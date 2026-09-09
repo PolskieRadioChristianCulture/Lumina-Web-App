@@ -178,6 +178,320 @@
             50% { opacity: 0.4; transform: scale(0.7); }
         }
 
+        /* Publish / Add Reel Button in Header */
+        .header-add-btn {
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 19px;
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(217, 119, 6, 0.35));
+            border: 1.5px solid rgba(250, 204, 21, 0.65);
+            color: #facc15;
+            font-size: 0.78rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            touch-action: manipulation;
+            letter-spacing: 0.4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-add-btn:active {
+            transform: scale(0.92);
+            background: linear-gradient(135deg, #facc15, #d97706);
+            color: #030712;
+            box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+        }
+
+        /* Platform Pill Badge on Slides */
+        .platform-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+        }
+        .platform-pill.yt { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5); }
+        .platform-pill.tiktok { background: rgba(0, 242, 254, 0.2); color: #38bdf8; border: 1px solid rgba(0, 242, 254, 0.4); }
+        .platform-pill.instagram { background: rgba(236, 72, 153, 0.25); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.5); }
+        .platform-pill.facebook { background: rgba(24, 119, 242, 0.25); color: #60a5fa; border: 1px solid rgba(24, 119, 242, 0.5); }
+        .platform-pill.mp4 { background: rgba(250, 204, 21, 0.2); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.4); }
+
+        /* Modal Overlay & Card */
+        .publish-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .publish-modal-overlay.open {
+            display: flex;
+        }
+
+        .publish-modal-card {
+            background: #0b1329;
+            border: 1.5px solid rgba(250, 204, 21, 0.45);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 90dvh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(250, 204, 21, 0.2);
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scrollbar-width: thin;
+            animation: modalScaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #f8fafc;
+        }
+
+        @keyframes modalScaleIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .modal-subtitle {
+            font-size: 0.76rem;
+            color: #94a3b8;
+        }
+
+        .modal-close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .modal-close-btn:hover, .modal-close-btn:active {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .modal-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            font-size: 0.88rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            outline: none;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
+        }
+
+        .btn-paste-clipboard {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(250, 204, 21, 0.15);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            color: var(--gold);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-paste-clipboard:active {
+            background: var(--gold);
+            color: #030712;
+            transform: scale(0.92);
+        }
+
+        .detected-badge-container {
+            min-height: 24px;
+            margin-top: 2px;
+        }
+
+        .detected-badge-empty {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .detected-badge-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            animation: badgePop 0.25s ease-out;
+        }
+
+        @keyframes badgePop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Preview box */
+        .reel-preview-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .preview-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preview-frame-box {
+            width: 100%;
+            height: 210px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-frame-box iframe, .preview-frame-box video {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain;
+        }
+
+        /* Category chips */
+        .category-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .category-chip {
+            padding: 6px 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-chip.active {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(217, 119, 6, 0.35));
+            border-color: var(--gold);
+            color: #facc15;
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.25);
+        }
+
+        .btn-submit-reel {
+            width: 100%;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #facc15 0%, #f59e0b 50%, #d97706 100%);
+            border: none;
+            color: #030712;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 6px;
+        }
+
+        .btn-submit-reel:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.6);
+        }
+
         /* Vertically Scrollable Reel Slides Container */
         .shorts-scroll-container {
             width: 100%;
@@ -633,9 +947,16 @@
                 <span class="header-badge">LIVE</span>
             </div>
 
-            <button type="button" class="header-btn" id="globalMuteBtn" onclick="toggleGlobalMute()" title="Włącz / Wyłącz dźwięk" aria-label="Przełącz dźwięk">
-                <i class="fa-solid fa-volume-xmark" id="globalMuteIcon"></i>
-            </button>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" class="header-add-btn" id="openAddReelBtn" onclick="openPublishModal()" title="Opublikuj Rolkę z YouTube, TikTok, IG, FB, MP4" aria-label="Dodaj Rolkę">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>+ Dodaj</span>
+                </button>
+
+                <button type="button" class="header-btn" id="globalMuteBtn" onclick="toggleGlobalMute()" title="Włącz / Wyłącz dźwięk" aria-label="Przełącz dźwięk">
+                    <i class="fa-solid fa-volume-xmark" id="globalMuteIcon"></i>
+                </button>
+            </div>
         </header>
 
         <!-- Toast notification -->
@@ -649,6 +970,73 @@
         <!-- Bottom Progress Bar -->
         <div class="shorts-progress-bar">
             <div class="shorts-progress-fill" id="shortsProgressFill"></div>
+        </div>
+
+        <!-- Modal Publikacji Rolki Wiary (Universal Multi-Platform) -->
+        <div class="publish-modal-overlay" id="publishModalOverlay" onclick="if(event.target===this) closePublishModal()">
+            <div class="publish-modal-card">
+                <div class="modal-header-row">
+                    <div>
+                        <h3 class="modal-title"><i class="fa-solid fa-sparkles" style="color:var(--gold);"></i> Dodaj Rolkę Wiary</h3>
+                        <p class="modal-subtitle">Wklej link z YouTube, TikTok, Instagram, FB lub MP4</p>
+                    </div>
+                    <button type="button" class="modal-close-btn" onclick="closePublishModal()" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Input Linku ze smart detektorem -->
+                <div class="form-group">
+                    <label class="form-label" for="inputReelUrl"><i class="fa-solid fa-link" style="color:var(--gold);"></i> Link do rolki lub wideo:</label>
+                    <div style="display:flex; gap:8px;">
+                        <input type="url" id="inputReelUrl" class="modal-input" placeholder="Wklej link (YouTube, TikTok, IG, FB, MP4)..." oninput="handleReelUrlInput(this.value)">
+                        <button type="button" class="btn-paste-clipboard" onclick="pasteFromClipboard()" title="Wklej ze schowka"><i class="fa-solid fa-paste"></i></button>
+                    </div>
+                    <!-- Dynamiczny badge wykrytej platformy -->
+                    <div id="detectedPlatformBadge" class="detected-badge-container">
+                        <span class="detected-badge-empty">Wklej link, a system automatycznie rozpozna platformę</span>
+                    </div>
+                </div>
+
+                <!-- Podgląd wideo (Dynamic Preview) -->
+                <div id="reelPreviewContainer" class="reel-preview-container" style="display:none;">
+                    <div class="preview-label"><i class="fa-solid fa-eye" style="color:#38bdf8;"></i> Podgląd wideo:</div>
+                    <div id="reelPreviewFrame" class="preview-frame-box"></div>
+                </div>
+
+                <!-- Tytuł / Przesłanie -->
+                <div class="form-group">
+                    <label class="form-label" for="inputReelTitle"><i class="fa-solid fa-heading" style="color:var(--gold);"></i> Tytuł / Przesłanie:</label>
+                    <input type="text" id="inputReelTitle" class="modal-input" placeholder="np. Boża moc przełamuje każdy strach 🕊️">
+                </div>
+
+                <!-- Autor / Twórca -->
+                <div class="form-group">
+                    <label class="form-label" for="inputReelAuthor"><i class="fa-solid fa-user" style="color:var(--gold);"></i> Autor / Twórca:</label>
+                    <input type="text" id="inputReelAuthor" class="modal-input" placeholder="Twoje imię lub nazwa profilu">
+                </div>
+
+                <!-- Werset biblijny -->
+                <div class="form-group">
+                    <label class="form-label" for="inputReelVerse"><i class="fa-solid fa-book-bible" style="color:#38bdf8;"></i> Werset biblijny (opcjonalnie):</label>
+                    <input type="text" id="inputReelVerse" class="modal-input" placeholder="np. Ew. Jana 3, 16 lub Psalm 23, 1">
+                </div>
+
+                <!-- Kategoria -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-tags" style="color:var(--gold);"></i> Kategoria:</label>
+                    <div class="category-chips-row" id="categoryChips">
+                        <button type="button" class="category-chip active" data-val="🕊️ Świadectwo" onclick="selectCategory(this)">🕊️ Świadectwo</button>
+                        <button type="button" class="category-chip" data-val="🌸 Modlitwa" onclick="selectCategory(this)">🌸 Modlitwa</button>
+                        <button type="button" class="category-chip" data-val="🎵 Uwielbienie" onclick="selectCategory(this)">🎵 Uwielbienie</button>
+                        <button type="button" class="category-chip" data-val="📖 Słowo Boże" onclick="selectCategory(this)">📖 Słowo Boże</button>
+                        <button type="button" class="category-chip" data-val="⚡ Misja & Wiara" onclick="selectCategory(this)">⚡ Misja & Wiara</button>
+                    </div>
+                </div>
+
+                <!-- Przycisk publikacji -->
+                <button type="button" class="btn-submit-reel" id="submitReelBtn" onclick="submitPublishedReel()">
+                    <i class="fa-solid fa-rocket"></i> Opublikuj Rolkę Wiary ✨
+                </button>
+            </div>
         </div>
 
     </div>
@@ -770,6 +1158,63 @@
                 description: "„A światłość świeci w ciemności, a ciemność jej nie ogarnęła.” Poznaj głębię oryginalnego tekstu greckiego w MojejBiblii. 💡🕊️",
                 amenCount: 567,
                 sharesCount: 178
+            },
+            {
+                id: "short_tiktok_worship",
+                title: "Młodzi dla Jezusa! Potężne uwielbienie w Duchu i Prawdzie 🔥🕊️",
+                author: "Pokolenie Wiary",
+                authorSlug: "radiocc",
+                authorAvatar: "avatar_cezary_official.jpg",
+                authorBadge: "🎵 TikTok Wiara",
+                videoType: "tiktok",
+                videoSrc: "7291234567890123456",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "1 Tymoteusza 4, 12",
+                verseBook: "1TI",
+                verseChapter: 4,
+                verseUrl: "https://polskieradio.cc/mojabiblia?book=1TI&ch=4&mode=reader",
+                audioTitle: "Ogień Ducha Świętego • TikTok Sound",
+                description: "„Niech nikt nie lekceważy twojej młodości, lecz bądź wzorem dla wierzących.” Czyste uwielbienie bez świeckiego hałasu! 🕊️✨",
+                amenCount: 892,
+                sharesCount: 245
+            },
+            {
+                id: "short_instagram_verse",
+                title: "Nie lękaj się, bo Ja jestem z tobą! Bóg walczy o ciebie każdego dnia 🛡️⚔️",
+                author: "Słowo Życia Insta",
+                authorSlug: "studiodobregoslowa",
+                authorAvatar: "avatar_cezary_official.jpg",
+                authorBadge: "📸 Instagram Reel",
+                videoType: "instagram",
+                videoSrc: "C3x9AbCDefG",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Księga Izajasza 41, 10",
+                verseBook: "ISA",
+                verseChapter: 41,
+                verseUrl: "https://polskieradio.cc/mojabiblia?book=ISA&ch=41&mode=reader",
+                audioTitle: "Spokój Duszy • Muzyka Uwielbienia",
+                description: "„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem.” Odpocznij dziś w Bożych obietnicach. 🌿📖",
+                amenCount: 630,
+                sharesCount: 190
+            },
+            {
+                id: "short_facebook_prayer",
+                title: "Wieczorne błogosławieństwo i modlitwa o pokój w Twoim domu 🏡🕊️",
+                author: "Rodzina Christian Culture",
+                authorSlug: "radiocc",
+                authorAvatar: "avatar_cezary_official.jpg",
+                authorBadge: "📘 Facebook Reel",
+                videoType: "facebook",
+                videoSrc: "https://www.facebook.com/reel/10158912345678901",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Księga Liczb 6, 24-26",
+                verseBook: "NUM",
+                verseChapter: 6,
+                verseUrl: "https://polskieradio.cc/mojabiblia?book=NUM&ch=6&mode=reader",
+                audioTitle: "Błogosławieństwo Aarona • Chór CC",
+                description: "„Niech ci błogosławi Pan i niech cię strzeże; niech rozjaśni Pan swoje oblicze nad tobą i będzie ci miłościw.” Niech Boży pokój napełni Twoje serce. 🙏✨",
+                amenCount: 754,
+                sharesCount: 310
             }
         ];
 
@@ -866,6 +1311,241 @@
             }
         };
 
+        let selectedCategory = '🕊️ Świadectwo';
+
+        // ── Smart Multi-Platform URL Parser ──
+        function parseReelUrl(rawUrl) {
+            if (!rawUrl || typeof rawUrl !== 'string') return null;
+            const url = rawUrl.trim();
+
+            // 1. YouTube Shorts / Videos
+            const ytMatch = url.match(/(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/i);
+            if (ytMatch) {
+                return {
+                    platform: 'youtube',
+                    id: ytMatch[1],
+                    label: 'YouTube Shorts',
+                    icon: 'fa-brands fa-youtube',
+                    color: '#ef4444',
+                    badgeClass: 'yt',
+                    embedSrc: ytMatch[1],
+                    previewUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1&controls=0&playsinline=1`
+                };
+            }
+
+            // 2. TikTok
+            const tiktokIdMatch = url.match(/tiktok\.com\/(?:@[^\/]+\/video\/|v\/|t\/)?(\d+)/i) || url.match(/\/(\d{15,22})/);
+            if (url.includes('tiktok.com') || tiktokIdMatch) {
+                const id = tiktokIdMatch ? tiktokIdMatch[1] : url;
+                return {
+                    platform: 'tiktok',
+                    id: id,
+                    label: 'TikTok Reel',
+                    icon: 'fa-brands fa-tiktok',
+                    color: '#00f2fe',
+                    badgeClass: 'tiktok',
+                    embedSrc: id,
+                    previewUrl: `https://www.tiktok.com/embed/v2/${id}`
+                };
+            }
+
+            // 3. Instagram Reels
+            const igMatch = url.match(/instagram\.com\/(?:reel|reels|p)\/([a-zA-Z0-9_-]+)/i);
+            if (igMatch) {
+                return {
+                    platform: 'instagram',
+                    id: igMatch[1],
+                    label: 'Instagram Reel',
+                    icon: 'fa-brands fa-instagram',
+                    color: '#ec4899',
+                    badgeClass: 'instagram',
+                    embedSrc: igMatch[1],
+                    previewUrl: `https://www.instagram.com/reel/${igMatch[1]}/embed/`
+                };
+            }
+
+            // 4. Facebook Reels
+            if (url.includes('facebook.com') || url.includes('fb.watch')) {
+                const fbReelMatch = url.match(/facebook\.com\/reel\/(\d+)/i) || url.match(/fb\.watch\/([a-zA-Z0-9_-]+)/i);
+                const fbId = fbReelMatch ? fbReelMatch[1] : '';
+                return {
+                    platform: 'facebook',
+                    id: fbId || url,
+                    label: 'Facebook Reel',
+                    icon: 'fa-brands fa-facebook',
+                    color: '#1877f2',
+                    badgeClass: 'facebook',
+                    embedSrc: url,
+                    previewUrl: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&autoplay=true&t=0`
+                };
+            }
+
+            // 5. MP4 / WebM / Direct Video
+            if (url.match(/\.(mp4|webm|mov)(\?.*)?$/i) || url.includes('storage.googleapis.com') || url.includes('.m3u8')) {
+                return {
+                    platform: 'mp4',
+                    id: 'mp4_' + Date.now(),
+                    label: 'Wideo MP4',
+                    icon: 'fa-solid fa-file-video',
+                    color: '#facc15',
+                    badgeClass: 'mp4',
+                    embedSrc: url,
+                    previewUrl: url
+                };
+            }
+
+            // Fallback for valid HTTP URL
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return {
+                    platform: 'mp4',
+                    id: 'url_' + Date.now(),
+                    label: 'Wideo Online',
+                    icon: 'fa-solid fa-video',
+                    color: '#38bdf8',
+                    badgeClass: 'mp4',
+                    embedSrc: url,
+                    previewUrl: url
+                };
+            }
+
+            return null;
+        }
+
+        // ── Real-Time URL Input Handler ──
+        window.handleReelUrlInput = function(val) {
+            const badgeContainer = document.getElementById('detectedPlatformBadge');
+            const previewContainer = document.getElementById('reelPreviewContainer');
+            const previewFrame = document.getElementById('reelPreviewFrame');
+            if (!badgeContainer) return;
+
+            const parsed = parseReelUrl(val);
+            if (!parsed) {
+                badgeContainer.innerHTML = '<span class="detected-badge-empty">Wklej link, a system automatycznie rozpozna platformę</span>';
+                if (previewContainer) previewContainer.style.display = 'none';
+                return;
+            }
+
+            badgeContainer.innerHTML = `
+                <span class="detected-badge-active" style="background:${parsed.color}22; color:${parsed.color}; border:1px solid ${parsed.color}66;">
+                    <i class="${parsed.icon}"></i> Wykryto: ${parsed.label}
+                </span>
+            `;
+
+            if (previewContainer && previewFrame) {
+                previewContainer.style.display = 'block';
+                if (parsed.platform === 'mp4') {
+                    previewFrame.innerHTML = `<video src="${parsed.previewUrl}" autoplay muted loop playsinline></video>`;
+                } else {
+                    previewFrame.innerHTML = `<iframe src="${parsed.previewUrl}" title="Podgląd" allow="autoplay" allowfullscreen></iframe>`;
+                }
+            }
+        };
+
+        window.pasteFromClipboard = async function() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    const input = document.getElementById('inputReelUrl');
+                    if (input) {
+                        input.value = text;
+                        handleReelUrlInput(text);
+                    }
+                }
+            } catch (err) {
+                showShortsToast('Wklej link ręcznie w pole tekstowe');
+            }
+        };
+
+        window.selectCategory = function(btn) {
+            document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCategory = btn.getAttribute('data-val');
+        };
+
+        window.openPublishModal = function() {
+            const modal = document.getElementById('publishModalOverlay');
+            if (modal) {
+                modal.classList.add('open');
+                // Pre-fill author if available in localStorage
+                const authorInput = document.getElementById('inputReelAuthor');
+                if (authorInput && !authorInput.value) {
+                    const profileName = localStorage.getItem('lumina_userName') || 'Świadek Wiary';
+                    authorInput.value = profileName;
+                }
+            }
+        };
+
+        window.closePublishModal = function() {
+            const modal = document.getElementById('publishModalOverlay');
+            if (modal) modal.classList.remove('open');
+        };
+
+        window.submitPublishedReel = function() {
+            const urlInput = document.getElementById('inputReelUrl');
+            const rawUrl = urlInput ? urlInput.value.trim() : '';
+            const parsed = parseReelUrl(rawUrl);
+
+            if (!parsed) {
+                alert('Proszę wkleić prawidłowy link do rolki z YouTube Shorts, TikTok, Instagram, Facebook lub plik wideo MP4.');
+                return;
+            }
+
+            const title = (document.getElementById('inputReelTitle').value || '').trim() || 'Rolka Wiary • Społeczność LUMINA 🕊️';
+            const author = (document.getElementById('inputReelAuthor').value || '').trim() || 'Świadek Wiary';
+            const verseRef = (document.getElementById('inputReelVerse').value || '').trim() || 'Pismo Święte';
+            const category = selectedCategory || '🕊️ Świadectwo';
+
+            const newId = 'short_user_' + Date.now();
+            const newShort = {
+                id: newId,
+                title: title,
+                author: author,
+                authorSlug: 'radiocc',
+                authorAvatar: 'avatar_cezary_official.jpg',
+                authorBadge: category,
+                videoType: parsed.platform,
+                videoSrc: parsed.embedSrc,
+                poster: 'tlo_tv_dzj.jpg',
+                verseRef: verseRef,
+                verseBook: 'PSA',
+                verseChapter: 1,
+                verseUrl: 'https://polskieradio.cc/mojabiblia',
+                audioTitle: 'Oryginalny dźwięk • ' + parsed.label,
+                description: title + ' 🕊️✨',
+                amenCount: 1,
+                sharesCount: 0,
+                isUserCreated: true
+            };
+
+            // Save in localStorage
+            try {
+                const stored = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+                stored.unshift(newShort);
+                localStorage.setItem('lumina_custom_shorts', JSON.stringify(stored));
+            } catch(e) {}
+
+            // Prepend to current feed
+            shortsData.unshift(newShort);
+            renderSlides(shortsData);
+
+            // Close modal & reset form
+            closePublishModal();
+            if (urlInput) urlInput.value = '';
+            document.getElementById('inputReelTitle').value = '';
+            document.getElementById('inputReelVerse').value = '';
+            document.getElementById('detectedPlatformBadge').innerHTML = '<span class="detected-badge-empty">Wklej link, a system automatycznie rozpozna platformę</span>';
+            const previewContainer = document.getElementById('reelPreviewContainer');
+            if (previewContainer) previewContainer.style.display = 'none';
+
+            // Scroll to newly published reel
+            setTimeout(() => {
+                const el = document.getElementById(newId);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+
+            showShortsToast('✨ Twoja Rolka Wiary została opublikowana!');
+        };
+
         // ── Render Slides ──
         function renderSlides(items) {
             const container = document.getElementById('shortsContainer');
@@ -882,13 +1562,17 @@
                 slide.setAttribute('data-index', index);
 
                 let mediaHtml = '';
-                if (item.videoType === 'mp4') {
+                const platform = item.videoType || 'mp4';
+                let platformBadgeHtml = '';
+
+                if (platform === 'mp4') {
                     mediaHtml = `
-                        <video playsinline loop preload="metadata" muted poster="${item.poster}">
+                        <video playsinline loop preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}">
                             <source src="${item.videoSrc}" type="video/mp4">
                         </video>
                     `;
-                } else if (item.videoType === 'youtube') {
+                    platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
+                } else if (platform === 'youtube') {
                     mediaHtml = `
                         <iframe src="https://www.youtube.com/embed/${item.videoSrc}?autoplay=0&mute=1&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
                                 title="${item.title}" 
@@ -896,6 +1580,34 @@
                                 allowfullscreen>
                         </iframe>
                     `;
+                    platformBadgeHtml = `<span class="platform-pill yt"><i class="fa-brands fa-youtube"></i> Shorts</span>`;
+                } else if (platform === 'tiktok') {
+                    mediaHtml = `
+                        <iframe src="https://www.tiktok.com/embed/v2/${item.videoSrc}" 
+                                title="${item.title}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
+                    `;
+                    platformBadgeHtml = `<span class="platform-pill tiktok"><i class="fa-brands fa-tiktok"></i> TikTok</span>`;
+                } else if (platform === 'instagram') {
+                    mediaHtml = `
+                        <iframe src="https://www.instagram.com/reel/${item.videoSrc}/embed/" 
+                                title="${item.title}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
+                    `;
+                    platformBadgeHtml = `<span class="platform-pill instagram"><i class="fa-brands fa-instagram"></i> Reels</span>`;
+                } else if (platform === 'facebook') {
+                    mediaHtml = `
+                        <iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.videoSrc)}&show_text=false&autoplay=false&t=0" 
+                                title="${item.title}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
+                    `;
+                    platformBadgeHtml = `<span class="platform-pill facebook"><i class="fa-brands fa-facebook"></i> Facebook</span>`;
                 }
 
                 slide.innerHTML = `
@@ -959,6 +1671,7 @@
                                 <i class="fa-solid fa-circle-check" style="color:var(--gold); font-size:0.85rem;"></i>
                             </a>
                             <span class="author-badge">${item.authorBadge || 'Społeczność'}</span>
+                            ${platformBadgeHtml}
                         </div>
 
                         <div class="short-title-text" title="${item.title}">${item.title}</div>
@@ -1088,6 +1801,14 @@
             } catch (err) {
                 shortsData = FALLBACK_SHORTS;
             }
+
+            // Merge locally published shorts from user
+            try {
+                const storedCustom = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+                if (Array.isArray(storedCustom) && storedCustom.length > 0) {
+                    shortsData = [...storedCustom, ...shortsData];
+                }
+            } catch (e) {}
 
             renderSlides(shortsData);
 
