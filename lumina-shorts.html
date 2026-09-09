@@ -898,28 +898,64 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Keyboard help tooltip on desktop */
-        .desktop-nav-hint {
+        /* Desktop nav arrows — wbudowane w action-sidebar pod przyciskiem Biblia */
+        .sidebar-nav-arrows {
             display: none;
-            position: absolute;
-            left: -180px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 14px;
-            border-radius: 16px;
-            color: #cbd5e1;
-            font-size: 0.8rem;
-            line-height: 1.5;
-            backdrop-filter: blur(8px);
-            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
         }
 
         @media (min-width: 900px) {
-            .desktop-nav-hint {
-                display: block;
+            .sidebar-nav-arrows {
+                display: flex;
             }
+        }
+
+        .sidebar-arrow-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.70);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.18);
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .sidebar-arrow-btn:hover {
+            background: rgba(251, 191, 36, 0.18);
+            border-color: rgba(251, 191, 36, 0.5);
+            color: var(--gold);
+            transform: scale(1.08);
+        }
+
+        .sidebar-arrow-label {
+            font-size: 0.6rem;
+            color: #475569;
+            letter-spacing: 0.04em;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Live badge */
+        .platform-pill.live {
+            background: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
         }
     </style>
 </head>
@@ -930,13 +966,8 @@
     <!-- Main 9:16 Shorts Shell -->
     <div class="shorts-app-shell" id="shortsShell">
         
-        <!-- Desktop Hint -->
-        <div class="desktop-nav-hint">
-            <div style="color:var(--gold); font-weight:800; margin-bottom:4px;"><i class="fa-solid fa-arrows-up-down"></i> Nawigacja:</div>
-            <div>Przewijaj kółkiem myszy lub strzałkami <span style="background:rgba(255,255,255,0.15); padding:2px 6px; border-radius:4px; font-weight:700;">↑</span> / <span style="background:rgba(255,255,255,0.15); padding:2px 6px; border-radius:4px; font-weight:700;">↓</span> na klawiaturze.</div>
-        </div>
 
-        <!-- Top Header -->
+
         <header class="shorts-header">
             <a href="tablica" class="header-btn" title="Powrót do Tablicy Społeczności" aria-label="Wróć do Tablicy">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -1046,6 +1077,63 @@
         // Fallback default shorts in case fetch is unavailable
         const FALLBACK_SHORTS = [
             {
+                id: "live_cctv24_worship",
+                title: "🔴 NA ŻYWO — Radio Christian Culture • CCTV24 Worship",
+                author: "Polskie Radio Christian Culture",
+                authorSlug: "radiocc",
+                authorAvatar: "logo_christian_culture_small.png",
+                authorBadge: "📡 Radio CC LIVE",
+                videoType: "live_iframe",
+                videoSrc: "cctv24-worship-live.html?muted=1&mute=1&in_mcr=1",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Psalm 22, 4",
+                verseBook: "PSA",
+                verseChapter: 22,
+                verseUrl: "/mojabiblia?book=PSA&ch=22&mode=reader",
+                audioTitle: "Uwielbienie NA ŻYWO • Polskie Radio Christian Culture",
+                description: "Słuchaj Radia Christian Culture NA ŻYWO! Czyste uwielbienie, Słowo Boże i muzyka chrześcijańska przez całą dobę. 📡🕊️",
+                amenCount: 1024,
+                sharesCount: 512
+            },
+            {
+                id: "live_cctv24",
+                title: "🔴 NA ŻYWO — CCTV24 Worship • Telewizja Chrześcijańska",
+                author: "CCTV24 Christian Culture",
+                authorSlug: "radiocc",
+                authorAvatar: "logo_christian_culture_small.png",
+                authorBadge: "📺 CCTV24 LIVE",
+                videoType: "live_iframe",
+                videoSrc: "cctv24.html?muted=1&mute=1&in_mcr=1",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Ew. Jana 4, 24",
+                verseBook: "JHN",
+                verseChapter: 4,
+                verseUrl: "/mojabiblia?book=JHN&ch=4&mode=reader",
+                audioTitle: "CCTV24 NA ŻYWO • Christian Culture Television",
+                description: "Oglądaj CCTV24 Worship NA ŻYWO! Transmisje, uwielbianie i chrześcijańskie programy przez całą dobę. 📺✝️",
+                amenCount: 756,
+                sharesCount: 389
+            },
+            {
+                id: "live_sniadaniowa",
+                title: "🔴 NA ŻYWO — Śniadaniowa • Poranny Program Chrześcijański",
+                author: "Śniadaniowa CC",
+                authorSlug: "radiocc",
+                authorAvatar: "logo_christian_culture_small.png",
+                authorBadge: "☀️ Śniadaniowa LIVE",
+                videoType: "live_iframe",
+                videoSrc: "snadaniowa-live.html?muted=1&mute=1&in_mcr=1",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Lamentacje 3, 22-23",
+                verseBook: "LAM",
+                verseChapter: 3,
+                verseUrl: "/mojabiblia?book=LAM&ch=3&mode=reader",
+                audioTitle: "Poranny Program NA ŻYWO • Śniadaniowa CC",
+                description: "\"Jego miłosierdzia nie ustają, jego litości nie kończą się. Każdego ranka są nowe.\" Zacznij dzień z Bogiem! ☀️🙏",
+                amenCount: 634,
+                sharesCount: 201
+            },
+            {
                 id: "short_psalm1",
                 title: "Błogosławiony człowiek, który rozmyśla nad Słowem Bożym 📖🌿",
                 author: "Zbyszek Gieroń",
@@ -1060,10 +1148,11 @@
                 verseChapter: 1,
                 verseUrl: "/mojabiblia?book=PSA&ch=1&mode=reader",
                 audioTitle: "Ciche Uwielbienie • Studio Dobrego Słowa",
-                description: "„Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” Prawdziwe szczęście zaczyna się w Bożej obecności. 🙏✨",
+                description: "„Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą." Prawdziwe szczęście zaczyna się w Bożej obecności. 🙏✨",
                 amenCount: 148,
                 sharesCount: 37
             },
+
             {
                 id: "short_swiadectwo_grzegorz",
                 title: "Niewiarygodna przemiana życia! Jezus uwolnił mnie od nałogu ✝️⚡",
@@ -1608,6 +1697,17 @@
                         </iframe>
                     `;
                     platformBadgeHtml = `<span class="platform-pill facebook"><i class="fa-brands fa-facebook"></i> Facebook</span>`;
+                } else if (platform === 'live_iframe') {
+                    mediaHtml = `
+                        <iframe src="${item.videoSrc}" 
+                                title="${item.title}" 
+                                allow="autoplay; fullscreen; picture-in-picture" 
+                                allowfullscreen
+                                style="border:0; width:100%; height:100%; object-fit:cover;">
+                        </iframe>
+                        <div style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; border: 3px solid rgba(239,68,68,0.6); border-radius:inherit; z-index:30;"></div>
+                    `;
+                    platformBadgeHtml = `<span class="platform-pill live"><i class="fa-solid fa-circle" style="animation:livePulse 1s infinite;"></i> NA ŻYWO</span>`;
                 }
 
                 slide.innerHTML = `
@@ -1660,6 +1760,17 @@
                                 <i class="fa-solid fa-book-bible"></i>
                             </a>
                             <span class="action-label">Biblia</span>
+                        </div>
+
+                        <!-- Desktop Nav Arrows (pod Biblią, tylko desktop) -->
+                        <div class="sidebar-nav-arrows" aria-label="Nawigacja rolek">
+                            <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} - 1)" title="Poprzednia rolka (↑)" aria-label="Poprzednia">
+                                <i class="fa-solid fa-chevron-up"></i>
+                            </button>
+                            <span class="sidebar-arrow-label">↑ ↓</span>
+                            <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} + 1)" title="Następna rolka (↓)" aria-label="Następna">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -1752,6 +1863,15 @@
 
             document.querySelectorAll('.short-slide').forEach(slide => observer.observe(slide));
         }
+
+        // ── Sidebar Arrow Navigation ──
+        window.scrollToSlide = function(targetIndex) {
+            const items = document.querySelectorAll('.short-slide');
+            const idx = Math.max(0, Math.min(items.length - 1, targetIndex));
+            if (items[idx]) {
+                items[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
 
         function updateVideoProgress(e) {
             const video = e.target;
