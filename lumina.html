@@ -1809,6 +1809,94 @@
             }
         }
 
+        /* ══════════ CAROUSEL CARD ACTIVITY BADGES (ENVELOPE & CHAT) ══════════ */
+        .card-activity-badges {
+            position: absolute;
+            top: 56px;
+            right: 12px;
+            z-index: 6;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            pointer-events: auto;
+        }
+
+        .card-badge-envelope {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 28px;
+            padding: 0 9px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(250, 204, 21, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), 0 0 10px rgba(250, 204, 21, 0.3);
+            color: #fde047;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+        }
+        .card-badge-envelope:hover {
+            transform: scale(1.1);
+            background: rgba(30, 41, 59, 0.95);
+            border-color: #facc15;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 14px rgba(250, 204, 21, 0.6);
+        }
+        .card-badge-envelope i {
+            font-size: 0.76rem;
+            color: #facc15;
+        }
+        .card-badge-envelope .card-badge-count {
+            font-size: 0.76rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.2px;
+        }
+
+        .card-badge-chat {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(56, 189, 248, 0.85);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), 0 0 12px rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            font-size: 0.78rem;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+            animation: pulseCardChat 2.4s infinite ease-in-out;
+        }
+        .card-badge-chat:hover {
+            transform: scale(1.16);
+            background: rgba(30, 41, 59, 0.95);
+            border-color: #38bdf8;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 16px rgba(56, 189, 248, 0.7);
+        }
+        @keyframes pulseCardChat {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), 0 0 6px rgba(56, 189, 248, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 14px rgba(56, 189, 248, 0.65);
+                transform: scale(1.06);
+            }
+        }
+
         /* Card body – 100% odsłonięte zdjęcie, dolny gradient wyłącznie z imieniem i wiekiem / nazwą */
         .card-body {
             position: absolute;
@@ -2367,14 +2455,14 @@
             #profileModal .modal-card {
                 width: 100vw !important;
                 max-width: 100vw !important;
-                max-height: 94vh !important;
-                max-height: 94dvh !important;
-                border-radius: 24px 24px 0 0 !important;
+                max-height: 85vh !important;
+                max-height: 85dvh !important;
+                border-radius: 28px 28px 0 0 !important;
                 border-bottom: none !important;
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1.5px solid rgba(250, 204, 21, 0.45) !important;
-                padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 10px)) 16px !important;
+                padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 14px)) 18px !important;
                 box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.85) !important;
                 transform: translateY(100%);
                 transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
@@ -3948,6 +4036,16 @@
 
                 <!-- Dynamic Live Results Dropdown -->
                 <div class="omni-dropdown" id="omniDropdown"></div>
+
+                <!-- Quick Action Shortcuts -->
+                <div class="omni-shortcuts-row">
+                    <button type="button" class="shortcut-chip" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator() : null" style="background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)); border-color: rgba(250,204,21,0.5); color: #fef08a;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Karta Wersetu Story 9:16 ✨
+                    </button>
+                    <a href="tablica" class="shortcut-chip special-board">
+                        <i class="fa-solid fa-comments"></i> Tablica Społeczności
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -4982,15 +5080,15 @@
 
     <!-- ══════════ PROFILE MODAL WITH EXPLAINABLE MATCH & 3-LEVEL CONNECTION ══════════ -->
     <div class="modal-overlay" id="profileModal">
-        <div class="modal-card" style="max-width: 460px; max-height: 94vh; overflow-y: auto; padding: 18px 20px 18px;">
+        <div class="modal-card" style="max-width: 480px; max-height: 92vh; overflow-y: auto; padding: 24px;">
             <button class="modal-close-btn" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="text-align:center;margin-bottom:10px;">
+            <div style="text-align:center;margin-bottom:14px;">
                 <div id="mImg"></div>
-                <h3 id="mName" style="font-size:1.2rem;font-weight:800;margin:6px 0 2px; color:#fff;"></h3>
-                <div id="mLoc" style="font-size:0.8rem;color:#a78bfa;font-weight:700;margin-bottom:8px;"></div>
+                <h3 id="mName" style="font-size:1.25rem;font-weight:800;margin:10px 0 4px; color:#fff;"></h3>
+                <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;margin-bottom:10px;"></div>
                 
                 <!-- ══════════ FAITH & LIFE BADGES (MAKIETA 6 & 1) ══════════ -->
-                <div class="faith-badges-container" id="mFaithBadgesBox" style="display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin:0 auto 8px; max-width:420px;">
+                <div class="faith-badges-container" id="mFaithBadgesBox" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 auto 12px; max-width:420px;">
                     <span class="faith-badge-pill prayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
                     <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Niedzielne nabożeństwo</span>
                     <span class="faith-badge-pill bible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
@@ -4998,91 +5096,88 @@
                 </div>
             </div>
             
-            <p id="mDesc" style="font-size:0.82rem;color:#cbd5e1;line-height:1.45;font-style:italic;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:10px;margin-bottom:10px;"></p>
+            <p id="mDesc" style="font-size:0.85rem;color:#cbd5e1;line-height:1.55;font-style:italic;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius:12px;margin-bottom:14px;"></p>
 
-            <!-- ══════════ EXPLAINABLE AI MATCH BREAKDOWN (MINIMIZED BY DEFAULT) ══════════ -->
-            <div id="mMatchBreakdownBox" style="background:rgba(15,23,42,0.85);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:9px 12px;margin-bottom:10px;transition:all 0.25s ease;">
-                <div class="match-breakdown-header" onclick="toggleMatchBreakdownDetails()" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
-                    <div style="display:flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:800;color:#facc15;">
+            <!-- ══════════ EXPLAINABLE AI MATCH BREAKDOWN ══════════ -->
+            <div id="mMatchBreakdownBox" style="background:rgba(15,23,42,0.85);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:14px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <div style="display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:800;color:#facc15;">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>Dopasowanie LUMINA:</span>
-                        <span id="mMatchScoreValue" style="color:#fff;background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:2px 8px;border-radius:10px;font-size:0.75rem;">96%</span>
+                        <span id="mMatchScoreValue" style="color:#fff;background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:2px 8px;border-radius:10px;font-size:0.78rem;">96%</span>
                     </div>
-                    <button type="button" style="background:none;border:none;color:#38bdf8;font-size:0.75rem;font-weight:700;cursor:pointer;padding:2px 4px;display:flex;align-items:center;gap:4px;">
-                        <span id="mMatchToggleText">Rozwiń</span>
-                        <i id="mMatchToggleIcon" class="fa-solid fa-chevron-down" style="font-size:0.68rem;transition:transform 0.25s;"></i>
+                    <button type="button" onclick="toggleMatchBreakdownDetails()" style="background:none;border:none;color:#38bdf8;font-size:0.75rem;font-weight:700;cursor:pointer;padding:2px 4px;">
+                        <span id="mMatchToggleText">Szczegóły ▼</span>
                     </button>
                 </div>
 
-                <!-- Collapsible Breakdown Details (Default hidden) -->
-                <div id="mMatchDetailsExpandable" style="display:none;margin-top:10px;padding-top:8px;border-top:1px solid rgba(168,85,247,0.2);">
-                    <div id="mMatchBarsContainer" style="display:flex;flex-direction:column;gap:8px;">
-                        <div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                                <span>✝️ Wiara & Duchowość</span>
-                                <span id="mBarFaithVal" style="font-weight:700;color:#38bdf8;">100%</span>
-                            </div>
-                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                                <div id="mBarFaith" style="width:100%;height:100%;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:4px;"></div>
-                            </div>
+                <!-- Expanded Breakdown Bars (Default visible) -->
+                <div id="mMatchBarsContainer" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                            <span>✝️ Wiara & Duchowość</span>
+                            <span id="mBarFaithVal" style="font-weight:700;color:#38bdf8;">100%</span>
                         </div>
-                        <div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                                <span>🎯 Cel w Społeczności</span>
-                                <span id="mBarGoalVal" style="font-weight:700;color:#ec4899;">95%</span>
-                            </div>
-                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                                <div id="mBarGoal" style="width:95%;height:100%;background:linear-gradient(90deg,#f472b6,#ec4899);border-radius:4px;"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                                <span>🌿 Wartości & Styl Życia</span>
-                                <span id="mBarValuesVal" style="font-weight:700;color:#a855f7;">92%</span>
-                            </div>
-                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                                <div id="mBarValues" style="width:92%;height:100%;background:linear-gradient(90deg,#c084fc,#a855f7);border-radius:4px;"></div>
-                            </div>
+                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                            <div id="mBarFaith" style="width:100%;height:100%;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:4px;"></div>
                         </div>
                     </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                            <span>🎯 Cel w Społeczności</span>
+                            <span id="mBarGoalVal" style="font-weight:700;color:#ec4899;">95%</span>
+                        </div>
+                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                            <div id="mBarGoal" style="width:95%;height:100%;background:linear-gradient(90deg,#f472b6,#ec4899);border-radius:4px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                            <span>🌿 Wartości & Styl Życia</span>
+                            <span id="mBarValuesVal" style="font-weight:700;color:#a855f7;">92%</span>
+                        </div>
+                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                            <div id="mBarValues" style="width:92%;height:100%;background:linear-gradient(90deg,#c084fc,#a855f7);border-radius:4px;"></div>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- Co Was Łączy Note -->
-                    <div id="mMatchCommonNote" style="margin-top:10px;padding:8px 10px;background:rgba(236,72,153,0.1);border:1px dashed rgba(236,72,153,0.3);border-radius:8px;font-size:0.75rem;color:#f9a8d4;line-height:1.4;">
-                        <i class="fa-solid fa-heart" style="color:#ec4899;margin-right:4px;"></i>
-                        <span id="mMatchCommonText">Oboje stawiacie Chrystusa w centrum relacji i cenicie Pismo Święte.</span>
-                    </div>
+                <!-- Co Was Łączy Note -->
+                <div id="mMatchCommonNote" style="margin-top:10px;padding:8px 10px;background:rgba(236,72,153,0.1);border:1px dashed rgba(236,72,153,0.3);border-radius:8px;font-size:0.75rem;color:#f9a8d4;line-height:1.4;">
+                    <i class="fa-solid fa-heart" style="color:#ec4899;margin-right:4px;"></i>
+                    <span id="mMatchCommonText">Oboje stawiacie Chrystusa w centrum relacji i cenicie Pismo Święte.</span>
                 </div>
             </div>
 
             <!-- ══════════ 3-LEVEL CHRISTIAN CONNECTION ACTIONS ══════════ -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
-                <button type="button" onclick="sendGreet()" title="Wyślij przyjacielskie przywitanie" style="padding:8px 4px;border-radius:12px;border:1px solid rgba(56,189,248,0.3);background:rgba(56,189,248,0.1);color:#38bdf8;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.75rem;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.2s;">
-                    <span style="font-size:1.05rem;">👋</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+                <button type="button" onclick="sendGreet()" title="Wyślij przyjacielskie przywitanie" style="padding:10px 6px;border-radius:14px;border:1px solid rgba(56,189,248,0.3);background:rgba(56,189,248,0.1);color:#38bdf8;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.76rem;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all 0.2s;">
+                    <span style="font-size:1.1rem;">👋</span>
                     <span>Poznajmy się</span>
                 </button>
-                <button type="button" onclick="sendCoffeeInvite()" title="Zaproś na wirtualną lub realną kawę" style="padding:8px 4px;border-radius:12px;border:1px solid rgba(251,191,36,0.3);background:rgba(251,191,36,0.1);color:#fbbf24;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.75rem;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.2s;">
-                    <span style="font-size:1.05rem;">☕</span>
+                <button type="button" onclick="sendCoffeeInvite()" title="Zaproś na wirtualną lub realną kawę" style="padding:10px 6px;border-radius:14px;border:1px solid rgba(251,191,36,0.3);background:rgba(251,191,36,0.1);color:#fbbf24;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.76rem;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all 0.2s;">
+                    <span style="font-size:1.1rem;">☕</span>
                     <span>Kawa</span>
                 </button>
-                <button type="button" onclick="sendPray()" title="Zapewnij o modlitwie wstawienniczej" style="padding:8px 4px;border-radius:12px;border:1px solid rgba(168,85,247,0.3);background:rgba(168,85,247,0.1);color:#c084fc;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.75rem;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.2s;">
-                    <span style="font-size:1.05rem;">🕊️</span>
+                <button type="button" onclick="sendPray()" title="Zapewnij o modlitwie wstawienniczej" style="padding:10px 6px;border-radius:14px;border:1px solid rgba(168,85,247,0.3);background:rgba(168,85,247,0.1);color:#c084fc;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.76rem;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all 0.2s;">
+                    <span style="font-size:1.1rem;">🕊️</span>
                     <span>Modlitwa</span>
                 </button>
             </div>
 
-            <!-- Direct Message & Full Profile Buttons in 2 columns -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
-                <button type="button" onclick="sendMsg()" style="width:100%;padding:10px 8px;border-radius:24px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.82rem;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 12px rgba(168,85,247,0.3);">
-                    <i class="fa-solid fa-paper-plane"></i> <span>Wiadomość</span>
+            <!-- Direct Message & Full Profile Buttons -->
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+                <button type="button" onclick="sendMsg()" style="width:100%;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.85rem;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 14px rgba(168,85,247,0.35);">
+                    <i class="fa-solid fa-paper-plane"></i> <span>Napisz Wiadomość</span>
                 </button>
-                <a id="mFullProfileLink" href="javascript:void(0)" onclick="navigateToFullProfile(event)" style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px 8px;border-radius:24px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.82rem;text-decoration:none;box-shadow:0 4px 12px rgba(217,70,239,0.3);transition:transform 0.2s;">
-                    <i class="fa-solid fa-address-card"></i> <span>Pełny Profil ➜</span>
-                </a>
+                <button type="button" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ authorName: document.getElementById('mName')?.textContent?.trim(), slug: window._currentModalProfileSlug }) : null" style="width:100%;padding:10px;border-radius:30px;background:rgba(250,204,21,0.12);border:1px solid rgba(250,204,21,0.4);color:#facc15;font-weight:800;cursor:pointer;font-family:inherit;font-size:0.82rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Stwórz Kartę Wersetu Story 9:16</span>
+                </button>
             </div>
 
-            <button type="button" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ authorName: document.getElementById('mName')?.textContent?.trim(), slug: window._currentModalProfileSlug }) : null" style="background:none;border:none;color:#facc15;font-size:0.74rem;font-weight:700;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;gap:5px;margin:0 auto;opacity:0.85;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Karta Wersetu Story 9:16</span>
-            </button>
+            <a id="mFullProfileLink" href="javascript:void(0)" onclick="navigateToFullProfile(event)" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:30px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.86rem;text-decoration:none;box-shadow:0 4px 16px rgba(217,70,239,0.35);transition:transform 0.2s;">
+                <i class="fa-solid fa-address-card"></i> <span>Zobacz Pełny Profil ➜</span>
+            </a>
         </div>
     </div>
 
@@ -6737,6 +6832,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
                     const liveScore = isLocalUser ? 'Twój profil' : (window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : null);
                     const isNew = typeof isProfileNew === 'function' ? isProfileNew(p) : true;
+                    const postCount = (typeof window.getProfilePostCount === 'function') ? window.getProfilePostCount(pKey, userName) : 0;
+                    const hasChat = (typeof window.hasProfileChatActivity === 'function') ? window.hasProfileChatActivity(pKey, userName) : false;
+                    const cleanNameEsc = String(userName || '').replace(/'/g, "\\'");
+                    const cleanAvatarEsc = String(userAvatar || 'lumina_icon.jpg').replace(/'/g, "\\'");
 
                     return `
                         <div class="profile-card cloud-registered-user-card" id="card_profile_${pKey}" data-profile-slug="${pKey}" data-category="${p.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${pKey}')">
@@ -6763,6 +6862,19 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                     <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                                 `}
                                 <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
+                                <div class="card-activity-badges" data-activity-badges-for="${pKey}">
+                                    ${postCount > 0 ? `
+                                        <button type="button" class="card-badge-envelope" title="${userName} – ${postCount} ${postCount === 1 ? 'wpis' : (postCount < 5 ? 'wpisy' : 'wpisów')} na profilu i tablicy społeczności" onclick="handleCardEnvelopeClick(event, '${pKey}')">
+                                            <i class="fa-solid fa-envelope"></i>
+                                            <span class="card-badge-count">${postCount}</span>
+                                        </button>
+                                    ` : ''}
+                                    ${hasChat ? `
+                                        <button type="button" class="card-badge-chat" title="${userName} pisze na czacie – kliknij, aby porozmawiać" onclick="handleCardChatClick(event, '${pKey}', '${cleanNameEsc}', '${cleanAvatarEsc}')">
+                                            <i class="fa-solid fa-comment-dots"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
                             </div>
 
                             <div class="card-body">
@@ -6923,6 +7035,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             // Aktywuj pulsujący przycisk OBSERWUJ pod dopasowaniem dla wszystkich kart w karuzeli
             if (typeof window.enhanceCarouselCardsWithFollowButtons === 'function') {
                 window.enhanceCarouselCardsWithFollowButtons();
+            }
+
+            // Aktywuj plakietki aktywności (koperta z liczbą postów oraz dymek czatu) dla wszystkich kart
+            if (typeof window.syncCarouselActivityBadges === 'function') {
+                window.syncCarouselActivityBadges();
             }
         };
 
@@ -7314,16 +7431,245 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
         };
 
+        // ══════════ CAROUSEL ACTIVITY BADGES ENGINE (ENVELOPE POSTS & CHAT) ══════════
+        window.getProfilePostCount = function(slug, name) {
+            if (!slug && !name) return 0;
+            const cleanSlug = String(slug || '').toLowerCase().trim().replace(/^u_/, '');
+            const normSlug = cleanSlug.replace(/[^a-z0-9]/g, '');
+            const normName = String(name || '').toLowerCase().trim().replace(/\s+/g, ' ');
+            const cleanName = normName.replace(/[^a-z0-9]/g, '');
+
+            let count = 0;
+            const countedPostIds = new Set();
+
+            // 1. Sprawdź posty z chmury (lumina_posts / cache)
+            let cloudPosts = window._cachedCloudPosts;
+            if (!cloudPosts) {
+                try {
+                    cloudPosts = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                } catch(e) {
+                    cloudPosts = [];
+                }
+            }
+            if (Array.isArray(cloudPosts)) {
+                cloudPosts.forEach(post => {
+                    if (!post) return;
+                    const pAuthorSlug = String(post.authorSlug || post.authorId || post.userId || post.uid || '').toLowerCase().trim().replace(/^u_/, '');
+                    const pNormAuthorSlug = pAuthorSlug.replace(/[^a-z0-9]/g, '');
+                    const pAuthor = String(post.author || post.senderName || post.userName || '').toLowerCase().trim().replace(/\s+/g, ' ');
+                    const pCleanAuthor = pAuthor.replace(/[^a-z0-9]/g, '');
+
+                    const matchSlug = normSlug && (pNormAuthorSlug === normSlug || pAuthorSlug.includes(cleanSlug) || cleanSlug.includes(pAuthorSlug));
+                    const matchName = cleanName && (pCleanAuthor === cleanName || pAuthor === normName || (normName.length > 3 && pAuthor.includes(normName)));
+
+                    if (matchSlug || matchName) {
+                        const pId = post.id || (post.title + '_' + post.createdAtDateStr);
+                        if (!countedPostIds.has(pId)) {
+                            countedPostIds.add(pId);
+                            count++;
+                        }
+                    }
+                });
+            }
+
+            // 2. Sprawdź dedykowany klucz w localStorage dla profilu
+            try {
+                const localKeys = [
+                    `lumina_posts_${cleanSlug}`,
+                    `lumina_posts_${normSlug}`,
+                    `lumina_posts_${cleanName}`,
+                    `lumina_feed_posts`
+                ];
+                localKeys.forEach(k => {
+                    const raw = localStorage.getItem(k);
+                    if (raw) {
+                        const arr = JSON.parse(raw);
+                        if (Array.isArray(arr)) {
+                            arr.forEach(p => {
+                                if (k === 'lumina_feed_posts') {
+                                    const pAuthorSlug = String(p.authorSlug || p.authorId || '').toLowerCase().trim().replace(/^u_/, '');
+                                    const pAuthor = String(p.author || '').toLowerCase().trim().replace(/\s+/g, ' ');
+                                    if ((normSlug && pAuthorSlug.replace(/[^a-z0-9]/g, '') === normSlug) || (cleanName && pAuthor.replace(/[^a-z0-9]/g, '') === cleanName)) {
+                                        const pid = p.id || (p.title + '_' + p.createdAt);
+                                        if (!countedPostIds.has(pid)) {
+                                            countedPostIds.add(pid);
+                                            count++;
+                                        }
+                                    }
+                                } else {
+                                    const pid = p.id || JSON.stringify(p);
+                                    if (!countedPostIds.has(pid)) {
+                                        countedPostIds.add(pid);
+                                        count++;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } catch(e) {}
+
+            // 3. Sprawdź bazowe wpisy redakcyjne / założycielskie w razie braku wpisów w pamięci
+            if (count === 0) {
+                if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) count = 6;
+                else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) count = 4;
+                else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) count = 3;
+                else if (cleanSlug.includes('zbyszek') || cleanName.includes('zbyszek')) count = 4;
+                else if (cleanSlug.includes('jola') || cleanName.includes('jola')) count = 3;
+                else if (cleanSlug.includes('pawel') || cleanName.includes('pawel')) count = 2;
+                else if (cleanSlug.includes('zofia') || cleanName.includes('zofia')) count = 2;
+                else if (cleanSlug.includes('radiocc') || cleanSlug.includes('cctv')) count = 5;
+            }
+
+            return count;
+        };
+
+        window.hasProfileChatActivity = function(slug, name) {
+            if (!slug && !name) return false;
+            const cleanSlug = String(slug || '').toLowerCase().trim().replace(/^u_/, '');
+            const normSlug = cleanSlug.replace(/[^a-z0-9]/g, '');
+            const normName = String(name || '').toLowerCase().trim().replace(/\s+/g, ' ');
+            const cleanName = normName.replace(/[^a-z0-9]/g, '');
+
+            // 1. Sprawdź wiadomości czatu publicznego w pamięci / cache
+            let chatMsgs = window._cachedPublicChatMessages;
+            if (!chatMsgs) {
+                try {
+                    chatMsgs = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+                } catch(e) {
+                    chatMsgs = [];
+                }
+            }
+            if (Array.isArray(chatMsgs) && chatMsgs.length > 0) {
+                const found = chatMsgs.some(msg => {
+                    if (!msg) return false;
+                    const sId = String(msg.senderId || msg.senderSlug || msg.fromId || msg.uid || '').toLowerCase().trim().replace(/^u_/, '');
+                    const sNormId = sId.replace(/[^a-z0-9]/g, '');
+                    const sName = String(msg.senderName || msg.fromName || msg.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
+                    const sCleanName = sName.replace(/[^a-z0-9]/g, '');
+
+                    const matchSlug = normSlug && (sNormId === normSlug || sId.includes(cleanSlug) || cleanSlug.includes(sId));
+                    const matchName = cleanName && (sCleanName === cleanName || sName === normName || (normName.length > 3 && sName.includes(normName)));
+                    return matchSlug || matchName;
+                });
+                if (found) return true;
+            }
+
+            // 2. Sprawdź prywatny wątek czatu w localStorage
+            try {
+                const privKeys = [
+                    `lumina_chat_${cleanSlug}`,
+                    `lumina_chat_${normSlug}`,
+                    `lumina_chat_${slug}`
+                ];
+                for (const k of privKeys) {
+                    const privRaw = localStorage.getItem(k);
+                    if (privRaw) {
+                        const privArr = JSON.parse(privRaw);
+                        if (Array.isArray(privArr) && privArr.length > 0) return true;
+                    }
+                }
+            } catch(e) {}
+
+            // 3. Aktywni uczestnicy czatu z bazy demo/społeczności
+            const activeChatSlugs = ['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'u_urszula_7685', 'urszula', 'ula', 'noemi', 'dawid', 'zbyszekgieron', 'pawelmurawski', 'radiocc'];
+            if (activeChatSlugs.some(s => cleanSlug.includes(s.replace(/^u_/, '')) || normSlug === s.replace(/^u_/, '').replace(/[^a-z0-9]/g, ''))) {
+                return true;
+            }
+
+            return false;
+        };
+
+        window.handleCardEnvelopeClick = function(event, slug) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            if (slug && typeof window.openCommunityProfile === 'function') {
+                window.openCommunityProfile(slug);
+            }
+        };
+
+        window.handleCardChatClick = function(event, slug, name, avatar) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            if (typeof window.openChatWith === 'function') {
+                window.openChatWith(name || slug, avatar || 'lumina_icon.jpg', slug);
+            } else if (typeof window.openPublicChat === 'function') {
+                window.openPublicChat();
+            }
+        };
+
+        window.syncCarouselActivityBadges = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+
+            carousel.querySelectorAll('.profile-card').forEach(card => {
+                if (card.classList.contains('video-card') || card.id === 'promoAdCard') return;
+
+                const slug = card.dataset.profileSlug || card.id.replace('card_profile_', '');
+                if (!slug) return;
+
+                const photoWrap = card.querySelector('.card-photo');
+                if (!photoWrap) return;
+
+                const nameEl = card.querySelector('.card-name');
+                const rawName = nameEl ? nameEl.textContent.split(',')[0].trim() : slug;
+                const imgEl = card.querySelector('.card-photo img');
+                const avatar = imgEl ? imgEl.src : 'lumina_icon.jpg';
+
+                const postCount = (typeof window.getProfilePostCount === 'function') 
+                    ? window.getProfilePostCount(slug, rawName) 
+                    : 0;
+                const hasChat = (typeof window.hasProfileChatActivity === 'function') 
+                    ? window.hasProfileChatActivity(slug, rawName) 
+                    : false;
+
+                let badgesWrap = photoWrap.querySelector('.card-activity-badges');
+                if (!badgesWrap) {
+                    badgesWrap = document.createElement('div');
+                    badgesWrap.className = 'card-activity-badges';
+                    badgesWrap.setAttribute('data-activity-badges-for', slug);
+                    photoWrap.appendChild(badgesWrap);
+                }
+
+                let badgesHtml = '';
+                if (postCount > 0) {
+                    const postLabel = postCount === 1 ? 'wpis' : (postCount < 5 ? 'wpisy' : 'wpisów');
+                    badgesHtml += `
+                        <button type="button" class="card-badge-envelope" title="${rawName} – ${postCount} ${postLabel} na profilu i tablicy społeczności" onclick="handleCardEnvelopeClick(event, '${slug}')">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span class="card-badge-count">${postCount}</span>
+                        </button>
+                    `;
+                }
+                if (hasChat) {
+                    const cleanNameEsc = String(rawName).replace(/'/g, "\\'");
+                    const cleanAvEsc = String(avatar).replace(/'/g, "\\'");
+                    badgesHtml += `
+                        <button type="button" class="card-badge-chat" title="${rawName} pisze na czacie – kliknij, aby porozmawiać" onclick="handleCardChatClick(event, '${slug}', '${cleanNameEsc}', '${cleanAvEsc}')">
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </button>
+                    `;
+                }
+                badgesWrap.innerHTML = badgesHtml;
+            });
+        };
+
         // Automatyczny start przy ładowaniu strony
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+                setTimeout(window.syncCarouselActivityBadges, 650);
                 setTimeout(() => {
                     if (typeof window.syncUserFollowsFromCloud === 'function') window.syncUserFollowsFromCloud();
                 }, 1200);
             });
         } else {
             setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+            setTimeout(window.syncCarouselActivityBadges, 650);
             setTimeout(() => {
                 if (typeof window.syncUserFollowsFromCloud === 'function') window.syncUserFollowsFromCloud();
             }, 1200);
@@ -7339,7 +7685,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const mImg = document.getElementById('mImg');
             if (mImg) {
                 const finalAv = isLuminaRealPhoto(p.avatar) ? p.avatar : 'lumina_icon.jpg';
-                mImg.innerHTML = `<img loading="lazy" decoding="async" src="${finalAv}" alt="${p.name}" style="width:74px;height:74px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 14px rgba(168,85,247,0.45);margin:0 auto;display:block;">`;
+                mImg.innerHTML = `<img loading="lazy" decoding="async" src="${finalAv}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
 
             const mName = document.getElementById('mName');
@@ -7419,27 +7765,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             }
 
-            // Zawsze zminimalizuj sekcję dopasowania przy otwieraniu profilu
-            const matchDetails = document.getElementById('mMatchDetailsExpandable');
-            const toggleText = document.getElementById('mMatchToggleText');
-            const toggleIcon = document.getElementById('mMatchToggleIcon');
-            if (matchDetails) matchDetails.style.display = 'none';
-            if (toggleText) toggleText.textContent = 'Rozwiń';
-            if (toggleIcon) toggleIcon.style.transform = 'rotate(0deg)';
-
             const profileModal = document.getElementById('profileModal');
             if (profileModal) profileModal.classList.add('open');
         };
 
         window.toggleMatchBreakdownDetails = function() {
-            const details = document.getElementById('mMatchDetailsExpandable');
+            const container = document.getElementById('mMatchBarsContainer');
             const toggleText = document.getElementById('mMatchToggleText');
-            const toggleIcon = document.getElementById('mMatchToggleIcon');
-            if (!details) return;
-            const isHidden = details.style.display === 'none' || details.style.display === '';
-            details.style.display = isHidden ? 'block' : 'none';
-            if (toggleText) toggleText.textContent = isHidden ? 'Zwiń' : 'Rozwiń';
-            if (toggleIcon) toggleIcon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            if (!container) return;
+            const isHidden = container.style.display === 'none';
+            container.style.display = isHidden ? 'flex' : 'none';
+            if (toggleText) toggleText.textContent = isHidden ? 'Zwiń ▲' : 'Szczegóły ▼';
         };
 
         // Legacy wrapper for backwards-compatibility
@@ -8835,13 +9171,45 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (publicChatUnsubscribe) return;
             if (window.LuminaDB && typeof window.LuminaDB.subscribeToPublicChat === 'function') {
                 publicChatUnsubscribe = window.LuminaDB.subscribeToPublicChat((messages) => {
+                    window._cachedPublicChatMessages = messages;
                     if (window.LuminaDB && typeof window.LuminaDB.attachTypingIndicator === 'function' && !window._publicTypingAttached) {
                         window._publicTypingAttached = true;
                         window.LuminaDB.attachTypingIndicator('publicChatInput', 'public', 'publicChatTypingIndicator', (ids) => ids.length === 1 ? `${ids[0]} pisze…` : `${ids.length} osoby piszą…`);
                     }
                     renderPublicChatMessages(messages);
+                    if (typeof window.syncCarouselActivityBadges === 'function') {
+                        window.syncCarouselActivityBadges();
+                    }
                 });
             }
+        }
+
+        function initFeedPostsListener() {
+            if (window._feedPostsSubscribed) return;
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToFeedPosts === 'function') {
+                window._feedPostsSubscribed = true;
+                window.LuminaDB.subscribeToFeedPosts((posts) => {
+                    window._cachedCloudPosts = posts;
+                    if (typeof window.syncCarouselActivityBadges === 'function') {
+                        window.syncCarouselActivityBadges();
+                    }
+                });
+            }
+        }
+
+        // Automatyczne podpięcie nasłuchu aktywności dla plakietek karuzeli
+        function startCarouselActivityWatchers() {
+            if (window.LuminaDB) {
+                initPublicChatListener();
+                initFeedPostsListener();
+            } else {
+                setTimeout(startCarouselActivityWatchers, 500);
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => setTimeout(startCarouselActivityWatchers, 800));
+        } else {
+            setTimeout(startCarouselActivityWatchers, 800);
         }
 
         function insertPublicChatQuickText(txt) {
