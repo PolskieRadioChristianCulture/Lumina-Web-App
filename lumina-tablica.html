@@ -919,6 +919,102 @@
         .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
+        /* ──────────────────── ROLKI WIARY • STORIES BAR (SHORT 9:16 REELS) ──────────────────── */
+        .lumina-stories-bar {
+            margin: 0 0 18px 0;
+            padding: 12px 14px;
+            background: rgba(11, 24, 56, 0.7);
+            border: 1.5px solid rgba(250, 204, 21, 0.35);
+            border-radius: 22px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+        }
+
+        .stories-scroll-track {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px;
+        }
+
+        .stories-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .story-item:hover, .story-item:active {
+            transform: scale(1.06);
+        }
+
+        .story-avatar-wrap {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            padding: 2.5px;
+            background: linear-gradient(135deg, #facc15, #ec4899, #38bdf8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .story-pulse-live {
+            background: linear-gradient(135deg, #ef4444, #f59e0b, #ec4899);
+            box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+            animation: storyPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes storyPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 14px rgba(239, 68, 68, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 22px rgba(245, 158, 11, 0.6); }
+        }
+
+        .story-icon-center {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #0b1838;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #facc15;
+        }
+
+        .story-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #070e24;
+            display: block;
+        }
+
+        .story-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            max-width: 64px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+        }
+
         /* ──────────────────── SINGLE-COLUMN 1:1 VERTICAL FEED STREAM ──────────────────── */
         .feed-stream {
             display: flex;
@@ -3722,6 +3818,67 @@
                     </button>
                     <a href="cctv24-pl.html" target="_blank" rel="noopener noreferrer" class="btn-daypart-radio" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; box-shadow:none; text-decoration:none;" title="Otwórz Program Telewizyjny">
                         <i class="fa-solid fa-tv"></i> <span data-i18n="tv_program_btn">Program TV</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ══════════ ROLKI WIARY • STORIES STRUMIEŃ (SHORTS 9:16) ══════════ -->
+            <div class="lumina-stories-bar" id="luminaStoriesBar">
+                <div class="stories-scroll-track">
+                    <!-- 0. Główna ikona Rolek Wiary -->
+                    <a href="rolki" class="story-item story-all-cta" title="Otwórz pełnoekranowe Rolki Wiary (LUMINA Shorts 9:16)">
+                        <div class="story-avatar-wrap story-pulse-live">
+                            <div class="story-icon-center"><i class="fa-solid fa-clapperboard"></i></div>
+                        </div>
+                        <span class="story-label" style="color:var(--gold); font-weight:800;">Rolki 9:16</span>
+                    </a>
+
+                    <!-- 1. Zbyszek Gieroń Psalm 1 -->
+                    <a href="rolki#short_psalm1" class="story-item" title="Rolka: Błogosławiony człowiek • Zbyszek Gieroń">
+                        <div class="story-avatar-wrap">
+                            <img src="post_zbyszek_psalm1.jpg" alt="Psalm 1" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Psalm 1</span>
+                    </a>
+
+                    <!-- 2. Świadectwo Grzegorza -->
+                    <a href="rolki#short_swiadectwo_grzegorz" class="story-item" title="Rolka: Uwolnienie od nałogu • Świadectwo Wiary">
+                        <div class="story-avatar-wrap">
+                            <img src="avatar_cezary_official.jpg" alt="Świadectwo" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Świadectwo</span>
+                    </a>
+
+                    <!-- 3. Jola Wójcik Modlitwa -->
+                    <a href="rolki#short_modlitwa_jola" class="story-item" title="Rolka: Czas Modlitwy • Jola Wójcik">
+                        <div class="story-avatar-wrap">
+                            <img src="avatar_jolawojcik.jpg" alt="Modlitwa" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Modlitwa</span>
+                    </a>
+
+                    <!-- 4. Alleluja Wear -->
+                    <a href="rolki#short_alleluja_wear" class="story-item" title="Rolka: Kolekcja Alleluja • Noś wiarę z odwagą">
+                        <div class="story-avatar-wrap">
+                            <img src="reklama_sklep_alleluja_poster.jpg" alt="Alleluja" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Alleluja</span>
+                    </a>
+
+                    <!-- 5. Świadectwo Roberta -->
+                    <a href="rolki#short_swiadectwo_robert" class="story-item" title="Rolka: Nowe Stworzenie • Robert">
+                        <div class="story-avatar-wrap">
+                            <img src="avatar_robert.jpg" alt="Robert" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Nawrócenie</span>
+                    </a>
+
+                    <!-- 6. Słowo Życia Jan -->
+                    <a href="rolki#short_slowo_zycia_jan" class="story-item" title="Rolka: Na początku było Słowo • Cezary Rogowski">
+                        <div class="story-avatar-wrap">
+                            <img src="tlo_profilowe_cezary.jpg" alt="Słowo Boże" class="story-avatar-img" loading="lazy">
+                        </div>
+                        <span class="story-label">Słowo Boże</span>
                     </a>
                 </div>
             </div>

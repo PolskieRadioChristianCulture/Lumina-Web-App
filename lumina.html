@@ -2221,6 +2221,8 @@
         .footer-links-row { display: flex; gap: 18px; flex-wrap: wrap; }
         .footer-links-row a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
         .footer-links-row a:hover { color: #fff; }
+        .footer-links-row a#footerQnaLink:hover,
+        .footer-links-row a#footerQnaLink.active { color: #facc15; font-weight: 700; }
         .footer-social { display: flex; gap: 14px; font-size: 1.1rem; }
         .footer-social a { color: #94a3b8; transition: color 0.2s; }
         .footer-social a:hover { color: #fff; }
@@ -3095,19 +3097,24 @@
            LUMINA Q&A / FAQ SECTION (PYTANIA I ODPOWIEDZI)
         ══════════════════════════════════════════════════════════════════════ */
         .qna-section {
+            display: none;
             position: relative;
-            padding: 30px 20px;
+            padding: 50px 20px 70px 20px;
             background: radial-gradient(circle at 50% 50%, rgba(250, 204, 21, 0.05) 0%, rgba(9, 14, 30, 0.98) 80%);
             border-top: 1px solid rgba(250, 204, 21, 0.18);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             margin: 24px 0 0 0;
             z-index: 10;
-            transition: padding 0.35s ease, margin 0.35s ease;
         }
 
         .qna-section.qna-expanded {
-            padding: 60px 20px 80px 20px;
-            margin: 36px 0 0 0;
+            display: block;
+            animation: fadeInQna 0.35s ease-out;
+        }
+
+        @keyframes fadeInQna {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .qna-container {
@@ -4705,24 +4712,13 @@
     <!-- ══════════ SEKCJA PYTANIA I ODPOWIEDZI (Q&A / FAQ LUMINA) ══════════ -->
     <section class="qna-section" id="qna-section" aria-label="Pytania i Odpowiedzi LUMINA">
         <div class="qna-container">
-            <div class="qna-header-box">
-                <button type="button" 
-                        class="qna-tag-btn" 
-                        id="qnaToggleBtn" 
-                        onclick="toggleQnaSection()" 
-                        aria-expanded="false" 
-                        aria-controls="qnaContentWrapper" 
-                        title="Kliknij, aby rozwinąć lub zwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi Q&A)">
-                    <i class="fa-solid fa-circle-question"></i> 
-                    <span>Baza Wiedzy & Pomoc</span>
-                    <i class="fa-solid fa-chevron-down qna-toggle-chevron" id="qnaToggleChevron"></i>
-                </button>
-            </div>
-
-            <!-- Zwinięta zawartość Q&A (domyślnie ukryta pod przyciskiem) -->
-            <div id="qnaContentWrapper" class="qna-content-wrapper" style="display: none;">
-                <div style="text-align: center; margin-top: 24px; margin-bottom: 25px;">
-                    <h2 class="qna-title">Pytania i Odpowiedzi (Q&A)</h2>
+            <!-- Zawartość Q&A (rozwijana przez link 'Baza Wiedzy & Pomoc' w stopce) -->
+            <div id="qnaContentWrapper" class="qna-content-wrapper">
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <h2 class="qna-title" style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
+                        <i class="fa-solid fa-circle-question" style="color:#facc15;"></i>
+                        <span>Pytania i Odpowiedzi (Q&A) • Baza Wiedzy &amp; Pomoc</span>
+                    </h2>
                     <div class="gold-divider centered" style="width:60px; height:3px; background:#facc15; margin:10px auto; border-radius:2px;"></div>
                     <p class="qna-subtitle" style="margin:0 auto;">
                         Poznaj najważniejsze informacje o portalu LUMINA, bezpiecznych relacjach chrześcijańskich, Tablicy Społeczności i ekosystemie Christian Culture.
@@ -4879,6 +4875,7 @@
         <div>&copy; 2026 LUMINA. Wszelkie prawa zastrzeżone.</div>
         <div class="footer-links-row">
             <a href="lumina-safety.html">Regulamin</a>
+            <a href="javascript:void(0)" onclick="toggleQnaSection()" id="footerQnaLink" title="Pytania i Odpowiedzi (Q&A) • Baza Wiedzy i Pomoc" style="cursor: pointer;">Baza Wiedzy i Pomoc</a>
             <a href="privacy.html">Polityka Prywatności</a>
             <a href="#">O Nas</a>
             <a href="index.html#contact-section">Kontakt</a>
@@ -10713,28 +10710,40 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script>
         // ── Q&A / Baza Wiedzy & Pomoc Accordion Toggle ──
         window.toggleQnaSection = function(forceState) {
-            var wrapper = document.getElementById('qnaContentWrapper');
-            var btn = document.getElementById('qnaToggleBtn');
             var section = document.getElementById('qna-section');
-            if (!wrapper || !btn) return;
+            var footerLink = document.getElementById('footerQnaLink');
+            var btn = document.getElementById('qnaToggleBtn');
+            if (!section) return;
 
-            var isCurrentlyOpen = (wrapper.style.display !== 'none');
+            var isCurrentlyOpen = (section.style.display !== 'none' && section.classList.contains('qna-expanded'));
             var shouldOpen = (typeof forceState === 'boolean') ? forceState : !isCurrentlyOpen;
 
             if (shouldOpen) {
-                wrapper.style.display = 'block';
-                btn.setAttribute('aria-expanded', 'true');
-                btn.classList.add('active');
-                if (section) section.classList.add('qna-expanded');
-                btn.setAttribute('title', 'Kliknij, aby zwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi)');
+                section.style.display = 'block';
+                section.classList.add('qna-expanded');
+                if (footerLink) {
+                    footerLink.classList.add('active');
+                    footerLink.setAttribute('aria-expanded', 'true');
+                }
+                if (btn) {
+                    btn.setAttribute('aria-expanded', 'true');
+                    btn.classList.add('active');
+                }
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                wrapper.style.display = 'none';
-                btn.setAttribute('aria-expanded', 'false');
-                btn.classList.remove('active');
-                if (section) section.classList.remove('qna-expanded');
-                btn.setAttribute('title', 'Kliknij, aby rozwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi Q&A)');
-                if (typeof forceState === 'boolean' && forceState === false && section) {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                section.style.display = 'none';
+                section.classList.remove('qna-expanded');
+                if (footerLink) {
+                    footerLink.classList.remove('active');
+                    footerLink.setAttribute('aria-expanded', 'false');
+                }
+                if (btn) {
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.classList.remove('active');
+                }
+                if (typeof forceState === 'boolean' && forceState === false) {
+                    var footer = document.querySelector('.page-footer');
+                    if (footer) footer.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 }
             }
         };
