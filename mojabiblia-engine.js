@@ -243,16 +243,68 @@
       }
     }
 
+    prevChapter() {
+      if (this.currentChapter > 1) {
+        this.loadChapter(this.currentBookId, this.currentChapter - 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const currentIdx = this.books.findIndex(b => b.id === this.currentBookId);
+        if (currentIdx > 0) {
+          const prevBook = this.books[currentIdx - 1];
+          this.loadChapter(prevBook.id, prevBook.chapters);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          this.showToast('To jest pierwszy rozdział Pisma Świętego (Rdz 1)');
+        }
+      }
+    }
+
+    nextChapter() {
+      const currentBook = this.books.find(b => b.id === this.currentBookId);
+      const maxCh = currentBook ? currentBook.chapters : 50;
+      if (this.currentChapter < maxCh) {
+        this.loadChapter(this.currentBookId, this.currentChapter + 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const currentIdx = this.books.findIndex(b => b.id === this.currentBookId);
+        if (currentIdx > -1 && currentIdx < this.books.length - 1) {
+          const nextBook = this.books[currentIdx + 1];
+          this.loadChapter(nextBook.id, 1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          this.showToast('Dotarłeś do ostatniego rozdziału Pisma Świętego (Ap 22)');
+        }
+      }
+    }
+
     async loadChapter(bookId, chapterNum) {
       this.currentBookId = bookId;
       this.currentChapter = chapterNum;
       this.updateUrl();
 
+      if (this.bookSelect && this.bookSelect.value !== bookId) {
+        this.bookSelect.value = bookId;
+        this.updateChapterOptions();
+      }
+      if (this.chapterSelect && parseInt(this.chapterSelect.value, 10) !== chapterNum) {
+        this.chapterSelect.value = chapterNum;
+      }
+
+      const bName = this.getBookName(bookId);
+      const shortName = this.getBookShort(bookId) || bName;
+      if (this.bookDrawerLabel) {
+        this.bookDrawerLabel.textContent = `${shortName} ${chapterNum}`;
+      }
+      const bottomLabel = document.getElementById('mbBottomBookLabel');
+      if (bottomLabel) {
+        bottomLabel.textContent = `${bName} ${chapterNum}`;
+      }
+
       if (this.contentContainer) {
         this.contentContainer.innerHTML = `
           <div class="mb-loading-state">
             <i class="fa-solid fa-compass-drafting fa-spin mb-gold-text" style="font-size:2rem;"></i>
-            <p>Otwieranie zwoju: ${this.getBookName(bookId)} ${chapterNum}...</p>
+            <p>Otwieranie zwoju: ${bName} ${chapterNum}...</p>
           </div>`;
       }
 
@@ -640,6 +692,12 @@
             <div class="mb-drawer-title"><i class="fa-solid fa-book-bible"></i> Kanon Pisma Świętego (66 Ksiąg)</div>
             <button class="mb-modal-close" onclick="window.mbApp.closeBookDrawer()"><i class="fa-solid fa-xmark"></i></button>
           </div>
+          <div style="padding: 10px 16px; border-bottom: 1px solid rgba(212,175,55,0.15); background: rgba(10,14,26,0.6);">
+            <div style="position:relative; display:flex; align-items:center;">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; color:var(--gold-bright); font-size:0.85rem; pointer-events:none;"></i>
+              <input type="search" id="mbDrawerFilterInput" placeholder="Szybkie szukanie księgi (np. Jan, Rdz, Rz, Ps)..." oninput="window.mbApp.filterBooksInDrawer(this.value)" style="width:100%; height:40px; padding:0 12px 0 38px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(212,175,55,0.25); color:#fff; font-size:0.88rem; outline:none;" />
+            </div>
+          </div>
           <div class="mb-drawer-body">
       `;
 
@@ -685,6 +743,25 @@
       if (!this.bookDrawerModal) return;
       this.bookDrawerModal.style.display = 'none';
       document.body.style.overflow = '';
+    }
+
+    filterBooksInDrawer(query) {
+      const q = (query || '').toLowerCase().trim();
+      if (!this.bookDrawerModal) return;
+      const tiles = this.bookDrawerModal.querySelectorAll('.mb-book-tile');
+      tiles.forEach(tile => {
+        const text = tile.textContent.toLowerCase();
+        const match = !q || text.includes(q);
+        tile.style.display = match ? 'flex' : 'none';
+      });
+      this.bookDrawerModal.querySelectorAll('.mb-category-group').forEach(group => {
+        const visibleTiles = group.querySelectorAll('.mb-book-tile:not([style*="display: none"])');
+        group.style.display = visibleTiles.length > 0 ? 'block' : 'none';
+      });
+      this.bookDrawerModal.querySelectorAll('.mb-testament-block').forEach(testament => {
+        const visibleGroups = testament.querySelectorAll('.mb-category-group:not([style*="display: none"])');
+        testament.style.display = visibleGroups.length > 0 ? 'block' : 'none';
+      });
     }
 
     selectBookInDrawer(bookId, event) {
@@ -1373,7 +1450,11 @@
         this.audioElement.pause();
         this.isAudioPlaying = false;
         if (this.audioBtn) {
-          this.audioBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Radio Biblia (24/7)</span>';
+          this.audioBtn.innerHTML = `
+            <i class="fa-solid fa-play"></i>
+            <span class="mb-audio-full-label">Radio Biblia (24/7)</span>
+            <span class="mb-audio-short-label">Radio 24/7</span>
+          `;
           this.audioBtn.classList.remove('playing');
         }
         if (this.audioStatus) this.audioStatus.textContent = 'Zatrzymano';
@@ -1381,7 +1462,11 @@
         this.audioElement.play().then(() => {
           this.isAudioPlaying = true;
           if (this.audioBtn) {
-            this.audioBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Odtwarzanie...</span>';
+            this.audioBtn.innerHTML = `
+              <span class="mb-live-dot"></span>
+              <span class="mb-audio-full-label">Na żywo (24/7)</span>
+              <span class="mb-audio-short-label">Na żywo</span>
+            `;
             this.audioBtn.classList.add('playing');
           }
           if (this.audioStatus) this.audioStatus.textContent = 'Na żywo: Radio Biblia Audio CC';
