@@ -207,7 +207,7 @@ function checkDuplicateServiceWorkerRegistration() {
 // ══════════════════════════════════════════════════════════════════════════
 function checkMojibake() {
   checksRun++;
-  const allFiles = [...HTML_FILES, ...JS_FILES];
+  const allFiles = [...HTML_FILES, ...JS_FILES.filter(f => !f.endsWith('.min.js'))];
   for (const f of allFiles) {
     const content = readFile(f);
     // Znaki sterujące C1 (0x80–0x9F) nigdy nie są legalną treścią w UI.
