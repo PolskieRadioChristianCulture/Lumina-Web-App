@@ -895,7 +895,7 @@
 
         <!-- VIDEO FRAME BACKGROUND -->
         <div class="video-container">
-            <iframe id="yt-player" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            <iframe id="yt-player" src="https://www.youtube.com/embed/videoseries?list=PLs22p9rsTpNywYD5OBPw-IShdwOYBFg30&amp;autoplay=1&amp;enablejsapi=1&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;loop=1" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         </div>
 
         <!-- START / UNMUTE OVERLAY -->
@@ -1396,6 +1396,14 @@
         let isPreloadMuted = window.location.search.includes('muted=1');
         let consecutiveErrors = 0;
 
+        // Natychmiastowe ustawienie źródła iframe na podstawie wybranej playlisty
+        const initialPlaylist = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
+        const muteParam = isPreloadMuted ? '&mute=1' : '';
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${initialPlaylist.id}&index=${currentVideoIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}&origin=${encodeURIComponent(window.location.origin)}`;
+        }
+
         // Populate Series Modal Grid
         function renderSeriesGrid() {
             const grid = document.getElementById('seriesGridContainer');
@@ -1455,18 +1463,7 @@
 
         // ── 4. YouTube Iframe Player Initialization ──
         function onYouTubeIframeAPIReady() {
-            const initialPlaylist = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
             player = new YT.Player('yt-player', {
-                playerVars: {
-                    'autoplay': 1,
-                    'controls': 0,
-                    'rel': 0,
-                    'modestbranding': 1,
-                    'enablejsapi': 1,
-                    'playsinline': 1,
-                    'listType': 'playlist',
-                    'list': initialPlaylist.id
-                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange,
@@ -1479,6 +1476,12 @@
             console.log("TV Epafraz Player Ready. Starting playlist #" + (currentPlaylistIndex + 1) + ": " + EPAFRAZ_PLAYLISTS[currentPlaylistIndex].title);
             if (isPreloadMuted) {
                 try { event.target.mute(); } catch(e) {}
+            } else {
+                try {
+                    event.target.unMute();
+                    event.target.setVolume(100);
+                    event.target.playVideo();
+                } catch(e) {}
             }
             updateOverlayBadge();
             renderSeriesGrid();
@@ -1503,6 +1506,12 @@
             const series = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
 
             console.log(`Ładowanie Serii #${currentPlaylistIndex + 1}/${EPAFRAZ_PLAYLISTS.length}: ${series.title} (film #${videoIndex + 1})`);
+
+            const muteParam = isPreloadMuted ? '&mute=1' : '';
+            const playerIframe = document.getElementById("yt-player");
+            if (playerIframe) {
+                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${series.id}&index=${videoIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}&origin=${encodeURIComponent(window.location.origin)}`;
+            }
 
             if (player && typeof player.loadPlaylist === 'function') {
                 try {
@@ -1719,6 +1728,44 @@
                 }
             } catch(e) {}
         }
+
+        function disableAudio() {
+            try {
+                if (player && typeof player.mute === 'function') {
+                    player.mute();
+                }
+            } catch(e) {}
+
+            try {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                }
+            } catch(e) {}
+        }
+
+        window.addEventListener('message', (e) => {
+            if (!e.data) return;
+            let type = '';
+            if (typeof e.data === 'string') {
+                try {
+                    const parsed = JSON.parse(e.data);
+                    type = parsed.type || parsed.event || '';
+                    if (parsed.func === 'unMute') type = 'UNMUTE_AUDIO';
+                    if (parsed.func === 'mute') type = 'MUTE_AUDIO';
+                } catch(err) {
+                    type = e.data;
+                }
+            } else if (typeof e.data === 'object') {
+                type = e.data.type || '';
+            }
+
+            if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
+                enableAudio();
+            } else if (type === 'MUTE_AUDIO' || type === 'mute') {
+                disableAudio();
+            }
+        });
 
         // ── 9. Auto-Fade Overlays on Inactivity ──
         let autoFadeTimer = null;
