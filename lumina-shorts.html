@@ -1312,6 +1312,16 @@
         let activeSlideIndex = 0;
         let observer = null;
 
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // ── Toast Helper ──
         function showShortsToast(msg) {
             const toast = document.getElementById('shortsToast');
@@ -1360,7 +1370,10 @@
         };
 
         // ── Share WhatsApp / System ──
-        window.shareShort = function(shortId, title, verse) {
+        window.shareShort = function(shortId) {
+            const item = (shortsData || []).find(s => s.id === shortId);
+            const title = item ? item.title : 'Rolka Wiary';
+            const verse = item ? item.verseRef : '';
             const shareUrl = `https://polskieradio.cc/rolki#${shortId}`;
             const text = `🕊️ Zobacz tę inspirującą rolkę w portalu LUMINA: „${title}” (${verse}) ➡️ ${shareUrl}`;
 
@@ -1743,7 +1756,7 @@
                         <div class="action-btn-wrapper">
                             <button type="button" 
                                     class="action-circle-btn whatsapp-btn" 
-                                    onclick="shareShort('${item.id}', '${item.title.replace(/'/g, "\\'")}', '${item.verseRef}')" 
+                                    onclick="shareShort('${item.id}')" 
                                     title="Udostępnij na WhatsApp"
                                     aria-label="Udostępnij">
                                 <i class="fa-brands fa-whatsapp"></i>
@@ -1778,24 +1791,24 @@
                     <div class="slide-info-box">
                         <div class="author-tag-row">
                             <a href="/lumina/${item.authorSlug}" class="author-name">
-                                <span>@${item.author}</span>
+                                <span>@${escapeHtml(item.author)}</span>
                                 <i class="fa-solid fa-circle-check" style="color:var(--gold); font-size:0.85rem;"></i>
                             </a>
-                            <span class="author-badge">${item.authorBadge || 'Społeczność'}</span>
+                            <span class="author-badge">${escapeHtml(item.authorBadge || 'Społeczność')}</span>
                             ${platformBadgeHtml}
                         </div>
 
-                        <div class="short-title-text" title="${item.title}">${item.title}</div>
+                        <div class="short-title-text" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
 
                         <a href="${item.verseUrl}" class="verse-pill-btn" title="Kliknij, aby otworzyć rozdział w MojejBiblii">
                             <i class="fa-solid fa-bookmark"></i>
-                            <span>${item.verseRef}</span>
+                            <span>${escapeHtml(item.verseRef)}</span>
                             <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
                         </a>
 
                         <div class="sound-ticker-row">
                             <i class="fa-solid fa-music"></i>
-                            <div class="sound-text-marquee">${item.audioTitle || 'Christian Culture Worship'}</div>
+                            <div class="sound-text-marquee">${escapeHtml(item.audioTitle || 'Christian Culture Worship')}</div>
                         </div>
                     </div>
 
