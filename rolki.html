@@ -174,8 +174,8 @@
         }
 
         @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.7); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
         }
 
         /* Publish / Add Reel Button in Header */
@@ -519,6 +519,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            contain: layout paint;
         }
 
         /* Media Container */
@@ -533,6 +538,9 @@
             align-items: center;
             justify-content: center;
             background: #000;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            contain: strict;
         }
 
         .video-container video {
@@ -851,6 +859,10 @@
             align-items: center;
             justify-content: center;
             animation: spinVinyl 5s linear infinite;
+            will-change: transform;
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .vinyl-disc::after {
@@ -965,8 +977,43 @@
         }
 
         @keyframes livePulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.7); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════
+         * LUMINA SHORTS MOBILE ANTI-FLICKER & GPU STABILIZATION
+         * ══════════════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .desktop-backdrop {
+                display: none !important;
+            }
+            .shorts-app-shell {
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .action-circle-btn {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(15, 23, 42, 0.88) !important;
+                border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+            }
+            .header-btn {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(0, 0, 0, 0.82) !important;
+                border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            }
+            .author-badge {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(250, 204, 21, 0.25) !important;
+            }
+            .action-sidebar {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                will-change: transform;
+            }
         }
     </style>
 </head>
@@ -1152,8 +1199,8 @@
                     "authorSlug": "radiocc",
                     "authorAvatar": "logo_christian_culture_small.png",
                     "authorBadge": "✨ Oficjalne",
-                    "videoType": "mp4",
-                    "videoSrc": "czesc_dobrze_ze_jestes.mp4",
+                    "videoType": "youtube",
+                    "videoSrc": "R4tEkn8EdVY",
                     "poster": "tlo_tv_dzj.jpg",
                     "verseRef": "1 Tesaloniczan 5, 11",
                     "verseBook": "1TH",
