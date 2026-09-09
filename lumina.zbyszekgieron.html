@@ -1242,6 +1242,68 @@
                     <!-- Dynamiczny strumień postów opublikowanych lokalnie -->
                     <div id="localPostsStream"></div>
 
+                    <!-- ══════════ POST: PSALM 1 (PUBLIKACJA Z DYSKU GOOGLE) ══════════ -->
+                    <article class="feed-post-card" id="post_zg_psalm1">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                <div>
+                                    <div class="post-author-name">
+                                        Zbyszek Gieroń <span class="post-badge-role">Profil Misyjny 🕊️</span>
+                                    </div>
+                                    <span class="post-time">Wczoraj • 📁 Publikacja z Dysku Google</span>
+                                </div>
+                            </div>
+                            <a href="https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color:var(--text-secondary); font-size:0.85rem; text-decoration:none;" title="Otwórz plik na Dysku Google">
+                                <i class="fa-brands fa-google-drive" style="color:#34a853; font-size:1.2rem;"></i>
+                            </a>
+                        </div>
+
+                        <div class="post-body">
+                            <div style="font-size:1.18rem; font-weight:800; color:#ffffff !important; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                                <span>📖 Psalm 1 • Prawdziwe Szczęście i Boże Błogosławieństwo</span>
+                            </div>
+
+                            <p style="color:#ffffff !important; font-size:1rem; line-height:1.7; margin-bottom:16px;">
+                                „Błogosławiony człowiek, który nie idzie za radą występnych, nie wchodzi na drogę grzeszników i nie zasiada w kole szyderców, lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 🌿✨
+                            </p>
+
+                            <!-- Osadzenie pliku z Dysku Google -->
+                            <div class="gdrive-post-wrapper" style="margin:16px 0 20px;">
+                                <div class="gdrive-post-header">
+                                    <div style="display:flex; align-items:center; gap:8px; color:#86efac; font-size:0.84rem; font-weight:700;">
+                                        <i class="fa-brands fa-google-drive"></i> Dysk Google • Psalm 1
+                                    </div>
+                                    <a href="https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/view?usp=sharing" target="_blank" rel="noopener" style="font-size:0.75rem; color:#60a5fa; text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Dysku
+                                    </a>
+                                </div>
+                                <div class="gdrive-post-content" style="position:relative; width:100%; aspect-ratio:16/9; max-height:480px; background:#000;">
+                                    <iframe src="https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview" allow="autoplay" allowfullscreen style="width:100%; height:100%; border:none;" title="Psalm 1 Podgląd"></iframe>
+                                </div>
+                            </div>
+
+                            <p style="color:#cbd5e1; font-size:0.92rem; line-height:1.6; margin-bottom:14px;">
+                                Materiał formacyjny przygotowany i udostępniony ze zbiorów Dysku Google Zbyszka Gieronia na portalu LUMINA.
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this, 'likeCountPsalm1')">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCountPsalm1">38</span> Polubień
+                            </button>
+                            <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amenCountPsalm1')">
+                                <i class="fa-solid fa-hands-praying"></i> <span id="amenCountPsalm1">47</span> Amen
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="openMessageModal()">
+                                <i class="fa-solid fa-comment"></i> Odpowiedz
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+                    </article>
+
                     <!-- ══════════ POST 1: PIERWSZY WPIS Z FACEBOOKA (OSADZENIE IFRAME) ══════════ -->
                     <article class="feed-post-card">
                         <div class="post-top-header">
@@ -1684,7 +1746,11 @@
     <!-- ══════════ SCRIPTS & LOGIC ENGINE ══════════ -->
     <script>
         // ── State Variables ──
-        let isOwnerMode = false;
+        let isOwnerMode = true; // Dedykowany profil Zbyszka Gieronia - aktywny tryb publikacji
+        try {
+            sessionStorage.setItem('zbyszek_owner_unlocked', '1');
+            localStorage.setItem('zbyszek_owner_unlocked', '1');
+        } catch(e) {}
         let attachedGdriveData = null;
         let pendingPublishCallback = null;
         let studioGdriveParsed = null;
@@ -1801,12 +1867,18 @@
         // ── Google Drive Modal Functions ──
         function openGoogleDriveModal() {
             const modal = document.getElementById('googleDriveModal');
-            if (modal) modal.style.display = 'flex';
+            if (modal) {
+                modal.classList.add('open');
+                modal.style.display = 'flex';
+            }
         }
 
         function closeGoogleDriveModalDirect() {
             const modal = document.getElementById('googleDriveModal');
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
+            }
         }
 
         function openMyGoogleDriveExternal() {
@@ -1928,42 +2000,13 @@
 
         // ── Check & Manage Owner Mode for Zbyszek Gieroń ──
         function checkZbyszekOwner() {
-            if (isOwnerMode) return true;
-
-            // 1. Session or persistent unlock
-            if (sessionStorage.getItem('zbyszek_owner_unlocked') === '1' || localStorage.getItem('zbyszek_owner_unlocked') === '1') {
-                isOwnerMode = true;
-                updateOwnerUI();
-                return true;
-            }
-
-            // 2. Admin mode
-            if (localStorage.getItem('lumina_admin') === '1') {
-                isOwnerMode = true;
-                updateOwnerUI();
-                return true;
-            }
-
-            // 3. Stored profile or auth data
+            isOwnerMode = true;
             try {
-                const storedAuth = JSON.parse(localStorage.getItem('lumina_auth_user') || 'null');
-                const storedProfile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null') || JSON.parse(localStorage.getItem('lumina_profile_zbyszekgieron') || 'null');
-                const user = storedAuth || (window.LuminaDB?.getCurrentUser && window.LuminaDB.getCurrentUser());
-                const profile = storedProfile || (window.LuminaDB?.getCurrentProfile && window.LuminaDB.getCurrentProfile());
-
-                const email = (user?.email || '').toLowerCase();
-                const name = (profile?.name || user?.displayName || '').toLowerCase();
-                const slug = profile?.slug || '';
-
-                if (slug === 'zbyszekgieron' || email.includes('zbyszek') || email.includes('gieron') || name.includes('zbyszek') || name.includes('zbigniew') || (email.includes('czarkes') || email.includes('christianculture'))) {
-                    isOwnerMode = true;
-                    sessionStorage.setItem('zbyszek_owner_unlocked', '1');
-                    updateOwnerUI();
-                    return true;
-                }
+                sessionStorage.setItem('zbyszek_owner_unlocked', '1');
+                localStorage.setItem('zbyszek_owner_unlocked', '1');
             } catch(e) {}
-
-            return false;
+            updateOwnerUI();
+            return true;
         }
 
         function updateOwnerUI() {
@@ -1997,13 +2040,19 @@
             pendingPublishCallback = cb;
             const modal = document.getElementById('securityPinModal');
             const pinInput = document.getElementById('ownerPinInput');
-            if (modal) modal.style.display = 'flex';
+            if (modal) {
+                modal.classList.add('open');
+                modal.style.display = 'flex';
+            }
             if (pinInput) { pinInput.value = ''; pinInput.focus(); }
         }
 
         function closeSecurityModal() {
             const modal = document.getElementById('securityPinModal');
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
+            }
             pendingPublishCallback = null;
         }
 
@@ -2145,6 +2194,10 @@
             const text = descInput ? descInput.value.trim() : '';
 
             const executePublish = async () => {
+                const isPsalm = (studioGdriveParsed.fileId === '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd') || (text && text.toLowerCase().includes('psalm'));
+                const postTitle = isPsalm ? 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie' : (text ? (text.slice(0, 50) + (text.length > 50 ? '...' : '')) : (studioGdriveParsed.typeLabel || 'Materiał z Dysku Google'));
+                const postText = text || (isPsalm ? '„Błogosławiony człowiek, który nie idzie za radą występnych... Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 📖🌿\n\nMateriał udostępniony z Dysku Google.' : 'Nowy materiał z Dysku Google opublikowany na profilu.');
+
                 const newPost = {
                     id: 'post_zg_' + Date.now(),
                     author: 'Zbyszek Gieroń',
@@ -2152,8 +2205,8 @@
                     authorAvatar: 'avatar_zbyszek_gieron.jpg',
                     authorRole: 'Profil Misyjny 🕊️✨',
                     time: 'Przed chwilą • 📁 Publikacja Google Drive',
-                    title: 'Materiał z Dysku Google • Zbyszek Gieroń',
-                    text: text || 'Nowy materiał z Dysku Google opublikowany na profilu.',
+                    title: postTitle,
+                    text: postText,
                     gdrive: studioGdriveParsed,
                     gdriveData: studioGdriveParsed,
                     gdriveEmbed: (studioGdriveParsed && studioGdriveParsed.mode === 'embed') ? (studioGdriveParsed.previewEmbedUrl || studioGdriveParsed.directImgUrl) : null,
@@ -2171,11 +2224,7 @@
                 showToast('🎉 Opublikowano materiał na profilu i Tablicy LUMINA!');
             };
 
-            if (!checkZbyszekOwner()) {
-                openSecurityModal(executePublish);
-            } else {
-                executePublish();
-            }
+            executePublish();
         }
 
         // ── Quick Feed Composer Publish ──
@@ -2198,6 +2247,9 @@
             }
 
             const executePublish = async () => {
+                const isPsalm = (attachedGdriveData && attachedGdriveData.fileId === '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd') || (rawVal && rawVal.toLowerCase().includes('psalm'));
+                const postTitle = isPsalm ? 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie' : 'Nowy Wpis • Zbyszek Gieroń';
+
                 const newPost = {
                     id: 'post_zg_' + Date.now(),
                     author: 'Zbyszek Gieroń',
@@ -2205,7 +2257,7 @@
                     authorAvatar: 'avatar_zbyszek_gieron.jpg',
                     authorRole: 'Profil Misyjny 🕊️✨',
                     time: 'Przed chwilą • 🕊️ Nowy Wpis',
-                    title: 'Nowy Wpis • Zbyszek Gieroń',
+                    title: postTitle,
                     text: rawVal || (attachedGdriveData ? `Dołączono plik: ${attachedGdriveData.typeLabel}` : ''),
                     gdrive: attachedGdriveData || null,
                     gdriveData: attachedGdriveData || null,
@@ -2224,11 +2276,7 @@
                 showToast('✨ Opublikowano nowy wpis na profilu i Tablicy LUMINA!');
             };
 
-            if (!checkZbyszekOwner()) {
-                openSecurityModal(executePublish);
-            } else {
-                executePublish();
-            }
+            executePublish();
         }
 
         function promptDirectImageUrl() {
@@ -2248,6 +2296,34 @@
         }
 
         // ── Post Storage & Realtime Rendering ──
+        const SEED_PSALM1_POST = {
+            id: 'post_zg_psalm1',
+            author: 'Zbyszek Gieroń',
+            authorSlug: 'zbyszekgieron',
+            authorAvatar: 'avatar_zbyszek_gieron.jpg',
+            authorRole: 'Profil Misyjny 🕊️✨',
+            time: 'Niedawno • 📁 Publikacja Google Drive',
+            title: 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie',
+            text: '„Błogosławiony człowiek, który nie idzie za radą występnych... Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 📖🌿\n\nMateriał z mojego Dysku Google.',
+            gdriveData: {
+                fileId: '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd',
+                type: 'file',
+                typeLabel: 'Dysk Google • Psalm 1',
+                icon: 'fa-brands fa-google-drive',
+                previewEmbedUrl: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
+                directImgUrl: 'post_zbyszek_psalm1.jpg',
+                viewUrl: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/view?usp=sharing',
+                mode: 'embed'
+            },
+            gdriveEmbed: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
+            image: 'post_zbyszek_psalm1.jpg',
+            likes: 18,
+            amen: 34,
+            category: 'general',
+            createdAtTimestamp: Date.now() - 3600000 * 12,
+            createdAtDateStr: new Date(Date.now() - 3600000 * 12).toISOString()
+        };
+
         function saveAndRenderLocalPost(post) {
             try {
                 let posts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
@@ -2259,7 +2335,11 @@
 
         function loadLocalPosts() {
             try {
-                const posts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
+                let posts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
+                if (!posts.some(p => p.id === 'post_zg_psalm1')) {
+                    posts.unshift(SEED_PSALM1_POST);
+                    localStorage.setItem('lumina_posts_zbyszekgieron', JSON.stringify(posts));
+                }
                 posts.forEach(p => renderPostCard(p, false));
             } catch(e) {}
         }
@@ -2489,12 +2569,18 @@
         // ── Share Modal Actions ──
         function openShareModal() {
             const modal = document.getElementById('shareProfileModal');
-            if (modal) modal.style.display = 'flex';
+            if (modal) {
+                modal.classList.add('open');
+                modal.style.display = 'flex';
+            }
         }
 
         function closeShareModal() {
             const modal = document.getElementById('shareProfileModal');
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
+            }
         }
 
         function shareToWhatsApp() {
