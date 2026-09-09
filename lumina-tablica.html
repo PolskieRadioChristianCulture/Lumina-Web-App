@@ -7884,18 +7884,32 @@
                 return (a.name || '').localeCompare(b.name || '');
             });
 
-            // Deduplikacja unikalnych profili (np. duplikaty kont z Firestore po uid lub znormalizowanej nazwie)
+            // ── DEDUPLIKACJA: ABSOLUTNY ZAKAZ DUBLOWANIA PROFILI ──
+            // Ten sam użytkownik może pojawić się z różnym slug/imię (np. "Ula" i "Urszula")
+            // ale ma to SAMO zdjęcie profilowe lub ten sam UID. Deduplikujemy po każdym kluczu.
             const seenDms = new Set();
             filtered = filtered.filter(u => {
-                const uidKey = u.uid ? `uid_${u.uid.toLowerCase().trim()}` : null;
-                const nameKey = u.name ? `name_${u.name.toLowerCase().trim().replace(/\s+/g, ' ')}` : null;
-                const slugKey = u.slug ? `slug_${u.slug.toLowerCase().trim()}` : null;
-                if (uidKey && seenDms.has(uidKey)) return false;
-                if (nameKey && seenDms.has(nameKey) && !u.isMission) return false;
-                if (slugKey && seenDms.has(slugKey)) return false;
-                if (uidKey) seenDms.add(uidKey);
-                if (nameKey && !u.isMission) seenDms.add(nameKey);
-                if (slugKey) seenDms.add(slugKey);
+                const uidKey   = u.uid   ? `uid_${u.uid.toLowerCase().trim()}` : null;
+                const slugKey  = u.slug  ? `slug_${u.slug.toLowerCase().trim()}` : null;
+                const nameKey  = u.name  ? `name_${u.name.toLowerCase().trim().replace(/\s+/g, ' ')}` : null;
+
+                // Deduplikacja po awatarze (to samo zdjęcie = ta sama osoba)
+                const avatarRaw = (u.avatar || '').trim();
+                const isDefaultAvatar = !avatarRaw || avatarRaw === 'lumina_icon.jpg' || avatarRaw === 'lumina_icon';
+                const avatarKey = (!isDefaultAvatar) ? `avatar_${avatarRaw}` : null;
+
+                // Sprawdź czy już widzieliśmy ten profil
+                if (uidKey    && seenDms.has(uidKey))    return false;
+                if (slugKey   && seenDms.has(slugKey))   return false;
+                if (avatarKey && seenDms.has(avatarKey)) return false;
+                if (nameKey   && seenDms.has(nameKey) && !u.isMission) return false;
+
+                // Rejestruj wszystkie klucze tego profilu
+                if (uidKey)                        seenDms.add(uidKey);
+                if (slugKey)                       seenDms.add(slugKey);
+                if (avatarKey)                     seenDms.add(avatarKey);
+                if (nameKey && !u.isMission)       seenDms.add(nameKey);
+
                 return true;
             });
 

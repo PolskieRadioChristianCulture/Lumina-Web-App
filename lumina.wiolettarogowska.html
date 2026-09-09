@@ -6076,6 +6076,26 @@
                 return (a.name || '').localeCompare(b.name || '');
             });
 
+            // ── DEDUPLIKACJA: ABSOLUTNY ZAKAZ DUBLOWANIA PROFILI ──
+            const seenDms = new Set();
+            filtered = filtered.filter(u => {
+                const uidKey   = u.uid   ? `uid_${u.uid.toLowerCase().trim()}` : null;
+                const slugKey  = u.slug  ? `slug_${u.slug.toLowerCase().trim()}` : null;
+                const nameKey  = u.name  ? `name_${u.name.toLowerCase().trim().replace(/\s+/g, ' ')}` : null;
+                const avatarRaw = (u.avatar || '').trim();
+                const isDefaultAvatar = !avatarRaw || avatarRaw === 'lumina_icon.jpg' || avatarRaw === 'lumina_icon';
+                const avatarKey = (!isDefaultAvatar) ? `avatar_${avatarRaw}` : null;
+                if (uidKey    && seenDms.has(uidKey))    return false;
+                if (slugKey   && seenDms.has(slugKey))   return false;
+                if (avatarKey && seenDms.has(avatarKey)) return false;
+                if (nameKey   && seenDms.has(nameKey) && !u.isMission) return false;
+                if (uidKey)                  seenDms.add(uidKey);
+                if (slugKey)                 seenDms.add(slugKey);
+                if (avatarKey)               seenDms.add(avatarKey);
+                if (nameKey && !u.isMission) seenDms.add(nameKey);
+                return true;
+            });
+
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div style="text-align:center; padding:25px 10px; color:#94a3b8;">
