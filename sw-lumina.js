@@ -96,11 +96,11 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.1)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.2)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.1-20260909';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.2-20260909';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',

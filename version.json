@@ -1,14 +1,14 @@
 {
-  "version": "4.1.1",
-  "buildDate": "2026-09-09T10:15:00.000Z",
-  "releaseName": "LUMINA v4.1.1 – Nowy standard dopasowania i wymuszone odświeżenie mobilne PWA",
+  "version": "4.1.2",
+  "buildDate": "2026-09-09T18:35:00.000Z",
+  "releaseName": "LUMINA v4.1.2 – Eliminacja migotania ekranu na telefonach i stabilizacja GPU",
   "changes": [
-    "✨ Domyślnie zwinięte okno szczegółów dopasowania AI dla każdego profilu użytkownika",
-    "💬 Messenger 2.0: dymki w stylu FB, potwierdzenia odczytu i szybkie błogosławieństwa",
-    "📱 Wymuszona aktualizacja i reinstalacja aplikacji PWA na urządzeniach mobilnych",
-    "🚀 Błyskawiczne czyszczenie pamięci podręcznej i natychmiastowa aktywacja Service Workera"
+    "🛡️ Eliminacja migotania i drżenia ekranu na smartfonach (iOS Safari & Android Chrome)",
+    "⚡ Bezpieczne animacje GPU (opacity-only) bez obciążania pamięci podręcznej rozmycia szkła",
+    "🚀 95% redukcja zbędnych mutacji DOM przy przewijaniu ekranu mobilnego",
+    "✨ Nowe, bezpieczne awatary społeczności oraz domyślny dźwięk w Rolkach Wiary"
   ],
-  "minAppVersion": "4.1.1",
+  "minAppVersion": "4.1.2",
   "forceReload": true,
   "forceReinstall": true
 }

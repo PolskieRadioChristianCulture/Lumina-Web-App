@@ -736,13 +736,15 @@
             height: 10px;
             border-radius: 50%;
             background: #ef4444;
-            box-shadow: 0 0 12px #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
             animation: livePulseAnim 1.4s infinite ease-in-out;
             flex-shrink: 0;
+            will-change: opacity;
+            transform: translateZ(0);
         }
         @keyframes livePulseAnim {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.35); opacity: 0.65; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
         }
         .daypart-badge-tag {
             font-size: 0.70rem;
@@ -938,7 +940,11 @@
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
-            padding: 2px;
+            padding: 4px 2px;
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            contain: content;
         }
 
         .stories-scroll-track::-webkit-scrollbar {
@@ -970,17 +976,21 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transform: translateZ(0);
+            contain: paint;
         }
 
         .story-pulse-live {
             background: linear-gradient(135deg, #ef4444, #f59e0b, #ec4899);
-            box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
             animation: storyPulse 2s infinite ease-in-out;
+            will-change: opacity;
+            transform: translateZ(0);
         }
 
         @keyframes storyPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 14px rgba(239, 68, 68, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 22px rgba(245, 158, 11, 0.6); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .story-icon-center {
@@ -1603,15 +1613,16 @@
             justify-content: center;
             color: #fff;
             font-size: 1rem;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
             flex-shrink: 0;
             animation: pulseLive 2s infinite ease-in-out;
+            will-change: opacity;
+            transform: translateZ(0);
         }
 
         @keyframes pulseLive {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
         }
 
         .btn-broadcast-shuffle {
@@ -2762,13 +2773,14 @@
             right: 0;
             height: 3px;
             background: linear-gradient(90deg, #ec4899, #d4af37, #38bdf8, #ec4899);
-            background-size: 200% 100%;
-            animation: liveGradientFlow 4s linear infinite;
+            animation: liveGradientFlow 3s ease-in-out infinite;
+            will-change: opacity;
+            transform: translateZ(0);
         }
 
         @keyframes liveGradientFlow {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         .mission-live-pill {
@@ -2791,12 +2803,15 @@
             height: 6px;
             background: #ef4444;
             border-radius: 50%;
-            animation: liveDotPulse 1.2s infinite;
+            box-shadow: 0 0 4px #ef4444;
+            animation: liveDotPulse 1.2s infinite ease-in-out;
+            will-change: opacity;
+            transform: translateZ(0);
         }
 
         @keyframes liveDotPulse {
-            0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 4px #ef4444; }
-            50% { transform: scale(1.35); opacity: 0.6; box-shadow: 0 0 10px #ef4444; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
         }
 
         .mission-live-player-wrapper {
@@ -4559,7 +4574,7 @@
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.1</span>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.2</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -10005,8 +10020,7 @@
     </script>
 
     <script>
-    // SMCC §Mobile — Tab Button Mobile Enforcer (v4.1.0)
-    // Prevents JS-applied inline styles from restoring text on small screens
+    // SMCC §Mobile — Tab Button Mobile Enforcer (v4.1.2 - Anti-Flicker Optimized)
     (function() {
         var MOBILE_BP = 640;
         var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat','tabBtnCreatePost'];
@@ -10015,34 +10029,25 @@
             TAB_IDS.forEach(function(id) {
                 var btn = document.getElementById(id);
                 if (!btn) return;
-                btn.style.padding = '0';
-                btn.style.minHeight = '44px';
-                btn.style.minWidth = '44px';
-                btn.style.maxHeight = '';
-                btn.style.maxWidth = '';
-                btn.style.gap = '0';
-                btn.style.height = '';
-                btn.style.width = '';
-                // Hide label span if present
-                btn.querySelectorAll('span.tab-label, span:not(.tab-badge):not(.tab-icon-wrap)').forEach(function(s) { s.style.display = 'none'; });
-            });
-            // Fix .modal-close-btn: must stay perfectly round 44x44, NOT oval
-            document.querySelectorAll('.modal-close-btn').forEach(function(btn) {
-                btn.style.width = '44px';
-                btn.style.height = '44px';
-                btn.style.minWidth = '44px';
-                btn.style.minHeight = '44px';
-                btn.style.maxWidth = '44px';
-                btn.style.maxHeight = '44px';
-                btn.style.padding = '0';
-                btn.style.borderRadius = '50%';
+                if (btn.style.minHeight !== '44px') {
+                    btn.style.padding = '0';
+                    btn.style.minHeight = '44px';
+                    btn.style.minWidth = '44px';
+                    btn.style.maxHeight = '';
+                    btn.style.maxWidth = '';
+                    btn.style.gap = '0';
+                    btn.style.height = '';
+                    btn.style.width = '';
+                }
+                btn.querySelectorAll('span.tab-label, span:not(.tab-badge):not(.tab-icon-wrap)').forEach(function(s) {
+                    if (s.style.display !== 'none') s.style.display = 'none';
+                });
             });
         }
         // Run on load
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(enforceMobile, 200);
             setTimeout(enforceMobile, 800);
-            setTimeout(enforceMobile, 2000);
         });
         // Run whenever switchMessengerMainTab fires (patch it)
         var _origSwitch = null;
@@ -10052,8 +10057,7 @@
                 _origSwitch = window.switchMessengerMainTab;
                 window.switchMessengerMainTab = function(tab) {
                     _origSwitch(tab);
-                    setTimeout(enforceMobile, 0);
-                    setTimeout(enforceMobile, 100);
+                    setTimeout(enforceMobile, 50);
                 };
                 window.switchMessengerMainTab._mobilePatchApplied = true;
             }
@@ -10061,10 +10065,14 @@
         // Poll for switchMessengerMainTab to be defined (loaded via defer)
         var _patchInterval = setInterval(function() {
             if (window.switchMessengerMainTab) { patchSwitch(); clearInterval(_patchInterval); }
-        }, 200);
-        setTimeout(function() { clearInterval(_patchInterval); }, 10000);
-        // Also enforce on resize
-        window.addEventListener('resize', enforceMobile);
+        }, 300);
+        setTimeout(function() { clearInterval(_patchInterval); }, 6000);
+        // Debounced resize listener to avoid triggering on mobile address bar scrolls
+        var _resizeTimer = null;
+        window.addEventListener('resize', function() {
+            if (_resizeTimer) clearTimeout(_resizeTimer);
+            _resizeTimer = setTimeout(enforceMobile, 200);
+        }, { passive: true });
     })();
     </script>
 
