@@ -1073,6 +1073,7 @@
     </div>
 
     <!-- Data & Interactive Player Engine -->
+    <script src="js/audio-master-director.js"></script>
     <script>
         // Fallback default shorts in case fetch is unavailable
         const FALLBACK_SHORTS = [
@@ -1686,6 +1687,12 @@
         window.triggerLiveChannelAutoplay = function(iframe, shouldPlay = true) {
             if (!iframe) return;
             try {
+                const slide = iframe.closest('.short-slide');
+                if (shouldPlay && window.AudioDirector && slide) {
+                    window.AudioDirector.acquireFocus(slide.id, 'live_iframe', iframe);
+                    return;
+                }
+
                 const idoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
                 if (idoc) {
                     // 1. Likwidacja nakładki "URUCHOM STUDIO"
@@ -1704,15 +1711,21 @@
                     }
 
                     // 2. Wywołanie initStream
-                    if (shouldPlay && typeof iframe.contentWindow.initStream === 'function') {
-                        iframe.contentWindow.initStream();
+                    if (shouldPlay) {
+                        try {
+                            if (iframe.contentWindow) iframe.contentWindow._worshipUserInteracted = true;
+                        } catch(e) {}
+                        if (typeof iframe.contentWindow.initStream === 'function') {
+                            iframe.contentWindow.initStream();
+                        }
                     }
 
                     // 3. Sterowanie dźwiękiem
                     const audio = idoc.querySelector('audio') || idoc.getElementById('stream-audio') || idoc.getElementById('worshipAudioPlayer');
                     if (audio) {
-                        if (shouldPlay) {
-                            audio.muted = isGlobalMuted;
+                        const isMuted = window.AudioDirector ? window.AudioDirector.isMasterMuted : isGlobalMuted;
+                        if (shouldPlay && !isMuted) {
+                            audio.muted = false;
                             audio.volume = 1.0;
                             audio.play().catch(() => {
                                 audio.muted = true;
@@ -1720,6 +1733,7 @@
                             });
                         } else {
                             audio.muted = true;
+                            audio.pause();
                         }
                     }
                 }
@@ -1727,8 +1741,9 @@
 
             // PostMessage dla pełnej kompatybilności
             try {
-                if (shouldPlay) {
-                    iframe.contentWindow.postMessage({ type: isGlobalMuted ? 'MUTE_AUDIO' : 'UNMUTE_AUDIO', func: isGlobalMuted ? 'mute' : 'unMute' }, '*');
+                const isMuted = window.AudioDirector ? window.AudioDirector.isMasterMuted : isGlobalMuted;
+                if (shouldPlay && !isMuted) {
+                    iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO', func: 'unMute' }, '*');
                     iframe.contentWindow.postMessage({ type: 'AUTOPLAY', func: 'play' }, '*');
                 } else {
                     iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO', func: 'mute' }, '*');
@@ -1745,6 +1760,8 @@
             slide.className = 'short-slide';
             slide.id = item.id;
             slide.setAttribute('data-index', index);
+            slide.setAttribute('data-original-src', item.videoSrc || '');
+            slide.setAttribute('data-platform', platform);
 
             let mediaHtml = '';
             const platform = item.videoType || 'mp4';
@@ -1876,6 +1893,14 @@
                 <div class="vinyl-disc" title="Dźwięk: ${escapeHtml(item.audioTitle || 'CC Music')}"></div>
             `;
 
+            if (window.AudioDirector) {
+                const vid = slide.querySelector('video');
+                const ifr = slide.querySelector('iframe');
+                const mediaEl = vid || ifr;
+                const mediaType = vid ? 'video' : (platform === 'live_iframe' ? 'live_iframe' : (platform === 'youtube' ? 'youtube' : 'other'));
+                window.AudioDirector.registerSource(slide.id, mediaType, mediaEl, item.videoSrc);
+            }
+
             return slide;
         }
 
@@ -1893,12 +1918,27 @@
 
             cleanShortsBase.forEach((item, index) => {
                 const slide = createSlideElement(item, index);
-                if (index === 0) slide.classList.add('active');
+                if (index === 0) {
+                    slide.classList.add('active');
+                    activeSlideIndex = 0;
+                }
                 container.appendChild(slide);
             });
 
             setupIntersectionObserver();
             setupInfiniteScroll();
+
+            // Inicjalny start pierwszego slajdu przez Reżysera Dźwięku
+            setTimeout(() => {
+                const firstSlide = container.querySelector('.short-slide');
+                if (firstSlide && window.AudioDirector) {
+                    const vid = firstSlide.querySelector('video');
+                    const ifr = firstSlide.querySelector('iframe');
+                    const media = vid || ifr;
+                    const type = vid ? 'video' : (ifr && ifr.classList.contains('live-channel-iframe') ? 'live_iframe' : 'youtube');
+                    window.AudioDirector.acquireFocus(firstSlide.id, type, media);
+                }
+            }, 150);
         }
 
         // ── Pętla Nieskończonego Przewijania (Infinite Loop) ──
@@ -1967,48 +2007,44 @@
                         }
                         updateProgress();
 
-                        // 1. HTML5 Video
-                        if (video) {
-                            video.muted = isGlobalMuted;
-                            video.play().catch(() => {
-                                video.muted = true;
-                                isGlobalMuted = true;
-                                const icon = document.getElementById('globalMuteIcon');
-                                if (icon) {
-                                    icon.className = 'fa-solid fa-volume-xmark';
-                                    icon.style.color = '#fff';
-                                }
+                        // ── WIRTUALNY REŻYSER DŹWIĘKU: EXCLUSIVE AUDIO FOCUS ──
+                        if (window.AudioDirector) {
+                            const mediaType = video ? 'video' : (iframe && iframe.classList.contains('live-channel-iframe') ? 'live_iframe' : (iframe ? 'youtube' : 'unknown'));
+                            const mediaEl = video || iframe;
+                            window.AudioDirector.acquireFocus(slide.id, mediaType, mediaEl);
+                        } else {
+                            // Fallback standardowy
+                            if (video) {
+                                video.muted = isGlobalMuted;
                                 video.play().catch(() => {});
-                            });
+                            } else if (iframe && iframe.classList.contains('live-channel-iframe')) {
+                                triggerLiveChannelAutoplay(iframe, true);
+                            }
+                        }
+
+                        if (video) {
                             video.ontimeupdate = updateVideoProgress;
                         }
-
-                        // 2. Kanał Live (CCTV24, Śniadaniowa)
-                        if (iframe && iframe.classList.contains('live-channel-iframe')) {
-                            triggerLiveChannelAutoplay(iframe, true);
-                        } else if (iframe) {
-                            // YouTube Shorts Autoplay
-                            const currentSrc = iframe.getAttribute('src');
-                            if (currentSrc && !currentSrc.includes('autoplay=1')) {
-                                iframe.setAttribute('src', currentSrc.replace('autoplay=0', 'autoplay=1'));
-                            }
-                            try {
-                                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                            } catch(e) {}
-                        }
                     } else {
-                        // Pauza po opuszczeniu ekranu
-                        if (video) {
-                            video.pause();
-                            video.currentTime = 0;
-                        }
-
-                        if (iframe && iframe.classList.contains('live-channel-iframe')) {
-                            triggerLiveChannelAutoplay(iframe, false);
-                        } else if (iframe) {
-                            try {
-                                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-                            } catch(e) {}
+                        // ── Wyciszenie i uśpienie po opuszczeniu ekranu ──
+                        if (window.AudioDirector) {
+                            const isDistant = Math.abs(index - activeSlideIndex) > 1;
+                            const mediaType = video ? 'video' : (iframe && iframe.classList.contains('live-channel-iframe') ? 'live_iframe' : (iframe ? 'youtube' : 'unknown'));
+                            const mediaEl = video || iframe;
+                            window.AudioDirector._silenceSource({
+                                id: slide.id,
+                                type: mediaType,
+                                element: mediaEl,
+                                originalSrc: slide.getAttribute('data-original-src')
+                            }, { deepSleep: isDistant });
+                        } else {
+                            if (video) {
+                                video.pause();
+                                video.currentTime = 0;
+                            }
+                            if (iframe && iframe.classList.contains('live-channel-iframe')) {
+                                triggerLiveChannelAutoplay(iframe, false);
+                            }
                         }
                     }
                 });
@@ -2019,12 +2055,22 @@
 
         // ── Kliknięcie / Tap w rolkę ──
         window.handleSlideTap = function(slideEl) {
+            if (!slideEl) return;
             const video = slideEl.querySelector('video');
             const iframe = slideEl.querySelector('iframe.live-channel-iframe');
+            const ytIframe = slideEl.querySelector('iframe:not(.live-channel-iframe)');
             const indicator = slideEl.querySelector('.play-indicator-overlay');
 
+            if (window.AudioDirector) {
+                window.AudioDirector.unlockAudio();
+            }
+
             if (iframe) {
-                triggerLiveChannelAutoplay(iframe, true);
+                if (window.AudioDirector) {
+                    window.AudioDirector.acquireFocus(slideEl.id, 'live_iframe', iframe);
+                } else {
+                    triggerLiveChannelAutoplay(iframe, true);
+                }
                 if (indicator) {
                     indicator.innerHTML = '<i class="fa-solid fa-play"></i>';
                     indicator.classList.add('show');
@@ -2035,41 +2081,54 @@
 
             if (video) {
                 if (video.paused) {
-                    video.play();
+                    if (window.AudioDirector) {
+                        window.AudioDirector.acquireFocus(slideEl.id, 'video', video);
+                    } else {
+                        video.play().catch(() => {});
+                    }
                     if (indicator) {
                         indicator.innerHTML = '<i class="fa-solid fa-play"></i>';
                         indicator.classList.add('show');
                         setTimeout(() => indicator.classList.remove('show'), 500);
                     }
                 } else {
-                    video.pause();
+                    if (window.AudioDirector) {
+                        window.AudioDirector._silenceSource({ id: slideEl.id, type: 'video', element: video });
+                    } else {
+                        video.pause();
+                    }
                     if (indicator) {
                         indicator.innerHTML = '<i class="fa-solid fa-pause"></i>';
                         indicator.classList.add('show');
                         setTimeout(() => indicator.classList.remove('show'), 500);
                     }
                 }
+            } else if (ytIframe) {
+                if (window.AudioDirector) {
+                    window.AudioDirector.acquireFocus(slideEl.id, 'youtube', ytIframe);
+                }
             }
         };
 
         // ── Wyciszenie Globalne ──
         window.toggleGlobalMute = function() {
-            isGlobalMuted = !isGlobalMuted;
-            const icon = document.getElementById('globalMuteIcon');
-            if (icon) {
-                icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
-                icon.style.color = isGlobalMuted ? '#fff' : '#facc15';
+            if (window.AudioDirector) {
+                isGlobalMuted = window.AudioDirector.toggleMasterMute();
+            } else {
+                isGlobalMuted = !isGlobalMuted;
+                const icon = document.getElementById('globalMuteIcon');
+                if (icon) {
+                    icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+                    icon.style.color = isGlobalMuted ? '#fff' : '#facc15';
+                }
+                document.querySelectorAll('.short-slide video').forEach(v => {
+                    v.muted = isGlobalMuted;
+                });
+                document.querySelectorAll('.short-slide iframe.live-channel-iframe').forEach(ifr => {
+                    triggerLiveChannelAutoplay(ifr, !isGlobalMuted);
+                });
             }
-
-            document.querySelectorAll('.short-slide video').forEach(v => {
-                v.muted = isGlobalMuted;
-            });
-
-            document.querySelectorAll('.short-slide iframe.live-channel-iframe').forEach(ifr => {
-                triggerLiveChannelAutoplay(ifr, !isGlobalMuted);
-            });
-
-            showShortsToast(isGlobalMuted ? '🔇 Wyciszono dźwięk' : '🔊 Dźwięk włączony');
+            showShortsToast(isGlobalMuted ? '🔇 Wyciszono dźwięk' : '🔊 Dźwięk włączony (DSP Master)');
         };
 
         // ── Nawigacja Strzałkami ──
