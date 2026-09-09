@@ -985,7 +985,7 @@
                 </button>
 
                 <button type="button" class="header-btn" id="globalMuteBtn" onclick="toggleGlobalMute()" title="Włącz / Wyłącz dźwięk" aria-label="Przełącz dźwięk">
-                    <i class="fa-solid fa-volume-xmark" id="globalMuteIcon"></i>
+                    <i class="fa-solid fa-volume-high" id="globalMuteIcon" style="color:#facc15;"></i>
                 </button>
             </div>
         </header>
@@ -1308,7 +1308,7 @@
         ];
 
         let shortsData = [];
-        let isGlobalMuted = true;
+        let isGlobalMuted = false;
         let activeSlideIndex = 0;
         let observer = null;
 
@@ -1663,7 +1663,7 @@
                     platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
                 } else if (platform === 'youtube') {
                     mediaHtml = `
-                        <iframe src="https://www.youtube.com/embed/${item.videoSrc}?autoplay=0&mute=1&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
+                        <iframe src="https://www.youtube.com/embed/${item.videoSrc}?autoplay=0&mute=0&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
                                 title="${item.title}" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                 allowfullscreen>
@@ -1829,10 +1829,20 @@
                         activeSlideIndex = index;
                         updateProgress();
 
-                        // Play HTML5 Video
+                        // Play HTML5 Video — dźwięk włączony, fallback do muted jeśli browser policy blokuje
                         if (video) {
                             video.muted = isGlobalMuted;
-                            video.play().catch(() => {});
+                            video.play().catch(() => {
+                                // Autoplay z dźwiękiem zablokowane — uruchamiamy wyciszone
+                                video.muted = true;
+                                isGlobalMuted = true;
+                                const icon = document.getElementById('globalMuteIcon');
+                                if (icon) {
+                                    icon.className = 'fa-solid fa-volume-xmark';
+                                    icon.style.color = '#fff';
+                                }
+                                video.play().catch(() => {});
+                            });
                             video.ontimeupdate = updateVideoProgress;
                         }
 
