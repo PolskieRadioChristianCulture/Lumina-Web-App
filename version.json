@@ -1,11 +1,14 @@
 {
-  "version": "4.2.0",
-  "buildDate": "2026-09-07T04:45:00.000Z",
-  "releaseName": "LUMINA v4.2.0 – Naprawa Przełącznika Dźwięku i Autoodtwarzania TV Live",
+  "version": "4.1.1",
+  "buildDate": "2026-09-09T10:15:00.000Z",
+  "releaseName": "LUMINA v4.1.1 – Nowy standard dopasowania i wymuszone odświeżenie mobilne PWA",
   "changes": [
-    "🔊 Pancerne włączanie i wyłączanie dźwięku w oknie TV Live na profilu i tablicy",
-    "🔇 Domyślne wyciszenie transmisji po wejściu na stronę z ergonomicznym przełącznikiem audio",
-    "✨ Błyskawiczna synchronizacja i odświeżenie pamięci podręcznej Service Workera"
+    "✨ Domyślnie zwinięte okno szczegółów dopasowania AI dla każdego profilu użytkownika",
+    "💬 Messenger 2.0: dymki w stylu FB, potwierdzenia odczytu i szybkie błogosławieństwa",
+    "📱 Wymuszona aktualizacja i reinstalacja aplikacji PWA na urządzeniach mobilnych",
+    "🚀 Błyskawiczne czyszczenie pamięci podręcznej i natychmiastowa aktywacja Service Workera"
   ],
-  "minAppVersion": "4.2.0"
+  "minAppVersion": "4.1.1",
+  "forceReload": true,
+  "forceReinstall": true
 }

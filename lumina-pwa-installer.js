@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '4.2.0';
+    const CURRENT_CLIENT_VERSION = '4.1.1';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -31,24 +31,36 @@
         return /iphone|ipad|ipod/.test(ua) && !window.MSStream;
     }
 
-    // 3. Register and Monitor Service Worker
+    // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
+                    // Wymuszone usuwanie przestarzałych pamięci podręcznych
+                    if ('caches' in window) {
+                        const keys = await caches.keys();
+                        await Promise.all(keys.map(k => {
+                            if (!k.includes('v4.1.1')) {
+                                console.log('[LUMINA PWA] Czyszczenie starego cache:', k);
+                                return caches.delete(k);
+                            }
+                        }));
+                    }
+
+                    // Wyrejestrowywanie starych wersji Service Workera
                     const registrations = await navigator.serviceWorker.getRegistrations();
                     for (const reg of registrations) {
-                        if (reg.active && !reg.active.scriptURL.includes('v=20260907_v430')) {
+                        if (reg.active && !reg.active.scriptURL.includes('v=20260909_v411')) {
                             console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
                             await reg.unregister();
                         }
                     }
                 } catch (e) {}
 
-                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260907_v430', { scope: './' })
+                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260909_v411', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
-                        console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
+                        console.log('[LUMINA PWA] Service Worker v4.1.1 zarejestrowany. Scope:', reg.scope);
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
@@ -69,7 +81,7 @@
         }
     }
 
-    // 4. Remote Version Checker (W 100% cicha aktualizacja w tle — ZERO wyskakujących okienek)
+    // 4. Remote Version Checker & Force Reinstall Manager
     async function checkForUpdatesFromServer(forcePrompt = false, waitingWorker = null) {
         try {
             const targetWorker = waitingWorker || (swRegistration && swRegistration.waiting);
@@ -79,6 +91,29 @@
             if (swRegistration) {
                 swRegistration.update().catch(() => {});
             }
+
+            // Sprawdź wersję na serwerze i wymuś reinstalację na mobile
+            try {
+                const res = await fetch('version.json?t=' + Date.now(), { cache: 'no-cache' });
+                if (res.ok) {
+                    const verData = await res.json();
+                    const isNewVer = verData && (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall);
+                    const reinstalled = localStorage.getItem('lumina_reinstalled_v411');
+
+                    if (isNewVer || !reinstalled) {
+                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na mobile (v4.1.1)');
+                        localStorage.setItem('lumina_reinstalled_v411', 'true');
+                        localStorage.removeItem(DISMISS_INSTALL_KEY);
+                        sessionStorage.removeItem(DISMISS_INSTALL_KEY);
+
+                        const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+                        if (isMobile && !isRunningStandalone()) {
+                            showInstallBanner();
+                        }
+                    }
+                }
+            } catch(fetchErr) {}
+
             // Zabezpieczenie przed wiszącym banerem w DOM
             const banner = document.getElementById('luminaUpdateBanner');
             if (banner) banner.remove();
@@ -407,7 +442,35 @@
 
     // 7. Create Install Banner
     function createInstallBanner() {
-        return;
+        if (document.getElementById('luminaPwaBanner')) return;
+
+        const banner = document.createElement('div');
+        banner.id = 'luminaPwaBanner';
+        banner.className = 'lumina-pwa-banner';
+        banner.innerHTML = `
+            <img src="lumina-icon-192.png" alt="LUMINA" class="lumina-pwa-icon" onerror="this.src='icon.png'">
+            <div class="lumina-pwa-content">
+                <div class="lumina-pwa-title">
+                    <span>LUMINA App</span>
+                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v4.1.1</span>
+                </div>
+                <div class="lumina-pwa-desc">Zainstaluj nową wersję v4.1.1 na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
+            </div>
+            <div class="lumina-pwa-actions">
+                <button type="button" class="lumina-pwa-btn-install" id="btnPwaInstallAction">
+                    <i class="fa-solid fa-download"></i> Instaluj
+                </button>
+                <button type="button" class="lumina-pwa-btn-close" id="btnPwaInstallClose" title="Zamknij">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        `;
+        document.body.appendChild(banner);
+
+        const btnInstall = document.getElementById('btnPwaInstallAction');
+        if (btnInstall) btnInstall.addEventListener('click', triggerInstallFlow);
+        const btnClose = document.getElementById('btnPwaInstallClose');
+        if (btnClose) btnClose.addEventListener('click', dismissInstallBanner);
     }
 
     // 8. Create iOS Install Modal
@@ -486,12 +549,17 @@
     }
 
     function showInstallBanner() {
-        return;
+        if (isRunningStandalone()) return;
+        createInstallBanner();
+        setTimeout(() => {
+            const banner = document.getElementById('luminaPwaBanner');
+            if (banner) banner.classList.add('visible');
+        }, 1200);
     }
 
     function dismissInstallBanner() {
         const banner = document.getElementById('luminaPwaBanner');
-        if (banner) banner.remove();
+        if (banner) banner.classList.remove('visible');
         sessionStorage.setItem(DISMISS_INSTALL_KEY, 'true');
     }
 
@@ -500,11 +568,9 @@
         registerLuminaServiceWorker();
         injectPWAStyles();
 
-        // Natychmiastowe usunięcie ewentualnych starych banerów
+        // Natychmiastowe usunięcie ewentualnych starych banerów aktualizacji
         const oldBanner = document.getElementById('luminaUpdateBanner');
         if (oldBanner) oldBanner.remove();
-        const oldPwaBanner = document.getElementById('luminaPwaBanner');
-        if (oldPwaBanner) oldPwaBanner.remove();
 
         setTimeout(() => {
             checkForUpdatesFromServer();
@@ -529,7 +595,14 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredInstallPrompt = e;
+            showInstallBanner();
         });
+
+        // Wymuszenie reinstalacji na urządzeniach mobilnych (jeśli nie w trybie standalone PWA)
+        const isMobileDevice = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+        if (isMobileDevice && !isRunningStandalone() && sessionStorage.getItem(DISMISS_INSTALL_KEY) !== 'true') {
+            setTimeout(showInstallBanner, 2200);
+        }
 
         window.addEventListener('appinstalled', () => {
             console.log('[LUMINA PWA] Aplikacja zainstalowana pomyślnie!');

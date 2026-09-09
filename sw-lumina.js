@@ -96,11 +96,11 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.0)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.1)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.0-20260830';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.1-20260909';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -354,7 +354,7 @@ self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'lumina-daily-mission-sync') {
         console.log('[SW] Periodic background mission sync triggered');
         event.waitUntil(
-            caches.open('lumina-dynamic-v4.1.0').then((cache) => {
+            caches.open('lumina-dynamic-v4.1.1-20260909').then((cache) => {
                 return fetch('./lumina-tablica.html?sync=1', { cache: 'no-cache' })
                     .then((response) => {
                         if (response && response.ok) cache.put('./lumina-tablica.html', response.clone());
