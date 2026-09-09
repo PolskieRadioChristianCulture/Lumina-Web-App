@@ -310,7 +310,7 @@
             }
 
             // 2. Age
-            const ageMatch = nameText.match(/,s*(d{2})/);
+            const ageMatch = nameText.match(/,\s*(\d{2})/);
             if (ageMatch) {
                 const age = parseInt(ageMatch[1], 10);
                 if (age > filterState.maxAge) {

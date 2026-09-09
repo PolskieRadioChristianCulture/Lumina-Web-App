@@ -4370,7 +4370,7 @@
             <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
             <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
             <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="if(typeof openAdvancedFiltersModal==='function') openAdvancedFiltersModal();" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
+            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal()" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
                 <i class="fa-solid fa-sliders" style="color:#facc15;"></i>
                 <span class="filter-chip-text">Filtry Wartości ⚙️</span>
             </button>
@@ -4416,7 +4416,7 @@
         </div>
 
         <!-- Banner / Widget Tablicy Społeczności (Zamiast Szybkich Wiadomości) -->
-        <div class="tablica-preview-widget" onclick="window.location.href="tablica"" style="cursor:pointer;" title="Przejdź do Tablicy Społeczności">
+        <div class="tablica-preview-widget" onclick="window.location.href='/tablica';" style="cursor:pointer;" title="Przejdź do Tablicy Społeczności LUMINA">
             <div>
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -4433,42 +4433,42 @@
             </div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨" style="z-index: 8;" onclick="event.stopPropagation(); window.location.href="lumina/rogowski";">
+                    <div class="tablica-online-avatar-item" title="Profil: Cezary Rogowski ✨" style="z-index: 8;" onclick="event.stopPropagation(); window.openCommunityProfile('cezaryrgowski');">
                         <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨" style="z-index: 7;" onclick="event.stopPropagation(); window.location.href="lumina/rogowska";">
+                    <div class="tablica-online-avatar-item" title="Profil: Wioletta Rogowska ✨" style="z-index: 7;" onclick="event.stopPropagation(); window.openCommunityProfile('wiolettarogowska');">
                         <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Andrzej Thiel ✨" style="z-index: 6;" onclick="event.stopPropagation(); window.location.href="lumina/thiel";">
+                    <div class="tablica-online-avatar-item" title="Profil: Andrzej Thiel ✨" style="z-index: 6;" onclick="event.stopPropagation(); window.openCommunityProfile('andrzejthiel');">
                         <img src="avatar_andrzej_thiel.jpg" alt="Andrzej" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena ✨" style="z-index: 5;" onclick="event.stopPropagation(); window.location.href="lumina/magdalena";">
+                    <div class="tablica-online-avatar-item" title="Profil: Magdalena ✨" style="z-index: 5;" onclick="event.stopPropagation(); window.openCommunityProfile('magdalena');">
                         <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Tomasz ✨" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=tomek';">
+                    <div class="tablica-online-avatar-item" title="Profil: Tomasz ✨" style="z-index: 4;" onclick="event.stopPropagation(); window.openCommunityProfile('tomek');">
                         <img src="avatar_widget_tomek.jpg" alt="Tomasz" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Noemi ✨" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=noemi';">
+                    <div class="tablica-online-avatar-item" title="Profil: Noemi ✨" style="z-index: 3;" onclick="event.stopPropagation(); window.openCommunityProfile('noemi');">
                         <img src="avatar_noemi.jpg" alt="Noemi" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Anna ✨" style="z-index: 2;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=anna';">
+                    <div class="tablica-online-avatar-item" title="Profil: Anna ✨" style="z-index: 2;" onclick="event.stopPropagation(); window.openCommunityProfile('anna');">
                         <img src="lumina_anna2.jpg" alt="Anna" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-more-btn" onclick="event.stopPropagation(); openAllOnlineUsersModal();" title="Zobacz wszystkich użytkowników dostępnych online ✨" aria-label="Liczba zalogowanych użytkowników online">
-                        +7
+                    <div class="tablica-online-more-btn" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='/tablica'; }" title="Zobacz wszystkich użytkowników dostępnych online ✨" aria-label="Liczba zalogowanych użytkowników online">
+                        +27
                     </div>
                 </div>
 
-                <span style="color:#38bdf8; font-size:0.84rem; font-weight:800; display:flex; align-items:center; gap:6px;">
+                <a href="/tablica" onclick="event.stopPropagation(); window.location.href='/tablica';" style="color:#38bdf8; font-size:0.84rem; font-weight:800; display:flex; align-items:center; gap:6px; text-decoration:none; cursor:pointer;" title="Otwórz Tablicę Społeczności LUMINA">
                     Otwórz Tablicę <i class="fa-solid fa-arrow-right"></i>
-                </span>
+                </a>
             </div>
         </div>
     </section>
@@ -7444,15 +7444,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const isSessionActive = localStorage.getItem('lumina_user_session') === 'active' || !!currentUser;
 
-            if (!isSessionActive) {
-                container.innerHTML = `
-                    <div style="font-size:0.78rem; color:#94a3b8; font-weight:700; display:flex; align-items:center; gap:6px; padding:4px 0;">
-                        <i class="fa-solid fa-user-slash" style="color:#fca5a5;"></i> Wylogowany (0 aktywnych)
-                    </div>
-                `;
-                return;
-            }
-
             // Pool of active/online members in LUMINA community
             const activeCommunityPool = [
                 { name: 'Cezary Rogowski', avatar: 'avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370', slug: 'cezaryrgowski' },
@@ -7528,13 +7519,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             // Wyświetlenie dokładnie do 7 awatarów
             const topSeven = loggedInList.slice(0, 7);
-            const totalCount = Math.max(loggedInList.length, window._livePresenceCount || 0);
+            const totalCount = Math.max(loggedInList.length, window._livePresenceCount || 27);
 
             let html = '';
             topSeven.forEach((user, idx) => {
                 const zIndex = 10 - idx;
                 html += `
-                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨" style="z-index: ${zIndex};" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}')">
+                    <div class="tablica-online-avatar-item" title="Profil: ${user.name} ✨" style="z-index: ${zIndex}; cursor:pointer;" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}');">
                         <img loading="lazy" decoding="async" src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
                         <span class="tablica-online-dot"></span>
                     </div>
@@ -7545,7 +7536,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (totalCount > 0) {
                 const countDisplay = totalCount > 99 ? '+99' : `+${totalCount}`;
                 html += `
-                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${totalCount} aktywnych w czasie rzeczywistym)" aria-label="Wszyscy zalogowani użytkownicy: ${totalCount}" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href="tablica"; }">
+                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${totalCount} aktywnych w czasie rzeczywistym)" aria-label="Wszyscy zalogowani użytkownicy: ${totalCount}" style="cursor:pointer;" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='/tablica'; }">
                         ${countDisplay}
                     </div>
                 `;
@@ -10005,7 +9996,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="js/lumina-groups-engine.js" defer></script>
     <script src="js/lumina-messenger-composer.js" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
-    <script src="js/lumina-discovery-filters.js" defer></script>
+    <script src="js/lumina-discovery-filters.js"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=20260907_google_auth_v1" defer></script>
     <script src="lumina-notifications.js?v=4.1.0_20260830" defer></script>
