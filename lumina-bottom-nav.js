@@ -209,8 +209,8 @@
             left: 50% !important;
             transform: translateX(-50%) !important;
             width: auto !important;
-            min-width: 240px !important;
-            max-width: 320px !important;
+            min-width: 280px !important;
+            max-width: 380px !important;
             height: 62px !important;
             background: rgba(9, 14, 30, 0.92) !important;
             backdrop-filter: blur(24px) saturate(180%) !important;
@@ -778,6 +778,7 @@
     const pathname = window.location.pathname.toLowerCase();
     const isDiscover = pathname.includes('lumina.html') || (pathname.endsWith('/lumina') && !pathname.includes('tablica') && !pathname.includes('women') && !pathname.includes('osobowosc') && !pathname.includes('radiocc') && !pathname.includes('cctv') && !pathname.includes('ccmen'));
     const isTablica = pathname.includes('lumina-tablica');
+    const isShorts = pathname.includes('lumina-shorts') || pathname.includes('rolki') || pathname.includes('shorts');
     const isProfile = pathname.includes('lumina-profile') || pathname.includes('cezaryrgowski') || pathname.includes('wiolettarogowska');
 
     // Dynamiczny link do Mojego Profilu (inteligentne rozpoznawanie zalogowanego użytkownika)
@@ -1018,7 +1019,21 @@
                         </div>
                     </a>
 
-                    <!-- 4. Mój Profil / Ustawienia -->
+                    <!-- 4. Rolki Wiary (LUMINA Shorts 9:16) -->
+                    <a href="rolki" class="lumina-menu-btn" onclick="if(window.toggleCcBottomNavMenu) window.toggleCcBottomNavMenu(event);" title="Rolki Wiary • LUMINA Shorts 9:16">
+                        <div class="lumina-menu-btn-icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.3),rgba(245,158,11,0.3)); color:#facc15;">
+                            <i class="fa-solid fa-clapperboard"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title" style="display:flex; align-items:center; gap:6px;">
+                                <span>Rolki Wiary 9:16</span>
+                                <span style="font-size:0.65rem; background:#ef4444; color:#fff; padding:1px 6px; border-radius:8px; font-weight:800;">NOWOŚĆ</span>
+                            </div>
+                            <div class="lumina-menu-btn-sub">Świadectwa & Krótkie Wideo</div>
+                        </div>
+                    </a>
+
+                    <!-- 5. Mój Profil / Ustawienia -->
                     <button type="button" class="lumina-menu-btn" onclick="window.handleBottomNavProfileClick(event); window.toggleCcBottomNavMenu(event);" title="Mój Profil / Panel Właściciela">
                         <div class="lumina-menu-btn-icon profile-icon-bg">
                             <i class="fa-solid fa-user-gear"></i>
@@ -1029,7 +1044,7 @@
                         </div>
                     </button>
 
-                    <!-- 5. Q&A (Pytania i Odpowiedzi) -->
+                    <!-- 6. Q&A (Pytania i Odpowiedzi) -->
                     <button type="button" class="lumina-menu-btn" onclick="window.toggleLuminaQnaDrawer(event); window.toggleCcBottomNavMenu(event);" title="Pytania i Odpowiedzi (Q&A) • Baza Wiedzy LUMINA">
                         <div class="lumina-menu-btn-icon qna-icon-bg">
                             <i class="fa-solid fa-circle-question"></i>
@@ -1040,7 +1055,7 @@
                         </div>
                     </button>
 
-                    <!-- 6. Master Admin (dla Dowódcy / Master Admin) -->
+                    <!-- 7. Master Admin (dla Dowódcy / Master Admin) -->
                     <button type="button" class="lumina-menu-btn admin-menu-btn" onclick="window.triggerSecretAdminPrompt(event); window.toggleCcBottomNavMenu(event);" title="Panel Master Admin">
                         <div class="lumina-menu-btn-icon admin-icon-bg">
                             <i class="fa-solid fa-shield-halved"></i>
@@ -1057,7 +1072,7 @@
                         <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> LUMINA • Bezpieczeństwo
                     </span>
                     <span style="font-weight:800; color:#facc15; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); padding:3px 12px; border-radius:12px; font-family:'Outfit',sans-serif; letter-spacing:0.4px;">
-                        Wydanie v4.0.0
+                        Wydanie v4.1.0
                     </span>
                 </div>
             </div>
@@ -1074,7 +1089,13 @@
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
-            <!-- 3. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, VOD, Profil, Q&A, Master Admin) -->
+            <!-- 3. Rolki Wiary (Shorts 9:16) -->
+            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" title="Rolki Wiary • LUMINA Shorts 9:16" style="position:relative;">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span style="position:absolute; top:8px; right:8px; width:7px; height:7px; background:#facc15; border-radius:50%; box-shadow:0 0 6px #facc15;"></span>
+            </a>
+
+            <!-- 4. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, VOD, Profil, Q&A, Master Admin) -->
             <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Q&A, Master Admin)">
                 <i class="fa-solid fa-bars" id="bottomNavBarsIcon"></i>
             </button>

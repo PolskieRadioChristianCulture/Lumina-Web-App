@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Rolki Wiary • LUMINA Shorts 9:16 | Christian Culture</title>
+    
+    <meta name="description" content="Chrześcijańskie wideo 9:16 w formacie Shorts / Reels – świadectwa, wersety biblijne, modlitwy i muzyka uwielbienia w portalu LUMINA.">
+    <meta property="og:title" content="Rolki Wiary • LUMINA Shorts | Christian Culture">
+    <meta property="og:description" content="Krótkie formy wideo budujące wiarę – świadectwa Bożej mocy, modlitwy i wersety biblijne.">
+    <meta property="og:image" content="https://polskieradio.cc/tlo_tv_dzj.jpg">
+    <meta property="og:url" content="https://polskieradio.cc/rolki">
+    <meta property="og:type" content="video.other">
+    <meta name="theme-color" content="#030712">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Pro -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-base: #030712;
+            --gold: #facc15;
+            --gold-dark: #d97706;
+            --primary: #38bdf8;
+            --pink: #ec4899;
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
+            --sidebar-w: 64px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background-color: var(--bg-base);
+            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Ambient background glow for desktop */
+        .desktop-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 30%, rgba(250, 204, 21, 0.08) 0%, rgba(14, 165, 233, 0.06) 50%, #030712 90%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 9:16 App Viewport Frame */
+        .shorts-app-shell {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            height: 100%;
+            height: 100dvh;
+            background: #000;
+            overflow: hidden;
+            z-index: 10;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(250, 204, 21, 0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 480px) {
+            .shorts-app-shell {
+                border-radius: 28px;
+                height: 94dvh;
+                max-height: 890px;
+                border: 2px solid rgba(250, 204, 21, 0.3);
+            }
+        }
+
+        /* Top Header Bar */
+        .shorts-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            padding: 12px 16px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+            pointer-events: auto;
+        }
+
+        .header-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            touch-action: manipulation;
+        }
+
+        .header-btn:active {
+            transform: scale(0.92);
+            background: rgba(250, 204, 21, 0.25);
+            border-color: var(--gold);
+        }
+
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            background: linear-gradient(135deg, #fff 20%, #facc15 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .header-badge {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+
+        .header-badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            animation: pulseDot 1.4s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        /* Vertically Scrollable Reel Slides Container */
+        .shorts-scroll-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .shorts-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Single Short Slide */
+        .short-slide {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Media Container */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: auto;
+        }
+
+        /* Tap overlay to play/pause */
+        .tap-detector {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        /* Play/Pause Animated Pulse Indicator */
+        .play-indicator-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(250, 204, 21, 0.7);
+            color: #facc15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            z-index: 25;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .play-indicator-overlay.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Cinematic Gradients Overlay */
+        .slide-gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 22;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.5) 0%,
+                transparent 18%,
+                transparent 55%,
+                rgba(0, 0, 0, 0.55) 75%,
+                rgba(0, 0, 0, 0.95) 100%
+            );
+        }
+
+        /* Right Action Bar (TikTok/Reels Style) */
+        .action-sidebar {
+            position: absolute;
+            right: 12px;
+            bottom: 84px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            z-index: 40;
+            pointer-events: auto;
+        }
+
+        .action-btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-circle-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            touch-action: manipulation;
+        }
+
+        .action-circle-btn:active {
+            transform: scale(0.88);
+        }
+
+        .action-circle-btn.amen-active {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-color: #facc15;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.7);
+            animation: amenPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes amenPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+
+        .action-circle-btn.whatsapp-btn {
+            background: rgba(37, 211, 102, 0.2);
+            border-color: #25d366;
+            color: #25d366;
+        }
+
+        .action-circle-btn.whatsapp-btn:active {
+            background: #25d366;
+            color: #fff;
+        }
+
+        .action-circle-btn.bible-btn {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+
+        .action-circle-btn.bible-btn:active {
+            background: #38bdf8;
+            color: #030712;
+        }
+
+        .action-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+            letter-spacing: 0.3px;
+        }
+
+        /* Author Avatar in Action Bar */
+        .avatar-action-wrapper {
+            position: relative;
+            margin-bottom: 6px;
+        }
+
+        .avatar-circle-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 14px rgba(250, 204, 21, 0.4);
+            cursor: pointer;
+        }
+
+        .avatar-plus-icon {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f59e0b);
+            color: #fff;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Bottom Info Overlay Area */
+        .slide-info-box {
+            position: absolute;
+            left: 16px;
+            right: 76px;
+            bottom: 24px;
+            z-index: 40;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .author-tag-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .author-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .author-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            background: rgba(250, 204, 21, 0.2);
+            color: var(--gold);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            padding: 2px 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .short-title-text {
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #f8fafc;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .verse-pill-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(30, 58, 138, 0.4));
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+            font-size: 0.76rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 16px;
+            text-decoration: none;
+            width: fit-content;
+            backdrop-filter: blur(6px);
+            transition: all 0.2s ease;
+        }
+
+        .verse-pill-btn:hover, .verse-pill-btn:active {
+            background: rgba(56, 189, 248, 0.45);
+            color: #fff;
+            transform: translateX(2px);
+        }
+
+        .sound-ticker-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            overflow: hidden;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .sound-ticker-row i {
+            color: var(--gold);
+        }
+
+        .sound-text-marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Vinyl Spin Animation */
+        .vinyl-disc {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: repeating-radial-gradient(#111, #111 2px, #222 3px, #111 4px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: absolute;
+            right: 18px;
+            bottom: 24px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spinVinyl 5s linear infinite;
+        }
+
+        .vinyl-disc::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        @keyframes spinVinyl {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress Bar (at the very bottom) */
+        .shorts-progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 60;
+        }
+
+        .shorts-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f59e0b, #facc15);
+            transition: width 0.1s linear;
+        }
+
+        /* Floating Toast */
+        .shorts-toast {
+            position: absolute;
+            top: 76px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid var(--gold);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+
+        .shorts-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Keyboard help tooltip on desktop */
+        .desktop-nav-hint {
+            display: none;
+            position: absolute;
+            left: -180px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px;
+            border-radius: 16px;
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+
+        @media (min-width: 900px) {
+            .desktop-nav-hint {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="desktop-backdrop"></div>
+
+    <!-- Main 9:16 Shorts Shell -->
+    <div class="shorts-app-shell" id="shortsShell">
+        
+        <!-- Desktop Hint -->
+        <div class="desktop-nav-hint">
+            <div style="color:var(--gold); font-weight:800; margin-bottom:4px;"><i class="fa-solid fa-arrows-up-down"></i> Nawigacja:</div>
+            <div>Przewijaj kółkiem myszy lub strzałkami <span style="background:rgba(255,255,255,0.15); padding:2px 6px; border-radius:4px; font-weight:700;">↑</span> / <span style="background:rgba(255,255,255,0.15); padding:2px 6px; border-radius:4px; font-weight:700;">↓</span> na klawiaturze.</div>
+        </div>
+
+        <!-- Top Header -->
+        <header class="shorts-header">
+            <a href="tablica" class="header-btn" title="Powrót do Tablicy Społeczności" aria-label="Wróć do Tablicy">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div class="header-title-box">
+                <span class="header-title">Rolki Wiary</span>
+                <span class="header-badge">LIVE</span>
+            </div>
+
+            <button type="button" class="header-btn" id="globalMuteBtn" onclick="toggleGlobalMute()" title="Włącz / Wyłącz dźwięk" aria-label="Przełącz dźwięk">
+                <i class="fa-solid fa-volume-xmark" id="globalMuteIcon"></i>
+            </button>
+        </header>
+
+        <!-- Toast notification -->
+        <div class="shorts-toast" id="shortsToast">✨ Amen! Dodano do ulubionych</div>
+
+        <!-- Vertical Scrollable Container -->
+        <main class="shorts-scroll-container" id="shortsContainer">
+            <!-- Slides dynamically injected here -->
+        </main>
+
+        <!-- Bottom Progress Bar -->
+        <div class="shorts-progress-bar">
+            <div class="shorts-progress-fill" id="shortsProgressFill"></div>
+        </div>
+
+    </div>
+
+    <!-- Data & Interactive Player Engine -->
+    <script>
+        // Fallback default shorts in case fetch is unavailable
+        const FALLBACK_SHORTS = [
+            {
+                id: "short_psalm1",
+                title: "Błogosławiony człowiek, który rozmyśla nad Słowem Bożym 📖🌿",
+                author: "Zbyszek Gieroń",
+                authorSlug: "zbyszekgieron",
+                authorAvatar: "avatar_zbyszek_gieron.jpg",
+                authorBadge: "🕊️ Misja & Wiara",
+                videoType: "mp4",
+                videoSrc: "reklama_sklep_alleluja.mp4",
+                poster: "post_zbyszek_psalm1.jpg",
+                verseRef: "Psalm 1, 1-2",
+                verseBook: "PSA",
+                verseChapter: 1,
+                verseUrl: "/mojabiblia?book=PSA&ch=1&mode=reader",
+                audioTitle: "Ciche Uwielbienie • Studio Dobrego Słowa",
+                description: "„Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” Prawdziwe szczęście zaczyna się w Bożej obecności. 🙏✨",
+                amenCount: 148,
+                sharesCount: 37
+            },
+            {
+                id: "short_swiadectwo_grzegorz",
+                title: "Niewiarygodna przemiana życia! Jezus uwolnił mnie od nałogu ✝️⚡",
+                author: "Świadectwa Wiary CC",
+                authorSlug: "radiocc",
+                authorAvatar: "avatar_cezary_official.jpg",
+                authorBadge: "📺 CCTV24 Live",
+                videoType: "youtube",
+                videoSrc: "66dmc_Wf-Ig",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "Ew. Jana 8, 36",
+                verseBook: "JHN",
+                verseChapter: 8,
+                verseUrl: "/mojabiblia?book=JHN&ch=8&mode=reader",
+                audioTitle: "Moc Świadectwa • Radio Christian Culture",
+                description: "„Jeśli więc Syn was wyzwoli, będziecie prawdziwie wolni.” Obejrzyj potężne świadectwo Bożej łaski i uzdrowienia. 🕊️🔥",
+                amenCount: 312,
+                sharesCount: 89
+            },
+            {
+                id: "short_modlitwa_jola",
+                title: "Biblijny Czas Modlitwy • Przełam każdą troskę przed Bogiem 🌸🙏",
+                author: "Jola Wójcik",
+                authorSlug: "jolawojcik",
+                authorAvatar: "avatar_jolawojcik.jpg",
+                authorBadge: "🕊️ Pasmo Modlitwy",
+                videoType: "youtube",
+                videoSrc: "EWY-J2gSqwo",
+                poster: "avatar_jolawojcik.jpg",
+                verseRef: "List do Filipian 4, 6-7",
+                verseBook: "PHP",
+                verseChapter: 4,
+                verseUrl: "/mojabiblia?book=PHP&ch=4&mode=reader",
+                audioTitle: "Pasmo Modlitwy Wstawienniczej • Polskie Radio CC",
+                description: "„O nic się nie martwcie, lecz we wszystkim w modlitwie powierzcie swoje prośby Bogu.” Dołącz do wspólnej modlitwy! 🕊️✨",
+                amenCount: 245,
+                sharesCount: 64
+            },
+            {
+                id: "short_alleluja_wear",
+                title: "Noś swoją wiarę z godnością i odwagą! Kolekcja Alleluja 👑🕊️",
+                author: "Sklep Christian Culture",
+                authorSlug: "radiocc",
+                authorAvatar: "logo_christian_culture_small.png",
+                authorBadge: "🛒 Sklep Misyjny",
+                videoType: "mp4",
+                videoSrc: "reklama_sklep_alleluja.mp4",
+                poster: "reklama_sklep_alleluja_poster.jpg",
+                verseRef: "List do Rzymian 1, 16",
+                verseBook: "ROM",
+                verseChapter: 1,
+                verseUrl: "/mojabiblia?book=ROM&ch=1&mode=reader",
+                audioTitle: "Alleluja • Pieśń Zwycięstwa CC",
+                description: "„Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Bożą ku zbawieniu.” Oficjalna kolekcja odzieży i gadżetów Christian Culture. ✨👕",
+                amenCount: 189,
+                sharesCount: 42
+            },
+            {
+                id: "short_swiadectwo_robert",
+                title: "Z więzienia do nowego życia z Bogiem – Świadectwo Roberta ⛓️➡️🕊️",
+                author: "Świadectwa Wiary CC",
+                authorSlug: "radiocc",
+                authorAvatar: "avatar_robert.jpg",
+                authorBadge: "✨ Świadectwo",
+                videoType: "youtube",
+                videoSrc: "90h-jZq_tUo",
+                poster: "tlo_tv_dzj.jpg",
+                verseRef: "2 Koryntian 5, 17",
+                verseBook: "2CO",
+                verseChapter: 5,
+                verseUrl: "/mojabiblia?book=2CO&ch=5&mode=reader",
+                audioTitle: "Nowe Stworzenie • Muzyka Uwielbienia",
+                description: "„Jeśli więc ktoś jest w Chrystusie, nowym jest stworzeniem. To, co dawne, minęło, oto wszystko stało się nowe!” 📖🌿",
+                amenCount: 421,
+                sharesCount: 115
+            },
+            {
+                id: "short_slowo_zycia_jan",
+                title: "Na początku było Słowo, a Słowo było u Boga! 📖✨",
+                author: "Cezary Rogowski",
+                authorSlug: "cezaryrgowski",
+                authorAvatar: "avatar_cezary_official.jpg",
+                authorBadge: "Założyciel CC ✨",
+                videoType: "youtube",
+                videoSrc: "tGmHYArka0k",
+                poster: "tlo_profilowe_cezary.jpg",
+                verseRef: "Ew. Jana 1, 1-5",
+                verseBook: "JHN",
+                verseChapter: 1,
+                verseUrl: "/mojabiblia?book=JHN&ch=1&mode=reader",
+                audioTitle: "Święte Słowo • Biblia Audio CC",
+                description: "„A światłość świeci w ciemności, a ciemność jej nie ogarnęła.” Poznaj głębię oryginalnego tekstu greckiego w MojejBiblii. 💡🕊️",
+                amenCount: 567,
+                sharesCount: 178
+            }
+        ];
+
+        let shortsData = [];
+        let isGlobalMuted = true;
+        let activeSlideIndex = 0;
+        let observer = null;
+
+        // ── Toast Helper ──
+        function showShortsToast(msg) {
+            const toast = document.getElementById('shortsToast');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2600);
+        }
+
+        // ── Global Mute / Unmute ──
+        window.toggleGlobalMute = function() {
+            isGlobalMuted = !isGlobalMuted;
+            const icon = document.getElementById('globalMuteIcon');
+            if (icon) {
+                icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+                icon.style.color = isGlobalMuted ? '#fff' : '#facc15';
+            }
+
+            // Apply to all HTML5 video elements
+            document.querySelectorAll('.short-slide video').forEach(v => {
+                v.muted = isGlobalMuted;
+            });
+
+            showShortsToast(isGlobalMuted ? '🔇 Wyciszono dźwięk' : '🔊 Dźwięk włączony');
+        };
+
+        // ── Amen Reaction ──
+        window.toggleAmen = function(shortId, btnEl, labelId) {
+            const isLiked = localStorage.getItem('lumina_amen_' + shortId) === '1';
+            const labelEl = document.getElementById(labelId);
+            let count = parseInt(labelEl.getAttribute('data-count') || '0', 10);
+
+            if (!isLiked) {
+                localStorage.setItem('lumina_amen_' + shortId, '1');
+                count += 1;
+                btnEl.classList.add('amen-active');
+                showShortsToast('🕊️ Amen! Chwała Bogu!');
+            } else {
+                localStorage.removeItem('lumina_amen_' + shortId);
+                count = Math.max(0, count - 1);
+                btnEl.classList.remove('amen-active');
+            }
+
+            labelEl.setAttribute('data-count', count);
+            labelEl.textContent = count;
+        };
+
+        // ── Share WhatsApp / System ──
+        window.shareShort = function(shortId, title, verse) {
+            const shareUrl = `https://polskieradio.cc/rolki#${shortId}`;
+            const text = `🕊️ Zobacz tę inspirującą rolkę w portalu LUMINA: „${title}” (${verse}) ➡️ ${shareUrl}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: text,
+                    url: shareUrl
+                }).catch(() => {});
+            } else {
+                const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+                window.open(waUrl, '_blank');
+            }
+            showShortsToast('📲 Udostępnij rolkę braciom i siostrom!');
+        };
+
+        // ── Tap to Play/Pause ──
+        window.handleSlideTap = function(slideEl) {
+            const video = slideEl.querySelector('video');
+            const indicator = slideEl.querySelector('.play-indicator-overlay');
+            if (!video) return;
+
+            if (video.paused) {
+                video.play();
+                if (indicator) {
+                    indicator.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    indicator.classList.add('show');
+                    setTimeout(() => indicator.classList.remove('show'), 500);
+                }
+            } else {
+                video.pause();
+                if (indicator) {
+                    indicator.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    indicator.classList.add('show');
+                    setTimeout(() => indicator.classList.remove('show'), 500);
+                }
+            }
+        };
+
+        // ── Render Slides ──
+        function renderSlides(items) {
+            const container = document.getElementById('shortsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const isAmen = localStorage.getItem('lumina_amen_' + item.id) === '1';
+                const amenDisplay = isAmen ? item.amenCount + 1 : item.amenCount;
+
+                const slide = document.createElement('div');
+                slide.className = 'short-slide';
+                slide.id = item.id;
+                slide.setAttribute('data-index', index);
+
+                let mediaHtml = '';
+                if (item.videoType === 'mp4') {
+                    mediaHtml = `
+                        <video playsinline loop preload="metadata" muted poster="${item.poster}">
+                            <source src="${item.videoSrc}" type="video/mp4">
+                        </video>
+                    `;
+                } else if (item.videoType === 'youtube') {
+                    mediaHtml = `
+                        <iframe src="https://www.youtube.com/embed/${item.videoSrc}?autoplay=0&mute=1&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
+                                title="${item.title}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
+                    `;
+                }
+
+                slide.innerHTML = `
+                    <div class="video-container">
+                        ${mediaHtml}
+                    </div>
+
+                    <div class="tap-detector" onclick="handleSlideTap(this.closest('.short-slide'))"></div>
+                    <div class="play-indicator-overlay"><i class="fa-solid fa-play"></i></div>
+                    <div class="slide-gradient-overlay"></div>
+
+                    <!-- Right Action Sidebar -->
+                    <div class="action-sidebar">
+                        <!-- Author Avatar -->
+                        <div class="avatar-action-wrapper" onclick="window.location.href='/lumina/${item.authorSlug}'" title="Otwórz profil: ${item.author}">
+                            <img src="${item.authorAvatar}" alt="${item.author}" class="avatar-circle-img" onerror="this.src='avatar_cezary_official.jpg'">
+                            <div class="avatar-plus-icon"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+
+                        <!-- Amen Button -->
+                        <div class="action-btn-wrapper">
+                            <button type="button" 
+                                    class="action-circle-btn ${isAmen ? 'amen-active' : ''}" 
+                                    onclick="toggleAmen('${item.id}', this, 'amenCount_${item.id}')" 
+                                    title="Powiedz Amen! (Polubienie)"
+                                    aria-label="Amen">
+                                <i class="fa-solid fa-hands-praying"></i>
+                            </button>
+                            <span class="action-label" id="amenCount_${item.id}" data-count="${amenDisplay}">${amenDisplay}</span>
+                        </div>
+
+                        <!-- WhatsApp Share -->
+                        <div class="action-btn-wrapper">
+                            <button type="button" 
+                                    class="action-circle-btn whatsapp-btn" 
+                                    onclick="shareShort('${item.id}', '${item.title.replace(/'/g, "\\'")}', '${item.verseRef}')" 
+                                    title="Udostępnij na WhatsApp"
+                                    aria-label="Udostępnij">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </button>
+                            <span class="action-label">${item.sharesCount}</span>
+                        </div>
+
+                        <!-- Read Bible Verse -->
+                        <div class="action-btn-wrapper">
+                            <a href="${item.verseUrl}" 
+                               class="action-circle-btn bible-btn" 
+                               title="Przeczytaj werset w MojejBiblii"
+                               aria-label="Pismo Święte">
+                                <i class="fa-solid fa-book-bible"></i>
+                            </a>
+                            <span class="action-label">Biblia</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Info Overlay -->
+                    <div class="slide-info-box">
+                        <div class="author-tag-row">
+                            <a href="/lumina/${item.authorSlug}" class="author-name">
+                                <span>@${item.author}</span>
+                                <i class="fa-solid fa-circle-check" style="color:var(--gold); font-size:0.85rem;"></i>
+                            </a>
+                            <span class="author-badge">${item.authorBadge || 'Społeczność'}</span>
+                        </div>
+
+                        <div class="short-title-text" title="${item.title}">${item.title}</div>
+
+                        <a href="${item.verseUrl}" class="verse-pill-btn" title="Kliknij, aby otworzyć rozdział w MojejBiblii">
+                            <i class="fa-solid fa-bookmark"></i>
+                            <span>${item.verseRef}</span>
+                            <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
+                        </a>
+
+                        <div class="sound-ticker-row">
+                            <i class="fa-solid fa-music"></i>
+                            <div class="sound-text-marquee">${item.audioTitle || 'Christian Culture Worship'}</div>
+                        </div>
+                    </div>
+
+                    <!-- Spinning Vinyl -->
+                    <div class="vinyl-disc" title="Dźwięk: ${item.audioTitle || 'CC Music'}"></div>
+                `;
+
+                container.appendChild(slide);
+            });
+
+            setupIntersectionObserver();
+        }
+
+        // ── Auto-Play on Scroll Snap ──
+        function setupIntersectionObserver() {
+            if (observer) observer.disconnect();
+
+            const options = {
+                root: document.getElementById('shortsContainer'),
+                threshold: 0.6
+            };
+
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const slide = entry.target;
+                    const video = slide.querySelector('video');
+                    const iframe = slide.querySelector('iframe');
+                    const index = parseInt(slide.getAttribute('data-index') || '0', 10);
+
+                    if (entry.isIntersecting) {
+                        activeSlideIndex = index;
+                        updateProgress();
+
+                        // Play HTML5 Video
+                        if (video) {
+                            video.muted = isGlobalMuted;
+                            video.play().catch(() => {});
+                            video.ontimeupdate = updateVideoProgress;
+                        }
+
+                        // Activate YouTube Iframe Autoplay
+                        if (iframe) {
+                            const currentSrc = iframe.getAttribute('src');
+                            if (currentSrc && !currentSrc.includes('autoplay=1')) {
+                                iframe.setAttribute('src', currentSrc.replace('autoplay=0', 'autoplay=1'));
+                            }
+                        }
+                    } else {
+                        // Pause HTML5 Video
+                        if (video) {
+                            video.pause();
+                            video.currentTime = 0;
+                        }
+
+                        // Pause YouTube Iframe
+                        if (iframe) {
+                            const currentSrc = iframe.getAttribute('src');
+                            if (currentSrc && currentSrc.includes('autoplay=1')) {
+                                iframe.setAttribute('src', currentSrc.replace('autoplay=1', 'autoplay=0'));
+                            }
+                        }
+                    }
+                });
+            }, options);
+
+            document.querySelectorAll('.short-slide').forEach(slide => observer.observe(slide));
+        }
+
+        function updateVideoProgress(e) {
+            const video = e.target;
+            if (!video.duration) return;
+            const pct = (video.currentTime / video.duration) * 100;
+            const bar = document.getElementById('shortsProgressFill');
+            if (bar) bar.style.width = pct + '%';
+        }
+
+        function updateProgress() {
+            const total = shortsData.length || 1;
+            const pct = ((activeSlideIndex + 1) / total) * 100;
+            const bar = document.getElementById('shortsProgressFill');
+            if (bar) bar.style.width = pct + '%';
+        }
+
+        // ── Keyboard Arrows Support ──
+        window.addEventListener('keydown', (e) => {
+            const container = document.getElementById('shortsContainer');
+            if (!container) return;
+
+            const slideHeight = container.clientHeight;
+            if (e.key === 'ArrowDown' || e.key === 'j') {
+                e.preventDefault();
+                container.scrollBy({ top: slideHeight, behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp' || e.key === 'k') {
+                e.preventDefault();
+                container.scrollBy({ top: -slideHeight, behavior: 'smooth' });
+            } else if (e.key === 'm') {
+                toggleGlobalMute();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                const activeSlide = document.querySelectorAll('.short-slide')[activeSlideIndex];
+                if (activeSlide) handleSlideTap(activeSlide);
+            }
+        });
+
+        // ── Load Data ──
+        async function loadShortsFeed() {
+            try {
+                const res = await fetch('data/shorts/shorts_feed.json?v=' + Date.now());
+                if (res.ok) {
+                    shortsData = await res.json();
+                } else {
+                    shortsData = FALLBACK_SHORTS;
+                }
+            } catch (err) {
+                shortsData = FALLBACK_SHORTS;
+            }
+
+            renderSlides(shortsData);
+
+            // If URL hash contains specific short ID, jump to it
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                setTimeout(() => {
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+                }, 400);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadShortsFeed);
+    </script>
+</body>
+</html>
