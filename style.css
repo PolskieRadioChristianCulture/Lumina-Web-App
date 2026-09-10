@@ -3321,18 +3321,18 @@ html {
 }
 
 .shortcuts-blocks-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
 }
 
 .shortcut-block {
-    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.14);
     border-radius: 14px;
     padding: 8px;
     opacity: 0;
@@ -3343,25 +3343,31 @@ html {
 #actionsList.open .shortcut-block.block-1 {
     opacity: 1;
     transform: translateY(0) scale(1);
-    transition-delay: 0.2s;
+    transition-delay: 0.12s;
 }
 
 #actionsList.open .shortcut-block.block-2 {
     opacity: 1;
     transform: translateY(0) scale(1);
-    transition-delay: 0.4s;
+    transition-delay: 0.22s;
 }
 
-@media (max-width: 768px) {
+#actionsList.open .shortcut-block.block-3 {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.32s;
+}
+
+@media (max-width: 900px) {
     #actionsList {
-        width: min(340px, calc(100vw - 20px)) !important;
+        width: min(360px, calc(100vw - 20px)) !important;
         right: -6px !important;
         max-height: calc(100vh - 75px) !important;
         max-height: calc(100dvh - 75px) !important;
         padding: 12px 10px !important;
     }
     .shortcuts-blocks-container {
-        flex-direction: column !important;
+        grid-template-columns: 1fr !important;
         gap: 8px !important;
     }
 }

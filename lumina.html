@@ -575,9 +575,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 420px;
+            min-height: 240px;
             background-color: #0b1838;
-            padding: 45px 20px 35px;
+            padding: 24px 20px 18px;
         }
 
         /* Pełnowymiarowa, czysta grafika tła - twarze w 100% widoczne bez zniekształceń i bez różnic kolorów */
@@ -675,10 +675,10 @@
             color: #7dd3fc;
         }
 
-        /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (MAKIETA 3) ══════════ */
+        /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (SLIM RIBBON) ══════════ */
         .devotional-banner-section {
             max-width: 1100px;
-            margin: 14px auto 20px;
+            margin: 8px auto 12px;
             padding: 0 16px;
             position: relative;
             z-index: 10;
@@ -687,13 +687,13 @@
         .devotional-glass-card {
             background: rgba(15, 23, 42, 0.88);
             border: 1px solid rgba(250, 204, 21, 0.28);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.08);
-            border-radius: 18px;
-            padding: 14px 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(250, 204, 21, 0.06);
+            border-radius: 12px;
+            padding: 7px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 10px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
@@ -701,49 +701,54 @@
         .devotional-card-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             flex: 1;
             min-width: 0;
         }
 
         .devotional-icon-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .devotional-icon-box i {
-            color: #fff;
-            font-size: 1.2rem;
+            color: #000;
+            font-size: 0.85rem;
         }
 
         .devotional-text-box {
             flex: 1;
             min-width: 0;
-        }
-
-        .devotional-meta {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 3px;
+            flex-wrap: nowrap;
+            overflow: hidden;
+        }
+
+        .devotional-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .devotional-tag {
             background: rgba(250, 204, 21, 0.18);
             border: 1px solid rgba(250, 204, 21, 0.45);
             color: #facc15;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 6px;
+            padding: 1px 6px;
+            border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
             display: inline-flex;
@@ -753,48 +758,42 @@
 
         .devotional-date {
             color: #94a3b8;
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .devotional-title {
-            font-size: 0.95rem;
-            font-weight: 800;
+            font-size: 0.82rem;
+            font-weight: 700;
             color: #fff;
-            margin: 0 0 2px;
-            line-height: 1.3;
+            margin: 0;
+            line-height: 1.25;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .devotional-snippet {
-            font-size: 0.78rem;
-            color: #cbd5e1;
-            margin: 0;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            display: none !important;
         }
 
         .devotional-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
         .btn-devotional-read {
-            padding: 9px 16px;
-            border-radius: 12px;
+            padding: 5px 12px;
+            border-radius: 8px;
             background: linear-gradient(135deg, #f59e0b, #ec4899);
             border: none;
             color: #fff;
             font-weight: 800;
             font-family: inherit;
-            font-size: 0.80rem;
+            font-size: 0.74rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -803,67 +802,64 @@
             transition: transform 0.2s;
             white-space: nowrap;
         }
+        .btn-devotional-read:hover {
+            transform: translateY(-1px);
+        }
 
         .btn-devotional-feed {
-            padding: 9px 14px;
-            border-radius: 12px;
+            padding: 5px 10px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.16);
             color: #38bdf8;
             font-weight: 700;
             font-family: inherit;
-            font-size: 0.80rem;
+            font-size: 0.74rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: background 0.2s;
+            gap: 5px;
             white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .btn-devotional-feed:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
         }
 
         @media (max-width: 768px) {
             .devotional-banner-section {
-                margin: 8px auto 16px;
-                padding: 0 12px;
+                margin: 6px auto 12px;
+                padding: 0 10px;
             }
             .devotional-glass-card {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 12px 14px;
-                gap: 10px;
-                border-radius: 16px;
-            }
-            .devotional-card-left {
-                gap: 10px;
-            }
-            .devotional-icon-box {
-                width: 36px;
-                height: 36px;
+                padding: 6px 10px;
+                gap: 8px;
                 border-radius: 10px;
             }
-            .devotional-icon-box i {
-                font-size: 1rem;
-            }
-            .devotional-title {
-                font-size: 0.86rem;
-                white-space: normal;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-            }
-            .devotional-snippet {
-                display: none;
-            }
-            .devotional-actions {
-                width: 100%;
-                display: flex;
+            .devotional-card-left {
                 gap: 8px;
             }
-            .btn-devotional-read, .btn-devotional-feed {
-                flex: 1;
-                justify-content: center;
-                padding: 8px 10px;
-                font-size: 0.76rem;
+            .devotional-icon-box {
+                width: 26px;
+                height: 26px;
+                border-radius: 6px;
+            }
+            .devotional-icon-box i {
+                font-size: 0.75rem;
+            }
+            .devotional-date {
+                display: none;
+            }
+            .devotional-title {
+                font-size: 0.78rem;
+            }
+            .btn-devotional-feed {
+                display: none;
+            }
+            .btn-devotional-read {
+                padding: 4px 10px;
+                font-size: 0.70rem;
             }
         }
 
@@ -897,18 +893,18 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: clamp(1.5rem, 5.5vw, 1.95rem); line-height: 1.25; margin-bottom: 10px; }
-            .hero-subtitle { font-size: 0.9rem; line-height: 1.45; margin-bottom: 18px; }
-            .hero-section { min-height: 390px; padding: 35px 14px 16px; }
-            .hero-content { padding: 8px 10px 0; max-width: 100%; }
+            .hero-title { font-size: clamp(1.3rem, 5vw, 1.7rem); line-height: 1.25; margin-bottom: 6px; }
+            .hero-subtitle { font-size: 0.82rem; line-height: 1.4; margin-bottom: 10px; }
+            .hero-section { min-height: 220px; padding: 20px 14px 14px; }
+            .hero-content { padding: 4px 8px 0; max-width: 100%; }
             .hero-break { display: none; }
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 1.45rem; line-height: 1.24; }
-            .hero-subtitle { font-size: 0.84rem; }
-            .hero-section { min-height: 360px; padding: 25px 10px 14px; }
-            .hero-pill-badge { font-size: 0.72rem; padding: 4px 10px; margin-bottom: 10px; }
+            .hero-title { font-size: 1.25rem; line-height: 1.22; }
+            .hero-subtitle { font-size: 0.78rem; }
+            .hero-section { min-height: 200px; padding: 16px 10px 12px; }
+            .hero-pill-badge { font-size: 0.68rem; padding: 3px 8px; margin-bottom: 8px; }
         }
 
         .btn-hero-main {
@@ -1367,16 +1363,21 @@
             overflow: visible;
         }
 
-        /* Hover on Hero, Click/Tap on Background or Active Focus reveals search bar smoothly */
-        .hero-section:hover .universal-search-container,
+        /* Explicit reveal when search is triggered or focused (No hover jumps) */
         .hero-section.search-active .universal-search-container,
         .universal-search-container.is-visible,
         .universal-search-container:focus-within {
             opacity: 1;
-            max-height: 140px;
-            margin-top: 18px;
+            max-height: 80px;
+            margin-top: 10px;
             transform: translateY(0) scale(1);
             pointer-events: auto;
+        }
+
+        .hero-section.search-active #heroSearchTriggerRow,
+        .hero-section:has(.universal-search-container.is-visible) #heroSearchTriggerRow,
+        .hero-section:has(.universal-search-container:focus-within) #heroSearchTriggerRow {
+            display: none !important;
         }
 
         .search-input-wrapper {
@@ -3946,6 +3947,11 @@
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px; font-size:0.95rem;"></i>
             </button>
 
+            <!-- 1.5. Przycisk wyszukiwarki portalu (Layer 2) -->
+            <button type="button" class="nav-circle-btn" id="navSearchToggleBtn" onclick="toggleHeroSearch(event)" data-i18n-title="nav.searchTitle" title="Szukaj w portalu LUMINA" style="width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.06); border:1.5px solid rgba(168,85,247,0.4); color:#c084fc; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;" onmouseover="this.style.background='rgba(168,85,247,0.15)'; this.style.borderColor='#c084fc';" onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(168,85,247,0.4)';">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:0.95rem;"></i>
+            </button>
+
             <!-- 2. Menu Nawigacji LUMINA (Wysuwany Drawer) -->
             <div class="nav-menu-wrapper" style="position:relative; display:inline-flex; align-items:center; flex-shrink:0;">
                 <button type="button" 
@@ -4025,16 +4031,25 @@
         <div class="hero-overlay" id="heroOverlay"></div>
         <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
-                <div style="margin-bottom: 10px;">
-                    <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 10px rgba(250, 204, 21, 0.3); display: inline-block;">
+                <div style="margin-bottom: 8px;">
+                    <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 16px rgba(168, 85, 247, 0.4), 0 0 8px rgba(250, 204, 21, 0.3); display: inline-block;">
                 </div>
-                <div class="hero-pill-badge">
+                <div class="hero-pill-badge" style="margin-bottom: 6px; padding: 3px 10px; font-size: 0.72rem;">
                     <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> <span data-i18n="hero_badge">Chrześcijańska Społeczność Relacji & Wartości</span>
                 </div>
-                <h1 class="hero-title" data-i18n="hero_title">LUMINA • Chrześcijańska Sieć Relacji</h1>
-                <p class="hero-subtitle" data-i18n="hero_subtitle">
-                    Poznaj ludzi, którzy chcą budować relacje oparte na wierze i wartościach.<br class="hero-break">Głębokie rozmowy • Świadectwa • Modlitwa • Małżeństwo
+                <h1 class="hero-title" data-i18n="hero_title" style="margin-bottom: 4px;">LUMINA • Chrześcijańska Sieć Relacji</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle" style="margin-bottom: 10px; font-size: 0.82rem; line-height: 1.35; max-width: 620px;">
+                    Poznaj ludzi, którzy budują relacje oparte na wierze i wartościach • Świadectwa • Modlitwa
                 </p>
+
+                <!-- Search trigger pill button -->
+                <div id="heroSearchTriggerRow" style="display: flex; justify-content: center;">
+                    <button type="button" class="hero-search-pill-btn" onclick="toggleHeroSearch(event, true)" title="Otwórz wyszukiwarkę LUMINA" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(250,204,21,0.35); color: rgba(255,255,255,0.9); font-size: 0.78rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.25s ease;" onmouseover="this.style.background='rgba(255,255,255,0.16)'; this.style.borderColor='#facc15';" onmouseout="this.style.background='rgba(255,255,255,0.08)'; this.style.borderColor='rgba(250,204,21,0.35)';">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #facc15; font-size: 0.8rem;"></i>
+                        <span>Szukaj osób, miast, powołań...</span>
+                        <kbd style="font-size: 0.6rem; background: rgba(0,0,0,0.4); color: #cbd5e1; padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">ESC</kbd>
+                    </button>
+                </div>
             </div>
 
             <!-- ══════════ UNIWERSALNA WYSZUKIWARKA PORTALU LUMINA ══════════ -->
@@ -4050,25 +4065,15 @@
 
                 <!-- Dynamic Live Results Dropdown -->
                 <div class="omni-dropdown" id="omniDropdown"></div>
-
-                <!-- Quick Action Shortcuts -->
-                <div class="omni-shortcuts-row">
-                    <button type="button" class="shortcut-chip" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator() : null" style="background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)); border-color: rgba(250,204,21,0.5); color: #fef08a;">
-                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Karta Wersetu Story 9:16 ✨
-                    </button>
-                    <a href="tablica" class="shortcut-chip special-board">
-                        <i class="fa-solid fa-comments"></i> Tablica Społeczności
-                    </a>
-                </div>
             </div>
         </div>
     </header>
 
-    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (FAITH & GROWTH HUB - MAKIETA 3) ══════════ -->
+    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (SLIM RIBBON) ══════════ -->
     <section class="devotional-banner-section" id="todayDevotionalBanner">
         <div class="devotional-glass-card">
             
-            <!-- Left: Icon, Badge, Title & Verse Snippet -->
+            <!-- Left: Icon, Badge, Title -->
             <div class="devotional-card-left">
                 <div class="devotional-icon-box">
                     <i class="fa-solid fa-book-bible"></i>
@@ -4083,7 +4088,7 @@
                     <h3 class="devotional-title" id="devotionalCardTitle">
                         ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
                     </h3>
-                    <p class="devotional-snippet" id="devotionalCardSnippet">
+                    <p class="devotional-snippet" id="devotionalCardSnippet" style="display:none !important;">
                         Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
                     </p>
                 </div>
@@ -4092,9 +4097,9 @@
             <!-- Right: Actions -->
             <div class="devotional-actions">
                 <button type="button" class="btn-devotional-read" onclick="openTodayDevotionalModal()">
-                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj Rozważanie</span>
+                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj</span>
                 </button>
-                <a href="tablica" class="btn-devotional-feed">
+                <a href="tablica" class="btn-devotional-feed" title="Tablica Społeczności">
                     <i class="fa-solid fa-rectangle-list"></i> <span data-i18n="btn_board">Tablica</span>
                 </a>
             </div>
@@ -4122,24 +4127,7 @@
                     </div>
                 </div>
 
-                <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC - CENTRUM NA START) -->
-                <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
-                    <div class="card-photo">
-                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
-                            <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
-                            <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
-                        </video>
-                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
-                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        
-                        <!-- Pulsujący Przycisk do Sklepu -->
-                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
-                        </a>
-                    </div>
-                </div>
+
 
                 <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
                     <div class="card-photo">
@@ -4220,23 +4208,7 @@
                     </div>
                 </div>
 
-                <!-- ✨ REKLAMA WIDEO 2: Sklep Christian Culture (Filipian 4:13 - Wszystko Mogę w Tym, który mnie umacnia) -->
-                <div class="profile-card video-card featured original-promo-card" id="promoAdCard2" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
-                    <div class="card-photo">
-                        <video id="promoVideoEl2" src="Reklama 2 Sklep CC.mp4" autoplay muted loop playsinline preload="auto" poster="reklama_2_sklep_cc_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('reklama_2_sklep_cc_poster.jpg') center top/cover no-repeat;">
-                            <source src="Reklama 2 Sklep CC.mp4" type="video/mp4">
-                        </video>
-                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
-                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        
-                        <!-- Pulsujący Przycisk do Sklepu -->
-                        <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
-                        </a>
-                    </div>
-                </div>
+
 
                 <!-- 7. Dawid (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
@@ -4324,23 +4296,7 @@
                     </div>
                 </div>
 
-                <!-- ✨ REKLAMA WIDEO 3: Dobrze, że jesteś - LIVE TV24 (Christian Culture TV Na Żywo) -->
-                <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
-                    <div class="card-photo">
-                        <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
-                            <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
-                        </video>
-                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
-                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        
-                        <!-- Pulsujący Przycisk do LIVE TV24 -->
-                        <a href="https://polskieradio.cc/master" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse" style="background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6);">
-                            <i class="fa-solid fa-tv"></i> OGLĄDAJ LIVE TV24 ➜
-                        </a>
-                    </div>
-                </div>
+
 
                 <!-- 11b. Jola Wójcik (Biblijny Czas Modlitwy • Polskie Radio CC) -->
                 <div class="profile-card" id="card_profile_jolawojcik" data-profile-slug="jolawojcik" onclick="openCommunityProfile('jolawojcik')" data-category="kobieta misja" style="cursor:pointer;">
@@ -4622,6 +4578,30 @@
                 <i class="fa-solid fa-paper-plane"></i>
                 <span class="filter-chip-text">Polecaj</span>
             </button>
+        </div>
+    </section>
+
+    <!-- ══════════ DEDICATED MISSION & SHOP SHELF (LUMINA LAYER 2) ══════════ -->
+    <section class="lumina-mission-shelf" id="luminaMissionShelf" style="max-width: 1100px; margin: 20px auto 26px; padding: 0 16px;">
+        <div class="mission-shelf-card" style="background: linear-gradient(135deg, rgba(20, 24, 40, 0.88), rgba(10, 13, 24, 0.95)); border: 1.5px solid rgba(212, 175, 55, 0.35); border-radius: 18px; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="display: flex; align-items: center; gap: 14px; flex: 1; min-width: 260px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #d4af37, #aa820a); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(212,175,55,0.4);">
+                    <i class="fa-solid fa-bag-shopping" style="color: #000; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 3px;">
+                        <span style="font-size: 0.62rem; font-weight: 800; background: rgba(212,175,55,0.2); color: #fbbf24; border: 1px solid rgba(212,175,55,0.4); padding: 1px 7px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Oficjalny Sklep Misji</span>
+                        <span style="font-size: 0.70rem; color: rgba(255,255,255,0.6);">Wsparcie Ewangelizacji</span>
+                    </div>
+                    <h3 style="font-size: 0.98rem; font-weight: 800; color: #fff; margin: 0; font-family: 'Cinzel', serif;">Kolekcja Christian Culture & Słowo Boże</h3>
+                    <p style="font-size: 0.76rem; color: rgba(255,255,255,0.7); margin: 3px 0 0 0; line-height: 1.3;">Każdy zakup wspiera rozwój portalu LUMINA, radia oraz bezpłatnych aplikacji chrześcijańskich.</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" class="btn-mission-shop" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 10px; background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; font-weight: 800; font-size: 0.82rem; text-decoration: none; box-shadow: 0 4px 14px rgba(212,175,55,0.35); transition: transform 0.2s, box-shadow 0.2s;">
+                    <i class="fa-solid fa-cart-shopping"></i> Otwórz Sklep CC ➜
+                </a>
+            </div>
         </div>
     </section>
 

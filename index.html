@@ -692,228 +692,242 @@
                         </div>
                     </button>
                     
-                    <!-- Vertical Dropdown Shortcuts Panel (2-Block Cascading Grid) -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 540px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
+                    <!-- Vertical Dropdown Shortcuts Panel (3-Section Cohesive Grid) -->
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 740px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: rgba(10, 12, 22, 0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
                         <!-- Header inside shortcuts panel -->
-                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.45); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif; text-align: left;">
-                            <i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture
+                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Cinzel', serif; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture</span>
+                            <span style="font-size: 0.58rem; color: var(--gold-light); font-weight: 600; text-transform: none; letter-spacing: 0.5px;">3 Sekcje Ekosystemu</span>
                         </div>
 
-                        <!-- 2 Equal Cascading Blocks Side-By-Side -->
+                        <!-- 3 Equal Cascading Blocks Side-By-Side -->
                         <div class="shortcuts-blocks-container">
-                            <!-- BLOCK 1: GŁÓWNE NARZĘDZIA & MEDIA -->
+                            <!-- SEKCJA 1: STACJE & MEDIA LIVE -->
                             <div class="shortcut-block block-1">
-                                <div style="font-size: 0.6rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Montserrat', sans-serif;">Główne Media</div>
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-tower-broadcast" style="font-size: 0.72rem;"></i> Stacje & Media LIVE
+                                </div>
 
-                                <!-- Shortcut: MojaBiblia (Interlinearna Biblia Badawcza) -->
-                                <a href="https://polskieradio.cc/mojabiblia" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.22)';" onmouseout="this.style.background='rgba(212,175,55,0.12)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);">
-                                        <i class="fa-solid fa-book-bible" style="color: #000; font-size: 0.88rem;"></i>
+                                <!-- Shortcut: PLAYER -->
+                                <a href="https://polskieradio.cc/player" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(212,175,55,0.15)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">MojaBiblia</span>
-                                            <span style="font-size: 0.55rem; background: rgba(212, 175, 55, 0.25); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.5); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">INTERLINEARNA</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">PLAYER CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
                                         </div>
-                                        <span style="font-size: 0.6rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Greka • Hebrajski • Kody Stronga</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Radio Biblia • Audycje</span>
                                     </div>
                                 </a>
 
-                                <!-- Shortcut: PLAYER (Biblijna Platforma Medialna / Odtwarzacz Audio) -->
-                                <a href="https://polskieradio.cc/player" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.28);" onmouseover="this.style.background='rgba(16, 185, 129, 0.2)';" onmouseout="this.style.background='rgba(16, 185, 129, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #10b981, #059669); flex-shrink: 0; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);">
-                                        <i class="fa-solid fa-circle-play" style="color: #fff; font-size: 0.95rem;"></i>
+                                <!-- Shortcut: Smart TV CC -->
+                                <a href="tv" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">PLAYER</span>
-                                            <span style="font-size: 0.55rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Smart TV CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
                                         </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Radio Biblia • Audycje • Muzyka</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Program TV 24/7 -->
-                                <a href="program.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25);" onmouseover="this.style.background='rgba(212,175,55,0.18)';" onmouseout="this.style.background='rgba(212,175,55,0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0;">
-                                        <i class="fa-solid fa-calendar-days" style="color: #000; font-size: 0.88rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
-                                        <span style="font-size: 0.6rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Dziś • Tydzień • Miesiąc</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Smart TV CC (Telewizja & Pilot) -->
-                                <a href="tv" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.28);" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)';" onmouseout="this.style.background='rgba(59, 130, 246, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3b82f6, #1d4ed8); flex-shrink: 0; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);">
-                                        <i class="fa-solid fa-tv" style="color: #fff; font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Smart TV CC</span>
-                                            <span style="font-size: 0.55rem; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PILOT & 6 STACJI</span>
-                                        </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Dedykowany ekran na telewizor</span>
-                                    </div>
-                                </a>
-                                
-                                <!-- Shortcut: Helpline Nadzieja CC -->
-                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 10px; text-decoration: none; transition: background 0.2s, box-shadow 0.3s; background: rgba(245, 197, 24, 0.07); border: 1px solid rgba(245,197,24,0.25); animation: helpline-pulse-drawer 2s infinite alternate;" onmouseover="this.style.background='rgba(245,197,24,0.16)'; this.style.borderColor='rgba(245,197,24,0.6)';" onmouseout="this.style.background='rgba(245,197,24,0.07)'; this.style.borderColor='rgba(245,197,24,0.25)';">
-                                    <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5c518, #e6a817); flex-shrink: 0; box-shadow: 0 0 10px rgba(245,197,24,0.4);">
-                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.9rem; animation: phone-bounce-drawer 1.4s infinite alternate;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.58rem; font-weight: 700; color: rgba(245,197,24,0.9); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja CC</span>
-                                        <span style="font-size: 0.9rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Dobrze, że jesteś -->
-                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Aplikacja Webowa CC -->
-                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(245,197,24,0.2), rgba(217,119,6,0.2)); border: 1.5px solid var(--border-gold-low); flex-shrink: 0; box-shadow: 0 2px 8px rgba(245,197,24,0.15);">
-                                        <i class="fa-solid fa-cross" style="color: var(--gold-primary); font-size: 0.92rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ekran telewizora & pilot</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: VOD Christian Culture -->
-                                <a href="vod" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25);" onmouseover="this.style.background='rgba(239, 68, 68, 0.18)';" onmouseout="this.style.background='rgba(239, 68, 68, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ef4444, #b91c1c); flex-shrink: 0; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);">
-                                        <i class="fa-solid fa-clapperboard" style="color: #fff; font-size: 0.85rem;"></i>
+                                <a href="vod" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-clapperboard" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">VOD Christian Culture</span>
-                                            <span style="font-size: 0.55rem; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">VOD CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
                                         </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Filmy i seanse z wartościami</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Filmy z wartościami</span>
                                     </div>
                                 </a>
 
-                                <!-- Shortcut: LUMINA -->
-                                <a href="lumina" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(157, 78, 221, 0.15)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(236,72,153,0.25)); border: 1.5px solid rgba(168,85,247,0.5); flex-shrink: 0; box-shadow: 0 2px 8px rgba(168,85,247,0.35);">
-                                        <i class="fa-solid fa-heart" style="color: #ec4899; font-size: 0.88rem;"></i>
+                                <!-- Shortcut: Program TV 24/7 -->
+                                <a href="program.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-calendar-days" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                             <span style="font-size: 0.8rem; font-weight: 700; color: #c084fc; font-family: 'Outfit', sans-serif;">LUMINA</span>
-                                             <span style="font-size: 0.55rem; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">WCZESNY DOSTĘP</span>
-                                        </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Portal dla Singli (Otwórz)</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Dziś • Tydzień</span>
                                     </div>
                                 </a>
 
-
-                                <!-- Shortcut: Herbatka między słowami -->
-                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(38, 166, 154, 0.12)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(38, 166, 154, 0.08); border: 1px solid rgba(38, 166, 154, 0.25); flex-shrink: 0;">
-                                        <i class="fa-solid fa-mug-hot" style="color: #26a69a; font-size: 0.88rem;"></i>
+                                <!-- Shortcut: Nadawaj z nami (OBS) -->
+                                <a href="nadawaj" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-signal" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
                                     </div>
                                 </a>
                             </div>
 
-                            <!-- BLOCK 2: ZASOBY, MODLITWA & OBS -->
+                            <!-- SEKCJA 2: SŁOWO & DUCHOWOŚĆ -->
                             <div class="shortcut-block block-2">
-                                <div style="font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Montserrat', sans-serif;">Zasoby & Usługi</div>
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-book-bible" style="font-size: 0.72rem;"></i> Słowo & Duchowość
+                                </div>
+
+                                <!-- Shortcut: MojaBiblia -->
+                                <a href="https://polskieradio.cc/mojabiblia" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.18)'; this.style.borderColor='rgba(212,175,55,0.5)';" onmouseout="this.style.background='rgba(212,175,55,0.08)'; this.style.borderColor='rgba(212,175,55,0.3)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 2px 6px rgba(212, 175, 55, 0.35);">
+                                        <i class="fa-solid fa-book-bible" style="color: #000; font-size: 0.82rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">MojaBiblia</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.25); color: #fbbf24; border: 1px solid rgba(212,175,55,0.45); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">INTERLINEARNA</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: var(--gold-light); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Greka • Hebrajski • Strong</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Dobrze, że jesteś -->
+                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
+                                    </div>
+                                </a>
 
                                 <!-- Shortcut: Modlitwa (Zjednoczeni za Polskę) -->
-                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; margin-top: 4px;" onmouseover="this.style.background='rgba(220, 20, 60, 0.12)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(220, 20, 60, 0.15); border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Zjednoczeni za Polskę</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Podstrona modlitewna</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Ściana Modlitwy</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">NARODOWA</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zjednoczeni za Polskę</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: Biblia do pobrania -->
-                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(243, 229, 171, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-book-bible" style="color: #f3e5ab; font-size: 0.88rem;"></i>
+                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-file-arrow-down" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #f3e5ab; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Kreator Kalendarza 2027 -->
-                                <a href="kalendarz2027" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.28);" onmouseover="this.style.background='rgba(245, 158, 11, 0.2)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f59e0b, #b45309); flex-shrink: 0; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);">
-                                        <i class="fa-solid fa-calendar-days" style="color: #000; font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Kreator Kalendarza 2027</span>
-                                            <span style="font-size: 0.55rem; background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">A4 / PDF</span>
-                                        </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Darmowy kalendarz ścienny</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Bank Treści -->
-                                <a href="bank-tresci.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-download" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Bank Treści</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowe materiały</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: SMS Subscriptions -->
-                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zapisz się bezpłatnie</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Słowo Boże na telefon</span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Shortcut: OBS Streaming -->
-                                <a href="nadawaj" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
+                            <!-- SEKCJA 3: SPOŁECZNOŚĆ, MISJA & NARZĘDZIA -->
+                            <div class="shortcut-block block-3">
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-users" style="font-size: 0.72rem;"></i> Społeczność & Narzędzia
+                                </div>
+
+                                <!-- Shortcut: LUMINA -->
+                                <a href="lumina" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Portal LUMINA</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Sieć relacji & wartości</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Helpline Nadzieja CC -->
+                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3);" onmouseover="this.style.background='rgba(212,175,55,0.18)'; this.style.borderColor='rgba(212,175,55,0.6)';" onmouseout="this.style.background='rgba(212,175,55,0.08)'; this.style.borderColor='rgba(212,175,55,0.3)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 0 8px rgba(212,175,55,0.4);">
+                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.55rem; font-weight: 700; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja</span>
+                                        <span style="font-size: 0.78rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Herbatka między słowami -->
+                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-mug-hot" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Kreator Kalendarza 2027 -->
+                                <a href="kalendarz2027" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-calendar-plus" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Kalendarz 2027</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">A4/PDF</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Kreator do druku</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Bank Treści -->
+                                <a href="bank-tresci.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-download" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Bank Treści</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowe materiały</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Aplikacja Webowa CC -->
+                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-mobile-screen" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: Language Toggle -->
-                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-language" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-language" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
-                                        <span id="langToggleText" style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
+                                        <span id="langToggleText" style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
                                     </div>
                                 </div>
                             </div>
@@ -933,45 +947,45 @@
             <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
             <nav class="drawer-nav">
                 <a href="#hero" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
-                <a href="lumina" class="drawer-link" style="color: #c084fc; font-weight: 800; border: 1px solid rgba(192, 132, 252, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(192, 132, 252, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="lumina" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <img src="lumina_icon.jpg" alt="LUMINA" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid #a855f7;">
-                        LUMINA — Portal Randkowy
+                        <img src="lumina_icon.jpg" alt="LUMINA" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-primary);">
+                        LUMINA — Portal Społeczności
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">WCZESNY DOSTĘP</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
                 </a>
-                <a href="vod" class="drawer-link" style="color: #f87171; font-weight: 800; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(239, 68, 68, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="vod" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-film" style="color: #ef4444; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-film" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         VOD CC — Filmy Fabularne
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
                 </a>
-                <a href="https://polskieradio.cc/mojabiblia" class="drawer-link" style="color: #fbbf24; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(245, 158, 11, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="https://polskieradio.cc/mojabiblia" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-book-bible" style="color: #f59e0b; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-book-bible" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         MojaBiblia — Interlinearna Biblia Badawcza
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
                 </a>
-                <a href="https://polskieradio.cc/player" class="drawer-link" style="color: #34d399; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(16, 185, 129, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="https://polskieradio.cc/player" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-circle-play" style="color: #10b981; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         PLAYER — Odtwarzacz Audio CC
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
                 </a>
-                <a href="tv" class="drawer-link" style="color: #60a5fa; font-weight: 800; border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(59, 130, 246, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="tv" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-tv" style="color: #3b82f6; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         Smart TV CC — Telewizja & Pilot
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
                 </a>
-                <a href="modlitwa.html" class="drawer-link" style="color: #ff4d6d; font-weight: 700;"><i class="fa-solid fa-hands-praying"></i> ZJEDNOCZENI ZA POLSKĘ</a>
+                <a href="modlitwa.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-hands-praying"></i> ZJEDNOCZENI ZA POLSKĘ</a>
                 <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
                 <div style="margin: 0.8rem 0 0.25rem 12px; font-size: 0.65rem; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(212, 175, 55, 0.55); font-weight: 700; font-family: 'Cinzel', serif;">Polskie Radio Christian Culture poleca:</div>
-                <a href="herbatka/index.html" class="drawer-link" style="color: #26a69a; font-weight: 700; border: 1px solid rgba(38, 166, 154, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 0.5rem; background: rgba(38, 166, 154, 0.03); transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(38, 166, 154, 0.1)'; this.style.borderColor='#26a69a';" onmouseout="this.style.background='rgba(38, 166, 154, 0.03)'; this.style.borderColor='rgba(38, 166, 154, 0.25)';"><i class="fa-solid fa-mug-hot"></i> Herbatka między słowami</a>
+                <a href="herbatka/index.html" class="drawer-link" style="color: #fff; font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.05); transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(212, 175, 55, 0.12)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.05)'; this.style.borderColor='rgba(212, 175, 55, 0.25)';"><i class="fa-solid fa-mug-hot" style="color: var(--gold-primary);"></i> Herbatka między słowami</a>
                 <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
                 <a href="nadawaj" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
                 <a href="biblia-do-pobrania.html" class="drawer-link" style="color: #f3e5ab; font-weight: 700;"><i class="fa-solid fa-book-bible"></i> Biblia do pobrania</a>
