@@ -3298,12 +3298,12 @@ html {
     }
 }
 
-/* Standard Ekosystemu @SE26/27: Obsidian & Imperial Gold - Dynamiczna Złota Poświata 3D */
+/* Standard Ekosystemu @SE26/27: Obsidian & Imperial Gold - Subtelna Poświata 3D & Klasa */
 #actionsList {
-    background: linear-gradient(165deg, rgba(18, 18, 20, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%) !important;
-    border: none !important;
+    background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.15) !important;
     border-radius: 20px !important;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.25), 0 0 70px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255, 235, 170, 0.2) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.08), inset 0 1px 1px rgba(255, 235, 170, 0.18) !important;
     backdrop-filter: blur(28px) !important;
     -webkit-backdrop-filter: blur(28px) !important;
     max-height: calc(100vh - 85px);
@@ -3562,12 +3562,12 @@ html {
 
 /* ═══════════════════════════════════════════════════════════════
    AKORDEON SEKCJI STRONY GŁÓWNEJ (POLSKIERADIO.CC)
-   Dynamiczna Złota Poświata 3D (Brak twardych ramek) - Standard @SE26/27
+   Subtelna Poświata 3D & Dynamiczny Refleks Światła - Standard @SE26/27
    ═══════════════════════════════════════════════════════════════ */
 
 .collapsible-section {
     position: relative;
-    padding: 12px 0 !important;
+    padding: 8px 0 !important;
     border: none !important;
     border-bottom: none !important;
     border-top: none !important;
@@ -3576,14 +3576,14 @@ html {
 }
 
 .collapsible-section.is-open {
-    padding: 12px 0 50px 0 !important;
+    padding: 8px 0 45px 0 !important;
     background: transparent !important;
 }
 
-/* Przycisk nagłówka akordeonu - Dynamiczna Złota Poświata 3D */
+/* Przycisk nagłówka akordeonu - Klasa, Subtelność i Głębokie 3D */
 .collapsible-trigger-bar {
     width: min(1200px, calc(100% - 32px));
-    margin: 10px auto;
+    margin: 8px auto;
     padding: 16px 24px;
     display: flex;
     align-items: center;
@@ -3591,91 +3591,108 @@ html {
     gap: 16px;
     position: relative;
     z-index: 1;
-    background: linear-gradient(165deg, rgba(20, 20, 22, 0.94) 0%, rgba(10, 10, 12, 0.98) 100%);
-    border: none !important;
-    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(9, 9, 11, 0.99) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.12) !important;
+    border-radius: 18px;
     cursor: pointer;
     text-align: left;
     outline: none;
     box-shadow: 
-        0 12px 35px -5px rgba(0, 0, 0, 0.9),
-        0 0 30px rgba(212, 175, 55, 0.22),
-        0 -8px 35px -6px rgba(212, 175, 55, 0.25),
-        0 8px 35px -6px rgba(212, 175, 55, 0.25),
-        inset 0 1px 1px rgba(255, 235, 170, 0.25);
+        0 10px 30px -4px rgba(0, 0, 0, 0.85),
+        0 0 18px rgba(212, 175, 55, 0.08),
+        0 0 35px rgba(212, 175, 55, 0.04),
+        inset 0 1px 1px rgba(255, 235, 170, 0.20),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+    animation: goldAuraBreathing 6s ease-in-out infinite alternate;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
-/* Wolumetryczna poświata 3D za belką akordeonu */
-.collapsible-trigger-bar::before {
-    content: '';
-    position: absolute;
-    inset: -8px -14px;
-    border-radius: 28px;
-    background: radial-gradient(ellipse at 12% 50%, rgba(212, 175, 55, 0.55) 0%, rgba(212, 175, 55, 0.18) 40%, transparent 65%),
-                radial-gradient(ellipse at 88% 50%, rgba(212, 175, 55, 0.45) 0%, rgba(212, 175, 55, 0.15) 35%, transparent 60%),
-                linear-gradient(90deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.32) 50%, rgba(212, 175, 55, 0.12) 100%);
-    filter: blur(18px);
-    opacity: 0.75;
-    pointer-events: none;
-    z-index: -1;
-    animation: goldAuraPulse3D 4s ease-in-out infinite alternate;
-    transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
-}
-
-@keyframes goldAuraPulse3D {
-    0% {
-        opacity: 0.65;
-        filter: blur(16px);
-        transform: scale(0.995);
+/* Subtelny oddech światła 3D */
+@keyframes goldAuraBreathing {
+    0%, 100% {
+        box-shadow: 
+            0 10px 30px -4px rgba(0, 0, 0, 0.85),
+            0 0 16px rgba(212, 175, 55, 0.07),
+            0 0 32px rgba(212, 175, 55, 0.03),
+            inset 0 1px 1px rgba(255, 235, 170, 0.18),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.6);
+        border-color: rgba(212, 175, 55, 0.12);
     }
     50% {
-        opacity: 0.92;
-        filter: blur(22px);
-        transform: scale(1.01);
+        box-shadow: 
+            0 12px 34px -4px rgba(0, 0, 0, 0.9),
+            0 0 24px rgba(212, 175, 55, 0.14),
+            0 0 45px rgba(212, 175, 55, 0.07),
+            inset 0 1px 1px rgba(255, 235, 170, 0.26),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.6);
+        border-color: rgba(212, 175, 55, 0.20);
+    }
+}
+
+/* Dynamiczny, luksusowy refleks światła przemykający przez belkę */
+.collapsible-trigger-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 65%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 25%,
+        rgba(255, 235, 170, 0.03) 42%,
+        rgba(212, 175, 55, 0.14) 50%,
+        rgba(255, 235, 170, 0.04) 58%,
+        transparent 75%
+    );
+    border-radius: 18px;
+    pointer-events: none;
+    z-index: 2;
+    animation: goldSheenLuxury 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes goldSheenLuxury {
+    0%, 20% {
+        left: -120%;
+        opacity: 0;
+    }
+    35% {
+        opacity: 1;
+    }
+    60% {
+        left: 180%;
+        opacity: 0;
     }
     100% {
-        opacity: 0.70;
-        filter: blur(17px);
-        transform: scale(1.0);
+        left: 180%;
+        opacity: 0;
     }
 }
 
 .collapsible-trigger-bar:hover {
-    background: linear-gradient(165deg, rgba(26, 26, 30, 0.96) 0%, rgba(12, 12, 14, 0.98) 100%);
+    background: linear-gradient(165deg, rgba(22, 22, 26, 0.98) 0%, rgba(12, 12, 14, 0.99) 100%);
     transform: translateY(-2px);
+    border-color: rgba(212, 175, 55, 0.32) !important;
     box-shadow: 
-        0 16px 45px -5px rgba(0, 0, 0, 0.95),
-        0 0 45px rgba(212, 175, 55, 0.35),
-        0 -12px 45px -4px rgba(212, 175, 55, 0.38),
-        0 12px 45px -4px rgba(212, 175, 55, 0.38),
-        inset 0 1px 2px rgba(255, 235, 170, 0.35);
-}
-
-.collapsible-trigger-bar:hover::before {
-    opacity: 1;
-    filter: blur(22px);
-    transform: scale(1.015);
+        0 14px 38px -4px rgba(0, 0, 0, 0.95),
+        0 0 25px rgba(212, 175, 55, 0.18),
+        0 0 50px rgba(212, 175, 55, 0.08),
+        inset 0 1px 1px rgba(255, 235, 170, 0.32),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.6);
 }
 
 .collapsible-section.is-open > .collapsible-trigger-bar {
-    background: linear-gradient(165deg, rgba(26, 22, 14, 0.98) 0%, rgba(12, 11, 8, 0.99) 100%);
+    background: linear-gradient(165deg, rgba(22, 20, 16, 0.98) 0%, rgba(11, 10, 8, 0.99) 100%);
+    border-color: rgba(212, 175, 55, 0.28) !important;
     box-shadow: 
-        0 16px 45px -5px rgba(0, 0, 0, 0.95),
-        0 0 50px rgba(212, 175, 55, 0.40),
-        0 -14px 50px -4px rgba(212, 175, 55, 0.45),
-        0 14px 50px -4px rgba(212, 175, 55, 0.45),
-        inset 0 1px 2px rgba(255, 235, 170, 0.4);
-}
-
-.collapsible-section.is-open > .collapsible-trigger-bar::before {
-    opacity: 1;
-    filter: blur(24px);
-    background: radial-gradient(ellipse at 12% 50%, rgba(255, 215, 0, 0.70) 0%, rgba(212, 175, 55, 0.3) 45%, transparent 65%),
-                radial-gradient(ellipse at 88% 50%, rgba(255, 215, 0, 0.60) 0%, rgba(212, 175, 55, 0.25) 40%, transparent 60%),
-                linear-gradient(90deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.48) 50%, rgba(255, 215, 0, 0.2) 100%);
+        0 14px 38px -4px rgba(0, 0, 0, 0.95),
+        0 0 28px rgba(212, 175, 55, 0.20),
+        0 0 55px rgba(212, 175, 55, 0.09),
+        inset 0 1px 1px rgba(255, 235, 170, 0.30),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.6);
 }
 
 .collapsible-trigger-info {
@@ -3684,35 +3701,33 @@ html {
     gap: 16px;
     flex: 1;
     min-width: 0;
+    position: relative;
+    z-index: 3;
 }
 
 .collapsible-trigger-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
-    background: rgba(22, 22, 24, 0.95);
-    border: none !important;
+    font-size: 1.3rem;
+    background: rgba(22, 22, 26, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.15) !important;
     flex-shrink: 0;
-    box-shadow: 0 0 24px rgba(212, 175, 55, 0.45), inset 0 0 10px rgba(212, 175, 55, 0.15);
-    animation: goldIconPulse3D 3.5s ease-in-out infinite alternate;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.12), inset 0 1px 0 rgba(255, 235, 170, 0.12);
     transition: all 0.3s ease;
 }
 
-@keyframes goldIconPulse3D {
-    0% {
-        box-shadow: 0 0 20px rgba(212, 175, 55, 0.35), inset 0 0 8px rgba(212, 175, 55, 0.12);
-    }
-    100% {
-        box-shadow: 0 0 32px rgba(212, 175, 55, 0.65), 0 0 14px rgba(255, 220, 120, 0.4), inset 0 0 12px rgba(212, 175, 55, 0.25);
-    }
+.collapsible-trigger-bar:hover .collapsible-trigger-icon {
+    border-color: rgba(212, 175, 55, 0.35) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 16px rgba(212, 175, 55, 0.22);
 }
 
 .collapsible-section.is-open .collapsible-trigger-icon {
-    box-shadow: 0 0 35px rgba(212, 175, 55, 0.7), 0 0 18px rgba(255, 220, 120, 0.5), inset 0 0 14px rgba(212, 175, 55, 0.3);
+    border-color: rgba(212, 175, 55, 0.4) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(212, 175, 55, 0.25);
 }
 
 .collapsible-trigger-text {
@@ -3723,35 +3738,35 @@ html {
 }
 
 .collapsible-trigger-tag {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: var(--gold-primary);
     font-family: 'Montserrat', sans-serif;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
 }
 
 .collapsible-trigger-title {
     font-family: 'Cinzel', serif;
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     font-weight: 800;
-    color: #f7e2a9;
-    letter-spacing: 0.8px;
+    color: #ffffff;
+    letter-spacing: 0.6px;
     margin: 0;
     line-height: 1.25;
-    text-shadow: 0 0 16px rgba(212, 175, 55, 0.5), 0 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2);
     transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
 .collapsible-trigger-bar:hover .collapsible-trigger-title {
-    color: #fff4d1;
-    text-shadow: 0 0 22px rgba(255, 215, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.8);
+    color: #f6e8c3;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 14px rgba(212, 175, 55, 0.35);
 }
 
 .collapsible-trigger-subtitle {
     font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.58);
     font-family: 'Inter', sans-serif;
     white-space: nowrap;
     overflow: hidden;
@@ -3763,6 +3778,8 @@ html {
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
+    position: relative;
+    z-index: 3;
 }
 
 .collapsible-status-pill {
@@ -3772,14 +3789,14 @@ html {
     letter-spacing: 1px;
     padding: 7px 16px;
     border-radius: 30px;
-    background: rgba(212, 175, 55, 0.12);
-    color: #f2d482;
-    border: none !important;
+    background: rgba(212, 175, 55, 0.08);
+    color: #ecd287;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 0 22px rgba(212, 175, 55, 0.45);
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 12px rgba(212, 175, 55, 0.10);
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
     transition: all 0.25s ease;
 }
 
@@ -3787,28 +3804,27 @@ html {
     background: linear-gradient(135deg, #d4af37 0%, #f6e27a 50%, #b38728 100%);
     color: #000;
     text-shadow: none;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
+    border-color: transparent !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.35);
 }
 
 .collapsible-chevron {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(212, 175, 55, 0.18);
-    color: #fff;
-    font-size: 0.82rem;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--gold-primary);
+    font-size: 0.8rem;
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease, color 0.25s ease;
 }
 
 .collapsible-section.is-open .collapsible-chevron {
     transform: rotate(180deg);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.25);
     color: #000;
-    box-shadow: none;
 }
 
 /* Zawartość rozwijana */
