@@ -15,11 +15,182 @@
          ========================================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture</title>
-    <meta name="description" content="Nowoczesna platforma Christian Culture & PolskieRadio.cc. Słuchaj czterech stacji radiowych online (Polskie Radio CC, Radio Global CC, Biblia Audio, Instrumental Worship Music) oraz korzystaj z modlitewnika 24/7.">
-    <meta name="keywords" content="polskie radio, radio online, polska muzyka, radio internetowe, polonia, kultura chrześcijańska, biblia audio, instrumental worship, modlitwa online, dobrze że jesteś">
+    <title>PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture (6 Stacji 24/7)</title>
+    <meta name="description" content="Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki sześciu stacjom radiowym z muzyką i Słowem Bożym bezpośrednio w przeglądarce oraz pobierz nasze dedykowane aplikacje mobilne wspierające Twój rozwój duchowy.">
+    <meta name="keywords" content="polskie radio, radio online, polska muzyka, radio internetowe, polonia, kultura chrześcijańska, biblia audio, instrumental worship, biblia śpiewana, modlitwa online, dobrze że jesteś, lumina, vod chrześcijańskie">
     <meta name="author" content="Christian Culture / PolskieRadio.cc">
+    <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
     <link rel="canonical" href="https://polskieradio.cc/">
+
+    <!-- ══════════ GWARANCJA JĘZYKA POLSKIEGO JAKO DOMYŚLNEGO (Christian Culture) ══════════ -->
+    <script>
+        (function() {
+            try {
+                // Jeśli użytkownik nie wybrał wyraźnie i świadomie języka angielskiego, ZAWSZE wymuś polski
+                var isExplicitEn = localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
+                if (!isExplicitEn) {
+                    localStorage.setItem('lumina_lang', 'pl');
+                    sessionStorage.removeItem('lumina_explicit_en');
+                    
+                    // Skuteczne czyszczenie ciasteczek googtrans na wszystkich poziomach domen
+                    var host = window.location.hostname;
+                    var domains = ['', host, '.' + host];
+                    var parts = host.split('.');
+                    if (parts.length >= 2) {
+                        var rootDomain = parts.slice(-2).join('.');
+                        domains.push(rootDomain);
+                        domains.push('.' + rootDomain);
+                    }
+                    var paths = ['/', ''];
+                    domains.forEach(function(d) {
+                        paths.forEach(function(p) {
+                            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + (d ? '; domain=' + d : '');
+                            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p;
+                        });
+                    });
+                    document.cookie = 'googtrans=/pl/pl; path=/;';
+                }
+            } catch(e) {}
+        })();
+    </script>
+
+    <!-- ══════════ AI SEARCH ENGINE & LLM STRUCTURED DATA (JSON-LD SCHEMA.ORG — GEO / AIO) ══════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://polskieradio.cc/#website",
+          "url": "https://polskieradio.cc",
+          "name": "PolskieRadio.cc — Globalne Polskie Radio Internetowe & Christian Culture",
+          "description": "Nowoczesna platforma medialna Christian Culture: 6 stacji radiowych 24/7, Biblia Audio non-stop, filmy VOD, transmisje na żywo oraz chrześcijański portal relacji LUMINA.",
+          "inLanguage": ["pl", "en", "de", "uk", "es"],
+          "publisher": { "@id": "https://polskieradio.cc/#organization" }
+        },
+        {
+          "@type": "RadioStation",
+          "@id": "https://polskieradio.cc/#radiostation",
+          "name": "PolskieRadio.cc – Christian Culture",
+          "url": "https://polskieradio.cc",
+          "logo": "https://polskieradio.cc/icon.png",
+          "image": "https://polskieradio.cc/icon.png",
+          "description": "Globalne Polskie Radio Internetowe nadające 24/7 wartościową muzykę, audycje autorskie, Biblię Audio oraz transmisje modlitewne na 6 kanałach nadawczych.",
+          "inLanguage": ["pl", "en"],
+          "broadcastChannel": [
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "poland",
+              "name": "Radio PL (Kanał Główny PL)",
+              "broadcastServiceTier": "Free",
+              "genre": "Christian Radio, Talk, Contemporary Christian Music, Audycje Autorskie"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "global",
+              "name": "Radio Global (English Broadcast)",
+              "broadcastServiceTier": "Free",
+              "genre": "International Christian Worship, Sermons, English Broadcast"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "biblia_audio",
+              "name": "Radio Biblia (Audio Biblia PL 24/7)",
+              "broadcastServiceTier": "Free",
+              "genre": "Audio Bible 24/7, Pismo Święte Non-Stop"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "global_biblia",
+              "name": "Global Audio Bible (English Audio Bible 24/7)",
+              "broadcastServiceTier": "Free",
+              "genre": "Audio Bible in English 24/7, Scripture Narration"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "instrumental_worship",
+              "name": "Instrumental Worship Music (Modlitwa & Wyciszenie)",
+              "broadcastServiceTier": "Free",
+              "genre": "Instrumental Worship, Ambient, Piano, Prayer Meditation"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "biblia_spiewana",
+              "name": "Biblia Śpiewana (Wersety w Muzyce)",
+              "broadcastServiceTier": "Free",
+              "genre": "Biblical Songs, Scripture in Music, Uwielbienie"
+            }
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://polskieradio.cc/#organization",
+          "name": "Christian Culture Platform",
+          "alternateName": "Misja Christian Culture",
+          "url": "https://polskieradio.cc",
+          "logo": "https://polskieradio.cc/icon.png",
+          "founder": {
+            "@type": "Person",
+            "name": "Cezary Rogowski",
+            "jobTitle": "Założyciel & Wizjoner Misji",
+            "url": "https://polskieradio.cc/lumina.cezaryrgowski"
+          },
+          "sameAs": [
+            "https://lumina-cc-b90b0.web.app",
+            "https://polskieradio.cc/lumina",
+            "https://polskieradio.cc/vod",
+            "https://christian-culture.web.app/"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://polskieradio.cc/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Czym jest platforma PolskieRadio.cc i Christian Culture?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Witaj w przestrzeni nowej kultury chrześcijańskiej. PolskieRadio.cc to globalna platforma medialna transmitująca 24 godziny na dobę 6 bezpłatnych stacji radiowych online, pełne nagrania Biblii Audio, transmisje TV na żywo, chrześcijańskie filmy fabularne VOD oraz portal relacji i społeczności LUMINA."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Jakich 6 stacji radiowych można słuchać na PolskieRadio.cc?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Na portalu dostępnych jest 6 stacji nadawanych 24/7 w jakości HD: 1) Radio PL (audycje autorskie, muzyka, komentarze biblijne), 2) Radio Global (pasmo anglojęzyczne), 3) Radio Biblia (ciągłe czytanie Pisma Świętego po polsku), 4) Global Biblia (anglojęzyczna Biblia Audio), 5) Instrumental Worship (spokojna muzyka instrumentalna do modlitwy), 6) Biblia Śpiewana (wersety biblijne w pięknych aranżacjach muzycznych)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Czym jest chrześcijański portal LUMINA?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "LUMINA (https://polskieradio.cc/lumina) to chrześcijański portal relacji i randkowy oparty na fundamencie wiary i Dekalogu, stworzony dla osób poszukujących wartościowych relacji, małżeństwa oraz przyjaciół w Bogu z weryfikacją tożsamości i bezpieczną tablicą społeczności."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Gdzie można oglądać bezpłatne chrześcijańskie filmy fabularne VOD?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "W strefie VOD Christian Culture pod adresem https://polskieradio.cc/vod można oglądać bez opłat i bez rejestracji pełnometrażowe filmy chrześcijańskie z lektorem PL, w tym takie tytuły jak 'Przełęcz ocalonych', 'Chata', 'JEZUS (Ewangelia wg św. Łukasza)', 'Bóg nie umarł' oraz 'Luter'."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Jak zgłosić intencję modlitewną lub włączyć się w modlitwę?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "W zakładce 'Zjednoczeni za Polskę' (https://polskieradio.cc/modlitwa.html) oraz bezpośrednio na stronie głównej znajduje się Ściana Modlitwy, gdzie można bezpłatnie wpisać intencję modlitewną, kliknąć 'Amen' przy intencjach innych osób oraz zamówić bezpłatny egzemplarz Pisma Świętego."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 
     <!-- Google AdSense Verification Code -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358"
@@ -28,7 +199,7 @@
     <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,8 +209,8 @@
          ========================================== -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="PolskieRadio.cc - Christian Culture">
-    <meta property="og:title" content="PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture">
-    <meta property="og:description" content="Słuchaj 4 stacji radiowych na żywo 24/7: Polskie Radio CC, Radio Global CC, Biblia Audio, Instrumental Worship Music oraz dołącz do ściany intencji modlitewnych.">
+    <meta property="og:title" content="PolskieRadio.cc - 6 Stacji Radiowych na Żywo & Christian Culture">
+    <meta property="og:description" content="Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki sześciu stacjom radiowym z muzyką i Słowem Bożym bezpośrednio w przeglądarce oraz pobierz nasze dedykowane aplikacje mobilne wspierające Twój rozwój duchowy.">
     <meta property="og:url" content="https://polskieradio.cc/">
     <meta property="og:image" content="https://polskieradio.cc/icon.png">
     <meta property="og:image:width" content="1200">
@@ -52,8 +223,8 @@
          ========================================== -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@ChristianCulture">
-    <meta name="twitter:title" content="PolskieRadio.cc - Na żywo ze świata 24/7">
-    <meta name="twitter:description" content="Włącz 4 stacje radiowe online: muzyka, słowo Boże, Biblia Audio i muzyka do modlitwy (Instrumental Worship).">
+    <meta name="twitter:title" content="PolskieRadio.cc - 6 Stacji Radiowych Online 24/7">
+    <meta name="twitter:description" content="Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki sześciu stacjom radiowym z muzyką i Słowem Bożym bezpośrednio w przeglądarce.">
     <meta name="twitter:image" content="https://polskieradio.cc/icon.png">
 
     <!-- ==========================================
@@ -75,7 +246,7 @@
     <meta name="googlebot" content="index, follow">
 
     <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
     <style>
         /* Aggressive Google Translate Banner and Offsets Hider */
         .goog-te-banner-frame,
@@ -263,7 +434,7 @@
             top: 50%;
             transform: translateY(-50%);
             width: 200px;
-            z-index: 9000;
+            z-index: 800;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -387,7 +558,7 @@
         <a class="side-promo-inner side-slide active" href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=1566" target="_blank" rel="noopener">
             <span class="side-badge">🔥 NOWOŚĆ</span><br>
             <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
-            <img src="kubek_filipian.png" alt="Kubek Wszystko mogę w tym który mnie umacnia" class="side-img">
+            <img src="kubek_filipian.png" alt="Kubek Wszystko mogę w tym który mnie umacnia" class="side-img" loading="lazy" decoding="async">
             <div class="side-title">Kubek<br>„Wszystko mogę<br>w Tym…"</div>
             <div class="side-sub">Filipian 4:13<br>Christian Culture TV<br>Oficjalny sklep</div>
             <span class="side-cta">🛒 KUP TERAZ</span>
@@ -395,7 +566,7 @@
         <a class="side-promo-inner side-slide" href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2537" target="_blank" rel="noopener">
             <span class="side-badge">🔥 KOLEKCJA 2026</span><br>
             <span class="side-badge-gold">⭐ Koszulka Premium FAITH</span>
-            <img src="koszulka_faith_2026.jpg" alt="Koszulka FAITH Christian Culture 2026" class="side-img">
+            <img src="koszulka_faith_2026.jpg" alt="Koszulka FAITH Christian Culture 2026" class="side-img" loading="lazy" decoding="async">
             <div class="side-title">Koszulka<br>„FAITH”</div>
             <div class="side-sub">Sierpień 2026<br>Christian Culture TV<br>Oficjalny sklep</div>
             <span class="side-cta">🛒 KUP TERAZ</span>
@@ -403,7 +574,7 @@
         <a class="side-promo-inner side-slide" href="https://my-store-1009741.creator-spring.com/listing/cc-kubek?variation=104946" target="_blank" rel="noopener">
             <span class="side-badge">🔥 EDYCJA LIMITOWANA</span><br>
             <span class="side-badge-gold">⭐ Kubek Christian Culture</span>
-            <img src="kubek_cc_2026.jpg" alt="Kubek Christian Culture 2026" class="side-img">
+            <img src="kubek_cc_2026.jpg" alt="Kubek Christian Culture 2026" class="side-img" loading="lazy" decoding="async">
             <div class="side-title">Kubek<br>„Christian Culture”</div>
             <div class="side-sub">Kolekcja 2026<br>Christian Culture TV<br>Oficjalny sklep</div>
             <span class="side-cta">🛒 KUP TERAZ</span>
@@ -415,7 +586,7 @@
         <a class="side-promo-inner" href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" style="border-color: rgba(212, 175, 55, 0.5); text-decoration: none;">
             <span class="side-badge" style="background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; font-weight: 900;">🤍 WSPARCIE MISJI</span><br>
             <span class="side-badge-gold">Zeskanuj Kod QR</span>
-            <img src="wsparcie_cc_qr.png" alt="Wsparcie Misji QR" style="width: 100%; height: auto; display: block; background: #000; border: none; object-fit: contain; margin: 8px 0 12px 0; border-radius: 8px; padding: 4px;">
+            <img src="wsparcie_cc_qr.png" alt="Wsparcie Misji QR" loading="lazy" decoding="async" style="width: 100%; height: auto; display: block; background: #000; border: none; object-fit: contain; margin: 8px 0 12px 0; border-radius: 8px; padding: 4px;">
             <div class="side-title" style="color: #d4af37; font-size: 0.9rem;">Wesprzyj Misję<br>Christian Culture</div>
             <div class="side-sub" style="color: #e0e0e0; margin-bottom: 10px; font-size: 0.72rem; line-height: 1.5;">BLIK: <strong>537 134 043</strong><br>Patronite • Revolut</div>
             <span class="side-cta" style="text-align: center; display: block;">🤍 WESPRZYJ TERAZ</span>
@@ -429,7 +600,7 @@
 
         function updatePanels() {
             var start = document.querySelector('.hero-section');
-            var end   = document.getElementById('aktualnosci-lipiec');
+            var end   = document.getElementById('aktualnosci-sierpien');
             if (!start || !end) return;
 
             var scrollY   = window.scrollY || window.pageYOffset;
@@ -521,200 +692,242 @@
                         </div>
                     </button>
                     
-                    <!-- Vertical Dropdown Shortcuts Panel (2-Block Cascading Grid) -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 540px; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
+                    <!-- Vertical Dropdown Shortcuts Panel (3-Section Cohesive Grid) -->
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 740px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: rgba(10, 12, 22, 0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
                         <!-- Header inside shortcuts panel -->
-                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.45); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif; text-align: left;">
-                            <i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture
+                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Cinzel', serif; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture</span>
+                            <span style="font-size: 0.58rem; color: var(--gold-light); font-weight: 600; text-transform: none; letter-spacing: 0.5px;">3 Sekcje Ekosystemu</span>
                         </div>
 
-                        <!-- 2 Equal Cascading Blocks Side-By-Side -->
+                        <!-- 3 Equal Cascading Blocks Side-By-Side -->
                         <div class="shortcuts-blocks-container">
-                            <!-- BLOCK 1: GŁÓWNE NARZĘDZIA & MEDIA -->
+                            <!-- SEKCJA 1: STACJE & MEDIA LIVE -->
                             <div class="shortcut-block block-1">
-                                <div style="font-size: 0.6rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Montserrat', sans-serif;">Główne Media</div>
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-tower-broadcast" style="font-size: 0.72rem;"></i> Stacje & Media LIVE
+                                </div>
 
-                                <!-- Shortcut: MojaBiblia (Interlinearna Biblia Badawcza) -->
-                                <a href="https://polskieradio.cc/mojabiblia" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.22)';" onmouseout="this.style.background='rgba(212,175,55,0.12)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);">
-                                        <i class="fa-solid fa-book-bible" style="color: #000; font-size: 0.88rem;"></i>
+                                <!-- Shortcut: PLAYER -->
+                                <a href="https://polskieradio.cc/player" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(212,175,55,0.15)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">MojaBiblia</span>
-                                            <span style="font-size: 0.55rem; background: rgba(212, 175, 55, 0.25); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.5); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">INTERLINEARNA</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">PLAYER CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
                                         </div>
-                                        <span style="font-size: 0.6rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Greka • Hebrajski • Kody Stronga</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Radio Biblia • Audycje</span>
                                     </div>
                                 </a>
 
-                                <!-- Shortcut: PLAYER (Biblijna Platforma Medialna / Odtwarzacz Audio) -->
-                                <a href="https://polskieradio.cc/player" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.28);" onmouseover="this.style.background='rgba(16, 185, 129, 0.2)';" onmouseout="this.style.background='rgba(16, 185, 129, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #10b981, #059669); flex-shrink: 0; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);">
-                                        <i class="fa-solid fa-circle-play" style="color: #fff; font-size: 0.95rem;"></i>
+                                <!-- Shortcut: Smart TV CC -->
+                                <a href="tv" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">PLAYER</span>
-                                            <span style="font-size: 0.55rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Smart TV CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
                                         </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Radio Biblia • Audycje • Muzyka</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ekran telewizora & pilot</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: VOD Christian Culture -->
+                                <a href="vod" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-clapperboard" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">VOD CC</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Filmy z wartościami</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: Program TV 24/7 -->
-                                <a href="program.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25);" onmouseover="this.style.background='rgba(212,175,55,0.18)';" onmouseout="this.style.background='rgba(212,175,55,0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0;">
-                                        <i class="fa-solid fa-calendar-days" style="color: #000; font-size: 0.88rem;"></i>
+                                <a href="program.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-calendar-days" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
-                                        <span style="font-size: 0.6rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Dziś • Tydzień • Miesiąc</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Smart TV CC (Telewizja & Pilot) -->
-                                <a href="tv" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.28);" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)';" onmouseout="this.style.background='rgba(59, 130, 246, 0.08)';">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3b82f6, #1d4ed8); flex-shrink: 0; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);">
-                                        <i class="fa-solid fa-tv" style="color: #fff; font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Smart TV CC</span>
-                                            <span style="font-size: 0.55rem; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PILOT & 6 STACJI</span>
-                                        </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Dedykowany ekran na telewizor</span>
-                                    </div>
-                                </a>
-                                
-                                <!-- Shortcut: Helpline Nadzieja CC -->
-                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 10px; text-decoration: none; transition: background 0.2s, box-shadow 0.3s; background: rgba(245, 197, 24, 0.07); border: 1px solid rgba(245,197,24,0.25); animation: helpline-pulse-drawer 2s infinite alternate;" onmouseover="this.style.background='rgba(245,197,24,0.16)'; this.style.borderColor='rgba(245,197,24,0.6)';" onmouseout="this.style.background='rgba(245,197,24,0.07)'; this.style.borderColor='rgba(245,197,24,0.25)';">
-                                    <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5c518, #e6a817); flex-shrink: 0; box-shadow: 0 0 10px rgba(245,197,24,0.4);">
-                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.9rem; animation: phone-bounce-drawer 1.4s infinite alternate;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.58rem; font-weight: 700; color: rgba(245,197,24,0.9); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja CC</span>
-                                        <span style="font-size: 0.9rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Dziś • Tydzień</span>
                                     </div>
                                 </a>
 
-                                <!-- Shortcut: Dobrze, że jesteś -->
-                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                <!-- Shortcut: Nadawaj z nami (OBS) -->
+                                <a href="nadawaj" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-signal" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Aplikacja Webowa CC -->
-                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(245,197,24,0.2), rgba(217,119,6,0.2)); border: 1.5px solid var(--border-gold-low); flex-shrink: 0; box-shadow: 0 2px 8px rgba(245,197,24,0.15);">
-                                        <i class="fa-solid fa-cross" style="color: var(--gold-primary); font-size: 0.92rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: LUMINA -->
-                                <a href="lumina" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(157, 78, 221, 0.15)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(236,72,153,0.25)); border: 1.5px solid rgba(168,85,247,0.5); flex-shrink: 0; box-shadow: 0 2px 8px rgba(168,85,247,0.35);">
-                                        <i class="fa-solid fa-heart" style="color: #ec4899; font-size: 0.88rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                             <span style="font-size: 0.8rem; font-weight: 700; color: #c084fc; font-family: 'Outfit', sans-serif;">LUMINA</span>
-                                             <span style="font-size: 0.55rem; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.45); padding: 1px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">WCZESNY DOSTĘP</span>
-                                        </div>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif;">Portal dla Singli (Otwórz)</span>
-                                    </div>
-                                </a>
-
-
-                                <!-- Shortcut: Herbatka między słowami -->
-                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(38, 166, 154, 0.12)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(38, 166, 154, 0.08); border: 1px solid rgba(38, 166, 154, 0.25); flex-shrink: 0;">
-                                        <i class="fa-solid fa-mug-hot" style="color: #26a69a; font-size: 0.88rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
                                     </div>
                                 </a>
                             </div>
 
-                            <!-- BLOCK 2: ZASOBY, MODLITWA & OBS -->
+                            <!-- SEKCJA 2: SŁOWO & DUCHOWOŚĆ -->
                             <div class="shortcut-block block-2">
-                                <div style="font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Montserrat', sans-serif;">Zasoby & Usługi</div>
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-book-bible" style="font-size: 0.72rem;"></i> Słowo & Duchowość
+                                </div>
+
+                                <!-- Shortcut: MojaBiblia -->
+                                <a href="https://polskieradio.cc/mojabiblia" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.18)'; this.style.borderColor='rgba(212,175,55,0.5)';" onmouseout="this.style.background='rgba(212,175,55,0.08)'; this.style.borderColor='rgba(212,175,55,0.3)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 2px 6px rgba(212, 175, 55, 0.35);">
+                                        <i class="fa-solid fa-book-bible" style="color: #000; font-size: 0.82rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">MojaBiblia</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.25); color: #fbbf24; border: 1px solid rgba(212,175,55,0.45); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">INTERLINEARNA</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: var(--gold-light); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Greka • Hebrajski • Strong</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Dobrze, że jesteś -->
+                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
+                                    </div>
+                                </a>
 
                                 <!-- Shortcut: Modlitwa (Zjednoczeni za Polskę) -->
-                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; margin-top: 4px;" onmouseover="this.style.background='rgba(220, 20, 60, 0.12)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(220, 20, 60, 0.15); border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Zjednoczeni za Polskę</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Podstrona modlitewna</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Ściana Modlitwy</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">NARODOWA</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zjednoczeni za Polskę</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: Biblia do pobrania -->
-                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(243, 229, 171, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-book-bible" style="color: #f3e5ab; font-size: 0.88rem;"></i>
+                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-file-arrow-down" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #f3e5ab; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Bank Treści -->
-                                <a href="bank-tresci.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-download" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Bank Treści</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowe materiały</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: SMS Subscriptions -->
-                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zapisz się bezpłatnie</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Słowo Boże na telefon</span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Shortcut: OBS Streaming -->
-                                <a href="nadawaj" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
+                            <!-- SEKCJA 3: SPOŁECZNOŚĆ, MISJA & NARZĘDZIA -->
+                            <div class="shortcut-block block-3">
+                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-users" style="font-size: 0.72rem;"></i> Społeczność & Narzędzia
+                                </div>
+
+                                <!-- Shortcut: LUMINA -->
+                                <a href="lumina" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Portal LUMINA</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Sieć relacji & wartości</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Helpline Nadzieja CC -->
+                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3);" onmouseover="this.style.background='rgba(212,175,55,0.18)'; this.style.borderColor='rgba(212,175,55,0.6)';" onmouseout="this.style.background='rgba(212,175,55,0.08)'; this.style.borderColor='rgba(212,175,55,0.3)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0; box-shadow: 0 0 8px rgba(212,175,55,0.4);">
+                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.55rem; font-weight: 700; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja</span>
+                                        <span style="font-size: 0.78rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Herbatka między słowami -->
+                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-mug-hot" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Kreator Kalendarza 2027 -->
+                                <a href="kalendarz2027" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-calendar-plus" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Kalendarz 2027</span>
+                                            <span style="font-size: 0.52rem; background: rgba(212,175,55,0.15); color: #fbbf24; border: 1px solid rgba(212,175,55,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">A4/PDF</span>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Kreator do druku</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Bank Treści -->
+                                <a href="bank-tresci.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-download" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Bank Treści</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowe materiały</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Aplikacja Webowa CC -->
+                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-mobile-screen" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
+                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
                                     </div>
                                 </a>
 
                                 <!-- Shortcut: Language Toggle -->
-                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <i class="fa-solid fa-language" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212,175,55,0.12)'; this.style.borderColor='rgba(212,175,55,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                                        <i class="fa-solid fa-language" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
-                                        <span id="langToggleText" style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
+                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
+                                        <span id="langToggleText" style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
                                     </div>
                                 </div>
                             </div>
@@ -734,37 +947,52 @@
             <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
             <nav class="drawer-nav">
                 <a href="#hero" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
-                <a href="lumina" class="drawer-link" style="color: #c084fc; font-weight: 800; border: 1px solid rgba(192, 132, 252, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(192, 132, 252, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="lumina" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <img src="lumina_icon.jpg" alt="LUMINA" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid #a855f7;">
-                        LUMINA — Portal Randkowy
+                        <img src="lumina_icon.jpg" alt="LUMINA" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-primary);">
+                        LUMINA — Portal Społeczności
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">WCZESNY DOSTĘP</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
                 </a>
-                <a href="vod" class="drawer-link" style="color: #f87171; font-weight: 800; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(239, 68, 68, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="vod" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-film" style="color: #ef4444; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-film" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         VOD CC — Filmy Fabularne
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
                 </a>
-                <a href="tv" class="drawer-link" style="color: #60a5fa; font-weight: 800; border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(59, 130, 246, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                <a href="https://polskieradio.cc/mojabiblia" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
                     <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-tv" style="color: #3b82f6; font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        <i class="fa-solid fa-book-bible" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        MojaBiblia — Interlinearna Biblia Badawcza
+                    </span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
+                </a>
+                <a href="https://polskieradio.cc/player" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
+                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
+                        PLAYER — Odtwarzacz Audio CC
+                    </span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
+                </a>
+                <a href="tv" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
+                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
+                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
                         Smart TV CC — Telewizja & Pilot
                     </span>
-                    <span style="font-size: 0.62rem; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
+                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
                 </a>
-                <a href="modlitwa.html" class="drawer-link" style="color: #ff4d6d; font-weight: 700;"><i class="fa-solid fa-hands-praying"></i> ZJEDNOCZENI ZA POLSKĘ</a>
+                <a href="modlitwa.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-hands-praying"></i> ZJEDNOCZENI ZA POLSKĘ</a>
                 <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
                 <div style="margin: 0.8rem 0 0.25rem 12px; font-size: 0.65rem; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(212, 175, 55, 0.55); font-weight: 700; font-family: 'Cinzel', serif;">Polskie Radio Christian Culture poleca:</div>
-                <a href="herbatka/index.html" class="drawer-link" style="color: #26a69a; font-weight: 700; border: 1px solid rgba(38, 166, 154, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 0.5rem; background: rgba(38, 166, 154, 0.03); transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(38, 166, 154, 0.1)'; this.style.borderColor='#26a69a';" onmouseout="this.style.background='rgba(38, 166, 154, 0.03)'; this.style.borderColor='rgba(38, 166, 154, 0.25)';"><i class="fa-solid fa-mug-hot"></i> Herbatka między słowami</a>
+                <a href="herbatka/index.html" class="drawer-link" style="color: #fff; font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.05); transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(212, 175, 55, 0.12)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.05)'; this.style.borderColor='rgba(212, 175, 55, 0.25)';"><i class="fa-solid fa-mug-hot" style="color: var(--gold-primary);"></i> Herbatka między słowami</a>
                 <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
                 <a href="nadawaj" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
                 <a href="biblia-do-pobrania.html" class="drawer-link" style="color: #f3e5ab; font-weight: 700;"><i class="fa-solid fa-book-bible"></i> Biblia do pobrania</a>
+                <a href="kalendarz2027" class="drawer-link" style="color: #fbbf24; font-weight: 700;"><i class="fa-solid fa-calendar-days"></i> Kreator Kalendarza 2027</a>
                 <a href="bank-tresci.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-download"></i> Bank Treści</a>
                 <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
-                <a href="#aktualnosci-czerwiec" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
+                <a href="#aktualnosci-sierpien" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
                 <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
                 <!-- Promocja Pisma Świętego (Biblia UBG) -->
                 <div class="drawer-bible-promo">
@@ -905,6 +1133,7 @@
                             <span style="color: #ff0000; font-weight: 800; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 1.5px;">Transmisja na żywo</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 12px;">
+                            <a href="https://youtube.com/@ChristianCultureTV/live" target="_blank" style="color: #ff4d4d; text-decoration: none; font-weight: 800; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" title="Oglądaj na żywo na YouTube"><i class="fa-brands fa-youtube" style="font-size: 0.95rem;"></i> Na YouTube</a>
                             <a href="nadawaj" style="color: var(--gold-primary); text-decoration: none; font-weight: 700; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" title="Przejdź do panelu nadawania"><i class="fa-solid fa-tower-broadcast"></i> NADAWAJ</a>
                             <button onclick="shareLiveStream()" style="background: none; border: none; color: rgba(255, 255, 255, 0.4); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; padding: 2px 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.4)'" title="Udostępnij transmisję"><i class="fa-solid fa-share-nodes"></i></button>
                         </div>
@@ -1010,7 +1239,12 @@
                         (function() {
                             window.playMasterLiveInline = function(event) {
                                 if (event) event.preventDefault();
-                                window.location.href = "master-live.html";
+                                const box = document.querySelector('#liveStreamBox .video-container') || document.querySelector('.hero-section .video-container');
+                                if (box) {
+                                    box.innerHTML = '<iframe id="masterLiveFrame" class="live-player-embed" src="master-live.html?muted=0&autoplay=1&embed=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; z-index: 10; display: block;" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share" allowfullscreen></iframe>';
+                                } else {
+                                    window.location.href = "master";
+                                }
                             };
 
                             window.shareLiveStream = function() {
@@ -1038,19 +1272,39 @@
                     </script>
                 </div>
                 <p class="hero-description">
-                    Witaj w przestrzeni nowej kultury chrze&#x15b;cija&#x144;skiej. Do&#x15b;wiadczaj wiary na co dzie&#x144; dzi&#x119;ki pi&#x119;ciu stacjom radiowym z muzyk&#x105; i S&#x142;owem Bo&#x17c;ym bezpo&#x15b;rednio w przegl&#x105;darce oraz pobierz nasze dedykowane aplikacje mobilne wspieraj&#x105;ce Tw&#xf3;j rozw&#xf3;j duchowy.
-                </p>
+                    Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki sześciu stacjom radiowym z muzyką i Słowem Bożym bezpośrednio w przeglądarce oraz pobierz nasze dedykowane aplikacje mobilne wspierające Twój rozwój duchowy.
                 <div class="hero-buttons">
-                    <a href="#" class="btn btn-gold" id="heroPlayBtn"><i class="fa-solid fa-play"></i> Słuchaj Radia</a>
-                    <a href="#apps-section" class="btn btn-outline scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                    <a href="https://polskieradio.cc/player" class="btn btn-gold" id="heroRadioBtn" title="Odtwarzacz Audio Polskie Radio CC"><i class="fa-solid fa-radio"></i> Radio</a>
+                    <a href="https://polskieradio.cc/nadawaj" class="btn btn-outline" id="heroTvBtn" title="Telewizja i Panel Nadawania CC"><i class="fa-solid fa-tv"></i> Telewizja</a>
                 </div>
             </div>
+        </div>
     </section>
 
     <!-- SECTION C: CODZIENNE ROZWAŻANIE (DOBRZE, ŻE JESTEŚ) -->
-    <section class="daily-reflection-section" id="dailyReflectionSection">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="daily-reflection-section collapsible-section" id="dailyReflectionSection">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-dailyReflectionSection">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-heart" style="color: #ec4899;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Codzienne Rozważanie</span>
+                    <span class="collapsible-trigger-title">Dobrze, że jesteś</span>
+                    <span class="collapsible-trigger-subtitle">Słowo Boże, inspiracja na dziś i hymn wideo</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-dailyReflectionSection">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Dobrze, że jesteś</span>
                 <h2 class="section-title" id="homepageDzjTitle">ŁADOWANIE ROZWAŻANIA...</h2>
                 <div class="gold-divider centered"></div>
@@ -1084,7 +1338,10 @@
                             <i class="fa-solid fa-heart" style="color: var(--gold-primary); font-size: 1rem;"></i>
                             <span style="font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; color: var(--gold-primary); font-family: 'Cinzel', serif;">POSŁUCHAJ HYMNU — DOBRZE, ŻE JESTEŚ</span>
                         </div>
-                        <span style="font-size: 0.65rem; color: rgba(255,255,255,0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Oficjalny Utwór CC</span>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 0.65rem; color: rgba(255,255,255,0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Oficjalny Utwór CC</span>
+                            <a href="https://www.youtube.com/playlist?list=PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW" target="_blank" style="color: #ff4d4d; font-size: 0.75rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><i class="fa-brands fa-youtube" style="font-size: 0.95rem;"></i> Na YouTube</a>
+                        </div>
                     </div>
                     <div class="dzj-video-container" style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden;">
                         <iframe 
@@ -1130,9 +1387,14 @@
             </div>
 
             <!-- Artykuł - Misja Trwa -->
-            <div id="aktualnosci-lipiec" style="margin-top: 40px; scroll-margin-top: 100px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-gold-low); background: rgba(0,0,0,0.5); padding: 30px; position: relative;">
+            <div id="aktualnosci-sierpien" style="margin-top: 40px; scroll-margin-top: 100px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-gold-low); background: rgba(0,0,0,0.5); padding: 30px; position: relative;">
+                <span id="aktualnosci-lipiec" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="aktualnosci" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="raport" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="sprawozdanie" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="sprawozdanie-misyjne" style="position: absolute; top: -100px; left: 0;"></span>
                 <button 
-                    onclick="if(navigator.share){navigator.share({title:'Misja Trwa: Zasięg globalny',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',url:'https://www.polskieradio.cc/#aktualnosci-lipiec'}).catch(console.error)}else{navigator.clipboard.writeText('https://www.polskieradio.cc/#aktualnosci-lipiec');alert('Skopiowano link do schowka!');}"
+                    onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za sierpień 2026!',url:'https://polskieradio.cc/#aktualnosci-sierpien'}).catch(console.error)}else{navigator.clipboard.writeText('https://polskieradio.cc/#aktualnosci-sierpien');alert('Skopiowano link do schowka!');}"
                     style="position: absolute; top: 20px; right: 20px; padding: 10px; background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold-low); color: var(--gold-primary); border-radius: 50%; cursor: pointer; transition: 0.3s; z-index: 10;"
                     title="Udostępnij raport"
                     onmouseover="this.style.background='var(--gold-primary)'; this.style.color='#000';"
@@ -1143,7 +1405,7 @@
                 
                 <h3 style="color: var(--gold-primary); font-family: 'Cinzel', serif; font-size: 1.5rem; margin-bottom: 24px; text-align: center; line-height: 1.3; padding-right: 40px;">
                     🚀 Misja Trwa!<br />
-                    <span style="color: #e4e4e7; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Aktualności: Zasięg globalny — lipiec 2026</span>
+                    <span style="color: #e4e4e7; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Aktualności: Zasięg globalny — sierpień 2026</span>
                 </h3>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: stretch;">
@@ -1153,39 +1415,49 @@
                             Droga Społeczności, Drodzy Patronowie i Słuchacze!
                         </p>
                         <p style="margin-bottom: 16px;">
-                            Lipiec 2026 przyniósł kolejne piękne owoce wspólnej misji! Dzięki Waszym modlitwom, wsparciu i zaangażowaniu Dobra Nowina nieustannie dociera do ludzi na całym świecie. Każde uruchomienie radia, każda minuta słuchania i każda osoba, która usłyszała Słowo Boże, jest świadectwem tego, że ta misja ma sens.
+                            Sierpień 2026 przyniósł wspaniałe owoce i nowy rekord zaangażowania w misję Christian Culture! Dzięki Waszym modlitwom, wsparciu i wierności Dobra Nowina każdego dnia dociera do tysięcy serc w najdalszych zakątkach globu. Każde uruchomienie radia, każda wysłuchana audycja i każda minuta spędzona ze Słowem Bożym to realny owoc budowania Królestwa Bożego.
                         </p>
                         <p style="margin-bottom: 16px;">
-                            Z radością i wdzięcznością Bogu przedstawiamy oficjalne sprawozdanie misyjne za lipiec 2026.
+                            Z radością i wdzięcznością Bogu przedstawiamy oficjalne sprawozdanie misyjne za sierpień 2026.
                         </p>
                         
                         <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">📊 Globalny Zasięg w Liczbach</h4>
                         <ul style="list-style: none; padding: 0; margin-bottom: 24px;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączna liczba uruchomień:</strong> 4 445 audycji</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączny czas słuchania:</strong> 1 159 godzin</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Unikalni odbiorcy:</strong> 1 288 osób</span></li>
-                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Średni czas sesji:</strong> 15 minut 44 sekundy</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączna liczba uruchomień:</strong> 3 664 audycje</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączny czas słuchania:</strong> 1 171 godzin 24 minuty <span style="font-size:0.8rem; color: var(--gold-primary); font-weight:700;">★ nowy rekord!</span></span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Unikalni odbiorcy:</strong> 1 087 osób (w 48 krajach świata)</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Średni czas sesji:</strong> 19 minut 11 sekund <span style="font-size:0.8rem; color: var(--gold-primary); font-weight:700;">(+21,7% względem lipca!)</span></span></li>
+                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Transfer danych:</strong> 66,3 GB ewangelizacyjnego przekazu</span></li>
                         </ul>
 
                         <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">🌍 Główne Bastiony (Top 5 Krajów)</h4>
                         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
                             <ol style="margin: 0; padding-left: 20px; color: #d4d4d8;">
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇵🇱 Polska</strong></li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇩🇪 Niemcy</strong></li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇺🇸 Stany Zjednoczone</strong></li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇳🇱 Holandia</strong></li>
-                                <li><strong style="color: #fff;">🇵🇰 Pakistan</strong> <span style="font-size:0.8rem; color: var(--gold-primary);">★ nowy w top 5!</span></li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇵🇱 Polska</strong> — 3 018 sesji (83,1%), 731 słuchaczy, 881,7 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇩🇪 Niemcy</strong> — 299 sesji (8,2%), 159 słuchaczy, 159,5 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇺🇸 Stany Zjednoczone</strong> — 76 sesji (2,1%), 60 słuchaczy, 36,4 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇳🇱 Holandia</strong> — 35 sesji (1,0%), 19 słuchaczy, 69,8 h</li>
+                                <li><strong style="color: #fff;">🇺🇦 Ukraina</strong> — 31 sesji (0,85%), 16 słuchaczy, 6,4 h</li>
                             </ol>
+                        </div>
+
+                        <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">📱 Urządzenia Odbiorców</h4>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                            <ul style="list-style: none; padding: 0; margin: 0; color: #d4d4d8; font-size: 0.9rem;">
+                                <li style="margin-bottom: 6px;">🤖 <strong>Android:</strong> 55,5% (2 071 sesji, śr. 20 min 41 sek)</li>
+                                <li style="margin-bottom: 6px;">💻 <strong>Komputery (Desktop):</strong> 39,3% (1 468 sesji, śr. 18 min 29 sek)</li>
+                                <li style="margin-bottom: 6px;">🍏 <strong>iPhone & Inne:</strong> 4,9% (184 sesje)</li>
+                                <li>📺 <strong>Smart TV:</strong> 0,3% (rekordowy średni czas: 30 min 47 sek!)</li>
+                            </ul>
                         </div>
 
                         <p style="margin-bottom: 8px;">📈 <strong style="color:#fff;">Co cieszy najbardziej?</strong></p>
                         <ul style="list-style: none; padding: 0; margin-bottom: 24px;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span>Liczba uruchomień wzrosła o <strong>9,4%</strong> względem czerwca.</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span>Czas słuchania utrzymał się na wysokim poziomie — ponad <strong>1 150 godzin</strong>.</span></li>
-                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span>Do grona krajów z największym zasięgiem dołączył <strong>Pakistan</strong>, a znacząco wzrosła aktywność słuchaczy z <strong>Holandii</strong>.</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Nowy rekord czasu słuchania:</strong> Aż <strong>1 171 godzin</strong> ewangelizacji w sierpniu.</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Skok zaangażowania:</strong> Średni czas sesji wzrósł aż do <strong>19 minut 11 sekund</strong> (+21,7% względem lipca).</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Rozwój Biblii Audio CC:</strong> Stacja Biblia Audio zgromadziła blisko <strong>200 godzin</strong> słuchania (16,9% całości).</span></li>
+                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Globalna obecność:</strong> Słuchacze łączyli się z nami z aż <strong>48 krajów świata</strong> (m.in. Dania, Indie, Afganistan, RPA, Norwegia, Wielka Brytania, Austria, Francja, Australia, Kenia, Madagaskar).</span></li>
                         </ul>
-
-                        <p style="margin-bottom: 16px; font-size: 0.9rem; color: #a1a1aa;">Słuchacze byli z nami także ze Szwajcarii, Austrii, Wielkiej Brytanii, Ukrainy oraz Republiki Południowej Afryki.</p>
                         
                         <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
                             <p style="color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; font-size: 0.9rem;">❤️ Twoje wsparcie naprawdę ma znaczenie!</p>
@@ -1219,12 +1491,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION D: NASZE APLIKACJE (SHOWCASE) -->
-    <section class="apps-section" id="apps-section">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="apps-section collapsible-section" id="apps-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-apps-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-mobile-screen-button" style="color: #60a5fa;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Zasoby Mobilne & Web</span>
+                    <span class="collapsible-trigger-title">Pobierz Nasze Aplikacje</span>
+                    <span class="collapsible-trigger-subtitle">Christian Culture, Cuda Każdego Dnia i aplikacje Google Play</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-apps-section">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Zasoby Mobilne</span>
                 <h2 class="section-title">POBIERZ NASZE APLIKACJE</h2>
                 <div class="gold-divider centered"></div>
@@ -1234,7 +1527,7 @@
                 <a href="https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl" target="_blank" style="display: block; width: 100%; max-width: 800px; margin: 0 auto 40px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 2px solid rgba(212, 175, 55, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 20px 45px rgba(212, 175, 55, 0.4)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.5)'; this.style.borderColor='rgba(212, 175, 55, 0.3)';">
                     <picture>
                         <source srcset="Sluchaj-Instaluj-Pobieraj.webp" type="image/webp">
-                        <img src="Sluchaj-Instaluj-Pobieraj.png" alt="Słuchaj, instaluj, pobieraj aplikacje ze sklepu Google Play" onerror="this.onerror=null; this.src='Sluchaj-Instaluj-Pobieraj.jpg';" width="728" height="180" style="width: 100%; height: auto; display: block;">
+                        <img src="Sluchaj-Instaluj-Pobieraj.png" alt="Słuchaj, instaluj, pobieraj aplikacje ze sklepu Google Play" onerror="this.onerror=null; this.src='Sluchaj-Instaluj-Pobieraj.jpg';" loading="lazy" decoding="async" width="728" height="180" style="width: 100%; height: auto; display: block;">
                     </picture>
                 </a>
               <div class="apps-grid">
@@ -1376,13 +1669,13 @@
                         <div style="margin-bottom: 8px;">
                             <span style="font-size: 0.65rem; background: rgba(34, 197, 94, 0.22); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.5); padding: 3px 10px; border-radius: 20px; font-weight: 800; display: inline-block; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;">WCZESNY DOSTĘP (SOFT LAUNCH)</span>
                         </div>
-                        <p class="app-tagline" style="color: #c084fc; font-weight: 800;">Chrześcijański Portal Randkowy &amp; Relacje</p>
+                        <p class="app-tagline" style="color: #c084fc; font-weight: 800;">Chrześcijański Portal Randkowy & Relacje</p>
                         <p class="app-desc">
                             Pierwszy profesjonalny portal relacji w ekosystemie Christian Culture. Buduj wartościowe relacje oparte na wspólnym fundamencie wiary, modlitwie i przygotowaniu do małżeństwa.
                         </p>
                         <div class="app-download-links">
                             <a href="lumina" class="download-badge play-store-badge" style="border-color: rgba(168, 85, 247, 0.6); background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(99, 102, 241, 0.25)); color: #fff; cursor: pointer; text-decoration: none;">
-                                <i class="fa-solid fa-sparkles" style="color: #ffd700;"></i>
+                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #ffd700;"></i>
                                 <span class="badge-text">
                                      <span class="badge-sub">Wczesny Dostęp (Beta)</span>
                                      <span class="badge-main" style="color: #ffd700;">Wejdź do Portalu ➔</span>
@@ -1400,12 +1693,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION E: STRUMIENIE SOCIAL MEDIA (SPOTIFY & YOUTUBE) -->
-    <section class="social-channels-section" id="social-channels">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="social-channels-section collapsible-section" id="social-channels">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-social-channels">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Nasze Media Społecznościowe</span>
+                    <span class="collapsible-trigger-title">Sieć YouTube & Spotify</span>
+                    <span class="collapsible-trigger-subtitle">CC MEN, CC WOMEN, Osobowość PLUS i Polskie Radio CC</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-social-channels">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Nasze Media</span>
                 <h2 class="section-title">KANAŁY STRUMIENIOWE</h2>
                 <div class="gold-divider centered"></div>
@@ -1430,9 +1744,14 @@
                     <h4>CC MEN</h4>
                     <span class="channel-handle">@CCMen7</span>
                     <p class="channel-description">Męska strona formacji duchowej. Wyzwania, konferencje, świadectwa i budowanie tożsamości w świetle Ewangelii.</p>
-                    <a href="https://youtube.com/@CCMen7" target="_blank" class="btn-channel btn-channel-men">
-                        <i class="fa-brands fa-youtube"></i> Subskrybuj
-                    </a>
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center;">
+                        <a href="https://youtube.com/@CCMen7/videos" target="_blank" class="btn-channel btn-channel-men">
+                            <i class="fa-brands fa-youtube"></i> Oglądaj Wideo
+                        </a>
+                        <a href="https://youtube.com/@CCMen7?sub_confirmation=1" target="_blank" style="font-size: 0.75rem; color: rgba(255,255,255,0.65); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                            <i class="fa-solid fa-bell" style="font-size: 0.75rem;"></i> Subskrybuj kanał
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Channel 2: CC WOMEN -->
@@ -1444,9 +1763,14 @@
                     <h4>CC WOMEN</h4>
                     <span class="channel-handle">@CCWomen7</span>
                     <p class="channel-description">Duchowość, inspiracje i rozwój dla kobiet. Powołanie, budowanie relacji, codzienna formacja oraz piękno kobiecego serca.</p>
-                    <a href="https://youtube.com/@CCWomen7" target="_blank" class="btn-channel btn-channel-women">
-                        <i class="fa-brands fa-youtube"></i> Subskrybuj
-                    </a>
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center;">
+                        <a href="https://youtube.com/@CCWomen7/videos" target="_blank" class="btn-channel btn-channel-women">
+                            <i class="fa-brands fa-youtube"></i> Oglądaj Wideo
+                        </a>
+                        <a href="https://youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" style="font-size: 0.75rem; color: rgba(255,255,255,0.65); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                            <i class="fa-solid fa-bell" style="font-size: 0.75rem;"></i> Subskrybuj kanał
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Channel 3: Personality Plus -->
@@ -1456,11 +1780,16 @@
                         <i class="fa-solid fa-brain"></i>
                     </div>
                     <h4>Personality Plus</h4>
-                    <span class="channel-handle">@bibliaaudiocc</span>
+                    <span class="channel-handle">@bibliaaudiocc • @osobowoscplus</span>
                     <p class="channel-description">Rozwój osobisty z perspektywy wiary. Odkryj swój temperament, talenty i powołanie do pełni chrześcijańskiego życia.</p>
-                    <a href="https://youtube.com/@bibliaaudiocc?si=eCmuMbEAgx7cHsjz" target="_blank" class="btn-channel btn-channel-personality">
-                        <i class="fa-brands fa-youtube"></i> Subskrybuj
-                    </a>
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center;">
+                        <a href="https://youtube.com/@bibliaaudiocc/videos" target="_blank" class="btn-channel btn-channel-personality">
+                            <i class="fa-brands fa-youtube"></i> Oglądaj Wideo
+                        </a>
+                        <a href="https://youtube.com/@bibliaaudiocc?sub_confirmation=1" target="_blank" style="font-size: 0.75rem; color: rgba(255,255,255,0.65); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                            <i class="fa-solid fa-bell" style="font-size: 0.75rem;"></i> Subskrybuj kanał
+                        </a>
+                    </div>
                 </div>
             </div>
             
@@ -1499,40 +1828,61 @@
                         Nasz projekt tworzy szeroką sieć kanałów tematycznych na YouTube. Wybierz kanał, aby oglądać codzienne rozważania wideo, muzykę lub programy:
                     </p>
                     <div class="youtube-channels-list">
-                        <a href="https://youtube.com/@bibliaaudiocc?si=eCmuMbEAgx7cHsjz" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@bibliaaudiocc/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> Personality Plus
                         </a>
-                        <a href="https://youtube.com/@CCMen7" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@CCMen7/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> CC MEN
                         </a>
-                        <a href="https://youtube.com/@CCWomen7" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@CCWomen7/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> CC WOMEN
                         </a>
-                        <a href="https://youtube.com/@ChristianCultureTV" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@ChristianCultureTV/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> CC TV
                         </a>
-                        <a href="https://youtube.com/@RadioChristianCulture" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@RadioChristianCulture/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> Radio CC
                         </a>
-                        <a href="https://youtube.com/@ToDlaCiebieGramy" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@ToDlaCiebieGramy/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> RCC TV 24
                         </a>
-                        <a href="https://youtube.com/@TopSeven_CC" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@TopSeven_CC/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> Top Seven CC
                         </a>
-                        <a href="https://youtube.com/@CCNations" target="_blank" class="yt-channel-item">
+                        <a href="https://youtube.com/@CCNations/videos" target="_blank" class="yt-channel-item">
                             <i class="fa-brands fa-youtube"></i> CC Nations
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION E: RETRANSMISJA & OBS NADAWANIE (BROADCAST SECTION) -->
-    <section class="broadcast-section" id="broadcast-section" style="padding: 100px 0; background: linear-gradient(180deg, #090b11 0%, #030407 100%); position: relative; border-bottom: 1px solid rgba(255,255,255,0.03);">
-        <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+    <section class="broadcast-section collapsible-section" id="broadcast-section" style="background: linear-gradient(180deg, #090b11 0%, #030407 100%); position: relative; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-broadcast-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary);"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Retransmisja 24/7</span>
+                    <span class="collapsible-trigger-title">Nadawaj z Christian Culture</span>
+                    <span class="collapsible-trigger-subtitle">Darmowe sceny OBS Studio i pobieranie sygnału radiowego</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-broadcast-section">
+            <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
                 <span class="section-tag" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 12px; background: rgba(212, 175, 55, 0.08); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(212, 175, 55, 0.2);">Retransmisja 24/7</span>
                 <h2 class="section-title" style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; margin-bottom: 15px;">NADAWAJ Z CHRISTIAN CULTURE</h2>
                 <div class="gold-divider centered" style="width: 60px; height: 3px; background: var(--gold-primary); margin: 0 auto 20px auto; border-radius: 2px;"></div>
@@ -1547,12 +1897,33 @@
                 </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION F: SKLEP & WSPARCIE MISJI (SUPPORT & STORE) -->
-    <section class="support-store-section" id="support-store">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="support-store-section collapsible-section" id="support-store">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-support-store">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-store" style="color: #f59e0b;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Wspieraj Dzieło & Oficjalny Sklep</span>
+                    <span class="collapsible-trigger-title">Wsparcie Misji & Sklep</span>
+                    <span class="collapsible-trigger-subtitle">Kolekcja "Mogę Wszystko", Patronite i zrzutka</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-support-store">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Wspieraj Dzieło</span>
                 <h2 class="section-title">WSPARCIE MISJI & SKLEP</h2>
                 <div class="gold-divider centered"></div>
@@ -1590,12 +1961,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION F2: OPINIE UŻYTKOWNIKÓW (GOOGLE REVIEWS) -->
-    <section class="reviews-section" id="reviews-section">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="reviews-section collapsible-section" id="reviews-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-reviews-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-comments" style="color: #34d399;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Głos Społeczności</span>
+                    <span class="collapsible-trigger-title">Opinie Przyjaciół Misji</span>
+                    <span class="collapsible-trigger-subtitle">Świadectwa słuchaczy i recenzje w Google</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-reviews-section">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Opinie Słuchaczy</span>
                 <h2 class="section-title">OPINIE PRZYJACIÓŁ MISJI</h2>
                 <div class="gold-divider centered"></div>
@@ -1631,31 +2023,200 @@
                 </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- SECTION G: KONTAKT (CONTACT) -->
-    <section class="contact-section" id="contact-section">
-        <div class="section-container">
-            <div class="section-header">
+    <!-- SECTION E: PYTANIA I ODPOWIEDZI (Q&A / FAQ — GEO & AIO) -->
+    <section class="qna-section collapsible-section" id="qna-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-qna-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-circle-question" style="color: #c084fc;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Baza Wiedzy & Pomoc</span>
+                    <span class="collapsible-trigger-title">Pytania i Odpowiedzi (Q&A)</span>
+                    <span class="collapsible-trigger-subtitle">Wszystko o naszych 6 stacjach, misji i aplikacjach</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-qna-section">
+            <div class="qna-container">
+                <div class="qna-header-box">
+                <span class="qna-tag"><i class="fa-solid fa-circle-question"></i> Baza Wiedzy & Pomoc</span>
+                <h2 class="qna-title">Pytania i Odpowiedzi (Q&A)</h2>
+                <div class="gold-divider centered"></div>
+                <p class="qna-subtitle">
+                    Poznaj najważniejsze informacje o 6 stacjach radiowych, bezpłatnym kinie VOD, portalu LUMINA oraz narzędziach duchowych w ekosystemie Christian Culture.
+                </p>
+            </div>
+
+            <div class="qna-accordion">
+                <!-- Q1: 6 Stacji Radiowych -->
+                <details class="qna-item" open>
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">1</span>
+                            <span>Jakich 6 stacji radiowych mogę słuchać na PolskieRadio.cc?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p>W naszym odtwarzaczu nadajemy 24 godziny na dobę 6 wyspecjalizowanych stacji w bezstratnej jakości HD:</p>
+                        <ul>
+                            <li>🔴 <strong>Radio PL:</strong> Główny kanał z audycjami autorskimi, wartościową muzyką chrześcijańską i komentarzami biblijnymi.</li>
+                            <li>🔵 <strong>Radio Global:</strong> Międzynarodowe pasmo anglojęzyczne z muzyką worship i nauczaniem.</li>
+                            <li>🟡 <strong>Radio Biblia:</strong> Całodobowe, profesjonalne czytanie Pisma Świętego (Stary i Nowy Testament) po polsku.</li>
+                            <li>🟡 <strong>Global Biblia:</strong> Angielska Biblia Audio 24/7 (Holy Scripture Audio Narration).</li>
+                            <li>🟣 <strong>Instrumental Worship:</strong> Spokojna, klimatyczna muzyka instrumentalna (fortepian, ambient) do modlitwy i wyciszenia.</li>
+                            <li>🟡 <strong>Biblia Śpiewana:</strong> Słowo Boże ubrane w piękne, melodyjne kompozycje muzyczne.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Q2: Bezpłatność & Misja -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">2</span>
+                            <span>Czy słuchanie radia i korzystanie z portalu jest całkowicie bezpłatne?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p><strong>Tak, w 100% bezpłatne.</strong> Cała transmisja radiowa, kino VOD, materiały do pobrania oraz aplikacje są udostępniane za darmo dla każdego człowieka, bez żadnych ukrytych abonamentów i opłat.</p>
+                        <p>Działalność misyjna i rozwój technologiczny są w pełni finansowane z dobrowolnych darowizn oraz wsparcia naszych Patronów na <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener">Patronite.pl/osobowoscplus</a>.</p>
+                    </div>
+                </details>
+
+                <!-- Q3: VOD Christian Culture -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">3</span>
+                            <span>Czym jest strefa VOD Christian Culture i jak oglądać filmy?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p>Strefa <strong>VOD Christian Culture</strong> (<a href="vod">polskieradio.cc/vod</a>) to chrześcijańskie kino online dostępne 24/7 w przeglądarce, na smartfonach i Smart TV.</p>
+                        <p>W repertuarze znajdują się pełnometrażowe filmy fabularne i dokumentalne z polskim lektorem (Lektor PL), m.in. <em>„Przełęcz ocalonych”</em>, <em>„Chata”</em>, <em>„JEZUS (Ewangelia wg św. Łukasza)”</em>, <em>„Bóg nie umarł 1 i 2”</em> oraz <em>„Luter”</em>.</p>
+                    </div>
+                </details>
+
+                <!-- Q4: Portal LUMINA -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">4</span>
+                            <span>Czym jest portal LUMINA i dla kogo powstał?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p><strong>LUMINA</strong> (<a href="lumina">polskieradio.cc/lumina</a>) to innowacyjny, bezpieczny portal relacji i randkowy dla osób wierzących. Łączy ludzi w oparciu o wspólne wartości chrześcijańskie, fundament Dekalogu i powołanie do czystej miłości oraz małżeństwa.</p>
+                        <p>Portal oferuje weryfikację profili, generator kart świadectw w formacie 9:16 oraz otwartą tablicę społecznościową.</p>
+                    </div>
+                </details>
+
+                <!-- Q5: Ściana Modlitwy -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">5</span>
+                            <span>Jak zgłosić intencję modlitewną na żywo?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p>W zakładce <strong>Zjednoczeni za Polskę</strong> (<a href="modlitwa.html">polskieradio.cc/modlitwa.html</a>) oraz na stronie głównej znajduje się interaktywna Ściana Modlitwy. Każdy może bezpłatnie wpisać swoją prośbę lub dziękczynienie, a społeczność z całego świata włącza się we wstawiennictwo klikając przycisk „Amen”.</p>
+                    </div>
+                </details>
+
+                <!-- Q6: Bezpłatna Biblia -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">6</span>
+                            <span>Jak zamówić darmowy egzemplarz Pisma Świętego?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p>Wyślij bezpłatny SMS o treści <strong>"BIBLIA"</strong> na numer <strong>+48 530 736 155</strong> (lub zadzwoń pod numer <strong>+48 507 821 789</strong>). Egzemplarz Nowego Testamentu / Biblii UBG zostanie wysłany bezpośrednio do Ciebie (zamawiający pokrywa jedynie symboliczny koszt przesyłki).</p>
+                    </div>
+                </details>
+
+                <!-- Q7: Aplikacje Mobilne -->
+                <details class="qna-item">
+                    <summary class="qna-summary">
+                        <div class="qna-q-title">
+                            <span class="qna-badge-q">7</span>
+                            <span>Jak zainstalować aplikacje mobilne Christian Culture?</span>
+                        </div>
+                        <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="qna-answer">
+                        <p>Nasze oficjalne aplikacje na Androida (<strong>Christian Culture</strong>, <strong>CC Light</strong> oraz <strong>Ambient Sleep</strong>) są dostępne bezpłatnie w sklepie <a href="https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl" target="_blank" rel="noopener">Google Play</a>. Ponadto cały portal działa jako Progresywna Aplikacja Internetowa (PWA), którą można dodać do ekranu głównego jednym kliknięciem na iOS i Androidzie.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- ==========================================
+         SECTION: KONTAKT I PEŁNA STOPKA
+         ========================================== -->
+    <section class="contact-section collapsible-section" id="contact-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-contact-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-envelope" style="color: #38bdf8;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Centrum Kontaktu</span>
+                    <span class="collapsible-trigger-title">Kontakt & Infolinia</span>
+                    <span class="collapsible-trigger-subtitle">Infolinia Nadzieja, telefon, adresy e-mail redakcji</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-contact-section">
+            <div class="contact-container">
+                <div class="section-header">
                 <span class="section-tag">Skontaktuj się z nami</span>
                 <h2 class="section-title">KONTAKT</h2>
                 <div class="gold-divider centered"></div>
                 <p class="section-subtitle">
-                    Masz pytania dotyczące naszej działalności, aplikacji mobilnych lub chcesz podzielić się świadectwem? Skontaktuj się z zespołem Polskie Radio Christian Culture.
+                    Masz pytania dotyczące naszej działalności, stacji radiowych, transmisji na żywo, filmów VOD lub aplikacji mobilnych? Skontaktuj się z zespołem Polskie Radio Christian Culture.
                 </p>
             </div>
             
             <div class="contact-grid">
-                <!-- Contact Card: Infolinia - Nadzieja -->
+                <!-- Contact Card 1: Infolinia -->
                 <div class="contact-card">
                     <div class="contact-card-glow"></div>
                     <div class="contact-card-icon"><i class="fa-solid fa-headset"></i></div>
                     <h3>Infolinia - Nadzieja</h3>
                     <p class="contact-card-value"><a href="tel:+48730958583">+48 730 958 583</a></p>
-                    <p class="contact-card-desc">Infolinia CHRISTIAN CULTURE</p>
+                    <p class="contact-card-desc">Infolinia CHRISTIAN CULTURE oraz wsparcie modlitewne</p>
                 </div>
 
-                <!-- Contact Card 1: Telefon -->
+                <!-- Contact Card 2: Telefon / SMS -->
                 <div class="contact-card">
                     <div class="contact-card-glow"></div>
                     <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
@@ -1664,7 +2225,7 @@
                     <p class="contact-card-desc">Obsługa telefoniczna oraz kontakt SMS/MMS</p>
                 </div>
                 
-                <!-- Contact Card 2: Email 1 -->
+                <!-- Contact Card 3: Email Główny -->
                 <div class="contact-card">
                     <div class="contact-card-glow"></div>
                     <div class="contact-card-icon"><i class="fa-solid fa-envelope"></i></div>
@@ -1673,25 +2234,33 @@
                     <p class="contact-card-desc">Główny adres e-mail do kontaktu i zapytań ogólnych</p>
                 </div>
 
-                <!-- Contact Card 3: Email 2 -->
+                <!-- Contact Card 4: Wsparcie Techniczne & TV -->
                 <div class="contact-card">
                     <div class="contact-card-glow"></div>
                     <div class="contact-card-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
                     <h3>Wsparcie Techniczne & TV</h3>
                     <p class="contact-card-value"><a href="mailto:polskiercctv@gmail.com">polskiercctv@gmail.com</a></p>
-                    <p class="contact-card-desc">Kontakt w sprawach technicznych oraz Christian Culture TV</p>
+                    <p class="contact-card-desc">Kontakt w sprawach technicznych, transmisji oraz CCTV24</p>
                 </div>
             </div>
+        </div>
+    </div>
             
-            <!-- Simple clean copyright footer block within contact section -->
-            <div class="contact-footer">
-                <p>&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
+    <!-- Simple clean copyright footer block within contact section -->
+    <div class="contact-footer" style="margin-top: 2rem; padding: 2rem 1rem 3rem 1rem; border-top: 1px solid rgba(212,175,55,0.15); text-align: center;">
+                <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
                 <div class="footer-links" style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
                     <a href="privacy.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Polityka Prywatności</a>
                     <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
                     <a href="general-safety.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Standardy Bezpieczeństwa</a>
                     <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
                     <a href="lumina-safety.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Ochrona Dzieci (Lumina)</a>
+                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
+                    <a href="program.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Program TV</a>
+                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
+                    <a href="tv" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Smart TV CC</a>
+                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
+                    <a href="vod" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Kino VOD</a>
                 </div>
             </div>
         </div>
@@ -1890,73 +2459,92 @@
 
     <!-- Scripts -->
     <script type="text/javascript">
-        // ── ENFORCE POLISH AS DEFAULT LANGUAGE ──
+        // ── ENFORCE POLISH AS DEFAULT LANGUAGE & CLEAN TRANSLATE ──
+        function purgeGoogleTransCookies() {
+            try {
+                var host = window.location.hostname;
+                var domains = ['', host, '.' + host];
+                var parts = host.split('.');
+                if (parts.length >= 2) {
+                    var rootDomain = parts.slice(-2).join('.');
+                    domains.push(rootDomain);
+                    domains.push('.' + rootDomain);
+                }
+                var paths = ['/', ''];
+                domains.forEach(function(d) {
+                    paths.forEach(function(p) {
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + (d ? '; domain=' + d : '');
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p;
+                    });
+                });
+            } catch(e) {}
+        }
+
         (function() {
             try {
-                const savedLang = localStorage.getItem('lumina_lang');
-                if (!savedLang || savedLang === 'pl') {
+                var isExplicitEn = localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
+                if (!isExplicitEn) {
                     localStorage.setItem('lumina_lang', 'pl');
-                    if (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen')) {
-                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        if (window.location.hostname.includes('.')) {
-                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        }
-                        document.cookie = 'googtrans=/pl/pl; Path=/;';
-                    }
+                    sessionStorage.removeItem('lumina_explicit_en');
+                    purgeGoogleTransCookies();
+                    document.cookie = 'googtrans=/pl/pl; path=/;';
                 }
             } catch(e) {}
         })();
 
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pl',
-                includedLanguages: 'en,pl',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
+            // Google Translate uruchamia się WYŁĄCZNIE gdy użytkownik świadomie wybrał język angielski
+            if (localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1') {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'pl',
+                    includedLanguages: 'en,pl',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('shortcutLangRow');
             const langSubtitle = document.getElementById('langSubtitle');
  
-            // Function to check if translated to English (based on Google Translate cookie)
+            // Function to check if translated to English
             function isEnglish() {
-                return localStorage.getItem('lumina_lang') === 'en' &&
-                       (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
+                return localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
             }
  
             // Sync button label on load
-            if (langBtn) {
-                if (isEnglish()) {
-                    langBtn.title = 'Przełącz na język polski';
-                    if (langSubtitle) langSubtitle.textContent = 'Switch to Polish';
-                } else {
-                    langBtn.title = 'Switch to English';
-                    if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
+            function syncLangButton() {
+                if (langBtn) {
+                    if (isEnglish()) {
+                        langBtn.title = 'Przełącz na język polski 🇵🇱';
+                        if (langSubtitle) langSubtitle.textContent = 'Zmień na polski';
+                    } else {
+                        langBtn.title = 'Switch to English 🇬🇧';
+                        if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
+                    }
                 }
             }
+            syncLangButton();
  
             if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (isEnglish()) {
-                        // Switch back to Polish by clearing the cookies
                         localStorage.setItem('lumina_lang', 'pl');
-                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-                        if (window.location.hostname.includes('.')) {
-                            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
-                        }
-                        document.cookie = "googtrans=/pl/pl; path=/";
+                        sessionStorage.removeItem('lumina_explicit_en');
+                        purgeGoogleTransCookies();
+                        document.cookie = 'googtrans=/pl/pl; path=/;';
+                        window.location.reload();
                     } else {
-                        // Switch to English
                         localStorage.setItem('lumina_lang', 'en');
-                        document.cookie = "googtrans=/pl/en; path=/";
+                        sessionStorage.setItem('lumina_explicit_en', '1');
+                        document.cookie = 'googtrans=/pl/en; path=/;';
                         if (window.location.hostname.includes('.')) {
-                            document.cookie = "googtrans=/pl/en; path=/; domain=" + window.location.hostname;
+                            document.cookie = 'googtrans=/pl/en; path=/; domain=' + window.location.hostname + ';';
                         }
+                        window.location.reload();
                     }
-                    window.location.reload();
                 });
             }
  
@@ -2008,23 +2596,21 @@
             }
 
 
-            // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
+            // Dynamic fail-safe cleanup for Google Translate top banner (only hides Google Translate bar, NEVER video/audio player iframes!)
             function cleanGoogleBanner() {
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com')) {
-                        iframe.style.setProperty('display', 'none', 'important');
-                        iframe.style.setProperty('visibility', 'hidden', 'important');
-                        iframe.style.setProperty('height', '0px', 'important');
-                        iframe.style.setProperty('width', '0px', 'important');
-                        iframe.style.setProperty('opacity', '0', 'important');
-                    }
+                document.querySelectorAll('iframe.goog-te-banner-frame, iframe[id*=":1.container"], .goog-te-banner-frame, iframe[src*="translate.google.com"], iframe[src*="translate.googleapis.com"]').forEach(iframe => {
+                    iframe.style.setProperty('display', 'none', 'important');
+                    iframe.style.setProperty('visibility', 'hidden', 'important');
+                    iframe.style.setProperty('height', '0px', 'important');
+                    iframe.style.setProperty('width', '0px', 'important');
+                    iframe.style.setProperty('opacity', '0', 'important');
                 });
                 document.body.style.setProperty('top', '0px', 'important');
                 document.body.style.setProperty('position', 'static', 'important');
                 document.documentElement.style.setProperty('margin-top', '0px', 'important');
             }
             cleanGoogleBanner();
-            setInterval(cleanGoogleBanner, 200);
+            setInterval(cleanGoogleBanner, 500);
 
             // --- Real-time Header Schedule Updater ---
             function updateHeaderSchedule() {
@@ -2033,115 +2619,121 @@
                 const min = now.getMinutes();
                 const timeInMinutes = hour * 60 + min;
 
-                let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master" };
                 let next = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 let third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
 
                 // 08:00 - 08:52 (Studium Telewizyjne Pisma Świętego Poranek)
                 if (timeInMinutes >= 8 * 60 && timeInMinutes < 8 * 60 + 52) {
-                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "studium-live.html" };
+                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "master" };
                     next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                 }
                 // 06:00 - 08:00 (Zjednoczeni za Polskę Poranek)
                 else if (timeInMinutes >= 6 * 60 && timeInMinutes < 8 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master" };
                     next = { time: "08:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 08:52 - 09:00 (Zjednoczeni za Polskę Przedpołudnie)
                 else if (timeInMinutes >= 8 * 60 + 52 && timeInMinutes < 9 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master" };
                     next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 09:00 - 09:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "09:06", title: "Zjednoczeni za Polskę" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 09:06 - 10:00 (Zjednoczeni za Polskę Przedpołudnie)
                 else if (timeInMinutes >= 9 * 60 + 6 && timeInMinutes < 10 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master" };
                     next = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                     third = { time: "12:00", title: "Biblia Śpiewana" };
                 }
                 // 10:00 - 10:55 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 10 * 60 && timeInMinutes < 10 * 60 + 55) {
-                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
+                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
-                    third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
+                    third = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
                 }
                 // 10:55 - 12:00 (Zjednoczeni za Polskę Pasmo Południowe)
                 else if (timeInMinutes >= 10 * 60 + 55 && timeInMinutes < 12 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
+                    third = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
+                }
+                // 12:00 - 13:00 (Biblia Śpiewana Popołudnie)
+                else if (timeInMinutes >= 12 * 60 && timeInMinutes < 13 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Południowe)", url: "master" };
+                    next = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
                     third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
                 }
-                // 12:00 - 15:00 (Biblia Śpiewana Popołudnie)
-                else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                // 13:00 - 15:00 (TV Epafraz — Główne Pasmo Biblijne 2h)
+                else if (timeInMinutes >= 13 * 60 && timeInMinutes < 15 * 60) {
+                    current = { title: "TV Epafraz — Główne Pasmo Biblijne (24 Serie)", url: "master" };
                     next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
-                    third = { time: "15:06", title: "Biblia Śpiewana" };
+                    third = { time: "16:00", title: "Codzienne Uwielbienie" };
                 }
                 // 15:00 - 15:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "15:06", title: "Biblia Śpiewana" };
-                    third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
+                    third = { time: "16:00", title: "Codzienne Uwielbienie (Blok Muzyczny)" };
                 }
                 // 15:06 - 16:00 (Biblia Śpiewana Popołudnie)
                 else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 16 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master" };
                     next = { time: "16:00", title: "Codzienne Uwielbienie (Blok Muzyczny)" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
                 // 16:00 - 18:00 (Codzienne Uwielbienie — Blok Muzyczny 2h)
                 else if (timeInMinutes >= 16 * 60 && timeInMinutes < 18 * 60) {
-                    current = { title: "Codzienne Uwielbienie (Blok Muzyczny 24/7)", url: "spiewajmy-panu-live.html" };
-                    next = { time: "18:00", title: "Biblia Śpiewana / Chrześcijański Blok Filmowy" };
+                    current = { title: "Codzienne Uwielbienie (Blok Muzyczny 24/7)", url: "master" };
+                    next = { time: "18:00", title: "Totalny Atak — Wykłady" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
-                // 18:00 - 20:00 (Biblia Śpiewana / Blok Filmowy)
+                // 18:00 - 20:00 (Totalny Atak — codziennie)
                 else if (timeInMinutes >= 18 * 60 && timeInMinutes < 20 * 60) {
-                    current = { title: "Biblia Śpiewana / Blok Filmowy", url: "master-live.html" };
+                    current = { title: "Totalny Atak — Wykłady Biblijne", url: "master" };
                     next = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "21:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 20:00 - 20:52 (Studium Telewizyjne Pisma Świętego Wieczór)
                 else if (timeInMinutes >= 20 * 60 && timeInMinutes < 20 * 60 + 52) {
-                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "studium-live.html" };
+                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 20:52 - 21:00 (Biblia Śpiewana)
                 else if (timeInMinutes >= 20 * 60 + 52 && timeInMinutes < 21 * 60) {
-                    current = { title: "Biblia Śpiewana", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 21:00 - 21:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "21:06", title: "Biblia Śpiewana" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 21:06 - 22:00 (Biblia Śpiewana Finał Dnia)
                 else if (timeInMinutes >= 21 * 60 + 6 && timeInMinutes < 22 * 60) {
-                    current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master" };
                     next = { time: "22:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                     third = { time: "22:55", title: "Instrumental Worship" };
                 }
                 // 22:00 - 22:55 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 22 * 60 && timeInMinutes < 22 * 60 + 55) {
-                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
+                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
                     next = { time: "22:55", title: "Instrumental Worship & Nocne Czuwanie" };
                     third = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 }
                 // 22:55 - 24:00 or 00:00 - 06:00 (Nocne Czuwanie)
                 else {
-                    current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                    current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master" };
                     next = { time: "06:00", title: "Zjednoczeni za Polskę" };
                     third = { time: "08:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
@@ -2170,9 +2762,145 @@
         });
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script type="module" src="app.js?v=27"></script>
-    <script type="module" src="dobrzezejestes.js?v=6"></script>
+    <script type="module" src="app.js?v=32"></script>
+    <script type="module" src="dobrzezejestes.js?v=20260831_v8"></script>
+    <script>
+        // Automatic reliable smooth-scroller for news report hashes
+        (function() {
+            function checkAndScrollToHash() {
+                var hash = window.location.hash;
+                if (!hash) return;
+                var aliases = ['#aktualnosci-sierpien', '#aktualnosci-lipiec', '#aktualnosci', '#raport', '#sprawozdanie', '#sprawozdanie-misyjne'];
+                var isNewsHash = aliases.indexOf(hash.toLowerCase()) !== -1 || hash.toLowerCase().indexOf('aktualnosci') !== -1 || hash.toLowerCase().indexOf('raport') !== -1;
+                
+                if (isNewsHash) {
+                    var el = document.getElementById('aktualnosci-sierpien') || document.querySelector(hash);
+                    if (el) {
+                        var headerOffset = 80;
+                        var elementPosition = el.getBoundingClientRect().top;
+                        var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
 
+                        // Visual highlight pulse so the user instantly sees the report
+                        el.style.transition = 'box-shadow 0.6s ease, border-color 0.6s ease';
+                        el.style.borderColor = 'var(--gold-primary)';
+                        el.style.boxShadow = '0 0 35px rgba(212, 175, 55, 0.45)';
+                        setTimeout(function() {
+                            el.style.borderColor = 'var(--border-gold-low)';
+                            el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+                        }, 3000);
+                    }
+                }
+            }
+
+            // Trigger at multiple intervals to handle dynamic images and media loading
+            window.addEventListener('DOMContentLoaded', function() {
+                setTimeout(checkAndScrollToHash, 80);
+                setTimeout(checkAndScrollToHash, 400);
+                setTimeout(checkAndScrollToHash, 1000);
+            });
+            window.addEventListener('hashchange', checkAndScrollToHash);
+        })();
+
+        // Global Image Guardian: Auto-repair and fallback protection
+        window.addEventListener('error', function(e) {
+            if (e.target && e.target.tagName === 'IMG') {
+                var img = e.target;
+                if (!img.dataset.failed) {
+                    img.dataset.failed = 'true';
+                    if (img.classList.contains('app-icon') || img.closest('.app-icon-wrapper')) {
+                        img.src = 'icon.png';
+                    }
+                }
+            }
+        }, true);
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CHRISTIAN CULTURE COLLAPSIBLE ACCORDION CONTROLLER
+         ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        (function() {
+            function toggleCollapsibleSection(sectionEl, forceState) {
+                if (!sectionEl) return;
+                const trigger = sectionEl.querySelector('.collapsible-trigger-bar');
+                const pillLabel = trigger ? trigger.querySelector('.pill-label') : null;
+                const isOpen = forceState !== undefined ? forceState : !sectionEl.classList.contains('is-open');
+
+                if (isOpen) {
+                    sectionEl.classList.add('is-open');
+                    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+                    if (pillLabel) pillLabel.textContent = 'Zwiń';
+                } else {
+                    sectionEl.classList.remove('is-open');
+                    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+                    if (pillLabel) pillLabel.textContent = 'Rozwiń';
+                }
+            }
+
+            // Inicjalizacja kliknięć w nagłówki akordeonu
+            document.querySelectorAll('.collapsible-trigger-bar').forEach(function(bar) {
+                bar.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.closest('.collapsible-section');
+                    if (section) {
+                        toggleCollapsibleSection(section);
+                    }
+                });
+            });
+
+            // Rozwijanie sekcji przy kliknięciu w link wewnętrzny (kotwica hash)
+            function expandTargetByHash(hash) {
+                if (!hash || hash.length < 2) return;
+                try {
+                    const target = document.querySelector(hash);
+                    if (!target) return;
+                    const section = target.classList.contains('collapsible-section') ? target : target.closest('.collapsible-section');
+                    if (section) {
+                        toggleCollapsibleSection(section, true);
+                        setTimeout(function() {
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 120);
+                    }
+                } catch(err) {}
+            }
+
+            // Przechwytywanie kliknięć w odnośniki z hashem w menu i drawerze
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href*="#"]');
+                if (!link) return;
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#') && href.length > 1) {
+                    expandTargetByHash(href);
+                }
+            });
+
+            // Sprawdzenie hasha przy starcie strony
+            window.addEventListener('DOMContentLoaded', function() {
+                if (window.location.hash) {
+                    setTimeout(function() {
+                        expandTargetByHash(window.location.hash);
+                    }, 200);
+                }
+            });
+            window.addEventListener('hashchange', function() {
+                if (window.location.hash) {
+                    expandTargetByHash(window.location.hash);
+                }
+            });
+
+            window.openCollapsibleSection = function(id) {
+                const el = document.getElementById(id);
+                if (el) toggleCollapsibleSection(el, true);
+            };
+        })();
+    </script>
+    <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
+    <script src="js/cc-global-auth.js?v=20260907_auth1" defer></script>
 </body>
 </html>
 

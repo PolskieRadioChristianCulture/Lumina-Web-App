@@ -1273,18 +1273,38 @@
                 </div>
                 <p class="hero-description">
                     Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki sześciu stacjom radiowym z muzyką i Słowem Bożym bezpośrednio w przeglądarce oraz pobierz nasze dedykowane aplikacje mobilne wspierające Twój rozwój duchowy.
-                </p>
                 <div class="hero-buttons">
-                    <a href="#" class="btn btn-gold" id="heroPlayBtn"><i class="fa-solid fa-play"></i> Słuchaj Radia</a>
-                    <a href="#apps-section" class="btn btn-outline scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                    <a href="https://polskieradio.cc/player" class="btn btn-gold" id="heroRadioBtn" title="Odtwarzacz Audio Polskie Radio CC"><i class="fa-solid fa-radio"></i> Radio</a>
+                    <a href="https://polskieradio.cc/nadawaj" class="btn btn-outline" id="heroTvBtn" title="Telewizja i Panel Nadawania CC"><i class="fa-solid fa-tv"></i> Telewizja</a>
                 </div>
             </div>
+        </div>
     </section>
 
     <!-- SECTION C: CODZIENNE ROZWAŻANIE (DOBRZE, ŻE JESTEŚ) -->
-    <section class="daily-reflection-section" id="dailyReflectionSection">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="daily-reflection-section collapsible-section" id="dailyReflectionSection">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-dailyReflectionSection">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-heart" style="color: #ec4899;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Codzienne Rozważanie</span>
+                    <span class="collapsible-trigger-title">Dobrze, że jesteś</span>
+                    <span class="collapsible-trigger-subtitle">Słowo Boże, inspiracja na dziś i hymn wideo</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-dailyReflectionSection">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Dobrze, że jesteś</span>
                 <h2 class="section-title" id="homepageDzjTitle">ŁADOWANIE ROZWAŻANIA...</h2>
                 <div class="gold-divider centered"></div>
@@ -1471,12 +1491,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION D: NASZE APLIKACJE (SHOWCASE) -->
-    <section class="apps-section" id="apps-section">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="apps-section collapsible-section" id="apps-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-apps-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-mobile-screen-button" style="color: #60a5fa;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Zasoby Mobilne & Web</span>
+                    <span class="collapsible-trigger-title">Pobierz Nasze Aplikacje</span>
+                    <span class="collapsible-trigger-subtitle">Christian Culture, Cuda Każdego Dnia i aplikacje Google Play</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-apps-section">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Zasoby Mobilne</span>
                 <h2 class="section-title">POBIERZ NASZE APLIKACJE</h2>
                 <div class="gold-divider centered"></div>
@@ -1652,12 +1693,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION E: STRUMIENIE SOCIAL MEDIA (SPOTIFY & YOUTUBE) -->
-    <section class="social-channels-section" id="social-channels">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="social-channels-section collapsible-section" id="social-channels">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-social-channels">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Nasze Media Społecznościowe</span>
+                    <span class="collapsible-trigger-title">Sieć YouTube & Spotify</span>
+                    <span class="collapsible-trigger-subtitle">CC MEN, CC WOMEN, Osobowość PLUS i Polskie Radio CC</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-social-channels">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Nasze Media</span>
                 <h2 class="section-title">KANAŁY STRUMIENIOWE</h2>
                 <div class="gold-divider centered"></div>
@@ -1794,12 +1856,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION E: RETRANSMISJA & OBS NADAWANIE (BROADCAST SECTION) -->
-    <section class="broadcast-section" id="broadcast-section" style="padding: 100px 0; background: linear-gradient(180deg, #090b11 0%, #030407 100%); position: relative; border-bottom: 1px solid rgba(255,255,255,0.03);">
-        <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+    <section class="broadcast-section collapsible-section" id="broadcast-section" style="background: linear-gradient(180deg, #090b11 0%, #030407 100%); position: relative; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-broadcast-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary);"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Retransmisja 24/7</span>
+                    <span class="collapsible-trigger-title">Nadawaj z Christian Culture</span>
+                    <span class="collapsible-trigger-subtitle">Darmowe sceny OBS Studio i pobieranie sygnału radiowego</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-broadcast-section">
+            <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
                 <span class="section-tag" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 12px; background: rgba(212, 175, 55, 0.08); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(212, 175, 55, 0.2);">Retransmisja 24/7</span>
                 <h2 class="section-title" style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; margin-bottom: 15px;">NADAWAJ Z CHRISTIAN CULTURE</h2>
                 <div class="gold-divider centered" style="width: 60px; height: 3px; background: var(--gold-primary); margin: 0 auto 20px auto; border-radius: 2px;"></div>
@@ -1814,12 +1897,33 @@
                 </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION F: SKLEP & WSPARCIE MISJI (SUPPORT & STORE) -->
-    <section class="support-store-section" id="support-store">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="support-store-section collapsible-section" id="support-store">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-support-store">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-store" style="color: #f59e0b;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Wspieraj Dzieło & Oficjalny Sklep</span>
+                    <span class="collapsible-trigger-title">Wsparcie Misji & Sklep</span>
+                    <span class="collapsible-trigger-subtitle">Kolekcja "Mogę Wszystko", Patronite i zrzutka</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-support-store">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Wspieraj Dzieło</span>
                 <h2 class="section-title">WSPARCIE MISJI & SKLEP</h2>
                 <div class="gold-divider centered"></div>
@@ -1857,12 +1961,33 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SECTION F2: OPINIE UŻYTKOWNIKÓW (GOOGLE REVIEWS) -->
-    <section class="reviews-section" id="reviews-section">
-        <div class="section-container">
-            <div class="section-header">
+    <section class="reviews-section collapsible-section" id="reviews-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-reviews-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-comments" style="color: #34d399;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Głos Społeczności</span>
+                    <span class="collapsible-trigger-title">Opinie Przyjaciół Misji</span>
+                    <span class="collapsible-trigger-subtitle">Świadectwa słuchaczy i recenzje w Google</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-reviews-section">
+            <div class="section-container">
+                <div class="section-header">
                 <span class="section-tag">Opinie Słuchaczy</span>
                 <h2 class="section-title">OPINIE PRZYJACIÓŁ MISJI</h2>
                 <div class="gold-divider centered"></div>
@@ -1898,13 +2023,33 @@
                 </a>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 
     <!-- SECTION E: PYTANIA I ODPOWIEDZI (Q&A / FAQ — GEO & AIO) -->
-    <section class="qna-section" id="qna-section">
-        <div class="qna-container">
-            <div class="qna-header-box">
+    <section class="qna-section collapsible-section" id="qna-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-qna-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-circle-question" style="color: #c084fc;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Baza Wiedzy & Pomoc</span>
+                    <span class="collapsible-trigger-title">Pytania i Odpowiedzi (Q&A)</span>
+                    <span class="collapsible-trigger-subtitle">Wszystko o naszych 6 stacjach, misji i aplikacjach</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-qna-section">
+            <div class="qna-container">
+                <div class="qna-header-box">
                 <span class="qna-tag"><i class="fa-solid fa-circle-question"></i> Baza Wiedzy & Pomoc</span>
                 <h2 class="qna-title">Pytania i Odpowiedzi (Q&A)</h2>
                 <div class="gold-divider centered"></div>
@@ -2024,14 +2169,35 @@
                 </details>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- ==========================================
          SECTION: KONTAKT I PEŁNA STOPKA
          ========================================== -->
-    <section class="contact-section" id="contact-section">
-        <div class="contact-container">
-            <div class="section-header">
+    <section class="contact-section collapsible-section" id="contact-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-contact-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-envelope" style="color: #38bdf8;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Centrum Kontaktu</span>
+                    <span class="collapsible-trigger-title">Kontakt & Infolinia</span>
+                    <span class="collapsible-trigger-subtitle">Infolinia Nadzieja, telefon, adresy e-mail redakcji</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-contact-section">
+            <div class="contact-container">
+                <div class="section-header">
                 <span class="section-tag">Skontaktuj się z nami</span>
                 <h2 class="section-title">KONTAKT</h2>
                 <div class="gold-divider centered"></div>
@@ -2077,9 +2243,11 @@
                     <p class="contact-card-desc">Kontakt w sprawach technicznych, transmisji oraz CCTV24</p>
                 </div>
             </div>
+        </div>
+    </div>
             
-            <!-- Simple clean copyright footer block within contact section -->
-            <div class="contact-footer" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(212,175,55,0.15); text-align: center;">
+    <!-- Simple clean copyright footer block within contact section -->
+    <div class="contact-footer" style="margin-top: 2rem; padding: 2rem 1rem 3rem 1rem; border-top: 1px solid rgba(212,175,55,0.15); text-align: center;">
                 <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
                 <div class="footer-links" style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
                     <a href="privacy.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Polityka Prywatności</a>
@@ -2650,6 +2818,86 @@
                 }
             }
         }, true);
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CHRISTIAN CULTURE COLLAPSIBLE ACCORDION CONTROLLER
+         ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        (function() {
+            function toggleCollapsibleSection(sectionEl, forceState) {
+                if (!sectionEl) return;
+                const trigger = sectionEl.querySelector('.collapsible-trigger-bar');
+                const pillLabel = trigger ? trigger.querySelector('.pill-label') : null;
+                const isOpen = forceState !== undefined ? forceState : !sectionEl.classList.contains('is-open');
+
+                if (isOpen) {
+                    sectionEl.classList.add('is-open');
+                    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+                    if (pillLabel) pillLabel.textContent = 'Zwiń';
+                } else {
+                    sectionEl.classList.remove('is-open');
+                    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+                    if (pillLabel) pillLabel.textContent = 'Rozwiń';
+                }
+            }
+
+            // Inicjalizacja kliknięć w nagłówki akordeonu
+            document.querySelectorAll('.collapsible-trigger-bar').forEach(function(bar) {
+                bar.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.closest('.collapsible-section');
+                    if (section) {
+                        toggleCollapsibleSection(section);
+                    }
+                });
+            });
+
+            // Rozwijanie sekcji przy kliknięciu w link wewnętrzny (kotwica hash)
+            function expandTargetByHash(hash) {
+                if (!hash || hash.length < 2) return;
+                try {
+                    const target = document.querySelector(hash);
+                    if (!target) return;
+                    const section = target.classList.contains('collapsible-section') ? target : target.closest('.collapsible-section');
+                    if (section) {
+                        toggleCollapsibleSection(section, true);
+                        setTimeout(function() {
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 120);
+                    }
+                } catch(err) {}
+            }
+
+            // Przechwytywanie kliknięć w odnośniki z hashem w menu i drawerze
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href*="#"]');
+                if (!link) return;
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#') && href.length > 1) {
+                    expandTargetByHash(href);
+                }
+            });
+
+            // Sprawdzenie hasha przy starcie strony
+            window.addEventListener('DOMContentLoaded', function() {
+                if (window.location.hash) {
+                    setTimeout(function() {
+                        expandTargetByHash(window.location.hash);
+                    }, 200);
+                }
+            });
+            window.addEventListener('hashchange', function() {
+                if (window.location.hash) {
+                    expandTargetByHash(window.location.hash);
+                }
+            });
+
+            window.openCollapsibleSection = function(id) {
+                const el = document.getElementById(id);
+                if (el) toggleCollapsibleSection(el, true);
+            };
+        })();
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
     <script src="js/cc-global-auth.js?v=20260907_auth1" defer></script>
