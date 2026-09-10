@@ -30,13 +30,13 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Przycisk Logowania przez Google */
+        /* Przycisk Logowania przez Google - Standard @SE26/27 Obsidian & Imperial Gold */
         .cc-auth-google-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, rgba(16, 24, 48, 0.92) 0%, rgba(26, 16, 44, 0.95) 100%);
-            border: 1.5px solid rgba(250, 204, 21, 0.45);
+            background: linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
             color: #ffffff;
             padding: 6px 14px 6px 10px;
             border-radius: 24px;
@@ -44,9 +44,9 @@
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 12px rgba(250, 204, 21, 0.15);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 14px rgba(212, 175, 55, 0.12);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
             white-space: nowrap;
@@ -54,9 +54,9 @@
         }
 
         .cc-auth-google-btn:hover {
-            border-color: #facc15;
-            background: linear-gradient(135deg, rgba(22, 34, 68, 0.98) 0%, rgba(42, 22, 68, 0.98) 100%);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(250, 204, 21, 0.35);
+            border-color: #d4af37;
+            background: linear-gradient(165deg, rgba(28, 38, 58, 0.98) 0%, rgba(17, 24, 39, 0.98) 100%);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65), 0 0 20px rgba(212, 175, 55, 0.3);
             transform: translateY(-1.5px) scale(1.02);
             color: #ffffff;
         }
@@ -73,7 +73,7 @@
         }
 
         .cc-auth-lumina-tag {
-            background: linear-gradient(135deg, #facc15, #ec4899);
+            background: linear-gradient(135deg, #d4af37, #f3e5ab);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 0.68rem;
@@ -81,33 +81,33 @@
             letter-spacing: 0.8px;
             text-transform: uppercase;
             padding-left: 2px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(212, 175, 55, 0.25);
             margin-left: 2px;
         }
 
-        /* Stan Zalogowany: Profil Pill */
+        /* Stan Zalogowany: Profil Pill - Standard @SE26/27 Obsidian & Imperial Gold */
         .cc-auth-user-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(11, 18, 38, 0.9);
-            border: 1.5px solid rgba(250, 204, 21, 0.4);
+            background: linear-gradient(165deg, rgba(17, 24, 39, 0.96) 0%, rgba(11, 15, 23, 0.96) 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
             border-radius: 24px;
             padding: 4px 12px 4px 5px;
             color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             transition: all 0.25s ease;
             user-select: none;
             min-height: 38px;
         }
 
         .cc-auth-user-pill:hover {
-            border-color: #facc15;
-            background: rgba(18, 30, 60, 0.95);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 14px rgba(250, 204, 21, 0.3);
+            border-color: #d4af37;
+            background: linear-gradient(165deg, rgba(28, 38, 58, 0.98) 0%, rgba(17, 24, 39, 0.98) 100%);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.28);
         }
 
         .cc-auth-avatar-wrap {
@@ -123,7 +123,7 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid #facc15;
+            border: 1.5px solid #d4af37;
             display: block;
         }
 
@@ -158,22 +158,23 @@
 
         .cc-auth-user-chevron {
             font-size: 0.65rem;
-            color: #94a3b8;
+            color: rgba(212, 175, 55, 0.7);
             transition: transform 0.2s ease;
         }
 
+        /* Dropdown Menu - Standard @SE26/27 Obsidian & Imperial Gold (Jednolity z #actionsList) */
         .cc-auth-dropdown {
             position: absolute;
             top: calc(100% + 10px);
             right: 0;
             width: 220px;
-            background: rgba(10, 16, 35, 0.97);
-            border: 1.5px solid rgba(250, 204, 21, 0.35);
+            background: linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
             border-radius: 18px;
             padding: 8px;
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 20px rgba(250, 204, 21, 0.15);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.12);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             display: none;
             flex-direction: column;
             gap: 4px;
@@ -197,7 +198,7 @@
             gap: 10px;
             padding: 8px 12px;
             border-radius: 12px;
-            color: #e2e8f0;
+            color: #ffffff;
             text-decoration: none;
             font-size: 0.82rem;
             font-weight: 600;
@@ -208,11 +209,12 @@
             width: 100%;
             text-align: left;
             box-sizing: border-box;
+            font-family: inherit;
         }
 
         .cc-auth-dropdown-item:hover {
-            background: rgba(250, 204, 21, 0.12);
-            color: #facc15;
+            background: rgba(212, 175, 55, 0.12);
+            color: #d4af37;
             transform: translateX(2px);
         }
 
@@ -220,12 +222,12 @@
             width: 16px;
             font-size: 0.88rem;
             text-align: center;
-            color: #facc15;
+            color: #d4af37;
         }
 
         .cc-auth-dropdown-sep {
             height: 1px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(212, 175, 55, 0.15);
             margin: 4px 6px;
         }
 
@@ -414,12 +416,28 @@
         }, 4500);
     }
 
-    // 7. Przełączanie dropdowna użytkownika
+    // 7. Przełączanie dropdowna użytkownika (z auto-zamykaniem menu skrótów)
     window.toggleCcUserDropdown = function(event) {
         if (event) event.stopPropagation();
         const drop = document.getElementById('ccAuthDropdown');
         if (drop) {
+            const willOpen = !drop.classList.contains('open');
             drop.classList.toggle('open');
+            if (willOpen) {
+                // Jeśli menu skrótów było otwarte, zamknij je dla czystości interfejsu
+                const actionsList = document.getElementById('actionsList');
+                const actionsToggleIcon = document.getElementById('actionsToggleIcon');
+                if (actionsList && (actionsList.style.opacity === '1' || actionsList.classList.contains('open'))) {
+                    actionsList.style.opacity = '0';
+                    actionsList.style.transform = 'translateY(-10px)';
+                    actionsList.style.pointerEvents = 'none';
+                    actionsList.classList.remove('open');
+                    if (actionsToggleIcon) {
+                        actionsToggleIcon.classList.remove('fa-xmark');
+                        actionsToggleIcon.classList.add('fa-plus');
+                    }
+                }
+            }
         }
     };
 
