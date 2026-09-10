@@ -91,12 +91,12 @@
             align-items: center;
             gap: 8px;
             background: linear-gradient(165deg, rgba(18, 18, 20, 0.96) 0%, rgba(8, 8, 10, 0.98) 100%);
-            border: 1.5px solid rgba(212, 175, 55, 0.35);
+            border: none;
             border-radius: 24px;
             padding: 4px 12px 4px 5px;
             color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.25), inset 0 1px 1px rgba(255, 235, 170, 0.2);
             backdrop-filter: blur(28px);
             -webkit-backdrop-filter: blur(28px);
             transition: all 0.25s ease;
@@ -105,9 +105,8 @@
         }
 
         .cc-auth-user-pill:hover {
-            border-color: #d4af37;
             background: linear-gradient(165deg, rgba(28, 28, 32, 0.98) 0%, rgba(16, 16, 18, 0.98) 100%);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.28);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.65), 0 0 24px rgba(212, 175, 55, 0.45), inset 0 1px 1px rgba(255, 235, 170, 0.35);
         }
 
         .cc-auth-avatar-wrap {
@@ -162,17 +161,17 @@
             transition: transform 0.2s ease;
         }
 
-        /* Dropdown Menu - Standard @SE26/27 Obsidian & Imperial Gold (Jednolity z #actionsList) */
+        /* Dropdown Menu - Standard @SE26/27 Obsidian & Imperial Gold (Dynamiczna Złota Poświata 3D) */
         .cc-auth-dropdown {
             position: absolute;
             top: calc(100% + 10px);
             right: 0;
             width: 220px;
             background: linear-gradient(165deg, rgba(18, 18, 20, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%);
-            border: 1.5px solid rgba(212, 175, 55, 0.35);
-            border-radius: 18px;
+            border: none;
+            border-radius: 20px;
             padding: 8px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.12);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.25), 0 0 70px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255, 235, 170, 0.2);
             backdrop-filter: blur(28px);
             -webkit-backdrop-filter: blur(28px);
             display: none;
