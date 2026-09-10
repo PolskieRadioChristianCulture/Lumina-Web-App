@@ -646,6 +646,19 @@
             gap: 4px;
         }
 
+        .action-circle-btn.shuffle-btn {
+            border-color: rgba(250, 204, 21, 0.4);
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.2);
+        }
+        .action-circle-btn.shuffle-btn:hover {
+            transform: rotate(45deg) scale(1.1);
+            box-shadow: 0 0 18px rgba(250, 204, 21, 0.6);
+        }
+        .header-btn#randomReelBtn:hover i {
+            transform: rotate(180deg);
+            transition: transform 0.4s ease;
+        }
+        
         .action-circle-btn {
             width: 48px;
             height: 48px;
@@ -1036,7 +1049,15 @@
                 <span class="header-badge">LIVE</span>
             </div>
 
-            <div style="display:flex; align-items:center; gap:8px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+                <button type="button" class="header-btn" id="randomReelBtn" onclick="jumpToRandomReel()" title="Wylosuj inną rolkę (tryb nieprzewidywalny)" aria-label="Losuj rolkę">
+                    <i class="fa-solid fa-shuffle" id="randomReelIcon" style="color:#facc15;"></i>
+                </button>
+
+                <button type="button" class="header-btn" id="autoAdvanceBtn" onclick="toggleAutoAdvance()" title="Automatyczne przejście do kolejnej rolki: WŁ" aria-label="Autoodtwarzanie">
+                    <i class="fa-solid fa-forward-step" id="autoAdvanceIcon" style="color:#38bdf8;"></i>
+                </button>
+
                 <button type="button" class="header-add-btn" id="openAddReelBtn" onclick="openPublishModal()" title="Opublikuj Rolkę z YouTube, TikTok, IG, FB, MP4" aria-label="Dodaj Rolkę">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <span>+ Dodaj</span>
@@ -1725,16 +1746,100 @@
             showShortsToast('✨ Twoja Rolka Wiary została opublikowana!');
         };
 
-        // ── Engine Sterowania i Filtracji Rolek Wiary ──
+        // ── Engine Sterowania i Filtracji Rolek Wiary (Dynamic Smart Shuffle) ──
         let cleanShortsBase = [];
         let loopCounter = 0;
         let isLoopAppending = false;
+        let isAutoAdvanceEnabled = localStorage.getItem('lumina_shorts_autoadvance') !== '0'; // Domyślnie WŁ
+        let recentlySeenIds = new Set();
 
-        // Filtr dopuszczonych do odtwarzania (eliminuje błędy platform zewnętrznych)
+        // ── Inteligentny Algorytm Dynamicznego Tasowania (Fisher-Yates) ──
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function smartFeedShuffle(items, pinnedId = null) {
+            if (!items || items.length <= 1) return items;
+
+            let pinned = null;
+            let pool = [];
+
+            if (pinnedId) {
+                pinned = items.find(it => it.id === pinnedId);
+                pool = items.filter(it => it.id !== pinnedId);
+            } else {
+                pool = [...items];
+            }
+
+            // Losujemy kolejność, aby za każdym razem sekwencja była świeża i nieprzewidywalna
+            pool = shuffleArray(pool);
+
+            // Heurystyka anty-klastrowa: rozsuwamy kanały live, aby nie były pod rząd
+            for (let i = 0; i < pool.length - 1; i++) {
+                const isCurLive = pool[i].videoType === 'live_iframe';
+                const isNextLive = pool[i + 1].videoType === 'live_iframe';
+                if (isCurLive && isNextLive) {
+                    const swapIdx = pool.findIndex((it, idx) => idx > i + 1 && it.videoType !== 'live_iframe');
+                    if (swapIdx !== -1) {
+                        [pool[i + 1], pool[swapIdx]] = [pool[swapIdx], pool[i + 1]];
+                    }
+                }
+            }
+
+            return pinned ? [pinned, ...pool] : pool;
+        }
+
+        // ── Przycisk "Losuj rolkę" (Błyskawiczny skok do losowej rolki) ──
+        window.jumpToRandomReel = function() {
+            const items = document.querySelectorAll('.short-slide');
+            if (!items.length) return;
+
+            // Wybierz indeks inny niż aktualny
+            let targetIdx = activeSlideIndex;
+            if (items.length > 1) {
+                const choices = [];
+                for (let i = 0; i < items.length; i++) {
+                    if (i !== activeSlideIndex) choices.push(i);
+                }
+                targetIdx = choices[Math.floor(Math.random() * choices.length)];
+            }
+
+            showShortsToast('🎲 Wylosowano nową rolkę!');
+            scrollToSlide(targetIdx);
+        };
+
+        // ── Przełącznik Autoodtwarzania Następnej Rolki ──
+        window.toggleAutoAdvance = function() {
+            isAutoAdvanceEnabled = !isAutoAdvanceEnabled;
+            localStorage.setItem('lumina_shorts_autoadvance', isAutoAdvanceEnabled ? '1' : '0');
+            updateAutoAdvanceUI();
+            showShortsToast(isAutoAdvanceEnabled ? '▶️ Automatyczne przejście do kolejnej rolki: WŁ' : '🔁 Powtarzanie rolki (pętla): WŁ');
+        };
+
+        function updateAutoAdvanceUI() {
+            const icon = document.getElementById('autoAdvanceIcon');
+            const btn = document.getElementById('autoAdvanceBtn');
+            if (!icon || !btn) return;
+            if (isAutoAdvanceEnabled) {
+                icon.className = 'fa-solid fa-forward-step';
+                icon.style.color = '#38bdf8';
+                btn.title = 'Automatyczne przejście do kolejnej losowej rolki: WŁ';
+            } else {
+                icon.className = 'fa-solid fa-repeat';
+                icon.style.color = '#94a3b8';
+                btn.title = 'Powtarzanie bieżącej rolki (pętla): WŁ';
+            }
+        }
+
+        // Filtr dopuszczonych do odtwarzania
         function isPlayableShort(item) {
             if (!item || !item.videoSrc) return false;
             const platform = (item.videoType || '').toLowerCase();
-            // Eliminujemy niedziałające atrapy TikToka, Instagrama i Facebooka
             if (platform === 'tiktok' || platform === 'instagram' || platform === 'facebook') {
                 return false;
             }
@@ -1753,7 +1858,6 @@
 
                 const idoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
                 if (idoc) {
-                    // 1. Likwidacja nakładki "URUCHOM STUDIO"
                     const overlay = idoc.getElementById('startOverlay');
                     if (overlay) {
                         overlay.classList.add('hidden');
@@ -1768,7 +1872,6 @@
                         idoc.head.appendChild(s);
                     }
 
-                    // 2. Wywołanie initStream
                     if (shouldPlay) {
                         try {
                             if (iframe.contentWindow) iframe.contentWindow._worshipUserInteracted = true;
@@ -1778,7 +1881,6 @@
                         }
                     }
 
-                    // 3. Sterowanie dźwiękiem
                     const audio = idoc.querySelector('audio') || idoc.getElementById('stream-audio') || idoc.getElementById('worshipAudioPlayer');
                     if (audio) {
                         const isMuted = window.AudioDirector ? window.AudioDirector.isMasterMuted : isGlobalMuted;
@@ -1797,7 +1899,6 @@
                 }
             } catch(e) {}
 
-            // PostMessage dla pełnej kompatybilności
             try {
                 const isMuted = window.AudioDirector ? window.AudioDirector.isMasterMuted : isGlobalMuted;
                 if (shouldPlay && !isMuted) {
@@ -1826,15 +1927,17 @@
             let platformBadgeHtml = '';
 
             if (platform === 'mp4') {
+                // Bez atrybutu loop — zakończenie wideo wywołuje auto-advance do kolejnej losowej rolki
                 mediaHtml = `
-                    <video playsinline loop preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}" onerror="this.closest('.short-slide').remove()">
+                    <video playsinline preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}" onerror="this.closest('.short-slide').remove()">
                         <source src="${item.videoSrc}" type="video/mp4">
                     </video>
                 `;
                 platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
             } else if (platform === 'youtube') {
+                // enablejsapi=1 dla detekcji zakończenia filmu i automatycznego przejścia
                 mediaHtml = `
-                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
+                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=0&playsinline=1&rel=0&modestbranding=1" 
                             class="youtube-shorts-iframe"
                             title="${escapeHtml(item.title)}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -1911,6 +2014,18 @@
                         <span class="action-label">Biblia</span>
                     </div>
 
+                    <!-- Random Reel Shuffle Button -->
+                    <div class="action-btn-wrapper">
+                        <button type="button" 
+                                class="action-circle-btn shuffle-btn" 
+                                onclick="jumpToRandomReel()" 
+                                title="Wylosuj następną rolkę (tryb nieprzewidywalny)" 
+                                aria-label="Losuj">
+                            <i class="fa-solid fa-shuffle" style="color:var(--gold);"></i>
+                        </button>
+                        <span class="action-label" style="color:var(--gold); font-weight:700;">Losuj</span>
+                    </div>
+
                     <!-- Desktop Nav Arrows -->
                     <div class="sidebar-nav-arrows" aria-label="Nawigacja rolek">
                         <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} - 1)" title="Poprzednia rolka (↑)" aria-label="Poprzednia">
@@ -1963,17 +2078,21 @@
             return slide;
         }
 
-        // ── Render Slides (Inicjalizacja) ──
+        // ── Render Slides (Inicjalizacja z dynamicznym losowaniem) ──
         function renderSlides(items) {
             const container = document.getElementById('shortsContainer');
             if (!container) return;
             container.innerHTML = '';
 
             // Filtracja: wyłącznie działające, zweryfikowane materiały
-            cleanShortsBase = (items || []).filter(isPlayableShort);
-            if (!cleanShortsBase.length) {
-                cleanShortsBase = FALLBACK_SHORTS.filter(isPlayableShort);
-            }
+            const base = (items || []).filter(isPlayableShort);
+            const poolToUse = base.length ? base : FALLBACK_SHORTS.filter(isPlayableShort);
+
+            // Sprawdzenie czy wywołano bezpośrednią rolkę przez hash w URL
+            const targetHash = window.location.hash ? window.location.hash.substring(1) : null;
+
+            // Dynamiczne inteligentne tasowanie (brak stałej, przewidywalnej sekwencji!)
+            cleanShortsBase = smartFeedShuffle(poolToUse, targetHash);
 
             cleanShortsBase.forEach((item, index) => {
                 const slide = createSlideElement(item, index);
@@ -1986,6 +2105,7 @@
 
             setupIntersectionObserver();
             setupInfiniteScroll();
+            updateAutoAdvanceUI();
 
             // Inicjalny start pierwszego slajdu przez Reżysera Dźwięku
             setTimeout(() => {
@@ -2000,7 +2120,7 @@
             }, 150);
         }
 
-        // ── Pętla Nieskończonego Przewijania (Infinite Loop) ──
+        // ── Pętla Nieskończonego Przewijania (Każda nowa pętla jest świeżo tasowana) ──
         function appendInfiniteShortsLoop() {
             if (isLoopAppending || !cleanShortsBase.length) return;
             isLoopAppending = true;
@@ -2011,11 +2131,23 @@
 
             const startIndex = container.querySelectorAll('.short-slide').length;
 
-            cleanShortsBase.forEach((item, idx) => {
+            // ŚWIEŻE LOSOWANIE dla kolejnej paczki rolek — koniec ze stałą sekwencją!
+            let nextBatch = shuffleArray(cleanShortsBase);
+
+            // Zabezpieczenie: pierwszy element nowej paczki nie może być taki sam jak ostatni
+            const currentLastSlide = container.querySelector('.short-slide:last-child');
+            if (currentLastSlide && nextBatch.length > 1) {
+                const lastSrc = currentLastSlide.getAttribute('data-original-src');
+                if (nextBatch[0].videoSrc === lastSrc) {
+                    nextBatch.push(nextBatch.shift());
+                }
+            }
+
+            nextBatch.forEach((item, idx) => {
                 const slideIndex = startIndex + idx;
                 const loopedItem = {
                     ...item,
-                    id: `${item.id}_loop_${loopCounter}_${idx}`
+                    id: `${item.id}_rnd_${loopCounter}_${idx}`
                 };
                 const slide = createSlideElement(loopedItem, slideIndex);
                 container.appendChild(slide);
@@ -2033,7 +2165,6 @@
             container._hasInfiniteScroll = true;
 
             container.addEventListener('scroll', () => {
-                // Gdy użytkownik zbliża się na 2.5 ekranu do końca, doładuj kolejną pętlę
                 if (container.scrollTop + container.clientHeight >= container.scrollHeight - (container.clientHeight * 2.5)) {
                     appendInfiniteShortsLoop();
                 }
@@ -2066,13 +2197,12 @@
                         }
                         updateProgress();
 
-                        // ── WIRTUALNY REŻYSER DŹWIĘKU: EXCLUSIVE AUDIO FOCUS ──
+                        // WIRTUALNY REŻYSER DŹWIĘKU
                         if (window.AudioDirector) {
                             const mediaType = video ? 'video' : (iframe && iframe.classList.contains('live-channel-iframe') ? 'live_iframe' : (iframe ? 'youtube' : 'unknown'));
                             const mediaEl = video || iframe;
                             window.AudioDirector.acquireFocus(slide.id, mediaType, mediaEl);
                         } else {
-                            // Fallback standardowy
                             if (video) {
                                 video.muted = isGlobalMuted;
                                 video.play().catch(() => {});
@@ -2083,9 +2213,21 @@
 
                         if (video) {
                             video.ontimeupdate = updateVideoProgress;
+                            // Automatyczne przejście do kolejnej losowej rolki po zakończeniu filmu
+                            video.onended = function() {
+                                if (isAutoAdvanceEnabled) {
+                                    showShortsToast('🎲 Kolejna rolka...');
+                                    setTimeout(() => {
+                                        scrollToSlide(activeSlideIndex + 1);
+                                    }, 300);
+                                } else {
+                                    video.currentTime = 0;
+                                    video.play().catch(() => {});
+                                }
+                            };
                         }
                     } else {
-                        // ── Wyciszenie i uśpienie po opuszczeniu ekranu ──
+                        // Wyciszenie i uśpienie po opuszczeniu ekranu
                         if (window.AudioDirector) {
                             const isDistant = Math.abs(index - activeSlideIndex) > 1;
                             const mediaType = video ? 'video' : (iframe && iframe.classList.contains('live-channel-iframe') ? 'live_iframe' : (iframe ? 'youtube' : 'unknown'));
@@ -2111,6 +2253,25 @@
 
             document.querySelectorAll('.short-slide').forEach(slide => observer.observe(slide));
         }
+
+        // ── Odbiór eventów z YouTube Player API (Auto-advance po zakończeniu wideo) ──
+        window.addEventListener('message', (event) => {
+            if (!event.data) return;
+            let data;
+            try {
+                data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+            } catch (e) { return; }
+
+            // YouTube state 0 = ENDED
+            if (data && (data.event === 'onStateChange' && data.info === 0)) {
+                if (isAutoAdvanceEnabled) {
+                    showShortsToast('🎲 Kolejna rolka...');
+                    setTimeout(() => {
+                        scrollToSlide(activeSlideIndex + 1);
+                    }, 400);
+                }
+            }
+        });
 
         // ── Kliknięcie / Tap w rolkę ──
         window.handleSlideTap = function(slideEl) {
@@ -2236,6 +2397,14 @@
                 container.scrollBy({ top: -slideHeight, behavior: 'smooth' });
             } else if (e.key === 'm') {
                 toggleGlobalMute();
+            } else if (e.key === 'r' || e.key === 's') {
+                // 'r' lub 's' = Random / Shuffle
+                e.preventDefault();
+                jumpToRandomReel();
+            } else if (e.key === 'a') {
+                // 'a' = Auto-advance toggle
+                e.preventDefault();
+                toggleAutoAdvance();
             } else if (e.key === ' ') {
                 e.preventDefault();
                 const activeSlide = document.querySelectorAll('.short-slide')[activeSlideIndex];
