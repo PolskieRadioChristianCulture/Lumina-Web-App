@@ -246,7 +246,7 @@
     <meta name="googlebot" content="index, follow">
 
     <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="style.css?v=25">
+    <link rel="stylesheet" href="style.css?v=26">
     <style>
         /* Aggressive Google Translate Banner and Offsets Hider */
         .goog-te-banner-frame,
@@ -693,7 +693,7 @@
                     </button>
                     
                     <!-- Vertical Dropdown Shortcuts Panel (3-Section Cohesive Grid) -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 740px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1.5px solid rgba(212, 175, 55, 0.35); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 25px rgba(212, 175, 55, 0.12); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 740px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: linear-gradient(165deg, rgba(18, 18, 20, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1.5px solid rgba(212, 175, 55, 0.35); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.95), 0 0 25px rgba(212, 175, 55, 0.12); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
                         <!-- Header inside shortcuts panel -->
                         <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Cinzel', serif; text-align: left; display: flex; align-items: center; justify-content: space-between;">
@@ -2244,27 +2244,28 @@
                 </div>
             </div>
         </div>
-    </div>
-            
-    <!-- Simple clean copyright footer block within contact section -->
-    <div class="contact-footer" style="margin-top: 2rem; padding: 2rem 1rem 3rem 1rem; border-top: 1px solid rgba(212,175,55,0.15); text-align: center;">
-                <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
-                <div class="footer-links" style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
-                    <a href="privacy.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Polityka Prywatności</a>
-                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
-                    <a href="general-safety.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Standardy Bezpieczeństwa</a>
-                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
-                    <a href="lumina-safety.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Ochrona Dzieci (Lumina)</a>
-                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
-                    <a href="program.html" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Program TV</a>
-                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
-                    <a href="tv" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Smart TV CC</a>
-                    <span style="color: rgba(212, 175, 55, 0.3); font-size: 0.85rem;">|</span>
-                    <a href="vod" style="color: var(--text-muted-gold); font-size: 0.85rem; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--text-muted-gold)'">Kino VOD</a>
-                </div>
-            </div>
-        </div>
     </section>
+
+    <!-- ==========================================
+         SITE FOOTER (GLOBALNY, ZAWSZE WIDOCZNY, BEZPIECZNY ODSTĘP NAD PASKIEM PLAYERA)
+         ========================================== -->
+    <footer class="site-footer" id="siteFooter">
+        <p class="footer-copyright">&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
+        <div class="footer-links">
+            <a href="privacy.html">Polityka Prywatności</a>
+            <span class="footer-separator">|</span>
+            <a href="general-safety.html">Standardy Bezpieczeństwa</a>
+            <span class="footer-separator">|</span>
+            <a href="lumina-safety.html">Ochrona Dzieci (Lumina)</a>
+            <span class="footer-separator">|</span>
+            <a href="program.html">Program TV</a>
+            <span class="footer-separator">|</span>
+            <a href="tv">Smart TV CC</a>
+            <span class="footer-separator">|</span>
+            <a href="vod">Kino VOD</a>
+        </div>
+    </footer>
+
 
     <!-- ANCHOR FOR SCROLLING -->
     <div id="radio-player-anchor"></div>
@@ -2904,7 +2905,7 @@
         })();
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
-    <script src="js/cc-global-auth.js?v=20260910_se26" defer></script>
+    <script src="js/cc-global-auth.js?v=20260910_se26_obsidian" defer></script>
 </body>
 </html>
 

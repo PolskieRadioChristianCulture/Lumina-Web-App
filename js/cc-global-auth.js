@@ -35,7 +35,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%);
+            background: linear-gradient(165deg, rgba(18, 18, 20, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%);
             border: 1.5px solid rgba(212, 175, 55, 0.35);
             color: #ffffff;
             padding: 6px 14px 6px 10px;
@@ -55,7 +55,7 @@
 
         .cc-auth-google-btn:hover {
             border-color: #d4af37;
-            background: linear-gradient(165deg, rgba(28, 38, 58, 0.98) 0%, rgba(17, 24, 39, 0.98) 100%);
+            background: linear-gradient(165deg, rgba(28, 28, 32, 0.98) 0%, rgba(16, 16, 18, 0.98) 100%);
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65), 0 0 20px rgba(212, 175, 55, 0.3);
             transform: translateY(-1.5px) scale(1.02);
             color: #ffffff;
@@ -90,7 +90,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(165deg, rgba(17, 24, 39, 0.96) 0%, rgba(11, 15, 23, 0.96) 100%);
+            background: linear-gradient(165deg, rgba(18, 18, 20, 0.96) 0%, rgba(8, 8, 10, 0.98) 100%);
             border: 1.5px solid rgba(212, 175, 55, 0.35);
             border-radius: 24px;
             padding: 4px 12px 4px 5px;
@@ -106,7 +106,7 @@
 
         .cc-auth-user-pill:hover {
             border-color: #d4af37;
-            background: linear-gradient(165deg, rgba(28, 38, 58, 0.98) 0%, rgba(17, 24, 39, 0.98) 100%);
+            background: linear-gradient(165deg, rgba(28, 28, 32, 0.98) 0%, rgba(16, 16, 18, 0.98) 100%);
             box-shadow: 0 6px 20px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.28);
         }
 
@@ -168,7 +168,7 @@
             top: calc(100% + 10px);
             right: 0;
             width: 220px;
-            background: linear-gradient(165deg, rgba(17, 24, 39, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%);
+            background: linear-gradient(165deg, rgba(18, 18, 20, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%);
             border: 1.5px solid rgba(212, 175, 55, 0.35);
             border-radius: 18px;
             padding: 8px;
