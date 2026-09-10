@@ -1283,22 +1283,27 @@
 
     <!-- SECTION C: CODZIENNE ROZWAŻANIE (DOBRZE, ŻE JESTEŚ) -->
     <section class="daily-reflection-section collapsible-section" id="dailyReflectionSection">
-        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-dailyReflectionSection">
-            <div class="collapsible-trigger-info">
-                <div class="collapsible-trigger-icon">
-                    <i class="fa-solid fa-heart" style="color: #ec4899;"></i>
+        <button type="button" class="collapsible-trigger-bar wow-panoramic-card wow-dzj-card" id="wowDzjTrigger" aria-expanded="false" aria-controls="content-dailyReflectionSection">
+            <div class="wow-card-glare"></div>
+            <div class="wow-card-left">
+                <div class="wow-icon-box">
+                    <i class="fa-solid fa-book-open"></i>
                 </div>
-                <div class="collapsible-trigger-text">
-                    <span class="collapsible-trigger-tag">Codzienne Rozważanie</span>
-                    <span class="collapsible-trigger-title">Dobrze, że jesteś</span>
-                    <span class="collapsible-trigger-subtitle">Słowo Boże, inspiracja na dziś i hymn wideo</span>
+                <div class="wow-text-content">
+                    <span class="wow-tag-pill"><i class="fa-solid fa-sun"></i> Codzienne Rozważanie</span>
+                    <h2 class="wow-card-title">Dobrze, że jesteś</h2>
+                    <p class="wow-card-subtitle">Słowo Boże, inspiracja na dziś i hymn wideo</p>
+                    <div class="wow-mini-actions">
+                        <span class="wow-mini-pill"><i class="fa-solid fa-book"></i> Czytaj <small>Słowo Dnia</small></span>
+                        <span class="wow-mini-pill"><i class="fa-solid fa-play"></i> Oglądaj <small>Rozważanie</small></span>
+                        <span class="wow-mini-pill"><i class="fa-solid fa-music"></i> Słuchaj <small>Hymn Dnia</small></span>
+                    </div>
                 </div>
             </div>
-            <div class="collapsible-trigger-action">
-                <span class="collapsible-status-pill">
-                    <span class="pill-label">Rozwiń</span>
-                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
-                </span>
+            <div class="wow-card-right">
+                <div class="wow-chevron-indicator">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
             </div>
         </button>
 
@@ -1494,24 +1499,164 @@
     </div>
 </section>
 
+    <!-- ═══════════════════════════════════════════════════════════════
+         SEKCJA: ODKRYJ CHRISTIAN CULTURE (SIATKA 6 KWADRATÓW 3D)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="cc-discover-section" id="ccDiscoverSection">
+        <div class="cc-discover-header">
+            <h2 class="cc-discover-title">
+                <span class="cc-discover-title-bar"></span>
+                Odkryj Christian Culture
+            </h2>
+            <a href="#broadcast-section" class="cc-discover-link">
+                Zobacz wszystkie <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="cc-discover-grid">
+            <!-- KAFELEK 1: Dobrze, że jesteś -->
+            <a href="#dailyReflectionSection" class="cc-square-card" id="tileDzjLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-dzj.jpg" alt="Dobrze, że jesteś" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">Dobrze, że jesteś</h3>
+                        <p class="cc-card-desc">Codzienna porcja Słowa</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-heart" style="color: #ec4899;"></i> Rozważanie</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KAFELEK 2: Radio -->
+            <a href="#radioPlayerBar" class="cc-square-card" id="tileRadioLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-radio.jpg" alt="Radio" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">Radio</h3>
+                        <p class="cc-card-desc">6 stacji 24/7</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-music" style="color: var(--wow-gold);"></i> Słuchaj</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KAFELEK 3: Biblia -->
+            <a href="mojabiblia.html" class="cc-square-card" id="tileBibliaLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-biblia.jpg" alt="Biblia" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">Biblia</h3>
+                        <p class="cc-card-desc">Czytaj • Studiuj • Odkrywaj</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-book-bible" style="color: #fbbf24;"></i> Poznaj</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KAFELEK 4: TV & VOD -->
+            <a href="vod" class="cc-square-card" id="tileVodLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-vod.jpg" alt="TV & VOD" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">TV & VOD</h3>
+                        <p class="cc-card-desc">Filmy • Dokumenty • Konferencje</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-film" style="color: #60a5fa;"></i> Oglądaj</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KAFELEK 5: GPT Dla Jezusa -->
+            <a href="#decalogueModal" class="cc-square-card" id="tileGptLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-gpt.jpg" alt="GPT Dla Jezusa" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">GPT Dla Jezusa</h3>
+                        <p class="cc-card-desc">Zadaj pytanie o Biblię</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-robot" style="color: #a78bfa;"></i> Zapytaj</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KAFELEK 6: LUMINA -->
+            <a href="lumina.html" class="cc-square-card" id="tileLuminaLink">
+                <div class="cc-card-thumb-wrap">
+                    <img src="images/homepage/art-lumina.jpg" alt="LUMINA" class="cc-card-thumb-img" loading="lazy">
+                    <div class="cc-card-thumb-gradient"></div>
+                </div>
+                <div class="cc-card-info">
+                    <div>
+                        <h3 class="cc-card-name">LUMINA</h3>
+                        <p class="cc-card-desc">Relacje • Wiara • Małżeństwo</p>
+                    </div>
+                    <div class="cc-card-btn-row">
+                        <span class="cc-card-btn-left"><i class="fa-solid fa-compass" style="color: #f43f5e;"></i> Odkrywaj</span>
+                        <i class="fa-solid fa-arrow-right cc-card-arrow"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
     <!-- SECTION D: NASZE APLIKACJE (SHOWCASE) -->
     <section class="apps-section collapsible-section" id="apps-section">
-        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-apps-section">
-            <div class="collapsible-trigger-info">
-                <div class="collapsible-trigger-icon">
-                    <i class="fa-solid fa-mobile-screen-button" style="color: #60a5fa;"></i>
+        <button type="button" class="collapsible-trigger-bar wow-panoramic-card wow-apps-card" id="wowAppsTrigger" aria-expanded="false" aria-controls="content-apps-section">
+            <div class="wow-card-glare"></div>
+            <div class="wow-card-left">
+                <div class="wow-icon-box">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
-                <div class="collapsible-trigger-text">
-                    <span class="collapsible-trigger-tag">Zasoby Mobilne & Web</span>
-                    <span class="collapsible-trigger-title">Pobierz Nasze Aplikacje</span>
-                    <span class="collapsible-trigger-subtitle">Christian Culture, Cuda Każdego Dnia i aplikacje Google Play</span>
+                <div class="wow-text-content">
+                    <span class="wow-tag-pill"><i class="fa-solid fa-mobile-screen"></i> Zasoby Mobilne & Web</span>
+                    <h2 class="wow-card-title"><span class="gold-accent">Pobierz</span> nasze aplikacje</h2>
+                    <p class="wow-card-subtitle">Christian Culture, Cuda Każdego Dnia i aplikacje Google Play</p>
+                    <div class="wow-store-row">
+                        <a href="https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl" target="_blank" class="wow-store-badge" onclick="event.stopPropagation();">
+                            <i class="fa-brands fa-google-play" style="color: #48bb78; font-size: 1.1rem;"></i>
+                            <span>GET IT ON<strong>Google Play</strong></span>
+                        </a>
+                        <a href="#" class="wow-store-badge" style="opacity: 0.75;" onclick="event.stopPropagation();">
+                            <i class="fa-brands fa-apple" style="font-size: 1.1rem;"></i>
+                            <span>Download on the<strong>App Store</strong></span>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="collapsible-trigger-action">
-                <span class="collapsible-status-pill">
-                    <span class="pill-label">Rozwiń</span>
-                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
-                </span>
+            <div class="wow-card-right">
+                <div class="wow-feature-tags">
+                    <span><i class="fa-solid fa-radio" style="color: var(--wow-gold);"></i> Radio & TV</span>
+                    <span><i class="fa-solid fa-book-bible" style="color: var(--wow-gold);"></i> Biblia & Studium</span>
+                    <span><i class="fa-solid fa-film" style="color: var(--wow-gold);"></i> VOD & Podcasty</span>
+                </div>
+                <div class="wow-chevron-indicator">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
             </div>
         </button>
 
@@ -2897,6 +3042,50 @@
                 const el = document.getElementById(id);
                 if (el) toggleCollapsibleSection(el, true);
             };
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           CHRISTIAN CULTURE 3D TILT ENGINE & DISCOVER GRID INTERACTION
+           ═══════════════════════════════════════════════════════════════ */
+        (function() {
+            const tiltElements = document.querySelectorAll('.wow-panoramic-card, .cc-square-card');
+            
+            tiltElements.forEach(function(card) {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -4;
+                    const rotateY = ((x - centerX) / centerX) * 4;
+                    
+                    card.style.transform = 'perspective(1000px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-4px) scale(1.01)';
+                    card.style.setProperty('--glare-x', (x / rect.width * 100).toFixed(1) + '%');
+                    card.style.setProperty('--glare-y', (y / rect.height * 100).toFixed(1) + '%');
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    card.style.transform = '';
+                });
+            });
+
+            // Obsługa kliknięcia kafelka Radio -> włącz radio i scrolluj
+            const tileRadio = document.getElementById('tileRadioLink');
+            if (tileRadio) {
+                tileRadio.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (window.playStation || window.togglePlay) {
+                        const playFn = window.playStation || window.togglePlay;
+                        try { playFn(); } catch(err) {}
+                    }
+                    const playerBar = document.getElementById('radioPlayerBar') || document.querySelector('.radio-player-bar');
+                    if (playerBar) {
+                        playerBar.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    }
+                });
+            }
         })();
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
