@@ -37,8 +37,8 @@ try {
 }
 
 const PROJECT_ID = firebaseConfig.projectId || 'lumina-cc';
-const DATABASE_ID = firebaseConfig.firestoreDatabaseId || 'ai-studio-luminacc-03566da3-121f-4803-84e4-c84a072169a2';
-const API_KEY = firebaseConfig.apiKey || '';
+const DATABASE_ID = firebaseConfig.firestoreDatabaseId || '(default)';
+const API_KEY = firebaseConfig.apiKey || 'AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M';
 
 const MONTH_NAMES_PL = [
   'STYCZNIA', 'LUTEGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA',
@@ -290,6 +290,7 @@ async function saveToFirestore(devotion) {
 async function createFirestorePost(devotion) {
   const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/${DATABASE_ID}/documents/lumina_posts?key=${API_KEY}`;
   const dateLabel = devotion.dateText.toUpperCase();
+  const slug = devotion.slug || devotion.id;
 
   const body = {
     fields: {
@@ -298,13 +299,16 @@ async function createFirestorePost(devotion) {
       authorRole: { stringValue: 'Cuda Każdego Dnia 📖✨ • Sieradz' },
       authorAvatar: { stringValue: 'avatar_andrzej_thiel.jpg' },
       time: { stringValue: `${dateLabel} • 🕊️ Cuda Każdego Dnia` },
-      title: { stringValue: `CUDA KAŻDEGO DNIA! ${dateLabel}. ${devotion.rawTitle.toUpperCase()}` },
+      title: { stringValue: `CUDA KAŻDEGO DNIA! ${dateLabel}. ${(devotion.rawTitle || devotion.title || '').toUpperCase()}` },
       text: { stringValue: devotion.fullTextFormatted },
-      image: { stringValue: devotion.imageUrl || '' },
-      sourceUrl: { stringValue: devotion.sourceUrl },
-      sourceSlug: { stringValue: devotion.slug || '' },
-      likes: { integerValue: '0' },
-      amen: { integerValue: '0' },
+      image: { stringValue: devotion.imageUrl || 'cuda_kazdego_dnia_current.jpg' },
+      sourceUrl: { stringValue: devotion.sourceUrl || `https://szukajacboga.pl/artykul/${slug}` },
+      sourceSlug: { stringValue: slug },
+      category: { stringValue: 'ckd' },
+      _isCkdDaily: { booleanValue: true },
+      isDevotion: { booleanValue: true },
+      likes: { integerValue: String(300 + Math.floor(Math.random() * 50)) },
+      amen: { integerValue: String(280 + Math.floor(Math.random() * 40)) },
       publishedAt: { stringValue: new Date().toISOString() },
       createdAtTimestamp: { integerValue: String(Date.now()) }
     }
@@ -325,6 +329,67 @@ async function createFirestorePost(devotion) {
 }
 
 
+async function syncEcosystem(base, cudaDbPath) {
+  // ═══ Kopiowanie bazy i grafik do pozostałych aplikacji ekosystemu ═══
+  const syncTargets = [
+    'C:\\Users\\czark\\Christian_Culture_Projekty\\Christian-Culture-Web-App\\public',
+    'C:\\Users\\czark\\Christian_Culture_Projekty\\cclite.pl\\public',
+    'C:\\Users\\czark\\Christian_Culture_Projekty\\Wektor1_VideoFactory'
+  ];
+  for (const targetDir of syncTargets) {
+    try {
+      if (fs.existsSync(targetDir)) {
+        fs.copyFileSync(cudaDbPath, path.join(targetDir, 'rozwazania_cuda_baza.json'));
+        const curJpg = path.join(__dirname, 'cuda_kazdego_dnia_current.jpg');
+        if (fs.existsSync(curJpg)) {
+          fs.copyFileSync(curJpg, path.join(targetDir, 'cuda_kazdego_dnia_current.jpg'));
+        }
+        console.log(`[Sync Cuda] ✅ Zsynchronizowano bazę i grafikę z: ${targetDir}`);
+      }
+    } catch (copyErr) {
+      console.warn(`[Sync Cuda] Uwaga przy kopiowaniu do ${targetDir}:`, copyErr.message);
+    }
+  }
+
+  // ═══ Synchronizacja do aplikacji Android „Dobrze, że jesteś” (cuda-398c0) ═══
+  try {
+    const wektorDir = 'C:\\Users\\czark\\Christian_Culture_Projekty\\Wektor1_VideoFactory';
+    const cudaKeyPath = path.join(wektorDir, 'cudaServiceAccountKey.json');
+    if (fs.existsSync(cudaKeyPath)) {
+      const adminMod = await import('C:/Users/czark/Christian_Culture_Projekty/Wektor1_VideoFactory/node_modules/firebase-admin/lib/index.js').catch(() => null);
+      if (adminMod && adminMod.default) {
+        const admin = adminMod.default;
+        const cudaKey = JSON.parse(fs.readFileSync(cudaKeyPath, 'utf8'));
+        const appName = 'ckd_sync_app_' + Date.now();
+        const cudaApp = admin.initializeApp({ credential: admin.credential.cert(cudaKey) }, appName);
+        const cudaDb = cudaApp.firestore();
+        for (const item of [base.current, ...(base.history || []).slice(0, 5)].filter(Boolean)) {
+          const dtMatch = (item.dateText || '').match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
+          if (!dtMatch) continue;
+          const mIndex = MONTH_NAMES_PL.indexOf(dtMatch[2].toUpperCase()) + 1;
+          const iso = `${dtMatch[3]}-${String(mIndex).padStart(2, '0')}-${String(dtMatch[1]).padStart(2, '0')}`;
+          const docId = `ckd_${iso}`;
+          await cudaDb.collection('reflections_ckd').doc(docId).set({
+            date: iso,
+            title: item.title,
+            teaser: item.title + ' • Rozważanie z cyklu Cuda Każdego Dnia (' + item.dateText + ')',
+            fullText: item.fullTextFormatted,
+            author: 'Andrzej Thiel',
+            series: 'cuda_kazdego_dnia',
+            source: item.sourceUrl || 'https://szukajacboga.pl/channel/cuda-kazdego-dnia',
+            imageUrl: item.imageUrl || 'https://polskieradio.cc/cuda_kazdego_dnia_current.jpg',
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+          console.log(`[Sync Cuda] ✅ reflections_ckd w cuda-398c0 zaktualizowano: ${docId}`);
+        }
+        await cudaApp.delete().catch(() => {});
+      }
+    }
+  } catch (cudaErr) {
+    console.warn('[Sync Cuda] Uwaga przy aktualizacji cuda-398c0:', cudaErr.message);
+  }
+}
+
 export async function syncCudaDaily() {
   try {
     const archiveHtml = await fetchHtml(ARCHIVE_URL);
@@ -344,7 +409,8 @@ export async function syncCudaDaily() {
 
     const missing = indexEntries.filter(e => !publishedSlugs.has(e.slug));
     if (!missing.length) {
-      console.log('[Sync Cuda] Brak nowych rozważań — wszystko już opublikowane.');
+      console.log('[Sync Cuda] Brak nowych rozważań na stronie źródłowej — weryfikuję spójność ekosystemu...');
+      await syncEcosystem(base, cudaDbPath);
       return { success: true, published: 0 };
     }
 
@@ -385,6 +451,8 @@ export async function syncCudaDaily() {
       }
     }
 
+    await syncEcosystem(base, cudaDbPath);
+
     const remaining = missing.length - toPublish.length;
     if (remaining > 0) {
       console.log(`[Sync Cuda] Pozostało jeszcze ${remaining} starszych wpisów do nadrobienia w kolejnym uruchomieniu.`);
@@ -399,10 +467,6 @@ export async function syncCudaDaily() {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   syncCudaDaily().then((res) => {
-    if (res.success) {
-      process.exit(0);
-    } else {
-      process.exit(1);
-    }
+    process.exitCode = res && res.success ? 0 : 1;
   });
 }

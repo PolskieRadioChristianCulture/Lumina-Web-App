@@ -1145,7 +1145,7 @@
                                         Andrzej Thiel
                                         <span class="post-badge-daily">Cuda Każdego Dnia</span>
                                     </div>
-                                    <div class="post-time">10 WRZEŚNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                    <div class="post-time">10 WRZEŚNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
                                 </div>
                             </div>
                             <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
@@ -2734,9 +2734,24 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
             return parts.length > 1 ? parts.slice(1).join('. ') : fullTitle;
         }
 
+        function shouldShowToday(timeStr, isFirst) {
+            if (!isFirst) return false;
+            const now = new Date();
+            const day = now.getDate();
+            const months = ['STYCZNIA', 'LUTEGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+            const todayStr = `${day} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            return String(timeStr || '').toUpperCase().includes(todayStr);
+        }
+
+        function cleanTime(timeStr) {
+            return String(timeStr || '').replace(/\s*\(Dzisiaj\)/gi, '').trim();
+        }
+
         function renderPost(id, p, isFirst) {
             const title = escapeHtml(extractDisplayTitle(p.title));
             const seriesLabel = escapeHtml((p.time || '').split('•')[0].trim() || p.time || '');
+            const timeLabel = cleanTime(p.time);
+            const isToday = shouldShowToday(timeLabel, isFirst);
             return `
                 <article class="feed-post-card" id="post_${escapeHtml(id)}" ${isFirst ? '' : 'style="opacity:0.95;"'}>
                     <div class="post-top-header">
@@ -2744,7 +2759,7 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                             <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
                             <div>
                                 <div class="post-author-name">Andrzej Thiel <span class="post-badge-daily">Cuda Każdego Dnia</span></div>
-                                <div class="post-time">${escapeHtml(p.time || '')}${isFirst ? ' (Dzisiaj)' : ''}</div>
+                                <div class="post-time">${escapeHtml(timeLabel)}${isToday ? ' (Dzisiaj)' : ''}</div>
                             </div>
                         </div>
                         <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
@@ -2779,17 +2794,49 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                 </article>`;
         }
 
+        let _andrzejBazaJsonCache = null;
         async function loadAndrzejBazaJson() {
             try {
                 const res = await fetch('rozwazania_cuda_baza.json?t=' + Date.now());
                 if (!res.ok) return;
-                const baza = await res.json();
-                console.log('[Andrzej Feed] Wczytano bazę JSON:', baza.current?.title);
+                _andrzejBazaJsonCache = await res.json();
+                console.log('[Andrzej Feed] Wczytano bazę JSON:', _andrzejBazaJsonCache.current?.title);
             } catch(e) {
                 console.warn('[Andrzej Feed] Baza JSON niedostępna:', e);
             }
         }
         loadAndrzejBazaJson();
+
+        function getPostTimeValue(d) {
+            if (!d) return 0;
+            // 1. ZAWSZE parsuj najpierw datę z tekstu rozważania (np. "10 WRZEŚNIA 2026")
+            const dateSource = d.time || d.dateText || d.title || '';
+            const match = dateSource.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
+            if (match) {
+                const months = {
+                    'STYCZNIA':0, 'LUTEGO':1, 'MARCA':2, 'KWIETNIA':3, 'MAJA':4, 'CZERWCA':5,
+                    'LIPCA':6, 'SIERPNIA':7, 'WRZEŚNIA':8, 'PAŹDZIERNIKA':9, 'LISTOPADA':10, 'GRUDNIA':11
+                };
+                const m = months[match[2].toUpperCase()];
+                if (m !== undefined) {
+                    return new Date(parseInt(match[3], 10), m, parseInt(match[1], 10), 6, 0).getTime();
+                }
+            }
+            // 2. Dopiero jako fallback znacznik czasu publikacji / utworzenia
+            if (d.publishedAt) {
+                const t = new Date(d.publishedAt).getTime();
+                if (!isNaN(t) && t > 0) return t;
+            }
+            if (d.createdAtTimestamp) {
+                if (typeof d.createdAtTimestamp.toMillis === 'function') return d.createdAtTimestamp.toMillis();
+                if (typeof d.createdAtTimestamp.toDate === 'function') return d.createdAtTimestamp.toDate().getTime();
+                const num = Number(d.createdAtTimestamp);
+                if (!isNaN(num) && num > 0) return num;
+                const t = new Date(d.createdAtTimestamp).getTime();
+                if (!isNaN(t) && t > 0) return t;
+            }
+            return 0;
+        }
 
         async function startAndrzejFeed(retriesLeft = 60) {
             if (!window.luminaDb && window.LuminaMediaReplacer?.getFirestoreInstance) {
@@ -2808,47 +2855,49 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                 );
                 onSnapshot(q, (snap) => {
                     const container = document.getElementById('andrzejPostsContainer');
-                    if (snap.empty) {
-                        // Jeśli w chmurze nie ma jeszcze postów, zachowaj wbudowane karty
-                        return;
-                    }
-                    const posts = snap.docs.map(d => ({ id: d.id, data: d.data() }));
-                    
-                    function getPostTimeValue(d) {
-                        if (d.publishedAt) {
-                            const t = new Date(d.publishedAt).getTime();
-                            if (!isNaN(t) && t > 0) return t;
-                        }
-                        if (d.createdAtTimestamp) {
-                            if (typeof d.createdAtTimestamp.toMillis === 'function') return d.createdAtTimestamp.toMillis();
-                            if (typeof d.createdAtTimestamp.toDate === 'function') return d.createdAtTimestamp.toDate().getTime();
-                            const num = Number(d.createdAtTimestamp);
-                            if (!isNaN(num) && num > 0) return num;
-                            const t = new Date(d.createdAtTimestamp).getTime();
-                            if (!isNaN(t) && t > 0) return t;
-                        }
-                        if (d.time) {
-                            const match = d.time.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
-                            if (match) {
-                                const months = {
-                                    'STYCZNIA':0, 'LUTEGO':1, 'MARCA':2, 'KWIETNIA':3, 'MAJA':4, 'CZERWCA':5,
-                                    'LIPCA':6, 'SIERPNIA':7, 'WRZEŚNIA':8, 'PAŹDZIERNIKA':9, 'LISTOPADA':10, 'GRUDNIA':11
-                                };
-                                const m = months[match[2].toUpperCase()];
-                                if (m !== undefined) {
-                                    return new Date(parseInt(match[3]), m, parseInt(match[1])).getTime();
+                    if (!container) return;
+
+                    const cloudDocs = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+
+                    // Połącz z bazą lokalną JSON, by najświeższe rozważanie było natychmiast dostępne
+                    const combined = [...cloudDocs];
+                    if (_andrzejBazaJsonCache) {
+                        const localItems = [_andrzejBazaJsonCache.current, ...(_andrzejBazaJsonCache.history || [])].filter(Boolean);
+                        for (const item of localItems) {
+                            const dateLabel = (item.dateText || '').toUpperCase();
+                            combined.push({
+                                id: `post_cuda_${item.slug}`,
+                                data: {
+                                    title: `CUDA KAŻDEGO DNIA! ${dateLabel}. ${(item.rawTitle || item.title || '').toUpperCase()}`,
+                                    time: `${dateLabel} • 🕊️ Cuda Każdego Dnia`,
+                                    text: item.fullTextFormatted || (item.paragraphs || []).join('\n\n'),
+                                    image: item.imageUrl || 'cuda_kazdego_dnia_current.jpg',
+                                    likes: item.likes || 315,
+                                    amen: item.amen || 285,
+                                    sourceSlug: item.slug
                                 }
-                            }
+                            });
                         }
-                        return 0;
                     }
 
-                    // Sortowanie po dacie / znaczniku czasu malejąco
-                    posts.sort((a, b) => getPostTimeValue(b.data) - getPostTimeValue(a.data));
+                    // Odrzuć posty testowe / uszkodzone oraz zduplikowane po slug
+                    const validPosts = [];
+                    const seenSlugs = new Set();
+                    for (const post of combined) {
+                        const p = post.data;
+                        if (!p || !p.text || p.text.length < 50 || p.text === 'Test content') continue;
+                        const slugKey = p.sourceSlug || p.title || post.id;
+                        if (seenSlugs.has(slugKey)) continue;
+                        seenSlugs.add(slugKey);
+                        validPosts.push(post);
+                    }
 
-                    if (posts.length > 0) {
+                    // Sortowanie po dacie rozważania malejąco (najnowsze na górze)
+                    validPosts.sort((a, b) => getPostTimeValue(b.data) - getPostTimeValue(a.data));
+
+                    if (validPosts.length > 0) {
                         const liveCard = container.querySelector('.mission-live-broadcast-card');
-                        const renderedPosts = posts.map((item, i) => renderPost(item.id, item.data, i === 0)).join('');
+                        const renderedPosts = validPosts.map((item, i) => renderPost(item.id, item.data, i === 0)).join('');
                         if (liveCard) {
                             container.innerHTML = liveCard.outerHTML + renderedPosts;
                         } else {
@@ -2857,7 +2906,6 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                     }
                 }, (err) => {
                     console.warn('[Andrzej Feed] Firestore live sync note:', err.message);
-                    // Nie zastępujemy zawartości błędem, dzięki czemu wbudowane karty natychmiastowe działają nieprzerwanie!
                 });
             } catch(e) {
                 console.warn('[Andrzej Feed] Initialization note:', e);
