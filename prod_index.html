@@ -2589,6 +2589,18 @@
                         }
                     }
                 });
+
+                // Auto-close on scroll for clean smartphone ergonomics
+                window.addEventListener("scroll", () => {
+                    if (actionsList.classList.contains("open")) {
+                        actionsList.classList.remove("open");
+                        actionsToggleBtn.classList.remove("open");
+                        actionsList.style.opacity = "0";
+                        actionsList.style.transform = "translateY(-10px)";
+                        actionsList.style.pointerEvents = "none";
+                        actionsToggleIcon.style.transform = "rotate(0deg)";
+                    }
+                }, { passive: true });
             }
 
             // Shortcuts integration triggers

@@ -104,6 +104,7 @@
                 transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
                 position: relative;
                 overflow: hidden;
+                flex-shrink: 0;
             }
             .group-card-item:hover {
                 background: rgba(255, 255, 255, 0.08);
@@ -517,20 +518,28 @@
         const viewCommander = document.getElementById('messengerCommanderView');
         const viewGroups = document.getElementById('messengerGroupsView');
 
+        const btnPost = document.getElementById('tabBtnCreatePost');
+        const viewPost = document.getElementById('messengerPostView');
+
         if (tab === 'groups') {
             if (btnPublic) { btnPublic.style.background = 'transparent'; btnPublic.style.color = '#94a3b8'; btnPublic.style.boxShadow = 'none'; }
             if (btnPrivate) { btnPrivate.style.background = 'transparent'; btnPrivate.style.color = '#94a3b8'; btnPrivate.style.boxShadow = 'none'; }
             if (btnCommander) { btnCommander.style.background = 'transparent'; btnCommander.style.color = '#94a3b8'; btnCommander.style.boxShadow = 'none'; }
+            if (btnPost) { btnPost.style.background = 'transparent'; btnPost.style.color = '#94a3b8'; btnPost.style.boxShadow = 'none'; }
             if (btnGroups) {
                 btnGroups.style.background = 'linear-gradient(135deg,#ec4899,#8b5cf6)';
                 btnGroups.style.color = '#fff';
                 btnGroups.style.boxShadow = '0 2px 8px rgba(236,72,153,0.3)';
             }
 
-            if (viewPublic) viewPublic.style.display = 'none';
-            if (viewPrivate) viewPrivate.style.display = 'none';
-            if (viewCommander) viewCommander.style.display = 'none';
-            if (viewGroups) viewGroups.style.display = 'flex';
+            if (viewPublic) viewPublic.style.setProperty('display', 'none', 'important');
+            if (viewPrivate) {
+                viewPrivate.style.setProperty('display', 'none', 'important');
+                viewPrivate.classList.add('is-hidden');
+            }
+            if (viewCommander) viewCommander.style.setProperty('display', 'none', 'important');
+            if (viewPost) viewPost.style.setProperty('display', 'none', 'important');
+            if (viewGroups) viewGroups.style.setProperty('display', 'flex', 'important');
 
             renderGroupsListView(document.getElementById('messengerGroupsListView'));
         } else {
@@ -539,7 +548,10 @@
                 btnGroups.style.color = '#94a3b8';
                 btnGroups.style.boxShadow = 'none';
             }
-            if (viewGroups) viewGroups.style.display = 'none';
+            if (viewGroups) viewGroups.style.setProperty('display', 'none', 'important');
+            if (viewPrivate && tab === 'private') {
+                viewPrivate.classList.remove('is-hidden');
+            }
 
             if (typeof originalSwitchMessengerMainTab === 'function') {
                 originalSwitchMessengerMainTab(tab);

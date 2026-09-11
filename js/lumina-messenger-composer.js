@@ -362,10 +362,13 @@
                 }
 
                 [viewPublic, viewPrivate, viewCommander, viewGroups].forEach(v => {
-                    if (v) v.style.display = 'none';
+                    if (v) {
+                        v.style.setProperty('display', 'none', 'important');
+                        if (v.id === 'messengerPrivateView') v.classList.add('is-hidden');
+                    }
                 });
 
-                if (viewPost) viewPost.style.display = 'flex';
+                if (viewPost) viewPost.style.setProperty('display', 'flex', 'important');
 
                 // Check logged in state
                 const user = window.getLuminaActiveUser();

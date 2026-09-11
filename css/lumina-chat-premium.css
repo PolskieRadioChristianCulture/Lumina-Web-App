@@ -123,12 +123,18 @@
 
 /* --- Układ dwukolumnowy (Dual-Pane) na desktopie --- */
 .messenger-dual-pane-container {
-    display: flex !important;
-    flex-direction: row !important;
-    flex: 1 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.messenger-dual-pane-container[style*="display: none"],
+.messenger-dual-pane-container[style*="display:none"],
+.messenger-dual-pane-container.is-hidden {
+    display: none !important;
 }
 
 /* Lewa kolumna: Inbox / Lista rozmów */
