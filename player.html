@@ -227,6 +227,10 @@
                 <i class="fa-solid fa-tower-broadcast text-[11px] text-amber-400"></i>
                 <span>Radio Live</span>
             </button>
+            <button onclick="scrollToSection('sec-clashofminds')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-scroll text-[11px] text-amber-400"></i>
+                <span>Clash of Minds</span>
+            </button>
             <button onclick="scrollToSection('sec-osobowosc')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
                 <i class="fa-solid fa-graduation-cap text-[11px] text-blue-400"></i>
                 <span>Osobowość PLUS</span>
@@ -277,6 +281,10 @@
                     <button onclick="scrollToSection('channels-section')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
                         <i class="fa-solid fa-tower-broadcast text-sm text-gray-400"></i>
                         <span>Stacje Live</span>
+                    </button>
+                    <button onclick="scrollToSection('sec-clashofminds')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-scroll text-sm text-amber-400"></i>
+                        <span>Clash of Minds</span>
                     </button>
                     <button onclick="scrollToSection('sec-osobowosc')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
                         <i class="fa-solid fa-graduation-cap text-sm text-blue-400"></i>
@@ -367,6 +375,20 @@
                                 <p class="text-[10px] text-gray-400 truncate">Komentarze · Rozmowy · Tematy</p>
                             </div>
                         </div>
+
+                        <!-- Clash of Minds (Walter Veith) -->
+                        <div onclick="playStation('clashofminds')" id="side-item-clashofminds" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition hover:bg-white/5 border border-transparent hover:border-white/10">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-scroll text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate">Clash of Minds</span>
+                                    <span class="text-[9px] font-bold text-amber-400">• PROROCTWA</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 truncate">Walter Veith · What's Up Prof?</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -451,6 +473,7 @@
             <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-full text-xs">
                 <button onclick="filterByTag('Wszystkie')" class="filter-pill active px-4 py-2 rounded-full bg-amber-500 text-gray-950 font-bold shadow-md transition whitespace-nowrap">Wszystkie</button>
                 <button onclick="filterByTag('Live')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Stacje Live</button>
+                <button onclick="filterByTag('Clash of Minds')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-amber-300 flex items-center gap-1.5"><i class="fa-solid fa-scroll text-[10px] text-amber-400"></i>Clash of Minds</button>
                 <button onclick="filterByTag('Osobowość PLUS')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-blue-300">Osobowość PLUS</button>
                 <button onclick="filterByTag('Christian Culture TV')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-teal-300">Christian Culture TV</button>
                 <button onclick="filterByTag('Polskie Radio CC')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-red-300">Polskie Radio CC</button>
@@ -464,12 +487,12 @@
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399] animate-pulse"></span>
-                        <span>Stacje Radiowe na Żywo</span>
+                        <span>Stacje Radiowe & Strumienie na Żywo</span>
                     </h2>
-                    <span class="text-xs text-gray-400 font-mono">5 strumieni 24/7</span>
+                    <span class="text-xs text-gray-400 font-mono">6 strumieni 24/7</span>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
                     <!-- Radio Biblia -->
                     <div onclick="playStation('biblia')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Biblia Live">
                         <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
@@ -511,6 +534,30 @@
                             <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Kultura · Edukacja · Inspiracja</p>
                             <div class="mt-2.5 flex items-center justify-between">
                                 <span class="text-[9px] font-medium text-amber-300/80">Sygnał Główny</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clash of Minds (Walter Veith) -->
+                    <div onclick="playStation('clashofminds')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Clash of Minds Wykłady Proroctwa Wszystkie">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg" alt="Clash of Minds" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/30 backdrop-blur-md flex items-center justify-center text-amber-300 text-xs">
+                                <i class="fa-solid fa-scroll"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[9px] font-bold">Proroctwa</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition">Clash of Minds</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Walter Veith & Martin Smith</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-amber-300/80">Strumień Audio</span>
                                 <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
                                     <i class="fa-solid fa-play"></i>
                                 </div>
@@ -589,6 +636,28 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- 3.5. SEKCJA: CLASH OF MINDS & PROF. WALTER VEITH -->
+            <section id="sec-clashofminds" class="space-y-4 filter-section" data-section-tags="Clash of Minds Wykłady Wszystkie">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#f59e0b]"></span>
+                            <span>Clash of Minds – Wykłady & Proroctwa Biblijne</span>
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Prof. Walter Veith & Martin Smith: What's Up Prof?, Ostateczny Atak, Kreacjonizm i Znaki Czasu</p>
+                    </div>
+                    <a href="https://clashofminds.com" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1.5 transition">
+                        <span>Portal Clash of Minds</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Siatka playlist Clash of Minds -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5" id="grid-clashofminds">
+                    <!-- Dynamicznie generowane w JS z bazy playlist -->
                 </div>
             </section>
 
@@ -906,11 +975,65 @@
                 desc: 'Szkoła biblijna, komentarze do aktualnych wydarzeń i świadectwa wiary.',
                 ticker: 'Szkoła Biblijna Christian Culture TV',
                 timeText: 'STRUMIEŃ AUDIO'
+            },
+            clashofminds: {
+                id: 'clashofminds',
+                title: 'Clash of Minds',
+                subtitle: 'Walter Veith · Proroctwa & Prawda',
+                type: 'youtube_playlist',
+                channelName: 'Clash of Minds',
+                playlistId: 'PLKOxPWmme0G0',
+                badge: 'Proroctwa',
+                heroBadge: 'CLASH OF MINDS',
+                cover: 'https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg',
+                heroImg: '/images/player/art-walter-veith.jpg',
+                headline: 'Głos Prawdy: <span class="gold-gradient-text">Clash of Minds</span> & Prof. Walter Veith.',
+                desc: 'Niezależne analizy biblijne, seria What\'s Up Prof?, proroctwa Księgi Daniela i Objawienia oraz kreacjonizm naukowy.',
+                ticker: 'Clash of Minds — What\'s Up Prof? & Wykłady Profetyczne',
+                timeText: 'STRUMIEŃ AUDIO'
             }
         };
 
         // ── BAZA PRAWDZIWYCH PLAYLIST YOUTUBE Z KANAŁÓW CC ──
         const PLAYLISTS_DATA = {
+    "clashOfMinds": [
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "What's Up Prof? & Proroctwa na Czas Końca",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg"
+        },
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "Total Onslaught (Ostateczny Atak) — Wykłady Apokalipsy",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/8aC_v13_z0E/hqdefault.jpg"
+        },
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "The Genesis Conflict — Kreacjonizm i Prawda o Początku",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/oM6V1D51o0E/hqdefault.jpg"
+        },
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "Rekindling the Reformation — Dziedzictwo i Przyszłość Wiary",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/XyZ_84h11wA/hqdefault.jpg"
+        },
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "Boże Zasady Zdrowia — Uzdrowienie i Regeneracja",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/aOQcX7OAAq4/hqdefault.jpg"
+        },
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "Znaki Czasu i Proroctwa Księgi Daniela",
+            "author": "Clash of Minds",
+            "thumbnail": "https://i.ytimg.com/vi/Myol_972HtY/hqdefault.jpg"
+        }
+    ],
     "osobowoscPlus": [
         {
             "id": "PLKOxPWmme0G0",
@@ -1200,6 +1323,12 @@
 
         // ── GENEROWANIE KART PLAYLIST NA STRONIE ──
         function renderAllPlaylists() {
+            // 0. Clash of Minds (Walter Veith & Martin Smith)
+            const gridClash = document.getElementById('grid-clashofminds');
+            if (gridClash && PLAYLISTS_DATA.clashOfMinds) {
+                gridClash.innerHTML = PLAYLISTS_DATA.clashOfMinds.map((p, idx) => createPlaylistCard(p, 'Clash of Minds', 'bg-amber-500/30 text-amber-300 border-amber-500/40', 'Clash of Minds Wykłady Proroctwa')).join('');
+            }
+
             // 1. Osobowość PLUS
             const gridOsobowosc = document.getElementById('grid-osobowosc');
             if (gridOsobowosc && PLAYLISTS_DATA.osobowoscPlus) {

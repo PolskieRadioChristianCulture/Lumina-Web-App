@@ -200,6 +200,54 @@
             featured: false,
             badge: 'OPARTE NA FAKTACH',
             tags: ['i stanie się światło', 'kevin sorbo', 'nawrócenie ateisty', 'rodzina', 'miłość']
+        },
+        {
+            id: 'whats-up-prof-znaki-czasu',
+            youtubeId: '4tcJRicwtfs',
+            title: 'What\'s Up Prof? — Znaki Czasu i Analizy Biblijne',
+            origTitle: 'What\'s Up Prof? (Clash of Minds)',
+            year: 2026,
+            duration: '78 min',
+            category: 'Proroctwa / Analiza Biblijna',
+            director: 'Prof. Walter Veith & Martin Smith',
+            cast: 'Prof. Walter Veith, Martin Smith',
+            description: 'Sztandarowa seria analityczno-profetyczna Clash of Minds. Prof. Walter Veith wraz z Martinem Smithem prześwietlają bieżące wydarzenia na świecie, ruchy geopolityczne, religijne i społeczne przez pryzmat natchnionego Słowa Bożego. Odkryj, jak starożytne proroctwa Księgi Daniela i Objawienia wypełniają się na naszych oczach.',
+            thumbnail: 'https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg',
+            featured: false,
+            badge: 'CLASH OF MINDS',
+            tags: ['clash of minds', 'whats up prof', 'walter veith', 'martin smith', 'proroctwa', 'apokalipsa', 'znaki czasu', 'wykłady biblijne', 'lektor pl']
+        },
+        {
+            id: 'total-onslaught-ostateczny-atak',
+            youtubeId: '8aC_v13_z0E',
+            title: 'Total Onslaught: Ostateczny Atak — Tajemnica Księgi Daniela i Apokalipsy',
+            origTitle: 'Total Onslaught — Prof. Walter Veith',
+            year: 2025,
+            duration: '94 min',
+            category: 'Wykłady & Proroctwa',
+            director: 'Prof. Walter Veith',
+            cast: 'Prof. Walter Veith',
+            description: 'Monumentalna seria wykładów prof. Waltera Veitha, która zyskała miliony widzów na całym globie. Wnikliwe, werset po wersecie, studium proroctw Księgi Daniela i Apokalipsy św. Jana. Odkryj tożsamość biblijnych bestii, małego rogu, tajemnicę 1260 dni oraz ostateczne zwycięstwo Jezusa Chrystusa.',
+            thumbnail: 'https://i.ytimg.com/vi/8aC_v13_z0E/hqdefault.jpg',
+            featured: false,
+            badge: 'WYKŁAD ROKU',
+            tags: ['total onslaught', 'ostateczny atak', 'walter veith', 'apokalipsa', 'księga daniela', 'proroctwa biblijne', 'clash of minds', 'lektor pl']
+        },
+        {
+            id: 'the-genesis-conflict-konflikt-w-genesis',
+            youtubeId: 'oM6V1D51o0E',
+            title: 'Konflikt w Genesis: Kreacjonizm, Nauka i Prawda o Początku',
+            origTitle: 'The Genesis Conflict — Prof. Walter Veith',
+            year: 2024,
+            duration: '88 min',
+            category: 'Nauka & Wiara',
+            director: 'Prof. Walter Veith',
+            cast: 'Prof. Walter Veith',
+            description: 'Jako były profesor zoologii i ewolucjonista, prof. Walter Veith prezentuje fascynujące dowody geologiczne, paleontologiczne i biologiczne na prawdziwość biblijnego opisu stworzenia i globalnego potopu. Prawda naukowa, która potwierdza autentyczność Księgi Rodzaju.',
+            thumbnail: 'https://i.ytimg.com/vi/oM6V1D51o0E/hqdefault.jpg',
+            featured: false,
+            badge: 'NAUKA & WIARA',
+            tags: ['konflikt w genesis', 'the genesis conflict', 'kreacjonizm', 'nauka a biblia', 'stworzenie świata', 'potop', 'walter veith', 'clash of minds']
         }
     ];
 
@@ -258,6 +306,10 @@
 
         getDramas: function() {
             return VOD_MOVIES_CATALOG.filter(m => (m.category && (m.category.toLowerCase().includes('dramat') || m.category.toLowerCase().includes('obyczaj'))) || (m.tags && m.tags.some(t => t.includes('dramat') || t.includes('wiara') || t.includes('świadectwo'))));
+        },
+
+        getProphecyLectures: function() {
+            return VOD_MOVIES_CATALOG.filter(m => (m.category && (m.category.toLowerCase().includes('wykłady') || m.category.toLowerCase().includes('proroctw') || m.category.toLowerCase().includes('nauka'))) || (m.tags && m.tags.some(t => t.includes('veith') || t.includes('clash of minds') || t.includes('apokalipsa'))));
         },
 
         getNextMovie: function(currentId) {

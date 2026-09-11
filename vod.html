@@ -1176,6 +1176,7 @@
                     <li><a href="#heroSection" class="active">Odkrywaj</a></li>
                     <li><a href="#rowHits">Hity Kinowe</a></li>
                     <li><a href="#rowBiblical">Biblijne</a></li>
+                    <li><a href="#rowProphecy">Wykłady & Proroctwa</a></li>
                     <li><a href="#rowDramas">Dramaty Wiary</a></li>
                     <li><a href="#vodQnaSection">Q&A</a></li>
                 </ul>
@@ -1275,7 +1276,19 @@
             </div>
         </div>
 
-        <!-- 3. DRAMATY WIARY & PORUSZAJĄCE ŚWIADECTWA -->
+        <!-- 3. WYKŁADY & PROROCTWA BIBLIJNE: PROF. WALTER VEITH (CLASH OF MINDS) -->
+        <div class="category-row-block" id="rowProphecy">
+            <div class="category-row-header">
+                <h2 class="category-row-title"><i class="fa-solid fa-scroll"></i> Wykłady & Proroctwa Biblijne (Clash of Minds)</h2>
+            </div>
+            <div class="row-scroll-wrapper">
+                <button type="button" class="row-arrow-btn row-arrow-left" onclick="scrollRow('trackProphecy', -1)" aria-label="Przewiń w lewo"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="row-movies-track" id="trackProphecy"></div>
+                <button type="button" class="row-arrow-btn row-arrow-right" onclick="scrollRow('trackProphecy', 1)" aria-label="Przewiń w prawo"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- 4. DRAMATY WIARY & PORUSZAJĄCE ŚWIADECTWA -->
         <div class="category-row-block" id="rowDramas">
             <div class="category-row-header">
                 <h2 class="category-row-title"><i class="fa-solid fa-dove"></i> Dramaty Wiary & Poruszające Świadectwa</h2>
@@ -1533,6 +1546,7 @@
                     <select id="proposalCategory" style="width: 100%; background: #0f1424; border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;">
                         <option value="Hity Kinowe & Superprodukcje">Hity Kinowe & Superprodukcje</option>
                         <option value="Ekranizacje Biblijne & Historia Zbawienia">Ekranizacje Biblijne & Historia Zbawienia</option>
+                        <option value="Wykłady & Proroctwa Biblijne">Wykłady & Proroctwa Biblijne</option>
                         <option value="Dramaty Wiary & Poruszające Świadectwa">Dramaty Wiary & Poruszające Świadectwa</option>
                         <option value="Wszystkie Filmy">Wszystkie Filmy</option>
                     </select>
@@ -1869,10 +1883,12 @@
             const allMovies = window.VodDB.movies;
             const hits = (typeof window.VodDB.getHits === 'function') ? window.VodDB.getHits() : allMovies.slice(0, 4);
             const biblical = (typeof window.VodDB.getBiblical === 'function') ? window.VodDB.getBiblical() : allMovies.filter(m => m.category.includes('Biblij'));
+            const prophecy = (typeof window.VodDB.getProphecyLectures === 'function') ? window.VodDB.getProphecyLectures() : allMovies.filter(m => m.category.includes('Proroctw') || m.category.includes('Wykłady'));
             const dramas = (typeof window.VodDB.getDramas === 'function') ? window.VodDB.getDramas() : allMovies.filter(m => m.category.includes('Dramat'));
 
             renderTrack('trackHits', hits, true, 'Hity Kinowe & Superprodukcje');
             renderTrack('trackBiblical', biblical, false, 'Ekranizacje Biblijne & Historia Zbawienia');
+            renderTrack('trackProphecy', prophecy, false, 'Wykłady & Proroctwa Biblijne');
             renderTrack('trackDramas', dramas, false, 'Dramaty Wiary & Poruszające Świadectwa');
             renderTrack('trackAll', allMovies, true, 'Wszystkie Filmy');
         }
@@ -1901,6 +1917,7 @@
                     (categoryKey === 'all') || 
                     (p.category && p.category.toLowerCase().includes(categoryKey.toLowerCase())) ||
                     (categoryKey.includes('Biblij') && p.category && p.category.includes('Biblij')) ||
+                    (categoryKey.includes('Proroctw') && p.category && p.category.includes('Proroctw')) ||
                     (categoryKey.includes('Dramat') && p.category && p.category.includes('Dramat')) ||
                     (categoryKey.includes('Hity') && p.category && p.category.includes('Hity'));
 
