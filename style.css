@@ -3646,48 +3646,49 @@ html {
     opacity: 0.50; /* 50% przyciemnienia zgodnie z życzeniem */
     pointer-events: none;
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease;
-    filter: brightness(0.9) saturate(1.1);
+    filter: brightness(0.98) saturate(1.2) contrast(1.1);
 }
 
 .collapsible-trigger-bar:hover::before {
-    opacity: 0.68;
+    opacity: 0.75;
     transform: scale(1.025);
-    filter: brightness(1.0) saturate(1.2);
+    filter: brightness(1.08) saturate(1.3) contrast(1.15);
 }
 
 .collapsible-section.is-open > .collapsible-trigger-bar::before {
-    opacity: 0.58;
-    filter: brightness(0.95) saturate(1.15);
+    opacity: 0.62;
+    filter: brightness(1.02) saturate(1.22);
 }
 
 /* 1. Codzienne Rozważanie - Dobrze, że jesteś */
 #dailyReflectionSection .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
-        url('tlo_tv_dzj.webp');
-    background-position: center 35%;
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        url('cuda_kazdego_dnia_current.jpg');
+    background-position: center 40%;
 }
 
 /* 2. Zasoby Mobilne & Web - Pobierz nasze aplikacje */
 #apps-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
-        url('Sluchaj-Instaluj-Pobieraj.webp');
-    background-position: center center;
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        url('Aplikacja Christian Culture.webp');
+    background-position: 85% center;
+    background-size: auto 170%;
 }
 
 /* 3. Nasze Media Społecznościowe - Sieć YouTube & Spotify */
 #social-channels .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
         url('biblia-audio-yt.webp');
-    background-position: center 40%;
+    background-position: center 45%;
 }
 
 /* 4. Retransmisja 24/7 - Nadawaj z Christian Culture */
 #broadcast-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
         url('tv24_master_live.webp');
     background-position: center center;
 }
@@ -3695,31 +3696,31 @@ html {
 /* 5. Wspieraj Dzieło & Oficjalny Sklep - Wsparcie Misji & Sklep */
 #support-store .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
         url('tlo_tv_koszulki.webp');
-    background-position: center center;
+    background-position: center 60%;
 }
 
 /* 6. Głos Społeczności - Opinie Przyjaciół Misji */
 #reviews-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
         url('lumina_hero_group.webp');
-    background-position: center 25%;
+    background-position: center 65%;
 }
 
 /* 7. Baza Wiedzy & Pomoc - Pytania i Odpowiedzi (Q&A) */
 #qna-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
-        url('tlo_studium.webp');
-    background-position: center center;
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        url('tlo_tv_biblia.jpg');
+    background-position: center 45%;
 }
 
 /* 8. Centrum Kontaktu - Kontakt & Infolinia */
 #contact-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(12, 12, 16, 0.38) 45%, rgba(8, 8, 10, 0.82) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
         url('tapeta_modlitwa_poster.jpg');
     background-position: center 30%;
 }
