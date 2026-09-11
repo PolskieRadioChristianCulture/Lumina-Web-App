@@ -3580,26 +3580,27 @@ html {
     background: transparent !important;
 }
 
-/* Przycisk nagłówka akordeonu - Klasa, Subtelność i Głębokie 3D */
+/* Przycisk nagłówka akordeonu - Klasa, Subtelność i Głębokie 3D (Wysoki luksusowy banner) */
 .collapsible-trigger-bar {
     width: min(1200px, calc(100% - 32px));
-    margin: 8px auto;
-    padding: 16px 24px;
+    min-height: 104px;
+    margin: 12px auto;
+    padding: 22px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 20px;
     position: relative;
     z-index: 1;
     overflow: hidden;
     background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(9, 9, 11, 0.99) 100%);
-    border: 1px solid rgba(212, 175, 55, 0.12) !important;
-    border-radius: 18px;
+    border: 1px solid rgba(212, 175, 55, 0.14) !important;
+    border-radius: 20px;
     cursor: pointer;
     text-align: left;
     outline: none;
     box-shadow: 
-        0 10px 30px -4px rgba(0, 0, 0, 0.85),
+        0 12px 36px -4px rgba(0, 0, 0, 0.88),
         0 0 18px rgba(212, 175, 55, 0.08),
         inset 0 1px 1px rgba(255, 235, 170, 0.18),
         inset 0 -1px 1px rgba(0, 0, 0, 0.6);
@@ -3621,7 +3622,7 @@ html {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.50; /* 50% przyciemnienia zgodnie z życzeniem */
+    opacity: 0.55; /* ~50% przyciemnienia zgodnie z życzeniem */
     pointer-events: none;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -3631,78 +3632,78 @@ html {
 }
 
 .collapsible-section.is-open > .collapsible-trigger-bar::before {
-    opacity: 0.60;
+    opacity: 0.65;
 }
 
 /* 1. Codzienne Rozważanie - Dobrze, że jesteś */
 #dailyReflectionSection .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.25) 50%, rgba(8, 8, 10, 0.68) 100%),
-        url('breakfast_studio.jpg');
-    background-position: right 45%;
+        linear-gradient(90deg, rgba(8, 8, 10, 0.92) 0%, rgba(10, 10, 14, 0.68) 45%, rgba(10, 10, 14, 0.20) 75%, rgba(8, 8, 10, 0.50) 100%),
+        url('promo_dzj.jpg');
+    background-position: right 30%;
     background-size: cover;
 }
 
 /* 2. Zasoby Mobilne & Web - Pobierz nasze aplikacje */
 #apps-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.70) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.92) 0%, rgba(10, 10, 14, 0.65) 45%, rgba(10, 10, 14, 0.15) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('Aplikacja CC Lite.jpg');
-    background-position: center center;
-    background-size: cover;
+    background-position: right 70px center;
+    background-size: auto 115%;
 }
 
 /* 3. Nasze Media Społecznościowe - Sieć YouTube & Spotify */
 #social-channels .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.92) 0%, rgba(10, 10, 14, 0.65) 45%, rgba(10, 10, 14, 0.15) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('biblia-audio-yt.jpg');
-    background-position: 85% center;
-    background-size: cover;
+    background-position: right 70px center;
+    background-size: auto 115%;
 }
 
 /* 4. Retransmisja 24/7 - Nadawaj z Christian Culture */
 #broadcast-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.70) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(10, 10, 14, 0.60) 45%, rgba(10, 10, 14, 0.20) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('tv24_master_live.webp');
-    background-position: center center;
+    background-position: right center;
     background-size: cover;
 }
 
 /* 5. Wspieraj Dzieło & Oficjalny Sklep - Wsparcie Misji & Sklep */
 #support-store .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
-        url('reklama_2_sklep_cc_poster.jpg');
-    background-position: center 30%;
-    background-size: cover;
+        linear-gradient(90deg, rgba(8, 8, 10, 0.92) 0%, rgba(10, 10, 14, 0.65) 45%, rgba(10, 10, 14, 0.18) 75%, rgba(8, 8, 10, 0.50) 100%),
+        url('koszulka_faith_2026.jpg');
+    background-position: right 60px center;
+    background-size: auto 125%;
 }
 
 /* 6. Głos Społeczności - Opinie Przyjaciół Misji */
 #reviews-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.90) 0%, rgba(10, 10, 14, 0.62) 45%, rgba(10, 10, 14, 0.20) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('lumina_hero_group.jpg');
-    background-position: center 40%;
+    background-position: right 45%;
     background-size: cover;
 }
 
 /* 7. Baza Wiedzy & Pomoc - Pytania i Odpowiedzi (Q&A) */
 #qna-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.72) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.90) 0%, rgba(10, 10, 14, 0.62) 45%, rgba(10, 10, 14, 0.20) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('tlo_tv_biblia.jpg');
-    background-position: center 35%;
+    background-position: right 38%;
     background-size: cover;
 }
 
 /* 8. Centrum Kontaktu - Kontakt & Infolinia */
 #contact-section .collapsible-trigger-bar::before {
     background-image: 
-        linear-gradient(90deg, rgba(8, 8, 10, 0.70) 0%, rgba(10, 10, 14, 0.20) 50%, rgba(8, 8, 10, 0.68) 100%),
+        linear-gradient(90deg, rgba(8, 8, 10, 0.88) 0%, rgba(10, 10, 14, 0.60) 45%, rgba(10, 10, 14, 0.20) 75%, rgba(8, 8, 10, 0.50) 100%),
         url('tapeta_modlitwa_poster.jpg');
-    background-position: center 30%;
+    background-position: right 30%;
     background-size: cover;
 }
 
@@ -3789,13 +3790,13 @@ html {
 }
 
 .collapsible-trigger-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 13px;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     background: rgba(22, 22, 26, 0.95);
     border: 1px solid rgba(212, 175, 55, 0.15) !important;
     flex-shrink: 0;
@@ -3821,21 +3822,22 @@ html {
 }
 
 .collapsible-trigger-tag {
-    font-size: 0.66rem;
+    font-size: 0.70rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.8px;
     color: var(--gold-primary);
     font-family: 'Montserrat', sans-serif;
     text-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
+    margin-bottom: 2px;
 }
 
 .collapsible-trigger-title {
     font-family: 'Cinzel', serif;
-    font-size: 1.3rem;
+    font-size: 1.42rem;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.8px;
     margin: 0;
     line-height: 1.25;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2);
@@ -3848,12 +3850,13 @@ html {
 }
 
 .collapsible-trigger-subtitle {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.62);
     font-family: 'Inter', sans-serif;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: 4px;
 }
 
 .collapsible-trigger-action {
@@ -3866,11 +3869,11 @@ html {
 }
 
 .collapsible-status-pill {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 7px 16px;
+    padding: 9px 20px;
     border-radius: 30px;
     background: rgba(212, 175, 55, 0.08);
     color: #ecd287;
@@ -3941,9 +3944,10 @@ html {
     }
     .collapsible-trigger-bar {
         width: calc(100% - 24px);
-        padding: 12px 16px;
-        gap: 12px;
-        border-radius: 14px;
+        min-height: 84px !important;
+        padding: 16px 18px !important;
+        gap: 14px !important;
+        border-radius: 16px !important;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
         -webkit-backface-visibility: hidden;
@@ -3965,16 +3969,18 @@ html {
         animation: none !important;
     }
     .collapsible-trigger-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-        border-radius: 10px;
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1.2rem !important;
+        border-radius: 12px !important;
     }
     .collapsible-trigger-title {
-        font-size: 1.08rem;
+        font-size: 1.12rem !important;
     }
     .collapsible-trigger-subtitle {
-        display: none;
+        display: block !important;
+        font-size: 0.74rem !important;
+        opacity: 0.7;
     }
     .collapsible-status-pill .pill-label {
         display: none;
