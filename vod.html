@@ -1627,7 +1627,7 @@
     </footer>
 
     <!-- ══════════ SCRIPTS ══════════ -->
-    <script src="vod-db.js?v=20260903_fireproof"></script>
+    <script src="vod-db.js?v=20260911_clashofminds"></script>
 
     <script>
     (function() {
@@ -1882,9 +1882,11 @@
 
             const allMovies = window.VodDB.movies;
             const hits = (typeof window.VodDB.getHits === 'function') ? window.VodDB.getHits() : allMovies.slice(0, 4);
-            const biblical = (typeof window.VodDB.getBiblical === 'function') ? window.VodDB.getBiblical() : allMovies.filter(m => m.category.includes('Biblij'));
-            const prophecy = (typeof window.VodDB.getProphecyLectures === 'function') ? window.VodDB.getProphecyLectures() : allMovies.filter(m => m.category.includes('Proroctw') || m.category.includes('Wykłady'));
-            const dramas = (typeof window.VodDB.getDramas === 'function') ? window.VodDB.getDramas() : allMovies.filter(m => m.category.includes('Dramat'));
+            const biblical = (typeof window.VodDB.getBiblical === 'function') ? window.VodDB.getBiblical() : allMovies.filter(m => m.category && m.category.includes('Biblij'));
+            const prophecy = (typeof window.VodDB.getProphecyLectures === 'function') 
+                ? window.VodDB.getProphecyLectures() 
+                : allMovies.filter(m => (m.category && (m.category.includes('Proroctw') || m.category.includes('Wykłady') || m.category.includes('Nauka'))) || (m.tags && (m.tags.includes('veith') || m.tags.includes('clash of minds'))));
+            const dramas = (typeof window.VodDB.getDramas === 'function') ? window.VodDB.getDramas() : allMovies.filter(m => m.category && m.category.includes('Dramat'));
 
             renderTrack('trackHits', hits, true, 'Hity Kinowe & Superprodukcje');
             renderTrack('trackBiblical', biblical, false, 'Ekranizacje Biblijne & Historia Zbawienia');
