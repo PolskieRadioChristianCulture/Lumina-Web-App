@@ -1019,22 +1019,22 @@
             "thumbnail": "https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg"
         },
         {
-            "id": "PLKOxPWmme0G0",
+            "id": "PLdbXyyVfVp-4HzN5_phwe1cU_WkfGakIm",
             "title": "Total Onslaught (Ostateczny Atak) — Wykłady Apokalipsy",
             "author": "Clash of Minds",
-            "thumbnail": "https://i.ytimg.com/vi/8aC_v13_z0E/hqdefault.jpg"
+            "thumbnail": "images/player/art-total-onslaught.jpg"
         },
         {
-            "id": "PLKOxPWmme0G0",
+            "id": "PL13eE2x3qhPktufTQOHw0wsMOPdxFky-P",
             "title": "The Genesis Conflict — Kreacjonizm i Prawda o Początku",
             "author": "Clash of Minds",
-            "thumbnail": "https://i.ytimg.com/vi/oM6V1D51o0E/hqdefault.jpg"
+            "thumbnail": "images/player/art-genesis-conflict.jpg"
         },
         {
-            "id": "PLKOxPWmme0G0",
+            "id": "PLdbXyyVfVp-45Jwr8Dm_XX6lCzb0W-r84",
             "title": "Rekindling the Reformation — Dziedzictwo i Przyszłość Wiary",
             "author": "Clash of Minds",
-            "thumbnail": "https://i.ytimg.com/vi/XyZ_84h11wA/hqdefault.jpg"
+            "thumbnail": "images/player/art-rekindling-reformation.jpg"
         },
         {
             "id": "PLKOxPWmme0G0",
@@ -1364,15 +1364,22 @@
         }
 
         function createPlaylistCard(p, channelName, badgeClasses, categories) {
-            const cleanTitle = escapeHtml(p.title);
-            const thumb = p.thumbnail || '/images/player/hero-pure-art.jpg?v=2';
+            const rawTitle = p.title || '';
+            const jsEscapedTitle = rawTitle.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            const displayTitle = rawTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            const attrTitle = displayTitle.replace(/'/g, '&#39;');
+            const thumb = p.thumbnail || 'images/player/hero-pure-art.jpg?v=2';
+            let fallbackImg = 'images/player/art-chan-clashofminds.jpg';
+            if (channelName.includes('Osobowość')) fallbackImg = 'images/player/art-chan-wyklady.jpg';
+            else if (channelName.includes('Christian Culture TV')) fallbackImg = 'images/player/art-worship.jpg';
+            else if (channelName.includes('Polskie Radio CC')) fallbackImg = 'images/player/art-chan-cc.jpg';
             return `
-                <div onclick="playYouTubePlaylist('${p.id}', '${cleanTitle}', '${channelName}', '${thumb}')" 
+                <div onclick="playYouTubePlaylist('${p.id}', '${jsEscapedTitle}', '${channelName}', '${thumb}')" 
                      class="playlist-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 p-3 flex flex-col justify-between aspect-[4/5] relative bg-[#0d1322]"
-                     data-category="${categories}" data-title="${cleanTitle.toLowerCase()}">
+                     data-category="${categories}" data-title="${attrTitle.toLowerCase()}">
                     
                     <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2.5 bg-black shadow-md">
-                        <img src="${thumb}" alt="${cleanTitle}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="${thumb}" alt="${attrTitle}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImg}';" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0d1322] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute top-2 right-2">
                             <span class="px-2 py-0.5 rounded-full text-[8.5px] font-bold border backdrop-blur-md ${badgeClasses}">
@@ -1386,7 +1393,7 @@
 
                     <div class="flex-1 flex flex-col justify-between">
                         <h4 class="text-xs font-bold text-white group-hover:text-amber-300 transition line-clamp-2 leading-snug">
-                            ${cleanTitle}
+                            ${displayTitle}
                         </h4>
                         <div class="mt-2 flex items-center justify-between text-[9px] text-gray-400">
                             <span class="truncate max-w-[80%]">${channelName}</span>
