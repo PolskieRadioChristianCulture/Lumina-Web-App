@@ -740,25 +740,29 @@
 
         /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (SLIM RIBBON) ══════════ */
         .devotional-banner-section {
-            max-width: 1100px;
-            margin: 8px auto 12px;
+            max-width: 1040px;
+            margin: 14px auto 14px;
             padding: 0 16px;
             position: relative;
             z-index: 10;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .devotional-glass-card {
             background: rgba(15, 23, 42, 0.88);
             border: 1px solid rgba(168, 85, 247, 0.35);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(168, 85, 247, 0.12);
-            border-radius: 12px;
-            padding: 7px 14px;
+            border-radius: 16px;
+            padding: 9px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 12px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .devotional-card-left {
@@ -892,13 +896,13 @@
 
         @media (max-width: 768px) {
             .devotional-banner-section {
-                margin: 6px auto 12px;
-                padding: 0 10px;
+                margin: 10px auto 14px;
+                padding: 0 12px;
             }
             .devotional-glass-card {
-                padding: 6px 10px;
+                padding: 7px 12px;
                 gap: 8px;
-                border-radius: 10px;
+                border-radius: 12px;
             }
             .devotional-card-left {
                 gap: 8px;
@@ -1000,10 +1004,10 @@
             gap: 10px;
             justify-content: center;
             align-items: center;
-            flex-wrap: nowrap;
-            margin: 0 auto;
-            padding: 16px 16px 4px;
-            max-width: 1050px;
+            flex-wrap: wrap;
+            margin: 16px auto 6px;
+            padding: 0 16px;
+            max-width: 1040px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -1013,7 +1017,8 @@
                 max-width: 100%;
                 overflow-x: auto;
                 justify-content: flex-start;
-                padding: 12px 16px 8px;
+                padding: 10px 12px 6px;
+                margin: 12px auto 6px;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
@@ -2867,12 +2872,14 @@
         /* ──────────────────── FLOATING 3D SCRIPTURE CARDS ──────────────────── */
         .scripture-strip {
             max-width: 1040px;
-            margin: 15px auto 45px;
-            padding: 0 24px;
+            margin: 0 auto 36px;
+            padding: 0 16px;
             display: flex;
-            gap: 24px;
+            gap: 16px;
             perspective: 1200px;
             transform-style: preserve-3d;
+            box-sizing: border-box;
+            width: 100%;
         }
         .scripture-card {
             flex: 1;
@@ -2880,8 +2887,8 @@
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 22px 26px;
+            border-radius: 16px;
+            padding: 18px 22px;
             text-align: left;
             position: relative;
             overflow: hidden;
@@ -2988,7 +2995,12 @@
         }
 
         @media (max-width: 800px) {
-            .scripture-strip { flex-direction: column; }
+            .scripture-strip {
+                flex-direction: column;
+                gap: 12px;
+                padding: 0 12px;
+                margin: 0 auto 30px;
+            }
             .scripture-card:nth-child(1), .scripture-card:nth-child(2) { animation: none; transform: none; }
             .nav-radio-sub { display: none; }
         }
@@ -3066,10 +3078,6 @@
             transform: scale(1.05);
         }
 
-        @media (max-width: 800px) {
-            .scripture-strip { flex-direction: column; }
-            .nav-radio-sub { display: none; }
-        }
     
         /* ── LUMINA FLOATING SCROLL TO TOP BUTTON ── */
         .lumina-scroll-top-btn {
@@ -4928,7 +4936,7 @@
         </div>
 
         <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Filtry Wartości, Polecaj) - pod karuzelą -->
-        <div class="discovery-filters-wrap" style="margin-top: 16px;">
+        <div class="discovery-filters-wrap">
             <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
             <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
             <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
