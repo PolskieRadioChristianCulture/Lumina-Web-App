@@ -2593,6 +2593,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
     const user = currentUserState;
+    if (!user || user.isAnonymous || !user.uid) {
+        console.warn('Lumina Direct Chat: wiadomości wymagają zalogowanego konta członka.');
+        return null;
+    }
     const myProfile = currentProfileState;
     const fromId = normalizeChatUserId(messageObj.senderId || (myProfile ? (myProfile.slug || myProfile.uid) : (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest'))));
     let receiverId = messageObj.receiverId ? normalizeChatUserId(messageObj.receiverId) : null;
@@ -2613,6 +2617,15 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
     if (!receiverId) receiverId = 'guest';
 
+    const receiverProfile = messageObj.receiverUid
+        ? null
+        : await getProfileFromCloud(receiverId);
+    const receiverAuthUid = messageObj.receiverUid || receiverProfile?.uid || null;
+    if (!receiverAuthUid || receiverAuthUid === user.uid) {
+        console.warn('Lumina Direct Chat: nie można bezpiecznie ustalić odbiorcy wiadomości.');
+        return null;
+    }
+
     const normalizedChatId = getChatId(fromId, receiverId);
     const senderName = messageObj.senderName || myProfile?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
     const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
@@ -2620,8 +2633,11 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
     const fullMsg = {
         chatId: normalizedChatId,
+        senderAuthUid: user.uid,
+        receiverAuthUid,
+        participants: [user.uid, receiverAuthUid],
         senderId: fromId,
-        senderUid: user?.uid || fromId,
+        senderUid: user.uid,
         senderName: senderName,
         senderAvatar: senderAvatar,
         senderBadge: senderBadge,
@@ -2670,6 +2686,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             ...(myProfile?.uid ? [myProfile.uid] : []),
             ...(messageObj.receiverUid ? [messageObj.receiverUid] : [])
         ].filter(Boolean)));
+        const chatParticipants = Array.from(new Set([user.uid, receiverAuthUid]));
 
         setDoc(doc(db, 'lumina_chats', normalizedChatId), {
             chatId: normalizedChatId,
@@ -2680,6 +2697,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderAvatar: senderAvatar,
             lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
+            participants: chatParticipants,
             users: chatUsers
         }, { merge: true }).catch(() => {});
 
@@ -2820,12 +2838,17 @@ export function subscribeToPublicChat(onUpdate) {
 
 export async function sendPublicChatMessage(messageObj) {
     const user = currentUserState;
+    if (!user || user.isAnonymous || !user.uid) {
+        console.warn('Lumina Public Chat: publikacja wymaga zalogowanego konta członka.');
+        return null;
+    }
     const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
     const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
     const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     const fullMsg = {
+        senderAuthUid: user.uid,
         senderId: fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
@@ -3589,6 +3612,10 @@ try {
 
 export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 'like') {
     const user = currentUserState;
+    if (!user || user.isAnonymous || !user.uid) {
+        console.warn('Lumina Match Engine: reakcje wymagają zalogowanego konta członka.');
+        return { success: false, isMatch: false, type };
+    }
     const fromId = user ? user.uid : 'guest_' + (localStorage.getItem('lumina_guest_id') || Math.random().toString(36).substring(2, 9));
     if (!user && !localStorage.getItem('lumina_guest_id')) {
         localStorage.setItem('lumina_guest_id', fromId);
@@ -3617,6 +3644,7 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
         try {
             // Save our like in Firestore
             await setDoc(doc(db, 'lumina_likes', likeDocId), {
+                fromAuthUid: user.uid,
                 from: fromId,
                 to: targetIdOrSlug,
                 fromName: currentProfileState?.name || user?.displayName || 'Anonimowy Użytkownik',
@@ -4127,8 +4155,13 @@ export function subscribeToUserMatches(userId, onUpdate) {
 
 export async function reportContent({ targetType, targetId, targetAuthorId, reason, details }) {
     const user = currentUserState;
+    if (!user || user.isAnonymous || !user.uid) {
+        console.warn('Lumina Report: zgłoszenie wymaga zalogowanego konta członka.');
+        return { success: false, message: 'Zaloguj się, aby przesłać zgłoszenie do moderatorów.' };
+    }
     const reporterId = user ? user.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
     const reportData = {
+        reporterAuthUid: user.uid,
         reporterId: reporterId,
         reporterName: currentProfileState?.name || user?.displayName || 'Anonimowy Zgłaszający',
         targetType: targetType || 'post', // 'post' | 'profile' | 'message'
@@ -5831,6 +5864,7 @@ export function startPresenceHeartbeat() {
     const sendPing = async () => {
         try {
             const u = currentUserState || (window.LuminaDB?.getCurrentUser ? window.LuminaDB.getCurrentUser() : null);
+            if (!u || u.isAnonymous || !u.uid) return;
             const p = currentProfileState;
             const sessionId = getSessionId();
             const docId = (u && u.uid) ? u.uid : sessionId;

@@ -18,7 +18,7 @@ import {
   serverTimestamp, 
   Unsubscribe 
 } from "firebase/firestore";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import type { LuminaPost, PostComment } from "@/types/post";
 
 const COLLECTION_NAME = "lumina_posts";
@@ -50,10 +50,19 @@ export class PostRepository {
    * Dodaje nowy post na Tablicy
    */
   async createPost(post: Partial<LuminaPost>): Promise<string | null> {
+    const user = auth.currentUser;
+    if (!user || user.isAnonymous || !post.text?.trim()) {
+      console.warn("[PostRepository] Publikacja wymaga zalogowanego konta członka.");
+      return null;
+    }
+
     try {
       const collRef = collection(db, COLLECTION_NAME);
       const newPost = {
         ...post,
+        authorUid: user.uid,
+        author: post.author?.trim() || user.displayName || "Członek Społeczności",
+        text: post.text.trim(),
         likes: post.likes || 0,
         amen: post.amen || 0,
         commentsCount: 0,

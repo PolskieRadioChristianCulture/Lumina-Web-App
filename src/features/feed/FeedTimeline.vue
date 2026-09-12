@@ -5,6 +5,7 @@ import { postRepository } from "@/services/repositories/postRepository";
 import PostCard from "@/components/PostCard.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseModal from "@/components/BaseModal.vue";
+import { useAuthStore } from "@/stores/authStore";
 
 const posts = ref<LuminaPost[]>([]);
 const isLoading = ref(true);
@@ -16,6 +17,7 @@ const newPostTitle = ref("");
 const newPostText = ref("");
 const newPostType = ref<PostType>("post");
 const isSubmitting = ref(false);
+const authStore = useAuthStore();
 
 let unsubscribe: (() => void) | null = null;
 
@@ -38,13 +40,17 @@ const filteredPosts = computed(() => {
 
 async function handleCreatePost() {
  if (!newPostText.value.trim()) return;
+ if (!authStore.user || authStore.user.isAnonymous) {
+  authStore.openAuthModal();
+  return;
+ }
  isSubmitting.value = true;
 
  const createdId = await postRepository.createPost({
  title: newPostTitle.value.trim() || undefined,
  text: newPostText.value.trim(),
  type: newPostType.value,
- author: "Społeczność LUMINA",
+ author: authStore.displayName,
  authorRole: "Członek Społeczności ✨"
  });
 
