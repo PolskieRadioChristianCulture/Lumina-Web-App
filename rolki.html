@@ -613,12 +613,17 @@
             pointer-events: auto;
         }
 
-        /* Dyskretne kadrowanie YouTube Shorts — ukrywa natywne przyciski YouTube (Udostępnij, Dźwięk itp.) */
+        /* Dyskretne kadrowanie YouTube Shorts — ukrywa natywne przyciski YouTube bez czarnych pasów */
         .video-container iframe.youtube-shorts-iframe {
-            width: 114%;
-            height: 104%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
             max-width: none;
-            transform: scale(1.06) translate(-2%, 0);
+            transform: translate(-50%, -50%) scale(1.18);
             transform-origin: center center;
             border: none;
             pointer-events: auto;
