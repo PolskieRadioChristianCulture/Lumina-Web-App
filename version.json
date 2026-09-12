@@ -1,13 +1,13 @@
 {
-  "version": "4.1.4",
-  "buildDate": "2026-09-12T13:40:00.000Z",
-  "releaseName": "LUMINA v4.1.4 – Precyzyjne wycentrowanie i symetria Słowa Dnia oraz cytatów",
+  "version": "4.1.5",
+  "buildDate": "2026-09-12T13:46:00.000Z",
+  "releaseName": "LUMINA v4.1.5 – Naprawa przycisków filtrów na telefonach (pełne pigułki z tekstem)",
   "changes": [
-    "✨ Idealne zrównanie szerokości (1040px) i krawędzi Słowa Dnia oraz kart cytatów biblijnych",
-    "🎯 Wycentrowanie filtrów wartości i zbalansowanie odstępów pionowych",
-    "📱 Harmonijne marginesy i zaokrąglenia na komputerach i urządzeniach mobilnych"
+    "📱 Całkowita eliminacja zniekształconych i nakładających się okrągłych przycisków na telefonach",
+    "✨ Przywrócenie eleganckich pigułek z ikoną i czytelnym tekstem w poziomym pasku przewijania",
+    "🎯 Pełne wsparcie dla dotyku (min-height: 40px, min-width: 44px) zgodnie ze standardem @SMCC"
   ],
-  "minAppVersion": "4.1.4",
+  "minAppVersion": "4.1.5",
   "forceReload": true,
   "forceReinstall": true
 }
