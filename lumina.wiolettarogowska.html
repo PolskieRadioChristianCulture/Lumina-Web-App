@@ -6637,6 +6637,21 @@
             }
         });
 
+        // ── Inicjalizacja Autorska Profilu Wioletty Rogowskiej ──
+        function initWiolettaProfile() {
+            try {
+                if (typeof renderProfileView === 'function') renderProfileView();
+                if (typeof renderPosts === 'function') renderPosts();
+            } catch (err) {
+                console.warn('[LUMINA] Błąd startu profilu Wioletty:', err);
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWiolettaProfile);
+        } else {
+            initWiolettaProfile();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
