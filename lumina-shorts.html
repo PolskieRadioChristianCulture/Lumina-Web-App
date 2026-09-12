@@ -535,6 +535,34 @@
             display: none;
         }
 
+        /* Widoczny stan pierwszego ładowania — nigdy nie zostawiaj użytkownika z czarnym ekranem. */
+        .shorts-loading-state,
+        .shorts-empty-state {
+            min-height: 100%;
+            display: grid;
+            place-content: center;
+            gap: 0.8rem;
+            padding: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.92);
+            background:
+                radial-gradient(circle at 50% 35%, rgba(250, 204, 21, 0.16), transparent 34%),
+                #050505;
+        }
+
+        .shorts-loading-state i {
+            color: var(--gold);
+            font-size: 1.45rem;
+            animation: livePulse 1.25s ease-in-out infinite;
+        }
+
+        .shorts-loading-state span,
+        .shorts-empty-state p {
+            margin: 0;
+            font-size: 0.92rem;
+            line-height: 1.45;
+        }
+
         /* Single Short Slide */
         .short-slide {
             position: relative;
@@ -594,6 +622,26 @@
             transform-origin: center center;
             border: none;
             pointer-events: auto;
+            opacity: 0;
+            transition: opacity 180ms ease;
+        }
+
+        .youtube-short-poster {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #080808;
+            transition: opacity 180ms ease;
+        }
+
+        .short-slide.media-ready .video-container iframe.youtube-shorts-iframe {
+            opacity: 1;
+        }
+
+        .short-slide.media-ready .youtube-short-poster {
+            opacity: 0;
         }
 
         /* Tap overlay to play/pause */
@@ -1107,8 +1155,11 @@
         <div class="shorts-toast" id="shortsToast">✨ Amen! Dodano do ulubionych</div>
 
         <!-- Vertical Scrollable Container -->
-        <main class="shorts-scroll-container" id="shortsContainer">
-            <!-- Slides dynamically injected here -->
+        <main class="shorts-scroll-container" id="shortsContainer" aria-busy="true" aria-live="polite">
+            <div class="shorts-loading-state" id="shortsLoadingState" role="status">
+                <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+                <span>Przygotowujemy Rolki Wiary…</span>
+            </div>
         </main>
 
         <!-- Bottom Progress Bar -->
@@ -2839,9 +2890,12 @@
                 `;
                 platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
             } else if (platform === 'youtube') {
+                const youtubePoster = item.poster || `https://i.ytimg.com/vi/${item.videoSrc}/hqdefault.jpg`;
                 mediaHtml = `
-                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=1&playsinline=1&rel=0&modestbranding=1" 
+                    <img class="youtube-short-poster" src="${youtubePoster}" alt="" aria-hidden="true" decoding="async">
+                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=1&playsinline=1&rel=0&modestbranding=1"
                             class="youtube-shorts-iframe"
+                            loading="${index < 2 ? 'eager' : 'lazy'}"
                             title="${escapeHtml(item.title)}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
@@ -3004,6 +3058,11 @@
                 <div class="vinyl-disc" title="Dźwięk: ${escapeHtml(item.audioTitle || 'CC Music')}"></div>
             `;
 
+            const youtubeFrame = slide.querySelector('iframe.youtube-shorts-iframe');
+            if (youtubeFrame) {
+                youtubeFrame.addEventListener('load', () => slide.classList.add('media-ready'), { once: true });
+            }
+
             if (window.AudioDirector) {
                 const vid = slide.querySelector('video');
                 const ifr = slide.querySelector('iframe');
@@ -3025,6 +3084,16 @@
             const base = (items || []).filter(isPlayableShort);
             const poolToUse = base.length ? base : FALLBACK_SHORTS.filter(isPlayableShort);
 
+            if (!poolToUse.length) {
+                container.setAttribute('aria-busy', 'false');
+                container.innerHTML = `
+                    <div class="shorts-empty-state" role="status">
+                        <i class="fa-solid fa-film" aria-hidden="true"></i>
+                        <p>Rolki są chwilowo przygotowywane. Odśwież stronę za moment.</p>
+                    </div>`;
+                return;
+            }
+
             // Sprawdzenie czy wywołano bezpośrednią rolkę przez hash w URL
             const targetHash = window.location.hash ? window.location.hash.substring(1) : null;
 
@@ -3039,6 +3108,8 @@
                 }
                 container.appendChild(slide);
             });
+
+            container.setAttribute('aria-busy', 'false');
 
             setupIntersectionObserver();
             setupInfiniteScroll();
@@ -3394,7 +3465,7 @@
 
         async function loadShortsFeed() {
             try {
-                const res = await fetch('data/shorts/shorts_feed.json?v=' + Date.now());
+                const res = await fetch('/data/shorts/shorts_feed.json', { cache: 'no-cache' });
                 if (res.ok) {
                     rawSeedShorts = await res.json();
                 } else {
@@ -3434,7 +3505,20 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', loadShortsFeed);
+        // Cloudflare może wykonać skrypt po DOMContentLoaded; zabezpieczenie eliminuje
+        // cichy brak startu feedu, który pozostawiał ekran rolek całkowicie pusty.
+        let shortsFeedBooted = false;
+        function bootShortsFeed() {
+            if (shortsFeedBooted) return;
+            shortsFeedBooted = true;
+            loadShortsFeed();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootShortsFeed, { once: true });
+        } else {
+            bootShortsFeed();
+        }
     </script>
 </body>
 </html>
