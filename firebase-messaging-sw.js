@@ -71,7 +71,7 @@ try {
             urlToOpen = data.url || '/master';
         }
 
-        const tag = notification.tag || data.tag || `lumina_${type}_${Date.now()}`;
+        const tag = data.tag || notification.tag || data.notificationId || data.eventId || (type ? `lumina_${type}` : 'lumina_notification');
         const requireInteraction = (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd');
 
         const notificationOptions = {
@@ -80,7 +80,7 @@ try {
             badge: './lumina-icon-192.png',
             image: image,
             tag: tag,
-            renotify: true,
+            renotify: false,
             vibrate: [200, 100, 200],
             requireInteraction: requireInteraction,
             data: {
