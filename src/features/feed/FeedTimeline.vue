@@ -129,6 +129,7 @@ function handlePostAmen(post: LuminaPost) {
       <PostCard
         v-for="p in filteredPosts"
         :key="p.id"
+        v-memo="[p.id, p.likes, p.amen, p.commentsCount, p.text]"
         :post="p"
         @like="handlePostLike"
         @amen="handlePostAmen"

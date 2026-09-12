@@ -106,6 +106,7 @@ function handleCardLike(p: LuminaProfile) {
       <ProfileCard
         v-for="p in filteredProfiles"
         :key="p.id || p.slug"
+        v-memo="[p.id, p.name, p.avatar, p.isOnline, p.likesCount]"
         :profile="p"
         @click="handleCardClick"
         @like="handleCardLike"

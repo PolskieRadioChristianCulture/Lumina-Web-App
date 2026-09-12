@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineAsyncComponent } from "vue";
 import { useAuthStore } from "@/stores/authStore";
-import ProfileGrid from "@/features/profiles/ProfileGrid.vue";
-import FeedTimeline from "@/features/feed/FeedTimeline.vue";
-import ChatView from "@/features/chat/ChatView.vue";
 import BottomNav from "@/components/BottomNav.vue";
-import AuthModal from "@/features/auth/AuthModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
+
+// ── Lazy-loaded heavy views (optymalizacja wydajności i redukcja bundle size) ──
+const ProfileGrid = defineAsyncComponent(() => import("@/features/profiles/ProfileGrid.vue"));
+const FeedTimeline = defineAsyncComponent(() => import("@/features/feed/FeedTimeline.vue"));
+const ChatView = defineAsyncComponent(() => import("@/features/chat/ChatView.vue"));
+const AuthModal = defineAsyncComponent(() => import("@/features/auth/AuthModal.vue"));
 
 const activeView = ref<"profiles" | "feed" | "chat">("feed");
 const authStore = useAuthStore();
