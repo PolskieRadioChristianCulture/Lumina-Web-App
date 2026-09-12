@@ -698,6 +698,256 @@
                 animation: friendsToastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
+            /* Opcje relacji na kafelku siatki (3-dots) */
+            .followed-card-opt-btn {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: rgba(15, 23, 42, 0.85);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #cbd5e1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.68rem;
+                cursor: pointer;
+                z-index: 4;
+                transition: all 0.2s;
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                opacity: 0.85;
+            }
+
+            .followed-friend-item:hover .followed-card-opt-btn,
+            .followed-card-opt-btn:hover {
+                opacity: 1;
+                color: #facc15;
+                border-color: #facc15;
+                background: rgba(15, 23, 42, 0.98);
+                transform: scale(1.12);
+            }
+
+            .followed-friend-link {
+                text-decoration: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                color: inherit;
+            }
+
+            .followed-friend-badge, .followed-check-badge {
+                cursor: pointer;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+            }
+
+            .followed-friend-badge:hover, .followed-check-badge:hover {
+                transform: scale(1.25);
+                box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+            }
+
+            /* ── MODAL RELACJI I ZARZĄDZANIA ── */
+            .lumina-rel-modal-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 100005;
+                background: rgba(0, 0, 0, 0.78);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+                animation: friendsToastIn 0.2s ease;
+            }
+
+            .lumina-rel-modal-overlay.open {
+                display: flex;
+            }
+
+            .lumina-rel-modal-card {
+                position: relative;
+                width: 100%;
+                max-width: 360px;
+                background: #0b142e;
+                border: 1px solid rgba(250, 204, 21, 0.4);
+                border-radius: 20px;
+                padding: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(250, 204, 21, 0.15);
+                box-sizing: border-box;
+            }
+
+            .lumina-rel-modal-close {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: #94a3b8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 0.85rem;
+                transition: all 0.2s;
+            }
+
+            .lumina-rel-modal-close:hover {
+                color: #fff;
+                background: rgba(239, 68, 68, 0.7);
+                border-color: #ef4444;
+            }
+
+            .lumina-rel-modal-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 16px;
+                padding-bottom: 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .lumina-rel-modal-avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #facc15;
+                box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
+                flex-shrink: 0;
+            }
+
+            .lumina-rel-modal-info {
+                min-width: 0;
+                flex: 1;
+            }
+
+            .lumina-rel-modal-name {
+                font-size: 1rem;
+                font-weight: 800;
+                color: #fff;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .lumina-rel-modal-role {
+                font-size: 0.74rem;
+                color: #94a3b8;
+                margin-top: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .lumina-rel-modal-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lumina-rel-btn {
+                width: 100%;
+                min-height: 44px;
+                padding: 10px 14px;
+                border-radius: 14px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                font-size: 0.82rem;
+                font-weight: 700;
+                font-family: inherit;
+                cursor: pointer;
+                border: none;
+                text-decoration: none;
+                box-sizing: border-box;
+                transition: all 0.2s;
+            }
+
+            .lumina-rel-btn.is-primary {
+                background: rgba(56, 189, 248, 0.2);
+                border: 1px solid rgba(56, 189, 248, 0.5);
+                color: #38bdf8;
+            }
+
+            .lumina-rel-btn.is-primary:hover {
+                background: #0284c7;
+                color: #fff;
+            }
+
+            .lumina-rel-btn.is-gold {
+                background: rgba(245, 158, 11, 0.2);
+                border: 1px solid rgba(245, 158, 11, 0.5);
+                color: #fef08a;
+            }
+
+            .lumina-rel-btn.is-gold:hover {
+                background: #f59e0b;
+                color: #000;
+            }
+
+            .lumina-rel-btn.is-danger {
+                background: rgba(239, 68, 68, 0.16);
+                border: 1px solid rgba(239, 68, 68, 0.5);
+                color: #fca5a5;
+            }
+
+            .lumina-rel-btn.is-danger:hover {
+                background: #ef4444;
+                color: #fff;
+            }
+
+            .lumina-rel-btn.is-outline {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: #cbd5e1;
+            }
+
+            .lumina-rel-btn.is-outline:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+            }
+
+            .lumina-rel-admin-sep {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.5), transparent);
+                margin: 4px 0;
+            }
+
+            .lumina-rel-btn.is-master-delete {
+                background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(153, 27, 27, 0.35));
+                border: 1px solid #ef4444;
+                color: #fca5a5;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+            }
+
+            .lumina-rel-btn.is-master-delete:hover {
+                background: #dc2626;
+                color: #fff;
+                box-shadow: 0 4px 16px rgba(220, 38, 38, 0.6);
+            }
+
+            .btn-action-mini.btn-delete-prof-mini {
+                background: rgba(239, 68, 68, 0.2);
+                color: #fca5a5;
+                border: 1px solid rgba(239, 68, 68, 0.5);
+                padding: 5px 8px;
+            }
+
+            .btn-action-mini.btn-delete-prof-mini:hover {
+                background: #ef4444;
+                color: #fff;
+                border-color: #f87171;
+                box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+            }
+
             @keyframes friendsToastIn {
                 from { opacity: 0; transform: translateY(12px); }
                 to { opacity: 1; transform: translateY(0); }
@@ -818,9 +1068,139 @@
         refreshWidgetView();
     }
 
+    // Sprawdza czy profil został oznaczony jako trwale usunięty przez Dowódcę
+    function isDeletedProfile(slug) {
+        if (!slug) return false;
+        try {
+            const deleted = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
+            const clean = String(slug).toLowerCase().trim();
+            return deleted.includes(clean) || deleted.includes(clean.replace(/^u_/, ''));
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // Sprawdza uprawnienia Dowódcy / Master Admin
+    function checkIsMasterAdmin() {
+        try {
+            if (localStorage.getItem('lumina_auth_master_admin') === 'true' || 
+                sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski' ||
+                localStorage.getItem('lumina_user_slug') === 'cezaryrgowski') {
+                return true;
+            }
+            if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+                const u = window.LuminaDB.getCurrentUser();
+                if (u && (u.email === 'nazirczarkes@gmail.com' || u.uid === 'cezaryrgowski' || u.slug === 'cezaryrgowski')) {
+                    return true;
+                }
+            }
+            const raw = localStorage.getItem('lumina_current_user');
+            if (raw) {
+                const u = JSON.parse(raw);
+                if (u && (u.email === 'nazirczarkes@gmail.com' || u.uid === 'cezaryrgowski' || u.slug === 'cezaryrgowski')) {
+                    return true;
+                }
+            }
+        } catch(e) {}
+        return false;
+    }
+
+    function ensureRelationshipModal() {
+        let modal = document.getElementById('luminaFollowedRelModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'luminaFollowedRelModal';
+            modal.className = 'lumina-rel-modal-overlay';
+            modal.onclick = function(e) {
+                if (e.target === modal) modal.classList.remove('open');
+            };
+            document.body.appendChild(modal);
+        }
+        return modal;
+    }
+
+    function openRelationshipModal(data) {
+        const modal = ensureRelationshipModal();
+        const isMaster = checkIsMasterAdmin();
+        const isFr = data.isFriend === true || data.isFriend === 'true';
+        const isFoll = data.isFollowed === true || data.isFollowed === 'true';
+
+        modal.innerHTML = `
+            <div class="lumina-rel-modal-card">
+                <button type="button" class="lumina-rel-modal-close" onclick="document.getElementById('luminaFollowedRelModal').classList.remove('open')">✕</button>
+                <div class="lumina-rel-modal-header">
+                    <img src="${data.avatar || 'lumina_icon.jpg'}" alt="${escapeHtml(data.name)}" onerror="this.src='lumina_icon.jpg'" class="lumina-rel-modal-avatar">
+                    <div class="lumina-rel-modal-info">
+                        <div class="lumina-rel-modal-name">${escapeHtml(data.name)}</div>
+                        <div class="lumina-rel-modal-role">${escapeHtml(data.role || '')} ${data.city ? `• ${escapeHtml(data.city)}` : ''}</div>
+                    </div>
+                </div>
+                <div class="lumina-rel-modal-actions">
+                    <!-- 1. Znajomość: Dodaj / Usuń ze znajomych -->
+                    <button type="button" class="lumina-rel-btn ${isFr ? 'is-danger' : 'is-primary'}" id="modalRelBtnFriend">
+                        <i class="fa-solid fa-handshake"></i>
+                        <span>${isFr ? 'Usuń z grona znajomych 🤝' : 'Wyślij zaproszenie do znajomych 🤝'}</span>
+                    </button>
+
+                    <!-- 2. Obserwowanie: Obserwuj / Przestań obserwować -->
+                    <button type="button" class="lumina-rel-btn ${isFoll ? 'is-danger' : 'is-gold'}" id="modalRelBtnFollow">
+                        <i class="fa-solid fa-check"></i>
+                        <span>${isFoll ? 'Przestań obserwować publikacje ✓' : 'Zacznij obserwować publikacje ✓'}</span>
+                    </button>
+
+                    <!-- 3. Zobacz profil -->
+                    <a href="${data.url}" class="lumina-rel-btn is-outline">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Przejdź do profilu</span>
+                    </a>
+
+                    <!-- 4. Tylko dla Dowódcy: Trwałe usunięcie profilu -->
+                    ${isMaster ? `
+                        <div class="lumina-rel-admin-sep"></div>
+                        <button type="button" class="lumina-rel-btn is-master-delete" id="modalRelBtnAdminDelete">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>🗑️ Trwale usuń profil z portalu LUMINA</span>
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        const friendBtn = modal.querySelector('#modalRelBtnFriend');
+        if (friendBtn) {
+            friendBtn.onclick = function() {
+                sendFriendRequest(data.slug);
+                modal.classList.remove('open');
+            };
+        }
+
+        const followBtn = modal.querySelector('#modalRelBtnFollow');
+        if (followBtn) {
+            followBtn.onclick = function() {
+                toggleFollow(data.slug);
+                modal.classList.remove('open');
+            };
+        }
+
+        const adminDelBtn = modal.querySelector('#modalRelBtnAdminDelete');
+        if (adminDelBtn) {
+            adminDelBtn.onclick = function() {
+                modal.classList.remove('open');
+                if (typeof window.LuminaDeleteProfile === 'function') {
+                    window.LuminaDeleteProfile(data.slug, data.name);
+                } else if (window.LuminaDB && typeof window.LuminaDB.deleteProfile === 'function') {
+                    window.LuminaDB.deleteProfile(data.slug, data.name);
+                }
+            };
+        }
+
+        modal.classList.add('open');
+    }
+
     // Pobiera listę z przypisanymi statusami
     function getFriendsData(currentProfileSlug) {
-        const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== currentProfileSlug);
+        const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== currentProfileSlug && !isDeletedProfile(f.slug));
 
         const mapped = friends.map(f => {
             const followed = isFollowing(f.slug);
@@ -866,6 +1246,7 @@
         const allFriends = getFriendsData(currentProfileSlug);
         const friendsCount = allFriends.filter(f => f.isFriend).length;
         const followedCount = allFriends.filter(f => f.isFollowed).length;
+        const isMaster = checkIsMasterAdmin();
 
         const profileBioMap = {
             'cezaryrgowski': 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
@@ -956,7 +1337,7 @@
                         const isFoll = f.isFollowed;
 
                         return `
-                            <div class="search-result-item">
+                            <div class="search-result-item" data-slug="${f.slug}">
                                 <a href="${f.url}" class="search-result-user" title="${f.name} • ${f.role}">
                                     <img src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="search-result-avatar">
                                     <div class="search-result-meta">
@@ -970,7 +1351,7 @@
                                             class="btn-action-mini friend-btn ${isFr ? 'is-active' : (isPend ? 'is-pending' : '')}" 
                                             data-action="friend" 
                                             data-slug="${f.slug}" 
-                                            title="${isFr ? 'Jesteście Znajomymi (kliknij aby zmienić)' : (isPend ? 'Wysłano zaproszenie' : 'Wyślij zaproszenie do znajomych')}">
+                                            title="${isFr ? 'Jesteście Znajomymi (kliknij aby usunąć ze znajomych)' : (isPend ? 'Wysłano zaproszenie' : 'Wyślij zaproszenie do znajomych')}">
                                         ${isFr ? '🤝 Znajomy' : (isPend ? 'Wysłano ⏳' : '🤝 Zaproś')}
                                     </button>
 
@@ -979,9 +1360,21 @@
                                             class="btn-action-mini follow-btn ${isFoll ? 'is-active' : ''}" 
                                             data-action="follow" 
                                             data-slug="${f.slug}" 
-                                            title="${isFoll ? 'Obserwujesz ten profil' : 'Zacznij obserwować'}">
+                                            title="${isFoll ? 'Obserwujesz ten profil (kliknij aby wyłączyć)' : 'Zacznij obserwować'}">
                                         ${isFoll ? '✓' : '+ Obs.'}
                                     </button>
+
+                                    <!-- Przycisk Kasowania dla Dowódcy -->
+                                    ${isMaster ? `
+                                        <button type="button" 
+                                                class="btn-action-mini btn-delete-prof-mini" 
+                                                data-action="admin-delete" 
+                                                data-slug="${f.slug}" 
+                                                data-name="${escapeHtml(f.name)}" 
+                                                title="Trwale usuń profil z portalu LUMINA (Tylko Dowódca)">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    ` : ''}
                                 </div>
                             </div>
                         `;
@@ -996,36 +1389,54 @@
                 <!-- ── SIATKA 3 KOLUMNY (STANDARDOWY WIDOK) ── -->
                 <div class="followed-friends-grid">
                     ${displayGridFriends.map(f => `
-                        <a href="${f.url}" 
-                           class="followed-friend-item ${f.isFriend ? 'is-friend' : ''} ${f.isFollowed ? 'is-active-follow' : ''}" 
-                           title="${f.name} • ${f.role} (${f.city}) ${f.isFriend ? '• 🤝 Znajomy' : ''} ${f.isFollowed ? '• ✓ Obserwujesz' : ''}">
-                            <div class="followed-avatar-wrapper">
-                                <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
-                                
-                                <!-- ODZNAKA ZNAJOMY 🤝 (LEWY GÓRNY RÓG) -->
-                                ${f.isFriend ? `
-                                    <span class="followed-friend-badge" title="Znajomy 🤝">
-                                        <i class="fa-solid fa-handshake"></i>
-                                    </span>
-                                ` : ''}
+                        <div class="followed-friend-item ${f.isFriend ? 'is-friend' : ''} ${f.isFollowed ? 'is-active-follow' : ''}" data-slug="${f.slug}">
+                            <!-- Przycisk opcji 3-dots: unfriend, unfollow, profil, usuń (Dowódca) -->
+                            <button type="button" 
+                                    class="followed-card-opt-btn" 
+                                    data-action="open-options" 
+                                    data-slug="${f.slug}" 
+                                    data-name="${escapeHtml(f.name)}" 
+                                    data-role="${escapeHtml(f.role)}" 
+                                    data-city="${escapeHtml(f.city || '')}" 
+                                    data-avatar="${f.avatar}" 
+                                    data-url="${f.url}" 
+                                    data-is-friend="${f.isFriend}" 
+                                    data-is-followed="${f.isFollowed}" 
+                                    title="Zarządzaj relacją z ${f.name}">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
 
-                                <!-- ODZNAKA OBSERWOWANY ✓ (PRAWY GÓRNY RÓG) -->
-                                ${f.isFollowed ? `
-                                    <span class="followed-check-badge" title="Obserwujesz ✓">
-                                        <i class="fa-solid fa-check"></i>
-                                    </span>
-                                ` : ''}
+                            <a href="${f.url}" 
+                               class="followed-friend-link" 
+                               title="${f.name} • ${f.role} (${f.city}) ${f.isFriend ? '• 🤝 Znajomy' : ''} ${f.isFollowed ? '• ✓ Obserwujesz' : ''}">
+                                <div class="followed-avatar-wrapper">
+                                    <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
+                                    
+                                    <!-- ODZNAKA ZNAJOMY 🤝 (LEWY GÓRNY RÓG) - 1-tap zarządzanie / unfriend -->
+                                    ${f.isFriend ? `
+                                        <span class="followed-friend-badge" data-action="badge-friend" data-slug="${f.slug}" title="🤝 Znajomy (kliknij aby usunąć z grona)">
+                                            <i class="fa-solid fa-handshake"></i>
+                                        </span>
+                                    ` : ''}
 
-                                <!-- Wskaźnik online -->
-                                <span class="followed-online-dot"></span>
-                            </div>
-                            <div class="followed-friend-name">
-                                ${f.shortName}
-                            </div>
-                            <div class="followed-friend-role">
-                                ${f.role}
-                            </div>
-                        </a>
+                                    <!-- ODZNAKA OBSERWOWANY ✓ (PRAWY GÓRNY RÓG) - 1-tap zarządzanie / unfollow -->
+                                    ${f.isFollowed ? `
+                                        <span class="followed-check-badge" data-action="badge-follow" data-slug="${f.slug}" title="✓ Obserwujesz (kliknij aby przestać obserwować)">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    ` : ''}
+
+                                    <!-- Wskaźnik online -->
+                                    <span class="followed-online-dot"></span>
+                                </div>
+                                <div class="followed-friend-name">
+                                    ${f.shortName}
+                                </div>
+                                <div class="followed-friend-role">
+                                    ${f.role}
+                                </div>
+                            </a>
+                        </div>
                     `).join('')}
 
                     <!-- Dodatkowy kafelek Odkryj więcej -->
@@ -1079,7 +1490,49 @@
             });
         });
 
-        // Podpięcie akcji z listy wyszukiwania (Zaproś do znajomych / Obserwuj)
+        // Podpięcie opcji kafelków (3-dots)
+        const optBtns = container.querySelectorAll('.followed-card-opt-btn');
+        optBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const data = {
+                    slug: this.getAttribute('data-slug'),
+                    name: this.getAttribute('data-name'),
+                    role: this.getAttribute('data-role'),
+                    city: this.getAttribute('data-city'),
+                    avatar: this.getAttribute('data-avatar'),
+                    url: this.getAttribute('data-url'),
+                    isFriend: this.getAttribute('data-is-friend') === 'true',
+                    isFollowed: this.getAttribute('data-is-followed') === 'true'
+                };
+                openRelationshipModal(data);
+            });
+        });
+
+        // Bezpośrednie kliknięcie w odznakę znajomego (1-tap unfriend)
+        const friendBadges = container.querySelectorAll('.followed-friend-badge');
+        friendBadges.forEach(badge => {
+            badge.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const slug = this.getAttribute('data-slug');
+                sendFriendRequest(slug);
+            });
+        });
+
+        // Bezpośrednie kliknięcie w odznakę obserwowanego (1-tap unfollow)
+        const followBadges = container.querySelectorAll('.followed-check-badge');
+        followBadges.forEach(badge => {
+            badge.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const slug = this.getAttribute('data-slug');
+                toggleFollow(slug);
+            });
+        });
+
+        // Podpięcie akcji z listy wyszukiwania (Zaproś do znajomych / Obserwuj / Usuń dla Dowódcy)
         const actionBtns = container.querySelectorAll('.btn-action-mini');
         actionBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -1087,10 +1540,17 @@
                 e.stopPropagation();
                 const action = this.getAttribute('data-action');
                 const slug = this.getAttribute('data-slug');
+                const name = this.getAttribute('data-name');
                 if (action === 'friend') {
                     sendFriendRequest(slug);
                 } else if (action === 'follow') {
                     toggleFollow(slug);
+                } else if (action === 'admin-delete') {
+                    if (typeof window.LuminaDeleteProfile === 'function') {
+                        window.LuminaDeleteProfile(slug, name);
+                    } else if (window.LuminaDB && typeof window.LuminaDB.deleteProfile === 'function') {
+                        window.LuminaDB.deleteProfile(slug, name);
+                    }
                 }
             });
         });
@@ -1170,6 +1630,7 @@
 
     window.addEventListener('lumina:followChange', refreshWidgetView);
     window.addEventListener('lumina:friendshipChange', refreshWidgetView);
+    window.addEventListener('lumina:profileDeleted', refreshWidgetView);
 
     // Inicjalizacja po załadowaniu drzewa DOM
     if (document.readyState === 'loading') {

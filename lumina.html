@@ -7451,6 +7451,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             }
 
+            // Filtruj i usuń z karuzeli profile usunięte przez Dowódcę
+            try {
+                const deletedList = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
+                if (deletedList.length > 0) {
+                    deletedList.forEach(delSlug => {
+                        const noU = delSlug.replace(/^u_/, '');
+                        carousel.querySelectorAll(`.profile-card[data-user-slug="${delSlug}"], .profile-card[data-user-slug="${noU}"]`).forEach(c => c.remove());
+                    });
+                }
+            } catch(e) {}
+
             // 2. Generate cards for all self-registered community members from Firestore & Local Storage
             let cloudCardsHtml = '';
             try {
@@ -7482,6 +7493,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const cleanPKey = pKey.replace(/^u_/, '');
                     const normName = (p.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
                     const cleanNameKey = normName.replace(/[^a-z0-9]/g, '');
+
+                    // Filtruj profile usunięte przez Dowódcę
+                    try {
+                        const deletedProfiles = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
+                        if (deletedProfiles.includes(pKey) || deletedProfiles.includes(cleanPKey)) {
+                            return '';
+                        }
+                    } catch(e) {}
 
                     // Filtruj i deduplikuj wszelkie warianty profilu LUMINA / Misji
                     if (pKey.includes('lumina') || normName.includes('lumina') || cleanNameKey.includes('lumina') || (p.job && p.job.includes('Oficjalny profil Misji'))) {
@@ -11634,16 +11653,50 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         function renderOnlineUsersList(profiles) {
             var container = document.getElementById('allOnlineUsersListContainer');
             if (!container) return;
-            if (!profiles || profiles.length === 0) {
+
+            // Filtruj usunięte profile
+            var deletedProfiles = [];
+            try {
+                deletedProfiles = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
+            } catch(e) {}
+
+            var validProfiles = (profiles || []).filter(function(p) {
+                if (!p) return false;
+                var slug = (p.slug || p.id || '').toLowerCase().trim();
+                var cleanSlug = slug.replace(/^u_/, '');
+                return !deletedProfiles.includes(slug) && !deletedProfiles.includes(cleanSlug);
+            });
+
+            if (!validProfiles || validProfiles.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:24px; color:#94a3b8; font-size:0.88rem;">Brak użytkowników pasujących do wyszukiwania.</div>';
                 return;
             }
-            container.innerHTML = profiles.map(function(p) {
+
+            var isMaster = false;
+            try {
+                isMaster = localStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                           sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                           (localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim() === 'cezaryrgowski' ||
+                           (localStorage.getItem('lumina_active_session_slug') || '').toLowerCase().trim() === 'cezaryrgowski' ||
+                           (localStorage.getItem('lumina_active_session_email') || '').toLowerCase().trim() === 'nazirczarkes@gmail.com';
+            } catch(e) {}
+
+            container.innerHTML = validProfiles.map(function(p) {
+                var pSlug = p.slug || p.id || '';
                 var profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
-                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + (p.slug || p.id)));
+                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + pSlug));
                 var avatar = p.avatar || 'lumina_icon.jpg';
                 var name = p.name || 'Użytkownik LUMINA';
                 var info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
+                var escapedName = name.replace(/'/g, "\\'");
+
+                var adminDeleteBtn = '';
+                if (isMaster && pSlug && pSlug !== 'cezaryrgowski') {
+                    adminDeleteBtn = '<button type="button" class="admin-suite-btn" onclick="if(window.LuminaDeleteProfile){window.LuminaDeleteProfile(\'' + pSlug + '\', \'' + escapedName + '\');}else if(window.LuminaDB&&window.LuminaDB.deleteProfile){window.LuminaDB.deleteProfile(\'' + pSlug + '\', \'' + escapedName + '\');}" style="padding:6px 10px; border-radius:12px; font-size:0.78rem; font-weight:700; background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; cursor:pointer;" title="Trwale usuń profil (Tylko Dowódca)">' +
+                        '<i class="fa-solid fa-trash-can"></i>' +
+                    '</button>';
+                }
+
                 return '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">' +
                         '<div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href=\'' + profileUrl + '\'">' +
                             '<div style="position:relative; width:44px; height:44px; flex-shrink:0;">' +
@@ -11655,7 +11708,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 '<div style="font-size:0.75rem; color:#94a3b8;">' + info + '</div>' +
                             '</div>' +
                         '</div>' +
-                        '<div style="display:flex; gap:8px;">' +
+                        '<div style="display:flex; gap:8px; align-items:center;">' +
+                            adminDeleteBtn +
                             '<button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href=\'' + profileUrl + '\'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">' +
                                 'Profil' +
                             '</button>' +
@@ -11673,6 +11727,18 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window._cachedLiveProfiles = Array.from(map.values());
             });
         }
+
+        // Auto-refresh when profile deleted
+        window.addEventListener('lumina:profileDeleted', function() {
+            if (typeof window.syncAllProfilesToCarousel === 'function') {
+                window.syncAllProfilesToCarousel();
+            }
+            var sInput = document.getElementById('onlineUsersSearchInput');
+            var term = sInput ? sInput.value : '';
+            if (typeof window.filterOnlineUsersModal === 'function') {
+                window.filterOnlineUsersModal(term);
+            }
+        });
     </script>
 
     <!-- ══════════ MODAL: WYJAŚNIENIE PROFILU POGLĄDOWEGO ══════════ -->

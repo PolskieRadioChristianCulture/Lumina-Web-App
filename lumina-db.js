@@ -1384,14 +1384,62 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
 
 export async function deleteProfileFromCloud(slugOrUid) {
     if (!slugOrUid) return false;
-    const cleanSlug = slugOrUid.toLowerCase();
+    const cleanSlug = slugOrUid.toLowerCase().trim();
+    const cleanNoU = cleanSlug.replace(/^u_/, '');
     
-    // Clear local storage
+    // Clear local storage and session
     try {
-        localStorage.removeItem(`lumina_profile_${slugOrUid}`);
-        localStorage.removeItem(`lumina_profile_${cleanSlug}`);
-        sessionStorage.removeItem(`lumina_auth_owner_${slugOrUid}`);
-        sessionStorage.removeItem(`lumina_auth_owner_${cleanSlug}`);
+        const keysToRemove = [
+            `lumina_profile_${slugOrUid}`,
+            `lumina_profile_${cleanSlug}`,
+            `lumina_avatar_${slugOrUid}`,
+            `lumina_avatar_${cleanSlug}`,
+            `lumina_cover_${slugOrUid}`,
+            `lumina_cover_${cleanSlug}`,
+            `lumina_carousel_${slugOrUid}`,
+            `lumina_carousel_${cleanSlug}`,
+            `lumina_friend_${slugOrUid}`,
+            `lumina_friend_${cleanSlug}`,
+            `lumina_following_${slugOrUid}`,
+            `lumina_following_${cleanSlug}`,
+            `lumina_auth_owner_${slugOrUid}`,
+            `lumina_auth_owner_${cleanSlug}`,
+            `lumina_private_access_${slugOrUid}`,
+            `lumina_private_access_${cleanSlug}`
+        ];
+        if (cleanNoU !== cleanSlug) {
+            keysToRemove.push(
+                `lumina_profile_${cleanNoU}`,
+                `lumina_avatar_${cleanNoU}`,
+                `lumina_cover_${cleanNoU}`,
+                `lumina_carousel_${cleanNoU}`,
+                `lumina_friend_${cleanNoU}`,
+                `lumina_following_${cleanNoU}`,
+                `lumina_auth_owner_${cleanNoU}`
+            );
+        }
+        keysToRemove.forEach(k => {
+            try { localStorage.removeItem(k); } catch(e) {}
+            try { sessionStorage.removeItem(k); } catch(e) {}
+        });
+
+        // Remove from registered custom users list
+        let customUsers = JSON.parse(localStorage.getItem('lumina_custom_users_list') || '[]');
+        customUsers = customUsers.filter(u => {
+            if (!u) return false;
+            const s = (u.slug || u.uid || u.id || '').toLowerCase().trim();
+            return s !== cleanSlug && s !== cleanNoU && s !== slugOrUid.toLowerCase().trim();
+        });
+        localStorage.setItem('lumina_custom_users_list', JSON.stringify(customUsers));
+
+        // Add to permanent blacklist of deleted profiles
+        let deleted = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
+        if (!deleted.includes(cleanSlug)) deleted.push(cleanSlug);
+        if (!deleted.includes(cleanNoU)) deleted.push(cleanNoU);
+        localStorage.setItem('lumina_deleted_profiles', JSON.stringify(deleted));
+
+        // Dispatch storage and deletion events
+        window.dispatchEvent(new CustomEvent('lumina:profileDeleted', { detail: { slug: cleanSlug } }));
         window.dispatchEvent(new Event('storage'));
     } catch(e) {}
 
@@ -1402,12 +1450,70 @@ export async function deleteProfileFromCloud(slugOrUid) {
             if (cleanSlug !== slugOrUid) {
                 await deleteDoc(doc(db, 'lumina_profiles', cleanSlug));
             }
-            console.log(`Lumina: Profil [${slugOrUid}] został usunięty z bazy danych.`);
+            if (cleanNoU !== cleanSlug) {
+                await deleteDoc(doc(db, 'lumina_profiles', cleanNoU));
+            }
+            console.log(`Lumina: Profil [${slugOrUid}] został usunięty z bazy danych Firestore.`);
         } catch(err) {
             console.warn(`Błąd usuwania profilu [${slugOrUid}] z Firestore:`, err.message);
         }
     }
     return true;
+}
+
+export async function deleteProfile(slugOrUid, targetName) {
+    if (!slugOrUid) return false;
+    const cleanSlug = String(slugOrUid).toLowerCase().trim();
+    const displayName = targetName || cleanSlug;
+
+    if (cleanSlug === 'cezaryrgowski') {
+        const doubleCheck = confirm("⚠️ UWAGA: Próbujesz usunąć profil Założyciela (Cezary Rogowski)! Czy jesteś ABSOLUTNIE PEWNY?");
+        if (!doubleCheck) return false;
+    }
+
+    const confirmed = confirm(
+        `⚠️ CZY NA PEWNO CHCESZ BEZPOWROTNIE USUNĄĆ PROFIL?\n\n` +
+        `Użytkownik: "${displayName}" (slug: ${cleanSlug})\n\n` +
+        `Ta operacja:\n` +
+        `• Trwale usunie profil z chmury Firestore\n` +
+        `• Usunie profil ze wszystkich list, karuzeli i katalogów portalu\n` +
+        `• Wyczyści powiązane relacje znajomości i obserwowania\n` +
+        `• Zablokuje jego ponowne wyświetlanie\n\n` +
+        `Operacji nie można cofnąć. Kontynuować?`
+    );
+    if (!confirmed) return false;
+
+    if (typeof window.showToast === 'function') {
+        window.showToast(`Usuwanie profilu ${displayName} z bazy portalu... 🕊️`);
+    }
+
+    await deleteProfileFromCloud(cleanSlug);
+
+    // Remove any DOM card from carousel or lists
+    try {
+        const cleanNoU = cleanSlug.replace(/^u_/, '');
+        document.querySelectorAll(`.profile-card[data-user-slug="${cleanSlug}"], .profile-card[data-user-slug="${cleanNoU}"]`).forEach(el => el.remove());
+        document.querySelectorAll(`.followed-friend-item[data-slug="${cleanSlug}"], .followed-friend-card-wrapper[data-slug="${cleanSlug}"]`).forEach(el => el.remove());
+        document.querySelectorAll(`.search-result-item[data-slug="${cleanSlug}"]`).forEach(el => el.remove());
+    } catch(e) {}
+
+    if (typeof window.showToast === 'function') {
+        window.showToast(`🗑️ Profil ${displayName} został trwale usunięty z portalu LUMINA.`);
+    }
+
+    // If on that profile's page, redirect
+    const curPath = window.location.pathname.toLowerCase();
+    const curSearch = window.location.search.toLowerCase();
+    if (curSearch.includes('u=' + cleanSlug) || curSearch.includes('user=' + cleanSlug) || curPath.includes(cleanSlug)) {
+        setTimeout(() => {
+            window.location.href = 'lumina-tablica.html';
+        }, 1200);
+    }
+    return true;
+}
+
+if (typeof window !== 'undefined') {
+    window.LuminaDeleteProfile = deleteProfile;
 }
 
 export async function setProfileBlockStatus(slugOrUid, isBlocked, reason = 'Zablokowany przez Administratora Portalu') {
@@ -5765,15 +5871,12 @@ window.LuminaDB = {
     setupPhoneRecaptcha,
     sendPhoneVerificationCode,
     confirmPhoneVerificationCode,
-    onAuthChange,
-    getCurrentUser,
-    getCurrentProfile,
     subscribeToProfile,
     saveProfileToCloud,
     deleteProfileFromCloud,
+    deleteProfile,
     setProfileBlockStatus,
     subscribeToAllCommunityProfiles,
-    subscribeToFeedPosts,
     addPostToCloud,
     publishUniversalPost,
     getAuthorPosts,

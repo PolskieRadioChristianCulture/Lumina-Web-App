@@ -2264,6 +2264,15 @@
         // ══════════ USUWANIE I TWORZENIE PROFILI ══════════
         deleteProfile: function(slug) {
             const target = (slug || this.slug).toLowerCase().trim();
+            if (typeof window.LuminaDeleteProfile === 'function') {
+                window.LuminaDeleteProfile(target);
+                this.renderProfilesListInModal();
+                return;
+            } else if (window.LuminaDB && typeof window.LuminaDB.deleteProfile === 'function') {
+                window.LuminaDB.deleteProfile(target);
+                this.renderProfilesListInModal();
+                return;
+            }
             if (!confirm(`⚠️ CZY NA PEWNO chcesz bezpowrotnie USUNĄĆ profil "${target}" oraz wszystkie jego powiązane dane z bazy portalu?`)) {
                 return;
             }

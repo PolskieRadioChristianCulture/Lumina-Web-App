@@ -3285,6 +3285,9 @@
 
                     <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
                     <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
+                    <button type="button" class="btn-action-secondary btn-action-admin-delete" id="btnHeaderDeleteProfile" onclick="deleteCurrentProfileAdmin()" title="Trwale usuń ten profil z portalu LUMINA (Tylko Dowódca)" style="display:none; height:42px; border-radius:24px; background:linear-gradient(135deg,#dc2626,#991b1b); border:1px solid #ef4444; color:#fff; font-size:0.82rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(220,38,38,0.4); transition:all 0.25s ease; padding:0 14px; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-trash-can"></i> <span class="btn-text">Usuń profil</span>
+                    </button>
                     <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                     <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
                 </div>
@@ -5237,7 +5240,23 @@
             const targetUid = curProf?.uid || null;
 
             // 1. Sprawdzenie czy użytkownik to Główny Administrator lub Właściciel Profilu
-            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            let isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            if (!isMaster) {
+                try {
+                    const uSlug = localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_user_slug');
+                    if (uSlug === 'cezaryrgowski') isMaster = true;
+                    const cUser = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+                    if (cUser && (cUser.email === 'nazirczarkes@gmail.com' || cUser.uid === 'cezaryrgowski')) isMaster = true;
+                    const storedU = JSON.parse(localStorage.getItem('lumina_current_user') || '{}');
+                    if (storedU && (storedU.email === 'nazirczarkes@gmail.com' || storedU.slug === 'cezaryrgowski' || storedU.uid === 'cezaryrgowski')) isMaster = true;
+                } catch(e) {}
+                if (isMaster) {
+                    try {
+                        localStorage.setItem('lumina_auth_master_admin', 'true');
+                        sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                    } catch(e) {}
+                }
+            }
             let isSelf = false;
 
             try {
@@ -5272,7 +5291,12 @@
             const icon = document.getElementById('secStatusIcon');
             const txt = document.getElementById('secStatusText');
             const btn = document.getElementById('btnOwnerAuthToggle');
+            const headDelBtn = document.getElementById('btnHeaderDeleteProfile');
             const data = getProfileData();
+
+            if (headDelBtn) {
+                headDelBtn.style.display = isMaster ? 'inline-flex' : 'none';
+            }
 
             if (document.getElementById('adminTargetNameEl') && data) {
                 document.getElementById('adminTargetNameEl').textContent = data.name + ` (@${data.slug || getRequestedUserSlug()})`;
@@ -5399,26 +5423,22 @@
         async function deleteCurrentProfileAdmin() {
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
-            const confirmed = confirm(`⚠️ UWAGA - KASOWANIE PROFILU!\n\nCzy na pewno chcesz TRWALE USUNĄĆ profil:\n"${cur.name}" (slug: ${slug})?\n\nUsunięte zostaną wszystkie dane profilu, zdjęcia i posty. Tej operacji nie można cofnąć!`);
-            if (!confirmed) return;
-
-            showToast('Usuwanie profilu z portalu i chmury Firestore... 🕊️');
-            
-            try {
-                if (window.LuminaDB?.deleteProfileFromCloud) {
-                    await window.LuminaDB.deleteProfileFromCloud(slug);
-                }
-                localStorage.removeItem('lumina_profile_' + slug);
-                if (cur.uid) localStorage.removeItem('lumina_profile_' + cur.uid);
-                sessionStorage.removeItem('lumina_auth_owner_' + slug);
-            } catch(err) {
-                console.error('Błąd usuwania profilu:', err);
+            if (typeof window.LuminaDeleteProfile === 'function') {
+                await window.LuminaDeleteProfile(slug, cur.name);
+                return;
+            } else if (window.LuminaDB?.deleteProfile) {
+                await window.LuminaDB.deleteProfile(slug, cur.name);
+                return;
+            } else if (window.LuminaDB?.deleteProfileFromCloud) {
+                const confirmed = confirm(`⚠️ UWAGA - KASOWANIE PROFILU!\n\nCzy na pewno chcesz TRWALE USUNĄĆ profil:\n"${cur.name}" (slug: ${slug})?\n\nUsunięte zostaną wszystkie dane profilu, zdjęcia i posty. Tej operacji nie można cofnąć!`);
+                if (!confirmed) return;
+                showToast('Usuwanie profilu z portalu i chmury Firestore... 🕊️');
+                await window.LuminaDB.deleteProfileFromCloud(slug);
+                showToast(`✨ Profil ${cur.name} został trwale usunięty z portalu LUMINA.`);
+                setTimeout(() => {
+                    window.location.href = 'lumina.html';
+                }, 1500);
             }
-
-            showToast(`✨ Profil ${cur.name} został trwale usunięty z portalu LUMINA.`);
-            setTimeout(() => {
-                window.location.href = 'lumina.html';
-            }, 1500);
         }
 
         function requestOwnerAccess(callback) {

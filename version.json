@@ -1,13 +1,13 @@
 {
-  "version": "4.1.5",
-  "buildDate": "2026-09-12T13:46:00.000Z",
-  "releaseName": "LUMINA v4.1.5 – Naprawa przycisków filtrów na telefonach (pełne pigułki z tekstem)",
+  "version": "4.1.6",
+  "buildDate": "2026-09-12T17:55:00.000Z",
+  "releaseName": "LUMINA v4.1.6 – Usuwanie znajomych/obserwowanych oraz usuwanie profili przez Dowódcę",
   "changes": [
-    "📱 Całkowita eliminacja zniekształconych i nakładających się okrągłych przycisków na telefonach",
-    "✨ Przywrócenie eleganckich pigułek z ikoną i czytelnym tekstem w poziomym pasku przewijania",
-    "🎯 Pełne wsparcie dla dotyku (min-height: 40px, min-width: 44px) zgodnie ze standardem @SMCC"
+    "🤝 Opcja szybkiego usuwania ze znajomych (unfriend) i zaprzestania obserwowania (unfollow) bezpośrednio z kafelków i wyszukiwarki widgetu",
+    "👑 Trwałe, bezpieczne usuwanie dowolnego profilu z bazy Firestore i ekosystemu zarezerwowane wyłącznie dla Dowódcy (Master Admin)",
+    "🧹 Natychmiastowe czyszczenie pamięci lokalnej, karuzeli i list społeczności po usunięciu profilu"
   ],
-  "minAppVersion": "4.1.5",
+  "minAppVersion": "4.1.6",
   "forceReload": true,
   "forceReinstall": true
 }
