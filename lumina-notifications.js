@@ -1084,16 +1084,19 @@ window.requestLuminaPushPermission = async function() {
 
             if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
                 const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
-                await window.LuminaDB.requestNotificationPermission(userSlug);
+                const token = await window.LuminaDB.requestNotificationPermission(userSlug);
+                if (!token) throw new Error('Nie udało się zarejestrować telefonu. Zaloguj się i spróbuj ponownie.');
+            } else {
+                throw new Error('Moduł powiadomień jeszcze się ładuje. Spróbuj ponownie za chwilę.');
             }
             if (window.LuminaNotifications) {
                 window.LuminaNotifications.updatePushBar();
-                window.LuminaNotifications.push('🔔 Powiadomienia Aktywne', 'Dziękujemy! Będziesz otrzymywać powiadomienia o rozważaniach, transmisjach CCTV24 i wiadomościach.', 'lumina_icon.jpg', 'lumina-tablica.html');
+                window.LuminaNotifications.push('🔔 Urządzenie zarejestrowane', 'Zgoda i rejestracja urządzenia zostały zapisane. Dostarczenie w tle potwierdza osobny test powiadomienia.', 'lumina_icon.jpg', 'lumina-tablica.html');
             }
             if (typeof window.showLuminaToast === 'function') {
-                window.showLuminaToast('🔔 Powiadomienia PUSH zostały pomyślnie aktywowane!');
+                window.showLuminaToast('🔔 Urządzenie zostało zarejestrowane do powiadomień.');
             } else if (typeof window.showToast === 'function') {
-                window.showToast('🔔 Powiadomienia PUSH zostały pomyślnie aktywowane!');
+                window.showToast('🔔 Urządzenie zostało zarejestrowane do powiadomień.');
             }
             return true;
         } else {
@@ -1103,6 +1106,10 @@ window.requestLuminaPushPermission = async function() {
         }
     } catch(e) {
         console.error('Error requesting push permission:', e);
+        const message = e.message || 'Nie udało się włączyć powiadomień. Spróbuj ponownie.';
+        if (typeof window.showLuminaToast === 'function') window.showLuminaToast(message);
+        else if (typeof window.showToast === 'function') window.showToast(message);
+        else alert(message);
         return false;
     }
 };
@@ -1119,6 +1126,7 @@ window.syncLuminaPushTokenSilently = async function() {
 };
 
 // Uruchomienie cichej synchronizacji przy załadowaniu strony
+window.addEventListener('lumina-auth-state', () => window.syncLuminaPushTokenSilently());
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => setTimeout(window.syncLuminaPushTokenSilently, 2000));
 } else {

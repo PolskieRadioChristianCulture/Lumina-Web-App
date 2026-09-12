@@ -1,6 +1,8 @@
 // ══════════════════════════════════════════════════════════════════════════
 // LUMINA FIREBASE CLOUD MESSAGING (Background Web Push for Closed App)
 // ══════════════════════════════════════════════════════════════════════════
+// Register before Firebase so our deep links also handle SDK-displayed notifications.
+self.addEventListener('notificationclick', handleLuminaNotificationClick);
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
 
@@ -18,7 +20,8 @@ try {
 
     const fcmMessaging = firebase.messaging();
     fcmMessaging.onBackgroundMessage((payload) => {
-        console.log('[SW] FCM Background Message received:', payload);
+        // Firebase already displays notification payloads. Only data-only messages need rendering.
+        if (payload.notification) return;
         const data = payload.data || {};
         const notification = payload.notification || {};
         const type = data.type || 'general';
@@ -82,9 +85,9 @@ try {
             vibrate: [200, 100, 200],
             requireInteraction: requireInteraction,
             data: {
+                ...data,
                 url: urlToOpen,
                 type: type,
-                ...data
             },
             actions: actions
         };
@@ -223,6 +226,8 @@ self.addEventListener('push', (event) => {
 
     const data = payload.data || {};
     const notification = payload.notification || {};
+    // FCM's own push listener owns these messages (foreground and background).
+    if (payload.from) return;
     const type = data.type || 'general';
 
     const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
@@ -277,17 +282,20 @@ self.addEventListener('push', (event) => {
 // ══════════════════════════════════════════════════════════════════════════
 // NOTIFICATION CLICK HANDLER — DEEP-LINKING TO PAGES & CHAT
 // ══════════════════════════════════════════════════════════════════════════
-self.addEventListener('notificationclick', (event) => {
+function handleLuminaNotificationClick(event) {
+    event.stopImmediatePropagation();
     event.notification.close();
     const action = event.action;
-    const data = event.notification.data || {};
+    const notificationData = event.notification.data || {};
+    const fcmPayload = notificationData.FCM_MSG;
+    const data = fcmPayload ? { ...fcmPayload.data } : notificationData;
     const postId = data.postId || (data.data && data.data.postId);
     const authorSlug = data.authorSlug || (data.data && data.data.authorSlug);
     let targetUrl = data.url;
 
     const sender = data.senderId || data.senderSlug || data.chatPartnerId || (data.data && (data.data.senderId || data.data.senderSlug));
     const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
-    const isPublic = data.type === 'public' || data.openPublicChat || (data.data && data.data.type === 'public');
+    const isPublic = data.type === 'public' || data.type === 'public_chat' || data.openPublicChat || (data.data && data.data.type === 'public');
 
     if (action === 'watch') {
         targetUrl = data.url || '/master';
@@ -307,6 +315,14 @@ self.addEventListener('notificationclick', (event) => {
         targetUrl = `/lumina?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
     } else if (!targetUrl) {
         targetUrl = '/lumina';
+    }
+
+    // A notification may navigate only within this portal.
+    try {
+        const parsed = new URL(targetUrl, self.location.origin);
+        targetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina';
+    } catch (_) {
+        targetUrl = self.location.origin + '/lumina';
     }
 
     event.waitUntil(
@@ -332,7 +348,7 @@ self.addEventListener('notificationclick', (event) => {
                         });
                     }
                     if (targetUrl && 'navigate' in client) {
-                        client.navigate(targetUrl);
+                        return client.navigate(targetUrl).then(updated => (updated || client).focus());
                     }
                     return client.focus();
                 }
@@ -342,7 +358,7 @@ self.addEventListener('notificationclick', (event) => {
             }
         })
     );
-});
+}
 
 // ══════════════════════════════════════════════════════════════════════════
 // PERIODIC BACKGROUND SYNC (Missionary Devotion Sync at Dawn)

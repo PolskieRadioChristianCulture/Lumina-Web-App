@@ -82,8 +82,8 @@ try {
         if (supported && app) {
             messaging = getMessaging(app);
             onMessage(messaging, (payload) => {
-                const title = payload.notification?.title || 'LUMINA • Nowa Wiadomość 💌';
-                const body = payload.notification?.body || 'Nowa aktywność w społeczności.';
+                const title = payload.notification?.title || payload.data?.title || 'LUMINA • Nowa Wiadomość 💌';
+                const body = payload.notification?.body || payload.data?.body || 'Nowa aktywność w społeczności.';
                 window.dispatchEvent(new CustomEvent('lumina-push-message', { detail: { title, body, payload } }));
                 if (typeof window.showToast === 'function') {
                     window.showToast(`💌 ${title}: ${body}`);
@@ -110,27 +110,28 @@ export async function requestNotificationPermission(userUid) {
     try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
+            if (!auth || !db || !('serviceWorker' in navigator)) return null;
+            await auth.authStateReady();
+            // A profile slug is never an authenticated identity, even when passed by older callers.
+            const pushUser = auth.currentUser;
+            if (!pushUser || pushUser.isAnonymous) return null;
             if (!messaging && isMessagingSupported) {
                 const supported = await isMessagingSupported();
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260909_v411', { scope: './' });
+                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260909_v411', { scope: '/', updateViaCache: 'none' });
+                await navigator.serviceWorker.ready;
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
                     serviceWorkerRegistration: registration
                 });
                 
-                if (token) {
-                    try {
-                        localStorage.setItem('lumina_fcm_token', token);
-                    } catch(e) {}
-                }
-
                 if (token && db) {
                     try {
+                        if (auth.currentUser?.uid !== pushUser.uid) return null;
                         const tokenKey = token.replace(/[^a-zA-Z0-9_-]/g, '').slice(-32);
-                        const effectiveUid = userUid || (currentUserState ? currentUserState.uid : null) || localStorage.getItem('lumina_current_user_slug') || 'anonymous';
+                        const effectiveUid = pushUser.uid;
                         const effectiveSlug = localStorage.getItem('lumina_current_user_slug') || (currentProfileState ? (currentProfileState.slug || currentProfileState.uid) : '') || '';
                         const platform = /Android/i.test(navigator.userAgent) ? 'android' : (/iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ios' : 'web');
 
@@ -146,9 +147,11 @@ export async function requestNotificationPermission(userUid) {
                             lastSeenAt: serverTimestamp(),
                             updatedAt: serverTimestamp()
                         }, { merge: true });
+                        try { localStorage.setItem('lumina_fcm_token', token); } catch(e) {}
                         console.log('[LUMINA Push] Token pomyślnie zarejestrowany w LuminaDeviceTokens w Firestore! 🕊️');
                     } catch(e) {
                         console.warn('[LUMINA Push] Error saving to LuminaDeviceTokens:', e);
+                        return null;
                     }
 
                     if (userUid) {

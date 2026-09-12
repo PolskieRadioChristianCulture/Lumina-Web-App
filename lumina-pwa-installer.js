@@ -47,17 +47,10 @@
                         }));
                     }
 
-                    // Wyrejestrowywanie starych wersji Service Workera
-                    const registrations = await navigator.serviceWorker.getRegistrations();
-                    for (const reg of registrations) {
-                        if (reg.active && !reg.active.scriptURL.includes('v=20260909_v411')) {
-                            console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
-                            await reg.unregister();
-                        }
-                    }
+                    // Updating the existing registration preserves its push subscription.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260909_v411', { scope: './' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260909_v411', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker v4.1.1 zarejestrowany. Scope:', reg.scope);
