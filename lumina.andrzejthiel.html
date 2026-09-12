@@ -1001,6 +1001,11 @@
 
             <!-- Left Sidebar -->
             <aside class="sidebar-col">
+
+                <!-- ══════════ OBSERWOWANI ZNAJOMI (POD WIZYTÓWKĄ) ══════════ -->
+                <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
+
+
                 
                 <!-- About Me Card -->
                 <div class="side-card">
@@ -3045,5 +3050,6 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
         window.addEventListener('lumina:dbReady', () => startAndrzejFeed());
     </script>
     <script type="module" src="lumina-badges-engine.js?v=4.0.0"></script>
+    <script src="js/lumina-followed-friends.js" defer></script>
 </body>
 </html>

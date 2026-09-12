@@ -341,6 +341,102 @@
             overflow-x: hidden;
         }
 
+        
+        /* ── NAVBAR UNIVERSAL SEARCH BAR STYLES ── */
+        .nav-search-bar-wrap {
+            flex: 1;
+            max-width: 520px;
+            margin: 0 16px;
+            position: relative;
+            z-index: 10001;
+        }
+
+        .navbar-search-style {
+            opacity: 1 !important;
+            max-height: none !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            margin: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .navbar-search-style .search-input-wrapper {
+            background: rgba(11, 24, 56, 0.85) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+            border-radius: 28px !important;
+            padding: 3px 6px 3px 16px !important;
+            height: 42px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35) !important;
+            transition: all 0.25s ease !important;
+        }
+
+        .navbar-search-style .search-input-wrapper:focus-within,
+        .navbar-search-style .search-input-wrapper:hover {
+            border-color: #facc15 !important;
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.45) !important;
+            background: rgba(7, 14, 34, 0.98) !important;
+        }
+
+        .navbar-search-style .omni-search-input {
+            font-size: 0.86rem !important;
+            color: #fff !important;
+        }
+
+        .navbar-search-style .btn-omni-action {
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #f59e0b, #ec4899) !important;
+            border: none !important;
+            color: #fff !important;
+            font-size: 0.82rem !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            transition: transform 0.2s !important;
+        }
+
+        .navbar-search-style .btn-omni-action:hover {
+            transform: scale(1.08) !important;
+        }
+
+        @media (max-width: 640px) {
+            .nav-search-bar-wrap {
+                display: none;
+            }
+            .nav-search-bar-wrap.mobile-open {
+                display: block !important;
+                position: absolute;
+                top: calc(100% + 6px);
+                left: 10px;
+                right: 10px;
+                max-width: none !important;
+                margin: 0 !important;
+                background: rgba(11, 17, 32, 0.98);
+                padding: 6px;
+                border-radius: 30px;
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
+                border: 1.5px solid rgba(168, 85, 247, 0.6);
+                z-index: 10006 !important;
+            }
+            .mobile-search-toggle-btn {
+                display: inline-flex !important;
+            }
+        }
+        @media (min-width: 641px) {
+            .nav-search-bar-wrap {
+                display: block !important;
+            }
+            .mobile-search-toggle-btn {
+                display: none !important;
+            }
+        }
+
         /* ──────────────────── NAVBAR ──────────────────── */
         .lumina-nav {
             position: sticky;
@@ -3910,6 +4006,102 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
+<style>
+        /* LUMINA NAVBAR SEARCH & HERO AUTO-REVEAL FACES */
+        .nav-search-bar-wrap {
+            flex: 1;
+            max-width: 460px;
+            margin: 0 16px;
+            position: relative;
+            z-index: 50;
+        }
+        .nav-search-bar-wrap .universal-search-container {
+            opacity: 1 !important;
+            max-height: none !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+        .nav-search-bar-wrap .search-input-wrapper {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border: 1.5px solid rgba(168, 85, 247, 0.4) !important;
+            border-radius: 40px !important;
+            padding: 5px 8px 5px 14px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+            display: flex !important;
+            align-items: center !important;
+            transition: all 0.25s ease !important;
+        }
+        .nav-search-bar-wrap .search-input-wrapper:focus-within {
+            background: rgba(15, 23, 42, 0.95) !important;
+            border-color: rgba(250, 204, 21, 0.85) !important;
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.35) !important;
+        }
+        .nav-search-bar-wrap .omni-search-input {
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            color: #fff !important;
+            font-size: 0.84rem !important;
+            width: 100% !important;
+            padding: 4px 0 !important;
+        }
+        .nav-search-bar-wrap .omni-search-input::placeholder {
+            color: rgba(203, 213, 225, 0.65) !important;
+        }
+        .nav-search-bar-wrap .omni-dropdown {
+            position: absolute !important;
+            top: calc(100% + 8px) !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            max-height: 420px !important;
+            overflow-y: auto !important;
+            background: rgba(11, 17, 32, 0.98) !important;
+            border: 1.5px solid rgba(168, 85, 247, 0.5) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            z-index: 10005 !important;
+        }
+        @media (max-width: 820px) {
+            .nav-search-bar-wrap {
+                max-width: 260px;
+                margin: 0 8px;
+            }
+        }
+        @media (max-width: 580px) {
+            .nav-search-bar-wrap {
+                max-width: 170px;
+                margin: 0 4px;
+            }
+            .nav-search-bar-wrap .omni-search-input {
+                font-size: 0.76rem !important;
+            }
+            .nav-search-bar-wrap .search-input-wrapper {
+                padding: 3px 6px 3px 10px !important;
+            }
+        }
+
+        /* Hero Auto-Reveal Faces on Background */
+        .hero-section {
+            min-height: 250px !important;
+            cursor: pointer;
+            transition: background 0.5s ease;
+        }
+        .hero-content {
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .hero-section.faces-revealed .hero-content {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-8px) !important;
+        }
+    </style>
 </head>
 <body>
 <script>
@@ -3941,7 +4133,30 @@
             <span style="font-weight: 800; letter-spacing: 1.5px;">LUMINA</span>
         </a>
 
+        <!-- Belka Wyszukiwarki w Nawigacji Głównej LUMINA -->
+        <div class="nav-search-bar-wrap" id="navSearchWrapper">
+            <div class="universal-search-container" id="universalSearchBox" onclick="event.stopPropagation()">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon" style="color: #facc15; font-size: 0.9rem; margin-right: 8px;"></i>
+                    <input type="text" id="omniSearchInput" class="omni-search-input" data-i18n-placeholder="search_placeholder" placeholder="Szukaj osób, miast, powołań..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()" autocomplete="off">
+                    <button type="button" class="btn-omni-close" id="omniClearBtn" onclick="clearOmniSearch(event)" title="Wyczyść" style="background:transparent; border:none; color:#94a3b8; font-size:0.95rem; cursor:pointer; padding:4px 6px; display:none; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <!-- Dynamic Live Results Dropdown -->
+                <div class="omni-dropdown" id="omniDropdown"></div>
+            </div>
+        </div>
+
         <div class="lumina-nav-actions" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <!-- 0. Mobile Search Toggle -->
+            <button type="button" class="nav-circle-btn mobile-search-toggle-btn" id="mobileSearchBtn" onclick="toggleMobileNavbarSearch()" data-i18n-title="nav.searchTitle" title="Szukaj na LUMINA" style="display:none; width:38px; height:38px; border-radius:50%; background:rgba(11,24,56,0.90); border:1.5px solid rgba(168,85,247,0.8); color:#c084fc; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:0.95rem;"></i>
+            </button>
+
             <!-- 1. Mini Radio Player -->
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" data-i18n-title="nav.radioTitle" title="Włącz / Wyłącz Radio Christian Culture" style="width:38px; height:38px; border-radius:50%; background:rgba(11,24,56,0.90); border:1.5px solid rgba(250,204,21,0.8); color:#facc15; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px; font-size:0.95rem;"></i>
@@ -4024,7 +4239,7 @@
             <img src="lumina_hero_bg.jpg?v=20260822" alt="LUMINA Tło" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_bg_official.jpg';">
         </div>
         <div class="hero-overlay" id="heroOverlay"></div>
-        <div class="hero-content" id="heroContent">
+            <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
                 <div style="margin-bottom: 8px;">
                     <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 16px rgba(168, 85, 247, 0.4), 0 0 8px rgba(250, 204, 21, 0.3); display: inline-block;">
@@ -4036,30 +4251,6 @@
                 <p class="hero-subtitle" data-i18n="hero_subtitle" style="margin-bottom: 10px; font-size: 0.82rem; line-height: 1.35; max-width: 620px;">
                     Poznaj ludzi, którzy budują relacje oparte na wierze i wartościach • Świadectwa • Modlitwa
                 </p>
-
-                <!-- Search trigger pill button -->
-                <div id="heroSearchTriggerRow" style="display: flex; justify-content: center;">
-                    <button type="button" class="hero-search-pill-btn" onclick="toggleHeroSearch(event, true)" title="Otwórz wyszukiwarkę LUMINA" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(250,204,21,0.35); color: rgba(255,255,255,0.9); font-size: 0.78rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.25s ease;" onmouseover="this.style.background='rgba(255,255,255,0.16)'; this.style.borderColor='#facc15';" onmouseout="this.style.background='rgba(255,255,255,0.08)'; this.style.borderColor='rgba(250,204,21,0.35)';">
-                        <i class="fa-solid fa-magnifying-glass" style="color: #facc15; font-size: 0.8rem;"></i>
-                        <span>Szukaj osób, miast, powołań...</span>
-                        <kbd style="font-size: 0.6rem; background: rgba(0,0,0,0.4); color: #cbd5e1; padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">ESC</kbd>
-                    </button>
-                </div>
-            </div>
-
-            <!-- ══════════ UNIWERSALNA WYSZUKIWARKA PORTALU LUMINA ══════════ -->
-            <div class="universal-search-container" id="universalSearchBox" onclick="event.stopPropagation()">
-                <div class="search-input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="omniSearchInput" class="omni-search-input" data-i18n-placeholder="search_placeholder" placeholder="Szukaj po imieniu, nazwisku, mieście, powołaniu..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()" autocomplete="off">
-                    <button type="button" class="btn-omni-close" onclick="toggleHeroSearch(event, false)" title="Zwiń wyszukiwarkę" style="background:transparent; border:none; color:#94a3b8; font-size:1rem; cursor:pointer; padding:6px 10px; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                    <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj"><i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-
-                <!-- Dynamic Live Results Dropdown -->
-                <div class="omni-dropdown" id="omniDropdown"></div>
             </div>
         </div>
     </header>
@@ -10628,6 +10819,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         ];
 
         window.handleOmniSearchInput = function(val) {
+            const clearBtn = document.getElementById('omniClearBtn');
+            if (clearBtn) clearBtn.style.display = (val && val.trim().length > 0) ? 'inline-flex' : 'none';
             const dropdown = document.getElementById('omniDropdown');
             if (!dropdown) return;
             const term = (val || '').trim().toLowerCase();
@@ -11818,6 +12011,71 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     </div>
 </div>
 
+
+    <script>
+    /* LUMINA HERO REVEAL & NAVBAR SEARCH ENGINE */
+    let heroRevealTimer = null;
+
+    function hideHeroIntroToRevealFaces() {
+        const hero = document.getElementById('heroHeader');
+        if (hero) {
+            hero.classList.add('faces-revealed');
+        }
+    }
+
+    function restoreHeroIntro() {
+        const hero = document.getElementById('heroHeader');
+        if (hero) {
+            hero.classList.remove('faces-revealed');
+        }
+        resetHeroTimer();
+    }
+
+    function resetHeroTimer() {
+        if (heroRevealTimer) clearTimeout(heroRevealTimer);
+        heroRevealTimer = setTimeout(() => {
+            hideHeroIntroToRevealFaces();
+        }, 3500); // Po 3.5 sekundy odsłaniamy twarze na tapecie
+    }
+
+    window.toggleMobileNavbarSearch = function() {
+        const wrap = document.getElementById('navSearchWrapper');
+        const input = document.getElementById('omniSearchInput');
+        if (!wrap) return;
+        const isOpen = wrap.classList.toggle('mobile-open');
+        if (isOpen && input) {
+            setTimeout(() => input.focus(), 100);
+        }
+    };
+
+    window.clearOmniSearch = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        const input = document.getElementById('omniSearchInput');
+        const clearBtn = document.getElementById('omniClearBtn');
+        const dropdown = document.getElementById('omniDropdown');
+        if (input) {
+            input.value = '';
+            input.focus();
+        }
+        if (clearBtn) clearBtn.style.display = 'none';
+        if (dropdown) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const heroHeader = document.getElementById('heroHeader');
+        if (heroHeader) {
+            heroHeader.addEventListener('mouseenter', restoreHeroIntro);
+            heroHeader.addEventListener('touchstart', restoreHeroIntro, { passive: true });
+            heroHeader.addEventListener('mousemove', restoreHeroIntro);
+            heroHeader.addEventListener('click', restoreHeroIntro);
+        }
+        resetHeroTimer();
+    });
+    </script>
+    
 </body>
 </html>
 

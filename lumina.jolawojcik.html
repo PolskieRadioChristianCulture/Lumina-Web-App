@@ -906,7 +906,11 @@
                 </div>
 
                 <!-- Passion & Tags -->
-                <div class="sidebar-card">
+                
+                <!-- ══════════ OBSERWOWANI ZNAJOMI (POD WIZYTÓWKĄ) ══════════ -->
+                <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
+
+<div class="sidebar-card">
                     <div class="card-title">
                         <span><i class="fa-solid fa-tags"></i> Wartości & Pasje</span>
                     </div>
@@ -1553,5 +1557,6 @@
         window.addEventListener('DOMContentLoaded', updateJolaMatchScore);
         setTimeout(updateJolaMatchScore, 800);
     </script>
+    <script src="js/lumina-followed-friends.js" defer></script>
 </body>
 </html>

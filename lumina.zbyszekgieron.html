@@ -1295,17 +1295,29 @@
                             <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amenCountPsalm1')">
                                 <i class="fa-solid fa-hands-praying"></i> <span id="amenCountPsalm1">47</span> Amen
                             </button>
-                            <button type="button" class="post-act-btn" onclick="openMessageModal()">
-                                <i class="fa-solid fa-comment"></i> Odpowiedz
+                            <button type="button" class="post-act-btn" onclick="togglePostComments('post_zg_psalm1')" id="btnComment_post_zg_psalm1">
+                                <i class="fa-solid fa-comment"></i> Odpowiedz (<span id="commentCount_post_zg_psalm1">3</span>)
                             </button>
                             <button type="button" class="post-act-btn" onclick="openShareModal()">
                                 <i class="fa-solid fa-share-nodes"></i> Udostępnij
                             </button>
                         </div>
+                        <div class="post-comments-container" id="commentsBox_post_zg_psalm1" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+                            <div class="post-comments-list" id="commentsList_post_zg_psalm1"></div>
+                            <div class="post-comment-composer" style="display:flex; gap:10px; align-items:center; margin-top:12px;">
+                                <img src="avatar_cezary_official.jpg" alt="Ja" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent);" onerror="this.src='lumina_icon.jpg'">
+                                <div style="flex:1; position:relative;">
+                                    <input type="text" id="commentInput_post_zg_psalm1" placeholder="Napisz odpowiedź lub Amen..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:20px; padding:10px 44px 10px 14px; font-size:0.86rem; color:#fff; outline:none;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitPostComment('post_zg_psalm1');}">
+                                    <button type="button" onclick="submitPostComment('post_zg_psalm1')" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg, #f59e0b, #ec4899); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.82rem;" title="Opublikuj odpowiedź">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </article>
 
                     <!-- ══════════ POST 1: PIERWSZY WPIS Z FACEBOOKA (OSADZENIE IFRAME) ══════════ -->
-                    <article class="feed-post-card">
+                    <article class="feed-post-card" id="post_zg_1">
                         <div class="post-top-header">
                             <div class="post-author-box">
                                 <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
@@ -1376,12 +1388,24 @@
                             <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amenCountFb1')">
                                 <i class="fa-solid fa-hands-praying"></i> <span id="amenCountFb1">64</span> Amen
                             </button>
-                            <button type="button" class="post-act-btn" onclick="openMessageModal()">
-                                <i class="fa-solid fa-comment"></i> Odpowiedz
+                            <button type="button" class="post-act-btn" onclick="togglePostComments('post_zg_1')" id="btnComment_post_zg_1">
+                                <i class="fa-solid fa-comment"></i> Odpowiedz (<span id="commentCount_post_zg_1">2</span>)
                             </button>
                             <button type="button" class="post-act-btn" onclick="openShareModal()">
                                 <i class="fa-solid fa-share-nodes"></i> Udostępnij
                             </button>
+                        </div>
+                        <div class="post-comments-container" id="commentsBox_post_zg_1" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+                            <div class="post-comments-list" id="commentsList_post_zg_1"></div>
+                            <div class="post-comment-composer" style="display:flex; gap:10px; align-items:center; margin-top:12px;">
+                                <img src="avatar_cezary_official.jpg" alt="Ja" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent);" onerror="this.src='lumina_icon.jpg'">
+                                <div style="flex:1; position:relative;">
+                                    <input type="text" id="commentInput_post_zg_1" placeholder="Napisz odpowiedź lub Amen..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:20px; padding:10px 44px 10px 14px; font-size:0.86rem; color:#fff; outline:none;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitPostComment('post_zg_1');}">
+                                    <button type="button" onclick="submitPostComment('post_zg_1')" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg, #f59e0b, #ec4899); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.82rem;" title="Opublikuj odpowiedź">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </article>
 
@@ -1569,6 +1593,11 @@
 
             <!-- ── RIGHT COLUMN: SIDEBAR ── -->
             <aside class="sidebar-column-area">
+
+                <!-- ══════════ OBSERWOWANI ZNAJOMI (POD WIZYTÓWKĄ) ══════════ -->
+                <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
+
+
                 
                 <!-- Werset Przewodni -->
                 <div class="sidebar-card">
@@ -2492,12 +2521,24 @@
                     <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amen_${p.id}')">
                         <i class="fa-solid fa-hands-praying"></i> <span id="amen_${p.id}">${p.amen || 1}</span> Amen
                     </button>
-                    <button type="button" class="post-act-btn" onclick="openMessageModal()">
-                        <i class="fa-solid fa-comment"></i> Odpowiedz
+                    <button type="button" class="post-act-btn" onclick="togglePostComments('${p.id}')">
+                        <i class="fa-solid fa-comment"></i> Odpowiedz (<span id="commentCount_${p.id}">0</span>)
                     </button>
                     <button type="button" class="post-act-btn" onclick="openShareModal()">
                         <i class="fa-solid fa-share-nodes"></i> Udostępnij
                     </button>
+                </div>
+                <div class="post-comments-container" id="commentsBox_${p.id}" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+                    <div class="post-comments-list" id="commentsList_${p.id}"></div>
+                    <div class="post-comment-composer" style="display:flex; gap:10px; align-items:center; margin-top:12px;">
+                        <img src="avatar_cezary_official.jpg" alt="Ja" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent);" onerror="this.src='lumina_icon.jpg'">
+                        <div style="flex:1; position:relative;">
+                            <input type="text" id="commentInput_${p.id}" placeholder="Napisz odpowiedź lub Amen..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:20px; padding:10px 44px 10px 14px; font-size:0.86rem; color:#fff; outline:none;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitPostComment('${p.id}');}">
+                            <button type="button" onclick="submitPostComment('${p.id}')" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg, #f59e0b, #ec4899); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.82rem;" title="Opublikuj odpowiedź">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
 
@@ -2557,7 +2598,144 @@
             }
         }
 
-        function openMessageModal() {
+        
+        // ── Post Comments System (Komentarze i Odpowiedzi) ──
+        const DEFAULT_POST_COMMENTS = {
+            'post_zg_psalm1': [
+                {
+                    id: 'c_1',
+                    author: 'Cezary Rogowski',
+                    avatar: 'avatar_cezary_official.jpg',
+                    role: 'Założyciel Christian Culture 👑',
+                    time: 'Wczoraj, 19:45',
+                    text: 'Wspaniałe rozważanie Zbyszku! Niech Pan obficie błogosławi Twojej misji i posłudze słowa.'
+                },
+                {
+                    id: 'c_2',
+                    author: 'Wioletta Rogowska',
+                    avatar: 'avatar_wioletta_official.jpg',
+                    role: 'Współzałożycielka LUMINA 🌸',
+                    time: 'Wczoraj, 20:10',
+                    text: 'Amen! Drzewo zasadzone nad strumieniem wód – głębokie słowo i wspaniała grafika. Chwała Bogu! 🌿✨'
+                },
+                {
+                    id: 'c_3',
+                    author: 'Jola Wójcik',
+                    avatar: 'avatar_jolawojcik.jpg',
+                    role: 'Biblijny Czas Modlitwy 🙏',
+                    time: 'Wczoraj, 21:05',
+                    text: 'Łączę się w modlitwie i dziękczynieniu za to świadectwo! 🕊️🙏'
+                }
+            ],
+            'post_zg_1': [
+                {
+                    id: 'c_4',
+                    author: 'Tomasz',
+                    avatar: 'avatar_tomek.jpg',
+                    role: 'Młodzież & Ewangelizacja 🎸',
+                    time: 'Dzisiaj, 09:15',
+                    text: 'Genialne narzędzie! Korzystam z HiperBiblii i interlinearnego przekładu prawie codziennie. Bardzo polecam!'
+                },
+                {
+                    id: 'c_5',
+                    author: 'Magdalena',
+                    avatar: 'avatar_magdalena.jpg',
+                    role: 'Świadectwo & Wiara 🕊️',
+                    time: 'Dzisiaj, 10:30',
+                    text: 'Błogosławieni ubodzy w duchu... Piękne przypomnienie Kazania na Górze! Dziękuję Zbyszku 🌸'
+                }
+            ]
+        };
+
+        function getCommentsForPost(postId) {
+            try {
+                const stored = localStorage.getItem('lumina_comments_' + postId);
+                if (stored) return JSON.parse(stored);
+            } catch(e) {}
+            return DEFAULT_POST_COMMENTS[postId] || [];
+        }
+
+        function saveCommentsForPost(postId, comments) {
+            try {
+                localStorage.setItem('lumina_comments_' + postId, JSON.stringify(comments));
+            } catch(e) {}
+        }
+
+        function renderPostComments(postId) {
+            const listEl = document.getElementById('commentsList_' + postId);
+            const countEl = document.getElementById('commentCount_' + postId);
+            if (!listEl) return;
+
+            const comments = getCommentsForPost(postId);
+            if (countEl) countEl.textContent = comments.length;
+
+            if (comments.length === 0) {
+                listEl.innerHTML = '<div style="font-size:0.82rem; color:#94a3b8; font-style:italic; padding:8px 0;">Bądź pierwszą osobą, która skomentuje ten wpis! 🕊️</div>';
+                return;
+            }
+
+            listEl.innerHTML = comments.map(c => `
+                <div class="comment-item" style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-start;">
+                    <img src="${c.avatar || 'lumina_icon.jpg'}" alt="${c.author}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent); flex-shrink:0;" onerror="this.src='lumina_icon.jpg'">
+                    <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:10px 14px; flex:1;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+                            <span style="font-size:0.84rem; font-weight:800; color:#fef08a;">${c.author} <small style="color:#a78bfa; font-weight:600; font-size:0.72rem;">${c.role || ''}</small></span>
+                            <span style="font-size:0.72rem; color:#64748b;">${c.time || 'Niedawno'}</span>
+                        </div>
+                        <div style="font-size:0.86rem; color:#e2e8f0; line-height:1.5;">${escapeHtml(c.text)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function togglePostComments(postId) {
+            const box = document.getElementById('commentsBox_' + postId);
+            if (!box) return;
+            const isHidden = box.style.display === 'none' || !box.style.display;
+            if (isHidden) {
+                box.style.display = 'block';
+                renderPostComments(postId);
+                const inp = document.getElementById('commentInput_' + postId);
+                if (inp) setTimeout(() => inp.focus(), 150);
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        function submitPostComment(postId) {
+            const inp = document.getElementById('commentInput_' + postId);
+            if (!inp) return;
+            const text = inp.value.trim();
+            if (!text) {
+                showToast('⚠️ Wpisz treść odpowiedzi.');
+                return;
+            }
+
+            const comments = getCommentsForPost(postId);
+            const newComment = {
+                id: 'c_' + Date.now(),
+                author: localStorage.getItem('lumina_current_user_name') || 'Użytkownik LUMINA',
+                avatar: localStorage.getItem('lumina_current_user_avatar') || 'avatar_cezary_official.jpg',
+                role: 'Społeczność LUMINA 🕊️',
+                time: 'Przed chwilą',
+                text: text
+            };
+
+            comments.push(newComment);
+            saveCommentsForPost(postId, comments);
+            renderPostComments(postId);
+            inp.value = '';
+            showToast('✨ Twoja odpowiedź została opublikowana!');
+        }
+
+        // Initialize comment count labels
+        ['post_zg_psalm1', 'post_zg_1'].forEach(pId => {
+            const countEl = document.getElementById('commentCount_' + pId);
+            if (countEl) countEl.textContent = getCommentsForPost(pId).length;
+        });
+
+
+        function openMessageModal(postId) { if(postId) { togglePostComments(postId); return; }
             if (typeof window.openDirectMessageModal === 'function') {
                 window.openDirectMessageModal('zbyszekgieron', 'Zbyszek Gieroń', 'avatar_zbyszek_gieron.jpg');
             } else {
@@ -2661,5 +2839,6 @@
     <!-- Lumina Bottom Navigation & Universal Google Auth Suite -->
     <script src="lumina-bottom-nav.js?v=20260907_google_auth_v1" defer></script>
     <script src="js/cc-global-auth.js" defer></script>
+    <script src="js/lumina-followed-friends.js" defer></script>
 </body>
 </html>
