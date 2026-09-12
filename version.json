@@ -1,14 +1,13 @@
 {
-  "version": "4.1.2",
-  "buildDate": "2026-09-09T18:35:00.000Z",
-  "releaseName": "LUMINA v4.1.2 – Eliminacja migotania ekranu na telefonach i stabilizacja GPU",
+  "version": "4.1.3",
+  "buildDate": "2026-09-12T13:28:00.000Z",
+  "releaseName": "LUMINA v4.1.3 – Przeniesienie Słowa Dnia, filtr Wdowa / Wdowiec i stabilizacja filtrów",
   "changes": [
-    "🛡️ Eliminacja migotania i drżenia ekranu na smartfonach (iOS Safari & Android Chrome)",
-    "⚡ Bezpieczne animacje GPU (opacity-only) bez obciążania pamięci podręcznej rozmycia szkła",
-    "🚀 95% redukcja zbędnych mutacji DOM przy przewijaniu ekranu mobilnego",
-    "✨ Nowe, bezpieczne awatary społeczności oraz domyślny dźwięk w Rolkach Wiary"
+    "📖 Przeniesienie Słowa Dnia pod profile i nad cytat biblijny",
+    "🌿 Nowy filtr stanu cywilnego: Wdowa / Wdowiec",
+    "📱 Pełna responsywność i naprawa otwierania filtra wartości na telefonach komórkowych"
   ],
-  "minAppVersion": "4.1.2",
+  "minAppVersion": "4.1.3",
   "forceReload": true,
   "forceReinstall": true
 }
