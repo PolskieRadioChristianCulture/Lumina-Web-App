@@ -93,7 +93,7 @@
                 <div id="notif-dropdown" class="notif-dropdown" onclick="event.stopPropagation()">
                     <div class="notif-header">
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-bell" style="color:#f59e0b; font-size:0.95rem;"></i>
+                            <i class="fa-solid fa-bell" style="color:#c084fc; font-size:0.95rem;"></i>
                             <h4 style="margin:0; font-size:14px; font-weight:800; color:#fff; font-family:'Outfit',sans-serif;">Powiadomienia</h4>
                         </div>
                         <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
@@ -122,9 +122,9 @@
                     margin: 0 4px;
                 }
                 .notif-bell-btn {
-                    background: rgba(11, 24, 56, 0.90) !important;
-                    border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
-                    color: #facc15 !important;
+                    background: rgba(15, 23, 42, 0.85) !important;
+                    border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+                    color: #c084fc !important;
                     width: 38px !important;
                     height: 38px !important;
                     border-radius: 50% !important;
@@ -134,25 +134,26 @@
                     justify-content: center !important;
                     position: relative !important;
                     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                    box-shadow: 0 4px 14px rgba(0,0,0,0.4), 0 0 10px rgba(250, 204, 21, 0.25) !important;
+                    box-shadow: 0 4px 14px rgba(0,0,0,0.4), 0 0 10px rgba(168, 85, 247, 0.25) !important;
                     -webkit-tap-highlight-color: transparent !important;
                     outline: none !important;
                 }
                 .notif-bell-btn i {
                     font-size: 1.05rem !important;
-                    color: #facc15 !important;
-                    filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.5)) !important;
+                    color: #c084fc !important;
+                    filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.4)) !important;
                     transition: color 0.2s, transform 0.2s !important;
                 }
                 .notif-bell-btn:hover {
-                    background: #facc15 !important;
-                    color: #070e24 !important;
+                    background: rgba(168, 85, 247, 0.25) !important;
+                    border-color: rgba(192, 132, 252, 0.8) !important;
+                    color: #ffffff !important;
                     transform: scale(1.08) !important;
-                    box-shadow: 0 0 16px rgba(250, 204, 21, 0.6) !important;
+                    box-shadow: 0 0 16px rgba(168, 85, 247, 0.5) !important;
                 }
                 .notif-bell-btn:hover i {
-                    color: #070e24 !important;
-                    filter: none !important;
+                    color: #ffffff !important;
+                    filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.6)) !important;
                 }
                 .notif-badge {
                     position: absolute !important;
@@ -184,9 +185,9 @@
                     width: 350px !important;
                     max-width: calc(100vw - 24px) !important;
                     background: rgba(11, 24, 56, 0.98) !important;
-                    border: 1.5px solid rgba(250,204,21,0.4) !important;
+                    border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
                     border-radius: 20px !important;
-                    box-shadow: 0 20px 50px rgba(0,0,0,0.85), 0 0 20px rgba(250,204,21,0.15) !important;
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.85), 0 0 20px rgba(168, 85, 247, 0.15) !important;
                     display: none;
                     flex-direction: column !important;
                     z-index: 100000 !important;
@@ -221,7 +222,7 @@
                 .notif-action-btn { 
                     background: none !important; 
                     border: none !important; 
-                    color: #f59e0b !important; 
+                    color: #c084fc !important; 
                     font-size: 11.5px !important; 
                     font-weight: 700 !important; 
                     cursor: pointer !important; 
