@@ -9,6 +9,16 @@ while ((match = scriptRegex.exec(html)) !== null) {
   const tag = match[0];
   const content = match[1];
   if (tag.includes('src=')) continue;
+  if (tag.includes('type="application/ld+json"')) {
+    try {
+      JSON.parse(content);
+      console.log(`Script #${i} (json-ld): OK`);
+    } catch(e) {
+      console.error(`Script #${i} (json-ld) ERROR:`, e.message);
+      errors++;
+    }
+    continue;
+  }
   if (tag.includes('type="module"') || tag.includes("type='module'")) {
     console.log(`Script #${i} (module): OK`);
     continue;
