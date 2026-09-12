@@ -63,6 +63,7 @@
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
     <script src="lumina-auto-repair.js"></script>
     <script>window._currentProfileSlug = 'zofiadudek';</script>
+    <script src="js/lumina-community-posts.js"></script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -909,6 +910,12 @@
 
         <div class="nav-right-actions">
             <div id="ccAuthWidgetSlot"></div>
+            <a href="https://youtube.com/@wersetdnia_chsb?si=BsSd55i50trTzw8Y" target="_blank" rel="noopener noreferrer"
+               title="Kanał YouTube – Werset Dnia | Osobowość+"
+               style="display:inline-flex; align-items:center; gap:6px; padding:7px 13px; border-radius:12px; font-size:0.82rem; font-weight:700; color:#fff; background:linear-gradient(135deg,#c4302b,#ff0000); border:none; cursor:pointer; text-decoration:none; min-height:36px; white-space:nowrap;">
+                <i class="fa-brands fa-youtube" style="font-size:1rem;"></i>
+                <span class="hide-mobile">Werset Dnia</span>
+            </a>
             <button type="button" class="btn-action-secondary" onclick="openShareModal()" title="Udostępnij profil Zofii Dudek" style="min-height:38px; padding:6px 14px; font-size:0.82rem;">
                 <i class="fa-solid fa-share-nodes"></i> <span class="hide-mobile">Udostępnij</span>
             </button>
@@ -1048,6 +1055,180 @@
 
                     <!-- Dynamiczny strumień postów opublikowanych lokalnie -->
                     <div id="localPostsStream"></div>
+
+                    <!-- ══════════ POSTY YOUTUBE @wersetdnia_chsb ══════════ -->
+                    <div id="zofiaYoutubePostsStream">
+
+                        <!-- YT Post 1 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Werset Dnia 📖</span>
+                                        </div>
+                                        <span class="post-time">11 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/SejIiObP4OE" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                🔥 Tradycja jako śmiertelny jad w religii: Co niszczy wieczne zbawienie? <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Walter Veith &amp; Martin Smith | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/SejIiObP4OE" title="Tradycja jako śmiertelny jad w religii" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this,'likeZYT1')"><i class="fa-solid fa-heart"></i> <span id="likeZYT1">52</span> Polubień</button>
+                                <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this,'amenZYT1')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT1">67</span> Amen</button>
+                                <a href="https://youtu.be/SejIiObP4OE" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                        <!-- YT Post 2 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Werset Dnia 📖</span>
+                                        </div>
+                                        <span class="post-time">11 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/molfiZFFisw" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                🤖 Starożytne tajemnice, technologia AI i agenda zmiany czasu: Co kryje się za tymi nurtami? <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Walter Veith | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/molfiZFFisw" title="Starożytne tajemnice, technologia AI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn" onclick="toggleLike(this,'likeZYT2')"><i class="fa-solid fa-heart"></i> <span id="likeZYT2">44</span> Polubień</button>
+                                <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this,'amenZYT2')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT2">59</span> Amen</button>
+                                <a href="https://youtu.be/molfiZFFisw" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                        <!-- YT Post 3 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Osobowość+ 🎯</span>
+                                        </div>
+                                        <span class="post-time">11 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/rFS8OAizWxw" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                👑 Odc. 23 | Czy oddać Pokłon Bestii? | Objawienie 13 &amp; Daniel 3 (Część 4) <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Osobowość+ &amp; Christian Culture | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/rFS8OAizWxw" title="Czy oddać Pokłon Bestii" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this,'likeZYT3')"><i class="fa-solid fa-heart"></i> <span id="likeZYT3">61</span> Polubień</button>
+                                <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this,'amenZYT3')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT3">74</span> Amen</button>
+                                <a href="https://youtu.be/rFS8OAizWxw" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                        <!-- YT Post 4 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Werset Dnia 📖</span>
+                                        </div>
+                                        <span class="post-time">10 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/4tcJRicwtfs" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                ⚡ Cyberataki, awarie sieci, wojna płci i religijne przewroty: Dokąd zmierza ten chaos? <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Walter Veith | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/4tcJRicwtfs" title="Cyberataki, awarie sieci, war płci" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn" onclick="toggleLike(this,'likeZYT4')"><i class="fa-solid fa-heart"></i> <span id="likeZYT4">38</span> Polubień</button>
+                                <button type="button" class="post-act-btn" onclick="toggleAmen(this,'amenZYT4')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT4">47</span> Amen</button>
+                                <a href="https://youtu.be/4tcJRicwtfs" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                        <!-- YT Post 5 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Werset Dnia 📖</span>
+                                        </div>
+                                        <span class="post-time">10 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/3umojYA3gvU" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                🏛️ „Upadł, upadł wielki Babilon": Jaki Babilon i co tak naprawdę upadło? <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Walter Veith &amp; Martin Smith | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/3umojYA3gvU" title="Upadł wielki Babilon" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this,'likeZYT5')"><i class="fa-solid fa-heart"></i> <span id="likeZYT5">49</span> Polubień</button>
+                                <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this,'amenZYT5')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT5">63</span> Amen</button>
+                                <a href="https://youtu.be/3umojYA3gvU" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                        <!-- YT Post 6 -->
+                        <article class="feed-post-card">
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                    <div>
+                                        <div class="post-author-name">
+                                            Zofia Dudek <span class="post-badge-role">Osobowość+ 🎯</span>
+                                        </div>
+                                        <span class="post-time">9 września 2026 • <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</span>
+                                    </div>
+                                </div>
+                                <a href="https://youtu.be/AHRupJBN9Pg" target="_blank" rel="noopener noreferrer" style="color:#ff0000; font-size:1.1rem;" title="Otwórz na YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                            <div class="post-body" style="margin-bottom:10px;">
+                                🌍 Religia, polityka i nacjonalizm chrześcijański: Co kryje się za nową globalną agendą? <br>
+                                <em style="color:#94a3b8; font-size:0.88rem;">Walter Veith | @wersetdnia_chsb</em>
+                            </div>
+                            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:14px; margin-bottom:12px;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/AHRupJBN9Pg" title="Religia, polityka i nacjonalizm chrześcijański" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;" loading="lazy"></iframe>
+                            </div>
+                            <div class="post-actions-bar">
+                                <button type="button" class="post-act-btn" onclick="toggleLike(this,'likeZYT6')"><i class="fa-solid fa-heart"></i> <span id="likeZYT6">35</span> Polubień</button>
+                                <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this,'amenZYT6')"><i class="fa-solid fa-hands-praying"></i> <span id="amenZYT6">51</span> Amen</button>
+                                <a href="https://youtu.be/AHRupJBN9Pg" target="_blank" rel="noopener noreferrer" class="post-act-btn" style="text-decoration:none;"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
+                            </div>
+                        </article>
+
+                    </div>
+                    <!-- /zofiaYoutubePostsStream -->
 
                     <!-- Post 1: Powitanie -->
                     <article class="feed-post-card">
@@ -1199,6 +1380,26 @@
 
             <!-- ── RIGHT COLUMN: SIDEBAR ── -->
             <aside class="sidebar-column-area">
+
+            <!-- ══════════ PROMO: WERSET DNIA / OSOBOWOŚĆ+ ══════════ -->
+                <div class="sidebar-card" style="background:linear-gradient(135deg,rgba(196,48,43,0.18),rgba(17,35,80,0.95)); border:1px solid rgba(196,48,43,0.45);">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#c4302b,#ff0000); display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 0 16px rgba(196,48,43,0.5);">
+                            <i class="fa-brands fa-youtube" style="color:#fff; font-size:1.3rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:800; color:#fff; font-size:0.95rem;">Werset Dnia | Osobowość+</div>
+                            <div style="font-size:0.76rem; color:#fca5a5;">@wersetdnia_chsb · YouTube</div>
+                        </div>
+                    </div>
+                    <p style="font-size:0.82rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+                        Codzienne inspiracje biblijne, wykłady Waltera Veitha i głęboka formacja duchowa. Kanał rekomendowany przez Zofię Dudek.
+                    </p>
+                    <a href="https://youtube.com/@wersetdnia_chsb?si=VmP0KnqJUnvKNdlo" target="_blank" rel="noopener noreferrer"
+                       style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:10px; border-radius:12px; background:linear-gradient(135deg,#c4302b,#ff0000); color:#fff; font-weight:800; font-size:0.85rem; text-decoration:none; transition:opacity 0.2s;">
+                        <i class="fa-brands fa-youtube"></i> Subskrybuj (@wersetdnia_chsb)
+                    </a>
+                </div>
 
                 <!-- ══════════ OBSERWOWANI ZNAJOMI (POD WIZYTÓWKĄ) ══════════ -->
                 <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
