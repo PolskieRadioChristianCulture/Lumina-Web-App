@@ -2607,10 +2607,46 @@
             }
         }
 
+        // ── Deep-Link Handler to specific post on profile ──
+        function handleZbyszekPostDeepLink() {
+            const params = new URLSearchParams(window.location.search);
+            const targetPostId = params.get('postId') || params.get('post') || params.get('p') || params.get('id') || 
+                                 (window.location.hash && window.location.hash.startsWith('#post_') ? window.location.hash.slice(1) : null);
+            if (!targetPostId) return;
+
+            let attempts = 0;
+            const tryFocus = () => {
+                attempts++;
+                const card = document.getElementById(targetPostId) || document.querySelector(`article[id*="${targetPostId}"]`);
+                if (card) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.boxShadow = '0 0 40px rgba(250, 204, 21, 0.9), 0 0 80px rgba(245, 158, 11, 0.4)';
+                    card.style.borderColor = '#facc15';
+                    card.style.borderWidth = '2px';
+
+                    if (!card.querySelector('.spotlight-deep-link-badge')) {
+                        const badge = document.createElement('div');
+                        badge.className = 'spotlight-deep-link-badge';
+                        badge.style.cssText = 'background:linear-gradient(135deg, #f59e0b, #ec4899); color:#fff; font-weight:800; font-size:0.75rem; padding:6px 14px; border-radius:12px; display:inline-flex; align-items:center; gap:6px; margin: 10px 16px 6px; box-shadow:0 4px 14px rgba(245,158,11,0.4);';
+                        badge.innerHTML = '<i class="fa-solid fa-arrow-turn-down" style="transform:rotate(45deg);"></i> <span>Otwarto z powiadomienia • Publikacja Zbyszka Gieronia</span>';
+                        card.insertBefore(badge, card.children[1] || null);
+                    }
+
+                    showToast('✨ Otwarto wpis Zbyszka Gieronia');
+                    setTimeout(() => { card.style.boxShadow = ''; }, 8000);
+                    return;
+                }
+                if (attempts < 25) setTimeout(tryFocus, 200);
+            };
+            setTimeout(tryFocus, 400);
+        }
+
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
             checkZbyszekOwner();
             startZbyszekCloudFeed();
+            handleZbyszekPostDeepLink();
         });
         window.addEventListener('lumina:authChange', () => {
             checkZbyszekOwner();
@@ -2618,6 +2654,7 @@
         });
         window.addEventListener('lumina:dbReady', () => {
             startZbyszekCloudFeed();
+            handleZbyszekPostDeepLink();
         });
     </script>
 

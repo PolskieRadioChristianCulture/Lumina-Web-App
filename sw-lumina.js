@@ -298,6 +298,8 @@ self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     const action = event.action;
     const data = event.notification.data || {};
+    const postId = data.postId || (data.data && data.data.postId);
+    const authorSlug = data.authorSlug || (data.data && data.data.authorSlug);
     let targetUrl = data.url;
 
     const sender = data.senderId || data.senderSlug || data.chatPartnerId || (data.data && (data.data.senderId || data.data.senderSlug));
@@ -308,10 +310,14 @@ self.addEventListener('notificationclick', (event) => {
         targetUrl = data.url || '/master';
     } else if (action === 'program') {
         targetUrl = '/program';
-    } else if (action === 'share' && (data.devotionId || data.postId)) {
-        targetUrl = `/tablica?share=${encodeURIComponent(data.devotionId || data.postId)}`;
+    } else if (action === 'share' && (data.devotionId || postId)) {
+        targetUrl = `/tablica?share=${encodeURIComponent(data.devotionId || postId)}`;
     } else if (action === 'view' && data.slug && !sender) {
         targetUrl = `/lumina/${encodeURIComponent(data.slug)}`;
+    } else if (action === 'read' || data.type === 'new_post' || postId) {
+        targetUrl = (data.url && data.url.includes('postId=')) 
+            ? data.url 
+            : `/lumina-tablica.html?postId=${encodeURIComponent(postId || '')}${authorSlug ? '&author=' + encodeURIComponent(authorSlug) : ''}`;
     } else if (isPublic) {
         targetUrl = `/lumina?openPublicChat=1`;
     } else if (sender) {
@@ -324,16 +330,24 @@ self.addEventListener('notificationclick', (event) => {
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
             for (let client of windowClients) {
                 if (client.url && 'focus' in client) {
-                    client.postMessage({
-                        type: 'OPEN_LUMINA_CHAT',
-                        chatData: {
-                            senderId: sender,
-                            senderName: data.senderName,
-                            senderAvatar: data.avatar || data.icon,
-                            type: isPublic ? 'public' : 'private',
-                            messageId: msgId
-                        }
-                    });
+                    if (postId) {
+                        client.postMessage({
+                            type: 'LUMINA_NAVIGATE_POST',
+                            postId: postId,
+                            authorSlug: authorSlug
+                        });
+                    } else if (sender) {
+                        client.postMessage({
+                            type: 'OPEN_LUMINA_CHAT',
+                            chatData: {
+                                senderId: sender,
+                                senderName: data.senderName,
+                                senderAvatar: data.avatar || data.icon,
+                                type: isPublic ? 'public' : 'private',
+                                messageId: msgId
+                            }
+                        });
+                    }
                     if (targetUrl && 'navigate' in client) {
                         client.navigate(targetUrl);
                     }

@@ -5804,6 +5804,74 @@
                 amen: 45
             });
 
+            // 2c. Zbyszek Gieroń Posts (Profil Misyjny • Świadectwo & Wiara)
+            try {
+                const zJson = localStorage.getItem('lumina_profile_zbyszekgieron');
+                const zProfile = zJson ? JSON.parse(zJson) : null;
+                const zCustomPosts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
+
+                const zSeedPosts = [
+                    {
+                        id: 'post_zg_1',
+                        type: 'post',
+                        author: 'Zbyszek Gieroń',
+                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
+                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
+                        authorSlug: 'zbyszekgieron',
+                        time: 'Dzisiaj • 🕊️ Misja & Świadectwo',
+                        title: 'Czy znasz brakujące SŁOWO? • Narzędzie HiperBiblia',
+                        text: '<12> ➖ Czy znasz brakujące SŁOWO ? ❓\n\n✝️ Źródło cytatu 👉 HiperBiblia\nWpisz do wyszukiwarki słowo: HiperBiblia 👉 poznaj narzędzie do studiowania Pisma.\n\n💎 Główne funkcje strony HiperBiblia:\n• Porównywarka przekładów\n• Przypisy i komentarze\n• Czytnik\n• Wyszukiwarka\n• Interlinia\n• Leksykony\n• Kody Stronga\n• Zapytaj AI\n• Audio 💎',
+                        image: 'post_zbyszek_hiperbiblia.jpg',
+                        fbUrl: 'https://www.facebook.com/permalink.php?story_fbid=pfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql&id=100018961423282',
+                        likes: 52,
+                        amen: 64,
+                        _sortTs: Date.now() - 2 * 3600 * 1000
+                    },
+                    {
+                        id: 'post_zg_psalm1',
+                        type: 'post',
+                        author: 'Zbyszek Gieroń',
+                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
+                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
+                        authorSlug: 'zbyszekgieron',
+                        time: 'Wczoraj • 📁 Publikacja Google Drive',
+                        title: 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie',
+                        text: '„Błogosławiony człowiek, który nie idzie za radą występnych... Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 📖🌿\n\nMateriał z mojego Dysku Google.',
+                        image: 'post_zbyszek_psalm1.jpg',
+                        gdriveData: {
+                            fileId: '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd',
+                            type: 'file',
+                            typeLabel: 'Dysk Google • Psalm 1',
+                            icon: 'fa-brands fa-google-drive',
+                            previewEmbedUrl: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
+                            directImgUrl: 'post_zbyszek_psalm1.jpg',
+                            mode: 'embed'
+                        },
+                        gdriveEmbed: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
+                        likes: 68,
+                        amen: 74,
+                        _sortTs: Date.now() - 24 * 3600 * 1000
+                    }
+                ];
+
+                const allZPosts = [...zCustomPosts, ...(zProfile?.posts || []), ...zSeedPosts];
+                allZPosts.forEach(zp => {
+                    if (!zp || !zp.id || seenPostIds.has(zp.id)) return;
+                    seenPostIds.add(zp.id);
+                    posts.push({
+                        ...zp,
+                        author: zp.author || 'Zbyszek Gieroń',
+                        authorRole: zp.authorRole || 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
+                        authorAvatar: zp.authorAvatar || 'avatar_zbyszek_gieron.jpg',
+                        authorSlug: 'zbyszekgieron',
+                        time: zp.time || (formatPostTimestamp(zp.createdAtTimestamp || extractSortTs(zp), 'Przed chwilą') + ' • 🕊️ Świadectwo'),
+                        likes: zp.likes || 1,
+                        amen: zp.amen || 0,
+                        _sortTs: zp.createdAtTimestamp || extractSortTs(zp) || Date.now()
+                    });
+                });
+            } catch(e) {}
+
             // 3. Tomasz Post
             posts.push({
                 id: 'post_tomek1',
@@ -6598,8 +6666,14 @@
                     }
                 }
 
+                const isSpotlight = (window._luminaTargetPostId && (item.id === window._luminaTargetPostId || item.id === 'post_' + window._luminaTargetPostId)) || 
+                                    (!window._luminaTargetPostId && window._luminaTargetAuthor && (item.authorSlug === window._luminaTargetAuthor || (item.author && item.author.toLowerCase().includes(window._luminaTargetAuthor))));
+
                 return `
-                    <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''}" id="${item.id}">
+                    <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''} ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="${isSpotlight ? 'border: 2px solid #facc15 !important; box-shadow: 0 0 45px rgba(250, 204, 21, 0.9), 0 0 90px rgba(245, 158, 11, 0.45) !important;' : ''}">
+                        ${isSpotlight ? `
+                            <div class="spotlight-deep-link-badge" style="background:linear-gradient(135deg, #f59e0b, #ec4899); color:#fff; font-weight:800; font-size:0.75rem; padding:6px 14px; border-radius:12px; display:inline-flex; align-items:center; gap:6px; margin: 10px 16px 6px; box-shadow:0 4px 14px rgba(245,158,11,0.4);"><i class="fa-solid fa-arrow-turn-down" style="transform:rotate(45deg);"></i> <span>Otwarto z powiadomienia • Publikacja Autora</span></div>
+                        ` : ''}
                         <!-- Top Header -->
                         <div class="post-top-header">
                             <a href="${authorLink}" class="post-author-box">
@@ -9895,6 +9969,115 @@
             document.addEventListener('DOMContentLoaded', handlePushDevotionParams);
         } else {
             handlePushDevotionParams();
+        }
+    })();
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- AUTO-DEEP-LINK HANDLER FOR POST NOTIFICATIONS (postId, author, authorSlug) -->
+    <!-- Przekierowanie bezpośrednio do wpisu z powiadomień Push (np. Zbyszek Gieroń) -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <script>
+    (function(){
+        function handlePostDeepLinkParams() {
+            const params = new URLSearchParams(window.location.search);
+            const targetPostId = params.get('postId') || params.get('post') || params.get('p') || params.get('id') || 
+                                 (window.location.hash && window.location.hash.startsWith('#post_') ? window.location.hash.slice(1) : null);
+            const targetAuthor = (params.get('author') || params.get('authorSlug') || params.get('user') || '').toLowerCase().trim();
+
+            window._luminaTargetPostId = targetPostId;
+            window._luminaTargetAuthor = targetAuthor;
+
+            if (!targetPostId && !targetAuthor) return;
+
+            let attempts = 0;
+            const maxAttempts = 35; // 35 * 200ms = 7 sekund na dynamiczne doczytanie z chmury
+
+            function tryScrollAndHighlight(pId, aSlug) {
+                attempts++;
+
+                let postEl = null;
+                if (pId) {
+                    postEl = document.getElementById(pId) || 
+                             document.querySelector(`[data-post-id="${pId}"]`) ||
+                             document.querySelector(`article[id*="${pId}"]`);
+                }
+
+                if (!postEl && aSlug) {
+                    const allCards = Array.from(document.querySelectorAll('.post-card-1x1'));
+                    postEl = allCards.find(card => {
+                        const h = card.innerHTML.toLowerCase();
+                        const t = card.textContent.toLowerCase();
+                        return h.includes(aSlug) || t.includes(aSlug) || (aSlug.includes('zbyszek') && (h.includes('zbyszek') || t.includes('zbyszek') || h.includes('gieron') || t.includes('gieroń')));
+                    });
+                }
+
+                if (postEl) {
+                    // Precyzyjne wyrównanie wpisu tuż pod stałą górną belką
+                    function doAccurateScroll(target) {
+                        const nav = document.querySelector('nav, header, .navbar, .desktop-nav');
+                        const navH = (nav && nav.offsetHeight > 0) ? nav.offsetHeight : 70;
+                        const rect = target.getBoundingClientRect();
+                        const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                        const targetY = scrollY + rect.top - navH - 95;
+                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                    }
+
+                    doAccurateScroll(postEl);
+
+                    // Dodatkowe doszlifowanie po załadowaniu mediów powyżej
+                    setTimeout(() => {
+                        if (postEl) doAccurateScroll(postEl);
+                    }, 400);
+
+                    // Efektowne podświetlenie w stylu Obsidian & Gold
+                    postEl.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                    postEl.style.boxShadow = '0 0 45px rgba(250, 204, 21, 0.9), 0 0 90px rgba(245, 158, 11, 0.45)';
+                    postEl.style.borderColor = '#facc15';
+                    postEl.style.borderWidth = '2px';
+                    postEl.style.borderStyle = 'solid';
+
+                    // Wstrzyknięcie eleganckiej etykiety "Otwarto z powiadomienia"
+                    if (!postEl.querySelector('.spotlight-deep-link-badge')) {
+                        const header = postEl.querySelector('.post-top-header') || postEl;
+                        const badge = document.createElement('div');
+                        badge.className = 'spotlight-deep-link-badge';
+                        badge.style.cssText = 'background:linear-gradient(135deg, #f59e0b, #ec4899); color:#fff; font-weight:800; font-size:0.75rem; padding:6px 14px; border-radius:12px; display:inline-flex; align-items:center; gap:6px; margin: 8px 16px 6px; box-shadow:0 4px 14px rgba(245,158,11,0.4);';
+                        badge.innerHTML = '<i class="fa-solid fa-arrow-turn-down" style="transform:rotate(45deg);"></i> <span>Otwarto z powiadomienia • Publikacja Autora</span>';
+                        header.insertAdjacentElement('afterend', badge);
+                    }
+
+                    const aName = postEl.querySelector('.post-author-name')?.textContent?.trim() || ((aSlug && aSlug.includes('zbyszek')) ? 'Zbyszek Gieroń' : 'Autor');
+                    if (typeof window.showToast === 'function') {
+                        window.showToast(`✨ Przejście bezpośrednio do publikacji: ${aName}`);
+                    }
+
+                    setTimeout(() => {
+                        postEl.style.boxShadow = '0 8px 30px rgba(250, 204, 21, 0.35)';
+                    }, 8000);
+                    return;
+                }
+
+                if (attempts < maxAttempts) {
+                    setTimeout(() => tryScrollAndHighlight(pId, aSlug), 200);
+                }
+            }
+
+            setTimeout(() => tryScrollAndHighlight(targetPostId, targetAuthor), 400);
+
+            // Reaktywna obsługa wiadomości z Service Workera (jeśli karta była już otwarta w tle)
+            window.addEventListener('message', function(evt) {
+                if (evt.data && evt.data.type === 'LUMINA_NAVIGATE_POST') {
+                    attempts = 0;
+                    tryScrollAndHighlight(evt.data.postId, evt.data.authorSlug);
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handlePostDeepLinkParams);
+        } else {
+            handlePostDeepLinkParams();
         }
     })();
     </script>
