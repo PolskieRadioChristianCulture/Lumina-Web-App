@@ -98,11 +98,11 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.2)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.3)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.2-20260912';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.3-20260912-deeplink';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -290,11 +290,12 @@ function handleLuminaNotificationClick(event) {
     const data = fcmPayload ? { ...fcmPayload.data } : notificationData;
     const postId = data.postId || (data.data && data.data.postId);
     const authorSlug = data.authorSlug || (data.data && data.data.authorSlug);
-    let targetUrl = data.url;
 
-    const sender = data.senderId || data.senderSlug || data.chatPartnerId || (data.data && (data.data.senderId || data.data.senderSlug));
+    const sender = data.senderId || data.senderSlug || data.chatPartnerId || data.openChat || (data.data && (data.data.senderId || data.data.senderSlug || data.data.openChat));
     const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
     const isPublic = data.type === 'public' || data.type === 'public_chat' || data.openPublicChat || (data.data && data.data.type === 'public');
+
+    let targetUrl = data.url;
 
     if (action === 'watch') {
         targetUrl = data.url || '/master';
@@ -316,44 +317,77 @@ function handleLuminaNotificationClick(event) {
         targetUrl = '/lumina';
     }
 
-    // A notification may navigate only within this portal.
+    // Always ensure absolute URL in our origin
+    let fullTargetUrl;
     try {
         const parsed = new URL(targetUrl, self.location.origin);
-        targetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina';
+        fullTargetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina';
     } catch (_) {
-        targetUrl = self.location.origin + '/lumina';
+        fullTargetUrl = self.location.origin + '/lumina';
     }
 
+    const postPayload = {
+        type: 'OPEN_LUMINA_CHAT',
+        targetUrl: fullTargetUrl,
+        chatData: {
+            senderId: sender,
+            senderName: data.senderName || '',
+            senderAvatar: data.avatar || data.icon || 'avatar_cezary_official.jpg',
+            type: isPublic ? 'public' : 'private',
+            messageId: msgId
+        }
+    };
+
     event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-            for (let client of windowClients) {
-                if (client.url && 'focus' in client) {
-                    if (postId) {
-                        client.postMessage({
-                            type: 'LUMINA_NAVIGATE_POST',
-                            postId: postId,
-                            authorSlug: authorSlug
-                        });
-                    } else if (sender) {
-                        client.postMessage({
-                            type: 'OPEN_LUMINA_CHAT',
-                            chatData: {
-                                senderId: sender,
-                                senderName: data.senderName,
-                                senderAvatar: data.avatar || data.icon,
-                                type: isPublic ? 'public' : 'private',
-                                messageId: msgId
-                            }
-                        });
-                    }
-                    if (targetUrl && 'navigate' in client) {
-                        return client.navigate(targetUrl).then(updated => (updated || client).focus());
-                    }
-                    return client.focus();
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(async (windowClients) => {
+            // 1. Priorytet: szukamy okna z portalem LUMINA
+            let luminaClient = null;
+            for (const client of windowClients) {
+                if (client.url && (client.url.includes('lumina.html') || client.url.includes('/lumina'))) {
+                    luminaClient = client;
+                    break;
                 }
             }
+
+            if (luminaClient && 'focus' in luminaClient) {
+                try {
+                    await luminaClient.focus();
+                } catch(e) {}
+                luminaClient.postMessage(postPayload);
+                if ('navigate' in luminaClient) {
+                    try {
+                        await luminaClient.navigate(fullTargetUrl);
+                    } catch (e) {
+                        console.warn('[SW] navigate client failed:', e);
+                    }
+                }
+                return;
+            }
+
+            // 2. Jeśli nie ma okna Lumina, otwórz nowe okno bezpośrednio z linkiem czatu
             if (clients.openWindow) {
-                return clients.openWindow(targetUrl);
+                try {
+                    const newWin = await clients.openWindow(fullTargetUrl);
+                    if (newWin && typeof setTimeout !== 'undefined') {
+                        setTimeout(() => {
+                            try { newWin.postMessage(postPayload); } catch(e) {}
+                        }, 1200);
+                    }
+                    return;
+                } catch(e) {
+                    console.warn('[SW] openWindow failed:', e);
+                }
+            }
+
+            // 3. Ostateczny fallback: nawiguj dowolne istniejące okno
+            if (windowClients.length > 0) {
+                const anyClient = windowClients[0];
+                try {
+                    await anyClient.focus();
+                    if ('navigate' in anyClient) {
+                        await anyClient.navigate(fullTargetUrl);
+                    }
+                } catch(e) {}
             }
         })
     );
