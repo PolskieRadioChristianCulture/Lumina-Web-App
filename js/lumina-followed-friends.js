@@ -195,15 +195,17 @@
 
             .followed-friends-grid {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 12px 8px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px 6px;
                 margin-bottom: 16px;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             @media (max-width: 480px) {
                 .followed-friends-grid {
-                    grid-template-columns: repeat(4, 1fr);
-                    gap: 10px 6px;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px 4px;
                 }
             }
 
@@ -215,6 +217,9 @@
                 cursor: pointer;
                 transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
                 -webkit-tap-highlight-color: transparent;
+                width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
             }
 
             .followed-friend-item:hover {
@@ -226,6 +231,7 @@
                 width: 52px;
                 height: 52px;
                 margin-bottom: 5px;
+                flex-shrink: 0;
             }
 
             .followed-avatar-img {
@@ -278,14 +284,16 @@
             }
 
             .followed-friend-name {
-                font-size: 0.72rem;
+                font-size: 0.76rem;
                 font-weight: 700;
                 color: #fff;
                 text-align: center;
-                max-width: 66px;
+                width: 100%;
+                max-width: 84px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                line-height: 1.25;
             }
 
             .followed-friend-item.is-active-follow .followed-friend-name {
@@ -293,13 +301,16 @@
             }
 
             .followed-friend-role {
-                font-size: 0.62rem;
+                font-size: 0.64rem;
                 color: #94a3b8;
                 text-align: center;
-                max-width: 66px;
+                width: 100%;
+                max-width: 84px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                line-height: 1.2;
+                margin-top: 2px;
             }
 
             .followed-discover-btn {
@@ -316,6 +327,7 @@
                 font-size: 1.1rem;
                 margin-bottom: 5px;
                 transition: all 0.2s;
+                flex-shrink: 0;
             }
 
             .followed-friend-item:hover .followed-discover-btn {

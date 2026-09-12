@@ -96,9 +96,14 @@
                             <i class="fa-solid fa-bell" style="color:#f59e0b; font-size:0.95rem;"></i>
                             <h4 style="margin:0; font-size:14px; font-weight:800; color:#fff; font-family:'Outfit',sans-serif;">Powiadomienia</h4>
                         </div>
-                        <div id="notif-header-actions" style="display:none; align-items:center; gap:10px;">
-                            <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-action-btn" title="Oznacz wszystko jako przeczytane">Odczytaj</button>
-                            <button type="button" onclick="window.LuminaNotifications.clearAll()" class="notif-action-btn notif-clear-btn" title="Wyczyść listę powiadomień">Wyczyść</button>
+                        <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
+                            <div id="notif-header-actions" style="display:none; align-items:center; gap:10px;">
+                                <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-action-btn" title="Oznacz wszystko jako przeczytane">Odczytaj</button>
+                                <button type="button" onclick="window.LuminaNotifications.clearAll()" class="notif-action-btn notif-clear-btn" title="Wyczyść listę powiadomień">Wyczyść</button>
+                            </div>
+                            <button type="button" class="notif-close-btn" onclick="window.LuminaNotifications.closeDropdown()" title="Zamknij powiadomienia" aria-label="Zamknij">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
                         </div>
                     </div>
                     <div id="notif-push-bar" class="notif-push-bar"></div>
@@ -232,6 +237,28 @@
                 }
                 .notif-clear-btn:hover {
                     color: #f87171 !important;
+                }
+                .notif-close-btn {
+                    background: rgba(255, 255, 255, 0.06) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                    color: #94a3b8 !important;
+                    width: 24px !important;
+                    height: 24px !important;
+                    border-radius: 50% !important;
+                    cursor: pointer !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    font-size: 11px !important;
+                    padding: 0 !important;
+                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    line-height: 1 !important;
+                }
+                .notif-close-btn:hover {
+                    color: #fff !important;
+                    background: rgba(239, 68, 68, 0.25) !important;
+                    border-color: rgba(239, 68, 68, 0.5) !important;
+                    transform: scale(1.08) !important;
                 }
                 .notif-push-bar {
                     display: none;
@@ -746,19 +773,24 @@
                     const msgId = parsedUrl.searchParams.get('messageId') || parsedUrl.searchParams.get('msgId');
 
                     if (openChatUser && typeof window.openChatWith === 'function') {
-                        const dd = document.getElementById('notif-dropdown');
-                        if (dd) dd.classList.remove('active');
+                        this.closeDropdown();
                         window.openChatWith(item?.senderName || openChatUser, item?.icon || 'lumina_icon.jpg', openChatUser, msgId);
                         return;
                     } else if (openPublic) {
-                        const dd = document.getElementById('notif-dropdown');
-                        if (dd) dd.classList.remove('active');
+                        this.closeDropdown();
                         if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
                         if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
                         return;
                     }
                 } catch(e) {}
                 window.location.href = url;
+            }
+        }
+
+        closeDropdown() {
+            const dd = document.getElementById('notif-dropdown');
+            if (dd) {
+                dd.classList.remove('active');
             }
         }
 
@@ -791,6 +823,10 @@
             if (typeof window.showToast === 'function') {
                 window.showToast('Wyczyszczono listę powiadomień 🗑️');
             }
+            // Automatyczne zamknięcie okna powiadomień po wyczyszczeniu
+            setTimeout(() => {
+                this.closeDropdown();
+            }, 350);
         }
 
         // 6. Podpięcie pod zdarzenia systemowe LUMINA (Dzwonek = WYŁĄCZNIE powiadomienia systemowe)
