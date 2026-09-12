@@ -409,6 +409,18 @@
         const friends = getFollowedFriendsList(currentProfileSlug);
         const followedCount = friends.filter(f => f.isFollowed).length;
 
+        const profileBioMap = {
+            'cezaryrgowski': 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
+            'wiolettarogowska': 'Współzałożycielka Christian Culture. Razem z mężem Cezarym służymy Panu.',
+            'zbyszekgieron': 'Głoszenie Ewangelii, misja i świadectwo żywej wiary w Chrystusie.',
+            'andrzejthiel': 'Lider męskich grup, formacja i wzrost duchowy w Bożej prawdzie.',
+            'jolawojcik': 'Wstawiennictwo, modlitwa i wsparcie dla potrzebujących serc.'
+        };
+        const subtext = profileBioMap[currentProfileSlug] || 'Osoby ze społeczności LUMINA, których publikacje i świadectwa wiary obserwujesz:';
+
+        // 3 osoby na linię: 8 znajomych + 1 kafelek "Więcej" = 9 elementów (3 równe rzędy po 3, bez ucinania)
+        const displayFriends = friends.slice(0, 8);
+
         const html = `
             <div class="followed-friends-header">
                 <div class="followed-friends-title">
@@ -421,11 +433,11 @@
             </div>
             
             <p style="font-size:0.80rem; color:#94a3b8; line-height:1.45; margin:0 0 14px 0;">
-                Osoby ze społeczności LUMINA, których publikacje i świadectwa wiary obserwujesz:
+                ${subtext}
             </p>
 
             <div class="followed-friends-grid">
-                ${friends.slice(0, 7).map(f => `
+                ${displayFriends.map(f => `
                     <a href="${f.url}" class="followed-friend-item ${f.isFollowed ? 'is-active-follow' : ''}" title="${f.name} • ${f.role} (${f.city}) ${f.isFollowed ? '• Obserwujesz ✓' : '• Społeczność LUMINA'}">
                         <div class="followed-avatar-wrapper">
                             <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
