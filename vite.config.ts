@@ -21,7 +21,8 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'happy-dom'
+    environment: 'happy-dom',
+    include: ['src/**/*.{test,spec}.{js,ts}']
   },
   server: {
     port: 3000,
