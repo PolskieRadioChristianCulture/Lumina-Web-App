@@ -20,8 +20,7 @@ try {
 
     const fcmMessaging = firebase.messaging();
     fcmMessaging.onBackgroundMessage((payload) => {
-        // Firebase already displays notification payloads. Only data-only messages need rendering.
-        if (payload.notification) return;
+        console.log('[SW] FCM Background Message received:', payload);
         const data = payload.data || {};
         const notification = payload.notification || {};
         const type = data.type || 'general';
@@ -99,11 +98,11 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.1)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.2)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.1-20260909';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.2-20260912';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',

@@ -22,12 +22,14 @@ function worker() {
     return { listeners, shown, opened, background };
 }
 
-test('FCM notification payload is displayed by Firebase, not twice by our receiver', async () => {
+test('FCM notification payload renders once with full title and body', async () => {
     const w = worker();
-    const payload = { from: '413985877183', notification: { title: 'Test' }, data: {} };
+    const payload = { from: '413985877183', notification: { title: 'Test', body: 'Tresc' }, data: {} };
     w.listeners.push({ data: { json: () => payload }, waitUntil: p => p });
     await w.background(payload);
-    assert.equal(w.shown.length, 0);
+    assert.equal(w.shown.length, 1);
+    assert.equal(w.shown[0][0], 'Test');
+    assert.equal(w.shown[0][1].body, 'Tresc');
 });
 
 test('data-only FCM renders once and resolves public-chat URL', async () => {
