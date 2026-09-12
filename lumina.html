@@ -4758,8 +4758,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Urszula, 46</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
-                        <div class="card-desc">"Chrześcijanka, dla której Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia."</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowa</span></div>
+                        <div class="card-desc">"Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia."</div>
                     </div>
                 </div>
 
@@ -4778,8 +4778,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Robert Łukasz Pio, 41</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
-                        <div class="card-desc">"Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA."</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowiec</span></div>
+                        <div class="card-desc">"Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA."</div>
                     </div>
                 </div>
 
@@ -4798,8 +4798,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Zyta Grzesik, 48</div>
-                        <div class="card-city">📍 Warszawa • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
-                        <div class="card-desc">"Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie."</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowa</span></div>
+                        <div class="card-desc">"Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie."</div>
                     </div>
                 </div>
 
@@ -6147,8 +6147,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         <span class="filter-radio-pill" data-val="malzenstwo" onclick="window._setFilterOption('status', 'malzenstwo', this)">
                             💍 Małżeństwo
                         </span>
+                        <span class="filter-radio-pill" data-val="wdow" onclick="window._setFilterOption('status', 'wdow', this)">
+                            🌿 Wdowa / Wdowiec
+                        </span>
+                        <span class="filter-radio-pill" data-val="wdowa" onclick="window._setFilterOption('status', 'wdowa', this)">
+                            🌸 Wdowa
+                        </span>
                         <span class="filter-radio-pill" data-val="wdowiec" onclick="window._setFilterOption('status', 'wdowiec', this)">
-                            🌿 Wdowiec / Wdowa
+                            🛡️ Wdowiec
                         </span>
                     </div>
                 </div>
@@ -6250,7 +6256,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 <button type="button" onclick="window.resetAdvancedFilters()" style="flex: 1; padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 700; font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">
                     Wyczyść
                 </button>
-                <button type="button" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                <button type="button" id="btnApplyAdvancedFilters" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
                     <span>Zastosuj Filtry</span> <i class="fa-solid fa-sparkles"></i>
                 </button>
             </div>
@@ -7178,6 +7184,84 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 matchScore: '96%',
                 isVerified: true,
                 profileUrl: 'lumina-profile.html?u=u_yciezywymbogiem_4231'
+            },
+            'u_urszula_7685': {
+                slug: 'u_urszula_7685',
+                name: 'Urszula',
+                age: 46,
+                city: 'Kraków, Polska',
+                gender: 'kobieta',
+                status: 'Wdowa',
+                avatar: 'avatar_urszula.jpg',
+                job: 'Członkini Społeczności LUMINA 🕊️',
+                bio: 'Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia.',
+                matchScore: '98%',
+                profileUrl: 'lumina-profile.html?u=u_urszula_7685'
+            },
+            'urszula': {
+                slug: 'u_urszula_7685',
+                name: 'Urszula',
+                age: 46,
+                city: 'Kraków, Polska',
+                gender: 'kobieta',
+                status: 'Wdowa',
+                avatar: 'avatar_urszula.jpg',
+                job: 'Członkini Społeczności LUMINA 🕊️',
+                bio: 'Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia.',
+                matchScore: '98%',
+                profileUrl: 'lumina-profile.html?u=u_urszula_7685'
+            },
+            'u_robertukaszpio_5668': {
+                slug: 'u_robertukaszpio_5668',
+                name: 'Robert Łukasz Pio',
+                age: 41,
+                city: 'Kraków, Polska',
+                gender: 'mezczyzna',
+                status: 'Wdowiec',
+                avatar: 'avatar_robert.jpg',
+                job: 'Członek Społeczności LUMINA ✨',
+                bio: 'Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA.',
+                matchScore: '98%',
+                profileUrl: 'lumina-profile.html?u=u_robertukaszpio_5668'
+            },
+            'robertlukaszpio': {
+                slug: 'u_robertukaszpio_5668',
+                name: 'Robert Łukasz Pio',
+                age: 41,
+                city: 'Kraków, Polska',
+                gender: 'mezczyzna',
+                status: 'Wdowiec',
+                avatar: 'avatar_robert.jpg',
+                job: 'Członek Społeczności LUMINA ✨',
+                bio: 'Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA.',
+                matchScore: '98%',
+                profileUrl: 'lumina-profile.html?u=u_robertukaszpio_5668'
+            },
+            'u_zytagrzesik_7502': {
+                slug: 'u_zytagrzesik_7502',
+                name: 'Zyta Grzesik',
+                age: 48,
+                city: 'Warszawa, Polska',
+                gender: 'kobieta',
+                status: 'Wdowa',
+                avatar: 'lumina_icon.jpg',
+                job: 'Członkini Społeczności LUMINA ✨',
+                bio: 'Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+                matchScore: '100%',
+                profileUrl: 'lumina-profile.html?u=u_zytagrzesik_7502'
+            },
+            'zytagrzesik': {
+                slug: 'u_zytagrzesik_7502',
+                name: 'Zyta Grzesik',
+                age: 48,
+                city: 'Warszawa, Polska',
+                gender: 'kobieta',
+                status: 'Wdowa',
+                avatar: 'lumina_icon.jpg',
+                job: 'Członkini Społeczności LUMINA ✨',
+                bio: 'Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+                matchScore: '100%',
+                profileUrl: 'lumina-profile.html?u=u_zytagrzesik_7502'
             }
         };
 
@@ -7651,7 +7735,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     } else if (isDemoProfile) {
                         cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span>`;
                     } else {
-                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
+                        const statusBadge = p.status ? (p.status.includes('Wdow') ? `🌿 ${p.status}` : p.status) : 'Profil Społeczności';
+                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">${statusBadge}</span>`;
                     }
                 }
 
@@ -11666,6 +11751,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     <select id="modalProfileStatusSelect" style="width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; background: #131d3d; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.92rem; box-sizing: border-box;">
                         <option value="Panna/Kawaler">Panna / Kawaler</option>
                         <option value="Mężatka/Żonaty">Mężatka / Żonaty</option>
+                        <option value="Wdowa/Wdowiec">Wdowa / Wdowiec</option>
                         <option value="Szukam Bożej Relacji">Szukam Bożej Relacji z Wartościami</option>
                         <option value="Wspólnota i Przyjaźń">Wspólnota i Przyjaźń w Wierze</option>
                     </select>

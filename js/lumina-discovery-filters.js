@@ -14,7 +14,7 @@
         gender: 'all',              // 'all' | 'kobieta' | 'mezczyzna'
         minAge: 18,                 // 18..80
         maxAge: 75,                 // 18..80
-        status: 'all',              // 'all' | 'wolny' | 'malzenstwo' | 'wdowiec'
+        status: 'all',              // 'all' | 'wolny' | 'malzenstwo' | 'wdow' | 'wdowa' | 'wdowiec'
         goal: 'all',                // 'all' | 'malzenstwo' | 'relacja' | 'przyjazn' | 'modlitwa'
         denomination: 'all',        // 'all' | 'biblijny' | 'ewangeliczny' | 'katolicki' | 'charyzmatyczny'
         bibleReading: 'all',        // 'all' | 'codziennie' | 'regularnie' | 'niedziela'
@@ -332,8 +332,14 @@
                             <span class="filter-radio-pill" data-val="malzenstwo" onclick="window._setFilterOption('status', 'malzenstwo', this)">
                                 💍 Małżeństwo
                             </span>
+                            <span class="filter-radio-pill" data-val="wdow" onclick="window._setFilterOption('status', 'wdow', this)">
+                                🌿 Wdowa / Wdowiec
+                            </span>
+                            <span class="filter-radio-pill" data-val="wdowa" onclick="window._setFilterOption('status', 'wdowa', this)">
+                                🌸 Wdowa
+                            </span>
                             <span class="filter-radio-pill" data-val="wdowiec" onclick="window._setFilterOption('status', 'wdowiec', this)">
-                                🌿 Wdowiec / Wdowa
+                                🛡️ Wdowiec
                             </span>
                         </div>
                     </div>
@@ -435,7 +441,7 @@
                     <button type="button" onclick="window.resetAdvancedFilters()" style="flex: 1; padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 700; font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">
                         Wyczyść
                     </button>
-                    <button type="button" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                    <button type="button" id="btnApplyAdvancedFilters" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
                         <span>Zastosuj Filtry</span> <i class="fa-solid fa-sparkles"></i>
                     </button>
                 </div>
@@ -614,7 +620,10 @@
             const descText = (card.querySelector('.card-desc, p')?.textContent || '').toLowerCase();
             const matchText = (card.querySelector('.card-match')?.textContent || '90%').replace('%', '').trim();
 
-            const pDb = (window.PROFILES_DB && (window.PROFILES_DB[slug] || window.PROFILES_DB[slug.replace(/^u_/, '')])) || null;
+            const pDb = (window.PROFILES_DB && (window.PROFILES_DB[slug] || window.PROFILES_DB[slug.replace(/^u_/, '')]))
+                     || (window.LUMINA_BASE_PROFILES && (window.LUMINA_BASE_PROFILES[slug] || window.LUMINA_BASE_PROFILES[slug.replace(/^u_/, '')]))
+                     || (typeof window.getLiveProfile === 'function' && window.getLiveProfile(slug))
+                     || null;
 
             let isMatch = true;
 
@@ -632,7 +641,7 @@
                                  nameText.includes('zyta') || 
                                  nameText.includes('magdalena') || 
                                  nameText.includes('julia') ||
-                                 (pDb && (pDb.status === 'Panna' || pDb.status === 'Mężatka' || pDb.denom === 'Chrześcijanka'));
+                                 (pDb && (pDb.status === 'Panna' || pDb.status === 'Mężatka' || pDb.status === 'Wdowa' || pDb.gender === 'kobieta' || pDb.denom === 'Chrześcijanka'));
                 if (!isFemale) isMatch = false;
             } else if (filterState.gender === 'mezczyzna') {
                 const isMale = category.includes('mezczyzna') || 
@@ -646,7 +655,7 @@
                                nameText.includes('marek') || 
                                nameText.includes('robert') || 
                                nameText.includes('piotr') ||
-                               (pDb && (pDb.status === 'Kawaler' || pDb.status === 'Żonaty' || pDb.denom === 'Chrześcijanin'));
+                               (pDb && (pDb.status === 'Kawaler' || pDb.status === 'Żonaty' || pDb.status === 'Wdowiec' || pDb.gender === 'mezczyzna' || pDb.denom === 'Chrześcijanin'));
                 if (!isMale) isMatch = false;
             }
 
@@ -674,9 +683,15 @@
                 } else if (filterState.status === 'malzenstwo') {
                     const isMarried = combinedStatus.includes('żonaty') || combinedStatus.includes('mężatka') || combinedStatus.includes('małżeństw');
                     if (!isMarried) isMatch = false;
-                } else if (filterState.status === 'wdowiec') {
+                } else if (filterState.status === 'wdow') {
                     const isWidow = combinedStatus.includes('wdow');
                     if (!isWidow) isMatch = false;
+                } else if (filterState.status === 'wdowa') {
+                    const isWidowWoman = combinedStatus.includes('wdowa') || (combinedStatus.includes('wdow') && !combinedStatus.includes('wdowiec'));
+                    if (!isWidowWoman) isMatch = false;
+                } else if (filterState.status === 'wdowiec') {
+                    const isWidowMan = combinedStatus.includes('wdowiec') || (combinedStatus.includes('wdow') && !combinedStatus.includes('wdowa'));
+                    if (!isWidowMan) isMatch = false;
                 }
             }
 
@@ -824,7 +839,15 @@
             if (filterState.gender === 'kobieta') tags.push('🌸 Kobiety');
             if (filterState.gender === 'mezczyzna') tags.push('🛡️ Mężczyźni');
             if (filterState.minAge > 18 || filterState.maxAge < 75) tags.push(`🎂 ${filterState.minAge}–${filterState.maxAge} lat`);
-            if (filterState.status !== 'all') tags.push(`💍 ${filterState.status}`);
+            if (filterState.status !== 'all') {
+                let statusLabel = '🌿 ' + filterState.status;
+                if (filterState.status === 'wolny') statusLabel = '🕊️ Panna / Kawaler';
+                else if (filterState.status === 'malzenstwo') statusLabel = '💍 Małżeństwo';
+                else if (filterState.status === 'wdow') statusLabel = '🌿 Wdowa / Wdowiec';
+                else if (filterState.status === 'wdowa') statusLabel = '🌸 Wdowa';
+                else if (filterState.status === 'wdowiec') statusLabel = '🛡️ Wdowiec';
+                tags.push(statusLabel);
+            }
             if (filterState.location) tags.push(`📍 ${filterState.location}`);
             if (filterState.purityPriority) tags.push('✨ Czystość');
 
