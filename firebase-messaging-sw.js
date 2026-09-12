@@ -77,7 +77,7 @@ try {
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: './lumina-icon-192.png',
+            badge: './lumina-badge-monochrome.png',
             image: image,
             tag: tag,
             renotify: true,
@@ -102,7 +102,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.3-20260912-deeplink';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.4-20260912-monochrome-badge';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -111,6 +111,7 @@ const APP_SHELL_ASSETS = [
     './manifest-lumina.json',
     './lumina-icon-192.png',
     './lumina-icon-512.png',
+    './lumina-badge-monochrome.png',
     './icon.png',
     './lumina_icon.jpg'
 ];
@@ -259,7 +260,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: body,
         icon: icon,
-        badge: './lumina_icon.jpg',
+        badge: './lumina-badge-monochrome.png',
         image: image,
         data: {
             url: url,
