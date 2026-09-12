@@ -1186,6 +1186,7 @@
     </div>
 
     <!-- Data & Interactive Player Engine -->
+    <script type="module" src="lumina-db.js?v=4.1.1_20260909"></script>
     <script src="js/audio-master-director.js"></script>
     <script>
         // Fallback default shorts in case fetch is unavailable
@@ -2388,22 +2389,40 @@
             if (!rawUrl || typeof rawUrl !== 'string') return null;
             const url = rawUrl.trim();
 
-            // 1. YouTube Shorts / Videos
-            const ytMatch = url.match(/(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/i);
-            if (ytMatch) {
+            // 1. YouTube Shorts / Videos (Obsługuje wszystkie formaty linków)
+            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const ytMatch = url.match(ytRegex);
+            if (ytMatch && ytMatch[1]) {
+                const vidId = ytMatch[1];
                 return {
                     platform: 'youtube',
-                    id: ytMatch[1],
+                    id: vidId,
                     label: 'YouTube Shorts',
                     icon: 'fa-brands fa-youtube',
                     color: '#ef4444',
                     badgeClass: 'yt',
-                    embedSrc: ytMatch[1],
-                    previewUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1&controls=0&playsinline=1`
+                    embedSrc: vidId,
+                    previewUrl: `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&controls=0&playsinline=1`
                 };
             }
 
-            // 2. TikTok
+            // 2. Google Drive Video
+            const gdriveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i);
+            if (gdriveMatch && gdriveMatch[1]) {
+                const fileId = gdriveMatch[1];
+                return {
+                    platform: 'gdrive',
+                    id: fileId,
+                    label: 'Dysk Google • Wideo',
+                    icon: 'fa-brands fa-google-drive',
+                    color: '#34a853',
+                    badgeClass: 'gdrive',
+                    embedSrc: fileId,
+                    previewUrl: `https://drive.google.com/file/d/${fileId}/preview`
+                };
+            }
+
+            // 3. TikTok
             const tiktokIdMatch = url.match(/tiktok\.com\/(?:@[^\/]+\/video\/|v\/|t\/)?(\d+)/i) || url.match(/\/(\d{15,22})/);
             if (url.includes('tiktok.com') || tiktokIdMatch) {
                 const id = tiktokIdMatch ? tiktokIdMatch[1] : url;
@@ -2419,22 +2438,23 @@
                 };
             }
 
-            // 3. Instagram Reels
+            // 4. Instagram Reels
             const igMatch = url.match(/instagram\.com\/(?:reel|reels|p)\/([a-zA-Z0-9_-]+)/i);
-            if (igMatch) {
+            if (igMatch && igMatch[1]) {
+                const id = igMatch[1];
                 return {
                     platform: 'instagram',
-                    id: igMatch[1],
+                    id: id,
                     label: 'Instagram Reel',
                     icon: 'fa-brands fa-instagram',
                     color: '#ec4899',
                     badgeClass: 'instagram',
-                    embedSrc: igMatch[1],
-                    previewUrl: `https://www.instagram.com/reel/${igMatch[1]}/embed/`
+                    embedSrc: id,
+                    previewUrl: `https://www.instagram.com/reel/${id}/embed/`
                 };
             }
 
-            // 4. Facebook Reels
+            // 5. Facebook Reels
             if (url.includes('facebook.com') || url.includes('fb.watch')) {
                 const fbReelMatch = url.match(/facebook\.com\/reel\/(\d+)/i) || url.match(/fb\.watch\/([a-zA-Z0-9_-]+)/i);
                 const fbId = fbReelMatch ? fbReelMatch[1] : '';
@@ -2450,7 +2470,7 @@
                 };
             }
 
-            // 5. MP4 / WebM / Direct Video
+            // 6. MP4 / WebM / Direct Video
             if (url.match(/\.(mp4|webm|mov)(\?.*)?$/i) || url.includes('storage.googleapis.com') || url.includes('.m3u8')) {
                 return {
                     platform: 'mp4',
@@ -2550,13 +2570,13 @@
             if (modal) modal.classList.remove('open');
         };
 
-        window.submitPublishedReel = function() {
+        window.submitPublishedReel = async function() {
             const urlInput = document.getElementById('inputReelUrl');
             const rawUrl = urlInput ? urlInput.value.trim() : '';
             const parsed = parseReelUrl(rawUrl);
 
             if (!parsed) {
-                alert('Proszę wkleić prawidłowy link do rolki z YouTube Shorts, TikTok, Instagram, Facebook lub plik wideo MP4.');
+                alert('Proszę wkleić prawidłowy link do rolki z YouTube Shorts, TikTok, Instagram, Facebook, Dysku Google lub plik wideo MP4.');
                 return;
             }
 
@@ -2565,13 +2585,16 @@
             const verseRef = (document.getElementById('inputReelVerse').value || '').trim() || 'Pismo Święte';
             const category = selectedCategory || '🕊️ Świadectwo';
 
+            const userSlug = localStorage.getItem('lumina_userSlug') || 'radiocc';
+            const userAvatar = localStorage.getItem('lumina_userAvatar') || 'avatar_cezary_official.jpg';
+
             const newId = 'short_user_' + Date.now();
             const newShort = {
                 id: newId,
                 title: title,
                 author: author,
-                authorSlug: 'radiocc',
-                authorAvatar: 'avatar_cezary_official.jpg',
+                authorSlug: userSlug,
+                authorAvatar: userAvatar,
                 authorBadge: category,
                 videoType: parsed.platform,
                 videoSrc: parsed.embedSrc,
@@ -2584,21 +2607,33 @@
                 description: title + ' 🕊️✨',
                 amenCount: 1,
                 sharesCount: 0,
-                isUserCreated: true
+                isUserCreated: true,
+                createdAtTimestamp: Date.now(),
+                createdAtDateStr: new Date().toISOString()
             };
 
-            // Save in localStorage
+            // 1. Zapis natychmiastowy w localStorage (Offline-first & Zero-Lag)
             try {
                 const stored = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
                 stored.unshift(newShort);
                 localStorage.setItem('lumina_custom_shorts', JSON.stringify(stored));
             } catch(e) {}
 
-            // Prepend to current feed
-            shortsData.unshift(newShort);
+            // 2. Globalna publikacja w chmurze Firestore (LuminaDB)
+            if (window.LuminaDB && typeof window.LuminaDB.publishCloudShort === 'function') {
+                try {
+                    await window.LuminaDB.publishCloudShort(newShort);
+                    console.log('[Rolki] Opublikowano w Firestore lumina_shorts:', newShort.id);
+                } catch(err) {
+                    console.warn('[Rolki] Błąd chmury Firestore:', err);
+                }
+            }
+
+            // 3. Prepend do aktywnego feedu na ekranie
+            shortsData = [newShort, ...shortsData.filter(s => s.id !== newShort.id)];
             renderSlides(shortsData);
 
-            // Close modal & reset form
+            // 4. Zamknięcie modala i reset formularza
             closePublishModal();
             if (urlInput) urlInput.value = '';
             document.getElementById('inputReelTitle').value = '';
@@ -2607,13 +2642,13 @@
             const previewContainer = document.getElementById('reelPreviewContainer');
             if (previewContainer) previewContainer.style.display = 'none';
 
-            // Scroll to newly published reel
+            // 5. Płynne przewinięcie do nowo opublikowanej rolki
             setTimeout(() => {
                 const el = document.getElementById(newId);
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }, 300);
+            }, 250);
 
-            showShortsToast('✨ Twoja Rolka Wiary została opublikowana!');
+            showShortsToast('✨ Twoja Rolka Wiary została opublikowana w całej społeczności LUMINA!');
         };
 
         // ── Engine Sterowania i Filtracji Rolek Wiary (Dynamic Smart Shuffle) ──
@@ -2796,26 +2831,71 @@
             let mediaHtml = '';
             let platformBadgeHtml = '';
 
-            if (platform === 'mp4') {
-                // Bez atrybutu loop — zakończenie wideo wywołuje auto-advance do kolejnej losowej rolki
+                        if (platform === 'mp4') {
                 mediaHtml = `
-                    <video playsinline preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}" onerror="this.closest('.short-slide').remove()">
+                    <video playsinline preload="metadata" muted controls poster="${item.poster || 'tlo_tv_dzj.jpg'}" style="width:100%; height:100%; object-fit:cover;">
                         <source src="${item.videoSrc}" type="video/mp4">
                     </video>
                 `;
                 platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
             } else if (platform === 'youtube') {
-                // enablejsapi=1 dla detekcji zakończenia filmu i automatycznego przejścia
                 mediaHtml = `
-                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=0&playsinline=1&rel=0&modestbranding=1" 
+                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=1&playsinline=1&rel=0&modestbranding=1" 
                             class="youtube-shorts-iframe"
                             title="${escapeHtml(item.title)}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen
-                            onerror="this.closest('.short-slide').remove()">
+                            allowfullscreen>
                     </iframe>
                 `;
                 platformBadgeHtml = `<span class="platform-pill yt"><i class="fa-brands fa-youtube"></i> Shorts</span>`;
+            } else if (platform === 'tiktok') {
+                const tiktokEmbedSrc = item.videoSrc.startsWith('http') ? item.videoSrc : `https://www.tiktok.com/embed/v2/${item.videoSrc}`;
+                mediaHtml = `
+                    <iframe src="${tiktokEmbedSrc}"
+                            class="youtube-shorts-iframe"
+                            title="${escapeHtml(item.title)}"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="border:0; width:100%; height:100%; object-fit:cover;">
+                    </iframe>
+                `;
+                platformBadgeHtml = `<span class="platform-pill tiktok" style="background:#00f2fe; color:#000;"><i class="fa-brands fa-tiktok"></i> TikTok</span>`;
+            } else if (platform === 'instagram') {
+                const igId = item.videoSrc.replace(/^https?:\/\/(www\.)?instagram\.com\/(reel|p)\//, '').replace(/\/.*$/, '');
+                const igEmbedSrc = `https://www.instagram.com/reel/${igId}/embed/`;
+                mediaHtml = `
+                    <iframe src="${igEmbedSrc}"
+                            class="youtube-shorts-iframe"
+                            title="${escapeHtml(item.title)}"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="border:0; width:100%; height:100%; object-fit:cover;">
+                    </iframe>
+                `;
+                platformBadgeHtml = `<span class="platform-pill ig" style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color:#fff;"><i class="fa-brands fa-instagram"></i> Instagram</span>`;
+            } else if (platform === 'facebook') {
+                const fbEmbedSrc = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.videoSrc)}&show_text=false&autoplay=false`;
+                mediaHtml = `
+                    <iframe src="${fbEmbedSrc}"
+                            class="youtube-shorts-iframe"
+                            title="${escapeHtml(item.title)}"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="border:0; width:100%; height:100%; object-fit:cover;">
+                    </iframe>
+                `;
+                platformBadgeHtml = `<span class="platform-pill fb" style="background:#1877f2; color:#fff;"><i class="fa-brands fa-facebook"></i> Facebook</span>`;
+            } else if (platform === 'gdrive') {
+                mediaHtml = `
+                    <iframe src="https://drive.google.com/file/d/${item.videoSrc}/preview"
+                            class="youtube-shorts-iframe"
+                            title="${escapeHtml(item.title)}"
+                            allow="autoplay"
+                            allowfullscreen
+                            style="border:0; width:100%; height:100%; object-fit:cover;">
+                    </iframe>
+                `;
+                platformBadgeHtml = `<span class="platform-pill gdrive" style="background:#34a853; color:#fff;"><i class="fa-brands fa-google-drive"></i> Dysk Google</span>`;
             } else if (platform === 'live_iframe') {
                 mediaHtml = `
                     <iframe src="${item.videoSrc}" 
@@ -2824,7 +2904,6 @@
                             allow="autoplay; fullscreen; picture-in-picture" 
                             allowfullscreen
                             onload="triggerLiveChannelAutoplay(this, ${index === activeSlideIndex})"
-                            onerror="this.closest('.short-slide').remove()"
                             style="border:0; width:100%; height:100%; object-fit:cover;">
                     </iframe>
                     <div style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; border: 3px solid rgba(239,68,68,0.6); border-radius:inherit; z-index:30;"></div>
@@ -3283,29 +3362,82 @@
         });
 
         // ── Ładowanie Danych Feedu ──
+        let baseFeedLoaded = false;
+        let cloudFeedLoaded = false;
+        let rawSeedShorts = [];
+
+        function mergeAndRenderShorts() {
+            let combined = [];
+            const seenIds = new Set();
+
+            // 1. Najwyższy priorytet: Rolki opublikowane przez społeczność z chmury Firestore
+            const cloudShorts = window._luminaCloudShorts || [];
+            cloudShorts.forEach(cs => {
+                if (cs && cs.id && !seenIds.has(cs.id)) {
+                    seenIds.add(cs.id);
+                    combined.push(cs);
+                }
+            });
+
+            // 2. Lokalnie dodane rolki autora (localStorage)
+            try {
+                const storedCustom = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+                if (Array.isArray(storedCustom)) {
+                    storedCustom.forEach(ls => {
+                        if (ls && ls.id && !seenIds.has(ls.id)) {
+                            seenIds.add(ls.id);
+                            combined.push(ls);
+                        }
+                    });
+                }
+            } catch(e) {}
+
+            // 3. Oficjalne bazowe rolki i transmisje ze strumienia shorts_feed.json
+            rawSeedShorts.forEach(ss => {
+                if (ss && ss.id && !seenIds.has(ss.id)) {
+                    seenIds.add(ss.id);
+                    combined.push(ss);
+                }
+            });
+
+            shortsData = combined;
+            renderSlides(shortsData);
+        }
+
         async function loadShortsFeed() {
             try {
                 const res = await fetch('data/shorts/shorts_feed.json?v=' + Date.now());
                 if (res.ok) {
-                    shortsData = await res.json();
+                    rawSeedShorts = await res.json();
                 } else {
-                    shortsData = FALLBACK_SHORTS;
+                    rawSeedShorts = FALLBACK_SHORTS;
                 }
             } catch (err) {
-                shortsData = FALLBACK_SHORTS;
+                rawSeedShorts = FALLBACK_SHORTS;
             }
+            baseFeedLoaded = true;
+            mergeAndRenderShorts();
 
-            // Integracja własnych opublikowanych rolek
-            try {
-                const storedCustom = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
-                if (Array.isArray(storedCustom) && storedCustom.length > 0) {
-                    shortsData = [...storedCustom, ...shortsData];
+            // Inicjalizacja nasłuchu na rolki publikowane w chmurze Firestore
+            function initCloudSync() {
+                if (window.LuminaDB && typeof window.LuminaDB.subscribeToCloudShorts === 'function') {
+                    window.LuminaDB.subscribeToCloudShorts((cloudShorts) => {
+                        console.log('[Rolki] Otrzymano rolki z chmury Firestore:', (cloudShorts || []).length);
+                        window._luminaCloudShorts = cloudShorts;
+                        mergeAndRenderShorts();
+                    });
+                } else {
+                    setTimeout(initCloudSync, 200);
                 }
-            } catch (e) {}
+            }
+            initCloudSync();
 
-            renderSlides(shortsData);
-
-            if (window.location.hash) {
+            // Obsługa bezpośredniego otwarcia dodawania rolki (#publish lub ?action=publish)
+            if (window.location.hash === '#publish' || window.location.search.includes('action=publish')) {
+                setTimeout(() => {
+                    openPublishModal();
+                }, 350);
+            } else if (window.location.hash) {
                 const targetId = window.location.hash.substring(1);
                 setTimeout(() => {
                     const targetEl = document.getElementById(targetId);

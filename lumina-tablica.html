@@ -3846,6 +3846,14 @@
                         <span class="story-label" style="color:var(--gold); font-weight:800;">Rolki 9:16</span>
                     </a>
 
+                    <!-- 0b. Dodaj Rolkę CTA -->
+                    <a href="rolki#publish" class="story-item story-add-reel-cta" title="Dodaj nową Rolkę Wiary (YouTube, TikTok, IG, FB, MP4)">
+                        <div class="story-avatar-wrap" style="border: 2px dashed #facc15; background: rgba(250, 204, 21, 0.12); display: flex; align-items: center; justify-content: center;">
+                            <div class="story-icon-center" style="color:#facc15; font-size:1.1rem;"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+                        <span class="story-label" style="color:#facc15; font-weight:700;">+ Dodaj</span>
+                    </a>
+
                     <!-- 1. Zbyszek Gieroń Psalm 1 -->
                     <a href="rolki#short_psalm1" class="story-item" title="Rolka: Błogosławiony człowiek • Zbyszek Gieroń">
                         <div class="story-avatar-wrap">
@@ -3898,30 +3906,65 @@
 
             <script>
                 (function() {
-                    try {
-                        const custom = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+                    function renderStoryItems(shortsList) {
                         const track = document.getElementById('storiesScrollTrack');
-                        if (track && Array.isArray(custom) && custom.length > 0) {
-                            const cta = track.querySelector('.story-all-cta');
-                            custom.forEach(item => {
+                        if (!track) return;
+                        track.querySelectorAll('.story-user-published').forEach(el => el.remove());
+
+                        const addCta = track.querySelector('.story-add-reel-cta') || track.querySelector('.story-all-cta');
+                        const anchor = addCta || track.firstChild;
+
+                        if (Array.isArray(shortsList) && shortsList.length > 0) {
+                            shortsList.forEach(item => {
+                                if (!item || !item.id) return;
                                 const a = document.createElement('a');
                                 a.href = 'rolki#' + item.id;
                                 a.className = 'story-item story-user-published';
-                                a.title = 'Rolka: ' + item.title + ' • ' + item.author;
+                                a.title = 'Rolka: ' + (item.title || 'Rolka Wiary') + ' • ' + (item.author || 'Świadek Wiary');
                                 a.innerHTML = `
-                                    <div class="story-avatar-wrap" style="border-color: #ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);">
-                                        <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author}" class="story-avatar-img" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
+                                    <div class="story-avatar-wrap" style="border: 2px solid #ec4899; box-shadow: 0 0 12px rgba(236, 72, 153, 0.6); position: relative;">
+                                        <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="story-avatar-img" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
+                                        <span style="position:absolute; bottom:-2px; right:-2px; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-size:8px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid #fff;"><i class="fa-solid fa-play" style="font-size:6px; margin-left:1px;"></i></span>
                                     </div>
-                                    <span class="story-label" style="color:#f472b6;">${(item.author || 'Nowa Rolka').split(' ')[0]}</span>
+                                    <span class="story-label" style="color:#f472b6; font-weight:700;">${(item.author || 'Nowa Rolka').split(' ')[0]}</span>
                                 `;
-                                if (cta && cta.nextSibling) {
-                                    track.insertBefore(a, cta.nextSibling);
+                                if (anchor && anchor.nextSibling) {
+                                    track.insertBefore(a, anchor.nextSibling);
                                 } else {
                                     track.appendChild(a);
                                 }
                             });
                         }
+                    }
+
+                    // 1. Initial local render
+                    try {
+                        const localCached = JSON.parse(localStorage.getItem('lumina_cloud_shorts_cache') || localStorage.getItem('lumina_custom_shorts') || '[]');
+                        if (localCached.length > 0) renderStoryItems(localCached);
                     } catch(e) {}
+
+                    // 2. Realtime Cloud Sync z Firestore LuminaDB
+                    function initTablicaCloudShorts() {
+                        if (window.LuminaDB && typeof window.LuminaDB.subscribeToCloudShorts === 'function') {
+                            window.LuminaDB.subscribeToCloudShorts((cloudShorts) => {
+                                if (Array.isArray(cloudShorts) && cloudShorts.length > 0) {
+                                    renderStoryItems(cloudShorts);
+                                }
+                            });
+                        } else {
+                            setTimeout(initTablicaCloudShorts, 250);
+                        }
+                    }
+                    initTablicaCloudShorts();
+
+                    window.addEventListener('lumina_short_published', (e) => {
+                        if (e.detail) {
+                            try {
+                                const current = JSON.parse(localStorage.getItem('lumina_cloud_shorts_cache') || '[]');
+                                renderStoryItems([e.detail, ...current.filter(c => c.id !== e.detail.id)]);
+                            } catch(err) {}
+                        }
+                    });
                 })();
             </script>
 
