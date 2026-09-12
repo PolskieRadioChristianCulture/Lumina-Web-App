@@ -243,7 +243,17 @@
     function getOrCreateModal() {
         injectStyles();
         let modal = document.getElementById('luminaAdvancedFiltersModal');
-        if (modal) return modal;
+        if (modal) {
+            if (!modal.__hasBackdropListener) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        window.closeAdvancedFiltersModal();
+                    }
+                });
+                modal.__hasBackdropListener = true;
+            }
+            return modal;
+        }
 
         modal = document.createElement('div');
         modal.id = 'luminaAdvancedFiltersModal';
@@ -838,10 +848,16 @@
     function ensureButtonHook() {
         const btn = document.getElementById('btnAdvancedFiltersModalTrigger');
         if (btn) {
-            btn.onclick = function(e) {
-                if (e) e.preventDefault();
-                window.openAdvancedFiltersModal();
+            const handleTrigger = function(e) {
+                if (e) {
+                    if (e.cancelable) e.preventDefault();
+                    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+                }
+                window.openAdvancedFiltersModal(e);
             };
+            btn.onclick = handleTrigger;
+            btn.addEventListener('click', handleTrigger);
+            btn.addEventListener('touchend', handleTrigger, { passive: false });
         }
     }
 

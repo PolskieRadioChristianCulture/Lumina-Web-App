@@ -1340,6 +1340,30 @@
                 padding: 8px 16px;
                 font-size: 0.82rem;
             }
+            #btnAdvancedFiltersModalTrigger {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                padding: 8px 16px !important;
+                border-radius: 24px !important;
+                touch-action: manipulation !important;
+                cursor: pointer !important;
+                user-select: none !important;
+                -webkit-tap-highlight-color: transparent !important;
+            }
+            #btnAdvancedFiltersModalTrigger .filter-chip-text {
+                display: inline !important;
+                margin-left: 6px !important;
+                font-weight: 700 !important;
+                font-size: 0.82rem !important;
+            }
+            #btnAdvancedFiltersModalTrigger * {
+                pointer-events: none !important;
+            }
             .btn-3d-recommend {
                 flex-shrink: 0 !important;
                 width: 40px !important;
@@ -4402,44 +4426,6 @@
         </div>
     </header>
 
-    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (SLIM RIBBON) ══════════ -->
-    <section class="devotional-banner-section" id="todayDevotionalBanner">
-        <div class="devotional-glass-card">
-            
-            <!-- Left: Icon, Badge, Title -->
-            <div class="devotional-card-left">
-                <div class="devotional-icon-box">
-                    <i class="fa-solid fa-book-bible"></i>
-                </div>
-                <div class="devotional-text-box">
-                    <div class="devotional-meta">
-                        <span class="devotional-tag">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="word_of_the_day">Słowo Dnia</span>
-                        </span>
-                        <span class="devotional-date" id="devotionalDateBadge">Niedziela, 30 Sierpnia</span>
-                    </div>
-                    <h3 class="devotional-title" id="devotionalCardTitle">
-                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
-                    </h3>
-                    <p class="devotional-snippet" id="devotionalCardSnippet" style="display:none !important;">
-                        Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Right: Actions -->
-            <div class="devotional-actions">
-                <button type="button" class="btn-devotional-read" onclick="openTodayDevotionalModal()">
-                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj</span>
-                </button>
-                <a href="tablica" class="btn-devotional-feed" title="Tablica Społeczności">
-                    <i class="fa-solid fa-rectangle-list"></i> <span data-i18n="btn_board">Tablica</span>
-                </a>
-            </div>
-
-        </div>
-    </section>
-
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
         <div class="carousel-container">
@@ -4947,9 +4933,9 @@
             <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
             <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
             <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal()" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
-                <i class="fa-solid fa-sliders" style="color:#facc15;"></i>
-                <span class="filter-chip-text">Filtry Wartości ⚙️</span>
+            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal(event)" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
+                <i class="fa-solid fa-sliders" style="color:#facc15; pointer-events:none;"></i>
+                <span class="filter-chip-text" style="pointer-events:none;">Filtry Wartości ⚙️</span>
             </button>
 
             <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
@@ -4957,6 +4943,44 @@
                 <i class="fa-solid fa-paper-plane"></i>
                 <span class="filter-chip-text">Polecaj</span>
             </button>
+        </div>
+    </section>
+
+    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (SLIM RIBBON) ══════════ -->
+    <section class="devotional-banner-section" id="todayDevotionalBanner">
+        <div class="devotional-glass-card">
+            
+            <!-- Left: Icon, Badge, Title -->
+            <div class="devotional-card-left">
+                <div class="devotional-icon-box">
+                    <i class="fa-solid fa-book-bible"></i>
+                </div>
+                <div class="devotional-text-box">
+                    <div class="devotional-meta">
+                        <span class="devotional-tag">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="word_of_the_day">Słowo Dnia</span>
+                        </span>
+                        <span class="devotional-date" id="devotionalDateBadge">Niedziela, 30 Sierpnia</span>
+                    </div>
+                    <h3 class="devotional-title" id="devotionalCardTitle">
+                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
+                    </h3>
+                    <p class="devotional-snippet" id="devotionalCardSnippet" style="display:none !important;">
+                        Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="devotional-actions">
+                <button type="button" class="btn-devotional-read" onclick="openTodayDevotionalModal()">
+                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj</span>
+                </button>
+                <a href="tablica" class="btn-devotional-feed" title="Tablica Społeczności">
+                    <i class="fa-solid fa-rectangle-list"></i> <span data-i18n="btn_board">Tablica</span>
+                </a>
+            </div>
+
         </div>
     </section>
 
@@ -6052,6 +6076,187 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         </div>
     </div>
 
+    <!-- ══════════ ADVANCED VALUES-BASED DISCOVERY FILTERS MODAL ══════════ -->
+    <div class="modal-overlay" id="luminaAdvancedFiltersModal" role="dialog" aria-modal="true" aria-labelledby="advFiltersTitle" style="z-index: 2147483640; display: none; opacity: 0; pointer-events: none;">
+        <div class="adv-filters-card" style="max-width: 600px; width: 100%; max-height: 90vh; max-height: 90dvh; background: linear-gradient(180deg, #0b1329 0%, #060b18 100%); border: 1.5px solid rgba(250, 204, 21, 0.45); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(250, 204, 21, 0.15);">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #facc15, #d97706); display: flex; align-items: center; justify-content: center; color: #030712; font-size: 1.2rem; box-shadow: 0 0 15px rgba(250,204,21,0.4);">
+                        <i class="fa-solid fa-sliders"></i>
+                    </span>
+                    <div>
+                        <h3 id="advFiltersTitle" style="font-size: 1.05rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif; margin: 0; letter-spacing: 0.3px;">
+                            Filtry Wartości & Wiary ⚙️
+                        </h3>
+                        <div style="font-size: 0.72rem; color: #94a3b8;">
+                            Szukaj relacji opartych na wierze, czystości i powołaniu
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="window.closeAdvancedFiltersModal(event)" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; touch-action: manipulation; transition: all 0.2s;" title="Zamknij (ESC)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body (Scrollable) -->
+            <div style="padding: 18px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px;">
+
+                <!-- 1. Kogo szukasz (Płeć) -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-venus-mars"></i> Kogo szukasz?</div>
+                    <div class="filter-radio-pill-group" id="filterGroupGender">
+                        <span class="filter-radio-pill active" data-val="all" onclick="window._setFilterOption('gender', 'all', this)">
+                            <i class="fa-solid fa-users"></i> Wszyscy
+                        </span>
+                        <span class="filter-radio-pill" data-val="kobieta" onclick="window._setFilterOption('gender', 'kobieta', this)">
+                            🌸 Kobiety
+                        </span>
+                        <span class="filter-radio-pill" data-val="mezczyzna" onclick="window._setFilterOption('gender', 'mezczyzna', this)">
+                            🛡️ Mężczyźni
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 2. Przedział Wieku (Wiek Od - Do) -->
+                <div class="age-slider-double">
+                    <div class="filter-group-title" style="margin-bottom: 2px;">
+                        <i class="fa-solid fa-cake-candles"></i> Przedział Wieku: 
+                        <span id="filterAgeLabel" style="color: #facc15; font-weight: 800; margin-left: 6px;">18 – 75 lat</span>
+                    </div>
+                    <div class="age-slider-row">
+                        <span style="font-size: 0.72rem; color: #94a3b8; width: 35px;">Od: <b id="lblMinAge" style="color:#fff;">18</b></span>
+                        <input type="range" class="age-slider-input" id="filterAgeSliderMin" min="18" max="75" value="18" oninput="window._updateAgeSliders()">
+                    </div>
+                    <div class="age-slider-row">
+                        <span style="font-size: 0.72rem; color: #94a3b8; width: 35px;">Do: <b id="lblMaxAge" style="color:#fff;">75</b></span>
+                        <input type="range" class="age-slider-input" id="filterAgeSliderMax" min="20" max="80" value="75" oninput="window._updateAgeSliders()">
+                    </div>
+                </div>
+
+                <!-- 3. Stan Cywilny -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-ring"></i> Stan Cywilny</div>
+                    <div class="filter-radio-pill-group" id="filterGroupStatus">
+                        <span class="filter-radio-pill active" data-val="all" onclick="window._setFilterOption('status', 'all', this)">
+                            Dowolny stan
+                        </span>
+                        <span class="filter-radio-pill" data-val="wolny" onclick="window._setFilterOption('status', 'wolny', this)">
+                            🕊️ Panna / Kawaler
+                        </span>
+                        <span class="filter-radio-pill" data-val="malzenstwo" onclick="window._setFilterOption('status', 'malzenstwo', this)">
+                            💍 Małżeństwo
+                        </span>
+                        <span class="filter-radio-pill" data-val="wdowiec" onclick="window._setFilterOption('status', 'wdowiec', this)">
+                            🌿 Wdowiec / Wdowa
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 4. Cel Relacji -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-heart"></i> Cel Relacji & Powołanie</div>
+                    <select id="filterSelectGoal" class="filter-select-luxury" onchange="if(window.filterState) filterState.goal = this.value">
+                        <option value="all">Wszystkie cele relacji</option>
+                        <option value="malzenstwo">💍 Szukam małżeństwa według Bożej woli</option>
+                        <option value="relacja">❤️ Trwała relacja oparta na wartościach</option>
+                        <option value="przyjazn">🤝 Chrześcijańska przyjaźń & rozmowa</option>
+                        <option value="modlitwa">🙏 Wspólna modlitwa & budowanie w wierze</option>
+                    </select>
+                </div>
+
+                <!-- 5. Tradycja Wiary / Wyznanie -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-church"></i> Wyznanie & Tradycja Wiary</div>
+                    <select id="filterSelectDenom" class="filter-select-luxury" onchange="if(window.filterState) filterState.denomination = this.value">
+                        <option value="all">Wszystkie tradycje chrześcijańskie</option>
+                        <option value="biblijny">✝️ Chrześcijanin Biblijny / Bezdenominacyjny</option>
+                        <option value="ewangeliczny">🌿 Wspólnoty Ewangeliczne / Wolne Kościoły</option>
+                        <option value="katolicki">⛪ Tradycja Katolicka</option>
+                        <option value="charyzmatyczny">🕊️ Ruch Uwielbienia & Charyzmatyczny</option>
+                    </select>
+                </div>
+
+                <!-- 6. Czytanie Słowa Bożego -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-book-bible"></i> Praktyka Wiary & Pismo Święte</div>
+                    <select id="filterSelectBible" class="filter-select-luxury" onchange="if(window.filterState) filterState.bibleReading = this.value">
+                        <option value="all">Dowolna częstotliwość</option>
+                        <option value="codziennie">📖 Codziennie rozważam Słowo Boże</option>
+                        <option value="regularnie">🌿 Kilka razy w tygodniu</option>
+                        <option value="niedziela">⛪ W niedziele i podczas nabożeństw</option>
+                    </select>
+                </div>
+
+                <!-- 7. Lokalizacja / Województwo -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-location-dot"></i> Województwo / Miasto</div>
+                    <select id="filterSelectLocation" class="filter-select-luxury" onchange="if(window.filterState) filterState.location = this.value">
+                        <option value="">Cała Polska & Zagranica</option>
+                        <option value="mazowieckie">Mazowieckie (Warszawa, Radom, Płock...)</option>
+                        <option value="malopolskie">Małopolskie (Kraków, Tarnów, Nowy Sącz...)</option>
+                        <option value="slaskie">Śląskie (Katowice, Częstochowa, Gliwice...)</option>
+                        <option value="wielkopolskie">Wielkopolskie (Poznań, Kalisz, Konin...)</option>
+                        <option value="dolnoslaskie">Dolnośląskie (Wrocław, Legnica, Wałbrzych...)</option>
+                        <option value="pomorskie">Pomorskie (Gdańsk, Gdynia, Sopot...)</option>
+                        <option value="lodzkie">Łódzkie (Łódź, Sieradz, Piotrków...)</option>
+                        <option value="lubelskie">Lubelskie (Lublin, Zamość, Chełm...)</option>
+                        <option value="podkarpackie">Podkarpackie (Rzeszów, Przemyśl, Krosno...)</option>
+                        <option value="kujawsko-pomorskie">Kujawsko-Pomorskie (Bydgoszcz, Toruń...)</option>
+                        <option value="zachodniopomorskie">Zachodniopomorskie (Szczecin, Koszalin...)</option>
+                        <option value="warminsko-mazurskie">Warmińsko-Mazurskie (Olsztyn, Elbląg...)</option>
+                        <option value="swietokrzyskie">Świętokrzyskie (Kielce, Ostrowiec Św....)</option>
+                        <option value="podlaskie">Podlaskie (Białystok, Suwałki, Łomża...)</option>
+                        <option value="lubuskie">Lubuskie (Zielona Góra, Gorzów Wlkp....)</option>
+                        <option value="opolskie">Opolskie (Opole, Nysa, Kędzierzyn...)</option>
+                    </select>
+                </div>
+
+                <!-- 8. Wartości Życiowe & Czystość (Checkboxy) -->
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div class="filter-group-title"><i class="fa-solid fa-gem"></i> Wartości Chrześcijańskie</div>
+                    
+                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckPurity')">
+                        <input type="checkbox" id="filterCheckPurity" onchange="if(window.filterState) filterState.purityPriority = this.checked">
+                        <label for="filterCheckPurity">✨ Czystość przedmałżeńska jako priorytet</label>
+                    </div>
+
+                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckNoAddictions')">
+                        <input type="checkbox" id="filterCheckNoAddictions" onchange="if(window.filterState) filterState.noAddictions = this.checked">
+                        <label for="filterCheckNoAddictions">🕊️ Życie wolne od nałogów (bez alkoholu i tytoniu)</label>
+                    </div>
+
+                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckWithPhoto')">
+                        <input type="checkbox" id="filterCheckWithPhoto" checked onchange="if(window.filterState) filterState.withPhotoOnly = this.checked">
+                        <label for="filterCheckWithPhoto">🖼️ Tylko profile ze zdjęciem</label>
+                    </div>
+                </div>
+
+                <!-- 9. Sortowanie -->
+                <div>
+                    <div class="filter-group-title"><i class="fa-solid fa-arrow-down-wide-short"></i> Sortowanie Wyników</div>
+                    <select id="filterSelectSort" class="filter-select-luxury" onchange="if(window.filterState) filterState.sortBy = this.value">
+                        <option value="match">✨ Najwyższe dopasowanie duchowe (%)</option>
+                        <option value="age_asc">👶 Wiek: od najmłodszych</option>
+                        <option value="age_desc">🧓 Wiek: od najstarszych</option>
+                        <option value="newest">⚡ Najnowsze profile w społeczności</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Footer Actions -->
+            <div style="display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);">
+                <button type="button" onclick="window.resetAdvancedFilters()" style="flex: 1; padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 700; font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">
+                    Wyczyść
+                </button>
+                <button type="button" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                    <span>Zastosuj Filtry</span> <i class="fa-solid fa-sparkles"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
 <!-- ══════════ TOAST ══════════ -->
     <div class="toast" id="toastEl">
         <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -6060,6 +6265,49 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
     <!-- ══════════ ENGINE INTEGRATION ══════════ -->
     <script>
+        window.openAdvancedFiltersModal = function(e) {
+            if (e) {
+                if (e.cancelable) e.preventDefault();
+                if (typeof e.stopPropagation === 'function') e.stopPropagation();
+            }
+            const modal = document.getElementById('luminaAdvancedFiltersModal');
+            if (modal) {
+                modal.classList.add('open');
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+                modal.style.pointerEvents = 'auto';
+                document.body.style.overflow = 'hidden';
+                try {
+                    document.querySelectorAll('#luminaCookieConsentBanner, #lumina-cookie-banner, .cookie-banner').forEach(b => {
+                        b.dataset.prevDisplay = b.style.display || '';
+                        b.style.display = 'none';
+                    });
+                } catch(err) {}
+            }
+        };
+
+        window.closeAdvancedFiltersModal = function(e) {
+            if (e) {
+                if (e.cancelable) e.preventDefault();
+                if (typeof e.stopPropagation === 'function') e.stopPropagation();
+            }
+            const modal = document.getElementById('luminaAdvancedFiltersModal');
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
+                modal.style.opacity = '0';
+                modal.style.pointerEvents = 'none';
+                document.body.style.overflow = '';
+                try {
+                    document.querySelectorAll('#luminaCookieConsentBanner, #lumina-cookie-banner, .cookie-banner').forEach(b => {
+                        if (b.dataset.prevDisplay !== undefined) {
+                            b.style.display = b.dataset.prevDisplay;
+                        }
+                    });
+                } catch(err) {}
+            }
+        };
+
         let obAvatarDataUrl = 'lumina_icon.jpg';
 
         window.switchAuthTab = function(tab) {
@@ -11077,7 +11325,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="js/lumina-groups-engine.js" defer></script>
     <script src="js/lumina-messenger-composer.js" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
-    <script src="js/lumina-discovery-filters.js"></script>
+    <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.1_20260909" defer></script>
     <script src="lumina-notifications.js?v=4.1.1_20260909" defer></script>
