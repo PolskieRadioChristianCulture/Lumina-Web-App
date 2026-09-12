@@ -1,7 +1,9 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * LUMINA FOLLOWED FRIENDS WIDGET (js/lumina-followed-friends.js)
- * Wyświetla awatary obserwowanych znajomych pod wizytówką na profilach LUMINA
+ * LUMINA FOLLOWED & FRIENDS WIDGET (js/lumina-followed-friends.js)
+ * Wyświetla awatary znajomych i obserwowanych pod wizytówką na profilach LUMINA
+ * Rozróżnia relacje: Znajomi (🤝 obustronna relacja) vs Obserwowani (✓ jednostronna subskrypcja)
+ * Zawiera wbudowaną wyszukiwarkę z zaproszeniami do znajomych i filtrami zakładek
  * Standard: Obsidian & Gold, @ProgresMCC, @SMCC Touch Ergonomics (44px+)
  * ══════════════════════════════════════════════════════════════════════════
  */
@@ -18,7 +20,9 @@
             avatar: 'avatar_cezary_official.jpg',
             role: 'Założyciel 👑',
             url: 'lumina.cezaryrgowski.html',
-            city: 'Ostrowiec Św.'
+            city: 'Ostrowiec Św.',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'wiolettarogowska',
@@ -27,7 +31,9 @@
             avatar: 'avatar_wioletta_official.jpg',
             role: 'Współzałożycielka 🌸',
             url: 'lumina.wiolettarogowska.html',
-            city: 'Ostrowiec Św.'
+            city: 'Ostrowiec Św.',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'zbyszekgieron',
@@ -36,7 +42,9 @@
             avatar: 'avatar_zbyszek_gieron.jpg',
             role: 'Profil Misyjny 🕊️',
             url: 'lumina.zbyszekgieron.html',
-            city: 'Polska'
+            city: 'Polska',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'andrzejthiel',
@@ -45,7 +53,9 @@
             avatar: 'avatar_andrzej_thiel.jpg',
             role: 'Lider CC 🛡️',
             url: 'lumina.andrzejthiel.html',
-            city: 'Gdańsk'
+            city: 'Gdańsk',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'jolawojcik',
@@ -54,7 +64,9 @@
             avatar: 'avatar_jolawojcik.jpg',
             role: 'Czas Modlitwy 🙏',
             url: 'lumina.jolawojcik.html',
-            city: 'Lublin'
+            city: 'Lublin',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'magdalena',
@@ -63,7 +75,9 @@
             avatar: 'avatar_magdalena.jpg',
             role: 'Świadectwo 🕊️',
             url: 'lumina.magdalena.html',
-            city: 'Poznań'
+            city: 'Poznań',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'pawelmurawski',
@@ -72,52 +86,9 @@
             avatar: 'avatar_pawel_murawski.jpg',
             role: 'Życie z Bogiem ✝️',
             url: 'lumina.pawelmurawski.html',
-            city: 'Kraków'
-        },
-        {
-            slug: 'tomek',
-            name: 'Tomasz',
-            shortName: 'Tomek',
-            avatar: 'avatar_tomek.jpg',
-            role: 'Młodzież 🎸',
-            url: 'lumina.html?user=tomek',
-            city: 'Warszawa'
-        },
-        {
-            slug: 'noemi',
-            name: 'Noemi',
-            shortName: 'Noemi',
-            avatar: 'avatar_noemi.jpg',
-            role: 'Uwielbienie 🎶',
-            url: 'lumina.html?user=noemi',
-            city: 'Kraków'
-        },
-        {
-            slug: 'dawid',
-            name: 'Dawid',
-            shortName: 'Dawid',
-            avatar: 'avatar_dawid.jpg',
-            role: 'Ewangelizacja 📖',
-            url: 'lumina.html?user=dawid',
-            city: 'Wrocław'
-        },
-        {
-            slug: 'weronika',
-            name: 'Weronika',
-            shortName: 'Weronika',
-            avatar: 'avatar_weronika.jpg',
-            role: 'Diakonia 🌸',
-            url: 'lumina.html?user=weronika',
-            city: 'Łódź'
-        },
-        {
-            slug: 'ania',
-            name: 'Ania',
-            shortName: 'Ania',
-            avatar: 'avatar_ania.jpg',
-            role: 'Modlitwa 🕊️',
-            url: 'lumina.html?user=anna',
-            city: 'Gdańsk'
+            city: 'Kraków',
+            defaultFriend: true,
+            defaultFollowed: true
         },
         {
             slug: 'zofiadudek',
@@ -126,7 +97,64 @@
             avatar: 'avatar_zofia_dudek.jpg',
             role: 'Rodzina 🌿',
             url: 'lumina.zofiadudek.html',
-            city: 'Wrocław'
+            city: 'Wrocław',
+            defaultFriend: true,
+            defaultFollowed: true
+        },
+        {
+            slug: 'tomek',
+            name: 'Tomasz',
+            shortName: 'Tomek',
+            avatar: 'avatar_tomek.jpg',
+            role: 'Młodzież 🎸',
+            url: 'lumina.html?user=tomek',
+            city: 'Warszawa',
+            defaultFriend: false,
+            defaultFollowed: false
+        },
+        {
+            slug: 'noemi',
+            name: 'Noemi',
+            shortName: 'Noemi',
+            avatar: 'avatar_noemi.jpg',
+            role: 'Uwielbienie 🎶',
+            url: 'lumina.html?user=noemi',
+            city: 'Kraków',
+            defaultFriend: false,
+            defaultFollowed: false
+        },
+        {
+            slug: 'dawid',
+            name: 'Dawid',
+            shortName: 'Dawid',
+            avatar: 'avatar_dawid.jpg',
+            role: 'Ewangelizacja 📖',
+            url: 'lumina.html?user=dawid',
+            city: 'Wrocław',
+            defaultFriend: false,
+            defaultFollowed: false
+        },
+        {
+            slug: 'weronika',
+            name: 'Weronika',
+            shortName: 'Weronika',
+            avatar: 'avatar_weronika.jpg',
+            role: 'Diakonia 🌸',
+            url: 'lumina.html?user=weronika',
+            city: 'Łódź',
+            defaultFriend: false,
+            defaultFollowed: false
+        },
+        {
+            slug: 'ania',
+            name: 'Ania',
+            shortName: 'Ania',
+            avatar: 'avatar_ania.jpg',
+            role: 'Modlitwa 🕊️',
+            url: 'lumina.html?user=anna',
+            city: 'Gdańsk',
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'robert',
@@ -135,11 +163,18 @@
             avatar: 'avatar_robert.jpg',
             role: 'Świadectwo ✝️',
             url: 'lumina.html?user=robert',
-            city: 'Katowice'
+            city: 'Katowice',
+            defaultFriend: false,
+            defaultFollowed: false
         }
     ];
 
-    // Wstrzyknięcie uniwersalnych stylów CSS widżetu
+    // Aktywny stan filtra zakładek: 'all' | 'friends' | 'followed'
+    let currentFilterTab = 'all';
+    // Aktywny stan wyszukiwarki
+    let currentSearchQuery = '';
+
+    // Wstrzyknięcie stylów CSS
     function injectStyles() {
         if (document.getElementById('lumina-followed-friends-styles')) return;
 
@@ -150,7 +185,7 @@
                 background: var(--navy-surface, #0b1838) !important;
                 border: 1px solid rgba(245, 158, 11, 0.28) !important;
                 border-radius: var(--radius-lg, 20px) !important;
-                padding: 20px !important;
+                padding: 18px !important;
                 margin-bottom: 22px !important;
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
                 position: relative;
@@ -164,21 +199,21 @@
                 left: 0;
                 right: 0;
                 height: 2px;
-                background: linear-gradient(90deg, transparent, #facc15, #f59e0b, transparent);
+                background: linear-gradient(90deg, transparent, #facc15, #38bdf8, transparent);
             }
 
             .followed-friends-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 12px;
+                margin-bottom: 8px;
             }
 
             .followed-friends-title {
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                font-size: 1rem;
+                font-size: 0.98rem;
                 font-weight: 800;
                 color: #fff;
             }
@@ -187,12 +222,113 @@
                 background: rgba(245, 158, 11, 0.16);
                 border: 1px solid rgba(245, 158, 11, 0.4);
                 color: #fef08a;
-                font-size: 0.75rem;
+                font-size: 0.72rem;
                 font-weight: 800;
-                padding: 3px 10px;
+                padding: 3px 9px;
                 border-radius: 14px;
             }
 
+            /* ── WYSZUKIWARKA ZNAJOMYCH ── */
+            .friends-search-box {
+                position: relative;
+                width: 100%;
+                margin: 10px 0 12px 0;
+            }
+
+            .friends-search-input {
+                width: 100%;
+                height: 38px;
+                box-sizing: border-box;
+                padding: 0 34px 0 34px;
+                border-radius: 20px;
+                background: rgba(15, 23, 42, 0.75);
+                border: 1px solid rgba(250, 204, 21, 0.3);
+                color: #fff;
+                font-size: 0.78rem;
+                font-family: inherit;
+                outline: none;
+                transition: all 0.2s;
+            }
+
+            .friends-search-input:focus {
+                border-color: #facc15;
+                background: rgba(15, 23, 42, 0.95);
+                box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+            }
+
+            .friends-search-icon {
+                position: absolute;
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #facc15;
+                font-size: 0.82rem;
+                pointer-events: none;
+            }
+
+            .friends-search-clear {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(255,255,255,0.12);
+                border: none;
+                color: #94a3b8;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.65rem;
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+
+            .friends-search-clear:hover {
+                color: #fff;
+                background: rgba(239, 68, 68, 0.6);
+            }
+
+            /* ── ZAKŁADKI: Wszyscy / Znajomi 🤝 / Obserwowani ✓ ── */
+            .friends-filter-tabs {
+                display: flex;
+                gap: 5px;
+                margin-bottom: 12px;
+                background: rgba(0, 0, 0, 0.25);
+                padding: 3px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            .friends-tab-btn {
+                flex: 1;
+                background: transparent;
+                border: none;
+                color: #94a3b8;
+                font-size: 0.68rem;
+                font-weight: 700;
+                padding: 6px 4px;
+                border-radius: 9px;
+                cursor: pointer;
+                text-align: center;
+                transition: all 0.2s;
+                white-space: nowrap;
+            }
+
+            .friends-tab-btn:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .friends-tab-btn.active {
+                background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(56, 189, 248, 0.2));
+                color: #fef08a;
+                border: 1px solid rgba(250, 204, 21, 0.45);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+
+            /* ── SIATKA 3 KOLUMNY ── */
             .followed-friends-grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -220,10 +356,11 @@
                 width: 100%;
                 min-width: 0;
                 box-sizing: border-box;
+                position: relative;
             }
 
             .followed-friend-item:hover {
-                transform: translateY(-3px) scale(1.05);
+                transform: translateY(-3px) scale(1.04);
             }
 
             .followed-avatar-wrapper {
@@ -249,9 +386,20 @@
                 box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
             }
 
+            /* Aktywny obrys dla znajomego / obserwowanego */
+            .followed-friend-item.is-friend .followed-avatar-img {
+                border-color: #38bdf8;
+                box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+            }
+
             .followed-friend-item.is-active-follow .followed-avatar-img {
                 border-color: #facc15;
                 box-shadow: 0 0 14px rgba(250, 204, 21, 0.45);
+            }
+
+            .followed-friend-item.is-friend.is-active-follow .followed-avatar-img {
+                border-color: #facc15;
+                box-shadow: 0 0 16px rgba(250, 204, 21, 0.5), 0 0 8px rgba(56, 189, 248, 0.4);
             }
 
             .followed-online-dot {
@@ -266,6 +414,7 @@
                 box-shadow: 0 0 6px #10b981;
             }
 
+            /* ODZNAKA OBSERWOWANY ✓ (Prawy górny róg) */
             .followed-check-badge {
                 position: absolute;
                 top: -2px;
@@ -281,10 +430,32 @@
                 font-size: 0.55rem;
                 font-weight: 800;
                 border: 1.5px solid #070b16;
+                z-index: 2;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            }
+
+            /* ODZNAKA ZNAJOMY 🤝 (Lewy górny róg) */
+            .followed-friend-badge {
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                background: linear-gradient(135deg, #0284c7, #38bdf8);
+                color: #fff;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.55rem;
+                font-weight: 800;
+                border: 1.5px solid #070b16;
+                z-index: 2;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             }
 
             .followed-friend-name {
-                font-size: 0.76rem;
+                font-size: 0.75rem;
                 font-weight: 700;
                 color: #fff;
                 text-align: center;
@@ -336,6 +507,152 @@
                 transform: rotate(90deg);
             }
 
+            /* ── WYNIKI WYSZUKIWANIA (LISTA WYNIKÓW) ── */
+            .friends-search-results {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 16px;
+                max-height: 280px;
+                overflow-y: auto;
+                padding-right: 4px;
+            }
+
+            .friends-search-results::-webkit-scrollbar {
+                width: 4px;
+            }
+            .friends-search-results::-webkit-scrollbar-thumb {
+                background: rgba(250, 204, 21, 0.3);
+                border-radius: 4px;
+            }
+
+            .search-result-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                padding: 8px 10px;
+                transition: all 0.2s;
+            }
+
+            .search-result-item:hover {
+                background: rgba(255, 255, 255, 0.07);
+                border-color: rgba(250, 204, 21, 0.3);
+            }
+
+            .search-result-user {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .search-result-avatar {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 1.5px solid rgba(250, 204, 21, 0.4);
+                flex-shrink: 0;
+            }
+
+            .search-result-meta {
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+            }
+
+            .search-result-name {
+                font-size: 0.78rem;
+                font-weight: 700;
+                color: #fff;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .search-result-role {
+                font-size: 0.65rem;
+                color: #94a3b8;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .search-result-actions {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                flex-shrink: 0;
+            }
+
+            .btn-action-mini {
+                padding: 5px 8px;
+                border-radius: 12px;
+                font-size: 0.65rem;
+                font-weight: 800;
+                cursor: pointer;
+                border: none;
+                transition: all 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .btn-action-mini.friend-btn {
+                background: rgba(56, 189, 248, 0.18);
+                color: #38bdf8;
+                border: 1px solid rgba(56, 189, 248, 0.45);
+            }
+
+            .btn-action-mini.friend-btn:hover {
+                background: #0284c7;
+                color: #fff;
+            }
+
+            .btn-action-mini.friend-btn.is-active {
+                background: #0284c7;
+                color: #fff;
+                border-color: #38bdf8;
+            }
+
+            .btn-action-mini.friend-btn.is-pending {
+                background: rgba(245, 158, 11, 0.2);
+                color: #fde047;
+                border-color: rgba(245, 158, 11, 0.5);
+            }
+
+            .btn-action-mini.follow-btn {
+                background: rgba(245, 158, 11, 0.15);
+                color: #fef08a;
+                border: 1px solid rgba(245, 158, 11, 0.4);
+            }
+
+            .btn-action-mini.follow-btn:hover {
+                background: #f59e0b;
+                color: #000;
+            }
+
+            .btn-action-mini.follow-btn.is-active {
+                background: #f59e0b;
+                color: #000;
+                font-weight: 800;
+            }
+
+            /* Pusty stan wyników */
+            .friends-search-empty {
+                text-align: center;
+                padding: 16px 8px;
+                font-size: 0.76rem;
+                color: #94a3b8;
+            }
+
+            /* Przycisk dolny */
             .btn-discover-all-friends {
                 display: inline-flex;
                 align-items: center;
@@ -360,54 +677,195 @@
                 border-color: #facc15;
                 color: #fff;
             }
+
+            /* Toast powiadomień */
+            .friends-mini-toast {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                background: rgba(15, 23, 42, 0.95);
+                border: 1px solid #facc15;
+                color: #fff;
+                padding: 10px 16px;
+                border-radius: 12px;
+                font-size: 0.82rem;
+                font-weight: 700;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+                z-index: 999999;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                animation: friendsToastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            @keyframes friendsToastIn {
+                from { opacity: 0; transform: translateY(12px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
         `;
         document.head.appendChild(styleEl);
     }
 
-    // Sprawdza czy użytkownik obserwuje dany profil
+    // Wyświetlanie powiadomienia Toast
+    function showToast(message) {
+        if (typeof window.showToast === 'function') {
+            window.showToast(message);
+            return;
+        }
+
+        const existing = document.querySelector('.friends-mini-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'friends-mini-toast';
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.3s ease';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2600);
+    }
+
+    // ── ZARZĄDZANIE RELACJAMI: ZNAJOMOŚĆ (FRIENDSHIP) ──
+    function getFriendshipStatus(slug) {
+        if (!slug) return null;
+        try {
+            const val = localStorage.getItem('lumina_friend_' + slug);
+            if (val === 'accepted' || val === 'pending') return val;
+            if (val === '0' || val === 'none') return null;
+        } catch (e) {}
+
+        // Domyślny status relacji dla ambasadorów/kontaktów
+        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
+        if (item && item.defaultFriend) {
+            return 'accepted';
+        }
+        return null;
+    }
+
+    function isFriend(slug) {
+        return getFriendshipStatus(slug) === 'accepted';
+    }
+
+    function sendFriendRequest(slug) {
+        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
+        const name = item ? item.name : slug;
+        const current = getFriendshipStatus(slug);
+
+        if (current === 'accepted') {
+            // Usunięcie ze znajomych (przełącznik)
+            localStorage.setItem('lumina_friend_' + slug, '0');
+            showToast(`Usunięto z grona znajomych: ${name}`);
+        } else if (current === 'pending') {
+            // Anulowanie zaproszenia
+            localStorage.setItem('lumina_friend_' + slug, '0');
+            showToast(`Anulowano zaproszenie do: ${name}`);
+        } else {
+            // Wysłanie zaproszenia
+            localStorage.setItem('lumina_friend_' + slug, 'pending');
+            showToast(`🤝 Wysłano zaproszenie do grona znajomych do: ${name}!`);
+
+            // Rejestracja w centrum powiadomień jeśli aktywne
+            if (window.LuminaNotificationCenter && typeof window.LuminaNotificationCenter.notify === 'function') {
+                window.LuminaNotificationCenter.notify({
+                    type: 'friend_request_sent',
+                    title: 'Zaproszenie do znajomych 🤝',
+                    message: `Wysłałeś zaproszenie do ${name}`,
+                    senderName: name,
+                    avatar: item ? item.avatar : 'lumina_icon.jpg'
+                });
+            }
+        }
+
+        window.dispatchEvent(new CustomEvent('lumina:friendshipChange', { detail: { slug } }));
+        refreshWidgetView();
+    }
+
+    // ── ZARZĄDZANIE RELACJAMI: OBSERWOWANIE (FOLLOWING) ──
     function isFollowing(slug) {
         if (!slug) return false;
         try {
             const val = localStorage.getItem('lumina_following_' + slug);
             if (val === '1' || val === 'true') return true;
+            if (val === '0' || val === 'false') return false;
         } catch (e) {}
 
         if (typeof window.isFollowingLocally === 'function') {
             return window.isFollowingLocally(slug);
         }
-        return false;
+
+        // Domyślny status obserwowany
+        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
+        return Boolean(item && item.defaultFollowed);
     }
 
-    // Pobiera listę obserwowanych znajomych z priorytetem
-    function getFollowedFriendsList(currentProfileSlug) {
+    function toggleFollow(slug) {
+        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
+        const name = item ? item.name : slug;
+        const currentlyFollowing = isFollowing(slug);
+
+        if (currentlyFollowing) {
+            localStorage.setItem('lumina_following_' + slug, '0');
+            showToast(`Przestałeś obserwować publikacje: ${name}`);
+        } else {
+            localStorage.setItem('lumina_following_' + slug, '1');
+            showToast(`✓ Obserwujesz publikacje i świadectwa: ${name}!`);
+        }
+
+        window.dispatchEvent(new CustomEvent('lumina:followChange', { detail: { slug } }));
+        refreshWidgetView();
+    }
+
+    // Pobiera listę z przypisanymi statusami
+    function getFriendsData(currentProfileSlug) {
         const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== currentProfileSlug);
 
         const mapped = friends.map(f => {
             const followed = isFollowing(f.slug);
+            const friendStatus = getFriendshipStatus(f.slug);
+            const isFr = friendStatus === 'accepted';
             return {
                 ...f,
-                isFollowed: followed
+                isFollowed: followed,
+                friendStatus: friendStatus,
+                isFriend: isFr
             };
-        });
-
-        // Posortuj: najpierw aktywnie obserwowani, potem kluczowi ambasadorzy wspólnoty
-        mapped.sort((a, b) => {
-            if (a.isFollowed && !b.isFollowed) return -1;
-            if (!a.isFollowed && b.isFollowed) return 1;
-            return 0;
         });
 
         return mapped;
     }
 
-    // Renderuje zawartość widżetu do wskazanego kontenera
+    // Sortowanie: najpierw Znajomi, potem Obserwowani
+    function sortFriends(list) {
+        return [...list].sort((a, b) => {
+            if (a.isFriend && !b.isFriend) return -1;
+            if (!a.isFriend && b.isFriend) return 1;
+            if (a.isFollowed && !b.isFollowed) return -1;
+            if (!a.isFollowed && b.isFollowed) return 1;
+            return 0;
+        });
+    }
+
+    // Odświeżenie widoku widżetu
+    function refreshWidgetView() {
+        const slot = document.getElementById('luminaFollowedFriendsSlot') || document.getElementById('followedFriendsCard');
+        if (slot) {
+            const currentSlug = detectCurrentProfileSlug();
+            renderFollowedFriends(slot, currentSlug);
+        }
+    }
+
+    // ── RENDEROWANIE GŁÓWNEGO WIDŻETU ──
     function renderFollowedFriends(container, currentProfileSlug) {
         if (!container) return;
 
         injectStyles();
 
-        const friends = getFollowedFriendsList(currentProfileSlug);
-        const followedCount = friends.filter(f => f.isFollowed).length;
+        const allFriends = getFriendsData(currentProfileSlug);
+        const friendsCount = allFriends.filter(f => f.isFriend).length;
+        const followedCount = allFriends.filter(f => f.isFollowed).length;
 
         const profileBioMap = {
             'cezaryrgowski': 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
@@ -416,60 +874,170 @@
             'andrzejthiel': 'Lider męskich grup, formacja i wzrost duchowy w Bożej prawdzie.',
             'jolawojcik': 'Wstawiennictwo, modlitwa i wsparcie dla potrzebujących serc.'
         };
-        const subtext = profileBioMap[currentProfileSlug] || 'Osoby ze społeczności LUMINA, których publikacje i świadectwa wiary obserwujesz:';
+        const subtext = profileBioMap[currentProfileSlug] || 'Osoby ze społeczności LUMINA, z którymi budujesz braterstwo i wiarę:';
 
-        // 3 osoby na linię: 8 znajomych + 1 kafelek "Więcej" = 9 elementów (3 równe rzędy po 3, bez ucinania)
-        const displayFriends = friends.slice(0, 8);
+        // Filtrowanie według aktywnej zakładki
+        let filteredByTab = allFriends;
+        if (currentFilterTab === 'friends') {
+            filteredByTab = allFriends.filter(f => f.isFriend);
+        } else if (currentFilterTab === 'followed') {
+            filteredByTab = allFriends.filter(f => f.isFollowed);
+        }
+
+        const sortedFriends = sortFriends(filteredByTab);
+
+        // Filtrowanie według wyszukiwarki
+        const query = (currentSearchQuery || '').trim().toLowerCase();
+        let searchResults = [];
+        let isSearching = query.length > 0;
+
+        if (isSearching) {
+            searchResults = allFriends.filter(f => {
+                return f.name.toLowerCase().includes(query) ||
+                       f.shortName.toLowerCase().includes(query) ||
+                       f.role.toLowerCase().includes(query) ||
+                       (f.city && f.city.toLowerCase().includes(query));
+            });
+        }
+
+        // Siatka 3 kolumny: do 8 osób + 1 kafelek Odkryj Więcej
+        const displayGridFriends = sortedFriends.slice(0, 8);
 
         const html = `
             <div class="followed-friends-header">
                 <div class="followed-friends-title">
                     <i class="fa-solid fa-user-group" style="color:#facc15;"></i>
-                    <span>Obserwowani Znajomi</span>
+                    <span>Znajomi & Obserwowani</span>
                 </div>
                 <span class="followed-friends-badge">
-                    ${followedCount > 0 ? `${followedCount} aktywnych` : `${friends.length} w sieci`}
+                    ${friendsCount} znajomych • ${followedCount} obs.
                 </span>
             </div>
             
-            <p style="font-size:0.80rem; color:#94a3b8; line-height:1.45; margin:0 0 14px 0;">
+            <p style="font-size:0.80rem; color:#94a3b8; line-height:1.45; margin:0 0 10px 0;">
                 ${subtext}
             </p>
 
-            <div class="followed-friends-grid">
-                ${displayFriends.map(f => `
-                    <a href="${f.url}" class="followed-friend-item ${f.isFollowed ? 'is-active-follow' : ''}" title="${f.name} • ${f.role} (${f.city}) ${f.isFollowed ? '• Obserwujesz ✓' : '• Społeczność LUMINA'}">
-                        <div class="followed-avatar-wrapper">
-                            <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
-                            
-                            <!-- Wskaźnik online -->
-                            <span class="followed-online-dot"></span>
-                            
-                            <!-- Odznaka Obserwowany -->
-                            ${f.isFollowed ? `
-                                <span class="followed-check-badge">
-                                    <i class="fa-solid fa-check"></i>
-                                </span>
-                            ` : ''}
-                        </div>
-                        <div class="followed-friend-name">
-                            ${f.shortName}
-                        </div>
-                        <div class="followed-friend-role">
-                            ${f.role}
-                        </div>
-                    </a>
-                `).join('')}
-
-                <!-- Dodatkowy kafelek Odkryj więcej -->
-                <a href="lumina.html" class="followed-friend-item" title="Odkryj więcej profili w katalogu LUMINA">
-                    <div class="followed-discover-btn">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <div class="followed-friend-name" style="color:#facc15;">Więcej</div>
-                    <div class="followed-friend-role">Odkrywaj</div>
-                </a>
+            <!-- ── WYSZUKIWARKA ZNAJOMYCH ── -->
+            <div class="friends-search-box">
+                <i class="fa-solid fa-magnifying-glass friends-search-icon"></i>
+                <input type="text" 
+                       id="friendsSearchInput" 
+                       class="friends-search-input" 
+                       placeholder="Szukaj osoby, znajomego..." 
+                       value="${escapeHtml(currentSearchQuery)}"
+                       autocomplete="off" />
+                ${isSearching ? `
+                    <button type="button" id="friendsSearchClear" class="friends-search-clear" title="Wyczyść szukanie">✕</button>
+                ` : ''}
             </div>
+
+            <!-- ── ZAKŁADKI FILTROWANIA ── -->
+            ${!isSearching ? `
+                <div class="friends-filter-tabs">
+                    <button type="button" class="friends-tab-btn ${currentFilterTab === 'all' ? 'active' : ''}" data-tab="all">
+                        Wszyscy (${allFriends.length})
+                    </button>
+                    <button type="button" class="friends-tab-btn ${currentFilterTab === 'friends' ? 'active' : ''}" data-tab="friends" title="Osoby z obustronną relacją znajomości">
+                        Znajomi 🤝 (${friendsCount})
+                    </button>
+                    <button type="button" class="friends-tab-btn ${currentFilterTab === 'followed' ? 'active' : ''}" data-tab="followed" title="Osoby, których publikacje obserwujesz">
+                        Obserwowani ✓ (${followedCount})
+                    </button>
+                </div>
+            ` : ''}
+
+            <!-- ── WIDOK WYSZUKIWANIA (LISTA Z PRZYCISKAMI AKCJI) ── -->
+            ${isSearching ? `
+                <div class="friends-search-results">
+                    ${searchResults.length > 0 ? searchResults.map(f => {
+                        const isFr = f.isFriend;
+                        const isPend = f.friendStatus === 'pending';
+                        const isFoll = f.isFollowed;
+
+                        return `
+                            <div class="search-result-item">
+                                <a href="${f.url}" class="search-result-user" title="${f.name} • ${f.role}">
+                                    <img src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="search-result-avatar">
+                                    <div class="search-result-meta">
+                                        <div class="search-result-name">${f.name}</div>
+                                        <div class="search-result-role">${f.role} (${f.city})</div>
+                                    </div>
+                                </a>
+                                <div class="search-result-actions">
+                                    <!-- Przycisk Znajomości -->
+                                    <button type="button" 
+                                            class="btn-action-mini friend-btn ${isFr ? 'is-active' : (isPend ? 'is-pending' : '')}" 
+                                            data-action="friend" 
+                                            data-slug="${f.slug}" 
+                                            title="${isFr ? 'Jesteście Znajomymi (kliknij aby zmienić)' : (isPend ? 'Wysłano zaproszenie' : 'Wyślij zaproszenie do znajomych')}">
+                                        ${isFr ? '🤝 Znajomy' : (isPend ? 'Wysłano ⏳' : '🤝 Zaproś')}
+                                    </button>
+
+                                    <!-- Przycisk Obserwowania -->
+                                    <button type="button" 
+                                            class="btn-action-mini follow-btn ${isFoll ? 'is-active' : ''}" 
+                                            data-action="follow" 
+                                            data-slug="${f.slug}" 
+                                            title="${isFoll ? 'Obserwujesz ten profil' : 'Zacznij obserwować'}">
+                                        ${isFoll ? '✓' : '+ Obs.'}
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('') : `
+                        <div class="friends-search-empty">
+                            <i class="fa-solid fa-user-xmark" style="font-size:1.4rem; color:#64748b; margin-bottom:6px; display:block;"></i>
+                            Nie znaleziono osoby „${escapeHtml(query)}” w podręcznym katalogu.
+                        </div>
+                    `}
+                </div>
+            ` : `
+                <!-- ── SIATKA 3 KOLUMNY (STANDARDOWY WIDOK) ── -->
+                <div class="followed-friends-grid">
+                    ${displayGridFriends.map(f => `
+                        <a href="${f.url}" 
+                           class="followed-friend-item ${f.isFriend ? 'is-friend' : ''} ${f.isFollowed ? 'is-active-follow' : ''}" 
+                           title="${f.name} • ${f.role} (${f.city}) ${f.isFriend ? '• 🤝 Znajomy' : ''} ${f.isFollowed ? '• ✓ Obserwujesz' : ''}">
+                            <div class="followed-avatar-wrapper">
+                                <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
+                                
+                                <!-- ODZNAKA ZNAJOMY 🤝 (LEWY GÓRNY RÓG) -->
+                                ${f.isFriend ? `
+                                    <span class="followed-friend-badge" title="Znajomy 🤝">
+                                        <i class="fa-solid fa-handshake"></i>
+                                    </span>
+                                ` : ''}
+
+                                <!-- ODZNAKA OBSERWOWANY ✓ (PRAWY GÓRNY RÓG) -->
+                                ${f.isFollowed ? `
+                                    <span class="followed-check-badge" title="Obserwujesz ✓">
+                                        <i class="fa-solid fa-check"></i>
+                                    </span>
+                                ` : ''}
+
+                                <!-- Wskaźnik online -->
+                                <span class="followed-online-dot"></span>
+                            </div>
+                            <div class="followed-friend-name">
+                                ${f.shortName}
+                            </div>
+                            <div class="followed-friend-role">
+                                ${f.role}
+                            </div>
+                        </a>
+                    `).join('')}
+
+                    <!-- Dodatkowy kafelek Odkryj więcej -->
+                    <a href="lumina.html" class="followed-friend-item" title="Odkryj więcej profili w katalogu LUMINA">
+                        <div class="followed-discover-btn">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="followed-friend-name" style="color:#facc15;">Więcej</div>
+                        <div class="followed-friend-role">Odkrywaj</div>
+                    </a>
+                </div>
+            `}
 
             <div style="padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); text-align:center;">
                 <a href="lumina.html" class="btn-discover-all-friends">
@@ -479,6 +1047,58 @@
         `;
 
         container.innerHTML = html;
+
+        // Podpięcie zdarzeń wyszukiwarki
+        const searchInput = container.querySelector('#friendsSearchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                currentSearchQuery = e.target.value;
+                renderFollowedFriends(container, currentProfileSlug);
+                const newInput = container.querySelector('#friendsSearchInput');
+                if (newInput) {
+                    newInput.focus();
+                    newInput.setSelectionRange(newInput.value.length, newInput.value.length);
+                }
+            });
+        }
+
+        const clearBtn = container.querySelector('#friendsSearchClear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                currentSearchQuery = '';
+                renderFollowedFriends(container, currentProfileSlug);
+            });
+        }
+
+        // Podpięcie zdarzeń zakładek
+        const tabBtns = container.querySelectorAll('.friends-tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentFilterTab = this.getAttribute('data-tab') || 'all';
+                renderFollowedFriends(container, currentProfileSlug);
+            });
+        });
+
+        // Podpięcie akcji z listy wyszukiwania (Zaproś do znajomych / Obserwuj)
+        const actionBtns = container.querySelectorAll('.btn-action-mini');
+        actionBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const action = this.getAttribute('data-action');
+                const slug = this.getAttribute('data-slug');
+                if (action === 'friend') {
+                    sendFriendRequest(slug);
+                } else if (action === 'follow') {
+                    toggleFollow(slug);
+                }
+            });
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
     // Wykrywa slug bieżącego profilu z URL lub DOM
@@ -541,16 +1161,15 @@
         renderFollowedFriends(slot, currentSlug);
     }
 
-    // Reaktywna aktualizacja przy polubieniu / zaobserwowaniu
+    // Reaktywna aktualizacja przy zmianach relacji
     window.addEventListener('storage', function(e) {
-        if (e.key && e.key.startsWith('lumina_following_')) {
-            autoMountFollowedFriends();
+        if (e.key && (e.key.startsWith('lumina_following_') || e.key.startsWith('lumina_friend_'))) {
+            refreshWidgetView();
         }
     });
 
-    window.addEventListener('lumina:followChange', function() {
-        autoMountFollowedFriends();
-    });
+    window.addEventListener('lumina:followChange', refreshWidgetView);
+    window.addEventListener('lumina:friendshipChange', refreshWidgetView);
 
     // Inicjalizacja po załadowaniu drzewa DOM
     if (document.readyState === 'loading') {
@@ -559,8 +1178,15 @@
         autoMountFollowedFriends();
     }
 
-    // Eksport globalny do natychmiastowego wywołania
+    // Eksport globalny do natychmiastowego wywołania i integracji
     window.mountFollowedFriendsWidget = autoMountFollowedFriends;
     window.refreshFollowedFriendsWidget = autoMountFollowedFriends;
+    window.LuminaFriends = {
+        isFriend,
+        isFollowing,
+        sendFriendRequest,
+        toggleFollow,
+        getFriendshipStatus
+    };
 
 })();

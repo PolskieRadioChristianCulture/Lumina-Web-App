@@ -1813,15 +1813,15 @@ export const MISSION_BROADCAST_CHANNELS = {
     },
     'cc_women': {
         channelId: 'cc_women_live',
-        authorName: 'CC Women • YouTube',
+        authorName: 'CC WOMEN (WOMEN TV) • YouTube',
         authorAvatar: 'logo_cc_women.jpg',
-        authorRole: '🌸 Misja Kobiet Wiary',
-        channelTitle: 'CC Women • Pasmo Kobiet Wiary',
+        authorRole: '🌸 Misja Kobiet Wiary • @womentv24',
+        channelTitle: 'CC WOMEN • Oficjalny Kanał YouTube',
         badge: '🌸 EMISJA NA ŻYWO • KOBIETY WIARY',
-        showTitle: 'CC Women • Świadectwa, Modlitwa i Muzyka Uwielbienia',
-        description: 'Dedykowane pasmo dla kobiet wiary. Budujące świadectwa, modlitwa o relacje, pokój w rodzinie i chrześcijańskie wartości.',
+        showTitle: 'CC WOMEN • Świadectwa, Modlitwa i Muzyka Uwielbienia',
+        description: 'Oficjalny kanał Wioletty Rogowskiej i kobiet wiary Christian Culture (@womentv24). Świadectwa przemiany życia, pieśni uwielbienia, modlitwa o relacje i uświęcenie w Chrystusie.',
         streamUrl: 'biblia-spiewana-live.html?muted=1&in_mcr=1',
-        fullPageUrl: 'biblia-spiewana-live.html',
+        fullPageUrl: 'https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py',
         category: 'Kobiety Wiary',
         icon: 'fa-wand-magic-sparkles',
         accentColor: '#f472b6'
@@ -2020,9 +2020,19 @@ export function getAuthorPosts(authorSlug, authorName) {
     } catch(e) {}
 
     // D. From in-memory cloud feed
-    if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
+    if (typeof window !== 'undefined' && window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
         window.cloudFeedPosts.forEach(addIfMatch);
     }
+
+    // D2. From Central Immutable Community Posts (LUMINA_CORE_POSTS_DATA)
+    try {
+        const corePosts = (typeof LUMINA_CORE_POSTS_DATA !== 'undefined' && Array.isArray(LUMINA_CORE_POSTS_DATA))
+            ? LUMINA_CORE_POSTS_DATA
+            : (typeof window !== 'undefined' && Array.isArray(window.LUMINA_CORE_POSTS_DATA) ? window.LUMINA_CORE_POSTS_DATA : (typeof window !== 'undefined' && window.getSafeCommunityPosts ? window.getSafeCommunityPosts() : null));
+        if (corePosts && Array.isArray(corePosts)) {
+            corePosts.forEach(addIfMatch);
+        }
+    } catch(e) {}
 
     // E. Dynamic Living Mission Broadcast Channel Autostart Post
     const missionCh = getMissionBroadcastChannel(authorSlug, authorName);

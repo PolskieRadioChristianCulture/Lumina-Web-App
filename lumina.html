@@ -24,13 +24,14 @@
     </script>
 
     <script>
-    // ── Emergency Auto-Sanitizer v4.0.0 (Clean corrupt localStorage) ──
+    // ── Emergency Auto-Sanitizer v5.0.0 (Clean corrupt localStorage & Commander photo leaks) ──
     (function(){
         try {
             const keysToPurge = [
                 'lumina_profile_radiocc',
                 'lumina_profile_cezaryrgowski',
                 'lumina_profile_weronika',
+                'lumina_profile_dawid',
                 'lumina_element_overrides',
                 'lumina_avatar_radiocc',
                 'lumina_custom_avatar_radiocc',
@@ -38,11 +39,28 @@
                 'lumina_custom_avatar_cezaryrgowski',
                 'lumina_avatar_weronika',
                 'lumina_custom_avatar_weronika',
+                'lumina_avatar_dawid',
+                'lumina_custom_avatar_dawid',
                 'lumina_profile_ccwomen',
                 'lumina_avatar_ccwomen',
                 'lumina_custom_avatar_ccwomen'
             ];
             keysToPurge.forEach(k => localStorage.removeItem(k));
+
+            // Usuń zdjęcia Dowódcy ze wszystkich obcych profili w localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (!k) continue;
+                if (k.startsWith('lumina_custom_avatar_') || k.startsWith('lumina_avatar_') || k.startsWith('lumina_profile_')) {
+                    const slug = k.replace('lumina_custom_avatar_', '').replace('lumina_avatar_', '').replace('lumina_profile_', '');
+                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta') {
+                        const val = (localStorage.getItem(k) || '').toLowerCase();
+                        if (val.includes('cezary') || val.includes('christian_culture_carousel') || val.includes('avatar_christian_culture')) {
+                            localStorage.removeItem(k);
+                        }
+                    }
+                }
+            }
 
             // Clean my profile if corrupted with radio cc equalizer
             const myProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
@@ -58,31 +76,58 @@
         } catch(e){}
     })();
     </script>
+    <script src="js/lumina-identity-guard.js" defer></script>
 
     <!-- Google Analytics -->
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
+    function isCommanderPhotoAsset(val) {
+        if (!val || typeof val !== 'string') return false;
+        const l = val.toLowerCase();
+        return l.includes('cezary') || l.includes('christian_culture_carousel') || l.includes('avatar_christian_culture_hq') || l.includes('tlo_profilowe_cezary');
+    }
+
     window.applyAllLuminaCustomAvatars = function() {
         try {
-            // Wymuszone usunięcie błędnych grafik z localStorage dla Urszuli
-            localStorage.removeItem('lumina_custom_avatar_u_urszula_7685');
-            localStorage.removeItem('lumina_avatar_u_urszula_7685');
-            localStorage.removeItem('lumina_custom_avatar_urszula');
-            localStorage.removeItem('lumina_avatar_urszula');
-            const ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
-            Object.keys(ovs).forEach(k => {
-                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) delete ovs[k];
+            // Wymuszone usunięcie błędnych grafik Dowódcy ze wszystkich obcych profili w localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (!k) continue;
+                if (k.startsWith('lumina_custom_avatar_') || k.startsWith('lumina_avatar_')) {
+                    const slug = k.replace('lumina_custom_avatar_', '').replace('lumina_avatar_', '');
+                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta') {
+                        const val = localStorage.getItem(k);
+                        if (isCommanderPhotoAsset(val)) localStorage.removeItem(k);
+                    }
+                }
+            }
+            // Specjalne czyszczenie legacy dla profili, które mogły ulec zanieczyszczeniu
+            ['u_urszula_7685', 'urszula', 'dawid'].forEach(s => {
+                ['lumina_custom_avatar_', 'lumina_avatar_', 'lumina_profile_'].forEach(prefix => {
+                    const val = localStorage.getItem(prefix + s);
+                    if (isCommanderPhotoAsset(val)) localStorage.removeItem(prefix + s);
+                });
             });
-            localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
+
+            const ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+            let ovsChanged = false;
+            Object.keys(ovs).forEach(k => {
+                const isCez = k.includes('cezaryrgowski') || k.includes('home-cezary-card') || k.includes('card_profile_cezaryrgowski');
+                if (!isCez && (isCommanderPhotoAsset(JSON.stringify(ovs[k])) || k.includes('urszula') || k.includes('dawid'))) {
+                    delete ovs[k];
+                    ovsChanged = true;
+                }
+            });
+            if (ovsChanged) localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
         } catch(e) {}
 
-    // Automatyczne czyszczenie przestarzałych nadpisań
+        // Automatyczne czyszczenie przestarzałych nadpisań
         try {
-            ['radiocc', 'cezaryrgowski', 'u_urszula_7685', 'urszula'].forEach(s => {
+            ['radiocc', 'cezaryrgowski', 'u_urszula_7685', 'urszula', 'dawid'].forEach(s => {
                 const val = localStorage.getItem('lumina_custom_avatar_' + s) || localStorage.getItem('lumina_avatar_' + s);
-                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || val.includes('christian_culture') || val.includes('RADIO') || val.includes('avatar_christian_culture'))) {
+                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || (s !== 'cezaryrgowski' && isCommanderPhotoAsset(val)) || val.includes('RADIO'))) {
                     localStorage.removeItem('lumina_custom_avatar_' + s);
                     localStorage.removeItem('lumina_avatar_' + s);
                 }
@@ -96,6 +141,12 @@
                 if (!slug) return;
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
                 if (customAvatar) {
+                    // BEZWZGLĘDNA BLOKADA: Zdjęcia Dowódcy wyłącznie dla profilu Cezarego Rogowskiego
+                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + slug);
+                        localStorage.removeItem('lumina_avatar_' + slug);
+                        return;
+                    }
                     const img = card.querySelector('img');
                     if (img && img.src !== customAvatar) {
                         img.src = customAvatar;
@@ -114,10 +165,15 @@
             if (curSlug) {
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + curSlug) || localStorage.getItem('lumina_avatar_' + curSlug);
                 if (customAvatar) {
-                    const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
-                    if (mainAvatar && mainAvatar.src !== customAvatar) {
-                        mainAvatar.src = customAvatar;
-                        mainAvatar.setAttribute('src', customAvatar);
+                    if (curSlug !== 'cezaryrgowski' && curSlug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + curSlug);
+                        localStorage.removeItem('lumina_avatar_' + curSlug);
+                    } else {
+                        const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
+                        if (mainAvatar && mainAvatar.src !== customAvatar) {
+                            mainAvatar.src = customAvatar;
+                            mainAvatar.setAttribute('src', customAvatar);
+                        }
                     }
                 }
             }
@@ -127,6 +183,12 @@
             Object.keys(overrides).forEach(sel => {
                 const item = overrides[sel];
                 if (!item) return;
+                const isCez = sel.includes('cezaryrgowski') || sel.includes('home-cezary-card') || sel.includes('card_profile_cezaryrgowski');
+                if (!isCez && item.src && isCommanderPhotoAsset(item.src)) {
+                    delete overrides[sel];
+                    localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
+                    return;
+                }
                 const el = document.querySelector(sel);
                 if (el) {
                     if (item.type === 'img' && item.src) {
@@ -4130,13 +4192,16 @@
 <script>
     (function() {
         try {
-            ['lumina_profile_u_urszula_7685', 'lumina_profile_urszula', 'lumina_custom_avatar_u_urszula_7685', 'lumina_avatar_u_urszula_7685', 'lumina_custom_avatar_urszula'].forEach(function(k) {
+            ['lumina_profile_u_urszula_7685', 'lumina_profile_urszula', 'lumina_custom_avatar_u_urszula_7685', 'lumina_avatar_u_urszula_7685', 'lumina_custom_avatar_urszula',
+             'lumina_profile_dawid', 'lumina_custom_avatar_dawid', 'lumina_avatar_dawid'].forEach(function(k) {
                 localStorage.removeItem(k);
             });
             var ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
             var changed = false;
             Object.keys(ovs).forEach(function(k) {
-                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) {
+                var isCez = k.includes('cezaryrgowski') || k.includes('home-cezary-card') || k.includes('card_profile_cezaryrgowski');
+                var valStr = JSON.stringify(ovs[k]).toLowerCase();
+                if (!isCez && (k.includes('urszula') || k.includes('dawid') || valStr.includes('cezary') || valStr.includes('christian_culture'))) {
                     delete ovs[k];
                     changed = true;
                 }
@@ -4455,8 +4520,8 @@
                         <div class="card-new-badge">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
-                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_dawid.jpg" onerror="this.src='avatar_dawid.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_dawid.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
                     </div>
                     <div class="card-body">
@@ -6516,7 +6581,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 name: 'Brat Robert (Robert Łukasz Pio)',
                 age: 45,
                 city: 'Polska',
-                avatar: 'avatar_sara.jpg',
+                avatar: 'avatar_robert.jpg',
                 job: 'Brat w Chrystusie • Społeczność LUMINA',
                 bio: 'Pokój i Dobro! Modlitwa, braterstwo i wspólne budowanie Królestwa Bożego.',
                 matchScore: '98%',
@@ -6567,7 +6632,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 age: 30,
                 city: 'Poznań, Polska',
                 status: 'Kawaler • Wierzący w działanie Ducha',
-                avatar: 'avatar_sara.jpg',
+                avatar: 'avatar_dawid.jpg',
                 job: 'Architekt Wnętrz & Muzyk Uwielbienia',
                 bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze.',
                 matchScore: '93%',

@@ -771,7 +771,7 @@ export const PROFILES_DB = {
         name: 'Dawid',
         age: '30',
         city: 'Poznań, Polska',
-        avatar: 'avatar_sara.jpg',
+        avatar: 'avatar_dawid.jpg',
         cover: 'lumina_default_cover.jpg',
         coverPosY: '50%',
         job: 'Architekt & Projektant',
@@ -788,7 +788,7 @@ export const PROFILES_DB = {
         verseRef: '— Psalm 127, 1',
         bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu, prawdzie i żywej wierze w Chrystusa.',
         tags: ['Architektura', 'Gitara', 'Uwielbienie', 'Sport', 'Biblia'],
-        photos: ['avatar_sara.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_dawid.jpg', 'lumina_default_cover.jpg'],
         posts: []
     },
 

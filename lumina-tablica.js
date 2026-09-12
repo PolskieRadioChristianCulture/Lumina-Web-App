@@ -113,11 +113,11 @@ class LuminaTablicaEngine {
             },
             {
                 type: 'mission_women',
-                title: 'CC Women • Kobiety Wiary i Modlitwy',
-                tag: '✨ KANAŁ OFICJALNY CC',
-                desc: 'Dołącz do wspólnoty chrześcijanek. Świadectwa, wzajemne budowanie i modlitwa wstawiennicza.',
+                title: 'CC WOMEN (WOMEN TV) • Oficjalny Kanał YouTube',
+                tag: '🌸 KANAŁ OFICJALNY CC & YOUTUBE',
+                desc: 'Oficjalny kanał Wioletty Rogowskiej (@womentv24). Świadectwa przemiany życia, pieśni uwielbienia, modlitwa o relacje i uświęcenie w Chrystusie.',
                 image: 'logo_cc_women.jpg',
-                link: 'lumina.ccwomen.html'
+                link: 'https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py'
             },
             {
                 type: 'mission_radio',

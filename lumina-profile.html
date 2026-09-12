@@ -12,9 +12,16 @@
     })();
     </script>
 
+    <script src="js/lumina-identity-guard.js" defer></script>
     <script>
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
+    function isCommanderPhotoAsset(val) {
+        if (!val || typeof val !== 'string') return false;
+        const l = val.toLowerCase();
+        return l.includes('cezary') || l.includes('christian_culture_carousel') || l.includes('avatar_christian_culture_hq') || l.includes('tlo_profilowe_cezary');
+    }
+
     window.applyAllLuminaCustomAvatars = function() {
         try {
             // 1. Zastosuj zapisane zdjęcia per slug profilu
@@ -23,6 +30,11 @@
                 if (!slug) return;
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
                 if (customAvatar) {
+                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + slug);
+                        localStorage.removeItem('lumina_avatar_' + slug);
+                        return;
+                    }
                     const img = card.querySelector('img');
                     if (img && img.src !== customAvatar) {
                         img.src = customAvatar;
@@ -41,10 +53,15 @@
             if (curSlug) {
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + curSlug) || localStorage.getItem('lumina_avatar_' + curSlug);
                 if (customAvatar) {
-                    const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
-                    if (mainAvatar && mainAvatar.src !== customAvatar) {
-                        mainAvatar.src = customAvatar;
-                        mainAvatar.setAttribute('src', customAvatar);
+                    if (curSlug !== 'cezaryrgowski' && curSlug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + curSlug);
+                        localStorage.removeItem('lumina_avatar_' + curSlug);
+                    } else {
+                        const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
+                        if (mainAvatar && mainAvatar.src !== customAvatar) {
+                            mainAvatar.src = customAvatar;
+                            mainAvatar.setAttribute('src', customAvatar);
+                        }
                     }
                 }
             }
@@ -54,6 +71,12 @@
             Object.keys(overrides).forEach(sel => {
                 const item = overrides[sel];
                 if (!item) return;
+                const isCez = sel.includes('cezaryrgowski') || sel.includes('home-cezary-card') || sel.includes('card_profile_cezaryrgowski');
+                if (!isCez && item.src && isCommanderPhotoAsset(item.src)) {
+                    delete overrides[sel];
+                    localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
+                    return;
+                }
                 const el = document.querySelector(sel);
                 if (el) {
                     if (item.type === 'img' && item.src) {
@@ -4590,7 +4613,7 @@
                 name: 'Dawid',
                 age: '30',
                 city: 'Poznań, Polska',
-                avatar: 'avatar_sara.jpg',
+                avatar: 'avatar_dawid.jpg',
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Architekt & Projektant',
@@ -4604,7 +4627,7 @@
                 verseRef: '— Psalm 127, 1',
                 bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu, prawdzie i żywej wierze w Chrystusa.',
                 tags: ['Architektura', 'Gitara', 'Uwielbienie', 'Sport', 'Biblia'],
-                photos: ['avatar_sara.jpg', 'lumina_default_cover.jpg'],
+                photos: ['avatar_dawid.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_dawid_1',
@@ -4613,7 +4636,7 @@
                         text: 'Projektowanie z myślą o Bogu daje zupełnie nową perspektywę na przestrzeń i harmonię! ✨',
                         likes: 19,
                         amen: 12,
-                        image: 'avatar_sara.jpg'
+                        image: 'avatar_dawid.jpg'
                     }
                 ]
             },

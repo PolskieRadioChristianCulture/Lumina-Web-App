@@ -12,9 +12,16 @@
     })();
     </script>
 <!-- Google Consent Mode v2 (Default Denied) -->
+<script src="js/lumina-identity-guard.js" defer></script>
 <script>
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
+    function isCommanderPhotoAsset(val) {
+        if (!val || typeof val !== 'string') return false;
+        const l = val.toLowerCase();
+        return l.includes('cezary') || l.includes('christian_culture_carousel') || l.includes('avatar_christian_culture_hq') || l.includes('tlo_profilowe_cezary');
+    }
+
     window.applyAllLuminaCustomAvatars = function() {
         try {
             // 1. Zastosuj zapisane zdjęcia per slug profilu
@@ -23,6 +30,11 @@
                 if (!slug) return;
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
                 if (customAvatar) {
+                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + slug);
+                        localStorage.removeItem('lumina_avatar_' + slug);
+                        return;
+                    }
                     const img = card.querySelector('img');
                     if (img && img.src !== customAvatar) {
                         img.src = customAvatar;
@@ -41,10 +53,15 @@
             if (curSlug) {
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + curSlug) || localStorage.getItem('lumina_avatar_' + curSlug);
                 if (customAvatar) {
-                    const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
-                    if (mainAvatar && mainAvatar.src !== customAvatar) {
-                        mainAvatar.src = customAvatar;
-                        mainAvatar.setAttribute('src', customAvatar);
+                    if (curSlug !== 'cezaryrgowski' && curSlug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
+                        localStorage.removeItem('lumina_custom_avatar_' + curSlug);
+                        localStorage.removeItem('lumina_avatar_' + curSlug);
+                    } else {
+                        const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
+                        if (mainAvatar && mainAvatar.src !== customAvatar) {
+                            mainAvatar.src = customAvatar;
+                            mainAvatar.setAttribute('src', customAvatar);
+                        }
                     }
                 }
             }
@@ -54,6 +71,12 @@
             Object.keys(overrides).forEach(sel => {
                 const item = overrides[sel];
                 if (!item) return;
+                const isCez = sel.includes('cezaryrgowski') || sel.includes('home-cezary-card') || sel.includes('card_profile_cezaryrgowski');
+                if (!isCez && item.src && isCommanderPhotoAsset(item.src)) {
+                    delete overrides[sel];
+                    localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
+                    return;
+                }
                 const el = document.querySelector(sel);
                 if (el) {
                     if (item.type === 'img' && item.src) {
@@ -148,6 +171,7 @@
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'wiolettarogowska';</script>
     <script type="module" src="lumina-db.js?v=4.1.1_20260909"></script>
+    <script src="js/lumina-community-posts.js"></script>
     <script src="lumina-radio.js?v=1"></script>
     <script type="module" src="lumina-chat-typing.js?v=1"></script>
     <script type="module" src="lumina-core.js"></script>
@@ -2864,6 +2888,7 @@
                 <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:10px; align-items:center; width:auto; max-width:100%;">
                     <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
+                    <a href="https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py" target="_blank" rel="noopener noreferrer" class="btn-action-secondary" style="background:linear-gradient(135deg, #ef4444, #dc2626); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(239,68,68,0.4); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;" title="Oficjalny Kanał YouTube CC WOMEN (@womentv24)"><i class="fa-brands fa-youtube" style="color:#fff; font-size:1.1rem;"></i> <span class="btn-text">CC WOMEN (@womentv24)</span></a>
                     <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span></a>
                     
                     <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
@@ -2940,7 +2965,32 @@
                     </div>
                 </div>
 
-                
+                <!-- ══════════ OFICJALNY KANAŁ YOUTUBE • CC WOMEN (WOMEN TV) ══════════ -->
+                <div class="sidebar-card" style="border: 1.5px solid rgba(244, 114, 182, 0.45); background: linear-gradient(180deg, rgba(236,72,153,0.16) 0%, rgba(15,23,42,0.92) 100%); box-shadow: 0 10px 30px rgba(236,72,153,0.2); position:relative; overflow:hidden;">
+                    <div style="position:absolute; top:-30px; right:-30px; width:100px; height:100px; background:radial-gradient(circle, rgba(239,68,68,0.25) 0%, transparent 70%); border-radius:50%; pointer-events:none;"></div>
+                    <div class="card-title" style="color: #f472b6; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                        <span style="display:flex; align-items:center; gap:8px; font-weight:800; font-size:0.95rem;">
+                            <i class="fa-brands fa-youtube" style="color:#ef4444; font-size:1.15rem;"></i> Oficjalny Kanał YouTube
+                        </span>
+                        <span class="badge-status-pill" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; letter-spacing:0.5px; box-shadow:0 0 10px rgba(239,68,68,0.5);">CC WOMEN</span>
+                    </div>
+                    <div style="text-align:center; padding:6px 0 14px;">
+                        <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:8px;">
+                            <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" style="width:48px; height:48px; border-radius:50%; border:2px solid #f472b6; object-fit:cover; box-shadow:0 0 12px rgba(244,114,182,0.4);">
+                            <div style="text-align:left;">
+                                <div style="font-size:1.08rem; font-weight:800; color:#fff; font-family:'Outfit',sans-serif; line-height:1.2;">WOMEN TV • CC WOMEN</div>
+                                <div style="font-size:0.78rem; color:#f472b6; font-weight:700;">@womentv24 • Wioletta Rogowska</div>
+                            </div>
+                        </div>
+                        <p style="font-size:0.84rem; color:#cbd5e1; line-height:1.55; margin:10px 0 14px; text-align:left;">
+                            Oficjalny kanał Wioletty Rogowskiej i kobiet wiary Christian Culture. Świadectwa przemiany życia, pieśni uwielbienia, modlitwa o relacje i uświęcenie w Chrystusie.
+                        </p>
+                        <a href="https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; justify-content:center; gap:9px; width:100%; padding:11px 18px; border-radius:24px; background:linear-gradient(135deg, #ef4444, #dc2626); color:#fff; font-weight:800; font-size:0.88rem; text-decoration:none; box-shadow:0 6px 18px rgba(239,68,68,0.45); transition:all 0.25s ease;">
+                            <i class="fa-brands fa-youtube" style="font-size:1.15rem;"></i> Subskrybuj Kanał (@womentv24) <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- ══════════ OBSERWOWANI ZNAJOMI (POD WIZYTÓWKĄ) ══════════ -->
                 <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
 
@@ -3714,9 +3764,53 @@
             photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'],
             posts: [
                 {
+                    id: 'post_wioletta_yt_1',
+                    author: 'Wioletta Rogowska',
+                    time: 'Dzisiaj, 09:30 • 🎬 Nowość Wideo',
+                    title: 'Hymn o Wytrwałości | WOMEN TV • CC WOMEN',
+                    text: 'Droga Siostro i Drogi Bracie! ✨ Z całego serca zapraszam Was do wysłuchania naszego najnowszego utworu: „Hymn o Wytrwałości”. Bez względu na to, jak trudna wydaje się dzisiaj Twoja droga – pamiętaj, że Boża łaska i moc doskonalą się w naszej słabości. Wytrwaj, zaufaj Panu i nigdy nie trać nadziei! 💕🕊️\n\nObejrzyj i posłuchaj tutaj: https://www.youtube.com/watch?v=RT9m7K0fMgM\n\nSubskrybuj nasz oficjalny kanał CC WOMEN: https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py ✨',
+                    likes: 88,
+                    amen: 79,
+                    image: 'https://i.ytimg.com/vi/RT9m7K0fMgM/hqdefault.jpg',
+                    youtubeUrl: 'https://www.youtube.com/watch?v=RT9m7K0fMgM'
+                },
+                {
+                    id: 'post_wioletta_yt_2',
+                    author: 'Wioletta Rogowska',
+                    time: 'Wczoraj, 18:45 • 🌸 Uwielbienie',
+                    title: 'Tylko On | WOMEN TV • CC WOMEN',
+                    text: '„Tylko On potrafi ukoić skołatane serce, wlać głęboki pokój i dać nadzieję, której ten świat nigdy dać nie potrafi.” Zapraszam Was do wspólnego uwielbienia i zanurzenia się w Bożej obecności. Niech ten utwór napełni Wasze domy i rodziny obecnością Ducha Świętego! 🌸🙏\n\nPosłuchaj utworu: https://www.youtube.com/watch?v=vH2eSEVtTtY\n\nDołącz do nas na kanale CC WOMEN: https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py',
+                    likes: 104,
+                    amen: 95,
+                    image: 'https://i.ytimg.com/vi/vH2eSEVtTtY/hqdefault.jpg',
+                    youtubeUrl: 'https://www.youtube.com/watch?v=vH2eSEVtTtY'
+                },
+                {
+                    id: 'post_wioletta_yt_3',
+                    author: 'Wioletta Rogowska',
+                    time: '2 dni temu • ✨ Świadectwo Wiary',
+                    title: 'Po spotkaniu z JEZUSEM – Twoje życie się zmieni!',
+                    text: 'Spotkanie z żywym Chrystusem zmienia absolutnie wszystko: usuwa lęk, leczy rany z przeszłości i nadaje życiu wieczny sens. Jeśli szukasz nowego początku i pragniesz doświadczyć Bożej miłości – Ten, który oddał za Ciebie życie, czeka na Ciebie z otwartymi ramionami! Obejrzyj to poruszające przesłanie: https://www.youtube.com/watch?v=kGDQZ1PwWu8 💕🕊️',
+                    likes: 119,
+                    amen: 110,
+                    image: 'https://i.ytimg.com/vi/kGDQZ1PwWu8/hqdefault.jpg',
+                    youtubeUrl: 'https://www.youtube.com/watch?v=kGDQZ1PwWu8'
+                },
+                {
+                    id: 'post_wioletta_yt_4',
+                    author: 'Wioletta Rogowska',
+                    time: '3 dni temu • 👑 Oficjalny Utwór',
+                    title: 'Jestem Kobietą Boga | Oficjalny Hymn CC WOMEN',
+                    text: 'Oficjalny utwór kanału WOMEN TV: „Jestem Kobietą Boga”! Jesteśmy powołane do świętości, godności, łagodności i niesienia Bożego światła w naszych domach, małżeństwach i całym otoczeniu. Bądź dumna z tego, kim jesteś w Chrystusie! 👑🌸\n\nOdtwórz wideo: https://www.youtube.com/watch?v=wcqjqT5wDPY\n\nSubskrybuj nasz kanał: https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py',
+                    likes: 142,
+                    amen: 131,
+                    image: 'https://i.ytimg.com/vi/wcqjqT5wDPY/hqdefault.jpg',
+                    youtubeUrl: 'https://www.youtube.com/watch?v=wcqjqT5wDPY'
+                },
+                {
                     id: 'post_w1',
                     author: 'Wioletta Rogowska',
-                    time: 'Dzisiaj, 19:15 • ✨ Publiczny',
+                    time: '4 dni temu • ✨ Publiczny',
                     text: 'Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! ✨✨',
                     likes: 38,
                     image: null
@@ -3724,7 +3818,7 @@
                 {
                     id: 'post_w2',
                     author: 'Wioletta Rogowska',
-                    time: 'Wczoraj, 20:40 • ✨ Słowo Życia',
+                    time: '5 dni temu • ✨ Słowo Życia',
                     text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! ✨',
                     likes: 52,
                     image: 'lumina_default_cover.jpg'
@@ -3749,6 +3843,14 @@
                     if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
                         age = '50';
                     }
+                    // Auto-upgrade cached posts if they lack the YouTube channel releases
+                    let finalPosts = Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts];
+                    const hasYtPosts = finalPosts.some(p => p.id && p.id.includes('wioletta_yt'));
+                    if (!hasYtPosts) {
+                        const existingIds = new Set(finalPosts.map(p => p.id));
+                        const missingYt = defaultProfile.posts.filter(p => !existingIds.has(p.id));
+                        finalPosts = [...missingYt, ...finalPosts];
+                    }
                     return {
                         ...defaultProfile,
                         ...parsed,
@@ -3758,7 +3860,7 @@
                         city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
                         photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos],
-                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
+                        posts: finalPosts
                     };
                 }
             } catch (e) {}
@@ -4386,9 +4488,20 @@
 
         function renderPosts() {
             const data = getProfileData();
-            const posts = (window.LuminaDB?.getAuthorPosts) 
-                ? window.LuminaDB.getAuthorPosts('wiolettarogowska', data.name)
-                : (Array.isArray(data.posts) ? data.posts : []);
+            let authorPosts = [];
+            if (window.LuminaDB?.getAuthorPosts) {
+                authorPosts = window.LuminaDB.getAuthorPosts('wiolettarogowska', data.name);
+            }
+            const seenIds = new Set((authorPosts || []).map(p => p.id));
+            const localPosts = Array.isArray(data.posts) ? data.posts : [];
+            const merged = [...(authorPosts || [])];
+            localPosts.forEach(dp => {
+                if (dp && dp.id && !seenIds.has(dp.id)) {
+                    seenIds.add(dp.id);
+                    merged.push(dp);
+                }
+            });
+            const posts = merged.length > 0 ? merged : localPosts;
             const stream = document.getElementById('feedStream');
             if (!stream) return;
 
@@ -4476,7 +4589,7 @@
                     <div class="post-content">${richResult.html || formatPostTextWithLinks(rawBody)}</div>
                     ${effectiveEmbedHtml || ''}
                     ${p.gdrive ? (window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(p.gdrive, { mode: p.gdrive.mode }) : '') : (p.gdriveEmbed ? `<div class="rich-gdrive-embed" style="margin-top:12px; border-radius:16px; overflow:hidden; border:1.5px solid rgba(52,168,83,0.35); background:rgba(15,23,42,0.85); box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="position:relative; width:100%; aspect-ratio:16/9; min-height:240px; background:#000;"><iframe src="${p.gdriveEmbed}" title="Dysk Google" style="width:100%; height:100%; border:none; display:block;" allow="autoplay" loading="lazy"></iframe></div></div>` : '')}
-                    ${`<img loading="lazy" decoding="async" src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_wioletta_official.jpg'}'">`}
+                    ${(p.image && p.image.trim() !== '' && !effectiveEmbedHtml) ? `<div style="width:100%; max-height:480px; overflow:hidden; border-radius:16px; margin-top:12px; background:#070b14; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 24px rgba(0,0,0,0.4);"><img loading="lazy" decoding="async" src="${p.image}" alt="Zdjęcie do wpisu" class="post-image" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" style="cursor:pointer; width:100%; height:auto; max-height:480px; object-fit:contain; display:block; margin:0 auto;"></div>` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
@@ -6559,7 +6672,7 @@
 
         // ── UNIVERSAL OMNI-SEARCH ENGINE (Global Shortcuts & Profiles Resolver) ──
         const OMNI_DIRECTORY = [
-            { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
+            { query: '@ccwomen @women @womentv @womentv24 cc women ccwomen', name: 'CC WOMEN (WOMEN TV) • YouTube', handle: '@womentv24', role: 'Oficjalny Kanał YouTube CC WOMEN (@womentv24) 🌸', avatar: 'logo_cc_women.jpg', url: 'https://youtube.com/@womentv24?si=gtUZ764bTofGk3Py', type: 'channel' },
             { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture ✨', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
             { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
             { query: '@radiocc @radio radio christian culture radio na zywo', name: 'Radio Christian Culture', handle: '@radiocc', role: 'Stacja Radiowa & Transmisja Na Żywo ✨', avatar: 'lumina_icon.jpg', url: 'index.html', type: 'media' },
