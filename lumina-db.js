@@ -1919,7 +1919,7 @@ export const MISSION_BROADCAST_CHANNELS = {
     'dawid_misja': {
         channelId: 'codzienne_uwielbienie',
         authorName: 'Dawid',
-        authorAvatar: 'avatar_sara.jpg',
+        authorAvatar: 'avatar_dawid.jpg',
         authorRole: '🎵 Uwielbienie i Świadectwa',
         channelTitle: 'Codzienne Uwielbienie • Pasmo Muzyczne',
         badge: '🎵 EMISJA NA ŻYWO • 538 UTWORÓW CHWAŁY',
@@ -2179,7 +2179,7 @@ export const MISSION_ACCOUNTS = {
         id: 'dawid_misja',
         name: 'Dawid',
         role: '🎵 Uwielbienie i Świadectwa',
-        avatar: 'avatar_sara.jpg',
+        avatar: 'avatar_dawid.jpg',
         slug: 'dawid',
         profileUrl: 'lumina-profile.html?u=dawid',
         badge: '🎵 Misja CC',
@@ -4262,7 +4262,7 @@ export const LUMINA_HANDLES = {
     'radio': { slug: 'radio_cc', name: 'Radio Christian Culture', url: 'index.html', avatar: 'lumina_icon.jpg', badge: '📻 Radio Live' },
     'lumina': { slug: 'lumina_official', name: 'LUMINA Społeczność', url: 'lumina-tablica.html', avatar: 'lumina_icon.jpg', badge: '🕊️ Tablica Portalu' },
     'noemi': { slug: 'noemi', name: 'Noemi', url: 'lumina-profile.html?u=noemi', avatar: 'avatar_noemi.jpg', badge: '🌿 Misja CC' },
-    'dawid': { slug: 'dawid', name: 'Dawid', url: 'lumina-profile.html?u=dawid', avatar: 'avatar_sara.jpg', badge: '🎵 Misja CC' },
+    'dawid': { slug: 'dawid', name: 'Dawid', url: 'lumina-profile.html?u=dawid', avatar: 'avatar_dawid.jpg', badge: '🎵 Misja CC' },
     'tomek': { slug: 'tomek', name: 'Tomasz', url: 'lumina-profile.html?u=tomek', avatar: 'avatar_widget_tomek.jpg', badge: '🌲 Pasjonat Gór' }
 };
 

@@ -1796,7 +1796,20 @@
             try {
                 // 1. Zapis zdjęcia profilu jeśli dotyczyło profilu
                 if (this._currentInspectorImgUpdate) {
-                    const { slug, imgSrc } = this._currentInspectorImgUpdate;
+                    const { slug, imgSrc, elementSelector } = this._currentInspectorImgUpdate;
+                    const isCommanderPhoto = (imgSrc || '').toLowerCase().includes('cezary') || (imgSrc || '').toLowerCase().includes('christian_culture_carousel') || (imgSrc || '').toLowerCase().includes('avatar_christian_culture_hq');
+                    const isCezaryTarget = (slug === 'cezaryrgowski' || slug === 'cezary_wioletta' || (elementSelector && (elementSelector.includes('cezaryrgowski') || elementSelector.includes('home-cezary-card'))));
+
+                    if (isCommanderPhoto && !isCezaryTarget) {
+                        console.error('[SECURITY BLOCK] Attempted to assign Commander photo to non-commander target:', slug || elementSelector);
+                        if (typeof window.showToast === 'function') {
+                            window.showToast('⚠️ Zdjęcie Dowódcy może należeć wyłącznie do profilu Cezarego Rogowskiego!');
+                        }
+                        this.closeModal('adminAgentNoteModal');
+                        this.deactivateAgentInspector();
+                        return;
+                    }
+
                     if (slug) {
                         localStorage.setItem('lumina_avatar_' + slug, imgSrc);
                         localStorage.setItem('lumina_custom_avatar_' + slug, imgSrc);
@@ -1812,7 +1825,12 @@
                 // 2. Zapis zmian w ogólnym rejestrze modyfikacji
                 const overrides = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
                 if (this._currentInspectorImgUpdate) {
-                    overrides[this._currentInspectorImgUpdate.elementSelector] = { type: 'img', src: this._currentInspectorImgUpdate.imgSrc };
+                    const { elementSelector, imgSrc } = this._currentInspectorImgUpdate;
+                    const isCommanderPhoto = (imgSrc || '').toLowerCase().includes('cezary') || (imgSrc || '').toLowerCase().includes('christian_culture_carousel');
+                    const isCezaryTarget = elementSelector && (elementSelector.includes('cezaryrgowski') || elementSelector.includes('home-cezary-card'));
+                    if (!isCommanderPhoto || isCezaryTarget) {
+                        overrides[elementSelector] = { type: 'img', src: imgSrc };
+                    }
                 }
                 if (this._currentInspectorTextUpdate) {
                     overrides[this._currentInspectorTextUpdate.elementSelector] = { type: 'text', text: this._currentInspectorTextUpdate.text };

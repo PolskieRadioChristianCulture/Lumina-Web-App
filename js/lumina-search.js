@@ -112,7 +112,7 @@ export const OMNI_BASE_PROFILES = [
         church: 'Kościół Poznań',
         denom: 'Chrześcijanin',
         tags: ['Architektura', 'Design', 'Muzyka', 'Worship', 'Poznań', 'Gitara'],
-        avatar: 'avatar_sara.jpg',
+        avatar: 'avatar_dawid.jpg',
         url: 'lumina-profile.html?u=dawid',
         type: 'user',
         badge: 'Społeczność LUMINA'
