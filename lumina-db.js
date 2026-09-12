@@ -2282,6 +2282,145 @@ export function subscribeToCoffeeInvites(userId, callback) {
 // ── Alias dla tworzenia i publikacji postów na Tablicy Live ──
 export const createFeedPost = publishUniversalPost;
 
+// ══════════════════════════════════════════════════════════════════════════
+// 3B. ROLKI WIARY • CLOUD SHORTS ENGINE (Firestore `lumina_shorts`)
+// ══════════════════════════════════════════════════════════════════════════
+
+export async function publishCloudShort(shortData) {
+    const newId = shortData.id || ('short_user_' + Date.now());
+    const normalized = {
+        id: newId,
+        title: shortData.title || 'Rolka Wiary • Społeczność LUMINA 🕊️',
+        author: shortData.author || 'Świadek Wiary',
+        authorSlug: shortData.authorSlug || 'radiocc',
+        authorAvatar: shortData.authorAvatar || 'avatar_cezary_official.jpg',
+        authorBadge: shortData.authorBadge || '🕊️ Świadectwo',
+        videoType: shortData.videoType || 'mp4',
+        videoSrc: shortData.videoSrc,
+        poster: shortData.poster || 'tlo_tv_dzj.jpg',
+        verseRef: shortData.verseRef || 'Pismo Święte',
+        verseBook: shortData.verseBook || 'PSA',
+        verseChapter: shortData.verseChapter || 1,
+        verseUrl: shortData.verseUrl || 'https://polskieradio.cc/mojabiblia',
+        audioTitle: shortData.audioTitle || ('Oryginalny dźwięk • ' + (shortData.author || 'Rolka Wiary')),
+        description: shortData.description || (shortData.title ? shortData.title + ' 🕊️✨' : 'Rolka Wiary w Społeczności LUMINA'),
+        amenCount: shortData.amenCount || 1,
+        sharesCount: shortData.sharesCount || 0,
+        isUserCreated: true,
+        createdAtTimestamp: shortData.createdAtTimestamp || Date.now(),
+        createdAtDateStr: new Date().toISOString()
+    };
+
+    // 1. Zapis natychmiastowy w pamięci podręcznej przeglądarki (localStorage)
+    try {
+        const stored = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+        if (!stored.some(s => s.id === normalized.id)) {
+            stored.unshift(normalized);
+            localStorage.setItem('lumina_custom_shorts', JSON.stringify(stored));
+        }
+    } catch(e) {}
+
+    // 2. Trwały zapis w globalnej chmurze Firestore (kolekcja `lumina_shorts`)
+    if (db) {
+        try {
+            await addDoc(collection(db, 'lumina_shorts'), {
+                ...normalized,
+                createdAtTimestamp: serverTimestamp()
+            });
+            console.log('[LuminaDB] Rolka pomyślnie opublikowana w Firestore (lumina_shorts):', normalized.id);
+        } catch(err) {
+            console.warn('[LuminaDB] Błąd zapisu rolki w Firestore:', err.message);
+        }
+    }
+
+    // 3. Emisja zdarzeń reaktywnych
+    window.dispatchEvent(new CustomEvent('lumina_short_published', { detail: normalized }));
+    window.dispatchEvent(new Event('storage'));
+
+    return normalized;
+}
+
+export function subscribeToCloudShorts(onUpdate) {
+    // Natychmiastowe przekazanie danych z pamięci podręcznej (Zero-Lag UI)
+    try {
+        const cached = localStorage.getItem('lumina_cloud_shorts_cache');
+        if (cached) {
+            onUpdate(JSON.parse(cached));
+        } else {
+            const custom = localStorage.getItem('lumina_custom_shorts');
+            if (custom) onUpdate(JSON.parse(custom));
+        }
+    } catch(e) {}
+
+    if (!db) return () => {};
+
+    try {
+        const shortsQuery = query(
+            collection(db, 'lumina_shorts'),
+            orderBy('createdAtTimestamp', 'desc'),
+            limit(50)
+        );
+
+        return onSnapshot(shortsQuery, (snap) => {
+            const cloudShorts = [];
+            snap.forEach(d => {
+                const data = d.data();
+                cloudShorts.push({
+                    id: data.id || d.id,
+                    ...data,
+                    firestoreDocId: d.id
+                });
+            });
+
+            try {
+                localStorage.setItem('lumina_cloud_shorts_cache', JSON.stringify(cloudShorts));
+            } catch(e) {}
+
+            onUpdate(cloudShorts);
+        }, (err) => {
+            console.warn('[LuminaDB] Błąd subskrypcji rolek Firestore:', err.message);
+        });
+    } catch(err) {
+        console.warn('[LuminaDB] subscribeToCloudShorts błąd:', err);
+        return () => {};
+    }
+}
+
+export async function getCloudShorts() {
+    if (!db) {
+        try {
+            return JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+        } catch(e) {
+            return [];
+        }
+    }
+    try {
+        const shortsQuery = query(
+            collection(db, 'lumina_shorts'),
+            orderBy('createdAtTimestamp', 'desc'),
+            limit(50)
+        );
+        const snap = await getDocs(shortsQuery);
+        const cloudShorts = [];
+        snap.forEach(d => {
+            const data = d.data();
+            cloudShorts.push({ id: data.id || d.id, ...data, firestoreDocId: d.id });
+        });
+        if (cloudShorts.length > 0) {
+            localStorage.setItem('lumina_cloud_shorts_cache', JSON.stringify(cloudShorts));
+        }
+        return cloudShorts;
+    } catch(err) {
+        console.warn('[LuminaDB] getCloudShorts error:', err);
+        try {
+            return JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
+        } catch(e) {
+            return [];
+        }
+    }
+}
+
+
 // 4. CAMPAIGNS & DIRECT MESSAGES REALTIME SYNC
 // ══════════════════════════════════════════════════════════════════════════
 
@@ -5565,6 +5704,9 @@ window.LuminaDB = {
     getCurrentProfile,
     subscribeToCoffeeInvites,
     createFeedPost,
+    publishCloudShort,
+    subscribeToCloudShorts,
+    getCloudShorts,
     subscribeToFeedPosts,
     ensureDbReady,
     loginWithGoogle,
