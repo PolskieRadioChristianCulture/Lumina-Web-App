@@ -21,6 +21,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -250,6 +251,43 @@ function checkUnescapedUserContent() {
       }
     }
   }
+
+  for (const f of JS_FILES) {
+    const content = readFile(f);
+    const rawPromptName = /<[^>]+>\$\{targetName\}<\/[^>]+>/g;
+    let match;
+    while ((match = rawPromptName.exec(content)) !== null) {
+      const lineNum = content.slice(0, match.index).split('\n').length;
+      report(
+        'F-UNESCAPED-PROMPT-NAME',
+        f,
+        `Linia ${lineNum}: nazwa profilu trafia bez zabezpieczenia do znacznika HTML.`
+      );
+    }
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════════════
+// REGUŁA K — Każdy zewnętrzny plik JS w katalogu głównym musi się parsować.
+// Testy odbiornika push nie importują całego lumina-notifications.js, dlatego
+// wcześniej przepuściły produkcyjny "try" bez catch/finally.
+// ═════════════════════════════════════════════════════════════════════════
+function checkExternalScriptSyntax() {
+  checksRun++;
+  for (const f of JS_FILES) {
+    const result = spawnSync(process.execPath, ['--check', path.join(ROOT, f)], {
+      encoding: 'utf8',
+      windowsHide: true,
+    });
+    if (result.status !== 0) {
+      const detail = (result.stderr || result.stdout || 'Nieznany błąd składni')
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .slice(-3)
+        .join(' ');
+      report('K-EXTERNAL-JS-SYNTAX-ERROR', f, detail);
+    }
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -406,6 +444,7 @@ checkCrossFileFunctionDrift();
 checkAggressiveDomPolling();
 checkOnErrorIdentitySubstitution();
 checkInlineScriptSyntax();
+checkExternalScriptSyntax();
 
 // ══════════════════════════════════════════════════════════════════════════
 // RAPORT

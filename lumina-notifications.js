@@ -570,14 +570,17 @@
             let title = '✨ Bądź na bieżąco z Misją';
             let desc = 'Otrzymuj poranne rozważania i wiadomości w społeczności LUMINA.';
             let iconClass = 'fa-solid fa-bell';
+            const escapePromptText = (value) => String(value || '').replace(/[&<>"']/g, (character) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[character]);
 
             if (contextType === 'chat') {
                 title = '💬 Powiadomienie o odpowiedzi';
-                const safeName = targetName ? `<strong>${targetName}</strong>` : 'rozmówca';
+                const safeName = targetName ? `<strong>${escapePromptText(targetName)}</strong>` : 'rozmówca';
                 desc = `Chcesz otrzymać powiadomienie na telefon, gdy ${safeName} Ci odpisze?`;
                 iconClass = 'fa-solid fa-comments';
             } else if (contextType === 'follow') {
-                const safeName = targetName ? `<strong>${targetName}</strong>` : 'ten profil';
+                const safeName = targetName ? `<strong>${escapePromptText(targetName)}</strong>` : 'ten profil';
                 title = `✨ Śledź aktywność`;
                 desc = `Otrzymuj powiadomienia, gdy ${safeName} doda nowe rozważanie lub wpis.`;
                 iconClass = 'fa-solid fa-user-plus';
@@ -1142,18 +1145,6 @@ window.requestLuminaPushPermission = async function() {
         if (typeof window.showLuminaToast === 'function') window.showLuminaToast(message);
         else if (typeof window.showToast === 'function') window.showToast(message);
         else alert(message);
-        return false;
-    }
-};
-
-// ── Cicha synchronizacja tokena FCM w tle przy starcie ──
-window.syncLuminaPushTokenSilently = async function() {
-    if (!("Notification" in window) || Notification.permission !== "granted") return;
-    try {
-        if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-            const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
-            await window.LuminaDB.requestNotificationPermission(userSlug);
-        }
         return false;
     }
 };

@@ -77,7 +77,7 @@ try {
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: data.badge || notification.badge || './lumina-badge-monochrome.png',
+            badge: './lumina-badge-monochrome.png',
             image: image,
             tag: tag,
             renotify: true,
@@ -260,7 +260,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: body,
         icon: icon,
-        badge: data.badge || notification.badge || './lumina-badge-monochrome.png',
+        badge: './lumina-badge-monochrome.png',
         image: image,
         data: {
             url: url,
