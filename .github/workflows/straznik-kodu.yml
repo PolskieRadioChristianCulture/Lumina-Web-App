@@ -11,9 +11,14 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: straznik-kodu-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   straznik-kodu:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Pobierz kod
         uses: actions/checkout@v5
