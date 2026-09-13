@@ -193,21 +193,21 @@ export async function requestNotificationPermission(userUid) {
 
                     if (userUid) {
                         try {
-                            await updateDoc(doc(db, 'lumina_profiles', userUid), {
+                            await setDoc(doc(db, 'lumina_profiles', userUid), {
                                 fcmToken: token,
                                 notificationsEnabled: true,
                                 updatedAt: serverTimestamp()
-                            });
+                            }, { merge: true });
                         } catch(e) {}
                     }
                     const curSlug = localStorage.getItem('lumina_current_user_slug');
                     if (curSlug && curSlug !== userUid) {
                         try {
-                            await updateDoc(doc(db, 'lumina_profiles', curSlug), {
+                            await setDoc(doc(db, 'lumina_profiles', curSlug), {
                                 fcmToken: token,
                                 notificationsEnabled: true,
                                 updatedAt: serverTimestamp()
-                            });
+                            }, { merge: true });
                         } catch(e) {}
                     }
                 }
