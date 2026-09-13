@@ -1,4 +1,4 @@
-name: đź›ˇď¸Ź StraĹĽnik Kodu â€” kontrola regresji
+﻿name: đź›ˇď¸Ź StraĹĽnik Kodu â€” kontrola regresji
 
 # Uruchamia siÄ™ przy KAĹ»DYM pushu i pull requeĹ›cie do main â€” niezaleĹĽnie od
 # tego, ktĂłry agent (Claude, Antigravity, Codex) czy czĹ‚owiek wprowadza zmianÄ™.
@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pobierz kod
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Ustaw Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
 
