@@ -836,7 +836,8 @@
                     name: name,
                     city: city,
                     text: text,
-                    approved: true, // Auto approved if client validation passes
+                    approved: false,
+                    status: "pending", // Approval is performed by a trusted moderator
                     timestamp: serverTimestamp()
                 });
                 
