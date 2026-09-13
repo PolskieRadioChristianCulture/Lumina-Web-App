@@ -10016,9 +10016,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 if (viewPublic) viewPublic.style.display = 'none';
                 if (viewPrivate) viewPrivate.style.display = 'flex';
                 if (viewCommander) viewCommander.style.display = 'none';
-                if (!preserveActiveChat && !window._keepActiveChat) {
-                    returnToConversationsList();
-                }
+                // Przełączenie zakładki nie może zamknąć aktywnej rozmowy.
+                // Wyjście do listy jest wykonywane wyłącznie przez jawne akcje UI.
             }
         }
 
@@ -10713,15 +10712,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 m.style.display = 'flex';
                 m.classList.add('open');
                 checkAndShowCommanderTab();
-                if (preferredTab) {
-                    switchMessengerMainTab(preferredTab);
-                } else {
-                    const unread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
-                    if (unread > 0) {
-                        switchMessengerMainTab('private');
-                    } else {
-                        switchMessengerMainTab(isUserCommanderAuthorized() ? 'commander' : 'public');
-                    }
+                const initialTab = preferredTab || (
+                    parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10) > 0
+                        ? 'private'
+                        : (isUserCommanderAuthorized() ? 'commander' : 'public')
+                );
+                switchMessengerMainTab(initialTab);
+                if (initialTab === 'private' && !activeChatSession) {
+                    returnToConversationsList();
                 }
             }
         }
@@ -11561,7 +11559,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-messenger-composer.js?v=20260913_fix_v3" defer></script>
-    <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
+    <script src="js/lumina-message-requests.js?v=20260914_chatfix_v1" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
