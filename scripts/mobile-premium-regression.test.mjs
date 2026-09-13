@@ -16,7 +16,7 @@ const mobilePages = [
 test('every primary Lumina surface loads the shared mobile layer once', async () => {
   for (const file of mobilePages) {
     const html = await readFile(file, 'utf8');
-    const links = html.match(/css\/lumina-mobile-premium\.css/g) || [];
+    const links = html.match(/css\/lumina-mobile-premium\.css\?v=20260913_4/g) || [];
     assert.equal(links.length, 1, `${file} must load the mobile layer exactly once`);
   }
 });
@@ -25,8 +25,12 @@ test('mobile layer provides Android-safe layout and interaction safeguards', asy
   const css = await readFile('css/lumina-mobile-premium.css', 'utf8');
   assert.match(css, /--lumina-mobile-target:\s*44px/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
-  assert.match(css, /content-visibility:\s*auto/);
+  assert.doesNotMatch(css, /content-visibility:\s*auto/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /\.shorts-scroll-container \.slide-info-box[\s\S]*bottom:\s*calc\(64px \+ env\(safe-area-inset-bottom\)\)/);
+  assert.match(css, /#profilesCarousel[\s\S]*overflow-y:\s*hidden/);
+  assert.match(css, /touch-action:\s*pan-y pinch-zoom/);
+  assert.match(css, /#profilesCarousel \.profile-card\.active-center-card[\s\S]*transform:\s*none/);
   assert.match(css, /max-width:\s*380px[\s\S]*\.btn-nav-more[\s\S]*display:\s*none/);
   assert.match(css, /\.shorts-header \.header-title-box[\s\S]*display:\s*none/);
 });
@@ -48,4 +52,15 @@ test('narrow-phone settings stay available when the compact action is hidden', a
     assert.match(html, /Ustawienia aplikacji/,
       `${file} must expose settings in the navigation drawer`);
   }
+});
+
+test('homepage carousel distinguishes vertical scrolling from a profile tap', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  assert.match(html, /const deltaY = Math\.abs\(touch\.clientY - _carouselPointerStartY\)/);
+  assert.match(html, /const isGesture = _carouselGestureMoved \|\| deltaX > 8 \|\| deltaY > 8 \|\| scrollDelta > 8/);
+  assert.match(html, /const isHorizontalSwipe = deltaX > 40 && deltaX > deltaY \* 1\.2/);
+  assert.match(html, /carousel\.addEventListener\('wheel',[\s\S]*window\.scrollBy\(0, e\.deltaY\)[\s\S]*passive: false/);
+  assert.match(html, /_suppressCarouselClickUntil = Date\.now\(\) \+ 500/);
+  assert.match(html, /carousel\.addEventListener\('touchcancel'/);
+  assert.match(html, /carousel\.addEventListener\('click',[\s\S]*\{ capture: true \}\)/);
 });

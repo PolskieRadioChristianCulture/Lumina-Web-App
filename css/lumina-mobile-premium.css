@@ -142,14 +142,6 @@
         padding-bottom: 10px !important;
     }
 
-    #feedStream1x1 > .post-card-1x1,
-    #feedStream1x1 > .mission-rotator-card,
-    #feedStream1x1 > .official-sponsor-banner-card,
-    .card-916 {
-        content-visibility: auto;
-        contain-intrinsic-size: auto 720px;
-    }
-
     .media-container-1x1,
     .campaign-media-container,
     .broadcast-preview-wrap,
@@ -165,6 +157,26 @@
     .video-container > iframe {
         display: block;
         width: 100%;
+    }
+
+    /* The horizontal carousel must hand vertical gestures back to the page. */
+    #profilesCarousel {
+        overflow-y: hidden !important;
+        overscroll-behavior-x: contain;
+        overscroll-behavior-y: auto;
+        touch-action: pan-y pinch-zoom;
+    }
+
+    /* Enlarged/raised cards were clipped by the carousel's scroll port. */
+    #profilesCarousel .profile-card,
+    #profilesCarousel .profile-card.featured,
+    #profilesCarousel .profile-card.active-center-card {
+        transform: none !important;
+    }
+
+    /* Android browser controls and gesture navigation must not cover metadata. */
+    .shorts-scroll-container .slide-info-box {
+        bottom: calc(64px + env(safe-area-inset-bottom)) !important;
     }
 
     .feed-load-more-wrap {

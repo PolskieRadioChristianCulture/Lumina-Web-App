@@ -4263,7 +4263,7 @@
             transform: translateY(-8px) !important;
         }
     </style>
-    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_2">
+    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_4">
 </head>
 <body>
 <script>
@@ -9595,6 +9595,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     requestAnimationFrame(window.updateCenterActiveCard);
                 }, { passive: true });
 
+                carousel.addEventListener('wheel', (e) => {
+                    if (window.innerWidth <= 768 && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                        e.preventDefault();
+                        window.scrollBy(0, e.deltaY);
+                    }
+                }, { passive: false });
+
                 carousel.addEventListener('mouseenter', () => {
                     isCarouselInteracting = true;
                 });
@@ -9623,6 +9630,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 let _carouselLongPressTimer = null;
                 let _carouselLongPressFired = false;
                 let _carouselPendingTargetCard = null;
+                let _carouselGestureMoved = false;
+                let _suppressCarouselClickUntil = 0;
 
                 function startCarouselLongPress(card, clientX, clientY) {
                     _carouselLongPressFired = false;
@@ -9651,6 +9660,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     _carouselPointerStartX = e.clientX;
                     _carouselPointerStartY = e.clientY;
                     _carouselPointerStartScrollLeft = carousel.scrollLeft;
+                    _carouselGestureMoved = false;
                     const card = e.target.closest('.profile-card');
                     if (card && !e.target.closest('.card-heart')) {
                         startCarouselLongPress(card, e.clientX, e.clientY);
@@ -9660,6 +9670,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 carousel.addEventListener('mousemove', (e) => {
                     const dist = Math.hypot(e.clientX - _carouselPointerStartX, e.clientY - _carouselPointerStartY);
                     if (dist > 8) {
+                        _carouselGestureMoved = true;
+                        _suppressCarouselClickUntil = Date.now() + 500;
                         cancelCarouselLongPress();
                     }
                 });
@@ -9678,6 +9690,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         _carouselPointerStartX = t.clientX;
                         _carouselPointerStartY = t.clientY;
                         _carouselPointerStartScrollLeft = carousel.scrollLeft;
+                        _carouselGestureMoved = false;
                         const card = e.target.closest('.profile-card');
                         if (card && !e.target.closest('.card-heart')) {
                             startCarouselLongPress(card, t.clientX, t.clientY);
@@ -9690,6 +9703,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         const t = e.touches[0];
                         const dist = Math.hypot(t.clientX - _carouselPointerStartX, t.clientY - _carouselPointerStartY);
                         if (dist > 8) {
+                            _carouselGestureMoved = true;
+                            _suppressCarouselClickUntil = Date.now() + 500;
                             cancelCarouselLongPress();
                         }
                     }
@@ -9699,46 +9714,52 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     cancelCarouselLongPress();
                     if (_carouselLongPressFired) {
                         _carouselLongPressFired = false;
+                        _suppressCarouselClickUntil = Date.now() + 500;
                         return; // Nie otwieraj profilu jeśli wywołano opcje przez przytrzymanie
                     }
                     if (e.changedTouches.length > 0) {
                         const touch = e.changedTouches[0];
                         const deltaX = Math.abs(touch.clientX - _carouselPointerStartX);
+                        const deltaY = Math.abs(touch.clientY - _carouselPointerStartY);
                         const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
-                        const isDrag = deltaX > 8 || scrollDelta > 8;
-                        if (isDrag) return;
-
-                        const el = document.elementFromPoint(touch.clientX, touch.clientY);
-                        if (!el || el.closest('.card-heart')) return;
-                        const card = el.closest('.profile-card');
-                        if (!card) return;
-                        const slug = card.getAttribute('data-profile-slug');
-                        if (slug && typeof window.openCommunityProfile === 'function') {
-                            window.openCommunityProfile(slug);
+                        const isHorizontalSwipe = deltaX > 40 && deltaX > deltaY * 1.2;
+                        if (isHorizontalSwipe && typeof window.scrollCarousel === 'function') {
+                            window.scrollCarousel(touch.clientX < _carouselPointerStartX ? 1 : -1);
+                        }
+                        const isGesture = _carouselGestureMoved || deltaX > 8 || deltaY > 8 || scrollDelta > 8;
+                        if (isGesture) {
+                            _carouselGestureMoved = true;
+                            _suppressCarouselClickUntil = Date.now() + 500;
                         }
                     }
                 }, { passive: true });
 
+                carousel.addEventListener('touchcancel', () => {
+                    _carouselGestureMoved = true;
+                    _suppressCarouselClickUntil = Date.now() + 500;
+                    cancelCarouselLongPress();
+                }, { passive: true });
+
                 carousel.addEventListener('click', (e) => {
-                    if (_carouselLongPressFired) {
+                    if (_carouselLongPressFired || _carouselGestureMoved || Date.now() < _suppressCarouselClickUntil) {
                         _carouselLongPressFired = false;
+                        _carouselGestureMoved = false;
                         e.preventDefault();
                         e.stopPropagation();
                         return;
                     }
-                    const deltaX = Math.abs((e.clientX || _carouselPointerStartX) - _carouselPointerStartX);
-                    const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
-                    const isDrag = deltaX > 8 || scrollDelta > 8;
-                    if (isDrag) return;
 
                     const card = e.target.closest('.profile-card');
-                    if (!card || e.target.closest('.card-heart')) return;
+                    const interactive = e.target.closest('button, a, input, select, textarea, [role="button"]');
+                    if (!card || interactive) return;
 
                     const slug = card.getAttribute('data-profile-slug');
                     if (slug && typeof window.openCommunityProfile === 'function') {
+                        e.preventDefault();
+                        e.stopPropagation();
                         window.openCommunityProfile(slug);
                     }
-                });
+                }, { capture: true });
 
                 carousel.addEventListener('contextmenu', (e) => {
                     const card = e.target.closest('.profile-card');
