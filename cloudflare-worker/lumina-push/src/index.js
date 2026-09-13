@@ -150,13 +150,17 @@ async function queryTokens(field, receiverId, accessToken, env) {
 }
 
 async function getRecipientTokens(receiverId, accessToken, env) {
+  // Każda wysyłka nie powinna rozpoczynać się od trzech zapytań indeksowych.
+  // Token jest synchronizowany także z profilem, więc ten pojedynczy odczyt
+  // zapewnia zwykłą ścieżkę dostarczenia i chroni limit Firestore.
+  const profile = await getFirestoreDocument(`lumina_profiles/${encodeURIComponent(receiverId)}`, accessToken, env);
+  if (profile?.fcmToken) return [profile.fcmToken];
+
+  // Starsze konta mogą nie mieć jeszcze tokenu w profilu. Wtedy zachowujemy
+  // zgodność z rejestrem wielu urządzeń jako ścieżkę zapasową.
   const fields = ['uid', 'slug', 'userSlug'];
   const tokenLists = await Promise.all(fields.map((field) => queryTokens(field, receiverId, accessToken, env)));
   const tokens = new Set(tokenLists.flat());
-  if (tokens.size === 0) {
-    const profile = await getFirestoreDocument(`lumina_profiles/${encodeURIComponent(receiverId)}`, accessToken, env);
-    if (profile?.fcmToken) tokens.add(profile.fcmToken);
-  }
   return [...tokens].slice(0, MAX_TOKENS_PER_RECIPIENT);
 }
 
