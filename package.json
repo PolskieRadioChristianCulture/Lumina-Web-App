@@ -19,7 +19,7 @@
     "test:mobile-premium": "node --test scripts/mobile-premium-regression.test.mjs",
     "test:inline": "node validate_lumina.js",
     "test:unit": "vitest run",
-    "test:all": "npm run test:unit && npm run test:push && npm run test:security-edge && npm run test:mobile-premium && npm run test:firestore-rules && npm run test:guardian:extended && npm run build:lumina",
+    "test:all": "npm run test:unit && npm run test:push && npm run test:security-edge && npm run test:mobile-premium && npm run test:firestore-rules && npm run test:smoke && npm run test:guardian:extended && npm run build:lumina",
     "test": "npm run test:all",
     "matrix": "node scripts/agent-matrix/launch_grid.js",
     "matrix:local": "node scripts/agent-matrix/launch_grid.js --local",

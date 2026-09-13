@@ -11,6 +11,10 @@ if (!token) {
   process.exit(1);
 }
 const repo = process.env.REPO || process.env.GITHUB_REPOSITORY;
+if (!repo || !/^[^/]+\/[^/]+$/.test(repo)) {
+  console.error('REPO must use the owner/name format');
+  process.exit(1);
+}
 const [owner, repoName] = repo.split('/');
 
 function ghRequest(path, method = 'GET', body = null) {
@@ -23,7 +27,9 @@ function ghRequest(path, method = 'GET', body = null) {
         'User-Agent': 'icc-scanner',
         'Accept': 'application/vnd.github.v3+json',
         'Authorization': `token ${token}`,
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
       },
+      timeout: 10000,
     };
     const req = https.request(options, (res) => {
       let data = '';
@@ -37,16 +43,25 @@ function ghRequest(path, method = 'GET', body = null) {
         }
       });
     });
+    req.on('timeout', () => req.destroy(new Error(`GitHub request timed out: ${method} ${path}`)));
     req.on('error', reject);
     if (body) req.write(JSON.stringify(body));
     req.end();
   });
 }
 
+function requireStatus(response, expected, operation) {
+  if (response.status !== expected) {
+    throw new Error(`${operation} failed with HTTP ${response.status}: ${JSON.stringify(response.body).slice(0, 500)}`);
+  }
+  return response.body;
+}
+
 (async () => {
   try {
     const commits = await ghRequest(`/repos/${owner}/${repoName}/commits?sha=main&per_page=1`);
-    const latest = Array.isArray(commits.body) && commits.body[0] ? commits.body[0] : null;
+    const commitsBody = requireStatus(commits, 200, 'commit lookup');
+    const latest = Array.isArray(commitsBody) && commitsBody[0] ? commitsBody[0] : null;
     const commitSha = latest ? latest.sha : 'unknown';
     const commitMsg = latest ? latest.commit.message.split('\n')[0] : 'n/a';
     const commitAuthor = latest && latest.commit.author ? latest.commit.author.name : 'n/a';
@@ -56,6 +71,12 @@ function ghRequest(path, method = 'GET', body = null) {
       guardian = fs.readFileSync('guardian.trim', 'utf8').trim();
     } else if (fs.existsSync('guardian.out')) {
       guardian = fs.readFileSync('guardian.out', 'utf8').trim().slice(0, 3000);
+    }
+    let health = 'not available';
+    if (fs.existsSync('health.trim')) {
+      health = fs.readFileSync('health.trim', 'utf8').trim();
+    } else if (fs.existsSync('health.out')) {
+      health = fs.readFileSync('health.out', 'utf8').trim().slice(0, 3000);
     }
 
     const bodyText = [
@@ -68,7 +89,10 @@ function ghRequest(path, method = 'GET', body = null) {
       '```',
       guardian || 'no-guardian-output',
       '```',
-      `* 🌐 **Status Produkcji:** (manual check required)`,
+      `* 🌐 **Status publicznych endpointów:**`,
+      '```',
+      health || 'no-health-output',
+      '```',
       '',
       `* ⏰ **Checked at:** ${new Date().toISOString()}`,
       '',
@@ -78,19 +102,22 @@ function ghRequest(path, method = 'GET', body = null) {
 
     const searchQ = encodeURIComponent(`repo:${owner}/${repoName} in:title "ICC monitor"`);
     const search = await ghRequest(`/search/issues?q=${searchQ}`);
+    const searchBody = requireStatus(search, 200, 'issue search');
     let issueNumber = null;
-    if (search.status === 200 && search.body.items && search.body.items.length > 0) {
-      issueNumber = search.body.items[0].number;
+    if (searchBody.items && searchBody.items.length > 0) {
+      issueNumber = searchBody.items[0].number;
     }
 
     const labelName = 'icc-monitor';
     const labelCheck = await ghRequest(`/repos/${owner}/${repoName}/labels/${encodeURIComponent(labelName)}`);
     if (labelCheck.status === 404) {
-      await ghRequest(`/repos/${owner}/${repoName}/labels`, 'POST', { name: labelName, color: '0e8a16', description: 'Automated ICC monitor' });
+      requireStatus(await ghRequest(`/repos/${owner}/${repoName}/labels`, 'POST', { name: labelName, color: '0e8a16', description: 'Automated ICC monitor' }), 201, 'label creation');
+    } else {
+      requireStatus(labelCheck, 200, 'label lookup');
     }
 
     if (issueNumber) {
-      await ghRequest(`/repos/${owner}/${repoName}/issues/${issueNumber}`, 'PATCH', { body: bodyText });
+      requireStatus(await ghRequest(`/repos/${owner}/${repoName}/issues/${issueNumber}`, 'PATCH', { body: bodyText }), 200, 'issue update');
       console.log(`Updated issue #${issueNumber}`);
     } else {
       const created = await ghRequest(`/repos/${owner}/${repoName}/issues`, 'POST', {
