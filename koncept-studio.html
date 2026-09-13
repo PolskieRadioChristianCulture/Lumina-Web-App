@@ -721,11 +721,11 @@
         <div class="row"><span>Social</span><a href="https://www.instagram.com/koncept.studio.mebli/">Instagram / Facebook</a></div>
       </div>
     </div>
-    <form class="contact-form reveal" onsubmit="event.preventDefault(); this.querySelector('.submit').textContent='Wysłano ✓';">
+    <form class="contact-form reveal" onsubmit="event.preventDefault(); document.getElementById('contactFormStatus').hidden = false;">
       <div class="f-row"><input type="text" placeholder=" " required><label>Imię i nazwisko</label></div>
       <div class="f-row"><input type="tel" placeholder=" " required><label>Telefon</label></div>
       <div class="f-row"><textarea rows="3" placeholder=" "></textarea><label>Opisz swój projekt</label></div>
-      <button class="btn solid submit" type="submit" style="margin-top:28px;align-self:flex-start;border:none;cursor:pointer;">Wyślij zapytanie</button>
+      <p id="contactFormStatus" class="form-status" role="status" aria-live="polite" hidden>Formularz jest chwilowo niedostępny. Skontaktuj się bezpośrednio: <a href="mailto:koncept.lublin@gmail.com">koncept.lublin@gmail.com</a>.</p>`n  <button class="btn solid submit" type="submit" style="margin-top:28px;align-self:flex-start;border:none;cursor:pointer;">Wyślij zapytanie</button>
     </form>
   </div>
 </section>
