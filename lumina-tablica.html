@@ -3514,7 +3514,7 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
-    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_5">
+    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_6">
 </head>
 <body>
 
@@ -6605,20 +6605,23 @@
                         streamUrl = streamUrl + (streamUrl.includes('?') ? '&' : '?') + 'muted=1&mute=1&in_mcr=1';
                     }
                     const livePlayerHtml = `
-                        <div class="mission-live-player-wrapper" style="margin: 0 0 18px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; min-height:220px;">
-                            <iframe src="${streamUrl}" 
-                                    title="Telewizja Christian Culture 24/7 — Transmisja na Żywo" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowfullscreen 
-                                    loading="eager"
-                                    style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
-                            <div class="mission-live-player-overlay">
-                                <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
-                                    <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
-                                </button>
-                                <a href="${streamUrl.split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
-                                    <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
-                                </a>
+                        <div class="mission-live-player-wrapper" id="livePlayerWrap_${item.id}" style="margin: 0 0 18px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+                            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.6) 100%);"></div>
+                            <div style="position:relative; z-index:2; text-align:center; padding:16px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+                                <span style="font-size:0.75rem; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.2); border:1px solid #ef4444; padding:3px 10px; border-radius:20px; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:6px;">
+                                    <span style="width:7px; height:7px; border-radius:50%; background:#ef4444; display:inline-block;"></span> NA ŻYWO 24/7
+                                </span>
+                                <div style="font-size:1.05rem; font-weight:800; color:#fff; font-family:'Plus Jakarta Sans',sans-serif; text-shadow:0 2px 4px rgba(0,0,0,0.8);">
+                                    Telewizja Christian Culture
+                                </div>
+                                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+                                    <button type="button" class="btn-play-live-stream" onclick="loadLiveIframe(this, '${streamUrl}')" style="background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; border:none; border-radius:24px; padding:9px 18px; font-size:0.85rem; font-weight:800; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+                                        <i class="fa-solid fa-play"></i> Oglądaj Transmisję
+                                    </button>
+                                    <a href="${streamUrl.split('?')[0]}" target="_blank" style="background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:#fff; border:1px solid rgba(255,255,255,0.3); border-radius:24px; padding:9px 14px; font-size:0.85rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-tv"></i> Pełny Ekran TV
+                                    </a>
+                                </div>
                             </div>
                         </div>`;
                     const refAvatar = resolveLuminaAuthorAvatar(item);
@@ -6807,24 +6810,31 @@
                             <div class="media-container-1x1" style="position:relative; aspect-ratio:16/9; width:100%; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); background:#000; margin-bottom:14px;">
                                 <iframe src="${item.videoUrl}" style="width:100%; height:100%; border:none; display:block;" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
-                        ` : (item.isLiveBroadcastPost && item.streamUrl ? `
-                            <div class="mission-live-player-wrapper" style="margin: 0 0 12px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; min-height:220px;">
-                                <iframe src="${item.streamUrl ? (item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html').includes('?') ? item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html') + '&muted=1&mute=1&in_mcr=1' : item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html') + '?muted=1&mute=1&in_mcr=1') : 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1'}" 
-                                        title="${item.title || 'Transmisja na Żywo'}" 
-                                        allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
-                                        allowfullscreen 
-                                        loading="eager"
-                                        style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
-                                <div class="mission-live-player-overlay">
-                                    <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
-                                        <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
-                                    </button>
-                                    <a href="${(item.streamUrl || 'cctv24-worship-live.html').split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
-                                        <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
-                                    </a>
+                        ` : (item.isLiveBroadcastPost && item.streamUrl ? (() => {
+                            const bUrl = item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html');
+                            const finalUrl = bUrl.includes('?') ? bUrl + '&muted=1&mute=1&in_mcr=1' : bUrl + '?muted=1&mute=1&in_mcr=1';
+                            return `
+                            <div class="mission-live-player-wrapper" id="livePlayerWrap_${item.id}" style="margin: 0 0 12px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+                                <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.6) 100%);"></div>
+                                <div style="position:relative; z-index:2; text-align:center; padding:16px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+                                    <span style="font-size:0.75rem; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.2); border:1px solid #ef4444; padding:3px 10px; border-radius:20px; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:6px;">
+                                        <span style="width:7px; height:7px; border-radius:50%; background:#ef4444; display:inline-block;"></span> NA ŻYWO 24/7
+                                    </span>
+                                    <div style="font-size:1.05rem; font-weight:800; color:#fff; font-family:'Plus Jakarta Sans',sans-serif; text-shadow:0 2px 4px rgba(0,0,0,0.8);">
+                                        ${item.title || 'Telewizja Christian Culture'}
+                                    </div>
+                                    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+                                        <button type="button" class="btn-play-live-stream" onclick="loadLiveIframe(this, '${finalUrl}')" style="background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; border:none; border-radius:24px; padding:9px 18px; font-size:0.85rem; font-weight:800; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+                                            <i class="fa-solid fa-play"></i> Oglądaj Transmisję
+                                        </button>
+                                        <a href="${finalUrl.split('?')[0]}" target="_blank" style="background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:#fff; border:1px solid rgba(255,255,255,0.3); border-radius:24px; padding:9px 14px; font-size:0.85rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                                            <i class="fa-solid fa-tv"></i> Pełny Ekran TV
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        ` : (
+                            `;
+                        })() : (
                             (!item.image && effectiveEmbedHtml) ? '' : (() => {
                                 const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
                                 const mediaTag = isVideoMedia 
@@ -7250,6 +7260,25 @@
             } else {
                 window.location.href = 'lumina-profile.html';
             }
+        };
+
+        window.loadLiveIframe = function(btn, streamUrl) {
+            const wrap = btn.closest('.mission-live-player-wrapper');
+            if (!wrap) return;
+            wrap.innerHTML = `
+                <iframe src="${streamUrl}" 
+                        title="Telewizja Christian Culture 24/7 — Transmisja na Żywo" 
+                        allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
+                        allowfullscreen 
+                        style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
+                <div class="mission-live-player-overlay">
+                    <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                        <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
+                    </button>
+                    <a href="${streamUrl.split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
+                        <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                    </a>
+                </div>`;
         };
 
         window.unmuteMissionIframe = function(btn) {
@@ -9422,13 +9451,7 @@
             syncFounderAvatar();
             renderFeed();
 
-            // Auto-collapse Tablica header after short delay (only on desktop/mobile if needed)
-            setTimeout(() => {
-                const bHeader = document.getElementById('boardHeader');
-                if (bHeader && !bHeader.classList.contains('collapsed')) {
-                    bHeader.classList.add('collapsed');
-                }
-            }, 3500);
+            // Header collapse remains manual via toggleBoardHeader (eliminacja skoków layoutu)
 
             // Toggle function for the header
             window.toggleBoardHeader = function() {

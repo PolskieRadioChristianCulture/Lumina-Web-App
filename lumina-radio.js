@@ -281,17 +281,20 @@
             .mini-radio-waves span {
                 display: inline-block;
                 width: 3px;
+                height: 16px;
+                transform-origin: bottom;
                 background: #facc15;
                 border-radius: 2px;
                 animation: miniWaveAnim 0.8s ease-in-out infinite alternate;
+                will-change: transform;
             }
-            .mini-radio-waves span:nth-child(1) { height: 6px; animation-delay: 0.1s; }
-            .mini-radio-waves span:nth-child(2) { height: 14px; animation-delay: 0.3s; }
-            .mini-radio-waves span:nth-child(3) { height: 9px; animation-delay: 0.2s; }
-            .mini-radio-waves span:nth-child(4) { height: 16px; animation-delay: 0.4s; }
+            .mini-radio-waves span:nth-child(1) { animation-delay: 0.1s; }
+            .mini-radio-waves span:nth-child(2) { animation-delay: 0.3s; }
+            .mini-radio-waves span:nth-child(3) { animation-delay: 0.2s; }
+            .mini-radio-waves span:nth-child(4) { animation-delay: 0.4s; }
             @keyframes miniWaveAnim {
-                0% { height: 4px; }
-                100% { height: 16px; }
+                0% { transform: scaleY(0.25); }
+                100% { transform: scaleY(1); }
             }
             .mini-radio-info {
                 display: flex;

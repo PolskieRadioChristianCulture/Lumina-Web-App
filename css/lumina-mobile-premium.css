@@ -34,6 +34,12 @@
         padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important;
     }
 
+    body.shorts-body,
+    body:has(#shortsShell),
+    body:has(.shorts-app-shell) {
+        padding-bottom: 0 !important;
+    }
+
     .lumina-nav {
         min-height: 60px;
         padding-left: var(--lumina-mobile-gutter) !important;
@@ -158,12 +164,23 @@
         width: 100%;
     }
 
-    /* The horizontal carousel must hand vertical gestures back to the page. */
-    #profilesCarousel {
+    /* The horizontal tracks must hand vertical gestures back to the page. */
+    #profilesCarousel,
+    .stories-scroll-track,
+    .filter-chips-row,
+    .sort-tabs-group {
         overflow-y: hidden !important;
         overscroll-behavior-x: contain;
         overscroll-behavior-y: auto;
         touch-action: pan-y pinch-zoom;
+    }
+
+    .feed-stream,
+    .post-card-1x1,
+    .board-header {
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 
     /* Enlarged/raised cards were clipped by the carousel's scroll port. */
