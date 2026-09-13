@@ -77,7 +77,7 @@ try {
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: './lumina-badge-monochrome.png',
+            badge: data.badge || notification.badge || './lumina-badge-monochrome.png',
             image: image,
             tag: tag,
             renotify: true,
@@ -98,11 +98,11 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.3)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.5)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.4-20260912-monochrome-badge';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.5-20260913-monochrome';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -260,7 +260,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: body,
         icon: icon,
-        badge: './lumina-badge-monochrome.png',
+        badge: data.badge || notification.badge || './lumina-badge-monochrome.png',
         image: image,
         data: {
             url: url,

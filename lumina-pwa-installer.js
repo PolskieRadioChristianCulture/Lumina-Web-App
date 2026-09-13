@@ -50,10 +50,10 @@
                     // Updating the existing registration preserves its push subscription.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260909_v411', { scope: '/', updateViaCache: 'none' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v415', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
-                        console.log('[LUMINA PWA] Service Worker v4.1.1 zarejestrowany. Scope:', reg.scope);
+                        console.log('[LUMINA PWA] Service Worker v4.1.5 zarejestrowany. Scope:', reg.scope);
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;

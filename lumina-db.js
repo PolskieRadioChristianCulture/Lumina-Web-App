@@ -120,7 +120,7 @@ export async function requestNotificationPermission(userUid) {
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260909_v411', { scope: '/', updateViaCache: 'none' });
+                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v415', { scope: '/', updateViaCache: 'none' });
                 await navigator.serviceWorker.ready;
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
@@ -2825,6 +2825,17 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
                 createdAt: serverTimestamp()
             }).catch(() => {});
         } catch(notifErr) {}
+        // Sposób C: Kontekstowe mikro-zaproszenie do włączenia powiadomień
+        try {
+            if (typeof window.showLuminaContextualPushPrompt === 'function') {
+                const partnerName = (typeof window.luminaCurrentChatPartnerName !== 'undefined' && window.luminaCurrentChatPartnerName) || receiverId || 'rozmówca';
+                setTimeout(() => {
+                    window.showLuminaContextualPushPrompt('chat', partnerName);
+                }, 1200);
+            }
+        } catch(promptErr) {}
+
+
 
         return msgRef.id;
     } catch(e) {
@@ -4170,6 +4181,17 @@ export async function toggleFollow(targetSlug, targetData = {}, forceAction = nu
     }
 
     try { localStorage.setItem(`lumina_following_${targetSlug}`, nowFollowing ? '1' : '0'); } catch (e) {}
+    
+    if (nowFollowing) {
+        try {
+            if (typeof window.showLuminaContextualPushPrompt === 'function') {
+                const targetName = targetData.name || targetSlug;
+                setTimeout(() => {
+                    window.showLuminaContextualPushPrompt('follow', targetName);
+                }, 1000);
+            }
+        } catch(promptErr) {}
+    }
     return { following: nowFollowing };
 }
 

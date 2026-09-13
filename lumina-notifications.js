@@ -553,39 +553,71 @@
             }
         }
 
-        // 3a. Soft-Prompt Banner (Eleganckie zaproszenie do powiadomień)
-        initSoftPrompt() {
+        // 3a. Sposób C: Kontekstowe Mikro-Zaproszenie (Contextual Push Prompt)
+        showContextualPrompt(contextType = 'general', targetName = '') {
             if (!("Notification" in window) || Notification.permission !== "default") return;
 
             try {
                 const dismissed = localStorage.getItem('lumina_push_prompt_dismissed');
-                if (dismissed && (Date.now() - parseInt(dismissed, 10) < 3 * 24 * 3600 * 1000)) {
-                    return; // Odroczone na 3 dni
+                if (dismissed && (Date.now() - parseInt(dismissed, 10) < 48 * 3600 * 1000)) {
+                    return; // Odroczone na 48h (pełna dyskrecja i poszanowanie użytkownika)
                 }
             } catch(e) {}
 
-            setTimeout(() => {
-                if (document.getElementById('luminaPushSoftPrompt') || Notification.permission !== "default") return;
+            const existing = document.getElementById('luminaPushSoftPrompt');
+            if (existing) existing.remove();
 
-                const promptEl = document.createElement('div');
-                promptEl.id = 'luminaPushSoftPrompt';
-                promptEl.innerHTML = `
-                    <div class="lumina-push-soft-card">
-                        <div class="push-soft-icon">
-                            <i class="fa-solid fa-bell"></i>
-                        </div>
-                        <div class="push-soft-content">
-                            <div class="push-soft-title">✨ Bądź na bieżąco z Misją</div>
-                            <div class="push-soft-desc">Otrzymuj poranne rozważania, transmisje CCTV24 i wiadomości w społeczności LUMINA.</div>
-                        </div>
-                        <div class="push-soft-actions">
-                            <button type="button" class="push-soft-btn-enable" onclick="window.requestLuminaPushPermission()">Włącz 🔔</button>
-                            <button type="button" class="push-soft-btn-close" onclick="window.LuminaNotifications.dismissSoftPrompt()" title="Później">✕</button>
-                        </div>
+            let title = '✨ Bądź na bieżąco z Misją';
+            let desc = 'Otrzymuj poranne rozważania i wiadomości w społeczności LUMINA.';
+            let iconClass = 'fa-solid fa-bell';
+
+            if (contextType === 'chat') {
+                title = '💬 Powiadomienie o odpowiedzi';
+                const safeName = targetName ? `<strong>${targetName}</strong>` : 'rozmówca';
+                desc = `Chcesz otrzymać powiadomienie na telefon, gdy ${safeName} Ci odpisze?`;
+                iconClass = 'fa-solid fa-comments';
+            } else if (contextType === 'follow') {
+                const safeName = targetName ? `<strong>${targetName}</strong>` : 'ten profil';
+                title = `✨ Śledź aktywność`;
+                desc = `Otrzymuj powiadomienia, gdy ${safeName} doda nowe rozważanie lub wpis.`;
+                iconClass = 'fa-solid fa-user-plus';
+            } else if (contextType === 'like' || contextType === 'react') {
+                title = '❤️ Bądź na bieżąco';
+                desc = 'Dowiedz się natychmiast na telefonie, gdy ktoś polubi Twój profil lub odpowie.';
+                iconClass = 'fa-solid fa-heart';
+            }
+
+            const promptEl = document.createElement('div');
+            promptEl.id = 'luminaPushSoftPrompt';
+            promptEl.innerHTML = `
+                <div class="lumina-push-soft-card">
+                    <div class="push-soft-icon">
+                        <i class="${iconClass}"></i>
                     </div>
-                `;
-                document.body.appendChild(promptEl);
-            }, 3500);
+                    <div class="push-soft-content">
+                        <div class="push-soft-title">${title}</div>
+                        <div class="push-soft-desc">${desc}</div>
+                    </div>
+                    <div class="push-soft-actions">
+                        <button type="button" class="push-soft-btn-enable" onclick="window.handleContextualPushConfirm()">Włącz 🔔</button>
+                        <button type="button" class="push-soft-btn-close" onclick="window.LuminaNotifications.dismissSoftPrompt()" title="Nie teraz">✕</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(promptEl);
+
+            if (this._contextualPromptTimer) clearTimeout(this._contextualPromptTimer);
+            this._contextualPromptTimer = setTimeout(() => {
+                const el = document.getElementById('luminaPushSoftPrompt');
+                if (el) {
+                    el.classList.add('fade-out');
+                    setTimeout(() => el.remove(), 300);
+                }
+            }, 15000);
+        }
+
+        initSoftPrompt() {
+            // Sposób C: nie atakujemy użytkownika agresywnym popupem przy wejściu
         }
 
         dismissSoftPrompt() {
@@ -1122,6 +1154,18 @@ window.syncLuminaPushTokenSilently = async function() {
             const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
             await window.LuminaDB.requestNotificationPermission(userSlug);
         }
+        return false;
+    }
+};
+
+// ── Cicha synchronizacja tokena FCM w tle przy starcie ──
+window.syncLuminaPushTokenSilently = async function() {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    try {
+        if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+            const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
+            await window.LuminaDB.requestNotificationPermission(userSlug);
+        }
     } catch(e) {}
 };
 
@@ -1133,3 +1177,28 @@ if (document.readyState === 'loading') {
     setTimeout(window.syncLuminaPushTokenSilently, 2000);
 }
 
+// ── Sposób C: Globalne wywołania mikro-zaproszenia kontekstowego ──
+window.showLuminaContextualPushPrompt = function(contextType, targetName) {
+    if (window.LuminaNotifications && typeof window.LuminaNotifications.showContextualPrompt === 'function') {
+        window.LuminaNotifications.showContextualPrompt(contextType, targetName);
+    }
+};
+
+window.handleContextualPushConfirm = async function() {
+    const promptEl = document.getElementById('luminaPushSoftPrompt');
+    if (promptEl) {
+        promptEl.classList.add('fade-out');
+        setTimeout(() => promptEl.remove(), 300);
+    }
+    if (typeof window.requestLuminaPushPermission === 'function') {
+        const granted = await window.requestLuminaPushPermission();
+        if (granted && window.LuminaNotifications) {
+            window.LuminaNotifications.push(
+                '🔔 Powiadomienia aktywne!',
+                'Będziesz teraz otrzymywać natychmiastowe powiadomienia na telefon.',
+                'lumina-badge-monochrome.png',
+                'lumina.html'
+            );
+        }
+    }
+};
