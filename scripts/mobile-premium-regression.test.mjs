@@ -16,7 +16,7 @@ const mobilePages = [
 test('every primary Lumina surface loads the shared mobile layer once', async () => {
   for (const file of mobilePages) {
     const html = await readFile(file, 'utf8');
-    const links = html.match(/css\/lumina-mobile-premium\.css\?v=20260913_6/g) || [];
+    const links = html.match(/css\/lumina-mobile-premium\.css(?:\?[^"'>\s]+)?/g) || [];
     assert.equal(links.length, 1, `${file} must load the mobile layer exactly once`);
   }
 });
