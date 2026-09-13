@@ -1506,27 +1506,7 @@
                 font-size: 0.72rem !important;
             }
 
-            /* 4. Przyciski Akcji: Elegancka siatka CTA w stylu mobilnym + rząd ikon narzędziowych */
-            .head-actions-grid-mobile {
-                display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
-                gap: 8px !important;
-                width: 100% !important;
-            }
-            .head-actions > .btn-action-primary,
-            .head-actions > .btn-action-secondary,
-            .head-actions > .btn-action-follow,
-            .head-actions > .btn-action-heart {
-                height: 40px !important;
-                font-size: 0.82rem !important;
-                font-weight: 800 !important;
-                border-radius: 22px !important;
-                padding: 0 12px !important;
-                flex: 1 1 calc(50% - 6px) !important;
-                box-sizing: border-box !important;
-            }
-            
-            /* Rząd akcji w stylu mobilnym: Siatka 2x2 z głównymi CTA */
+            /* 4. Doktryna Mobilna: Przyciski Akcji Wyłącznie jako Ikony (Zero Tekstu, 44x44px) */
             .head-actions {
                 display: flex !important;
                 flex-wrap: wrap !important;
@@ -1534,52 +1514,107 @@
                 justify-content: center !important;
                 align-items: center !important;
                 gap: 8px !important;
-            }
-            .head-actions .btn-action-primary,
-            .head-actions .btn-action-secondary:not(.btn-action-gear):not(.btn-action-share):not(.btn-action-logout):not(.btn-action-more),
-            .head-actions .btn-action-follow,
-            .head-actions .btn-action-heart {
-                flex: 1 1 calc(50% - 8px) !important;
-                min-width: 130px !important;
+                width: 100% !important;
                 max-width: 100% !important;
-                height: 40px !important;
-                padding: 0 10px !important;
-                font-size: 0.80rem !important;
+                margin-top: 10px !important;
+                padding: 0 !important;
+            }
+            .head-actions > button,
+            .head-actions > a {
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                max-width: 44px !important;
+                max-height: 44px !important;
+                border-radius: 50% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex: 0 0 44px !important;
+                font-size: 0 !important;
+                color: transparent !important;
+                box-sizing: border-box !important;
+                position: relative !important;
+                text-decoration: none !important;
+            }
+            .head-actions button i,
+            .head-actions a i {
+                font-size: 1.15rem !important;
+                color: #ffffff !important;
+                line-height: 1 !important;
+                margin: 0 !important;
+                display: inline-block !important;
+            }
+            .head-actions .btn-text,
+            .head-actions span:not(.profile-msg-badge),
+            #followBtnText,
+            #followCountBadge,
+            #heartBtnText,
+            #heartCountBadge,
+            .btn-divider {
+                display: none !important;
+            }
+            .head-actions .profile-msg-badge {
+                position: absolute !important;
+                top: -2px !important;
+                right: -2px !important;
+                display: flex !important;
+                min-width: 16px !important;
+                height: 16px !important;
+                border-radius: 8px !important;
+                font-size: 0.65rem !important;
+                color: #ffffff !important;
+                align-items: center !important;
                 justify-content: center !important;
             }
 
-            /* Rząd okrągłych narzędzi */
-            .head-actions .btn-action-gear,
-            .head-actions .btn-action-share,
-            .head-actions .btn-action-logout,
-            .head-actions .btn-action-more {
-                flex: 0 0 auto !important;
-                width: 38px !important;
-                height: 38px !important;
-                min-width: 38px !important;
-                max-width: 38px !important;
-                padding: 0 !important;
-            }
-
-            /* 5. Przewijane Zakładki Nawigacji */
+            /* 5. Przewijane Zakładki Nawigacji - Wyłącznie Ikony */
             .profile-nav-tabs {
                 display: flex !important;
                 overflow-x: auto !important;
                 scrollbar-width: none !important;
                 -webkit-overflow-scrolling: touch !important;
                 white-space: nowrap !important;
-                padding: 10px 0 2px !important;
+                padding: 8px 4px !important;
                 margin-top: 12px !important;
                 border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-                gap: 6px !important;
+                gap: 8px !important;
                 width: 100% !important;
+                justify-content: center !important;
             }
             .profile-nav-tabs::-webkit-scrollbar { display: none !important; }
             .tab-btn {
-                flex-shrink: 0 !important;
-                font-size: 0.78rem !important;
-                padding: 8px 13px !important;
-                border-radius: 18px !important;
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                max-width: 44px !important;
+                max-height: 44px !important;
+                border-radius: 14px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex: 0 0 44px !important;
+                font-size: 0 !important;
+                color: transparent !important;
+                box-sizing: border-box !important;
+            }
+            .tab-btn i {
+                font-size: 1.2rem !important;
+                color: #94a3b8 !important;
+                margin: 0 !important;
+                display: inline-block !important;
+            }
+            .tab-btn.active i {
+                color: #facc15 !important;
+            }
+            .tab-btn .tab-text {
+                display: none !important;
             }
 
             /* 6. Siatka Treści Profilu */
@@ -1663,18 +1698,7 @@
                 padding-bottom: 0 !important;
             }
             .profile-head-card .head-actions > * {
-                flex-shrink: 1 !important;
-                white-space: nowrap !important;
-            }
-            .profile-head-card .head-actions .btn-action-primary,
-            .profile-head-card .head-actions .btn-action-secondary:not(.btn-action-gear):not(.btn-action-share):not(.btn-action-logout):not(.btn-action-more),
-            .profile-head-card .head-actions .btn-action-follow,
-            .profile-head-card .head-actions .btn-action-heart {
-                flex: 1 1 calc(50% - 8px) !important;
-                min-width: 120px !important;
-                max-width: 100% !important;
-                height: 40px !important;
-                justify-content: center !important;
+                flex-shrink: 0 !important;
             }
         }
 
@@ -5752,6 +5776,8 @@
                             </div>
                         </div>
 
+                        <div id="activeChatTypingIndicator" class="lumina-typing-indicator" aria-live="polite" aria-atomic="true"></div>
+
                         <!-- Quick Christian Smart Blessings Bar -->
                         <div id="activeChatSmartBar" class="chat-quick-bar" data-target-input="activeChatInput"></div>
 
@@ -5775,7 +5801,7 @@
                             <button type="button" onclick="toggleChatEmojiDrawer()" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
                                 <i class="fa-regular fa-face-smile"></i>
                             </button>
-                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
+                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." maxlength="1000" autocomplete="off" style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
                             <button type="submit" id="btnActiveChatSubmit" class="lumina-send-btn-premium" style="padding: 10px 18px; border-radius: 22px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(236,72,153,0.4);">
                                 <span id="btnActiveChatSubmitLabel">Wyślij</span> <i class="fa-solid fa-paper-plane" id="btnActiveChatSubmitIcon"></i>
                             </button>
@@ -8702,6 +8728,7 @@
         let publicChatUnsubscribe = null;
         let activeChatSession = null;
         let activeChatUnsubscribe = null;
+        let activeChatTypingUnsubscribe = null;
 
         function switchMessengerMainTab(tab) {
             checkAndShowCommanderTab();
@@ -9721,6 +9748,10 @@
                 activeChatUnsubscribe();
                 activeChatUnsubscribe = null;
             }
+            if (activeChatTypingUnsubscribe) {
+                activeChatTypingUnsubscribe();
+                activeChatTypingUnsubscribe = null;
+            }
             activeChatSession = null;
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
@@ -9768,16 +9799,17 @@
         };
 
         window.handleActiveChatInputChange = function(val) {
+            const btn = document.getElementById('btnActiveChatSubmit');
             const btnIcon = document.getElementById('btnActiveChatSubmitIcon');
             const btnLabel = document.getElementById('btnActiveChatSubmitLabel');
-            if (!btnIcon || !btnLabel) return;
-            if (val && val.trim().length > 0) {
-                btnLabel.textContent = 'Wyślij';
-                btnIcon.className = 'fa-solid fa-paper-plane';
-            } else {
-                btnLabel.textContent = 'Błogosław';
-                btnIcon.className = 'fa-solid fa-dove';
-            }
+            if (!btn || !btnIcon || !btnLabel) return;
+            const hasText = Boolean(val && val.trim().length > 0);
+            btn.disabled = !hasText;
+            btn.style.opacity = hasText ? '1' : '0.55';
+            btn.style.cursor = hasText ? 'pointer' : 'not-allowed';
+            btn.title = hasText ? 'Wyślij wiadomość' : 'Wpisz wiadomość, aby ją wysłać';
+            btnLabel.textContent = 'Wyślij';
+            btnIcon.className = 'fa-solid fa-paper-plane';
         };
 
         function openChatWith(name, avatar, slug, targetMessageId) {
@@ -9888,10 +9920,19 @@
                 activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
                     renderDirectChatMessages(messages, fromId);
                 });
+                if (typeof window.LuminaDB.attachTypingIndicator === 'function') {
+                    activeChatTypingUnsubscribe = window.LuminaDB.attachTypingIndicator(
+                        'activeChatInput', chatId, 'activeChatTypingIndicator',
+                        () => `${activeChatSession?.targetName || 'Rozmówca'} pisze…`
+                    );
+                }
             }
             setTimeout(() => {
                 const input = document.getElementById('activeChatInput');
-                if (input) input.focus();
+                if (input) {
+                    input.focus();
+                    handleActiveChatInputChange(input.value);
+                }
                 scrollChatToBottom('activeChatMessagesBox', false);
             }, 150);
         }
@@ -9978,21 +10019,35 @@
         async function handleSendActiveChatMessage(e) {
             if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
-            let text = input ? input.value.trim() : '';
+            const text = input ? input.value.trim() : '';
             if (!text) {
-                text = 'Pokój temu domowi i Boże Błogosławieństwo! 🕊️✨';
+                input?.focus();
+                return;
             }
             if (!activeChatSession) return;
 
+            const submitButton = document.getElementById('btnActiveChatSubmit');
             if (input) input.value = '';
+            if (input) input.disabled = true;
+            if (submitButton) submitButton.disabled = true;
             handleActiveChatInputChange('');
             scrollChatToBottom('activeChatMessagesBox', true);
 
-            if (window.LuminaDB) {
-                await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
-                    receiverId: activeChatSession.targetId,
-                    text: text
-                });
+            try {
+                if (window.LuminaDB) {
+                    const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
+                        receiverId: activeChatSession.targetId,
+                        text: text
+                    });
+                    if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                    if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                }
+            } finally {
+                if (input) {
+                    input.disabled = false;
+                    input.focus();
+                }
+                handleActiveChatInputChange(input?.value || '');
             }
         }
 
@@ -10725,6 +10780,7 @@
 </div>
 
     <script src="js/lumina-messenger-composer.js" defer></script>
+    <script src="js/lumina-message-requests.js?v=1" defer></script>
     <script src="js/lumina-admin-media-replacer.js?v=20260907_antiflicker_v8"></script>
     <script src="js/lumina-followed-friends.js" defer></script>
 </body>

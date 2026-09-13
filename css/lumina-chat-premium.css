@@ -285,6 +285,40 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* Prośby o rozmowę — pierwszy kontakt pozostaje pod kontrolą odbiorcy. */
+.lumina-message-requests {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.lumina-message-requests-title {
+    color: #f8d66d;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+}
+.lumina-message-request-card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 9px;
+    padding: 10px;
+    border: 1px solid rgba(250, 204, 21, .26);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(250, 204, 21, .11), rgba(168, 85, 247, .10));
+}
+.lumina-message-request-avatar {
+    width: 42px; height: 42px; border-radius: 50%; object-fit: cover;
+    border: 2px solid rgba(250, 204, 21, .65);
+}
+.lumina-message-request-content { min-width: 0; }
+.lumina-message-request-content strong { display:block; color:#fff; font-size:.82rem; }
+.lumina-message-request-content p { margin:3px 0 0; color:#cbd5e1; font-size:.74rem; line-height:1.35; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.lumina-message-request-actions { grid-column:1 / -1; display:flex; gap:6px; }
+.lumina-message-request-actions button { min-height:36px; border-radius:10px; border:1px solid transparent; padding:0 10px; font:700 .72rem/1 inherit; cursor:pointer; }
+.lumina-message-request-actions .accept { background:#22c55e; color:#06230f; }
+.lumina-message-request-actions .decline { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16); color:#e2e8f0; }
+.lumina-message-request-actions .block { margin-left:auto; background:rgba(239,68,68,.13); border-color:rgba(239,68,68,.32); color:#fecaca; }
+
 /* Mobilny pełny ekran (< 768px) */
 @media (max-width: 768px) {
     .lumina-messenger-modal-card {
@@ -306,10 +340,25 @@
     .messenger-back-btn {
         display: inline-flex !important;
     }
+    #directMessagesModal .chat-header-bar { padding: max(12px, env(safe-area-inset-top)) 14px 10px !important; }
+    #directMessagesModal .chat-header-bar > div:first-child { margin-bottom: 8px !important; }
+    #directMessagesModal .chat-header-bar h3 { font-size: 1rem !important; }
+    #directMessagesModal .chat-header-bar > div:last-child { overflow-x:auto; scrollbar-width:none; gap:5px !important; padding-bottom:2px; }
+    #directMessagesModal .chat-header-bar > div:last-child button { flex:0 0 auto !important; min-width:44px !important; padding:0 11px !important; }
+    #directMessagesModal .chat-header-bar .tab-label { display:inline !important; font-size:.69rem; white-space:nowrap; }
+    #directMessagesModal #messengerPrivateView { min-height:0; }
+    #directMessagesModal #dmListView > div { padding:12px 12px calc(12px + env(safe-area-inset-bottom)) !important; }
+    #directMessagesModal #dmConversationsList { gap:8px !important; }
+    #directMessagesModal #dmActiveConversationBox { min-height:0; }
+    #directMessagesModal #activeChatMessagesBox, #directMessagesModal #publicChatMessagesBox { padding:12px !important; scroll-behavior:smooth; }
+    #directMessagesModal .chat-input-bar { padding:9px 10px max(10px, env(safe-area-inset-bottom)) !important; gap:7px !important; }
+    #directMessagesModal .chat-input-bar input { min-height:44px; font-size:16px !important; }
+    #directMessagesModal .chat-input-bar button { min-height:44px; min-width:44px; }
+    #directMessagesModal #btnActiveChatSubmit span, #directMessagesModal #publicChatForm button span { display:none; }
+    #directMessagesModal .fb-msg-bubble-me, #directMessagesModal .fb-msg-bubble-them { max-width:86% !important; font-size:.92rem; }
 }
 @media (min-width: 769px) {
     .messenger-back-btn {
         display: none !important;
     }
 }
-

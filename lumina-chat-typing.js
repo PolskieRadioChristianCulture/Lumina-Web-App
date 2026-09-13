@@ -44,6 +44,8 @@ function notifyTyping(chatId) {
     debounceTimer = setTimeout(() => { debounceTimer = null; }, 2000);
 }
 
+const typingBindings = new Map();
+
 function listenToTypingStatus(chatId, onUpdate) {
     if (!db() || !chatId) return () => {};
     return onSnapshot(doc(db(), 'lumina_typing', chatId), (snap) => {
@@ -68,12 +70,17 @@ function listenToTypingStatus(chatId, onUpdate) {
  */
 function attachTypingIndicator(inputElId, chatId, indicatorElId, nameResolver) {
     const input = document.getElementById(inputElId);
-    if (input && !input._luminaTypingBound) {
-        input.addEventListener('input', () => notifyTyping(chatId));
-        input._luminaTypingBound = true;
+    const previousBinding = typingBindings.get(inputElId);
+    if (previousBinding?.chatId === chatId) return previousBinding.cleanup;
+    if (previousBinding?.cleanup) previousBinding.cleanup();
+
+    if (input) {
+        const onInput = () => notifyTyping(chatId);
+        input.addEventListener('input', onInput);
+        input._luminaTypingBound = onInput;
     }
 
-    listenToTypingStatus(chatId, (typingIds) => {
+    const unsubscribe = listenToTypingStatus(chatId, (typingIds) => {
         const el = document.getElementById(indicatorElId);
         if (!el) return;
         if (!typingIds.length) {
@@ -84,6 +91,21 @@ function attachTypingIndicator(inputElId, chatId, indicatorElId, nameResolver) {
         el.innerHTML = `<span class="lumina-typing-dots"><span></span><span></span><span></span></span> ${label}`;
         el.classList.add('lumina-typing-visible');
     });
+    const binding = { chatId, input, indicatorElId, cleanup: null };
+    typingBindings.set(inputElId, binding);
+
+    const cleanup = () => {
+        unsubscribe();
+        if (input?._luminaTypingBound) {
+            input.removeEventListener('input', input._luminaTypingBound);
+            input._luminaTypingBound = null;
+        }
+        if (typingBindings.get(inputElId) === binding) typingBindings.delete(inputElId);
+        const el = document.getElementById(indicatorElId);
+        if (el) el.classList.remove('lumina-typing-visible');
+    };
+    binding.cleanup = cleanup;
+    return cleanup;
 }
 
 window.LuminaDB = window.LuminaDB || {};

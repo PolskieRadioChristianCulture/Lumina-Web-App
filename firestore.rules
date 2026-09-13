@@ -35,6 +35,15 @@ service cloud.firestore {
       );
     }
 
+    function directMessageAllowed(data) {
+      return data.senderAuthUid != data.receiverAuthUid &&
+        data.participants.size() == 2 &&
+        data.senderAuthUid in data.participants &&
+        data.receiverAuthUid in data.participants &&
+        !exists(/databases/$(database)/documents/lumina_user_blocks/$(request.auth.uid + '_' + data.receiverAuthUid)) &&
+        !exists(/databases/$(database)/documents/lumina_user_blocks/$(data.receiverAuthUid + '_' + request.auth.uid));
+    }
+
     match /lumina_profiles/{profileId} {
       // Public profile cards must contain only intentionally public fields.
       allow read: if true;
@@ -77,6 +86,7 @@ service cloud.firestore {
         request.resource.data.receiverAuthUid is string &&
         request.resource.data.participants is list &&
         request.auth.uid in request.resource.data.participants &&
+        directMessageAllowed(request.resource.data) &&
         request.resource.data.text is string &&
         request.resource.data.text.size() <= 4000
       );
@@ -89,6 +99,27 @@ service cloud.firestore {
       allow delete: if isMasterAdmin() || (
         isMember() && resource.data.senderAuthUid == request.auth.uid
       );
+    }
+
+    match /lumina_message_requests/{requestId} {
+      allow read: if isMasterAdmin() || isMessageParticipant(resource.data);
+      allow create: if isMasterAdmin() || (
+        isMember() &&
+        request.resource.data.senderAuthUid == request.auth.uid &&
+        request.resource.data.receiverAuthUid is string &&
+        request.resource.data.participants is list &&
+        request.resource.data.previewText is string &&
+        request.resource.data.previewText.size() <= 1000 &&
+        request.resource.data.status == 'pending' &&
+        directMessageAllowed(request.resource.data)
+      );
+      allow update: if isMasterAdmin() || (
+        isMember() && resource.data.receiverAuthUid == request.auth.uid &&
+        resource.data.status == 'pending' &&
+        request.resource.data.status in ['accepted', 'declined', 'blocked'] &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'acceptedAt', 'acceptedBy', 'respondedAt', 'respondedBy'])
+      );
+      allow delete: if isMasterAdmin();
     }
 
     match /lumina_public_chat_messages/{messageId} {

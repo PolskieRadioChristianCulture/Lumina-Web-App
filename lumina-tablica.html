@@ -4582,6 +4582,8 @@
                             </div>
                         </div>
 
+                        <div id="activeChatTypingIndicator" class="lumina-typing-indicator" aria-live="polite" aria-atomic="true"></div>
+
                         <!-- Quick Christian Smart Blessings Bar -->
                         <div id="activeChatSmartBar" class="chat-quick-bar" data-target-input="activeChatInput"></div>
 
@@ -4605,7 +4607,7 @@
                             <button type="button" onclick="toggleChatEmojiDrawer()" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
                                 <i class="fa-regular fa-face-smile"></i>
                             </button>
-                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
+                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." maxlength="1000" autocomplete="off" style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
                             <button type="submit" id="btnActiveChatSubmit" class="lumina-send-btn-premium" style="padding: 10px 18px; border-radius: 22px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(236,72,153,0.4);">
                                 <span id="btnActiveChatSubmitLabel">Wyślij</span> <i class="fa-solid fa-paper-plane" id="btnActiveChatSubmitIcon"></i>
                             </button>
@@ -7405,6 +7407,7 @@
         let publicChatUnsubscribe = null;
         let activeChatSession = null;
         let activeChatUnsubscribe = null;
+        let activeChatTypingUnsubscribe = null;
 
         function scrollChatToBottom(boxOrId, isSmooth = false) {
             const box = typeof boxOrId === 'string' ? document.getElementById(boxOrId) : boxOrId;
@@ -8489,6 +8492,10 @@
                 activeChatUnsubscribe();
                 activeChatUnsubscribe = null;
             }
+            if (activeChatTypingUnsubscribe) {
+                activeChatTypingUnsubscribe();
+                activeChatTypingUnsubscribe = null;
+            }
             activeChatSession = null;
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
@@ -8536,16 +8543,17 @@
         };
 
         window.handleActiveChatInputChange = function(val) {
+            const btn = document.getElementById('btnActiveChatSubmit');
             const btnIcon = document.getElementById('btnActiveChatSubmitIcon');
             const btnLabel = document.getElementById('btnActiveChatSubmitLabel');
-            if (!btnIcon || !btnLabel) return;
-            if (val && val.trim().length > 0) {
-                btnLabel.textContent = 'Wyślij';
-                btnIcon.className = 'fa-solid fa-paper-plane';
-            } else {
-                btnLabel.textContent = 'Błogosław';
-                btnIcon.className = 'fa-solid fa-dove';
-            }
+            if (!btn || !btnIcon || !btnLabel) return;
+            const hasText = Boolean(val && val.trim().length > 0);
+            btn.disabled = !hasText;
+            btn.style.opacity = hasText ? '1' : '0.55';
+            btn.style.cursor = hasText ? 'pointer' : 'not-allowed';
+            btn.title = hasText ? 'Wyślij wiadomość' : 'Wpisz wiadomość, aby ją wysłać';
+            btnLabel.textContent = 'Wyślij';
+            btnIcon.className = 'fa-solid fa-paper-plane';
         };
 
         function openChatWith(name, avatar, slug, targetMessageId) {
@@ -8657,10 +8665,19 @@
                 activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
                     renderDirectChatMessages(messages, fromId);
                 });
+                if (typeof window.LuminaDB.attachTypingIndicator === 'function') {
+                    activeChatTypingUnsubscribe = window.LuminaDB.attachTypingIndicator(
+                        'activeChatInput', chatId, 'activeChatTypingIndicator',
+                        () => `${activeChatSession?.targetName || 'Rozmówca'} pisze…`
+                    );
+                }
             }
             setTimeout(() => {
                 const input = document.getElementById('activeChatInput');
-                if (input) input.focus();
+                if (input) {
+                    input.focus();
+                    handleActiveChatInputChange(input.value);
+                }
                 scrollChatToBottom('activeChatMessagesBox', false);
             }, 150);
         }
@@ -8747,21 +8764,35 @@
         async function handleSendActiveChatMessage(e) {
             if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
-            let text = input ? input.value.trim() : '';
+            const text = input ? input.value.trim() : '';
             if (!text) {
-                text = 'Pokój temu domowi i Boże Błogosławieństwo! 🕊️✨';
+                input?.focus();
+                return;
             }
             if (!activeChatSession) return;
 
+            const submitButton = document.getElementById('btnActiveChatSubmit');
             if (input) input.value = '';
+            if (input) input.disabled = true;
+            if (submitButton) submitButton.disabled = true;
             handleActiveChatInputChange('');
             scrollChatToBottom('activeChatMessagesBox', true);
 
-            if (window.LuminaDB) {
-                await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
-                    receiverId: activeChatSession.targetId,
-                    text: text
-                });
+            try {
+                if (window.LuminaDB) {
+                    const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
+                        receiverId: activeChatSession.targetId,
+                        text: text
+                    });
+                    if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                    if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                }
+            } finally {
+                if (input) {
+                    input.disabled = false;
+                    input.focus();
+                }
+                handleActiveChatInputChange(input?.value || '');
             }
         }
 
@@ -9537,6 +9568,7 @@
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js" defer></script>
     <script src="js/lumina-messenger-composer.js" defer></script>
+    <script src="js/lumina-message-requests.js?v=1" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.1_20260909" defer></script>
@@ -10506,14 +10538,4 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 

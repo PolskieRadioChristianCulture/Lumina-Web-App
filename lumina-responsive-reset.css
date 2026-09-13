@@ -679,30 +679,98 @@ body.owner-mode-active .owner-only {
         gap: 6px 12px !important;
     }
 
-    /* Mobile Action Buttons (Strictly Single Horizontal Line) */
-    .head-actions {
+    /* ══════════════════════════════════════════════════════════════════════════
+     * MOBILE ICON-ONLY PROFILE DOCTRINE (< 768px)
+     * Na smartfonach wszystkie akcje profilu (.head-actions) i zakładki nawigacji
+     * ograniczają się WYŁĄCZNIE do ikon (Zero tekstu, zero ucinania, dotyk 44x44px)
+     * ══════════════════════════════════════════════════════════════════════════ */
+    .head-actions,
+    .head-actions-row,
+    .profile-head-card .head-actions {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        scrollbar-width: none !important;
+        justify-content: center !important;
+        align-items: center !important;
         gap: 8px !important;
         width: 100% !important;
         max-width: 100% !important;
         margin-top: 10px !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding-bottom: 4px !important;
+        padding: 0 !important;
+        overflow-x: visible !important;
+        scrollbar-width: none !important;
     }
     .head-actions::-webkit-scrollbar { display: none !important; }
 
-    .head-actions > * {
-        width: auto !important;
-        flex-shrink: 0 !important;
-        white-space: nowrap !important;
-        padding: 8px 14px !important;
-        font-size: 0.82rem !important;
+    /* Ukrycie tekstu i pancerne przyciski ikon 44x44px (Apple HIG & Google Touch Target) */
+    .head-actions > button,
+    .head-actions > a,
+    .head-actions-row > button,
+    .head-actions-row > a,
+    .profile-head-card .head-actions > button,
+    .profile-head-card .head-actions > a {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 44px !important;
+        font-size: 0 !important;
+        color: transparent !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        text-decoration: none !important;
+    }
+
+    /* Ikona w centrum przycisku */
+    .head-actions button i,
+    .head-actions a i,
+    .head-actions-row button i,
+    .head-actions-row a i,
+    .profile-head-card .head-actions button i,
+    .profile-head-card .head-actions a i {
+        font-size: 1.15rem !important;
+        color: #ffffff !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        display: inline-block !important;
+    }
+
+    /* Ukrycie wszelkich etykiet tekstowych, liczników i separatorów */
+    .head-actions .btn-text,
+    .head-actions span:not(.profile-msg-badge),
+    .head-actions-row .btn-text,
+    .head-actions-row span:not(.profile-msg-badge),
+    .profile-head-card .head-actions .btn-text,
+    .profile-head-card .head-actions span:not(.profile-msg-badge),
+    #followBtnText,
+    #followCountBadge,
+    #heartBtnText,
+    #heartCountBadge,
+    .btn-divider {
+        display: none !important;
+    }
+
+    /* Czerwona kropka powiadomień wiadomości */
+    .head-actions .profile-msg-badge {
+        position: absolute !important;
+        top: -2px !important;
+        right: -2px !important;
+        display: flex !important;
+        min-width: 16px !important;
+        height: 16px !important;
+        border-radius: 8px !important;
+        font-size: 0.65rem !important;
+        color: #ffffff !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     /* Single-Column Stack for Profile Content */
@@ -724,31 +792,100 @@ body.owner-mode-active .owner-only {
         width: 100% !important;
     }
 
-    /* Horizontal Scroll for Profile Tabs */
+    /* ── PROFILE NAV TABS: ICONS-ONLY DOCK ON MOBILE ── */
     .profile-tabs-nav,
     .profile-nav-tabs,
     .profile-tabs-wrap {
         display: flex !important;
         flex-wrap: nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 8px 4px !important;
+        margin-top: 10px !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
-        padding: 4px 6px !important;
-        gap: 6px !important;
-        width: 100% !important;
     }
-
-    .profile-tabs-nav::-webkit-scrollbar {
+    .profile-tabs-nav::-webkit-scrollbar,
+    .profile-nav-tabs::-webkit-scrollbar {
         display: none !important;
     }
 
+    .profile-tabs-nav .tab-btn,
+    .profile-nav-tabs .tab-btn,
     .profile-tab-btn,
-    .tab-btn {
-        flex: 0 0 auto !important;
-        white-space: nowrap !important;
-        padding: 8px 14px !important;
-        font-size: 0.82rem !important;
-        min-height: 40px !important;
+    .profile-nav-tabs button,
+    .profile-tabs-nav button {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
+        border-radius: 14px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 44px !important;
+        font-size: 0 !important;
+        color: transparent !important;
+        box-sizing: border-box !important;
+    }
+
+    .profile-tabs-nav .tab-btn i,
+    .profile-nav-tabs .tab-btn i,
+    .profile-tab-btn i,
+    .profile-nav-tabs button i,
+    .profile-tabs-nav button i {
+        font-size: 1.2rem !important;
+        color: #94a3b8 !important;
+        margin: 0 !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+    }
+
+    .profile-tabs-nav .tab-btn.active i,
+    .profile-nav-tabs .tab-btn.active i,
+    .profile-tab-btn.active i,
+    .profile-nav-tabs button.active i,
+    .profile-tabs-nav button.active i {
+        color: #facc15 !important;
+    }
+
+    .profile-tabs-nav .tab-text,
+    .profile-nav-tabs .tab-text,
+    .profile-tab-btn .tab-text,
+    .tab-btn .tab-text,
+    .profile-nav-tabs span,
+    .profile-tabs-nav span {
+        display: none !important;
+    }
+
+    /* Przycisk powrotu w nagłówku profilu (.btn-nav-back) */
+    .btn-nav-back span,
+    .profile-nav-back span {
+        display: none !important;
+    }
+    .btn-nav-back,
+    .profile-nav-back {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 44px !important;
     }
 
     /* Photos Grid (2 columns on mobile) */

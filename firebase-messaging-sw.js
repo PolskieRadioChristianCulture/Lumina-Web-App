@@ -55,7 +55,7 @@ try {
                 { action: 'like', title: '❤️ Polub' }
             ];
             if (data.postId) urlToOpen = `./lumina-tablica.html?postId=${encodeURIComponent(data.postId)}`;
-        } else if (type === 'direct_message' || type === 'mention') {
+        } else if (type === 'direct_message' || type === 'direct_message_request' || type === 'mention') {
             actions = [
                 { action: 'reply', title: '💬 Odpowiedz' },
                 { action: 'open', title: 'Otwórz Czat' }
@@ -75,7 +75,7 @@ try {
         }
 
         const tag = data.tag || notification.tag || data.notificationId || data.eventId || (type ? `lumina_${type}` : 'lumina_notification');
-        const requireInteraction = (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd');
+        const requireInteraction = (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd');
 
         const notificationOptions = {
             body: body,
@@ -258,7 +258,7 @@ self.addEventListener('push', (event) => {
             { action: 'read', title: '📖 Zobacz Wpis' },
             { action: 'like', title: '❤️ Polub' }
         ];
-    } else if (type === 'direct_message' || type === 'mention') {
+    } else if (type === 'direct_message' || type === 'direct_message_request' || type === 'mention') {
         actions = [
             { action: 'reply', title: '💬 Odpowiedz' },
             { action: 'open', title: 'Otwórz Czat' }
@@ -278,7 +278,7 @@ self.addEventListener('push', (event) => {
         tag: notification.tag || data.tag || `lumina_${type}_${Date.now()}`,
         renotify: true,
         vibrate: [200, 100, 200],
-        requireInteraction: (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd'),
+        requireInteraction: (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd'),
         actions: actions
     };
 

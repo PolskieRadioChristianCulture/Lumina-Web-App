@@ -53,6 +53,44 @@ const LUMINA_FIREBASE_CONFIG = {
     measurementId: "G-6440T9VBQB"
 };
 
+// Adres publiczny Workera Cloudflare ustawiany dopiero po jego publikacji.
+// Worker sam weryfikuje token Firebase i dokument Firestore; ten adres nie jest sekretem.
+async function triggerLuminaPush(kind, documentId) {
+    const baseUrl = String(globalThis.LUMINA_PUSH_WORKER_URL || '').replace(/\/$/, '');
+    const pushUser = auth?.currentUser;
+    // onDirectMessageCreated działa obecnie w Firebase. Przełączenie zwykłych
+    // wiadomości na Worker wymaga świadomego ustawienia flagi po wyłączeniu tej funkcji,
+    // inaczej odbiorca dostałby dwa identyczne powiadomienia.
+    if (kind === 'direct' && globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED !== true) {
+        return { skipped: true };
+    }
+    if (!baseUrl || !/^https:\/\//.test(baseUrl) || !pushUser || pushUser.isAnonymous || !documentId) {
+        return { skipped: true };
+    }
+    let timeoutId = null;
+    try {
+        const idToken = await pushUser.getIdToken();
+        const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+        const response = await fetch(`${baseUrl}/v1/push/${encodeURIComponent(kind)}/${encodeURIComponent(documentId)}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${idToken}` },
+            signal: controller?.signal
+        });
+        if (!response.ok) {
+            console.warn(`[LUMINA Push] Worker odrzucił ${kind}: ${response.status}`);
+            return { delivered: false };
+        }
+        return await response.json();
+    } catch (error) {
+        // Wiadomość została już bezpiecznie zapisana w Firestore. Błąd push nie może jej cofnąć.
+        console.warn('[LUMINA Push] Worker chwilowo niedostępny:', error?.message || error);
+        return { delivered: false };
+    } finally {
+        if (timeoutId) clearTimeout(timeoutId);
+    }
+}
+
 const LUMINA_VAPID_KEY = "BD_YXGFbonkuMphLzVdYqADfcPX4TMnN4PowO2eu673JnZQR3RJRMM3F8nJN9Zpk8qQlSb4VEcFN39KXlZ85TPw";
 
 let app = null;
@@ -2617,6 +2655,24 @@ export function getChatId(userA, userB) {
 
 const activeDirectChatListeners = new Map();
 
+function getDirectMessageTime(message) {
+    return (message.timestamp?.seconds ? message.timestamp.seconds * 1000 : 0) || message.createdAt || 0;
+}
+
+function getDirectMessageKey(message) {
+    if (message.clientMessageId) return `client:${message.clientMessageId}`;
+    // Starsze wiadomości zapisywano równolegle w dwóch kolekcjach. Identyczny
+    // nadawca, odbiorca, czas i treść oznaczają tę samą wiadomość, nie dwa wpisy.
+    return [
+        'legacy',
+        message.senderAuthUid || message.senderUid || message.senderId || '',
+        message.receiverAuthUid || message.receiverId || '',
+        getDirectMessageTime(message),
+        message.type || 'text',
+        message.text || ''
+    ].join('|');
+}
+
 export function subscribeToDirectMessages(chatId, onUpdate) {
     if (!chatId) return () => {};
     let normalizedChatId = chatId;
@@ -2645,8 +2701,26 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
     let unsub1 = () => {};
     let unsub2 = () => {};
+    let topLevelMessages = [];
+    let nestedMessages = [];
 
-    // Listener A: Top-level collection (100% reliable)
+    const emitMergedMessages = () => {
+        const uniqueMessages = new Map();
+        [...nestedMessages, ...topLevelMessages].forEach(message => {
+            const key = getDirectMessageKey(message);
+            const existing = uniqueMessages.get(key);
+            // Preferuj dokument główny, ale zachowaj pełniejsze dane z kopii zapasowej.
+            uniqueMessages.set(key, existing ? { ...existing, ...message } : message);
+        });
+        const messages = [...uniqueMessages.values()].sort((a, b) => getDirectMessageTime(a) - getDirectMessageTime(b));
+        try {
+            localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(messages));
+        } catch(e) {}
+        onUpdate(messages);
+    };
+
+    // Dwa historyczne magazyny są obserwowane jako jedno źródło prawdy. Bez
+    // scalenia UI przełączało się między nimi i wyświetlało duplikaty.
     try {
         const directQ = query(
             collection(db, 'lumina_direct_messages'),
@@ -2654,19 +2728,9 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             limit(150)
         );
         unsub1 = onSnapshot(directQ, (snap) => {
-            const msgs = [];
-            snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
-            if (msgs.length > 0) {
-                msgs.sort((a, b) => {
-                    const timeA = (a.timestamp?.seconds ? a.timestamp.seconds * 1000 : 0) || a.createdAt || 0;
-                    const timeB = (b.timestamp?.seconds ? b.timestamp.seconds * 1000 : 0) || b.createdAt || 0;
-                    return timeA - timeB;
-                });
-                try {
-                    localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
-                } catch(e) {}
-                onUpdate(msgs);
-            }
+            topLevelMessages = [];
+            snap.forEach(d => topLevelMessages.push({ id: d.id, ...d.data() }));
+            emitMergedMessages();
         }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
     } catch(e) {}
 
@@ -2677,19 +2741,9 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             limit(150)
         );
         unsub2 = onSnapshot(nestedQ, (snap) => {
-            if (!snap.empty) {
-                const msgs = [];
-                snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
-                msgs.sort((a, b) => {
-                    const timeA = (a.timestamp?.seconds ? a.timestamp.seconds * 1000 : 0) || a.createdAt || 0;
-                    const timeB = (b.timestamp?.seconds ? b.timestamp.seconds * 1000 : 0) || b.createdAt || 0;
-                    return timeA - timeB;
-                });
-                try {
-                    localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
-                } catch(e) {}
-                onUpdate(msgs);
-            }
+            nestedMessages = [];
+            snap.forEach(d => nestedMessages.push({ id: d.id, ...d.data() }));
+            emitMergedMessages();
         }, () => {});
     } catch(e) {}
 
@@ -2698,6 +2752,71 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         try { unsub2(); } catch(e) {}
         activeDirectChatListeners.delete(normalizedChatId);
     };
+}
+
+// ── Prośby o rozmowę: pierwszy kontakt wymaga zgody odbiorcy ──
+export function subscribeToIncomingMessageRequests(onUpdate) {
+    const user = currentUserState;
+    if (!db || !user?.uid || user.isAnonymous) return () => {};
+    try {
+        const requestQuery = query(
+            collection(db, 'lumina_message_requests'),
+            where('receiverAuthUid', '==', user.uid),
+            limit(50)
+        );
+        return onSnapshot(requestQuery, snap => {
+            const requests = [];
+            snap.forEach(d => {
+                const request = { id: d.id, ...d.data() };
+                if (request.status === 'pending') requests.push(request);
+            });
+            requests.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            onUpdate(requests);
+        }, err => console.warn('Lumina message requests notice:', err));
+    } catch (e) {
+        return () => {};
+    }
+}
+
+export async function acceptMessageRequest(requestId) {
+    const user = currentUserState;
+    if (!db || !user?.uid || user.isAnonymous || !requestId) return false;
+    try {
+        const requestRef = doc(db, 'lumina_message_requests', requestId);
+        const requestSnap = await getDoc(requestRef);
+        const request = requestSnap.data();
+        if (!requestSnap.exists() || request.receiverAuthUid !== user.uid || request.status !== 'pending') return false;
+        await setDoc(doc(db, 'lumina_chats', request.chatId), {
+            chatId: request.chatId,
+            participants: [request.senderAuthUid, request.receiverAuthUid],
+            users: [request.senderId, request.receiverId, request.senderAuthUid, request.receiverAuthUid],
+            conversationState: 'accepted',
+            acceptedAt: serverTimestamp(),
+            acceptedBy: user.uid
+        }, { merge: true });
+        await updateDoc(requestRef, { status: 'accepted', acceptedAt: serverTimestamp(), acceptedBy: user.uid });
+        return request;
+    } catch (e) {
+        console.warn('Lumina accept message request notice:', e.message);
+        return false;
+    }
+}
+
+export async function declineMessageRequest(requestId, shouldBlock = false) {
+    const user = currentUserState;
+    if (!db || !user?.uid || user.isAnonymous || !requestId) return false;
+    try {
+        const requestRef = doc(db, 'lumina_message_requests', requestId);
+        const requestSnap = await getDoc(requestRef);
+        const request = requestSnap.data();
+        if (!requestSnap.exists() || request.receiverAuthUid !== user.uid || request.status !== 'pending') return false;
+        await updateDoc(requestRef, { status: shouldBlock ? 'blocked' : 'declined', respondedAt: serverTimestamp(), respondedBy: user.uid });
+        if (shouldBlock) await blockUser(request.senderId || request.senderAuthUid);
+        return true;
+    } catch (e) {
+        console.warn('Lumina decline message request notice:', e.message);
+        return false;
+    }
 }
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
@@ -2740,7 +2859,43 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
+    // Pierwsza wiadomość jest prośbą o kontakt. Istniejące, historyczne czaty
+    // pozostają otwarte, aby nie przerywać dotychczasowych rozmów.
+    if (db) {
+        try {
+            const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            if (!chatSnapshot.exists()) {
+                const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
+                const existingRequest = await getDoc(requestRef);
+                if (!existingRequest.exists()) {
+                    await setDoc(requestRef, {
+                        chatId: normalizedChatId,
+                        senderAuthUid: user.uid,
+                        receiverAuthUid,
+                        participants: [user.uid, receiverAuthUid],
+                        senderId: fromId,
+                        receiverId,
+                        senderName,
+                        senderAvatar,
+                        previewText: String(messageObj.text || '').slice(0, 1000),
+                        status: 'pending',
+                        createdAt: Date.now(),
+                        createdAtTimestamp: serverTimestamp()
+                    });
+                    await triggerLuminaPush('request', normalizedChatId);
+                    return { status: 'request_sent', requestId: normalizedChatId };
+                }
+                return { status: existingRequest.data()?.status === 'pending' ? 'request_pending' : 'request_closed' };
+            }
+        } catch (e) {
+            console.warn('Lumina message request notice:', e.message);
+            return null;
+        }
+    }
+    const clientMessageId = (globalThis.crypto?.randomUUID?.() || `${user.uid}_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+
     const fullMsg = {
+        clientMessageId,
         chatId: normalizedChatId,
         senderAuthUid: user.uid,
         receiverAuthUid,
@@ -2783,6 +2938,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     try {
         // Write to top-level collection (Primary)
         const msgRef = await addDoc(collection(db, 'lumina_direct_messages'), fullMsg);
+        await triggerLuminaPush('direct', msgRef.id);
 
         // Also write to subcollection (Backup)
         addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
@@ -2855,18 +3011,27 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
     // 1. Zapisz czas odczytania tego czatu
     localStorage.setItem(`lumina_chat_read_${normalizedChatId}`, String(Date.now()));
 
-    // 2. Natychmiast wyczyść badge nieprzeczytanych wiadomości
+    // 2. Zachowaj licznik pozostałych rozmów. Odczyt jednego wątku nie może
+    // ukrywać nowych wiadomości w innych pokojach.
     try {
-        localStorage.setItem('lumina_messages_unread_count', '0');
+        const remaining = Math.max(0, parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10) || 0);
+        localStorage.setItem('lumina_messages_unread_count', String(remaining));
         if (typeof window.updateLuminaMessagesBadge === 'function') {
-            window.updateLuminaMessagesBadge(0);
+            window.updateLuminaMessagesBadge(remaining);
         } else {
             const b = document.getElementById('floatingChatBadge');
             if (b) {
-                b.style.setProperty('display', 'none', 'important');
-                b.classList.remove('visible');
-                b.setAttribute('data-visible', 'false');
-                b.textContent = '';
+                if (remaining > 0) {
+                    b.style.setProperty('display', 'flex', 'important');
+                    b.classList.add('visible');
+                    b.setAttribute('data-visible', 'true');
+                    b.textContent = remaining > 9 ? '9+' : String(remaining);
+                } else {
+                    b.style.setProperty('display', 'none', 'important');
+                    b.classList.remove('visible');
+                    b.setAttribute('data-visible', 'false');
+                    b.textContent = '';
+                }
             }
         }
     } catch(e) {}
@@ -4345,9 +4510,13 @@ export async function blockUser(targetIdOrSlug) {
     const user = currentUserState;
     if (db && user) {
         try {
-            await setDoc(doc(db, 'lumina_user_blocks', `${user.uid}_${normalized}`), {
+            const targetProfile = await getProfileFromCloud(normalized);
+            const targetKey = targetProfile?.uid || normalized;
+            await setDoc(doc(db, 'lumina_user_blocks', `${user.uid}_${targetKey}`), {
+                ownerUid: user.uid,
                 blockerUid: user.uid,
                 blockedTargetId: normalized,
+                blockedTargetUid: targetProfile?.uid || null,
                 timestamp: serverTimestamp()
             });
         } catch(e) {}
@@ -5908,6 +6077,9 @@ window.LuminaDB = {
     getChatId,
     normalizeChatUserId,
     subscribeToDirectMessages,
+    subscribeToIncomingMessageRequests,
+    acceptMessageRequest,
+    declineMessageRequest,
     sendDirectMessageToCloud,
     markDirectMessagesAsRead,
     toggleDirectMessageReaction,
