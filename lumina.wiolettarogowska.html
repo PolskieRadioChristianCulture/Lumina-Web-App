@@ -5311,23 +5311,23 @@
         }
 
         // ── Realtime Messenger Dual Engine (Public Live Chat + Private 1:1) ──
-        function scrollChatToBottom(boxOrId, isSmooth = false) {
+        function scrollChatToBottom(boxOrId, isSmooth = false, checkNearBottom = false) {
             const box = typeof boxOrId === 'string' ? document.getElementById(boxOrId) : boxOrId;
             if (!box) return;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight;
+            if (checkNearBottom && !wasNearBottom) return;
             const execute = () => {
-                try {
-                    if (isSmooth) {
-                        box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
-                    } else {
-                        box.scrollTop = box.scrollHeight;
-                    }
-                } catch(e) {
+                if (isSmooth) {
+                    box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
+                } else if (box) {
                     box.scrollTop = box.scrollHeight;
                 }
             };
             execute();
-            setTimeout(execute, 60);
-            setTimeout(execute, 180);
+            requestAnimationFrame(execute);
+            setTimeout(execute, 40);
+            setTimeout(execute, 120);
+            setTimeout(execute, 300);
         }
         window.scrollChatToBottom = scrollChatToBottom;
 
