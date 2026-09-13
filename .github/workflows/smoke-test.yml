@@ -1,0 +1,35 @@
+name: Post-Deploy Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Target Base URL to verify'
+        required: false
+        default: 'https://polskieradio.cc'
+  repository_dispatch:
+    types: [post-deploy-smoke]
+
+concurrency:
+  group: post-deploy-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    name: Production Endpoint & Audio Stream Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run Public Health & Audio Stream Check
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://polskieradio.cc' }}
+        run: |
+          node scripts/public-health-check.cjs "$BASE_URL"

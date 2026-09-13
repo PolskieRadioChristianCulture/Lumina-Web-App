@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblia Śpiewana — Emisja 24/7 | Christian Culture</title>
+    <link rel="canonical" href="https://polskieradio.cc/biblia-spiewana">
 
     <!-- Facebook & Open Graph Video Metadata -->
     <meta property="og:type" content="video.other">
@@ -36,6 +37,42 @@
     <meta name="twitter:player" content="https://polskieradio.cc/biblia-spiewana">
     <meta name="twitter:player:width" content="1280">
     <meta name="twitter:player:height" content="720">
+
+    <!-- Structured Data (JSON-LD BroadcastEvent & VideoObject) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BroadcastEvent",
+          "@id": "https://polskieradio.cc/biblia-spiewana#broadcast",
+          "name": "Biblia Śpiewana 24/7 — Śpiewane Przypowieści Salomona & Muzyka Uwielbienia",
+          "description": "Transmisja na żywo 24/7: Śpiewane Przypowieści Salomona oraz muzyka uwielbienia i chwały.",
+          "isLiveBroadcast": true,
+          "videoFormat": "HD",
+          "broadcastOfEvent": {
+            "@type": "Event",
+            "name": "Całodobowa Transmisja Biblii Śpiewanej",
+            "startDate": "2026-01-01T00:00:00+01:00"
+          }
+        },
+        {
+          "@type": "VideoObject",
+          "@id": "https://polskieradio.cc/biblia-spiewana#video",
+          "name": "Biblia Śpiewana 24/7 na żywo",
+          "description": "Słuchaj i oglądaj na żywo: Śpiewane Przypowieści Salomona oraz muzykę chwały 24/7.",
+          "thumbnailUrl": "https://polskieradio.cc/Logo_Biblia_Spiewana.jpg",
+          "uploadDate": "2026-08-01T00:00:00+02:00",
+          "embedUrl": "https://polskieradio.cc/biblia-spiewana",
+          "publication": {
+            "@type": "BroadcastEvent",
+            "isLiveBroadcast": true,
+            "startDate": "2026-08-01T00:00:00+02:00"
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
