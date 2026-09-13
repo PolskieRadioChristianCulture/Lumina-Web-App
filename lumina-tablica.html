@@ -3514,7 +3514,7 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
-    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_4">
+    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_5">
 </head>
 <body>
 
@@ -9438,13 +9438,22 @@
                 }
             };
 
-            // Realtime Sync from LuminaDB (Firestore)
+            // Realtime Sync from LuminaDB (Firestore) z debouncingiem (eliminacja migotania)
+            let _renderFeedDebounceTimer = null;
+            function scheduleRenderFeed() {
+                if (_renderFeedDebounceTimer) clearTimeout(_renderFeedDebounceTimer);
+                _renderFeedDebounceTimer = setTimeout(() => {
+                    _renderFeedDebounceTimer = null;
+                    renderFeed();
+                }, 60);
+            }
+
             const initRealtimeSync = () => {
                 if (window.LuminaDB) {
                     // 1. Subscribe to Live Feed Posts
                     window.LuminaDB.subscribeToFeedPosts((cloudPosts) => {
                         window.cloudFeedPosts = cloudPosts;
-                        renderFeed();
+                        scheduleRenderFeed();
                     });
 
                     // 2. Subscribe to Cezary & Wioletta Profile Avatars
@@ -9452,10 +9461,10 @@
                         if (p && p.avatar && document.getElementById('founderBarAvatar')) {
                             document.getElementById('founderBarAvatar').src = p.avatar;
                         }
-                        renderFeed();
+                        scheduleRenderFeed();
                     });
                     window.LuminaDB.subscribeToProfile('wiolettarogowska', () => {
-                        renderFeed();
+                        scheduleRenderFeed();
                     });
                 } else {
                     setTimeout(initRealtimeSync, 300);
@@ -9483,7 +9492,7 @@
 
         window.addEventListener('storage', () => {
             syncFounderAvatar();
-            renderFeed();
+            scheduleRenderFeed();
         });
 
         window.openStoryFromTablicaPost = function(postId) {

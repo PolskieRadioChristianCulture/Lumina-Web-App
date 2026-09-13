@@ -22,17 +22,16 @@
     }
 
     html {
-        overflow-x: clip;
+        overflow-x: hidden;
         text-size-adjust: 100%;
         -webkit-text-size-adjust: 100%;
     }
 
     body {
-        min-height: 100dvh;
+        min-height: 100%;
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
-        padding-bottom: env(safe-area-inset-bottom);
-        overscroll-behavior-y: contain;
+        padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important;
     }
 
     .lumina-nav {
@@ -146,7 +145,7 @@
     .campaign-media-container,
     .broadcast-preview-wrap,
     .video-container {
-        contain: layout paint;
+        /* Stabilny render GPU bez migania warstw */
     }
 
     .media-img-1x1,

@@ -1886,7 +1886,7 @@
             return;
         }
 
-        if (document.getElementById('luminaCookieConsentBanner')) return;
+        if (document.getElementById('luminaCookieConsentBanner') || document.getElementById('lumina-cookie-banner')) return;
 
         // Positioned directly ABOVE the detailed cookie banner (jedno pod drugim)
         const bannerHtml = `
