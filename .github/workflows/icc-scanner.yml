@@ -8,6 +8,9 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,4 +36,4 @@ jobs:
           REPO: ${{ github.repository }}
           REPO_OWNER: ${{ github.repository_owner }}
         run: |
-          node scripts/icc_scan.js
+          node scripts/icc_scan.cjs
