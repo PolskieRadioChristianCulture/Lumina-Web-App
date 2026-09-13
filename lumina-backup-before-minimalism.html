@@ -24,14 +24,13 @@
     </script>
 
     <script>
-    // ── Emergency Auto-Sanitizer v5.0.0 (Clean corrupt localStorage & Commander photo leaks) ──
+    // ── Emergency Auto-Sanitizer v4.0.0 (Clean corrupt localStorage) ──
     (function(){
         try {
             const keysToPurge = [
                 'lumina_profile_radiocc',
                 'lumina_profile_cezaryrgowski',
                 'lumina_profile_weronika',
-                'lumina_profile_dawid',
                 'lumina_element_overrides',
                 'lumina_avatar_radiocc',
                 'lumina_custom_avatar_radiocc',
@@ -39,28 +38,11 @@
                 'lumina_custom_avatar_cezaryrgowski',
                 'lumina_avatar_weronika',
                 'lumina_custom_avatar_weronika',
-                'lumina_avatar_dawid',
-                'lumina_custom_avatar_dawid',
                 'lumina_profile_ccwomen',
                 'lumina_avatar_ccwomen',
                 'lumina_custom_avatar_ccwomen'
             ];
             keysToPurge.forEach(k => localStorage.removeItem(k));
-
-            // Usuń zdjęcia Dowódcy ze wszystkich obcych profili w localStorage
-            for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if (!k) continue;
-                if (k.startsWith('lumina_custom_avatar_') || k.startsWith('lumina_avatar_') || k.startsWith('lumina_profile_')) {
-                    const slug = k.replace('lumina_custom_avatar_', '').replace('lumina_avatar_', '').replace('lumina_profile_', '');
-                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta') {
-                        const val = (localStorage.getItem(k) || '').toLowerCase();
-                        if (val.includes('cezary') || val.includes('christian_culture_carousel') || val.includes('avatar_christian_culture')) {
-                            localStorage.removeItem(k);
-                        }
-                    }
-                }
-            }
 
             // Clean my profile if corrupted with radio cc equalizer
             const myProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
@@ -76,58 +58,31 @@
         } catch(e){}
     })();
     </script>
-    <script src="js/lumina-identity-guard.js" defer></script>
 
     <!-- Google Analytics -->
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
-    function isCommanderPhotoAsset(val) {
-        if (!val || typeof val !== 'string') return false;
-        const l = val.toLowerCase();
-        return l.includes('cezary') || l.includes('christian_culture_carousel') || l.includes('avatar_christian_culture_hq') || l.includes('tlo_profilowe_cezary');
-    }
-
     window.applyAllLuminaCustomAvatars = function() {
         try {
-            // Wymuszone usunięcie błędnych grafik Dowódcy ze wszystkich obcych profili w localStorage
-            for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if (!k) continue;
-                if (k.startsWith('lumina_custom_avatar_') || k.startsWith('lumina_avatar_')) {
-                    const slug = k.replace('lumina_custom_avatar_', '').replace('lumina_avatar_', '');
-                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta') {
-                        const val = localStorage.getItem(k);
-                        if (isCommanderPhotoAsset(val)) localStorage.removeItem(k);
-                    }
-                }
-            }
-            // Specjalne czyszczenie legacy dla profili, które mogły ulec zanieczyszczeniu
-            ['u_urszula_7685', 'urszula', 'dawid'].forEach(s => {
-                ['lumina_custom_avatar_', 'lumina_avatar_', 'lumina_profile_'].forEach(prefix => {
-                    const val = localStorage.getItem(prefix + s);
-                    if (isCommanderPhotoAsset(val)) localStorage.removeItem(prefix + s);
-                });
-            });
-
+            // Wymuszone usunięcie błędnych grafik z localStorage dla Urszuli
+            localStorage.removeItem('lumina_custom_avatar_u_urszula_7685');
+            localStorage.removeItem('lumina_avatar_u_urszula_7685');
+            localStorage.removeItem('lumina_custom_avatar_urszula');
+            localStorage.removeItem('lumina_avatar_urszula');
             const ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
-            let ovsChanged = false;
             Object.keys(ovs).forEach(k => {
-                const isCez = k.includes('cezaryrgowski') || k.includes('home-cezary-card') || k.includes('card_profile_cezaryrgowski');
-                if (!isCez && (isCommanderPhotoAsset(JSON.stringify(ovs[k])) || k.includes('urszula') || k.includes('dawid'))) {
-                    delete ovs[k];
-                    ovsChanged = true;
-                }
+                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) delete ovs[k];
             });
-            if (ovsChanged) localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
+            localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
         } catch(e) {}
 
-        // Automatyczne czyszczenie przestarzałych nadpisań
+    // Automatyczne czyszczenie przestarzałych nadpisań
         try {
-            ['radiocc', 'cezaryrgowski', 'u_urszula_7685', 'urszula', 'dawid'].forEach(s => {
+            ['radiocc', 'cezaryrgowski', 'u_urszula_7685', 'urszula'].forEach(s => {
                 const val = localStorage.getItem('lumina_custom_avatar_' + s) || localStorage.getItem('lumina_avatar_' + s);
-                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || (s !== 'cezaryrgowski' && isCommanderPhotoAsset(val)) || val.includes('RADIO'))) {
+                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || val.includes('christian_culture') || val.includes('RADIO') || val.includes('avatar_christian_culture'))) {
                     localStorage.removeItem('lumina_custom_avatar_' + s);
                     localStorage.removeItem('lumina_avatar_' + s);
                 }
@@ -141,12 +96,6 @@
                 if (!slug) return;
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
                 if (customAvatar) {
-                    // BEZWZGLĘDNA BLOKADA: Zdjęcia Dowódcy wyłącznie dla profilu Cezarego Rogowskiego
-                    if (slug !== 'cezaryrgowski' && slug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
-                        localStorage.removeItem('lumina_custom_avatar_' + slug);
-                        localStorage.removeItem('lumina_avatar_' + slug);
-                        return;
-                    }
                     const img = card.querySelector('img');
                     if (img && img.src !== customAvatar) {
                         img.src = customAvatar;
@@ -165,15 +114,10 @@
             if (curSlug) {
                 const customAvatar = localStorage.getItem('lumina_custom_avatar_' + curSlug) || localStorage.getItem('lumina_avatar_' + curSlug);
                 if (customAvatar) {
-                    if (curSlug !== 'cezaryrgowski' && curSlug !== 'cezary_wioletta' && isCommanderPhotoAsset(customAvatar)) {
-                        localStorage.removeItem('lumina_custom_avatar_' + curSlug);
-                        localStorage.removeItem('lumina_avatar_' + curSlug);
-                    } else {
-                        const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
-                        if (mainAvatar && mainAvatar.src !== customAvatar) {
-                            mainAvatar.src = customAvatar;
-                            mainAvatar.setAttribute('src', customAvatar);
-                        }
+                    const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
+                    if (mainAvatar && mainAvatar.src !== customAvatar) {
+                        mainAvatar.src = customAvatar;
+                        mainAvatar.setAttribute('src', customAvatar);
                     }
                 }
             }
@@ -183,12 +127,6 @@
             Object.keys(overrides).forEach(sel => {
                 const item = overrides[sel];
                 if (!item) return;
-                const isCez = sel.includes('cezaryrgowski') || sel.includes('home-cezary-card') || sel.includes('card_profile_cezaryrgowski');
-                if (!isCez && item.src && isCommanderPhotoAsset(item.src)) {
-                    delete overrides[sel];
-                    localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
-                    return;
-                }
                 const el = document.querySelector(sel);
                 if (el) {
                     if (item.type === 'img' && item.src) {
@@ -363,13 +301,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="LUMINA">
-    <meta name="theme-color" content="#0A0A0F">
+    <meta name="theme-color" content="#090d1a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/christian-culture-design-system.css">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
@@ -385,26 +322,25 @@
 
     <style>
         :root {
-            --navy: #12121A;
-            --navy-deep: #0A0A0F;
-            --accent-purple: var(--cc-gold, #D4A94A);
-            --accent-cyan: var(--cc-gold-glow, #E8C97A);
-            --accent-magenta: var(--cc-ember, #B23A2E);
-            --text-muted: var(--cc-mist, #8A8578);
+            --navy: #0f1535;
+            --navy-deep: #0b1838;
+            --accent-purple: #9d4edd;
+            --accent-cyan: #00d2ff;
+            --accent-magenta: #e01a4f;
+            --text-muted: #94a3b8;
             --radius-lg: 20px;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--cc-font-sans, 'Manrope', 'Plus Jakarta Sans', sans-serif);
-            background: var(--cc-bg-void, #0A0A0F);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--navy-deep);
             min-height: 100vh;
-            color: var(--cc-text-parchment, #EDE6D6);
+            color: #fff;
             overflow-x: hidden;
         }
 
-        
         /* ──────────────────── NAVBAR ──────────────────── */
         .lumina-nav {
             position: sticky;
@@ -414,11 +350,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 32px;
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(15, 23, 42, 0.94);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(212, 169, 74, 0.22);
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             gap: 16px;
         }
 
@@ -432,12 +368,12 @@
             align-items: center;
             gap: 10px;
             flex-shrink: 0;
-            font-family: var(--cc-font-serif, 'Fraunces', serif);
+            font-family: 'Outfit', sans-serif;
         }
         .nav-logo-text span {
-            color: var(--cc-text-parchment, #EDE6D6);
+            color: #ffffff;
         }
-        .nav-logo-text i { color: var(--cc-gold, #D4A94A); text-shadow: 0 0 10px rgba(212,169,74,0.5); }
+        .nav-logo-text i { color: #eab308; }
 
         /* Flexible Centered Nav Links (No overlap with right widgets) */
         .nav-links {
@@ -451,9 +387,9 @@
         }
 
         .nav-link {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 169, 74, 0.2);
-            color: var(--cc-mist, #8A8578);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
             font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
@@ -467,30 +403,29 @@
             border-radius: 40px;
         }
         .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-glow, #E8C97A));
+            background: linear-gradient(135deg, #a855f7, #06b6d4);
             border-color: transparent;
-            color: #0A0A0F;
-            font-weight: 800;
-            box-shadow: 0 4px 18px rgba(212, 169, 74, 0.45);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5), 0 0 16px rgba(6, 182, 212, 0.35);
             transform: translateY(-1px);
         }
         .nav-badge {
-            color: var(--cc-ember, #B23A2E);
+            color: #ef4444;
             font-size: 0.9rem;
             font-weight: 700;
         }
 
         .btn-nav-cta {
-            background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-glow, #E8C97A));
-            color: #0A0A0F;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             padding: 8px 18px;
             border-radius: 30px;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.84rem;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 4px 14px rgba(212, 169, 74, 0.35);
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -501,12 +436,12 @@
         }
         .btn-nav-cta i {
             font-size: 0.95rem;
-            color: #0A0A0F;
+            color: #ffffff;
         }
         .btn-nav-cta:hover {
-            background: linear-gradient(135deg, #E8C97A, #F5DC9A);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(212, 169, 74, 0.55);
+            box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
         }
 
         .btn-nav-support {
@@ -640,9 +575,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 240px;
+            min-height: 420px;
             background-color: #0b1838;
-            padding: 24px 20px 18px;
+            padding: 45px 20px 35px;
         }
 
         /* Pełnowymiarowa, czysta grafika tła - twarze w 100% widoczne bez zniekształceń i bez różnic kolorów */
@@ -740,84 +675,75 @@
             color: #7dd3fc;
         }
 
-        /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (SLIM RIBBON) ══════════ */
+        /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (MAKIETA 3) ══════════ */
         .devotional-banner-section {
-            max-width: 1040px;
-            margin: 10px auto 28px;
+            max-width: 1100px;
+            margin: 14px auto 20px;
             padding: 0 16px;
             position: relative;
             z-index: 10;
-            box-sizing: border-box;
-            width: 100%;
         }
 
         .devotional-glass-card {
             background: rgba(15, 23, 42, 0.88);
-            border: 1px solid rgba(168, 85, 247, 0.35);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(168, 85, 247, 0.12);
-            border-radius: 16px;
-            padding: 9px 18px;
+            border: 1px solid rgba(250, 204, 21, 0.28);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.08);
+            border-radius: 18px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 16px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            box-sizing: border-box;
-            width: 100%;
         }
 
         .devotional-card-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
             flex: 1;
             min-width: 0;
         }
 
         .devotional-icon-box {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
         }
 
         .devotional-icon-box i {
             color: #fff;
-            font-size: 0.85rem;
+            font-size: 1.2rem;
         }
 
         .devotional-text-box {
             flex: 1;
             min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: nowrap;
-            overflow: hidden;
         }
 
         .devotional-meta {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
+            gap: 8px;
+            margin-bottom: 3px;
         }
 
         .devotional-tag {
-            background: rgba(168, 85, 247, 0.18);
-            border: 1px solid rgba(168, 85, 247, 0.45);
-            color: #c084fc;
-            font-size: 0.65rem;
+            background: rgba(250, 204, 21, 0.18);
+            border: 1px solid rgba(250, 204, 21, 0.45);
+            color: #facc15;
+            font-size: 0.68rem;
             font-weight: 800;
-            padding: 1px 6px;
-            border-radius: 4px;
+            padding: 2px 7px;
+            border-radius: 6px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
             display: inline-flex;
@@ -827,163 +753,171 @@
 
         .devotional-date {
             color: #94a3b8;
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 600;
-            white-space: nowrap;
         }
 
         .devotional-title {
-            font-size: 0.82rem;
-            font-weight: 700;
+            font-size: 0.95rem;
+            font-weight: 800;
             color: #fff;
-            margin: 0;
-            line-height: 1.25;
+            margin: 0 0 2px;
+            line-height: 1.3;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .devotional-snippet {
-            display: none !important;
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            margin: 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .devotional-actions {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             flex-shrink: 0;
         }
 
         .btn-devotional-read {
-            padding: 5px 12px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            padding: 9px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
             border: none;
             color: #fff;
             font-weight: 800;
             font-family: inherit;
-            font-size: 0.74rem;
+            font-size: 0.80rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 3px 12px rgba(168, 85, 247, 0.35);
+            box-shadow: 0 3px 12px rgba(245, 158, 11, 0.3);
             transition: transform 0.2s;
             white-space: nowrap;
         }
-        .btn-devotional-read:hover {
-            transform: translateY(-1px);
-        }
 
         .btn-devotional-feed {
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 9px 14px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.16);
             color: #38bdf8;
             font-weight: 700;
             font-family: inherit;
-            font-size: 0.74rem;
+            font-size: 0.80rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            white-space: nowrap;
+            gap: 6px;
             transition: background 0.2s;
-        }
-        .btn-devotional-feed:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
+            white-space: nowrap;
         }
 
         @media (max-width: 768px) {
             .devotional-banner-section {
-                margin: 6px auto 22px;
+                margin: 8px auto 16px;
                 padding: 0 12px;
             }
             .devotional-glass-card {
-                padding: 7px 12px;
-                gap: 8px;
-                border-radius: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 14px;
+                gap: 10px;
+                border-radius: 16px;
             }
             .devotional-card-left {
-                gap: 8px;
+                gap: 10px;
             }
             .devotional-icon-box {
-                width: 26px;
-                height: 26px;
-                border-radius: 6px;
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
             }
             .devotional-icon-box i {
-                font-size: 0.75rem;
-            }
-            .devotional-date {
-                display: none;
+                font-size: 1rem;
             }
             .devotional-title {
-                font-size: 0.78rem;
+                font-size: 0.86rem;
+                white-space: normal;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
             }
-            .btn-devotional-feed {
+            .devotional-snippet {
                 display: none;
             }
-            .btn-devotional-read {
-                padding: 4px 10px;
-                font-size: 0.70rem;
+            .devotional-actions {
+                width: 100%;
+                display: flex;
+                gap: 8px;
+            }
+            .btn-devotional-read, .btn-devotional-feed {
+                flex: 1;
+                justify-content: center;
+                padding: 8px 10px;
+                font-size: 0.76rem;
             }
         }
 
         .hero-title {
             font-size: clamp(1.85rem, 4vw, 2.75rem);
-            font-weight: 700;
+            font-weight: 800;
             line-height: 1.22;
-            color: var(--cc-text-parchment, #EDE6D6);
-            text-shadow: 0 4px 24px rgba(0,0,0,0.85);
+            color: #fff;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.75);
             margin: 0 auto 14px;
-            letter-spacing: -0.01em;
-            font-family: var(--cc-font-serif, 'Fraunces', serif);
+            letter-spacing: -0.02em;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             text-wrap: balance;
         }
 
         .hero-title-accent {
-            color: var(--cc-gold, #D4A94A);
+            color: #c084fc;
             font-weight: 400;
-            font-style: italic;
         }
 
         .hero-subtitle {
             font-size: clamp(0.92rem, 1.8vw, 1.05rem);
-            color: rgba(237, 230, 214, 0.9);
+            color: rgba(241, 245, 249, 0.94);
             font-weight: 500;
             line-height: 1.55;
             max-width: 680px;
             margin: 0 auto 20px;
             text-shadow: 0 2px 14px rgba(0,0,0,0.85);
-            font-family: var(--cc-font-sans, 'Manrope', 'Plus Jakarta Sans', sans-serif);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             text-wrap: balance;
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: clamp(1.3rem, 5vw, 1.7rem); line-height: 1.25; margin-bottom: 6px; }
-            .hero-subtitle { font-size: 0.82rem; line-height: 1.4; margin-bottom: 10px; }
-            .hero-section { min-height: 220px; padding: 20px 14px 14px; }
-            .hero-content { padding: 4px 8px 0; max-width: 100%; }
+            .hero-title { font-size: clamp(1.5rem, 5.5vw, 1.95rem); line-height: 1.25; margin-bottom: 10px; }
+            .hero-subtitle { font-size: 0.9rem; line-height: 1.45; margin-bottom: 18px; }
+            .hero-section { min-height: 390px; padding: 35px 14px 16px; }
+            .hero-content { padding: 8px 10px 0; max-width: 100%; }
             .hero-break { display: none; }
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 1.25rem; line-height: 1.22; }
-            .hero-subtitle { font-size: 0.78rem; }
-            .hero-section { min-height: 200px; padding: 16px 10px 12px; }
-            .hero-pill-badge { font-size: 0.68rem; padding: 3px 8px; margin-bottom: 8px; }
+            .hero-title { font-size: 1.45rem; line-height: 1.24; }
+            .hero-subtitle { font-size: 0.84rem; }
+            .hero-section { min-height: 360px; padding: 25px 10px 14px; }
+            .hero-pill-badge { font-size: 0.72rem; padding: 4px 10px; margin-bottom: 10px; }
         }
 
         .btn-hero-main {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-glow, #E8C97A));
-            color: #0A0A0F;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(90deg, #d946ef, #0ea5e9);
+            color: #fff;
+            border: none;
             padding: 16px 44px;
             border-radius: 40px;
             font-weight: 800;
@@ -991,13 +925,12 @@
             letter-spacing: 0.8px;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 0 25px rgba(212, 169, 74, 0.45), 0 0 45px rgba(232, 201, 122, 0.3);
+            box-shadow: 0 0 30px rgba(217,70,239,0.55), 0 0 55px rgba(14,165,233,0.35);
             transition: transform 0.25s, box-shadow 0.25s;
         }
         .btn-hero-main:hover {
             transform: scale(1.05);
-            background: linear-gradient(135deg, #E8C97A, #F5DC9A);
-            box-shadow: 0 0 35px rgba(212, 169, 74, 0.65), 0 0 55px rgba(232, 201, 122, 0.45);
+            box-shadow: 0 0 42px rgba(217,70,239,0.75), 0 0 70px rgba(14,165,233,0.55);
         }
 
         /* ──────────────────── DISCOVERY FILTER CHIPS & MATCH ANIMATION ──────────────────── */
@@ -1008,10 +941,10 @@
             gap: 10px;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
-            margin: 16px auto 6px;
-            padding: 0 16px;
-            max-width: 1040px;
+            flex-wrap: nowrap;
+            margin: 0 auto;
+            padding: 16px 16px 4px;
+            max-width: 1050px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -1021,8 +954,7 @@
                 max-width: 100%;
                 overflow-x: auto;
                 justify-content: flex-start;
-                padding: 10px 12px 6px;
-                margin: 12px auto 6px;
+                padding: 12px 16px 8px;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
@@ -1181,7 +1113,7 @@
         .cards-section {
             position: relative;
             padding-top: 8px;
-            padding-bottom: 12px;
+            padding-bottom: 24px;
             overflow: visible;
         }
 
@@ -1234,7 +1166,6 @@
             width: 100%;
             align-items: center;
             -webkit-overflow-scrolling: touch;
-            position: relative;
         }
         .profiles-grid::-webkit-scrollbar { display: none; }
 
@@ -1246,10 +1177,10 @@
             box-sizing: border-box;
             height: 410px;
             scroll-snap-align: center;
-            background: #12121A;
+            background: #0f172a;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,169,74,0.22);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.32), 0 0 0 1px rgba(255,255,255,0.1);
             cursor: pointer;
             transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.45s ease, opacity 0.45s ease;
             position: relative;
@@ -1265,28 +1196,28 @@
         .profile-card.active-center-card,
         .profile-card.featured {
             transform: translateY(-16px) scale(1.06) !important;
-            box-shadow: 0 22px 50px rgba(0,0,0,0.65), 0 0 30px rgba(212,169,74,0.35);
-            border: 2px solid rgba(212,169,74,0.65);
+            box-shadow: 0 22px 50px rgba(0,0,0,0.5), 0 0 28px rgba(168,85,247,0.35);
+            border: 2px solid rgba(255,255,255,0.45);
             opacity: 1;
             z-index: 10;
         }
 
-        @media (max-width: 992px) and (min-width: 681px) {
-            .carousel-container { margin-top: 24px; padding: 0 4px; overflow: visible; }
+        @media (max-width: 992px) {
+            .carousel-container { margin-top: 24px; padding: 0; overflow: visible; }
             .profiles-grid {
                 gap: 16px;
-                padding: 30px 0 40px;
-                scroll-snap-type: none;
+                padding: 30px 16px 40px;
+                scroll-snap-type: x mandatory;
+                scroll-padding: 0 16px;
                 -webkit-overflow-scrolling: touch;
             }
             .profile-card {
-                flex: 0 0 calc((100% - 32px) / 3) !important;
-                width: calc((100% - 32px) / 3) !important;
-                min-width: calc((100% - 32px) / 3) !important;
-                max-width: calc((100% - 32px) / 3) !important;
+                flex: 0 0 285px;
                 height: 400px;
                 opacity: 1;
                 transform: none;
+                scroll-snap-align: center;
+                scroll-snap-stop: always;
                 -webkit-tap-highlight-color: transparent;
                 will-change: transform;
             }
@@ -1333,7 +1264,7 @@
                 font-size: 0.95rem;
             }
             .discovery-filters-wrap {
-                margin: 10px 0 6px;
+                margin: 10px 0 20px;
                 padding: 4px 16px 10px;
                 display: flex;
                 flex-wrap: nowrap;
@@ -1346,29 +1277,17 @@
             }
             .discovery-filters-wrap::-webkit-scrollbar { display: none; }
             .filter-chip {
+                flex-shrink: 0;
+                padding: 8px 16px;
+                font-size: 0.82rem;
+            }
+            .btn-3d-recommend {
                 flex-shrink: 0 !important;
+                width: 40px !important;
                 height: 40px !important;
-                min-height: 40px !important;
-                min-width: 44px !important;
-                padding: 0 14px !important;
-                border-radius: 20px !important;
-                font-size: 0.82rem !important;
-                font-weight: 700 !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                white-space: nowrap !important;
-                touch-action: manipulation !important;
-                cursor: pointer !important;
-            }
-            .filter-chip .filter-chip-text {
-                display: inline !important;
-                font-weight: 700 !important;
-                font-size: 0.82rem !important;
-                pointer-events: none !important;
-            }
-            .filter-chip * {
-                pointer-events: none !important;
+                min-width: 40px !important;
+                padding: 0 !important;
+                border-radius: 50% !important;
             }
             .carousel-container {
                 margin-top: 20px;
@@ -1448,21 +1367,16 @@
             overflow: visible;
         }
 
-        /* Explicit reveal when search is triggered or focused (No hover jumps) */
+        /* Hover on Hero, Click/Tap on Background or Active Focus reveals search bar smoothly */
+        .hero-section:hover .universal-search-container,
         .hero-section.search-active .universal-search-container,
         .universal-search-container.is-visible,
         .universal-search-container:focus-within {
             opacity: 1;
-            max-height: 80px;
-            margin-top: 10px;
+            max-height: 140px;
+            margin-top: 18px;
             transform: translateY(0) scale(1);
             pointer-events: auto;
-        }
-
-        .hero-section.search-active #heroSearchTriggerRow,
-        .hero-section:has(.universal-search-container.is-visible) #heroSearchTriggerRow,
-        .hero-section:has(.universal-search-container:focus-within) #heroSearchTriggerRow {
-            display: none !important;
         }
 
         .search-input-wrapper {
@@ -1997,8 +1911,7 @@
             justify-content: flex-end;
         }
         .card-name {
-            font-size: 1.15rem; font-weight: 700; color: var(--cc-text-parchment, #EDE6D6);
-            font-family: var(--cc-font-serif, 'Fraunces', serif);
+            font-size: 1.15rem; font-weight: 800; color: #ffffff;
             text-shadow: 0 2px 8px rgba(0,0,0,0.85);
             display: flex; align-items: center; gap: 6px;
             letter-spacing: 0.2px; line-height: 1.25;
@@ -2866,14 +2779,12 @@
         /* ──────────────────── FLOATING 3D SCRIPTURE CARDS ──────────────────── */
         .scripture-strip {
             max-width: 1040px;
-            margin: 0 auto 36px;
-            padding: 0 16px;
+            margin: 15px auto 45px;
+            padding: 0 24px;
             display: flex;
-            gap: 16px;
+            gap: 24px;
             perspective: 1200px;
             transform-style: preserve-3d;
-            box-sizing: border-box;
-            width: 100%;
         }
         .scripture-card {
             flex: 1;
@@ -2881,8 +2792,8 @@
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 18px 22px;
+            border-radius: 20px;
+            padding: 22px 26px;
             text-align: left;
             position: relative;
             overflow: hidden;
@@ -2989,12 +2900,7 @@
         }
 
         @media (max-width: 800px) {
-            .scripture-strip {
-                flex-direction: column;
-                gap: 12px;
-                padding: 0 12px;
-                margin: 0 auto 30px;
-            }
+            .scripture-strip { flex-direction: column; }
             .scripture-card:nth-child(1), .scripture-card:nth-child(2) { animation: none; transform: none; }
             .nav-radio-sub { display: none; }
         }
@@ -3072,6 +2978,10 @@
             transform: scale(1.05);
         }
 
+        @media (max-width: 800px) {
+            .scripture-strip { flex-direction: column; }
+            .nav-radio-sub { display: none; }
+        }
     
         /* ── LUMINA FLOATING SCROLL TO TOP BUTTON ── */
         .lumina-scroll-top-btn {
@@ -3476,8 +3386,9 @@
                 font-size: 0.86rem;
             }
         }
-    </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260912_v415">
+
+</style>
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=1786937913306">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786940887015">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -3487,7 +3398,7 @@
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
-    <script type="module" src="js/lumina-actions.js?v=20260913_c"></script>
+    <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
@@ -3606,9 +3517,9 @@
             height: 38px !important;
             min-width: 38px !important;
             border-radius: 50% !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
-            color: #c084fc !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
+            color: #facc15 !important;
             cursor: pointer !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -3621,10 +3532,10 @@
         }
         #radioWidget:hover,
         .nav-radio-btn:hover {
-            border-color: rgba(192, 132, 252, 0.8) !important;
+            border-color: #fde047 !important;
             background: rgba(26, 38, 74, 0.95) !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
         }
 
         /* 2. Menu Button (Unified) */
@@ -3633,8 +3544,8 @@
             min-height: 38px !important;
             padding: 0 15px !important;
             border-radius: 20px !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
             color: #fff !important;
             font-family: 'Outfit', sans-serif !important;
             font-size: 0.84rem !important;
@@ -3650,14 +3561,14 @@
             flex-shrink: 0 !important;
         }
         .nav-menu-btn i.fa-compass {
-            color: #c084fc !important;
+            color: #facc15 !important;
             font-size: 1rem !important;
         }
         .nav-menu-btn:hover {
-            border-color: rgba(192, 132, 252, 0.8) !important;
+            border-color: #fde047 !important;
             background: rgba(26, 38, 74, 0.95) !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
         }
 
         /* 3. Support Button (Unified) */
@@ -3666,8 +3577,8 @@
             min-height: 38px !important;
             padding: 0 15px !important;
             border-radius: 20px !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
             color: #fff !important;
             font-family: 'Outfit', sans-serif !important;
             font-size: 0.84rem !important;
@@ -3683,7 +3594,7 @@
             flex-shrink: 0 !important;
         }
         .btn-nav-support i {
-            color: #c084fc !important;
+            color: #facc15 !important;
             font-size: 1rem !important;
         }
         .btn-nav-support .btn-nav-cta-text {
@@ -3693,10 +3604,10 @@
             font-family: 'Outfit', sans-serif !important;
         }
         .btn-nav-support:hover {
-            border-color: rgba(192, 132, 252, 0.8) !important;
+            border-color: #fde047 !important;
             background: rgba(26, 38, 74, 0.95) !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
         }
 
         /* 4. User Profile Pill (Unified) */
@@ -3705,8 +3616,8 @@
             min-height: 38px !important;
             padding: 0 8px 0 2px !important;
             border-radius: 20px !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
             box-sizing: border-box !important;
             display: inline-flex !important;
@@ -3719,24 +3630,16 @@
             height: 32px !important;
             border-radius: 50% !important;
             object-fit: cover !important;
-            border: 1.5px solid rgba(192, 132, 252, 0.85) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.85) !important;
             cursor: pointer !important;
         }
         .btn-nav-logout i {
-            color: #cbd5e1 !important;
+            color: #facc15 !important;
             font-size: 0.9rem !important;
-            transition: color 0.2s ease !important;
-        }
-        .btn-nav-logout:hover i {
-            color: #ec4899 !important;
         }
         .btn-nav-more i {
-            color: #cbd5e1 !important;
+            color: #facc15 !important;
             font-size: 0.95rem !important;
-            transition: color 0.2s ease !important;
-        }
-        .btn-nav-more:hover i {
-            color: #c084fc !important;
         }
 
         /* ═════════ MOBILE (<= 640px) ═════════ */
@@ -3923,6 +3826,8 @@
 /* 🚀 PANCERNA OPTYMALIZACJA MOBILNA: ZERO PRZEGRZEWANIA I LAGÓW */
 .profile-card {
     contain: layout paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 260px 380px;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: auto;
@@ -4004,280 +3909,18 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
-<style>
-        /* LUMINA NAVBAR SEARCH & BRAND ZONE */
-        .nav-brand-group {
-            display: flex !important;
-            align-items: center !important;
-            gap: 16px !important;
-            flex-shrink: 0 !important;
-        }
-        .nav-search-bar-wrap {
-            width: 320px !important;
-            max-width: 350px !important;
-            margin: 0 !important;
-            position: relative !important;
-            z-index: 50 !important;
-        }
-        .nav-search-bar-wrap .universal-search-container {
-            opacity: 1 !important;
-            max-height: none !important;
-            transform: none !important;
-            pointer-events: auto !important;
-            margin: 0 !important;
-            width: 100% !important;
-        }
-        .nav-search-bar-wrap .search-input-wrapper {
-            background: rgba(15, 23, 42, 0.75) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border: 1px solid rgba(168, 85, 247, 0.35) !important;
-            border-radius: 20px !important;
-            height: 35px !important;
-            min-height: 35px !important;
-            max-height: 35px !important;
-            box-sizing: border-box !important;
-            padding: 0 4px 0 12px !important;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.20) !important;
-            display: flex !important;
-            align-items: center !important;
-            transition: all 0.2s ease !important;
-        }
-        .nav-search-bar-wrap .search-input-wrapper:hover {
-            border-color: rgba(192, 132, 252, 0.7) !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-        }
-        .nav-search-bar-wrap .search-input-wrapper:focus-within {
-            background: rgba(11, 18, 38, 0.98) !important;
-            border-color: rgba(192, 132, 252, 0.9) !important;
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.35), inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
-        }
-        .nav-search-bar-wrap .search-icon {
-            font-size: 0.78rem !important;
-            color: #c084fc !important;
-            margin-right: 8px !important;
-            opacity: 0.95 !important;
-            flex-shrink: 0 !important;
-        }
-        .nav-search-bar-wrap .omni-search-input {
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            color: #ffffff !important;
-            font-size: 0.78rem !important;
-            font-weight: 500 !important;
-            width: 100% !important;
-            height: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            line-height: 35px !important;
-        }
-        .nav-search-bar-wrap .omni-search-input::placeholder {
-            color: rgba(203, 213, 225, 0.60) !important;
-            font-size: 0.76rem !important;
-            font-weight: 400 !important;
-        }
-        .nav-search-bar-wrap .btn-omni-close {
-            font-size: 0.75rem !important;
-            padding: 2px 4px !important;
-            color: #94a3b8 !important;
-        }
-        .nav-search-bar-wrap .btn-omni-action {
-            width: 27px !important;
-            height: 27px !important;
-            min-width: 27px !important;
-            min-height: 27px !important;
-            border-radius: 50% !important;
-            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%) !important;
-            border: none !important;
-            color: #ffffff !important;
-            font-size: 0.66rem !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            cursor: pointer !important;
-            flex-shrink: 0 !important;
-            margin-left: 4px !important;
-            padding: 0 !important;
-            box-shadow: 0 2px 6px rgba(236, 72, 153, 0.35) !important;
-            transition: transform 0.15s ease, box-shadow 0.15s ease !important;
-        }
-        .nav-search-bar-wrap .btn-omni-action:hover {
-            transform: scale(1.06) !important;
-            box-shadow: 0 3px 10px rgba(236, 72, 153, 0.5) !important;
-        }
-        .nav-search-bar-wrap .btn-omni-action:active {
-            transform: scale(0.92) !important;
-        }
-        .nav-search-bar-wrap .omni-dropdown {
-            position: absolute !important;
-            top: calc(100% + 6px) !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-            max-height: 420px !important;
-            overflow-y: auto !important;
-            background: rgba(11, 17, 32, 0.98) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.5) !important;
-            border-radius: 16px !important;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            z-index: 10005 !important;
-        }
-        .mobile-nav-search-btn {
-            display: none !important;
-        }
-        .btn-mobile-search-dismiss {
-            display: none !important;
-        }
-        @keyframes navSearchFadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 1024px) {
-            .nav-brand-group {
-                gap: 12px !important;
-            }
-            .nav-search-bar-wrap {
-                width: 220px !important;
-                max-width: 220px !important;
-            }
-        }
-        @media (max-width: 768px) {
-            .nav-brand-group {
-                gap: 10px !important;
-            }
-            .nav-search-bar-wrap {
-                width: 160px !important;
-                max-width: 180px !important;
-            }
-            .nav-search-bar-wrap .search-input-wrapper {
-                height: 33px !important;
-                min-height: 33px !important;
-                max-height: 33px !important;
-            }
-            .nav-search-bar-wrap .btn-omni-action {
-                width: 25px !important;
-                height: 25px !important;
-                min-width: 25px !important;
-                min-height: 25px !important;
-                font-size: 0.62rem !important;
-            }
-            .nav-search-bar-wrap .omni-search-input {
-                font-size: 0.74rem !important;
-            }
-        }
-        @media (max-width: 640px) {
-            .nav-brand-group {
-                gap: 8px !important;
-            }
-            .nav-logo-text span {
-                font-size: 1rem !important;
-            }
-            .mobile-nav-search-btn {
-                display: inline-flex !important;
-                width: 36px !important;
-                height: 36px !important;
-                min-width: 36px !important;
-                min-height: 36px !important;
-                border-radius: 50% !important;
-                background: rgba(15, 23, 42, 0.85) !important;
-                border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
-                color: #c084fc !important;
-                cursor: pointer !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0 !important;
-                font-size: 0.9rem !important;
-                transition: transform 0.15s ease, border-color 0.2s ease !important;
-            }
-            .mobile-nav-search-btn:hover {
-                border-color: rgba(192, 132, 252, 0.8) !important;
-                box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
-            }
-            .mobile-nav-search-btn:active {
-                transform: scale(0.92) !important;
-            }
-            .nav-search-bar-wrap {
-                display: none !important;
-            }
-            .nav-search-bar-wrap.mobile-open {
-                display: block !important;
-                position: absolute !important;
-                top: 6px !important;
-                left: 8px !important;
-                right: 8px !important;
-                width: calc(100% - 16px) !important;
-                max-width: none !important;
-                margin: 0 !important;
-                z-index: 10020 !important;
-                animation: navSearchFadeIn 0.2s ease !important;
-            }
-            .nav-search-bar-wrap.mobile-open .universal-search-container {
-                width: 100% !important;
-            }
-            .nav-search-bar-wrap.mobile-open .search-input-wrapper {
-                height: 38px !important;
-                min-height: 38px !important;
-                max-height: 38px !important;
-                background: rgba(11, 18, 38, 0.98) !important;
-                border-color: rgba(192, 132, 252, 0.9) !important;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(168, 85, 247, 0.35) !important;
-                padding: 0 6px 0 12px !important;
-            }
-            .nav-search-bar-wrap.mobile-open .omni-search-input {
-                font-size: 0.84rem !important;
-                display: block !important;
-            }
-            .nav-search-bar-wrap.mobile-open .btn-mobile-search-dismiss {
-                display: inline-flex !important;
-                background: transparent !important;
-                border: none !important;
-                color: #94a3b8 !important;
-                font-size: 1.1rem !important;
-                padding: 4px 8px !important;
-                cursor: pointer !important;
-                align-items: center !important;
-                justify-content: center !important;
-                margin-left: 4px !important;
-            }
-            .lumina-nav .btn-nav-support {
-                display: none !important;
-            }
-        }
-
-        /* Hero Auto-Reveal Faces on Background */
-        .hero-section {
-            min-height: 250px !important;
-            cursor: pointer;
-            transition: background 0.5s ease;
-        }
-        .hero-content {
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-        .hero-section.faces-revealed .hero-content {
-            opacity: 0 !important;
-            pointer-events: none !important;
-            transform: translateY(-8px) !important;
-        }
-    </style>
-    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260913_6">
 </head>
 <body>
 <script>
     (function() {
         try {
-            ['lumina_profile_u_urszula_7685', 'lumina_profile_urszula', 'lumina_custom_avatar_u_urszula_7685', 'lumina_avatar_u_urszula_7685', 'lumina_custom_avatar_urszula',
-             'lumina_profile_dawid', 'lumina_custom_avatar_dawid', 'lumina_avatar_dawid'].forEach(function(k) {
+            ['lumina_profile_u_urszula_7685', 'lumina_profile_urszula', 'lumina_custom_avatar_u_urszula_7685', 'lumina_avatar_u_urszula_7685', 'lumina_custom_avatar_urszula'].forEach(function(k) {
                 localStorage.removeItem(k);
             });
             var ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
             var changed = false;
             Object.keys(ovs).forEach(function(k) {
-                var isCez = k.includes('cezaryrgowski') || k.includes('home-cezary-card') || k.includes('card_profile_cezaryrgowski');
-                var valStr = JSON.stringify(ovs[k]).toLowerCase();
-                if (!isCez && (k.includes('urszula') || k.includes('dawid') || valStr.includes('cezary') || valStr.includes('christian_culture'))) {
+                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) {
                     delete ovs[k];
                     changed = true;
                 }
@@ -4292,43 +3935,14 @@
 
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
-        <div class="nav-brand-group">
-        <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+        <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 10px;">
             <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" alt="LUMINA Logo" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192,132,252,0.8); box-shadow: 0 0 12px rgba(168,85,247,0.5);">
             <span style="font-weight: 800; letter-spacing: 1.5px;">LUMINA</span>
         </a>
 
-        <!-- Mobile Search Icon Button (Widoczna TYLKO na urządzeniach mobilnych) -->
-        <button type="button" class="nav-circle-btn mobile-nav-search-btn" id="mobileNavSearchBtn" onclick="toggleMobileNavbarSearch()" data-i18n-title="nav.searchTitle" title="Szukaj na portalu LUMINA" aria-label="Szukaj">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-
-        <!-- Belka Wyszukiwarki w Nawigacji Głównej LUMINA -->
-        <div class="nav-search-bar-wrap" id="navSearchWrapper">
-            <div class="universal-search-container" id="universalSearchBox" onclick="event.stopPropagation()">
-                <div class="search-input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass search-icon" style="color: #c084fc; font-size: 0.9rem; margin-right: 8px;"></i>
-                    <input type="text" id="omniSearchInput" class="omni-search-input" data-i18n-placeholder="search_placeholder" placeholder="Szukaj osób, miast, powołań..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()" autocomplete="off">
-                    <button type="button" class="btn-omni-close" id="omniClearBtn" onclick="clearOmniSearch(event)" title="Wyczyść" style="background:transparent; border:none; color:#94a3b8; font-size:0.95rem; cursor:pointer; padding:4px 6px; display:none; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                    <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button type="button" class="btn-mobile-search-dismiss" onclick="closeMobileNavbarSearch()" title="Zamknij wyszukiwarkę" aria-label="Zamknij">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <!-- Dynamic Live Results Dropdown -->
-                <div class="omni-dropdown" id="omniDropdown"></div>
-            </div>
-        </div>
-
-        </div><!-- /.nav-brand-group -->
-
         <div class="lumina-nav-actions" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
             <!-- 1. Mini Radio Player -->
-            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" data-i18n-title="nav.radioTitle" title="Włącz / Wyłącz Radio Christian Culture" style="width:38px; height:38px; border-radius:50%; background:rgba(15,23,42,0.85); border:1.5px solid rgba(168,85,247,0.45); color:#c084fc; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
+            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" data-i18n-title="nav.radioTitle" title="Włącz / Wyłącz Radio Christian Culture" style="width:38px; height:38px; border-radius:50%; background:rgba(11,24,56,0.90); border:1.5px solid rgba(250,204,21,0.8); color:#facc15; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px; font-size:0.95rem;"></i>
             </button>
 
@@ -4351,7 +3965,7 @@
                     <div class="drawer-lang-selector" id="drawerLangSelector" style="display:flex; flex-direction:column; gap:8px; padding:10px 12px; margin-bottom:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.35); border-radius:14px;">
                         <div class="drawer-lang-header" style="display:flex; align-items:center; justify-content:space-between; font-size:0.82rem; font-weight:700; color:#f8fafc;">
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-globe" style="color:#c084fc; font-size:1.05rem;"></i>
+                                <i class="fa-solid fa-globe" style="color:#f59e0b; font-size:1.05rem;"></i>
                                 <span data-i18n="nav.languageSelect">Język</span>
                             </div>
                             <button type="button" 
@@ -4360,7 +3974,7 @@
                                     onclick="toggleLanguage()"
                                     data-i18n-title="nav_lang_toggle" 
                                     title="Zmień język (PL / EN / ES / FR)"
-                                    style="font-size:0.75rem; font-weight:800; color:#c084fc; background:rgba(168,85,247,0.15); padding:3px 8px; border-radius:8px; border:1px solid rgba(168,85,247,0.35); cursor:pointer; touch-action:manipulation;">
+                                    style="font-size:0.75rem; font-weight:800; color:#facc15; background:rgba(250,204,21,0.15); padding:3px 8px; border-radius:8px; border:1px solid rgba(250,204,21,0.35); cursor:pointer; touch-action:manipulation;">
                                 <span id="navLangBadgeText">PL</span> ↻
                             </button>
                         </div>
@@ -4373,13 +3987,11 @@
                     </div>
                     <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span data-i18n="nav.radioHome">Strona Główna Radia</span></a>
                     <a href="lumina" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-wand-magic-sparkles" style="color:#ec4899;"></i> <span data-i18n="nav.luminaPortal">Portal LUMINA</span></a>
-                    <a href="tablica" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#c084fc;"></i> <span data-i18n="nav.communityFeed">Tablica Społeczności</span></a>
-                    <a href="rolki" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-clapperboard" style="color:#ec4899;"></i> <span data-i18n="nav.shortsFeed">Rolki Wiary 9:16</span></a>
+                    <a href="tablica" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span data-i18n="nav.communityFeed">Tablica Społeczności</span></a>
                     <a href="lumina.html#odkrywaj" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof scrollToSection==='function') scrollToSection('odkrywaj');"><i class="fa-solid fa-compass" style="color:#c084fc;"></i> <span data-i18n="nav.discoverProfiles">Odkrywaj Profile</span></a>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span data-i18n="nav.messagesChat">Wiadomości & Czat</span></button>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span data-i18n="nav.recommendPortal">Polecaj Portal</span></button>
                     <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span data-i18n="nav.myProfile">Mój Profil</span></a>
-                    <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openPersonalSettingsModal==='function') openPersonalSettingsModal();"><i class="fa-solid fa-sliders" style="color:#facc15;"></i> <span>Ustawienia aplikacji</span></button>
                     
                     <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
                     
@@ -4397,7 +4009,7 @@
 
             <!-- 4. User Avatar Profile (when logged in) -->
             <div class="user-nav-profile" id="userNavProfile" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
-                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" role="button" tabindex="0" aria-label="Otwórz mój profil" onclick="handleMyProfileNavigation(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMyProfileNavigation(event)}" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(192,132,252,0.85); cursor:pointer;">
+                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(250,204,21,0.85); cursor:pointer;">
                 <span class="user-nav-name" id="userNavName" style="display:none;"></span>
                 <button type="button" class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.95rem; padding:4px;"><i class="fa-solid fa-right-from-bracket"></i></button>
                 <button type="button" class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -4411,21 +4023,84 @@
             <img src="lumina_hero_bg.jpg?v=20260822" alt="LUMINA Tło" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_bg_official.jpg';">
         </div>
         <div class="hero-overlay" id="heroOverlay"></div>
-            <div class="hero-content" id="heroContent">
+        <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
-                <div style="margin-bottom: 8px;">
-                    <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192, 132, 252, 0.85); box-shadow: 0 0 16px rgba(168, 85, 247, 0.5); display: inline-block;">
+                <div style="margin-bottom: 10px;">
+                    <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 10px rgba(250, 204, 21, 0.3); display: inline-block;">
                 </div>
-                <div class="hero-pill-badge" style="margin-bottom: 6px; padding: 3px 10px; font-size: 0.72rem;">
-                    <i class="fa-solid fa-wand-magic-sparkles" style="color:#c084fc;"></i> <span data-i18n="hero_badge">Chrześcijańska Społeczność Relacji & Wartości</span>
+                <div class="hero-pill-badge">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> <span data-i18n="hero_badge">Chrześcijańska Społeczność Relacji & Wartości</span>
                 </div>
-                <h1 class="hero-title" data-i18n="hero_title" style="margin-bottom: 4px;">LUMINA • Chrześcijańska Sieć Relacji</h1>
-                <p class="hero-subtitle" data-i18n="hero_subtitle" style="margin-bottom: 10px; font-size: 0.82rem; line-height: 1.35; max-width: 620px;">
-                    Poznaj ludzi, którzy budują relacje oparte na wierze i wartościach • Świadectwa • Modlitwa
+                <h1 class="hero-title" data-i18n="hero_title">LUMINA • Chrześcijańska Sieć Relacji</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">
+                    Poznaj ludzi, którzy chcą budować relacje oparte na wierze i wartościach.<br class="hero-break">Głębokie rozmowy • Świadectwa • Modlitwa • Małżeństwo
                 </p>
+            </div>
+
+            <!-- ══════════ UNIWERSALNA WYSZUKIWARKA PORTALU LUMINA ══════════ -->
+            <div class="universal-search-container" id="universalSearchBox" onclick="event.stopPropagation()">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="omniSearchInput" class="omni-search-input" data-i18n-placeholder="search_placeholder" placeholder="Szukaj po imieniu, nazwisku, mieście, powołaniu..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()" autocomplete="off">
+                    <button type="button" class="btn-omni-close" onclick="toggleHeroSearch(event, false)" title="Zwiń wyszukiwarkę" style="background:transparent; border:none; color:#94a3b8; font-size:1rem; cursor:pointer; padding:6px 10px; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
+                <!-- Dynamic Live Results Dropdown -->
+                <div class="omni-dropdown" id="omniDropdown"></div>
+
+                <!-- Quick Action Shortcuts -->
+                <div class="omni-shortcuts-row">
+                    <button type="button" class="shortcut-chip" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator() : null" style="background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)); border-color: rgba(250,204,21,0.5); color: #fef08a;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Karta Wersetu Story 9:16 ✨
+                    </button>
+                    <a href="tablica" class="shortcut-chip special-board">
+                        <i class="fa-solid fa-comments"></i> Tablica Społeczności
+                    </a>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (FAITH & GROWTH HUB - MAKIETA 3) ══════════ -->
+    <section class="devotional-banner-section" id="todayDevotionalBanner">
+        <div class="devotional-glass-card">
+            
+            <!-- Left: Icon, Badge, Title & Verse Snippet -->
+            <div class="devotional-card-left">
+                <div class="devotional-icon-box">
+                    <i class="fa-solid fa-book-bible"></i>
+                </div>
+                <div class="devotional-text-box">
+                    <div class="devotional-meta">
+                        <span class="devotional-tag">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="word_of_the_day">Słowo Dnia</span>
+                        </span>
+                        <span class="devotional-date" id="devotionalDateBadge">Niedziela, 30 Sierpnia</span>
+                    </div>
+                    <h3 class="devotional-title" id="devotionalCardTitle">
+                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
+                    </h3>
+                    <p class="devotional-snippet" id="devotionalCardSnippet">
+                        Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="devotional-actions">
+                <button type="button" class="btn-devotional-read" onclick="openTodayDevotionalModal()">
+                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj Rozważanie</span>
+                </button>
+                <a href="tablica" class="btn-devotional-feed">
+                    <i class="fa-solid fa-rectangle-list"></i> <span data-i18n="btn_board">Tablica</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
 
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
@@ -4446,6 +4121,7 @@
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
                 </div>
+
                 <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC - CENTRUM NA START) -->
                 <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
@@ -4543,6 +4219,7 @@
                         <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
+
                 <!-- ✨ REKLAMA WIDEO 2: Sklep Christian Culture (Filipian 4:13 - Wszystko Mogę w Tym, który mnie umacnia) -->
                 <div class="profile-card video-card featured original-promo-card" id="promoAdCard2" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
@@ -4567,8 +4244,8 @@
                         <div class="card-new-badge">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
-                        <img src="avatar_dawid.jpg" onerror="this.src='avatar_dawid.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_dawid.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
                     </div>
                     <div class="card-body">
@@ -4646,6 +4323,7 @@
                         <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
                     </div>
                 </div>
+
                 <!-- ✨ REKLAMA WIDEO 3: Dobrze, że jesteś - LIVE TV24 (Christian Culture TV Na Żywo) -->
                 <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
@@ -4759,8 +4437,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Urszula, 46</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowa</span></div>
-                        <div class="card-desc">"Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia."</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Chrześcijanka, dla której Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia."</div>
                     </div>
                 </div>
 
@@ -4779,8 +4457,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Robert Łukasz Pio, 41</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowiec</span></div>
-                        <div class="card-desc">"Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA."</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA."</div>
                     </div>
                 </div>
 
@@ -4799,8 +4477,8 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Zyta Grzesik, 48</div>
-                        <div class="card-city">📍 Warszawa • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">🌿 Wdowa</span></div>
-                        <div class="card-desc">"Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie."</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie."</div>
                     </div>
                 </div>
 
@@ -4929,14 +4607,14 @@
         </div>
 
         <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Filtry Wartości, Polecaj) - pod karuzelą -->
-        <div class="discovery-filters-wrap">
+        <div class="discovery-filters-wrap" style="margin-top: 16px;">
             <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
             <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
             <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
             <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal(event)" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
-                <i class="fa-solid fa-sliders" style="color:#facc15; pointer-events:none;"></i>
-                <span class="filter-chip-text" style="pointer-events:none;">Filtry Wartości ⚙️</span>
+            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal()" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
+                <i class="fa-solid fa-sliders" style="color:#facc15;"></i>
+                <span class="filter-chip-text">Filtry Wartości ⚙️</span>
             </button>
 
             <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
@@ -4944,44 +4622,6 @@
                 <i class="fa-solid fa-paper-plane"></i>
                 <span class="filter-chip-text">Polecaj</span>
             </button>
-        </div>
-    </section>
-
-    <!-- ══════════ TODAY'S DEVOTIONAL BANNER (SLIM RIBBON) ══════════ -->
-    <section class="devotional-banner-section" id="todayDevotionalBanner">
-        <div class="devotional-glass-card">
-            
-            <!-- Left: Icon, Badge, Title -->
-            <div class="devotional-card-left">
-                <div class="devotional-icon-box">
-                    <i class="fa-solid fa-book-bible"></i>
-                </div>
-                <div class="devotional-text-box">
-                    <div class="devotional-meta">
-                        <span class="devotional-tag">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="word_of_the_day">Słowo Dnia</span>
-                        </span>
-                        <span class="devotional-date" id="devotionalDateBadge">Niedziela, 30 Sierpnia</span>
-                    </div>
-                    <h3 class="devotional-title" id="devotionalCardTitle">
-                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
-                    </h3>
-                    <p class="devotional-snippet" id="devotionalCardSnippet" style="display:none !important;">
-                        Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Right: Actions -->
-            <div class="devotional-actions">
-                <button type="button" class="btn-devotional-read" onclick="openTodayDevotionalModal()">
-                    <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_read_devotion">Czytaj</span>
-                </button>
-                <a href="tablica" class="btn-devotional-feed" title="Tablica Społeczności">
-                    <i class="fa-solid fa-rectangle-list"></i> <span data-i18n="btn_board">Tablica</span>
-                </a>
-            </div>
-
         </div>
     </section>
 
@@ -5371,7 +5011,7 @@
                             <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#c084fc; font-size:0.85rem;"></i>
                             <input type="text" 
                                    id="dmUserSearchInput" 
-                                   placeholder="Wyszukaj w rozmowach..." 
+                                   placeholder="🔍 Wyszukaj w rozmowach..." 
                                    oninput="filterCommunityUsersForDm(this.value)" 
                                    style="width:100%; padding:9px 34px 9px 36px; border-radius:20px; background:rgba(255,255,255,0.06); border:1.5px solid rgba(168,85,247,0.35); color:#fff; font-family:inherit; font-size:0.84rem; outline:none; transition:all 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
                             <button type="button" 
@@ -5454,8 +5094,6 @@
                             </div>
                         </div>
 
-                        <div id="activeChatTypingIndicator" class="lumina-typing-indicator" aria-live="polite" aria-atomic="true"></div>
-
                         <!-- Quick Christian Smart Blessings Bar -->
                         <div id="activeChatSmartBar" class="chat-quick-bar" data-target-input="activeChatInput"></div>
 
@@ -5479,7 +5117,7 @@
                             <button type="button" onclick="toggleChatEmojiDrawer()" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
                                 <i class="fa-regular fa-face-smile"></i>
                             </button>
-                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." maxlength="1000" autocomplete="off" style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
+                            <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
                             <button type="submit" id="btnActiveChatSubmit" class="lumina-send-btn-premium" style="padding: 10px 18px; border-radius: 22px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(236,72,153,0.4);">
                                 <span id="btnActiveChatSubmitLabel">Wyślij</span> <i class="fa-solid fa-paper-plane" id="btnActiveChatSubmitIcon"></i>
                             </button>
@@ -5600,11 +5238,11 @@
 
     <!-- ══════════ FULL TODAY'S DEVOTIONAL READER MODAL ══════════ -->
     <div class="modal-overlay" id="devotionalModal" style="z-index: 9999; background: rgba(5, 8, 22, 0.88); backdrop-filter: blur(14px);">
-        <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto; padding: 28px 24px; border: 1.5px solid rgba(168, 85, 247, 0.45); box-shadow: 0 0 40px rgba(168, 85, 247, 0.30);">
+        <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto; padding: 28px 24px; border: 1.5px solid rgba(250, 204, 21, 0.4); box-shadow: 0 0 40px rgba(250, 204, 21, 0.25);">
             <button class="modal-close-btn" onclick="closeModal('devotionalModal')"><i class="fa-solid fa-xmark"></i></button>
             
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <span style="background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.45); color: #c084fc; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 8px; text-transform: uppercase;">
+                <span style="background: rgba(250, 204, 21, 0.2); border: 1px solid rgba(250, 204, 21, 0.5); color: #facc15; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 8px; text-transform: uppercase;">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Słowo Boże na Dziś
                 </span>
                 <span style="color: #94a3b8; font-size: 0.76rem; font-weight: 600;">☀️ Dobrze, że jesteś</span>
@@ -5615,8 +5253,8 @@
             </h2>
 
             <!-- Verse Quote Box -->
-            <div id="modalDevotionVerseBox" style="background: rgba(168, 85, 247, 0.10); border-left: 3px solid #a855f7; border-radius: 0 12px 12px 0; padding: 12px 16px; margin-bottom: 16px;">
-                <p id="modalDevotionVerseText" style="color: #e9d5ff; font-size: 0.88rem; font-weight: 600; font-style: italic; margin: 0; line-height: 1.45;">
+            <div id="modalDevotionVerseBox" style="background: rgba(250, 204, 21, 0.08); border-left: 3px solid #facc15; border-radius: 0 12px 12px 0; padding: 12px 16px; margin-bottom: 16px;">
+                <p id="modalDevotionVerseText" style="color: #fde047; font-size: 0.88rem; font-weight: 600; font-style: italic; margin: 0; line-height: 1.45;">
                     „Wtedy Jezus odezwał się i rzekł do nich: 'Zapytam was i ja o jedną rzecz...'” (Mateusza 21,24)
                 </p>
             </div>
@@ -5632,7 +5270,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             <!-- Action Buttons: Amen Reaction & Share -->
             <div style="display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
-                <button type="button" id="btnDevotionAmen" onclick="reactDevotionAmen()" style="flex: 1 1 180px; padding: 12px; border-radius: 30px; border: none; background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(168,85,247,0.4);">
+                <button type="button" id="btnDevotionAmen" onclick="reactDevotionAmen()" style="flex: 1 1 180px; padding: 12px; border-radius: 30px; border: none; background: linear-gradient(135deg, #f59e0b, #ec4899); color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(245,158,11,0.4);">
                     <i class="fa-solid fa-hands-praying"></i> <span>Amen! Przyjmuję ✨</span>
                 </button>
                 <a href="tablica" style="flex: 1 1 180px; padding: 12px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); color: #38bdf8; font-weight: 800; font-family: inherit; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -6079,193 +5717,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         </div>
     </div>
 
-    <!-- ══════════ ADVANCED VALUES-BASED DISCOVERY FILTERS MODAL ══════════ -->
-    <div class="modal-overlay" id="luminaAdvancedFiltersModal" role="dialog" aria-modal="true" aria-labelledby="advFiltersTitle" style="z-index: 2147483640; display: none; opacity: 0; pointer-events: none;">
-        <div class="adv-filters-card" style="max-width: 600px; width: 100%; max-height: 90vh; max-height: 90dvh; background: linear-gradient(180deg, #0b1329 0%, #060b18 100%); border: 1.5px solid rgba(250, 204, 21, 0.45); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(250, 204, 21, 0.15);">
-            <!-- Header -->
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #facc15, #d97706); display: flex; align-items: center; justify-content: center; color: #030712; font-size: 1.2rem; box-shadow: 0 0 15px rgba(250,204,21,0.4);">
-                        <i class="fa-solid fa-sliders"></i>
-                    </span>
-                    <div>
-                        <h3 id="advFiltersTitle" style="font-size: 1.05rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif; margin: 0; letter-spacing: 0.3px;">
-                            Filtry Wartości & Wiary ⚙️
-                        </h3>
-                        <div style="font-size: 0.72rem; color: #94a3b8;">
-                            Szukaj relacji opartych na wierze, czystości i powołaniu
-                        </div>
-                    </div>
-                </div>
-                <button type="button" onclick="window.closeAdvancedFiltersModal(event)" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; touch-action: manipulation; transition: all 0.2s;" title="Zamknij (ESC)">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Body (Scrollable) -->
-            <div style="padding: 18px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px;">
-
-                <!-- 1. Kogo szukasz (Płeć) -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-venus-mars"></i> Kogo szukasz?</div>
-                    <div class="filter-radio-pill-group" id="filterGroupGender">
-                        <span class="filter-radio-pill active" data-val="all" onclick="window._setFilterOption('gender', 'all', this)">
-                            <i class="fa-solid fa-users"></i> Wszyscy
-                        </span>
-                        <span class="filter-radio-pill" data-val="kobieta" onclick="window._setFilterOption('gender', 'kobieta', this)">
-                            🌸 Kobiety
-                        </span>
-                        <span class="filter-radio-pill" data-val="mezczyzna" onclick="window._setFilterOption('gender', 'mezczyzna', this)">
-                            🛡️ Mężczyźni
-                        </span>
-                    </div>
-                </div>
-
-                <!-- 2. Przedział Wieku (Wiek Od - Do) -->
-                <div class="age-slider-double">
-                    <div class="filter-group-title" style="margin-bottom: 2px;">
-                        <i class="fa-solid fa-cake-candles"></i> Przedział Wieku: 
-                        <span id="filterAgeLabel" style="color: #facc15; font-weight: 800; margin-left: 6px;">18 – 75 lat</span>
-                    </div>
-                    <div class="age-slider-row">
-                        <span style="font-size: 0.72rem; color: #94a3b8; width: 35px;">Od: <b id="lblMinAge" style="color:#fff;">18</b></span>
-                        <input type="range" class="age-slider-input" id="filterAgeSliderMin" min="18" max="75" value="18" oninput="window._updateAgeSliders()">
-                    </div>
-                    <div class="age-slider-row">
-                        <span style="font-size: 0.72rem; color: #94a3b8; width: 35px;">Do: <b id="lblMaxAge" style="color:#fff;">75</b></span>
-                        <input type="range" class="age-slider-input" id="filterAgeSliderMax" min="20" max="80" value="75" oninput="window._updateAgeSliders()">
-                    </div>
-                </div>
-
-                <!-- 3. Stan Cywilny -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-ring"></i> Stan Cywilny</div>
-                    <div class="filter-radio-pill-group" id="filterGroupStatus">
-                        <span class="filter-radio-pill active" data-val="all" onclick="window._setFilterOption('status', 'all', this)">
-                            Dowolny stan
-                        </span>
-                        <span class="filter-radio-pill" data-val="wolny" onclick="window._setFilterOption('status', 'wolny', this)">
-                            🕊️ Panna / Kawaler
-                        </span>
-                        <span class="filter-radio-pill" data-val="malzenstwo" onclick="window._setFilterOption('status', 'malzenstwo', this)">
-                            💍 Małżeństwo
-                        </span>
-                        <span class="filter-radio-pill" data-val="wdow" onclick="window._setFilterOption('status', 'wdow', this)">
-                            🌿 Wdowa / Wdowiec
-                        </span>
-                        <span class="filter-radio-pill" data-val="wdowa" onclick="window._setFilterOption('status', 'wdowa', this)">
-                            🌸 Wdowa
-                        </span>
-                        <span class="filter-radio-pill" data-val="wdowiec" onclick="window._setFilterOption('status', 'wdowiec', this)">
-                            🛡️ Wdowiec
-                        </span>
-                    </div>
-                </div>
-
-                <!-- 4. Cel Relacji -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-heart"></i> Cel Relacji & Powołanie</div>
-                    <select id="filterSelectGoal" class="filter-select-luxury" onchange="if(window.filterState) filterState.goal = this.value">
-                        <option value="all">Wszystkie cele relacji</option>
-                        <option value="malzenstwo">💍 Szukam małżeństwa według Bożej woli</option>
-                        <option value="relacja">❤️ Trwała relacja oparta na wartościach</option>
-                        <option value="przyjazn">🤝 Chrześcijańska przyjaźń & rozmowa</option>
-                        <option value="modlitwa">🙏 Wspólna modlitwa & budowanie w wierze</option>
-                    </select>
-                </div>
-
-                <!-- 5. Tradycja Wiary / Wyznanie -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-church"></i> Wyznanie & Tradycja Wiary</div>
-                    <select id="filterSelectDenom" class="filter-select-luxury" onchange="if(window.filterState) filterState.denomination = this.value">
-                        <option value="all">Wszystkie tradycje chrześcijańskie</option>
-                        <option value="biblijny">✝️ Chrześcijanin Biblijny / Bezdenominacyjny</option>
-                        <option value="ewangeliczny">🌿 Wspólnoty Ewangeliczne / Wolne Kościoły</option>
-                        <option value="katolicki">⛪ Tradycja Katolicka</option>
-                        <option value="charyzmatyczny">🕊️ Ruch Uwielbienia & Charyzmatyczny</option>
-                    </select>
-                </div>
-
-                <!-- 6. Czytanie Słowa Bożego -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-book-bible"></i> Praktyka Wiary & Pismo Święte</div>
-                    <select id="filterSelectBible" class="filter-select-luxury" onchange="if(window.filterState) filterState.bibleReading = this.value">
-                        <option value="all">Dowolna częstotliwość</option>
-                        <option value="codziennie">📖 Codziennie rozważam Słowo Boże</option>
-                        <option value="regularnie">🌿 Kilka razy w tygodniu</option>
-                        <option value="niedziela">⛪ W niedziele i podczas nabożeństw</option>
-                    </select>
-                </div>
-
-                <!-- 7. Lokalizacja / Województwo -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-location-dot"></i> Województwo / Miasto</div>
-                    <select id="filterSelectLocation" class="filter-select-luxury" onchange="if(window.filterState) filterState.location = this.value">
-                        <option value="">Cała Polska & Zagranica</option>
-                        <option value="mazowieckie">Mazowieckie (Warszawa, Radom, Płock...)</option>
-                        <option value="malopolskie">Małopolskie (Kraków, Tarnów, Nowy Sącz...)</option>
-                        <option value="slaskie">Śląskie (Katowice, Częstochowa, Gliwice...)</option>
-                        <option value="wielkopolskie">Wielkopolskie (Poznań, Kalisz, Konin...)</option>
-                        <option value="dolnoslaskie">Dolnośląskie (Wrocław, Legnica, Wałbrzych...)</option>
-                        <option value="pomorskie">Pomorskie (Gdańsk, Gdynia, Sopot...)</option>
-                        <option value="lodzkie">Łódzkie (Łódź, Sieradz, Piotrków...)</option>
-                        <option value="lubelskie">Lubelskie (Lublin, Zamość, Chełm...)</option>
-                        <option value="podkarpackie">Podkarpackie (Rzeszów, Przemyśl, Krosno...)</option>
-                        <option value="kujawsko-pomorskie">Kujawsko-Pomorskie (Bydgoszcz, Toruń...)</option>
-                        <option value="zachodniopomorskie">Zachodniopomorskie (Szczecin, Koszalin...)</option>
-                        <option value="warminsko-mazurskie">Warmińsko-Mazurskie (Olsztyn, Elbląg...)</option>
-                        <option value="swietokrzyskie">Świętokrzyskie (Kielce, Ostrowiec Św....)</option>
-                        <option value="podlaskie">Podlaskie (Białystok, Suwałki, Łomża...)</option>
-                        <option value="lubuskie">Lubuskie (Zielona Góra, Gorzów Wlkp....)</option>
-                        <option value="opolskie">Opolskie (Opole, Nysa, Kędzierzyn...)</option>
-                    </select>
-                </div>
-
-                <!-- 8. Wartości Życiowe & Czystość (Checkboxy) -->
-                <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <div class="filter-group-title"><i class="fa-solid fa-gem"></i> Wartości Chrześcijańskie</div>
-                    
-                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckPurity')">
-                        <input type="checkbox" id="filterCheckPurity" onchange="if(window.filterState) filterState.purityPriority = this.checked">
-                        <label for="filterCheckPurity">✨ Czystość przedmałżeńska jako priorytet</label>
-                    </div>
-
-                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckNoAddictions')">
-                        <input type="checkbox" id="filterCheckNoAddictions" onchange="if(window.filterState) filterState.noAddictions = this.checked">
-                        <label for="filterCheckNoAddictions">🕊️ Życie wolne od nałogów (bez alkoholu i tytoniu)</label>
-                    </div>
-
-                    <div class="filter-checkbox-row" onclick="window._toggleCheckbox('filterCheckWithPhoto')">
-                        <input type="checkbox" id="filterCheckWithPhoto" checked onchange="if(window.filterState) filterState.withPhotoOnly = this.checked">
-                        <label for="filterCheckWithPhoto">🖼️ Tylko profile ze zdjęciem</label>
-                    </div>
-                </div>
-
-                <!-- 9. Sortowanie -->
-                <div>
-                    <div class="filter-group-title"><i class="fa-solid fa-arrow-down-wide-short"></i> Sortowanie Wyników</div>
-                    <select id="filterSelectSort" class="filter-select-luxury" onchange="if(window.filterState) filterState.sortBy = this.value">
-                        <option value="match">✨ Najwyższe dopasowanie duchowe (%)</option>
-                        <option value="age_asc">👶 Wiek: od najmłodszych</option>
-                        <option value="age_desc">🧓 Wiek: od najstarszych</option>
-                        <option value="newest">⚡ Najnowsze profile w społeczności</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <!-- Footer Actions -->
-            <div style="display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);">
-                <button type="button" onclick="window.resetAdvancedFilters()" style="flex: 1; padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 700; font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">
-                    Wyczyść
-                </button>
-                <button type="button" id="btnApplyAdvancedFilters" onclick="window.applyAdvancedFilterValues()" style="flex: 2; padding: 12px; border-radius: 14px; background: linear-gradient(90deg, #f59e0b, #ec4899); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
-                    <span>Zastosuj Filtry</span> <i class="fa-solid fa-sparkles"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
 <!-- ══════════ TOAST ══════════ -->
     <div class="toast" id="toastEl">
         <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -6274,49 +5725,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
     <!-- ══════════ ENGINE INTEGRATION ══════════ -->
     <script>
-        window.openAdvancedFiltersModal = function(e) {
-            if (e) {
-                if (e.cancelable) e.preventDefault();
-                if (typeof e.stopPropagation === 'function') e.stopPropagation();
-            }
-            const modal = document.getElementById('luminaAdvancedFiltersModal');
-            if (modal) {
-                modal.classList.add('open');
-                modal.style.display = 'flex';
-                modal.style.opacity = '1';
-                modal.style.pointerEvents = 'auto';
-                document.body.style.overflow = 'hidden';
-                try {
-                    document.querySelectorAll('#luminaCookieConsentBanner, #lumina-cookie-banner, .cookie-banner').forEach(b => {
-                        b.dataset.prevDisplay = b.style.display || '';
-                        b.style.display = 'none';
-                    });
-                } catch(err) {}
-            }
-        };
-
-        window.closeAdvancedFiltersModal = function(e) {
-            if (e) {
-                if (e.cancelable) e.preventDefault();
-                if (typeof e.stopPropagation === 'function') e.stopPropagation();
-            }
-            const modal = document.getElementById('luminaAdvancedFiltersModal');
-            if (modal) {
-                modal.classList.remove('open');
-                modal.style.display = 'none';
-                modal.style.opacity = '0';
-                modal.style.pointerEvents = 'none';
-                document.body.style.overflow = '';
-                try {
-                    document.querySelectorAll('#luminaCookieConsentBanner, #lumina-cookie-banner, .cookie-banner').forEach(b => {
-                        if (b.dataset.prevDisplay !== undefined) {
-                            b.style.display = b.dataset.prevDisplay;
-                        }
-                    });
-                } catch(err) {}
-            }
-        };
-
         let obAvatarDataUrl = 'lumina_icon.jpg';
 
         window.switchAuthTab = function(tab) {
@@ -6898,7 +6306,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 name: 'Brat Robert (Robert Łukasz Pio)',
                 age: 45,
                 city: 'Polska',
-                avatar: 'avatar_robert.jpg',
+                avatar: 'avatar_sara.jpg',
                 job: 'Brat w Chrystusie • Społeczność LUMINA',
                 bio: 'Pokój i Dobro! Modlitwa, braterstwo i wspólne budowanie Królestwa Bożego.',
                 matchScore: '98%',
@@ -6949,7 +6357,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 age: 30,
                 city: 'Poznań, Polska',
                 status: 'Kawaler • Wierzący w działanie Ducha',
-                avatar: 'avatar_dawid.jpg',
+                avatar: 'avatar_sara.jpg',
                 job: 'Architekt Wnętrz & Muzyk Uwielbienia',
                 bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze.',
                 matchScore: '93%',
@@ -7187,84 +6595,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 matchScore: '96%',
                 isVerified: true,
                 profileUrl: 'lumina-profile.html?u=u_yciezywymbogiem_4231'
-            },
-            'u_urszula_7685': {
-                slug: 'u_urszula_7685',
-                name: 'Urszula',
-                age: 46,
-                city: 'Kraków, Polska',
-                gender: 'kobieta',
-                status: 'Wdowa',
-                avatar: 'avatar_urszula.jpg',
-                job: 'Członkini Społeczności LUMINA 🕊️',
-                bio: 'Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia.',
-                matchScore: '98%',
-                profileUrl: 'lumina-profile.html?u=u_urszula_7685'
-            },
-            'urszula': {
-                slug: 'u_urszula_7685',
-                name: 'Urszula',
-                age: 46,
-                city: 'Kraków, Polska',
-                gender: 'kobieta',
-                status: 'Wdowa',
-                avatar: 'avatar_urszula.jpg',
-                job: 'Członkini Społeczności LUMINA 🕊️',
-                bio: 'Chrześcijanka, wdowa. Dla mnie Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia.',
-                matchScore: '98%',
-                profileUrl: 'lumina-profile.html?u=u_urszula_7685'
-            },
-            'u_robertukaszpio_5668': {
-                slug: 'u_robertukaszpio_5668',
-                name: 'Robert Łukasz Pio',
-                age: 41,
-                city: 'Kraków, Polska',
-                gender: 'mezczyzna',
-                status: 'Wdowiec',
-                avatar: 'avatar_robert.jpg',
-                job: 'Członek Społeczności LUMINA ✨',
-                bio: 'Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA.',
-                matchScore: '98%',
-                profileUrl: 'lumina-profile.html?u=u_robertukaszpio_5668'
-            },
-            'robertlukaszpio': {
-                slug: 'u_robertukaszpio_5668',
-                name: 'Robert Łukasz Pio',
-                age: 41,
-                city: 'Kraków, Polska',
-                gender: 'mezczyzna',
-                status: 'Wdowiec',
-                avatar: 'avatar_robert.jpg',
-                job: 'Członek Społeczności LUMINA ✨',
-                bio: 'Szczęść Boże! Chrześcijanin, wdowiec. Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA.',
-                matchScore: '98%',
-                profileUrl: 'lumina-profile.html?u=u_robertukaszpio_5668'
-            },
-            'u_zytagrzesik_7502': {
-                slug: 'u_zytagrzesik_7502',
-                name: 'Zyta Grzesik',
-                age: 48,
-                city: 'Warszawa, Polska',
-                gender: 'kobieta',
-                status: 'Wdowa',
-                avatar: 'lumina_icon.jpg',
-                job: 'Członkini Społeczności LUMINA ✨',
-                bio: 'Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
-                matchScore: '100%',
-                profileUrl: 'lumina-profile.html?u=u_zytagrzesik_7502'
-            },
-            'zytagrzesik': {
-                slug: 'u_zytagrzesik_7502',
-                name: 'Zyta Grzesik',
-                age: 48,
-                city: 'Warszawa, Polska',
-                gender: 'kobieta',
-                status: 'Wdowa',
-                avatar: 'lumina_icon.jpg',
-                job: 'Członkini Społeczności LUMINA ✨',
-                bio: 'Wdowa, szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
-                matchScore: '100%',
-                profileUrl: 'lumina-profile.html?u=u_zytagrzesik_7502'
             }
         };
 
@@ -7459,17 +6789,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             }
 
-            // Filtruj i usuń z karuzeli profile usunięte przez Dowódcę
-            try {
-                const deletedList = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
-                if (deletedList.length > 0) {
-                    deletedList.forEach(delSlug => {
-                        const noU = delSlug.replace(/^u_/, '');
-                        carousel.querySelectorAll(`.profile-card[data-user-slug="${delSlug}"], .profile-card[data-user-slug="${noU}"]`).forEach(c => c.remove());
-                    });
-                }
-            } catch(e) {}
-
             // 2. Generate cards for all self-registered community members from Firestore & Local Storage
             let cloudCardsHtml = '';
             try {
@@ -7501,14 +6820,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const cleanPKey = pKey.replace(/^u_/, '');
                     const normName = (p.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
                     const cleanNameKey = normName.replace(/[^a-z0-9]/g, '');
-
-                    // Filtruj profile usunięte przez Dowódcę
-                    try {
-                        const deletedProfiles = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
-                        if (deletedProfiles.includes(pKey) || deletedProfiles.includes(cleanPKey)) {
-                            return '';
-                        }
-                    } catch(e) {}
 
                     // Filtruj i deduplikuj wszelkie warianty profilu LUMINA / Misji
                     if (pKey.includes('lumina') || normName.includes('lumina') || cleanNameKey.includes('lumina') || (p.job && p.job.includes('Oficjalny profil Misji'))) {
@@ -7757,8 +7068,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     } else if (isDemoProfile) {
                         cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span>`;
                     } else {
-                        const statusBadge = p.status ? (p.status.includes('Wdow') ? `🌿 ${p.status}` : p.status) : 'Profil Społeczności';
-                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">${statusBadge}</span>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
                     }
                 }
 
@@ -9389,62 +8699,23 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window.pauseCarouselAutoplayTemporarily(6000);
             }
 
-            const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
-            let closestIdx = 0;
-            let minDiff = Infinity;
-            visibleCards.forEach((card, idx) => {
-                const center = card.offsetLeft + (card.offsetWidth / 2);
-                const diff = Math.abs(carouselCenter - center);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    closestIdx = idx;
-                }
-            });
+            const firstCard = visibleCards[0];
+            const cardWidth = firstCard ? (firstCard.getBoundingClientRect().width || 320) : 320;
+            const gap = 24;
+            const step = Math.round(cardWidth + gap);
+            const scrollAmount = step * direction;
 
-            let nextIdx = closestIdx + direction;
-            if (nextIdx < 0) nextIdx = visibleCards.length - 1;
-            if (nextIdx >= visibleCards.length) nextIdx = 0;
-
-            const targetCard = visibleCards[nextIdx];
-            const cardLeft = targetCard.offsetLeft;
-            const cardWidth = targetCard.offsetWidth;
-            const carouselWidth = carousel.clientWidth;
-            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
-
-            carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            if (direction > 0 && (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20)) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (direction < 0 && carousel.scrollLeft <= 10) {
+                carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+            } else {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
 
             setTimeout(() => {
                 window.updateCenterActiveCard();
             }, 350);
-        };
-
-        window.snapToNearestCard = function() {
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel || isCarouselInteracting) return;
-            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
-            if (!visibleCards.length) return;
-
-            const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
-            let closestCard = visibleCards[0];
-            let minDiff = Infinity;
-            visibleCards.forEach(card => {
-                const center = card.offsetLeft + (card.offsetWidth / 2);
-                const diff = Math.abs(carouselCenter - center);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    closestCard = card;
-                }
-            });
-
-            const cardLeft = closestCard.offsetLeft;
-            const cardWidth = closestCard.offsetWidth;
-            const carouselWidth = carousel.clientWidth;
-            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
-
-            if (Math.abs(carousel.scrollLeft - targetScroll) > 3) {
-                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
-            }
-            window.updateCenterActiveCard();
         };
 
         window.handleInfiniteScrollBoundary = function() {
@@ -9515,8 +8786,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
 
-            let targetCard = visibleCards[1] || visibleCards[0];
-            for (let i = 0; i < visibleCards.length; i++) {
+            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
+            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount] || visibleCards[0];
+
+            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
                 if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || (visibleCards[i].id && visibleCards[i].id.includes('promoAdCard')))) {
                     targetCard = visibleCards[i];
                     break;
@@ -9633,13 +8906,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     requestAnimationFrame(window.updateCenterActiveCard);
                 }, { passive: true });
 
-                carousel.addEventListener('wheel', (e) => {
-                    if (window.innerWidth <= 768 && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                        e.preventDefault();
-                        window.scrollBy(0, e.deltaY);
-                    }
-                }, { passive: false });
-
                 carousel.addEventListener('mouseenter', () => {
                     isCarouselInteracting = true;
                 });
@@ -9668,8 +8934,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 let _carouselLongPressTimer = null;
                 let _carouselLongPressFired = false;
                 let _carouselPendingTargetCard = null;
-                let _carouselGestureMoved = false;
-                let _suppressCarouselClickUntil = 0;
 
                 function startCarouselLongPress(card, clientX, clientY) {
                     _carouselLongPressFired = false;
@@ -9698,7 +8962,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     _carouselPointerStartX = e.clientX;
                     _carouselPointerStartY = e.clientY;
                     _carouselPointerStartScrollLeft = carousel.scrollLeft;
-                    _carouselGestureMoved = false;
                     const card = e.target.closest('.profile-card');
                     if (card && !e.target.closest('.card-heart')) {
                         startCarouselLongPress(card, e.clientX, e.clientY);
@@ -9708,8 +8971,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 carousel.addEventListener('mousemove', (e) => {
                     const dist = Math.hypot(e.clientX - _carouselPointerStartX, e.clientY - _carouselPointerStartY);
                     if (dist > 8) {
-                        _carouselGestureMoved = true;
-                        _suppressCarouselClickUntil = Date.now() + 500;
                         cancelCarouselLongPress();
                     }
                 });
@@ -9728,7 +8989,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         _carouselPointerStartX = t.clientX;
                         _carouselPointerStartY = t.clientY;
                         _carouselPointerStartScrollLeft = carousel.scrollLeft;
-                        _carouselGestureMoved = false;
                         const card = e.target.closest('.profile-card');
                         if (card && !e.target.closest('.card-heart')) {
                             startCarouselLongPress(card, t.clientX, t.clientY);
@@ -9741,8 +9001,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         const t = e.touches[0];
                         const dist = Math.hypot(t.clientX - _carouselPointerStartX, t.clientY - _carouselPointerStartY);
                         if (dist > 8) {
-                            _carouselGestureMoved = true;
-                            _suppressCarouselClickUntil = Date.now() + 500;
                             cancelCarouselLongPress();
                         }
                     }
@@ -9752,55 +9010,46 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     cancelCarouselLongPress();
                     if (_carouselLongPressFired) {
                         _carouselLongPressFired = false;
-                        _suppressCarouselClickUntil = Date.now() + 500;
                         return; // Nie otwieraj profilu jeśli wywołano opcje przez przytrzymanie
                     }
                     if (e.changedTouches.length > 0) {
                         const touch = e.changedTouches[0];
                         const deltaX = Math.abs(touch.clientX - _carouselPointerStartX);
-                        const deltaY = Math.abs(touch.clientY - _carouselPointerStartY);
                         const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
-                        const isHorizontalSwipe = deltaX > 40 && deltaX > deltaY * 1.2;
-                        if (isHorizontalSwipe && typeof window.scrollCarousel === 'function') {
-                            window.scrollCarousel(touch.clientX < _carouselPointerStartX ? 1 : -1);
-                        }
-                        const isGesture = _carouselGestureMoved || deltaX > 8 || deltaY > 8 || scrollDelta > 8;
-                        if (isGesture) {
-                            _carouselGestureMoved = true;
-                            _suppressCarouselClickUntil = Date.now() + 500;
-                            if (!isHorizontalSwipe && scrollDelta > 10 && typeof window.snapToNearestCard === 'function') {
-                                setTimeout(window.snapToNearestCard, 60);
-                            }
+                        const isDrag = deltaX > 8 || scrollDelta > 8;
+                        if (isDrag) return;
+
+                        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if (!el || el.closest('.card-heart')) return;
+                        const card = el.closest('.profile-card');
+                        if (!card) return;
+                        const slug = card.getAttribute('data-profile-slug');
+                        if (slug && typeof window.openCommunityProfile === 'function') {
+                            window.openCommunityProfile(slug);
                         }
                     }
                 }, { passive: true });
 
-                carousel.addEventListener('touchcancel', () => {
-                    _carouselGestureMoved = true;
-                    _suppressCarouselClickUntil = Date.now() + 500;
-                    cancelCarouselLongPress();
-                }, { passive: true });
-
                 carousel.addEventListener('click', (e) => {
-                    if (_carouselLongPressFired || _carouselGestureMoved || Date.now() < _suppressCarouselClickUntil) {
+                    if (_carouselLongPressFired) {
                         _carouselLongPressFired = false;
-                        _carouselGestureMoved = false;
                         e.preventDefault();
                         e.stopPropagation();
                         return;
                     }
+                    const deltaX = Math.abs((e.clientX || _carouselPointerStartX) - _carouselPointerStartX);
+                    const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
+                    const isDrag = deltaX > 8 || scrollDelta > 8;
+                    if (isDrag) return;
 
                     const card = e.target.closest('.profile-card');
-                    const interactive = e.target.closest('button, a, input, select, textarea, [role="button"]');
-                    if (!card || interactive) return;
+                    if (!card || e.target.closest('.card-heart')) return;
 
                     const slug = card.getAttribute('data-profile-slug');
                     if (slug && typeof window.openCommunityProfile === 'function') {
-                        e.preventDefault();
-                        e.stopPropagation();
                         window.openCommunityProfile(slug);
                     }
-                }, { capture: true });
+                });
 
                 carousel.addEventListener('contextmenu', (e) => {
                     const card = e.target.closest('.profile-card');
@@ -9915,7 +9164,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         let publicChatUnsubscribe = null;
         let activeChatSession = null;
         let activeChatUnsubscribe = null;
-        let activeChatTypingUnsubscribe = null;
 
         function scrollChatToBottom(boxOrId, isSmooth = false) {
             const box = typeof boxOrId === 'string' ? document.getElementById(boxOrId) : boxOrId;
@@ -9935,7 +9183,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }
         window.scrollChatToBottom = scrollChatToBottom;
 
-        function switchMessengerMainTab(tab, preserveActiveChat) {
+        function switchMessengerMainTab(tab) {
             checkAndShowCommanderTab();
             const btnPublic = document.getElementById('tabBtnPublicChat');
             const btnPrivate = document.getElementById('tabBtnPrivateChat');
@@ -10005,9 +9253,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 if (viewPublic) viewPublic.style.display = 'none';
                 if (viewPrivate) viewPrivate.style.display = 'flex';
                 if (viewCommander) viewCommander.style.display = 'none';
-                if (!preserveActiveChat) {
-                    returnToConversationsList();
-                }
+                returnToConversationsList();
             }
         }
 
@@ -10699,7 +9945,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         function openDirectMessagesModal(preferredTab) {
             const m = document.getElementById('directMessagesModal');
             if (m) {
-                m.style.display = 'flex';
                 m.classList.add('open');
                 checkAndShowCommanderTab();
                 if (preferredTab) {
@@ -11033,10 +10278,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 activeChatUnsubscribe();
                 activeChatUnsubscribe = null;
             }
-            if (activeChatTypingUnsubscribe) {
-                activeChatTypingUnsubscribe();
-                activeChatTypingUnsubscribe = null;
-            }
             activeChatSession = null;
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
@@ -11084,29 +10325,25 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         };
 
         window.handleActiveChatInputChange = function(val) {
-            const btn = document.getElementById('btnActiveChatSubmit');
             const btnIcon = document.getElementById('btnActiveChatSubmitIcon');
             const btnLabel = document.getElementById('btnActiveChatSubmitLabel');
-            if (!btn || !btnIcon || !btnLabel) return;
-            const hasText = Boolean(val && val.trim().length > 0);
-            btn.disabled = !hasText;
-            btn.style.opacity = hasText ? '1' : '0.55';
-            btn.style.cursor = hasText ? 'pointer' : 'not-allowed';
-            btn.title = hasText ? 'Wyślij wiadomość' : 'Wpisz wiadomość, aby ją wysłać';
-            btnLabel.textContent = 'Wyślij';
-            btnIcon.className = 'fa-solid fa-paper-plane';
+            if (!btnIcon || !btnLabel) return;
+            if (val && val.trim().length > 0) {
+                btnLabel.textContent = 'Wyślij';
+                btnIcon.className = 'fa-solid fa-paper-plane';
+            } else {
+                btnLabel.textContent = 'Błogosław';
+                btnIcon.className = 'fa-solid fa-dove';
+            }
         };
 
         function openChatWith(name, avatar, slug, targetMessageId) {
             if (targetMessageId) window._targetChatMessageId = targetMessageId;
             window._activeChatInitialScrollDone = false;
             const m = document.getElementById('directMessagesModal');
-            if (m) {
-                m.style.display = 'flex';
-                m.classList.add('open');
-            }
+            if (m) m.classList.add('open');
 
-            switchMessengerMainTab('private', true);
+            switchMessengerMainTab('private');
 
             const isDesktop = (window.innerWidth > 768);
             const listView = document.getElementById('dmListView');
@@ -11225,19 +10462,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
                     renderDirectChatMessages(messages, fromId);
                 });
-                if (typeof window.LuminaDB.attachTypingIndicator === 'function') {
-                    activeChatTypingUnsubscribe = window.LuminaDB.attachTypingIndicator(
-                        'activeChatInput', chatId, 'activeChatTypingIndicator',
-                        () => `${activeChatSession?.targetName || 'Rozmówca'} pisze…`
-                    );
-                }
             }
             setTimeout(() => {
                 const input = document.getElementById('activeChatInput');
-                if (input) {
-                    input.focus();
-                    handleActiveChatInputChange(input.value);
-                }
+                if (input) input.focus();
                 scrollChatToBottom('activeChatMessagesBox', false);
             }, 150);
         }
@@ -11324,35 +10552,21 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         async function handleSendActiveChatMessage(e) {
             if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
-            const text = input ? input.value.trim() : '';
+            let text = input ? input.value.trim() : '';
             if (!text) {
-                input?.focus();
-                return;
+                text = 'Pokój temu domowi i Boże Błogosławieństwo! 🕊️✨';
             }
             if (!activeChatSession) return;
 
-            const submitButton = document.getElementById('btnActiveChatSubmit');
             if (input) input.value = '';
-            if (input) input.disabled = true;
-            if (submitButton) submitButton.disabled = true;
             handleActiveChatInputChange('');
             scrollChatToBottom('activeChatMessagesBox', true);
 
-            try {
-                if (window.LuminaDB) {
-                    const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
-                        receiverId: activeChatSession.targetId,
-                        text: text
-                    });
-                    if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
-                    if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
-                }
-            } finally {
-                if (input) {
-                    input.disabled = false;
-                    input.focus();
-                }
-                handleActiveChatInputChange(input?.value || '');
+            if (window.LuminaDB) {
+                await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
+                    receiverId: activeChatSession.targetId,
+                    text: text
+                });
             }
         }
 
@@ -11417,8 +10631,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         ];
 
         window.handleOmniSearchInput = function(val) {
-            const clearBtn = document.getElementById('omniClearBtn');
-            if (clearBtn) clearBtn.style.display = (val && val.trim().length > 0) ? 'inline-flex' : 'none';
             const dropdown = document.getElementById('omniDropdown');
             if (!dropdown) return;
             const term = (val || '').trim().toLowerCase();
@@ -11527,12 +10739,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js" defer></script>
     <script src="js/lumina-messenger-composer.js" defer></script>
-    <script src="js/lumina-message-requests.js?v=1" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
-    <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>
+    <script src="js/lumina-discovery-filters.js"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.1_20260909" defer></script>
-    <script src="lumina-notifications.js?v=4.1.2_20260913" defer></script>
+    <script src="lumina-notifications.js?v=4.1.1_20260909" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
@@ -11758,50 +10969,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         function renderOnlineUsersList(profiles) {
             var container = document.getElementById('allOnlineUsersListContainer');
             if (!container) return;
-
-            // Filtruj usunięte profile
-            var deletedProfiles = [];
-            try {
-                deletedProfiles = JSON.parse(localStorage.getItem('lumina_deleted_profiles') || '[]');
-            } catch(e) {}
-
-            var validProfiles = (profiles || []).filter(function(p) {
-                if (!p) return false;
-                var slug = (p.slug || p.id || '').toLowerCase().trim();
-                var cleanSlug = slug.replace(/^u_/, '');
-                return !deletedProfiles.includes(slug) && !deletedProfiles.includes(cleanSlug);
-            });
-
-            if (!validProfiles || validProfiles.length === 0) {
+            if (!profiles || profiles.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:24px; color:#94a3b8; font-size:0.88rem;">Brak użytkowników pasujących do wyszukiwania.</div>';
                 return;
             }
-
-            var isMaster = false;
-            try {
-                isMaster = localStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                           sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                           (localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim() === 'cezaryrgowski' ||
-                           (localStorage.getItem('lumina_active_session_slug') || '').toLowerCase().trim() === 'cezaryrgowski' ||
-                           (localStorage.getItem('lumina_active_session_email') || '').toLowerCase().trim() === 'nazirczarkes@gmail.com';
-            } catch(e) {}
-
-            container.innerHTML = validProfiles.map(function(p) {
-                var pSlug = p.slug || p.id || '';
+            container.innerHTML = profiles.map(function(p) {
                 var profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
-                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + pSlug));
+                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + (p.slug || p.id)));
                 var avatar = p.avatar || 'lumina_icon.jpg';
                 var name = p.name || 'Użytkownik LUMINA';
                 var info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
-                var escapedName = name.replace(/'/g, "\\'");
-
-                var adminDeleteBtn = '';
-                if (isMaster && pSlug && pSlug !== 'cezaryrgowski') {
-                    adminDeleteBtn = '<button type="button" class="admin-suite-btn" onclick="if(window.LuminaDeleteProfile){window.LuminaDeleteProfile(\'' + pSlug + '\', \'' + escapedName + '\');}else if(window.LuminaDB&&window.LuminaDB.deleteProfile){window.LuminaDB.deleteProfile(\'' + pSlug + '\', \'' + escapedName + '\');}" style="padding:6px 10px; border-radius:12px; font-size:0.78rem; font-weight:700; background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; cursor:pointer;" title="Trwale usuń profil (Tylko Dowódca)">' +
-                        '<i class="fa-solid fa-trash-can"></i>' +
-                    '</button>';
-                }
-
                 return '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">' +
                         '<div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href=\'' + profileUrl + '\'">' +
                             '<div style="position:relative; width:44px; height:44px; flex-shrink:0;">' +
@@ -11813,8 +10990,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 '<div style="font-size:0.75rem; color:#94a3b8;">' + info + '</div>' +
                             '</div>' +
                         '</div>' +
-                        '<div style="display:flex; gap:8px; align-items:center;">' +
-                            adminDeleteBtn +
+                        '<div style="display:flex; gap:8px;">' +
                             '<button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href=\'' + profileUrl + '\'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">' +
                                 'Profil' +
                             '</button>' +
@@ -11832,18 +11008,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window._cachedLiveProfiles = Array.from(map.values());
             });
         }
-
-        // Auto-refresh when profile deleted
-        window.addEventListener('lumina:profileDeleted', function() {
-            if (typeof window.syncAllProfilesToCarousel === 'function') {
-                window.syncAllProfilesToCarousel();
-            }
-            var sInput = document.getElementById('onlineUsersSearchInput');
-            var term = sInput ? sInput.value : '';
-            if (typeof window.filterOnlineUsersModal === 'function') {
-                window.filterOnlineUsersModal(term);
-            }
-        });
     </script>
 
     <!-- ══════════ MODAL: WYJAŚNIENIE PROFILU POGLĄDOWEGO ══════════ -->
@@ -11917,7 +11081,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     <select id="modalProfileStatusSelect" style="width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; background: #131d3d; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.92rem; box-sizing: border-box;">
                         <option value="Panna/Kawaler">Panna / Kawaler</option>
                         <option value="Mężatka/Żonaty">Mężatka / Żonaty</option>
-                        <option value="Wdowa/Wdowiec">Wdowa / Wdowiec</option>
                         <option value="Szukam Bożej Relacji">Szukam Bożej Relacji z Wartościami</option>
                         <option value="Wspólnota i Przyjaźń">Wspólnota i Przyjaźń w Wierze</option>
                     </select>
@@ -12453,93 +11616,58 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     (function(){
         window._targetChatMessageId = null;
 
-        function openChatByTargetUser(targetUser, messageId) {
-            if (!targetUser) return;
-            const normUser = String(targetUser).trim();
-            if (messageId) window._targetChatMessageId = messageId;
-
-            let attempts = 0;
-            const tryOpen = () => {
-                attempts++;
-                let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : 'Rozmówca');
-                let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg');
-
-                if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
-                    name = window._cloudProfilesMap[normUser].name || name;
-                    avatar = window._cloudProfilesMap[normUser].avatar || avatar;
-                } else if (typeof PROFILES_DB !== 'undefined' && PROFILES_DB[normUser]) {
-                    name = PROFILES_DB[normUser].name || name;
-                    avatar = PROFILES_DB[normUser].avatar || avatar;
-                } else if (typeof window.getLiveProfile === 'function') {
-                    const p = window.getLiveProfile(normUser);
-                    if (p) {
-                        name = p.name || name;
-                        avatar = p.avatar || avatar;
-                    }
-                }
-
-                if (typeof window.openChatWith === 'function') {
-                    window.openChatWith(name, avatar, normUser, messageId);
-                } else if (attempts < 30) {
-                    setTimeout(tryOpen, 150);
-                }
-            };
-            tryOpen();
-        }
-        window.openChatByTargetUser = openChatByTargetUser;
-
         function handleUrlChatParams() {
-            const searchParams = new URLSearchParams(window.location.search);
-            let hashParams = new URLSearchParams();
-            try {
-                if (window.location.hash && window.location.hash.includes('=')) {
-                    hashParams = new URLSearchParams(window.location.hash.substring(1));
-                }
-            } catch(e) {}
-
-            const chatUser = searchParams.get('openChat') || searchParams.get('chatWith') || searchParams.get('chat') || searchParams.get('partnerId') || hashParams.get('openChat') || hashParams.get('chatWith') || hashParams.get('chat');
-            const msgId = searchParams.get('messageId') || searchParams.get('msgId') || hashParams.get('messageId') || hashParams.get('msgId');
-            const openPublic = searchParams.get('openPublicChat') || searchParams.get('publicChat') || hashParams.get('openPublicChat');
+            const params = new URLSearchParams(window.location.search);
+            const chatUser = params.get('openChat') || params.get('chatWith') || params.get('chat') || params.get('partnerId');
+            const msgId = params.get('messageId') || params.get('msgId');
+            const openPublic = params.get('openPublicChat') || params.get('publicChat');
 
             if (msgId) window._targetChatMessageId = msgId;
 
             if (chatUser) {
-                openChatByTargetUser(chatUser, msgId);
+                const normUser = chatUser.trim();
+                let attempts = 0;
+                const tryOpen = () => {
+                    attempts++;
+                    let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : 'Rozmówca');
+                    let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg');
+
+                    if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
+                        name = window._cloudProfilesMap[normUser].name || name;
+                        avatar = window._cloudProfilesMap[normUser].avatar || avatar;
+                    } else if (typeof PROFILES_DB !== 'undefined' && PROFILES_DB[normUser]) {
+                        name = PROFILES_DB[normUser].name || name;
+                        avatar = PROFILES_DB[normUser].avatar || avatar;
+                    } else if (typeof window.getLiveProfile === 'function') {
+                        const p = window.getLiveProfile(normUser);
+                        if (p) {
+                            name = p.name || name;
+                            avatar = p.avatar || avatar;
+                        }
+                    }
+
+                    if (typeof window.openChatWith === 'function') {
+                        window.openChatWith(name, avatar, normUser, msgId);
+                    } else if (attempts < 10) {
+                        setTimeout(tryOpen, 200);
+                    }
+                };
+                setTimeout(tryOpen, 250);
             } else if (openPublic) {
                 let attempts = 0;
                 const tryOpenPublic = () => {
                     attempts++;
                     const modal = document.getElementById('publicChatModal') || document.getElementById('directMessagesModal');
                     if (modal) {
-                        modal.style.display = 'flex';
                         modal.classList.add('open');
                         if (typeof switchMessengerMainTab === 'function') switchMessengerMainTab('public');
-                    } else if (attempts < 30) {
-                        setTimeout(tryOpenPublic, 150);
+                    } else if (attempts < 10) {
+                        setTimeout(tryOpenPublic, 200);
                     }
                 };
-                tryOpenPublic();
+                setTimeout(tryOpenPublic, 250);
             }
         }
-
-        // Listener for Service Worker postMessage
-        const onChatMsgEvent = (event) => {
-            if (event.data && event.data.type === 'OPEN_LUMINA_CHAT') {
-                const chatData = event.data.chatData || {};
-                const senderId = chatData.senderId || chatData.openChat;
-                if (senderId) {
-                    openChatByTargetUser(senderId, chatData.messageId);
-                }
-            }
-        };
-
-        window.addEventListener('message', onChatMsgEvent);
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.addEventListener('message', onChatMsgEvent);
-        }
-
-        window.addEventListener('focus', () => setTimeout(handleUrlChatParams, 200));
-        window.addEventListener('popstate', handleUrlChatParams);
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', handleUrlChatParams);
@@ -12693,86 +11821,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     </div>
 </div>
 
-
-    <script>
-    /* LUMINA HERO REVEAL & NAVBAR SEARCH ENGINE */
-    let heroRevealTimer = null;
-
-    function hideHeroIntroToRevealFaces() {
-        const hero = document.getElementById('heroHeader');
-        if (hero) {
-            hero.classList.add('faces-revealed');
-        }
-    }
-
-    function restoreHeroIntro() {
-        const hero = document.getElementById('heroHeader');
-        if (hero) {
-            hero.classList.remove('faces-revealed');
-        }
-        resetHeroTimer();
-    }
-
-    function resetHeroTimer() {
-        if (heroRevealTimer) clearTimeout(heroRevealTimer);
-        heroRevealTimer = setTimeout(() => {
-            hideHeroIntroToRevealFaces();
-        }, 3500); // Po 3.5 sekundy odsłaniamy twarze na tapecie
-    }
-
-    window.toggleMobileNavbarSearch = function() {
-        const wrap = document.getElementById('navSearchWrapper');
-        const input = document.getElementById('omniSearchInput');
-        if (!wrap) return;
-        const isOpen = wrap.classList.toggle('mobile-open');
-        if (isOpen && input) {
-            setTimeout(() => input.focus(), 100);
-        }
-    };
-
-    window.closeMobileNavbarSearch = function() {
-        const wrap = document.getElementById('navSearchWrapper');
-        if (wrap) wrap.classList.remove('mobile-open');
-    };
-
-    document.addEventListener('click', function(e) {
-        const wrap = document.getElementById('navSearchWrapper');
-        const btn = document.getElementById('mobileNavSearchBtn');
-        if (wrap && wrap.classList.contains('mobile-open')) {
-            if (!wrap.contains(e.target) && (!btn || !btn.contains(e.target))) {
-                wrap.classList.remove('mobile-open');
-            }
-        }
-    });
-
-    window.clearOmniSearch = function(e) {
-        if (e && e.stopPropagation) e.stopPropagation();
-        const input = document.getElementById('omniSearchInput');
-        const clearBtn = document.getElementById('omniClearBtn');
-        const dropdown = document.getElementById('omniDropdown');
-        if (input) {
-            input.value = '';
-            input.focus();
-        }
-        if (clearBtn) clearBtn.style.display = 'none';
-        if (dropdown) {
-            dropdown.classList.remove('open');
-            dropdown.innerHTML = '';
-        }
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const heroHeader = document.getElementById('heroHeader');
-        if (heroHeader) {
-            heroHeader.addEventListener('mouseenter', restoreHeroIntro);
-            heroHeader.addEventListener('touchstart', restoreHeroIntro, { passive: true });
-            heroHeader.addEventListener('mousemove', restoreHeroIntro);
-            heroHeader.addEventListener('click', restoreHeroIntro);
-        }
-        resetHeroTimer();
-    });
-    </script>
-    
 </body>
 </html>
 
