@@ -86,7 +86,17 @@ export function toggleProfileFollow(btn, profileSlug) {
         countEl.textContent = isFollowing ? (count + 1) : Math.max(0, count - 1);
     }
     
-    showToast(isFollowing ? 'Obserwujesz ten profil! Będziesz otrzymywać powiadomienia o nowych wpisach 🔔' : 'Przestałeś obserwować profil');
+    if (isFollowing) {
+        showToast('Obserwujesz ten profil! ✨');
+        if (typeof window.showLuminaContextualPushPrompt === 'function') {
+            const targetName = textEl?.dataset?.name || profileSlug || 'ten profil';
+            setTimeout(() => {
+                window.showLuminaContextualPushPrompt('follow', targetName);
+            }, 500);
+        }
+    } else {
+        showToast('Przestałeś obserwować profil');
+    }
 
     if (isFollowing && typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('lumina:profile_follow', {
