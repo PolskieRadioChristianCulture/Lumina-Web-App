@@ -3167,10 +3167,16 @@ function getWeatherPreset(city) {
                     const slideEl = document.createElement("div");
                     slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
                     
-                    if (slideData.type === "chat") {
+                    const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[char]));                    if (slideData.type === "chat") {
                         let chatHTML = `
-                            <div class="slide-tag"><i class="fa-solid fa-comments"></i> <span>${slideData.tag}</span></div>
-                            <div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;">${slideData.title}</div>
+                            <div class="slide-tag"><i class="fa-solid fa-comments"></i> <span>${escapeHtml(slideData.tag)}</span></div>
+                            <div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;">${escapeHtml(slideData.title)}</div>
                             <div class="chat-container">
                         `;
                         slideData.messages.forEach(msg => {
@@ -3188,10 +3194,10 @@ function getWeatherPreset(city) {
 
                             chatHTML += `
                                 <div class="chat-bubble-row ${senderClass}">
-                                    ${avatar ? `<img class="chat-avatar" src="${avatar}" alt="${msg.sender}">` : ''}
+                                    ${avatar ? `<img class="chat-avatar" src="${avatar}" alt="${escapeHtml(msg.sender)}">` : ''}
                                     <div class="chat-bubble">
-                                        ${(!isProduction && !isScripture) ? `<div class="chat-sender-name">${msg.sender}</div>` : ''}
-                                        <div class="chat-message-text">${adaptedText}</div>
+                                        ${(!isProduction && !isScripture) ? `<div class="chat-sender-name">${escapeHtml(msg.sender)}</div>` : ''}
+                                        <div class="chat-message-text">${escapeHtml(adaptedText)}</div>
                                     </div>
                                 </div>
                             `;
@@ -3200,10 +3206,10 @@ function getWeatherPreset(city) {
                         slideEl.innerHTML = chatHTML;
                     } else {
                         slideEl.innerHTML = `
-                            <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${slideData.tag}</span></div>
+                            <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${escapeHtml(slideData.tag)}</span></div>
                             <div class="slide-text-scroll-wrap" style="flex: 1; overflow-y: auto; padding-right: 8px; margin-top: 10px; width: 100%;">
-                                <div class="slide-title" style="margin-bottom: 15px;">${slideData.title}</div>
-                                <div class="slide-text">${adaptTextToTimeOfDay(slideData.text)}</div>
+                                <div class="slide-title" style="margin-bottom: 15px;">${escapeHtml(slideData.title)}</div>
+                                <div class="slide-text">${escapeHtml(adaptTextToTimeOfDay(slideData.text))}</div>
                             </div>
                         `;
                     }
