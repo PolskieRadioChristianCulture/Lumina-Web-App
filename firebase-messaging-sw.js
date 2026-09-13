@@ -27,8 +27,11 @@ try {
 
         const title = notification.title || data.title || 'LUMINA ✨';
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
-        const icon = notification.icon || data.icon || data.avatar || './lumina-icon-512.png';
-        const image = notification.image || data.image || data.imageUrl || undefined;
+        const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
+        const defaultIcon = origin + '/lumina-notif-icon-v2.png';
+        const defaultBadge = origin + '/lumina-badge-v2.png';
+        const icon = (type === 'direct_message' && (data.avatar || notification.icon)) ? (data.avatar || notification.icon) : defaultIcon;
+        const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
         let urlToOpen = data.url || './lumina.html';
 
         let actions = [
@@ -77,7 +80,7 @@ try {
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: './lumina-badge-monochrome.png',
+            badge: defaultBadge,
             image: image,
             tag: tag,
             renotify: true,
@@ -102,16 +105,18 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.5-20260913-monochrome';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.7-20260913-perfect-status-bar';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
     './lumina-tablica.html',
     './lumina-profile.html',
     './manifest-lumina.json',
+    './lumina-badge-v2.png',
+    './lumina-badge-monochrome.png',
+    './lumina-notif-icon-v2.png',
     './lumina-icon-192.png',
     './lumina-icon-512.png',
-    './lumina-badge-monochrome.png',
     './icon.png',
     './lumina_icon.jpg'
 ];
@@ -230,10 +235,13 @@ self.addEventListener('push', (event) => {
     if (payload.from) return;
     const type = data.type || 'general';
 
+    const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
+    const defaultIcon = origin + '/lumina-notif-icon-v2.png';
+    const defaultBadge = origin + '/lumina-badge-v2.png';
     const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
     const body = notification.body || data.body || 'Otrzymałeś nową wiadomość w portalu LUMINA.';
-    const icon = notification.icon || data.icon || './lumina-icon-192.png';
-    const image = notification.image || data.image || data.imageUrl || undefined;
+    const icon = (type === 'direct_message' && (data.avatar || notification.icon)) ? (data.avatar || notification.icon) : (notification.icon || data.icon || defaultIcon);
+    const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
     const url = data.url || './lumina.html';
 
     let actions = [
@@ -260,7 +268,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: body,
         icon: icon,
-        badge: './lumina-badge-monochrome.png',
+        badge: defaultBadge,
         image: image,
         data: {
             url: url,

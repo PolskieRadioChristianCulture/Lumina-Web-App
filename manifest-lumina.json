@@ -7,17 +7,26 @@
   "start_url": "/lumina?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "window-controls-overlay", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "window-controls-overlay",
+    "minimal-ui"
+  ],
   "orientation": "portrait",
   "background_color": "#090d1a",
   "theme_color": "#090d1a",
   "lang": "pl-PL",
   "dir": "ltr",
-  "categories": ["social", "lifestyle", "dating", "news"],
+  "categories": [
+    "social",
+    "lifestyle",
+    "dating",
+    "news"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "lumina-badge-monochrome.png",
+      "src": "lumina-badge-v2.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "monochrome"
@@ -27,6 +36,12 @@
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "monochrome"
+    },
+    {
+      "src": "lumina-notif-icon-v2.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "lumina-icon-192.png",
@@ -39,6 +54,12 @@
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "lumina-notif-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "lumina-icon-512.png",
@@ -57,12 +78,6 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "lumina-push-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -71,28 +86,48 @@
       "short_name": "Tablica",
       "description": "Najnowsze wpisy, modlitwy i aktywność społeczności LUMINA",
       "url": "/tablica?source=pwa_shortcut",
-      "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "lumina-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Odkrywaj i Randki",
       "short_name": "Randki",
       "description": "Poznaj profile chrześcijan o wspólnych wartościach",
       "url": "/lumina?source=pwa_shortcut",
-      "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "lumina-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Mój Profil",
       "short_name": "Profil",
       "description": "Edycja i podgląd profilu użytkownika",
       "url": "/profil?source=pwa_shortcut",
-      "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "lumina-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Modlitwy Live",
       "short_name": "Modlitwa",
       "description": "Wstawiennictwo i wspólnota modlitewna",
       "url": "/modlitwa?source=pwa_shortcut",
-      "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "lumina-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
   "share_target": {
