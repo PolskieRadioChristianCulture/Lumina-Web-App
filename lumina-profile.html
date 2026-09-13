@@ -7808,8 +7808,14 @@
         }
         window.scrollChatToBottom = scrollChatToBottom;
 
-        function switchMessengerMainTab(tab) {
+        function switchMessengerMainTab(tab, preserveActiveChat) {
             checkAndShowCommanderTab();
+            const modal = document.getElementById('directMessagesModal');
+            const viewPriv = document.getElementById('messengerPrivateView');
+            if (tab !== 'private') {
+                if (modal) modal.classList.remove('is-chat-active');
+                if (viewPriv) viewPriv.classList.remove('is-chat-active');
+            }
             const btnPublic = document.getElementById('tabBtnPublicChat');
             const btnPrivate = document.getElementById('tabBtnPrivateChat');
             const btnCommander = document.getElementById('tabBtnCommanderChat');
@@ -7878,7 +7884,9 @@
                 if (viewPublic) viewPublic.style.display = 'none';
                 if (viewPrivate) viewPrivate.style.display = 'flex';
                 if (viewCommander) viewCommander.style.display = 'none';
-                returnToConversationsList();
+                if (!preserveActiveChat) {
+                    returnToConversationsList();
+                }
             }
         }
 
@@ -8820,6 +8828,11 @@
                 activeChatTypingUnsubscribe = null;
             }
             activeChatSession = null;
+            const modal = document.getElementById('directMessagesModal');
+            if (modal) modal.classList.remove('is-chat-active');
+            const priv = document.getElementById('messengerPrivateView');
+            if (priv) priv.classList.remove('is-chat-active');
+
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
             const placeholder = document.getElementById('dmPlaceholderState');
@@ -8883,9 +8896,14 @@
             if (targetMessageId) window._targetChatMessageId = targetMessageId;
             window._activeChatInitialScrollDone = false;
             const m = document.getElementById('directMessagesModal');
-            if (m) m.classList.add('open');
+            if (m) {
+                m.classList.add('open');
+                m.classList.add('is-chat-active');
+            }
+            const priv = document.getElementById('messengerPrivateView');
+            if (priv) priv.classList.add('is-chat-active');
 
-            switchMessengerMainTab('private');
+            switchMessengerMainTab('private', true);
 
             const isDesktop = (window.innerWidth > 768);
             const listView = document.getElementById('dmListView');
@@ -9688,7 +9706,7 @@
             if (window.switchMessengerMainTab) {
                 _origSwitch = window.switchMessengerMainTab;
                 window.switchMessengerMainTab = function(tab) {
-                    _origSwitch(tab);
+                    _origSwitch.apply(this, arguments);
                     setTimeout(enforceMobile, 0);
                     setTimeout(enforceMobile, 100);
                 };

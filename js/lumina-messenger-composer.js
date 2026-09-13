@@ -399,7 +399,7 @@
             if (viewPost) viewPost.style.display = 'none';
 
             if (typeof originalSwitch === 'function') {
-                originalSwitch(tab);
+                originalSwitch.apply(this, arguments);
             }
         };
     }

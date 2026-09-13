@@ -554,7 +554,7 @@
             }
 
             if (typeof originalSwitchMessengerMainTab === 'function') {
-                originalSwitchMessengerMainTab(tab);
+                originalSwitchMessengerMainTab.apply(this, arguments);
             }
         }
     };

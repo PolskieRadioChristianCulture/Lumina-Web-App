@@ -372,6 +372,11 @@
     <link rel="stylesheet" href="/css/christian-culture-design-system.css">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
+    <script>
+        // Publiczny adres Worker'a; autoryzacja odbywa się przez token Firebase.
+        globalThis.LUMINA_PUSH_WORKER_URL = 'https://lumina-push.nazirczarkes.workers.dev';
+        globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED = true;
+    </script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=4.1.1_20260909"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -9937,6 +9942,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         function switchMessengerMainTab(tab, preserveActiveChat) {
             checkAndShowCommanderTab();
+            const modal = document.getElementById('directMessagesModal');
+            const viewPriv = document.getElementById('messengerPrivateView');
+            if (tab !== 'private') {
+                if (modal) modal.classList.remove('is-chat-active');
+                if (viewPriv) viewPriv.classList.remove('is-chat-active');
+            }
             const btnPublic = document.getElementById('tabBtnPublicChat');
             const btnPrivate = document.getElementById('tabBtnPrivateChat');
             const btnCommander = document.getElementById('tabBtnCommanderChat');
@@ -11038,6 +11049,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 activeChatTypingUnsubscribe = null;
             }
             activeChatSession = null;
+            const modal = document.getElementById('directMessagesModal');
+            if (modal) modal.classList.remove('is-chat-active');
+            const priv = document.getElementById('messengerPrivateView');
+            if (priv) priv.classList.remove('is-chat-active');
+
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
             const placeholder = document.getElementById('dmPlaceholderState');
@@ -11104,7 +11120,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (m) {
                 m.style.display = 'flex';
                 m.classList.add('open');
+                m.classList.add('is-chat-active');
             }
+            const priv = document.getElementById('messengerPrivateView');
+            if (priv) priv.classList.add('is-chat-active');
 
             switchMessengerMainTab('private', true);
 
@@ -12606,7 +12625,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (window.switchMessengerMainTab) {
                 _origSwitch = window.switchMessengerMainTab;
                 window.switchMessengerMainTab = function(tab) {
-                    _origSwitch(tab);
+                    _origSwitch.apply(this, arguments);
                     setTimeout(enforceMobile, 0);
                     setTimeout(enforceMobile, 100);
                 };
