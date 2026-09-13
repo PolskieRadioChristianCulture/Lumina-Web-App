@@ -2863,7 +2863,11 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     if (db) {
         try {
             const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
-            if (!chatSnapshot.exists()) {
+            // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości. Starsze
+            // rekordy czatu bez tego stanu zachowują historię, ale wymagają
+            // ponownego, świadomego potwierdzenia odbiorcy.
+            const conversationAccepted = chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted';
+            if (!conversationAccepted) {
                 const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
                 const existingRequest = await getDoc(requestRef);
                 if (!existingRequest.exists()) {

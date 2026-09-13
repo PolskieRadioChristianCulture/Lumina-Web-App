@@ -308,6 +308,22 @@
                 color: #0f172a;
                 box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6);
             }
+            @media (max-width: 768px) {
+                .btn-lumina-replace-floating {
+                    width: 44px;
+                    height: 44px;
+                    min-width: 44px;
+                    min-height: 44px;
+                    padding: 0;
+                    border-radius: 50%;
+                    justify-content: center;
+                    font-size: 0;
+                }
+                .btn-lumina-replace-floating i {
+                    margin: 0;
+                    font-size: 1rem;
+                }
+            }
 
             .btn-lumina-replace-action {
                 color: #f59e0b !important;

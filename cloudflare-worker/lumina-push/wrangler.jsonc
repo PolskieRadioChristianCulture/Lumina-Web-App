@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lumina-push",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-13",
+  "vars": {
+    "FIREBASE_PROJECT_ID": "lumina-cc",
+    "ALLOWED_ORIGIN": "https://polskieradio.cc",
+    "FIREBASE_WEB_API_KEY": "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.05 }
+  }
+}

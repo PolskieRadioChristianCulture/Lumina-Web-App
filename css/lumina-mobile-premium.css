@@ -83,6 +83,21 @@
         min-height: var(--lumina-mobile-target) !important;
     }
 
+    /* Własne profile miały wariant Menu bez klasy tekstu; na telefonie
+       pozostaje sama ikona, bez kolizji z sąsiednimi przyciskami. */
+    .profile-navbar .nav-menu-btn > span,
+    .profile-navbar .nav-menu-btn .nav-btn-chevron {
+        display: none !important;
+    }
+    .profile-navbar .nav-menu-btn {
+        width: var(--lumina-mobile-target) !important;
+        min-width: var(--lumina-mobile-target) !important;
+        height: var(--lumina-mobile-target) !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        gap: 0 !important;
+    }
+
     .nav-circle-btn,
     .nav-menu-btn,
     .btn-nav-support,
