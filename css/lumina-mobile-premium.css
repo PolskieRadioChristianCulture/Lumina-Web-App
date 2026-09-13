@@ -1,0 +1,235 @@
+/*
+ * LUMINA Mobile Premium Layer
+ * Stabilny, dotykowy interfejs dla Androida bez zmiany układu desktopowego.
+ */
+
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --lumina-mobile-target: 44px;
+        --lumina-mobile-gutter: max(12px, env(safe-area-inset-left));
+    }
+
+    html {
+        overflow-x: clip;
+        text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        min-height: 100dvh;
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+        overscroll-behavior-y: contain;
+    }
+
+    .lumina-nav {
+        min-height: 60px;
+        padding-left: var(--lumina-mobile-gutter) !important;
+        padding-right: var(--lumina-mobile-gutter) !important;
+    }
+
+    .lumina-nav .nav-links,
+    .lumina-nav .nav-actions,
+    .lumina-nav .lumina-nav-actions {
+        gap: 4px !important;
+    }
+
+    .user-nav-avatar {
+        width: var(--lumina-mobile-target) !important;
+        height: var(--lumina-mobile-target) !important;
+        min-width: var(--lumina-mobile-target) !important;
+        flex: 0 0 var(--lumina-mobile-target) !important;
+    }
+
+    .nav-logo-text,
+    .nav-circle-btn,
+    .nav-radio-btn,
+    .nav-menu-btn,
+    .btn-nav-support,
+    .btn-nav-more,
+    .notif-bell-btn,
+    .filter-chip,
+    .btn-devotional-read,
+    .lumina-scroll-top,
+    .header-btn,
+    .chip-btn,
+    .sort-tab-btn,
+    .post-action-btn,
+    .comment-submit-btn,
+    .btn-carousel-follow-pulse,
+    .card-badge-chat,
+    .card-badge-envelope,
+    .card-heart,
+    .card-sound-btn,
+    .mobile-auth-btn {
+        min-height: var(--lumina-mobile-target) !important;
+    }
+
+    .nav-circle-btn,
+    .nav-menu-btn,
+    .btn-nav-support,
+    .btn-nav-more,
+    .notif-bell-btn,
+    .lumina-scroll-top,
+    .header-btn,
+    .comment-submit-btn,
+    .card-badge-chat,
+    .card-heart,
+    .card-sound-btn {
+        width: var(--lumina-mobile-target) !important;
+        height: var(--lumina-mobile-target) !important;
+        min-width: var(--lumina-mobile-target) !important;
+        max-width: var(--lumina-mobile-target) !important;
+        min-height: var(--lumina-mobile-target) !important;
+        max-height: var(--lumina-mobile-target) !important;
+    }
+
+    .post-action-btn,
+    .btn-daypart-radio,
+    .reflection-smart-link,
+    .post-author-box,
+    .btn-campaign-cta,
+    .official-sponsor-banner-card a,
+    .mini-radio-play-btn,
+    .mini-radio-popup,
+    .mini-radio-close,
+    .lumina-legal-close-btn,
+    .lumina-share-link-input,
+    .lumina-share-copy-btn,
+    .lumina-push-accept,
+    .lumina-push-dismiss {
+        min-width: var(--lumina-mobile-target) !important;
+        min-height: var(--lumina-mobile-target) !important;
+        box-sizing: border-box !important;
+    }
+
+    .footer-links-row a,
+    .footer-social a,
+    button[title="Zamknij"],
+    button[aria-label="Zamknij"] {
+        min-width: var(--lumina-mobile-target) !important;
+        min-height: var(--lumina-mobile-target) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .nav-radio-btn {
+        flex: 0 0 var(--lumina-mobile-target) !important;
+    }
+
+    .post-action-btn,
+    .chip-btn,
+    .sort-tab-btn,
+    .btn-carousel-follow-pulse,
+    .card-badge-envelope,
+    .mobile-auth-btn {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    #feedStream1x1 > .post-card-1x1,
+    #feedStream1x1 > .mission-rotator-card,
+    #feedStream1x1 > .official-sponsor-banner-card,
+    .card-916 {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 720px;
+    }
+
+    .media-container-1x1,
+    .campaign-media-container,
+    .broadcast-preview-wrap,
+    .video-container {
+        contain: layout paint;
+    }
+
+    .media-img-1x1,
+    .campaign-img-full,
+    .broadcast-preview-img,
+    .video-container > img,
+    .video-container > video,
+    .video-container > iframe {
+        display: block;
+        width: 100%;
+    }
+
+    .feed-load-more-wrap {
+        display: grid;
+        place-items: center;
+        padding: 8px 0 24px;
+    }
+
+    .feed-load-more-btn {
+        min-height: 48px;
+        width: min(100%, 360px);
+        padding: 12px 18px;
+        border: 1px solid rgba(212, 169, 74, 0.5);
+        border-radius: 14px;
+        background: linear-gradient(135deg, #D4A94A, #E8C97A);
+        color: #0A0A0F;
+        font: 800 0.9rem/1.2 var(--cc-font-sans, "Manrope", sans-serif);
+        box-shadow: 0 8px 24px rgba(212, 169, 74, 0.22);
+        cursor: pointer;
+    }
+
+    .feed-load-more-btn:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 3px;
+    }
+
+    #lumina-cookie-banner,
+    #luminaCookieConsentBanner {
+        left: max(10px, env(safe-area-inset-left)) !important;
+        right: max(10px, env(safe-area-inset-right)) !important;
+        bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+        width: auto !important;
+        max-width: none !important;
+        padding: 12px !important;
+        gap: 8px !important;
+    }
+
+    #lumina-cookie-banner button,
+    #lumina-cookie-banner a,
+    #luminaCookieConsentBanner button,
+    #luminaCookieConsentBanner a {
+        min-height: var(--lumina-mobile-target);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            scroll-behavior: auto !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@media (max-width: 380px) {
+    /* Ustawienia pozostają dostępne w szufladzie nawigacji. */
+    .lumina-nav .btn-nav-more {
+        display: none !important;
+    }
+
+    /* Zachowaj wszystkie akcje Rolek bez obcinania sterowania dźwiękiem. */
+    .shorts-header .header-title-box {
+        display: none !important;
+    }
+}

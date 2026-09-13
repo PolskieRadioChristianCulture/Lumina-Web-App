@@ -3514,6 +3514,7 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
+    <link rel="stylesheet" href="css/lumina-mobile-premium.css?v=20260913_2">
 </head>
 <body>
 
@@ -3581,6 +3582,7 @@
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span data-i18n="nav_messages">Wiadomości & Czat</span></button>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span data-i18n="nav_share">Polecaj Portal</span></button>
                     <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span data-i18n="nav_my_profile">Mój Profil</span></a>
+                    <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openPersonalSettingsModal==='function') openPersonalSettingsModal();"><i class="fa-solid fa-sliders" style="color:#facc15;"></i> <span>Ustawienia aplikacji</span></button>
                     
                     <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
                     
@@ -3598,7 +3600,7 @@
 
             <!-- 5. User Avatar Profile (when logged in) -->
             <div class="user-nav-profile" id="userNavProfile" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
-                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(250,204,21,0.85); cursor:pointer;">
+                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" role="button" tabindex="0" aria-label="Otwórz mój profil" onclick="handleMyProfileNavigation(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMyProfileNavigation(event)}" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(250,204,21,0.85); cursor:pointer;">
                 <span class="user-nav-name" id="userNavName" style="display:none;"></span>
                 <button type="button" class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.95rem; padding:4px;"><i class="fa-solid fa-right-from-bracket"></i></button>
                 <button type="button" class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -6073,7 +6075,16 @@
         // 📻 INTELIGENTNY SILNIK SORTOWANIA FEEDU I RAMÓWKI (LUMINA SMART DAYPART)
         // ══════════════════════════════════════════════════════════════════════
         
+        const FEED_PAGE_SIZE = 8;
+        let visibleFeedItems = FEED_PAGE_SIZE;
         let currentSortMode = 'smart_daypart';
+
+        window.loadMoreFeedItems = function() {
+            visibleFeedItems += FEED_PAGE_SIZE;
+            renderFeed();
+            const status = document.getElementById('feedPaginationStatus');
+            if (status) status.focus({ preventScroll: true });
+        };
 
         const LUMINA_DAYPARTS = {
             morning: {
@@ -6212,6 +6223,7 @@
 
         function setFeedSortMode(mode, btn) {
             currentSortMode = mode;
+            visibleFeedItems = FEED_PAGE_SIZE;
             document.querySelectorAll('.sort-tab-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
             renderFeed();
@@ -6433,6 +6445,23 @@
                 return !window.LuminaDB?.isUserBlocked(authorKey);
             });
 
+            // Mobile-first progressive feed: render a small, useful first page
+            // instead of building more than one hundred rich cards at once.
+            // A direct link from a notification always expands far enough to
+            // include the requested post or author.
+            let renderLimit = visibleFeedItems;
+            const deepLinkPostId = urlParams.get('postId') || urlParams.get('post') || urlParams.get('p') || urlParams.get('id');
+            const deepLinkAuthor = (urlParams.get('author') || urlParams.get('authorSlug') || urlParams.get('user') || '').toLowerCase().trim();
+            if (deepLinkPostId || deepLinkAuthor) {
+                const deepLinkIndex = combined.findIndex(item => {
+                    const itemId = String(item.id || '');
+                    const itemAuthor = `${item.authorSlug || ''} ${item.author || ''}`.toLowerCase();
+                    return (deepLinkPostId && itemId === deepLinkPostId) || (deepLinkAuthor && itemAuthor.includes(deepLinkAuthor));
+                });
+                if (deepLinkIndex >= 0) renderLimit = Math.max(renderLimit, deepLinkIndex + 1);
+            }
+            const visibleCombined = combined.slice(0, renderLimit);
+
             if (combined.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
@@ -6465,7 +6494,7 @@
                 return 'lumina_logo_portal.jpg';
             }
 
-            container.innerHTML = combined.map(item => {
+            container.innerHTML = visibleCombined.map(item => {
                 if (item.type === 'donor_wall') {
                     return `
                     <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
@@ -6855,6 +6884,21 @@
                     </article>
                 `;
             }).join('');
+            if (visibleCombined.length < combined.length) {
+                const remaining = combined.length - visibleCombined.length;
+                const nextCount = Math.min(FEED_PAGE_SIZE, remaining);
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="feed-load-more-wrap">
+                        <button type="button" class="feed-load-more-btn" onclick="loadMoreFeedItems()" aria-describedby="feedPaginationStatus">
+                            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                            Pokaż kolejne ${nextCount} publikacji
+                        </button>
+                        <span id="feedPaginationStatus" tabindex="-1" class="sr-only" aria-live="polite">
+                            Wyświetlono ${visibleCombined.length} z ${combined.length} publikacji. Pozostało ${remaining}.
+                        </span>
+                    </div>
+                `);
+            }
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(container);
             }
@@ -6862,6 +6906,7 @@
 
         function filterFeed(type, btn) {
             currentFilter = type;
+            visibleFeedItems = FEED_PAGE_SIZE;
             document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
             renderFeed();
@@ -6869,6 +6914,7 @@
 
         function clearQueryFilter() {
             window._activeFeedQuery = null;
+            visibleFeedItems = FEED_PAGE_SIZE;
             const url = new URL(window.location.href);
             url.searchParams.delete('q');
             window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
