@@ -53,14 +53,13 @@ const LUMINA_FIREBASE_CONFIG = {
     measurementId: "G-6440T9VBQB"
 };
 
-// Adres publiczny Workera Cloudflare ustawiany dopiero po jego publikacji.
-// Worker sam weryfikuje token Firebase i dokument Firestore; ten adres nie jest sekretem.
+// Adres produkcyjny Workera Cloudflare (LUMINA Web Push / FCM v1 Dispatcher)
+globalThis.LUMINA_PUSH_WORKER_URL = globalThis.LUMINA_PUSH_WORKER_URL || 'https://lumina-push.nazirczarkes.workers.dev';
+globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED = true;
+
 async function triggerLuminaPush(kind, documentId) {
-    const baseUrl = String(globalThis.LUMINA_PUSH_WORKER_URL || '').replace(/\/$/, '');
+    const baseUrl = String(globalThis.LUMINA_PUSH_WORKER_URL || 'https://lumina-push.nazirczarkes.workers.dev').replace(/\/$/, '');
     const pushUser = auth?.currentUser;
-    // onDirectMessageCreated działa obecnie w Firebase. Przełączenie zwykłych
-    // wiadomości na Worker wymaga świadomego ustawienia flagi po wyłączeniu tej funkcji,
-    // inaczej odbiorca dostałby dwa identyczne powiadomienia.
     if (kind === 'direct' && globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED !== true) {
         return { skipped: true };
     }

@@ -8760,8 +8760,12 @@
                 `;
             });
 
+            const prevScrollTop = box.scrollTop;
+            const prevScrollHeight = box.scrollHeight;
+            const prevDistFromBottom = prevScrollHeight - prevScrollTop - box.clientHeight;
+            const wasNearBottom = (prevDistFromBottom < 160 || prevScrollHeight <= box.clientHeight);
+
             box.innerHTML = html;
-            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._activeChatInitialScrollDone;
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -8771,13 +8775,17 @@
                         targetEl.classList.add('chat-message-highlight');
                         setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
                         window._targetChatMessageId = null;
-                    } else {
-                        scrollChatToBottom(box, false);
+                    } else if (wasNearBottom) {
+                        scrollChatToBottom(box, false, true);
                     }
                 }, 100);
-            } else if (!window._activeChatInitialScrollDone || wasNearBottom) {
-                scrollChatToBottom(box, window._activeChatInitialScrollDone ? true : false);
+            } else if (!window._activeChatInitialScrollDone) {
+                scrollChatToBottom(box, false);
                 window._activeChatInitialScrollDone = true;
+            } else if (wasNearBottom) {
+                scrollChatToBottom(box, true, true);
+            } else {
+                box.scrollTop = Math.max(0, box.scrollHeight - prevDistFromBottom);
             }
 
             if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
