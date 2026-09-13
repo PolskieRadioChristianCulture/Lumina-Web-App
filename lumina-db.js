@@ -2888,7 +2888,13 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
                     await triggerLuminaPush('request', normalizedChatId);
                     return { status: 'request_sent', requestId: normalizedChatId };
                 }
-                return { status: existingRequest.data()?.status === 'pending' ? 'request_pending' : 'request_closed' };
+                if (existingRequest.data()?.status === 'pending') {
+                    // Ręczne ponowienie przez nadawcę jest przypomnieniem o tej
+                    // samej prośbie, nie tworzy kolejnego wątku rozmowy.
+                    await triggerLuminaPush('request', normalizedChatId);
+                    return { status: 'request_pending' };
+                }
+                return { status: 'request_closed' };
             }
         } catch (e) {
             console.warn('Lumina message request notice:', e.message);
