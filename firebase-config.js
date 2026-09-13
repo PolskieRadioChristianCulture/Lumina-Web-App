@@ -2,12 +2,12 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  projectId: "cc-mission-control",
-  appId: "1:519207260358:web:d875a610f438ecad2c47c7",
-  apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
-  authDomain: "cc-mission-control.firebaseapp.com",
-  storageBucket: "cc-mission-control.firebasestorage.app",
-  messagingSenderId: "519207260358",
+  projectId: "lumina-cc",
+  appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a",
+  apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+  authDomain: "lumina-cc.firebaseapp.com",
+  storageBucket: "lumina-cc.firebasestorage.app",
+  messagingSenderId: "413985877183",
   measurementId: ""
 };
 
