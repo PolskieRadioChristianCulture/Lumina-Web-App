@@ -25,21 +25,22 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Inter:wght@300;400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Cinzel:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/christian-culture-design-system.css">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --gold-primary: #d4af37;
-            --gold-light: #f3e5ab;
-            --gold-dark: #aa7c11;
-            --red-national: #dc143c;
-            --white-national: #ffffff;
-            --glass-bg: rgba(15, 18, 30, 0.95);
-            --glass-border: rgba(212, 175, 55, 0.25);
-            --text-main: #f4f4f5;
+            --gold-primary: var(--cc-gold, #D4A94A);
+            --gold-light: var(--cc-gold-soft, #E8C97A);
+            --gold-dark: #B88D34;
+            --red-national: var(--cc-ember, #B23A2E);
+            --white-national: var(--cc-parchment, #EDE6D6);
+            --glass-bg: rgba(18, 18, 26, 0.94);
+            --glass-border: var(--cc-border, rgba(212, 169, 74, 0.22));
+            --text-main: var(--cc-parchment, #EDE6D6);
         }
 
         * {
@@ -49,8 +50,8 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #030407;
+            font-family: var(--cc-font-sans, 'Manrope', sans-serif);
+            background: #0A0A0F;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -64,7 +65,7 @@
             position: relative;
             z-index: 10;
             padding: 20px 24px;
-            background: rgba(3, 4, 7, 0.95);
+            background: rgba(10, 10, 15, 0.95);
             border-bottom: 1.5px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
@@ -84,20 +85,20 @@
         }
 
         .logo-top {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            font-weight: 900;
+            font-family: var(--cc-font-serif, 'Fraunces', serif);
+            font-size: 1.15rem;
+            font-weight: 700;
             color: var(--white-national);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             line-height: 1;
         }
 
         .logo-bottom {
-            font-family: 'Cinzel', serif;
+            font-family: var(--cc-font-serif, 'Fraunces', serif);
             font-size: 0.9rem;
             font-weight: 700;
             color: var(--gold-primary);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             line-height: 1.2;
         }
 
@@ -112,14 +113,15 @@
             border: 1px solid var(--glass-border);
             padding: 8px 16px;
             border-radius: 50px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(18, 18, 26, 0.8);
             transition: all 0.2s;
         }
 
         .nav-back:hover {
-            background: var(--gold-primary);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+            color: #0A0A0F;
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 169, 74, 0.35);
         }
 
         /* Hero Banner with GIF Animation (Full Screen) */
@@ -193,15 +195,15 @@
         }
 
         .event-title {
-            font-family: 'Cinzel', serif;
+            font-family: var(--cc-font-serif, 'Fraunces', serif);
             font-size: 2.8rem;
-            font-weight: 900;
-            color: #fff;
+            font-weight: 700;
+            color: var(--white-national);
             margin-top: 15px;
             margin-bottom: 10px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             line-height: 1.2;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
         }
 
         .event-subtitle {
@@ -238,11 +240,11 @@
         }
 
         .card-title {
-            font-family: 'Cinzel', serif;
+            font-family: var(--cc-font-serif, 'Fraunces', serif);
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--gold-primary);
-            border-bottom: 1.5px solid rgba(212, 175, 55, 0.15);
+            border-bottom: 1.5px solid rgba(212, 169, 74, 0.18);
             padding-bottom: 12px;
             display: flex;
             align-items: center;
@@ -280,12 +282,12 @@
             outline: none;
             border-color: var(--gold-primary);
             background: rgba(0,0,0,0.7);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 12px rgba(212, 169, 74, 0.25);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            color: #0A0A0F;
             border: none;
             border-radius: 50px;
             padding: 14px 28px;
@@ -293,6 +295,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
+            box-shadow: 0 4px 18px rgba(212, 169, 74, 0.35);
             transition: all 0.3s;
             display: flex;
             align-items: center;
@@ -303,7 +306,8 @@
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 6px 25px rgba(212, 169, 74, 0.55);
+            background: linear-gradient(135deg, var(--gold-light) 0%, #F5DC9A 100%);
         }
 
         /* Grid section for forms and texts */

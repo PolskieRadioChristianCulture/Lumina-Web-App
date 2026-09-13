@@ -106,8 +106,8 @@ body.owner-mode-active .cover-hint-badge {
     height: 140px;
     border-radius: 50%;
     background: #0f172a;
-    border: 4px solid var(--bg-base);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 3.5px solid var(--cc-gold, #D4A94A);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 169, 74, 0.35);
     flex-shrink: 0;
     margin-top: -70px;
 }
@@ -125,9 +125,9 @@ body.owner-mode-active .cover-hint-badge {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ec4899, #8b5cf6);
-    border: 2px solid #fff;
-    color: #fff;
+    background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-soft, #E8C97A));
+    border: 2px solid #0A0A0F;
+    color: #0A0A0F;
     display: none;
     align-items: center;
     justify-content: center;
@@ -140,12 +140,13 @@ body.owner-mode-active .avatar-edit-badge {
 
 .head-user-name {
     font-size: 1.85rem;
-    font-weight: 800;
-    color: #fff;
+    font-weight: 700;
+    color: var(--text-primary);
     font-family: var(--font-heading);
     display: flex;
     align-items: center;
     gap: 8px;
+    letter-spacing: -0.01em;
 }
 .head-user-location {
     font-size: 0.88rem;

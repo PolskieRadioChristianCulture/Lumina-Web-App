@@ -1,34 +1,38 @@
 /* ══════════════════════════════════════════════════════════════════════════
- * LUMINA CORE THEME & DESIGN TOKENS
+ * LUMINA CORE THEME & DESIGN TOKENS — CHRISTIAN CULTURE DESIGN SYSTEM
  * ══════════════════════════════════════════════════════════════════════════ */
 
+@import url('christian-culture-design-system.css');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --bg-base: #090d1a;
-    --bg-surface: #0b1838;
-    --bg-card: rgba(18, 26, 47, 0.92);
-    --bg-card-hover: rgba(26, 38, 68, 0.98);
-    --border-glass: rgba(255, 255, 255, 0.12);
-    --border-glass-glow: rgba(168, 85, 247, 0.45);
+    --bg-base: var(--cc-bg-void, #0A0A0F);
+    --bg-surface: var(--cc-bg-surface, #12121A);
+    --bg-card: rgba(18, 18, 26, 0.94);
+    --bg-card-hover: rgba(26, 26, 38, 0.98);
+    --border-glass: var(--cc-border, rgba(212, 169, 74, 0.18));
+    --border-glass-glow: var(--cc-gold-glow, rgba(212, 169, 74, 0.35));
     
-    --text-primary: #ffffff;
+    --text-primary: var(--cc-parchment, #EDE6D6);
     --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
+    --text-muted: var(--cc-mist, #8A8578);
     
-    --accent-gold: #f59e0b;
-    --accent-pink: #ec4899;
-    --accent-purple: #a855f7;
-    --accent-cyan: #38bdf8;
-    --accent-blue: #2563eb;
+    --accent-gold: var(--cc-gold, #D4A94A);
+    --accent-gold-soft: var(--cc-gold-soft, #E8C97A);
+    --accent-pink: var(--cc-gold, #D4A94A);
+    --accent-purple: var(--cc-gold, #D4A94A);
+    --accent-cyan: var(--cc-gold-soft, #E8C97A);
+    --accent-blue: var(--cc-gold, #D4A94A);
     --accent-green: #10b981;
-    --accent-red: #e11d48;
+    --accent-red: var(--cc-ember, #B23A2E);
     
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 20px;
     --radius-full: 9999px;
     
-    --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-heading: var(--cc-font-serif, 'Fraunces', Georgia, serif);
+    --font-body: var(--cc-font-sans, 'Manrope', sans-serif);
 }
 
 *, *::before, *::after {
@@ -44,9 +48,9 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     background-image: 
-        radial-gradient(ellipse at 15% 10%, rgba(168, 85, 247, 0.14) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 25%, rgba(236, 72, 153, 0.12) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 80%, rgba(56, 189, 248, 0.10) 0%, transparent 60%);
+        radial-gradient(ellipse at 15% 10%, rgba(212, 169, 74, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 25%, rgba(178, 58, 46, 0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 80%, rgba(212, 169, 74, 0.05) 0%, transparent 60%);
     background-attachment: fixed;
     line-height: 1.5;
 }

@@ -159,14 +159,14 @@
 }
 
 .btn-action-primary {
-    background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-    color: #fff !important;
+    background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-soft, #E8C97A)) !important;
+    color: #0A0A0F !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(212, 169, 74, 0.35) !important;
 }
 .btn-action-primary:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.55) !important;
+    box-shadow: 0 6px 20px rgba(212, 169, 74, 0.55) !important;
 }
 
 .btn-action-secondary {

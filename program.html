@@ -20,26 +20,30 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/christian-culture-design-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="style.css?v=25">
 
     <style>
         :root {
-            --gold-primary: #d4af37;
-            --gold-light: #f3e5ab;
-            --gold-dark: #aa820a;
-            --bg-deep-black: #0a0a0c;
-            --glass-card: rgba(18, 18, 24, 0.65);
-            --glass-border: rgba(212, 175, 55, 0.22);
-            --glass-glow: rgba(212, 175, 55, 0.12);
+            --gold-primary: #D4A94A;
+            --gold-light: #E8C97A;
+            --gold-dark: #A67D24;
+            --bg-deep-black: #0A0A0F;
+            --glass-card: rgba(18, 18, 26, 0.88);
+            --glass-border: rgba(212, 169, 74, 0.2);
+            --glass-glow: rgba(212, 169, 74, 0.15);
+            --ember: #B23A2E;
+            --parchment: #EDE6D6;
+            --mist: #8A8578;
         }
 
         body {
-            background: #060608 linear-gradient(180deg, #0b0b10 0%, #040406 100%);
-            color: #ffffff;
-            font-family: 'Outfit', 'Montserrat', sans-serif;
+            background: #0A0A0F linear-gradient(180deg, #0A0A0F 0%, #12121A 100%);
+            color: var(--parchment);
+            font-family: 'Manrope', 'Outfit', sans-serif;
             min-height: 100vh;
         }
 
@@ -69,10 +73,10 @@
         }
 
         .hero-title {
-            font-family: 'Cinzel', serif;
+            font-family: 'Fraunces', serif;
             font-size: clamp(2.2rem, 5vw, 3.8rem);
             font-weight: 900;
-            background: linear-gradient(135deg, #ffffff 30%, var(--gold-light) 70%, var(--gold-primary) 100%);
+            background: linear-gradient(135deg, #EDE6D6 30%, var(--gold-light) 70%, var(--gold-primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
@@ -131,7 +135,7 @@
         }
 
         .live-now-title {
-            font-family: 'Cinzel', serif;
+            font-family: 'Fraunces', serif;
             font-size: 1.6rem;
             font-weight: 800;
             color: #fff;
@@ -201,8 +205,8 @@
         }
 
         .view-tab-btn.active {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            color: #0A0A0F;
             font-weight: 800;
             box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
         }
@@ -288,6 +292,7 @@
 
         .time-start {
             font-size: 1.5rem;
+            font-family: 'Fraunces', serif;
             font-weight: 900;
             color: var(--gold-primary);
             letter-spacing: 0.5px;
@@ -352,7 +357,7 @@
         }
 
         .show-title {
-            font-family: 'Cinzel', serif;
+            font-family: 'Fraunces', serif;
             font-size: 1.3rem;
             font-weight: 800;
             color: #fff;
@@ -381,8 +386,8 @@
         }
 
         .schedule-action-btn:hover {
-            background: var(--gold-primary);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            color: #0A0A0F;
             border-color: var(--gold-primary);
         }
 
@@ -402,7 +407,7 @@
         }
 
         .day-column-header {
-            font-family: 'Cinzel', serif;
+            font-family: 'Fraunces', serif;
             font-size: 1.2rem;
             font-weight: 800;
             color: var(--gold-primary);
@@ -1011,7 +1016,7 @@
             </div>
 
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button id="chromecastDirectTriggerBtn" onclick="triggerNativeCast()" style="background: linear-gradient(135deg, var(--gold-primary, #d4af37) 0%, #aa820a 100%); color: #000; font-weight: 800; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px;">
+                <button id="chromecastDirectTriggerBtn" onclick="triggerNativeCast()" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%); color: #000; font-weight: 800; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px;">
                     <img src="chromecast.png" alt="" style="height: 18px; width: auto;"> WŁĄCZ TRANSMISJĘ NA TV
                 </button>
                 <button onclick="closeChromecastModal()" style="background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;">
