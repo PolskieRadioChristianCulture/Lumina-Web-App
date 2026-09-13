@@ -1234,6 +1234,7 @@
             width: 100%;
             align-items: center;
             -webkit-overflow-scrolling: touch;
+            position: relative;
         }
         .profiles-grid::-webkit-scrollbar { display: none; }
 
@@ -1270,22 +1271,22 @@
             z-index: 10;
         }
 
-        @media (max-width: 992px) {
-            .carousel-container { margin-top: 24px; padding: 0; overflow: visible; }
+        @media (max-width: 992px) and (min-width: 681px) {
+            .carousel-container { margin-top: 24px; padding: 0 4px; overflow: visible; }
             .profiles-grid {
                 gap: 16px;
-                padding: 30px 16px 40px;
-                scroll-snap-type: x mandatory;
-                scroll-padding: 0 16px;
+                padding: 30px 0 40px;
+                scroll-snap-type: none;
                 -webkit-overflow-scrolling: touch;
             }
             .profile-card {
-                flex: 0 0 285px;
+                flex: 0 0 calc((100% - 32px) / 3) !important;
+                width: calc((100% - 32px) / 3) !important;
+                min-width: calc((100% - 32px) / 3) !important;
+                max-width: calc((100% - 32px) / 3) !important;
                 height: 400px;
                 opacity: 1;
                 transform: none;
-                scroll-snap-align: center;
-                scroll-snap-stop: always;
                 -webkit-tap-highlight-color: transparent;
                 will-change: transform;
             }
@@ -3922,8 +3923,6 @@
 /* 🚀 PANCERNA OPTYMALIZACJA MOBILNA: ZERO PRZEGRZEWANIA I LAGÓW */
 .profile-card {
     contain: layout paint;
-    content-visibility: auto;
-    contain-intrinsic-size: 260px 380px;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: auto;
@@ -9388,23 +9387,62 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window.pauseCarouselAutoplayTemporarily(6000);
             }
 
-            const firstCard = visibleCards[0];
-            const cardWidth = firstCard ? (firstCard.getBoundingClientRect().width || 320) : 320;
-            const gap = 24;
-            const step = Math.round(cardWidth + gap);
-            const scrollAmount = step * direction;
+            const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
+            let closestIdx = 0;
+            let minDiff = Infinity;
+            visibleCards.forEach((card, idx) => {
+                const center = card.offsetLeft + (card.offsetWidth / 2);
+                const diff = Math.abs(carouselCenter - center);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIdx = idx;
+                }
+            });
 
-            if (direction > 0 && (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20)) {
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            } else if (direction < 0 && carousel.scrollLeft <= 10) {
-                carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
-            } else {
-                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+            let nextIdx = closestIdx + direction;
+            if (nextIdx < 0) nextIdx = visibleCards.length - 1;
+            if (nextIdx >= visibleCards.length) nextIdx = 0;
+
+            const targetCard = visibleCards[nextIdx];
+            const cardLeft = targetCard.offsetLeft;
+            const cardWidth = targetCard.offsetWidth;
+            const carouselWidth = carousel.clientWidth;
+            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
+
+            carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
 
             setTimeout(() => {
                 window.updateCenterActiveCard();
             }, 350);
+        };
+
+        window.snapToNearestCard = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel || isCarouselInteracting) return;
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
+
+            const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
+            let closestCard = visibleCards[0];
+            let minDiff = Infinity;
+            visibleCards.forEach(card => {
+                const center = card.offsetLeft + (card.offsetWidth / 2);
+                const diff = Math.abs(carouselCenter - center);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestCard = card;
+                }
+            });
+
+            const cardLeft = closestCard.offsetLeft;
+            const cardWidth = closestCard.offsetWidth;
+            const carouselWidth = carousel.clientWidth;
+            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
+
+            if (Math.abs(carousel.scrollLeft - targetScroll) > 3) {
+                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            }
+            window.updateCenterActiveCard();
         };
 
         window.handleInfiniteScrollBoundary = function() {
@@ -9475,10 +9513,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
 
-            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
-            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount] || visibleCards[0];
-
-            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
+            let targetCard = visibleCards[1] || visibleCards[0];
+            for (let i = 0; i < visibleCards.length; i++) {
                 if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || (visibleCards[i].id && visibleCards[i].id.includes('promoAdCard')))) {
                     targetCard = visibleCards[i];
                     break;
@@ -9730,6 +9766,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         if (isGesture) {
                             _carouselGestureMoved = true;
                             _suppressCarouselClickUntil = Date.now() + 500;
+                            if (!isHorizontalSwipe && scrollDelta > 10 && typeof window.snapToNearestCard === 'function') {
+                                setTimeout(window.snapToNearestCard, 60);
+                            }
                         }
                     }
                 }, { passive: true });
