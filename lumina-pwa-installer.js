@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '4.1.3';
+    const CURRENT_CLIENT_VERSION = '4.1.4';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -46,7 +46,7 @@
                     if ('caches' in window) {
                         const keys = await caches.keys();
                         await Promise.all(keys.map(k => {
-                            if (!k.includes('v4.1.3')) {
+                            if (!k.includes('v4.1.4')) {
                                 console.log('[LUMINA PWA] Czyszczenie starego cache:', k);
                                 return caches.delete(k);
                             }
@@ -56,10 +56,10 @@
                     // Bypass the HTTP/SW cache so every device fetches the forced build.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.3_20260914_chatfix', { scope: '/', updateViaCache: 'none' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.4_20260914_deliveryfix', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
-                        console.log('[LUMINA PWA] Service Worker v4.1.3 zarejestrowany. Scope:', reg.scope);
+                        console.log('[LUMINA PWA] Service Worker v4.1.4 zarejestrowany. Scope:', reg.scope);
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
@@ -97,11 +97,11 @@
                 if (res.ok) {
                     const verData = await res.json();
                     const isNewVer = verData && (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall);
-                    const reinstalled = localStorage.getItem('lumina_reinstalled_v413');
+                    const reinstalled = localStorage.getItem('lumina_reinstalled_v414');
 
                     if (isNewVer || !reinstalled) {
-                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.3)');
-                        localStorage.setItem('lumina_reinstalled_v413', 'true');
+                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.4)');
+                        localStorage.setItem('lumina_reinstalled_v414', 'true');
                         localStorage.removeItem(DISMISS_INSTALL_KEY);
                         sessionStorage.removeItem(DISMISS_INSTALL_KEY);
 
