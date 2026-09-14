@@ -79,4 +79,10 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 4. Po załadowaniu wersji `lumina-db.js?v=4.1.2_20260914_pushfix` uruchomić `wrangler tail lumina-push` i wysłać testową prośbę. Odczytać wynik Worker’a: `delivered`, `no_active_device`, `401`, `403` albo `502`.
 5. Osobno odtworzyć kliknięcie przycisku emoji na telefonie i desktopie; sprawdzić listener, DOM oraz ewentualne przechwycenie kliknięcia przez warstwę czatu.
 
+**Aktualizacja 2026-09-14 07:54 CEST:**
+
+* `de8c02f` — profile Firestore znalezione po slug/ID dokumentu uzupełniają `uid` z `doc.id`; moduł `lumina-db.js` otrzymał cache-busting `4.1.4_20260914_deliveryfix`.
+* `1a516df` — nadawca odzyskuje `receiverAuthUid` z zaakceptowanego `lumina_chats/{chatId}` lub `lumina_message_requests/{chatId}`, gdy profil odbiorcy nie dostarcza UID; dodano diagnostykę identyfikatora odbiorcy.
+* Zmiany wypchnięto do `Strona-www-Christian-Culture/main` i wdrożono na `christian-culture-global`. Wymagany test dwóch kont po zamknięciu starych kart/PWA.
+
 **Zakazy:** nie dotykać `cctv24-worship.html`; nie publikować kolejnych zmian bez pełnego diffu, testów i zgody Dowódcy.
