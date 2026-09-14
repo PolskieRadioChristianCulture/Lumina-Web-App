@@ -35,12 +35,18 @@
     // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
-            // Aktywacja nowego Workera nie może sama przeładowywać strony.
-            // Na części telefonów controllerchange występuje przy każdym
-            // odtworzeniu klienta i powodował pętlę nieskończonych odświeżeń.
+            // Aktywacja nowego Workera odświeża stronę dokładnie raz na daną wersję (ochrona przed pętlą przeładowań)
             navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (controllerReloaded) return;
+                const lastSynced = sessionStorage.getItem('lumina_sw_synced_version');
+                if (lastSynced === CURRENT_CLIENT_VERSION) {
+                    console.log('[LUMINA PWA] Nowy Service Worker aktywny (już zsynchronizowano z v' + CURRENT_CLIENT_VERSION + ').');
+                    return;
+                }
                 controllerReloaded = true;
-                console.log('[LUMINA PWA] Nowy Service Worker aktywny.');
+                sessionStorage.setItem('lumina_sw_synced_version', CURRENT_CLIENT_VERSION);
+                console.log('[LUMINA PWA] Nowy Service Worker aktywny — jednorazowa aktualizacja do v' + CURRENT_CLIENT_VERSION);
+                window.location.reload();
             });
             window.addEventListener('load', async () => {
                 try {
@@ -453,9 +459,9 @@
             <div class="lumina-pwa-content">
                 <div class="lumina-pwa-title">
                     <span>LUMINA App</span>
-                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v4.1.3</span>
+                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v${CURRENT_CLIENT_VERSION}</span>
                 </div>
-                <div class="lumina-pwa-desc">Zainstaluj nową wersję v4.1.3 na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
+                <div class="lumina-pwa-desc">Zainstaluj nową wersję v${CURRENT_CLIENT_VERSION} na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
             </div>
             <div class="lumina-pwa-actions">
                 <button type="button" class="lumina-pwa-btn-install" id="btnPwaInstallAction">
@@ -565,7 +571,14 @@
     }
 
     // 10. Initialization
+    function syncVersionBadges() {
+        document.querySelectorAll('.lumina-app-version-badge, #luminaAppVersionBadge').forEach(el => {
+            el.textContent = 'v' + CURRENT_CLIENT_VERSION;
+        });
+    }
+
     function init() {
+        syncVersionBadges();
         registerLuminaServiceWorker();
         injectPWAStyles();
 

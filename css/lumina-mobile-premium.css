@@ -16,6 +16,40 @@
 }
 
 @media (max-width: 768px) {
+    /* SMCC & ICC: Pancerne kółko awatara czatu i ikona profilu bez tekstu na mobile */
+    .chat-header-bar {
+        gap: 8px !important;
+        min-height: 56px !important;
+    }
+    .chat-header-profile-btn {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+    }
+    .chat-header-profile-btn .chat-header-profile-text {
+        display: none !important;
+    }
+    #activeChatAvatar {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        max-width: 42px !important;
+        max-height: 42px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+    }
+
     :root {
         --lumina-mobile-target: 44px;
         --lumina-mobile-gutter: max(12px, env(safe-area-inset-left));

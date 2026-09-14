@@ -200,14 +200,14 @@
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'cezaryrgowski';</script>
-    <script type="module" src="lumina-db.js?v=1786940468365"></script>
+    <script type="module" src="lumina-db.js?v=4.1.4_20260914_deliveryfix"></script>
     <script src="lumina-radio.js?v=1"></script>
     <script type="module" src="lumina-chat-typing.js?v=1"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-sharing-suite.js?v=4.1.1_20260909"></script>
-    <script src="lumina-pwa-installer.js?v=4.1.1_20260909"></script>
+    <script src="lumina-pwa-installer.js?v=4.1.4_20260914_deliveryfix"></script>
 
     <style>
         :root {
@@ -2176,6 +2176,22 @@
                 transform: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
+            }
+            
+            #directMessagesModal .chat-header-profile-btn {
+                width: 36px !important;
+                height: 36px !important;
+                min-width: 36px !important;
+                min-height: 36px !important;
+                padding: 0 !important;
+                border-radius: 50% !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-shrink: 0 !important;
+            }
+            #directMessagesModal .chat-header-profile-btn .chat-header-profile-text {
+                display: none !important;
             }
             #directMessagesModal .modal-close-btn {
                 width: 36px !important;
@@ -5762,27 +5778,27 @@
                     <!-- ACTIVE CONVERSATION THREAD -->
                     <div id="dmActiveConversationBox" style="display: none; flex-direction: column; height: 100%; min-height: 0;">
                         <!-- Chat Room Header (Meta Messenger Style) -->
-                        <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08);">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <button type="button" class="messenger-back-btn" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;" title="Powrót do listy rozmów"><i class="fa-solid fa-arrow-left"></i></button>
-                                <div style="position:relative;">
-                                    <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
-                                    <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; border-radius:50%; background:#10b981; border:2px solid #070d1e;"></span>
+                        <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08); min-height: 58px; gap: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
+                                <button type="button" class="messenger-back-btn" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 6px; flex-shrink: 0;" title="Powrót do listy rozmów"><i class="fa-solid fa-arrow-left"></i></button>
+                                <div style="position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                    <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; max-width: 44px; max-height: 44px; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #c084fc; display: block; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                                    <span style="position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px; min-width: 11px; min-height: 11px; border-radius: 50%; background: #10b981; border: 2px solid #070d1e; flex-shrink: 0; pointer-events: none;"></span>
                                 </div>
-                                <div>
-                                    <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff; cursor: pointer; display:flex; align-items:center; gap:6px;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}">
+                                <div style="min-width: 0; flex: 1; overflow: hidden;">
+                                    <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}">
                                         Rozmowa Prywatna
                                     </div>
-                                    <div style="font-size: 0.70rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
-                                        <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Aktywny(a) teraz • Bezpieczna Rozmowa ✨
+                                    <div style="font-size: 0.70rem; color: #10b981; display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <span style="width: 6px; height: 6px; min-width: 6px; min-height: 6px; border-radius: 50%; background: #10b981; display: inline-block; flex-shrink: 0;"></span> Aktywny(a) teraz • Bezpieczna Rozmowa ✨
                                     </div>
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <button type="button" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 12px; padding: 5px 12px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Zobacz pełny profil rozmówcy">
-                                    <i class="fa-solid fa-user"></i> <span>Profil</span>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                                <button type="button" class="chat-header-profile-btn" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 12px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; min-height: 36px;" title="Zobacz pełny profil rozmówcy">
+                                    <i class="fa-solid fa-user"></i><span class="chat-header-profile-text"> Profil</span>
                                 </button>
-                                <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+                                <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static; flex-shrink: 0;"><i class="fa-solid fa-xmark"></i></button>
                             </div>
                         </div>
 
@@ -5871,7 +5887,7 @@
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.1</span>
+                        <span id="luminaAppVersionBadge" class="lumina-app-version-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.4</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -9187,7 +9203,7 @@
 
             setTimeout(() => {
                 const url = new URL(window.location.href);
-                url.searchParams.set('v_sync', Date.now());
+                url.searchParams.set('v_sync', `4.1.4_${Date.now()}`);
                 window.location.href = url.toString();
             }, 1000);
         }
@@ -10332,7 +10348,7 @@
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.1_20260909" defer></script>
-    <script src="lumina-notifications.js?v=4.1.2_20260913" defer></script>
+    <script src="lumina-notifications.js?v=4.1.4_20260914" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
