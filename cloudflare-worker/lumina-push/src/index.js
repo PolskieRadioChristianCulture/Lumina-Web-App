@@ -7,6 +7,7 @@ const GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/datastore'
 ].join(' ');
 const MAX_TOKENS_PER_RECIPIENT = 10;
+const PUBLIC_ORIGIN = 'https://polskieradio.cc';
 
 function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), { status, headers: { ...JSON_HEADERS, ...extraHeaders } });
@@ -113,6 +114,17 @@ function firestoreBaseUrl(env) {
   return `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(env.FIREBASE_PROJECT_ID)}/databases/(default)/documents`;
 }
 
+function notificationAssetUrl(value, fallback) {
+  if (typeof value !== 'string' || !value.trim()) return fallback;
+  try {
+    const url = new URL(value, PUBLIC_ORIGIN);
+    if (url.protocol !== 'https:') return fallback;
+    return url.href;
+  } catch {
+    return fallback;
+  }
+}
+
 async function getFirestoreDocument(path, accessToken, env) {
   const response = await fetch(`${firestoreBaseUrl(env)}/${path}`, { headers: { authorization: `Bearer ${accessToken}` } });
   if (response.status === 404) return null;
@@ -170,15 +182,17 @@ function notificationFor(kind, documentId, record) {
   const body = isRequest
     ? String(record.previewText || 'Otwórz prośbę o rozmowę.').slice(0, 140)
     : (record.imageUrl ? 'Przesłał(a) zdjęcie w wiadomości prywatnej' : String(record.text || 'Nowa wiadomość').slice(0, 140));
+  const icon = notificationAssetUrl(record.senderAvatar, `${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`);
   return {
     title: isRequest ? `💌 ${senderName} chce rozpocząć rozmowę` : `💬 ${senderName}`,
     body,
+    senderName,
     type: isRequest ? 'direct_message_request' : 'direct_message',
     tag: isRequest ? `lumina-request-${record.senderId}` : `lumina-dm-${record.senderId}`,
     url: isRequest
       ? 'https://polskieradio.cc/lumina.html?openMessages=private'
       : `https://polskieradio.cc/lumina.html?openChat=${encodeURIComponent(record.senderId || '')}&messageId=${encodeURIComponent(documentId)}`,
-    icon: String(record.senderAvatar || 'https://polskieradio.cc/lumina_icon.jpg'),
+    icon,
     senderId: String(record.senderId || ''),
     documentId
   };
@@ -192,6 +206,8 @@ async function sendFcm(token, notification, accessToken, env) {
     tag: notification.tag,
     url: notification.url,
     icon: notification.icon,
+    avatar: notification.icon,
+    senderName: notification.senderName || '',
     senderId: notification.senderId,
     messageId: notification.type === 'direct_message' ? notification.documentId : '',
     requestId: notification.type === 'direct_message_request' ? notification.documentId : ''
@@ -210,7 +226,7 @@ async function sendFcm(token, notification, accessToken, env) {
             title: notification.title,
             body: notification.body,
             icon: notification.icon,
-            badge: 'https://polskieradio.cc/lumina-icon-192.png',
+            badge: `${PUBLIC_ORIGIN}/lumina-push-badge.svg`,
             tag: notification.tag,
             renotify: true,
             requireInteraction: true,
