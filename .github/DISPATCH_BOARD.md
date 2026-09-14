@@ -35,3 +35,36 @@
 ## 🔄 3. PROCEDURA PRZEJĘCIA ROLI LIDERA
 W razie wyczerpania tokenów u bieżącego lidera, kolejny dostępny agent melduje przejęcie sterów.
 Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane są do modułu **`@MCC`** ([`.github/MATRIX_CC_AGENT_RULES.md`](.github/MATRIX_CC_AGENT_RULES.md)).
+
+---
+
+## 🚨 POWIADOMIENIA PUSH — PRZEKAZANIE KRYTYCZNE (2026-09-14)
+
+**Stan zgłoszony przez Dowódcę:** test Cezary Rogowski na telefonie → Biblia Audio Christian Culture na komputerze. Brak PUSH. Wiadomości nie pojawiają się konsekwentnie w drugim oknie czatu albo wcale nie docierają. Przycisk dodawania emotikon również nie działa.
+
+**Co zostało wdrożone:**
+
+* `680d025` — mobilny czat nie wraca już sam do listy po kliknięciu rozmowy; wdrożone na Pages.
+* `9920ae1` — Worker `lumina-push` najpierw odczytuje token z profilu, a rejestr wielu urządzeń pozostawia jako fallback.
+* `f1e5e83` — rejestracja FCM zapisuje token przez `setDoc(..., { merge: true })`, także gdy dokument profilu nie istniał.
+* `a928102` — ponowne wysłanie oczekującej prośby o rozmowę wywołuje przypomnienie PUSH bez tworzenia duplikatu.
+* `17fcace` — odświeżony adres `lumina-db.js`, aby telefony nie uruchamiały starego modułu z cache.
+
+**Twarde ustalenia:**
+
+* Produkcja ładuje `js/lumina-message-requests.js` jako JavaScript (wcześniej był 404/MIME HTML).
+* Test automatyczny Service Workera PUSH: 9/9 zaliczone. Nie jest to dowód dostarczenia na fizyczny Android.
+* Test Playwright potwierdził otwarcie mobilnego pokoju: `is-chat-active`, lista `none`, pokój `flex`.
+* Odczyt Firestore rejestru tokenów przez konto serwisowe zwrócił `429 Quota exceeded`. Worker mógł z tego powodu nie dojść do FCM.
+* Podgląd `wrangler tail lumina-push` nie pokazał wywołania po jednej ręcznej próbie — bardzo możliwy był wtedy cache starego `lumina-db.js`.
+* Zrzut Dowódcy pokazuje lokalnie wyrenderowaną bańkę wiadomości. Funkcja czatu najpierw zapisuje ją lokalnie, więc zrzut sam nie dowodzi zapisu w Firestore ani dostarczenia do odbiorcy.
+
+**Pierwsze zadania dla następnego agenta (bez przebudowy UI):**
+
+1. Zalogować oba konta i sprawdzić w konsoli przeglądarki wynik `sendDirectMessageToCloud` oraz błędy Firestore / `permission-denied`.
+2. Zweryfikować w Firestore, czy po wysłaniu istnieje dokument w `lumina_message_requests` lub `lumina_direct_messages`, z poprawnymi `senderAuthUid`, `receiverAuthUid`, `senderId`, `receiverId`, `participants`.
+3. Ustalić, czy profil **Biblia Audio Christian Culture** ma prawidłowy Firebase UID i czy `getProfileFromCloud(receiverId)` nie zwraca błędnego/zerowego odbiorcy.
+4. Po załadowaniu wersji `lumina-db.js?v=4.1.2_20260914_pushfix` uruchomić `wrangler tail lumina-push` i wysłać testową prośbę. Odczytać wynik Worker’a: `delivered`, `no_active_device`, `401`, `403` albo `502`.
+5. Osobno odtworzyć kliknięcie przycisku emoji na telefonie i desktopie; sprawdzić listener, DOM oraz ewentualne przechwycenie kliknięcia przez warstwę czatu.
+
+**Zakazy:** nie dotykać `cctv24-worship.html`; nie publikować kolejnych zmian bez pełnego diffu, testów i zgody Dowódcy.
