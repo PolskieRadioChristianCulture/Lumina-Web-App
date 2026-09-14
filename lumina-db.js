@@ -2885,13 +2885,13 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
                         createdAt: Date.now(),
                         createdAtTimestamp: serverTimestamp()
                     });
-                    await triggerLuminaPush('request', normalizedChatId);
+                    void triggerLuminaPush('request', normalizedChatId);
                     return { status: 'request_sent', requestId: normalizedChatId };
                 }
                 if (existingRequest.data()?.status === 'pending') {
                     // Ręczne ponowienie przez nadawcę jest przypomnieniem o tej
                     // samej prośbie, nie tworzy kolejnego wątku rozmowy.
-                    await triggerLuminaPush('request', normalizedChatId);
+                    void triggerLuminaPush('request', normalizedChatId);
                     return { status: 'request_pending' };
                 }
                 return { status: 'request_closed' };
@@ -2933,21 +2933,28 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
     // 1. Save locally and trigger active UI listener immediately
     const localKey = `lumina_chat_${normalizedChatId}`;
+    const localMessageId = `local_${Date.now()}`;
     try {
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
+        cached.push({
+            ...fullMsg,
+            id: localMessageId,
+            status: 'pending',
+            delivered: false,
+            timestamp: { seconds: Date.now() / 1000 }
+        });
         localStorage.setItem(localKey, JSON.stringify(cached));
         
         const listener = activeDirectChatListeners.get(normalizedChatId);
         if (listener) listener(cached);
     } catch(e) {}
 
-    if (!db || !normalizedChatId) return 'local_' + Date.now();
+    if (!db || !normalizedChatId) return null;
 
     try {
         // Write to top-level collection (Primary)
         const msgRef = await addDoc(collection(db, 'lumina_direct_messages'), fullMsg);
-        await triggerLuminaPush('direct', msgRef.id);
+        void triggerLuminaPush('direct', msgRef.id);
 
         // Also write to subcollection (Backup)
         addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
@@ -3002,10 +3009,37 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
 
 
+        try {
+            const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+            const localIndex = cached.findIndex((message) => message.id === localMessageId);
+            if (localIndex >= 0) {
+                cached[localIndex] = {
+                    ...cached[localIndex],
+                    id: msgRef.id,
+                    status: 'sent',
+                    delivered: true,
+                    deliveredAt: Date.now()
+                };
+                localStorage.setItem(localKey, JSON.stringify(cached));
+                const listener = activeDirectChatListeners.get(normalizedChatId);
+                if (listener) listener(cached);
+            }
+        } catch (error) {
+            console.warn('Lumina local message confirmation notice:', error.message);
+        }
         return msgRef.id;
     } catch(e) {
         console.warn('Lumina send direct message notice:', e.message);
-        return 'local_' + Date.now();
+        try {
+            const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+            const failedMessageRemoved = cached.filter((message) => message.id !== localMessageId);
+            localStorage.setItem(localKey, JSON.stringify(failedMessageRemoved));
+            const listener = activeDirectChatListeners.get(normalizedChatId);
+            if (listener) listener(failedMessageRemoved);
+        } catch (cleanupError) {
+            console.warn('Lumina failed message cleanup notice:', cleanupError.message);
+        }
+        return null;
     }
 }
 
