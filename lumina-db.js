@@ -2705,12 +2705,14 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
     let unsub1 = () => {};
     let unsub2 = () => {};
+    let unsub3 = () => {};
     let topLevelMessages = [];
     let nestedMessages = [];
+    let legacyMessages = [];
 
     const emitMergedMessages = () => {
         const uniqueMessages = new Map();
-        [...nestedMessages, ...topLevelMessages].forEach(message => {
+        [...nestedMessages, ...topLevelMessages, ...legacyMessages].forEach(message => {
             const key = getDirectMessageKey(message);
             const existing = uniqueMessages.get(key);
             // Preferuj dokument główny, ale zachowaj pełniejsze dane z kopii zapasowej.
@@ -2741,6 +2743,23 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
     } catch(e) {}
 
+    // Historical documents may have only `users`, not `participants`.
+    try {
+        const legacyQ = query(
+            collection(db, 'lumina_direct_messages'),
+            where('users', 'array-contains', authUid),
+            limit(150)
+        );
+        unsub3 = onSnapshot(legacyQ, (snap) => {
+            legacyMessages = [];
+            snap.forEach(d => {
+                const message = { id: d.id, ...d.data() };
+                if (message.chatId === normalizedChatId) legacyMessages.push(message);
+            });
+            emitMergedMessages();
+        }, (err) => console.warn('Lumina Direct Messages legacy notice:', err));
+    } catch(e) {}
+
     // Listener B: Nested subcollection (backup)
     try {
         const nestedQ = query(
@@ -2758,6 +2777,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     return () => {
         try { unsub1(); } catch(e) {}
         try { unsub2(); } catch(e) {}
+        try { unsub3(); } catch(e) {}
         activeDirectChatListeners.delete(normalizedChatId);
     };
 }
