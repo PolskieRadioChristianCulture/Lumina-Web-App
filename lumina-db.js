@@ -2897,10 +2897,36 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
     if (!receiverId) receiverId = 'guest';
 
+    const normalizedChatId = getChatId(fromId, receiverId);
     const receiverProfile = messageObj.receiverUid
         ? null
         : await getProfileFromCloud(receiverId);
-    const receiverAuthUid = messageObj.receiverUid || receiverProfile?.uid || null;
+    let receiverAuthUid = messageObj.receiverUid || receiverProfile?.uid || null;
+    if (!receiverAuthUid && db && normalizedChatId) {
+        try {
+            const chatSnap = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            const chatData = chatSnap.exists() ? chatSnap.data() : null;
+            const chatParticipant = Array.isArray(chatData?.participants)
+                ? chatData.participants.find(uid => uid && uid !== user.uid)
+                : null;
+            if (chatParticipant) receiverAuthUid = chatParticipant;
+        } catch (chatLookupError) {
+            console.warn('Lumina Direct Chat: nie udało się odczytać uczestnika czatu.', chatLookupError.message);
+        }
+    }
+    if (!receiverAuthUid && db && normalizedChatId) {
+        try {
+            const requestSnap = await getDoc(doc(db, 'lumina_message_requests', normalizedChatId));
+            const requestData = requestSnap.exists() ? requestSnap.data() : null;
+            if (requestData?.senderAuthUid === user.uid) {
+                receiverAuthUid = requestData.receiverAuthUid || null;
+            } else if (requestData?.receiverAuthUid === user.uid) {
+                receiverAuthUid = requestData.senderAuthUid || null;
+            }
+        } catch (requestLookupError) {
+            console.warn('Lumina Direct Chat: nie udało się odczytać uczestnika prośby.', requestLookupError.message);
+        }
+    }
     if (!receiverAuthUid || receiverAuthUid === user.uid) {
         console.warn('Lumina Direct Chat: nie można bezpiecznie ustalić odbiorcy wiadomości.', {
             receiverId,
@@ -2911,7 +2937,6 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         return null;
     }
 
-    const normalizedChatId = getChatId(fromId, receiverId);
     const senderName = messageObj.senderName || myProfile?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
     const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
