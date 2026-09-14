@@ -2694,6 +2694,11 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     } catch(e) {}
 
     if (!db || !normalizedChatId) return () => {};
+    const authUid = currentUserState?.uid;
+    if (!authUid || currentUserState.isAnonymous) {
+        console.warn('Lumina Direct Messages: realtime wymaga zalogowanego członka.');
+        return () => {};
+    }
 
     // Register active listener callback for optimistic instant rendering
     activeDirectChatListeners.set(normalizedChatId, onUpdate);
@@ -2723,12 +2728,15 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     try {
         const directQ = query(
             collection(db, 'lumina_direct_messages'),
-            where('chatId', '==', normalizedChatId),
+            where('participants', 'array-contains', authUid),
             limit(150)
         );
         unsub1 = onSnapshot(directQ, (snap) => {
             topLevelMessages = [];
-            snap.forEach(d => topLevelMessages.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => {
+                const message = { id: d.id, ...d.data() };
+                if (message.chatId === normalizedChatId) topLevelMessages.push(message);
+            });
             emitMergedMessages();
         }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
     } catch(e) {}
@@ -2737,6 +2745,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     try {
         const nestedQ = query(
             collection(db, `lumina_chats/${normalizedChatId}/messages`),
+            where('participants', 'array-contains', authUid),
             limit(150)
         );
         unsub2 = onSnapshot(nestedQ, (snap) => {
@@ -3248,8 +3257,12 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
     // 2. Zapisz w Firestore
     try {
         if (!String(messageId).startsWith('local_')) {
-            const docRef = doc(db, 'lumina_direct_messages', messageId);
-            const docSnap = await getDoc(docRef);
+            let collectionName = 'lumina_direct_messages';
+            let docSnap = await getDoc(doc(db, collectionName, messageId));
+            if (!docSnap.exists()) {
+                collectionName = `lumina_chats/${normalizedChatId}/messages`;
+                docSnap = await getDoc(doc(db, collectionName, messageId));
+            }
             if (docSnap.exists()) {
                 const currentData = docSnap.data();
                 const reactions = currentData.reactions || {};
@@ -3265,7 +3278,7 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
                 } else {
                     reactions[emoji] = list;
                 }
-                await updateDoc(docRef, { reactions });
+                await updateDoc(doc(db, collectionName, messageId), { reactions });
             }
         }
     } catch(e) {
