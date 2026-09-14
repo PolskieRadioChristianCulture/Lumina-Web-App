@@ -1279,7 +1279,8 @@ export async function getProfileFromCloud(slugOrUid) {
             const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
             const querySnap = await getDocs(q);
             if (!querySnap.empty) {
-                const cloudProfile = querySnap.docs[0].data();
+                const profileDoc = querySnap.docs[0];
+                const cloudProfile = { uid: profileDoc.id, ...profileDoc.data() };
                 if (window.LuminaStorage) {
                     window.LuminaStorage.saveProfile(slugOrUid, cloudProfile);
                 }
@@ -1295,7 +1296,7 @@ export async function getProfileFromCloud(slugOrUid) {
             // Second check by doc ID
             const docSnap = await getDoc(doc(db, 'lumina_profiles', slugOrUid));
             if (docSnap.exists()) {
-                const cloudProfile = docSnap.data();
+                const cloudProfile = { uid: docSnap.id, ...docSnap.data() };
                 if (window.LuminaStorage) {
                     window.LuminaStorage.saveProfile(slugOrUid, cloudProfile);
                 }
@@ -2901,7 +2902,12 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         : await getProfileFromCloud(receiverId);
     const receiverAuthUid = messageObj.receiverUid || receiverProfile?.uid || null;
     if (!receiverAuthUid || receiverAuthUid === user.uid) {
-        console.warn('Lumina Direct Chat: nie można bezpiecznie ustalić odbiorcy wiadomości.');
+        console.warn('Lumina Direct Chat: nie można bezpiecznie ustalić odbiorcy wiadomości.', {
+            receiverId,
+            requestedReceiverUid: messageObj.receiverUid || null,
+            profileUid: receiverProfile?.uid || null,
+            chatId
+        });
         return null;
     }
 
