@@ -378,7 +378,7 @@
         globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED = true;
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=4.1.2_20260914_pushfix"></script>
+    <script type="module" src="lumina-db.js?v=4.1.3_20260914_chatfix"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
@@ -386,7 +386,7 @@
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=4.1.1_20260909"></script>
-    <script src="lumina-pwa-installer.js?v=4.1.1_20260909"></script>
+    <script src="lumina-pwa-installer.js?v=4.1.3_20260914_chatfix"></script>
 
     <style>
         :root {
@@ -5499,7 +5499,7 @@
 
                         <!-- Chat Input Form (Meta Messenger / WhatsApp Composer) -->
                         <form id="activeChatForm" class="chat-input-bar" onsubmit="handleSendActiveChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.08); align-items: center;">
-                            <button type="button" onclick="toggleChatEmojiDrawer()" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
+                            <button type="button" onclick="window.toggleChatEmojiDrawer()" aria-controls="activeChatEmojisBar" aria-expanded="false" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
                                 <i class="fa-regular fa-face-smile"></i>
                             </button>
                             <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." maxlength="1000" autocomplete="off" style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
@@ -6067,7 +6067,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.2</span>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.3</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -6451,7 +6451,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 return window.LuminaDB;
             }
             try {
-                const mod = await import('./lumina-db.js?v=4.1.2_20260914_pushfix');
+                const mod = await import('./lumina-db.js?v=4.1.3_20260914_chatfix');
                 window.LuminaDB = mod.default || mod || window.LuminaDB;
                 return window.LuminaDB;
             } catch(e) {
@@ -6475,7 +6475,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                 if (typeof authFn !== 'function') {
                     // Direct dynamic import execution
-                    const mod = await import('./lumina-db.js?v=4.1.2_20260914_pushfix');
+                    const mod = await import('./lumina-db.js?v=4.1.3_20260914_chatfix');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
@@ -8056,7 +8056,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     authFn = (dbEngine && dbEngine.loginWithGoogle) || window.loginWithGoogle;
                 }
                 if (typeof authFn !== 'function') {
-                    const mod = await import('./lumina-db.js?v=4.1.2_20260914_pushfix');
+                    const mod = await import('./lumina-db.js?v=4.1.3_20260914_chatfix');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
@@ -10238,9 +10238,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
             emojis.forEach(em => {
-                const sp = document.createElement('span');
+                const sp = document.createElement('button');
+                sp.type = 'button';
                 sp.textContent = em;
-                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
+                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border:0; color:#fff; background:transparent; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center; padding:0; touch-action:manipulation;';
                 sp.onmouseover = () => {
                     sp.style.transform = 'scale(1.35) translateY(-2px)';
                     sp.style.background = 'rgba(255,255,255,0.18)';
@@ -10249,11 +10250,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     sp.style.transform = 'scale(1)';
                     sp.style.background = 'transparent';
                 };
-                sp.onclick = (ev) => {
+                const selectEmoji = (ev) => {
                     ev.stopPropagation();
-                    window.handleChatReaction(type, chatId, msgId, em);
+                    Promise.resolve(window.handleChatReaction(type, chatId, msgId, em)).catch((error) => {
+                        console.warn('Nie udało się zapisać reakcji:', error);
+                    });
                     picker.remove();
                 };
+                sp.onclick = selectEmoji;
                 picker.appendChild(sp);
             });
 
@@ -10263,7 +10267,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const pickerHeight = picker.offsetHeight || 80;
 
             const minLeft = Math.max(cardRect.left + 8, 8);
-            const maxLeft = Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8);
+            const maxLeft = Math.max(minLeft, Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8));
 
             let left = rect.left + (rect.width / 2) - (pickerWidth / 2);
             if (left < minLeft) left = minLeft;
@@ -10316,7 +10320,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
 
             const addBtn = `
-                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}')" 
+                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}')"
                         style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;" 
                         title="Dodaj emotikon / reakcję">
                     <i class="fa-regular fa-face-smile"></i> +
@@ -10401,7 +10405,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
                 if ('serviceWorker' in navigator) {
                     const registrations = await navigator.serviceWorker.getRegistrations();
-                    for (let reg of registrations) {
+                    for (const reg of registrations) {
+                        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
                         await reg.update();
                     }
                 }
@@ -10413,7 +10418,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             setTimeout(() => {
                 const url = new URL(window.location.href);
-                url.searchParams.set('v_sync', Date.now());
+                url.searchParams.set('v_sync', `4.1.3_${Date.now()}`);
                 window.location.href = url.toString();
             }, 1000);
         }
@@ -11103,7 +11108,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         // Modern Messenger Drawer & Input Helpers
         window.toggleChatEmojiDrawer = function() {
             const bar = document.getElementById('activeChatEmojisBar');
-            if (bar) bar.classList.toggle('open');
+            const button = document.querySelector('#activeChatForm [aria-controls="activeChatEmojisBar"]');
+            if (!bar) return;
+            const isOpen = bar.classList.toggle('open');
+            if (button) button.setAttribute('aria-expanded', String(isOpen));
         };
 
         window.insertChatEmoji = function(emoji) {
@@ -11394,6 +11402,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         receiverId: activeChatSession.targetId,
                         text: text
                     });
+                    if (!result) {
+                        showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
+                    }
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
                 }
@@ -11582,7 +11593,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.1_20260909" defer></script>
-    <script src="lumina-notifications.js?v=4.1.2_20260913" defer></script>
+    <script src="lumina-notifications.js?v=4.1.3_20260914" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
@@ -12825,5 +12836,3 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     
 </body>
 </html>
-
-

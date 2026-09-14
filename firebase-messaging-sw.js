@@ -29,8 +29,10 @@ try {
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
         const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
         const defaultIcon = origin + '/lumina-notif-icon-v2.png';
-        const defaultBadge = origin + '/lumina-badge-v2.png';
-        const icon = (type === 'direct_message' && (data.avatar || notification.icon)) ? (data.avatar || notification.icon) : defaultIcon;
+        const defaultBadge = origin + '/lumina-push-badge.svg';
+        const icon = type === 'direct_message'
+            ? (data.avatar || data.icon || notification.icon || defaultIcon)
+            : (notification.icon || data.icon || defaultIcon);
         const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
         let urlToOpen = data.url || './lumina.html';
 
@@ -101,18 +103,18 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.5)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.3)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.7-20260913-perfect-status-bar';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.3-20260914-chat-fix';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
     './lumina-tablica.html',
     './lumina-profile.html',
     './manifest-lumina.json',
-    './lumina-badge-v2.png',
+    './lumina-push-badge.svg',
     './lumina-badge-monochrome.png',
     './lumina-notif-icon-v2.png',
     './lumina-icon-192.png',
@@ -237,10 +239,12 @@ self.addEventListener('push', (event) => {
 
     const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
     const defaultIcon = origin + '/lumina-notif-icon-v2.png';
-    const defaultBadge = origin + '/lumina-badge-v2.png';
+    const defaultBadge = origin + '/lumina-push-badge.svg';
     const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
     const body = notification.body || data.body || 'Otrzymałeś nową wiadomość w portalu LUMINA.';
-    const icon = (type === 'direct_message' && (data.avatar || notification.icon)) ? (data.avatar || notification.icon) : (notification.icon || data.icon || defaultIcon);
+    const icon = type === 'direct_message'
+        ? (data.avatar || data.icon || notification.icon || defaultIcon)
+        : (notification.icon || data.icon || defaultIcon);
     const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
     const url = data.url || './lumina.html';
 
@@ -409,7 +413,7 @@ self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'lumina-daily-mission-sync') {
         console.log('[SW] Periodic background mission sync triggered');
         event.waitUntil(
-            caches.open('lumina-dynamic-v4.1.1-20260909').then((cache) => {
+            caches.open('lumina-dynamic-v4.1.3-20260914-chat-fix').then((cache) => {
                 return fetch('./lumina-tablica.html?sync=1', { cache: 'no-cache' })
                     .then((response) => {
                         if (response && response.ok) cache.put('./lumina-tablica.html', response.clone());
