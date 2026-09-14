@@ -2915,13 +2915,18 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     if (db) {
         try {
             const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
+            const requestSnapshot = await getDoc(requestRef);
             // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości. Starsze
             // rekordy czatu bez tego stanu zachowują historię, ale wymagają
             // ponownego, świadomego potwierdzenia odbiorcy.
-            const conversationAccepted = chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted';
+            const conversationAccepted = (
+                chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted'
+            ) || (
+                requestSnapshot.exists() && requestSnapshot.data()?.status === 'accepted'
+            );
             if (!conversationAccepted) {
-                const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
-                const existingRequest = await getDoc(requestRef);
+                const existingRequest = requestSnapshot;
                 if (!existingRequest.exists()) {
                     await setDoc(requestRef, {
                         chatId: normalizedChatId,
@@ -3024,7 +3029,8 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
             participants: chatParticipants,
-            users: chatUsers
+            users: chatUsers,
+            conversationState: 'accepted'
         }, { merge: true }).catch(() => {});
 
         // Add real-time notification document in Firestore for recipient
@@ -3057,7 +3063,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         return msgRef.id;
     } catch(e) {
         console.warn('Lumina send direct message notice:', e.message);
-        return 'local_' + Date.now();
+        return null;
     }
 }
 

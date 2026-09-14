@@ -9146,6 +9146,9 @@
                         receiverId: activeChatSession.targetId,
                         text: text
                     });
+                    if (!result) {
+                        showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
+                    }
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
                 }
