@@ -1090,9 +1090,8 @@
             </a>
 
             <!-- 3. Rolki Wiary (Shorts 9:16) -->
-            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" title="Rolki Wiary • LUMINA Shorts 9:16" style="position:relative;">
+            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" title="Rolki Wiary • LUMINA Shorts 9:16">
                 <i class="fa-solid fa-clapperboard"></i>
-                <span style="position:absolute; top:8px; right:8px; width:7px; height:7px; background:#facc15; border-radius:50%; box-shadow:0 0 6px #facc15;"></span>
             </a>
 
             <!-- 4. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, VOD, Profil, Q&A, Master Admin) -->
