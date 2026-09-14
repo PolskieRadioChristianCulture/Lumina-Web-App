@@ -226,7 +226,7 @@ async function sendFcm(token, notification, accessToken, env) {
             title: notification.title,
             body: notification.body,
             icon: notification.icon,
-            badge: `${PUBLIC_ORIGIN}/lumina-push-badge.svg`,
+            badge: `${PUBLIC_ORIGIN}/lumina-push-badge-v4.1.5.svg`,
             tag: notification.tag,
             renotify: true,
             requireInteraction: true,

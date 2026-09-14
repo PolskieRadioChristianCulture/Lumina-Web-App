@@ -29,7 +29,7 @@ try {
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
         const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
         const defaultIcon = origin + '/lumina-notif-icon-v2.png';
-        const defaultBadge = origin + '/lumina-push-badge.svg';
+        const defaultBadge = origin + '/lumina-push-badge-v4.1.5.svg';
         const icon = type === 'direct_message'
             ? (data.avatar || data.icon || notification.icon || defaultIcon)
             : (notification.icon || data.icon || defaultIcon);
@@ -114,7 +114,7 @@ const APP_SHELL_ASSETS = [
     './lumina-tablica.html',
     './lumina-profile.html',
     './manifest-lumina.json',
-    './lumina-push-badge.svg',
+    './lumina-push-badge-v4.1.5.svg',
     './lumina-badge-monochrome.png',
     './lumina-notif-icon-v2.png',
     './lumina-icon-192.png',
@@ -239,7 +239,7 @@ self.addEventListener('push', (event) => {
 
     const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
     const defaultIcon = origin + '/lumina-notif-icon-v2.png';
-    const defaultBadge = origin + '/lumina-push-badge.svg';
+    const defaultBadge = origin + '/lumina-push-badge-v4.1.5.svg';
     const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
     const body = notification.body || data.body || 'Otrzymałeś nową wiadomość w portalu LUMINA.';
     const icon = type === 'direct_message'

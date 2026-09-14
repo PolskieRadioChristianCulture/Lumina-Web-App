@@ -38,7 +38,7 @@ export function notificationMessage(token, event) {
             notification: {
                 title, body,
                 icon: event.senderAvatar || `${ORIGIN}/lumina-icon-512.png`,
-                badge: `${ORIGIN}/lumina-push-badge.svg`,
+                badge: `${ORIGIN}/lumina-push-badge-v4.1.5.svg`,
                 // A retry replaces the same Android tray entry, rather than adding another.
                 tag: `lumina-${event.type}-${event.id}`,
                 renotify: false,
