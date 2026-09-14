@@ -54,6 +54,7 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `043b934` — listener czatu czeka na zakończenie przywracania sesji Firebase, gdy pokój otworzy się zbyt wcześnie; cleanup pozostaje bezpieczny.
 * `pending` — przycisk `+`/emoji korzysta z globalnego handlera, obsługuje pointer/touch i klawiaturę, a identyfikatory rozmowy są bezpiecznie kodowane w inline handlerze; listener wykonuje jednorazowy odczyt odświeżający po zerwaniu snapshotu.
 * `pending` — PUSH przekazuje avatar nadawcy jednocześnie jako `data.avatar` i `data.icon`; Service Worker używa obu pól. Badge zmieniono z pełnokolorowego kwadratu na transparentny `lumina-push-badge.svg`, aby Android nie wyświetlał białego kwadratu na pasku.
+* `3f401ab` — picker reakcji używa prawdziwych przycisków z `click` zamiast `pointerup` na `span`, a pozycja jest poprawnie ograniczona na wąskich ekranach telefonu.
 
 **Twarde ustalenia:**
 
