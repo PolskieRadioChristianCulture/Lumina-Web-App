@@ -49,6 +49,9 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `f1e5e83` — rejestracja FCM zapisuje token przez `setDoc(..., { merge: true })`, także gdy dokument profilu nie istniał.
 * `a928102` — ponowne wysłanie oczekującej prośby o rozmowę wywołuje przypomnienie PUSH bez tworzenia duplikatu.
 * `17fcace` — odświeżony adres `lumina-db.js`, aby telefony nie uruchamiały starego modułu z cache.
+* `e5b9cd4` — realtime query ogranicza odczyt do `participants array-contains authUid`, zgodnie z regułami Firestore; dodano fallback reakcji do zagnieżdżonego dokumentu wiadomości.
+* `fbd902c` — dodano zgodność z historycznymi dokumentami używającymi pola `users` zamiast `participants`.
+* `043b934` — listener czatu czeka na zakończenie przywracania sesji Firebase, gdy pokój otworzy się zbyt wcześnie; cleanup pozostaje bezpieczny.
 
 **Twarde ustalenia:**
 
@@ -58,6 +61,8 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * Odczyt Firestore rejestru tokenów przez konto serwisowe zwrócił `429 Quota exceeded`. Worker mógł z tego powodu nie dojść do FCM.
 * Podgląd `wrangler tail lumina-push` nie pokazał wywołania po jednej ręcznej próbie — bardzo możliwy był wtedy cache starego `lumina-db.js`.
 * Zrzut Dowódcy pokazuje lokalnie wyrenderowaną bańkę wiadomości. Funkcja czatu najpierw zapisuje ją lokalnie, więc zrzut sam nie dowodzi zapisu w Firestore ani dostarczenia do odbiorcy.
+* Firestore Security Rules nie działają jak filtry. Zapytanie ograniczone tylko do `chatId` mogło kończyć się `permission-denied`, dlatego listener wymaga teraz UID w `participants` (oraz osobno obsługuje historyczne `users`).
+* Dodatkowy race condition: otwarcie pokoju przed ustawieniem `currentUserState` wyłączało realtime na stałe. Listener jest teraz odroczony do callbacku `onAuthChange`.
 
 **Pierwsze zadania dla następnego agenta (bez przebudowy UI):**
 
