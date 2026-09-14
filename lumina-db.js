@@ -2694,18 +2694,35 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     } catch(e) {}
 
     if (!db || !normalizedChatId) return () => {};
+    const authUid = currentUserState?.uid;
+    if (!authUid || currentUserState.isAnonymous) {
+        let activeUnsubscribe = () => {};
+        let retryUnsubscribe = () => {};
+        retryUnsubscribe = onAuthChange((user) => {
+            if (user?.uid && !user.isAnonymous) {
+                retryUnsubscribe();
+                activeUnsubscribe = subscribeToDirectMessages(normalizedChatId, onUpdate);
+            }
+        });
+        return () => {
+            retryUnsubscribe();
+            activeUnsubscribe();
+        };
+    }
 
     // Register active listener callback for optimistic instant rendering
     activeDirectChatListeners.set(normalizedChatId, onUpdate);
 
     let unsub1 = () => {};
     let unsub2 = () => {};
+    let unsub3 = () => {};
     let topLevelMessages = [];
     let nestedMessages = [];
+    let legacyMessages = [];
 
     const emitMergedMessages = () => {
         const uniqueMessages = new Map();
-        [...nestedMessages, ...topLevelMessages].forEach(message => {
+        [...nestedMessages, ...topLevelMessages, ...legacyMessages].forEach(message => {
             const key = getDirectMessageKey(message);
             const existing = uniqueMessages.get(key);
             // Preferuj dokument główny, ale zachowaj pełniejsze dane z kopii zapasowej.
@@ -2723,20 +2740,54 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     try {
         const directQ = query(
             collection(db, 'lumina_direct_messages'),
-            where('chatId', '==', normalizedChatId),
+            where('participants', 'array-contains', authUid),
             limit(150)
         );
         unsub1 = onSnapshot(directQ, (snap) => {
             topLevelMessages = [];
-            snap.forEach(d => topLevelMessages.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => {
+                const message = { id: d.id, ...d.data() };
+                if (message.chatId === normalizedChatId) topLevelMessages.push(message);
+            });
             emitMergedMessages();
-        }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
+        }, (err) => {
+            console.warn('Lumina Direct Messages top-level notice:', err);
+            // A mobile network handoff can terminate a snapshot without
+            // re-establishing it. Refresh once so the open desktop chat
+            // receives the phone message even after a transient disconnect.
+            getDocs(directQ).then((snap) => {
+                topLevelMessages = [];
+                snap.forEach(d => {
+                    const message = { id: d.id, ...d.data() };
+                    if (message.chatId === normalizedChatId) topLevelMessages.push(message);
+                });
+                emitMergedMessages();
+            }).catch((refreshError) => console.warn('Lumina Direct Messages refresh notice:', refreshError));
+        });
+    } catch(e) {}
+
+    // Historical documents may have only `users`, not `participants`.
+    try {
+        const legacyQ = query(
+            collection(db, 'lumina_direct_messages'),
+            where('users', 'array-contains', authUid),
+            limit(150)
+        );
+        unsub3 = onSnapshot(legacyQ, (snap) => {
+            legacyMessages = [];
+            snap.forEach(d => {
+                const message = { id: d.id, ...d.data() };
+                if (message.chatId === normalizedChatId) legacyMessages.push(message);
+            });
+            emitMergedMessages();
+        }, (err) => console.warn('Lumina Direct Messages legacy notice:', err));
     } catch(e) {}
 
     // Listener B: Nested subcollection (backup)
     try {
         const nestedQ = query(
             collection(db, `lumina_chats/${normalizedChatId}/messages`),
+            where('participants', 'array-contains', authUid),
             limit(150)
         );
         unsub2 = onSnapshot(nestedQ, (snap) => {
@@ -2749,6 +2800,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     return () => {
         try { unsub1(); } catch(e) {}
         try { unsub2(); } catch(e) {}
+        try { unsub3(); } catch(e) {}
         activeDirectChatListeners.delete(normalizedChatId);
     };
 }
@@ -2863,13 +2915,18 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     if (db) {
         try {
             const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
+            const requestSnapshot = await getDoc(requestRef);
             // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości. Starsze
             // rekordy czatu bez tego stanu zachowują historię, ale wymagają
             // ponownego, świadomego potwierdzenia odbiorcy.
-            const conversationAccepted = chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted';
+            const conversationAccepted = (
+                chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted'
+            ) || (
+                requestSnapshot.exists() && requestSnapshot.data()?.status === 'accepted'
+            );
             if (!conversationAccepted) {
-                const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
-                const existingRequest = await getDoc(requestRef);
+                const existingRequest = requestSnapshot;
                 if (!existingRequest.exists()) {
                     await setDoc(requestRef, {
                         chatId: normalizedChatId,
@@ -2972,7 +3029,8 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
             participants: chatParticipants,
-            users: chatUsers
+            users: chatUsers,
+            conversationState: 'accepted'
         }, { merge: true }).catch(() => {});
 
         // Add real-time notification document in Firestore for recipient
@@ -3005,7 +3063,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         return msgRef.id;
     } catch(e) {
         console.warn('Lumina send direct message notice:', e.message);
-        return 'local_' + Date.now();
+        return null;
     }
 }
 
@@ -3248,8 +3306,12 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
     // 2. Zapisz w Firestore
     try {
         if (!String(messageId).startsWith('local_')) {
-            const docRef = doc(db, 'lumina_direct_messages', messageId);
-            const docSnap = await getDoc(docRef);
+            let collectionName = 'lumina_direct_messages';
+            let docSnap = await getDoc(doc(db, collectionName, messageId));
+            if (!docSnap.exists()) {
+                collectionName = `lumina_chats/${normalizedChatId}/messages`;
+                docSnap = await getDoc(doc(db, collectionName, messageId));
+            }
             if (docSnap.exists()) {
                 const currentData = docSnap.data();
                 const reactions = currentData.reactions || {};
@@ -3265,7 +3327,7 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
                 } else {
                     reactions[emoji] = list;
                 }
-                await updateDoc(docRef, { reactions });
+                await updateDoc(doc(db, collectionName, messageId), { reactions });
             }
         }
     } catch(e) {
@@ -3432,9 +3494,9 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
         banner.id = 'lumina-chat-notification-banner';
         banner.style.cssText = `
             position: fixed;
-            top: 14px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-140%);
+            bottom: 18px;
+            right: 18px;
+            transform: translateY(140%);
             width: 92%;
             max-width: 440px;
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.96));
@@ -3485,7 +3547,7 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
     `;
 
     banner.onclick = () => {
-        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.transform = 'translateY(140%)';
         banner.style.opacity = '0';
         if (type === 'public') {
             if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
@@ -3501,13 +3563,13 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
 
     // Smooth entry
     requestAnimationFrame(() => {
-        banner.style.transform = 'translateX(-50%) translateY(0)';
+        banner.style.transform = 'translateY(0)';
         banner.style.opacity = '1';
     });
 
     if (window._luminaBannerTimeout) clearTimeout(window._luminaBannerTimeout);
     window._luminaBannerTimeout = setTimeout(() => {
-        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.transform = 'translateY(140%)';
         banner.style.opacity = '0';
     }, 7000);
 }
@@ -3612,6 +3674,7 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
 }
 
 export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type, image }) {
+    const isChatNotification = ['private', 'chat', 'public', 'direct_message', 'direct_message_request'].includes(type);
     // 1. Immediately bump Unread Badge on Floating Chat Button & Navigation
     try {
         const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
@@ -3640,9 +3703,10 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         try { navigator.vibrate([160, 80, 160]); } catch(e) {}
     }
 
-    // 3. Centralized Notification Center Integration (Dzwonek powiadomień)
+    // 3. Systemowe powiadomienia trafiają do górnego centrum. Wiadomości
+    // czatu mają jeden kanał in-app: dymek w prawym dolnym rogu.
     try {
-        if (window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
+        if (!isChatNotification && window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
             const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
             const notifTargetUrl = type === 'public' 
                 ? 'lumina.html?openPublicChat=1' 
@@ -3657,11 +3721,16 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         }
     } catch(e) {}
 
-    // 4. In-app floating banner
-    showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
+    // 4. In-app chat bubble
+    if (isChatNotification) {
+        showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
+    }
 
-    // 5. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
-    showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
+    // 5. OS drawer is useful while the page is hidden; while visible it would
+    // duplicate the in-app chat bubble.
+    if (!isChatNotification || document.visibilityState !== 'visible') {
+        showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
+    }
 }
 
 let hasStartedRealtimeNotifs = false;

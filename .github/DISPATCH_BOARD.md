@@ -49,6 +49,16 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `f1e5e83` — rejestracja FCM zapisuje token przez `setDoc(..., { merge: true })`, także gdy dokument profilu nie istniał.
 * `a928102` — ponowne wysłanie oczekującej prośby o rozmowę wywołuje przypomnienie PUSH bez tworzenia duplikatu.
 * `17fcace` — odświeżony adres `lumina-db.js`, aby telefony nie uruchamiały starego modułu z cache.
+* `e5b9cd4` — realtime query ogranicza odczyt do `participants array-contains authUid`, zgodnie z regułami Firestore; dodano fallback reakcji do zagnieżdżonego dokumentu wiadomości.
+* `fbd902c` — dodano zgodność z historycznymi dokumentami używającymi pola `users` zamiast `participants`.
+* `043b934` — listener czatu czeka na zakończenie przywracania sesji Firebase, gdy pokój otworzy się zbyt wcześnie; cleanup pozostaje bezpieczny.
+* `pending` — przycisk `+`/emoji korzysta z globalnego handlera, obsługuje pointer/touch i klawiaturę, a identyfikatory rozmowy są bezpiecznie kodowane w inline handlerze; listener wykonuje jednorazowy odczyt odświeżający po zerwaniu snapshotu.
+* `pending` — PUSH przekazuje avatar nadawcy jednocześnie jako `data.avatar` i `data.icon`; Service Worker używa obu pól. Badge zmieniono z pełnokolorowego kwadratu na transparentny `lumina-push-badge.svg`, aby Android nie wyświetlał białego kwadratu na pasku.
+* `3f401ab` — picker reakcji używa prawdziwych przycisków z `click` zamiast `pointerup` na `span`, a pozycja jest poprawnie ograniczona na wąskich ekranach telefonu.
+* `pending` — wysyłanie uznaje także `lumina_message_requests.status == accepted` za aktywną rozmowę, zapisuje `conversationState: accepted` przy wiadomości i zgłasza błąd zapisu zamiast zwracać lokalny identyfikator jako pozorny sukces.
+* `pending` — wymuszono wersję klienta `v4.1.3`: nowa nazwa cache Service Workera, `updateViaCache: none`, `SKIP_WAITING`, przeładowanie po `controllerchange` oraz cache-busting modułu `lumina-db.js`.
+* `pending` — rozdzielono kanały in-app: wiadomości czatu nie trafiają już do górnego centrum dzwonka, tylko do dymka przy prawej dolnej krawędzi; centrum pozostaje dla powiadomień systemowych.
+* `pending` — panel „Wymuś Aktualizację” miał hardkodowane `v4.1.2`; etykiety, cache-busting powiadomień oraz przycisk aktualizacji wskazują teraz `v4.1.3`, wysyłają `SKIP_WAITING` i używają parametru `v_sync=4.1.3_*`.
 
 **Twarde ustalenia:**
 
@@ -58,6 +68,8 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * Odczyt Firestore rejestru tokenów przez konto serwisowe zwrócił `429 Quota exceeded`. Worker mógł z tego powodu nie dojść do FCM.
 * Podgląd `wrangler tail lumina-push` nie pokazał wywołania po jednej ręcznej próbie — bardzo możliwy był wtedy cache starego `lumina-db.js`.
 * Zrzut Dowódcy pokazuje lokalnie wyrenderowaną bańkę wiadomości. Funkcja czatu najpierw zapisuje ją lokalnie, więc zrzut sam nie dowodzi zapisu w Firestore ani dostarczenia do odbiorcy.
+* Firestore Security Rules nie działają jak filtry. Zapytanie ograniczone tylko do `chatId` mogło kończyć się `permission-denied`, dlatego listener wymaga teraz UID w `participants` (oraz osobno obsługuje historyczne `users`).
+* Dodatkowy race condition: otwarcie pokoju przed ustawieniem `currentUserState` wyłączało realtime na stałe. Listener jest teraz odroczony do callbacku `onAuthChange`.
 
 **Pierwsze zadania dla następnego agenta (bez przebudowy UI):**
 
