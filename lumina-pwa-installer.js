@@ -35,10 +35,12 @@
     // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
+            // Aktywacja nowego Workera nie może sama przeładowywać strony.
+            // Na części telefonów controllerchange występuje przy każdym
+            // odtworzeniu klienta i powodował pętlę nieskończonych odświeżeń.
             navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (controllerReloaded) return;
                 controllerReloaded = true;
-                window.location.reload();
+                console.log('[LUMINA PWA] Nowy Service Worker aktywny.');
             });
             window.addEventListener('load', async () => {
                 try {
