@@ -67,7 +67,7 @@ try {
             actions = [
                 { action: 'open', title: '💬 Dołącz do rozmowy' }
             ];
-            urlToOpen = '/lumina/?openPublicChat=1';
+            urlToOpen = '/lumina.html?openPublicChat=1';
         } else if (type === 'tv_schedule' || type === 'tv24' || type === 'live') {
             actions = [
                 { action: 'watch', title: '📺 Oglądaj w CC TV24' },
@@ -323,9 +323,9 @@ function handleLuminaNotificationClick(event) {
             ? data.url 
             : `/lumina-tablica.html?postId=${encodeURIComponent(postId || '')}${authorSlug ? '&author=' + encodeURIComponent(authorSlug) : ''}`;
     } else if (isPublic) {
-        targetUrl = `/lumina/?openPublicChat=1`;
+        targetUrl = `/lumina.html?openPublicChat=1`;
     } else if (sender) {
-        targetUrl = `/lumina/?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
+        targetUrl = `/lumina.html?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
     } else if (!targetUrl) {
         targetUrl = '/lumina';
     }
@@ -334,9 +334,9 @@ function handleLuminaNotificationClick(event) {
     let fullTargetUrl;
     try {
         const parsed = new URL(targetUrl, self.location.origin);
-        fullTargetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina/';
+        fullTargetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina.html';
     } catch (_) {
-        fullTargetUrl = self.location.origin + '/lumina/';
+        fullTargetUrl = self.location.origin + '/lumina.html';
     }
 
     const postPayload = {
