@@ -204,8 +204,10 @@
 
             .followed-friends-header {
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
                 justify-content: space-between;
+                gap: 6px;
                 margin-bottom: 8px;
             }
 
@@ -293,7 +295,8 @@
             /* ── ZAKŁADKI: Wszyscy / Znajomi 🤝 / Obserwowani ✓ ── */
             .friends-filter-tabs {
                 display: flex;
-                gap: 5px;
+                flex-wrap: wrap;
+                gap: 4px;
                 margin-bottom: 12px;
                 background: rgba(0, 0, 0, 0.25);
                 padding: 3px;
@@ -302,7 +305,8 @@
             }
 
             .friends-tab-btn {
-                flex: 1;
+                flex: 1 1 auto;
+                min-width: 0;
                 background: transparent;
                 border: none;
                 color: #94a3b8;
@@ -314,6 +318,8 @@
                 text-align: center;
                 transition: all 0.2s;
                 white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .friends-tab-btn:hover {
