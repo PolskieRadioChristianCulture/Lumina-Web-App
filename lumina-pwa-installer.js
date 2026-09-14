@@ -35,18 +35,12 @@
     // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
-            // Aktywacja nowego Workera odświeża stronę dokładnie raz na daną wersję (ochrona przed pętlą przeładowań)
+            // Aktywacja nowego Workera nie może sama przeładowywać strony.
+            // Na telefonach i PWA controllerchange występuje przy odtworzeniu klienta
+            // i wywołanie reload() powoduje nieskończoną pętlę przeładowań.
             navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (controllerReloaded) return;
-                const lastSynced = sessionStorage.getItem('lumina_sw_synced_version');
-                if (lastSynced === CURRENT_CLIENT_VERSION) {
-                    console.log('[LUMINA PWA] Nowy Service Worker aktywny (już zsynchronizowano z v' + CURRENT_CLIENT_VERSION + ').');
-                    return;
-                }
                 controllerReloaded = true;
-                sessionStorage.setItem('lumina_sw_synced_version', CURRENT_CLIENT_VERSION);
-                console.log('[LUMINA PWA] Nowy Service Worker aktywny — jednorazowa aktualizacja do v' + CURRENT_CLIENT_VERSION);
-                window.location.reload();
+                console.log('[LUMINA PWA] Nowy Service Worker aktywny.');
             });
             window.addEventListener('load', async () => {
                 try {
