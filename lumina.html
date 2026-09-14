@@ -11378,6 +11378,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     });
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    if (!result) {
+                        if (input) input.value = text;
+                        showToast?.('Nie udało się wysłać wiadomości. Spróbuj ponownie.');
+                    }
                 }
             } finally {
                 if (input) {
@@ -12807,5 +12811,4 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     
 </body>
 </html>
-
 
