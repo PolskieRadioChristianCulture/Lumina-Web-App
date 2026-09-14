@@ -1319,6 +1319,13 @@ export async function getProfileFromCloud(slugOrUid) {
         return null;
     } catch(err) {
         console.warn(`Lumina getProfileFromCloud [${slugOrUid}] error:`, err.message);
+        // Firestore REST/query może chwilowo zwrócić 429. Nie gub wtedy
+        // poprawnego profilu zapisanego lokalnie — zawiera on także UID
+        // potrzebny do autoryzacji wiadomości i wysyłki PUSH.
+        try {
+            const fallback = localStorage.getItem(`lumina_profile_${normalized}`) || localStorage.getItem(`lumina_profile_${slugOrUid}`);
+            if (fallback) return JSON.parse(fallback);
+        } catch(e) {}
         return null;
     }
 }
