@@ -10220,9 +10220,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
             emojis.forEach(em => {
-                const sp = document.createElement('span');
+                const sp = document.createElement('button');
+                sp.type = 'button';
                 sp.textContent = em;
-                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
+                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border:0; color:#fff; background:transparent; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center; padding:0; touch-action:manipulation;';
                 sp.onmouseover = () => {
                     sp.style.transform = 'scale(1.35) translateY(-2px)';
                     sp.style.background = 'rgba(255,255,255,0.18)';
@@ -10231,20 +10232,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     sp.style.transform = 'scale(1)';
                     sp.style.background = 'transparent';
                 };
-                sp.setAttribute('role', 'button');
-                sp.setAttribute('tabindex', '0');
                 const selectEmoji = (ev) => {
                     ev.stopPropagation();
-                    ev.preventDefault();
                     Promise.resolve(window.handleChatReaction(type, chatId, msgId, em)).catch((error) => {
                         console.warn('Nie udało się zapisać reakcji:', error);
                     });
                     picker.remove();
                 };
-                sp.onpointerup = selectEmoji;
-                sp.onkeydown = (ev) => {
-                    if (ev.key === 'Enter' || ev.key === ' ') selectEmoji(ev);
-                };
+                sp.onclick = selectEmoji;
                 picker.appendChild(sp);
             });
 
@@ -10254,7 +10249,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const pickerHeight = picker.offsetHeight || 80;
 
             const minLeft = Math.max(cardRect.left + 8, 8);
-            const maxLeft = Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8);
+            const maxLeft = Math.max(minLeft, Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8));
 
             let left = rect.left + (rect.width / 2) - (pickerWidth / 2);
             if (left < minLeft) left = minLeft;
