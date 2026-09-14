@@ -5481,7 +5481,7 @@
 
                         <!-- Chat Input Form (Meta Messenger / WhatsApp Composer) -->
                         <form id="activeChatForm" class="chat-input-bar" onsubmit="handleSendActiveChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.08); align-items: center;">
-                            <button type="button" onclick="toggleChatEmojiDrawer()" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
+                            <button type="button" onclick="window.toggleChatEmojiDrawer()" aria-controls="activeChatEmojisBar" aria-expanded="false" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display:flex; align-items:center; justify-content:center;" title="Wybierz reakcję / Emoji">
                                 <i class="fa-regular fa-face-smile"></i>
                             </button>
                             <input type="text" id="activeChatInput" oninput="handleActiveChatInputChange(this.value)" placeholder="Napisz wiadomość prywatną..." maxlength="1000" autocomplete="off" style="flex: 1; padding: 10px 16px; border-radius: 22px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s;" required>
@@ -10231,10 +10231,19 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     sp.style.transform = 'scale(1)';
                     sp.style.background = 'transparent';
                 };
-                sp.onclick = (ev) => {
+                sp.setAttribute('role', 'button');
+                sp.setAttribute('tabindex', '0');
+                const selectEmoji = (ev) => {
                     ev.stopPropagation();
-                    window.handleChatReaction(type, chatId, msgId, em);
+                    ev.preventDefault();
+                    Promise.resolve(window.handleChatReaction(type, chatId, msgId, em)).catch((error) => {
+                        console.warn('Nie udało się zapisać reakcji:', error);
+                    });
                     picker.remove();
+                };
+                sp.onpointerup = selectEmoji;
+                sp.onkeydown = (ev) => {
+                    if (ev.key === 'Enter' || ev.key === ' ') selectEmoji(ev);
                 };
                 picker.appendChild(sp);
             });
@@ -10298,7 +10307,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
 
             const addBtn = `
-                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}')" 
+                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}')"
                         style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;" 
                         title="Dodaj emotikon / reakcję">
                     <i class="fa-regular fa-face-smile"></i> +
@@ -11085,7 +11094,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         // Modern Messenger Drawer & Input Helpers
         window.toggleChatEmojiDrawer = function() {
             const bar = document.getElementById('activeChatEmojisBar');
-            if (bar) bar.classList.toggle('open');
+            const button = document.querySelector('#activeChatForm [aria-controls="activeChatEmojisBar"]');
+            if (!bar) return;
+            const isOpen = bar.classList.toggle('open');
+            if (button) button.setAttribute('aria-expanded', String(isOpen));
         };
 
         window.insertChatEmoji = function(emoji) {
@@ -12807,5 +12819,3 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     
 </body>
 </html>
-
-

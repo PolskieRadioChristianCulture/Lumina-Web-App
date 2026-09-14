@@ -52,6 +52,7 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `e5b9cd4` — realtime query ogranicza odczyt do `participants array-contains authUid`, zgodnie z regułami Firestore; dodano fallback reakcji do zagnieżdżonego dokumentu wiadomości.
 * `fbd902c` — dodano zgodność z historycznymi dokumentami używającymi pola `users` zamiast `participants`.
 * `043b934` — listener czatu czeka na zakończenie przywracania sesji Firebase, gdy pokój otworzy się zbyt wcześnie; cleanup pozostaje bezpieczny.
+* `pending` — przycisk `+`/emoji korzysta z globalnego handlera, obsługuje pointer/touch i klawiaturę, a identyfikatory rozmowy są bezpiecznie kodowane w inline handlerze; listener wykonuje jednorazowy odczyt odświeżający po zerwaniu snapshotu.
 
 **Twarde ustalenia:**
 

@@ -2750,7 +2750,20 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
                 if (message.chatId === normalizedChatId) topLevelMessages.push(message);
             });
             emitMergedMessages();
-        }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
+        }, (err) => {
+            console.warn('Lumina Direct Messages top-level notice:', err);
+            // A mobile network handoff can terminate a snapshot without
+            // re-establishing it. Refresh once so the open desktop chat
+            // receives the phone message even after a transient disconnect.
+            getDocs(directQ).then((snap) => {
+                topLevelMessages = [];
+                snap.forEach(d => {
+                    const message = { id: d.id, ...d.data() };
+                    if (message.chatId === normalizedChatId) topLevelMessages.push(message);
+                });
+                emitMergedMessages();
+            }).catch((refreshError) => console.warn('Lumina Direct Messages refresh notice:', refreshError));
+        });
     } catch(e) {}
 
     // Historical documents may have only `users`, not `participants`.
