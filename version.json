@@ -1,10 +1,11 @@
 {
-  "version": "4.1.5",
-  "buildDate": "2026-09-14T09:00:00.000Z",
-  "releaseName": "LUMINA v4.1.5 – Naprawa nieskończonej pętli przeładowań",
+  "version": "4.1.6",
+  "buildDate": "2026-09-14T10:28:21.658Z",
+  "releaseName": "LUMINA v4.1.6 – Pełna aktualizacja mobilna i synchronizacja rozważań",
   "changes": [
-    "🔧 Naprawa nieskończonej pętli przeładowań portalu (forceReinstall/forceReload wyłączone)",
-    "🛡️ Zabezpieczenie logiki aktualizacji SW przed ponownym wyzwalaniem po każdym załadowaniu strony"
+    "📱 Naprawa mobilnego overflow profilu Wioletty Rogowskiej (head-actions, cytaty, siatka 44px)",
+    "☀️ Synchronizacja Dnia 14 cyklu 'Słowa Mają Moc' w portalu i na profilu Założyciela",
+    "⚡ Pełne odświeżenie pamięci podręcznej Service Workera i assetów PWA (v4.1.6)"
   ],
   "minAppVersion": "4.1.4",
   "forceReload": false,

@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '4.1.4';
+    const CURRENT_CLIENT_VERSION = '4.1.6';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -58,7 +58,7 @@
                     // Bypass the HTTP/SW cache so every device fetches the forced build.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.4_20260914_deliveryfix', { scope: '/', updateViaCache: 'none' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker v4.1.4 zarejestrowany. Scope:', reg.scope);
