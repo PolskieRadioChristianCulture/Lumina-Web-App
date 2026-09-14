@@ -157,7 +157,7 @@ export async function requestNotificationPermission(userUid) {
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v417', { scope: '/', updateViaCache: 'none' });
+                const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync', { scope: '/', updateViaCache: 'none' });
                 await navigator.serviceWorker.ready;
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
