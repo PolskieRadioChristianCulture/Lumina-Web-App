@@ -2696,8 +2696,18 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     if (!db || !normalizedChatId) return () => {};
     const authUid = currentUserState?.uid;
     if (!authUid || currentUserState.isAnonymous) {
-        console.warn('Lumina Direct Messages: realtime wymaga zalogowanego członka.');
-        return () => {};
+        let activeUnsubscribe = () => {};
+        let retryUnsubscribe = () => {};
+        retryUnsubscribe = onAuthChange((user) => {
+            if (user?.uid && !user.isAnonymous) {
+                retryUnsubscribe();
+                activeUnsubscribe = subscribeToDirectMessages(normalizedChatId, onUpdate);
+            }
+        });
+        return () => {
+            retryUnsubscribe();
+            activeUnsubscribe();
+        };
     }
 
     // Register active listener callback for optimistic instant rendering
