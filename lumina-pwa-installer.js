@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '4.1.1';
+    const CURRENT_CLIENT_VERSION = '4.1.3';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -14,6 +14,7 @@
     let deferredInstallPrompt = null;
     let swRegistration = null;
     let updatePromptActive = false;
+    let controllerReloaded = false;
 
     // 1. Standalone / Installed Detection
     function isRunningStandalone() {
@@ -34,26 +35,31 @@
     // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (controllerReloaded) return;
+                controllerReloaded = true;
+                window.location.reload();
+            });
             window.addEventListener('load', async () => {
                 try {
                     // Wymuszone usuwanie przestarzałych pamięci podręcznych
                     if ('caches' in window) {
                         const keys = await caches.keys();
                         await Promise.all(keys.map(k => {
-                            if (!k.includes('v4.1.1')) {
+                            if (!k.includes('v4.1.3')) {
                                 console.log('[LUMINA PWA] Czyszczenie starego cache:', k);
                                 return caches.delete(k);
                             }
                         }));
                     }
 
-                    // Updating the existing registration preserves its push subscription.
+                    // Bypass the HTTP/SW cache so every device fetches the forced build.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v417', { scope: '/', updateViaCache: 'none' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.3_20260914_chatfix', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
-                        console.log('[LUMINA PWA] Service Worker v4.1.5 zarejestrowany. Scope:', reg.scope);
+                        console.log('[LUMINA PWA] Service Worker v4.1.3 zarejestrowany. Scope:', reg.scope);
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
@@ -91,11 +97,11 @@
                 if (res.ok) {
                     const verData = await res.json();
                     const isNewVer = verData && (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall);
-                    const reinstalled = localStorage.getItem('lumina_reinstalled_v411');
+                    const reinstalled = localStorage.getItem('lumina_reinstalled_v413');
 
                     if (isNewVer || !reinstalled) {
-                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na mobile (v4.1.1)');
-                        localStorage.setItem('lumina_reinstalled_v411', 'true');
+                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.3)');
+                        localStorage.setItem('lumina_reinstalled_v413', 'true');
                         localStorage.removeItem(DISMISS_INSTALL_KEY);
                         sessionStorage.removeItem(DISMISS_INSTALL_KEY);
 
@@ -445,9 +451,9 @@
             <div class="lumina-pwa-content">
                 <div class="lumina-pwa-title">
                     <span>LUMINA App</span>
-                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v4.1.1</span>
+                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v4.1.3</span>
                 </div>
-                <div class="lumina-pwa-desc">Zainstaluj nową wersję v4.1.1 na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
+                <div class="lumina-pwa-desc">Zainstaluj nową wersję v4.1.3 na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
             </div>
             <div class="lumina-pwa-actions">
                 <button type="button" class="lumina-pwa-btn-install" id="btnPwaInstallAction">

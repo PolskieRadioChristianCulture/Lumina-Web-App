@@ -56,6 +56,7 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `pending` — PUSH przekazuje avatar nadawcy jednocześnie jako `data.avatar` i `data.icon`; Service Worker używa obu pól. Badge zmieniono z pełnokolorowego kwadratu na transparentny `lumina-push-badge.svg`, aby Android nie wyświetlał białego kwadratu na pasku.
 * `3f401ab` — picker reakcji używa prawdziwych przycisków z `click` zamiast `pointerup` na `span`, a pozycja jest poprawnie ograniczona na wąskich ekranach telefonu.
 * `pending` — wysyłanie uznaje także `lumina_message_requests.status == accepted` za aktywną rozmowę, zapisuje `conversationState: accepted` przy wiadomości i zgłasza błąd zapisu zamiast zwracać lokalny identyfikator jako pozorny sukces.
+* `pending` — wymuszono wersję klienta `v4.1.3`: nowa nazwa cache Service Workera, `updateViaCache: none`, `SKIP_WAITING`, przeładowanie po `controllerchange` oraz cache-busting modułu `lumina-db.js`.
 
 **Twarde ustalenia:**
 
