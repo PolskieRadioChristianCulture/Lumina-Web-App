@@ -3494,9 +3494,9 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
         banner.id = 'lumina-chat-notification-banner';
         banner.style.cssText = `
             position: fixed;
-            top: 14px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-140%);
+            bottom: 18px;
+            right: 18px;
+            transform: translateY(140%);
             width: 92%;
             max-width: 440px;
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.96));
@@ -3547,7 +3547,7 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
     `;
 
     banner.onclick = () => {
-        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.transform = 'translateY(140%)';
         banner.style.opacity = '0';
         if (type === 'public') {
             if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
@@ -3563,13 +3563,13 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
 
     // Smooth entry
     requestAnimationFrame(() => {
-        banner.style.transform = 'translateX(-50%) translateY(0)';
+        banner.style.transform = 'translateY(0)';
         banner.style.opacity = '1';
     });
 
     if (window._luminaBannerTimeout) clearTimeout(window._luminaBannerTimeout);
     window._luminaBannerTimeout = setTimeout(() => {
-        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.transform = 'translateY(140%)';
         banner.style.opacity = '0';
     }, 7000);
 }
@@ -3674,6 +3674,7 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
 }
 
 export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type, image }) {
+    const isChatNotification = ['private', 'chat', 'public', 'direct_message', 'direct_message_request'].includes(type);
     // 1. Immediately bump Unread Badge on Floating Chat Button & Navigation
     try {
         const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
@@ -3702,9 +3703,10 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         try { navigator.vibrate([160, 80, 160]); } catch(e) {}
     }
 
-    // 3. Centralized Notification Center Integration (Dzwonek powiadomień)
+    // 3. Systemowe powiadomienia trafiają do górnego centrum. Wiadomości
+    // czatu mają jeden kanał in-app: dymek w prawym dolnym rogu.
     try {
-        if (window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
+        if (!isChatNotification && window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
             const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
             const notifTargetUrl = type === 'public' 
                 ? 'lumina.html?openPublicChat=1' 
@@ -3719,11 +3721,16 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         }
     } catch(e) {}
 
-    // 4. In-app floating banner
-    showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
+    // 4. In-app chat bubble
+    if (isChatNotification) {
+        showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
+    }
 
-    // 5. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
-    showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
+    // 5. OS drawer is useful while the page is hidden; while visible it would
+    // duplicate the in-app chat bubble.
+    if (!isChatNotification || document.visibilityState !== 'visible') {
+        showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
+    }
 }
 
 let hasStartedRealtimeNotifs = false;

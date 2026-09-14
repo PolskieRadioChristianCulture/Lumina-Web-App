@@ -57,6 +57,7 @@ Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane s
 * `3f401ab` — picker reakcji używa prawdziwych przycisków z `click` zamiast `pointerup` na `span`, a pozycja jest poprawnie ograniczona na wąskich ekranach telefonu.
 * `pending` — wysyłanie uznaje także `lumina_message_requests.status == accepted` za aktywną rozmowę, zapisuje `conversationState: accepted` przy wiadomości i zgłasza błąd zapisu zamiast zwracać lokalny identyfikator jako pozorny sukces.
 * `pending` — wymuszono wersję klienta `v4.1.3`: nowa nazwa cache Service Workera, `updateViaCache: none`, `SKIP_WAITING`, przeładowanie po `controllerchange` oraz cache-busting modułu `lumina-db.js`.
+* `pending` — rozdzielono kanały in-app: wiadomości czatu nie trafiają już do górnego centrum dzwonka, tylko do dymka przy prawej dolnej krawędzi; centrum pozostaje dla powiadomień systemowych.
 
 **Twarde ustalenia:**
 
