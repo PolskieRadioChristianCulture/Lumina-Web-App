@@ -89,7 +89,8 @@
             if (targetWorker) {
                 targetWorker.postMessage({ type: 'SKIP_WAITING' });
             }
-            if (swRegistration) {
+            // FIX v4.1.5: update() tylko gdy forcePrompt=true (nie przy kazdej wizycie)
+            if (swRegistration && forcePrompt) {
                 swRegistration.update().catch(() => {});
             }
 
@@ -98,12 +99,18 @@
                 const res = await fetch('version.json?t=' + Date.now(), { cache: 'no-cache' });
                 if (res.ok) {
                     const verData = await res.json();
-                    const isNewVer = verData && (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall);
-                    const reinstalled = localStorage.getItem('lumina_reinstalled_v414');
+                    const reinstalled = localStorage.getItem('lumina_reinstalled_v415');
+                    // FIX v4.1.5: forceReinstall honorowane tylko raz (gdy brak guardu)
+                    const isNewVer = verData && (
+                        reinstalled
+                            ? verData.version !== CURRENT_CLIENT_VERSION
+                            : (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall)
+                    );
 
                     if (isNewVer || !reinstalled) {
                         console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.4)');
-                        localStorage.setItem('lumina_reinstalled_v414', 'true');
+                        localStorage.setItem('lumina_reinstalled_v415', 'true');
+                        localStorage.removeItem('lumina_reinstalled_v414'); // Usun stary klucz
                         localStorage.removeItem(DISMISS_INSTALL_KEY);
                         sessionStorage.removeItem(DISMISS_INSTALL_KEY);
 
@@ -586,17 +593,12 @@
 
         setInterval(() => {
             checkForUpdatesFromServer();
-            if (swRegistration) {
-                swRegistration.update().catch(() => {});
-            }
         }, 15 * 60 * 1000);
 
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
+                // FIX v4.1.5: usunięto bezwarunkowy swRegistration.update()
                 checkForUpdatesFromServer();
-                if (swRegistration) {
-                    swRegistration.update().catch(() => {});
-                }
             }
         });
 

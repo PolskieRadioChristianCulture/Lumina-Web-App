@@ -5829,6 +5829,13 @@ export function isProfileRecommendedForUser(targetProfile, currentProfile) {
 
     if (!myProfile) return true; // Dla gości bez określonej płci pokazujemy domyślną mieszankę
 
+    // ── WYJĄTEK ADMINISTRATORA (@Dowódca) ──
+    // Właściciel i administrator portalu widzi WSZYSTKICH użytkowników bez filtra płci
+    const mySlug = (myProfile.slug || myProfile.uid || myProfile.id || '').toLowerCase();
+    if (myProfile.isAdmin || myProfile.isFounder || mySlug === 'cezaryrgowski') {
+        return true;
+    }
+
     const myGender = detectProfileGender(myProfile);
     const targetGender = detectProfileGender(targetProfile);
 
