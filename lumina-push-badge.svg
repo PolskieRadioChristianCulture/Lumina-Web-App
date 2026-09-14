@@ -1,3 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <path fill="#fff" d="M25 12h12v60h36v12H25V12Z"/>
+  <defs>
+    <linearGradient id="luminaBrand" x1="25" y1="12" x2="71" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#luminaBrand)" d="M25 12h12v60h36v12H25V12Z"/>
 </svg>
