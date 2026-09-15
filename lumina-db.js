@@ -2113,6 +2113,7 @@ export function getAuthorPosts(authorSlug, authorName) {
     const collected = [];
     const seenIds = new Set();
     const seenTexts = new Set();
+    const isHameraProfile = cleanSlug.includes('hamera') || cleanName.includes('hamera');
 
     function addIfMatch(p) {
         if (!p || (!p.text && !p.image && !p.gdrive && !p.gdriveEmbed && !p.video && !p.videoUrl && !p.youtubeUrl)) return;
@@ -2122,8 +2123,16 @@ export function getAuthorPosts(authorSlug, authorName) {
         // Profile Hamery must never display content belonging to Andrzej Thiel.
         // This also protects against stale local/cloud caches containing an
         // incorrect authorSlug or author name after an earlier migration.
-        const isHameraProfile = cleanSlug.includes('hamera') || cleanName.includes('hamera');
-        const isThielPost = pSlug.includes('thiel') || pAuthor.includes('thiel');
+        const searchablePostText = [
+            pSlug,
+            pAuthor,
+            p.title,
+            p.text,
+            p.description,
+            p.linkPreview?.title,
+            p.linkPreview?.description
+        ].filter(Boolean).join(' ').toLowerCase();
+        const isThielPost = searchablePostText.includes('thiel');
         if (isHameraProfile && isThielPost) return;
 
         let isMatch = false;
@@ -2194,6 +2203,25 @@ export function getAuthorPosts(authorSlug, authorName) {
             corePosts.forEach(addIfMatch);
         }
     } catch(e) {}
+
+    // Canonical replacement for the unrelated legacy post on Hamera's profile.
+    // Inject it after all sources so stale cache entries cannot suppress it.
+    if (isHameraProfile && !collected.some((p) => String(p.youtubeUrl || '').includes('Hf3h8guGxkc'))) {
+        collected.push({
+            id: 'post_ah_film_hf3h8guGxkc',
+            author: 'Andrzej Hamera',
+            authorSlug: 'andrzejhamera',
+            authorAvatar: 'avatar_andrzej_hamera.jpg',
+            authorRole: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+            time: 'Polecany materiał • 🎥 YouTube',
+            title: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
+            text: 'Poznaj film prezentujący studio mebli kuchennych na wymiar KONCEPT.',
+            youtubeUrl: 'https://youtu.be/Hf3h8guGxkc',
+            likes: 0,
+            amen: 0,
+            createdAtTimestamp: Date.now()
+        });
+    }
 
     // E. Dynamic Living Mission Broadcast Channel Autostart Post
     const missionCh = getMissionBroadcastChannel(authorSlug, authorName);
