@@ -140,19 +140,17 @@
     box-shadow: none !important;
 }
 
-/* Przycisk fullscreen — widoczny tylko na desktopie */
-@media (min-width: 769px) {
-    .chat-fullscreen-btn {
-        display: inline-flex !important;
-    }
-    .chat-fullscreen-btn:hover {
-        background: rgba(168, 85, 247, 0.28) !important;
-        border-color: rgba(192, 132, 252, 0.6) !important;
-        color: #e9d5ff !important;
-    }
-    .chat-fullscreen-btn:active {
-        transform: scale(0.93);
-    }
+/* Przycisk fullscreen — widoczny na desktopie, ukryty na mobile */
+.chat-fullscreen-btn {
+    display: inline-flex;
+}
+.chat-fullscreen-btn:hover {
+    background: rgba(168, 85, 247, 0.28) !important;
+    border-color: rgba(192, 132, 252, 0.6) !important;
+    color: #e9d5ff !important;
+}
+.chat-fullscreen-btn:active {
+    transform: scale(0.93);
 }
 @media (max-width: 768px) {
     .chat-fullscreen-btn {
