@@ -3537,7 +3537,7 @@
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786940887015">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
-    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20260915_fullscreen_v1">
+    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20260915_fullscreen_v2">
     <link rel="stylesheet" href="/css/lumina-profile.css?v=1786940887015">
     <link rel="stylesheet" href="/css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
@@ -8985,6 +8985,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (el) {
                 el.classList.remove('open');
                 el.style.display = 'none';
+                if (id === 'directMessagesModal') {
+                    el.classList.remove('is-fullscreen');
+                    const card = el.querySelector('.lumina-messenger-modal-card') || el.querySelector('.modal-card');
+                    if (card) card.classList.remove('is-fullscreen');
+                    const icon = document.getElementById('iconChatFullscreen');
+                    if (icon) icon.className = 'fa-solid fa-expand';
+                    const btn = document.getElementById('btnChatFullscreen');
+                    if (btn) btn.title = 'Pełny ekran czatu';
+                }
             }
         };
 
@@ -10784,10 +10793,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }
 
         function toggleChatFullscreen() {
-            const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card');
+            const modal = document.getElementById('directMessagesModal');
+            const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card') || (modal ? modal.querySelector('.modal-card') : null);
             const icon = document.getElementById('iconChatFullscreen');
-            if (!card) return;
+            if (!card || !modal) return;
             const isFs = card.classList.toggle('is-fullscreen');
+            modal.classList.toggle('is-fullscreen', isFs);
             if (icon) {
                 icon.className = isFs ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
             }
@@ -10799,7 +10810,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card');
-                if (card && card.classList.contains('is-fullscreen')) {
+                const modal = document.getElementById('directMessagesModal');
+                if ((card && card.classList.contains('is-fullscreen')) || (modal && modal.classList.contains('is-fullscreen'))) {
                     toggleChatFullscreen();
                 }
             }
@@ -11645,7 +11657,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-story-card-generator.js" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
-    <script src="js/lumina-messenger-composer.js?v=20260913_fix_v3" defer></script>
+    <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
     <script src="js/lumina-message-requests.js?v=20260914_chatfix_v1" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>

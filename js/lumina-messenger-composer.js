@@ -803,7 +803,7 @@
         style.id = 'lumina-messenger-desktop-style';
         style.textContent = `
             @media (min-width: 769px) {
-                #directMessagesModal .modal-card {
+                #directMessagesModal .modal-card:not(.is-fullscreen) {
                     max-width: 860px !important;
                     width: 95% !important;
                     height: 720px !important;
@@ -827,14 +827,121 @@
                     flex: 1 1 auto !important;
                 }
             }
+
+            /* --- Tryb Pełnoekranowy Centrum Rozmów LUMINA --- */
+            #directMessagesModal.is-fullscreen,
+            div#directMessagesModal.is-fullscreen {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                height: 100dvh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                max-height: 100dvh !important;
+                align-items: stretch !important;
+                justify-content: stretch !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            #directMessagesModal.is-fullscreen .modal-card,
+            #directMessagesModal .modal-card.is-fullscreen,
+            div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
+            .lumina-messenger-modal-card.is-fullscreen {
+                width: 100vw !important;
+                height: 100vh !important;
+                height: 100dvh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                max-height: 100dvh !important;
+                min-width: 100vw !important;
+                min-height: 100vh !important;
+                min-height: 100dvh !important;
+                border-radius: 0 !important;
+                border: none !important;
+                position: fixed !important;
+                inset: 0 !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                margin: 0 !important;
+                transform: none !important;
+                z-index: 99999999 !important;
+                box-shadow: none !important;
+            }
+
+            @media (max-width: 768px) {
+                .chat-fullscreen-btn {
+                    display: none !important;
+                }
+            }
         `;
         document.head.appendChild(style);
     })();
+
+    // ── Global Fullscreen Mode Handler for LUMINA Messenger 🖥️✨ ──
+    window.toggleChatFullscreen = function() {
+        const modal = document.getElementById('directMessagesModal');
+        const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card') || (modal ? modal.querySelector('.modal-card') : null);
+        const icon = document.getElementById('iconChatFullscreen');
+        if (!card || !modal) return;
+        const isFs = card.classList.toggle('is-fullscreen');
+        modal.classList.toggle('is-fullscreen', isFs);
+        if (icon) {
+            icon.className = isFs ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+        }
+        const btn = document.getElementById('btnChatFullscreen');
+        if (btn) btn.title = isFs ? 'Wyjdź z pełnego ekranu' : 'Pełny ekran czatu';
+    };
+
+    if (!window.__luminaFsEscBound) {
+        window.__luminaFsEscBound = true;
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('directMessagesModal');
+                const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card');
+                if ((card && card.classList.contains('is-fullscreen')) || (modal && modal.classList.contains('is-fullscreen'))) {
+                    window.toggleChatFullscreen();
+                }
+            }
+        });
+    }
+
+    function ensureChatFullscreenButton() {
+        const modal = document.getElementById('directMessagesModal');
+        if (!modal) return;
+        if (document.getElementById('btnChatFullscreen')) return;
+        const closeBtn = modal.querySelector('.chat-header-bar .modal-close-btn');
+        if (!closeBtn || !closeBtn.parentNode) return;
+
+        const btn = document.createElement('button');
+        btn.id = 'btnChatFullscreen';
+        btn.type = 'button';
+        btn.onclick = window.toggleChatFullscreen;
+        btn.title = 'Pełny ekran czatu';
+        btn.className = 'chat-fullscreen-btn';
+        btn.style.cssText = 'align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex-shrink:0;';
+        btn.innerHTML = '<i class="fa-solid fa-expand" id="iconChatFullscreen"></i>';
+
+        const parent = closeBtn.parentNode;
+        if (parent.style.display !== 'flex') {
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'display:flex; align-items:center; gap:6px;';
+            parent.insertBefore(wrapper, closeBtn);
+            wrapper.appendChild(btn);
+            wrapper.appendChild(closeBtn);
+        } else {
+            parent.insertBefore(btn, closeBtn);
+        }
+    }
 
     // Auto-initialize on load & DOM ready
     function setup() {
         initMessengerComposerUI();
         patchSwitchMessengerTab();
+        ensureChatFullscreenButton();
         if (typeof window.updateMsgComposerAuthorUI === 'function') {
             window.updateMsgComposerAuthorUI();
         }
@@ -842,6 +949,7 @@
 
     window.addEventListener('lumina-auth-state', () => {
         if (typeof window.updateMsgComposerAuthorUI === 'function') window.updateMsgComposerAuthorUI();
+        ensureChatFullscreenButton();
     });
     window.addEventListener('storage', () => {
         if (typeof window.updateMsgComposerAuthorUI === 'function') window.updateMsgComposerAuthorUI();
