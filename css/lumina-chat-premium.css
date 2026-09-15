@@ -588,3 +588,89 @@
         display: none !important;
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LUMINA SCROLLBARS — Elegancki standard dopasowany do dark theme LUMINA
+   Cienki (5px), gradient fioletowo-różowy, zaokrąglone — zero brzydkich
+   domyślnych suwaków przeglądarki w obszarach czatu i listy rozmów.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Globalne własności scrollbara dla Firefox (scrollbar-width: thin + color) */
+#dmConversationsList,
+#activeChatMessagesBox,
+#publicChatMessagesBox,
+#commanderChatMessagesBox,
+#activeChatMessagesContainer,
+.messenger-inbox-column,
+.messenger-chat-column,
+.lumina-chat-scroll,
+.dm-conversations-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.55) rgba(7, 13, 30, 0.4);
+}
+
+/* Webkit (Chrome, Safari, Edge, Android WebView) */
+#dmConversationsList::-webkit-scrollbar,
+#activeChatMessagesBox::-webkit-scrollbar,
+#publicChatMessagesBox::-webkit-scrollbar,
+#commanderChatMessagesBox::-webkit-scrollbar,
+#activeChatMessagesContainer::-webkit-scrollbar,
+.messenger-inbox-column::-webkit-scrollbar,
+.messenger-chat-column::-webkit-scrollbar,
+.lumina-chat-scroll::-webkit-scrollbar,
+.dm-conversations-list::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+#dmConversationsList::-webkit-scrollbar-track,
+#activeChatMessagesBox::-webkit-scrollbar-track,
+#publicChatMessagesBox::-webkit-scrollbar-track,
+#commanderChatMessagesBox::-webkit-scrollbar-track,
+#activeChatMessagesContainer::-webkit-scrollbar-track,
+.messenger-inbox-column::-webkit-scrollbar-track,
+.messenger-chat-column::-webkit-scrollbar-track,
+.lumina-chat-scroll::-webkit-scrollbar-track,
+.dm-conversations-list::-webkit-scrollbar-track {
+    background: rgba(7, 13, 30, 0.35);
+    border-radius: 999px;
+}
+
+#dmConversationsList::-webkit-scrollbar-thumb,
+#activeChatMessagesBox::-webkit-scrollbar-thumb,
+#publicChatMessagesBox::-webkit-scrollbar-thumb,
+#commanderChatMessagesBox::-webkit-scrollbar-thumb,
+#activeChatMessagesContainer::-webkit-scrollbar-thumb,
+.messenger-inbox-column::-webkit-scrollbar-thumb,
+.messenger-chat-column::-webkit-scrollbar-thumb,
+.lumina-chat-scroll::-webkit-scrollbar-thumb,
+.dm-conversations-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #a855f7 0%, #ec4899 100%);
+    border-radius: 999px;
+    min-height: 28px;
+}
+
+#dmConversationsList::-webkit-scrollbar-thumb:hover,
+#activeChatMessagesBox::-webkit-scrollbar-thumb:hover,
+#publicChatMessagesBox::-webkit-scrollbar-thumb:hover,
+#commanderChatMessagesBox::-webkit-scrollbar-thumb:hover,
+#activeChatMessagesContainer::-webkit-scrollbar-thumb:hover,
+.messenger-inbox-column::-webkit-scrollbar-thumb:hover,
+.messenger-chat-column::-webkit-scrollbar-thumb:hover,
+.lumina-chat-scroll::-webkit-scrollbar-thumb:hover,
+.dm-conversations-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #c084fc 0%, #f472b6 100%);
+}
+
+/* Filter-tabs poziomy scrollbar (Wszyscy / Rozmowy / Liderzy & Misja):
+   Na mobile nie chcemy go widocznego — chcemy płynnego swipe'a bez suwaka */
+#dmFilterTabsRow,
+.dm-filter-tabs,
+#dmFilterTabs {
+    scrollbar-width: none;
+}
+#dmFilterTabsRow::-webkit-scrollbar,
+.dm-filter-tabs::-webkit-scrollbar,
+#dmFilterTabs::-webkit-scrollbar {
+    display: none;
+}
