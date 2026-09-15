@@ -59,19 +59,35 @@ body {
     overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar — Christian Culture Standard */
+html, body, * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 169, 74, 0.4) var(--bg-deep-black);
+}
+
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 7px;
+    height: 7px;
 }
 ::-webkit-scrollbar-track {
     background: var(--bg-deep-black);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(212, 169, 74, 0.3);
-    border-radius: 4px;
+    background: rgba(212, 169, 74, 0.35);
+    border-radius: 9999px;
+    border: 1.5px solid var(--bg-deep-black);
+    transition: background 0.2s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gold-primary);
+}
+::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+::-webkit-scrollbar-corner {
+    background: var(--bg-deep-black);
 }
 
 a {
