@@ -171,7 +171,8 @@
             LuminaStorage.set('media', `avatar_${slug}`, copy.avatar);
             if (slug.includes('cezary')) copy.avatar = 'avatar_cezary_official.jpg';
             else if (slug.includes('wioletta')) copy.avatar = 'avatar_wioletta_official.jpg';
-            else if (slug.includes('andrzej')) copy.avatar = 'avatar_andrzej_thiel.jpg';
+            else if (slug.includes('hamera')) copy.avatar = 'avatar_andrzej_hamera.jpg';
+            else if (slug.includes('thiel') || (slug.includes('andrzej') && !slug.includes('hamera'))) copy.avatar = 'avatar_andrzej_thiel.jpg';
             else copy.avatar = 'lumina_icon.jpg';
         }
 
@@ -683,7 +684,8 @@
             let ultimateFallback = 'lumina_icon.jpg';
             if (isAvatar) {
                 if (originalSrc.includes('wioletta')) ultimateFallback = 'avatar_wioletta_official.jpg';
-                else if (originalSrc.includes('andrzej')) ultimateFallback = 'avatar_andrzej_thiel.jpg';
+                else if (originalSrc.includes('hamera')) ultimateFallback = 'avatar_andrzej_hamera.jpg';
+                else if (originalSrc.includes('thiel') || (originalSrc.includes('andrzej') && !originalSrc.includes('hamera'))) ultimateFallback = 'avatar_andrzej_thiel.jpg';
                 else if (originalSrc.includes('magdalena')) ultimateFallback = 'avatar_magdalena.png';
                 else if (originalSrc.includes('women') || originalSrc.includes('ccwomen')) ultimateFallback = 'logo_cc_women.jpg';
                 else ultimateFallback = 'avatar_cezary_official.jpg';

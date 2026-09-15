@@ -13,6 +13,7 @@
 
     // Domena znanych profili systemowych
     const SYSTEM_PROFILES = [
+        { slug: 'andrzejhamera', name: 'Andrzej Hamera', role: 'Właściciel KONCEPT Lublin', type: 'community', verified: true, avatar: 'avatar_andrzej_hamera.jpg' },
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Autor: Cuda Każdego Dnia', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
         { slug: 'cezaryrgowski', name: 'Cezary Rogowski', role: 'Dyrektor Projektu & Autor', type: 'official', verified: true, avatar: 'avatar_cezary_official.jpg' },
         { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Moderator Społeczności & Współzałożycielka', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
@@ -34,6 +35,7 @@
         if (urlParams.get('u')) return urlParams.get('u').toLowerCase().trim();
 
         const path = window.location.pathname.toLowerCase();
+        if (path.includes('andrzejhamera') || path.includes('hamera')) return 'andrzejhamera';
         if (path.includes('andrzejthiel')) return 'andrzejthiel';
         if (path.includes('osobowoscplus')) return 'osobowoscplus';
         if (path.includes('studiodobregoslowa')) return 'studiodobregoslowa';

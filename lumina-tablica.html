@@ -115,7 +115,10 @@
             if (sId.includes('wioletta') || sName.includes('wioletta')) {
                 return 'avatar_wioletta_official.jpg';
             }
-            if (sId.includes('andrzej') || sName.includes('andrzej')) {
+            if (sId.includes('hamera') || sName.includes('hamera')) {
+                return 'avatar_andrzej_hamera.jpg';
+            }
+            if (sId.includes('thiel') || sName.includes('thiel') || ((sId.includes('andrzej') || sName.includes('andrzej')) && !sId.includes('hamera') && !sName.includes('hamera'))) {
                 return 'avatar_andrzej_thiel.jpg';
             }
             if (sId === 'radiocc' || sName.includes('joshua') || sName.includes('agent ai')) {

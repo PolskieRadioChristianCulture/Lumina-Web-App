@@ -1342,25 +1342,29 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
     if (!profileData.name || profileData.name.trim() === '') {
         if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.name = 'Cezary Rogowski';
         else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.name = 'Wioletta Rogowska';
-        else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.name = 'Andrzej Thiel';
+        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.name = 'Andrzej Hamera';
+        else if (cleanSlug.includes('thiel') || cleanName.includes('thiel') || cleanSlug === 'andrzej' || cleanName === 'andrzej' || ((cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) && !cleanSlug.includes('hamera') && !cleanName.includes('hamera'))) profileData.name = 'Andrzej Thiel';
         else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.name = 'Paweł Murawski';
     }
     if (!profileData.age) {
         if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.age = 51;
         else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.age = 50;
-        else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.age = 70;
+        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.age = 52;
+        else if (cleanSlug.includes('thiel') || cleanName.includes('thiel') || ((cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) && !cleanSlug.includes('hamera') && !cleanName.includes('hamera'))) profileData.age = 70;
         else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.age = 49;
     }
     if (!profileData.city || profileData.city.trim() === '') {
         if (cleanSlug.includes('cezary') || cleanSlug.includes('wioletta')) profileData.city = 'Ostrowiec Świętokrzyski, Polska';
-        else if (cleanSlug.includes('andrzej')) profileData.city = 'Sieradz, Polska';
+        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.city = 'Lublin, Polska';
+        else if (cleanSlug.includes('thiel') || (cleanSlug.includes('andrzej') && !cleanSlug.includes('hamera'))) profileData.city = 'Sieradz, Polska';
         else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.city = 'Żywiec, Polska';
     }
 
     if (!profileData.avatar || profileData.avatar === 'null' || profileData.avatar === 'undefined' || profileData.avatar.trim() === '') {
         if (cleanSlug.includes('cezary')) profileData.avatar = 'avatar_cezary_official.jpg';
         else if (cleanSlug.includes('wioletta')) profileData.avatar = 'avatar_wioletta_official.jpg';
-        else if (cleanSlug.includes('andrzej')) profileData.avatar = 'avatar_andrzej_thiel.jpg';
+        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.avatar = 'avatar_andrzej_hamera.jpg';
+        else if (cleanSlug.includes('thiel') || (cleanSlug.includes('andrzej') && !cleanSlug.includes('hamera'))) profileData.avatar = 'avatar_andrzej_thiel.jpg';
         else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.avatar = 'avatar_pawel_murawski.jpg';
         else profileData.avatar = 'lumina_icon.jpg';
     }
@@ -1664,8 +1668,20 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     }
                 }
 
-                // Żelazne wymuszenie i samonaprawa danych Andrzeja Thiela (70 lat, Sieradz)
-                if (slugLower.includes('andrzej') || nameLower.includes('andrzej')) {
+                // Żelazne rozdzielenie i samonaprawa danych Andrzeja Hamery vs Andrzeja Thiela
+                if (slugLower.includes('hamera') || nameLower.includes('hamera')) {
+                    p.name = 'Andrzej Hamera';
+                    p.age = 52;
+                    p.city = 'Lublin, Polska';
+                    p.avatar = 'avatar_andrzej_hamera.jpg';
+                    p.status = 'Chrześcijanin';
+                    p.church = 'Wspólnota Chrześcijańska w Lublinie';
+                    p.job = 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚';
+                    p.company = 'KONCEPT – Studio Mebli Kuchennych na Wymiar';
+                    p.companyUrl = 'https://koncept-studio.pl/';
+                    p.facebookUrl = 'https://www.facebook.com/KonceptLublin';
+                    p.profileUrl = 'lumina-profile.html?u=andrzejhamera';
+                } else if (slugLower.includes('thiel') || nameLower.includes('thiel') || slugLower === 'andrzej' || nameLower === 'andrzej' || ((slugLower.includes('andrzej') || nameLower.includes('andrzej')) && !slugLower.includes('hamera') && !nameLower.includes('hamera'))) {
                     p.name = 'Andrzej Thiel';
                     p.age = 70;
                     p.birthDate = '30 listopada 1955';
@@ -2147,12 +2163,24 @@ export function getAuthorPosts(authorSlug, authorName) {
             if ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) && (pAuthor.includes('women') || pSlug.includes('women'))) isMatch = true;
             if ((cleanSlug.includes('men') || cleanSlug.includes('ccmen')) && (pAuthor.includes('men') || pSlug.includes('men'))) isMatch = true;
             if (cleanSlug.includes('thiel') && (pAuthor.includes('thiel') || pSlug.includes('thiel'))) isMatch = true;
+            if (cleanSlug.includes('hamera') && (pAuthor.includes('hamera') || pSlug.includes('hamera'))) isMatch = true;
         }
         if (cleanName && (pAuthor.includes(cleanName) || cleanName.includes(pAuthor))) {
-            isMatch = true;
+            if (!isHameraProfile || (!pAuthor.includes('thiel') && !pSlug.includes('thiel'))) {
+                isMatch = true;
+            }
         }
 
         if (isMatch) {
+            if (isHameraProfile) {
+                if (!p.authorAvatar || p.authorAvatar.includes('thiel') || p.authorAvatar.includes('lumina_icon')) {
+                    p.authorAvatar = 'avatar_andrzej_hamera.jpg';
+                }
+                if (!p.author || p.author.includes('Thiel')) {
+                    p.author = 'Andrzej Hamera';
+                }
+                p.authorSlug = 'andrzejhamera';
+            }
             const key = p.id || ((p.text || '') + '_' + (p.image || '') + '_' + (p.createdAtTimestamp || ''));
             if (!seenIds.has(key)) {
                 seenIds.add(key);

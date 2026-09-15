@@ -43,7 +43,8 @@
         if (s === 'pawelmurawski' || s.includes('pawel')) return 'avatar_pawel_murawski.jpg';
         if (s.includes('robert') || s.includes('robertukaszpio')) return 'avatar_robert.jpg';
         if (s === 'magdalena') return 'avatar_magdalena.jpg';
-        if (s === 'andrzejthiel' || s === 'andrzej') return 'avatar_andrzej_thiel.jpg';
+        if (s === 'andrzejhamera' || s === 'u_andrzejhamera' || s.includes('hamera')) return 'avatar_andrzej_hamera.jpg';
+        if (s === 'andrzejthiel' || s.includes('thiel') || (s === 'andrzej' && !s.includes('hamera'))) return 'avatar_andrzej_thiel.jpg';
         if (s === 'wiolettarogowska' || s === 'wioletta') return 'avatar_wioletta_official.jpg';
         if (s === 'radiocc' || s === 'radio_cc') return 'avatar_radio_cc.jpg';
         if (window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[s]?.avatar) {

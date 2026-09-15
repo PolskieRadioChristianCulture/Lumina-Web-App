@@ -77,7 +77,9 @@ test('Hamera profile uses the kitchen-furniture identity and excludes Thiel post
   assert.match(db, /s\.includes\('hamera'\)[\s\S]*return null/);
   assert.match(profile, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
   assert.match(profilesDb, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
-  assert.match(profile, /lumina-db\.js\?v=20260915_hamera_video_v2/);
+  assert.match(profile, /lumina-db\.js\?v=20260915_hamera_steel_v420/);
+  assert.match(profile, /avatar_andrzej_hamera\.jpg/);
+  assert.match(db, /avatar_andrzej_hamera\.jpg/);
   assert.doesNotMatch(profile.slice(profile.indexOf("'andrzejhamera':"), profile.indexOf("'u_andrzejhamera':")), /Studio Reklamy|Poligraf/i);
 
   const luminaHtml = await readFile('lumina.html', 'utf8');

@@ -115,7 +115,10 @@
             if (sId.includes('wioletta') || sName.includes('wioletta')) {
                 return 'avatar_wioletta_official.jpg';
             }
-            if (sId.includes('andrzej') || sName.includes('andrzej')) {
+            if (sId.includes('hamera') || sName.includes('hamera')) {
+                return 'avatar_andrzej_hamera.jpg';
+            }
+            if (sId.includes('thiel') || sName.includes('thiel') || ((sId.includes('andrzej') || sName.includes('andrzej')) && !sId.includes('hamera') && !sName.includes('hamera'))) {
                 return 'avatar_andrzej_thiel.jpg';
             }
             if (sId === 'radiocc' || sName.includes('joshua') || sName.includes('agent ai')) {
@@ -265,7 +268,7 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260915_hamera_video_v2"></script>
+    <script type="module" src="lumina-db.js?v=20260915_hamera_steel_v420"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
@@ -2591,7 +2594,7 @@
     <link rel="stylesheet" href="/css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
     
-    <script type="module" src="js/lumina-db-profiles.js?v=20260915_hamera_v418"></script>
+    <script type="module" src="js/lumina-db-profiles.js?v=20260915_hamera_steel_v420"></script>
     <script type="module" src="js/lumina-actions.js?v=20260913_c"></script>
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
@@ -5236,6 +5239,60 @@
                     photos: ['avatar_pawel_murawski.jpg']
                 };
             }
+
+            // Twarde zabezpieczenie profilu Andrzeja Hamery (KONCEPT Lublin, 52 lata)
+            if (slug === 'andrzejhamera' || slug === 'u_andrzejhamera' || slug === 'hamera' || slug.includes('hamera')) {
+                const baseHamera = PROFILES_DB['andrzejhamera'] || PROFILES_DB['u_andrzejhamera'] || {};
+                try {
+                    ['lumina_profile_andrzejhamera', 'lumina_profile_u_andrzejhamera', 'lumina_avatar_andrzejhamera', 'lumina_avatar_u_andrzejhamera'].forEach(k => {
+                        const val = localStorage.getItem(k);
+                        if (val && (val.includes('thiel') || val.includes('Sieradz') || val.includes('70'))) {
+                            localStorage.removeItem(k);
+                        }
+                    });
+                } catch(e) {}
+
+                const cloud = (window._cloudProfileData && (window._cloudProfileData.slug === 'andrzejhamera' || window._cloudProfileData.uid === 'andrzejhamera')) ? window._cloudProfileData : {};
+                const localProfStr = localStorage.getItem('lumina_profile_andrzejhamera') || localStorage.getItem('lumina_profile_' + slug);
+                let localProf = null;
+                if (localProfStr) {
+                    try {
+                        const parsed = JSON.parse(localProfStr);
+                        if (parsed && !parsed.avatar?.includes('thiel') && !parsed.name?.includes('Thiel')) {
+                            localProf = parsed;
+                        }
+                    } catch(e) {}
+                }
+
+                let effectiveAvatar = 'avatar_andrzej_hamera.jpg';
+                if (localProf && localProf.avatar && !localProf.avatar.includes('thiel') && !localProf.avatar.includes('lumina_icon')) {
+                    effectiveAvatar = localProf.avatar;
+                } else if (cloud.avatar && !cloud.avatar.includes('thiel') && !cloud.avatar.includes('lumina_icon')) {
+                    effectiveAvatar = cloud.avatar;
+                }
+
+                return {
+                    ...baseHamera,
+                    ...(localProf || {}),
+                    ...(cloud || {}),
+                    name: 'Andrzej Hamera',
+                    age: 52,
+                    city: 'Lublin, Polska',
+                    denom: 'Chrześcijanin',
+                    church: 'Wspólnota Chrześcijańska w Lublinie',
+                    status: 'Żonaty',
+                    job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+                    role: 'Właściciel firmy KONCEPT • Studio Mebli Kuchennych na Wymiar 🪚',
+                    avatar: effectiveAvatar,
+                    cover: 'lumina_default_cover.jpg',
+                    company: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
+                    companyUrl: 'https://koncept-studio.pl/',
+                    facebookUrl: 'https://www.facebook.com/KonceptLublin',
+                    verified: true,
+                    isMissionAccount: false,
+                    photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg']
+                };
+            }
             
             // Twarde zabezpieczenie kanału CC Women
             if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {
@@ -6224,17 +6281,26 @@
             const isHameraProfile = /hamera/i.test(`${slug} ${data?.name || ''}`);
             if (isHameraProfile) {
                 const isThielContent = (p) => {
-                    const haystack = [p?.id, p?.author, p?.authorName, p?.title, p?.text, p?.description, p?.showTitle, p?.channelTitle]
+                    const haystack = [p?.id, p?.author, p?.authorName, p?.title, p?.text, p?.description, p?.showTitle, p?.channelTitle, p?.authorAvatar]
                         .filter(Boolean).join(' ').toLowerCase();
                     return /andrzej thiel|studium telewizyjne|post_live_studium_live|wykład biblijny/.test(haystack);
                 };
                 posts = posts.filter(p => !isThielContent(p));
+                posts.forEach(p => {
+                    if (!p.authorAvatar || p.authorAvatar.includes('thiel') || p.authorAvatar.includes('lumina_icon')) {
+                        p.authorAvatar = 'avatar_andrzej_hamera.jpg';
+                    }
+                    if (!p.author || p.author.includes('Thiel')) {
+                        p.author = 'Andrzej Hamera';
+                    }
+                    p.authorSlug = 'andrzejhamera';
+                });
                 if (!posts.some(p => String(p?.youtubeUrl || '').includes('Hf3h8guGxkc'))) {
                     posts.push({
                         id: 'post_ah_film_hf3h8guGxkc',
                         author: 'Andrzej Hamera',
                         authorSlug: 'andrzejhamera',
-                        authorAvatar: data.avatar || 'avatar_andrzej_hamera.jpg',
+                        authorAvatar: 'avatar_andrzej_hamera.jpg',
                         authorRole: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
                         time: 'Polecany materiał • 🎥 YouTube',
                         title: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
@@ -6336,10 +6402,15 @@
 
                 const hasRealPostImage = p.image && String(p.image).trim() !== '' && !String(p.image).includes('lumina_icon.jpg');
 
+                let effectivePostAvatar = p.authorAvatar || data.avatar || 'lumina_icon.jpg';
+                if (isHameraProfile && (effectivePostAvatar.includes('thiel') || effectivePostAvatar.includes('lumina_icon') || !effectivePostAvatar)) {
+                    effectivePostAvatar = 'avatar_andrzej_hamera.jpg';
+                }
+
                 return `
                 <article class="post-card" id="${p.id}">
                     <div class="post-header">
-                        <img loading="lazy" decoding="async" src="${p.authorAvatar || data.avatar || 'lumina_icon.jpg'}" alt="${p.author}" class="post-avatar">
+                        <img loading="lazy" decoding="async" src="${effectivePostAvatar}" alt="${p.author}" class="post-avatar">
                         <div>
                             <div class="post-author" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                                 <span>${p.author}</span>
@@ -9820,7 +9891,7 @@
     </div>
 
     <script src="js/lumina-admin-media-replacer.js?v=20260907_antiflicker_v8"></script>
-    <script src="lumina-admin-profile-suite.js?v=20260915_session_pin_v419"></script>
+    <script src="lumina-admin-profile-suite.js?v=20260915_hamera_steel_v420"></script>
     <script src="lumina-premium-video-avatar.js"></script>
 <script>
 

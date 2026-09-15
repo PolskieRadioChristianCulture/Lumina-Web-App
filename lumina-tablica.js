@@ -230,7 +230,8 @@ class LuminaTablicaEngine {
                 const slug = (post.authorSlug || '').toLowerCase();
                 if (slug.includes('cezary')) postAvatar = 'avatar_cezary_official.jpg';
                 else if (slug.includes('wioletta')) postAvatar = 'avatar_wioletta_official.jpg';
-                else if (slug.includes('andrzej')) postAvatar = 'avatar_andrzej_thiel.jpg';
+                else if (slug.includes('hamera')) postAvatar = 'avatar_andrzej_hamera.jpg';
+                else if (slug.includes('thiel') || (slug.includes('andrzej') && !slug.includes('hamera'))) postAvatar = 'avatar_andrzej_thiel.jpg';
                 else if (slug.includes('ccwomen') || slug.includes('women')) postAvatar = 'logo_cc_women.jpg';
                 else if (slug.includes('magdalena')) postAvatar = 'avatar_magdalena.png';
                 else postAvatar = 'lumina_icon.jpg';
