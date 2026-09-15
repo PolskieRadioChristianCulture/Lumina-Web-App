@@ -50,6 +50,44 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_09_15',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '15 Września 2026 • ☀️ Słowa Mają Moc',
+            title: '☀️ Słowa Mają Moc — Dzień 15: Skory do słuchania, nieskory do mówienia',
+            text: `☀️ **Słowa Mają Moc — Dzień 15: Skory do słuchania, nieskory do mówienia**
+
+W piętnastym dniu wrześniowego cyklu formacyjnego „Słowa Mają Moc” mierzymy się z pokusą wypowiadania ostrych słów w gniewie i pośpiesznej oceny.
+
+Apostoł Jakub daje nam prostą, rewolucyjną radę: bądź skory do słuchania, nieskory do mówienia i nieskory do gniewu. Chrześcijański lider nie pozwala sobie na wybuchy gniewu i raniące komentarze pod wpływem emocji. Jego mowa jest opanowana i pełna łaski. Wybieraj dzisiaj świadomie: panuj nad swoim językiem, odrzucając gniew i stając w królewskiej klasie opanowania.
+
+**Jezus mówi dziś do Ciebie:**
+„...niech każdy człowiek będzie skory do słuchania, nieskory do mówienia, nieskory do gniewu.” *(Jakuba 1,19, UBG)*
+
+**Zadanie Taktyczne (Czytaj | Wierz | Działaj):**
+**CZYTAJ:** Otwórz dzisiaj Pismo Święte i przeczytaj pierwszy rozdział Listu świętego Jakuba, wersety 19–27.
+**WIERZ:** Przyjmij wiarą, że opanowanie języka w trudnej sytuacji jest dowodem dojrzałości i pracy Ducha Świętego.
+**DZIAŁAJ:** W każdej sytuacji konfliktowej najpierw usłysz i przemilcz gniew, a dopiero potem wypowiedz słowo pełne pokoju i mądrości.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Panie Jezu, poskrom mój gniew i naucz mnie milczeć wtedy, gdy emocje chcą przejąć kontrolę. Uczyń mój język narzędziem Twojego pokoju.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.polskieradio.cc/lumina | www.cclite.pl
+Wspomóż misję: patronite.pl/osobowoscplus`,
+            image: 'promo_dzj.jpg',
+            likes: 0,
+            amen: 0,
+            _sortTs: Date.now() + 10000000020
+        },
+        {
             id: 'post_vod_mega_hity_kina',
             type: 'promo',
             author: 'Christian Culture VOD',
