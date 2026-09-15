@@ -119,6 +119,45 @@
     flex-direction: column !important;
     overflow: hidden !important;
     padding: 0 !important;
+    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                max-width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-radius 0.3s ease !important;
+}
+
+/* --- Tryb Pełnoekranowy (Desktop only) --- */
+.lumina-messenger-modal-card.is-fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999999 !important;
+    box-shadow: none !important;
+}
+
+/* Przycisk fullscreen — widoczny tylko na desktopie */
+@media (min-width: 769px) {
+    .chat-fullscreen-btn {
+        display: inline-flex !important;
+    }
+    .chat-fullscreen-btn:hover {
+        background: rgba(168, 85, 247, 0.28) !important;
+        border-color: rgba(192, 132, 252, 0.6) !important;
+        color: #e9d5ff !important;
+    }
+    .chat-fullscreen-btn:active {
+        transform: scale(0.93);
+    }
+}
+@media (max-width: 768px) {
+    .chat-fullscreen-btn {
+        display: none !important;
+    }
 }
 
 /* --- Układ dwukolumnowy (Dual-Pane) na desktopie --- */

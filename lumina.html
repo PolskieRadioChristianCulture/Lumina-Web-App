@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -5333,7 +5333,10 @@
                                 <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨ </div>
                         </div>
                     </div>
-                    <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button id="btnChatFullscreen" type="button" onclick="toggleChatFullscreen()" title="Pełny ekran czatu" class="chat-fullscreen-btn" style="display:none; align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex-shrink:0;"><i class="fa-solid fa-expand" id="iconChatFullscreen"></i></button>
+                        <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
                 </div>
 
                 <!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
@@ -10779,6 +10782,28 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             }
         }
+
+        function toggleChatFullscreen() {
+            const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card');
+            const icon = document.getElementById('iconChatFullscreen');
+            if (!card) return;
+            const isFs = card.classList.toggle('is-fullscreen');
+            if (icon) {
+                icon.className = isFs ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+            }
+            const btn = document.getElementById('btnChatFullscreen');
+            if (btn) btn.title = isFs ? 'Wyjdź z pełnego ekranu' : 'Pełny ekran czatu';
+        }
+
+        // Wyjście z fullscreen przez klawisz Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const card = document.querySelector('#directMessagesModal .lumina-messenger-modal-card');
+                if (card && card.classList.contains('is-fullscreen')) {
+                    toggleChatFullscreen();
+                }
+            }
+        });
 
         
         // ── BŁYSKAWICZNA WYSZUKIWARKA & KATALOG UŻYTKOWNIKÓW DLA ROZMÓW PRYWATNYCH 🔍✨ ──
