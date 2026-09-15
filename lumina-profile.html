@@ -6312,9 +6312,36 @@
         function renderPosts() {
             const data = getProfileData();
             const slug = getRequestedUserSlug();
-            const posts = (window.LuminaDB?.getAuthorPosts) 
+            let posts = (window.LuminaDB?.getAuthorPosts) 
                 ? window.LuminaDB.getAuthorPosts(slug, data.name)
                 : (Array.isArray(data.posts) ? data.posts : []);
+            // Ochrona profilu Hamera działa również w trybie awaryjnym,
+            // gdy moduł danych nie zdążył się załadować (np. blokada Firebase).
+            const isHameraProfile = /hamera/i.test(`${slug} ${data?.name || ''}`);
+            if (isHameraProfile) {
+                const isThielContent = (p) => {
+                    const haystack = [p?.id, p?.author, p?.authorName, p?.title, p?.text, p?.description, p?.showTitle, p?.channelTitle]
+                        .filter(Boolean).join(' ').toLowerCase();
+                    return /andrzej thiel|studium telewizyjne|post_live_studium_live|wykład biblijny/.test(haystack);
+                };
+                posts = posts.filter(p => !isThielContent(p));
+                if (!posts.some(p => String(p?.youtubeUrl || '').includes('Hf3h8guGxkc'))) {
+                    posts.push({
+                        id: 'post_ah_film_hf3h8guGxkc',
+                        author: 'Andrzej Hamera',
+                        authorSlug: 'andrzejhamera',
+                        authorAvatar: data.avatar || 'avatar_andrzej_hamera.jpg',
+                        authorRole: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+                        time: 'Polecany materiał • 🎥 YouTube',
+                        title: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
+                        text: 'Poznaj film prezentujący studio mebli kuchennych na wymiar KONCEPT.',
+                        youtubeUrl: 'https://youtu.be/Hf3h8guGxkc',
+                        likes: 0,
+                        amen: 0,
+                        image: null
+                    });
+                }
+            }
             const stream = document.getElementById('feedStream');
             if (!stream) return;
 
