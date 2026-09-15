@@ -1151,8 +1151,8 @@ export const PROFILES_DB = {
         avatar: 'avatar_andrzej_hamera.jpg',
         cover: 'lumina_default_cover.jpg',
         coverPosY: '50%',
-        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
-        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+        role: 'Właściciel firmy KONCEPT • Studio Mebli Kuchennych na Wymiar 🪚',
         church: 'Wspólnota Chrześcijańska w Lublinie',
         denom: 'Chrześcijanin',
         status: 'Żonaty',
@@ -1161,14 +1161,14 @@ export const PROFILES_DB = {
         match: '98%',
         matchScore: '98%',
         isCommunity: true,
-        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        company: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
         companyUrl: 'https://koncept-studio.pl/',
         facebookUrl: 'https://www.facebook.com/KonceptLublin',
         stats: { friends: '64', posts: '2', likes: '180' },
         verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
         verseRef: '— Przypowieści Salomona 16, 3',
-        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
-        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Prowadzę KONCEPT – studio mebli kuchennych na wymiar w Lublinie (koncept-studio.pl). Projektujemy funkcjonalne i trwałe zabudowy dopasowane do domu, stylu życia i potrzeb każdej rodziny. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do współpracy!',
+        tags: ['KONCEPT', 'Meble Kuchenne', 'Kuchnie na Wymiar', 'Lublin', 'Przedsiębiorca z wartościami', 'Projektowanie Wnętrz', 'Wiara w biznesie', 'Rodzina'],
         photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
         featuredCompanyHtml: `<div class="featured-company-card" style="background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.9)); border: 1px solid rgba(250,204,21,0.45); border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.55);">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
@@ -1178,10 +1178,10 @@ export const PROFILES_DB = {
                     </div>
                     <div>
                         <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.15rem; color:#fff; display:flex; align-items:center; gap:8px;">
-                            <span>Studio Reklamy & Poligrafii KONCEPT</span>
+                    <span>Studio Mebli Kuchennych na Wymiar KONCEPT</span>
                             <span style="font-size:0.65rem; font-weight:800; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.6); color:#facc15; padding:3px 8px; border-radius:12px; letter-spacing:0.5px;">LUBLIN</span>
                         </div>
-                        <div style="font-size:0.8rem; color:#94a3b8;">Kompleksowa reklama, druk & identyfikacja wizualna z wartościami</div>
+                    <div style="font-size:0.8rem; color:#94a3b8;">Funkcjonalne kuchnie na wymiar projektowane z wartościami</div>
                     </div>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -1194,7 +1194,7 @@ export const PROFILES_DB = {
                 </div>
             </div>
             <div style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; background:rgba(0,0,0,0.25); padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.07);">
-                Tworzymy z pasją: poligrafię, druk cyfrowy i offsetowy, identyfikację wizualną, oklejanie pojazdów oraz reklamę zewnętrzną dla firm i inicjatyw w Lublinie i w całym kraju.
+                Projektujemy i wykonujemy meble kuchenne na wymiar, dopasowane do wnętrza, potrzeb rodziny i codziennego życia – w Lublinie i okolicach.
             </div>
         </div>`,
         posts: [
@@ -1203,16 +1203,16 @@ export const PROFILES_DB = {
                 author: 'Andrzej Hamera',
                 authorSlug: 'andrzejhamera',
                 authorAvatar: 'avatar_andrzej_hamera.jpg',
-                authorRole: 'Właściciel KONCEPT Studio Reklamy 🎨',
+                authorRole: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
                 time: 'Wczoraj, 14:20 • 🌍 Publiczny',
-                text: 'W studiu reklamy KONCEPT w Lublinie wierzymy, że każda wartościowa inicjatywa i firma zasługuje na profesjonalną, piękną oprawę wizualną. Realizujemy kompleksowe projekty graficzne, druk cyfrowy i offsetowy, oklejanie pojazdów, szyldy oraz identyfikację wizualną.\n\nZapraszam serdecznie braci i siostry z całej Polski do współpracy: https://koncept-studio.pl/ oraz na nasz profil: https://www.facebook.com/KonceptLublin ✨🤝',
+                text: 'W KONCEPT projektujemy i wykonujemy meble kuchenne na wymiar, łącząc funkcjonalność, trwałość i piękno. Każdą kuchnię dopasowujemy do wnętrza, potrzeb rodziny i codziennego życia.\n\nZapraszam do współpracy: https://koncept-studio.pl/ ✨🤝',
                 likes: 54,
                 amen: 46,
                 image: null,
                 linkPreview: {
                     url: 'https://koncept-studio.pl/',
-                    title: 'KONCEPT • Studio Reklamy i Poligrafii Lublin',
-                    description: 'Kompleksowa reklama, druk i identyfikacja wizualna z wartościami. Lublin i cała Polska.',
+                    title: 'KONCEPT • Studio Mebli Kuchennych na Wymiar Lublin',
+                    description: 'Funkcjonalne i trwałe meble kuchenne na wymiar projektowane z wartościami. Lublin i okolice.',
                     image: 'lumina_default_cover.jpg'
                 }
             },
@@ -1221,7 +1221,7 @@ export const PROFILES_DB = {
                 author: 'Andrzej Hamera',
                 authorSlug: 'andrzejhamera',
                 authorAvatar: 'avatar_andrzej_hamera.jpg',
-                authorRole: 'Właściciel KONCEPT Studio Reklamy 🎨',
+                authorRole: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
                 time: '3 dni temu • 🕊️ Świadectwo & Wiara',
                 text: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone” (Prz 16, 3). Praca zawodowa i biznes mogą być piękną przestrzenią służby i świadectwa. Cieszę się, że mogę być częścią społeczności LUMINA!',
                 likes: 48,
@@ -1242,8 +1242,8 @@ export const PROFILES_DB = {
         avatar: 'avatar_andrzej_hamera.jpg',
         cover: 'lumina_default_cover.jpg',
         coverPosY: '50%',
-        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
-        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+        role: 'Właściciel firmy KONCEPT • Studio Mebli Kuchennych na Wymiar 🪚',
         church: 'Wspólnota Chrześcijańska w Lublinie',
         denom: 'Chrześcijanin',
         status: 'Żonaty',
@@ -1252,14 +1252,14 @@ export const PROFILES_DB = {
         match: '98%',
         matchScore: '98%',
         isCommunity: true,
-        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        company: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
         companyUrl: 'https://koncept-studio.pl/',
         facebookUrl: 'https://www.facebook.com/KonceptLublin',
         stats: { friends: '64', posts: '2', likes: '180' },
         verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
         verseRef: '— Przypowieści Salomona 16, 3',
-        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
-        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Prowadzę KONCEPT – studio mebli kuchennych na wymiar w Lublinie (koncept-studio.pl). Projektujemy funkcjonalne i trwałe zabudowy dopasowane do domu, stylu życia i potrzeb każdej rodziny. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do współpracy!',
+        tags: ['KONCEPT', 'Meble Kuchenne', 'Kuchnie na Wymiar', 'Lublin', 'Przedsiębiorca z wartościami', 'Projektowanie Wnętrz', 'Wiara w biznesie', 'Rodzina'],
         photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
         posts: []
     },
@@ -1275,8 +1275,8 @@ export const PROFILES_DB = {
         avatar: 'avatar_andrzej_hamera.jpg',
         cover: 'lumina_default_cover.jpg',
         coverPosY: '50%',
-        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
-        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚',
+        role: 'Właściciel firmy KONCEPT • Studio Mebli Kuchennych na Wymiar 🪚',
         church: 'Wspólnota Chrześcijańska w Lublinie',
         denom: 'Chrześcijanin',
         status: 'Żonaty',
@@ -1285,14 +1285,14 @@ export const PROFILES_DB = {
         match: '98%',
         matchScore: '98%',
         isCommunity: true,
-        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        company: 'KONCEPT – Studio Mebli Kuchennych na Wymiar',
         companyUrl: 'https://koncept-studio.pl/',
         facebookUrl: 'https://www.facebook.com/KonceptLublin',
         stats: { friends: '64', posts: '2', likes: '180' },
         verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
         verseRef: '— Przypowieści Salomona 16, 3',
-        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
-        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Prowadzę KONCEPT – studio mebli kuchennych na wymiar w Lublinie (koncept-studio.pl). Projektujemy funkcjonalne i trwałe zabudowy dopasowane do domu, stylu życia i potrzeb każdej rodziny. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do współpracy!',
+        tags: ['KONCEPT', 'Meble Kuchenne', 'Kuchnie na Wymiar', 'Lublin', 'Przedsiębiorca z wartościami', 'Projektowanie Wnętrz', 'Wiara w biznesie', 'Rodzina'],
         photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
         posts: []
     },
@@ -1303,12 +1303,12 @@ export const PROFILES_DB = {
         profileUrl: 'lumina-profile.html?u=u_andrzejhamera',
         name: 'Andrzej Hamera',
         age: 52, location: 'Lublin', faith: 'Chrześcijanin', status: 'Żonaty',
-        bio: 'Właściciel KONCEPT Studio Reklamy w Lublinie. Wiara i rodzina na pierwszym miejscu.',
+        bio: 'Właściciel KONCEPT – studia mebli kuchennych na wymiar w Lublinie. Wiara i rodzina na pierwszym miejscu.',
         avatar: 'avatar_andrzej_hamera.jpg',
         cover: 'lumina_default_cover.jpg',
         match: 98,
         verified: true,
-        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami'],
+        tags: ['KONCEPT', 'Meble Kuchenne', 'Kuchnie na Wymiar', 'Lublin', 'Przedsiębiorca z wartościami'],
         photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
         posts: []
     }

@@ -64,3 +64,13 @@ test('homepage carousel distinguishes vertical scrolling from a profile tap', as
   assert.match(html, /carousel\.addEventListener\('touchcancel'/);
   assert.match(html, /carousel\.addEventListener\('click',[\s\S]*\{ capture: true \}\)/);
 });
+
+test('Hamera profile uses the kitchen-furniture identity and excludes Thiel posts', async () => {
+  const profile = await readFile('lumina-profile.html', 'utf8');
+  const profilesDb = await readFile('js/lumina-db-profiles.js', 'utf8');
+  const db = await readFile('lumina-db.js', 'utf8');
+  assert.match(profile, /Studio Mebli Kuchennych na Wymiar/);
+  assert.match(profilesDb, /Studio Mebli Kuchennych na Wymiar/);
+  assert.match(db, /isHameraProfile[\s\S]*isThielPost[\s\S]*if \(isHameraProfile && isThielPost\) return/);
+  assert.doesNotMatch(profile.slice(profile.indexOf("'andrzejhamera':"), profile.indexOf("'u_andrzejhamera':")), /Studio Reklamy|Poligraf/i);
+});

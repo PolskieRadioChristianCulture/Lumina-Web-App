@@ -2119,6 +2119,13 @@ export function getAuthorPosts(authorSlug, authorName) {
         const pSlug = (p.authorSlug || p.authorId || '').toLowerCase();
         const pAuthor = (p.author || p.authorName || '').toLowerCase();
 
+        // Profile Hamery must never display content belonging to Andrzej Thiel.
+        // This also protects against stale local/cloud caches containing an
+        // incorrect authorSlug or author name after an earlier migration.
+        const isHameraProfile = cleanSlug.includes('hamera') || cleanName.includes('hamera');
+        const isThielPost = pSlug.includes('thiel') || pAuthor.includes('thiel');
+        if (isHameraProfile && isThielPost) return;
+
         let isMatch = false;
         if (cleanSlug) {
             if (pSlug === cleanSlug || pSlug.includes(cleanSlug) || cleanSlug.includes(pSlug)) isMatch = true;
