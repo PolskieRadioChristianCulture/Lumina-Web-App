@@ -47,9 +47,9 @@
         return 'profile_default';
     }
 
-    // Sprawdza czy aktywny jest tryb Master Admina (wyłącznie po autoryzacji PIN-em)
+    // Sprawdza czy aktywny jest tryb Master Admina (wyłącznie po autoryzacji PIN-em w bieżącej sesji)
     function isUserMasterAdmin() {
-        return sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true';
+        return sessionStorage.getItem('lumina_auth_master_admin') === 'true';
     }
 
     // Pobiera listę wszystkich zablokowanych profili
@@ -1238,6 +1238,10 @@
         slug: detectCurrentProfileSlug(),
 
         init: function() {
+            // Bezpieczeństwo: czyścimy trwałą flagę z localStorage, aby telefon/przeglądarka nigdy nie wchodziła do panelu bez PINu
+            try {
+                localStorage.removeItem('lumina_auth_master_admin');
+            } catch(e) {}
             this.ensureMediaReplacerLoaded();
             this.slug = detectCurrentProfileSlug();
             injectAdminStyles();
@@ -1367,7 +1371,7 @@
 
             if (hash === ADMIN_PIN_HASH) {
                 sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                localStorage.setItem('lumina_auth_master_admin', 'true');
+                try { localStorage.removeItem('lumina_auth_master_admin'); } catch(e) {}
                 this.checkAndApplyAdminState();
                 if (window.LuminaMediaReplacer && typeof window.LuminaMediaReplacer.scanAndAttachButtons === 'function') {
                     window.LuminaMediaReplacer.scanAndAttachButtons();

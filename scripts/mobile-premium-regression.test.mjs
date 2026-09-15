@@ -85,3 +85,11 @@ test('Hamera profile uses the kitchen-furniture identity and excludes Thiel post
   assert.match(luminaHtml, /renderedNames[\s\S]*'andrzej hamera'/);
 });
 
+test('master admin HUD requires explicit PIN session and prevents duplicate bars', async () => {
+  const profile = await readFile('lumina-profile.html', 'utf8');
+  const adminSuite = await readFile('lumina-admin-profile-suite.js', 'utf8');
+  assert.doesNotMatch(profile, /<div class="admin-master-hud" id="adminMasterHud">/);
+  assert.doesNotMatch(profile, /if \(uSlug === 'cezaryrgowski'\) isMaster = true/);
+  assert.match(adminSuite, /sessionStorage\.getItem\('lumina_auth_master_admin'\) === 'true'/);
+});
+
