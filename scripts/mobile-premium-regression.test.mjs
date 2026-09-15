@@ -74,6 +74,7 @@ test('Hamera profile uses the kitchen-furniture identity and excludes Thiel post
   assert.match(db, /isHameraProfile[\s\S]*isThielPost[\s\S]*if \(isHameraProfile && isThielPost\) return/);
   assert.match(db, /searchablePostText[\s\S]*p\.title[\s\S]*p\.text/);
   assert.match(db, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
+  assert.match(db, /s\.includes\('hamera'\)[\s\S]*return null/);
   assert.match(profile, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
   assert.match(profilesDb, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
   assert.doesNotMatch(profile.slice(profile.indexOf("'andrzejhamera':"), profile.indexOf("'u_andrzejhamera':")), /Studio Reklamy|Poligraf/i);

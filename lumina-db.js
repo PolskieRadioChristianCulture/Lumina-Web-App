@@ -2091,6 +2091,10 @@ export function getMissionBroadcastChannel(authorSlug, authorName) {
     const s = (authorSlug || '').toLowerCase();
     const n = (authorName || '').toLowerCase();
 
+    // Andrzej Hamera is a community profile, not the Andrzej Thiel mission
+    // channel. Keep the generic "andrzej" fallback from misrouting him.
+    if (s.includes('hamera') || n.includes('hamera')) return null;
+
     if (s.includes('cezary') || n.includes('cezary')) return MISSION_BROADCAST_CHANNELS['cezary_rogowski'];
     if (s.includes('wioletta') || n.includes('wioletta')) return MISSION_BROADCAST_CHANNELS['wioletta_rogowska'];
     if (s.includes('women') || n.includes('women') || s.includes('kobiety')) return MISSION_BROADCAST_CHANNELS['cc_women'];
