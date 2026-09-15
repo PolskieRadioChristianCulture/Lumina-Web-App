@@ -1137,8 +1137,167 @@ export const PROFILES_DB = {
         tags: ['Portal Społecznościowy', 'Relacje w Bogu', 'Chrześcijanie', 'Wiara', 'Społeczność'],
         photos: ['lumina_logo_portal.jpg', 'lumina_default_cover.jpg'],
         posts: []
+    },
+
+        'andrzejhamera': {
+        uid: 'andrzejhamera',
+        slug: 'andrzejhamera',
+        profileUrl: 'lumina-profile.html?u=andrzejhamera',
+        name: 'Andrzej Hamera',
+        age: 52,
+        gender: 'mezczyzna',
+        lookingFor: 'kobieta',
+        city: 'Lublin, Polska',
+        avatar: 'avatar_andrzej_hamera.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
+        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        church: 'Wspólnota Chrześcijańska w Lublinie',
+        denom: 'Chrześcijanin',
+        status: 'Żonaty',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        isCommunity: true,
+        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        companyUrl: 'https://koncept-studio.pl/',
+        facebookUrl: 'https://www.facebook.com/KonceptLublin',
+        stats: { friends: '64', posts: '2', likes: '180' },
+        verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
+        verseRef: '— Przypowieści Salomona 16, 3',
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
+        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
+        featuredCompanyHtml: `<div class="featured-company-card" style="background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.9)); border: 1px solid rgba(250,204,21,0.45); border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.55);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#d97706); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; box-shadow:0 4px 14px rgba(245,158,11,0.45); flex-shrink:0;">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div>
+                        <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.15rem; color:#fff; display:flex; align-items:center; gap:8px;">
+                            <span>Studio Reklamy & Poligrafii KONCEPT</span>
+                            <span style="font-size:0.65rem; font-weight:800; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.6); color:#facc15; padding:3px 8px; border-radius:12px; letter-spacing:0.5px;">LUBLIN</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:#94a3b8;">Kompleksowa reklama, druk & identyfikacja wizualna z wartościami</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#0f172a; padding:7px 16px; border-radius:20px; font-size:0.78rem; font-weight:800; text-decoration:none; transition:all 0.2s; box-shadow:0 4px 12px rgba(245,158,11,0.35);">
+                        <i class="fa-solid fa-globe"></i> Strona WWW
+                    </a>
+                    <a href="https://www.facebook.com/KonceptLublin" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#f1f5f9; padding:7px 14px; border-radius:20px; font-size:0.78rem; font-weight:700; text-decoration:none; transition:all 0.2s;">
+                        <i class="fa-brands fa-facebook"></i> Facebook
+                    </a>
+                </div>
+            </div>
+            <div style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; background:rgba(0,0,0,0.25); padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.07);">
+                Tworzymy z pasją: poligrafię, druk cyfrowy i offsetowy, identyfikację wizualną, oklejanie pojazdów oraz reklamę zewnętrzną dla firm i inicjatyw w Lublinie i w całym kraju.
+            </div>
+        </div>`,
+        posts: [
+            {
+                id: 'post_ah_1',
+                author: 'Andrzej Hamera',
+                authorSlug: 'andrzejhamera',
+                authorAvatar: 'avatar_andrzej_hamera.jpg',
+                authorRole: 'Właściciel KONCEPT Studio Reklamy 🎨',
+                time: 'Wczoraj, 14:20 • 🌍 Publiczny',
+                text: 'W studiu reklamy KONCEPT w Lublinie wierzymy, że każda wartościowa inicjatywa i firma zasługuje na profesjonalną, piękną oprawę wizualną. Realizujemy kompleksowe projekty graficzne, druk cyfrowy i offsetowy, oklejanie pojazdów, szyldy oraz identyfikację wizualną.\n\nZapraszam serdecznie braci i siostry z całej Polski do współpracy: https://koncept-studio.pl/ oraz na nasz profil: https://www.facebook.com/KonceptLublin ✨🤝',
+                likes: 54,
+                amen: 46,
+                image: null,
+                linkPreview: {
+                    url: 'https://koncept-studio.pl/',
+                    title: 'KONCEPT • Studio Reklamy i Poligrafii Lublin',
+                    description: 'Kompleksowa reklama, druk i identyfikacja wizualna z wartościami. Lublin i cała Polska.',
+                    image: 'lumina_default_cover.jpg'
+                }
+            },
+            {
+                id: 'post_ah_2',
+                author: 'Andrzej Hamera',
+                authorSlug: 'andrzejhamera',
+                authorAvatar: 'avatar_andrzej_hamera.jpg',
+                authorRole: 'Właściciel KONCEPT Studio Reklamy 🎨',
+                time: '3 dni temu • 🕊️ Świadectwo & Wiara',
+                text: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone” (Prz 16, 3). Praca zawodowa i biznes mogą być piękną przestrzenią służby i świadectwa. Cieszę się, że mogę być częścią społeczności LUMINA!',
+                likes: 48,
+                amen: 42,
+                image: null
+            }
+        ]
+    },
+    'u_andrzejhamera': {
+        uid: 'andrzejhamera',
+        slug: 'andrzejhamera',
+        profileUrl: 'lumina-profile.html?u=andrzejhamera',
+        name: 'Andrzej Hamera',
+        age: 52,
+        gender: 'mezczyzna',
+        lookingFor: 'kobieta',
+        city: 'Lublin, Polska',
+        avatar: 'avatar_andrzej_hamera.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
+        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        church: 'Wspólnota Chrześcijańska w Lublinie',
+        denom: 'Chrześcijanin',
+        status: 'Żonaty',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        isCommunity: true,
+        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        companyUrl: 'https://koncept-studio.pl/',
+        facebookUrl: 'https://www.facebook.com/KonceptLublin',
+        stats: { friends: '64', posts: '2', likes: '180' },
+        verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
+        verseRef: '— Przypowieści Salomona 16, 3',
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
+        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
+        posts: []
+    },
+    'hamera': {
+        uid: 'andrzejhamera',
+        slug: 'andrzejhamera',
+        profileUrl: 'lumina-profile.html?u=andrzejhamera',
+        name: 'Andrzej Hamera',
+        age: 52,
+        gender: 'mezczyzna',
+        lookingFor: 'kobieta',
+        city: 'Lublin, Polska',
+        avatar: 'avatar_andrzej_hamera.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Właściciel KONCEPT Studio Reklamy & Poligrafii 🎨',
+        role: 'Właściciel firmy KONCEPT • Studio Reklamy 🎨',
+        church: 'Wspólnota Chrześcijańska w Lublinie',
+        denom: 'Chrześcijanin',
+        status: 'Żonaty',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        isCommunity: true,
+        company: 'KONCEPT – Studio Reklamy i Poligrafii',
+        companyUrl: 'https://koncept-studio.pl/',
+        facebookUrl: 'https://www.facebook.com/KonceptLublin',
+        stats: { friends: '64', posts: '2', likes: '180' },
+        verse: '„Powierz Panu swoje dzieła, a twoje zamysły będą utwierdzone.”',
+        verseRef: '— Przypowieści Salomona 16, 3',
+        bio: 'Chrześcijanin, mąż, przedsiębiorca. Od lat z pasją prowadzę studio reklamy i poligrafii KONCEPT w Lublinie (koncept-studio.pl). Projektujemy identyfikację wizualną, druk, grafikę i reklamę dla firm oraz inicjatyw z wartościami. Wierzę, że uczciwość, rzetelność i Boże zasady w biznesie tworzą trwałe owoce ku Bożej chwale. Zapraszam do owocnej współpracy!',
+        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
+        photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
+        posts: []
     }
 };
+
 
 /**
  * Pobiera dane profilu na podstawie slug / uid z uwzględnieniem pamięci lokalnej

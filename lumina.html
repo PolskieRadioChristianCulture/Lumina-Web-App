@@ -3542,7 +3542,7 @@
     <link rel="stylesheet" href="/css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
     
-    <script type="module" src="js/lumina-db-profiles.js?v=20260915_mariankampa"></script>
+    <script type="module" src="js/lumina-db-profiles.js?v=20260915_hamera_v418"></script>
     <script type="module" src="js/lumina-actions.js?v=20260913_c"></script>
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
@@ -4880,6 +4880,35 @@
                     </div>
                 </div>
 
+                                <!-- 11g. Andrzej Hamera (Właściciel KONCEPT Studio Reklamy • Lublin) -->
+                <div class="profile-card" id="card_profile_andrzejhamera" data-profile-slug="andrzejhamera" onclick="openCommunityProfile('andrzejhamera')" data-category="mezczyzna spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_andrzej_hamera.jpg" onerror="this.src='lumina_icon.jpg'" alt="Andrzej Hamera" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, 'andrzejhamera', 'Andrzej Hamera', 'avatar_andrzej_hamera.jpg')">
+                            <i class="fa-solid fa-bell"></i> OBSERWUJ
+                        </button>
+                        <button class="card-heart" onclick="toggleLike(event,this,'andrzejhamera','Andrzej Hamera','avatar_andrzej_hamera.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
+                        <div class="card-activity-badges" data-activity-badges-for="andrzejhamera">
+                            <button type="button" class="card-badge-envelope" title="Andrzej Hamera – 2 wpisy na profilu i tablicy społeczności" onclick="handleCardEnvelopeClick(event, 'andrzejhamera')">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span class="card-badge-count">2</span>
+                            </button>
+                            <button type="button" class="card-badge-chat" title="Andrzej Hamera – kliknij, aby porozmawiać" onclick="handleCardChatClick(event, 'andrzejhamera', 'Andrzej Hamera', 'avatar_andrzej_hamera.jpg')">
+                                <i class="fa-solid fa-comment-dots"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Andrzej Hamera, 52</div>
+                        <div class="card-city">📍 Lublin • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Żonaty</span></div>
+                        <div class="card-desc">"Właściciel firmy KONCEPT • Studio Reklamy i Poligrafii w Lublinie (koncept-studio.pl). Żonaty, chrześcijanin."</div>
+                    </div>
+                </div>
+
                 <!-- 12. Magdalena (Kobieta) -->
                 <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
                     <div class="card-photo" style="position:relative;">
@@ -6123,7 +6152,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span id="luminaAppVersionBadge" class="lumina-app-version-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.7</span>
+                        <span id="luminaAppVersionBadge" class="lumina-app-version-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.8</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -8411,8 +8440,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 event.preventDefault();
                 event.stopPropagation();
             }
-            if (slug && typeof window.openCommunityProfile === 'function') {
-                window.openCommunityProfile(slug);
+            if (!slug) return;
+            const clean = String(slug).toLowerCase().trim();
+            if (clean === 'andrzejthiel' || clean === 'thiel') {
+                window.location.href = 'lumina.andrzejthiel.html#posts';
+            } else if (clean === 'cezaryrgowski') {
+                window.location.href = 'lumina.cezaryrgowski.html#posts';
+            } else if (clean === 'wiolettarogowska') {
+                window.location.href = 'lumina.wiolettarogowska.html#posts';
+            } else {
+                window.location.href = 'lumina-tablica.html?author=' + encodeURIComponent(clean);
             }
         };
 
@@ -8421,8 +8458,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 event.preventDefault();
                 event.stopPropagation();
             }
-            if (typeof window.openChatWith === 'function') {
-                window.openChatWith(name || slug, avatar || 'lumina_icon.jpg', slug);
+            const chatFn = (typeof openChatWith === 'function') ? openChatWith : (typeof window.openChatWith === 'function' ? window.openChatWith : null);
+            if (chatFn) {
+                chatFn(name || slug, avatar || 'lumina_icon.jpg', slug);
+            } else if (typeof window.openDirectMessagesModal === 'function') {
+                window.openDirectMessagesModal();
             } else if (typeof window.openPublicChat === 'function') {
                 window.openPublicChat();
             }
@@ -9795,10 +9835,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 });
 
                 carousel.addEventListener('mousemove', (e) => {
+                    if (e.buttons !== 1) return; // Ignoruj ruch kursora bez wciśniętego klawisza myszy!
                     const dist = Math.hypot(e.clientX - _carouselPointerStartX, e.clientY - _carouselPointerStartY);
-                    if (dist > 8) {
+                    if (dist > 15) {
                         _carouselGestureMoved = true;
-                        _suppressCarouselClickUntil = Date.now() + 500;
+                        _suppressCarouselClickUntil = Date.now() + 350;
                         cancelCarouselLongPress();
                     }
                 });
@@ -9829,9 +9870,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     if (e.touches.length > 0) {
                         const t = e.touches[0];
                         const dist = Math.hypot(t.clientX - _carouselPointerStartX, t.clientY - _carouselPointerStartY);
-                        if (dist > 8) {
+                        if (dist > 14) {
                             _carouselGestureMoved = true;
-                            _suppressCarouselClickUntil = Date.now() + 500;
+                            _suppressCarouselClickUntil = Date.now() + 350;
                             cancelCarouselLongPress();
                         }
                     }
@@ -9872,22 +9913,21 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                 carousel.addEventListener('click', (e) => {
                     const interactive = e.target.closest('button, a, input, select, textarea, [role="button"]');
-                    if (_carouselLongPressFired || _carouselGestureMoved || Date.now() < _suppressCarouselClickUntil) {
+                    if (_carouselLongPressFired || (_carouselGestureMoved && Date.now() < _suppressCarouselClickUntil)) {
                         _carouselLongPressFired = false;
                         _carouselGestureMoved = false;
-                        // Nie blokuj kliknięć na interaktywne elementy (przyciski ikon) —
-                        // pozwól im przebić się do własnych handlerów onclick
                         if (!interactive) {
                             e.preventDefault();
                             e.stopPropagation();
                         }
                         return;
                     }
+                    _carouselGestureMoved = false;
 
                     const card = e.target.closest('.profile-card');
                     if (!card || interactive) return;
 
-                    const slug = card.getAttribute('data-profile-slug');
+                    const slug = card.getAttribute('data-profile-slug') || (card.id ? card.id.replace('card_profile_', '') : '');
                     if (slug && typeof window.openCommunityProfile === 'function') {
                         e.preventDefault();
                         e.stopPropagation();
@@ -10859,6 +10899,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_mariankampa_mmsa', name: 'Marian Kampa', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'andrzejhamera', name: 'Andrzej Hamera', job: 'Właściciel KONCEPT Studio Reklamy 🎨', city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Wiara', isMission: true },
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Kobiety Christian Culture • Modlitwa 🌸', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Kobiety CC', isMission: false },
             { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },

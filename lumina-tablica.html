@@ -3106,7 +3106,7 @@
     <link rel="stylesheet" href="/css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
     
-    <script type="module" src="js/lumina-db-profiles.js?v=20260915_mariankampa"></script>
+    <script type="module" src="js/lumina-db-profiles.js?v=20260915_hamera_v418"></script>
     <script type="module" src="js/lumina-actions.js?v=20260913_c"></script>
     <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
@@ -6500,7 +6500,7 @@
                 const author = (it.author || '').toLowerCase().trim();
                 if (slug === 'cezaryrgowski' || author.includes('cezary')) return 'avatar_cezary_official.jpg';
                 if (slug === 'wiolettarogowska' || author.includes('wioletta')) return 'avatar_wioletta_official.jpg';
-                if (slug === 'andrzejthiel' || author.includes('andrzej')) return 'avatar_andrzej_thiel.jpg';
+                if (slug === 'andrzejthiel' || (!author.includes('hamera') && (author.includes('thiel') || author === 'andrzej'))) return 'avatar_andrzej_thiel.jpg';
                 if (slug === 'radiocc' || author.includes('radio')) return 'logo_radio_cc.jpg';
                 if (slug === 'cctv' || author.includes('cctv') || author.includes('telewizja')) return 'logo_cctv.png';
                 if (slug === 'ccwomen' || author.includes('women')) return 'logo_cc_women.jpg';
@@ -8215,6 +8215,7 @@
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_mariankampa_mmsa', name: 'Marian Kampa', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'andrzejhamera', name: 'Andrzej Hamera', job: 'Właściciel KONCEPT Studio Reklamy 🎨', city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
@@ -10117,7 +10118,7 @@
                 if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
                 else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
                 else if (slug === 'jolawojcik' || slug === 'jola') window.location.href = 'lumina.jolawojcik.html';
-                else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
+                else if (slug === 'andrzejthiel' || (slug === 'andrzej' && !slug.includes('hamera'))) window.location.href = 'lumina.andrzejthiel.html';
                 else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
                 else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
                 else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
