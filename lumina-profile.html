@@ -166,6 +166,11 @@
                     window.location.replace('lumina.andrzejthiel.html' + (window.location.hash || ''));
                     return;
                 }
+                // Canonical URL cleanup for Hamera — Firebase assigns u_andrzejhamera_jdc2, we expose clean slug
+                if (slug === 'u_andrzejhamera_jdc2' || slug === 'hamera') {
+                    window.location.replace('lumina-profile.html?u=u_andrzejhamera' + (window.location.hash || ''));
+                    return;
+                }
                 if (slug.includes('zbyszekgieron') || slug.includes('zbyszek') || slug.includes('gieron')) {
                     window.location.replace('lumina.zbyszekgieron.html' + (window.location.hash || ''));
                     return;

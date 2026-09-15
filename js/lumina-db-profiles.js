@@ -1295,6 +1295,22 @@ export const PROFILES_DB = {
         tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami', 'Druk & Poligrafia', 'Grafika', 'Wiara w biznesie', 'Rodzina'],
         photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
         posts: []
+    },
+    // Alias — Firebase UID slug (canonical redirect obsługuje lumina-profile.html)
+    'u_andrzejhamera_jdc2': {
+        uid: 'andrzejhamera',
+        slug: 'andrzejhamera',
+        profileUrl: 'lumina-profile.html?u=u_andrzejhamera',
+        name: 'Andrzej Hamera',
+        age: 52, location: 'Lublin', faith: 'Chrześcijanin', status: 'Żonaty',
+        bio: 'Właściciel KONCEPT Studio Reklamy w Lublinie. Wiara i rodzina na pierwszym miejscu.',
+        avatar: 'avatar_andrzej_hamera.jpg',
+        cover: 'lumina_default_cover.jpg',
+        match: 98,
+        verified: true,
+        tags: ['KONCEPT', 'Studio Reklamy', 'Lublin', 'Przedsiębiorca z wartościami'],
+        photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
+        posts: []
     }
 };
 
