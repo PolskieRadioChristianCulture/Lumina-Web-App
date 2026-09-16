@@ -2593,6 +2593,43 @@
             width: 100%;
         }
 
+        
+        /* ──────────────────── CYCLIC SIDEBAR SWAP (LEWA <-> PRAWA) ──────────────────── */
+        .sidebar-left-916 {
+            grid-column: 1 !important;
+            grid-row: 1 !important;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .feed-center-column {
+            grid-column: 2 !important;
+            grid-row: 1 !important;
+        }
+        .sidebar-right-916 {
+            grid-column: 3 !important;
+            grid-row: 1 !important;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Swapped state: right becomes column 1, left becomes column 3 */
+        .board-container.sidebars-swapped .sidebar-left-916 {
+            grid-column: 3 !important;
+            grid-row: 1 !important;
+        }
+        .board-container.sidebars-swapped .feed-center-column {
+            grid-column: 2 !important;
+            grid-row: 1 !important;
+        }
+        .board-container.sidebars-swapped .sidebar-right-916 {
+            grid-column: 1 !important;
+            grid-row: 1 !important;
+        }
+
+        .sidebar-916.sidebar-fading-out {
+            opacity: 0 !important;
+            transform: scale(0.97) translateY(4px) !important;
+            pointer-events: none !important;
+        }
+
         .sidebar-916 {
             position: sticky;
             top: 84px;
@@ -11051,6 +11088,76 @@
     </div>
 </div>
 
+<script>
+        // ══════════════════════════════════════════════════════════════════════
+        // 🔄 CYKLICZNA ZAMIANA MIEJSCAMI REKLAM (LEWA <-> PRAWA STRONA)
+        // ══════════════════════════════════════════════════════════════════════
+        (function initCyclicSidebarRotation() {
+            const ROTATION_INTERVAL_MS = 45000; // 45 sekund na cykl
+            const container = document.querySelector('.board-container');
+            const leftSidebar = document.querySelector('.sidebar-left-916');
+            const rightSidebar = document.querySelector('.sidebar-right-916');
+
+            if (!container || !leftSidebar || !rightSidebar) return;
+
+            let isSwapped = false;
+            let isHovered = false;
+
+            // 1. Zabezpieczenie przed zamianą w trakcie najechania myszką
+            leftSidebar.addEventListener('mouseenter', function() { isHovered = true; });
+            leftSidebar.addEventListener('mouseleave', function() { isHovered = false; });
+            rightSidebar.addEventListener('mouseenter', function() { isHovered = true; });
+            rightSidebar.addEventListener('mouseleave', function() { isHovered = false; });
+
+            // 2. Alternacja startowa (naprzemiennie co wizytę/odświeżenie w sesji)
+            try {
+                const visits = parseInt(sessionStorage.getItem('lumina_tablica_visits') || '0', 10);
+                sessionStorage.setItem('lumina_tablica_visits', (visits + 1).toString());
+                if (visits % 2 === 1) {
+                    isSwapped = true;
+                    container.classList.add('sidebars-swapped');
+                }
+            } catch(e) {}
+
+            // 3. Płynna funkcja zamiany stron z animacją cross-fade
+            function performSwap(forceImmediate) {
+                if (window.innerWidth <= 1239) return; // tylko na desktopie z 3 kolumnami
+                if (!forceImmediate && (isHovered || document.hidden)) return;
+
+                if (forceImmediate) {
+                    isSwapped = !isSwapped;
+                    container.classList.toggle('sidebars-swapped', isSwapped);
+                    return;
+                }
+
+                leftSidebar.classList.add('sidebar-fading-out');
+                rightSidebar.classList.add('sidebar-fading-out');
+
+                setTimeout(function() {
+                    isSwapped = !isSwapped;
+                    container.classList.toggle('sidebars-swapped', isSwapped);
+                    
+                    setTimeout(function() {
+                        leftSidebar.classList.remove('sidebar-fading-out');
+                        rightSidebar.classList.remove('sidebar-fading-out');
+                    }, 50);
+                }, 400);
+            }
+
+            // 4. Cykliczny interwał rotacji
+            setInterval(function() {
+                performSwap(false);
+            }, ROTATION_INTERVAL_MS);
+
+            // 5. Globalna metoda dla testów lub ręcznego wywołania
+            window.swapLuminaSidebars = function(immediate) {
+                performSwap(immediate === true);
+            };
+            window.isLuminaSidebarsSwapped = function() {
+                return isSwapped;
+            };
+        })();
+</script>
 </body>
 </html>
 
