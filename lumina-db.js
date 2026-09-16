@@ -6334,7 +6334,7 @@ if (typeof window !== 'undefined') {
 window.loadLuminaDailyDevotional = loadLuminaDailyDevotional;
 
 // Global window attachment for seamless cross-script integration
-window.LuminaDB = {
+window.LuminaDB = Object.assign(window.LuminaDB || {}, {
     isProfileNew,
     loadLuminaDailyDevotional,
 
@@ -6421,7 +6421,7 @@ window.LuminaDB = {
     isUserAuthenticated,
     openLoginToFollowModal,
     toggleFollow
-};
+});
 
 
 // End of module exports

@@ -6,7 +6,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js';
+import * as LuminaDB from './lumina-db.js?v=4.1.7';
 import * as LuminaCore from './lumina-core.js';
 
 class LuminaTablicaEngine {
