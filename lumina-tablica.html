@@ -1229,59 +1229,75 @@
             display: flex;
             flex-direction: column;
             background: #1e293b;
+            position: relative;
+            overflow: hidden;
+            border-radius: 14px;
         }
         .fb-story-create-top {
             height: 135px;
             position: relative;
-            overflow: hidden;
             background: #0f172a;
         }
-        .fb-story-create-top img {
+        .fb-story-create-img-wrap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .fb-story-create-img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
+            display: block;
+            transition: transform 0.3s ease;
         }
-        .fb-story-create:hover .fb-story-create-top img {
+        .fb-story-create:hover .fb-story-create-img-wrap img {
             transform: scale(1.08);
         }
         .fb-story-create-btn {
             position: absolute;
-            bottom: -18px;
+            bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, #0284c7, #2563eb);
-            border: 3px solid #1e293b;
-            color: #fff;
+            border: 3.5px solid #1e293b;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
-            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.6);
-            z-index: 3;
-            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 16px rgba(2, 132, 199, 0.6);
+            z-index: 10;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+        }
+        .fb-story-create-btn i {
+            display: block;
+            font-size: 1.05rem;
+            line-height: 1;
+            color: #ffffff;
         }
         .fb-story-create:hover .fb-story-create-btn {
             transform: translateX(-50%) scale(1.12);
             background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.85);
         }
         .fb-story-create-bottom {
-            height: 60px;
-            background: #1e293b;
+            height: 55px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding-bottom: 8px;
-            text-align: center;
+            padding-bottom: 9px;
+            background: #1e293b;
             position: relative;
+            z-index: 1;
         }
         .fb-story-create-label {
             color: #ffffff;
-            font-size: 0.74rem;
-            font-weight: 800;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-align: center;
             line-height: 1.2;
             padding: 0 4px;
         }
@@ -1327,12 +1343,9 @@
                 min-width: 105px;
                 height: 175px;
             }
-            .fb-story-create-top {
-                height: 120px;
-            }
-            .fb-story-create-bottom {
-                height: 55px;
-            }
+            .fb-story-create-top { height: 120px; }
+            .fb-story-create-btn { width: 32px; height: 32px; bottom: -16px; border-width: 3px; font-size: 0.85rem; }
+            .fb-story-create-bottom { height: 55px; padding-bottom: 8px; }
             .fb-story-avatar-badge {
                 width: 34px;
                 height: 34px;
@@ -4162,7 +4175,7 @@
                         <span>NA ŻYWO</span>
                     </button>
                     <span class="board-switcher-divider">|</span>
-                    <button type="button" class="board-switcher-btn" id="btnSwitchRolki" onclick="toggleBoardTopWindow('rolki')" title="Rozwiń / Schowaj Rolki Wiary">
+                    <button type="button" class="board-switcher-btn active" id="btnSwitchRolki" onclick="toggleBoardTopWindow('rolki')" title="Rozwiń / Schowaj Rolki Wiary">
                         <i class="fa-solid fa-clapperboard"></i>
                         <span>ROLKI</span>
                     </button>
@@ -4249,7 +4262,7 @@
             </div>
 
             <!-- ══════════ ROLKI WIARY • STORIES STRUMIEŃ (FACEBOOK STORIES MINIATURY - Schowane pod przyciskiem ROLKI) ══════════ -->
-            <div class="lumina-stories-bar" id="luminaStoriesBar" style="display:none;">
+            <div class="lumina-stories-bar" id="luminaStoriesBar" style="display:block;">
                 <button type="button" class="fb-stories-scroll-btn fb-stories-scroll-left" onclick="scrollStoriesTrack(-1)" title="Przewiń w lewo" style="display:none;">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
@@ -4257,7 +4270,9 @@
                     <!-- Karta 1: Utwórz relację (+ Dodaj) jak na Facebooku -->
                     <a href="rolki#publish" class="fb-story-card fb-story-create" title="Dodaj nową Rolkę Wiary (YouTube, TikTok, IG, FB, MP4)">
                         <div class="fb-story-create-top">
-                            <img src="avatar_cezary_official.jpg" alt="Twój profil" loading="lazy" onerror="this.src='lumina_icon.jpg'">
+                            <div class="fb-story-create-img-wrap">
+                                <img src="avatar_cezary_official.jpg" alt="Twój profil" loading="lazy" onerror="this.src='lumina_icon.jpg'">
+                            </div>
                             <div class="fb-story-create-btn">
                                 <i class="fa-solid fa-plus"></i>
                             </div>
@@ -10023,17 +10038,27 @@
                 }
             };
 
-            // Sprawdzenie URL params przy załadowaniu (np. ?tab=live, #rolki)
+            // Inicjalizacja górnego paska: domyślnie ROLKI jako dedykowany wybór
             (function() {
                 const hash = window.location.hash.toLowerCase();
                 const params = new URLSearchParams(window.location.search);
                 const tabParam = params.get('tab') || '';
-                if (hash === '#rolki' || tabParam === 'rolki') {
-                    window.toggleBoardTopWindow('rolki');
-                } else if (hash === '#live' || tabParam === 'live') {
+                if (hash === '#live' || tabParam === 'live') {
                     window.toggleBoardTopWindow('live');
                 } else if (hash === '#tablica' || tabParam === 'tablica') {
                     window.toggleBoardTopWindow('tablica');
+                } else {
+                    // Domyślnie ROLKI jako dedykowany wybór
+                    window._luminaActiveTopWindow = 'rolki';
+                    const wRolki = document.getElementById('luminaStoriesBar');
+                    const btnRolki = document.getElementById('btnSwitchRolki');
+                    if (wRolki) wRolki.style.display = 'block';
+                    if (btnRolki) btnRolki.classList.add('active');
+                    setTimeout(function() {
+                        if (typeof window.updateStoriesScrollButtons === 'function') {
+                            window.updateStoriesScrollButtons();
+                        }
+                    }, 150);
                 }
             })();
 
