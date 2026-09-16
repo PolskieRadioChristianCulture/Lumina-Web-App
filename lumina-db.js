@@ -4833,7 +4833,7 @@ export function extractYouTubeId(url) {
     // If iframe tag passed, extract src
     const iframeMatch = str.match(/src=["']([^"']+)["']/i);
     const targetUrl = iframeMatch ? iframeMatch[1] : str;
-    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const regExp = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
     const match = targetUrl.match(regExp);
     return (match && match[1]) ? match[1] : null;
 }

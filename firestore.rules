@@ -57,12 +57,22 @@ service cloud.firestore {
 
     match /lumina_posts/{postId} {
       allow read: if true;
-      allow create: if isMasterAdmin() || (
-        isMember() &&
-        request.resource.data.authorUid == request.auth.uid &&
-        request.resource.data.text is string &&
-        request.resource.data.text.size() <= 5000
-      );
+      // Automatyczny serwer sync CKD (Andrzej Thiel) — nie ma uid użytkownika,
+      // ale wpis jest zdeterminowany: isDevotion=true, authorSlug='andrzejthiel',
+      // category='ckd'. Bez tego warunku sync script nie może pisać bez auth.
+      allow create: if isMasterAdmin() ||
+        (
+          request.resource.data.isDevotion == true &&
+          request.resource.data.authorSlug == 'andrzejthiel' &&
+          request.resource.data.category == 'ckd' &&
+          request.resource.data.text is string
+        ) ||
+        (
+          isMember() &&
+          request.resource.data.authorUid == request.auth.uid &&
+          request.resource.data.text is string &&
+          request.resource.data.text.size() <= 5000
+        );
       allow update: if isMasterAdmin() || (
         isMember() &&
         resource.data.authorUid == request.auth.uid &&
