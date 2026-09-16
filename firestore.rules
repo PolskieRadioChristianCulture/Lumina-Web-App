@@ -57,14 +57,14 @@ service cloud.firestore {
 
     match /lumina_posts/{postId} {
       allow read: if true;
-      // Automatyczny serwer sync CKD (Andrzej Thiel) — nie ma uid użytkownika,
-      // ale wpis jest zdeterminowany: isDevotion=true, authorSlug='andrzejthiel',
-      // category='ckd'. Bez tego warunku sync script nie może pisać bez auth.
+      // Automatyczny serwer sync CKD (Andrzej Thiel) oraz oficjalne rozważania DZJ (Cezary Rogowski)
       allow create: if isMasterAdmin() ||
         (
           request.resource.data.isDevotion == true &&
-          request.resource.data.authorSlug == 'andrzejthiel' &&
-          request.resource.data.category == 'ckd' &&
+          (
+            (request.resource.data.authorSlug == 'andrzejthiel' && request.resource.data.category == 'ckd') ||
+            (request.resource.data.authorSlug == 'cezaryrgowski')
+          ) &&
           request.resource.data.text is string
         ) ||
         (
@@ -76,8 +76,10 @@ service cloud.firestore {
       allow update: if isMasterAdmin() ||
         (
           resource.data.isDevotion == true &&
-          resource.data.authorSlug == 'andrzejthiel' &&
-          resource.data.category == 'ckd'
+          (
+            (resource.data.authorSlug == 'andrzejthiel' && resource.data.category == 'ckd') ||
+            (resource.data.authorSlug == 'cezaryrgowski')
+          )
         ) || (
           isMember() &&
           resource.data.authorUid == request.auth.uid &&
@@ -86,8 +88,10 @@ service cloud.firestore {
       allow delete: if isMasterAdmin() ||
         (
           resource.data.isDevotion == true &&
-          resource.data.authorSlug == 'andrzejthiel' &&
-          resource.data.category == 'ckd'
+          (
+            (resource.data.authorSlug == 'andrzejthiel' && resource.data.category == 'ckd') ||
+            (resource.data.authorSlug == 'cezaryrgowski')
+          )
         ) || (
           isMember() && resource.data.authorUid == request.auth.uid
         );
