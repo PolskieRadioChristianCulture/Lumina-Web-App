@@ -217,6 +217,7 @@
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=4.1.1_20260909"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
+    <script src="js/lumina-start-preferences.js"></script>
 
     <!-- Firebase SDK (Rozważanie Dnia) -->
     <script type="module">
@@ -954,108 +955,327 @@
         .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
-        /* ──────────────────── ROLKI WIARY • STORIES BAR (SHORT 9:16 REELS) ──────────────────── */
+        /* ──────────────────── TOP VIEW SWITCHER DOCK (TABLICA | NA ŻYWO | ROLKI) ──────────────────── */
+        .board-top-switcher-dock {
+            margin-top: 8px;
+            position: relative;
+            z-index: 20;
+            margin: 0 0 16px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .board-top-switcher-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1.5px solid rgba(250, 204, 21, 0.32);
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(250, 204, 21, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .board-switcher-divider {
+            color: rgba(255, 255, 255, 0.22);
+            font-size: 0.95rem;
+            font-weight: 300;
+            user-select: none;
+        }
+        .board-switcher-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            font-weight: 800;
+            font-size: 0.84rem;
+            letter-spacing: 0.6px;
+            padding: 9px 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            position: relative;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+        .board-switcher-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-color: rgba(250, 204, 21, 0.45);
+            transform: translateY(-1px);
+        }
+        .board-switcher-btn.active {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.28), rgba(168, 85, 247, 0.32));
+            border-color: rgba(250, 204, 21, 0.75);
+            color: #facc15;
+            box-shadow: 0 0 16px rgba(250, 204, 21, 0.35);
+            transform: translateY(-1px);
+        }
+        .switcher-live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px #ef4444;
+            animation: liveDotPulse 1.5s infinite ease-in-out;
+        }
+        @keyframes liveDotPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+        }
+
+        @media (max-width: 500px) {
+            .board-top-switcher-wrap {
+                width: 100%;
+                gap: 4px;
+                padding: 5px 6px;
+                justify-content: space-between;
+            }
+            .board-switcher-btn {
+                padding: 8px 8px;
+                font-size: 0.74rem;
+                gap: 5px;
+                flex: 1;
+                justify-content: center;
+                min-height: 42px;
+            }
+            .board-switcher-divider {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ──────────────────── FACEBOOK STORIES / REELS CAROUSEL ──────────────────── */
         .lumina-stories-bar {
+            position: relative;
             margin: 0 0 18px 0;
-            padding: 12px 14px;
-            background: rgba(11, 24, 56, 0.7);
-            border: 1.5px solid rgba(250, 204, 21, 0.35);
-            border-radius: 22px;
+            padding: 12px 10px;
+            background: rgba(11, 24, 56, 0.65);
+            border: 1.5px solid rgba(250, 204, 21, 0.28);
+            border-radius: 20px;
             backdrop-filter: blur(16px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
             overflow: hidden;
         }
-
         .stories-scroll-track {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             padding: 4px 2px;
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            contain: content;
+            scroll-behavior: smooth;
         }
-
         .stories-scroll-track::-webkit-scrollbar {
             display: none;
         }
-
-        .story-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            flex-shrink: 0;
+        .fb-story-card {
+            position: relative;
+            width: 120px;
+            min-width: 120px;
+            height: 195px;
+            border-radius: 14px;
+            overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .story-item:hover, .story-item:active {
-            transform: scale(1.06);
-        }
-
-        .story-avatar-wrap {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            padding: 2.5px;
-            background: linear-gradient(135deg, #facc15, #ec4899, #38bdf8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            transform: translateZ(0);
-            contain: paint;
-        }
-
-        .story-pulse-live {
-            background: linear-gradient(135deg, #ef4444, #f59e0b, #ec4899);
-            box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
-            animation: storyPulse 2s infinite ease-in-out;
-            will-change: opacity;
-            transform: translateZ(0);
-        }
-
-        @keyframes storyPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .story-icon-center {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #0b1838;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            color: #facc15;
-        }
-
-        .story-avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #070e24;
+            flex-shrink: 0;
+            text-decoration: none;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+            transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s, border-color 0.22s;
+            user-select: none;
             display: block;
         }
-
-        .story-label {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            max-width: 64px;
+        .fb-story-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
+            border-color: rgba(250, 204, 21, 0.5);
+        }
+        .fb-story-card:hover .fb-story-bg {
+            transform: scale(1.07);
+        }
+        .fb-story-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+        .fb-story-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.92) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .fb-story-avatar-badge {
+            position: absolute;
+            top: 9px;
+            left: 9px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            z-index: 2;
+            background: #0f172a;
+        }
+        .fb-story-avatar-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .fb-story-author {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            z-index: 2;
+            color: #ffffff;
+            font-size: 0.76rem;
+            font-weight: 700;
+            line-height: 1.25;
+            text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.95);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        /* Card 1: Utworz relacje (+ Dodaj) */
+        .fb-story-create {
+            display: flex;
+            flex-direction: column;
+            background: #1e293b;
+        }
+        .fb-story-create-top {
+            height: 135px;
+            position: relative;
+            overflow: hidden;
+            background: #0f172a;
+        }
+        .fb-story-create-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .fb-story-create:hover .fb-story-create-top img {
+            transform: scale(1.08);
+        }
+        .fb-story-create-btn {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            border: 3px solid #1e293b;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.6);
+            z-index: 3;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .fb-story-create:hover .fb-story-create-btn {
+            transform: translateX(-50%) scale(1.12);
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+        }
+        .fb-story-create-bottom {
+            height: 60px;
+            background: #1e293b;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
             text-align: center;
+            position: relative;
+        }
+        .fb-story-create-label {
+            color: #ffffff;
+            font-size: 0.74rem;
+            font-weight: 800;
+            line-height: 1.2;
+            padding: 0 4px;
+        }
+
+        /* Przewijanie strzalkami jak na FB */
+        .fb-stories-scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65);
+            z-index: 5;
+            transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+        .fb-stories-scroll-btn:hover {
+            background: #0284c7;
+            border-color: #38bdf8;
+            transform: translateY(-50%) scale(1.08);
+        }
+        .fb-stories-scroll-left { left: 6px; }
+        .fb-stories-scroll-right { right: 6px; }
+
+        @media (max-width: 900px) {
+            .board-top-switcher-dock {
+                margin-top: 26px;
+                margin-bottom: 14px;
+            }
+        }
+        @media (max-width: 600px) {
+            .fb-story-card {
+                width: 105px;
+                min-width: 105px;
+                height: 175px;
+            }
+            .fb-story-create-top {
+                height: 120px;
+            }
+            .fb-story-create-bottom {
+                height: 55px;
+            }
+            .fb-story-avatar-badge {
+                width: 34px;
+                height: 34px;
+                top: 7px;
+                left: 7px;
+            }
+            .fb-story-author {
+                font-size: 0.72rem;
+                bottom: 6px;
+                left: 6px;
+                right: 6px;
+            }
+            .fb-stories-scroll-btn {
+                display: none !important;
+            }
         }
 
         /* ──────────────────── SINGLE-COLUMN 1:1 VERTICAL FEED STREAM ──────────────────── */
@@ -3819,8 +4039,29 @@
         <!-- ══════════ CENTRUM: GŁÓWNY STRUMIEŃ TABLICY ══════════ -->
         <section class="feed-center-column">
             
-            <!-- Header Banner -->
-            <header class="board-header" id="boardHeader">
+            <!-- ══════════ TOP VIEW SWITCHER DOCK (TABLICA | NA ŻYWO | ROLKI) ══════════ -->
+            <div class="board-top-switcher-dock" id="boardTopSwitcherDock">
+                <div class="board-top-switcher-wrap">
+                    <button type="button" class="board-switcher-btn" id="btnSwitchTablica" onclick="toggleBoardTopWindow('tablica')" title="Rozwiń / Schowaj okno Tablicy i filtrów">
+                        <i class="fa-solid fa-table-cells-large"></i>
+                        <span>TABLICA</span>
+                    </button>
+                    <span class="board-switcher-divider">|</span>
+                    <button type="button" class="board-switcher-btn" id="btnSwitchLive" onclick="toggleBoardTopWindow('live')" title="Rozwiń / Schowaj okno Na Żywo">
+                        <span class="switcher-live-dot"></span>
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <span>NA ŻYWO</span>
+                    </button>
+                    <span class="board-switcher-divider">|</span>
+                    <button type="button" class="board-switcher-btn" id="btnSwitchRolki" onclick="toggleBoardTopWindow('rolki')" title="Rozwiń / Schowaj Rolki Wiary">
+                        <i class="fa-solid fa-clapperboard"></i>
+                        <span>ROLKI</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Header Banner (Schowane pod przyciskiem TABLICA) -->
+            <header class="board-header" id="boardHeader" style="display:none;">
                 <h1 class="board-title" onclick="toggleBoardHeader()" title="Rozwiń / Zwiń" style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
                     <span data-i18n="board_main_title">Tablica Portalu LUMINA</span> 
                     <i class="fa-solid fa-chevron-down" id="boardHeaderChevron" style="font-size:0.8rem; opacity:0; transition:all 0.3s;"></i>
@@ -3870,7 +4111,8 @@
             <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
 
             <!-- ══════════ LUMINA LIVE BROADCAST DAYPART RIBBON ══════════ -->
-            <div class="lumina-daypart-ribbon" id="luminaLiveDaypartBar">
+            <!-- LUMINA LIVE BROADCAST DAYPART RIBBON (Schowane pod przyciskiem NA ŻYWO) -->
+            <div class="lumina-daypart-ribbon" id="luminaLiveDaypartBar" style="display:none;">
                 <div class="daypart-live-indicator">
                     <div class="live-pulse-dot"></div>
                     <div>
@@ -3897,73 +4139,98 @@
                 </div>
             </div>
 
-            <!-- ══════════ ROLKI WIARY • STORIES STRUMIEŃ (SHORTS 9:16) ══════════ -->
-            <div class="lumina-stories-bar" id="luminaStoriesBar">
-                <div class="stories-scroll-track" id="storiesScrollTrack">
-                    <!-- 0. Główna ikona Rolek Wiary -->
-                    <a href="rolki" class="story-item story-all-cta" title="Otwórz pełnoekranowe Rolki Wiary (LUMINA Shorts 9:16)">
-                        <div class="story-avatar-wrap story-pulse-live">
-                            <div class="story-icon-center"><i class="fa-solid fa-clapperboard"></i></div>
+            <!-- ══════════ ROLKI WIARY • STORIES STRUMIEŃ (FACEBOOK STORIES MINIATURY - Schowane pod przyciskiem ROLKI) ══════════ -->
+            <div class="lumina-stories-bar" id="luminaStoriesBar" style="display:none;">
+                <button type="button" class="fb-stories-scroll-btn fb-stories-scroll-left" onclick="scrollStoriesTrack(-1)" title="Przewiń w lewo" style="display:none;">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="stories-scroll-track" id="storiesScrollTrack" onscroll="updateStoriesScrollButtons()">
+                    <!-- Karta 1: Utwórz relację (+ Dodaj) jak na Facebooku -->
+                    <a href="rolki#publish" class="fb-story-card fb-story-create" title="Dodaj nową Rolkę Wiary (YouTube, TikTok, IG, FB, MP4)">
+                        <div class="fb-story-create-top">
+                            <img src="avatar_cezary_official.jpg" alt="Twój profil" loading="lazy" onerror="this.src='lumina_icon.jpg'">
+                            <div class="fb-story-create-btn">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
                         </div>
-                        <span class="story-label" style="color:var(--gold); font-weight:800;">Rolki 9:16</span>
-                    </a>
-
-                    <!-- 0b. Dodaj Rolkę CTA -->
-                    <a href="rolki#publish" class="story-item story-add-reel-cta" title="Dodaj nową Rolkę Wiary (YouTube, TikTok, IG, FB, MP4)">
-                        <div class="story-avatar-wrap" style="border: 2px dashed #facc15; background: rgba(250, 204, 21, 0.12); display: flex; align-items: center; justify-content: center;">
-                            <div class="story-icon-center" style="color:#facc15; font-size:1.1rem;"><i class="fa-solid fa-plus"></i></div>
+                        <div class="fb-story-create-bottom">
+                            <span class="fb-story-create-label">Utwórz relację</span>
                         </div>
-                        <span class="story-label" style="color:#facc15; font-weight:700;">+ Dodaj</span>
                     </a>
 
                     <!-- 1. Zbyszek Gieroń Psalm 1 -->
-                    <a href="rolki#short_psalm1" class="story-item" title="Rolka: Błogosławiony człowiek • Zbyszek Gieroń">
-                        <div class="story-avatar-wrap">
-                            <img src="post_zbyszek_psalm1.jpg" alt="Psalm 1" class="story-avatar-img" loading="lazy">
+                    <a href="rolki#short_psalm1" class="fb-story-card" title="Rolka: Błogosławiony człowiek • Zbyszek Gieroń">
+                        <img src="post_zbyszek_psalm1.jpg" alt="Psalm 1" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge">
+                            <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" loading="lazy" onerror="this.src='post_zbyszek_psalm1.jpg'">
                         </div>
-                        <span class="story-label">Psalm 1</span>
+                        <div class="fb-story-author">Zbyszek Gieroń</div>
                     </a>
 
-                    <!-- 2. Świadectwo Grzegorza -->
-                    <a href="rolki#short_swiadectwo_grzegorz" class="story-item" title="Rolka: Uwolnienie od nałogu • Świadectwo Wiary">
-                        <div class="story-avatar-wrap">
-                            <img src="avatar_cezary_official.jpg" alt="Świadectwo" class="story-avatar-img" loading="lazy">
+                    <!-- 2. Zofia Dudek -->
+                    <a href="rolki#short_zofia" class="fb-story-card" title="Rolka: Świadectwo Bożej Łaski • Zofia Dudek">
+                        <img src="tlo_profilowe_cezary.jpg" alt="Zofia Dudek" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#38bdf8;">
+                            <img src="avatar_zofia_dudek.jpg" alt="Zofia Dudek" loading="lazy">
                         </div>
-                        <span class="story-label">Świadectwo</span>
+                        <div class="fb-story-author">Zofia Dudek</div>
                     </a>
 
                     <!-- 3. Jola Wójcik Modlitwa -->
-                    <a href="rolki#short_modlitwa_jola" class="story-item" title="Rolka: Czas Modlitwy • Jola Wójcik">
-                        <div class="story-avatar-wrap">
-                            <img src="avatar_jolawojcik.jpg" alt="Modlitwa" class="story-avatar-img" loading="lazy">
+                    <a href="rolki#short_modlitwa_jola" class="fb-story-card" title="Rolka: Czas Modlitwy • Jola Wójcik">
+                        <img src="cover_jolawojcik.jpg" alt="Jola Wójcik" class="fb-story-bg" loading="lazy" onerror="this.src='avatar_jolawojcik.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#ec4899;">
+                            <img src="avatar_jolawojcik.jpg" alt="Jola Wójcik" loading="lazy">
                         </div>
-                        <span class="story-label">Modlitwa</span>
+                        <div class="fb-story-author">Jola Wójcik</div>
                     </a>
 
-                    <!-- 4. Alleluja Wear -->
-                    <a href="rolki#short_alleluja_wear" class="story-item" title="Rolka: Kolekcja Alleluja • Noś wiarę z odwagą">
-                        <div class="story-avatar-wrap">
-                            <img src="reklama_sklep_alleluja_poster.jpg" alt="Alleluja" class="story-avatar-img" loading="lazy">
+                    <!-- 4. Świadectwo Wiary -->
+                    <a href="rolki#short_swiadectwo_grzegorz" class="fb-story-card" title="Rolka: Uwolnienie od nałogu • Świadectwo Wiary">
+                        <img src="tlo_tv_dzj.jpg" alt="Świadectwo" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#f59e0b;">
+                            <img src="avatar_cezary_official.jpg" alt="Świadectwo" loading="lazy">
                         </div>
-                        <span class="story-label">Alleluja</span>
+                        <div class="fb-story-author">Świadectwo Wiary</div>
                     </a>
 
-                    <!-- 5. Świadectwo Roberta -->
-                    <a href="rolki#short_swiadectwo_robert" class="story-item" title="Rolka: Nowe Stworzenie • Robert">
-                        <div class="story-avatar-wrap">
-                            <img src="avatar_robert.jpg" alt="Robert" class="story-avatar-img" loading="lazy">
+                    <!-- 5. Alleluja Wear -->
+                    <a href="rolki#short_alleluja_wear" class="fb-story-card" title="Rolka: Kolekcja Alleluja • Noś wiarę z odwagą">
+                        <img src="reklama_sklep_alleluja_poster.jpg" alt="Alleluja" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#facc15;">
+                            <img src="lumina_icon.jpg" alt="Alleluja" loading="lazy">
                         </div>
-                        <span class="story-label">Nawrócenie</span>
+                        <div class="fb-story-author">Alleluja Wear</div>
                     </a>
 
-                    <!-- 6. Słowo Życia Jan -->
-                    <a href="rolki#short_slowo_zycia_jan" class="story-item" title="Rolka: Na początku było Słowo • Cezary Rogowski">
-                        <div class="story-avatar-wrap">
-                            <img src="tlo_profilowe_cezary.jpg" alt="Słowo Boże" class="story-avatar-img" loading="lazy">
+                    <!-- 6. Świadectwo Roberta -->
+                    <a href="rolki#short_swiadectwo_robert" class="fb-story-card" title="Rolka: Nowe Stworzenie • Robert">
+                        <img src="tlo_tv_dzj.jpg" alt="Robert" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#10b981;">
+                            <img src="avatar_robert.jpg" alt="Robert" loading="lazy">
                         </div>
-                        <span class="story-label">Słowo Boże</span>
+                        <div class="fb-story-author">Robert • Nawrócenie</div>
+                    </a>
+
+                    <!-- 7. Słowo Boże Jan -->
+                    <a href="rolki#short_slowo_zycia_jan" class="fb-story-card" title="Rolka: Na początku było Słowo • Cezary Rogowski">
+                        <img src="tlo_profilowe_cezary.jpg" alt="Słowo Boże" class="fb-story-bg" loading="lazy">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-avatar-badge" style="border-color:#8b5cf6;">
+                            <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">Cezary • Słowo Życia</div>
                     </a>
                 </div>
+                <button type="button" class="fb-stories-scroll-btn fb-stories-scroll-right" onclick="scrollStoriesTrack(1)" title="Przewiń w prawo">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
 
             <script>
@@ -3973,22 +4240,23 @@
                         if (!track) return;
                         track.querySelectorAll('.story-user-published').forEach(el => el.remove());
 
-                        const addCta = track.querySelector('.story-add-reel-cta') || track.querySelector('.story-all-cta');
-                        const anchor = addCta || track.firstChild;
+                        const createCard = track.querySelector('.fb-story-create');
+                        const anchor = createCard || track.firstChild;
 
                         if (Array.isArray(shortsList) && shortsList.length > 0) {
                             shortsList.forEach(item => {
                                 if (!item || !item.id) return;
                                 const a = document.createElement('a');
                                 a.href = 'rolki#' + item.id;
-                                a.className = 'story-item story-user-published';
+                                a.className = 'fb-story-card story-user-published';
                                 a.title = 'Rolka: ' + (item.title || 'Rolka Wiary') + ' • ' + (item.author || 'Świadek Wiary');
                                 a.innerHTML = `
-                                    <div class="story-avatar-wrap" style="border: 2px solid #ec4899; box-shadow: 0 0 12px rgba(236, 72, 153, 0.6); position: relative;">
-                                        <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="story-avatar-img" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
-                                        <span style="position:absolute; bottom:-2px; right:-2px; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-size:8px; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid #fff;"><i class="fa-solid fa-play" style="font-size:6px; margin-left:1px;"></i></span>
+                                    <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
+                                    <div class="fb-story-gradient"></div>
+                                    <div class="fb-story-avatar-badge" style="border-color:#ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.7);">
+                                        <img src="${item.authorAvatar || 'lumina_icon.jpg'}" alt="${item.author || 'Autor'}" loading="lazy" onerror="this.src='lumina_icon.jpg'">
                                     </div>
-                                    <span class="story-label" style="color:#f472b6; font-weight:700;">${(item.author || 'Nowa Rolka').split(' ')[0]}</span>
+                                    <div class="fb-story-author">${item.author || 'Nowa Rolka'}</div>
                                 `;
                                 if (anchor && anchor.nextSibling) {
                                     track.insertBefore(a, anchor.nextSibling);
@@ -3997,34 +4265,23 @@
                                 }
                             });
                         }
-                    }
-
-                    // 1. Initial local render
-                    try {
-                        const localCached = JSON.parse(localStorage.getItem('lumina_cloud_shorts_cache') || localStorage.getItem('lumina_custom_shorts') || '[]');
-                        if (localCached.length > 0) renderStoryItems(localCached);
-                    } catch(e) {}
-
-                    // 2. Realtime Cloud Sync z Firestore LuminaDB
-                    function initTablicaCloudShorts() {
-                        if (window.LuminaDB && typeof window.LuminaDB.subscribeToCloudShorts === 'function') {
-                            window.LuminaDB.subscribeToCloudShorts((cloudShorts) => {
-                                if (Array.isArray(cloudShorts) && cloudShorts.length > 0) {
-                                    renderStoryItems(cloudShorts);
-                                }
-                            });
-                        } else {
-                            setTimeout(initTablicaCloudShorts, 250);
+                        if (typeof window.updateStoriesScrollButtons === 'function') {
+                            window.updateStoriesScrollButtons();
                         }
                     }
-                    initTablicaCloudShorts();
 
-                    window.addEventListener('lumina_short_published', (e) => {
-                        if (e.detail) {
-                            try {
-                                const current = JSON.parse(localStorage.getItem('lumina_cloud_shorts_cache') || '[]');
-                                renderStoryItems([e.detail, ...current.filter(c => c.id !== e.detail.id)]);
-                            } catch(err) {}
+                    // Initial render from local cache
+                    try {
+                        const cachedShorts = localStorage.getItem('lumina_shorts_feed');
+                        if (cachedShorts) {
+                            renderStoryItems(JSON.parse(cachedShorts));
+                        }
+                    } catch(e) {}
+
+                    // Listen to updates from rolki feed
+                    window.addEventListener('lumina_shorts_updated', function(e) {
+                        if (e && e.detail && Array.isArray(e.detail.shorts)) {
+                            renderStoryItems(e.detail.shorts);
                         }
                     });
                 })();
@@ -4655,6 +4912,44 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                
+                <!-- 0. EKRAN STARTOWY PORTALU LUMINA -->
+                <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(250,204,21,0.12), rgba(168,85,247,0.12)); border: 1px solid rgba(250,204,21,0.35);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-house-chimney" style="color: #facc15; font-size: 1.05rem;"></i>
+                            <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Ekran Startowy Portalu LUMINA</span>
+                        </div>
+                        <span id="luminaStartPageBadge" class="lumina-start-page-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(250,204,21,0.22); color: #fef08a; font-weight: 800;">Strona Główna</span>
+                    </div>
+                    <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
+                        Wybierz, co ma się automatycznie wyświetlać po uruchomieniu portalu i aplikacji LUMINA:
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="home" onchange="setLuminaStartPage('home')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">A. Strona Główna Portalu</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Główny pulpit portalu, karuzela profili i dopasowania</span>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="tablica" onchange="setLuminaStartPage('tablica')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">B. Tablica Społeczności</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Strumień wpisów, świadectwa wiary, rozważania i modlitwy</span>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="profile" onchange="setLuminaStartPage('profile')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">C. Własny Profil</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Twój osobisty profil, galeria zdjęć i zarządzanie kontem</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- 1. POWIADOMIENIA PUSH & DŹWIĘK -->
                 <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(168,85,247,0.12)); border: 1px solid rgba(236,72,153,0.35);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
@@ -7837,6 +8132,7 @@
 
         // ── Personal Settings & Force App Update ──
         function openPersonalSettingsModal() {
+            if (typeof window.syncLuminaStartPageUI === "function") window.syncLuminaStartPageUI();
             const m = document.getElementById('personalSettingsModal');
             if (m) m.classList.add('open');
         }
@@ -9539,6 +9835,99 @@
             // Header collapse remains manual via toggleBoardHeader (eliminacja skoków layoutu)
 
             // Toggle function for the header
+            
+            // ── TOP WINDOW TOGGLE CONTROLLER (TABLICA | NA ŻYWO | ROLKI) ──
+            window.toggleBoardTopWindow = function(key) {
+                const wBoard = document.getElementById('boardHeader');
+                const wLive = document.getElementById('luminaLiveDaypartBar');
+                const wRolki = document.getElementById('luminaStoriesBar');
+
+                const btnBoard = document.getElementById('btnSwitchTablica');
+                const btnLive = document.getElementById('btnSwitchLive');
+                const btnRolki = document.getElementById('btnSwitchRolki');
+
+                const currentlyActive = window._luminaActiveTopWindow || null;
+
+                if (currentlyActive === key) {
+                    window.closeAllBoardTopWindows();
+                    window._luminaActiveTopWindow = null;
+                    try { localStorage.setItem('lumina_tablica_top_active', 'none'); } catch(e) {}
+                    return;
+                }
+
+                window.closeAllBoardTopWindows();
+
+                if (key === 'tablica' && wBoard) {
+                    wBoard.style.display = 'block';
+                    if (btnBoard) btnBoard.classList.add('active');
+                    window._luminaActiveTopWindow = 'tablica';
+                    try { localStorage.setItem('lumina_tablica_top_active', 'tablica'); } catch(e) {}
+                } else if (key === 'live' && wLive) {
+                    wLive.style.display = 'flex';
+                    if (btnLive) btnLive.classList.add('active');
+                    window._luminaActiveTopWindow = 'live';
+                    try { localStorage.setItem('lumina_tablica_top_active', 'live'); } catch(e) {}
+                } else if (key === 'rolki' && wRolki) {
+                    wRolki.style.display = 'block';
+                    if (btnRolki) btnRolki.classList.add('active');
+                    window._luminaActiveTopWindow = 'rolki';
+                    try { localStorage.setItem('lumina_tablica_top_active', 'rolki'); } catch(e) {}
+                    setTimeout(window.updateStoriesScrollButtons, 100);
+                }
+            };
+
+            window.closeAllBoardTopWindows = function() {
+                const wBoard = document.getElementById('boardHeader');
+                const wLive = document.getElementById('luminaLiveDaypartBar');
+                const wRolki = document.getElementById('luminaStoriesBar');
+
+                const btnBoard = document.getElementById('btnSwitchTablica');
+                const btnLive = document.getElementById('btnSwitchLive');
+                const btnRolki = document.getElementById('btnSwitchRolki');
+
+                if (wBoard) wBoard.style.display = 'none';
+                if (wLive) wLive.style.display = 'none';
+                if (wRolki) wRolki.style.display = 'none';
+
+                if (btnBoard) btnBoard.classList.remove('active');
+                if (btnLive) btnLive.classList.remove('active');
+                if (btnRolki) btnRolki.classList.remove('active');
+            };
+
+            window.scrollStoriesTrack = function(direction) {
+                const track = document.getElementById('storiesScrollTrack');
+                if (!track) return;
+                const scrollAmount = track.clientWidth * 0.75 * direction;
+                track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                setTimeout(window.updateStoriesScrollButtons, 300);
+            };
+
+            window.updateStoriesScrollButtons = function() {
+                const track = document.getElementById('storiesScrollTrack');
+                const btnLeft = document.querySelector('.fb-stories-scroll-left');
+                const btnRight = document.querySelector('.fb-stories-scroll-right');
+                if (!track) return;
+                if (btnLeft) btnLeft.style.display = (track.scrollLeft > 20) ? 'flex' : 'none';
+                if (btnRight) {
+                    const canScrollRight = track.scrollLeft + track.clientWidth < track.scrollWidth - 20;
+                    btnRight.style.display = canScrollRight ? 'flex' : 'none';
+                }
+            };
+
+            // Sprawdzenie URL params przy załadowaniu (np. ?tab=live, #rolki)
+            (function() {
+                const hash = window.location.hash.toLowerCase();
+                const params = new URLSearchParams(window.location.search);
+                const tabParam = params.get('tab') || '';
+                if (hash === '#rolki' || tabParam === 'rolki') {
+                    window.toggleBoardTopWindow('rolki');
+                } else if (hash === '#live' || tabParam === 'live') {
+                    window.toggleBoardTopWindow('live');
+                } else if (hash === '#tablica' || tabParam === 'tablica') {
+                    window.toggleBoardTopWindow('tablica');
+                }
+            })();
+
             window.toggleBoardHeader = function() {
                 const bHeader = document.getElementById('boardHeader');
                 if (bHeader) {

@@ -193,6 +193,7 @@
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
+    <script src="js/lumina-start-preferences.js"></script>
 
     <style>
         :root {
@@ -4028,6 +4029,44 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                
+                <!-- 0. EKRAN STARTOWY PORTALU LUMINA -->
+                <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(250,204,21,0.12), rgba(168,85,247,0.12)); border: 1px solid rgba(250,204,21,0.35);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-house-chimney" style="color: #facc15; font-size: 1.05rem;"></i>
+                            <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Ekran Startowy Portalu LUMINA</span>
+                        </div>
+                        <span id="luminaStartPageBadge" class="lumina-start-page-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(250,204,21,0.22); color: #fef08a; font-weight: 800;">Strona Główna</span>
+                    </div>
+                    <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
+                        Wybierz, co ma się automatycznie wyświetlać po uruchomieniu portalu i aplikacji LUMINA:
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="home" onchange="setLuminaStartPage('home')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">A. Strona Główna Portalu</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Główny pulpit portalu, karuzela profili i dopasowania</span>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="tablica" onchange="setLuminaStartPage('tablica')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">B. Tablica Społeczności</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Strumień wpisów, świadectwa wiary, rozważania i modlitwy</span>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="luminaStartChoice" value="profile" onchange="setLuminaStartPage('profile')" style="accent-color: #facc15; width: 18px; height: 18px; cursor: pointer;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 0.84rem; font-weight: 700; color: #fff;">C. Własny Profil</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8;">Twój osobisty profil, galeria zdjęć i zarządzanie kontem</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- 1. POWIADOMIENIA PUSH & DŹWIĘK -->
                 <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(168,85,247,0.12)); border: 1px solid rgba(236,72,153,0.35);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
@@ -6096,6 +6135,7 @@
 
         // ── Personal Settings & Force App Update ──
         function openPersonalSettingsModal() {
+            if (typeof window.syncLuminaStartPageUI === "function") window.syncLuminaStartPageUI();
             const m = document.getElementById('personalSettingsModal');
             if (m) m.classList.add('open');
         }
