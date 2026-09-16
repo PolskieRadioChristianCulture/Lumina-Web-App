@@ -956,6 +956,78 @@
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
         /* ──────────────────── TOP VIEW SWITCHER DOCK (TABLICA | NA ŻYWO | ROLKI) ──────────────────── */
+        
+        /* ──────────────────── ZOBACZ WIĘCEJ (FEED LOAD MORE) ──────────────────── */
+        .feed-load-more-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 36px auto 48px auto;
+            width: 100%;
+            text-align: center;
+            clear: both;
+        }
+
+        .feed-load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 44px;
+            min-height: 50px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(37, 99, 235, 0.28) 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.55);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px rgba(56, 189, 248, 0.25);
+            transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            user-select: none;
+            outline: none;
+        }
+
+        .feed-load-more-btn i {
+            font-size: 0.9rem;
+            color: #38bdf8;
+            transition: transform 0.24s ease, color 0.24s ease;
+        }
+
+        .feed-load-more-btn:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            border-color: #7dd3fc;
+            color: #ffffff;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.5), 0 0 24px rgba(56, 189, 248, 0.45);
+        }
+
+        .feed-load-more-btn:hover i {
+            transform: translateY(3px);
+            color: #ffffff;
+        }
+
+        .feed-load-more-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        @media (max-width: 600px) {
+            .feed-load-more-wrap {
+                margin: 24px auto 36px auto;
+            }
+            .feed-load-more-btn {
+                width: 90%;
+                max-width: 320px;
+                padding: 13px 22px;
+                font-size: 0.94rem;
+            }
+        }
+
         .board-top-switcher-dock {
             margin-top: 8px;
             position: relative;
@@ -7215,9 +7287,9 @@
                 const nextCount = Math.min(FEED_PAGE_SIZE, remaining);
                 container.insertAdjacentHTML('beforeend', `
                     <div class="feed-load-more-wrap">
-                        <button type="button" class="feed-load-more-btn" onclick="loadMoreFeedItems()" aria-describedby="feedPaginationStatus">
+                        <button type="button" class="feed-load-more-btn" onclick="loadMoreFeedItems()" aria-describedby="feedPaginationStatus" title="Załaduj więcej wpisów na Tablicy">
+                            <span>Zobacz Więcej</span>
                             <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
-                            Pokaż kolejne ${nextCount} publikacji
                         </button>
                         <span id="feedPaginationStatus" tabindex="-1" class="sr-only" aria-live="polite">
                             Wyświetlono ${visibleCombined.length} z ${combined.length} publikacji. Pozostało ${remaining}.
