@@ -473,8 +473,25 @@
             }
         }
 
+        // Pobierz aktualne rozważanie "Cuda Każdego Dnia" (Andrzej Thiel) z bazy JSON
+        async function loadCudaDailyReflection() {
+            try {
+                const res = await fetch('/rozwazania_cuda_baza.json?v=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.current) {
+                        window._luminaCudaDailyCurrent = data.current;
+                        if (typeof renderFeed === 'function') renderFeed();
+                    }
+                }
+            } catch(e) {
+                console.warn('Lumina Board: Błąd pobierania rozwazania_cuda_baza.json:', e.message);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadDailyReflection();
+            loadCudaDailyReflection();
         });
     </script>
     <style>
@@ -6612,31 +6629,33 @@
                 _sortTs: new Date(2026, 7, 21, 12, 0).getTime()
             });
 
-                        // 0.0. Andrzej Thiel - Cuda Każdego Dnia (31 SIERPNIA 2026 - DZISIAJ)
+            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (Dynamiczne pobranie aktualnego rozważania)
             try {
-                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
-                const aProfile = aJson ? JSON.parse(aJson) : null;
-                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
-                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
-                const aCudaImg31 = localStorage.getItem('lumina_cuda_image_31') || 'cuda_kazdego_dnia_27_sierpnia_2026.jpg';
-
-                posts.push({
-                    id: 'post_andrzej_cuda_current',
-                    author: 'Andrzej Thiel',
-                    authorSlug: 'andrzejthiel',
-                    avatar: 'avatar_andrzej_thiel.jpg',
-                    badge: 'Cuda Każdego Dnia',
-                    time: '12 WRZEŚNIA 2026 • 🕊️ Cuda Każdego Dnia (Dzisiaj)',
-                    title: 'Cuda Każdego Dnia: Patrz przed siebie',
-                    text: '12 WRZEŚNIA 2026 • Cuda Każdego Dnia\n\nDzisiaj chciałabym zakończyć nasze rozważania na temat naszej odpowiedzialności przed Bogiem jako ambasadorów Jego Królestwa, jako Jego świadków, uczniów, naśladowców i Jego menadżerów. Wierzę, że było to dla ciebie, zachęcające i mobilizujące do jeszcze lepszej służby i podobania się Bogu.',
-                    date: '12 WRZEŚNIA 2026',
-                    verified: true,
-                    type: 'official_daily_cuda',
-                    image: 'cuda_kazdego_dnia_current.jpg',
-                    likes: 342,
-                    amen: 320,
-                    _sortTs: new Date(2026, 8, 12, 6, 0).getTime()
-                });
+                const cudaCur = window._luminaCudaDailyCurrent;
+                if (cudaCur && (!cudaCur.slug || !seenSlugs.has(cudaCur.slug))) {
+                    if (cudaCur.slug) seenSlugs.add(cudaCur.slug);
+                    const cTitle = cudaCur.rawTitle || cudaCur.title || 'Cuda Każdego Dnia';
+                    const cDate = cudaCur.dateText || 'Dzisiaj';
+                    posts.push({
+                        id: 'post_andrzej_cuda_' + (cudaCur.slug || 'current'),
+                        type: 'post',
+                        category: 'ckd',
+                        isDevotion: true,
+                        author: 'Andrzej Thiel',
+                        authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
+                        authorAvatar: 'avatar_andrzej_thiel.jpg',
+                        authorSlug: 'andrzejthiel',
+                        time: `${cDate} • 🕊️ Cuda Każdego Dnia`,
+                        title: `CUDA KAŻDEGO DNIA! ${cDate}. ${cTitle.toUpperCase()}`,
+                        text: cudaCur.fullTextFormatted || (cudaCur.paragraphs ? cudaCur.paragraphs.join('\n\n') : ''),
+                        image: cudaCur.imageUrl || 'cuda_kazdego_dnia_current.jpg',
+                        sourceUrl: cudaCur.sourceUrl || '',
+                        sourceSlug: cudaCur.slug || '',
+                        likes: 342,
+                        amen: 320,
+                        _sortTs: extractSortTs({ time: cDate }) || Date.now()
+                    });
+                }
             } catch(e) {}
 
             // 0.1. Andrzej Thiel - Cuda Każdego Dnia (Fallback offline)

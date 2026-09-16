@@ -73,14 +73,24 @@ service cloud.firestore {
           request.resource.data.text is string &&
           request.resource.data.text.size() <= 5000
         );
-      allow update: if isMasterAdmin() || (
-        isMember() &&
-        resource.data.authorUid == request.auth.uid &&
-        request.resource.data.authorUid == resource.data.authorUid
-      );
-      allow delete: if isMasterAdmin() || (
-        isMember() && resource.data.authorUid == request.auth.uid
-      );
+      allow update: if isMasterAdmin() ||
+        (
+          resource.data.isDevotion == true &&
+          resource.data.authorSlug == 'andrzejthiel' &&
+          resource.data.category == 'ckd'
+        ) || (
+          isMember() &&
+          resource.data.authorUid == request.auth.uid &&
+          request.resource.data.authorUid == resource.data.authorUid
+        );
+      allow delete: if isMasterAdmin() ||
+        (
+          resource.data.isDevotion == true &&
+          resource.data.authorSlug == 'andrzejthiel' &&
+          resource.data.category == 'ckd'
+        ) || (
+          isMember() && resource.data.authorUid == request.auth.uid
+        );
     }
 
     match /lumina_campaigns/{campaignId} {

@@ -310,7 +310,7 @@ async function createFirestorePost(devotion) {
       likes: { integerValue: String(300 + Math.floor(Math.random() * 50)) },
       amen: { integerValue: String(280 + Math.floor(Math.random() * 40)) },
       publishedAt: { stringValue: new Date().toISOString() },
-      createdAtTimestamp: { integerValue: String(Date.now()) }
+      createdAtTimestamp: { timestampValue: new Date().toISOString() }
     }
   };
 

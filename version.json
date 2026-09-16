@@ -1,13 +1,13 @@
 {
-  "version": "4.1.6",
-  "buildDate": "2026-09-14T10:28:21.658Z",
-  "releaseName": "LUMINA v4.1.6 – Pełna aktualizacja mobilna i synchronizacja rozważań",
+  "version": "4.1.8",
+  "buildDate": "2026-09-16T21:55:00.000Z",
+  "releaseName": "LUMINA v4.1.8 – Dynamiczna publikacja Cuda Każdego Dnia i naprawa feedu",
   "changes": [
-    "📱 Naprawa mobilnego overflow profilu Wioletty Rogowskiej (head-actions, cytaty, siatka 44px)",
-    "☀️ Synchronizacja Dnia 14 cyklu 'Słowa Mają Moc' w portalu i na profilu Założyciela",
-    "⚡ Pełne odświeżenie pamięci podręcznej Service Workera i assetów PWA (v4.1.6)"
+    "📖 Usunięcie zamrożonego wpisu z 12 września i wdrożenie w pełni dynamicznego ładowania Cudów Każdego Dnia",
+    "☁️ Pełna synchronizacja Firestore dla Andrzeja Thiela z właściwymi sygnaturami czasowymi",
+    "⚡ Odświeżenie pamięci podręcznej i feedu tablicy LUMINA"
   ],
   "minAppVersion": "4.1.4",
-  "forceReload": false,
+  "forceReload": true,
   "forceReinstall": false
 }
