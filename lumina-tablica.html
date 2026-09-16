@@ -1395,6 +1395,163 @@
         .fb-stories-scroll-left { left: 6px; }
         .fb-stories-scroll-right { right: 6px; }
 
+        /* ══════════ QUICK POST PUBLISHER BAR ("CO DOBREGO U CIEBIE?") ══════════ */
+        .quick-post-bar-container {
+            margin: 0 0 16px 0;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(11, 24, 56, 0.88));
+            border: 1.5px solid rgba(250, 204, 21, 0.35);
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(250, 204, 21, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .quick-post-bar-container:hover {
+            border-color: rgba(250, 204, 21, 0.55);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 22px rgba(250, 204, 21, 0.2);
+        }
+        .quick-post-bar-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .quick-post-avatar-wrap {
+            position: relative;
+            width: 44px;
+            min-width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .quick-post-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #facc15;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease;
+        }
+        .quick-post-avatar-wrap:hover .quick-post-avatar {
+            transform: scale(1.06);
+        }
+        .quick-post-avatar-status {
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            border: 2px solid #0f172a;
+            box-shadow: 0 0 6px #22c55e;
+        }
+        .quick-post-trigger-input {
+            flex: 1;
+            min-height: 44px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 24px;
+            padding: 10px 18px;
+            color: #cbd5e1;
+            font-size: 0.92rem;
+            font-family: inherit;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .quick-post-trigger-input:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(250, 204, 21, 0.5);
+            color: #ffffff;
+            box-shadow: 0 2px 12px rgba(250, 204, 21, 0.15);
+        }
+        .quick-post-placeholder-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .quick-post-input-icon {
+            color: #facc15;
+            font-size: 1rem;
+            opacity: 0.85;
+            flex-shrink: 0;
+        }
+        .quick-post-actions-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .quick-post-action-btn {
+            flex: 1;
+            min-height: 44px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 8px 10px;
+            color: #e2e8f0;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .quick-post-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .quick-post-action-btn.primary-action {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.18), rgba(234, 179, 8, 0.08));
+            border-color: rgba(250, 204, 21, 0.38);
+            color: #fde047;
+        }
+        .quick-post-action-btn.primary-action:hover {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.3), rgba(234, 179, 8, 0.18));
+            border-color: #facc15;
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);
+        }
+        .quick-post-pill-badge {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: #fff;
+            font-size: 0.62rem;
+            font-weight: 900;
+            padding: 1px 6px;
+            border-radius: 8px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+        }
+        @media (max-width: 600px) {
+            .quick-post-actions-row {
+                gap: 6px;
+            }
+            .quick-post-action-btn {
+                padding: 6px 6px;
+                font-size: 0.75rem;
+                gap: 5px;
+            }
+            .quick-post-action-btn span:not(.quick-post-pill-badge) {
+                font-size: 0.72rem;
+            }
+        }
+
         @media (max-width: 900px) {
             .board-top-switcher-dock {
                 margin-top: 4px;
@@ -4561,10 +4718,14 @@
                                 });
                             }
 
-                            // Unviewed stories are prioritized (+10000)
-                            // Stable shuffle within the session based on session seed
-                            const cardHash = pseudoHash(cardId) % 1000;
-                            card._sortScore = (isViewed ? 0 : 10000) + cardHash;
+                            if (card.classList.contains('story-user-published') || card.dataset.newlyPublished === 'true') {
+                                card._sortScore = 900000 + (parseInt(card.dataset.timestamp || '0', 10) % 99999);
+                            } else {
+                                // Unviewed stories are prioritized (+10000)
+                                // Stable shuffle within the session based on session seed
+                                const cardHash = pseudoHash(cardId) % 1000;
+                                card._sortScore = (isViewed ? 0 : 10000) + cardHash;
+                            }
                         });
 
                         cards.sort((a, b) => (b._sortScore || 0) - (a._sortScore || 0));
@@ -4606,12 +4767,30 @@
                             shortsList.forEach(item => {
                                 if (!item || !item.id) return;
                                 const a = document.createElement('a');
-                                a.href = 'rolki#' + item.id;
+                                const isExternal = item.videoUrl && item.videoUrl.startsWith('http') && !item.videoUrl.includes('polskieradio.cc');
+                                a.href = isExternal ? item.videoUrl : ('rolki#' + item.id);
+                                if (isExternal) {
+                                    a.target = '_blank';
+                                    a.rel = 'noopener noreferrer';
+                                }
                                 a.className = 'fb-story-card story-user-published';
-                                a.title = 'Rolka: ' + (item.title || 'Rolka Wiary') + ' • ' + (item.author || 'Świadek Wiary');
+                                a.dataset.newlyPublished = (item._isNewlyPublished || item.badge === 'NOWOŚĆ') ? 'true' : 'false';
+                                a.dataset.timestamp = String(item.createdAtTimestamp || item.timestamp || Date.now());
+                                a.title = 'Rolka 9:16: ' + (item.title || 'Rolka Wiary') + ' • ' + (item.author || 'Świadek Wiary');
+
+                                const isMp4 = item.videoUrl && (item.videoUrl.endsWith('.mp4') || item.videoUrl.includes('.mp4'));
+                                const mediaMarkup = isMp4 
+                                    ? `<video class="fb-story-bg fb-story-video" src="${item.videoUrl}" poster="${item.poster || 'tlo_tv_dzj.jpg'}" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>`
+                                    : `<img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">`;
+
+                                const badgeHtml = (item._isNewlyPublished || item.badge === 'NOWOŚĆ')
+                                    ? `<div class="fb-story-video-badge" style="background:linear-gradient(135deg, #ec4899, #f43f5e); box-shadow:0 0 12px rgba(236, 72, 153, 0.9); font-weight:900;"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</div>`
+                                    : `<div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>`;
+
                                 a.innerHTML = `
-                                    <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
+                                    ${mediaMarkup}
                                     <div class="fb-story-gradient"></div>
+                                    ${badgeHtml}
                                     <div class="fb-story-avatar-badge living-ring" style="border-color:#ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.7);">
                                         <img src="${item.authorAvatar || 'lumina_icon.jpg'}" alt="${item.author || 'Autor'}" loading="lazy" onerror="this.src='lumina_icon.jpg'">
                                     </div>
@@ -4645,6 +4824,35 @@
                     window.refreshLuminaStoriesRotation = applyStoriesRotation;
                 })();
             </script>
+
+            <!-- ══════════ PASEK SZYBKIEJ PUBLIKACJI („CO DOBREGO U CIEBIE?”) ══════════ -->
+            <div class="quick-post-bar-container" id="luminaQuickPostBar">
+                <div class="quick-post-bar-top">
+                    <div class="quick-post-avatar-wrap" onclick="openQuickPostComposer()" title="Otwórz okno publikacji wpisu">
+                        <img id="quickPostBarAvatar" src="avatar_cezary_official.jpg" alt="Twój profil" class="quick-post-avatar" onerror="this.src='lumina_icon.jpg'">
+                        <span class="quick-post-avatar-status" title="Aktywny profil"></span>
+                    </div>
+                    <button type="button" class="quick-post-trigger-input" onclick="openQuickPostComposer()" aria-label="Napisz post: Co dobrego u Ciebie?">
+                        <span class="quick-post-placeholder-text">Co dobrego u Ciebie? Podziel się wiarą... ✨</span>
+                        <i class="fa-solid fa-feather-pointed quick-post-input-icon"></i>
+                    </button>
+                </div>
+                <div class="quick-post-actions-row">
+                    <button type="button" class="quick-post-action-btn" onclick="openQuickPostComposer('image')" title="Dodaj zdjęcie do wpisu">
+                        <i class="fa-solid fa-image" style="color:#22c55e;"></i>
+                        <span>Zdjęcie</span>
+                    </button>
+                    <button type="button" class="quick-post-action-btn" onclick="openQuickPostComposer('video')" title="Wklej wideo lub Rolkę 9:16 (Szorts)">
+                        <i class="fa-solid fa-clapperboard" style="color:#f43f5e;"></i>
+                        <span>Wideo / 9:16</span>
+                        <span class="quick-post-pill-badge">Szorts</span>
+                    </button>
+                    <button type="button" class="quick-post-action-btn primary-action" onclick="openQuickPostComposer('post')" title="Napisz post na Tablicę i do Profilu">
+                        <i class="fa-solid fa-pen-to-square" style="color:#facc15;"></i>
+                        <span>Napisz post</span>
+                    </button>
+                </div>
+            </div>
 
             <!-- ══════════ SMART FEED SORTING BAR ══════════ -->
             <div class="smart-sort-bar" id="smartSortBar">
@@ -4939,7 +5147,103 @@
         </div>
     </div>
 
-<!-- ══════════ CC MISSION CAMPAIGN PUBLISHER MODAL ══════════ -->
+    <!-- ══════════ OKNO SZYBKIEJ PUBLIKACJI POSTA („CO DOBREGO U CIEBIE?”) ══════════ -->
+    <div class="modal-overlay" id="quickPostModal">
+        <div class="modal-card" style="max-width: 580px; width: 94%; max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, #0b1838 0%, #070e24 100%); border: 1.5px solid rgba(250, 204, 21, 0.4); border-radius: 20px; box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 0 25px rgba(250, 204, 21, 0.2);">
+            <button class="modal-close-btn" onclick="closeModal('quickPostModal')" title="Zamknij okno"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <span style="font-size: 1.6rem; color:#facc15;"><i class="fa-solid fa-feather-pointed"></i></span>
+                <div>
+                    <h3 style="font-size: 1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff;" id="qpModalMainTitle">Co dobrego u Ciebie?</h3>
+                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Publikacja na Tablicę Społeczności & do Twojego Profilu</div>
+                </div>
+            </div>
+
+            <!-- Belka Aktywnego Autora -->
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; margin-bottom:14px;">
+                <img id="qpModalAuthorAvatar" src="avatar_cezary_official.jpg" alt="Autor" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #facc15;">
+                <div style="flex:1; min-width:0;">
+                    <div id="qpModalAuthorName" style="font-size:0.92rem; font-weight:800; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Cezary Rogowski</div>
+                    <div id="qpModalAuthorRole" style="font-size:0.72rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">✨ Założyciel Christian Culture</div>
+                </div>
+                <span style="font-size:0.68rem; font-weight:800; color:#22c55e; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); padding:3px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;">
+                    <span style="width:6px; height:6px; border-radius:50%; background:#22c55e;"></span> Publiczny
+                </span>
+            </div>
+
+            <form id="quickPostForm" onsubmit="submitQuickPost(event)">
+                <!-- 1. Opcjonalny tytuł wpisu -->
+                <div style="margin-bottom: 12px;">
+                    <label for="qpTitleInput" style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
+                        <span><i class="fa-solid fa-heading" style="color:#facc15; margin-right:4px;"></i> Tytuł wpisu</span>
+                        <span style="color:#94a3b8; font-weight:500;">(opcjonalnie)</span>
+                    </label>
+                    <input type="text" id="qpTitleInput" placeholder="np. Słowo na dziś, Świadectwo Bożej opieki, Intencja modlitewna..." style="width:100%; min-height:44px; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.92rem; font-weight:600; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#facc15'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+                </div>
+
+                <!-- 2. Treść posta -->
+                <div style="margin-bottom: 14px;">
+                    <label for="qpTextInput" style="display:block; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
+                        <i class="fa-solid fa-align-left" style="color:#38bdf8; margin-right:4px;"></i> Treść posta <span style="color:#ef4444;">*</span>
+                    </label>
+                    <textarea id="qpTextInput" rows="4" placeholder="Co dobrego u Ciebie? Podziel się świadectwem, myślą, modlitwą lub dobrą nowiną..." style="width:100%; min-height:90px; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.92rem; line-height:1.5; outline:none; resize:vertical; transition:border-color 0.2s;" onfocus="this.style.borderColor='#facc15'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"></textarea>
+                </div>
+
+                <!-- 3. Zdjęcie (plik z urządzenia lub URL) -->
+                <div style="margin-bottom: 14px; padding:12px; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.18); border-radius:14px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                        <span style="font-size:0.78rem; font-weight:700; color:#e2e8f0; display:inline-flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-image" style="color:#22c55e;"></i> Dodaj Zdjęcie
+                        </span>
+                        <input type="file" id="qpImageFileInput" accept="image/*" style="display:none;" onchange="handleQpImageFile(this)">
+                        <button type="button" class="btn-camp-quick" onclick="document.getElementById('qpImageFileInput').click()" style="min-height:44px; padding:8px 14px; font-size:0.78rem; border-radius:10px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.4); color:#4ade80; cursor:pointer; font-weight:700;">
+                            <i class="fa-solid fa-folder-open"></i> Wybierz z galerii / dysku
+                        </button>
+                    </div>
+
+                    <input type="url" id="qpImageUrlInput" placeholder="lub wklej link do grafiki (https://...)..." oninput="handleQpImageUrl(this.value)" style="width:100%; min-height:40px; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff; font-size:0.80rem; outline:none;">
+
+                    <!-- Podgląd zdjęcia -->
+                    <div id="qpImagePreviewBox" style="display:none; position:relative; margin-top:10px; border-radius:12px; overflow:hidden; border:1px solid rgba(34,197,94,0.5); max-height:220px; background:#000;">
+                        <img id="qpImagePreviewImg" src="" alt="Podgląd" style="width:100%; height:200px; object-fit:cover; display:block;">
+                        <button type="button" onclick="removeQpImage()" title="Usuń zdjęcie" style="position:absolute; top:8px; right:8px; background:rgba(220,38,38,0.85); color:#fff; border:none; border-radius:50%; width:32px; height:32px; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4. Link Wideo & Wykrywanie 9:16 (Szorts / Rolki) -->
+                <div style="margin-bottom: 14px; padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:14px;">
+                    <label for="qpVideoUrlInput" style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; font-weight:700; color:#e2e8f0; margin-bottom:6px;">
+                        <span><i class="fa-solid fa-clapperboard" style="color:#f43f5e; margin-right:5px;"></i> Link do Wideo (YouTube, Shorts, TikTok, Reels, MP4)</span>
+                        <span id="qp916AutoBadge" class="quick-post-pill-badge" style="display:none;"><i class="fa-solid fa-sparkles"></i> 9:16 WYKRYTY</span>
+                    </label>
+                    <input type="url" id="qpVideoUrlInput" placeholder="https://youtube.com/shorts/... lub link do pliku .mp4 / TikTok / Reel" oninput="detectQp916Video(this.value)" style="width:100%; min-height:44px; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.88rem; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#f43f5e'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+
+                    <!-- Przełącznik formatu 9:16 -->
+                    <div id="qp916NoticeBox" style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:rgba(236,72,153,0.10); border:1px solid rgba(236,72,153,0.3); border-radius:10px; margin-top:10px;">
+                        <label for="qpIs916Checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.82rem; font-weight:700; color:#fbcfe8; user-select:none;">
+                            <input type="checkbox" id="qpIs916Checkbox" style="width:20px; height:20px; min-width:20px; accent-color:#ec4899; cursor:pointer;">
+                            <span>Format pionowy 9:16 • Opublikuj także jako <b>NOWOŚĆ w Rolkach Wiary (Szorts)</b> 🎬✨</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Przyciski akcji -->
+                <div style="display:flex; gap:10px; margin-top: 16px;">
+                    <button type="button" onclick="closeModal('quickPostModal')" style="flex:1; min-height:44px; padding:10px 14px; border-radius:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:#cbd5e1; font-weight:700; font-family:inherit; font-size:0.90rem; cursor:pointer; transition:all 0.2s;">
+                        Anuluj
+                    </button>
+                    <button type="submit" id="qpSubmitBtn" style="flex:2; min-height:44px; padding:10px 20px; border-radius:24px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#000; font-weight:900; font-family:inherit; font-size:0.95rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 18px rgba(245,158,11,0.45); transition:all 0.2s;">
+                        <i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════ CC MISSION CAMPAIGN PUBLISHER MODAL ══════════ -->
     <div class="modal-overlay" id="campaignModal">
         <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('campaignModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -6103,7 +6407,24 @@
             const seenPostIds = new Set();
             const seenSlugs = new Set();
 
-            // 0. Real-time Cloud Posts from Firestore (Najwyższy priorytet danych live)
+            // 0. Najświeższy opublikowany wpis użytkownika (Lumina Quick Publisher Spotlight - NAJWYŻSZY PRIORYTET)
+            try {
+                const recentRaw = localStorage.getItem('lumina_recent_published_post');
+                if (recentRaw) {
+                    const rp = JSON.parse(recentRaw);
+                    if (rp && rp.id && !seenPostIds.has(rp.id)) {
+                        seenPostIds.add(rp.id);
+                        posts.push({
+                            ...rp,
+                            _isNewlyPublished: true,
+                            _isFreshSpotlight: true,
+                            _sortTs: rp.createdAtTimestamp || Date.now()
+                        });
+                    }
+                }
+            } catch(e) {}
+
+            // 0.1. Real-time Cloud Posts from Firestore (Najwyższy priorytet danych live)
             if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
                 window.cloudFeedPosts.forEach(cp => {
                     if (!cp || !cp.id || seenPostIds.has(cp.id)) return;
@@ -8189,8 +8510,309 @@
                 const avatarEl = document.getElementById('activePersonaAvatar');
                 if (avatarEl && persona) avatarEl.src = persona.avatar;
                 if (persona) showToast(`Aktywna tożsamość: ${persona.name} (${persona.role}) ✨`);
+                updateQuickPostBarAuthorUI();
             }
         };
+
+        // ── Quick Post Composer ("Co dobrego u Ciebie?") Logic ──
+        let attachedQpImageDataUrl = null;
+
+        function getActiveAuthorPersona() {
+            if (window.LuminaDB && typeof window.LuminaDB.getActiveMissionPersona === 'function') {
+                const p = window.LuminaDB.getActiveMissionPersona();
+                if (p && p.name) return p;
+            }
+            try {
+                const raw = localStorage.getItem('lumina_current_user_profile');
+                if (raw) {
+                    const u = JSON.parse(raw);
+                    if (u && u.name) {
+                        return {
+                            id: u.id || u.uid || 'user_' + (u.slug || 'active'),
+                            name: u.name,
+                            role: u.role || 'Społeczność LUMINA ✨',
+                            avatar: u.avatar || u.photoURL || 'avatar_cezary_official.jpg',
+                            slug: u.slug || 'cezaryrgowski',
+                            badge: u.badge || 'Społeczność LUMINA'
+                        };
+                    }
+                }
+            } catch(e) {}
+            return {
+                id: 'cezary_rogowski',
+                name: 'Cezary Rogowski',
+                role: '✨ Założyciel Christian Culture',
+                avatar: 'avatar_cezary_official.jpg',
+                slug: 'cezaryrgowski',
+                badge: '✨ Założyciel CC'
+            };
+        }
+
+        function updateQuickPostBarAuthorUI() {
+            const persona = getActiveAuthorPersona();
+            const barAvatar = document.getElementById('quickPostBarAvatar');
+            if (barAvatar && persona.avatar) {
+                barAvatar.src = persona.avatar;
+            }
+            const modalAvatar = document.getElementById('qpModalAuthorAvatar');
+            if (modalAvatar && persona.avatar) {
+                modalAvatar.src = persona.avatar;
+            }
+            const modalName = document.getElementById('qpModalAuthorName');
+            if (modalName && persona.name) {
+                modalName.textContent = persona.name;
+            }
+            const modalRole = document.getElementById('qpModalAuthorRole');
+            if (modalRole && persona.role) {
+                modalRole.textContent = persona.role;
+            }
+        }
+
+        function openQuickPostComposer(mode) {
+            updateQuickPostBarAuthorUI();
+            const modal = document.getElementById('quickPostModal');
+            if (modal) {
+                modal.classList.add('open');
+            }
+            setTimeout(() => {
+                if (mode === 'image') {
+                    const fileInput = document.getElementById('qpImageFileInput');
+                    if (fileInput && !attachedQpImageDataUrl) {
+                        fileInput.click();
+                    } else {
+                        const urlInput = document.getElementById('qpImageUrlInput');
+                        if (urlInput) urlInput.focus();
+                    }
+                } else if (mode === 'video') {
+                    const vInput = document.getElementById('qpVideoUrlInput');
+                    if (vInput) vInput.focus();
+                } else {
+                    const tInput = document.getElementById('qpTextInput');
+                    if (tInput) tInput.focus();
+                }
+            }, 120);
+        }
+
+        function handleQpImageFile(input) {
+            const file = input && input.files ? input.files[0] : null;
+            if (!file) return;
+            showToast('Przetwarzanie grafiki... 🕊️');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                attachedQpImageDataUrl = e.target.result;
+                const previewImg = document.getElementById('qpImagePreviewImg');
+                const previewBox = document.getElementById('qpImagePreviewBox');
+                if (previewImg && previewBox) {
+                    previewImg.src = attachedQpImageDataUrl;
+                    previewBox.style.display = 'block';
+                }
+                showToast('Zdjęcie dołączone do wpisu! 📸');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleQpImageUrl(url) {
+            const trimmed = (url || '').trim();
+            const previewImg = document.getElementById('qpImagePreviewImg');
+            const previewBox = document.getElementById('qpImagePreviewBox');
+            if (trimmed && (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:image/'))) {
+                attachedQpImageDataUrl = trimmed;
+                if (previewImg && previewBox) {
+                    previewImg.src = trimmed;
+                    previewBox.style.display = 'block';
+                }
+            } else if (!trimmed && (!document.getElementById('qpImageFileInput') || !document.getElementById('qpImageFileInput').files.length)) {
+                if (previewBox) previewBox.style.display = 'none';
+                attachedQpImageDataUrl = null;
+            }
+        }
+
+        function removeQpImage() {
+            attachedQpImageDataUrl = null;
+            const fileInput = document.getElementById('qpImageFileInput');
+            if (fileInput) fileInput.value = '';
+            const urlInput = document.getElementById('qpImageUrlInput');
+            if (urlInput) urlInput.value = '';
+            const previewBox = document.getElementById('qpImagePreviewBox');
+            if (previewBox) previewBox.style.display = 'none';
+            const previewImg = document.getElementById('qpImagePreviewImg');
+            if (previewImg) previewImg.src = '';
+        }
+
+        function detectQp916Video(url) {
+            const trimmed = (url || '').trim();
+            const is916 = /(?:youtube\.com\/shorts\/|youtu\.be\/.*[\?&]v=.*|tiktok\.com|instagram\.com\/(?:reel|reels|p)\/|\.mp4)/i.test(trimmed);
+            const badge = document.getElementById('qp916AutoBadge');
+            const checkbox = document.getElementById('qpIs916Checkbox');
+            if (is916) {
+                if (checkbox) checkbox.checked = true;
+                if (badge) badge.style.display = 'inline-flex';
+            } else {
+                if (badge) badge.style.display = 'none';
+            }
+        }
+
+        async function submitQuickPost(event) {
+            if (event && event.preventDefault) event.preventDefault();
+
+            const title = (document.getElementById('qpTitleInput') ? document.getElementById('qpTitleInput').value.trim() : '');
+            const text = (document.getElementById('qpTextInput') ? document.getElementById('qpTextInput').value.trim() : '');
+            const videoUrl = (document.getElementById('qpVideoUrlInput') ? document.getElementById('qpVideoUrlInput').value.trim() : '');
+            const imgUrlField = document.getElementById('qpImageUrlInput') ? document.getElementById('qpImageUrlInput').value.trim() : '';
+            const finalImage = attachedQpImageDataUrl || imgUrlField || null;
+            let is916 = document.getElementById('qpIs916Checkbox') ? document.getElementById('qpIs916Checkbox').checked : false;
+
+            if (!text && !finalImage && !videoUrl) {
+                alert('Wpisz treść wpisu lub dodaj zdjęcie/wideo!');
+                return;
+            }
+
+            // Auto-check 9:16 if URL matches shorts/tiktok/reels
+            if (videoUrl && /(?:youtube\.com\/shorts\/|tiktok\.com|instagram\.com\/(?:reel|reels|p)\/)/i.test(videoUrl)) {
+                is916 = true;
+            }
+
+            const persona = getActiveAuthorPersona();
+            const submitBtn = document.getElementById('qpSubmitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publikowanie...';
+            }
+
+            const postId = 'post_qp_' + Date.now();
+            const ytId = (window.LuminaDB && window.LuminaDB.extractYouTubeId) ? window.LuminaDB.extractYouTubeId(videoUrl) : null;
+
+            const newPost = {
+                id: postId,
+                type: is916 ? 'short' : 'post',
+                title: title,
+                text: text,
+                desc: text,
+                image: finalImage || (videoUrl && !ytId && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4')) ? videoUrl : null),
+                videoUrl: videoUrl || null,
+                youtubeUrl: ytId ? videoUrl : null,
+                isShort: !!is916,
+                is916: !!is916,
+                author: persona.name,
+                authorSlug: persona.slug,
+                authorAvatar: persona.avatar,
+                authorRole: persona.role,
+                authorBadge: persona.badge || 'Społeczność LUMINA ✨',
+                time: 'Przed chwilą • ✨ Świeży wpis',
+                createdAt: 'Przed chwilą • ✨ Świeży wpis',
+                createdAtTimestamp: Date.now(),
+                _isNewlyPublished: true,
+                _isFreshSpotlight: true,
+                likes: 3,
+                amen: 2
+            };
+
+            // 1. Zapis na Tablicy (local spotlight + cloud cache + memory feed)
+            try {
+                localStorage.setItem('lumina_recent_published_post', JSON.stringify(newPost));
+                const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                const cloudList = rawCloud ? JSON.parse(rawCloud) : [];
+                cloudList.unshift(newPost);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudList));
+            } catch(e) {}
+
+            if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
+                window.cloudFeedPosts.unshift(newPost);
+            }
+
+            // 2. Zapis w profilu autora oraz w Firestore
+            try {
+                if (window.LuminaDB?.publishUniversalPost) {
+                    await window.LuminaDB.publishUniversalPost(newPost);
+                }
+            } catch(e) {
+                console.warn('Błąd publikacji LuminaDB:', e);
+            }
+
+            // Gwarancja zapisu w profilu autora w localStorage
+            try {
+                const profKey = 'lumina_profile_' + persona.slug;
+                const rawProf = localStorage.getItem(profKey);
+                let profObj = rawProf ? JSON.parse(rawProf) : { name: persona.name, slug: persona.slug, posts: [] };
+                if (!Array.isArray(profObj.posts)) profObj.posts = [];
+                profObj.posts.unshift(newPost);
+                localStorage.setItem(profKey, JSON.stringify(profObj));
+
+                if (persona.slug === 'cezaryrgowski' || persona.name.includes('Cezary')) {
+                    const rawC = localStorage.getItem('lumina_profile_cezaryrgowski');
+                    if (rawC) {
+                        let cObj = JSON.parse(rawC);
+                        if (Array.isArray(cObj.posts)) {
+                            cObj.posts.unshift(newPost);
+                            localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(cObj));
+                        }
+                    }
+                }
+            } catch(e) {}
+
+            // 3. Jeśli format 9:16 — dodaj jako NOWOŚĆ do rolek / szortsów
+            if (is916 && (videoUrl || finalImage)) {
+                try {
+                    const storyItem = {
+                        id: 'short_' + Date.now(),
+                        title: title || (text ? (text.slice(0, 32) + (text.length > 32 ? '...' : '')) : 'Nowa Rolka Wiary'),
+                        author: persona.name,
+                        authorAvatar: persona.avatar,
+                        authorSlug: persona.slug,
+                        videoUrl: videoUrl || finalImage,
+                        poster: finalImage || 'tlo_tv_dzj.jpg',
+                        isVertical: true,
+                        badge: 'NOWOŚĆ',
+                        _isNewlyPublished: true,
+                        createdAtTimestamp: Date.now()
+                    };
+
+                    const rawShorts = localStorage.getItem('lumina_shorts_feed');
+                    let shortsList = rawShorts ? JSON.parse(rawShorts) : [];
+                    if (!Array.isArray(shortsList)) shortsList = [];
+                    shortsList.unshift(storyItem);
+                    localStorage.setItem('lumina_shorts_feed', JSON.stringify(shortsList));
+
+                    if (typeof window.refreshLuminaStoriesRotation === 'function') {
+                        window.refreshLuminaStoriesRotation();
+                    }
+                    window.dispatchEvent(new CustomEvent('lumina_shorts_updated', { detail: { shorts: shortsList } }));
+                } catch(e) {
+                    console.warn('Błąd publikacji 9:16 w rolkach:', e);
+                }
+            }
+
+            // 4. Zamknięcie modala, czyszczenie pól i odświeżenie feedu
+            closeModal('quickPostModal');
+            if (document.getElementById('qpTitleInput')) document.getElementById('qpTitleInput').value = '';
+            if (document.getElementById('qpTextInput')) document.getElementById('qpTextInput').value = '';
+            if (document.getElementById('qpVideoUrlInput')) document.getElementById('qpVideoUrlInput').value = '';
+            if (document.getElementById('qpIs916Checkbox')) document.getElementById('qpIs916Checkbox').checked = false;
+            removeQpImage();
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
+            }
+
+            if (typeof renderFeed === 'function') {
+                renderFeed();
+            }
+
+            showToast('Twój wpis został pomyślnie opublikowany na tablicy i w Twoim profilu! ✨✨');
+
+            // Płynne przewinięcie do nowo opublikowanego wpisu
+            setTimeout(() => {
+                const bar = document.getElementById('luminaQuickPostBar');
+                if (bar) {
+                    bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 200);
+        }
+
+        // Inicjalizacja belki publikacji przy starcie
+        window.addEventListener('DOMContentLoaded', updateQuickPostBarAuthorUI);
+        window.addEventListener('load', updateQuickPostBarAuthorUI);
 
         function saveCampaignSubmit(e) {
             e.preventDefault();
