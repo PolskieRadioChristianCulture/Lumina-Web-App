@@ -423,15 +423,134 @@
         width: 100%;
     }
 
-    /* The horizontal tracks must hand vertical gestures back to the page. */
-    #profilesCarousel,
-    .stories-scroll-track,
-    .filter-chips-row,
-    .sort-tabs-group {
+    /* Profile carousel on homepage has custom JS touch drag handlers that dispatch vertical scrolling. */
+    #profilesCarousel {
         overflow-y: hidden !important;
         overscroll-behavior-x: contain;
         overscroll-behavior-y: auto;
         touch-action: pan-y pinch-zoom;
+    }
+
+    /* Horizontal swipe tracks must allow native horizontal pan-x alongside vertical page scrolling */
+    .stories-scroll-track,
+    .filter-chips-row,
+    .smart-sort-bar,
+    .sort-tabs-group {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        overscroll-behavior-x: contain !important;
+        overscroll-behavior-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-x pan-y !important;
+    }
+
+    /* ══════════ SMCC & MOBILE-FIRST TABLICA COMPACT SPACING ══════════ */
+    .board-container {
+        padding: 6px 4px 80px 4px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 0 !important;
+    }
+
+    .feed-center-column {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .board-top-switcher-dock {
+        margin: 4px auto 8px auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .lumina-stories-bar {
+        margin: 0 0 8px 0 !important;
+        padding: 8px 6px !important;
+        border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        background: rgba(11, 24, 56, 0.75) !important;
+    }
+
+    .stories-scroll-track {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 2px 2px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-x pan-y !important;
+        scrollbar-width: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .stories-scroll-track .fb-story-card {
+        flex-shrink: 0 !important;
+        touch-action: pan-x pan-y !important;
+        -webkit-user-drag: none !important;
+        user-drag: none !important;
+    }
+    .stories-scroll-track img,
+    .stories-scroll-track a {
+        -webkit-user-drag: none !important;
+        user-drag: none !important;
+    }
+
+    .smart-sort-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        padding: 6px 8px !important;
+        margin: 0 0 8px 0 !important;
+        border-radius: 12px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-x pan-y !important;
+        white-space: nowrap !important;
+        scrollbar-width: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .smart-sort-bar::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .smart-sort-bar > * {
+        flex-shrink: 0 !important;
+    }
+
+    .sort-tabs-group {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        touch-action: pan-x pan-y !important;
+    }
+
+    .sort-tab-btn {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        touch-action: manipulation !important;
+    }
+
+    .feed-stream {
+        gap: 10px !important;
+    }
+
+    .post-card-1x1,
+    .post-card {
+        border-radius: 14px !important;
+        margin-bottom: 0 !important;
     }
 
     .feed-stream,
@@ -518,5 +637,30 @@
     /* Zachowaj wszystkie akcje Rolek bez obcinania sterowania dźwiękiem. */
     .shorts-header .header-title-box {
         display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .fb-story-card {
+        width: 104px !important;
+        min-width: 104px !important;
+        height: 168px !important;
+        border-radius: 12px !important;
+    }
+    .fb-story-create-top {
+        height: 114px !important;
+    }
+    .fb-story-create-btn {
+        width: 32px !important;
+        height: 32px !important;
+        bottom: -16px !important;
+        font-size: 0.82rem !important;
+    }
+    .fb-story-create-bottom {
+        height: 54px !important;
+        padding-bottom: 6px !important;
+    }
+    .fb-story-create-label {
+        font-size: 0.72rem !important;
     }
 }

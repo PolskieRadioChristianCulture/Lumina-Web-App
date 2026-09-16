@@ -1141,11 +1141,16 @@
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y;
             padding: 4px 2px;
-            scroll-behavior: smooth;
         }
         .stories-scroll-track::-webkit-scrollbar {
             display: none;
+        }
+        .stories-scroll-track,
+        .stories-scroll-track * {
+            -webkit-user-drag: none !important;
+            user-drag: none !important;
         }
         .fb-story-card {
             position: relative;
@@ -1333,8 +1338,8 @@
 
         @media (max-width: 900px) {
             .board-top-switcher-dock {
-                margin-top: 26px;
-                margin-bottom: 14px;
+                margin-top: 4px;
+                margin-bottom: 8px;
             }
         }
         @media (max-width: 600px) {
@@ -10037,6 +10042,88 @@
                     btnRight.style.display = canScrollRight ? 'flex' : 'none';
                 }
             };
+
+                        // Pancerne przewijanie dotykowe i myszką (Drag-to-Scroll) dla Rolek i Sortowania
+            function initHorizontalDragScroll(el) {
+                if (!el || el._hasDragScroll) return;
+                el._hasDragScroll = true;
+                let isDown = false, startX = 0, scrollStart = 0, hasMoved = false;
+
+                el.addEventListener('dragstart', function(e) { e.preventDefault(); });
+                el.addEventListener('mousedown', function(e) {
+                    if (e.button !== 0) return;
+                    isDown = true;
+                    hasMoved = false;
+                    startX = e.pageX;
+                    scrollStart = el.scrollLeft;
+                });
+
+                window.addEventListener('mouseup', function() {
+                    if (!isDown) return;
+                    isDown = false;
+                    if (hasMoved) {
+                        const suppressClick = function(ce) {
+                            ce.preventDefault();
+                            ce.stopPropagation();
+                            window.removeEventListener('click', suppressClick, true);
+                        };
+                        window.addEventListener('click', suppressClick, true);
+                        setTimeout(function() { window.removeEventListener('click', suppressClick, true); }, 150);
+                    }
+                });
+
+                el.addEventListener('mousemove', function(e) {
+                    if (!isDown) return;
+                    const walk = (e.pageX - startX);
+                    if (Math.abs(walk) > 4) {
+                        hasMoved = true;
+                        el.scrollLeft = scrollStart - walk;
+                        if (typeof window.updateStoriesScrollButtons === 'function') {
+                            window.updateStoriesScrollButtons();
+                        }
+                    }
+                });
+
+                // Touch swipe guard - zapobiega przypadkowemu kliknięciu w Rolkę podczas machnięcia palcem
+                let touchStartX = 0, touchMoved = false;
+                el.addEventListener('touchstart', function(e) {
+                    if (!e.touches || !e.touches[0]) return;
+                    touchStartX = e.touches[0].clientX;
+                    touchMoved = false;
+                }, { passive: true });
+
+                el.addEventListener('touchmove', function(e) {
+                    if (!e.touches || !e.touches[0]) return;
+                    const dx = Math.abs(e.touches[0].clientX - touchStartX);
+                    if (dx > 8) {
+                        touchMoved = true;
+                        if (typeof window.updateStoriesScrollButtons === 'function') {
+                            window.updateStoriesScrollButtons();
+                        }
+                    }
+                }, { passive: true });
+
+                el.addEventListener('click', function(e) {
+                    if (touchMoved) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        touchMoved = false;
+                    }
+                }, true);
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const sTrack = document.getElementById('storiesScrollTrack');
+                const sSort = document.getElementById('smartSortBar');
+                if (sTrack) initHorizontalDragScroll(sTrack);
+                if (sSort) initHorizontalDragScroll(sSort);
+            });
+            setTimeout(function() {
+                const sTrack = document.getElementById('storiesScrollTrack');
+                const sSort = document.getElementById('smartSortBar');
+                if (sTrack) initHorizontalDragScroll(sTrack);
+                if (sSort) initHorizontalDragScroll(sSort);
+            }, 500);
 
             // Inicjalizacja górnego paska: domyślnie ROLKI jako dedykowany wybór
             (function() {
