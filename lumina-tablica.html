@@ -1185,6 +1185,44 @@
             object-fit: cover;
             transition: transform 0.35s ease;
         }
+        video.fb-story-bg {
+            pointer-events: none;
+            background: #000;
+        }
+        .fb-story-video-badge {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(250, 204, 21, 0.7);
+            color: #fef08a;
+            font-size: 0.60rem;
+            font-weight: 800;
+            padding: 2.5px 7px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        .fb-story-video-badge i {
+            font-size: 0.52rem;
+            color: #f59e0b;
+        }
+        .btn-toggle-reflection {
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        }
+        .btn-toggle-reflection:hover {
+            background: rgba(250, 204, 21, 0.22) !important;
+            border-color: #facc15 !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
         .fb-story-gradient {
             position: absolute;
             inset: 0;
@@ -4396,40 +4434,44 @@
                         <div class="fb-story-author">Jola Wójcik</div>
                     </a>
 
-                    <!-- 4. Świadectwo Wiary -->
-                    <a href="rolki#short_swiadectwo_grzegorz" class="fb-story-card" title="Rolka: Uwolnienie od nałogu • Świadectwo Wiary">
-                        <img src="tlo_tv_dzj.jpg" alt="Świadectwo" class="fb-story-bg" loading="lazy">
+                    <!-- 4. Świadectwo Wiary (Modlitwa) -->
+                    <a href="rolki#short_swiadectwo_grzegorz" class="fb-story-card" title="Rolka: Dom Modlitwy • Świadectwo Wiary">
+                        <video class="fb-story-bg fb-story-video" src="dom_modlitwy_narod_zydowski.mp4" poster="tlo_tv_dzj.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                         <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>
                         <div class="fb-story-avatar-badge" style="border-color:#f59e0b;">
                             <img src="avatar_cezary_official.jpg" alt="Świadectwo" loading="lazy">
                         </div>
-                        <div class="fb-story-author">Świadectwo Wiary</div>
+                        <div class="fb-story-author">Dom Modlitwy</div>
                     </a>
 
                     <!-- 5. Alleluja Wear -->
                     <a href="rolki#short_alleluja_wear" class="fb-story-card" title="Rolka: Kolekcja Alleluja • Noś wiarę z odwagą">
-                        <img src="reklama_sklep_alleluja_poster.jpg" alt="Alleluja" class="fb-story-bg" loading="lazy">
+                        <video class="fb-story-bg fb-story-video" src="reklama_sklep_alleluja.mp4" poster="reklama_sklep_alleluja_poster.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                         <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>
                         <div class="fb-story-avatar-badge" style="border-color:#facc15;">
                             <img src="lumina_icon.jpg" alt="Alleluja" loading="lazy">
                         </div>
                         <div class="fb-story-author">Alleluja Wear</div>
                     </a>
 
-                    <!-- 6. Świadectwo Roberta -->
-                    <a href="rolki#short_swiadectwo_robert" class="fb-story-card" title="Rolka: Nowe Stworzenie • Robert">
-                        <img src="tlo_tv_dzj.jpg" alt="Robert" class="fb-story-bg" loading="lazy">
+                    <!-- 6. Kino VOD CC -->
+                    <a href="rolki#short_swiadectwo_robert" class="fb-story-card" title="Rolka: Hity Chrześcijańskiego Kina VOD">
+                        <video class="fb-story-bg fb-story-video" src="vod_hity_kina.mp4" poster="tlo_tv_dzj.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                         <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>
                         <div class="fb-story-avatar-badge" style="border-color:#10b981;">
                             <img src="avatar_robert.jpg" alt="Robert" loading="lazy">
                         </div>
-                        <div class="fb-story-author">Robert • Nawrócenie</div>
+                        <div class="fb-story-author">Kino VOD CC</div>
                     </a>
 
                     <!-- 7. Słowo Boże Jan -->
                     <a href="rolki#short_slowo_zycia_jan" class="fb-story-card" title="Rolka: Na początku było Słowo • Cezary Rogowski">
-                        <img src="tlo_profilowe_cezary.jpg" alt="Słowo Boże" class="fb-story-bg" loading="lazy">
+                        <video class="fb-story-bg fb-story-video" src="tlo_profilowe_cezary.mp4" poster="tlo_profilowe_cezary.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                         <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>
                         <div class="fb-story-avatar-badge" style="border-color:#8b5cf6;">
                             <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" loading="lazy">
                         </div>
@@ -4529,6 +4571,26 @@
 
                         // Re-append cards strictly after createCard (which always stays at position 0)
                         cards.forEach(card => track.appendChild(card));
+
+                        // Uruchomienie autoodtwarzania wideo w rolkach (bez dźwięku, zapętlenie)
+                        track.querySelectorAll('video.fb-story-video').forEach(v => {
+                            v.muted = true;
+                            v.loop = true;
+                            v.setAttribute('playsinline', '');
+                            v.setAttribute('webkit-playsinline', '');
+                            const playPromise = v.play();
+                            if (playPromise && typeof playPromise.catch === 'function') {
+                                playPromise.catch(() => {
+                                    const kickstart = () => {
+                                        v.play().catch(() => {});
+                                        window.removeEventListener('touchstart', kickstart);
+                                        window.removeEventListener('click', kickstart);
+                                    };
+                                    window.addEventListener('touchstart', kickstart, { once: true, passive: true });
+                                    window.addEventListener('click', kickstart, { once: true, passive: true });
+                                });
+                            }
+                        });
 
                         if (typeof window.updateStoriesScrollButtons === 'function') {
                             window.updateStoriesScrollButtons();
@@ -6137,6 +6199,75 @@
                 }
             } catch(e) {}
 
+            // 0.00. Najświeższy opublikowany wpis użytkownika (Lumina Quick Publisher Spotlight)
+            try {
+                const recentRaw = localStorage.getItem('lumina_recent_published_post');
+                if (recentRaw) {
+                    const rp = JSON.parse(recentRaw);
+                    if (rp && rp.id && !seenPostIds.has(rp.id)) {
+                        seenPostIds.add(rp.id);
+                        posts.unshift({
+                            ...rp,
+                            _isNewlyPublished: true,
+                            _isFreshSpotlight: true,
+                            _sortTs: rp.createdAtTimestamp || Date.now()
+                        });
+                    }
+                }
+            } catch(e) {}
+
+            // 0.0A. OFICJALNE ROLKI WIARY W FEEDZIE (AUTOOODTWARZANIE WIDEO BEZ DŹWIĘKU 44PX)
+            posts.push({
+                id: 'post_rolka_alleluja',
+                type: 'post',
+                author: 'Alleluja Wear • Odzież z Przesłaniem',
+                authorRole: 'Rolka Wiary ✝️✨ • Oficjalna Kolekcja CC',
+                authorAvatar: 'lumina_icon.jpg',
+                authorSlug: 'allelujawear',
+                time: 'Dzisiaj • 🎬 Rolka Wiary (Wideo)',
+                title: '🎬 Rolka Wiary: Nowa Kolekcja Alleluja — Noś Wiarę z Odwagą!',
+                text: '„Bo nie wstydzę się Ewangelii Chrystusowej, jest ona bowiem mocą Bożą ku zbawieniu każdego, kto wierzy.” (Rz 1, 16) ✨ Zobacz naszą najnowszą kolekcję chrześcijańską. Każdy wzór to świadectwo żywej wiary na co dzień!',
+                image: 'reklama_sklep_alleluja.mp4',
+                likes: 84,
+                amen: 95,
+                _isFeedVideo: true,
+                _sortTs: Date.now() - 25 * 60 * 1000
+            });
+
+            posts.push({
+                id: 'post_rolka_slowo_zycia',
+                type: 'post',
+                author: 'Cezary Rogowski',
+                authorRole: 'Założyciel Christian Culture ✨',
+                authorAvatar: 'avatar_cezary_official.jpg',
+                authorSlug: 'cezaryrgowski',
+                time: 'Dzisiaj • 🎬 Słowo Życia (Rolka Wiary)',
+                title: '🎬 Rolka Wiary: Na Początku Było Słowo • Cezary Rogowski',
+                text: '„W Nim było życie, a życie było światłością ludzi. A światłość świeci w ciemności, a ciemność jej nie ogarnęła.” (J 1, 4-5) ✨ Boże Słowo rozświetla każdą drogę i napełnia serce pokojem!',
+                image: 'tlo_profilowe_cezary.mp4',
+                likes: 112,
+                amen: 128,
+                _isFeedVideo: true,
+                _sortTs: Date.now() - 55 * 60 * 1000
+            });
+
+            posts.push({
+                id: 'post_rolka_kino_vod',
+                type: 'post',
+                author: 'Kino Chrześcijańskie CC',
+                authorRole: 'Kanał Filmowy VOD ✨ • Premiery',
+                authorAvatar: 'logo_cctv.png',
+                authorSlug: 'cctv',
+                time: 'Dzisiaj • 🎬 Zwiastun Filmowy VOD',
+                title: '🎬 Rolka Kina CC: Zwiastuny i Hity Chrześcijańskiego Kina VOD',
+                text: 'Odkryj najpiękniejsze filmy z wartościami na naszej platformie VOD! Wzruszające historie, świadectwa wiary i biblijne opowieści dla całej rodziny. Oglądaj na polskieradio.cc/vod! ✨🎬',
+                image: 'vod_hity_kina.mp4',
+                likes: 71,
+                amen: 82,
+                _isFeedVideo: true,
+                _sortTs: Date.now() - 3 * 3600 * 1000
+            });
+
             // 0.0. NOWOŚĆ: CCTV24 INSTRUMENTAL WORSHIP (21 SIERPNIA 2026)
             posts.push({
                 id: 'post_cctv24_worship_nowosc_21_08',
@@ -6809,12 +6940,28 @@
             const engagement = (post.amen || 0) * 0.4 + (post.likes || 0) * 0.2;
             score += Math.min(engagement, 80);
 
-            // 5. Świeżość w bieżącej sesji użytkownika (Anti-Fatigue / Żywa Tablica)
+            // 5. Świeżość w bieżącej sesji użytkownika (Anti-Fatigue / Żywa Tablica & Rotacja)
             if (mode === 'smart_daypart') {
                 const seenPosts = window._luminaSeenPostIds || (window._luminaSeenPostIds = new Set(JSON.parse(sessionStorage.getItem('lumina_seen_feed_posts') || '[]')));
-                if (!seenPosts.has(post.id)) {
-                    score += 45; // Bonus za jeszcze nieodkryte wpisy w tej sesji!
+                if (seenPosts.has(post.id)) {
+                    score -= 75; // Wpisy już przejrzane ustępują miejsca świeżym treściom
+                } else {
+                    score += 90; // Silny priorytet dla jeszcze nieodkrytych treści w sesji!
                 }
+
+                // Dynamiczny współczynnik rotacji po odświeżeniu (żywy obrót głosami społeczności)
+                let seed = 77;
+                try {
+                    seed = parseInt(sessionStorage.getItem('lumina_stories_seed') || '77', 10);
+                } catch(e) {}
+                let h = seed;
+                const str = String(post.id || '');
+                for (let i = 0; i < str.length; i++) {
+                    h = ((h << 5) - h) + str.charCodeAt(i);
+                    h |= 0;
+                }
+                const sessionVariety = (Math.abs(h) % 80) - 40; // od -40 do +40
+                score += sessionVariety;
             }
 
             return score;
@@ -7070,9 +7217,32 @@
                 video.play().catch(() => {});
             }
 
+            function initStoryReelsVideos() {
+                const storyVideos = document.querySelectorAll('video.fb-story-video');
+                storyVideos.forEach(v => {
+                    v.muted = true;
+                    v.loop = true;
+                    v.setAttribute('playsinline', '');
+                    v.setAttribute('webkit-playsinline', '');
+                    const p = v.play();
+                    if (p && typeof p.catch === 'function') {
+                        p.catch(() => {
+                            const kickstart = () => {
+                                v.play().catch(() => {});
+                                window.removeEventListener('touchstart', kickstart);
+                                window.removeEventListener('click', kickstart);
+                            };
+                            window.addEventListener('touchstart', kickstart, { once: true, passive: true });
+                            window.addEventListener('click', kickstart, { once: true, passive: true });
+                        });
+                    }
+                });
+            }
+
             return {
                 init,
                 scanAndObserve,
+                initStoryReelsVideos,
                 toggleSound,
                 getSeenPostIds
             };
@@ -7083,10 +7253,62 @@
             LuminaViewportMediaManager.toggleSound(btn, evt);
         };
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() { LuminaViewportMediaManager.init(); });
+            document.addEventListener('DOMContentLoaded', function() { 
+                LuminaViewportMediaManager.init(); 
+                LuminaViewportMediaManager.initStoryReelsVideos();
+            });
         } else {
             LuminaViewportMediaManager.init();
+            LuminaViewportMediaManager.initStoryReelsVideos();
         }
+
+        // ── Ekstrakcja Teasera / Pigułki Dnia dla Rozważania ──
+        function extractReflectionTeaser(htmlOrText) {
+            try {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = htmlOrText;
+                const p = tmp.querySelector('p');
+                let text = p ? (p.textContent || p.innerText) : tmp.textContent;
+                text = (text || '').trim().replace(/\s+/g, ' ');
+                if (text.length > 270) {
+                    return text.substring(0, 267) + '...';
+                }
+                return text || 'Słowo i inspiracja na dzisiejszy dzień z cyklu „Dobrze, że jesteś”. Przeczytaj pełne rozważanie i zaczerpnij siłę w Bożej obecności! ✨';
+            } catch(e) {
+                return 'Słowo i inspiracja na dzisiejszy dzień z cyklu „Dobrze, że jesteś”. ✨';
+            }
+        }
+
+        // ── Płynne Rozwijanie / Zwinięcie Rozważania Dnia ──
+        window.toggleDailyReflectionExpand = function(btn, refId) {
+            const wrap = document.getElementById('dailyReflectionContentWrap_' + refId);
+            if (!wrap) return;
+            const teaser = document.getElementById('dailyReflectionTeaser_' + refId);
+            const fullText = document.getElementById('dailyReflectionFullText_' + refId);
+            const label = btn.querySelector('.btn-toggle-reflection-text');
+            const icon = btn.querySelector('.btn-toggle-reflection-icon');
+
+            const isCurrentlyOpen = fullText && fullText.style.display !== 'none';
+            if (isCurrentlyOpen) {
+                if (fullText) fullText.style.display = 'none';
+                if (teaser) teaser.style.display = 'block';
+                if (label) label.textContent = 'Czytaj całe rozważanie 📖';
+                if (icon) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+                try { sessionStorage.setItem('lumina_refl_expanded_' + refId, '0'); } catch(e) {}
+            } else {
+                if (fullText) fullText.style.display = 'block';
+                if (teaser) teaser.style.display = 'none';
+                if (label) label.textContent = 'Zwiń rozważanie';
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+                try { sessionStorage.setItem('lumina_refl_expanded_' + refId, '1'); } catch(e) {}
+            }
+        };
 
         // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
@@ -7124,6 +7346,15 @@
             if (window._luminaDailyReflection) {
                 combined.push(window._luminaDailyReflection);
             }
+
+            // 👑 JEŚLI UŻYTKOWNIK WŁAŚNIE OPUBLIKOWAŁ POST — ZARAZ POD ROZWAŻANIEM NA GÓRZE TABLICY!
+            const freshUserPosts = userPosts.filter(p => p._isNewlyPublished || p._isFreshSpotlight);
+            freshUserPosts.forEach(fp => {
+                fp._isFreshSpotlight = true;
+                if (!combined.some(it => it.id === fp.id)) {
+                    combined.push(fp);
+                }
+            });
 
             // 2. POZYCJA 2: Reklama Oficjalnego Patrona Misji Christian Culture (KONCEPT STUDIO)
             combined.push({
@@ -7166,6 +7397,9 @@
             userPosts.forEach(p => {
                 if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
+                }
+                if (p._isFreshSpotlight || p._isNewlyPublished) {
+                    return; // Już w spotlight na samej górze!
                 }
                 if (pinnedPostIds.includes(p.id)) {
                     p._isPinnedByAdmin = true;
@@ -7488,10 +7722,20 @@
                             <!-- Grafika (jeśli jest) -->
                             <div class="post-details-box" style="padding-top:4px;">
                                 ${livePlayerHtml}
-                                ${item.title ? `<div class="post-headline" style="font-size:1.15rem; margin-bottom:16px;">${item.title}</div>` : ''}
-                                <!-- Pełna treść rozważania -->
-                                <div style="font-size:0.93rem; color:#e2e8f0; line-height:1.8; font-family:'Plus Jakarta Sans',sans-serif;">
-                                    ${item.fullTextHtml || '<p style="color:var(--text-secondary);">Trwa ładowanie rozważania...</p>'}
+                                ${item.title ? `<div class="post-headline" style="font-size:1.15rem; margin-bottom:12px;">${item.title}</div>` : ''}
+                                
+                                <div class="daily-reflection-content-wrap" id="dailyReflectionContentWrap_${item.id}">
+                                    <div class="daily-reflection-teaser" id="dailyReflectionTeaser_${item.id}" style="${sessionStorage.getItem('lumina_refl_expanded_' + item.id) === '1' ? 'display:none;' : 'display:block;'} font-size:0.94rem; color:#e2e8f0; line-height:1.75; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:10px;">
+                                        <p style="margin:0 0 8px 0; color:#f8fafc; font-weight:500;">${extractReflectionTeaser(item.fullTextHtml || item.title || '')}</p>
+                                    </div>
+                                    <div class="daily-reflection-fulltext" id="dailyReflectionFullText_${item.id}" style="${sessionStorage.getItem('lumina_refl_expanded_' + item.id) === '1' ? 'display:block;' : 'display:none;'} font-size:0.93rem; color:#e2e8f0; line-height:1.8; font-family:'Plus Jakarta Sans',sans-serif;">
+                                        ${item.fullTextHtml || '<p style="color:var(--text-secondary);">Trwa ładowanie rozważania...</p>'}
+                                    </div>
+                                    <button type="button" class="btn-toggle-reflection" onclick="toggleDailyReflectionExpand(this, '${item.id}')" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 18px; width:100%; border-radius:14px; background:rgba(250,204,21,0.12); border:1px solid rgba(250,204,21,0.35); color:#fef08a; font-weight:800; font-family:inherit; font-size:0.86rem; cursor:pointer; margin-top:6px;">
+                                        <i class="fa-solid fa-book-open"></i>
+                                        <span class="btn-toggle-reflection-text">${sessionStorage.getItem('lumina_refl_expanded_' + item.id) === '1' ? 'Zwiń rozważanie' : 'Czytaj całe rozważanie 📖'}</span>
+                                        <i class="fa-solid ${sessionStorage.getItem('lumina_refl_expanded_' + item.id) === '1' ? 'fa-chevron-up' : 'fa-chevron-down'} btn-toggle-reflection-icon" style="font-size:0.75rem;"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -7512,7 +7756,9 @@
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
                 
                 let badgeHtml = '';
-                if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);" title="Przypięty Wpis"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24;"></i> <span class="badge-type-tag-text">Przypięty Wpis</span></span>';
+                if (item._isFreshSpotlight || item._isNewlyPublished) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; box-shadow:0 0 14px rgba(245,158,11,0.5);" title="Twój Opublikowany Wpis"><i class="fa-solid fa-sparkles"></i> <span class="badge-type-tag-text">Twój Opublikowany Wpis</span></span>';
+                else if (item._isFeedVideo || (item.image && (item.image.endsWith('.mp4') || item.image.includes('.mp4')))) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,rgba(236,72,153,0.35),rgba(168,85,247,0.35)); border:1px solid #ec4899; color:#fbcfe8; font-weight:800; box-shadow:0 0 12px rgba(236,72,153,0.35);" title="Rolka Wiary"><i class="fa-solid fa-play" style="color:#f472b6;"></i> <span class="badge-type-tag-text">Rolka Wiary</span></span>';
+                else if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);" title="Przypięty Wpis"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24;"></i> <span class="badge-type-tag-text">Przypięty Wpis</span></span>';
                 else if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;" title="Rozważanie Dnia"><i class="fa-solid fa-sun"></i> <span class="badge-type-tag-text">Rozważanie Dnia</span></span>';
                 else if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad" title="Reklama Misji CC"><i class="fa-solid fa-rectangle-ad"></i> <span class="badge-type-tag-text">Reklama CC</span></span>';
                 else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo" title="Promocja CC"><i class="fa-solid fa-rocket"></i> <span class="badge-type-tag-text">Promocja CC</span></span>';
@@ -7981,6 +8227,9 @@
                 authorSlug: persona.slug,
                 authorBadge: persona.badge,
                 createdAt: 'Przed chwilą • ✨ Misja CC',
+                createdAtTimestamp: Date.now(),
+                _isNewlyPublished: true,
+                _isFreshSpotlight: true,
                 likes: 12,
                 amen: 8
             };
@@ -7999,7 +8248,8 @@
                     authorRole: persona.role,
                     likes: newCampaign.likes,
                     amen: newCampaign.amen,
-                    time: newCampaign.createdAt
+                    time: newCampaign.createdAt,
+                    createdAtTimestamp: newCampaign.createdAtTimestamp
                 });
             } else if (window.LuminaDB?.publishAsMissionAccount) {
                 window.LuminaDB.publishAsMissionAccount(persona.id, newCampaign);
@@ -8010,6 +8260,7 @@
                 const list = savedRaw ? JSON.parse(savedRaw) : [...DEFAULT_CC_CAMPAIGNS];
                 list.unshift(newCampaign);
                 localStorage.setItem('lumina_cc_campaigns', JSON.stringify(list));
+                localStorage.setItem('lumina_recent_published_post', JSON.stringify(newCampaign));
             } catch(err) {}
 
             closeModal('campaignModal');
