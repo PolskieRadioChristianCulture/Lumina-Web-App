@@ -1412,6 +1412,147 @@
         .fb-stories-scroll-left { left: 6px; }
         .fb-stories-scroll-right { right: 6px; }
 
+        /* ══════════ KARUZELA PROFILI "POZNAJMY SIĘ BLIŻEJ" ══════════ */
+        .profiles-carousel-block {
+            margin: 0 0 20px 0;
+            padding: 16px 14px 14px;
+            background: linear-gradient(135deg, rgba(15,23,42,0.94), rgba(17,35,80,0.90));
+            border: 1.5px solid rgba(139,92,246,0.35);
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 0 16px rgba(139,92,246,0.10);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-sizing: border-box;
+            width: 100%;
+            overflow: hidden;
+        }
+        .profiles-carousel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+        .profiles-carousel-title {
+            font-size: 0.80rem;
+            font-weight: 900;
+            color: #c4b5fd;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .profiles-carousel-title i { color: #a78bfa; }
+        .profiles-carousel-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 4px;
+        }
+        .profiles-carousel-scroll::-webkit-scrollbar { display: none; }
+        .profile-carousel-card {
+            flex: 0 0 calc(33.33% - 8px);
+            min-width: 88px;
+            max-width: 120px;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(139,92,246,0.20);
+            border-radius: 14px;
+            padding: 12px 8px 10px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .profile-carousel-card:hover,
+        .profile-carousel-card:active {
+            background: rgba(139,92,246,0.15);
+            border-color: rgba(139,92,246,0.5);
+            transform: translateY(-2px);
+        }
+        .profile-carousel-avatar-wrap {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+        }
+        .profile-carousel-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(139,92,246,0.6);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .profile-carousel-verified {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #7c3aed;
+            border-radius: 50%;
+            border: 2px solid #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            color: #fff;
+        }
+        .profile-carousel-name {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .profile-carousel-tag {
+            font-size: 0.62rem;
+            color: #a78bfa;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .profile-carousel-btn {
+            margin-top: 2px;
+            font-size: 0.62rem;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border: none;
+            border-radius: 20px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            min-height: 28px;
+        }
+        .profile-carousel-btn:hover { opacity: 0.85; }
+        @media (max-width: 480px) {
+            .profiles-carousel-block { padding: 12px 10px 10px; }
+            .profile-carousel-card {
+                flex: 0 0 80px;
+                min-width: 80px;
+                padding: 10px 6px 8px;
+            }
+            .profile-carousel-avatar,
+            .profile-carousel-avatar-wrap { width: 44px; height: 44px; }
+        }
+
         /* ══════════ QUICK POST PUBLISHER BAR ("CO DOBREGO U CIEBIE?") ══════════ */
          .quick-post-bar-container {
             margin: 0 0 16px 0;
@@ -7940,7 +8081,66 @@
                 return 'lumina_logo_portal.jpg';
             }
 
+            // ── Profile CC dla karuzeli "Poznajmy się bliżej" ──
+            const LUMINA_FEED_PROFILES = [
+                { name: 'Cezary Rogowski', slug: 'cezaryrgowski', tag: 'Dowódca CC', avatar: 'avatar_cezary_official.jpg', verified: true },
+                { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', tag: 'Ewangelizacja', avatar: 'avatar_wioletta_official.jpg', verified: true },
+                { name: 'Andrzej Thiel', slug: 'andrzejthiel', tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg', verified: true },
+                { name: 'Radio CC', slug: 'radiocc', tag: 'Radio chrześcijańskie', avatar: 'logo_radio_cc.jpg', verified: true },
+                { name: 'CC TV', slug: 'cctv', tag: 'Telewizja CC', avatar: 'logo_cctv.png', verified: true },
+                { name: 'CC Women', slug: 'ccwomen', tag: 'Kobiety wiary', avatar: 'logo_cc_women.jpg', verified: false },
+                { name: 'CC Men', slug: 'ccmen', tag: 'Mężczyźni wiary', avatar: 'logo_cc_men.jpg', verified: false },
+                { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', tag: 'Nauczanie', avatar: 'studiodobregoslowa_avatar.jpg', verified: true },
+                { name: 'Zbyszek Gieroń', slug: 'zbyszekgieron', tag: 'Świadectwo', avatar: 'avatar_zbyszek_gieron.jpg', verified: false },
+                { name: 'OsobowośćPLUS', slug: 'osobowoscplus', tag: 'Rozwój duchowy', avatar: 'logo_osobowosc_plus.jpg', verified: false },
+            ];
+
+            // Rotacja karuzeli — różny zestaw przy każdym ładowaniu feedu
+            let _profileCarouselOffset = 0;
+            function buildProfilesCarouselHtml() {
+                const count = 5;
+                const profiles = [];
+                for (let i = 0; i < count; i++) {
+                    profiles.push(LUMINA_FEED_PROFILES[(_profileCarouselOffset + i) % LUMINA_FEED_PROFILES.length]);
+                }
+                _profileCarouselOffset = (_profileCarouselOffset + 3) % LUMINA_FEED_PROFILES.length;
+                const cards = profiles.map(p => `
+                    <div class="profile-carousel-card" onclick="window.location.href='lumina-profile.html?user=${p.slug}'" title="Zobacz profil: ${p.name}">
+                        <div class="profile-carousel-avatar-wrap">
+                            <img class="profile-carousel-avatar" src="${p.avatar}" alt="${p.name}" loading="lazy" onerror="this.src='lumina_logo_portal.jpg'">
+                            ${p.verified ? `<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>` : ''}
+                        </div>
+                        <div class="profile-carousel-name">${p.name}</div>
+                        <div class="profile-carousel-tag">${p.tag}</div>
+                        <button class="profile-carousel-btn" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?user=${p.slug}'">Zobacz profil</button>
+                    </div>`).join('');
+                return `
+                <div class="profiles-carousel-block" aria-label="Sekcja: Poznajmy się bliżej">
+                    <div class="profiles-carousel-header">
+                        <div class="profiles-carousel-title">
+                            <i class="fa-solid fa-users"></i>
+                            Poznajmy się bliżej 🤝
+                        </div>
+                        <span style="font-size:0.65rem; color:#64748b; font-weight:600;">Społeczność LUMINA</span>
+                    </div>
+                    <div class="profiles-carousel-scroll">${cards}</div>
+                </div>`;
+            }
+
+            // ── Feed render z karuzelą co 8 postów ──
+            const PROFILE_CAROUSEL_EVERY = 8;
+            let _feedPostCount = 0; // liczy tylko prawdziwe posty (nie donor_wall, nie broadcast)
             container.innerHTML = visibleCombined.map(item => {
+                // Wstaw karuzelę co 8 prawdziwych postów (ale nie przed pierwszym postem)
+                let carouselPrefix = '';
+                if (!item.type || (item.type !== 'donor_wall' && !item._isBroadcastChannel)) {
+                    _feedPostCount++;
+                    if (_feedPostCount > 1 && (_feedPostCount - 1) % PROFILE_CAROUSEL_EVERY === 0) {
+                        carouselPrefix = buildProfilesCarouselHtml();
+                    }
+                }
+                // ── Dalej oryginalna logika karty ──
+                const cardHtml = (function() {
                 if (item.type === 'donor_wall') {
                     return `
                     <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
@@ -8406,6 +8606,8 @@
                         </div>
                     </article>
                 `;
+                })();
+                return carouselPrefix + cardHtml;
             }).join('');
             if (visibleCombined.length < combined.length) {
                 const remaining = combined.length - visibleCombined.length;
