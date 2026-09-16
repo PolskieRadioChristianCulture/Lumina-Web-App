@@ -530,6 +530,52 @@ export const PROFILES_DB = {
         ]
     },
 
+    'robertlukaszpio': {
+        uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+        slug: 'u_robertukaszpio_5668',
+        name: 'Robert Łukasz Pio',
+        age: 41,
+        city: 'Kraków, Polska',
+        avatar: 'avatar_robert.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członek Społeczności LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Wdowiec',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '52', posts: '1', likes: '112' },
+        verse: '„Kto nie miłuje, nie zna Boga, bo Bóg jest miłością.”',
+        verseRef: '— 1 J 4, 8',
+        bio: 'Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA. Zapraszam do zapoznania się z moją twórczością i playlistą wideo.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Muzyka Uwielbienia'],
+        photos: ['avatar_robert.jpg', 'lumina_default_cover.jpg'],
+        featuredPlaylistUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+        featuredPlaylistIframe: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+        posts: [
+            {
+                id: 'post_robert_featured_playlist',
+                title: '🎬 Oficjalna Playlista Wideo • Robert Łukasz Pio',
+                author: 'Robert Łukasz Pio',
+                authorSlug: 'u_robertukaszpio_5668',
+                authorAvatar: 'avatar_robert.jpg',
+                authorRole: 'Społeczność LUMINA ✨',
+                time: 'Przypięty wpis • 🎬 Wideo Playlista',
+                text: 'Szczęść Boże! Zapraszam do oglądania i odsłuchiwania mojej oficjalnej playlisty wideo. Niech te nagrania będą dla Was błogosławieństwem i umocnieniem w drodze wiary! 🙏✨',
+                youtubeUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+                embedHtml: '<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>',
+                likes: 12,
+                amen: 15,
+                image: null,
+                isPinned: true
+            }
+        ]
+    },
+
     'u_robertukaszpio_5668': {
         uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
         slug: 'u_robertukaszpio_5668',
@@ -1327,6 +1373,10 @@ export function getLuminaProfile(slug) {
     // 1. Sprawdzenie stałej bazy
     if (PROFILES_DB[clean]) return JSON.parse(JSON.stringify(PROFILES_DB[clean]));
     if (PROFILES_DB[slug]) return JSON.parse(JSON.stringify(PROFILES_DB[slug]));
+    if (clean.includes('robert') || (slug && slug.toLowerCase().includes('robert'))) {
+        const rob = PROFILES_DB['robertlukaszpio'] || PROFILES_DB['u_robertukaszpio_5668'] || PROFILES_DB['robertukaszpio'];
+        if (rob) return JSON.parse(JSON.stringify(rob));
+    }
     
     // 2. Sprawdzenie profilu zalogowanego użytkownika w localStorage
     try {

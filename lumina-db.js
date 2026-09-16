@@ -385,6 +385,46 @@ try {
 
 window.LuminaDB.ANDRZEJ_THIEL_PROFILE = ANDRZEJ_THIEL_PROFILE;
 
+// ── Robert Łukasz Pio Profile ──
+export const ROBERT_LUKASZ_PIO_PROFILE = {
+    uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+    id: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+    slug: 'u_robertukaszpio_5668',
+    chatSlug: 'robertlukaszpio',
+    name: 'Robert Łukasz Pio',
+    displayName: 'Robert Łukasz Pio',
+    age: 41,
+    city: 'Kraków, Polska',
+    avatar: 'avatar_robert.jpg',
+    cover: 'lumina_default_cover.jpg',
+    coverPosY: '50%',
+    job: 'Członek Społeczności LUMINA ✨',
+    role: 'Społeczność LUMINA ✨',
+    church: 'Wspólnota Chrześcijańska',
+    denom: 'Rzymskokatolickie',
+    status: 'Wdowiec',
+    pin: '7777',
+    visibility: 'public',
+    match: '98%',
+    matchScore: '98%',
+    stats: { friends: '52', posts: '1', likes: '112' },
+    verse: '„Kto nie miłuje, nie zna Boga, bo Bóg jest miłością.”',
+    verseRef: '— 1 J 4, 8',
+    bio: 'Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA. Zapraszam do zapoznania się z moją twórczością i playlistą wideo.',
+    tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Muzyka Uwielbienia'],
+    photos: ['avatar_robert.jpg', 'lumina_default_cover.jpg'],
+    featuredPlaylistUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk'
+};
+
+try {
+    localStorage.setItem('lumina_profile_robertlukaszpio', JSON.stringify(ROBERT_LUKASZ_PIO_PROFILE));
+    localStorage.setItem('lumina_profile_robertukaszpio', JSON.stringify(ROBERT_LUKASZ_PIO_PROFILE));
+    localStorage.setItem('lumina_profile_u_robertukaszpio_5668', JSON.stringify(ROBERT_LUKASZ_PIO_PROFILE));
+    localStorage.setItem('lumina_profile_jidflt3g8ohgpcowmcljaz9i5d42', JSON.stringify(ROBERT_LUKASZ_PIO_PROFILE));
+} catch(e) {}
+
+window.LuminaDB.ROBERT_LUKASZ_PIO_PROFILE = ROBERT_LUKASZ_PIO_PROFILE;
+
 // Domyślnie użytkownik jest wylogowany (brak automatycznego logowania do sesji admina)
 let currentUserState = null;
 let currentProfileState = null;
@@ -1268,6 +1308,12 @@ export async function getProfileFromCloud(slugOrUid) {
     if (!slugOrUid) return null;
     const normalized = slugOrUid.trim().toLowerCase();
     try {
+        if (normalized === 'robertlukaszpio' || normalized === 'robertukaszpio' || normalized === 'u_robertukaszpio_5668' || normalized === 'jidflt3g8ohgpcowmcljaz9i5d42') {
+            return ROBERT_LUKASZ_PIO_PROFILE;
+        }
+        if (normalized === 'andrzejthiel' || normalized === 'andrzej') {
+            return ANDRZEJ_THIEL_PROFILE;
+        }
         const localKey = `lumina_profile_${normalized}`;
         let localData = localStorage.getItem(localKey);
         if (!localData && currentUserState && (normalized === currentUserState.uid?.toLowerCase() || normalized === currentUserState.slug?.toLowerCase())) {
@@ -1316,6 +1362,27 @@ export async function getProfileFromCloud(slugOrUid) {
             const idbProf = await window.LuminaStorage.getProfile(slugOrUid);
             if (idbProf) return idbProf;
         }
+
+        // Fallback do bazy profili statycznych (PROFILES_DB / getLuminaProfile)
+        if (typeof window !== 'undefined') {
+            if (window.PROFILES_DB) {
+                const cleanSlug = normalized.replace(/^u_/, '');
+                const match = window.PROFILES_DB[slugOrUid] || window.PROFILES_DB[normalized] || window.PROFILES_DB[cleanSlug] ||
+                              (normalized.includes('robert') ? (window.PROFILES_DB['robertlukaszpio'] || window.PROFILES_DB['u_robertukaszpio_5668'] || window.PROFILES_DB['robertukaszpio']) : null);
+                if (match && match.uid) {
+                    try { localStorage.setItem(localKey, JSON.stringify(match)); } catch(e) {}
+                    return match;
+                }
+            }
+            if (typeof window.getLuminaProfile === 'function') {
+                const p = window.getLuminaProfile(slugOrUid);
+                if (p && p.uid && p.name && p.name !== 'Użytkownik LUMINA') {
+                    try { localStorage.setItem(localKey, JSON.stringify(p)); } catch(e) {}
+                    return p;
+                }
+            }
+        }
+
         return null;
     } catch(err) {
         console.warn(`Lumina getProfileFromCloud [${slugOrUid}] error:`, err.message);
@@ -1323,6 +1390,12 @@ export async function getProfileFromCloud(slugOrUid) {
         // poprawnego profilu zapisanego lokalnie — zawiera on także UID
         // potrzebny do autoryzacji wiadomości i wysyłki PUSH.
         try {
+            if (normalized === 'robertlukaszpio' || normalized === 'robertukaszpio' || normalized === 'u_robertukaszpio_5668' || normalized === 'jidflt3g8ohgpcowmcljaz9i5d42') {
+                return ROBERT_LUKASZ_PIO_PROFILE;
+            }
+            if (normalized === 'andrzejthiel' || normalized === 'andrzej') {
+                return ANDRZEJ_THIEL_PROFILE;
+            }
             const fallback = localStorage.getItem(`lumina_profile_${normalized}`) || localStorage.getItem(`lumina_profile_${slugOrUid}`);
             if (fallback) return JSON.parse(fallback);
         } catch(e) {}
@@ -2712,8 +2785,19 @@ export function normalizeChatUserId(idOrSlug) {
     // 4. Andrzej Thiel:
     if (str === 'andrzejthiel' || str === 'andrzej') return 'andrzejthiel';
 
-    // 5. Brat Robert Łukasz Pio (tylko oficjalny profil, nie blokować innych Robertów):
-    if (str === 'robertlukaszpio' || str === 'bratrobert' || str === 'brat_robert' || str === 'u_robertukaszpio_5668') return 'robertlukaszpio';
+    // 5. Brat Robert Łukasz Pio (wszystkie warianty: slug z bazy, slug czatu, UID auth Firebase, aliasy):
+    const isRobert = (
+        str === 'robertlukaszpio' || 
+        str === 'robertukaszpio' || 
+        str === 'u_robertukaszpio_5668' || 
+        str === 'bratrobert' || 
+        str === 'brat_robert' || 
+        str === 'robert_lukasz_pio' || 
+        str === 'robert-lukasz-pio' ||
+        str === 'jidflt3g8ohgpcowmcljaz9i5d42' ||
+        str === 'jIdflt3G8ohgpCoWmCLJAZ9i5d42'.toLowerCase()
+    );
+    if (isRobert) return 'robertlukaszpio';
     
     return str;
 }
@@ -2976,6 +3060,22 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         ? null
         : await getProfileFromCloud(receiverId);
     let receiverAuthUid = messageObj.receiverUid || receiverProfile?.uid || null;
+
+    // Bulletproof known recipient resolution
+    if (!receiverAuthUid) {
+        if (receiverId === 'robertlukaszpio' || receiverId === 'robertukaszpio' || receiverId === 'u_robertukaszpio_5668') {
+            receiverAuthUid = 'jIdflt3G8ohgpCoWmCLJAZ9i5d42';
+        } else if (receiverId === 'andrzejthiel') {
+            receiverAuthUid = 'andrzejthiel';
+        } else if (receiverId === 'zytagrzesik' || receiverId === 'u_zytagrzesik_7502') {
+            receiverAuthUid = 'z3PXzHryYuP8rQiXKW4jRORTFCg2';
+        } else if (receiverId === 'pawelmurawski' || receiverId === 'u_yciezywymbogiem_4231') {
+            receiverAuthUid = 'NHjYeuO4nxM8fIfEJPHmi9rTQV12';
+        } else if (typeof window !== 'undefined' && window.PROFILES_DB) {
+            const p = window.PROFILES_DB[receiverId] || window.PROFILES_DB['u_' + receiverId] || window.PROFILES_DB[receiverId.replace(/^u_/, '')];
+            if (p && p.uid) receiverAuthUid = p.uid;
+        }
+    }
     if (!receiverAuthUid && db && normalizedChatId) {
         try {
             const chatSnap = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
@@ -3001,6 +3101,12 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             console.warn('Lumina Direct Chat: nie udało się odczytać uczestnika prośby.', requestLookupError.message);
         }
     }
+    // Pancerne zabezpieczenie: każdy z każdym musi mieć możliwość pisać na czacie.
+    // Jeśli odbiorca nie ma jeszcze UID w Firebase Auth, używamy jego identyfikatora/sluga.
+    if (!receiverAuthUid && receiverId && receiverId !== 'guest') {
+        receiverAuthUid = receiverId;
+    }
+
     if (!receiverAuthUid || receiverAuthUid === user.uid) {
         console.warn('Lumina Direct Chat: nie można bezpiecznie ustalić odbiorcy wiadomości.', {
             receiverId,
@@ -6248,6 +6354,8 @@ window.LuminaDB = {
     loginWithEmail,
     loginUser,
     getProfileFromCloud,
+    ANDRZEJ_THIEL_PROFILE,
+    ROBERT_LUKASZ_PIO_PROFILE,
     logoutUser,
     setupPhoneRecaptcha,
     sendPhoneVerificationCode,

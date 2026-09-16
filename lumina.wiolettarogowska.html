@@ -186,7 +186,7 @@
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'wiolettarogowska';</script>
-    <script type="module" src="lumina-db.js?v=4.1.6"></script>
+    <script type="module" src="lumina-db.js?v=4.1.7"></script>
     <script src="js/lumina-community-posts.js"></script>
     <script src="lumina-radio.js?v=1"></script>
     <script type="module" src="lumina-chat-typing.js?v=1"></script>
@@ -6498,7 +6498,7 @@
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
-            { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_robertukaszpio_5668', uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_mariankampa_mmsa', name: 'Marian Kampa', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'andrzejhamera', name: 'Andrzej Hamera', job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚', city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg', badge: '✨ Społeczność', isMission: false },
@@ -6907,7 +6907,8 @@
                 chatId: chatId,
                 targetId: toId,
                 targetName: nameEl?.textContent || name,
-                targetAvatar: avatarEl?.src || avatar
+                targetAvatar: avatarEl?.src || avatar,
+                targetUid: (slug === 'u_robertukaszpio_5668' || toId === 'robertlukaszpio') ? 'jIdflt3G8ohgpCoWmCLJAZ9i5d42' : null
             };
 
             const box = document.getElementById('activeChatMessagesBox');
@@ -7088,6 +7089,7 @@
                 if (window.LuminaDB) {
                     const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
                         receiverId: activeChatSession.targetId,
+                        receiverUid: activeChatSession.targetUid || null,
                         text: text
                     });
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');

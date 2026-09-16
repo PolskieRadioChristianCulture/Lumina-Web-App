@@ -381,7 +381,7 @@
         globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED = true;
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=4.1.6"></script>
+    <script type="module" src="lumina-db.js?v=4.1.7"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
@@ -6579,7 +6579,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 return window.LuminaDB;
             }
             try {
-                const mod = await import('./lumina-db.js?v=4.1.6');
+                const mod = await import('./lumina-db.js?v=4.1.7');
                 window.LuminaDB = mod.default || mod || window.LuminaDB;
                 return window.LuminaDB;
             } catch(e) {
@@ -6603,7 +6603,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                 if (typeof authFn !== 'function') {
                     // Direct dynamic import execution
-                    const mod = await import('./lumina-db.js?v=4.1.6');
+                    const mod = await import('./lumina-db.js?v=4.1.7');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
@@ -8186,7 +8186,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     authFn = (dbEngine && dbEngine.loginWithGoogle) || window.loginWithGoogle;
                 }
                 if (typeof authFn !== 'function') {
-                    const mod = await import('./lumina-db.js?v=4.1.6');
+                    const mod = await import('./lumina-db.js?v=4.1.7');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
@@ -10942,7 +10942,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
-            { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_robertukaszpio_5668', uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_mariankampa_mmsa', name: 'Marian Kampa', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'andrzejhamera', name: 'Andrzej Hamera', job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚', city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg', badge: '✨ Społeczność', isMission: false },
@@ -11385,7 +11385,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 chatId: chatId,
                 targetId: toId,
                 targetName: nameEl?.textContent || name,
-                targetAvatar: avatarEl?.src || avatar
+                targetAvatar: avatarEl?.src || avatar,
+                targetUid: (slug === 'u_robertukaszpio_5668' || toId === 'robertlukaszpio') ? 'jIdflt3G8ohgpCoWmCLJAZ9i5d42' : null
             };
 
             const box = document.getElementById('activeChatMessagesBox');
@@ -11583,6 +11584,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 if (window.LuminaDB) {
                     const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
                         receiverId: activeChatSession.targetId,
+                        receiverUid: activeChatSession.targetUid || null,
                         text: text
                     });
                     if (!result) {
