@@ -1204,6 +1204,27 @@
             overflow: hidden;
             z-index: 2;
             background: #0f172a;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .fb-story-avatar-badge.living-ring {
+            border: 2px solid #facc15;
+            box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.5), 0 0 12px rgba(250, 204, 21, 0.65);
+            animation: livingStoryPulse 2.6s infinite ease-in-out;
+        }
+        @keyframes livingStoryPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.45), 0 0 10px rgba(250, 204, 21, 0.5);
+                border-color: #facc15;
+            }
+            50% {
+                box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.75), 0 0 16px rgba(236, 72, 153, 0.85);
+                border-color: #ec4899;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .fb-story-avatar-badge.living-ring {
+                animation: none;
+            }
         }
         .fb-story-avatar-badge img {
             width: 100%;
@@ -1623,6 +1644,64 @@
         }
         .post-card-1x1:hover .media-img-1x1 {
             transform: scale(1.03);
+        }
+
+        /* ── IN-VIEWPORT VIDEO AUTOPLAY & ERGONOMIC UNMUTE BUTTON ── */
+        .lumina-video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lumina-feed-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .btn-feed-video-sound {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            z-index: 12;
+            min-height: 44px;
+            min-width: 44px;
+            padding: 8px 14px;
+            border-radius: 22px;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: inherit;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            touch-action: manipulation;
+        }
+        .btn-feed-video-sound:hover,
+        .btn-feed-video-sound:focus-visible {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(250, 204, 21, 0.6);
+            transform: scale(1.04);
+        }
+        .btn-feed-video-sound.sound-active {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.95));
+            border-color: #facc15;
+            color: #000;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
+        }
+        .btn-feed-video-sound.sound-active i {
+            color: #000;
         }
 
         /* Post Body Content */
@@ -4364,13 +4443,102 @@
 
             <script>
                 (function() {
+                    function getViewedStories() {
+                        try {
+                            return JSON.parse(sessionStorage.getItem('lumina_viewed_stories') || '[]');
+                        } catch(e) {
+                            return [];
+                        }
+                    }
+
+                    function markStoryViewed(storyId) {
+                        if (!storyId) return;
+                        try {
+                            const viewed = getViewedStories();
+                            if (!viewed.includes(storyId)) {
+                                viewed.push(storyId);
+                                sessionStorage.setItem('lumina_viewed_stories', JSON.stringify(viewed));
+                            }
+                        } catch(e) {}
+                    }
+
+                    function getStoriesSeed() {
+                        try {
+                            let s = sessionStorage.getItem('lumina_stories_seed');
+                            if (!s) {
+                                const hour = new Date().getHours();
+                                s = String(Math.floor(Math.random() * 1000) * 100 + hour);
+                                sessionStorage.setItem('lumina_stories_seed', s);
+                            }
+                            return parseInt(s, 10) || 77;
+                        } catch(e) {
+                            return 77;
+                        }
+                    }
+
+                    function applyStoriesRotation() {
+                        const track = document.getElementById('storiesScrollTrack');
+                        if (!track) return;
+                        const createCard = track.querySelector('.fb-story-create');
+                        if (!createCard) return;
+
+                        const cards = Array.from(track.querySelectorAll('.fb-story-card:not(.fb-story-create)'));
+                        if (cards.length === 0) return;
+
+                        const viewedList = getViewedStories();
+                        const seed = getStoriesSeed();
+
+                        function pseudoHash(str) {
+                            let h = seed;
+                            for (let i = 0; i < str.length; i++) {
+                                h = ((h << 5) - h) + str.charCodeAt(i);
+                                h |= 0;
+                            }
+                            return Math.abs(h);
+                        }
+
+                        cards.forEach((card, idx) => {
+                            const href = card.getAttribute('href') || '';
+                            const cardId = href.replace(/^rolki#/, '') || card.getAttribute('title') || ('story_' + idx);
+                            const isViewed = viewedList.includes(cardId);
+                            const badge = card.querySelector('.fb-story-avatar-badge');
+                            
+                            if (badge) {
+                                if (!isViewed) {
+                                    badge.classList.add('living-ring');
+                                } else {
+                                    badge.classList.remove('living-ring');
+                                }
+                            }
+
+                            if (!card._hasStoryClickTrack) {
+                                card._hasStoryClickTrack = true;
+                                card.addEventListener('click', function() {
+                                    markStoryViewed(cardId);
+                                    if (badge) badge.classList.remove('living-ring');
+                                });
+                            }
+
+                            // Unviewed stories are prioritized (+10000)
+                            // Stable shuffle within the session based on session seed
+                            const cardHash = pseudoHash(cardId) % 1000;
+                            card._sortScore = (isViewed ? 0 : 10000) + cardHash;
+                        });
+
+                        cards.sort((a, b) => (b._sortScore || 0) - (a._sortScore || 0));
+
+                        // Re-append cards strictly after createCard (which always stays at position 0)
+                        cards.forEach(card => track.appendChild(card));
+
+                        if (typeof window.updateStoriesScrollButtons === 'function') {
+                            window.updateStoriesScrollButtons();
+                        }
+                    }
+
                     function renderStoryItems(shortsList) {
                         const track = document.getElementById('storiesScrollTrack');
                         if (!track) return;
                         track.querySelectorAll('.story-user-published').forEach(el => el.remove());
-
-                        const createCard = track.querySelector('.fb-story-create');
-                        const anchor = createCard || track.firstChild;
 
                         if (Array.isArray(shortsList) && shortsList.length > 0) {
                             shortsList.forEach(item => {
@@ -4382,21 +4550,15 @@
                                 a.innerHTML = `
                                     <img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">
                                     <div class="fb-story-gradient"></div>
-                                    <div class="fb-story-avatar-badge" style="border-color:#ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.7);">
+                                    <div class="fb-story-avatar-badge living-ring" style="border-color:#ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.7);">
                                         <img src="${item.authorAvatar || 'lumina_icon.jpg'}" alt="${item.author || 'Autor'}" loading="lazy" onerror="this.src='lumina_icon.jpg'">
                                     </div>
                                     <div class="fb-story-author">${item.author || 'Nowa Rolka'}</div>
                                 `;
-                                if (anchor && anchor.nextSibling) {
-                                    track.insertBefore(a, anchor.nextSibling);
-                                } else {
-                                    track.appendChild(a);
-                                }
+                                track.appendChild(a);
                             });
                         }
-                        if (typeof window.updateStoriesScrollButtons === 'function') {
-                            window.updateStoriesScrollButtons();
-                        }
+                        applyStoriesRotation();
                     }
 
                     // Initial render from local cache
@@ -4404,8 +4566,12 @@
                         const cachedShorts = localStorage.getItem('lumina_shorts_feed');
                         if (cachedShorts) {
                             renderStoryItems(JSON.parse(cachedShorts));
+                        } else {
+                            applyStoriesRotation();
                         }
-                    } catch(e) {}
+                    } catch(e) {
+                        applyStoriesRotation();
+                    }
 
                     // Listen to updates from rolki feed
                     window.addEventListener('lumina_shorts_updated', function(e) {
@@ -4413,6 +4579,8 @@
                             renderStoryItems(e.detail.shorts);
                         }
                     });
+
+                    window.refreshLuminaStoriesRotation = applyStoriesRotation;
                 })();
             </script>
 
@@ -6641,6 +6809,14 @@
             const engagement = (post.amen || 0) * 0.4 + (post.likes || 0) * 0.2;
             score += Math.min(engagement, 80);
 
+            // 5. Świeżość w bieżącej sesji użytkownika (Anti-Fatigue / Żywa Tablica)
+            if (mode === 'smart_daypart') {
+                const seenPosts = window._luminaSeenPostIds || (window._luminaSeenPostIds = new Set(JSON.parse(sessionStorage.getItem('lumina_seen_feed_posts') || '[]')));
+                if (!seenPosts.has(post.id)) {
+                    score += 45; // Bonus za jeszcze nieodkryte wpisy w tej sesji!
+                }
+            }
+
             return score;
         }
 
@@ -6702,6 +6878,215 @@
         }
 
         window.setFeedSortMode = setFeedSortMode;
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // 👑 INTELIGENTNY DYSTRYBUTOR RÓŻNORODNOŚCI AUTORÓW (FAIR-SHARE INTERLEAVING)
+        // Zapobiega monotonii i grupowaniu wpisów tego samego autora
+        // ═══════════════════════════════════════════════════════════════════════
+        function interleaveFeedAuthors(posts) {
+            if (!Array.isArray(posts) || posts.length <= 2) return posts;
+            const pool = [...posts];
+            const result = [];
+            let lastAuthor = null;
+
+            while (pool.length > 0) {
+                let nextIdx = pool.findIndex(p => {
+                    const a = (p.authorSlug || p.author || '').toLowerCase().trim();
+                    return a !== lastAuthor;
+                });
+
+                if (nextIdx === -1) {
+                    nextIdx = 0;
+                }
+
+                const chosen = pool.splice(nextIdx, 1)[0];
+                result.push(chosen);
+                lastAuthor = (chosen.authorSlug || chosen.author || '').toLowerCase().trim();
+            }
+            return result;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // 🎥 INTELIGENTNY SILNIK AUTOODTWARZANIA WIDEO W VIEWPORCIE (MUTED)
+        // ORAZ OBSERWATOR ŚWIEŻOŚCI TABLICY (ANTI-FATIGUE OBSERVER)
+        // ═══════════════════════════════════════════════════════════════════════
+        const LuminaViewportMediaManager = (function() {
+            let videoObserver = null;
+            let postObserver = null;
+            const observedVideos = new Set();
+            const observedPostIds = new Set();
+            let currentPlayingVideo = null;
+            let userPrefersSound = false;
+
+            function getSeenPostIds() {
+                try {
+                    return new Set(JSON.parse(sessionStorage.getItem('lumina_seen_feed_posts') || '[]'));
+                } catch(e) {
+                    return new Set();
+                }
+            }
+
+            function markPostSeen(postId) {
+                if (!postId) return;
+                try {
+                    const seen = getSeenPostIds();
+                    if (!seen.has(postId)) {
+                        seen.add(postId);
+                        sessionStorage.setItem('lumina_seen_feed_posts', JSON.stringify(Array.from(seen)));
+                        if (window._luminaSeenPostIds) window._luminaSeenPostIds.add(postId);
+                    }
+                } catch(e) {}
+            }
+
+            function init() {
+                if (!('IntersectionObserver' in window)) return;
+
+                if (videoObserver) videoObserver.disconnect();
+                if (postObserver) postObserver.disconnect();
+                observedVideos.clear();
+                observedPostIds.clear();
+
+                // 1. Observer wideo w viewporcie (autoodtwarzanie bez dźwięku)
+                videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = entry.target;
+                        video._luminaRatio = entry.isIntersecting ? entry.intersectionRatio : 0;
+                    });
+
+                    let bestCandidate = null;
+                    let highestRatio = 0;
+
+                    observedVideos.forEach(video => {
+                        const r = video._luminaRatio || 0;
+                        if (r >= 0.5 && r > highestRatio) {
+                            highestRatio = r;
+                            bestCandidate = video;
+                        }
+                    });
+
+                    if (bestCandidate) {
+                        if (currentPlayingVideo && currentPlayingVideo !== bestCandidate) {
+                            currentPlayingVideo.pause();
+                        }
+                        currentPlayingVideo = bestCandidate;
+                        bestCandidate.muted = !userPrefersSound;
+                        const p = bestCandidate.play();
+                        if (p && typeof p.catch === 'function') {
+                            p.catch(() => {
+                                bestCandidate.muted = true;
+                                bestCandidate.play().catch(() => {});
+                            });
+                        }
+                    } else if (currentPlayingVideo) {
+                        if ((currentPlayingVideo._luminaRatio || 0) < 0.35) {
+                            currentPlayingVideo.pause();
+                            currentPlayingVideo = null;
+                        }
+                    }
+                }, {
+                    threshold: [0, 0.25, 0.5, 0.75, 1.0],
+                    rootMargin: '0px 0px -40px 0px'
+                });
+
+                // 2. Observer wpisów obejrzanych przez użytkownika (anty-znużenie)
+                postObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const isSignificant = entry.isIntersecting && (
+                            entry.intersectionRatio >= 0.35 || 
+                            (entry.intersectionRect && entry.intersectionRect.height >= 250)
+                        );
+                        if (isSignificant) {
+                            const pid = entry.target.getAttribute('id');
+                            if (pid && !pid.startsWith('broadcast_ch_') && pid !== 'donor_wall_special') {
+                                markPostSeen(pid);
+                            }
+                        }
+                    });
+                }, {
+                    threshold: [0.1, 0.25, 0.5]
+                });
+
+                scanAndObserve();
+            }
+
+            function scanAndObserve() {
+                if (!videoObserver && !postObserver) return;
+
+                // Videos
+                const videos = document.querySelectorAll('video.lumina-feed-video, .media-container-1x1 video, .campaign-media-container video');
+                videos.forEach(v => {
+                    if (videoObserver && !observedVideos.has(v)) {
+                        observedVideos.add(v);
+                        v.muted = !userPrefersSound;
+                        v.setAttribute('playsinline', '');
+                        v.setAttribute('webkit-playsinline', '');
+                        videoObserver.observe(v);
+                    }
+                });
+
+                // Posts
+                const posts = document.querySelectorAll('article.post-card-1x1');
+                posts.forEach(p => {
+                    const id = p.getAttribute('id');
+                    if (postObserver && id && !observedPostIds.has(id)) {
+                        observedPostIds.add(id);
+                        postObserver.observe(p);
+                    }
+                });
+            }
+
+            function toggleSound(btn, evt) {
+                if (evt) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+                const wrapper = btn.closest('.lumina-video-wrapper') || btn.parentElement;
+                const video = wrapper ? wrapper.querySelector('video') : null;
+                if (!video) return;
+
+                userPrefersSound = !userPrefersSound;
+                video.muted = !userPrefersSound;
+
+                document.querySelectorAll('.btn-feed-video-sound').forEach(b => {
+                    const iconMuted = b.querySelector('.sound-icon-muted');
+                    const iconUnmuted = b.querySelector('.sound-icon-unmuted');
+                    const label = b.querySelector('.sound-toggle-label');
+
+                    if (userPrefersSound) {
+                        if (iconMuted) iconMuted.style.display = 'none';
+                        if (iconUnmuted) iconUnmuted.style.display = 'inline-block';
+                        if (label) label.textContent = 'Dźwięk: Wł.';
+                        b.classList.add('sound-active');
+                        b.setAttribute('title', 'Dźwięk włączony (dotknij, by wyciszyć)');
+                    } else {
+                        if (iconMuted) iconMuted.style.display = 'inline-block';
+                        if (iconUnmuted) iconUnmuted.style.display = 'none';
+                        if (label) label.textContent = 'Dźwięk';
+                        b.classList.remove('sound-active');
+                        b.setAttribute('title', 'Dotknij, by włączyć dźwięk');
+                    }
+                });
+
+                video.play().catch(() => {});
+            }
+
+            return {
+                init,
+                scanAndObserve,
+                toggleSound,
+                getSeenPostIds
+            };
+        })();
+
+        window.LuminaViewportMediaManager = LuminaViewportMediaManager;
+        window.toggleFeedVideoAudio = function(btn, evt) {
+            LuminaViewportMediaManager.toggleSound(btn, evt);
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() { LuminaViewportMediaManager.init(); });
+        } else {
+            LuminaViewportMediaManager.init();
+        }
 
         // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
@@ -6812,7 +7197,11 @@
             // ── 👑 INTELIGENTNE SORTOWANIE POSTÓW WG PORY DNIA I RAMÓWKI ──
             normalUserPosts.sort((a, b) => calculatePostScore(b, daypart, currentSortMode) - calculatePostScore(a, daypart, currentSortMode));
 
-            normalUserPosts.forEach((post, idx) => {
+            // 👑 INTELIGENTNY DYSTRYBUTOR RÓŻNORODNOŚCI AUTORÓW (FAIR-SHARE INTERLEAVING)
+            // Zapobiega dominacji jednego autora pod rząd, przeplatając głosy społeczności
+            const diversifiedUserPosts = interleaveFeedAuthors(normalUserPosts);
+
+            diversifiedUserPosts.forEach((post, idx) => {
                 combined.push(post);
                 
                 // Wstrzyknięcie Ściany Darczyńców zaraz po pierwszym normalnym poście (czyli po Andrzeju Thielu)
@@ -7283,7 +7672,14 @@
                             (!item.image && effectiveEmbedHtml) ? '' : (() => {
                                 const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
                                 const mediaTag = isVideoMedia 
-                                    ? `<video src="${cardImgSrc}" class="${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" autoplay loop muted playsinline poster="vod_hity_kina_poster.jpg" style="width:100%; height:100%; object-fit:cover; display:block;"></video>`
+                                    ? `<div class="lumina-video-wrapper">
+                                        <video src="${cardImgSrc}" class="lumina-feed-video ${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" muted playsinline webkit-playsinline loop preload="metadata" poster="vod_hity_kina_poster.jpg"></video>
+                                        <button type="button" class="btn-feed-video-sound" onclick="toggleFeedVideoAudio(this, event)" title="Dotknij, by włączyć dźwięk" aria-label="Włącz lub wyłącz dźwięk">
+                                            <i class="fa-solid fa-volume-xmark sound-icon-muted"></i>
+                                            <i class="fa-solid fa-volume-high sound-icon-unmuted" style="display:none;"></i>
+                                            <span class="sound-toggle-label">Dźwięk</span>
+                                        </button>
+                                       </div>`
                                     : `<img src="${cardImgSrc}" alt="${item.title || item.author}" class="${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">`;
                                 return isCampaign ? `
                                     <div class="campaign-media-container">${mediaTag}</div>
@@ -7356,6 +7752,9 @@
             }
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(container);
+            }
+            if (window.LuminaViewportMediaManager?.scanAndObserve) {
+                window.LuminaViewportMediaManager.scanAndObserve();
             }
         }
 
