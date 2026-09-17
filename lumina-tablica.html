@@ -2581,6 +2581,10 @@
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(15, 23, 42, 0.5);
             margin-top: auto;
+            box-sizing: border-box;
+            width: 100%;
+            overflow: hidden;
+            gap: 4px;
         }
         .post-action-btn {
             background: transparent;
@@ -2596,6 +2600,9 @@
             border-radius: 16px;
             transition: all 0.2s;
             font-family: inherit;
+            min-width: 0;
+            flex-shrink: 1;
+            white-space: nowrap;
         }
         .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
         .post-action-btn.liked { color: #f43f5e; }
@@ -2999,6 +3006,20 @@
             }
             .form-input, .input-composer {
                 font-size: 16px !important;
+            }
+            .post-actions-bar {
+                padding: 8px 10px;
+                gap: 2px;
+                flex-wrap: nowrap;
+            }
+            .post-action-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                gap: 3px;
+                min-height: 44px;
+            }
+            .post-action-btn .btn-text {
+                display: none;
             }
         }
 
