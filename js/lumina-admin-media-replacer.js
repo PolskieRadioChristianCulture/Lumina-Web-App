@@ -318,35 +318,26 @@
                 align-items: center;
                 gap: 6px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 12px rgba(245, 158, 11, 0.3);
-                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s, color 0.2s, box-shadow 0.2s;
+                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
                 min-height: 44px;
                 min-width: 44px;
-                opacity: 0;
-                pointer-events: none;
+                opacity: 0 !important;
+                pointer-events: none !important;
                 transform: translateY(-4px) scale(0.96);
             }
 
-            /* Pojawienie się na krótką chwilę (ok. 3.8s) po załadowaniu */
-            .btn-lumina-replace-floating.lumina-replacer-brief-show {
-                animation: luminaReplacerBriefNotice 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            /* Aktywne chwilowe wyświetlenie (trwa tylko 3-3.5s i znika, aby nie zasłaniać okna wideo) */
+            .btn-lumina-replace-floating.is-active-reveal {
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: translateY(0) scale(1) !important;
             }
 
-            .btn-lumina-replace-floating:hover {
+            .btn-lumina-replace-floating.is-active-reveal:hover {
                 transform: translateY(-2px) scale(1.04) !important;
                 background: #f59e0b !important;
                 color: #0f172a !important;
                 box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6) !important;
-            }
-
-            /* Pojawianie się przy bezpośrednim najechaniu kursorem na przycisk lub po wywołaniu chwilowej widoczności */
-            .btn-lumina-replace-floating.is-active-reveal,
-            .btn-lumina-replace-floating:hover,
-            .btn-lumina-replace-floating:focus,
-            .btn-lumina-replace-floating:focus-within {
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                transform: translateY(0) scale(1) !important;
-                animation: none !important;
             }
 
             @media (max-width: 768px) {
@@ -688,49 +679,62 @@
     function attachHostListeners(host, btn) {
         if (!host || !btn) return;
         host.classList.add('lumina-replacer-host');
-        btn.classList.add('lumina-replacer-brief-show');
 
-        // Obsługa zdarzeń: dotknięcie lub najechanie kursorem na kontener wywołuje przycisk TYLKO na krótką chwilę (~3.5s),
-        // aby nie zasłaniał okna/wideo podczas oglądania, ale był natychmiast dostępny dla admina
-        if (host.dataset.replacerHostBound) return;
-        host.dataset.replacerHostBound = 'true';
-
+        // Obsługa zdarzeń: pojawienie się TYLKO na krótką chwilę (~3s), a po upływie czasu ZAWSZE znika
         let hideTimer = null;
-        const triggerBriefReveal = (duration = 3500) => {
-            btn.classList.remove('lumina-replacer-brief-show');
+        const triggerBriefReveal = (duration = 3200) => {
             btn.classList.add('is-active-reveal');
             if (hideTimer) clearTimeout(hideTimer);
             hideTimer = setTimeout(() => {
-                // Jeśli użytkownik nie trzyma kursora bezpośrednio na przycisku i nie ma fokusu
-                if (!btn.matches(':hover') && !btn.matches(':focus') && !btn.contains(document.activeElement)) {
+                const isHoveredDirectly = btn.matches(':hover') && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                if (!isHoveredDirectly) {
                     btn.classList.remove('is-active-reveal');
+                    btn.blur();
                 }
             }, duration);
         };
 
-        host.addEventListener('pointerenter', () => triggerBriefReveal(3500), { passive: true });
-        host.addEventListener('touchstart', () => triggerBriefReveal(3800), { passive: true });
+        // Przy tworzeniu: pokaż na 3.2s i samoczynnie schowaj
+        triggerBriefReveal(3200);
 
-        btn.addEventListener('pointerleave', () => {
-            if (btn.classList.contains('is-active-reveal')) {
+        if (!host.dataset.replacerHostBound) {
+            host.dataset.replacerHostBound = 'true';
+            host.addEventListener('pointerenter', () => triggerBriefReveal(3000), { passive: true });
+            host.addEventListener('touchstart', () => triggerBriefReveal(3000), { passive: true });
+            host.addEventListener('pointerleave', () => {
                 if (hideTimer) clearTimeout(hideTimer);
                 hideTimer = setTimeout(() => {
                     btn.classList.remove('is-active-reveal');
-                }, 800);
-            }
+                    btn.blur();
+                }, 350);
+            }, { passive: true });
+        }
+
+        btn.addEventListener('pointerleave', () => {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                btn.classList.remove('is-active-reveal');
+                btn.blur();
+            }, 350);
         }, { passive: true });
+
+        btn.addEventListener('click', () => {
+            btn.classList.remove('is-active-reveal');
+            btn.blur();
+        });
     }
 
-    function revealAllBriefly(duration = 3800) {
+    function revealAllBriefly(duration = 3200) {
         const buttons = document.querySelectorAll('.btn-lumina-replace-floating');
         buttons.forEach(btn => {
-            btn.classList.remove('lumina-replacer-brief-show');
             btn.classList.add('is-active-reveal');
         });
         setTimeout(() => {
             buttons.forEach(btn => {
-                if (!btn.matches(':hover') && !btn.matches(':focus') && !btn.contains(document.activeElement)) {
+                const isHoveredDirectly = btn.matches(':hover') && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                if (!isHoveredDirectly) {
                     btn.classList.remove('is-active-reveal');
+                    btn.blur();
                 }
             });
         }, duration);

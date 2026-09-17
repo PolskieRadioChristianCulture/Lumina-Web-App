@@ -65,6 +65,16 @@ const CHANNELS = [
         badge: '🎙️ RADIO CC • YouTube',
         category: 'radiocc',
         accentColor: '#10b981'
+    },
+    {
+        handle: '@zbyszek.gieron__jezus-wraca',
+        slug: 'zbyszekgieron',
+        name: 'Zbyszek Gieroń',
+        avatar: 'avatar_zbyszek_gieron.jpg',
+        role: 'Słowo Boże & Jezus Wraca ✨ • YouTube',
+        badge: '🕊️ ZBYSZEK GIEROŃ • YouTube',
+        category: 'general',
+        accentColor: '#f59e0b'
     }
 ];
 

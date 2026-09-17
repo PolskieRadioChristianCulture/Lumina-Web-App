@@ -1120,6 +1120,9 @@
                     <a href="https://www.facebook.com/profile.php?id=100018961423282&locale=pl_PL" target="_blank" rel="noopener noreferrer" class="btn-action-secondary" title="Zobacz oficjalny profil na Facebooku">
                         <i class="fa-brands fa-facebook" style="color:#1877f2;"></i> Facebook
                     </a>
+                    <a href="https://youtube.com/@zbyszek.gieron__jezus-wraca" target="_blank" rel="noopener noreferrer" class="btn-action-secondary" title="Zobacz oficjalny kanał YouTube: Zbyszek Gieroń">
+                        <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> YouTube
+                    </a>
                     <button type="button" id="btnUnlockOwner" class="btn-action-secondary" onclick="openSecurityModal()" style="display:inline-flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-user-shield" style="color:var(--gold-accent);"></i> Autoryzacja Autora
                     </button>
@@ -1242,6 +1245,134 @@
 
                     <!-- Dynamiczny strumień postów opublikowanych lokalnie -->
                     <div id="localPostsStream"></div>
+
+                    <!-- ══════════ POST YT 1: AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA (YOUTUBE) ══════════ -->
+                    <article class="feed-post-card" id="post_yt_zbyszekgieron_yoszIGTJ4DI">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                <div>
+                                    <div class="post-author-name">
+                                        Zbyszek Gieroń <span class="post-badge-role">Słowo Boże & Jezus Wraca ✨</span>
+                                    </div>
+                                    <span class="post-time">Świeża Publikacja • 🎥 Oficjalny Kanał YouTube</span>
+                                </div>
+                            </div>
+                            <span class="badge-type-tag" style="background:linear-gradient(135deg,rgba(239,68,68,0.25),rgba(220,38,38,0.35));border:1px solid #ef4444;color:#fca5a5;font-weight:800;padding:4px 10px;border-radius:20px;font-size:0.75rem;" title="🕊️ ZBYSZEK GIEROŃ • YouTube">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> YouTube
+                            </span>
+                        </div>
+
+                        <div class="post-body">
+                            <div style="font-size:1.18rem; font-weight:800; color:#ffffff !important; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                                <span>AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA 👉 Lekcja X 👉 5 września 2026</span>
+                            </div>
+
+                            <p style="color:#ffffff !important; font-size:1rem; line-height:1.7; margin-bottom:16px;">
+                                Zapraszamy do oglądania najnowszego materiału z oficjalnego kanału Zbyszka Gieronia (@zbyszek.gieron__jezus-wraca) w sieci Christian Culture! Oglądaj bezpośrednio w odtwarzaczu poniżej. 🕊️✨
+                            </p>
+
+                            <!-- Osadzenie wideo YouTube 16:9 -->
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <iframe src="https://www.youtube.com/embed/yoszIGTJ4DI?rel=0&amp;modestbranding=1&amp;playsinline=1" style="width:100%; aspect-ratio:16/9; border:none; display:block;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" title="AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA - Zbyszek Gieroń"></iframe>
+                            </div>
+
+                            <p style="color:#cbd5e1; font-size:0.92rem; line-height:1.6; margin-bottom:14px;">
+                                Materiał wideo z cyklu rozważań i lekcji biblijnych Zbyszka Gieronia na portalu LUMINA.
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this, 'like_post_zg_yt1')">
+                                <i class="fa-solid fa-heart"></i> <span id="like_post_zg_yt1">51</span> Polubień
+                            </button>
+                            <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amen_post_zg_yt1')">
+                                <i class="fa-solid fa-hands-praying"></i> <span id="amen_post_zg_yt1">40</span> Amen
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="togglePostComments('post_yt_zbyszekgieron_yoszIGTJ4DI')">
+                                <i class="fa-solid fa-comment"></i> Odpowiedz (<span id="commentCount_post_yt_zbyszekgieron_yoszIGTJ4DI">0</span>)
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+                        <div class="post-comments-container" id="commentsBox_post_yt_zbyszekgieron_yoszIGTJ4DI" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+                            <div class="post-comments-list" id="commentsList_post_yt_zbyszekgieron_yoszIGTJ4DI"></div>
+                            <div class="post-comment-composer" style="display:flex; gap:10px; align-items:center; margin-top:12px;">
+                                <img src="avatar_cezary_official.jpg" alt="Ja" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent);" onerror="this.src='lumina_icon.jpg'">
+                                <div style="flex:1; position:relative;">
+                                    <input type="text" id="commentInput_post_yt_zbyszekgieron_yoszIGTJ4DI" placeholder="Napisz odpowiedź lub Amen..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:20px; padding:10px 44px 10px 14px; font-size:0.86rem; color:#fff; outline:none;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitPostComment('post_yt_zbyszekgieron_yoszIGTJ4DI');}">
+                                    <button type="button" onclick="submitPostComment('post_yt_zbyszekgieron_yoszIGTJ4DI')" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg, #f59e0b, #ec4899); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.82rem;" title="Opublikuj odpowiedź">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ══════════ POST YT 2: SŁUŻBA MOTYWOWANA MIŁOŚCIĄ (YOUTUBE) ══════════ -->
+                    <article class="feed-post-card" id="post_yt_zbyszekgieron_rFPEIo9bgfQ">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                                <div>
+                                    <div class="post-author-name">
+                                        Zbyszek Gieroń <span class="post-badge-role">Słowo Boże & Jezus Wraca ✨</span>
+                                    </div>
+                                    <span class="post-time">Świeża Publikacja • 🎥 Oficjalny Kanał YouTube</span>
+                                </div>
+                            </div>
+                            <span class="badge-type-tag" style="background:linear-gradient(135deg,rgba(239,68,68,0.25),rgba(220,38,38,0.35));border:1px solid #ef4444;color:#fca5a5;font-weight:800;padding:4px 10px;border-radius:20px;font-size:0.75rem;" title="🕊️ ZBYSZEK GIEROŃ • YouTube">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> YouTube
+                            </span>
+                        </div>
+
+                        <div class="post-body">
+                            <div style="font-size:1.18rem; font-weight:800; color:#ffffff !important; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                                <span>SŁUŻBA MOTYWOWANA MIŁOŚCIĄ 👉 Lekcja IX 👉 29 sierpnia 2026</span>
+                            </div>
+
+                            <p style="color:#ffffff !important; font-size:1rem; line-height:1.7; margin-bottom:16px;">
+                                Zapraszamy do oglądania najnowszego materiału z oficjalnego kanału Zbyszka Gieronia (@zbyszek.gieron__jezus-wraca) w sieci Christian Culture! Oglądaj bezpośrednio w odtwarzaczu poniżej. 🕊️✨
+                            </p>
+
+                            <!-- Osadzenie wideo YouTube 16:9 -->
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <iframe src="https://www.youtube.com/embed/rFPEIo9bgfQ?rel=0&amp;modestbranding=1&amp;playsinline=1" style="width:100%; aspect-ratio:16/9; border:none; display:block;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" title="SŁUŻBA MOTYWOWANA MIŁOŚCIĄ - Zbyszek Gieroń"></iframe>
+                            </div>
+
+                            <p style="color:#cbd5e1; font-size:0.92rem; line-height:1.6; margin-bottom:14px;">
+                                Materiał wideo z cyklu rozważań i lekcji biblijnych Zbyszka Gieronia na portalu LUMINA.
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this, 'like_post_zg_yt2')">
+                                <i class="fa-solid fa-heart"></i> <span id="like_post_zg_yt2">52</span> Polubień
+                            </button>
+                            <button type="button" class="post-act-btn active-amen" onclick="toggleAmen(this, 'amen_post_zg_yt2')">
+                                <i class="fa-solid fa-hands-praying"></i> <span id="amen_post_zg_yt2">38</span> Amen
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="togglePostComments('post_yt_zbyszekgieron_rFPEIo9bgfQ')">
+                                <i class="fa-solid fa-comment"></i> Odpowiedz (<span id="commentCount_post_yt_zbyszekgieron_rFPEIo9bgfQ">0</span>)
+                            </button>
+                            <button type="button" class="post-act-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+                        <div class="post-comments-container" id="commentsBox_post_yt_zbyszekgieron_rFPEIo9bgfQ" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+                            <div class="post-comments-list" id="commentsList_post_yt_zbyszekgieron_rFPEIo9bgfQ"></div>
+                            <div class="post-comment-composer" style="display:flex; gap:10px; align-items:center; margin-top:12px;">
+                                <img src="avatar_cezary_official.jpg" alt="Ja" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-accent);" onerror="this.src='lumina_icon.jpg'">
+                                <div style="flex:1; position:relative;">
+                                    <input type="text" id="commentInput_post_yt_zbyszekgieron_rFPEIo9bgfQ" placeholder="Napisz odpowiedź lub Amen..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:20px; padding:10px 44px 10px 14px; font-size:0.86rem; color:#fff; outline:none;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitPostComment('post_yt_zbyszekgieron_rFPEIo9bgfQ');}">
+                                    <button type="button" onclick="submitPostComment('post_yt_zbyszekgieron_rFPEIo9bgfQ')" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg, #f59e0b, #ec4899); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.82rem;" title="Opublikuj odpowiedź">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
 
                     <!-- ══════════ POST: PSALM 1 (PUBLIKACJA Z DYSKU GOOGLE) ══════════ -->
                     <article class="feed-post-card" id="post_zg_psalm1">
@@ -2836,6 +2967,10 @@
             handleZbyszekPostDeepLink();
         });
     </script>
+
+    <!-- Lumina Community Posts Repository & Admin Media Replacer -->
+    <script src="js/lumina-community-posts.js?v=20260917"></script>
+    <script src="js/lumina-admin-media-replacer.js?v=20260907_antiflicker_v8"></script>
 
     <!-- Lumina Bottom Navigation & Universal Google Auth Suite -->
     <script src="lumina-bottom-nav.js?v=20260907_google_auth_v1" defer></script>
