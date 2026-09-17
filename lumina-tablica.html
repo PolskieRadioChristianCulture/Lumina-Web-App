@@ -206,6 +206,8 @@
     <link rel="stylesheet" href="/css/christian-culture-design-system.css">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
+    <!-- Lumina Community Core Posts Data -->
+    <script src="js/lumina-community-posts.js?v=20260917"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=4.1.7"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -4843,6 +4845,61 @@
                         </div>
                     </a>
 
+                    <!-- YT-1: Osobowość + Rolka Wiary -->
+                    <a href="rolki#short_osobowoscplus_bFmXoR4p7_g" class="fb-story-card" title="Rolka: Osobowość + • Formacja & Wiara">
+                        <img src="https://i.ytimg.com/vi/bFmXoR4p7_g/hqdefault.jpg" alt="Osobowość +" class="fb-story-bg" loading="lazy" onerror="this.src='logo_osobowosc_plus.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#a855f7;">
+                            <img src="logo_osobowosc_plus.jpg" alt="Osobowość +" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">Osobowość +</div>
+                    </a>
+
+                    <!-- YT-2: CC Women Rolka Wiary -->
+                    <a href="rolki#short_ccwomen_WdHm10w4i0o" class="fb-story-card" title="Rolka: CC Women • Kobiety Wiary">
+                        <img src="https://i.ytimg.com/vi/WdHm10w4i0o/hqdefault.jpg" alt="CC Women" class="fb-story-bg" loading="lazy" onerror="this.src='avatar_ccwomen_official_2026.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#ec4899;">
+                            <img src="avatar_ccwomen_official_2026.jpg" alt="CC Women" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">CC Women</div>
+                    </a>
+
+                    <!-- YT-3: CC Men Rolka Wiary -->
+                    <a href="rolki#short_ccmen_A4S-h_KeGNE" class="fb-story-card" title="Rolka: CC Men • Mężczyźni Wiary">
+                        <img src="https://i.ytimg.com/vi/A4S-h_KeGNE/hqdefault.jpg" alt="CC Men" class="fb-story-bg" loading="lazy" onerror="this.src='logo_cc_men.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#3b82f6;">
+                            <img src="logo_cc_men.jpg" alt="CC Men" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">CC Men</div>
+                    </a>
+
+                    <!-- YT-4: Christian Culture TV Rolka Wiary -->
+                    <a href="rolki#short_cctv_y9szJ8_2_SU" class="fb-story-card" title="Rolka: Christian Culture TV">
+                        <img src="https://i.ytimg.com/vi/y9szJ8_2_SU/hqdefault.jpg" alt="CC TV" class="fb-story-bg" loading="lazy" onerror="this.src='logo_cctv.png'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#10b981;">
+                            <img src="logo_cctv.png" alt="CC TV" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">CC TV</div>
+                    </a>
+
+                    <!-- YT-5: Polskie Radio CC Rolka Wiary -->
+                    <a href="rolki#short_radiocc_PWbTcl6W4ss" class="fb-story-card" title="Rolka: Polskie Radio CC">
+                        <img src="https://i.ytimg.com/vi/PWbTcl6W4ss/hqdefault.jpg" alt="Radio CC" class="fb-story-bg" loading="lazy" onerror="this.src='logo_radio_cc.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#06b6d4;">
+                            <img src="logo_radio_cc.jpg" alt="Radio CC" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">Radio CC</div>
+                    </a>
+
                     <!-- 1. Zbyszek Gieroń Psalm 1 -->
                     <a href="rolki#short_psalm1" class="fb-story-card" title="Rolka: Błogosławiony człowiek • Zbyszek Gieroń">
                         <img src="post_zbyszek_psalm1.jpg" alt="Psalm 1" class="fb-story-bg" loading="lazy">
@@ -6760,6 +6817,24 @@
                     });
                 });
             }
+
+            // 0.1B. Oficjalne Publikacje Społeczności i Kanałów YouTube (js/lumina-community-posts.js)
+            try {
+                const corePosts = (typeof LUMINA_CORE_POSTS_DATA !== 'undefined' && Array.isArray(LUMINA_CORE_POSTS_DATA))
+                    ? LUMINA_CORE_POSTS_DATA
+                    : (typeof window !== 'undefined' && Array.isArray(window.LUMINA_CORE_POSTS_DATA) ? window.LUMINA_CORE_POSTS_DATA : null);
+                if (corePosts && corePosts.length > 0) {
+                    corePosts.forEach(cp => {
+                        if (!cp || !cp.id || seenPostIds.has(cp.id)) return;
+                        seenPostIds.add(cp.id);
+                        const sortTs = cp._sortTs || cp.createdAtTimestamp || extractSortTs(cp) || Date.now();
+                        posts.push({
+                            ...cp,
+                            _sortTs: sortTs
+                        });
+                    });
+                }
+            } catch(e) {}
 
             // 0.0A. Local Cache Cloud Posts (lumina_cloud_posts_cache)
             try {
