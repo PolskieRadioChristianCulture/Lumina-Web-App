@@ -5377,12 +5377,20 @@ export function formatRichTextAndMedia(rawText, postData = null) {
     // 1. Zabezpieczenie przed XSS (Sanityzacja znaczników HTML)
     const sanitizedText = escapeHtml(rawText || '');
 
+    // Rozpoznanie i zamiana linku wsparcia Patronite na aktywny lśniący przycisk
+    let preprocessedText = sanitizedText.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+        const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
+        const url = `https://patronite.pl/${targetSlug}`;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link" onclick="event.stopPropagation()"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
     // Regex for URLs
     const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
-    const foundUrls = sanitizedText.match(urlRegex) || [];
+    const foundUrls = preprocessedText.match(urlRegex) || [];
     
     // Replace URLs in text with rich styled <a> links
-    let formattedText = sanitizedText.replace(urlRegex, (url) => {
+    let formattedText = preprocessedText.replace(urlRegex, (url) => {
+        if (url.includes('patronite.pl/')) return url; // pomiń jeśli już sparsowany
         let display = url.replace(/^https?:\/\/(www\.)?/, '');
         if (display.length > 38) display = display.substring(0, 35) + '...';
         const safeUrl = encodeURI(url).replace(/"/g, '&quot;');
@@ -6156,22 +6164,42 @@ export function formatLuminaDevotionalContent(rawText) {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link"><i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
-    // 3. Polskie Radio CC -> zamień na szafirowy przycisk Radia CC
-    text = text.replace(/(?:https?:\/\/)?(?:www\.)?polskieradio\.cc[^\s<)]*/gi, () => {
+    // 3. Polskie Radio CC & Lumina Portal
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc(\/[a-zA-Z0-9_-]*)?/gi, (match, path) => {
+        if (path && path.toLowerCase().includes('lumina')) {
+            return `<a href="https://www.polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-users-rays"></i> Portal Społeczności LUMINA <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+        }
         return `<a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
     // 4. CC Lite -> zamień na różowy przycisk Telewizji CC Lite
-    text = text.replace(/(?:https?:\/\/)?(?:www\.)?cclite\.pl[^\s<)]*/gi, () => {
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?cclite\.pl[^\s<)]*/gi, () => {
         return `<a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link"><i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
-    // 5. Usuń surowe pozostałości linków i tagów OpenGraph lub podwójnych linków
+    // 6. Patronite / Wsparcie Misji -> zamień na bordowo-czerwony aktywny przycisk ze serduszkiem
+    text = text.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+        const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
+        const url = `https://patronite.pl/${targetSlug}`;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 7. Revolut Wsparcie -> zamień na aktywny przycisk
+    text = text.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Darowizna|Revolut)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?revolut\.me\/([a-zA-Z0-9_-]+)/gi, (match, tag) => {
+        const targetTag = tag || 'christianculture';
+        const url = `https://revolut.me/${targetTag}`;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-hand-holding-dollar" style="color:#ef4444;"></i> Wesprzyj przez Revolut <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 8. Oczyszczenie wiszących separatorów '|' między przyciskami smart-link
+    text = text.replace(/(<\/a>)\s*\|\s*(?=<a [^>]*class="[^"]*reflection-smart-link)/gi, '$1 ');
+
+    // 9. Usuń surowe pozostałości linków i tagów OpenGraph lub podwójnych linków
     text = text.replace(/🌐\s*chat\.whatsapp\.com[^\s<]*/gi, '');
     text = text.replace(/CHAT\.WHATSAPP\.COM/gi, '');
     text = text.replace(/Otwórz stronę w nowej karcie\.\.\./gi, '');
 
-    // 6. Markdown links [Tytuł](https://...)
+    // 10. Markdown links [Tytuł](https://...)
     text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (match, label, url) => {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link">${label} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });

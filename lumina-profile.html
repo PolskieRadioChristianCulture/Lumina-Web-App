@@ -2552,6 +2552,57 @@
             color: #fef08a !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
+
+        .reflection-smart-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            padding: 7px 15px !important;
+            border-radius: 20px !important;
+            font-weight: 700 !important;
+            font-size: 0.84rem !important;
+            text-decoration: none !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+            margin: 4px 6px 4px 0 !important;
+            vertical-align: middle !important;
+        }
+        .reflection-smart-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+            filter: brightness(1.15) !important;
+        }
+        .reflection-smart-link.whatsapp-link {
+            background: rgba(34, 197, 94, 0.16) !important;
+            border: 1.5px solid #22c55e !important;
+            color: #4ade80 !important;
+        }
+        .reflection-smart-link.radio-link {
+            background: rgba(59, 130, 246, 0.16) !important;
+            border: 1.5px solid #3b82f6 !important;
+            color: #93c5fd !important;
+        }
+        .reflection-smart-link.tv-link {
+            background: rgba(236, 72, 153, 0.16) !important;
+            border: 1.5px solid #ec4899 !important;
+            color: #f472b6 !important;
+        }
+        .reflection-smart-link.apps-link {
+            background: rgba(245, 158, 11, 0.16) !important;
+            border: 1.5px solid #f59e0b !important;
+            color: #fde047 !important;
+        }
+        .reflection-smart-link.support-link {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.32)) !important;
+            border: 1.5px solid #ef4444 !important;
+            color: #fca5a5 !important;
+        }
+        .reflection-smart-link.support-link:hover {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.35), rgba(220, 38, 38, 0.5)) !important;
+            border-color: #f87171 !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
+        }
     
         /* ── TOP NAV COLLAPSIBLE DRAWER STYLES ── */
         .drawer-nav-item {
@@ -6296,7 +6347,16 @@
 
         function formatPostTextWithLinks(rawText) {
             if (!rawText) return '';
-            let text = rawText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (m, label, url) => {
+            let text = rawText;
+
+            // Patronite / Wsparcie Misji -> aktywny przycisk ze serduszkiem
+            text = text.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+                const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
+                const url = `https://patronite.pl/${targetSlug}`;
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (m, label, url) => {
                 return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-link">${label} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>`;
             });
             const urlRegex = /(^|[\s(>])(https?:\/\/[^\s<)]+)/gi;
