@@ -1477,6 +1477,7 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             padding-bottom: 4px;
+            justify-content: safe center;
         }
         .profiles-carousel-scroll::-webkit-scrollbar { display: none; }
         .profile-carousel-card {
@@ -1576,6 +1577,16 @@
             }
             .profile-carousel-avatar,
             .profile-carousel-avatar-wrap { width: 44px; height: 44px; }
+        }
+        @media (min-width: 640px) {
+            .profiles-carousel-scroll {
+                justify-content: center;
+            }
+            .profile-carousel-card {
+                flex: 1 1 0;
+                min-width: 96px;
+                max-width: 130px;
+            }
         }
 
         /* ══════════ QUICK POST PUBLISHER BAR ("CO DOBREGO U CIEBIE?") ══════════ */
