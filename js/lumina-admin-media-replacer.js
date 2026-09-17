@@ -278,7 +278,27 @@
         const style = document.createElement('style');
         style.id = 'lumina-media-replacer-styles';
         style.textContent = `
-            /* 👑 LUMINA MEDIA REPLACER BUTTONS */
+            /* 👑 LUMINA MEDIA REPLACER BUTTONS — TYMCZASOWE POJAWIENIE SIĘ I BRAK ZASŁANIANIA OKIEN */
+            @keyframes luminaReplacerBriefNotice {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-6px) scale(0.95);
+                }
+                12% {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+                78% {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-6px) scale(0.95);
+                    pointer-events: none;
+                }
+            }
+
             .btn-lumina-replace-floating {
                 position: absolute;
                 top: 10px;
@@ -298,16 +318,37 @@
                 align-items: center;
                 gap: 6px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 12px rgba(245, 158, 11, 0.3);
-                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s, color 0.2s, box-shadow 0.2s;
                 min-height: 44px;
                 min-width: 44px;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-4px) scale(0.96);
             }
+
+            /* Pojawienie się na krótką chwilę (ok. 3.8s) po załadowaniu */
+            .btn-lumina-replace-floating.lumina-replacer-brief-show {
+                animation: luminaReplacerBriefNotice 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+
             .btn-lumina-replace-floating:hover {
-                transform: translateY(-2px) scale(1.04);
-                background: #f59e0b;
-                color: #0f172a;
-                box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6);
+                transform: translateY(-2px) scale(1.04) !important;
+                background: #f59e0b !important;
+                color: #0f172a !important;
+                box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6) !important;
             }
+
+            /* Pojawianie się przy bezpośrednim najechaniu kursorem na przycisk lub po wywołaniu chwilowej widoczności */
+            .btn-lumina-replace-floating.is-active-reveal,
+            .btn-lumina-replace-floating:hover,
+            .btn-lumina-replace-floating:focus,
+            .btn-lumina-replace-floating:focus-within {
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: translateY(0) scale(1) !important;
+                animation: none !important;
+            }
+
             @media (max-width: 768px) {
                 .btn-lumina-replace-floating {
                     width: 44px;
@@ -644,6 +685,57 @@
     }
 
     // ── 6. Skaner elementów i dołączanie przycisków "Wymień" ──
+    function attachHostListeners(host, btn) {
+        if (!host || !btn) return;
+        host.classList.add('lumina-replacer-host');
+        btn.classList.add('lumina-replacer-brief-show');
+
+        // Obsługa zdarzeń: dotknięcie lub najechanie kursorem na kontener wywołuje przycisk TYLKO na krótką chwilę (~3.5s),
+        // aby nie zasłaniał okna/wideo podczas oglądania, ale był natychmiast dostępny dla admina
+        if (host.dataset.replacerHostBound) return;
+        host.dataset.replacerHostBound = 'true';
+
+        let hideTimer = null;
+        const triggerBriefReveal = (duration = 3500) => {
+            btn.classList.remove('lumina-replacer-brief-show');
+            btn.classList.add('is-active-reveal');
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                // Jeśli użytkownik nie trzyma kursora bezpośrednio na przycisku i nie ma fokusu
+                if (!btn.matches(':hover') && !btn.matches(':focus') && !btn.contains(document.activeElement)) {
+                    btn.classList.remove('is-active-reveal');
+                }
+            }, duration);
+        };
+
+        host.addEventListener('pointerenter', () => triggerBriefReveal(3500), { passive: true });
+        host.addEventListener('touchstart', () => triggerBriefReveal(3800), { passive: true });
+
+        btn.addEventListener('pointerleave', () => {
+            if (btn.classList.contains('is-active-reveal')) {
+                if (hideTimer) clearTimeout(hideTimer);
+                hideTimer = setTimeout(() => {
+                    btn.classList.remove('is-active-reveal');
+                }, 800);
+            }
+        }, { passive: true });
+    }
+
+    function revealAllBriefly(duration = 3800) {
+        const buttons = document.querySelectorAll('.btn-lumina-replace-floating');
+        buttons.forEach(btn => {
+            btn.classList.remove('lumina-replacer-brief-show');
+            btn.classList.add('is-active-reveal');
+        });
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                if (!btn.matches(':hover') && !btn.matches(':focus') && !btn.contains(document.activeElement)) {
+                    btn.classList.remove('is-active-reveal');
+                }
+            });
+        }, duration);
+    }
+
     function cleanupDuplicateButtons() {
         const allButtons = Array.from(document.querySelectorAll('.btn-lumina-replace-floating'));
         for (let i = 0; i < allButtons.length; i++) {
@@ -713,6 +805,7 @@
                         openReplacerForElement(img || card, 'image');
                     };
                     targetWrapper.appendChild(floatBtn);
+                    attachHostListeners(targetWrapper, floatBtn);
                 }
             } else {
                 // Tylko dla postów bez grafiki i bez wideo: dodaj przycisk do DOLNEJ belki akcji (.post-actions-bar, .post-footer)
@@ -759,6 +852,7 @@
                 openReplacerForElement(iframe || player, 'video');
             };
             player.appendChild(btn);
+            attachHostListeners(player, btn);
         });
 
         // 3. Samodzielne tagi AUDIO i VIDEO (poza playerami wideo i postami)
@@ -783,6 +877,7 @@
                     openReplacerForElement(media, media.tagName.toLowerCase());
                 };
                 parent.appendChild(btn);
+                attachHostListeners(parent, btn);
             }
         });
 
@@ -836,6 +931,7 @@
                     openReplacerForElement(img, 'image');
                 };
                 parent.appendChild(btn);
+                attachHostListeners(parent, btn);
             }
         });
     }
@@ -1259,6 +1355,7 @@
         parseMediaUrl,
         scanAndAttachButtons,
         applySavedReplacements,
+        revealAllBriefly,
         isMasterAdmin,
         getFirestoreInstance
     };
