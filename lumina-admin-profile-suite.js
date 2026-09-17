@@ -604,7 +604,7 @@
                         <button type="button" class="admin-suite-btn btn-purple" onclick="window.LuminaAdminSuite.openNewPostModal()">
                             <i class="fa-solid fa-plus"></i> Nowy Wpis
                         </button>
-                        <button type="button" class="admin-suite-btn btn-gold" onclick="if(window.LuminaMediaReplacer) { window.LuminaMediaReplacer.scanAndAttachButtons(); if(typeof window.showToast==='function') window.showToast('🔍 Kliknij przycisk Wymień przy pliku lub grafice!'); }" title="Wymień dowolny plik/multimedia na link z Dysku Google lub YouTube (Zero-Egress Standard)">
+                        <button type="button" class="admin-suite-btn btn-gold" onclick="if(window.LuminaMediaReplacer) { window.LuminaMediaReplacer.scanAndAttachButtons(); window.LuminaMediaReplacer.revealAllBriefly(4000); if(typeof window.showToast==='function') window.showToast('🔍 Przyciski Wymień aktywne przez 4s przy mediach!'); }" title="Wymień dowolny plik/multimedia na link z Dysku Google lub YouTube (Zero-Egress Standard)">
                             <i class="fa-solid fa-arrows-rotate"></i> Wymień Plik (Dysk/YT)
                         </button>
                         <button type="button" class="admin-suite-btn btn-warn" id="hudBtnToggleBlock" onclick="window.LuminaAdminSuite.toggleBlockCurrentProfile()">
@@ -1258,7 +1258,7 @@
         ensureMediaReplacerLoaded: function() {
             if (!window.LuminaMediaReplacer && !document.querySelector('script[src*="lumina-admin-media-replacer"]')) {
                 const s = document.createElement('script');
-                s.src = 'js/lumina-admin-media-replacer.js?v=20260907_antiflicker_v8';
+                s.src = 'js/lumina-admin-media-replacer.js?v=20260917_autohide_final_v10';
                 s.onload = () => {
                     if (isUserMasterAdmin() && window.LuminaMediaReplacer) {
                         window.LuminaMediaReplacer.scanAndAttachButtons();

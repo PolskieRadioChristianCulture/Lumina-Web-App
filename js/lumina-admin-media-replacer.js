@@ -318,18 +318,20 @@
                 align-items: center;
                 gap: 6px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 12px rgba(245, 158, 11, 0.3);
-                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
                 min-height: 44px;
                 min-width: 44px;
                 opacity: 0 !important;
                 pointer-events: none !important;
+                visibility: hidden !important;
                 transform: translateY(-4px) scale(0.96);
             }
 
-            /* Aktywne chwilowe wyświetlenie (trwa tylko 3-3.5s i znika, aby nie zasłaniać okna wideo) */
+            /* Aktywne chwilowe wyświetlenie (trwa krótko i bezwzględnie znika, aby nie zasłaniać okna wideo) */
             .btn-lumina-replace-floating.is-active-reveal {
                 opacity: 1 !important;
                 pointer-events: auto !important;
+                visibility: visible !important;
                 transform: translateY(0) scale(1) !important;
             }
 
@@ -680,33 +682,30 @@
         if (!host || !btn) return;
         host.classList.add('lumina-replacer-host');
 
-        // Obsługa zdarzeń: pojawienie się TYLKO na krótką chwilę (~3s), a po upływie czasu ZAWSZE znika
+        // Obsługa zdarzeń: pojawienie się TYLKO na krótką chwilę (~2.5s), a po upływie czasu BEZWZGLĘDNIE znika
         let hideTimer = null;
-        const triggerBriefReveal = (duration = 3200) => {
+        const triggerBriefReveal = (duration = 2500) => {
             btn.classList.add('is-active-reveal');
             if (hideTimer) clearTimeout(hideTimer);
             hideTimer = setTimeout(() => {
-                const isHoveredDirectly = btn.matches(':hover') && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-                if (!isHoveredDirectly) {
-                    btn.classList.remove('is-active-reveal');
-                    btn.blur();
-                }
+                // Bezwarunkowe ukrycie po upływie czasu — brak zasłaniania okna wideo/mediów
+                btn.classList.remove('is-active-reveal');
+                btn.blur();
             }, duration);
         };
 
-        // Przy tworzeniu: pokaż na 3.2s i samoczynnie schowaj
-        triggerBriefReveal(3200);
+        // UWAGA: Przy tworzeniu przycisku NIE wywołujemy auto-pokazywania! Przycisk jest domyślnie 100% ukryty.
 
         if (!host.dataset.replacerHostBound) {
             host.dataset.replacerHostBound = 'true';
-            host.addEventListener('pointerenter', () => triggerBriefReveal(3000), { passive: true });
-            host.addEventListener('touchstart', () => triggerBriefReveal(3000), { passive: true });
+            host.addEventListener('pointerenter', () => triggerBriefReveal(2500), { passive: true });
+            host.addEventListener('touchstart', () => triggerBriefReveal(2500), { passive: true });
             host.addEventListener('pointerleave', () => {
                 if (hideTimer) clearTimeout(hideTimer);
                 hideTimer = setTimeout(() => {
                     btn.classList.remove('is-active-reveal');
                     btn.blur();
-                }, 350);
+                }, 250);
             }, { passive: true });
         }
 
@@ -715,7 +714,7 @@
             hideTimer = setTimeout(() => {
                 btn.classList.remove('is-active-reveal');
                 btn.blur();
-            }, 350);
+            }, 250);
         }, { passive: true });
 
         btn.addEventListener('click', () => {
@@ -724,18 +723,15 @@
         });
     }
 
-    function revealAllBriefly(duration = 3200) {
+    function revealAllBriefly(duration = 2500) {
         const buttons = document.querySelectorAll('.btn-lumina-replace-floating');
         buttons.forEach(btn => {
             btn.classList.add('is-active-reveal');
         });
         setTimeout(() => {
             buttons.forEach(btn => {
-                const isHoveredDirectly = btn.matches(':hover') && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-                if (!isHoveredDirectly) {
-                    btn.classList.remove('is-active-reveal');
-                    btn.blur();
-                }
+                btn.classList.remove('is-active-reveal');
+                btn.blur();
             });
         }, duration);
     }
@@ -863,11 +859,11 @@
         const mediaTags = document.querySelectorAll('video, audio, .audio-player-container');
         mediaTags.forEach(media => {
             // Ignoruj media wewnątrz gotowych wrapperów playerów ORAZ kart postów i kampanii (obsługiwanych w kroku 1 i 2)
-            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, .media-container-1x1, .campaign-media-container, .post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916')) return;
+            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, .media-container-1x1, .campaign-media-container, .post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-broadcast-card, .lumina-replacer-host')) return;
             const parent = media.parentElement || media;
             if (!parent || parent === document.body || parent === document.documentElement) return;
 
-            if (!parent.querySelector('.btn-lumina-replace-floating') && !parent.closest('.btn-lumina-replace-floating')) {
+            if (!parent.querySelector('.btn-lumina-replace-floating') && !parent.closest('.btn-lumina-replace-floating') && !parent.dataset.replacerHostBound) {
                 if (getComputedStyle(parent).position === 'static') {
                     parent.style.position = 'relative';
                 }
@@ -1346,6 +1342,9 @@
             getFirestoreInstance().catch(() => {});
             if (isMasterAdmin()) {
                 safeScanAndAttachButtons();
+                setTimeout(() => {
+                    revealAllBriefly(2500);
+                }, 500);
             }
             // Zabezpieczenie na wypadek późniejszego załadowania konta admina
             setTimeout(() => {
