@@ -1005,11 +1005,7 @@ body.owner-mode-active .owner-only {
     }
 
     .post-actions-bar > div {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        flex-shrink: 0 !important;
-        flex-wrap: nowrap !important;
+        display: contents !important;
     }
 
     .post-action-btn {
@@ -1031,11 +1027,25 @@ body.owner-mode-active .owner-only {
     }
 
     .post-action-btn.action-icon-only,
+    .post-action-btn.action-comments,
+    .post-action-btn.action-story,
+    .post-action-btn.action-report,
+    .post-action-btn.action-share,
+    .post-action-btn.action-pin,
     .post-action-btn:not(:has(.count)):not(:has(.amen-count)) {
         width: 40px !important;
+        min-width: 40px !important;
         max-width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
         padding: 0 !important;
+        margin: 0 !important;
         border-radius: 50% !important;
+        flex: 0 0 40px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .post-action-btn i {
@@ -1044,10 +1054,27 @@ body.owner-mode-active .owner-only {
         justify-content: center !important;
         line-height: 1 !important;
         font-size: 0.92rem !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
         width: 1.1em !important;
         text-align: center !important;
         vertical-align: middle !important;
+    }
+
+    .post-action-btn.action-icon-only i,
+    .post-action-btn.action-comments i,
+    .post-action-btn.action-story i,
+    .post-action-btn.action-report i,
+    .post-action-btn.action-share i,
+    .post-action-btn.action-pin i,
+    .post-action-btn:not(:has(.count)):not(:has(.amen-count)) i {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
 
     .post-action-btn .count,

@@ -2601,6 +2601,99 @@
         .post-action-btn.liked { color: #f43f5e; }
         .post-action-btn.amen-active { color: #fbbf24; }
 
+        @media (max-width: 768px) {
+            .post-actions-bar {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                padding: 8px 10px !important;
+                gap: 6px !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+            }
+            .post-actions-bar > div {
+                display: contents !important;
+            }
+            .post-action-btn {
+                height: 40px !important;
+                min-height: 40px !important;
+                max-height: 40px !important;
+                min-width: 40px !important;
+                border-radius: 9999px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0 10px !important;
+                gap: 5px !important;
+                font-size: 0.82rem !important;
+                font-weight: 700 !important;
+                line-height: 1 !important;
+                box-sizing: border-box !important;
+                flex-shrink: 0 !important;
+                background: rgba(255, 255, 255, 0.06) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                color: #cbd5e1 !important;
+                text-decoration: none !important;
+                touch-action: manipulation !important;
+            }
+            .post-action-btn.action-icon-only,
+            .post-action-btn.action-comments,
+            .post-action-btn.action-story,
+            .post-action-btn.action-report,
+            .post-action-btn.action-share,
+            .post-action-btn.action-pin,
+            .post-action-btn:not(:has(.count)):not(:has(.amen-count)) {
+                width: 40px !important;
+                min-width: 40px !important;
+                max-width: 40px !important;
+                height: 40px !important;
+                min-height: 40px !important;
+                max-height: 40px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border-radius: 50% !important;
+                flex: 0 0 40px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .post-action-btn i {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                line-height: 1 !important;
+                font-size: 0.92rem !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                width: 1.1em !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+            }
+            .post-action-btn.action-icon-only i,
+            .post-action-btn.action-comments i,
+            .post-action-btn.action-story i,
+            .post-action-btn.action-report i,
+            .post-action-btn.action-share i,
+            .post-action-btn.action-pin i,
+            .post-action-btn:not(:has(.count)):not(:has(.amen-count)) i {
+                width: 100% !important;
+                height: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+            }
+            .post-action-btn .btn-text,
+            .post-action-btn.action-comments .btn-text,
+            .post-action-btn.action-story .btn-text {
+                display: none !important;
+            }
+            .post-action-btn.action-story {
+                color: #facc15 !important;
+            }
+        }
+
         /* Comments Drawer */
         .comments-section {
             padding: 12px 14px;
@@ -3910,7 +4003,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260915_scrollbars_v1">
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_icons_center_v2">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -4343,7 +4436,7 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
-    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260916_sort_touch_v3">
+    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260917_icons_center_v2">
 </head>
 <body>
 
