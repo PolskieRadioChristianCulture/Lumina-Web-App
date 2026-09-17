@@ -396,7 +396,6 @@
         display: none !important;
     }
 
-    .post-action-btn,
     .chip-btn,
     .sort-tab-btn,
     .btn-carousel-follow-pulse,
@@ -404,6 +403,102 @@
     .mobile-auth-btn {
         padding-top: 10px !important;
         padding-bottom: 10px !important;
+    }
+
+    /* ══════════ POST ACTIONS BAR & BUTTONS UNIFICATION (MOBILE) ══════════ */
+    .post-actions-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 8px 10px !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .post-actions-bar > div {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .post-action-btn {
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        min-width: 40px !important;
+        border-radius: 9999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 10px !important;
+        gap: 5px !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #cbd5e1 !important;
+        text-decoration: none !important;
+        touch-action: manipulation !important;
+    }
+
+    /* Icon-only action buttons: perfect 40x40 circle */
+    .post-action-btn.action-icon-only,
+    .post-action-btn:not(:has(.count)):not(:has(.amen-count)) {
+        width: 40px !important;
+        max-width: 40px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+    }
+
+    /* Icon centering and normalization */
+    .post-action-btn i {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important;
+        font-size: 0.92rem !important;
+        margin: 0 !important;
+        width: 1.1em !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    /* Counter typography & baseline alignment */
+    .post-action-btn .count,
+    .post-action-btn .amen-count {
+        display: inline-block !important;
+        line-height: 1 !important;
+        font-size: 0.82rem !important;
+        font-variant-numeric: tabular-nums !important;
+        font-weight: 700 !important;
+        vertical-align: middle !important;
+    }
+
+    .post-action-btn:hover,
+    .post-action-btn:active {
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: #fff !important;
+    }
+
+    .post-action-btn.action-story {
+        color: #facc15 !important;
+    }
+
+    .post-action-btn.liked {
+        background: rgba(244, 63, 94, 0.18) !important;
+        border-color: rgba(244, 63, 94, 0.45) !important;
+        color: #fb7185 !important;
+    }
+
+    .post-action-btn.amen-active {
+        background: rgba(245, 158, 11, 0.18) !important;
+        border-color: rgba(245, 158, 11, 0.45) !important;
+        color: #fbbf24 !important;
     }
 
     .media-container-1x1,

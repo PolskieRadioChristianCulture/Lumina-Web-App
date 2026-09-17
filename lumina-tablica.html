@@ -2581,10 +2581,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(15, 23, 42, 0.5);
             margin-top: auto;
-            box-sizing: border-box;
-            width: 100%;
-            overflow: hidden;
-            gap: 4px;
         }
         .post-action-btn {
             background: transparent;
@@ -2600,9 +2596,6 @@
             border-radius: 16px;
             transition: all 0.2s;
             font-family: inherit;
-            min-width: 0;
-            flex-shrink: 1;
-            white-space: nowrap;
         }
         .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
         .post-action-btn.liked { color: #f43f5e; }
@@ -3006,20 +2999,6 @@
             }
             .form-input, .input-composer {
                 font-size: 16px !important;
-            }
-            .post-actions-bar {
-                padding: 8px 10px;
-                gap: 2px;
-                flex-wrap: nowrap;
-            }
-            .post-action-btn {
-                padding: 6px 8px;
-                font-size: 0.75rem;
-                gap: 3px;
-                min-height: 44px;
-            }
-            .post-action-btn .btn-text {
-                display: none;
             }
         }
 
@@ -8340,13 +8319,15 @@
 
                             <!-- Actions Bar -->
                             <div class="post-actions-bar">
-                                <div style="display:flex; gap:4px;">
-                                    <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
-                                    <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
-                                    <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
-                                    <button class="post-action-btn" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ verse: '${(item.teaser || item.title || '').replace(/'/g, "\\'")}', ref: 'Rozważanie Christian Culture' }) : null" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
+                                    <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
+                                    <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                    <button class="post-action-btn action-story action-icon-only" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ verse: '${(item.teaser || item.title || '').replace(/'/g, "\\'")}', ref: 'Rozważanie Christian Culture' }) : null" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                                 </div>
-                                <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <button class="post-action-btn action-share action-icon-only" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
+                                </div>
                             </div>
                         </article>
                     `;
@@ -8593,20 +8574,20 @@
 
                         <!-- Actions Bar -->
                         <div class="post-actions-bar">
-                            <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                                <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
-                                <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
-                                <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
-                                <button class="post-action-btn" onclick="window.openStoryFromTablicaPost('${item.id}')" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
+                            <div style="display:flex; gap:6px; align-items:center;">
+                                <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
+                                <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
+                                <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                <button class="post-action-btn action-story action-icon-only" onclick="window.openStoryFromTablicaPost('${item.id}')" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                             </div>
-                            <div style="display:flex; gap:4px; align-items:center;">
+                            <div style="display:flex; gap:6px; align-items:center;">
                                 ${isAdmin ? `
-                                    <button class="post-action-btn ${item._isPinnedByAdmin ? 'pin-active' : ''}" onclick="toggleAdminPinPost('${item.id}')" title="${item._isPinnedByAdmin ? 'Odepnij wpis z góry tablicy (Admin)' : 'Przypnij wpis na samej górze tablicy (Admin)'}" style="${item._isPinnedByAdmin ? 'color:#facc15; border-color:rgba(250,204,21,0.5); font-weight:800; background:rgba(250,204,21,0.12);' : 'color:#cbd5e1;'}">
+                                    <button class="post-action-btn action-pin action-icon-only ${item._isPinnedByAdmin ? 'pin-active' : ''}" onclick="toggleAdminPinPost('${item.id}')" title="${item._isPinnedByAdmin ? 'Odepnij wpis z góry tablicy (Admin)' : 'Przypnij wpis na samej górze tablicy (Admin)'}" style="${item._isPinnedByAdmin ? 'color:#facc15; border-color:rgba(250,204,21,0.5); font-weight:800; background:rgba(250,204,21,0.12);' : 'color:#cbd5e1;'}">
                                         <i class="fa-solid fa-thumbtack" style="${item._isPinnedByAdmin ? 'transform:rotate(-45deg); color:#facc15;' : ''}"></i> <span class="btn-text">${item._isPinnedByAdmin ? 'Odepnij' : 'Przypnij'}</span>
                                     </button>
                                 ` : ''}
-                                <button class="post-action-btn" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś naruszenie"><i class="fa-solid fa-flag"></i></button>
-                                <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
+                                <button class="post-action-btn action-report action-icon-only" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś naruszenie"><i class="fa-solid fa-flag"></i></button>
+                                <button class="post-action-btn action-share action-icon-only" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
                             </div>
                         </div>
 
