@@ -1912,13 +1912,27 @@ export async function publishUniversalPost(postData) {
     const authorAvatar = postData.authorAvatar || 'lumina_icon.jpg';
     const authorRole = postData.authorRole || 'Społeczność LUMINA ✨';
 
+    const rawCombinedText = `${postData.text || ''} ${postData.desc || ''} ${postData.title || ''}`;
+    let autoYtId = extractYouTubeId(postData.videoUrl || postData.youtubeUrl || '');
+    if (!autoYtId) {
+        const autoMatch = rawCombinedText.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+        if (autoMatch) autoYtId = autoMatch[1];
+    }
+    const resolvedYtUrl = autoYtId ? ('https://www.youtube.com/watch?v=' + autoYtId) : (postData.youtubeUrl || null);
+    const resolvedEmbedUrl = autoYtId ? ('https://www.youtube-nocookie.com/embed/' + autoYtId) : (postData.videoUrl || null);
+    const resolvedPoster = postData.image || (autoYtId ? `https://i.ytimg.com/vi/${autoYtId}/hqdefault.jpg` : null);
+    const isShortDetected = !!(postData.isShort || postData.is916 || (rawCombinedText && rawCombinedText.includes('/shorts/')) || (postData.videoUrl && String(postData.videoUrl).includes('/shorts/')));
+
     const normalizedPost = {
         id: postData.id || ('post_' + Date.now()),
-        type: postData.type || 'post',
+        type: isShortDetected ? 'short' : (postData.type || 'post'),
         title: postData.title || '',
         text: postData.text || postData.desc || '',
-        image: postData.image || null,
-        youtubeUrl: postData.youtubeUrl || null,
+        image: resolvedPoster,
+        videoUrl: resolvedEmbedUrl,
+        youtubeUrl: resolvedYtUrl,
+        isShort: isShortDetected,
+        is916: isShortDetected,
         embedHtml: postData.embedHtml || null,
         playlistUrl: postData.playlistUrl || null,
         isPinned: !!postData.isPinned,

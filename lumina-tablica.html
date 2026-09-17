@@ -8497,23 +8497,29 @@
                     ? window.LuminaDB.formatRichTextAndMedia(rawBody, item)
                     : { html: rawBody, embedHtml: '' };
 
+                // ── Sprawdzenie czy wpis posiada YouTube (w polach wideo lub w tekście) ──
+                const postYtMatch = `${item.videoUrl || ''} ${item.youtubeUrl || ''} ${item.playlistUrl || ''} ${item.text || ''} ${item.desc || ''} ${item.title || ''} ${item.image || ''}`.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/|i\.ytimg\.com\/vi\/|img\.youtube\.com\/vi\/)([a-zA-Z0-9_-]{11})/i);
+                const postYtId = postYtMatch ? postYtMatch[1] : null;
+
                 let effectiveEmbedHtml = '';
-                if (item.linkPreview && window.LuminaDB?.createRichOpenGraphCardHtml) {
-                    effectiveEmbedHtml = window.LuminaDB.createRichOpenGraphCardHtml(item.linkPreview);
-                } else if (item.embedHtml) {
-                    effectiveEmbedHtml = item.embedHtml;
-                } else if (richResult.embedHtml) {
-                    effectiveEmbedHtml = richResult.embedHtml;
-                }
-                if (!effectiveEmbedHtml && (item.youtubeUrl || item.playlistUrl)) {
-                    const targetYt = item.youtubeUrl || item.playlistUrl;
-                    const plId = window.LuminaDB?.extractYouTubePlaylistId ? window.LuminaDB.extractYouTubePlaylistId(targetYt) : null;
-                    if (plId) {
-                        effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
-                    } else {
-                        const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
-                        if (ytId) {
-                            effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+                if (!postYtId) {
+                    if (item.linkPreview && window.LuminaDB?.createRichOpenGraphCardHtml) {
+                        effectiveEmbedHtml = window.LuminaDB.createRichOpenGraphCardHtml(item.linkPreview);
+                    } else if (item.embedHtml) {
+                        effectiveEmbedHtml = item.embedHtml;
+                    } else if (richResult.embedHtml) {
+                        effectiveEmbedHtml = richResult.embedHtml;
+                    }
+                    if (!effectiveEmbedHtml && (item.youtubeUrl || item.playlistUrl)) {
+                        const targetYt = item.youtubeUrl || item.playlistUrl;
+                        const plId = window.LuminaDB?.extractYouTubePlaylistId ? window.LuminaDB.extractYouTubePlaylistId(targetYt) : null;
+                        if (plId) {
+                            effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+                        } else {
+                            const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
+                            if (ytId) {
+                                effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+                            }
                         }
                     }
                 }
@@ -8560,21 +8566,38 @@
 
                         <!-- Media Container (Video / Live Broadcast / Campaigns / User Posts 1:1) -->
                         ${(() => {
-                            const rawVid = item.videoUrl || item.youtubeUrl || '';
-                            const ytId = (window.LuminaDB && window.LuminaDB.extractYouTubeId) ? window.LuminaDB.extractYouTubeId(rawVid) : (() => {
-                                const m = String(rawVid).match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i);
-                                return m ? m[1] : null;
-                            })();
+                            // ── Pancerne wykrywanie YouTube we wszystkich polach posta ──
+                            let rawVid = item.videoUrl || item.youtubeUrl || item.playlistUrl || item.video || '';
+                            let ytId = postYtId || ((window.LuminaDB && window.LuminaDB.extractYouTubeId) ? window.LuminaDB.extractYouTubeId(rawVid) : null);
 
-                            // 1. YouTube Video lub YouTube Shorts (Oficjalny embed youtube-nocookie - NIGDY odrzucenia połączenia)
+                            if (!ytId) {
+                                const fullPostText = `${rawVid} ${item.text || ''} ${item.desc || ''} ${item.title || ''} ${item.image || ''} ${item.embedHtml || ''}`;
+                                const m = fullPostText.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/|i\.ytimg\.com\/vi\/|img\.youtube\.com\/vi\/)([a-zA-Z0-9_-]{11})/i);
+                                if (m && m[1]) {
+                                    ytId = m[1];
+                                    if (!rawVid) rawVid = 'https://www.youtube.com/watch?v=' + ytId;
+                                }
+                            }
+
+                            // 1. YouTube Video lub YouTube Shorts (Oficjalny embed youtube-nocookie - ZAWSZE zamiast zdjęcia zastępczego)
                             if (ytId) {
-                                const isVertical = item.is916 || item.isShort || String(rawVid).includes('/shorts/');
+                                const isVertical = item.is916 || item.isShort || String(rawVid).includes('/shorts/') || (item.text && item.text.includes('/shorts/'));
                                 const containerStyle = isVertical
                                     ? 'position:relative; aspect-ratio:9/16; max-width:380px; width:100%; margin:0 auto 14px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.6);'
                                     : 'position:relative; aspect-ratio:16/9; width:100%; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); background:#000; margin-bottom:14px; box-shadow:0 8px 24px rgba(0,0,0,0.6);';
                                 return `
                                     <div class="media-container-1x1 rich-youtube-embed" style="${containerStyle}">
                                         <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1" style="width:100%; height:100%; border:none; display:block;" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+                                    </div>
+                                `;
+                            }
+
+                            // 1b. YouTube Playlist (Oficjalny embed listy odtwarzania)
+                            const plId = (window.LuminaDB && window.LuminaDB.extractYouTubePlaylistId) ? window.LuminaDB.extractYouTubePlaylistId(rawVid) : null;
+                            if (plId) {
+                                return `
+                                    <div class="media-container-1x1 rich-youtube-embed" style="position:relative; aspect-ratio:16/9; width:100%; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); background:#000; margin-bottom:14px; box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+                                        <iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" style="width:100%; height:100%; border:none; display:block;" title="YouTube playlist player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
                                     </div>
                                 `;
                             }
@@ -8636,8 +8659,8 @@
                                 `;
                             }
 
-                            // 5. Image or default media tag
-                            if (!item.image && effectiveEmbedHtml) return '';
+                            // 5. Rzeczywista Grafika Wpisu (lub Kampanii) — jeśli wpis nie posiada grafiki ani nie jest kampanią, NIE renderuj fałszywego placeholdera
+                            if (!item.image && !isCampaign) return '';
                             const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
                             const mediaTag = isVideoMedia 
                                 ? `<div class="lumina-video-wrapper">
@@ -9059,10 +9082,19 @@
 
             const title = (document.getElementById('qpTitleInput') ? document.getElementById('qpTitleInput').value.trim() : '');
             const text = (document.getElementById('qpTextInput') ? document.getElementById('qpTextInput').value.trim() : '');
-            const videoUrl = (document.getElementById('qpVideoUrlInput') ? document.getElementById('qpVideoUrlInput').value.trim() : '');
+            let videoUrl = (document.getElementById('qpVideoUrlInput') ? document.getElementById('qpVideoUrlInput').value.trim() : '');
             const imgUrlField = document.getElementById('qpImageUrlInput') ? document.getElementById('qpImageUrlInput').value.trim() : '';
             const finalImage = attachedQpImageDataUrl || imgUrlField || null;
             let is916 = document.getElementById('qpIs916Checkbox') ? document.getElementById('qpIs916Checkbox').checked : false;
+
+            // Automatyczne wykrycie linku YouTube w treści lub tytule wpisu jeśli pole wideo było puste
+            if (!videoUrl && text) {
+                const combinedYtSource = `${text} ${title}`;
+                const textYtMatch = combinedYtSource.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                if (textYtMatch) {
+                    videoUrl = textYtMatch[0];
+                }
+            }
 
             if (!text && !finalImage && !videoUrl) {
                 alert('Wpisz treść wpisu lub dodaj zdjęcie/wideo!');
@@ -9087,7 +9119,7 @@
                 return m ? m[1] : null;
             })();
 
-            const normalizedYtUrl = ytId ? ('https://www.youtube.com/watch?v=' + ytId) : null;
+            const normalizedYtUrl = ytId ? ('https://www.youtube.com/watch?v=' + ytId) : (videoUrl || null);
             const normalizedEmbedUrl = ytId ? ('https://www.youtube-nocookie.com/embed/' + ytId) : (videoUrl || null);
             const ytPoster = ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : null;
 
