@@ -371,6 +371,45 @@
         display: none !important;
     }
 
+    .profile-navbar {
+        min-height: 56px !important;
+        height: 56px !important;
+        padding: 0 var(--lumina-mobile-gutter) !important;
+        gap: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+    .profile-navbar .nav-brand-title {
+        font-size: 1.15rem !important;
+        letter-spacing: 1px !important;
+    }
+    .profile-navbar .nav-logo-badge {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+    }
+    .profile-navbar .nav-center-links {
+        gap: 8px !important;
+    }
+    .profile-navbar .nav-center-links .nav-link-btn {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 0 !important;
+    }
+    .profile-navbar .nav-center-links .nav-link-btn i {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+
     .btn-nav-back span,
     .profile-nav-back span {
         display: none !important;
@@ -390,18 +429,34 @@
         align-items: center !important;
         justify-content: center !important;
         flex: 0 0 var(--lumina-mobile-target) !important;
+        font-size: 0 !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+    }
+    .btn-nav-back i,
+    .profile-nav-back i {
+        font-size: 1.15rem !important;
+        margin: 0 auto !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .post-action-btn .btn-text {
-        display: none !important;
+        display: inline-block !important;
     }
 
     .chip-btn,
     .sort-tab-btn,
-    .btn-carousel-follow-pulse,
-    .card-badge-envelope,
-    .mobile-auth-btn {
-        padding-top: 10px !important;
+    .filter-chip {
+        font-size: 0.8rem !important;
+    }
+
+    .feed-sort-row {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
         padding-bottom: 10px !important;
     }
 
@@ -410,29 +465,37 @@
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 8px 10px !important;
-        gap: 6px !important;
+        flex-wrap: wrap !important;
+        padding: 10px 12px !important;
+        gap: 8px !important;
         box-sizing: border-box !important;
+        width: 100% !important;
     }
 
     .post-actions-bar > div {
-        display: contents !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
     }
 
     .post-action-btn {
-        height: 40px !important;
-        min-height: 40px !important;
-        max-height: 40px !important;
-        min-width: 40px !important;
-        border-radius: 9999px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        min-width: 38px !important;
+        width: auto !important;
+        max-width: none !important;
+        border-radius: 20px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 0 10px !important;
-        gap: 5px !important;
+        padding: 0 12px !important;
+        gap: 6px !important;
         font-size: 0.82rem !important;
         font-weight: 700 !important;
         line-height: 1 !important;
+        white-space: nowrap !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
         background: rgba(255, 255, 255, 0.06) !important;
@@ -442,27 +505,18 @@
         touch-action: manipulation !important;
     }
 
-    /* Icon-only action buttons: perfect 40x40 circle */
-    .post-action-btn.action-icon-only,
-    .post-action-btn.action-comments,
-    .post-action-btn.action-story,
-    .post-action-btn.action-report,
-    .post-action-btn.action-share,
-    .post-action-btn.action-pin,
-    .post-action-btn:not(:has(.count)):not(:has(.amen-count)) {
-        width: 40px !important;
-        min-width: 40px !important;
-        max-width: 40px !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        max-height: 40px !important;
+    /* Icon-only action buttons: perfect 38x38 circle */
+    .post-action-btn.action-icon-only {
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
         padding: 0 !important;
         margin: 0 !important;
         border-radius: 50% !important;
-        flex: 0 0 40px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        flex: 0 0 38px !important;
     }
 
     /* Icon centering and normalization */
@@ -472,27 +526,12 @@
         justify-content: center !important;
         line-height: 1 !important;
         font-size: 0.92rem !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
         padding: 0 !important;
-        width: 1.1em !important;
+        width: auto !important;
+        height: auto !important;
         text-align: center !important;
         vertical-align: middle !important;
-    }
-
-    .post-action-btn.action-icon-only i,
-    .post-action-btn.action-comments i,
-    .post-action-btn.action-story i,
-    .post-action-btn.action-report i,
-    .post-action-btn.action-share i,
-    .post-action-btn.action-pin i,
-    .post-action-btn:not(:has(.count)):not(:has(.amen-count)) i {
-        width: 100% !important;
-        height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
     }
 
     /* Counter typography & baseline alignment */
