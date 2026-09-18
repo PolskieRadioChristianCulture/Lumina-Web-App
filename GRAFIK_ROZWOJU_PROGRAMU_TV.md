@@ -30,7 +30,8 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **20:00 – 21:00** | **📖 Studium Telewizyjne Pisma Świętego** | Wydanie wieczorne wykładu werset po wersecie | `studium-live.html` |
 | **21:00 – 21:06** | **📌 Apokalipsa Dzień po Dniu** | Wieczorny komentarz dnia | `apokalipsa-live.html` |
 | **21:06 – 22:00** | **🎶 Biblia Śpiewana — Finał Dnia** | Zwieńczenie dnia muzyką uwielbienia | `biblia-spiewana-live.html` |
-| **22:00 – 23:00** | **🔥 Apokalipsa: Księga Nadziei** | Wieczorne wydanie kursu biblijnego | `apokalipsa-ksiega-nadziei-live.html` |
+| **22:00 – 23:00 (Pon – Czw)** | **🔥 Apokalipsa: Księga Nadziei** | Wieczorne wydanie kursu biblijnego | `apokalipsa-ksiega-nadziei-live.html` |
+| **22:00 – 23:00 (Pt – Ndz)** | **💑 Randki & Małżeństwo** | Prawdziwe Szczęście w Rodzinie — Roman Chałupka (18 odcinków) | `randki-malzenstwo-live.html` |
 | **23:00 – 06:00** | **🌙 Nocne Czuwanie & Worship — Pasmo Nocne** | 100% muzyki i relaksu z cyklem 23 rotacyjnych filmów nocnych (1 pozycja na dobę) | `nocne-czuwanie-live.html` |
 
 ---

@@ -747,6 +747,10 @@
             "tv-epafraz-live.html": {
                 title: "TV EPAFRAZ — GŁÓWNE PASMO BIBLIJNE",
                 desc: "Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca i filmy chrześcijańskie"
+            },
+            "randki-malzenstwo-live.html": {
+                title: "RANDKI & MAŁŻEŃSTWO — PRAWDZIWE SZCZĘŚCIE W RODZINIE",
+                desc: "Kurs relacji, narzeczeństwa, małżeństwa i rodziny z Romanem Chałupką (Pt, Sob, Ndz 22:00)"
             }
         };
 
@@ -861,21 +865,27 @@
                 if (hour !== 21) apokalipsaDoneHours[21] = false;
             }
 
-            // 3) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 60 min slot window)
+            // 3) Trigger Pasmo 10:00 (Apokalipsa: Księga Nadziei) oraz Pasmo Wieczorne 22:00 (Randki & Małżeństwo w Pt, Sob, Ndz)
             if (hour === 10 || hour === 22) {
+                const dayOfWeek = now.getDay(); // 0 = Niedziela, 5 = Piątek, 6 = Sobota
+                const isWeekendNight = (hour === 22 && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0));
+                const targetSlotChannel = (hour === 10) 
+                    ? "apokalipsa-ksiega-nadziei-live.html" 
+                    : (isWeekendNight ? "randki-malzenstwo-live.html" : "apokalipsa-ksiega-nadziei-live.html");
+
                 if (min < 55) {
                     if (!ksiegaNadzieiDoneHours[hour]) {
                         ksiegaNadzieiDoneHours[hour] = true;
                         isSpecialSlotActive = true;
-                        switchChannel("apokalipsa-ksiega-nadziei-live.html");
+                        switchChannel(targetSlotChannel);
 
                         safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for Księga Nadziei slot.");
+                            console.log("MCR: Safety timeout reached for 22:00 / 10:00 slot.");
                             endSpecialSlot();
                         }, 3300000);
                         return;
                     }
-                } else if (isSpecialSlotActive && currentUrl === "apokalipsa-ksiega-nadziei-live.html") {
+                } else if (isSpecialSlotActive && (currentUrl === "apokalipsa-ksiega-nadziei-live.html" || currentUrl === "randki-malzenstwo-live.html")) {
                     endSpecialSlot();
                 }
             } else {
@@ -1137,7 +1147,7 @@
                 muteSubframe();
                 return;
             }
-            if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'PROGRAM_FINISHED') {
+            if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'RANDKI_MALZENSTWO_FINISHED' || type === 'PROGRAM_FINISHED') {
                 console.log("MCR: Received completion signal (" + type + ") from sub-channel. Ending special slot immediately!");
                 endSpecialSlot();
             }
