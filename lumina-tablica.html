@@ -1581,14 +1581,57 @@
         }
         @media (min-width: 640px) {
             .profiles-carousel-scroll {
-                justify-content: center;
+                justify-content: flex-start;
             }
             .profile-carousel-card {
-                flex: 1 1 0;
-                min-width: 96px;
-                max-width: 130px;
+                flex: 0 0 110px;
+                min-width: 110px;
+                max-width: 110px;
             }
         }
+        /* Strzałki nawigacyjne karuzeli (desktop) */
+        .profiles-carousel-nav-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .profiles-carousel-nav-btn {
+            display: none;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(139,92,246,0.45);
+            background: rgba(15,23,42,0.88);
+            color: #c4b5fd;
+            font-size: 0.85rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s, border-color 0.18s, opacity 0.18s;
+            z-index: 2;
+            user-select: none;
+        }
+        .profiles-carousel-nav-btn:hover {
+            background: rgba(139,92,246,0.25);
+            border-color: rgba(139,92,246,0.75);
+        }
+        .profiles-carousel-nav-btn:disabled {
+            opacity: 0.28;
+            cursor: default;
+        }
+        .profiles-carousel-nav-btn.nav-prev { margin-right: 6px; }
+        .profiles-carousel-nav-btn.nav-next { margin-left: 6px; }
+        @media (min-width: 640px) {
+            .profiles-carousel-nav-btn { display: inline-flex; }
+        }
+        /* Cursor grab dla mouse-drag */
+        .profiles-carousel-scroll.is-grabbing {
+            cursor: grabbing !important;
+            user-select: none;
+        }
+
 
         /* ══════════ QUICK POST PUBLISHER BAR ("CO DOBREGO U CIEBIE?") ══════════ */
          .quick-post-bar-container {
@@ -5295,8 +5338,16 @@
                     </div>
                     <span style="font-size:0.65rem; color:#64748b; font-weight:600;">Społeczność LUMINA</span>
                 </div>
-                <div class="profiles-carousel-scroll" id="staticProfilesCarouselScroll">
-                    <!-- Wypełniane przez JS (initStaticProfilesCarousel) -->
+                <div class="profiles-carousel-nav-wrap">
+                    <button class="profiles-carousel-nav-btn nav-prev" id="staticCarouselPrev" aria-label="Poprzedni profil" title="Poprzedni">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="profiles-carousel-scroll" id="staticProfilesCarouselScroll">
+                        <!-- Wypełniane przez JS (initStaticProfilesCarousel) -->
+                    </div>
+                    <button class="profiles-carousel-nav-btn nav-next" id="staticCarouselNext" aria-label="Następny profil" title="Następny">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
 
@@ -13318,6 +13369,63 @@
                    + '</div>';
         }
         scroll.innerHTML = cards;
+
+        // ── Przyciski strzałek ──────────────────────────────────────────────
+        var btnPrev = document.getElementById('staticCarouselPrev');
+        var btnNext = document.getElementById('staticCarouselNext');
+        var STEP = 240; // px na jedno kliknięcie
+        function updateBtns() {
+            if (!btnPrev || !btnNext) return;
+            btnPrev.disabled = scroll.scrollLeft <= 2;
+            btnNext.disabled = scroll.scrollLeft >= scroll.scrollWidth - scroll.clientWidth - 2;
+        }
+        if (btnPrev) {
+            btnPrev.addEventListener('click', function() {
+                scroll.scrollBy({ left: -STEP, behavior: 'smooth' });
+            });
+        }
+        if (btnNext) {
+            btnNext.addEventListener('click', function() {
+                scroll.scrollBy({ left: STEP, behavior: 'smooth' });
+            });
+        }
+        scroll.addEventListener('scroll', updateBtns, { passive: true });
+        updateBtns();
+
+        // ── Mouse-drag (kliknij i przeciągnij — desktop) ───────────────────
+        var isDown = false;
+        var startX = 0;
+        var scrollStart = 0;
+        scroll.style.cursor = 'grab';
+        scroll.addEventListener('mousedown', function(e) {
+            // Ignoruj kliknięcia w przyciski wewnętrzne
+            if (e.target.closest('.profile-carousel-btn') || e.target.closest('a')) return;
+            isDown = true;
+            startX = e.pageX;
+            scrollStart = scroll.scrollLeft;
+            scroll.classList.add('is-grabbing');
+            scroll.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+        document.addEventListener('mousemove', function(e) {
+            if (!isDown) return;
+            var dx = e.pageX - startX;
+            scroll.scrollLeft = scrollStart - dx;
+        });
+        document.addEventListener('mouseup', function() {
+            if (!isDown) return;
+            isDown = false;
+            scroll.classList.remove('is-grabbing');
+            scroll.style.cursor = 'grab';
+            updateBtns();
+        });
+        // Kółko myszy → scroll poziomy (gdy kursor nad karuzelą)
+        scroll.addEventListener('wheel', function(e) {
+            if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return; // poziomy scroll — pomiń
+            e.preventDefault();
+            scroll.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
+            updateBtns();
+        }, { passive: false });
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', run);
