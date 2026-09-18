@@ -2636,6 +2636,27 @@
                 const hour = now.getHours();
                 const min = now.getMinutes();
                 const timeInMinutes = hour * 60 + min;
+                const dayOfWeek = now.getDay(); // 0 = Niedziela, 5 = Piątek, 6 = Sobota
+                const isWeekendNight = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+
+                let title22 = "Apokalipsa: Księga Nadziei";
+                let title22Full = "Apokalipsa: Księga Nadziei (Kurs Biblijny)";
+                let url22 = "master";
+
+                if (isWeekendNight) {
+                    const baseStartDate = new Date(2026, 8, 18);
+                    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const diffDays = Math.round((todayMidnight - baseStartDate) / 86400000);
+                    const weeksElapsed = Math.floor(diffDays / 7);
+                    let slot = (dayOfWeek === 5) ? 0 : (dayOfWeek === 6 ? 1 : 2);
+                    let broadcastIdx = weeksElapsed * 3 + slot;
+                    if (broadcastIdx < 0) broadcastIdx = 0;
+                    const epNum = (broadcastIdx % 18) + 1;
+
+                    title22 = "Randki & Małżeństwo (Odc. " + epNum + ")";
+                    title22Full = "Randki & Małżeństwo • Roman Chałupka (Odc. " + epNum + ")";
+                    url22 = "randki-malzenstwo";
+                }
 
                 let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master" };
                 let next = { time: "06:00", title: "Zjednoczeni za Polskę" };
@@ -2723,29 +2744,29 @@
                 else if (timeInMinutes >= 20 * 60 && timeInMinutes < 20 * 60 + 52) {
                     current = { title: "Studium Telewizyjne Pisma Świętego", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
-                    third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
+                    third = { time: "22:00", title: title22 };
                 }
                 // 20:52 - 21:00 (Biblia Śpiewana)
                 else if (timeInMinutes >= 20 * 60 + 52 && timeInMinutes < 21 * 60) {
                     current = { title: "Biblia Śpiewana", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
-                    third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
+                    third = { time: "22:00", title: title22 };
                 }
                 // 21:00 - 21:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 6) {
                     current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "21:06", title: "Biblia Śpiewana" };
-                    third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
+                    third = { time: "22:00", title: title22 };
                 }
                 // 21:06 - 22:00 (Biblia Śpiewana Finał Dnia)
                 else if (timeInMinutes >= 21 * 60 + 6 && timeInMinutes < 22 * 60) {
                     current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master" };
-                    next = { time: "22:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
+                    next = { time: "22:00", title: title22Full };
                     third = { time: "22:55", title: "Instrumental Worship" };
                 }
-                // 22:00 - 22:55 (Apokalipsa: Księga Nadziei)
+                // 22:00 - 22:55 (Apokalipsa: Księga Nadziei lub Randki & Małżeństwo w Pt, Sob, Ndz)
                 else if (timeInMinutes >= 22 * 60 && timeInMinutes < 22 * 60 + 55) {
-                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
+                    current = { title: title22Full, url: url22 };
                     next = { time: "22:55", title: "Instrumental Worship & Nocne Czuwanie" };
                     third = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 }
