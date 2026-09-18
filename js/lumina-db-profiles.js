@@ -169,7 +169,7 @@ export const PROFILES_DB = {
         bio: 'Oficjalny profil Studia Dobrego Słowa (@StudioDeeS). Tworzymy podcasty, inspirujące rozmowy o wierze, relacjach i życiu z Bogiem. Zapraszamy także do naszej Herbaciarni Dobrego Słowa (studiods.pl)!',
         tags: ['Podcasty', 'Herbaciarnia', 'Słowo Boże', 'Ewangelizacja', 'Rozmowy o Wierze', 'YouTube'],
         latestYoutubeId: 'hHug_C6XDPU',
-        photos: ['studiodobregoslowa_avatar.jpg', 'lumina_default_cover.jpg'],
+        photos: ['studiodobregoslowa_karuzela.jpg', 'studiodobregoslowa_avatar.jpg', 'lumina_default_cover.jpg'],
         posts: [
             {
                 id: 'post_sds_1',
