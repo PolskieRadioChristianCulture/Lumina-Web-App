@@ -958,6 +958,22 @@
         .lumina-post-link:hover {
             color: #7dd3fc;
         }
+
+        /* ── Modal Overlays ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.open {
+            display: flex !important;
+        }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
 </head>
@@ -1054,8 +1070,8 @@
 
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
-                <button class="tab-btn active" id="btnTabFeed" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
-                <button class="tab-btn" id="btnTabPrayer" onclick="switchTab('tab-prayer-series', this)"><i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy</button>
+                <button class="tab-btn active" id="btnTabPrayer" onclick="switchTab('tab-prayer-series', this)"><i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy (19)</button>
+                <button class="tab-btn" id="btnTabFeed" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
                 <button class="tab-btn" id="btnTabAbout" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
                 <button class="tab-btn" id="btnTabFaith" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
             </div>
@@ -1156,7 +1172,7 @@
             <section class="profile-main-content">
                 
                 <!-- ══════════ TAB 1: BIBLIJNY CZAS MODLITWY (SERIA WIDEO) ══════════ -->
-                <div id="tab-prayer-series" class="tab-pane-content" style="display:none;">
+                <div id="tab-prayer-series" class="tab-pane-content" style="display:block;">
                     
                     <!-- Intro Banner Series -->
                     <div class="sidebar-card" style="background:linear-gradient(135deg, rgba(168,85,247,0.18), rgba(11,24,56,0.9)); border-color:rgba(168,85,247,0.4); margin-bottom:20px;">
@@ -1220,74 +1236,915 @@
                         </div>
                     </article>
 
-                    <!-- Wideo 1 -->
-                    <article class="video-promo-card">
-                        <div class="video-promo-header">
-                            <div class="video-promo-title">
-                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.3rem;"></i>
-                                <span>Biblijny Czas Modlitwy • Odcinek 1</span>
+                    
+                    <!-- Odcinek 1: Boża Dobroć Która Wzrusza – Pokonali Szatana Przez Słowo Świadectwa Krew Baranka -->
+                    <article class="video-promo-card" id="ep_Ncpu5o_kt10" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Boża Dobroć Która Wzrusza – Pokonali Szatana Przez Słowo Świadectwa Krew Baranka</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🕊️ ŚWIADECTWO WIARY • NOWOŚĆ</span>
+                                </div>
                             </div>
-                            <a href="https://youtu.be/EWY-J2gSqwo" target="_blank" rel="noopener" style="font-size:0.75rem; color:#94a3b8; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.08); padding:4px 10px; border-radius:12px;">
-                                YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 33:04</span>
+                                <a href="https://youtu.be/Ncpu5o_kt10" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="video-embed-wrapper">
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
                             <iframe 
-                                src="https://www.youtube.com/embed/EWY-J2gSqwo" 
-                                title="Biblijny Czas Modlitwy — Polskie Radio Christian Culture" 
+                                src="https://www.youtube.com/embed/Ncpu5o_kt10?rel=0" 
+                                title="Boża Dobroć Która Wzrusza – Pokonali Szatana Przez Słowo Świadectwa Krew Baranka" 
+                                frameborder="0" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
                                 allowfullscreen 
-                                loading="lazy">
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
                             </iframe>
                         </div>
-                        <div class="video-promo-body">
-                            <h3 style="font-size:1.05rem; font-weight:800; color:#fff; margin-bottom:6px;">Trwaj w Bożej Obecności • Modlitwa i Słowo Boże</h3>
-                            <p class="video-promo-desc">
-                                Wejdź w głębię modlitwy wstawienniczej i uwielbienia. Otwórz swoje serce na działanie Ducha Świętego i pozwól, aby Boży pokój przewyższający wszelki umysł napełnił Twój dom.
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Poruszające świadectwo Bożej dobroci, która wzrusza do głębi serca. Pokonali go przez krew Baranka i przez słowo swego świadectwa! Niech to nagranie napełni Wasze serca pokojem, nadzieją i wiarą w moc Bożą.
                             </p>
-                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="https://youtu.be/EWY-J2gSqwo" target="_blank" rel="noopener" class="btn-action-primary" style="font-size:0.8rem; height:36px; padding:0 16px;">
-                                    <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
-                                </a>
-                                <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/EWY-J2gSqwo', 'Skopiowano link do odcinka 1! ✨')" style="font-size:0.8rem; height:36px; padding:0 14px;">
-                                    <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                                </button>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/Ncpu5o_kt10" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/Ncpu5o_kt10', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </article>
 
-                    <!-- Wideo 2 -->
-                    <article class="video-promo-card">
-                        <div class="video-promo-header">
-                            <div class="video-promo-title">
-                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.3rem;"></i>
-                                <span>Biblijny Czas Modlitwy • Odcinek 2</span>
+                    <!-- Odcinek 2: Biblijny Czas Modlitwy – Poprowadzi Jola | Transmisja na Żywo -->
+                    <article class="video-promo-card" id="ep_KtjxBfKfw_Y" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – Poprowadzi Jola | Transmisja na Żywo</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🔴 WYDANIE GŁÓWNE • PROWADZI JOLA</span>
+                                </div>
                             </div>
-                            <a href="https://youtu.be/nFbfDqf42Q4" target="_blank" rel="noopener" style="font-size:0.75rem; color:#94a3b8; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.08); padding:4px 10px; border-radius:12px;">
-                                YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 3:54:53</span>
+                                <a href="https://youtu.be/KtjxBfKfw_Y" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="video-embed-wrapper">
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
                             <iframe 
-                                src="https://www.youtube.com/embed/nFbfDqf42Q4" 
-                                title="Biblijny Czas Modlitwy — Polskie Radio Christian Culture" 
+                                src="https://www.youtube.com/embed/KtjxBfKfw_Y?rel=0" 
+                                title="Biblijny Czas Modlitwy – Poprowadzi Jola | Transmisja na Żywo" 
+                                frameborder="0" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
                                 allowfullscreen 
-                                loading="lazy">
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
                             </iframe>
                         </div>
-                        <div class="video-promo-body">
-                            <h3 style="font-size:1.05rem; font-weight:800; color:#fff; margin-bottom:6px;">Moc Wytrwałej Modlitwy • Słuchaj i Rozważaj</h3>
-                            <p class="video-promo-desc">
-                                Kolejny odcinek pasma modlitewnego Polskiego Radia Christian Culture. Poświęć ten czas, aby wsłuchać się w wersety Pisma Świętego i wzmocnić swoją wiarę.
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Oficjalne autorskie pasmo modlitewne na żywo prowadzone przez Siostrę Jolę w Polskim Radiu Christian Culture TV. Wspólna modlitwa wstawiennicza, rozważanie Słowa Bożego i błogosławieństwo.
                             </p>
-                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="https://youtu.be/nFbfDqf42Q4" target="_blank" rel="noopener" class="btn-action-primary" style="font-size:0.8rem; height:36px; padding:0 16px;">
-                                    <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/KtjxBfKfw_Y" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/KtjxBfKfw_Y', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 3: Biblijny Czas Modlitwy – List do Efezjan 4:1-16 | Audycja Siostry Joli -->
+                    <article class="video-promo-card" id="ep_y2CPitfyQTM" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – List do Efezjan 4:1-16 | Audycja Siostry Joli</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📖 LIST DO EFEZJAN • CZĘŚĆ 1</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:02:46</span>
+                                <a href="https://youtu.be/y2CPitfyQTM" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
-                                <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/nFbfDqf42Q4', 'Skopiowano link do odcinka 2! ✨')" style="font-size:0.8rem; height:36px; padding:0 14px;">
-                                    <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                                </button>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/y2CPitfyQTM?rel=0" 
+                                title="Biblijny Czas Modlitwy – List do Efezjan 4:1-16 | Audycja Siostry Joli" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Głębokie rozważanie 4. rozdziału Listu do Efezjan (wersety 1-16). Jedność Ciała Chrystusowego, dary łaski i budowanie się w miłości. Audycja autorska Siostry Joli.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/y2CPitfyQTM" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/y2CPitfyQTM', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 4: Biblijny Czas Modlitwy | Część 2 – List do Efezjan 4 -->
+                    <article class="video-promo-card" id="ep_RbRgmPvTTu8" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy | Część 2 – List do Efezjan 4</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📖 LIST DO EFEZJAN • CZĘŚĆ 2</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:03:55</span>
+                                <a href="https://youtu.be/RbRgmPvTTu8" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/RbRgmPvTTu8?rel=0" 
+                                title="Biblijny Czas Modlitwy | Część 2 – List do Efezjan 4" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Kontynuacja rozważań Listu do Efezjan z Siostrą Jolą. Odnowienie umysłu, zrzucenie starego człowieka i przyobleczenie nowego w sprawiedliwości i świętości prawdy.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/RbRgmPvTTu8" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/RbRgmPvTTu8', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 5: Biblijny Czas Modlitwy – List do Efezjan 1 | Moc Bożego Błogosławieństwa -->
+                    <article class="video-promo-card" id="ep_TyzDXuZvW9o" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – List do Efezjan 1 | Moc Bożego Błogosławieństwa</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📖 LIST DO EFEZJAN • ROZDZIAŁ 1</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 59:25</span>
+                                <a href="https://youtu.be/TyzDXuZvW9o" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/TyzDXuZvW9o?rel=0" 
+                                title="Biblijny Czas Modlitwy – List do Efezjan 1 | Moc Bożego Błogosławieństwa" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Błogosławiony niech będzie Bóg i Ojciec Pana naszego Jezusa Chrystusa! Wejdź w obfitość duchowych darów i poznaj Boże powołanie dla Twojego życia.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/TyzDXuZvW9o" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/TyzDXuZvW9o', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 6: Biblijny Czas Modlitwy Wstawienniczej | Efezjan 2: Nadzieja i Pokój w Chrystusie -->
+                    <article class="video-promo-card" id="ep_sAZzUv_0t7o" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy Wstawienniczej | Efezjan 2: Nadzieja i Pokój w Chrystusie</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📖 LIST DO EFEZJAN • ROZDZIAŁ 2</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:28:47</span>
+                                <a href="https://youtu.be/sAZzUv_0t7o" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/sAZzUv_0t7o?rel=0" 
+                                title="Biblijny Czas Modlitwy Wstawienniczej | Efezjan 2: Nadzieja i Pokój w Chrystusie" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Łaską bowiem jesteście zbawieni przez wiarę. Modlitwa wstawiennicza za chorych, cierpiących i poszukujących Bożego pokoju w codziennych trudnościach.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/sAZzUv_0t7o" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/sAZzUv_0t7o', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 7: Biblijny Czas Modlitwy – Efezjan 3 | Tajemnica Chrystusa i Moc Jego Miłości -->
+                    <article class="video-promo-card" id="ep_kWi2Qd7grXk" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – Efezjan 3 | Tajemnica Chrystusa i Moc Jego Miłości</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📖 LIST DO EFEZJAN • ROZDZIAŁ 3</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:07:15</span>
+                                <a href="https://youtu.be/kWi2Qd7grXk" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/kWi2Qd7grXk?rel=0" 
+                                title="Biblijny Czas Modlitwy – Efezjan 3 | Tajemnica Chrystusa i Moc Jego Miłości" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Poznać miłość Chrystusa przewyższającą wszelkie poznanie, abyście zostali wypełnieni całą pełnią Bożą. Czas intymnej modlitwy i wywyższenia Pana.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/kWi2Qd7grXk" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/kWi2Qd7grXk', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 8: Biblijny Czas Modlitwy – II Księga Samuela 22 | Pieśń Zwycięstwa Dawida -->
+                    <article class="video-promo-card" id="ep_Aprp16JO-fs" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – II Księga Samuela 22 | Pieśń Zwycięstwa Dawida</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">⚔️ II SAMUELA 22 • MOC BOŻA</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:04:42</span>
+                                <a href="https://youtu.be/Aprp16JO-fs" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/Aprp16JO-fs?rel=0" 
+                                title="Biblijny Czas Modlitwy – II Księga Samuela 22 | Pieśń Zwycięstwa Dawida" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Pan jest opoką moją i twierdzą moją, i wybawicielem moim! Niezwykła moc modlitwy dziękczynnej i zaufania Bogu pośród najcięższych burz i prześladowań.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/Aprp16JO-fs" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/Aprp16JO-fs', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 9: Zatrzymaj Się. Bóg Jest Tutaj – Biblijny Czas Modlitwy -->
+                    <article class="video-promo-card" id="ep_wIJxDW9fZNk" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Zatrzymaj Się. Bóg Jest Tutaj – Biblijny Czas Modlitwy</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🕊️ CISZA PRZED PANEM • MODLITWA</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 45:42</span>
+                                <a href="https://youtu.be/wIJxDW9fZNk" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/wIJxDW9fZNk?rel=0" 
+                                title="Zatrzymaj Się. Bóg Jest Tutaj – Biblijny Czas Modlitwy" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Odłóż gonitwę codzienności, wycisz serce i usłysz cichy głos Ducha Świętego. Spotkanie z Bogiem w prawdzie, skrusze i bezwarunkowej miłości.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/wIJxDW9fZNk" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/wIJxDW9fZNk', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 10: Trzej Królowie czy Mędrcy? Odkryj Tajemnicę Uświęcenia (Mt 2,1–12) -->
+                    <article class="video-promo-card" id="ep_ZhI8Kfp9rlE" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Trzej Królowie czy Mędrcy? Odkryj Tajemnicę Uświęcenia (Mt 2,1–12)</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">👑 EWANGELIA MATEUSZA • ROZWAŻANIE</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 48:38</span>
+                                <a href="https://youtu.be/ZhI8Kfp9rlE" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/ZhI8Kfp9rlE?rel=0" 
+                                title="Trzej Królowie czy Mędrcy? Odkryj Tajemnicę Uświęcenia (Mt 2,1–12)" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Głęboka analiza biblijna historii mędrców ze Wschodu. Co oznacza oddać Jezusowi to, co najcenniejsze? Duchowe znaczenie złota, kadzidła i mirry.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/ZhI8Kfp9rlE" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/ZhI8Kfp9rlE', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 11: Proroctwo o Wiecznym Królu: Tajemnica 7. Rozdziału Daniela -->
+                    <article class="video-promo-card" id="ep_zkxM_ZcEdDY" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Proroctwo o Wiecznym Królu: Tajemnica 7. Rozdziału Daniela</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">📜 PROROCTWO DANIELA • CZAS OSTATECZNY</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 21:32</span>
+                                <a href="https://youtu.be/zkxM_ZcEdDY" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/zkxM_ZcEdDY?rel=0" 
+                                title="Proroctwo o Wiecznym Królu: Tajemnica 7. Rozdziału Daniela" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Syn Człowieczy przychodzący na obłokach nieba. Królestwo Boże, które nie przeminie. Wykład biblijny i modlitwa o duchowe zrozumienie czasów ostatecznych.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/zkxM_ZcEdDY" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/zkxM_ZcEdDY', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 12: Biblijny Czas Modlitwy: „Już CUCHNIE!” – Cud Wskrzeszenia Łazarza -->
+                    <article class="video-promo-card" id="ep_qPiTlgBnx50" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy: „Już CUCHNIE!” – Cud Wskrzeszenia Łazarza</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">✨ WIELKI CUD JEZUSA • JAN 11</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 45:08</span>
+                                <a href="https://youtu.be/qPiTlgBnx50" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/qPiTlgBnx50?rel=0" 
+                                title="Biblijny Czas Modlitwy: „Już CUCHNIE!” – Cud Wskrzeszenia Łazarza" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Dla Boga nie ma sytuacji zbyt późnych ani spraw niemożliwych! Nawet gdy po ludzku wszystko zdaje się stracone, głos Jezusa powołuje do życia ze śmierci.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/qPiTlgBnx50" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/qPiTlgBnx50', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 13: Moje Życie Było Horrorem | Świadectwo i Biblijny Czas Modlitwy -->
+                    <article class="video-promo-card" id="ep_J54GnZONHJc" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Moje Życie Było Horrorem | Świadectwo i Biblijny Czas Modlitwy</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🕊️ PRAWDZIWE ŚWIADECTWO PRZEMIANY</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 45:11</span>
+                                <a href="https://youtu.be/J54GnZONHJc" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/J54GnZONHJc?rel=0" 
+                                title="Moje Życie Było Horrorem | Świadectwo i Biblijny Czas Modlitwy" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Poruszająca historia ocalenia z beznadziei i ciemności. Bóg wyciąga człowieka z najgłębszego dołu i stawia jego stopy na Skale, którą jest Jezus Chrystus.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/J54GnZONHJc" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/J54GnZONHJc', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 14: Biblijny Czas Modlitwy – Audycja Przemiany i Mocy | Wylanie Ducha Świętego -->
+                    <article class="video-promo-card" id="ep_h-4cUm_XDkM" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy – Audycja Przemiany i Mocy | Wylanie Ducha Świętego</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🔥 DUCH ŚWIĘTY • PRZEMIANA</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 4:02</span>
+                                <a href="https://youtu.be/h-4cUm_XDkM" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/h-4cUm_XDkM?rel=0" 
+                                title="Biblijny Czas Modlitwy – Audycja Przemiany i Mocy | Wylanie Ducha Świętego" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Nie siłą, nie mocą naszą, lecz Duchem Moim – mówi Pan Zastępów! Wołanie o odnowienie duchowe, dary Ducha Świętego i rozpalenie pierwszej miłości.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/h-4cUm_XDkM" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/h-4cUm_XDkM', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 15: Trwaj w Bożej Obecności • Modlitwa i Słowo Boże (Odcinek 1) -->
+                    <article class="video-promo-card" id="ep_EWY-J2gSqwo" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Trwaj w Bożej Obecności • Modlitwa i Słowo Boże (Odcinek 1)</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🕊️ CZAS WSTAWIENNICTWA • ODCINEK 1</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:01:53</span>
+                                <a href="https://youtu.be/EWY-J2gSqwo" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/EWY-J2gSqwo?rel=0" 
+                                title="Trwaj w Bożej Obecności • Modlitwa i Słowo Boże (Odcinek 1)" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Wejdź w głębię modlitwy wstawienniczej i uwielbienia. Otwórz swoje serce na działanie Ducha Świętego i pozwól, aby Boży pokój napełnił Twój dom.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/EWY-J2gSqwo" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/EWY-J2gSqwo', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 16: Moc Wytrwałej Modlitwy • Słuchaj i Rozważaj (Odcinek 2 / Psalm 74) -->
+                    <article class="video-promo-card" id="ep_nFbfDqf42Q4" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Moc Wytrwałej Modlitwy • Słuchaj i Rozważaj (Odcinek 2 / Psalm 74)</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🛡️ WALKA DUCHOWA • ODCINEK 2</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 31:53</span>
+                                <a href="https://youtu.be/nFbfDqf42Q4" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/nFbfDqf42Q4?rel=0" 
+                                title="Moc Wytrwałej Modlitwy • Słuchaj i Rozważaj (Odcinek 2 / Psalm 74)" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Pasmo modlitewne Polskiego Radia Christian Culture. Poświęć ten czas, aby wsłuchać się w wersety Pisma Świętego i wzmocnić swoją wiarę w Bożą obietnicę.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/nFbfDqf42Q4" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/nFbfDqf42Q4', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 17: Jola zaprasza do Biblijnego Czasu Modlitwy | O+ & Christian Culture -->
+                    <article class="video-promo-card" id="ep_r1SbAVKIkw8" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Jola zaprasza do Biblijnego Czasu Modlitwy | O+ & Christian Culture</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🌸 ZAPROSZENIE DO WSPÓLNOTY</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 51:45</span>
+                                <a href="https://youtu.be/r1SbAVKIkw8" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/r1SbAVKIkw8?rel=0" 
+                                title="Jola zaprasza do Biblijnego Czasu Modlitwy | O+ & Christian Culture" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Osobiste przesłanie Siostry Joli z zaproszeniem do codziennego trwania na modlitwie, budowania relacji z Jezusem i dzielenia się miłością Bożą.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/r1SbAVKIkw8" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/r1SbAVKIkw8', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 18: Biblijny Czas Modlitwy | Wydanie Noworoczne • Twoje Radio CC -->
+                    <article class="video-promo-card" id="ep_-EeaptLeYK4" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy | Wydanie Noworoczne • Twoje Radio CC</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🙏 SPECJALNA MODLITWA NOWOROCZNA</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 1:03:26</span>
+                                <a href="https://youtu.be/-EeaptLeYK4" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/-EeaptLeYK4?rel=0" 
+                                title="Biblijny Czas Modlitwy | Wydanie Noworoczne • Twoje Radio CC" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Wspólne wejście w nowy czas z błogosławieństwem Bożym. Powierzanie Panu wszystkich dni, planów, rodzin oraz dziękczynienie za minione łaski.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/-EeaptLeYK4" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/-EeaptLeYK4', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Odcinek 19: Biblijny Czas Modlitwy Na Żywo | Dołącz, Bądź Błogosławiony! -->
+                    <article class="video-promo-card" id="ep_AHVYuedhSw4" style="margin-bottom:24px; border:1px solid rgba(236,72,153,0.25); background:linear-gradient(180deg, rgba(17,35,80,0.95), rgba(11,24,56,0.98)); box-shadow:0 8px 24px rgba(0,0,0,0.45); border-radius:18px; overflow:hidden;">
+                        <div class="video-promo-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06);">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.35rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.02rem;">Biblijny Czas Modlitwy Na Żywo | Dołącz, Bądź Błogosławiony!</span>
+                                    <span style="background:linear-gradient(135deg,#ec4899,#a855f7); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">🔴 WIELKIE PASMO MODLITEWNE LIVE</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:8px;"><i class="fa-regular fa-clock"></i> 6:13:10</span>
+                                <a href="https://youtu.be/AHVYuedhSw4" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:5px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-weight:700;">
+                                    YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                            <iframe 
+                                src="https://www.youtube.com/embed/AHVYuedhSw4?rel=0" 
+                                title="Biblijny Czas Modlitwy Na Żywo | Dołącz, Bądź Błogosławiony!" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="lazy"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding:16px 18px;">
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.6; margin-bottom:14px;">
+                                Wielogodzinne pasmo uwielbienia, modlitwy wstawienniczej za Polskę, rodziny i osoby chore z udziałem słuchaczy i społeczności.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtu.be/AHVYuedhSw4" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg,#ec4899,#db2777); font-size:0.82rem; height:38px; padding:0 18px; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> Obejrzyj i Módl się
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtu.be/AHVYuedhSw4', 'Skopiowano link do audycji! ✨')" style="font-size:0.82rem; height:38px; padding:0 14px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </article>
@@ -1295,7 +2152,7 @@
                 </div>
 
                 <!-- ══════════ TAB 2: FEED / POSTY ══════════ -->
-                <div id="tab-feed" class="tab-pane-content" style="display:block;">
+                <div id="tab-feed" class="tab-pane-content" style="display:none;">
                     
                     <!-- ✍️ KOMPOZYTOR POSTÓW: Jola Wójcik -->
                     <div class="feed-composer-card" id="jolaPostComposer">
