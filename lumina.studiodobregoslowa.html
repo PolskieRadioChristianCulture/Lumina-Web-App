@@ -229,15 +229,16 @@
         .cover-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(7, 14, 36, 0.2) 30%, rgba(7, 14, 36, 0.9) 100%);
+            background: linear-gradient(to bottom, rgba(7, 14, 36, 0.15) 30%, rgba(7, 14, 36, 0.85) 100%);
+            pointer-events: none;
         }
 
         .cover-badge-banner {
             position: absolute;
             top: 20px;
-            right: 20px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(10px);
+            left: 20px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--red-accent);
             color: #fca5a5;
             padding: 8px 16px;
@@ -247,7 +248,37 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .btn-change-cover-fixed {
+            position: absolute;
+            bottom: 16px;
+            right: 18px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(239, 68, 68, 0.55);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 25;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
+            transition: all 0.25s ease;
+        }
+        .btn-change-cover-fixed:hover {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            border-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(239, 68, 68, 0.5);
         }
 
         /* Profile Head Card */
@@ -1135,16 +1166,26 @@
 
         <!-- Cover Banner -->
         <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby zmienić zdjęcie lub wideo">
-            <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; z-index:1;"></video>
-            <img src="lumina_default_cover.jpg" onerror="this.src='tlo_1_sie_2026.jpg'" alt="Studio Dobrego Słowa Tło" class="cover-photo" id="coverPhotoEl">
+            <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="studiodobregoslowa_cover.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; z-index:1;"></video>
+            <img src="studiodobregoslowa_cover.jpg" onerror="this.src='tlo_1_sie_2026.jpg'" alt="Studio Dobrego Słowa Tło" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
             
-            <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby zmienić</div>
+            <div class="cover-badge-banner">
+                <i class="fa-solid fa-microphone"></i> STUDIO DOBREGO SŁOWA • LIVE & MEDIA
+            </div>
 
+            <!-- Widoczny, elegancki przycisk edycji tła na stałe w prawym rogu okładki -->
+            <button type="button" class="btn-change-cover-fixed" onclick="openUniversalCoverModal(event)">
+                <i class="fa-solid fa-camera"></i> <span>Zmień Tło</span>
+            </button>
+
+            <!-- Menu Szybkich Akcji Tła -->
             <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
-                <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
-                <button type="button" class="btn-change-cover" onclick="openCoverVideoModal()"><i class="fa-brands fa-youtube" style="color:#f87171;"></i> Wideo w tle (YouTube / MP4)</button>
+                <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-upload"></i> Wgraj z dysku</button>
+                <button type="button" class="btn-change-cover" onclick="openCoverUrlModal()"><i class="fa-solid fa-link"></i> Link (Google Drive / URL)</button>
+                <button type="button" class="btn-change-cover" onclick="openCoverVideoModal()"><i class="fa-brands fa-youtube" style="color:#f87171;"></i> Wideo (YouTube / MP4)</button>
                 <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr</button>
+                <button type="button" class="btn-change-cover" onclick="resetToOfficialCover()" style="color:#fca5a5;"><i class="fa-solid fa-rotate-left"></i> Domyślne Tło</button>
                 <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
@@ -1165,10 +1206,6 @@
             </div>
 
             <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelected(event)">
-
-            <div class="cover-badge-banner">
-                <i class="fa-solid fa-microphone"></i> STUDIO DOBREGO SŁOWA • LIVE & MEDIA
-            </div>
         </div>
 
         <!-- Profile Head Info Card -->
@@ -1610,6 +1647,59 @@
             if (group) group.classList.remove('active');
         }
 
+        function parseGoogleDriveDirectUrl(url) {
+            if (!url) return '';
+            url = url.trim();
+            const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+            }
+            return url;
+        }
+
+        function openUniversalCoverModal(event) {
+            if (event) event.stopPropagation();
+            const group = document.getElementById('coverActionsGroup');
+            if (group) {
+                group.classList.toggle('active');
+            }
+        }
+
+        function openCoverUrlModal() {
+            closeCoverActions();
+            const rawUrl = prompt('Wklej link do grafiki (Dysk Google, URL z sieci lub link do zdjęcia):', 'https://drive.google.com/file/d/10jnKt9BBDWqEtt26PHgKboGT4d8glnYs/view?usp=sharing');
+            if (!rawUrl) return;
+
+            const directUrl = parseGoogleDriveDirectUrl(rawUrl);
+            const coverImg = document.getElementById('coverPhotoEl');
+            const coverVid = document.getElementById('profileCoverVideoEl');
+
+            if (coverVid) coverVid.style.display = 'none';
+
+            if (coverImg) {
+                coverImg.src = directUrl;
+                try {
+                    localStorage.setItem('lumina_cover_studiodobregoslowa', directUrl);
+                    localStorage.removeItem('lumina_cover_video_studiodobregoslowa');
+                } catch(e) {}
+                showToast('✨ Ustawiono nowe zdjęcie w tle!');
+            }
+        }
+
+        function resetToOfficialCover() {
+            closeCoverActions();
+            const officialUrl = 'studiodobregoslowa_cover.jpg';
+            const coverImg = document.getElementById('coverPhotoEl');
+            const coverVid = document.getElementById('profileCoverVideoEl');
+            if (coverVid) coverVid.style.display = 'none';
+            if (coverImg) coverImg.src = officialUrl;
+            try {
+                localStorage.setItem('lumina_cover_studiodobregoslowa', officialUrl);
+                localStorage.removeItem('lumina_cover_video_studiodobregoslowa');
+            } catch(e) {}
+            showToast('🕊️ Przywrócono oficjalne tło: Apokalipsa - Księga Nadziei!');
+        }
+
         function triggerCoverUpload() {
             closeCoverActions();
             const input = document.getElementById('coverFileInput');
@@ -1626,7 +1716,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxW = 1600;
+                    const maxW = 2000;
                     let w = img.width;
                     let h = img.height;
                     if (w > maxW) {
@@ -1637,7 +1727,7 @@
                     canvas.height = h;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, w, h);
-                    const compressedData = canvas.toDataURL('image/jpeg', 0.86);
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.88);
 
                     // Zastosuj w DOM
                     const coverImg = document.getElementById('coverPhotoEl');
@@ -1664,8 +1754,9 @@
 
         function openCoverVideoModal() {
             closeCoverActions();
-            const url = prompt('Podaj bezpośredni link do wideo w tle (plik .mp4 lub link z YouTube):');
-            if (!url) return;
+            const rawUrl = prompt('Podaj bezpośredni link do wideo w tle (plik .mp4 lub link z YouTube):');
+            if (!rawUrl) return;
+            const url = parseGoogleDriveDirectUrl(rawUrl);
             const coverVid = document.getElementById('profileCoverVideoEl');
             const coverImg = document.getElementById('coverPhotoEl');
             if (coverVid && (url.endsWith('.mp4') || url.includes('.mp4?'))) {
@@ -1677,10 +1768,11 @@
                 } catch(e) {}
                 showToast('🎬 Ustawiono wideo w tle!');
             } else if (url) {
-                // Jeśli link YouTube lub grafika
+                if (coverVid) coverVid.style.display = 'none';
                 if (coverImg) coverImg.src = url;
                 try {
                     localStorage.setItem('lumina_cover_studiodobregoslowa', url);
+                    localStorage.removeItem('lumina_cover_video_studiodobregoslowa');
                 } catch(e) {}
                 showToast('✨ Ustawiono tło!');
             }
@@ -1737,7 +1829,10 @@
                 }
             } else if (savedCover) {
                 const coverImg = document.getElementById('coverPhotoEl');
-                if (coverImg) coverImg.src = savedCover;
+                if (coverImg) coverImg.src = parseGoogleDriveDirectUrl(savedCover);
+            } else {
+                const coverImg = document.getElementById('coverPhotoEl');
+                if (coverImg) coverImg.src = 'studiodobregoslowa_cover.jpg';
             }
 
             if (savedPos) {
