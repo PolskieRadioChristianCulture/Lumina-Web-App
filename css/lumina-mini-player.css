@@ -519,3 +519,17 @@
         max-width: 320px;
     }
 }
+
+/* Stan oczekiwania na pierwszy gest użytkownika (One-Touch Resume) */
+#luminaMiniPlayerContainer.lmp-awaiting-gesture {
+    animation: lmpPulseGesture 1.8s infinite ease-in-out !important;
+}
+
+@keyframes lmpPulseGesture {
+    0%, 100% {
+        box-shadow: 0 0 0 2px #facc15, 0 8px 32px rgba(250, 204, 21, 0.45);
+    }
+    50% {
+        box-shadow: 0 0 0 4px #facc15, 0 8px 36px rgba(250, 204, 21, 0.85);
+    }
+}

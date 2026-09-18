@@ -36,7 +36,8 @@
         }
     ];
 
-    const STORAGE_KEY = 'lumina_mini_player_state_v1';
+    const STORAGE_KEY = 'lumina_mini_player_state_v2';
+    const LEGACY_STORAGE_KEY = 'lumina_mini_player_state_v1';
 
     let audioEl = null;
     let containerEl = null;
@@ -44,11 +45,14 @@
     let isPlaying = false;
     let isMinimized = false;
     let currentStationIndex = 0;
+    let shouldAutoResume = false;
+    let userExplicitlyPaused = false;
+    let oneTouchArmed = false;
 
-    // Odczyt zapisanego stanu
+    // Odczyt zapisanego stanu (sessionStorage dla karty + localStorage dla persystencji)
     function loadSavedState() {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            const raw = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
             if (raw) {
                 const data = JSON.parse(raw);
                 if (data.stationId) {
@@ -58,6 +62,12 @@
                 if (typeof data.isMinimized === 'boolean') {
                     isMinimized = data.isMinimized;
                 }
+                const now = Date.now();
+                const lastActive = data.timestamp || 0;
+                // Jeśli użytkownik słuchał radia na portalu w ciągu ostatnich 15 minut i sam go nie zatrzymał
+                if (data.isPlaying === true && (now - lastActive) < 15 * 60 * 1000) {
+                    shouldAutoResume = true;
+                }
             }
         } catch (e) {
             console.warn('[LuminaMiniPlayer] Błąd odczytu stanu:', e);
@@ -66,11 +76,16 @@
 
     function saveState() {
         try {
+            const active = isPlaying && !userExplicitlyPaused;
             const data = {
                 stationId: STATIONS[currentStationIndex].id,
-                isMinimized: isMinimized
+                isMinimized: isMinimized,
+                isPlaying: active,
+                timestamp: Date.now()
             };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            const serialized = JSON.stringify(data);
+            localStorage.setItem(STORAGE_KEY, serialized);
+            sessionStorage.setItem(STORAGE_KEY, serialized);
         } catch (e) {
             // ignore
         }
@@ -82,28 +97,80 @@
         if (!audioEl) {
             audioEl = document.createElement('audio');
             audioEl.id = 'luminaGlobalAudio';
-            audioEl.preload = 'none';
+            audioEl.preload = 'auto';
             audioEl.setAttribute('playsinline', 'true');
             audioEl.setAttribute('webkit-playsinline', 'true');
-            document.body.appendChild(audioEl);
+            (document.body || document.head || document.documentElement).appendChild(audioEl);
         }
 
         audioEl.addEventListener('playing', () => {
             isPlaying = true;
+            userExplicitlyPaused = false;
             updateUI();
             setupMediaSession();
+            saveState();
+            removeResumeNotice();
         });
 
         audioEl.addEventListener('pause', () => {
-            isPlaying = false;
-            updateUI();
-            setupMediaSession();
+            // Zabezpieczenie: jeśli pauza wywołana jest unloadem strony przy nawigacji, nie traktuj jako pause użytkownika
+            if (userExplicitlyPaused) {
+                isPlaying = false;
+                updateUI();
+                setupMediaSession();
+                saveState();
+            }
         });
 
         audioEl.addEventListener('error', (err) => {
             console.warn('[LuminaMiniPlayer] Błąd strumienia audio:', err);
-            isPlaying = false;
-            updateUI();
+            if (!shouldAutoResume) {
+                isPlaying = false;
+                updateUI();
+            }
+        });
+    }
+
+    function showResumeNotice() {
+        if (containerEl) {
+            containerEl.classList.add('lmp-awaiting-gesture');
+            const playIcon = document.getElementById('lmpPlayIcon');
+            if (playIcon) playIcon.className = 'fa-solid fa-play';
+        }
+    }
+
+    function removeResumeNotice() {
+        if (containerEl) {
+            containerEl.classList.remove('lmp-awaiting-gesture');
+        }
+    }
+
+    function armOneTouchResume() {
+        if (oneTouchArmed) return;
+        oneTouchArmed = true;
+
+        const resumeHandler = () => {
+            if (!userExplicitlyPaused && audioEl) {
+                audioEl.play().then(() => {
+                    isPlaying = true;
+                    updateUI();
+                    setupMediaSession();
+                    saveState();
+                    removeResumeNotice();
+                }).catch(e => console.warn('[LuminaMiniPlayer] Próba One-Touch Resume:', e));
+            }
+            cleanup();
+        };
+
+        function cleanup() {
+            oneTouchArmed = false;
+            ['touchstart', 'pointerdown', 'click', 'scroll'].forEach(evt => {
+                window.removeEventListener(evt, resumeHandler, { capture: true });
+            });
+        }
+
+        ['touchstart', 'pointerdown', 'click', 'scroll'].forEach(evt => {
+            window.addEventListener(evt, resumeHandler, { once: true, capture: true, passive: true });
         });
     }
 
@@ -266,7 +333,8 @@
 
     // Publiczne API Playera
     const LuminaMiniPlayer = {
-        play: function (stationId) {
+        play: function (stationId, options) {
+            options = options || {};
             if (stationId) {
                 const idx = STATIONS.findIndex(s => s.id === stationId);
                 if (idx !== -1) currentStationIndex = idx;
@@ -281,24 +349,37 @@
                 audioEl.load();
             }
 
+            userExplicitlyPaused = false;
+            shouldAutoResume = false;
+            isPlaying = true;
+            updateUI();
+
             const playPromise = audioEl.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     isPlaying = true;
                     updateUI();
+                    setupMediaSession();
+                    saveState();
+                    removeResumeNotice();
                 }).catch(err => {
-                    console.warn('[LuminaMiniPlayer] Autoplay zablokowany przez przeglądarkę:', err);
-                    isPlaying = false;
-                    updateUI();
+                    console.warn('[LuminaMiniPlayer] Autoplay oczekuje na gest (Autoplay Policy):', err);
+                    // Przeglądarka zablokowała autoplay bez gestu — uzbrój wznowienie na pierwszy dotyk lub scroll
+                    armOneTouchResume();
+                    showResumeNotice();
                 });
             }
         },
 
         pause: function () {
+            userExplicitlyPaused = true;
+            shouldAutoResume = false;
             if (!audioEl) return;
             audioEl.pause();
             isPlaying = false;
             updateUI();
+            saveState();
+            removeResumeNotice();
         },
 
         toggle: function (e) {
@@ -372,12 +453,45 @@
 
     window.LuminaMiniPlayer = LuminaMiniPlayer;
 
+    // ── GWARANCJA CIĄGŁOŚCI DŹWIĘKU PRZY NAWIGACJI (CROSS-PAGE RUNTIME) ──
+    window.addEventListener('beforeunload', () => {
+        if (isPlaying && !userExplicitlyPaused) {
+            saveState();
+        }
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (isPlaying && !userExplicitlyPaused) {
+            saveState();
+        }
+    });
+
+    // Zapisanie stanu przed kliknięciem w jakikolwiek link wewnętrzny
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href]');
+        if (link && isPlaying && !userExplicitlyPaused) {
+            saveState();
+        }
+    }, { capture: true, passive: true });
+
+    // Heartbeat odświeżający znacznik obecności w tle co 5 sekund
+    setInterval(() => {
+        if (isPlaying && !userExplicitlyPaused) {
+            saveState();
+        }
+    }, 5000);
+
     // Start po załadowaniu DOM
     function bootstrap() {
         loadSavedState();
         initAudio();
         renderPlayerDOM();
         updateUI();
+
+        // Jeśli sesja odtwarzania była aktywna na poprzedniej podstronie, wznów dźwięk natychmiast!
+        if (shouldAutoResume && !userExplicitlyPaused) {
+            LuminaMiniPlayer.play(STATIONS[currentStationIndex].id, { autoResume: true });
+        }
     }
 
     if (document.readyState === 'loading') {
