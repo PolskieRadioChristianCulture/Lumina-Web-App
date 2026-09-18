@@ -815,7 +815,7 @@
                     btn.type = 'button';
                     btn.className = 'post-action-btn btn-lumina-replace-action';
                     btn.title = 'Wymień treść posta (Zero-Egress)';
-                    btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> <span>Wymień (Dysk/YT)</span>';
+                    btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> <span class="btn-text">Wymień (Dysk/YT)</span>';
                     btn.onclick = (e) => {
                         e.stopPropagation();
                         openReplacerForElement(card, 'post');

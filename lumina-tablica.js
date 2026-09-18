@@ -264,13 +264,13 @@ class LuminaTablicaEngine {
                     ` : ''}
                     <div class="post-footer" style="display:flex; align-items:center; gap:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:12px;">
                         <button class="post-action-btn" onclick="window.LuminaTablica.toggleReaction('${post.id}', 'likes')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span>${likesCount}</span> Polubień
+                            <i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span class="count">${likesCount}</span><span class="btn-text"> Polubień</span>
                         </button>
                         <button class="post-action-btn amen" onclick="window.LuminaTablica.toggleReaction('${post.id}', 'amen')" style="background:rgba(250,204,21,0.1); border:1px solid rgba(250,204,21,0.3); color:#facc15; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-hands-praying"></i> <span>${amenCount ? amenCount + ' ' : ''}Amen!</span>
+                            <i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${amenCount || ''}</span><span class="btn-text"> Amen!</span>
                         </button>
                         <button class="post-action-btn" onclick="window.openMessageModal?.('${post.author}', '${postAvatar}', '${post.authorSlug || 'user'}')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:600; cursor:pointer; margin-left:auto;">
-                            <i class="fa-solid fa-comment-dots"></i> Napisz
+                            <i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span>
                         </button>
                     </div>
                 </article>

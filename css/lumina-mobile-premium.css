@@ -444,8 +444,13 @@
         justify-content: center !important;
     }
 
-    .post-action-btn .btn-text {
-        display: inline-block !important;
+    /* PANCERNA ZASADA: na mobile przyciski akcji = TYLKO IKONY, zero tekstu */
+    .post-action-btn .btn-text,
+    .post-act-btn .btn-text,
+    .post-action-btn span:not(.count):not(.amen-count):not(.sound-toggle-label),
+    .btn-lumina-replace-action span,
+    .action-icon-only .btn-text {
+        display: none !important;
     }
 
     .chip-btn,
