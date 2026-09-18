@@ -5286,6 +5286,20 @@
                 </div>
             </div>
 
+            <!-- ══════════ KARUZELA PROFILI „POZNAJMY SIĘ BLIŻEJ" (statyczna – zaraz pod kompozerem) ══════════ -->
+            <div class="profiles-carousel-block" id="staticProfilesCarousel" aria-label="Sekcja: Poznajmy się bliżej">
+                <div class="profiles-carousel-header">
+                    <div class="profiles-carousel-title">
+                        <i class="fa-solid fa-users"></i>
+                        Poznajmy się bliżej 🤝
+                    </div>
+                    <span style="font-size:0.65rem; color:#64748b; font-weight:600;">Społeczność LUMINA</span>
+                </div>
+                <div class="profiles-carousel-scroll" id="staticProfilesCarouselScroll">
+                    <!-- Wypełniane przez JS (initStaticProfilesCarousel) -->
+                </div>
+            </div>
+
             <!-- ══════════ SMART FEED SORTING BAR ══════════ -->
             <div class="smart-sort-bar" id="smartSortBar">
                 <div style="display:flex; align-items:center; gap:8px;">
@@ -13264,6 +13278,53 @@
                 return isSwapped;
             };
         })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STATYCZNA KARUZELA PROFILI — pod kompozerem, nad feedem
+     Wypełniana niezależnie od renderFeed() przy każdym ładowaniu strony
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function initStaticProfilesCarousel() {
+    var PROFILES = [
+        { name: 'Cezary Rogowski',      slug: 'cezaryrgowski',      tag: 'Dowódca CC',             avatar: 'avatar_cezary_official.jpg',         verified: true  },
+        { name: 'Wioletta Rogowska',    slug: 'wiolettarogowska',   tag: 'Ewangelizacja',          avatar: 'avatar_wioletta_official.jpg',       verified: true  },
+        { name: 'Andrzej Thiel',        slug: 'andrzejthiel',       tag: 'Słowo na każdy dzień',   avatar: 'avatar_andrzej_thiel.jpg',           verified: true  },
+        { name: 'Radio CC',             slug: 'radiocc',            tag: 'Radio chrześcijańskie',  avatar: 'logo_radio_cc.jpg',                  verified: true  },
+        { name: 'CC TV',                slug: 'cctv',               tag: 'Telewizja CC',           avatar: 'logo_cctv.png',                      verified: true  },
+        { name: 'CC Women',             slug: 'ccwomen',            tag: 'Kobiety wiary',          avatar: 'logo_cc_women.jpg',                  verified: false },
+        { name: 'CC Men',               slug: 'ccmen',              tag: 'Mężczyźni wiary',        avatar: 'logo_cc_men.jpg',                    verified: false },
+        { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', tag: 'Nauczanie',              avatar: 'studiodobregoslowa_avatar.jpg?v=20260918_sds_host', verified: true  },
+        { name: 'Zbyszek Gieroń',       slug: 'zbyszekgieron',      tag: 'Świadectwo',             avatar: 'avatar_zbyszek_gieron.jpg',          verified: false },
+        { name: 'OsobowośćPLUS',        slug: 'osobowoscplus',      tag: 'Rozwój duchowy',         avatar: 'logo_osobowosc_plus.jpg',            verified: false }
+    ];
+    function run() {
+        var scroll = document.getElementById('staticProfilesCarouselScroll');
+        if (!scroll) return;
+        // Lekkie losowanie — zawsze inna kolejność przy ładowaniu
+        var offset = Math.floor(Math.random() * PROFILES.length);
+        var cards = '';
+        for (var i = 0; i < PROFILES.length; i++) {
+            var p = PROFILES[(offset + i) % PROFILES.length];
+            var badge = p.verified ? '<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>' : '';
+            cards += '<div class="profile-carousel-card" onclick="window.location.href=\'lumina-profile.html?user=' + p.slug + '\'" title="Zobacz profil: ' + p.name + '">'
+                   + '<div class="profile-carousel-avatar-wrap">'
+                   + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" onerror="this.src=\'lumina_logo_portal.jpg\'">'
+                   + badge
+                   + '</div>'
+                   + '<div class="profile-carousel-name">' + p.name + '</div>'
+                   + '<div class="profile-carousel-tag">' + p.tag + '</div>'
+                   + '<button class="profile-carousel-btn" onclick="event.stopPropagation();window.location.href=\'lumina-profile.html?user=' + p.slug + '\'">Zobacz profil</button>'
+                   + '</div>';
+        }
+        scroll.innerHTML = cards;
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+})();
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════
