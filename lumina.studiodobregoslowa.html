@@ -776,10 +776,37 @@
             border-color: #ef4444;
             color: #fca5a5;
         }
-        .post-action-btn.active-amen {
-            background: rgba(245, 158, 11, 0.2);
-            border-color: var(--gold-accent);
-            color: #fef08a;
+        .post-action-btn.post-action-btn-del {
+            background: rgba(239, 68, 68, 0.10);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+        }
+        .post-action-btn.post-action-btn-del:hover {
+            background: rgba(239, 68, 68, 0.28);
+            border-color: #ef4444;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-action-delete-sds {
+            padding: 5px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .btn-action-delete-sds:hover {
+            background: rgba(239, 68, 68, 0.30);
+            border-color: #ef4444;
+            color: #fff;
+            transform: translateY(-1px);
         }
 
         /* ── Modal Overlays ── */
@@ -1507,6 +1534,7 @@
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (141)</button>
                         <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Kanał</a>
                         <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                        <button class="post-action-btn post-action-btn-del" onclick="toggleHidePinnedBroadcast()" title="Ukryj przypięty kanał (Admin)" style="margin-left:auto;"><i class="fa-solid fa-eye-slash"></i> <span>Ukryj</span></button>
                     </div>
                 </article>
 
@@ -2197,7 +2225,7 @@
             const formattedText = formatLuminaPostTextWithLinks(post.text || '');
 
             article.innerHTML = `
-                <div class="post-top-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                <div class="post-top-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
                     <div class="post-author-box" style="display:flex; align-items:center; gap:12px;">
                         <img src="${post.authorAvatar || 'studiodobregoslowa_avatar.jpg'}" onerror="this.src='lumina_icon.jpg'" alt="${post.author}" class="post-author-img" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #ef4444;">
                         <div>
@@ -2208,9 +2236,14 @@
                             <div class="post-time" style="font-size:0.75rem; color:#94a3b8;">${post.time || 'Niedawno • Publiczny'}</div>
                         </div>
                     </div>
-                    <button class="btn-action-secondary" style="padding:5px 10px; font-size:0.75rem;" onclick="openShareModal()">
-                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                    </button>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="btn-action-secondary" style="padding:6px 12px; font-size:0.75rem; border-radius:20px; display:inline-flex; align-items:center; gap:5px;" onclick="openShareModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                        <button class="btn-action-delete-sds" onclick="deleteSdsPost('${post.id}')" title="Usuń ten wpis (Administrator)">
+                            <i class="fa-solid fa-trash-can"></i> Usuń
+                        </button>
+                    </div>
                 </div>
 
                 <div class="post-body">
@@ -2226,7 +2259,10 @@
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${post.likes || 1}</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (${post.amen || 1})</button>
                     </div>
-                    <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="post-action-btn post-action-btn-del" onclick="deleteSdsPost('${post.id}')" title="Usuń ten wpis (Admin)"><i class="fa-solid fa-trash-can"></i> Usuń</button>
+                        <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                    </div>
                 </div>
             `;
 
@@ -2237,12 +2273,172 @@
             }
         }
 
+        function deleteSdsPost(postId) {
+            if (!postId) return;
+
+            // Weryfikacja uprawnień Administratora / Autora
+            const isAuth = sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                           sessionStorage.getItem('lumina_sds_admin') === 'true' ||
+                           document.body.classList.contains('lumina-admin-mode');
+
+            if (!isAuth) {
+                const pin = prompt('🔐 Autoryzacja Administratora / Autora SDS (wprowadź PIN):');
+                if (!pin) return;
+                const cleanPin = pin.trim();
+                if (cleanPin === '7777' || cleanPin === '0455' || cleanPin === '1234') {
+                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                    sessionStorage.setItem('lumina_sds_admin', 'true');
+                    showToast('✅ Zalogowano jako Administrator');
+                } else {
+                    alert('❌ Nieprawidłowy kod PIN administratora!');
+                    return;
+                }
+            }
+
+            if (!confirm('Czy na pewno chcesz bezpowrotnie usunąć ten wpis z profilu Studio Dobrego Słowa?')) {
+                return;
+            }
+
+            try {
+                // 1. Usunięcie z bazy postów SDS
+                let sdsPosts = JSON.parse(localStorage.getItem('lumina_posts_studiodobregoslowa') || '[]');
+                sdsPosts = sdsPosts.filter(p => p.id !== postId);
+                localStorage.setItem('lumina_posts_studiodobregoslowa', JSON.stringify(sdsPosts));
+
+                // 2. Usunięcie z bufora chmurowego ogólnego feedu LUMINA
+                let cloudCache = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                cloudCache = cloudCache.filter(p => p.id !== postId);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudCache));
+
+                // 3. Dodanie do listy trwale usuniętych ID
+                let deletedList = JSON.parse(localStorage.getItem('lumina_deleted_posts_studiodobregoslowa') || '[]');
+                if (!deletedList.includes(postId)) {
+                    deletedList.push(postId);
+                    localStorage.setItem('lumina_deleted_posts_studiodobregoslowa', JSON.stringify(deletedList));
+                }
+
+                // 4. Usunięcie z LuminaDB jeśli dostępne
+                if (window.LuminaDB && typeof window.LuminaDB.deleteUniversalPost === 'function') {
+                    window.LuminaDB.deleteUniversalPost(postId).catch(err => console.warn('LuminaDB delete post error:', err));
+                }
+
+                // 5. Animowane usunięcie elementu z DOM
+                const card = document.getElementById(postId);
+                if (card) {
+                    card.style.transition = 'all 0.35s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.96)';
+                    setTimeout(() => {
+                        card.remove();
+                        const stream = document.getElementById('localPostsStream');
+                        if (stream && stream.children.length === 0) {
+                            renderEmptyPostsPlaceholder(stream);
+                        }
+                    }, 350);
+                }
+
+                showToast('🗑️ Wpis został pomyślnie usunięty!');
+            } catch(err) {
+                console.error('Błąd usuwania wpisu:', err);
+                showToast('❌ Wystąpił błąd podczas usuwania wpisu.');
+            }
+        }
+
+        function renderEmptyPostsPlaceholder(stream) {
+            if (!stream) return;
+            stream.innerHTML = `
+                <div class="empty-posts-notice" style="text-align:center; padding:36px 20px; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12); border-radius:16px; color:#94a3b8; margin-bottom:24px;">
+                    <i class="fa-regular fa-newspaper" style="font-size:2.2rem; color:#ef4444; margin-bottom:12px; display:inline-block;"></i>
+                    <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:6px;">Brak wpisów na osi czasu</h3>
+                    <p style="font-size:0.85rem; color:#94a3b8; max-width:440px; margin:0 auto 16px;">
+                        Wszystkie wpisy zostały zarchiwizowane lub usunięte przez administratora. Użyj kompozytora powyżej, aby opublikować nowe rozważanie.
+                    </p>
+                </div>`;
+        }
+
+        function toggleHidePinnedBroadcast() {
+            const isAuth = sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                           sessionStorage.getItem('lumina_sds_admin') === 'true' ||
+                           document.body.classList.contains('lumina-admin-mode');
+
+            if (!isAuth) {
+                const pin = prompt('🔐 Autoryzacja Administratora (wprowadź PIN):');
+                if (!pin) return;
+                const cleanPin = pin.trim();
+                if (cleanPin === '7777' || cleanPin === '0455' || cleanPin === '1234') {
+                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                    sessionStorage.setItem('lumina_sds_admin', 'true');
+                    showToast('✅ Zalogowano jako Administrator');
+                } else {
+                    alert('❌ Nieprawidłowy kod PIN administratora!');
+                    return;
+                }
+            }
+
+            const card = document.getElementById('post_live_sds_apokalipsa');
+            if (!card) return;
+            const isHidden = card.style.display === 'none';
+            if (!isHidden) {
+                if (confirm('Czy chcesz ukryć przypięty kanał nadawczy? Możesz go przywrócić w każdej chwili.')) {
+                    card.style.display = 'none';
+                    localStorage.setItem('lumina_sds_hide_pinned_broadcast', 'true');
+                    showToast('👁️ Ukryto przypięty kanał nadawczy.');
+                }
+            } else {
+                card.style.display = 'block';
+                localStorage.removeItem('lumina_sds_hide_pinned_broadcast');
+                showToast('📺 Przywrócono przypięty kanał nadawczy.');
+            }
+        }
+
         function loadSdsPosts() {
             try {
-                const sdsPosts = JSON.parse(localStorage.getItem('lumina_posts_studiodobregoslowa') || '[]');
+                // Sprawdź czy przypięty kanał nie był ukryty przez admina
+                if (localStorage.getItem('lumina_sds_hide_pinned_broadcast') === 'true') {
+                    const pinnedCard = document.getElementById('post_live_sds_apokalipsa');
+                    if (pinnedCard) pinnedCard.style.display = 'none';
+                }
+
+                let rawPosts = localStorage.getItem('lumina_posts_studiodobregoslowa');
+                let sdsPosts = [];
+                const deletedList = JSON.parse(localStorage.getItem('lumina_deleted_posts_studiodobregoslowa') || '[]');
+
+                if (rawPosts !== null) {
+                    sdsPosts = JSON.parse(rawPosts);
+                } else {
+                    // Domyślny wpis powitalny jeśli profil jest otwarty po raz pierwszy i nie był usuwany
+                    const initialDefaultPost = {
+                        id: 'post_sds_default_1',
+                        author: 'Studio Dobrego Słowa',
+                        authorSlug: 'studiodobregoslowa',
+                        authorAvatar: 'studiodobregoslowa_avatar.jpg',
+                        authorRole: 'Oficjalny Kanał Audio & Wideo 🎙️✨',
+                        time: 'Wczoraj • 🎬 Nowy Podcast Wideo',
+                        title: 'Boże prowadzenie w relacjach — Nowy Podcast',
+                        text: 'Witajcie na oficjalnym profilu Studio Dobrego Słowa! Zapraszamy do wysłuchania głębokiej rozmowy o Bożym prowadzeniu, pokoju serca i mądrości w codziennych wyborach. Link: https://youtu.be/hHug_C6XDPU ☕🕊️',
+                        image: 'https://img.youtube.com/vi/hHug_C6XDPU/maxresdefault.jpg',
+                        videoUrl: 'https://youtu.be/hHug_C6XDPU',
+                        likes: 42,
+                        amen: 38,
+                        createdAtTimestamp: Date.now() - 86400000
+                    };
+                    if (!deletedList.includes(initialDefaultPost.id)) {
+                        sdsPosts = [initialDefaultPost];
+                        localStorage.setItem('lumina_posts_studiodobregoslowa', JSON.stringify(sdsPosts));
+                    }
+                }
+
+                sdsPosts = sdsPosts.filter(p => !deletedList.includes(p.id));
+
                 const stream = document.getElementById('localPostsStream');
-                if (stream) stream.innerHTML = '';
-                sdsPosts.forEach(post => renderSinglePostCard(post, false));
+                if (stream) {
+                    stream.innerHTML = '';
+                    if (sdsPosts.length === 0) {
+                        renderEmptyPostsPlaceholder(stream);
+                    } else {
+                        sdsPosts.forEach(post => renderSinglePostCard(post, false));
+                    }
+                }
             } catch(e) {
                 console.warn('Error loading SDS posts:', e);
             }
