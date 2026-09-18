@@ -958,35 +958,53 @@
             width: 100%; height: 100%;
             border: none;
         }
+        /* Nakładka kontrolna odtwarzacza: ukryta domyślnie, pojawia się płynnie przy najechaniu myszką lub dotknięciu */
         .mission-live-player-overlay {
             position: absolute;
-            bottom: 10px;
-            left: 0; right: 0;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             gap: 10px;
             z-index: 10;
             pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+        .mission-live-player-wrapper:hover .mission-live-player-overlay,
+        .mission-live-player-wrapper.show-controls .mission-live-player-overlay {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
         }
         .btn-unmute-live, .btn-expand-live {
             pointer-events: auto;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0,0,0,0.72);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(255,255,255,0.22);
             color: #fff;
-            font-size: 0.8rem;
+            font-size: 0.80rem;
             font-weight: 700;
-            border-radius: 22px;
-            padding: 7px 16px;
+            border-radius: 20px;
+            padding: 7px 14px;
             cursor: pointer;
             text-decoration: none;
-            backdrop-filter: blur(6px);
-            transition: background 0.2s;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
         }
         .btn-unmute-live:hover, .btn-expand-live:hover {
-            background: rgba(239,68,68,0.55);
+            background: rgba(239, 68, 68, 0.75);
+            border-color: #ef4444;
+            transform: translateY(-1px);
         }
 
         /* ── Cover Actions & Reposition ── */
@@ -1492,28 +1510,25 @@
                 <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:24px;">
                     <div class="post-header">
                         <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-avatar" style="width:46px; height:46px; min-width:46px; min-height:46px; max-width:46px; max-height:46px; border-radius:50%; object-fit:cover; border:2px solid #ef4444; flex-shrink:0; display:block;">
-                        <div style="flex:1;">
-                            <div class="post-author" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
-                                <span>Studio Dobrego Słowa</span>
+                        <div style="flex:1; min-width:0;">
+                            <div class="post-author" style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                                <span style="font-weight:800; font-size:1.02rem; color:#fff;">Studio Dobrego Słowa</span>
                                 <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span>
-                                <span class="pinned-post-badge" style="background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); color:#fca5a5; font-size:0.70rem; font-weight:800; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-thumbtack"></i> PRZYPIĘTY KANAŁ NADAWCZY</span>
+                                <span class="pinned-post-badge" style="background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; font-size:0.70rem; font-weight:700; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-thumbtack"></i> Przypięty kanał</span>
                             </div>
-                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO 24/7 • APOKALIPSA: KSIĘGA NADZIEI</div>
-                        </div>
-                        <div class="live-viewer-chip">
-                            <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA NA ŻYWO</span>
+                            <div class="post-time" style="color:#94a3b8; font-size:0.78rem; margin-top:2px;">Oficjalne Pasmo Telewizyjne CC • Emisja ciągła 24/7</div>
                         </div>
                     </div>
 
                     <div class="post-content">
-                        <div style="font-weight:800;color:#fff;font-size:1.12rem;margin-bottom:6px;">🔴 APOKALIPSA: KSIĘGA NADZIEI — Kompletny Kurs Biblijny</div>
-                        <div style="color:#cbd5e1;font-size:0.92rem;line-height:1.55;">
+                        <div style="font-weight:800; color:#fff; font-size:1.15rem; margin-bottom:8px;">📖 Apokalipsa: Księga Nadziei — Cykl Wykładów Biblijnych</div>
+                        <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.6;">
                             Wielu ludzi kojarzy Księgę Objawienia wyłącznie z katastrofami i lękiem. Jednak pierwsze słowa tej księgi mówią o Objawieniu Jezusa Chrystusa jako Zwycięzcy! Bóg ma pełną kontrolę nad historią świata, a ostateczne słowo należy do Baranka. Zostań z nami w Słowie Bożym! 🕊️
                         </div>
                     </div>
 
                     <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
-                    <div class="mission-live-player-wrapper">
+                    <div class="mission-live-player-wrapper" id="sdsLivePlayerWrapper">
                         <iframe src="apokalipsa-ksiega-nadziei-live.html?muted=1&mute=1&in_mcr=1"
                                 title="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa LIVE"
                                 allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share"
@@ -1529,10 +1544,10 @@
                         </div>
                     </div>
 
-                    <div class="post-footer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+                    <div class="post-footer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center;">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">156</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (141)</button>
-                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Kanał</a>
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;" title="Otwórz kanał w pełnym oknie TV"><i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span></a>
                         <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
                         <button class="post-action-btn post-action-btn-del" onclick="toggleHidePinnedBroadcast()" title="Ukryj przypięty kanał (Admin)" style="margin-left:auto;"><i class="fa-solid fa-eye-slash"></i> <span>Ukryj</span></button>
                     </div>
@@ -1760,9 +1775,9 @@
                     }
                 }
                 btn.dataset.unmuted = 'true';
-                btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz Dźwięk 🔊</span>';
-                btn.style.background = 'rgba(34, 197, 94, 0.35)';
-                btn.style.borderColor = '#22c55e';
+                btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz</span>';
+                btn.style.background = 'rgba(34, 197, 94, 0.25)';
+                btn.style.borderColor = 'rgba(34, 197, 94, 0.5)';
                 btn.style.color = '#86efac';
             } else {
                 if (iframe) {
@@ -1785,11 +1800,38 @@
                 }
                 btn.dataset.unmuted = 'false';
                 btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>';
-                btn.style.background = 'rgba(0,0,0,0.72)';
-                btn.style.borderColor = 'rgba(255,255,255,0.22)';
+                btn.style.background = 'rgba(15, 23, 42, 0.85)';
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.22)';
                 btn.style.color = '#fff';
             }
         };
+
+        /* ── PŁYNNE STEROWANIE KONTROLKAMI TRANSMISJI (AUTO-HIDE PO INTERAKCJI) ── */
+        (function initPlayerControlsAutoHide() {
+            function bind() {
+                const playerWrapper = document.getElementById('sdsLivePlayerWrapper');
+                if (!playerWrapper || playerWrapper._autoHideBound) return;
+                playerWrapper._autoHideBound = true;
+                let hideTimeout = null;
+
+                function triggerControls() {
+                    playerWrapper.classList.add('show-controls');
+                    if (hideTimeout) clearTimeout(hideTimeout);
+                    hideTimeout = setTimeout(function() {
+                        playerWrapper.classList.remove('show-controls');
+                    }, 3500);
+                }
+
+                playerWrapper.addEventListener('mousemove', triggerControls);
+                playerWrapper.addEventListener('touchstart', triggerControls, { passive: true });
+                playerWrapper.addEventListener('click', triggerControls);
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bind);
+            } else {
+                bind();
+            }
+        })();
 
         /* ── ZARZĄDZANIE TŁEM PROFILU (COVER MANAGEMENT) ── */
         function toggleCoverActions(event) {
