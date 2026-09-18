@@ -1319,16 +1319,17 @@
                     <input type="file" id="composerImgFileInput" accept="image/*" style="display:none;" onchange="handleComposerImgSelected(event)">
                 </div>
 
-                <!-- Dynamiczny strumień postów opublikowanych na profilu SDS -->
-                <div id="localPostsStream"></div>
-
-                <!-- 🔴 KANAŁ NADAWCZY: Apokalipsa: Księga Nadziei — LIVE -->
-                <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:22px;">
+                <!-- 🔴 KANAŁ NADAWCZY: Apokalipsa: Księga Nadziei — LIVE (NA STAŁE JAKO PIERWSZY POST) -->
+                <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:24px;">
                     <div class="post-header">
                         <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-avatar">
                         <div style="flex:1;">
-                            <div class="post-author">Studio Dobrego Słowa <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span></div>
-                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO • APOKALIPSA: KSIĘGA NADZIEI</div>
+                            <div class="post-author" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                                <span>Studio Dobrego Słowa</span>
+                                <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span>
+                                <span class="pinned-post-badge" style="background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); color:#fca5a5; font-size:0.70rem; font-weight:800; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-thumbtack"></i> PRZYPIĘTY KANAŁ NADAWCZY</span>
+                            </div>
+                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO 24/7 • APOKALIPSA: KSIĘGA NADZIEI</div>
                         </div>
                         <div class="live-viewer-chip">
                             <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA NA ŻYWO</span>
@@ -1366,6 +1367,9 @@
                         <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
                     </div>
                 </article>
+
+                <!-- Dynamiczny strumień postów opublikowanych na profilu SDS (poniżej kanału nadawczego) -->
+                <div id="localPostsStream"></div>
 
             </main>
 
