@@ -41,6 +41,7 @@
     <meta name="twitter:image" content="https://polskieradio.cc/avatar_jolawojcik.jpg">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title id="pageTitle">Jola Wójcik – Biblijny Czas Modlitwy | LUMINA</title>
     
     <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
@@ -759,6 +760,204 @@
             .head-actions { justify-content: center; }
             .head-actions > * { flex: 0 0 auto; }
         }
+
+        /* ── Post Composer Premium for Jola Wójcik ── */
+        .feed-composer-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(38, 14, 28, 0.92) 100%);
+            border: 1.5px solid rgba(236, 72, 153, 0.45);
+            border-radius: 18px;
+            padding: 20px 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 1px rgba(236, 72, 153, 0.35);
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+        }
+        .feed-composer-card:focus-within {
+            border-color: rgba(236, 72, 153, 0.85);
+            box-shadow: 0 12px 38px rgba(0, 0, 0, 0.55), 0 0 24px rgba(236, 72, 153, 0.3);
+        }
+        .composer-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .composer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ec4899;
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.4);
+            flex-shrink: 0;
+        }
+        .composer-input-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .composer-title-input {
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .composer-title-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .composer-title-input:focus {
+            border-color: #ec4899;
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.25);
+        }
+        .composer-text-input {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 84px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            outline: none;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+        .composer-text-input::placeholder {
+            color: #94a3b8;
+        }
+        .composer-text-input:focus {
+            border-color: #ec4899;
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.25);
+        }
+        .composer-attached-box {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(236, 72, 153, 0.12);
+            border: 1.5px dashed rgba(236, 72, 153, 0.5);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+        .composer-actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+        .composer-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-composer-tool {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #e2e8f0;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+        .btn-composer-tool:hover {
+            background: rgba(236, 72, 153, 0.22);
+            border-color: rgba(236, 72, 153, 0.5);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .btn-publish-post {
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 0.90rem;
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.45);
+            transition: all 0.2s ease;
+        }
+        .btn-publish-post:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 24px rgba(236, 72, 153, 0.65);
+        }
+        .btn-action-delete-jola {
+            background: rgba(225, 29, 72, 0.12);
+            border: 1px solid rgba(225, 29, 72, 0.35);
+            color: #fda4af;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+        .btn-action-delete-jola:hover {
+            background: rgba(225, 29, 72, 0.3);
+            color: #fff;
+            border-color: #f43f5e;
+            transform: translateY(-1px);
+        }
+        .post-action-btn-del {
+            background: rgba(225, 29, 72, 0.12) !important;
+            border: 1px solid rgba(225, 29, 72, 0.3) !important;
+            color: #fda4af !important;
+        }
+        .post-action-btn-del:hover {
+            background: rgba(225, 29, 72, 0.28) !important;
+            color: #fff !important;
+        }
+        .lumina-post-link {
+            color: #38bdf8;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .lumina-post-link:hover {
+            color: #7dd3fc;
+        }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
 </head>
@@ -855,10 +1054,10 @@
 
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('tab-prayer-series', this)"><i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy</button>
-                <button class="tab-btn" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
-                <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
-                <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
+                <button class="tab-btn active" id="btnTabFeed" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
+                <button class="tab-btn" id="btnTabPrayer" onclick="switchTab('tab-prayer-series', this)"><i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy</button>
+                <button class="tab-btn" id="btnTabAbout" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
+                <button class="tab-btn" id="btnTabFaith" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
             </div>
         </section>
 
@@ -957,7 +1156,7 @@
             <section class="profile-main-content">
                 
                 <!-- ══════════ TAB 1: BIBLIJNY CZAS MODLITWY (SERIA WIDEO) ══════════ -->
-                <div id="tab-prayer-series" class="tab-pane-content">
+                <div id="tab-prayer-series" class="tab-pane-content" style="display:none;">
                     
                     <!-- Intro Banner Series -->
                     <div class="sidebar-card" style="background:linear-gradient(135deg, rgba(168,85,247,0.18), rgba(11,24,56,0.9)); border-color:rgba(168,85,247,0.4); margin-bottom:20px;">
@@ -1096,103 +1295,62 @@
                 </div>
 
                 <!-- ══════════ TAB 2: FEED / POSTY ══════════ -->
-                <div id="tab-feed" class="tab-pane-content" style="display:none;">
+                <div id="tab-feed" class="tab-pane-content" style="display:block;">
                     
-                    <!-- Standard Lumina Profile Composer -->
-                    <div class="feed-post-card" id="feedComposerCard" style="padding:18px 20px; margin-bottom:20px;">
-                        <div style="display:flex; align-items:center; gap:14px; width:100%;">
-                            <div style="position:relative; flex-shrink:0; width:44px; height:44px;">
-                                <img src="avatar_jolawojcik.jpg" alt="Jola" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.2); display:block;" onerror="this.src='lumina_icon.jpg'">
-                                <span style="position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-size:0.55rem; font-weight:900; padding:1px 4px; border-radius:6px; border:1px solid #fff; letter-spacing:0.5px; line-height:1; white-space:nowrap;">CC</span>
+                    <!-- ✍️ KOMPOZYTOR POSTÓW: Jola Wójcik -->
+                    <div class="feed-composer-card" id="jolaPostComposer">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.80rem;">
+                            <span style="display:inline-flex; align-items:center; gap:6px; color:#ec4899; font-weight:700;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Publikacja: Profil Joli Wójcik & Tablica LUMINA
+                            </span>
+                            <span style="color:#f472b6; font-weight:700;">
+                                <i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy
+                            </span>
+                        </div>
+
+                        <div class="composer-top">
+                            <img src="avatar_jolawojcik.jpg" onerror="this.src='lumina_icon.jpg'" alt="Jola Wójcik" class="composer-avatar" style="border-color:#ec4899; box-shadow:0 0 14px rgba(236,72,153,0.4);">
+                            <div class="composer-input-wrap">
+                                <input type="text" id="composerPostTitle" class="composer-title-input" placeholder="Tytuł wpisu, świadectwa lub intencji modlitewnej (opcjonalnie)...">
+                                <textarea id="composerTextInput" class="composer-text-input" placeholder="Napisz nowe rozważanie, intencję lub wklej link do wideo z YouTube..." oninput="autoDetectVideoInComposer(this.value)" onkeydown="if(event.key==='Enter' && (event.ctrlKey || event.metaKey)){handleQuickPublishJola();}"></textarea>
                             </div>
-                            <div style="position:relative; flex:1; display:flex; align-items:center;">
-                                <input type="text" id="composerInput" placeholder="HalleluYah #DobrzeŻeJesteś" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishJolaPost();}" style="width:100%; background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.16); border-radius:30px; padding:12px 50px 12px 20px; color:#fff; font-family:inherit; font-size:0.95rem; outline:none; transition:all 0.2s;" onfocus="this.style.borderColor='#ec4899'; this.style.boxShadow='0 0 16px rgba(236,72,153,0.25)';" onblur="this.style.borderColor='rgba(255,255,255,0.16)'; this.style.boxShadow='';">
-                                <button type="button" onclick="openJolaMediaModal()" title="Dołącz grafikę z dysku lub film z linku" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:transparent; border:none; color:#cbd5e1; font-size:1.3rem; cursor:pointer; padding:6px; border-radius:50%; transition:all 0.2s;">
-                                    <i class="fa-solid fa-image"></i>
+                        </div>
+
+                        <!-- Podgląd dołączonego załącznika -->
+                        <div id="composerAttachmentPreview" class="composer-attached-box">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <i id="composerAttachmentIcon" class="fa-solid fa-paperclip" style="font-size:1.1rem; color:#ec4899;"></i>
+                                <div>
+                                    <div id="composerAttachmentTitle" style="font-size:0.85rem; font-weight:700; color:#fff;">Załącznik</div>
+                                    <div id="composerAttachmentSubtitle" style="font-size:0.75rem; color:#cbd5e1;">Dołączono do wpisu</div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="removeComposerAttachment()" style="background:rgba(225,29,72,0.25); border:1px solid #f43f5e; color:#fda4af; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń załącznik"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="composer-actions-bar">
+                            <div class="composer-buttons-group">
+                                <button type="button" class="btn-composer-tool" onclick="document.getElementById('composerImgFileInput').click()">
+                                    <i class="fa-solid fa-image" style="color:#38bdf8;"></i> Zdjęcie
+                                </button>
+                                <button type="button" class="btn-composer-tool" onclick="promptDirectVideoUrl()">
+                                    <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / YT
+                                </button>
+                                <button type="button" class="btn-composer-tool" onclick="promptDirectImageUrl()">
+                                    <i class="fa-solid fa-link" style="color:#a855f7;"></i> Link do grafiki
                                 </button>
                             </div>
+
+                            <button type="button" class="btn-publish-post" onclick="handleQuickPublishJola()">
+                                <i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis
+                            </button>
                         </div>
 
-                        <!-- Image Preview -->
-                        <div id="jolaImgPreviewBox" style="display:none; position:relative; margin:10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border:1px solid rgba(255,255,255,0.15);">
-                            <img id="jolaAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
-                            <button type="button" onclick="removeJolaPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń grafikę"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                        <!-- Video Preview -->
-                        <div id="jolaVideoPreviewBox" style="display:none; position:relative; margin:10px 0 6px; border-radius:14px; overflow:hidden; background:#0f172a; border:1px solid rgba(56,189,248,0.3);">
-                            <div id="jolaVideoPreviewFrame"></div>
-                            <button type="button" onclick="removeJolaPostVideo()" style="position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10;" title="Usuń wideo"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:12px; margin-top:10px; border-top:1px solid rgba(255,255,255,0.08);">
-                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                <button type="button" onclick="document.getElementById('jolaPostImageFileInput').click()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:16px; font-family:inherit; transition:all 0.2s;" title="Wgraj grafikę z dysku"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika z dysku</button>
-                                <button type="button" onclick="promptJolaEmbedVideo()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:16px; font-family:inherit; transition:all 0.2s;" title="Film z linku YouTube / MP4"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Film z linku</button>
-                            </div>
-                            <button type="button" onclick="publishJolaPost()" style="background:linear-gradient(135deg,#ec4899,#f43f5e); color:#fff; border:none; padding:8px 22px; border-radius:20px; font-weight:800; font-size:0.88rem; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(236,72,153,0.35); font-family:inherit;"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
-                        </div>
+                        <input type="file" id="composerImgFileInput" accept="image/*" style="display:none;" onchange="handleComposerImgSelected(event)">
                     </div>
-                    <input type="file" id="jolaPostImageFileInput" accept="image/*" style="display:none;" onchange="handleJolaPostImageSelect(event)">
 
-                    <!-- Dynamic feed -->
+                    <!-- Dynamiczny strumień postów opublikowanych na profilu Joli Wójcik -->
                     <div id="jolaFeedStream"></div>
-
-                    <!-- Post 1 -->
-                    <article class="feed-post-card">
-                        <div class="post-top-header">
-                            <div class="post-author-box">
-                                <img src="avatar_jolawojcik.jpg" alt="Jola Wójcik" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
-                                <div>
-                                    <div class="post-author-name">
-                                        Jola Wójcik <span class="post-badge-role">Biblijny Czas Modlitwy</span>
-                                    </div>
-                                    <span class="post-time">Dzisiaj, 14:30 • 🕊️ Społeczność Wiary</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-body">
-                            <p style="margin-bottom:12px;">
-                                Szczęść Boże wszystkim w społeczności LUMINA! ✨ Cieszę się, że mogę być tutaj z Wami. Pragnę zaprosić Was do wspólnej modlitwy w ramach serii <strong>„Biblijny Czas Modlitwy”</strong> emitowanej w Polskim Radiu Christian Culture.
-                            </p>
-                            <p style="margin-bottom:12px;">
-                                Wierzę, że gdy stajemy razem przed Bogiem w prawdzie i zaufaniu, On dotyka naszych serc i uzdrawia każdą sferę życia. Obejrzyjcie odcinki w zakładce <strong>Biblijny Czas Modlitwy</strong> i podzielcie się swoimi intencjami w komentarzach! 🙏🌸
-                            </p>
-                        </div>
-                        <div class="post-actions-bar">
-                            <button class="post-act-btn active-heart" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span>28</span> Polubień</button>
-                            <button class="post-act-btn active-amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span>34</span> Amen</button>
-                            <button class="post-act-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment"></i> Odpowiedz</button>
-                            <button class="post-act-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share"></i> Udostępnij</button>
-                        </div>
-                    </article>
-
-                    <!-- Post 2 -->
-                    <article class="feed-post-card">
-                        <div class="post-top-header">
-                            <div class="post-author-box">
-                                <img src="avatar_jolawojcik.jpg" alt="Jola Wójcik" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
-                                <div>
-                                    <div class="post-author-name">
-                                        Jola Wójcik <span class="post-badge-role">Słowo Boże</span>
-                                    </div>
-                                    <span class="post-time">Wczoraj, 19:15 • 📖 Medytacja Biblijna</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-body">
-                            <p style="margin-bottom:12px;">
-                                <em>„Wzywaj mnie w dniu utrapienia, a wyzwolę cię, i będziesz mnie chwalił.” (Psalm 50, 15)</em>
-                            </p>
-                            <p>
-                                Nie bój się przyjść do Boga z tym wszystkim, co dzisiaj nosisz w sercu. On czeka na Twoje wołanie i ma dla Ciebie odpowiedź pełną miłości i pokoju. Błogosławionego wieczoru! 🕊️✨
-                            </p>
-                        </div>
-                        <div class="post-actions-bar">
-                            <button class="post-act-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span>19</span></button>
-                            <button class="post-act-btn active-amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span>26</span> Amen</button>
-                            <button class="post-act-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share"></i></button>
-                        </div>
-                    </article>
 
                 </div>
 
@@ -1417,110 +1575,385 @@
             showToast('Bóg zapłać za wirtualną kawę dla Joli! ☕✨');
         }
 
-        // ── Standard Lumina Composer for Jola Wójcik ──
-        let jolaAttachedImageDataUrl = null;
-        let jolaAttachedVideoUrl = null;
+        // ── Standard Lumina Composer & Post Engine for Jola Wójcik ──
+        let _attachedComposerMedia = null;
 
-        function openJolaMediaModal() {
-            const choice = confirm("Dołącz multimedia do wpisu HalleluYah #DobrzeŻeJesteś:\n\n[OK] = 📷 Wgraj grafikę z dysku\n[Anuluj] = 🎬 Dodaj film z linku (YouTube / MP4)");
-            if (choice) {
-                document.getElementById('jolaPostImageFileInput').click();
-            } else {
-                promptJolaEmbedVideo();
-            }
-        }
-
-        function handleJolaPostImageSelect(e) {
-            const file = e.target.files[0];
+        function handleComposerImgSelected(event) {
+            const file = event.target.files && event.target.files[0];
             if (!file) return;
-            showToast('Dołączanie grafiki do wpisu... 🕊️');
+            showToast('Wczytywanie zdjęcia... 📸');
+
             const reader = new FileReader();
-            reader.onload = function(ev) {
-                jolaAttachedImageDataUrl = ev.target.result;
-                document.getElementById('jolaAttachedImg').src = ev.target.result;
-                document.getElementById('jolaImgPreviewBox').style.display = 'block';
-                showToast('Grafika dołączona do wpisu! ✨');
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1200;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxW) {
+                        h = Math.round((h * maxW) / w);
+                        w = maxW;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.82);
+
+                    _attachedComposerMedia = { type: 'image', url: compressedData, name: file.name };
+                    showComposerAttachmentPreview('Grafika: ' + file.name, 'Dołączono zdjęcie z dysku', 'fa-solid fa-image');
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function removeJolaPostImage() {
-            jolaAttachedImageDataUrl = null;
-            document.getElementById('jolaImgPreviewBox').style.display = 'none';
-            document.getElementById('jolaAttachedImg').src = '';
-            document.getElementById('jolaPostImageFileInput').value = '';
-        }
-
-        function promptJolaEmbedVideo() {
-            const url = prompt('Wklej link do wideo (YouTube, Shorts lub plik MP4):');
+        function promptDirectVideoUrl() {
+            const url = prompt('Podaj link do wideo (YouTube lub plik MP4):');
             if (!url || !url.trim()) return;
-            jolaAttachedVideoUrl = url.trim();
-            const previewBox = document.getElementById('jolaVideoPreviewBox');
-            const previewFrame = document.getElementById('jolaVideoPreviewFrame');
-            previewFrame.innerHTML = jolaRenderVideo(jolaAttachedVideoUrl);
-            previewBox.style.display = 'block';
-            showToast('Wideo dołączone do wpisu! ✨');
+            const cleanUrl = url.trim();
+            _attachedComposerMedia = { type: 'video', url: cleanUrl, name: 'Wideo' };
+            showComposerAttachmentPreview('Wideo: ' + cleanUrl, 'Dołączono materiał wideo', 'fa-brands fa-youtube');
+            showToast('Dołączono materiał wideo ✨');
         }
 
-        function removeJolaPostVideo() {
-            jolaAttachedVideoUrl = null;
-            document.getElementById('jolaVideoPreviewBox').style.display = 'none';
-            document.getElementById('jolaVideoPreviewFrame').innerHTML = '';
+        function promptDirectImageUrl() {
+            const url = prompt('Podaj bezpośredni link do grafiki (URL):');
+            if (!url || !url.trim()) return;
+            const cleanUrl = url.trim();
+            _attachedComposerMedia = { type: 'image', url: cleanUrl, name: 'Grafika' };
+            showComposerAttachmentPreview('Grafika URL', cleanUrl, 'fa-solid fa-image');
+            showToast('Dołączono grafikę ✨');
         }
 
-        function jolaGetYTId(url) {
-            if (!url) return null;
-            const m = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
-            return (m && m[2].length === 11) ? m[2] : null;
+        function autoDetectVideoInComposer(val) {
+            if (_attachedComposerMedia || !val) return;
+            const match = val.match(/(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]{11}[^\s]*)/i);
+            if (match && match[1]) {
+                _attachedComposerMedia = { type: 'video', url: match[1], name: 'Wideo YouTube' };
+                showComposerAttachmentPreview('Wykryto wideo YouTube', match[1], 'fa-brands fa-youtube');
+            }
         }
 
-        function jolaRenderVideo(url) {
-            const ytId = jolaGetYTId(url);
-            if (ytId) return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin-top:10px;background:#000;"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;"></iframe></div>`;
-            if (url.endsWith('.mp4') || url.includes('.mp4?')) return `<div style="border-radius:14px;overflow:hidden;margin-top:10px;background:#000;"><video src="${url}" controls playsinline style="width:100%;max-height:360px;display:block;border-radius:14px;"></video></div>`;
-            return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin-top:10px;background:#000;"><iframe src="${url}" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;"></iframe></div>`;
+        function showComposerAttachmentPreview(title, subtitle, iconClass) {
+            const box = document.getElementById('composerAttachmentPreview');
+            const titleEl = document.getElementById('composerAttachmentTitle');
+            const subEl = document.getElementById('composerAttachmentSubtitle');
+            const iconEl = document.getElementById('composerAttachmentIcon');
+            if (box && titleEl && subEl && iconEl) {
+                titleEl.textContent = title;
+                subEl.textContent = subtitle;
+                iconEl.className = iconClass;
+                box.style.display = 'flex';
+            }
         }
 
-        function publishJolaPost() {
-            const input = document.getElementById('composerInput');
-            const val = input ? input.value.trim() : '';
-            if (!val && !jolaAttachedImageDataUrl && !jolaAttachedVideoUrl) {
+        function removeComposerAttachment() {
+            _attachedComposerMedia = null;
+            const box = document.getElementById('composerAttachmentPreview');
+            if (box) box.style.display = 'none';
+            const fileInput = document.getElementById('composerImgFileInput');
+            if (fileInput) fileInput.value = '';
+        }
+
+        function formatLuminaPostTextWithLinks(text) {
+            if (!text || typeof text !== 'string') return '';
+            let hasHtml = /<[a-z][\s\S]*>/i.test(text);
+            let str = hasHtml ? text : text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            const parts = str.split(/(<[^>]+>)/g);
+            for (let i = 0; i < parts.length; i++) {
+                if (parts[i].startsWith('<')) continue;
+                let part = parts[i];
+
+                part = part.replace(/(https?:\/\/[^\s<]+)/gi, function(url) {
+                    let trail = '';
+                    const trailMatch = url.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        url = url.slice(0, -trail.length);
+                    }
+                    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + url + '</a>' + trail;
+                });
+                parts[i] = part;
+            }
+            return parts.join('');
+        }
+
+        function handleQuickPublishJola() {
+            const titleInput = document.getElementById('composerPostTitle');
+            const textInput = document.getElementById('composerTextInput');
+            const title = titleInput ? titleInput.value.trim() : '';
+            const text = textInput ? textInput.value.trim() : '';
+
+            let detectedVideo = null;
+            if (!_attachedComposerMedia && text) {
+                const match = text.match(/(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]{11}[^\s]*)/i);
+                if (match && match[1]) detectedVideo = match[1];
+            }
+
+            const videoUrl = (_attachedComposerMedia && _attachedComposerMedia.type === 'video') ? _attachedComposerMedia.url : detectedVideo;
+            const imageUrl = (_attachedComposerMedia && _attachedComposerMedia.type === 'image') ? _attachedComposerMedia.url : null;
+
+            if (!text && !videoUrl && !imageUrl) {
                 showToast('Wpisz treść, dołącz grafikę lub wklej link do wideo!');
                 return;
             }
+
             const now = new Date();
             const timeStr = `Dzisiaj, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} • ✨ Nowy Wpis`;
-            
+
+            const newPost = {
+                id: 'post_jola_' + Date.now(),
+                author: 'Jola Wójcik',
+                authorSlug: 'jolawojcik',
+                authorAvatar: 'avatar_jolawojcik.jpg',
+                authorRole: 'Biblijny Czas Modlitwy • HalleluYah ✨',
+                time: timeStr,
+                title: title || 'Świadectwo & Modlitwa • Jola Wójcik',
+                text: text,
+                image: imageUrl,
+                videoUrl: videoUrl,
+                likes: 1,
+                amen: 1,
+                category: 'general',
+                createdAtTimestamp: Date.now(),
+                createdAtDateStr: now.toISOString()
+            };
+
+            // Zapis do localStorage profilu Joli
+            try {
+                let jolaPosts = JSON.parse(localStorage.getItem('lumina_posts_jolawojcik') || '[]');
+                jolaPosts.unshift(newPost);
+                localStorage.setItem('lumina_posts_jolawojcik', JSON.stringify(jolaPosts));
+            } catch(e) {
+                console.warn('LocalStorage save error:', e);
+            }
+
+            // Synchronizacja z feedem chmurowym LUMINA
+            try {
+                let cloudCache = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                cloudCache.unshift(newPost);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudCache));
+            } catch(e) {}
+
+            // Publikacja przez LuminaDB jeśli dostępne
+            if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+                window.LuminaDB.publishUniversalPost(newPost).catch(function(err){ console.warn('LuminaDB publish error:', err); });
+            }
+
+            // Renderuj post natychmiast na profilu
+            renderSinglePostCard(newPost, true);
+
+            // Czyść formularz
+            if (titleInput) titleInput.value = '';
+            if (textInput) textInput.value = '';
+            removeComposerAttachment();
+
+            showToast('✨ Opublikowano nowy wpis na profilu Joli Wójcik!');
+        }
+
+        function renderSinglePostCard(post, prepend) {
+            const stream = document.getElementById('jolaFeedStream');
+            if (!stream) return;
+
             const article = document.createElement('article');
             article.className = 'feed-post-card';
-            article.style.marginBottom = '20px';
+            article.id = post.id;
+            article.style.marginBottom = '24px';
+
+            let mediaHtml = '';
+            if (post.image) {
+                mediaHtml = `
+                    <div class="post-media-container" style="margin:14px 0; border-radius:14px; overflow:hidden; width:100%; border:1px solid rgba(255,255,255,0.08); background:#070e24;">
+                        <img src="${post.image}" alt="${post.title || ''}" class="post-media-img" style="width:100%; height:auto; max-height:none; object-fit:contain; display:block; border-radius:14px;">
+                    </div>`;
+            } else if (post.videoUrl) {
+                const ytMatch = post.videoUrl.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                if (ytMatch && ytMatch[1]) {
+                    mediaHtml = `
+                        <div style="position:relative; width:100%; padding-top:56.25%; border-radius:14px; overflow:hidden; margin:14px 0; background:#000; border:1px solid rgba(236,72,153,0.35); box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+                            <iframe src="https://www.youtube.com/embed/${ytMatch[1]}?rel=0" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+                        </div>`;
+                } else {
+                    mediaHtml = `
+                        <div style="margin:14px 0; border-radius:14px; overflow:hidden; background:#000;">
+                            <video src="${post.videoUrl}" controls playsinline style="width:100%; height:auto; max-height:none; border-radius:14px;"></video>
+                        </div>`;
+                }
+            }
+
+            const formattedText = formatLuminaPostTextWithLinks(post.text || '');
+
             article.innerHTML = `
-                <div class="post-top-header">
-                    <div class="post-author-box">
-                        <img src="avatar_jolawojcik.jpg" alt="Jola Wójcik" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                <div class="post-top-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+                    <div class="post-author-box" style="display:flex; align-items:center; gap:12px;">
+                        <img src="${post.authorAvatar || 'avatar_jolawojcik.jpg'}" onerror="this.src='lumina_icon.jpg'" alt="${post.author}" class="post-author-img" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #ec4899;">
                         <div>
-                            <div class="post-author-name">Jola Wójcik <span class="post-badge-role">HalleluYah</span></div>
-                            <span class="post-time">${timeStr}</span>
+                            <div class="post-author-name" style="font-weight:800; font-size:0.95rem; color:#fff;">
+                                ${post.author}
+                                <span class="post-badge-role" style="font-size:0.72rem; background:linear-gradient(135deg, #a855f7, #ec4899); color:#fff; padding:2px 8px; border-radius:10px; margin-left:6px;">${post.authorRole || 'Biblijny Czas Modlitwy'}</span>
+                            </div>
+                            <div class="post-time" style="font-size:0.75rem; color:#94a3b8;">${post.time || 'Niedawno • Społeczność Wiary'}</div>
                         </div>
                     </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="btn-action-secondary" style="padding:6px 12px; font-size:0.75rem; border-radius:20px; display:inline-flex; align-items:center; gap:5px;" onclick="copyProfileLink()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                        <button class="btn-action-delete-jola" onclick="deleteJolaPost('${post.id}')" title="Usuń ten wpis (Administrator)">
+                            <i class="fa-solid fa-trash-can"></i> Usuń
+                        </button>
+                    </div>
                 </div>
-                <div class="post-body" style="word-break:break-word;">${val ? `<p>${window.formatLuminaPostTextWithLinks ? window.formatLuminaPostTextWithLinks(val) : val}</p>` : ''}
-                    ${jolaAttachedVideoUrl ? jolaRenderVideo(jolaAttachedVideoUrl) : ''}
-                    ${jolaAttachedImageDataUrl ? `<img src="${jolaAttachedImageDataUrl}" alt="Zdjęcie" class="post-media-img" style="width:100%; height:auto; max-height:none; object-fit:contain; border-radius:12px; margin-top:10px; display:block; cursor:pointer;" onclick="showToast('Zdjęcie • LUMINA ✨')">` : ''}
-                </div>
-                <div class="post-actions-bar">
-                    <button class="post-act-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span>1</span> Polubień</button>
-                    <button class="post-act-btn active-amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span>0</span> Amen</button>
-                    <button class="post-act-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment"></i> Napisz</button>
-                </div>`;
-            
-            const stream = document.getElementById('jolaFeedStream');
-            stream.insertBefore(article, stream.firstChild);
 
-            if (input) input.value = '';
-            removeJolaPostImage();
-            removeJolaPostVideo();
-            showToast('Twój wpis został opublikowany na profilu! ✨✨');
+                <div class="post-body">
+                    ${post.title ? `<h2 class="post-title" style="font-size:1.20rem; font-weight:800; margin-bottom:10px; color:#fff;">${post.title}</h2>` : ''}
+                    <div class="post-text-content" style="font-size:0.94rem; line-height:1.65; color:#cbd5e1; white-space:pre-line; word-break:break-word;">
+                        ${formattedText}
+                    </div>
+                    ${mediaHtml}
+                </div>
+
+                <div class="post-actions-bar" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="post-act-btn active-heart" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span>${post.likes || 1}</span></button>
+                        <button class="post-act-btn active-amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span>${post.amen || 1}</span> Amen</button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="post-act-btn post-action-btn-del" onclick="deleteJolaPost('${post.id}')" title="Usuń ten wpis (Admin)"><i class="fa-solid fa-trash-can"></i> Usuń</button>
+                        <button class="post-act-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment"></i> Napisz</button>
+                    </div>
+                </div>
+            `;
+
+            if (prepend && stream.firstChild) {
+                stream.insertBefore(article, stream.firstChild);
+            } else {
+                stream.appendChild(article);
+            }
+        }
+
+        function deleteJolaPost(postId) {
+            if (!postId) return;
+
+            const isAuth = sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                           sessionStorage.getItem('lumina_jola_admin') === 'true' ||
+                           document.body.classList.contains('lumina-admin-mode');
+
+            if (!isAuth) {
+                const pin = prompt('🔐 Autoryzacja Administratora / Autora (wprowadź PIN):');
+                if (!pin) return;
+                const cleanPin = pin.trim();
+                if (cleanPin === '7777' || cleanPin === '0455' || cleanPin === '1234') {
+                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                    sessionStorage.setItem('lumina_jola_admin', 'true');
+                    showToast('✅ Zalogowano jako Administrator');
+                } else {
+                    alert('❌ Nieprawidłowy kod PIN administratora!');
+                    return;
+                }
+            }
+
+            if (!confirm('Czy na pewno chcesz bezpowrotnie usunąć ten wpis z profilu Joli Wójcik?')) {
+                return;
+            }
+
+            try {
+                let posts = JSON.parse(localStorage.getItem('lumina_posts_jolawojcik') || '[]');
+                posts = posts.filter(p => p.id !== postId);
+                localStorage.setItem('lumina_posts_jolawojcik', JSON.stringify(posts));
+
+                let blacklist = JSON.parse(localStorage.getItem('lumina_jola_deleted_posts') || '[]');
+                if (!blacklist.includes(postId)) blacklist.push(postId);
+                localStorage.setItem('lumina_jola_deleted_posts', JSON.stringify(blacklist));
+
+                let cloudCache = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                cloudCache = cloudCache.filter(p => p.id !== postId);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudCache));
+            } catch(e) {
+                console.warn('Delete error in storage:', e);
+            }
+
+            const postEl = document.getElementById(postId);
+            if (postEl) {
+                postEl.style.transition = 'all 0.35s ease';
+                postEl.style.opacity = '0';
+                postEl.style.transform = 'scale(0.95)';
+                setTimeout(() => postEl.remove(), 360);
+            }
+
+            showToast('🗑️ Pomyślnie usunięto wpis z profilu!');
+        }
+
+        function loadSavedJolaPosts() {
+            const stream = document.getElementById('jolaFeedStream');
+            if (!stream) return;
+            stream.innerHTML = '';
+
+            let blacklist = [];
+            try {
+                blacklist = JSON.parse(localStorage.getItem('lumina_jola_deleted_posts') || '[]');
+            } catch(e) {
+                blacklist = [];
+            }
+
+            let savedPosts = [];
+            try {
+                savedPosts = JSON.parse(localStorage.getItem('lumina_posts_jolawojcik') || '[]');
+            } catch(e) {
+                savedPosts = [];
+            }
+
+            // Domyślne wpisy bazowe (w tym wpis z wideo wskazanym przez użytkownika!)
+            const baselinePosts = [
+                {
+                    id: 'post_jola_boza_dobroc_2026',
+                    author: 'Jola Wójcik',
+                    authorSlug: 'jolawojcik',
+                    authorAvatar: 'avatar_jolawojcik.jpg',
+                    authorRole: 'Biblijny Czas Modlitwy • Świadectwo Wiary ✨',
+                    time: 'Dzisiaj, 14:00 • 🕊️ Świadectwo Wiary',
+                    title: 'Boża Dobroć Która Wzrusza - Pokonali Szatana Przez Słowo Świadectwa Krew Baranka.',
+                    text: 'Kochani, z całego serca pragnę podzielić się z Wami tym poruszającym świadectwem Bożej dobroci, która wzrusza do głębi serca. Pamiętajmy: pokonali go przez krew Baranka i przez słowo swego świadectwa! Niech to nagranie napełni Wasze serca pokojem, nadzieją i wiarą w moc Bożą. Trwajmy razem w modlitwie! HalleluYah #DobrzeŻeJesteś ✨🕊️',
+                    videoUrl: 'https://youtu.be/Ncpu5o_kt10',
+                    image: null,
+                    likes: 38,
+                    amen: 45,
+                    category: 'general',
+                    createdAtTimestamp: Date.now() - 3600000
+                },
+                {
+                    id: 'post_jola_powitanie_2026',
+                    author: 'Jola Wójcik',
+                    authorSlug: 'jolawojcik',
+                    authorAvatar: 'avatar_jolawojcik.jpg',
+                    authorRole: 'Biblijny Czas Modlitwy',
+                    time: 'Wczoraj, 14:30 • 🕊️ Społeczność Wiary',
+                    title: 'Biblijny Czas Modlitwy w Społeczności LUMINA',
+                    text: 'Szczęść Boże wszystkim w społeczności LUMINA! ✨ Cieszę się, że mogę być tutaj z Wami. Pragnę zaprosić Was do wspólnej modlitwy w ramach serii „Biblijny Czas Modlitwy” emitowanej w Polskim Radiu Christian Culture.\n\nWierzę, że gdy stajemy razem przed Bogiem w prawdzie i zaufaniu, On dotyka naszych serc i uzdrawia każdą sferę życia. Obejrzyjcie odcinki w zakładce Biblijny Czas Modlitwy i podzielcie się swoimi intencjami w komentarzach! 🙏🌸',
+                    videoUrl: null,
+                    image: null,
+                    likes: 28,
+                    amen: 34,
+                    category: 'general',
+                    createdAtTimestamp: Date.now() - 86400000
+                }
+            ];
+
+            const allPosts = [...savedPosts];
+            baselinePosts.forEach(b => {
+                if (!allPosts.some(p => p.id === b.id)) {
+                    allPosts.push(b);
+                }
+            });
+
+            const activePosts = allPosts.filter(p => !blacklist.includes(p.id));
+
+            activePosts.forEach(p => {
+                renderSinglePostCard(p, false);
+            });
         }
 
         // Dynamiczne dopasowanie profilu z uwzględnieniem Żelaznej Doktryny LUMINA (@L + @Joma)
@@ -1556,8 +1989,28 @@
                 el.style.display = 'none';
             }
         }
-        window.addEventListener('DOMContentLoaded', updateJolaMatchScore);
+
+        window.addEventListener('DOMContentLoaded', function() {
+            updateJolaMatchScore();
+            loadSavedJolaPosts();
+
+            // Obsługa bezpośrednich zakładek z adresu URL (np. #tab-prayer-series)
+            if (window.location.hash) {
+                const targetTab = window.location.hash.replace('#', '');
+                const btn = document.querySelector(`[onclick*="'${targetTab}'"]`);
+                if (btn && document.getElementById(targetTab)) {
+                    switchTab(targetTab, btn);
+                }
+            }
+        });
         setTimeout(updateJolaMatchScore, 800);
+        setTimeout(function() {
+            // Weryfikacja czy strumień postów został wypełniony
+            const stream = document.getElementById('jolaFeedStream');
+            if (stream && stream.children.length === 0) {
+                loadSavedJolaPosts();
+            }
+        }, 300);
     </script>
     <script src="lumina-admin-profile-suite.js?v=20260918_autolink_1x1"></script>
     <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer></script>
