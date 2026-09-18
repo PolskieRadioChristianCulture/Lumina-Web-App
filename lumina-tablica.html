@@ -7554,12 +7554,69 @@
         let visibleFeedItems = FEED_PAGE_SIZE;
         let currentSortMode = 'smart_daypart';
 
+        // 🎲 SEED RÓŻNORODNOŚCI ROLEK — nowy losowy seed przy każdym renderFeed()
+        // Dzięki temu każde przeładowanie feedu pokazuje inny zestaw wideo-rolek
+        let _feedRenderSeed = Math.floor(Math.random() * 999983);
+
         window.loadMoreFeedItems = function() {
             visibleFeedItems += FEED_PAGE_SIZE;
             renderFeed();
             const status = document.getElementById('feedPaginationStatus');
             if (status) status.focus({ preventScroll: true });
         };
+
+        // 🎬 SHUFFLER WIDEO-ROLEK — Fisher-Yates z dynamicznym seedem per-render
+        // Każde wywołanie renderFeed() generuje nowy seed → inny zestaw rolek za każdym razem
+        function seededRandFeed(max) {
+            _feedRenderSeed = (_feedRenderSeed * 16807 + 7) % 2147483647;
+            return (_feedRenderSeed % max + max) % max;
+        }
+
+        function shuffleArrayFeed(arr) {
+            const a = arr.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = seededRandFeed(i + 1);
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // Wyciąga posty wideo (_isFeedVideo) z tablicy i zwraca [videoPosts, pozostałe]
+        function extractFeedVideos(arr) {
+            const videos = [];
+            const rest = [];
+            arr.forEach(item => {
+                if (item._isFeedVideo || (item.image && typeof item.image === 'string' && item.image.endsWith('.mp4'))) {
+                    videos.push(item);
+                } else {
+                    rest.push(item);
+                }
+            });
+            return [videos, rest];
+        }
+
+        // Wstrzykuje shufflowane wideo-rolki co ~INTERVAL postów w feedzie
+        function injectShuffledVideos(combinedArr, videoPosts) {
+            if (!videoPosts || videoPosts.length === 0) return combinedArr;
+            const shuffled = shuffleArrayFeed(videoPosts);
+            const result = [];
+            const INTERVAL = Math.max(3, Math.floor(combinedArr.length / (shuffled.length + 1)));
+            let vIdx = 0;
+            combinedArr.forEach((item, i) => {
+                result.push(item);
+                // Wstrzykuj rolkę co INTERVAL elementów (nie na samym początku)
+                if (i > 0 && (i + 1) % INTERVAL === 0 && vIdx < shuffled.length) {
+                    result.push(shuffled[vIdx++]);
+                }
+            });
+            // Dołącz ewentualne pozostałe rolki na końcu
+            while (vIdx < shuffled.length) {
+                result.push(shuffled[vIdx++]);
+            }
+            return result;
+        }
+
+
 
         const LUMINA_DAYPARTS = {
             morning: {
@@ -8046,6 +8103,9 @@
             const container = document.getElementById('feedStream1x1');
             if (!container) return;
 
+            // 🎲 Nowy seed przy każdym renderze → świeży shuffle rolek za każdym razem
+            _feedRenderSeed = Math.floor(Math.random() * 999983) ^ (Date.now() & 0x7FFFF);
+
             const daypart = getCurrentDaypart();
             updateLiveDaypartUI(daypart);
 
@@ -8053,6 +8113,7 @@
             const campaigns = getStoredCampaigns();
             const pinnedPostIds = getPinnedPostIds();
             const isAdmin = localStorage.getItem('lumina_admin') === '1';
+
 
             // ── Dynamic Smart Broadcast Channel Ordering per Daypart ──
             const smartCycleOrder = getSmartOrderedBroadcastChannels(daypart);
@@ -8201,6 +8262,10 @@
                     combined.push(nextBroadcastSlot());
                 }
             }
+
+            // 🎬 SHUFFLE WIDEO-ROLEK — wyciągnij wszystkie _isFeedVideo i wstrzyknij losowo
+            const [feedVideoPosts, combined_noVideos] = extractFeedVideos(combined);
+            combined = injectShuffledVideos(combined_noVideos, feedVideoPosts);
 
             // Filter by search query (?q=... or #tag/@mention)
             const urlParams = new URLSearchParams(window.location.search);
