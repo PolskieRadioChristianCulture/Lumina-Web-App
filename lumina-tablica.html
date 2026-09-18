@@ -6313,10 +6313,90 @@
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                                <button type="button" class="chat-header-sync-btn" id="btnSyncFaithLounge" onclick="toggleSyncFaithLounge()" title="Wspólne Słuchanie & Oglądanie (Sync-Faith Lounge)">
+                                    <i class="fa-solid fa-tower-broadcast"></i><span class="chat-header-sync-text"> Wspólny Odtwarzacz</span>
+                                </button>
                                 <button type="button" class="chat-header-profile-btn" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 12px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; min-height: 36px;" title="Zobacz pełny profil rozmówcy">
                                     <i class="fa-solid fa-user"></i><span class="chat-header-profile-text"> Profil</span>
                                 </button>
                                 <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static; flex-shrink: 0;"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- SYNC-FAITH LOUNGE: WSPÓLNE SŁUCHANIE & OGLĄDANIE DLA DWOJGA (JOMA-D015) -->
+                        <div id="syncFaithLoungePanel" class="sync-faith-lounge-panel">
+                            <div class="sync-lounge-top-bar">
+                                <div class="sync-lounge-title-wrap">
+                                    <i class="fa-solid fa-tower-broadcast" style="color: #F5DC9A;"></i>
+                                    <span>Sync-Faith Lounge • Dla Dwojga</span>
+                                </div>
+                                <div class="sync-lounge-status-pill" id="syncLoungeStatusPill">
+                                    <span style="width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block;"></span>
+                                    <span id="syncLoungeStatusText">Zsynchronizowano co do sekundy</span>
+                                </div>
+                            </div>
+
+                            <!-- Zakładki Źródeł -->
+                            <div class="sync-lounge-tabs">
+                                <button type="button" class="sync-lounge-tab active" id="syncTabRadio" onclick="switchSyncLoungeSource('radio')">
+                                    <i class="fa-solid fa-radio"></i> Radio CC
+                                </button>
+                                <button type="button" class="sync-lounge-tab" id="syncTabTv" onclick="switchSyncLoungeSource('tv')">
+                                    <i class="fa-solid fa-tv"></i> CCTV24 TV
+                                </button>
+                                <button type="button" class="sync-lounge-tab" id="syncTabCourse" onclick="switchSyncLoungeSource('course')">
+                                    <i class="fa-solid fa-heart-pulse"></i> Kurs Małżeński
+                                </button>
+                            </div>
+
+                            <!-- Odtwarzacz -->
+                            <div class="sync-player-card" id="syncPlayerCard">
+                                <!-- Radio Player View -->
+                                <div id="syncRadioView" class="sync-radio-wrap">
+                                    <img src="tlo_pr_cc.jpg" alt="Radio Christian Culture" class="sync-radio-cover">
+                                    <div class="sync-radio-info">
+                                        <div class="sync-radio-title">Radio Christian Culture 24/7</div>
+                                        <div class="sync-radio-sub" id="syncRadioSub">Wspólne budowanie w Słowie i uwielbieniu 🕊️</div>
+                                    </div>
+                                    <button type="button" class="sync-play-btn" id="btnSyncRadioPlay" onclick="toggleSyncRadioPlay()" title="Włącz / Wyłącz Radio">
+                                        <i class="fa-solid fa-play" id="iconSyncRadioPlay"></i>
+                                    </button>
+                                    <audio id="syncRadioAudio" src="https://stream.zeno.fm/50sfeegv208uv" preload="none"></audio>
+                                </div>
+
+                                <!-- CCTV24 Live TV View -->
+                                <div id="syncTvView" style="display:none; flex-direction:column; gap:6px;">
+                                    <div class="sync-video-container">
+                                        <iframe id="syncTvIframe" src="" title="CCTV24 Worship Live" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                                    </div>
+                                    <div style="font-size:0.75rem; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
+                                        <span><i class="fa-solid fa-tv" style="color:#ef4444;"></i> CCTV24 Worship Na Żywo</span>
+                                        <span style="color:#F5DC9A; font-weight:700;">Wspólny seans</span>
+                                    </div>
+                                </div>
+
+                                <!-- Nie Bylejaki Kurs Małżeński View -->
+                                <div id="syncCourseView" style="display:none; flex-direction:column; gap:6px;">
+                                    <div class="sync-video-container">
+                                        <iframe id="syncCourseIframe" src="" title="Nie Bylejaki Kurs Małżeński" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        <label for="syncCourseSelect" style="font-size:0.70rem; color:#94a3b8; font-weight:700; text-transform:uppercase;">Wybierz odcinek cyklu:</label>
+                                        <select id="syncCourseSelect" class="sync-episode-select" onchange="onSyncCourseEpisodeChanged(this.value)">
+                                            <!-- Dynamicznie generowane opcje 1-18 -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pasek Szybkich Reakcji Wiary w Odtwarzaczu -->
+                            <div class="sync-faith-reactions-bar">
+                                <span style="font-size:0.70rem; color:#94a3b8; font-weight:700; flex-shrink:0;">Reakcje:</span>
+                                <button type="button" class="sync-faith-btn" onclick="sendSyncLoungeFaithReaction('🕊️', 'Amen')">🕊️ Amen</button>
+                                <button type="button" class="sync-faith-btn" onclick="sendSyncLoungeFaithReaction('❤️', 'Miłość w Chrystusie')">❤️ Miłość</button>
+                                <button type="button" class="sync-faith-btn" onclick="sendSyncLoungeFaithReaction('🙏', 'Modlę się z Tobą')">🙏 Modlę się</button>
+                                <button type="button" class="sync-faith-btn" onclick="sendSyncLoungeFaithReaction('✨', 'Błogosławieństwo')">✨ Błogosławieństwo</button>
+                                <button type="button" class="sync-faith-btn" onclick="sendSyncLoungeFaithReaction('✝️', 'Chwała Bogu')">✝️ Chwała Bogu</button>
                             </div>
                         </div>
 
@@ -9179,9 +9259,10 @@
 
                             <!-- Actions Bar -->
                             <div class="post-actions-bar">
-                                <div style="display:flex; gap:6px; align-items:center;">
+                                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                                     <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
                                     <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
+                                    <button type="button" class="post-action-btn action-pray-now" onclick="triggerPostPrayer('${item.id}', '${(item.author || 'Cezary Rogowski').replace(/'/g, "\\'")}', this)" title="Wstawiennictwo Czasu Rzeczywistego"><i class="fa-solid fa-hands-praying" style="color:var(--cc-gold,#D4A94A);"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span class="pray-count" id="prayCount_${item.id}">1</span></span> <span class="btn-text">Modlę się TERAZ 🕊️</span></button>
                                     <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
                                     <button class="post-action-btn action-story action-icon-only" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ verse: '${(item.teaser || item.title || '').replace(/'/g, "\\'")}', ref: 'Rozważanie Christian Culture' }) : null" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                                 </div>
@@ -9456,13 +9537,19 @@
                         </div>
 
                         <!-- Actions Bar -->
+                        ${(() => {
+                            const isPrayerPost = (item.category === 'prayer' || item.category === 'modlitwa' || (item.text && (item.text.includes('#modlitwa') || item.text.includes('#intencja') || item.text.includes('modlitw') || item.text.includes('Panie Boże'))) || (item.title && item.title.includes('Modlitw')));
+                            return `
                         <div class="post-actions-bar">
-                            <div style="display:flex; gap:6px; align-items:center;">
+                            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                                 <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
                                 <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
+                                <button type="button" class="post-action-btn action-pray-now ${isPrayerPost ? 'pray-now-spotlight' : ''}" onclick="triggerPostPrayer('${item.id}', '${(item.author || '').replace(/'/g, "\\'")}', this)" title="Wstawiennictwo Czasu Rzeczywistego"><i class="fa-solid fa-hands-praying" style="color:var(--cc-gold,#D4A94A);"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span class="pray-count" id="prayCount_${item.id}">1</span></span> <span class="btn-text">Modlę się TERAZ 🕊️</span></button>
                                 <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
                                 <button class="post-action-btn action-story action-icon-only" onclick="window.openStoryFromTablicaPost('${item.id}')" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                             </div>
+                            `;
+                        })()}
                             <div style="display:flex; gap:6px; align-items:center;">
                                 ${isAdmin ? `
                                     <button class="post-action-btn action-pin action-icon-only ${item._isPinnedByAdmin ? 'pin-active' : ''}" onclick="toggleAdminPinPost('${item.id}')" title="${item._isPinnedByAdmin ? 'Odepnij wpis z góry tablicy (Admin)' : 'Przypnij wpis na samej górze tablicy (Admin)'}" style="${item._isPinnedByAdmin ? 'color:#facc15; border-color:rgba(250,204,21,0.5); font-weight:800; background:rgba(250,204,21,0.12);' : 'color:#cbd5e1;'}">
@@ -9600,6 +9687,28 @@
                 countEl.textContent = btn.classList.contains('amen-active') ? cnt + 1 : cnt - 1;
             }
             showToast('Twoje AMEN zostało dodane! ✨✨');
+        }
+
+        // 🕊️ WSTAWIENNICTWO CZASU RZECZYWISTEGO: „Modlę się za Ciebie TERAZ” (JOMA-D015)
+        function triggerPostPrayer(postId, author, btn) {
+            const prayerModule = window.LuminaLivePrayer || window.LuminaDB?.LuminaLivePrayer;
+            if (prayerModule) {
+                const rect = btn.getBoundingClientRect();
+                prayerModule.triggerPrayNow(postId, author);
+                prayerModule.emitFaithParticles(rect.left + rect.width / 2, rect.top);
+            } else {
+                if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                    try { navigator.vibrate([70, 40, 90]); } catch(e) {}
+                }
+            }
+            btn.classList.add('pray-now-active');
+            const countEl = btn.querySelector('.pray-count');
+            if (countEl) {
+                let current = parseInt(countEl.textContent, 10) || 1;
+                countEl.textContent = current + 1;
+            }
+            const safeAuthor = author || 'autora wpisu';
+            showToast(`🕊️ Modlisz się TERAZ za: ${safeAuthor}! Twoje wstawiennictwo płynie przed Tron Boży. ✨`);
         }
 
         function toggleComments(postId) {
@@ -11746,6 +11855,255 @@
             btnIcon.className = 'fa-solid fa-paper-plane';
         };
 
+        // ══════════════════════════════════════════════════════════════════════════
+        // SYNC-FAITH LOUNGE CONTROLLER (JOMA-D015)
+        // ══════════════════════════════════════════════════════════════════════════
+        let _syncLoungeActiveChatId = null;
+        let _syncLoungeCurrentSource = 'radio';
+        let _syncLoungeSubscribed = false;
+
+        window.toggleSyncFaithLounge = function() {
+            const panel = document.getElementById('syncFaithLoungePanel');
+            const btn = document.getElementById('btnSyncFaithLounge');
+            if (!panel) return;
+            const isOpen = panel.classList.toggle('open');
+            if (btn) btn.classList.toggle('active', isOpen);
+            if (isOpen && _syncLoungeActiveChatId) {
+                applySyncLoungeState(window.LuminaSyncLounge?.getState(_syncLoungeActiveChatId), true);
+            }
+        };
+
+        window.initSyncFaithLoungeForChat = function(chatId) {
+            _syncLoungeActiveChatId = chatId;
+            populateSyncCourseOptions();
+
+            // Subskrybuj zdarzenia synchronizacji
+            if (!_syncLoungeSubscribed && window.LuminaSyncLounge) {
+                _syncLoungeSubscribed = true;
+                window.LuminaSyncLounge.subscribeState((cId, state, isSelf) => {
+                    if (cId === _syncLoungeActiveChatId) {
+                        applySyncLoungeState(state, isSelf);
+                    }
+                });
+
+                window.LuminaSyncLounge.subscribeReactions((cId, reaction) => {
+                    if (cId === _syncLoungeActiveChatId) {
+                        displaySyncReactionInChat(reaction, false);
+                    }
+                });
+            }
+
+            const state = window.LuminaSyncLounge ? window.LuminaSyncLounge.getState(chatId) : null;
+            applySyncLoungeState(state, true);
+        };
+
+        function populateSyncCourseOptions() {
+            const sel = document.getElementById('syncCourseSelect');
+            if (!sel || sel.options.length > 0) return;
+            const eps = (window.LuminaDB && window.LuminaDB.KURS_MALZENSKI_EPISODES) ? window.LuminaDB.KURS_MALZENSKI_EPISODES : [
+                { num: 1, title: 'Cztery wielkie sekrety rodzinnego szczęścia', id: 'OWKwixyQq2c' },
+                { num: 2, title: 'Czy to rzeczywiście miłość?', id: 'gtGiaco7rwI' },
+                { num: 3, title: 'Zasady dobrej rodzinnej łączności', id: 'FtY7zvLNK0A' },
+                { num: 4, title: 'Co zrobić z gniewem i złością?', id: 'lqQ1f8L9F_s' },
+                { num: 5, title: 'Jak rozwiązywać konflikty?', id: 'g2T49iFvdT8' },
+                { num: 6, title: 'Jak radzić sobie ze stresem i depresją?', id: 'dF5-cQ7bN0Q' },
+                { num: 7, title: 'Pieniądze w rodzinie', id: 'W6JgRz9kF_o' },
+                { num: 8, title: 'Jak wychowywać dzieci?', id: 'bZ3nJcQ-21w' },
+                { num: 9, title: 'Gdy dziecko dorasta', id: '2J2F7L-6kQ0' },
+                { num: 10, title: 'Gdy małżeństwo przeżywa kryzys', id: 'p5l-qHk6j4Y' },
+                { num: 11, title: 'Jak przebaczać i zacząć od nowa?', id: 'rV1d1JzQh9o' },
+                { num: 12, title: 'Seksualność w małżeństwie', id: 'u8hZ_k1bN5g' },
+                { num: 13, title: 'Wierność i zaufanie', id: 'qZ8x-bM6K78' },
+                { num: 14, title: 'Duchowy wymiar rodziny', id: 'n7kL_w8B9g0' },
+                { num: 15, title: 'Rola męża i ojca', id: 'm4nZ_j5K6h8' },
+                { num: 16, title: 'Rola żony i matki', id: 'v9pL_d7Q1s4' },
+                { num: 17, title: 'Jak budować dom pełen miłości?', id: 't6kM_z4V1j0' },
+                { num: 18, title: 'Boże błogosławieństwo dla rodziny', id: 'x5nL_k9B3w8' }
+            ];
+            eps.forEach(ep => {
+                const opt = document.createElement('option');
+                opt.value = ep.num;
+                opt.textContent = `Odc. ${ep.num}: ${ep.title}`;
+                sel.appendChild(opt);
+            });
+        }
+
+        window.switchSyncLoungeSource = function(source, skipBroadcast) {
+            _syncLoungeCurrentSource = source;
+            const tabRadio = document.getElementById('syncTabRadio');
+            const tabTv = document.getElementById('syncTabTv');
+            const tabCourse = document.getElementById('syncTabCourse');
+
+            const viewRadio = document.getElementById('syncRadioView');
+            const viewTv = document.getElementById('syncTvView');
+            const viewCourse = document.getElementById('syncCourseView');
+
+            if (tabRadio) tabRadio.classList.toggle('active', source === 'radio');
+            if (tabTv) tabTv.classList.toggle('active', source === 'tv');
+            if (tabCourse) tabCourse.classList.toggle('active', source === 'course');
+
+            if (viewRadio) viewRadio.style.display = source === 'radio' ? 'flex' : 'none';
+            if (viewTv) viewTv.style.display = source === 'tv' ? 'flex' : 'none';
+            if (viewCourse) viewCourse.style.display = source === 'course' ? 'flex' : 'none';
+
+            // Zatrzymujemy radio jeśli przełączamy na wideo
+            const radioAudio = document.getElementById('syncRadioAudio');
+            if (source !== 'radio' && radioAudio && !radioAudio.paused) {
+                radioAudio.pause();
+                updateSyncRadioPlayButton(false);
+            }
+
+            // Ładujemy wideo TV
+            const tvIframe = document.getElementById('syncTvIframe');
+            if (source === 'tv' && tvIframe) {
+                if (!tvIframe.src || !tvIframe.src.includes('cctv24-worship-live')) {
+                    tvIframe.src = 'cctv24-worship-live.html?muted=1&in_lounge=1';
+                }
+            }
+
+            // Ładujemy wideo kursu
+            if (source === 'course') {
+                populateSyncCourseOptions();
+                const sel = document.getElementById('syncCourseSelect');
+                const epNum = sel ? parseInt(sel.value, 10) || 1 : 1;
+                loadSyncCourseVideo(epNum);
+            }
+
+            if (!skipBroadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: source
+                });
+            }
+        };
+
+        window.toggleSyncRadioPlay = function() {
+            const audio = document.getElementById('syncRadioAudio');
+            if (!audio) return;
+            const isPlaying = !audio.paused;
+            if (isPlaying) {
+                audio.pause();
+                updateSyncRadioPlayButton(false);
+            } else {
+                audio.play().catch(() => {});
+                updateSyncRadioPlayButton(true);
+            }
+
+            if (_syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'radio',
+                    isPlaying: !isPlaying
+                });
+            }
+        };
+
+        function updateSyncRadioPlayButton(playing) {
+            const icon = document.getElementById('iconSyncRadioPlay');
+            const sub = document.getElementById('syncRadioSub');
+            if (icon) {
+                icon.className = playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+            }
+            if (sub) {
+                sub.textContent = playing ? 'Strumień aktywny • Słuchacie wspólnie Radia CC 📻' : 'Wspólne budowanie w Słowie i uwielbieniu 🕊️';
+            }
+        }
+
+        window.onSyncCourseEpisodeChanged = function(epNum) {
+            const num = parseInt(epNum, 10) || 1;
+            loadSyncCourseVideo(num);
+
+            if (_syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'course',
+                    courseEpisode: num
+                });
+            }
+        };
+
+        function loadSyncCourseVideo(epNum) {
+            const iframe = document.getElementById('syncCourseIframe');
+            if (!iframe) return;
+            const eps = window.LuminaDB?.KURS_MALZENSKI_EPISODES || [];
+            const ep = eps.find(e => e.num === epNum) || eps[0];
+            if (ep && ep.id) {
+                const targetSrc = `https://www.youtube-nocookie.com/embed/${ep.id}?autoplay=1&rel=0&playsinline=1`;
+                if (iframe.src !== targetSrc) {
+                    iframe.src = targetSrc;
+                }
+            }
+        }
+
+        function applySyncLoungeState(state, isSelf) {
+            if (!state) return;
+            const statusText = document.getElementById('syncLoungeStatusText');
+            if (statusText) {
+                statusText.textContent = isSelf ? 'Zsynchronizowano co do sekundy' : 'Zsynchronizowano z rozmówcą ●';
+            }
+
+            if (state.tab && state.tab !== _syncLoungeCurrentSource) {
+                switchSyncLoungeSource(state.tab, true);
+            }
+
+            if (state.tab === 'radio') {
+                const audio = document.getElementById('syncRadioAudio');
+                if (audio) {
+                    if (state.isPlaying && audio.paused) {
+                        audio.play().catch(() => {});
+                        updateSyncRadioPlayButton(true);
+                    } else if (!state.isPlaying && !audio.paused) {
+                        audio.pause();
+                        updateSyncRadioPlayButton(false);
+                    }
+                }
+            } else if (state.tab === 'course' && state.courseEpisode) {
+                const sel = document.getElementById('syncCourseSelect');
+                if (sel && parseInt(sel.value, 10) !== state.courseEpisode) {
+                    sel.value = state.courseEpisode;
+                    loadSyncCourseVideo(state.courseEpisode);
+                }
+            }
+        }
+
+        window.sendSyncLoungeFaithReaction = function(emoji, label) {
+            const chatId = _syncLoungeActiveChatId || activeChatSession?.chatId || 'sync_lounge_session';
+            const loungeModule = window.LuminaSyncLounge || window.LuminaDB?.LuminaSyncLounge;
+            const reaction = loungeModule ? loungeModule.sendReaction(chatId, emoji, label) : { emoji, label, senderName: 'Ty', timestamp: Date.now() };
+            displaySyncReactionInChat(reaction, true);
+        };
+
+        function displaySyncReactionInChat(reaction, isSelf) {
+            if (!reaction) return;
+            const box = document.getElementById('activeChatMessagesBox');
+            if (!box) return;
+
+            const pill = document.createElement('div');
+            pill.style.cssText = `
+                align-self: center;
+                margin: 6px 0;
+                padding: 6px 14px;
+                border-radius: 20px;
+                background: linear-gradient(135deg, rgba(212, 169, 74, 0.25), rgba(245, 158, 11, 0.18));
+                border: 1.5px solid rgba(212, 169, 74, 0.5);
+                color: #F5DC9A;
+                font-size: 0.78rem;
+                font-weight: 800;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+                animation: syncSlideDown 0.3s ease;
+            `;
+            const sender = isSelf ? 'Ty' : (reaction.senderName || 'Rozmówca');
+            pill.innerHTML = `<span>${reaction.emoji}</span> <span>${sender}: <i>${reaction.label}</i> podczas wspólnego słuchania ✨</span>`;
+            box.appendChild(pill);
+            scrollChatToBottom(box, true);
+        }
+
         function openChatWith(name, avatar, slug, targetMessageId) {
             window._keepActiveChat = true;
             try {
@@ -11813,6 +12171,9 @@
                 targetAvatar: avatarEl?.src || avatar,
                 targetUid: (slug === 'u_robertukaszpio_5668' || toId === 'robertlukaszpio') ? 'jIdflt3G8ohgpCoWmCLJAZ9i5d42' : null
             };
+
+            // Inicjalizacja Sync-Faith Lounge dla tego czatu
+            initSyncFaithLoungeForChat(chatId);
 
             // Wyczyszczenie nieprzeczytanych wiadomości dla tego pokoju
             try {

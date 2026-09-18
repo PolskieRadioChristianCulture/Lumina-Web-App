@@ -568,9 +568,13 @@
                         <i class="fa-solid fa-pen-nib"></i> Prześlij intencję modlitewną
                     </button>
                     
-                    <button id="prayBtn" onclick="incrementPrayCounter()" style="background: linear-gradient(135deg, #ff4d6d 0%, #dc143c 100%); border: none; color: #fff; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-fire"></i> Modlę się
-                        <span id="prayCounterBadge" style="background: #fff; color: #dc143c; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 5px;">368</span>
+                    <button id="prayLivePulseBtn" class="action-pray-now pray-now-spotlight" onclick="triggerModlitwaLivePulse(this)" title="Modlę się za Polskę i intencje TERAZ!">
+                        <i class="fa-solid fa-hands-praying" style="color: var(--cc-gold, #D4A94A);"></i>
+                        <span class="pray-live-badge">
+                            <span class="pray-pulse-dot"></span>
+                            <span id="prayCounterBadge">368</span>
+                        </span>
+                        <span class="btn-text">Modlę się TERAZ 🕊️</span>
                     </button>
                 </div>
                 
@@ -580,32 +584,40 @@
                     const hasPrayed = localStorage.getItem('hasPrayedUrgent') === 'true';
                     
                     const badge = document.getElementById('prayCounterBadge');
-                    const btn = document.getElementById('prayBtn');
+                    const btn = document.getElementById('prayLivePulseBtn');
                     
                     if (badge) badge.innerText = baseCounter;
                     if (hasPrayed && btn) {
-                        btn.style.opacity = '0.7';
-                        btn.style.pointerEvents = 'none';
-                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Dołączyłeś <span id="prayCounterBadge" style="background: #fff; color: #dc143c; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 5px;">' + baseCounter + '</span>';
+                        btn.classList.add('pray-now-active');
+                        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span id="prayCounterBadge">' + baseCounter + '</span></span> <span class="btn-text">Trwasz w modlitwie 🕊️</span>';
                     }
 
-                    window.incrementPrayCounter = function() {
-                        if (localStorage.getItem('hasPrayedUrgent') === 'true') return;
-                        
+                    window.triggerModlitwaLivePulse = function(btnEl) {
                         baseCounter++;
                         localStorage.setItem('urgentPrayerCount', baseCounter.toString());
                         localStorage.setItem('hasPrayedUrgent', 'true');
                         
                         const b = document.getElementById('prayCounterBadge');
-                        const btn = document.getElementById('prayBtn');
-                        
                         if (b) b.innerText = baseCounter;
-                        if (btn) {
-                            btn.style.opacity = '0.7';
-                            btn.style.pointerEvents = 'none';
-                            btn.innerHTML = '<i class="fa-solid fa-check"></i> Dołączyłeś <span id="prayCounterBadge" style="background: #fff; color: #dc143c; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 5px;">' + baseCounter + '</span>';
+
+                        if (btnEl) {
+                            btnEl.classList.add('pray-now-active');
+                            btnEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span id="prayCounterBadge">' + baseCounter + '</span></span> <span class="btn-text">Trwasz w modlitwie 🕊️</span>';
                         }
-                    }
+
+                        if (window.LuminaLivePrayer) {
+                            window.LuminaLivePrayer.triggerPrayNow('modlitwa_polska_narodowa', 'Zjednoczeni za Polskę');
+                        } else {
+                            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                                try { navigator.vibrate([70, 40, 90]); } catch(e) {}
+                            }
+                        }
+
+                        if (typeof showToast === 'function') {
+                            showToast('Twoje wstawiennictwo łączy się w tej chwili z modlitwą za Ojczyznę! Bóg wysłuchuje wołania swego ludu. 🕊️✨');
+                        }
+                    };
+                    window.incrementPrayCounter = window.triggerModlitwaLivePulse;
                     
                     window.shareDomModlitwy = function() {
                         const text = "🇮🇱 DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO I PRZECIW ANTYSEMITYZMOWI 🙏✨\n\nDołącz do grupy modlitewnej „Jeśli chcesz, pomodlę się o Ciebie”: https://chat.whatsapp.com/LGzSCB9K5Vp2jTF8dIALI6\n\nTransmisja i strona modlitwy: https://polskieradio.cc/modlitwa.html";
@@ -785,6 +797,8 @@
     <script type="module">
         import { db } from "./firebase-config.js";
         import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { LuminaLivePrayer } from "./lumina-db.js";
+        window.LuminaLivePrayer = LuminaLivePrayer;
 
 
 

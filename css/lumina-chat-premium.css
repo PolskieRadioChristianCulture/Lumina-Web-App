@@ -741,3 +741,274 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
 #dmFilterTabs::-webkit-scrollbar {
     display: none;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SYNC-FAITH LOUNGE: WSPÓLNE SŁUCHANIE & OGLĄDANIE DLA DWOJGA (JOMA-D015)
+   ══════════════════════════════════════════════════════════════════════════ */
+.chat-header-sync-btn {
+    background: linear-gradient(135deg, rgba(212, 169, 74, 0.18), rgba(245, 158, 11, 0.12));
+    border: 1.5px solid rgba(212, 169, 74, 0.45);
+    color: #F5DC9A;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+    min-height: 36px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chat-header-sync-btn:hover {
+    background: linear-gradient(135deg, rgba(212, 169, 74, 0.3), rgba(245, 158, 11, 0.25));
+    border-color: #D4A94A;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(212, 169, 74, 0.35);
+    transform: translateY(-1px);
+}
+
+.chat-header-sync-btn.active {
+    background: linear-gradient(135deg, #D4A94A, #B88D34);
+    color: #0A0A0F;
+    border-color: #F5DC9A;
+    box-shadow: 0 0 18px rgba(212, 169, 74, 0.5);
+}
+
+.sync-faith-lounge-panel {
+    display: none;
+    flex-direction: column;
+    background: linear-gradient(165deg, rgba(18, 18, 28, 0.96) 0%, rgba(10, 10, 15, 0.98) 100%);
+    border-bottom: 1.5px solid rgba(212, 169, 74, 0.35);
+    padding: 12px 14px;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 15;
+    animation: syncSlideDown 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sync-faith-lounge-panel.open {
+    display: flex;
+}
+
+@keyframes syncSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.sync-lounge-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sync-lounge-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #F5DC9A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sync-lounge-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.70rem;
+    font-weight: 700;
+}
+
+.sync-lounge-tabs {
+    display: flex;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sync-lounge-tab {
+    flex: 1;
+    min-height: 32px;
+    padding: 4px 10px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.sync-lounge-tab:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.sync-lounge-tab.active {
+    background: linear-gradient(135deg, rgba(212, 169, 74, 0.3), rgba(245, 158, 11, 0.2));
+    border: 1px solid rgba(212, 169, 74, 0.5);
+    color: #F5DC9A;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(212, 169, 74, 0.2);
+}
+
+.sync-player-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sync-radio-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sync-radio-cover {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid rgba(212, 169, 74, 0.3);
+    flex-shrink: 0;
+}
+
+.sync-radio-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sync-radio-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sync-radio-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+.sync-play-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4A94A, #B88D34);
+    color: #0A0A0F;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.18s;
+    box-shadow: 0 4px 12px rgba(212, 169, 74, 0.35);
+    flex-shrink: 0;
+}
+
+.sync-play-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 6px 16px rgba(212, 169, 74, 0.5);
+}
+
+.sync-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 220px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(212, 169, 74, 0.25);
+}
+
+.sync-video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.sync-episode-select {
+    width: 100%;
+    background: rgba(10, 10, 18, 0.8);
+    border: 1px solid rgba(212, 169, 74, 0.35);
+    color: #F5DC9A;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    outline: none;
+    cursor: pointer;
+}
+
+.sync-episode-select option {
+    background: #0f172a;
+    color: #fff;
+}
+
+.sync-faith-reactions-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 2px 0;
+    scrollbar-width: none;
+}
+
+.sync-faith-reactions-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.sync-faith-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    transition: all 0.18s;
+}
+
+.sync-faith-btn:hover {
+    background: rgba(212, 169, 74, 0.2);
+    border-color: #D4A94A;
+    color: #F5DC9A;
+    transform: translateY(-1px);
+}
+
