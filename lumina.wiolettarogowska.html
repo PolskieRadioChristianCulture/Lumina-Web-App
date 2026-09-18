@@ -5036,9 +5036,12 @@
                         <div class="post-footer">
                             <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 184}</span><span class="btn-text"> Polubień</span></button>
                             <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (${p.amen || 156})</span></button>
+                            <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2})</span></button>
                             <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                         </div>
+                        <!-- Expandable Comments Drawer V2 -->
+                        <div class="comments-section-v2" id="comments_${p.id}"></div>
                     </article>
                     `;
                 }
@@ -5079,12 +5082,18 @@
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                        <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2})</span></button>
+                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                     </div>
+                    <!-- Expandable Comments Drawer V2 -->
+                    <div class="comments-section-v2" id="comments_${p.id}"></div>
                 </article>
             `;}).join('');
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(stream);
+            }
+            if (window.LuminaComments) {
+                window.LuminaComments.initAllPostCommentCounters();
             }
         }
 
@@ -5754,6 +5763,66 @@
         function togglePostAmen(btn) {
             btn.classList.toggle('amen-active');
             showToast('Twoje AMEN zostało dodane! ✨✨');
+        }
+
+        function toggleComments(postId, authorSlug) {
+            if (window.LuminaComments) {
+                window.LuminaComments.toggleComments(postId, authorSlug || 'wiolettarogowska');
+            } else {
+                const section = document.getElementById('comments_' + postId);
+                if (section) section.classList.toggle('open');
+            }
+        }
+        window.toggleComments = toggleComments;
+
+        function submitComment(postId) {
+            if (window.LuminaComments) {
+                window.LuminaComments.submitComment(postId);
+            }
+        }
+        window.submitComment = submitComment;
+
+        function attachCommentsToStaticPosts() {
+            document.querySelectorAll('.post-card[id], article.post-card').forEach(card => {
+                const postId = card.id || card.getAttribute('data-post-id');
+                if (!postId) return;
+                
+                let footer = card.querySelector('.post-footer');
+                if (footer && !footer.querySelector('.action-comments')) {
+                    const commentsBtn = document.createElement('button');
+                    commentsBtn.type = 'button';
+                    commentsBtn.className = 'post-action-btn action-comments';
+                    const count = window.LuminaComments ? window.LuminaComments.getCommentCount(postId) : 2;
+                    commentsBtn.innerHTML = `<i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${count})</span>`;
+                    commentsBtn.onclick = function() {
+                        toggleComments(postId, 'wiolettarogowska');
+                    };
+                    
+                    const writeBtn = footer.querySelector('[onclick*="openMessageModal"]');
+                    if (writeBtn) {
+                        footer.insertBefore(commentsBtn, writeBtn);
+                    } else {
+                        footer.appendChild(commentsBtn);
+                    }
+                }
+                
+                if (!card.querySelector('.comments-section-v2')) {
+                    const drawer = document.createElement('div');
+                    drawer.className = 'comments-section-v2';
+                    drawer.id = 'comments_' + postId;
+                    card.appendChild(drawer);
+                }
+            });
+            if (window.LuminaComments) {
+                window.LuminaComments.initAllPostCommentCounters();
+            }
+        }
+        window.attachCommentsToStaticPosts = attachCommentsToStaticPosts;
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => setTimeout(attachCommentsToStaticPosts, 600));
+        } else {
+            setTimeout(attachCommentsToStaticPosts, 600);
         }
 
         function insertVersePrompt() {

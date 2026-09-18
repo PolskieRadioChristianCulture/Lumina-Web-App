@@ -7169,6 +7169,726 @@ window.LuminaDB.KURS_MALZENSKI_EPISODES = KURS_MALZENSKI_EPISODES;
 window.LuminaLivePrayer = LuminaLivePrayer;
 window.LuminaSyncLounge = LuminaSyncLounge;
 
+// ══════════════════════════════════════════════════════════════════════════
+// 🕊️ LUMINA MODERN COMMENTS ENGINE & NATURAL MISSION DIALOGUE (JOMA-COMM-V2)
+// ══════════════════════════════════════════════════════════════════════════
+
+let _commentsBroadcastChan = null;
+try {
+    if (typeof BroadcastChannel !== 'undefined') {
+        _commentsBroadcastChan = new BroadcastChannel('lumina_comments_channel');
+    }
+} catch(e) {}
+
+export const LuminaCommentsEngine = {
+    _commentsKeyPrefix: 'lumina_comments_v2_',
+
+    // Baza zaufanych profili misyjnych do naturalnego dialogu
+    _trustedMissionProfiles: [
+        { slug: 'andrzejthiel', name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
+        { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jola.jpg', badge: '🕊️ Wstawiennik LUMINA' },
+        { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🛡️ Świadectwo Wiary' },
+        { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia.jpg', badge: '🌿 Mądrość & Modlitwa' },
+        { slug: 'ccmen', name: 'CC MEN', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota' },
+        { slug: 'ccwomen', name: 'CC WOMEN', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kobieca Formacja' },
+        { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
+        { slug: 'pawelmurawski', name: 'Paweł Murawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+        { slug: 'magdalena', name: 'Magdalena', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' }
+    ],
+
+    // Szablony naturalnych wypowiedzi budujących wiarę
+    _dialogueTemplates: {
+        devotional: [
+            "Amen! Chwała Bogu za to słowo na dzisiejszy dzień. Niech Boży pokój napełnia dziś każde serce i każdą rodzinę. 🕊️✨",
+            "Dziękuję za to poranne umocnienie! Słowo Boże ma niesamowitą moc przemiany myślenia. Błogosławię całą społeczność! ❤️🙏",
+            "Potężna prawda, która stawia na nogi w trudnym czasie. Chwała Panu Jezusowi! Stoję z Wami w braterskiej modlitwie. ✝️🛡️",
+            "Cudowna, głęboka refleksja. Warto zatrzymać się w tym zabieganym świecie i oddać wszystko Stwórcy. Błogosławionego dnia! 🌿🌸",
+            "Tak jest! Prawdziwa siła to wierność Bogu każdego dnia bez kompromisów. Chwała Najwyższemu! 🛡️⚡",
+            "Przepiękne słowa pełne nadziei. Otwórzmy serca na Boże prowadzenie w każdej minucie dzisiejszego dnia! 🌸🕊️"
+        ],
+        prayer: [
+            "Dołączam do modlitwy całym sercem! Jezus jest z Tobą w tej sytuacji i On ma ostatnie słowo. Trwaj w pokoju! 🙏🕊️",
+            "Staję w wyłomie razem z Tobą, bracie/siostro. Żaden problem nie jest za duży dla naszego Pana! 🛡️✝️",
+            "Wstawiam się w Imieniu Jezusa. Wierzymy i ufamy Bożej obietnicy uzdrowienia i ratunku! ✨🙏",
+            "Nie jesteś sam w tej walce. Nasza wspólnota łączy się w modlitwie. Bóg już działa! ❤️🕊️"
+        ],
+        media: [
+            "Wspaniały klimat uwielbienia! Niech ta muzyka i Słowo zanoszą chwałę przed sam Boży Tron. Podajemy dalej! 🎬📖",
+            "Ta stacja wnosi tyle pokoju i światła do mojego domu. Słucham podczas codziennych obowiązków i odpoczynku. Dziękuję! 🎵🌿",
+            "Doskonała jakość i niesamowite namaszczenie. Niech Bóg błogosławi całą redakcję Christian Culture! 📻✨"
+        ],
+        general: [
+            "Piękne świadectwo Bożej obecności w codzienności! Dziękuję za podzielenie się tym na Tablicy. Błogosławieństwa! ✨🕊️",
+            "Bardzo cenna i inspirująca myśl. Wzrastajmy razem w prawdzie i miłości Chrystusa. Pozdrawiam serdecznie! ❤️",
+            "Bóg jest dobry w każdym czasie. Niech Jego łaska towarzyszy nam wszystkim przez cały ten tydzień! 🙏🌿",
+            "Świetnie to ująłeś! Żywa wiara wyraża się w konkretnych czynach i życzliwości wobec drugiego człowieka. ✝️✨"
+        ]
+    },
+
+    init() {
+        if (_commentsBroadcastChan && !this._hasBroadcastListener) {
+            this._hasBroadcastListener = true;
+            _commentsBroadcastChan.onmessage = (ev) => {
+                const data = ev.data;
+                if (data && data.postId) {
+                    this.updatePostCommentCountBadge(data.postId);
+                    const container = document.getElementById('comments_' + data.postId);
+                    if (container && container.classList.contains('open')) {
+                        this.refreshCommentsList(data.postId);
+                    }
+                }
+            };
+        }
+        if (typeof window !== 'undefined') {
+            window.addEventListener('storage', (ev) => {
+                if (ev.key && ev.key.startsWith(this._commentsKeyPrefix)) {
+                    const postId = ev.key.replace(this._commentsKeyPrefix, '');
+                    this.updatePostCommentCountBadge(postId);
+                    const container = document.getElementById('comments_' + postId);
+                    if (container && container.classList.contains('open')) {
+                        this.refreshCommentsList(postId);
+                    }
+                }
+            });
+        }
+    },
+
+    getCurrentCommenter() {
+        const curProfile = (typeof getCurrentProfile === 'function' ? getCurrentProfile() : null);
+        const curUser = (typeof getCurrentUser === 'function' ? getCurrentUser() : null);
+
+        let name = curProfile?.name || curUser?.displayName || 'Gość LUMINA';
+        let slug = curProfile?.slug || (curUser?.email ? curUser.email.split('@')[0] : 'user');
+        let avatar = curProfile?.avatar || curUser?.photoURL || 'avatar_cezary_official.jpg';
+        let badge = curProfile?.badge || curProfile?.job || 'Społeczność LUMINA';
+
+        // Auto-detect Cezary Rogowski if admin
+        const isAdmin = curProfile?.isAdmin || (curUser?.email && (curUser.email.includes('nazirczarkes') || curUser.email.includes('czarkes')));
+        if (isAdmin || slug === 'cezaryrgowski') {
+            name = 'Cezary Rogowski';
+            slug = 'cezaryrgowski';
+            avatar = 'avatar_cezary_official.jpg';
+            badge = '👑 Założyciel CC';
+        } else if (slug === 'wiolettarogowska' || name.toLowerCase().includes('wioletta')) {
+            name = 'Wioletta Rogowska';
+            slug = 'wiolettarogowska';
+            avatar = 'avatar_wioletta_official.jpg';
+            badge = '🌸 Współzałożycielka CC';
+        }
+
+        return { name, slug, avatar, badge };
+    },
+
+    // Generowanie naturalnego dialogu profili misyjnych (tylko raz per post)
+    generateNaturalMissionDialogue(postId, postContext = {}) {
+        const authorSlug = (postContext.authorSlug || '').toLowerCase();
+        let pool = this._trustedMissionProfiles.filter(p => p.slug !== authorSlug);
+        if (pool.length === 0) pool = this._trustedMissionProfiles;
+
+        // Określ typ postu
+        const lowerId = String(postId).toLowerCase();
+        const textLower = String(postContext.text || postContext.title || '').toLowerCase();
+
+        let category = 'general';
+        if (lowerId.startsWith('ref_') || textLower.includes('rozważanie') || textLower.includes('słowa mają moc') || textLower.includes('biblia') || textLower.includes('werset')) {
+            category = 'devotional';
+        } else if (textLower.includes('modlitw') || textLower.includes('intencj') || textLower.includes('błogosławi') || textLower.includes('uzdrowienie') || textLower.includes('chory')) {
+            category = 'prayer';
+        } else if (textLower.includes('live') || textLower.includes('transmisja') || textLower.includes('radio') || textLower.includes('worship') || textLower.includes('utwór')) {
+            category = 'media';
+        }
+
+        const templates = this._dialogueTemplates[category] || this._dialogueTemplates.general;
+
+        // Losuj 1 do 3 naturalnych komentarzy w oparciu o hash postId
+        let hash = 0;
+        for (let i = 0; i < postId.length; i++) {
+            hash = (hash << 5) - hash + postId.charCodeAt(i);
+            hash |= 0;
+        }
+        const absHash = Math.abs(hash);
+        const count = (absHash % 3) + 1; // 1, 2 lub 3 komentarze
+
+        const generated = [];
+        const now = Date.now();
+        const usedProfiles = new Set();
+
+        for (let i = 0; i < count; i++) {
+            const profileIdx = (absHash + i * 3) % pool.length;
+            const profile = pool[profileIdx];
+            if (usedProfiles.has(profile.slug)) continue;
+            usedProfiles.add(profile.slug);
+
+            const tmplIdx = (absHash + i * 7) % templates.length;
+            const text = templates[tmplIdx];
+
+            // Czas w przeszłości (np. 15m, 45m, 2h temu)
+            const timeOffsetMinutes = 15 + ((absHash + i * 29) % 180);
+            const commentTime = now - (timeOffsetMinutes * 60 * 1000);
+
+            generated.push({
+                id: `comm_${postId}_mission_${i}`,
+                postId: postId,
+                author: profile.name,
+                authorSlug: profile.slug,
+                authorAvatar: profile.avatar,
+                authorBadge: profile.badge,
+                text: text,
+                timestamp: commentTime,
+                likes: ((absHash + i * 5) % 4) + 1,
+                amen: ((absHash + i * 7) % 6) + 2,
+                likedByMe: false,
+                amenByMe: false,
+                pinned: (i === 0 && (absHash % 4 === 0)), // Czasem pierwszy jest przypięty
+                hidden: false,
+                edited: false,
+                isMissionAuto: true
+            });
+        }
+
+        return generated;
+    },
+
+    getComments(postId, postContext = {}) {
+        this.init();
+        const key = this._commentsKeyPrefix + postId;
+        const stored = localStorage.getItem(key);
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) {
+                    return this._sortComments(parsed);
+                }
+            } catch(e) {}
+        }
+
+        // Pierwsza inicjalizacja dla postu -> wygeneruj dialog misyjny
+        const autoComments = this.generateNaturalMissionDialogue(postId, postContext);
+        try {
+            localStorage.setItem(key, JSON.stringify(autoComments));
+        } catch(e) {}
+        return this._sortComments(autoComments);
+    },
+
+    _sortComments(list) {
+        return [...list].sort((a, b) => {
+            if (a.pinned && !b.pinned) return -1;
+            if (!a.pinned && b.pinned) return 1;
+            return a.timestamp - b.timestamp;
+        });
+    },
+
+    saveComments(postId, comments) {
+        const key = this._commentsKeyPrefix + postId;
+        try {
+            localStorage.setItem(key, JSON.stringify(comments));
+        } catch(e) {}
+
+        this.updatePostCommentCountBadge(postId);
+
+        if (_commentsBroadcastChan) {
+            try {
+                _commentsBroadcastChan.postMessage({ type: 'COMMENTS_UPDATED', postId: postId });
+            } catch(e) {}
+        }
+    },
+
+    getCommentCount(postId) {
+        const comments = this.getComments(postId);
+        return comments.filter(c => !c.hidden).length;
+    },
+
+    updatePostCommentCountBadge(postId) {
+        const count = this.getCommentCount(postId);
+        // Szukaj przycisków akcji dla tego postu
+        const postCard = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
+        const searchScope = postCard || document;
+        const btn = searchScope.querySelector(`.action-comments, [onclick*="toggleComments('${postId}')"]`);
+        if (btn) {
+            const countSpan = btn.querySelector('.comment-count-num') || btn.querySelector('.btn-text');
+            if (countSpan) {
+                countSpan.innerHTML = ` Komentarze (${count})`;
+            }
+        }
+    },
+
+    initAllPostCommentCounters() {
+        document.querySelectorAll('[onclick*="toggleComments("]').forEach(btn => {
+            const m = btn.getAttribute('onclick').match(/toggleComments\(['"]([^'"]+)['"]\)/);
+            if (m && m[1]) {
+                const postId = m[1];
+                const count = this.getCommentCount(postId);
+                const textEl = btn.querySelector('.btn-text') || btn;
+                textEl.innerHTML = ` Komentarze (${count})`;
+            }
+        });
+    },
+
+    formatCommentText(text) {
+        if (!text) return '';
+        let safe = escapeHtml(text);
+        // Formatuj hashtagi i wzmianki jeśli funkcja formatRichTextAndMedia jest dostępna
+        try {
+            if (window.LuminaDB && window.LuminaDB.formatRichTextAndMedia) {
+                const formatted = window.LuminaDB.formatRichTextAndMedia(safe);
+                return formatted.html || safe;
+            }
+        } catch(e) {}
+        return safe.replace(/\n/g, '<br>');
+    },
+
+    formatTimeAgo(timestamp) {
+        if (!timestamp) return 'Przed chwilą';
+        const diff = Date.now() - timestamp;
+        const mins = Math.floor(diff / (60 * 1000));
+        if (mins < 1) return 'Przed chwilą';
+        if (mins < 60) return `${mins} min temu`;
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) return `${hours} godz. temu`;
+        const days = Math.floor(hours / 24);
+        if (days < 7) return `${days} dni temu`;
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });
+    },
+
+    addComment(postId, text, replyToAuthor = null) {
+        if (!text || !text.trim()) return null;
+        const commenter = this.getCurrentCommenter();
+        const comments = this.getComments(postId);
+
+        let cleanText = text.trim();
+        if (replyToAuthor && !cleanText.startsWith('@' + replyToAuthor)) {
+            cleanText = `@${replyToAuthor} ${cleanText}`;
+        }
+
+        const newComment = {
+            id: 'comm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+            postId: postId,
+            author: commenter.name,
+            authorSlug: commenter.slug,
+            authorAvatar: commenter.avatar,
+            authorBadge: commenter.badge,
+            text: cleanText,
+            timestamp: Date.now(),
+            likes: 0,
+            amen: 0,
+            likedByMe: false,
+            amenByMe: false,
+            pinned: false,
+            hidden: false,
+            edited: false
+        };
+
+        comments.push(newComment);
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (typeof LuminaLivePrayer !== 'undefined' && LuminaLivePrayer.emitFaithParticles) {
+            LuminaLivePrayer.emitFaithParticles();
+        }
+
+        if (typeof window.showToast === 'function') {
+            window.showToast('Twój komentarz został pomyślnie dodany! ✨🕊️');
+        }
+
+        return newComment;
+    },
+
+    editComment(postId, commentId, newText) {
+        if (!newText || !newText.trim()) return false;
+        const comments = this.getComments(postId);
+        const idx = comments.findIndex(c => c.id === commentId);
+        if (idx === -1) return false;
+
+        comments[idx].text = newText.trim();
+        comments[idx].edited = true;
+        comments[idx].editedAt = Date.now();
+
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast('Komentarz został zaktualizowany. ✨');
+        }
+        return true;
+    },
+
+    deleteComment(postId, commentId) {
+        if (!confirm('Czy na pewno chcesz usunąć ten komentarz?')) return;
+        let comments = this.getComments(postId);
+        comments = comments.filter(c => c.id !== commentId);
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast('Komentarz został usunięty.');
+        }
+    },
+
+    togglePinComment(postId, commentId) {
+        const comments = this.getComments(postId);
+        const target = comments.find(c => c.id === commentId);
+        if (!target) return;
+
+        const willPin = !target.pinned;
+        // Odpinamy pozostałe
+        comments.forEach(c => {
+            if (c.id === commentId) c.pinned = willPin;
+            else if (willPin) c.pinned = false;
+        });
+
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast(willPin ? '📌 Komentarz został przypięty na samej górze!' : 'Komentarz został odpięty.');
+        }
+    },
+
+    toggleHideComment(postId, commentId) {
+        const comments = this.getComments(postId);
+        const target = comments.find(c => c.id === commentId);
+        if (!target) return;
+
+        target.hidden = !target.hidden;
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (typeof window.showToast === 'function') {
+            window.showToast(target.hidden ? 'Komentarz został ukryty.' : 'Komentarz został odkryty.');
+        }
+    },
+
+    toggleCommentLike(postId, commentId) {
+        const comments = this.getComments(postId);
+        const target = comments.find(c => c.id === commentId);
+        if (!target) return;
+
+        target.likedByMe = !target.likedByMe;
+        target.likes = target.likedByMe ? (target.likes + 1) : Math.max(0, target.likes - 1);
+
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+    },
+
+    toggleCommentAmen(postId, commentId) {
+        const comments = this.getComments(postId);
+        const target = comments.find(c => c.id === commentId);
+        if (!target) return;
+
+        target.amenByMe = !target.amenByMe;
+        target.amen = target.amenByMe ? (target.amen + 1) : Math.max(0, target.amen - 1);
+
+        this.saveComments(postId, comments);
+        this.refreshCommentsList(postId);
+
+        if (target.amenByMe) {
+            if (typeof LuminaLivePrayer !== 'undefined' && LuminaLivePrayer.emitFaithParticles) {
+                LuminaLivePrayer.emitFaithParticles();
+            }
+            if (typeof window.showToast === 'function') {
+                window.showToast('Twoje AMEN do komentarza zostało dodane! 🕊️✨');
+            }
+        }
+    },
+
+    insertFaithChip(postId, chipText) {
+        const input = document.getElementById('comment_input_' + postId);
+        if (!input) return;
+        const curVal = input.value.trim();
+        input.value = curVal ? (curVal + ' ' + chipText) : chipText;
+        input.focus();
+    },
+
+    replyToUser(postId, commentId, authorName) {
+        const input = document.getElementById('comment_input_' + postId);
+        const replyBadge = document.getElementById('comment_reply_badge_' + postId);
+        if (input) {
+            input.dataset.replyTo = authorName;
+            input.value = `@${authorName} `;
+            input.focus();
+        }
+        if (replyBadge) {
+            replyBadge.innerHTML = `<span>Odpowiedź do: <b>@${escapeHtml(authorName)}</b></span> <button type="button" class="comment-cancel-reply-btn" onclick="LuminaComments.cancelReply('${postId}')">✕</button>`;
+            replyBadge.style.display = 'flex';
+        }
+    },
+
+    cancelReply(postId) {
+        const input = document.getElementById('comment_input_' + postId);
+        const replyBadge = document.getElementById('comment_reply_badge_' + postId);
+        if (input) {
+            delete input.dataset.replyTo;
+            if (input.value.startsWith('@')) {
+                input.value = '';
+            }
+        }
+        if (replyBadge) {
+            replyBadge.style.display = 'none';
+        }
+    },
+
+    startInlineEdit(postId, commentId) {
+        const commentItem = document.getElementById('comment_item_' + commentId);
+        if (!commentItem) return;
+        const textContent = commentItem.querySelector('.comment-text-content');
+        const editBox = commentItem.querySelector('.comment-inline-edit-wrap');
+        if (textContent && editBox) {
+            textContent.style.display = 'none';
+            editBox.style.display = 'flex';
+            const textarea = editBox.querySelector('textarea');
+            if (textarea) textarea.focus();
+        }
+        this.closeAllDropdowns();
+    },
+
+    cancelInlineEdit(postId, commentId) {
+        const commentItem = document.getElementById('comment_item_' + commentId);
+        if (!commentItem) return;
+        const textContent = commentItem.querySelector('.comment-text-content');
+        const editBox = commentItem.querySelector('.comment-inline-edit-wrap');
+        if (textContent && editBox) {
+            textContent.style.display = 'block';
+            editBox.style.display = 'none';
+        }
+    },
+
+    saveInlineEdit(postId, commentId) {
+        const commentItem = document.getElementById('comment_item_' + commentId);
+        if (!commentItem) return;
+        const textarea = commentItem.querySelector('.comment-inline-edit-textarea');
+        if (!textarea) return;
+        const newText = textarea.value.trim();
+        this.editComment(postId, commentId, newText);
+    },
+
+    toggleCommentDropdown(postId, commentId) {
+        const menu = document.getElementById('comment_dropdown_' + commentId);
+        if (!menu) return;
+        const isOpen = menu.classList.contains('open');
+        this.closeAllDropdowns();
+        if (!isOpen) {
+            menu.classList.add('open');
+        }
+    },
+
+    closeAllDropdowns() {
+        document.querySelectorAll('.comment-dropdown-menu.open').forEach(el => el.classList.remove('open'));
+    },
+
+    toggleComments(postId, postAuthorSlug) {
+        const section = document.getElementById('comments_' + postId);
+        if (!section) return;
+        const isOpen = section.classList.contains('open');
+        if (isOpen) {
+            section.classList.remove('open');
+            section.style.display = 'none';
+        } else {
+            section.classList.add('open');
+            section.style.display = 'block';
+            this.refreshCommentsSection(postId, postAuthorSlug);
+            const input = document.getElementById('comment_input_' + postId);
+            if (input) input.focus();
+        }
+    },
+
+    submitComment(postId) {
+        const input = document.getElementById('comment_input_' + postId);
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        const replyTo = input.dataset.replyTo || null;
+        this.addComment(postId, text, replyTo);
+        input.value = '';
+        this.cancelReply(postId);
+    },
+
+    renderCommentsListHtml(postId, postAuthorSlug) {
+        const comments = this.getComments(postId);
+        const me = this.getCurrentCommenter();
+        const isAdmin = me.slug === 'cezaryrgowski';
+        const isPostAuthor = postAuthorSlug && (postAuthorSlug === me.slug);
+
+        if (comments.length === 0) {
+            return `<div style="text-align:center; padding:16px; color:#94a3b8; font-size:0.82rem; font-style:italic;">Bądź pierwszą osobą, która podzieli się słowem lub Amen! ✨🕊️</div>`;
+        }
+
+        return comments.map(c => {
+            const isMyComment = (c.authorSlug && c.authorSlug === me.slug);
+            const canManage = (isMyComment || isPostAuthor || isAdmin);
+
+            if (c.hidden && !canManage) {
+                return `
+                    <div class="comment-item-v2" id="comment_item_${c.id}">
+                        <div class="comment-hidden-placeholder" style="width:100%;">
+                            <span><i class="fa-solid fa-eye-slash"></i> Ten komentarz został ukryty przez autora wpisu.</span>
+                            <button type="button" class="btn-reveal-hidden" onclick="document.getElementById('hidden_body_${c.id}').style.display='block'; this.parentElement.style.display='none';">Pokaż mimo to</button>
+                        </div>
+                        <div id="hidden_body_${c.id}" style="display:none; width:100%;">
+                            ${this._renderSingleCommentBubbleHtml(postId, c, canManage, isMyComment)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="comment-item-v2 ${c.pinned ? 'pinned-comment' : ''}" id="comment_item_${c.id}">
+                    <a href="${c.authorSlug ? ('lumina.html?u=' + c.authorSlug) : '#'}" class="comment-avatar-link">
+                        <img loading="lazy" decoding="async" src="${c.authorAvatar || 'lumina_icon.jpg'}" alt="${escapeHtml(c.author)}" class="comment-avatar-v2" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                    </a>
+                    <div class="comment-body-v2">
+                        ${this._renderSingleCommentBubbleHtml(postId, c, canManage, isMyComment)}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    },
+
+    _renderSingleCommentBubbleHtml(postId, c, canManage, isMyComment) {
+        return `
+            <div class="comment-bubble-v2">
+                ${c.pinned ? `<div class="comment-pinned-indicator"><i class="fa-solid fa-thumbtack"></i> Przypięty komentarz</div>` : ''}
+                ${c.hidden ? `<div style="font-size:0.72rem; color:#f87171; margin-bottom:4px; font-weight:700;"><i class="fa-solid fa-eye-slash"></i> (Komentarz ukryty dla gości)</div>` : ''}
+                
+                <div class="comment-header-row">
+                    <a href="${c.authorSlug ? ('lumina.html?u=' + c.authorSlug) : '#'}" class="comment-author-name">
+                        <span>${escapeHtml(c.author)}</span>
+                        ${c.authorBadge ? `<span class="comment-badge-pill">${escapeHtml(c.authorBadge)}</span>` : ''}
+                    </a>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span class="comment-time-v2">${this.formatTimeAgo(c.timestamp)}</span>
+                        ${c.edited ? `<span class="comment-edited-tag">(edytowano)</span>` : ''}
+                        
+                        ${canManage ? `
+                            <button type="button" class="comment-more-btn" onclick="LuminaComments.toggleCommentDropdown('${postId}', '${c.id}')" title="Opcje komentarza">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <div class="comment-dropdown-menu" id="comment_dropdown_${c.id}">
+                                ${isMyComment ? `
+                                    <button type="button" class="comment-dropdown-item" onclick="LuminaComments.startInlineEdit('${postId}', '${c.id}')">
+                                        <i class="fa-solid fa-pencil"></i> Edytuj
+                                    </button>
+                                ` : ''}
+                                <button type="button" class="comment-dropdown-item" onclick="LuminaComments.togglePinComment('${postId}', '${c.id}')">
+                                    <i class="fa-solid fa-thumbtack"></i> ${c.pinned ? 'Odepnij' : 'Przypnij na górze'}
+                                </button>
+                                <button type="button" class="comment-dropdown-item" onclick="LuminaComments.toggleHideComment('${postId}', '${c.id}')">
+                                    <i class="fa-solid ${c.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i> ${c.hidden ? 'Odkryj' : 'Ukryj'}
+                                </button>
+                                <button type="button" class="comment-dropdown-item item-danger" onclick="LuminaComments.deleteComment('${postId}', '${c.id}')">
+                                    <i class="fa-solid fa-trash-can"></i> Usuń
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="comment-text-content">${this.formatCommentText(c.text)}</div>
+
+                <!-- Inline Edit Form (Hidden by default) -->
+                <div class="comment-inline-edit-wrap" style="display:none;">
+                    <textarea class="comment-inline-edit-textarea">${escapeHtml(c.text)}</textarea>
+                    <div class="comment-inline-edit-buttons">
+                        <button type="button" class="comment-edit-btn-cancel" onclick="LuminaComments.cancelInlineEdit('${postId}', '${c.id}')">Anuluj</button>
+                        <button type="button" class="comment-edit-btn-save" onclick="LuminaComments.saveInlineEdit('${postId}', '${c.id}')">Zapisz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reactions and reply -->
+            <div class="comment-actions-bar-v2">
+                <button type="button" class="comment-action-link ${c.likedByMe ? 'active-like' : ''}" onclick="LuminaComments.toggleCommentLike('${postId}', '${c.id}')" title="Polub komentarz">
+                    <i class="fa-solid fa-heart"></i> <span>${c.likes > 0 ? c.likes : ''} Lubię</span>
+                </button>
+                <button type="button" class="comment-action-link ${c.amenByMe ? 'active-amen' : ''}" onclick="LuminaComments.toggleCommentAmen('${postId}', '${c.id}')" title="Dodaj AMEN!">
+                    <i class="fa-solid fa-hands-praying"></i> <span>${c.amen > 0 ? c.amen : ''} Amen!</span>
+                </button>
+                <button type="button" class="comment-action-link" onclick="LuminaComments.replyToUser('${postId}', '${c.id}', '${escapeHtml(c.author)}')" title="Odpowiedz temu autorowi">
+                    <i class="fa-solid fa-reply"></i> <span>Odpowiedz</span>
+                </button>
+            </div>
+        `;
+    },
+
+    refreshCommentsList(postId, postAuthorSlug) {
+        const list = document.getElementById('comment_list_' + postId);
+        if (list) {
+            list.innerHTML = this.renderCommentsListHtml(postId, postAuthorSlug);
+        }
+    },
+
+    refreshCommentsSection(postId, postAuthorSlug) {
+        const container = document.getElementById('comments_' + postId);
+        if (!container) return;
+        const me = this.getCurrentCommenter();
+
+        container.className = 'comments-section-v2 open';
+        container.style.display = 'block';
+        container.innerHTML = `
+            <!-- Faith Quick-Chips -->
+            <div class="comment-faith-chips-bar">
+                <button type="button" class="comment-faith-chip" onclick="LuminaComments.insertFaithChip('${postId}', '🕊️ Amen!')">🕊️ Amen!</button>
+                <button type="button" class="comment-faith-chip" onclick="LuminaComments.insertFaithChip('${postId}', '🙏 Błogosławię w Panu!')">🙏 Błogosławię w Panu!</button>
+                <button type="button" class="comment-faith-chip" onclick="LuminaComments.insertFaithChip('${postId}', '❤️ Piękne świadectwo!')">❤️ Piękne świadectwo!</button>
+                <button type="button" class="comment-faith-chip" onclick="LuminaComments.insertFaithChip('${postId}', '✨ Chwała Bogu!')">✨ Chwała Bogu!</button>
+                <button type="button" class="comment-faith-chip" onclick="LuminaComments.insertFaithChip('${postId}', '📖 Słowo na czasie!')">📖 Słowo na czasie!</button>
+            </div>
+
+            <!-- Composer Input Row -->
+            <div class="comment-input-composer-v2">
+                <img loading="lazy" decoding="async" src="${me.avatar || 'lumina_icon.jpg'}" alt="${escapeHtml(me.name)}" class="comment-my-avatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                <div class="comment-input-wrap">
+                    <div id="comment_reply_badge_${postId}" class="comment-replying-to-badge" style="display:none;"></div>
+                    <textarea class="comment-textarea-v2" id="comment_input_${postId}" placeholder="Napisz budujący komentarz, świadectwo lub Amen..." rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); LuminaComments.submitComment('${postId}'); }"></textarea>
+                    <div class="comment-submit-bar">
+                        <span style="font-size:0.7rem; color:#64748b;">Naciśnij Enter, aby wysłać</span>
+                        <button type="button" class="comment-submit-btn-v2" onclick="LuminaComments.submitComment('${postId}')">
+                            <i class="fa-solid fa-paper-plane"></i> Opublikuj
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Feed List -->
+            <div class="comments-list-v2" id="comment_list_${postId}">
+                ${this.renderCommentsListHtml(postId, postAuthorSlug)}
+            </div>
+        `;
+
+        this.updatePostCommentCountBadge(postId);
+    }
+};
+
+// Global Exposure
+window.LuminaComments = LuminaCommentsEngine;
+window.LuminaCommentsEngine = LuminaCommentsEngine;
+window.LuminaDB = window.LuminaDB || {};
+window.LuminaDB.LuminaComments = LuminaCommentsEngine;
+
+window.toggleComments = function(postId, authorSlug) {
+    LuminaCommentsEngine.toggleComments(postId, authorSlug);
+};
+window.submitComment = function(postId) {
+    LuminaCommentsEngine.submitComment(postId);
+};
+
+// Auto-inicjalizacja liczników po załadowaniu DOM
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => LuminaCommentsEngine.initAllPostCommentCounters(), 500);
+        });
+    } else {
+        setTimeout(() => LuminaCommentsEngine.initAllPostCommentCounters(), 500);
+    }
+    // Zamknięcie otwartych dropdownów po kliknięciu poza nimi
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.comment-dropdown-menu') && !e.target.closest('.comment-more-btn')) {
+            LuminaCommentsEngine.closeAllDropdowns();
+        }
+    });
+}
+
 if (typeof window !== 'undefined') {
     if (!window.triggerPostPrayer) {
         window.triggerPostPrayer = function(postId, author, btn) {
@@ -7196,5 +7916,4 @@ if (typeof window !== 'undefined') {
         };
     }
 }
-
 

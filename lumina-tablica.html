@@ -9263,13 +9263,16 @@
                                     <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
                                     <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
                                     <button type="button" class="post-action-btn action-pray-now" onclick="triggerPostPrayer('${item.id}', '${(item.author || 'Cezary Rogowski').replace(/'/g, "\\'")}', this)" title="Wstawiennictwo Czasu Rzeczywistego"><i class="fa-solid fa-hands-praying" style="color:var(--cc-gold,#D4A94A);"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span class="pray-count" id="prayCount_${item.id}">1</span></span> <span class="btn-text">Modlę się TERAZ 🕊️</span></button>
-                                    <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                    <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}', '${(item.authorSlug || 'cezaryrgowski').replace(/'/g, "\\'")}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(item.id) : 2})</span></button>
                                     <button class="post-action-btn action-story action-icon-only" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ verse: '${(item.teaser || item.title || '').replace(/'/g, "\\'")}', ref: 'Rozważanie Christian Culture' }) : null" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                                 </div>
                                 <div style="display:flex; gap:6px; align-items:center;">
                                     <button class="post-action-btn action-share action-icon-only" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
                                 </div>
                             </div>
+
+                            <!-- Expandable Comments Drawer V2 -->
+                            <div class="comments-section-v2" id="comments_${item.id}"></div>
                         </article>
                     `;
                 }
@@ -9545,7 +9548,7 @@
                                 <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
                                 <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
                                 <button type="button" class="post-action-btn action-pray-now ${isPrayerPost ? 'pray-now-spotlight' : ''}" onclick="triggerPostPrayer('${item.id}', '${(item.author || '').replace(/'/g, "\\'")}', this)" title="Wstawiennictwo Czasu Rzeczywistego"><i class="fa-solid fa-hands-praying" style="color:var(--cc-gold,#D4A94A);"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span class="pray-count" id="prayCount_${item.id}">1</span></span> <span class="btn-text">Modlę się TERAZ 🕊️</span></button>
-                                <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}', '${(item.authorSlug || item.author || '').replace(/'/g, "\\'")}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(item.id) : 1})</span></button>
                                 <button class="post-action-btn action-story action-icon-only" onclick="window.openStoryFromTablicaPost('${item.id}')" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                             </div>
                             `;
@@ -9562,20 +9565,8 @@
                         </div>
 
 
-                        <!-- Expandable Comments Drawer -->
-                        <div class="comments-section" id="comments_${item.id}">
-                            <div id="comment_list_${item.id}">
-                                <div class="comment-item">
-                                    <img loading="lazy" decoding="async" src="avatar_widget_tomek.jpg" alt="Tomek" class="comment-avatar">
-                                    <div class="comment-bubble">
-                                        <b style="color:#38bdf8;">Tomasz:</b> Błogosławieństwa Bożego! Piękne świadectwo i wspaniała inicjatywa! ✨✨ </div>
-                                </div>
-                            </div>
-                            <div class="comment-input-row">
-                                <input type="text" class="comment-input" id="input_${item.id}" placeholder="Napisz komentarz..." onkeypress="if(event.key==='Enter') submitComment('${item.id}')">
-                                <button class="comment-submit-btn" onclick="submitComment('${item.id}')"><i class="fa-solid fa-paper-plane"></i></button>
-                            </div>
-                        </div>
+                        <!-- Expandable Comments Drawer V2 -->
+                        <div class="comments-section-v2" id="comments_${item.id}"></div>
                     </article>
                 `;
                 })();
@@ -9604,6 +9595,9 @@
             }
             // Inicjuj nawigację (strzałki + drag) dla karuzel wstawionych przez renderFeed
             initFeedCarousels(container);
+            if (window.LuminaComments) {
+                window.LuminaComments.initAllPostCommentCounters();
+            }
         }
 
         function filterFeed(type, btn) {
@@ -9711,29 +9705,39 @@
             showToast(`🕊️ Modlisz się TERAZ za: ${safeAuthor}! Twoje wstawiennictwo płynie przed Tron Boży. ✨`);
         }
 
-        function toggleComments(postId) {
-            const section = document.getElementById('comments_' + postId);
-            if (section) section.classList.toggle('open');
+        function toggleComments(postId, authorSlug) {
+            if (window.LuminaComments) {
+                window.LuminaComments.toggleComments(postId, authorSlug);
+            } else {
+                const section = document.getElementById('comments_' + postId);
+                if (section) {
+                    section.classList.toggle('open');
+                    section.style.display = section.classList.contains('open') ? 'block' : 'none';
+                }
+            }
         }
 
         function submitComment(postId) {
-            const input = document.getElementById('input_' + postId);
-            const list = document.getElementById('comment_list_' + postId);
-            if (!input || !list) return;
-            const text = input.value.trim();
-            if (!text) return;
-
-            const newComment = document.createElement('div');
-            newComment.className = 'comment-item';
-            newComment.innerHTML = `
-                <img loading="lazy" decoding="async" src="avatar_new1.jpg" alt="Ja" class="comment-avatar">
-                <div class="comment-bubble">
-                    <b style="color:#f472b6;">Ty:</b> ${text}
-                </div>
-            `;
-            list.appendChild(newComment);
-            input.value = '';
-            showToast('Komentarz został pomyślnie dodany! ✨✨');
+            if (window.LuminaComments) {
+                window.LuminaComments.submitComment(postId);
+            } else {
+                const input = document.getElementById('input_' + postId);
+                const list = document.getElementById('comment_list_' + postId);
+                if (!input || !list) return;
+                const text = input.value.trim();
+                if (!text) return;
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.innerHTML = `
+                    <img loading="lazy" decoding="async" src="avatar_new1.jpg" alt="Ja" class="comment-avatar">
+                    <div class="comment-bubble">
+                        <b style="color:#f472b6;">Ty:</b> ${text}
+                    </div>
+                `;
+                list.appendChild(newComment);
+                input.value = '';
+                showToast('Komentarz został pomyślnie dodany! ✨✨');
+            }
         }
 
         function sharePostLink(postId) {

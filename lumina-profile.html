@@ -6465,9 +6465,12 @@
                         <div class="post-footer">
                             <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 142}</span><span class="btn-text"> Polubień</span></button>
                             <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (${p.amen || 120})</span></button>
+                            <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 3})</span></button>
                             <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                         </div>
+                        <!-- Expandable Comments Drawer V2 -->
+                        <div class="comments-section-v2" id="comments_${p.id}"></div>
                     </article>
                     `;
                 }
@@ -6537,12 +6540,18 @@
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                        <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 1})</span></button>
+                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                     </div>
+                    <!-- Expandable Comments Drawer V2 -->
+                    <div class="comments-section-v2" id="comments_${p.id}"></div>
                 </article>
             `;}).join('');
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(stream);
+            }
+            if (window.LuminaComments) {
+                window.LuminaComments.initAllPostCommentCounters();
             }
         }
 
@@ -8159,6 +8168,23 @@
             btn.classList.toggle('amen-active');
             showToast('Twoje AMEN zostało dodane! ✨✨');
         }
+
+        function toggleComments(postId, authorSlug) {
+            if (window.LuminaComments) {
+                window.LuminaComments.toggleComments(postId, authorSlug);
+            } else {
+                const section = document.getElementById('comments_' + postId);
+                if (section) section.classList.toggle('open');
+            }
+        }
+        window.toggleComments = toggleComments;
+
+        function submitComment(postId) {
+            if (window.LuminaComments) {
+                window.LuminaComments.submitComment(postId);
+            }
+        }
+        window.submitComment = submitComment;
 
         function insertVersePrompt() {
             const input = document.getElementById('composerInput');
