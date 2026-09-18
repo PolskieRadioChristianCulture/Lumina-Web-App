@@ -115,6 +115,9 @@
                 font-family: 'Plus Jakarta Sans', sans-serif;
                 overflow: hidden;
             }
+            .lumina-sheet-drag-handle {
+                display: none;
+            }
             @media (max-width: 768px) {
                 .story-gen-overlay {
                     padding: 0;
@@ -123,14 +126,38 @@
                 .story-gen-modal {
                     flex-direction: column;
                     border-radius: 28px 28px 0 0;
-                    border-bottom: none;
-                    border-left: none;
-                    border-right: none;
+                    border-bottom: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    border-top: 2px solid rgba(250, 204, 21, 0.6) !important;
+                    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.95), 0 0 30px rgba(250, 204, 21, 0.25) !important;
                     max-height: 90dvh;
-                    padding: 20px 16px calc(24px + env(safe-area-inset-bottom, 14px));
+                    padding: 14px 16px calc(24px + env(safe-area-inset-bottom, 14px));
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
                     gap: 16px;
+                    transform: translateY(100%);
+                    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                    will-change: transform;
+                }
+                .story-gen-overlay.open .story-gen-modal {
+                    transform: translateY(0) !important;
+                }
+                .lumina-sheet-drag-handle {
+                    display: block !important;
+                    width: 44px;
+                    height: 5px;
+                    background: rgba(255, 255, 255, 0.32);
+                    border-radius: 999px;
+                    margin: 0 auto 8px auto;
+                    cursor: grab;
+                    touch-action: none;
+                    transition: background 0.2s ease, width 0.2s ease;
+                }
+                .lumina-sheet-drag-handle:active,
+                .story-gen-modal.is-dragging .lumina-sheet-drag-handle {
+                    background: #facc15 !important;
+                    width: 52px !important;
                 }
             }
             .story-preview-col {
@@ -487,8 +514,9 @@
         overlay.id = 'luminaStoryGenModal';
         overlay.className = 'story-gen-overlay';
         overlay.innerHTML = `
-            <div class="story-gen-modal">
-                <button class="story-close-btn" onclick="window.closeLuminaStoryGenerator()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="story-gen-modal" onclick="event.stopPropagation()">
+                <div class="lumina-sheet-drag-handle" id="storyDragHandle" title="Przeciągnij w dół, aby zamknąć"></div>
+                <button class="story-close-btn" onclick="window.closeLuminaStoryGenerator()" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
                 
                 <div class="story-preview-col">
                     <canvas id="storyCanvasPreview" class="story-preview-canvas" title="Kliknij, aby pobrać HD"></canvas>
@@ -546,6 +574,61 @@
         `;
         document.body.appendChild(overlay);
 
+        // ── Mobile Touch Gesture: Swipe-to-Dismiss ──
+        const modal = overlay.querySelector('.story-gen-modal');
+        const dragHandle = overlay.querySelector('#storyDragHandle');
+
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        const onTouchStart = (e) => {
+            if (window.innerWidth > 768) return;
+            const target = e.target;
+            if (dragHandle && (dragHandle.contains(target) || modal.scrollTop <= 0)) {
+                startY = e.touches[0].clientY;
+                currentY = startY;
+                isDragging = true;
+                modal.classList.add('is-dragging');
+                modal.style.transition = 'none';
+            }
+        };
+
+        const onTouchMove = (e) => {
+            if (!isDragging) return;
+            currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            if (deltaY > 0) {
+                modal.style.transform = `translateY(${deltaY}px)`;
+                if (e.cancelable) e.preventDefault();
+            } else {
+                modal.style.transform = `translateY(${deltaY * 0.15}px)`;
+            }
+        };
+
+        const onTouchEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            modal.classList.remove('is-dragging');
+            const deltaY = currentY - startY;
+            modal.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
+            if (deltaY > 80) {
+                window.closeLuminaStoryGenerator();
+            } else {
+                modal.style.transform = 'translateY(0)';
+            }
+        };
+
+        modal.addEventListener('touchstart', onTouchStart, { passive: true });
+        modal.addEventListener('touchmove', onTouchMove, { passive: false });
+        modal.addEventListener('touchend', onTouchEnd, { passive: true });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('open')) {
+                window.closeLuminaStoryGenerator();
+            }
+        });
+
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) window.closeLuminaStoryGenerator();
         });
@@ -571,13 +654,31 @@
         if (textarea) textarea.value = currentConfig.text;
         if (refInput) refInput.value = currentConfig.ref;
 
+        const modal = overlay.querySelector('.story-gen-modal');
+        if (modal) {
+            modal.style.transform = '';
+            modal.style.transition = '';
+        }
+
         window._setStoryTheme(currentConfig.theme);
         overlay.classList.add('open');
     };
 
     window.closeLuminaStoryGenerator = function() {
         const overlay = document.getElementById('luminaStoryGenModal');
-        if (overlay) overlay.classList.remove('open');
+        if (!overlay) return;
+        const modal = overlay.querySelector('.story-gen-modal');
+        if (modal && window.innerWidth <= 768) {
+            modal.style.transition = 'transform 0.26s cubic-bezier(0.4, 0, 1, 1)';
+            modal.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                overlay.classList.remove('open');
+                modal.style.transform = '';
+                modal.style.transition = '';
+            }, 260);
+        } else {
+            overlay.classList.remove('open');
+        }
     };
 
     window._setStoryTheme = function(themeName) {

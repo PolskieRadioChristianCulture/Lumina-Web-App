@@ -12138,13 +12138,33 @@
         });
 
         window.openStoryFromTablicaPost = function(postId) {
-            const post = (typeof FEED_DATA !== 'undefined' && Array.isArray(FEED_DATA)) ? FEED_DATA.find(p => p.id === postId) : null;
-            if (!post) return;
+            let post = (typeof FEED_DATA !== 'undefined' && Array.isArray(FEED_DATA)) ? FEED_DATA.find(p => p.id === postId) : null;
+            if (!post && typeof window.currentTablicaCombinedPosts !== 'undefined' && Array.isArray(window.currentTablicaCombinedPosts)) {
+                post = window.currentTablicaCombinedPosts.find(p => p.id === postId);
+            }
+            if (!post && postId) {
+                const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
+                if (postEl) {
+                    const authorEl = postEl.querySelector('.post-author-name') || postEl.querySelector('.author-name') || postEl.querySelector('h4');
+                    const textEl = postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
+                    post = {
+                        text: textEl ? textEl.textContent.trim() : '',
+                        author: authorEl ? authorEl.textContent.trim() : 'Społeczność LUMINA'
+                    };
+                }
+            }
+            if (!post) {
+                post = {
+                    text: 'Wszystko mogę w Tym, który mnie umacnia.',
+                    author: 'Społeczność LUMINA',
+                    verseRef: 'List do Filipian 4, 13'
+                };
+            }
             const cleanText = (post.text || post.title || "Bóg jest miłością").replace(/<[^>]*>?/gm, '').trim();
             if (typeof window.openLuminaStoryGenerator === 'function') {
                 window.openLuminaStoryGenerator({
                     verse: cleanText.length > 240 ? cleanText.substring(0, 240) + '...' : cleanText,
-                    verseRef: post.type === 'verse' ? (post.verseRef || 'Pismo Święte') : `Świadectwo • ${post.author || 'LUMINA'}`,
+                    verseRef: post.type === 'verse' ? (post.verseRef || 'Pismo Święte') : (post.verseRef || `Świadectwo • ${post.author || 'LUMINA'}`),
                     authorName: post.author || 'Społeczność LUMINA',
                     slug: post.authorSlug || ''
                 });
@@ -12152,7 +12172,7 @@
         };
     </script>
     <script src="lumina-scroll-top.js?v=20260918_v4" defer></script>
-    <script src="lumina-story-card-generator.js" defer></script>
+    <script src="lumina-story-card-generator.js?v=20260918_v1" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
