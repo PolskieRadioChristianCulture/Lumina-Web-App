@@ -5356,7 +5356,9 @@
                     <span style="font-size:0.65rem; color:#fde047; font-weight:900; background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.4); padding:1px 7px; border-radius:8px; text-transform:uppercase; letter-spacing:0.5px;">KINO 24/7</span>
                 </div>
                 <div class="card-916-media-wrap">
-                    <video src="vod_hity_kina.mp4" poster="vod_hity_kina_poster.jpg" class="card-916-img" autoplay loop muted playsinline style="object-fit:cover; width:100%; height:100%; display:block;"></video>
+                    <video id="vod-ad-video" class="card-916-img" autoplay loop muted playsinline webkit-playsinline preload="auto" poster="vod_hity_kina.gif" style="object-fit:cover; width:100%; height:100%; display:block;">
+                        <source src="vod_hity_kina.mp4" type="video/mp4">
+                    </video>
                     <div class="card-916-overlay" style="padding:14px; background:linear-gradient(to top, rgba(7, 14, 36, 0.98) 0%, rgba(7, 14, 36, 0.90) 60%, rgba(7, 14, 36, 0.25) 88%, transparent 100%);">
                         <div class="card-916-title" style="font-size:1.08rem; color:#fde047; margin-bottom:6px; text-shadow:0 2px 10px rgba(0,0,0,0.9); font-weight:900;">
                             🎬 MEGA HITY ŚWIATOWEGO KINA
@@ -13263,6 +13265,73 @@
             };
         })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     VOD AD — Gwarancja Autoplay z Fallbackiem na GIF
+     iOS Low Power Mode / Data Saver / Strict Autoplay Policy Guard
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function initVodAdPlayback() {
+    var GIF_SRC = 'vod_hity_kina.gif';
+    var MP4_SRC = 'vod_hity_kina.mp4';
+
+    function swapToGif(video) {
+        if (video._gifSwapped) return;
+        video._gifSwapped = true;
+        var img = document.createElement('img');
+        img.src = GIF_SRC;
+        img.className = video.className;
+        img.alt = 'VOD Christian Culture — Mega Hity Kina';
+        img.style.cssText = video.style.cssText;
+        video.parentNode.replaceChild(img, video);
+    }
+
+    function tryPlay(video) {
+        video.defaultMuted = true;
+        video.muted = true;
+        video.playsInline = true;
+        var p = video.play();
+        if (p && typeof p.then === 'function') {
+            p.then(function() {
+                // playing fine — no action needed
+            }).catch(function() {
+                swapToGif(video);
+            });
+        }
+        // Extra safety: if video is still paused after 1.5s, swap to GIF
+        setTimeout(function() {
+            if (video.paused && !video._gifSwapped) {
+                swapToGif(video);
+            }
+        }, 1500);
+    }
+
+    function initAd() {
+        var video = document.getElementById('vod-ad-video');
+        if (!video) return;
+        if (!video.paused) return; // already playing
+        tryPlay(video);
+
+        // On any user interaction, try to re-activate video
+        var events = ['scroll', 'touchstart', 'click', 'pointerdown'];
+        function onInteraction() {
+            var v = document.getElementById('vod-ad-video');
+            if (v && v.paused && !v._gifSwapped) {
+                tryPlay(v);
+                events.forEach(function(e) { document.removeEventListener(e, onInteraction, {passive:true}); });
+            }
+        }
+        events.forEach(function(e) { document.addEventListener(e, onInteraction, {passive:true}); });
+    }
+
+    if (document.readyState === 'loading') {
+        window.addEventListener('load', initAd);
+    } else {
+        initAd();
+    }
+})();
+</script>
 </body>
 </html>
+
 
