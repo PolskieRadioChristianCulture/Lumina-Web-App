@@ -1380,7 +1380,6 @@ body.owner-mode-active .owner-only {
 @media (max-width: 900px) {
     .back-to-top,
     #btnScrollTop,
-    .lumina-scroll-top,
     .floating-audio-btn {
         bottom: calc(76px + env(safe-area-inset-bottom, 8px)) !important;
         right: 14px !important;

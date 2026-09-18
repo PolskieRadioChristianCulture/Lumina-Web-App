@@ -10,82 +10,80 @@
     // 1. Wstrzyknięcie stylów CSS dopasowanych do motywu LUMINA
     const styles = `
       .lumina-scroll-top {
-        position: fixed;
-        bottom: 30px;
-        right: 24px;
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        background: rgba(18, 18, 22, 0.88);
+        position: fixed !important;
+        bottom: 24px !important;
+        right: 10px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
+        background: #070e24 !important;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        color: #d4af37;
-        border: 1px solid rgba(212, 175, 55, 0.35);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+        color: #facc15 !important;
+        border: 2px solid #facc15 !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 16px rgba(250, 204, 21, 0.4) !important;
         opacity: 0;
         visibility: hidden;
         transform: translateY(20px) scale(0.85);
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                    visibility 0.3s,
-                    border-color 0.2s,
-                    box-shadow 0.2s;
-        z-index: 99999;
+        transition: opacity 0.25s ease,
+                    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    visibility 0.25s,
+                    box-shadow 0.25s ease !important;
+        z-index: 99997 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
       }
 
       .lumina-scroll-top.visible {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) scale(1) !important;
       }
 
       .lumina-scroll-top:hover {
-        background: rgba(28, 28, 34, 0.95);
-        border-color: #ffd700;
-        color: #ffffff;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 22px rgba(212, 175, 55, 0.45);
-        transform: translateY(-3px) scale(1.05);
+        background: #0b142e !important;
+        transform: translateY(-2px) scale(1.06) !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9), 0 0 22px rgba(250, 204, 21, 0.6) !important;
       }
 
       .lumina-scroll-top:active {
-        transform: translateY(0) scale(0.95);
+        transform: scale(0.95) !important;
       }
 
       .lumina-progress-ring {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: rotate(-90deg);
-        pointer-events: none;
-      }
-
-      .lumina-progress-circle {
-        stroke: #d4af37;
-        transition: stroke-dashoffset 0.08s linear;
-        stroke-linecap: round;
+        display: none !important; /* Usunięcie podwójnego pierścienia — jednolity złoty ring 2px */
       }
 
       .lumina-arrow-icon {
-        font-size: 16px;
-        transition: transform 0.2s ease;
+        font-size: 1.15rem !important;
+        color: #facc15 !important;
+        transition: transform 0.2s ease !important;
         z-index: 2;
       }
 
       .lumina-scroll-top:hover .lumina-arrow-icon {
-        transform: translateY(-2px);
+        transform: translateY(-2px) !important;
       }
 
-      /* Uniesienie przycisku ponad dolny pasek nawigacji mobilnej */
+      /* Uniesienie i ujednolicenie przycisku na smartfonach (48px, równe odstępy 12px) */
       @media (max-width: 768px) {
+        #luminaScrollTop.lumina-scroll-top,
         .lumina-scroll-top {
-          bottom: 88px;
-          right: 18px;
-          width: 44px;
-          height: 44px;
+          bottom: calc(82px + env(safe-area-inset-bottom, 8px)) !important;
+          right: 10px !important;
+          width: 48px !important;
+          min-width: 48px !important;
+          max-width: 48px !important;
+          height: 48px !important;
+          min-height: 48px !important;
+          max-height: 48px !important;
+        }
+        .lumina-arrow-icon {
+          font-size: 1.05rem !important;
         }
       }
     `;

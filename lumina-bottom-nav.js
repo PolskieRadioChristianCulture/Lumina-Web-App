@@ -486,18 +486,18 @@
         /* ── FLOATING CHAT BUBBLE BUTTON (DYMEK CZATU NAD SCROLL-TOP) ── */
         .lumina-floating-chat-btn {
             position: fixed !important;
-            bottom: 88px !important;
-            right: 24px !important;
+            bottom: 86px !important;
+            right: 10px !important;
             width: 50px !important;
             height: 50px !important;
             border-radius: 50% !important;
             background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-            border: 2px solid rgba(250, 204, 21, 0.75) !important;
+            border: 2px solid #facc15 !important;
             color: #ffffff !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5), 0 0 16px rgba(250, 204, 21, 0.35) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 16px rgba(250, 204, 21, 0.4) !important;
             cursor: pointer !important;
             z-index: 99998 !important;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease !important;
@@ -548,8 +548,8 @@
 
         @media (max-width: 768px) {
             .lumina-floating-chat-btn {
-                bottom: calc(144px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above scroll-top */
-                right: 18px !important;
+                bottom: calc(142px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above scroll-top */
+                right: 10px !important;
                 width: 48px !important;
                 height: 48px !important;
             }
@@ -1579,13 +1579,13 @@
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
-            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v3';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v4';
             document.head.appendChild(lmpCss);
         }
         if (!window.LuminaMiniPlayer && !document.getElementById('luminaMiniPlayerScript')) {
             const lmpScript = document.createElement('script');
             lmpScript.id = 'luminaMiniPlayerScript';
-            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v3';
+            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v4';
             lmpScript.defer = true;
             document.body.appendChild(lmpScript);
         }
