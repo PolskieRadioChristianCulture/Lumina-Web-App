@@ -5018,6 +5018,28 @@
                         </div>
                         <div class="fb-story-author">Cezary • Słowo Życia</div>
                     </a>
+
+                    <!-- 8. Studio Dobrego Słowa Rolka Wiary -->
+                    <a href="rolki#short_sds_hHug_C6XDPU" class="fb-story-card" title="Rolka: Studio Dobrego Słowa • Boże Prowadzenie w Relacjach">
+                        <img src="https://i.ytimg.com/vi/hHug_C6XDPU/hqdefault.jpg" alt="Studio Dobrego Słowa" class="fb-story-bg" loading="lazy" onerror="this.src='studiodobregoslowa_karuzela.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#ef4444;">
+                            <img src="studiodobregoslowa_avatar.jpg" alt="Studio Dobrego Słowa" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">Studio Dobrego Słowa</div>
+                    </a>
+
+                    <!-- 9. Apokalipsa: Księga Nadziei LIVE -->
+                    <a href="rolki#short_apokalipsa_live" class="fb-story-card" title="Rolka: Apokalipsa Księga Nadziei • Kurs Biblijny">
+                        <img src="https://img.youtube.com/vi/hHug_C6XDPU/hqdefault.jpg" alt="Apokalipsa" class="fb-story-bg" loading="lazy" onerror="this.src='studiodobregoslowa_cover.jpg'">
+                        <div class="fb-story-gradient"></div>
+                        <div class="fb-story-video-badge" style="background:linear-gradient(135deg, #ef4444, #dc2626);"><i class="fa-solid fa-satellite-dish"></i> LIVE</div>
+                        <div class="fb-story-avatar-badge" style="border-color:#ef4444;">
+                            <img src="studiodobregoslowa_avatar.jpg" alt="Apokalipsa" loading="lazy">
+                        </div>
+                        <div class="fb-story-author">Apokalipsa LIVE</div>
+                    </a>
                 </div>
                 <button type="button" class="fb-stories-scroll-btn fb-stories-scroll-right" onclick="scrollStoriesTrack(1)" title="Przewiń w prawo">
                     <i class="fa-solid fa-chevron-right"></i>
@@ -5045,96 +5067,68 @@
                         } catch(e) {}
                     }
 
-                    function getStoriesSeed() {
-                        try {
-                            let s = sessionStorage.getItem('lumina_stories_seed');
-                            if (!s) {
-                                const hour = new Date().getHours();
-                                s = String(Math.floor(Math.random() * 1000) * 100 + hour);
-                                sessionStorage.setItem('lumina_stories_seed', s);
-                            }
-                            return parseInt(s, 10) || 77;
-                        } catch(e) {
-                            return 77;
-                        }
-                    }
-
+                    // Dynamiczna rotacja: za każdym wejściem na tablicę lub odświeżeniem strony
+                    // pierwsze 3-4 rolki w polu widzenia są ZAWSZE inne (cykl FIFO round-robin + unikalne kafelki)
                     function applyStoriesRotation() {
                         const track = document.getElementById('storiesScrollTrack');
                         if (!track) return;
                         const createCard = track.querySelector('.fb-story-create');
                         if (!createCard) return;
 
-                        const cards = Array.from(track.querySelectorAll('.fb-story-card:not(.fb-story-create)'));
-                        if (cards.length === 0) return;
+                        const allCards = Array.from(track.querySelectorAll('.fb-story-card:not(.fb-story-create)'));
+                        if (allCards.length === 0) return;
 
-                        const viewedList = getViewedStories();
-                        const seed = getStoriesSeed();
+                        // Rozdzielenie kart: nowo opublikowane/autorskie oraz karty ze stałej/pobranej bazy
+                        const userPublished = allCards.filter(c => c.classList.contains('story-user-published') || c.dataset.newlyPublished === 'true');
+                        const standardCards = allCards.filter(c => !c.classList.contains('story-user-published') && c.dataset.newlyPublished !== 'true');
 
-                        function pseudoHash(str) {
-                            let h = seed;
-                            for (let i = 0; i < str.length; i++) {
-                                h = ((h << 5) - h) + str.charCodeAt(i);
-                                h |= 0;
-                            }
-                            return Math.abs(h);
+                        if (standardCards.length > 0) {
+                            // Każde wywołanie przesuwa pulę o 3-4 pozycje (czyli dokładnie o szerokość widocznego ekranu)
+                            let currentStep = parseInt(localStorage.getItem('lumina_stories_rotation_step') || '0', 10);
+                            currentStep = (currentStep + 3) % standardCards.length;
+                            localStorage.setItem('lumina_stories_rotation_step', String(currentStep));
+
+                            // Cykliczny obrót kart w karuzeli
+                            const rotatedCards = standardCards.slice(currentStep).concat(standardCards.slice(0, currentStep));
+
+                            // Podpięcie tracking kliknięć i stylów obejrzenia
+                            const viewedList = getViewedStories();
+                            rotatedCards.forEach((card, idx) => {
+                                const href = card.getAttribute('href') || '';
+                                const cardId = href.replace(/^rolki#/, '') || card.getAttribute('title') || ('story_' + idx);
+                                const isViewed = viewedList.includes(cardId);
+                                const badge = card.querySelector('.fb-story-avatar-badge');
+                                if (badge) {
+                                    if (!isViewed) {
+                                        badge.classList.add('living-ring');
+                                    } else {
+                                        badge.classList.remove('living-ring');
+                                    }
+                                }
+                                if (!card._hasStoryClickTrack) {
+                                    card._hasStoryClickTrack = true;
+                                    card.addEventListener('click', function() {
+                                        markStoryViewed(cardId);
+                                        if (badge) badge.classList.remove('living-ring');
+                                    });
+                                }
+                            });
+
+                            // Wstawienie: najpierw nowo dodane przez użytkownika, potem obrócona pula
+                            const finalSequence = [...userPublished, ...rotatedCards];
+                            finalSequence.forEach(card => track.appendChild(card));
                         }
 
-                        cards.forEach((card, idx) => {
-                            const href = card.getAttribute('href') || '';
-                            const cardId = href.replace(/^rolki#/, '') || card.getAttribute('title') || ('story_' + idx);
-                            const isViewed = viewedList.includes(cardId);
-                            const badge = card.querySelector('.fb-story-avatar-badge');
-                            
-                            if (badge) {
-                                if (!isViewed) {
-                                    badge.classList.add('living-ring');
-                                } else {
-                                    badge.classList.remove('living-ring');
-                                }
-                            }
+                        // Przewinięcie karuzeli na pozycję 0, aby użytkownik od razu widział nowe rolki
+                        track.scrollLeft = 0;
 
-                            if (!card._hasStoryClickTrack) {
-                                card._hasStoryClickTrack = true;
-                                card.addEventListener('click', function() {
-                                    markStoryViewed(cardId);
-                                    if (badge) badge.classList.remove('living-ring');
-                                });
-                            }
-
-                            if (card.classList.contains('story-user-published') || card.dataset.newlyPublished === 'true') {
-                                card._sortScore = 900000 + (parseInt(card.dataset.timestamp || '0', 10) % 99999);
-                            } else {
-                                // Unviewed stories are prioritized (+10000)
-                                // Stable shuffle within the session based on session seed
-                                const cardHash = pseudoHash(cardId) % 1000;
-                                card._sortScore = (isViewed ? 0 : 10000) + cardHash;
-                            }
-                        });
-
-                        cards.sort((a, b) => (b._sortScore || 0) - (a._sortScore || 0));
-
-                        // Re-append cards strictly after createCard (which always stays at position 0)
-                        cards.forEach(card => track.appendChild(card));
-
-                        // Uruchomienie autoodtwarzania wideo w rolkach (bez dźwięku, zapętlenie)
+                        // Autoodtwarzanie wideo w rolkach wideo
                         track.querySelectorAll('video.fb-story-video').forEach(v => {
                             v.muted = true;
                             v.loop = true;
                             v.setAttribute('playsinline', '');
                             v.setAttribute('webkit-playsinline', '');
-                            const playPromise = v.play();
-                            if (playPromise && typeof playPromise.catch === 'function') {
-                                playPromise.catch(() => {
-                                    const kickstart = () => {
-                                        v.play().catch(() => {});
-                                        window.removeEventListener('touchstart', kickstart);
-                                        window.removeEventListener('click', kickstart);
-                                    };
-                                    window.addEventListener('touchstart', kickstart, { once: true, passive: true });
-                                    window.addEventListener('click', kickstart, { once: true, passive: true });
-                                });
-                            }
+                            v.play().catch(() => {});
                         });
 
                         if (typeof window.updateStoriesScrollButtons === 'function') {
@@ -5150,6 +5144,9 @@
                         if (Array.isArray(shortsList) && shortsList.length > 0) {
                             shortsList.forEach(item => {
                                 if (!item || !item.id) return;
+                                // Sprawdź czy taka rolka już nie istnieje w statycznym HTML
+                                if (track.querySelector(`[href="rolki#${item.id}"]`)) return;
+
                                 const a = document.createElement('a');
                                 const isExternal = item.videoUrl && item.videoUrl.startsWith('http') && !item.videoUrl.includes('polskieradio.cc');
                                 a.href = isExternal ? item.videoUrl : ('rolki#' + item.id);
@@ -5162,14 +5159,17 @@
                                 a.dataset.timestamp = String(item.createdAtTimestamp || item.timestamp || Date.now());
                                 a.title = 'Rolka 9:16: ' + (item.title || 'Rolka Wiary') + ' • ' + (item.author || 'Świadek Wiary');
 
-                                const isMp4 = item.videoUrl && (item.videoUrl.endsWith('.mp4') || item.videoUrl.includes('.mp4'));
+                                const isMp4 = (item.videoType === 'mp4') || (item.videoUrl && (item.videoUrl.endsWith('.mp4') || item.videoUrl.includes('.mp4')));
+                                const videoSrc = item.videoSrc || item.videoUrl;
+                                const poster = item.poster || (item.videoType === 'youtube' && videoSrc ? `https://i.ytimg.com/vi/${videoSrc}/hqdefault.jpg` : 'tlo_tv_dzj.jpg');
+
                                 const mediaMarkup = isMp4 
-                                    ? `<video class="fb-story-bg fb-story-video" src="${item.videoUrl}" poster="${item.poster || 'tlo_tv_dzj.jpg'}" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>`
-                                    : `<img src="${item.poster || 'tlo_tv_dzj.jpg'}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">`;
+                                    ? `<video class="fb-story-bg fb-story-video" src="${videoSrc}" poster="${poster}" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>`
+                                    : `<img src="${poster}" alt="${item.author || 'Rolka'}" class="fb-story-bg" loading="lazy" onerror="this.src='tlo_tv_dzj.jpg'">`;
 
                                 const badgeHtml = (item._isNewlyPublished || item.badge === 'NOWOŚĆ')
                                     ? `<div class="fb-story-video-badge" style="background:linear-gradient(135deg, #ec4899, #f43f5e); box-shadow:0 0 12px rgba(236, 72, 153, 0.9); font-weight:900;"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</div>`
-                                    : `<div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>`;
+                                    : (item.videoType === 'youtube' ? `<div class="fb-story-video-badge"><i class="fa-brands fa-youtube"></i> SHORTS</div>` : `<div class="fb-story-video-badge"><i class="fa-solid fa-play"></i> ROLKA</div>`);
 
                                 a.innerHTML = `
                                     ${mediaMarkup}
@@ -5186,19 +5186,39 @@
                         applyStoriesRotation();
                     }
 
-                    // Initial render from local cache
-                    try {
-                        const cachedShorts = localStorage.getItem('lumina_shorts_feed');
-                        if (cachedShorts) {
-                            renderStoryItems(JSON.parse(cachedShorts));
-                        } else {
-                            applyStoriesRotation();
-                        }
-                    } catch(e) {
+                    // Dynamiczne pobieranie rolek z bazy i odświeżenie rotacji
+                    async function initStoriesFeed() {
+                        try {
+                            const cachedShorts = localStorage.getItem('lumina_shorts_feed');
+                            if (cachedShorts) {
+                                renderStoryItems(JSON.parse(cachedShorts));
+                            }
+                        } catch(e) {}
+
+                        // Natychmiastowa rotacja na starcie
                         applyStoriesRotation();
+
+                        // W tle pobierz świeże rolki z bazy
+                        try {
+                            const res = await fetch('/data/shorts/shorts_feed.json?v=' + Date.now());
+                            if (res.ok) {
+                                const list = await res.json();
+                                if (Array.isArray(list) && list.length > 0) {
+                                    localStorage.setItem('lumina_shorts_feed', JSON.stringify(list));
+                                    renderStoryItems(list);
+                                }
+                            }
+                        } catch(err) {}
                     }
 
-                    // Listen to updates from rolki feed
+                    // Uruchomienie przy załadowaniu DOM
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', initStoriesFeed);
+                    } else {
+                        initStoriesFeed();
+                    }
+
+                    // Nasłuchiwanie na aktualizacje z modułu publikacji rolek
                     window.addEventListener('lumina_shorts_updated', function(e) {
                         if (e && e.detail && Array.isArray(e.detail.shorts)) {
                             renderStoryItems(e.detail.shorts);
