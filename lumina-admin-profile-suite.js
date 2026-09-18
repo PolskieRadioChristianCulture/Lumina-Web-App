@@ -2690,7 +2690,7 @@
                     await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
                 }
 
-                const coverEls = document.querySelectorAll('.profile-cover, .cover-img, #coverImgEl, #coverPhotoEl');
+                const coverEls = document.querySelectorAll('.profile-cover, .cover-img, #coverImgEl, #coverPhotoEl, .cover-photo');
                 coverEls.forEach(el => {
                     if (el.tagName === 'IMG') el.src = dataUrl;
                     else el.style.backgroundImage = `url(${dataUrl})`;
@@ -2753,8 +2753,45 @@
 
             this.closeModal('adminUniversalPostModal');
 
+            const targetSlug = (this.currentEditingSlug || this.slug || 'studiodobregoslowa').toLowerCase();
+            const curData = this.getCurrentData(targetSlug);
+            const authorName = curData.name || 'Studio Dobrego Słowa';
+            const authorAvatar = curData.avatar || 'studiodobregoslowa_avatar.jpg';
+
+            const newPostObj = {
+                id: 'post_adm_' + Date.now(),
+                author: authorName,
+                authorSlug: targetSlug,
+                authorAvatar: authorAvatar,
+                authorRole: curData.role || 'Oficjalny Profil LUMINA ✨',
+                time: 'Przed chwilą • 🕊️ Nowy Wpis',
+                title: title || series || 'Nowa Publikacja',
+                text: content + (prayer ? `\n\n🙏 ${prayer}` : ''),
+                series: series || '',
+                likes: 1,
+                amen: 1,
+                category: 'general',
+                createdAtTimestamp: Date.now(),
+                createdAtDateStr: new Date().toISOString()
+            };
+
+            // Trwały zapis dla danego profilu
+            try {
+                const storageKey = 'lumina_posts_' + targetSlug;
+                let postList = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                postList.unshift(newPostObj);
+                localStorage.setItem(storageKey, JSON.stringify(postList));
+            } catch(e) {}
+
+            // Zapis w pamięci podręcznej chmury LUMINA
+            try {
+                let cloudPosts = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                cloudPosts.unshift(newPostObj);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudPosts));
+            } catch(e) {}
+
             // Prepend new post dynamically to the feed
-            const feedCol = document.querySelector('.main-feed-col, .feed-stream, .profile-feed');
+            const feedCol = document.querySelector('#localPostsStream, .main-feed-col, .feed-stream, .profile-feed');
             if (feedCol) {
                 const article = document.createElement('article');
                 article.className = 'feed-post-card';
@@ -2771,8 +2808,12 @@
                 feedCol.prepend(article);
             }
 
+            if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+                window.LuminaDB.publishUniversalPost(newPostObj).catch(function(){});
+            }
+
             if (typeof window.showToast === 'function') {
-                window.showToast('✨ Wpis został pomyślnie opublikowany!');
+                window.showToast('✨ Wpis został pomyślnie opublikowany i zapisany!');
             }
         },
 

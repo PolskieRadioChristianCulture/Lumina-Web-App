@@ -715,6 +715,368 @@
             transform: translateY(0);
             opacity: 1;
         }
+
+        /* ── Mission Live Broadcast Card ── */
+        .mission-live-broadcast-card {
+            border: 1.5px solid rgba(239,68,68,0.45) !important;
+            box-shadow: 0 8px 32px rgba(239,68,68,0.15) !important;
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(30,10,10,0.97) 100%) !important;
+        }
+        .mission-live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(90deg,#ef4444,#b91c1c);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: 20px;
+            padding: 2px 9px;
+            margin-left: 7px;
+            vertical-align: middle;
+        }
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulseLive 1.3s ease-in-out infinite;
+        }
+        @keyframes pulseLive {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.4; transform: scale(1.35); }
+        }
+        .live-viewer-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(239,68,68,0.18);
+            border: 1px solid rgba(239,68,68,0.4);
+            color: #fca5a5;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            border-radius: 20px;
+            padding: 4px 12px;
+        }
+        .mission-live-player-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0 8px;
+        }
+        .mission-live-player-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+        .mission-live-player-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 0; right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .btn-unmute-live, .btn-expand-live {
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0,0,0,0.72);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 22px;
+            padding: 7px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            backdrop-filter: blur(6px);
+            transition: background 0.2s;
+        .btn-unmute-live:hover, .btn-expand-live:hover {
+            background: rgba(239,68,68,0.55);
+        }
+
+        /* ── Cover Actions & Reposition ── */
+        .cover-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+        .cover-actions-group {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            display: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            z-index: 30;
+            background: rgba(11, 24, 56, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 8px 12px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 0.25s ease;
+        }
+        .cover-actions-group.active {
+            display: flex;
+        }
+        .cover-hint-badge {
+            position: absolute;
+            bottom: 14px;
+            right: 18px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #fca5a5;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        .cover-wrapper:hover .cover-hint-badge {
+            background: rgba(239, 68, 68, 0.85);
+            color: #fff;
+        }
+        .btn-change-cover {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-family: inherit;
+        }
+        .btn-change-cover:hover {
+            background: rgba(239, 68, 68, 0.65);
+            transform: translateY(-1px);
+        }
+        .cover-reposition-toolbar {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            background: rgba(11, 24, 56, 0.95);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            border-radius: 16px;
+            padding: 12px 18px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            z-index: 35;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+        }
+        .cover-reposition-toolbar.open {
+            display: flex;
+        }
+        .reposition-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #fca5a5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .reposition-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            max-width: 420px;
+        }
+        .btn-preset {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+        .cover-slider {
+            flex: 1;
+            accent-color: #ef4444;
+            cursor: pointer;
+        }
+        .btn-repo-save {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            border: none;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-repo-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+
+        /* ── Post Composer ── */
+        .feed-composer-card {
+            background: var(--navy-surface, rgba(15, 23, 42, 0.95));
+            border: 1.5px solid rgba(239, 68, 68, 0.35);
+            border-radius: var(--radius-lg, 16px);
+            padding: 18px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.2s;
+        }
+        .feed-composer-card:focus-within {
+            border-color: rgba(239, 68, 68, 0.7);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+        .composer-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .composer-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ef4444;
+            flex-shrink: 0;
+        }
+        .composer-input-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .composer-title-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 8px 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .composer-title-input:focus {
+            border-color: #ef4444;
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .composer-text-input {
+            width: 100%;
+            min-height: 72px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            outline: none;
+            resize: vertical;
+            transition: all 0.2s;
+        }
+        .composer-text-input:focus {
+            border-color: #ef4444;
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .composer-attached-box {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px dashed rgba(239, 68, 68, 0.4);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin-bottom: 12px;
+        }
+        .composer-actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .composer-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-composer-tool {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-composer-tool:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+        }
+        .btn-publish-post {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+            transition: all 0.2s;
+        }
+        .btn-publish-post:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.55);
+        }
     </style>
     <script src="lumina-mobile-back-guard.js?v=20260825_v1"></script>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
@@ -746,9 +1108,38 @@
     <div class="profile-container">
 
         <!-- Cover Banner -->
-        <div class="cover-wrapper">
-            <img src="lumina_default_cover.jpg" onerror="this.src='tlo_1_sie_2026.jpg'" alt="Studio Dobrego Słowa Tło" class="cover-photo">
+        <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby zmienić zdjęcie lub wideo">
+            <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; z-index:1;"></video>
+            <img src="lumina_default_cover.jpg" onerror="this.src='tlo_1_sie_2026.jpg'" alt="Studio Dobrego Słowa Tło" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
+            
+            <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby zmienić</div>
+
+            <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
+                <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                <button type="button" class="btn-change-cover" onclick="openCoverVideoModal()"><i class="fa-brands fa-youtube" style="color:#f87171;"></i> Wideo w tle (YouTube / MP4)</button>
+                <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr</button>
+                <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Interactive Cover Reposition Toolbar -->
+            <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation()">
+                <div class="reposition-title"><i class="fa-solid fa-arrows-up-down"></i> Dopasuj Kadr Zdjęcia w Tle</div>
+                <div class="reposition-controls">
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(0)">Góra</button>
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(50)">Środek</button>
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(100)">Dół</button>
+                    <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" class="cover-slider">
+                    <span id="coverPosValueLabel" style="font-weight:700; font-size:0.82rem; min-width:38px; color:#fca5a5;">50%</span>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-repo-cancel" onclick="closeCoverRepositionToolbar()">Anuluj</button>
+                    <button type="button" class="btn-repo-save" onclick="saveCoverPosition()"><i class="fa-solid fa-check"></i> Zapisz Kadr</button>
+                </div>
+            </div>
+
+            <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelected(event)">
+
             <div class="cover-badge-banner">
                 <i class="fa-solid fa-microphone"></i> STUDIO DOBREGO SŁOWA • LIVE & MEDIA
             </div>
@@ -876,61 +1267,103 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
-                <!-- 🌟 POST 1: Apokalipsa Live 🌟 -->
-                <article class="feed-post-card" id="post_sds_1">
-                    <div class="post-top-header">
-                        <div class="post-author-box">
-                            <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-author-img">
+                <!-- ✍️ KOMPOZYTOR POSTÓW: Studio Dobrego Słowa -->
+                <div class="feed-composer-card" id="sdsPostComposer">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.80rem;">
+                        <span style="display:inline-flex; align-items:center; gap:6px; color:#ef4444; font-weight:700;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Publikacja: Profil Studio Dobrego Słowa & Tablica LUMINA
+                        </span>
+                        <span style="color:#fca5a5; font-weight:700;">
+                            <i class="fa-solid fa-microphone-lines"></i> Oficjalny Nadawca
+                        </span>
+                    </div>
+
+                    <div class="composer-top">
+                        <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="composer-avatar">
+                        <div class="composer-input-wrap">
+                            <input type="text" id="composerPostTitle" class="composer-title-input" placeholder="Tytuł wpisu, wykładu lub rozważania (opcjonalnie)...">
+                            <textarea id="composerTextInput" class="composer-text-input" placeholder="Napisz nowe rozważanie, podziel się słowem lub wklej link do wideo z YouTube..." onkeydown="if(event.key==='Enter' && (event.ctrlKey || event.metaKey)){handleQuickPublish();}"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Podgląd dołączonego załącznika -->
+                    <div id="composerAttachmentPreview" class="composer-attached-box">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <i id="composerAttachmentIcon" class="fa-solid fa-paperclip" style="font-size:1.1rem; color:#ef4444;"></i>
                             <div>
-                                <div class="post-author-name">
-                                    Studio Dobrego Słowa
-                                    <span class="post-badge-daily">Transmisja Live</span>
-                                </div>
-                                <div class="post-time">19 SIERPNIA 2026 • 📍 Piła • 🌍 Publiczny</div>
+                                <div id="composerAttachmentTitle" style="font-size:0.85rem; font-weight:700; color:#fff;">Załącznik</div>
+                                <div id="composerAttachmentSubtitle" style="font-size:0.75rem; color:#cbd5e1;">Dołączono do wpisu</div>
                             </div>
                         </div>
-                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareModal()">
-                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        <button type="button" onclick="removeComposerAttachment()" style="background:rgba(239,68,68,0.25); border:1px solid #ef4444; color:#fca5a5; width:26px; height:26px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń załącznik"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div class="composer-actions-bar">
+                        <div class="composer-buttons-group">
+                            <button type="button" class="btn-composer-tool" onclick="document.getElementById('composerImgFileInput').click()">
+                                <i class="fa-solid fa-image" style="color:#38bdf8;"></i> Zdjęcie
+                            </button>
+                            <button type="button" class="btn-composer-tool" onclick="promptDirectVideoUrl()">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / YT
+                            </button>
+                            <button type="button" class="btn-composer-tool" onclick="promptDirectImageUrl()">
+                                <i class="fa-solid fa-link" style="color:#a855f7;"></i> Link do grafiki
+                            </button>
+                        </div>
+
+                        <button type="button" class="btn-publish-post" onclick="handleQuickPublish()">
+                            <i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis
                         </button>
                     </div>
 
-                    <div class="post-body">
-                        <div class="post-series-tag">
-                            <i class="fa-solid fa-book-bible"></i> APOKALIPSA: KSIĘGA NADZIEI • WYKŁAD LIVE
+                    <input type="file" id="composerImgFileInput" accept="image/*" style="display:none;" onchange="handleComposerImgSelected(event)">
+                </div>
+
+                <!-- Dynamiczny strumień postów opublikowanych na profilu SDS -->
+                <div id="localPostsStream"></div>
+
+                <!-- 🔴 KANAŁ NADAWCZY: Apokalipsa: Księga Nadziei — LIVE -->
+                <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:22px;">
+                    <div class="post-header">
+                        <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-avatar">
+                        <div style="flex:1;">
+                            <div class="post-author">Studio Dobrego Słowa <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span></div>
+                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO • APOKALIPSA: KSIĘGA NADZIEI</div>
                         </div>
-
-                        <h2 class="post-title">CZY APOKALIPSA MA BYĆ ŹRÓDŁEM STRACHU CZY WIELKIEJ NADZIEI?</h2>
-
-                        <div class="post-text-content">
-Wielu ludzi kojarzy Księgę Objawienia wyłącznie z katastrofami i lękiem. Jednak pierwsze słowa tej księgi mówią o Objawieniu Jezusa Chrystusa jako Zwycięzcy!
-
-To księga otuchy dla wierzących w trudnych czasach. Bóg ma pełną kontrolę nad historią świata, a ostateczne słowo należy do Baranka. Zapraszamy do wspólnego studium w Studio Dobrego Słowa.
+                        <div class="live-viewer-chip">
+                            <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA NA ŻYWO</span>
                         </div>
-
-                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fee2e2;">
-                            Zostań z nami w Słowie Bożym! 🕊️
-                        </p>
                     </div>
 
-                    <!-- Post Actions Bar -->
-                    <div class="post-actions-bar">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn active-heart" id="btnPostLikeSds1" onclick="togglePostLike(this, 'likeCountSds1')">
-                                <i class="fa-solid fa-heart"></i> <span id="likeCountSds1">156</span>
-                            </button>
-                            <button class="post-action-btn active-amen" id="btnPostAmenSds1" onclick="togglePostAmen(this, 'amenCountSds1')">
-                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCountSds1">141</span>)
-                            </button>
+                    <div class="post-content">
+                        <div style="font-weight:800;color:#fff;font-size:1.12rem;margin-bottom:6px;">🔴 APOKALIPSA: KSIĘGA NADZIEI — Kompletny Kurs Biblijny</div>
+                        <div style="color:#cbd5e1;font-size:0.92rem;line-height:1.55;">
+                            Wielu ludzi kojarzy Księgę Objawienia wyłącznie z katastrofami i lękiem. Jednak pierwsze słowa tej księgi mówią o Objawieniu Jezusa Chrystusa jako Zwycięzcy! Bóg ma pełną kontrolę nad historią świata, a ostateczne słowo należy do Baranka. Zostań z nami w Słowie Bożym! 🕊️
                         </div>
+                    </div>
 
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <a href="https://www.youtube.com/@StudioDeeS" target="_blank" class="post-action-btn">
-                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Oglądaj na YouTube
-                            </a>
-                            <button class="post-action-btn" onclick="openShareModal()">
-                                <i class="fa-solid fa-share-nodes"></i> Poleć Transmisję
+                    <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
+                    <div class="mission-live-player-wrapper">
+                        <iframe src="apokalipsa-ksiega-nadziei-live.html?muted=1&mute=1&in_mcr=1"
+                                title="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa LIVE"
+                                allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share"
+                                allowfullscreen
+                                loading="eager"></iframe>
+                        <div class="mission-live-player-overlay">
+                            <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)">
+                                <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
                             </button>
+                            <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-expand-live">
+                                <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                            </a>
                         </div>
+                    </div>
+
+                    <div class="post-footer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">156</span></button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (141)</button>
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Kanał</a>
+                        <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
                     </div>
                 </article>
 
@@ -1062,6 +1495,445 @@ To księga otuchy dla wierzących w trudnych czasach. Bóg ma pełną kontrolę 
             } else if (typeof window.openLoginToFollowModal === 'function') {
                 window.openLoginToFollowModal(targetSlug, targetData);
             }
+        }
+
+        /* ── TRANSMISJA LIVE: Apokalipsa - Księga Nadziei (Unmute & Player Sync) ── */
+        window.unmuteMissionIframe = function(btn) {
+            const card = btn.closest('.post-card') || btn.closest('.feed-post-card') || btn.closest('.mission-live-player-wrapper') || btn.parentElement.parentElement;
+            if (!card) return;
+            const iframe = card.querySelector('iframe');
+            const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';
+
+            if (!isCurrentlyUnmuted) {
+                if (iframe) {
+                    try {
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) {
+                                innerAudio.muted = false;
+                                innerAudio.volume = 1.0;
+                                innerAudio.play().catch(function(){});
+                            }
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) {
+                                innerVideo.muted = false;
+                                innerVideo.volume = 1.0;
+                                innerVideo.play().catch(function(){});
+                            }
+                        }
+                    } catch(e) {}
+
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('UNMUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        } catch(e) {}
+                    }
+                }
+                btn.dataset.unmuted = 'true';
+                btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz Dźwięk 🔊</span>';
+                btn.style.background = 'rgba(34, 197, 94, 0.35)';
+                btn.style.borderColor = '#22c55e';
+                btn.style.color = '#86efac';
+            } else {
+                if (iframe) {
+                    try {
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) innerAudio.muted = true;
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) innerVideo.muted = true;
+                        }
+                    } catch(e) {}
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('MUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        } catch(e) {}
+                    }
+                }
+                btn.dataset.unmuted = 'false';
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>';
+                btn.style.background = 'rgba(0,0,0,0.72)';
+                btn.style.borderColor = 'rgba(255,255,255,0.22)';
+                btn.style.color = '#fff';
+            }
+        };
+
+        /* ── ZARZĄDZANIE TŁEM PROFILU (COVER MANAGEMENT) ── */
+        function toggleCoverActions(event) {
+            if (event) {
+                const target = event.target;
+                if (target && (target.closest('#coverRepositionToolbar') || target.closest('#coverActionsGroup'))) return;
+            }
+            const group = document.getElementById('coverActionsGroup');
+            if (group) group.classList.toggle('active');
+        }
+
+        function closeCoverActions() {
+            const group = document.getElementById('coverActionsGroup');
+            if (group) group.classList.remove('active');
+        }
+
+        function triggerCoverUpload() {
+            closeCoverActions();
+            const input = document.getElementById('coverFileInput');
+            if (input) input.click();
+        }
+
+        function handleCoverFileSelected(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie zdjęcia w tle... 🖼️');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1600;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxW) {
+                        h = Math.round((h * maxW) / w);
+                        w = maxW;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.86);
+
+                    // Zastosuj w DOM
+                    const coverImg = document.getElementById('coverPhotoEl');
+                    if (coverImg) coverImg.src = compressedData;
+
+                    // Ukryj ewentualne wideo
+                    const coverVid = document.getElementById('profileCoverVideoEl');
+                    if (coverVid) coverVid.style.display = 'none';
+
+                    // Zapisz do localStorage
+                    try {
+                        localStorage.setItem('lumina_cover_studiodobregoslowa', compressedData);
+                        localStorage.removeItem('lumina_cover_video_studiodobregoslowa');
+                    } catch(err) {
+                        console.warn('LocalStorage limit for cover image, continuing with active session');
+                    }
+
+                    showToast('✨ Zdjęcie w tle zostało pomyślnie zmienione i zapisane!');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openCoverVideoModal() {
+            closeCoverActions();
+            const url = prompt('Podaj bezpośredni link do wideo w tle (plik .mp4 lub link z YouTube):');
+            if (!url) return;
+            const coverVid = document.getElementById('profileCoverVideoEl');
+            const coverImg = document.getElementById('coverPhotoEl');
+            if (coverVid && (url.endsWith('.mp4') || url.includes('.mp4?'))) {
+                coverVid.src = url;
+                coverVid.style.display = 'block';
+                coverVid.play().catch(function(){});
+                try {
+                    localStorage.setItem('lumina_cover_video_studiodobregoslowa', url);
+                } catch(e) {}
+                showToast('🎬 Ustawiono wideo w tle!');
+            } else if (url) {
+                // Jeśli link YouTube lub grafika
+                if (coverImg) coverImg.src = url;
+                try {
+                    localStorage.setItem('lumina_cover_studiodobregoslowa', url);
+                } catch(e) {}
+                showToast('✨ Ustawiono tło!');
+            }
+        }
+
+        function toggleCoverRepositionToolbar() {
+            closeCoverActions();
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (!tb) return;
+            tb.classList.toggle('open');
+        }
+
+        function closeCoverRepositionToolbar() {
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (tb) tb.classList.remove('open');
+        }
+
+        function setCoverPosition(val) {
+            const range = document.getElementById('coverPosRange');
+            if (range) range.value = val;
+            onCoverRangeChange(val);
+        }
+
+        function onCoverRangeChange(val) {
+            const label = document.getElementById('coverPosValueLabel');
+            if (label) label.textContent = val + '%';
+            const img = document.getElementById('coverPhotoEl');
+            if (img) img.style.objectPosition = `center ${val}%`;
+            const vid = document.getElementById('profileCoverVideoEl');
+            if (vid) vid.style.objectPosition = `center ${val}%`;
+        }
+
+        function saveCoverPosition() {
+            const range = document.getElementById('coverPosRange');
+            const val = range ? range.value : '50';
+            try {
+                localStorage.setItem('lumina_cover_pos_studiodobregoslowa', val);
+            } catch(e) {}
+            closeCoverRepositionToolbar();
+            showToast('✅ Zapisano kadr zdjęcia w tle!');
+        }
+
+        function loadSavedCover() {
+            const savedCover = localStorage.getItem('lumina_cover_studiodobregoslowa');
+            const savedPos = localStorage.getItem('lumina_cover_pos_studiodobregoslowa');
+            const savedVideo = localStorage.getItem('lumina_cover_video_studiodobregoslowa');
+
+            if (savedVideo) {
+                const coverVid = document.getElementById('profileCoverVideoEl');
+                if (coverVid) {
+                    coverVid.src = savedVideo;
+                    coverVid.style.display = 'block';
+                    coverVid.play().catch(function(){});
+                }
+            } else if (savedCover) {
+                const coverImg = document.getElementById('coverPhotoEl');
+                if (coverImg) coverImg.src = savedCover;
+            }
+
+            if (savedPos) {
+                setCoverPosition(savedPos);
+            }
+        }
+
+        /* ── PUBLIKACJA NOWEGO POSTU (POST COMPOSER) ── */
+        let _attachedComposerMedia = null;
+
+        function handleComposerImgSelected(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            showToast('Wczytywanie zdjęcia... 📸');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1200;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxW) {
+                        h = Math.round((h * maxW) / w);
+                        w = maxW;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.82);
+
+                    _attachedComposerMedia = { type: 'image', url: compressedData, name: file.name };
+                    showComposerAttachmentPreview('Grafika: ' + file.name, 'Dołączono zdjęcie z dysku', 'fa-solid fa-image');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function promptDirectVideoUrl() {
+            const url = prompt('Podaj link do wideo (YouTube lub plik MP4):');
+            if (!url) return;
+            _attachedComposerMedia = { type: 'video', url: url, name: 'Wideo' };
+            showComposerAttachmentPreview('Wideo: ' + url, 'Dołączono link wideo', 'fa-brands fa-youtube');
+            showToast('Dołączono materiał wideo');
+        }
+
+        function promptDirectImageUrl() {
+            const url = prompt('Podaj bezpośredni link do grafiki (URL):');
+            if (!url) return;
+            _attachedComposerMedia = { type: 'image', url: url, name: 'Grafika' };
+            showComposerAttachmentPreview('Grafika URL', url, 'fa-solid fa-image');
+            showToast('Dołączono grafikę');
+        }
+
+        function showComposerAttachmentPreview(title, subtitle, iconClass) {
+            const box = document.getElementById('composerAttachmentPreview');
+            const titleEl = document.getElementById('composerAttachmentTitle');
+            const subEl = document.getElementById('composerAttachmentSubtitle');
+            const iconEl = document.getElementById('composerAttachmentIcon');
+            if (box && titleEl && subEl && iconEl) {
+                titleEl.textContent = title;
+                subEl.textContent = subtitle;
+                iconEl.className = iconClass;
+                box.style.display = 'flex';
+            }
+        }
+
+        function removeComposerAttachment() {
+            _attachedComposerMedia = null;
+            const box = document.getElementById('composerAttachmentPreview');
+            if (box) box.style.display = 'none';
+            const fileInput = document.getElementById('composerImgFileInput');
+            if (fileInput) fileInput.value = '';
+        }
+
+        function handleQuickPublish() {
+            const titleInput = document.getElementById('composerPostTitle');
+            const textInput = document.getElementById('composerTextInput');
+            const title = titleInput ? titleInput.value.trim() : '';
+            const text = textInput ? textInput.value.trim() : '';
+
+            if (!text && !_attachedComposerMedia) {
+                showToast('Wpisz treść rozważania lub dołącz załącznik!');
+                return;
+            }
+
+            const newPost = {
+                id: 'post_sds_' + Date.now(),
+                author: 'Studio Dobrego Słowa',
+                authorSlug: 'studiodobregoslowa',
+                authorAvatar: 'studiodobregoslowa_avatar.jpg',
+                authorRole: 'Oficjalny Kanał Audio & Wideo 🎙️✨',
+                time: 'Przed chwilą • 🕊️ Nowy Wpis',
+                title: title || 'Nowy Wpis • Studio Dobrego Słowa',
+                text: text,
+                image: (_attachedComposerMedia && _attachedComposerMedia.type === 'image') ? _attachedComposerMedia.url : null,
+                videoUrl: (_attachedComposerMedia && _attachedComposerMedia.type === 'video') ? _attachedComposerMedia.url : null,
+                likes: 1,
+                amen: 1,
+                category: 'general',
+                createdAtTimestamp: Date.now(),
+                createdAtDateStr: new Date().toISOString()
+            };
+
+            // Zapisz do localStorage profilu SDS
+            try {
+                let sdsPosts = JSON.parse(localStorage.getItem('lumina_posts_studiodobregoslowa') || '[]');
+                sdsPosts.unshift(newPost);
+                localStorage.setItem('lumina_posts_studiodobregoslowa', JSON.stringify(sdsPosts));
+            } catch(e) {
+                console.warn('LocalStorage save error:', e);
+            }
+
+            // Synchronizacja z feedem chmurowym LUMINA
+            try {
+                let cloudCache = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                cloudCache.unshift(newPost);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudCache));
+            } catch(e) {}
+
+            // Publikacja przez LuminaDB jeśli dostępne
+            if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+                window.LuminaDB.publishUniversalPost(newPost).catch(function(err){ console.warn('LuminaDB publish error:', err); });
+            }
+
+            // Renderuj post natychmiast na profilu
+            renderSinglePostCard(newPost, true);
+
+            // Czyść formularz
+            if (titleInput) titleInput.value = '';
+            if (textInput) textInput.value = '';
+            removeComposerAttachment();
+
+            showToast('✨ Opublikowano nowy wpis na profilu Studio Dobrego Słowa!');
+        }
+
+        function renderSinglePostCard(post, prepend) {
+            const stream = document.getElementById('localPostsStream');
+            if (!stream) return;
+
+            const article = document.createElement('article');
+            article.className = 'feed-post-card';
+            article.id = post.id;
+            article.style.marginBottom = '24px';
+
+            let mediaHtml = '';
+            if (post.image) {
+                mediaHtml = `<div style="margin:14px 0; border-radius:12px; overflow:hidden;"><img src="${post.image}" alt="${post.title || ''}" style="width:100%; max-height:480px; object-fit:cover; border-radius:12px;"></div>`;
+            } else if (post.videoUrl) {
+                const ytMatch = post.videoUrl.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                if (ytMatch && ytMatch[1]) {
+                    mediaHtml = `
+                        <div style="position:relative; width:100%; padding-top:56.25%; border-radius:12px; overflow:hidden; margin:14px 0; background:#000;">
+                            <iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allowfullscreen></iframe>
+                        </div>`;
+                } else {
+                    mediaHtml = `
+                        <div style="margin:14px 0; border-radius:12px; overflow:hidden; background:#000;">
+                            <video src="${post.videoUrl}" controls playsinline style="width:100%; max-height:480px; border-radius:12px;"></video>
+                        </div>`;
+                }
+            }
+
+            article.innerHTML = `
+                <div class="post-top-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                    <div class="post-author-box" style="display:flex; align-items:center; gap:12px;">
+                        <img src="${post.authorAvatar || 'studiodobregoslowa_avatar.jpg'}" onerror="this.src='lumina_icon.jpg'" alt="${post.author}" class="post-author-img" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #ef4444;">
+                        <div>
+                            <div class="post-author-name" style="font-weight:800; font-size:0.95rem; color:#fff;">
+                                ${post.author}
+                                <span class="post-badge-daily" style="font-size:0.72rem; background:rgba(239,68,68,0.25); color:#fca5a5; border:1px solid rgba(239,68,68,0.4); padding:2px 8px; border-radius:10px; margin-left:6px;">Oficjalny Wpis</span>
+                            </div>
+                            <div class="post-time" style="font-size:0.75rem; color:#94a3b8;">${post.time || 'Niedawno • Publiczny'}</div>
+                        </div>
+                    </div>
+                    <button class="btn-action-secondary" style="padding:5px 10px; font-size:0.75rem;" onclick="openShareModal()">
+                        <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                    </button>
+                </div>
+
+                <div class="post-body">
+                    ${post.title ? `<h2 class="post-title" style="font-size:1.25rem; font-weight:800; margin-bottom:10px; color:#fff;">${post.title}</h2>` : ''}
+                    <div class="post-text-content" style="font-size:0.94rem; line-height:1.65; color:#cbd5e1; white-space:pre-line;">
+                        ${post.text || ''}
+                    </div>
+                    ${mediaHtml}
+                </div>
+
+                <div class="post-actions-bar" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${post.likes || 1}</span></button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (${post.amen || 1})</button>
+                    </div>
+                    <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                </div>
+            `;
+
+            if (prepend && stream.firstChild) {
+                stream.insertBefore(article, stream.firstChild);
+            } else {
+                stream.appendChild(article);
+            }
+        }
+
+        function loadSdsPosts() {
+            try {
+                const sdsPosts = JSON.parse(localStorage.getItem('lumina_posts_studiodobregoslowa') || '[]');
+                const stream = document.getElementById('localPostsStream');
+                if (stream) stream.innerHTML = '';
+                sdsPosts.forEach(post => renderSinglePostCard(post, false));
+            } catch(e) {
+                console.warn('Error loading SDS posts:', e);
+            }
+        }
+
+        // Inicjalizacja przy załadowaniu DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedCover();
+            loadSdsPosts();
+        });
+        if (document.readyState !== 'loading') {
+            loadSavedCover();
+            loadSdsPosts();
         }
     </script>
     <script src="lumina-admin-profile-suite.js"></script>
