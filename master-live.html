@@ -874,15 +874,19 @@
                     : (isWeekendNight ? "randki-malzenstwo-live.html" : "apokalipsa-ksiega-nadziei-live.html");
 
                 if (min < 55) {
-                    if (!ksiegaNadzieiDoneHours[hour]) {
+                    if (!ksiegaNadzieiDoneHours[hour] || currentUrl !== targetSlotChannel) {
                         ksiegaNadzieiDoneHours[hour] = true;
                         isSpecialSlotActive = true;
-                        switchChannel(targetSlotChannel);
+                        if (currentUrl !== targetSlotChannel) {
+                            switchChannel(targetSlotChannel);
+                        }
 
-                        safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for 22:00 / 10:00 slot.");
-                            endSpecialSlot();
-                        }, 3300000);
+                        if (!safetyTimeout) {
+                            safetyTimeout = setTimeout(() => {
+                                console.log("MCR: Safety timeout reached for 22:00 / 10:00 slot.");
+                                endSpecialSlot();
+                            }, 3300000);
+                        }
                         return;
                     }
                 } else if (isSpecialSlotActive && (currentUrl === "apokalipsa-ksiega-nadziei-live.html" || currentUrl === "randki-malzenstwo-live.html")) {
