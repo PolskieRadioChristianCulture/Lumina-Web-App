@@ -616,6 +616,52 @@
             line-height: 1.75;
             margin-bottom: 18px;
             white-space: pre-line;
+            word-break: break-word;
+        }
+
+        /* ── Autolinki w postach: Aktywne, lśniące odnośniki WWW ── */
+        .post-text-content a,
+        .feed-post-card a.lumina-post-link,
+        .post-card a.lumina-post-link,
+        a.lumina-post-link {
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            text-decoration: underline !important;
+            text-underline-offset: 3px !important;
+            transition: color 0.2s ease, text-shadow 0.2s ease !important;
+            cursor: pointer !important;
+            display: inline !important;
+            word-break: break-all !important;
+        }
+
+        .post-text-content a:hover,
+        .feed-post-card a.lumina-post-link:hover,
+        .post-card a.lumina-post-link:hover,
+        a.lumina-post-link:hover {
+            color: #7dd3fc !important;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6) !important;
+        }
+
+        /* ── Zakaz ucinania grafik w formacie 1:1 oraz dowolnych proporcjach ── */
+        .feed-post-card img:not(.post-author-img):not(.post-avatar):not(.composer-avatar),
+        .post-card img:not(.post-author-img):not(.post-avatar):not(.composer-avatar),
+        .post-media-img,
+        .post-image,
+        .feed-post-card .post-body img,
+        .feed-post-card .post-media-container img {
+            max-height: none !important;
+            height: auto !important;
+            width: 100% !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+
+        .feed-post-card .post-media-container,
+        .feed-post-card .post-image-wrap {
+            max-height: none !important;
+            height: auto !important;
+            overflow: visible !important;
+            width: 100% !important;
         }
 
         .post-actions-bar {
@@ -1972,6 +2018,67 @@
             showToast('✨ Opublikowano nowy wpis na profilu Studio Dobrego Słowa!');
         }
 
+        function formatLuminaPostTextWithLinks(text) {
+            if (!text || typeof text !== 'string') return '';
+            let hasHtml = /<[a-z][\s\S]*>/i.test(text);
+            let str = hasHtml ? text : text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            const parts = str.split(/(<[^>]+>)/g);
+            let insideAnchor = false;
+            const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
+
+            for (let i = 0; i < parts.length; i++) {
+                let part = parts[i];
+                if (part.startsWith('<')) {
+                    if (/^<a\b/i.test(part)) insideAnchor = true;
+                    if (/^<\/a>/i.test(part)) insideAnchor = false;
+                    continue;
+                }
+                if (insideAnchor) continue;
+
+                // 1. URLs z http:// lub https://
+                part = part.replace(/\b(https?:\/\/[^\s<]+)/gi, function(match) {
+                    let url = match;
+                    let trail = '';
+                    const trailMatch = url.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        url = url.slice(0, -trail.length);
+                    }
+                    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + url + '</a>' + trail;
+                });
+
+                // 2. URLs zaczynające się od www.
+                part = part.replace(/(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<]*)/gi, function(match, p1, rawDomain) {
+                    let domain = rawDomain;
+                    let trail = '';
+                    const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        domain = domain.slice(0, -trail.length);
+                    }
+                    return p1 + '<a href="https://' + domain + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + domain + '</a>' + trail;
+                });
+
+                // 3. Adresy domenowe bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
+                const bareDomainRegex = new RegExp('(^|[\\s(])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<]*)?)', 'gi');
+                part = part.replace(bareDomainRegex, function(match, p1, rawDomain) {
+                    let domain = rawDomain;
+                    let trail = '';
+                    const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        domain = domain.slice(0, -trail.length);
+                    }
+                    return p1 + '<a href="https://' + domain + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + domain + '</a>' + trail;
+                });
+
+                parts[i] = part;
+            }
+
+            return parts.join('');
+        }
+
         function renderSinglePostCard(post, prepend) {
             const stream = document.getElementById('localPostsStream');
             if (!stream) return;
@@ -1983,21 +2090,26 @@
 
             let mediaHtml = '';
             if (post.image) {
-                mediaHtml = `<div style="margin:14px 0; border-radius:12px; overflow:hidden;"><img src="${post.image}" alt="${post.title || ''}" style="width:100%; max-height:480px; object-fit:cover; border-radius:12px;"></div>`;
+                mediaHtml = `
+                    <div class="post-media-container" style="margin:14px 0; border-radius:14px; overflow:hidden; width:100%; border:1px solid rgba(255,255,255,0.08); background:#070e24;">
+                        <img src="${post.image}" alt="${post.title || ''}" class="post-media-img" style="width:100%; height:auto; max-height:none; object-fit:contain; display:block; border-radius:14px;">
+                    </div>`;
             } else if (post.videoUrl) {
                 const ytMatch = post.videoUrl.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
                 if (ytMatch && ytMatch[1]) {
                     mediaHtml = `
-                        <div style="position:relative; width:100%; padding-top:56.25%; border-radius:12px; overflow:hidden; margin:14px 0; background:#000;">
+                        <div style="position:relative; width:100%; padding-top:56.25%; border-radius:14px; overflow:hidden; margin:14px 0; background:#000;">
                             <iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allowfullscreen></iframe>
                         </div>`;
                 } else {
                     mediaHtml = `
-                        <div style="margin:14px 0; border-radius:12px; overflow:hidden; background:#000;">
-                            <video src="${post.videoUrl}" controls playsinline style="width:100%; max-height:480px; border-radius:12px;"></video>
+                        <div style="margin:14px 0; border-radius:14px; overflow:hidden; background:#000;">
+                            <video src="${post.videoUrl}" controls playsinline style="width:100%; height:auto; max-height:none; border-radius:14px;"></video>
                         </div>`;
                 }
             }
+
+            const formattedText = formatLuminaPostTextWithLinks(post.text || '');
 
             article.innerHTML = `
                 <div class="post-top-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
@@ -2018,8 +2130,8 @@
 
                 <div class="post-body">
                     ${post.title ? `<h2 class="post-title" style="font-size:1.25rem; font-weight:800; margin-bottom:10px; color:#fff;">${post.title}</h2>` : ''}
-                    <div class="post-text-content" style="font-size:0.94rem; line-height:1.65; color:#cbd5e1; white-space:pre-line;">
-                        ${post.text || ''}
+                    <div class="post-text-content" style="font-size:0.94rem; line-height:1.65; color:#cbd5e1; white-space:pre-line; word-break:break-word;">
+                        ${formattedText}
                     </div>
                     ${mediaHtml}
                 </div>

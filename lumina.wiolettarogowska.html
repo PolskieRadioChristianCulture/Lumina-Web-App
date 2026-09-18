@@ -1534,11 +1534,13 @@
         }
 
         .post-image {
-            width: 100%;
+            width: 100% !important;
             border-radius: var(--radius-md);
             margin-bottom: 14px;
-            max-height: 380px;
-            object-fit: cover;
+            max-height: none !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
         }
 
         .post-footer {
@@ -4904,7 +4906,34 @@
                     trailing = punct[0];
                     cleanUrl = cleanUrl.slice(0, -trailing.length);
                 }
-                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link">${cleanUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${cleanUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+            });
+
+            // URLs zaczynające się od www. (bez protokołu)
+            text = text.replace(/(^|[\s(>])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<)]*)/gi, (m, prefix, rawDomain) => {
+                let domain = rawDomain;
+                let trailing = '';
+                const punct = domain.match(/[.,;!?:)]+$/);
+                if (punct) {
+                    trailing = punct[0];
+                    domain = domain.slice(0, -trailing.length);
+                }
+                return `${prefix}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${domain} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+            });
+
+            // Bezpośrednie domeny bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
+            const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
+            const bareDomainRegex = new RegExp('(^|[\\s(>])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<)]*)?)', 'gi');
+            text = text.replace(bareDomainRegex, (m, prefix, rawDomain) => {
+                if (m.includes('href=') || m.includes('class=')) return m;
+                let domain = rawDomain;
+                let trailing = '';
+                const punct = domain.match(/[.,;!?:)]+$/);
+                if (punct) {
+                    trailing = punct[0];
+                    domain = domain.slice(0, -trailing.length);
+                }
+                return `${prefix}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${domain} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
             });
             return text;
         }
@@ -5046,7 +5075,7 @@
                     <div class="post-content">${richResult.html || formatPostTextWithLinks(rawBody)}</div>
                     ${effectiveEmbedHtml || ''}
                     ${p.gdrive ? (window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(p.gdrive, { mode: p.gdrive.mode }) : '') : (p.gdriveEmbed ? `<div class="rich-gdrive-embed" style="margin-top:12px; border-radius:16px; overflow:hidden; border:1.5px solid rgba(52,168,83,0.35); background:rgba(15,23,42,0.85); box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="position:relative; width:100%; aspect-ratio:16/9; min-height:240px; background:#000;"><iframe src="${p.gdriveEmbed}" title="Dysk Google" style="width:100%; height:100%; border:none; display:block;" allow="autoplay" loading="lazy"></iframe></div></div>` : '')}
-                    ${(p.image && p.image.trim() !== '' && !effectiveEmbedHtml) ? `<div style="width:100%; max-height:480px; overflow:hidden; border-radius:16px; margin-top:12px; background:#070b14; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 24px rgba(0,0,0,0.4);"><img loading="lazy" decoding="async" src="${p.image}" alt="Zdjęcie do wpisu" class="post-image" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" style="cursor:pointer; width:100%; height:auto; max-height:480px; object-fit:contain; display:block; margin:0 auto;"></div>` : ''}
+                    ${(p.image && p.image.trim() !== '' && !effectiveEmbedHtml) ? `<div style="width:100%; height:auto; max-height:none; overflow:visible; border-radius:16px; margin-top:12px; background:#070b14; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 24px rgba(0,0,0,0.4);"><img loading="lazy" decoding="async" src="${p.image}" alt="Zdjęcie do wpisu" class="post-image" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" style="cursor:pointer; width:100%; height:auto; max-height:none; object-fit:contain; display:block; margin:0 auto;"></div>` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>

@@ -1509,7 +1509,7 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
 
             let mediaHTML = '';
             if (_radioPostAttachedImageDataURL) {
-                mediaHTML += `<div style="margin:12px 0;border-radius:14px;overflow:hidden;"><img src="${_radioPostAttachedImageDataURL}" style="width:100%;max-height:400px;object-fit:cover;display:block;border-radius:14px;"></div>`;
+                mediaHTML += `<div class="post-media-container" style="margin:12px 0;border-radius:14px;overflow:hidden;width:100%;"><img src="${_radioPostAttachedImageDataURL}" class="post-media-img" style="width:100%;height:auto;max-height:none;object-fit:contain;display:block;border-radius:14px;"></div>`;
             }
             if (_radioPostEmbedVideoURL) {
                 let embedSrc = _radioPostEmbedVideoURL;
@@ -1520,7 +1520,7 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
                 </div>`;
             }
 
-            const textHTML = text ? `<div class="post-text-content" style="white-space:pre-wrap;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : '';
+            const textHTML = text ? `<div class="post-text-content" style="white-space:pre-wrap;word-break:break-word;">${window.formatLuminaPostTextWithLinks ? window.formatLuminaPostTextWithLinks(text) : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : '';
 
             const postHTML = `
             <article class="feed-post-card" id="${postId}" style="border-left:3px solid #06b6d4;">

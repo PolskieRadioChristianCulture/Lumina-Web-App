@@ -259,7 +259,7 @@ class LuminaTablicaEngine {
                     ${rich.embedHtml || ''}
                     ${post.image ? `
                         <div style="width:100%; border-radius:14px; overflow:hidden; margin-bottom:14px; background:#070e24; display:flex; align-items:center; justify-content:center;">
-                            <img src="${post.image}" alt="Post Image" style="width:100%; max-height:480px; object-fit:contain !important;" loading="lazy">
+                            <img src="${post.image}" alt="Post Image" style="width:100%; height:auto; max-height:none; object-fit:contain !important;" loading="lazy">
                         </div>
                     ` : ''}
                     <div class="post-footer" style="display:flex; align-items:center; gap:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:12px;">

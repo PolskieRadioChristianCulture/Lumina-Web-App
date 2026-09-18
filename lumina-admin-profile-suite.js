@@ -522,6 +522,58 @@
                 border-color: #ef4444;
             }
 
+            /* ══════════ UNIVERSAL LINK & UNTOUCHED 1:1 IMAGE ASPECT RATIO ══════════ */
+            .feed-post-card .post-text-content a,
+            .post-card .post-content a,
+            .feed-post-card a.lumina-post-link,
+            .post-card a.lumina-post-link,
+            .feed-post-card .post-body a,
+            a.lumina-post-link {
+                color: #38bdf8 !important;
+                font-weight: 700 !important;
+                text-decoration: underline !important;
+                text-underline-offset: 3px !important;
+                transition: color 0.2s ease, text-shadow 0.2s ease !important;
+                cursor: pointer !important;
+                display: inline !important;
+                word-break: break-all !important;
+            }
+
+            .feed-post-card .post-text-content a:hover,
+            .post-card .post-content a:hover,
+            .feed-post-card a.lumina-post-link:hover,
+            .post-card a.lumina-post-link:hover,
+            .feed-post-card .post-body a:hover,
+            a.lumina-post-link:hover {
+                color: #7dd3fc !important;
+                text-shadow: 0 0 10px rgba(56, 189, 248, 0.6) !important;
+            }
+
+            /* ZAKAZ UCINANIA GRAFIK 1:1 ORAZ ZDJĘĆ W POSTACH NA WSZYSTKICH PROFILACH */
+            .feed-post-card img:not(.post-author-img):not(.post-avatar):not(.composer-avatar),
+            .post-card img:not(.post-author-img):not(.post-avatar):not(.composer-avatar),
+            .post-image,
+            .post-media-img,
+            .feed-post-card .post-body img,
+            .feed-post-card .post-media-container img,
+            article.feed-post-card img:not(.post-author-img):not(.post-avatar),
+            article.post-card img:not(.post-author-img):not(.post-avatar) {
+                max-height: none !important;
+                height: auto !important;
+                width: 100% !important;
+                object-fit: contain !important;
+                display: block !important;
+            }
+
+            .feed-post-card .post-media-container,
+            .feed-post-card .post-image-wrap,
+            .post-card div:has(> img.post-image) {
+                max-height: none !important;
+                height: auto !important;
+                overflow: visible !important;
+                width: 100% !important;
+            }
+
             @media (max-width: 768px) {
                 .lumina-admin-hud-inner {
                     flex-direction: column;
@@ -1252,6 +1304,8 @@
             this.attachInlinePencils();
             this.loadProfileFromStorage(this.slug);
             this.checkIfCurrentProfileIsBlocked();
+            this.enrichLuminaPostElements();
+            this.setupPostEnricherObserver();
             window.addEventListener('resize', () => this.repositionHudBar());
         },
 
@@ -2802,7 +2856,7 @@
                         <span style="font-size:0.75rem; color:#94a3b8;">Przed chwilą • Publiczny</span>
                     </div>
                     <h2 class="post-title" style="font-size:1.4rem; font-weight:800; margin-bottom:12px; color:#fff;">${title}</h2>
-                    <div class="post-text-content" style="font-size:0.94rem; color:#cbd5e1; line-height:1.7; white-space:pre-line; margin-bottom:14px;">${content}</div>
+                    <div class="post-text-content" style="font-size:0.94rem; color:#cbd5e1; line-height:1.7; white-space:pre-line; margin-bottom:14px; word-break:break-word;">${this.formatLuminaPostTextWithLinks(content)}</div>
                     ${prayer ? `<div class="post-prayer-highlight" style="background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:12px 14px; border-radius:8px; font-style:italic; color:#fef08a; margin-bottom:14px;">${prayer}</div>` : ''}
                 `;
                 feedCol.prepend(article);
@@ -2815,6 +2869,123 @@
             if (typeof window.showToast === 'function') {
                 window.showToast('✨ Wpis został pomyślnie opublikowany i zapisany!');
             }
+        },
+
+        // Universal linkifier: http(s), www., oraz bezpośrednie domeny bez protokołu
+        formatLuminaPostTextWithLinks: function(text) {
+            if (!text || typeof text !== 'string') return '';
+            let hasHtml = /<[a-z][\s\S]*>/i.test(text);
+            let str = hasHtml ? text : text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            const parts = str.split(/(<[^>]+>)/g);
+            let insideAnchor = false;
+            const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
+
+            for (let i = 0; i < parts.length; i++) {
+                let part = parts[i];
+                if (part.startsWith('<')) {
+                    if (/^<a\b/i.test(part)) insideAnchor = true;
+                    if (/^<\/a>/i.test(part)) insideAnchor = false;
+                    continue;
+                }
+                if (insideAnchor) continue;
+
+                // 1. URLs z http:// lub https://
+                part = part.replace(/\b(https?:\/\/[^\s<]+)/gi, function(match) {
+                    let url = match;
+                    let trail = '';
+                    const trailMatch = url.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        url = url.slice(0, -trail.length);
+                    }
+                    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + url + '</a>' + trail;
+                });
+
+                // 2. URLs zaczynające się od www.
+                part = part.replace(/(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<]*)/gi, function(match, p1, rawDomain) {
+                    let domain = rawDomain;
+                    let trail = '';
+                    const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        domain = domain.slice(0, -trail.length);
+                    }
+                    return p1 + '<a href="https://' + domain + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + domain + '</a>' + trail;
+                });
+
+                // 3. Adresy domenowe bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
+                const bareDomainRegex = new RegExp('(^|[\\s(])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<]*)?)', 'gi');
+                part = part.replace(bareDomainRegex, function(match, p1, rawDomain) {
+                    let domain = rawDomain;
+                    let trail = '';
+                    const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+                    if (trailMatch) {
+                        trail = trailMatch[0];
+                        domain = domain.slice(0, -trail.length);
+                    }
+                    return p1 + '<a href="https://' + domain + '" target="_blank" rel="noopener noreferrer" class="lumina-post-link">' + domain + '</a>' + trail;
+                });
+
+                parts[i] = part;
+            }
+
+            return parts.join('');
+        },
+
+        // Dynamiczny skaner postów: upewnia się, że grafiki 1:1 nie są ucięte, a linki są klikalne
+        enrichLuminaPostElements: function() {
+            try {
+                // 1. Zabezpieczenie grafik postów przed ucinaniem kadru
+                const postImgs = document.querySelectorAll('.feed-post-card img, .post-card img, .post-image, .post-media-img, .post-body img');
+                postImgs.forEach(img => {
+                    if (img.classList.contains('post-author-img') || img.classList.contains('post-avatar') || img.classList.contains('composer-avatar')) return;
+                    img.style.setProperty('max-height', 'none', 'important');
+                    img.style.setProperty('height', 'auto', 'important');
+                    img.style.setProperty('object-fit', 'contain', 'important');
+                    img.style.setProperty('width', '100%', 'important');
+                    img.style.setProperty('display', 'block', 'important');
+
+                    // Usuń restrykcyjne max-height z rodzica jeśli występuje
+                    const parent = img.parentElement;
+                    if (parent && (parent.style.maxHeight || (parent.getAttribute('style') && parent.getAttribute('style').includes('max-height')))) {
+                        parent.style.setProperty('max-height', 'none', 'important');
+                        parent.style.setProperty('height', 'auto', 'important');
+                        parent.style.setProperty('overflow', 'visible', 'important');
+                    }
+                });
+
+                // 2. Automatyczne przekształcanie niepodlinkowanych URL/domen w tekście wpisów na klikalne <a>
+                const textNodes = document.querySelectorAll('.post-text-content, .post-content, .feed-post-card .post-body');
+                textNodes.forEach(el => {
+                    if (el.dataset.luminaAutoLinked === 'true') return;
+                    const html = el.innerHTML;
+                    if (/(?:https?:\/\/|www\.|\b[a-zA-Z0-9-]+\.(?:online|pl|cc|com|org|net|eu|tv|live|app|edu))\b/i.test(html)) {
+                        const enriched = this.formatLuminaPostTextWithLinks(html);
+                        if (enriched && enriched !== html) {
+                            el.innerHTML = enriched;
+                        }
+                    }
+                    el.dataset.luminaAutoLinked = 'true';
+                });
+            } catch(err) {
+                console.warn('[LuminaAdminSuite] Error enriching post elements:', err);
+            }
+        },
+
+        setupPostEnricherObserver: function() {
+            if (window._luminaPostObserverAttached) return;
+            window._luminaPostObserverAttached = true;
+
+            let debounceTimer = null;
+            const observer = new MutationObserver(() => {
+                if (debounceTimer) clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    this.enrichLuminaPostElements();
+                }, 120);
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
         },
 
         runSelfRepair: function() {
@@ -2832,6 +3003,11 @@
                 }
             }
         }
+    };
+
+    // Globalna ekspozycja funkcji formatującej
+    window.formatLuminaPostTextWithLinks = function(text) {
+        return window.LuminaAdminSuite ? window.LuminaAdminSuite.formatLuminaPostTextWithLinks(text) : text;
     };
 
     // Automatyczna inicjalizacja po załadowaniu DOM

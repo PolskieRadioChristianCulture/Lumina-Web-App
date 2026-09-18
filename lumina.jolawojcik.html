@@ -1504,9 +1504,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="post-body">${val ? `<p>${val}</p>` : ''}
+                <div class="post-body" style="word-break:break-word;">${val ? `<p>${window.formatLuminaPostTextWithLinks ? window.formatLuminaPostTextWithLinks(val) : val}</p>` : ''}
                     ${jolaAttachedVideoUrl ? jolaRenderVideo(jolaAttachedVideoUrl) : ''}
-                    ${jolaAttachedImageDataUrl ? `<img src="${jolaAttachedImageDataUrl}" alt="Zdjęcie" style="width:100%; border-radius:12px; margin-top:10px; cursor:pointer;" onclick="showToast('Zdjęcie • LUMINA ✨')">` : ''}
+                    ${jolaAttachedImageDataUrl ? `<img src="${jolaAttachedImageDataUrl}" alt="Zdjęcie" class="post-media-img" style="width:100%; height:auto; max-height:none; object-fit:contain; border-radius:12px; margin-top:10px; display:block; cursor:pointer;" onclick="showToast('Zdjęcie • LUMINA ✨')">` : ''}
                 </div>
                 <div class="post-actions-bar">
                     <button class="post-act-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span>1</span> Polubień</button>
@@ -1529,19 +1529,21 @@
             if (!el) return;
             const jolaProfile = {
                 name: 'Jola Wójcik',
-                gender: 'kobieta',
-                denom: 'Chrześcijanka',
-                status: 'Panna',
-                slug: 'jolawojcik'
+                community: 'HalleluYah',
+                church: 'Wspólnota Chrześcijańska',
+                location: 'Polska'
             };
-            const score = (typeof window.calculateProfileMatchScore === 'function')
-                ? window.calculateProfileMatchScore(jolaProfile)
-                : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(jolaProfile) : null);
-
-            if (score && score !== 'Wymaga profilu') {
+            const myRaw = localStorage.getItem('lumina_my_profile');
+            if (myRaw) {
+                const my = JSON.parse(myRaw);
+                let score = '70%';
+                if (my.community === jolaProfile.community) score = '98%';
+                else if (my.church === jolaProfile.church) score = '88%';
+                if (my.name === jolaProfile.name) score = 'Twój profil';
+                
                 el.style.display = 'inline-flex';
                 if (score === '0%') {
-                    el.innerHTML = '<i class="fa-solid fa-heart-crack"></i> Dopasowanie: 0%';
+                    el.innerHTML = '<i class="fa-solid fa-user-plus"></i> Nowy kontakt';
                     el.style.color = '#9ca3af';
                 } else if (score === 'Twój profil') {
                     el.innerHTML = '<i class="fa-solid fa-user-check"></i> Twój profil';
@@ -1557,6 +1559,7 @@
         window.addEventListener('DOMContentLoaded', updateJolaMatchScore);
         setTimeout(updateJolaMatchScore, 800);
     </script>
+    <script src="lumina-admin-profile-suite.js"></script>
     <script src="js/lumina-followed-friends.js" defer></script>
 </body>
 </html>

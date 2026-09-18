@@ -5019,7 +5019,7 @@ export function createGoogleDriveEmbedHtml(gdriveData, options = {}) {
     if (isImageOnly) {
         return `
             <div class="gdrive-img-box" style="position:relative; margin-top:10px; border-radius:14px; overflow:hidden; border:1px solid rgba(52,168,83,0.3); background:#07090e;">
-                <img src="${gdriveData.directImgUrl}" alt="Grafika z Dysku Google" class="post-image" loading="lazy" decoding="async" style="width:100%; max-height:480px; object-fit:contain; display:block;" onerror="this.onerror=null; this.src='${gdriveData.lh3ImgUrl}';">
+                <img src="${gdriveData.directImgUrl}" alt="Grafika z Dysku Google" class="post-image" loading="lazy" decoding="async" style="width:100%; height:auto; max-height:none; object-fit:contain; display:block;" onerror="this.onerror=null; this.src='${gdriveData.lh3ImgUrl}';">
                 <div style="position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.75); border:1px solid rgba(52,168,83,0.5); color:#86efac; font-size:0.7rem; font-weight:800; padding:3px 8px; border-radius:12px; display:flex; align-items:center; gap:5px; backdrop-filter:blur(8px);">
                     <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Dysk Google
                 </div>
@@ -5384,17 +5384,49 @@ export function formatRichTextAndMedia(rawText, postData = null) {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link" onclick="event.stopPropagation()"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
-    // Regex for URLs
+    // Regex for URLs, www domains, and bare domains
     const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
     const foundUrls = preprocessedText.match(urlRegex) || [];
-    
-    // Replace URLs in text with rich styled <a> links
+
+    // 1. Zamiana pełnych URLs (http/https) na aktywne linki
     let formattedText = preprocessedText.replace(urlRegex, (url) => {
         if (url.includes('patronite.pl/')) return url; // pomiń jeśli już sparsowany
         let display = url.replace(/^https?:\/\/(www\.)?/, '');
         if (display.length > 38) display = display.substring(0, 35) + '...';
         const safeUrl = encodeURI(url).replace(/"/g, '&quot;');
-        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="post-rich-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+    });
+
+    // 2. Zamiana adresów www. (bez protokołu)
+    formattedText = formattedText.replace(/(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<]*)/gi, (match, p1, rawDomain) => {
+        let domain = rawDomain;
+        let trail = '';
+        const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+        if (trailMatch) {
+            trail = trailMatch[0];
+            domain = domain.slice(0, -trail.length);
+        }
+        let display = domain;
+        if (display.length > 38) display = display.substring(0, 35) + '...';
+        return `${p1}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>${trail}`;
+    });
+
+    // 3. Zamiana domen bazowych bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
+    const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
+    const bareDomainRegex = new RegExp('(^|[\\s(])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<]*)?)', 'gi');
+    formattedText = formattedText.replace(bareDomainRegex, (match, p1, rawDomain) => {
+        if (match.includes('href=') || match.includes('class=')) return match;
+        let domain = rawDomain;
+        let trail = '';
+        const trailMatch = domain.match(/[.,:;!?)\]]+$/);
+        if (trailMatch) {
+            trail = trailMatch[0];
+            domain = domain.slice(0, -trail.length);
+        }
+        if (!foundUrls.includes('https://' + domain)) foundUrls.push('https://' + domain);
+        let display = domain;
+        if (display.length > 38) display = display.substring(0, 35) + '...';
+        return `${p1}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>${trail}`;
     });
 
     // Replace @mentions with clickable profile pills

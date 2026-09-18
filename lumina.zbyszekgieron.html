@@ -2618,7 +2618,7 @@
             } else if (p.image) {
                 mediaHtml = `
                     <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
-                        <img src="${escapeHtml(p.image)}" alt="Grafika" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='lumina_default_cover.jpg'">
+                        <img src="${escapeHtml(p.image)}" alt="Grafika" style="width:100%; height:auto; max-height:none; object-fit:contain; display:block;" onerror="this.src='lumina_default_cover.jpg'">
                     </div>
                 `;
             } else if (p.videoUrl) {
@@ -2644,7 +2644,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="post-body">${escapeHtml(p.text || '')}</div>
+                <div class="post-body" style="word-break:break-word;">${window.formatLuminaPostTextWithLinks ? window.formatLuminaPostTextWithLinks(p.text || '') : escapeHtml(p.text || '')}</div>
                 ${mediaHtml}
                 <div class="post-actions-bar">
                     <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this, 'like_${p.id}')">
@@ -2971,6 +2971,9 @@
     <!-- Lumina Community Posts Repository & Admin Media Replacer -->
     <script src="js/lumina-community-posts.js?v=20260917"></script>
     <script src="js/lumina-admin-media-replacer.js?v=20260917_autohide_final_v10"></script>
+
+    <!-- Lumina Master Admin Suite & Universal Post Formatting -->
+    <script src="lumina-admin-profile-suite.js"></script>
 
     <!-- Lumina Bottom Navigation & Universal Google Auth Suite -->
     <script src="lumina-bottom-nav.js?v=20260907_google_auth_v1" defer></script>

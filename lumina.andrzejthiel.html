@@ -2931,7 +2931,7 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
 
             let html = '';
             if (introLine) html += `<p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">${escapeHtml(introLine)}</p>`;
-            html += '<div class="post-text-content">' + bodyParas.map(p => `<p style="margin-bottom:14px;">${escapeHtml(p)}</p>`).join('') + '</div>';
+            html += '<div class="post-text-content" style="word-break:break-word;">' + bodyParas.map(p => `<p style="margin-bottom:14px;">${window.formatLuminaPostTextWithLinks ? window.formatLuminaPostTextWithLinks(p) : escapeHtml(p)}</p>`).join('') + '</div>';
             if (prayerLine) {
                 html += `<div class="post-prayer-highlight">${escapeHtml(prayerLine)}
                     <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">/opr. na podst. wiad. B.K./.</div>
@@ -2969,9 +2969,12 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                 <article class="feed-post-card" id="post_${escapeHtml(id)}" ${isFirst ? '' : 'style="opacity:0.95;"'}>
                     <div class="post-top-header">
                         <div class="post-author-box">
-                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                            <img src="avatar_andrzej_thiel.jpg" alt="Andrzej Thiel" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
                             <div>
-                                <div class="post-author-name">Andrzej Thiel <span class="post-badge-daily">Cuda Każdego Dnia</span></div>
+                                <div class="post-author-name">
+                                    Andrzej Thiel
+                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                </div>
                                 <div class="post-time">${escapeHtml(timeLabel)}${isToday ? ' (Dzisiaj)' : ''}</div>
                             </div>
                         </div>
@@ -2986,7 +2989,7 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                             <iframe src="${escapeHtml(p.videoUrl)}" style="width:100%; aspect-ratio:16/9; border:none; display:block;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>` : (p.image ? `
                         <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
-                            <img src="${escapeHtml(p.image)}" alt="${title}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='lumina_logo.jpg'">
+                            <img src="${escapeHtml(p.image)}" alt="${title}" style="width:100%; height:auto; max-height:none; object-fit:contain; display:block;" onerror="this.src='lumina_logo.jpg'">
                         </div>` : '')}
                         <h2 class="post-title">${title}</h2>
                         ${renderBodyParagraphs(p.text)}
