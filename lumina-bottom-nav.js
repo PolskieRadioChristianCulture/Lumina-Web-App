@@ -1080,17 +1080,17 @@
 
         <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
-            <a href="lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
+            <a href="lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('lumina')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('lumina')" title="Odkrywaj Chrześcijańskie Profile">
                 <i class="fa-solid fa-heart-circle-bolt"></i>
             </a>
 
             <!-- 2. Tablica Społeczności -->
-            <a href="tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
+            <a href="tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('tablica')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('tablica')" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
             <!-- 3. Rolki Wiary (Shorts 9:16) -->
-            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" title="Rolki Wiary • LUMINA Shorts 9:16">
+            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('rolki')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('rolki')" title="Rolki Wiary • LUMINA Shorts 9:16">
                 <i class="fa-solid fa-clapperboard"></i>
             </a>
 
@@ -1572,6 +1572,18 @@
     document.body.insertAdjacentHTML('beforeend', navHtml);
 
     // ══════════════════════════════════════════════════════════════════════════
+    // Pomocnik natychmiastowego pobierania w tle stron portalu LUMINA (Near-Zero Latency)
+    window.luminaPrefetchPage = function(url) {
+        if (!url || document.querySelector(`link[rel="prefetch"][href="${url}"]`)) return;
+        try {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+        } catch(e){}
+    };
+
+    // ══════════════════════════════════════════════════════════════════════════
     // AUTO-INIEKCJA MINI-PLAYERA AUDIO DLA CAŁEGO PORTALU LUMINA
     // ══════════════════════════════════════════════════════════════════════════
     try {
@@ -1579,13 +1591,13 @@
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
-            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v4';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v5';
             document.head.appendChild(lmpCss);
         }
         if (!window.LuminaMiniPlayer && !document.getElementById('luminaMiniPlayerScript')) {
             const lmpScript = document.createElement('script');
             lmpScript.id = 'luminaMiniPlayerScript';
-            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v4';
+            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v5';
             lmpScript.defer = true;
             document.body.appendChild(lmpScript);
         }
