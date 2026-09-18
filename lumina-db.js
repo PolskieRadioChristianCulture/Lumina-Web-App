@@ -4863,39 +4863,44 @@ export function extractYouTubePlaylistId(url) {
 }
 
 export const LUMINA_HANDLES = {
-    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawel': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawelmurawski': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'u_yciezywymbogiem_4231': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
     'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'u_robertukaszpio_5668': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
-    'magdalena': { slug: 'magdalena', name: 'Magdalena (43)', url: 'lumina-profile.html?u=magdalena', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' },
+    'magdalena': { slug: 'magdalena', name: 'Magdalena (43)', url: 'lumina.magdalena.html', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' },
     'cezary': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrgowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrogowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'wioletta': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
-    'studiodobregoslowa': {
-        name: 'Studio Dobrego Słowa',
-        avatar: 'studiodobregoslowa_avatar.jpg',
-        cover: 'studiodobregoslowa_cover.jpg',
-        city: 'Piła, Polska',
-        job: 'Produkcja Multimedialna & Ewangelizacja',
-        status: 'Oficjalny Partner Medialny',
-        bio: 'Oficjalny profil Studio Dobrego Słowa.'
-    },
-    'wiolettarogowska': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', avatarVideo: 'wioletta_profile_video.mp4', badge: '🌸 Współzałożycielka CC' },
-    'ccwomen': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', avatarVideo: 'wideo_profilowe_ccwomen.mp4', badge: '🌸 Kanał CC Women' },
-    'women': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', avatarVideo: 'wideo_profilowe_ccwomen.mp4', badge: '🌸 Kanał CC Women' },
-    'cc_women': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', avatarVideo: 'wideo_profilowe_ccwomen.mp4', badge: '🌸 Kanał CC Women' },
-    'radiocc': { slug: 'radiocc', name: 'Polskie Radio CC • YouTube', url: 'lumina.radiocc.html', avatar: 'logo_radio_cc.jpg', badge: '📻 Radio Uwielbienia 24/7' },
-    'osobowoscplus': { slug: 'osobowoscplus', name: 'OSOBOWOŚĆ + • YouTube', url: 'lumina.osobowoscplus.html', avatar: 'logo_osobowosc_plus.jpg', badge: '🧠 Formacja & Wiara' },
-    'cctv': { slug: 'cctv', name: 'Christian Culture TV • YouTube', url: 'lumina.cctv.html', avatar: 'logo_cctv.png', badge: '📺 Telewizja CCTV24' },
+    'wiolettarogowska': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
+    'andrzej': { slug: 'andrzejthiel', name: 'Andrzej Thiel', url: 'lumina.andrzejthiel.html', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
+    'andrzejthiel': { slug: 'andrzejthiel', name: 'Andrzej Thiel', url: 'lumina.andrzejthiel.html', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
+    'thiel': { slug: 'andrzejthiel', name: 'Andrzej Thiel', url: 'lumina.andrzejthiel.html', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
+    'studiodobregoslowa': { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', url: 'lumina.studiodobregoslowa.html', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
+    'sds': { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', url: 'lumina.studiodobregoslowa.html', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
+    'ccwomen': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kanał CC Women' },
+    'women': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kanał CC Women' },
+    'cc_women': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kanał CC Women' },
     'ccmen': { slug: 'ccmen', name: 'CC MEN • YouTube', url: 'lumina.ccmen.html', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota Wiary' },
+    'men': { slug: 'ccmen', name: 'CC MEN • YouTube', url: 'lumina.ccmen.html', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota Wiary' },
+    'cc_men': { slug: 'ccmen', name: 'CC MEN • YouTube', url: 'lumina.ccmen.html', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota Wiary' },
+    'radiocc': { slug: 'radiocc', name: 'Polskie Radio CC', url: 'lumina.radiocc.html', avatar: 'logo_radio_cc.jpg', badge: '📻 Radio Uwielbienia 24/7' },
+    'radio': { slug: 'radiocc', name: 'Polskie Radio CC', url: 'lumina.radiocc.html', avatar: 'logo_radio_cc.jpg', badge: '📻 Radio Uwielbienia 24/7' },
+    'cctv': { slug: 'cctv', name: 'Christian Culture TV', url: 'lumina.cctv.html', avatar: 'logo_cctv.png', badge: '📺 Telewizja CCTV24' },
+    'osobowoscplus': { slug: 'osobowoscplus', name: 'OSOBOWOŚĆ + • YouTube', url: 'lumina.osobowoscplus.html', avatar: 'logo_osobowosc_plus.jpg', badge: '🧠 Formacja & Wiara' },
+    'zbyszek': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
+    'zbyszekgieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
+    'gieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
+    'jola': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jola.jpg', badge: '🕊️ Społeczność LUMINA' },
+    'jolawojcik': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jola.jpg', badge: '🕊️ Społeczność LUMINA' },
+    'zofia': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia.jpg', badge: '🌿 Społeczność LUMINA' },
+    'zofiadudek': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia.jpg', badge: '🌿 Społeczność LUMINA' },
     'bibliaaudio': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
     'bibliaaudiochristianculture': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
     'u_bibliaaudiochristianculture_3248': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
-    'radio': { slug: 'radio_cc', name: 'Radio Christian Culture', url: 'index.html', avatar: 'lumina_icon.jpg', badge: '📻 Radio Live' },
     'lumina': { slug: 'lumina_official', name: 'LUMINA Społeczność', url: 'lumina-tablica.html', avatar: 'lumina_icon.jpg', badge: '🕊️ Tablica Portalu' },
     'noemi': { slug: 'noemi', name: 'Noemi', url: 'lumina-profile.html?u=noemi', avatar: 'avatar_noemi.jpg', badge: '🌿 Misja CC' },
     'dawid': { slug: 'dawid', name: 'Dawid', url: 'lumina-profile.html?u=dawid', avatar: 'avatar_dawid.jpg', badge: '🎵 Misja CC' },
@@ -4903,11 +4908,24 @@ export const LUMINA_HANDLES = {
 };
 
 export function resolveMentionHandle(handle) {
-    const clean = (handle || '').toLowerCase().replace(/^[@#]/, '');
-    return LUMINA_HANDLES[clean] || {
+    const clean = (handle || '').toLowerCase().replace(/^[@#]/, '').trim();
+    if (LUMINA_HANDLES[clean]) {
+        return LUMINA_HANDLES[clean];
+    }
+    if (typeof window !== 'undefined' && window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[clean]) {
+        const prof = window.LUMINA_COMMUNITY_PROFILES[clean];
+        return {
+            slug: clean,
+            name: prof.name || ('@' + clean),
+            url: prof.url || `lumina-profile.html?u=${encodeURIComponent(clean)}`,
+            avatar: prof.avatar || 'lumina_icon.jpg',
+            badge: prof.badge || prof.tag || 'Profil LUMINA'
+        };
+    }
+    return {
         slug: clean,
         name: '@' + clean,
-        url: `lumina-profile.html?u=${clean}`,
+        url: `lumina-profile.html?u=${encodeURIComponent(clean)}`,
         avatar: 'lumina_icon.jpg',
         badge: 'Profil LUMINA'
     };
@@ -5430,14 +5448,18 @@ export function formatRichTextAndMedia(rawText, postData = null) {
     });
 
     // Replace @mentions with clickable profile pills
-    formattedText = formattedText.replace(/@([a-zA-Z0-9_]+)/g, (match, handle) => {
+    formattedText = formattedText.replace(/(^|[\s>(])@([a-zA-Z0-9_]+)/g, (match, p1, handle) => {
         const hInfo = resolveMentionHandle(handle);
-        return `<a href="${encodeURI(hInfo.url)}" class="lumina-mention-pill" title="Przejdź do profilu: ${escapeHtml(hInfo.name)}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`;
+        const nameAttr = (hInfo && hInfo.name) ? escapeHtml(hInfo.name) : escapeHtml(handle);
+        const urlAttr = (hInfo && hInfo.url) ? encodeURI(hInfo.url) : `lumina-profile.html?u=${encodeURIComponent(handle)}`;
+        return `${p1}<a href="${urlAttr}" class="lumina-mention-pill" title="Przejdź do profilu: ${nameAttr}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`;
     });
 
     // Replace #hashtags with clickable search pills
-    formattedText = formattedText.replace(/#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, tag) => {
-        return `<a href="lumina-tablica.html?q=%23${encodeURIComponent(tag)}" class="lumina-hashtag-pill" title="Filtruj wpisy #${escapeHtml(tag)}" onclick="event.stopPropagation()"><i class="fa-solid fa-hashtag"></i>${escapeHtml(tag)}</a>`;
+    formattedText = formattedText.replace(/(^|[\s>(])#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, p1, tag) => {
+        const safeTag = escapeHtml(tag);
+        const encTag = encodeURIComponent(tag);
+        return `${p1}<a href="lumina-tablica.html?q=%23${encTag}" class="lumina-hashtag-pill" data-tag="${safeTag}" title="Filtruj wpisy #${safeTag}" onclick="if(window.filterFeedByTag){event.preventDefault();event.stopPropagation();window.filterFeedByTag('${safeTag}');}else{event.stopPropagation();}"><i class="fa-solid fa-hashtag"></i>${safeTag}</a>`;
     });
 
     // Replace linebreaks with <br>

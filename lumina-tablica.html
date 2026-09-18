@@ -203,13 +203,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/christian-culture-design-system.css">
+    <link rel="stylesheet" href="/css/christian-culture-design-system.css?v=20260919_tags_mentions">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Community Core Posts Data -->
-    <script src="js/lumina-community-posts.js?v=20260918_kurs_malzenski"></script>
+    <script src="js/lumina-community-posts.js?v=20260919_tags_mentions"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=4.1.7"></script>
+    <script type="module" src="lumina-db.js?v=4.2.0_tags_mentions"></script>
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
@@ -2252,6 +2252,114 @@
             color: #fff;
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(56, 189, 248, 0.4);
+        }
+
+        /* ── Composer Quick Chips & Autocomplete Dropdown ── */
+        .composer-chip-btn {
+            min-height: 32px;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .composer-chip-btn:hover {
+            transform: translateY(-1px);
+            color: #fff;
+        }
+        .composer-chip-btn.chip-tag:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+            color: #38bdf8;
+            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
+        }
+        .composer-chip-btn.chip-mention:hover {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: #c084fc;
+            color: #c084fc;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+        }
+
+        .lumina-composer-autocomplete {
+            position: absolute;
+            top: calc(100% - 10px);
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #0b1838 0%, #070e24 100%);
+            border: 1.5px solid rgba(250, 204, 21, 0.5);
+            border-radius: 14px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85), 0 0 22px rgba(250, 204, 21, 0.25);
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 4px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .lumina-autocomplete-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            min-height: 44px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background 0.15s;
+        }
+        .lumina-autocomplete-item:last-child {
+            border-bottom: none;
+        }
+        .lumina-autocomplete-item:hover,
+        .lumina-autocomplete-item.selected {
+            background: rgba(250, 204, 21, 0.14);
+        }
+        .lumina-autocomplete-item .ac-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(56, 189, 248, 0.18);
+            color: #38bdf8;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .lumina-autocomplete-item .ac-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(250, 204, 21, 0.5);
+            flex-shrink: 0;
+        }
+        .lumina-autocomplete-item .ac-text-col {
+            flex: 1;
+            min-width: 0;
+        }
+        .lumina-autocomplete-item .ac-primary {
+            font-weight: 800;
+            color: #fff;
+            font-size: 0.86rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .lumina-autocomplete-item .ac-secondary {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Responsive YouTube / Video Embed */
@@ -5469,6 +5577,9 @@
                 </div>
             </div>
 
+            <!-- ══════════ ACTIVE TAG & QUERY FILTER BAR ══════════ -->
+            <div id="feedFilterActiveAlert" style="display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:12px 18px; border-radius:16px; background:linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.98)); border:1.5px solid rgba(56, 189, 248, 0.5); box-shadow:0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.2); margin-bottom:16px; color:#fff;"></div>
+
             <!-- ══════════ SMART FEED SORTING BAR ══════════ -->
             <div class="smart-sort-bar" id="smartSortBar">
                 <div style="display:flex; align-items:center; gap:8px;">
@@ -5859,11 +5970,30 @@
                 </div>
 
                 <!-- 2. Treść posta -->
-                <div style="margin-bottom: 14px;">
-                    <label for="qpTextInput" style="display:block; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
-                        <i class="fa-solid fa-align-left" style="color:#38bdf8; margin-right:4px;"></i> Treść posta <span style="color:#ef4444;">*</span>
+                <div style="margin-bottom: 14px; position:relative;">
+                    <label for="qpTextInput" style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
+                        <span><i class="fa-solid fa-align-left" style="color:#38bdf8; margin-right:4px;"></i> Treść posta <span style="color:#ef4444;">*</span></span>
+                        <span style="font-size:0.70rem; color:#94a3b8; font-weight:600;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Użyj <b>#temat</b> lub <b>@osoba</b></span>
                     </label>
-                    <textarea id="qpTextInput" rows="4" placeholder="Co dobrego u Ciebie? Podziel się świadectwem, myślą, modlitwą lub dobrą nowiną..." style="width:100%; min-height:90px; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.92rem; line-height:1.5; outline:none; resize:vertical; transition:border-color 0.2s;" onfocus="this.style.borderColor='#facc15'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"></textarea>
+                    <textarea id="qpTextInput" rows="4" placeholder="Co dobrego u Ciebie? Podziel się świadectwem, myślą, modlitwą... Wpisz # aby dodać tag lub @ aby oznaczyć profil." style="width:100%; min-height:90px; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.92rem; line-height:1.5; outline:none; resize:vertical; transition:border-color 0.2s;" onfocus="this.style.borderColor='#facc15'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"></textarea>
+
+                    <!-- Autocomplete dropdown floating box -->
+                    <div id="qpAutocompleteDropdown" class="lumina-composer-autocomplete" style="display:none;"></div>
+
+                    <!-- Pasek Szybkich Podpowiedzi Tagów i Wzmianek -->
+                    <div class="composer-quick-chips" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+                        <span style="font-size:0.70rem; color:#94a3b8; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-tags" style="color:#facc15;"></i> Podpowiedzi:</span>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#modlitwa')">#modlitwa</button>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#małżeństwo')">#małżeństwo</button>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#świadectwo')">#świadectwo</button>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#randki')">#randki</button>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#apokalipsa')">#apokalipsa</button>
+                        <button type="button" class="composer-chip-btn chip-tag" onclick="insertTagIntoComposer('#uwielbienie')">#uwielbienie</button>
+                        <button type="button" class="composer-chip-btn chip-mention" onclick="insertTagIntoComposer('@CezaryRogowski')">@CezaryRogowski</button>
+                        <button type="button" class="composer-chip-btn chip-mention" onclick="insertTagIntoComposer('@WiolettaRogowska')">@WiolettaRogowska</button>
+                        <button type="button" class="composer-chip-btn chip-mention" onclick="insertTagIntoComposer('@CCMen')">@CCMen</button>
+                        <button type="button" class="composer-chip-btn chip-mention" onclick="insertTagIntoComposer('@CCWomen')">@CCWomen</button>
+                    </div>
                 </div>
 
                 <!-- 3. Zdjęcie (plik z urządzenia lub URL) -->
@@ -8665,34 +8795,78 @@
             combined = injectShuffledVideos(combined_noVideos, feedVideoPosts);
 
             // Filter by search query (?q=... or #tag/@mention)
+            // Filter by search query (?q=... or ?tag=... or #tag / @mention)
             const urlParams = new URLSearchParams(window.location.search);
-            const activeQuery = urlParams.get('q') || window._activeFeedQuery;
-            const qBanner = document.getElementById('queryFilterBanner');
-            if (qBanner) {
-                if (activeQuery) {
-                    qBanner.style.display = 'flex';
-                    qBanner.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-magnifying-glass" style="color:#c084fc;"></i>
-                            <span>Filtrowanie wpisów: <b style="color:#facc15;">${activeQuery}</b></span>
-                        </div>
-                        <button onclick="clearQueryFilter()" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:20px; padding:4px 12px; cursor:pointer; font-size:0.75rem; font-weight:800; font-family:inherit;"><i class="fa-solid fa-xmark"></i> Wyczyść</button>
-                    `;
-                } else {
-                    qBanner.style.display = 'none';
-                }
-            }
+            const activeQuery = urlParams.get('q') || (urlParams.get('tag') ? ('#' + urlParams.get('tag')) : null) || window._activeFeedQuery;
 
             if (activeQuery) {
-                const qClean = activeQuery.toLowerCase().replace(/^[@#]/, '');
+                const isTag = activeQuery.startsWith('#');
+                const isMention = activeQuery.startsWith('@');
+                const qClean = activeQuery.toLowerCase().replace(/^[@#]/, '').trim();
+
                 combined = combined.filter(item => {
                     if (item._isBroadcastChannel) return true;
-                    const textMatch = (item.text || item.desc || '').toLowerCase().includes(qClean);
-                    const titleMatch = (item.title || '').toLowerCase().includes(qClean);
-                    const authorMatch = (item.author || '').toLowerCase().includes(qClean) || (item.authorSlug || '').toLowerCase().includes(qClean);
-                    return textMatch || titleMatch || authorMatch;
+                    const text = (item.text || item.desc || '').toLowerCase();
+                    const title = (item.title || '').toLowerCase();
+                    const author = (item.author || '').toLowerCase();
+                    const authorSlug = (item.authorSlug || '').toLowerCase();
+
+                    if (isTag) {
+                        const tagClean = '#' + qClean;
+                        return text.includes(tagClean) || text.includes(qClean) || title.includes(tagClean) || title.includes(qClean);
+                    } else if (isMention) {
+                        const mentionClean = '@' + qClean;
+                        return text.includes(mentionClean) || authorSlug === qClean || author.includes(qClean);
+                    } else {
+                        return text.includes(qClean) || title.includes(qClean) || author.includes(qClean) || authorSlug.includes(qClean);
+                    }
                 });
             }
+
+            // Update both Filter Banners (top queryFilterBanner and above-feed feedFilterActiveAlert)
+            const qBanner = document.getElementById('queryFilterBanner');
+            const alertBanner = document.getElementById('feedFilterActiveAlert');
+            [qBanner, alertBanner].forEach(banner => {
+                if (!banner) return;
+                if (activeQuery) {
+                    const isTag = activeQuery.startsWith('#');
+                    const isMention = activeQuery.startsWith('@');
+                    let filterLabel = 'Filtrowanie wpisów:';
+                    let filterIcon = 'fa-magnifying-glass';
+                    let iconColor = '#c084fc';
+                    let badgeBg = 'rgba(192, 132, 252, 0.15)';
+                    let badgeBorder = 'rgba(192, 132, 252, 0.4)';
+                    if (isTag) {
+                        filterLabel = 'Aktywny temat / tag:';
+                        filterIcon = 'fa-hashtag';
+                        iconColor = '#38bdf8';
+                        badgeBg = 'rgba(56, 189, 248, 0.15)';
+                        badgeBorder = 'rgba(56, 189, 248, 0.4)';
+                    } else if (isMention) {
+                        filterLabel = 'Wpisy powiązane z:';
+                        filterIcon = 'fa-at';
+                        iconColor = '#ec4899';
+                        badgeBg = 'rgba(236, 72, 153, 0.15)';
+                        badgeBorder = 'rgba(236, 72, 153, 0.4)';
+                    }
+                    const postCount = combined.filter(it => !it._isBroadcastChannel && it.type !== 'donor_wall' && it.type !== 'official_patron_koncept').length;
+                    banner.style.display = 'flex';
+                    banner.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:12px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${iconColor}; font-weight:800; font-size:0.80rem;">
+                                <i class="fa-solid ${filterIcon}"></i> ${filterLabel}
+                            </span>
+                            <span style="font-size:1.02rem; font-weight:800; color:#facc15; font-family:'Outfit',sans-serif;">${activeQuery}</span>
+                            <span style="font-size:0.75rem; color:#94a3b8;">(${postCount} ${postCount === 1 ? 'wpis' : (postCount > 1 && postCount < 5 ? 'wpisy' : 'wpisów')})</span>
+                        </div>
+                        <button type="button" onclick="clearQueryFilter()" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:20px; padding:6px 14px; cursor:pointer; font-size:0.78rem; font-weight:800; font-family:inherit; min-height:40px; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.3);" title="Wyczyść filtr i pokaż całą tablicę">
+                            <i class="fa-solid fa-xmark"></i> Wyczyść filtr
+                        </button>
+                    `;
+                } else {
+                    banner.style.display = 'none';
+                }
+            });
 
             // Filter by category
             if (currentFilter !== 'all') {
@@ -9358,9 +9532,56 @@
             visibleFeedItems = FEED_PAGE_SIZE;
             const url = new URL(window.location.href);
             url.searchParams.delete('q');
+            url.searchParams.delete('tag');
             window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
             renderFeed();
         }
+
+        window.filterFeedByTag = function(tag) {
+            if (!tag) return;
+            const cleanTag = tag.replace(/^#/, '').trim();
+            window._activeFeedQuery = '#' + cleanTag;
+            visibleFeedItems = FEED_PAGE_SIZE;
+            const url = new URL(window.location.href);
+            url.searchParams.set('q', '#' + cleanTag);
+            window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''));
+            renderFeed();
+            const anchor = document.getElementById('feedFilterActiveAlert') || document.getElementById('smartSortBar') || document.getElementById('feedStream1x1');
+            if (anchor) {
+                anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        window.filterFeedByMention = function(handle) {
+            if (!handle) return;
+            const cleanHandle = handle.replace(/^@/, '').trim();
+            window._activeFeedQuery = '@' + cleanHandle;
+            visibleFeedItems = FEED_PAGE_SIZE;
+            const url = new URL(window.location.href);
+            url.searchParams.set('q', '@' + cleanHandle);
+            window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''));
+            renderFeed();
+            const anchor = document.getElementById('feedFilterActiveAlert') || document.getElementById('smartSortBar') || document.getElementById('feedStream1x1');
+            if (anchor) {
+                anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        window.insertTagIntoComposer = function(token) {
+            const input = document.getElementById('qpTextInput');
+            if (!input) return;
+            const start = input.selectionStart || 0;
+            const end = input.selectionEnd || 0;
+            const currentVal = input.value;
+            const before = currentVal.substring(0, start);
+            const after = currentVal.substring(end);
+            const needSpaceBefore = before.length > 0 && !before.endsWith(' ') && !before.endsWith('\n');
+            const insertText = (needSpaceBefore ? ' ' : '') + token + ' ';
+            input.value = before + insertText + after;
+            input.focus();
+            const newPos = start + insertText.length;
+            input.setSelectionRange(newPos, newPos);
+        };
 
         function toggleFeedLike(btn) {
             btn.classList.toggle('liked');
@@ -9609,6 +9830,7 @@
 
         function openQuickPostComposer(mode) {
             updateQuickPostBarAuthorUI();
+            if (typeof initComposerAutocomplete === 'function') initComposerAutocomplete();
             const modal = document.getElementById('quickPostModal');
             if (modal) {
                 modal.classList.add('open');
@@ -9865,9 +10087,191 @@
             }, 200);
         }
 
+        // ══════════════════════════════════════════════════════════════════════════
+        // ── AUTOCOMPLETE TAGÓW (#) I WZMIANEK (@) W KOMPOZERZE WPISÓW ──
+        // ══════════════════════════════════════════════════════════════════════════
+        function initComposerAutocomplete() {
+            const textarea = document.getElementById('qpTextInput');
+            const dropdown = document.getElementById('qpAutocompleteDropdown');
+            if (!textarea || !dropdown || textarea._autocompleteInitialized) return;
+            textarea._autocompleteInitialized = true;
+
+            const SUGGESTED_TAGS = [
+                { tag: 'modlitwa', desc: 'Modlitwa i wstawiennictwo', icon: 'fa-hands-praying' },
+                { tag: 'małżeństwo', desc: 'Małżeństwo i rodzina', icon: 'fa-ring' },
+                { tag: 'randki', desc: 'Relacje, randki i narzeczeństwo', icon: 'fa-heart' },
+                { tag: 'świadectwo', desc: 'Świadectwo Bożej opieki', icon: 'fa-sparkles' },
+                { tag: 'apokalipsa', desc: 'Księga Objawienia / Proroctwa', icon: 'fa-book-bible' },
+                { tag: 'uwielbienie', desc: 'Muzyka i pieśni uwielbienia', icon: 'fa-music' },
+                { tag: 'wiara', desc: 'Życie wiary i zaufanie Bogu', icon: 'fa-cross' },
+                { tag: 'słowoboże', desc: 'Pismo Święte i wersety', icon: 'fa-scroll' },
+                { tag: 'nadzieja', desc: 'Boża nadzieja i pokój', icon: 'fa-sun' },
+                { tag: 'ewangelizacja', desc: 'Misja i głoszenie Ewangelii', icon: 'fa-earth-europe' },
+                { tag: 'cuda', desc: 'Cuda Każdego Dnia', icon: 'fa-wand-magic-sparkles' },
+                { tag: 'dobrzeżejesteś', desc: 'Rozważania poranne Cezarego', icon: 'fa-dove' }
+            ];
+
+            const SUGGESTED_PROFILES = [
+                { handle: 'CezaryRogowski', name: 'Cezary Rogowski', role: '👑 Założyciel CC', avatar: 'avatar_cezary_official.jpg' },
+                { handle: 'WiolettaRogowska', name: 'Wioletta Rogowska', role: '🌸 Współzałożycielka CC', avatar: 'avatar_wioletta_official.jpg' },
+                { handle: 'AndrzejThiel', name: 'Andrzej Thiel', role: '📖 Cuda Każdego Dnia', avatar: 'avatar_andrzej_thiel.jpg' },
+                { handle: 'CCMen', name: 'CC MEN • YouTube', role: '🛡️ Męska Wspólnota Wiary', avatar: 'logo_cc_men.jpg' },
+                { handle: 'CCWomen', name: 'CC Women • YouTube', role: '🌸 Kanał CC Women', avatar: 'avatar_ccwomen_official_2026.jpg' },
+                { handle: 'StudioDobregoSlowa', name: 'Studio Dobrego Słowa', role: '🎬 Partner Medialny', avatar: 'studiodobregoslowa_avatar.jpg' },
+                { handle: 'RadioCC', name: 'Polskie Radio CC', role: '📻 Radio Uwielbienia 24/7', avatar: 'logo_radio_cc.jpg' },
+                { handle: 'CCTV', name: 'Christian Culture TV', role: '📺 Telewizja CCTV24', avatar: 'logo_cctv.png' },
+                { handle: 'ZbyszekGieron', name: 'Zbyszek Gieroń', role: '🕊️ Świadectwo', avatar: 'avatar_zbyszek_gieron.jpg' },
+                { handle: 'JolaWojcik', name: 'Jola Wójcik', role: '🕊️ Społeczność LUMINA', avatar: 'avatar_jola.jpg' },
+                { handle: 'ZofiaDudek', name: 'Zofia Dudek', role: '🌿 Społeczność LUMINA', avatar: 'avatar_zofia.jpg' },
+                { handle: 'OsobowoscPLUS', name: 'OSOBOWOŚĆ + • YouTube', role: '🧠 Formacja & Wiara', avatar: 'logo_osobowosc_plus.jpg' },
+                { handle: 'PawelMurawski', name: 'Paweł Murawski', role: '✨ Społeczność LUMINA', avatar: 'avatar_pawel_murawski.jpg' }
+            ];
+
+            let currentMatch = null;
+            let selectedIndex = 0;
+
+            function closeDropdown() {
+                dropdown.style.display = 'none';
+                dropdown.innerHTML = '';
+                currentMatch = null;
+            }
+
+            function checkTrigger() {
+                const cursorPos = textarea.selectionStart;
+                const textBefore = textarea.value.slice(0, cursorPos);
+                const match = textBefore.match(/(?:^|[\s\n])([@#])([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*)$/);
+                if (!match) {
+                    closeDropdown();
+                    return;
+                }
+
+                const symbol = match[1];
+                const query = match[2].toLowerCase();
+                const startPos = textBefore.length - match[2].length - 1;
+
+                let items = [];
+                if (symbol === '#') {
+                    items = SUGGESTED_TAGS.filter(t => t.tag.toLowerCase().includes(query)).map(t => ({
+                        insertText: '#' + t.tag + ' ',
+                        display: '#' + t.tag,
+                        sub: t.desc,
+                        icon: t.icon,
+                        type: 'tag'
+                    }));
+                    if (query && !items.some(it => it.display.toLowerCase() === '#' + query)) {
+                        items.unshift({
+                            insertText: '#' + query + ' ',
+                            display: '#' + query,
+                            sub: 'Dodaj nowy temat',
+                            icon: 'fa-hashtag',
+                            type: 'tag'
+                        });
+                    }
+                } else if (symbol === '@') {
+                    items = SUGGESTED_PROFILES.filter(p => 
+                        p.handle.toLowerCase().includes(query) || p.name.toLowerCase().includes(query)
+                    ).map(p => ({
+                        insertText: '@' + p.handle + ' ',
+                        display: '@' + p.handle,
+                        sub: p.name + ' • ' + p.role,
+                        avatar: p.avatar,
+                        type: 'mention'
+                    }));
+                }
+
+                if (items.length === 0) {
+                    closeDropdown();
+                    return;
+                }
+
+                currentMatch = { symbol, query, startPos, cursorPos, items };
+                selectedIndex = 0;
+                renderDropdown(items);
+            }
+
+            function renderDropdown(items) {
+                dropdown.innerHTML = items.slice(0, 6).map((item, idx) => {
+                    const isSel = idx === selectedIndex ? 'selected' : '';
+                    if (item.type === 'tag') {
+                        return `
+                            <div class="lumina-autocomplete-item ${isSel}" data-idx="${idx}" onmousedown="event.preventDefault(); window.applyComposerAutocompleteItem(${idx});">
+                                <span class="ac-icon tag-icon"><i class="fa-solid ${item.icon}"></i></span>
+                                <div class="ac-text-col">
+                                    <div class="ac-primary">${item.display}</div>
+                                    <div class="ac-secondary">${item.sub}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="lumina-autocomplete-item ${isSel}" data-idx="${idx}" onmousedown="event.preventDefault(); window.applyComposerAutocompleteItem(${idx});">
+                                <img src="${item.avatar}" class="ac-avatar" onerror="this.src='lumina_icon.jpg'">
+                                <div class="ac-text-col">
+                                    <div class="ac-primary">${item.display}</div>
+                                    <div class="ac-secondary">${item.sub}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
+                dropdown.style.display = 'block';
+            }
+
+            window.applyComposerAutocompleteItem = function(idx) {
+                if (!currentMatch || !currentMatch.items || !currentMatch.items[idx]) return;
+                const item = currentMatch.items[idx];
+                const fullText = textarea.value;
+                const before = fullText.slice(0, currentMatch.startPos);
+                const after = fullText.slice(currentMatch.cursorPos);
+                textarea.value = before + item.insertText + after;
+                const newCursor = before.length + item.insertText.length;
+                textarea.setSelectionRange(newCursor, newCursor);
+                textarea.focus();
+                closeDropdown();
+            };
+
+            textarea.addEventListener('input', checkTrigger);
+            textarea.addEventListener('click', checkTrigger);
+            textarea.addEventListener('keyup', (e) => {
+                if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape', 'Tab'].includes(e.key)) return;
+                checkTrigger();
+            });
+            textarea.addEventListener('keydown', (e) => {
+                if (dropdown.style.display === 'block' && currentMatch && currentMatch.items.length > 0) {
+                    const total = Math.min(currentMatch.items.length, 6);
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex + 1) % total;
+                        renderDropdown(currentMatch.items);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex - 1 + total) % total;
+                        renderDropdown(currentMatch.items);
+                    } else if (e.key === 'Enter' || e.key === 'Tab') {
+                        e.preventDefault();
+                        window.applyComposerAutocompleteItem(selectedIndex);
+                    } else if (e.key === 'Escape') {
+                        closeDropdown();
+                    }
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!textarea.contains(e.target) && !dropdown.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+        }
+
         // Inicjalizacja belki publikacji przy starcie
-        window.addEventListener('DOMContentLoaded', updateQuickPostBarAuthorUI);
-        window.addEventListener('load', updateQuickPostBarAuthorUI);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateQuickPostBarAuthorUI();
+            initComposerAutocomplete();
+        });
+        window.addEventListener('load', () => {
+            updateQuickPostBarAuthorUI();
+            initComposerAutocomplete();
+        });
 
         function saveCampaignSubmit(e) {
             e.preventDefault();
