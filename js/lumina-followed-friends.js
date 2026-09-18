@@ -377,6 +377,14 @@
                 flex-shrink: 0;
             }
 
+            .followed-avatar-anchor {
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                text-decoration: none;
+            }
+
             .followed-avatar-img {
                 width: 100%;
                 height: 100%;
@@ -410,54 +418,48 @@
 
             .followed-online-dot {
                 position: absolute;
-                bottom: 1px;
-                right: 1px;
-                width: 11px;
-                height: 11px;
+                bottom: 2px;
+                right: 2px;
+                width: 14px;
+                height: 14px;
                 border-radius: 50%;
                 background: #10b981;
                 border: 2px solid #070b16;
-                box-shadow: 0 0 6px #10b981;
+                box-shadow: 0 0 8px #10b981;
+                cursor: pointer;
+                z-index: 5;
+                outline: none;
+                padding: 0;
+                transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+                -webkit-tap-highlight-color: transparent;
             }
 
-            /* ODZNAKA OBSERWOWANY ✓ (Prawy górny róg) */
-            .followed-check-badge {
+            .followed-online-dot::after {
+                content: '';
                 position: absolute;
-                top: -2px;
-                right: -2px;
-                background: linear-gradient(135deg, #f59e0b, #ec4899);
-                color: #fff;
-                width: 16px;
-                height: 16px;
+                top: -12px;
+                left: -12px;
+                right: -12px;
+                bottom: -12px;
                 border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.55rem;
-                font-weight: 800;
-                border: 1.5px solid #070b16;
-                z-index: 2;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             }
 
-            /* ODZNAKA ZNAJOMY 🤝 (Lewy górny róg) */
-            .followed-friend-badge {
-                position: absolute;
-                top: -2px;
-                left: -2px;
-                background: linear-gradient(135deg, #0284c7, #38bdf8);
-                color: #fff;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.55rem;
-                font-weight: 800;
-                border: 1.5px solid #070b16;
-                z-index: 2;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            .followed-online-dot:hover {
+                transform: scale(1.35);
+                background: #34d399;
+                box-shadow: 0 0 12px #34d399;
+                border-color: #facc15;
+            }
+
+            .followed-online-dot:active {
+                transform: scale(0.92);
+            }
+
+            /* Ukrycie starych elementów przyklejonych do zdjęcia (wszystko przeniesione pod zieloną kropkę) */
+            .followed-check-badge,
+            .followed-friend-badge,
+            .followed-card-opt-btn {
+                display: none !important;
             }
 
             .followed-friend-name {
@@ -1140,6 +1142,21 @@
                     <div class="lumina-rel-modal-info">
                         <div class="lumina-rel-modal-name">${escapeHtml(data.name)}</div>
                         <div class="lumina-rel-modal-role">${escapeHtml(data.role || '')} ${data.city ? `• ${escapeHtml(data.city)}` : ''}</div>
+                        <div class="lumina-rel-modal-status-pills" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <span style="display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; padding:3px 9px; border-radius:12px; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.35); font-weight:700;">
+                                <span style="width:7px; height:7px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 6px #10b981;"></span> Dostępny online
+                            </span>
+                            ${isFr ? `
+                                <span style="display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; padding:3px 9px; border-radius:12px; background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.35); font-weight:700;">
+                                    🤝 Twój Znajomy
+                                </span>
+                            ` : ''}
+                            ${isFoll ? `
+                                <span style="display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; padding:3px 9px; border-radius:12px; background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.35); font-weight:700;">
+                                    ✓ Obserwujesz
+                                </span>
+                            ` : ''}
+                        </div>
                     </div>
                 </div>
                 <div class="lumina-rel-modal-actions">
@@ -1396,45 +1413,31 @@
                 <div class="followed-friends-grid">
                     ${displayGridFriends.map(f => `
                         <div class="followed-friend-item ${f.isFriend ? 'is-friend' : ''} ${f.isFollowed ? 'is-active-follow' : ''}" data-slug="${f.slug}">
-                            <!-- Przycisk opcji 3-dots: unfriend, unfollow, profil, usuń (Dowódca) -->
-                            <button type="button" 
-                                    class="followed-card-opt-btn" 
-                                    data-action="open-options" 
-                                    data-slug="${f.slug}" 
-                                    data-name="${escapeHtml(f.name)}" 
-                                    data-role="${escapeHtml(f.role)}" 
-                                    data-city="${escapeHtml(f.city || '')}" 
-                                    data-avatar="${f.avatar}" 
-                                    data-url="${f.url}" 
-                                    data-is-friend="${f.isFriend}" 
-                                    data-is-followed="${f.isFollowed}" 
-                                    title="Zarządzaj relacją z ${f.name}">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
+                            <div class="followed-avatar-wrapper">
+                                <a href="${f.url}" class="followed-avatar-anchor" title="${f.name} • ${f.role}">
+                                    <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
+                                </a>
+                                
+                                <!-- PRZYCISK JEDNEJ ZIELONEJ KROPKI: status online + zarządzanie relacją -->
+                                <button type="button" 
+                                        class="followed-online-dot" 
+                                        data-action="open-options" 
+                                        data-slug="${f.slug}" 
+                                        data-name="${escapeHtml(f.name)}" 
+                                        data-role="${escapeHtml(f.role)}" 
+                                        data-city="${escapeHtml(f.city || '')}" 
+                                        data-avatar="${f.avatar}" 
+                                        data-url="${f.url}" 
+                                        data-is-friend="${f.isFriend}" 
+                                        data-is-followed="${f.isFollowed}" 
+                                        title="Status i opcje relacji: ${escapeHtml(f.name)}" 
+                                        aria-label="Status i opcje relacji: ${escapeHtml(f.name)}">
+                                </button>
+                            </div>
 
                             <a href="${f.url}" 
                                class="followed-friend-link" 
                                title="${f.name} • ${f.role} (${f.city}) ${f.isFriend ? '• 🤝 Znajomy' : ''} ${f.isFollowed ? '• ✓ Obserwujesz' : ''}">
-                                <div class="followed-avatar-wrapper">
-                                    <img loading="lazy" decoding="async" src="${f.avatar}" alt="${f.name}" onerror="this.src='lumina_icon.jpg'" class="followed-avatar-img">
-                                    
-                                    <!-- ODZNAKA ZNAJOMY 🤝 (LEWY GÓRNY RÓG) - 1-tap zarządzanie / unfriend -->
-                                    ${f.isFriend ? `
-                                        <span class="followed-friend-badge" data-action="badge-friend" data-slug="${f.slug}" title="🤝 Znajomy (kliknij aby usunąć z grona)">
-                                            <i class="fa-solid fa-handshake"></i>
-                                        </span>
-                                    ` : ''}
-
-                                    <!-- ODZNAKA OBSERWOWANY ✓ (PRAWY GÓRNY RÓG) - 1-tap zarządzanie / unfollow -->
-                                    ${f.isFollowed ? `
-                                        <span class="followed-check-badge" data-action="badge-follow" data-slug="${f.slug}" title="✓ Obserwujesz (kliknij aby przestać obserwować)">
-                                            <i class="fa-solid fa-check"></i>
-                                        </span>
-                                    ` : ''}
-
-                                    <!-- Wskaźnik online -->
-                                    <span class="followed-online-dot"></span>
-                                </div>
                                 <div class="followed-friend-name">
                                     ${f.shortName}
                                 </div>
@@ -1496,8 +1499,8 @@
             });
         });
 
-        // Podpięcie opcji kafelków (3-dots)
-        const optBtns = container.querySelectorAll('.followed-card-opt-btn');
+        // Podpięcie zielonej kropki (oraz ewentualnych przycisków opcji relacji)
+        const optBtns = container.querySelectorAll('.followed-online-dot, .followed-card-opt-btn, [data-action="open-options"]');
         optBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1513,28 +1516,6 @@
                     isFollowed: this.getAttribute('data-is-followed') === 'true'
                 };
                 openRelationshipModal(data);
-            });
-        });
-
-        // Bezpośrednie kliknięcie w odznakę znajomego (1-tap unfriend)
-        const friendBadges = container.querySelectorAll('.followed-friend-badge');
-        friendBadges.forEach(badge => {
-            badge.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const slug = this.getAttribute('data-slug');
-                sendFriendRequest(slug);
-            });
-        });
-
-        // Bezpośrednie kliknięcie w odznakę obserwowanego (1-tap unfollow)
-        const followBadges = container.querySelectorAll('.followed-check-badge');
-        followBadges.forEach(badge => {
-            badge.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const slug = this.getAttribute('data-slug');
-                toggleFollow(slug);
             });
         });
 
