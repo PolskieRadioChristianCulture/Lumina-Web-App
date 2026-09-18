@@ -7204,16 +7204,19 @@ export const LuminaCommentsEngine = {
             "Potężna prawda, która stawia na nogi w trudnym czasie. Chwała Panu Jezusowi! Stoję z Wami w braterskiej modlitwie. ✝️🛡️",
             "Cudowna, głęboka refleksja. Warto zatrzymać się w tym zabieganym świecie i oddać wszystko Stwórcy. Błogosławionego dnia! 🌿🌸",
             "Tak jest! Prawdziwa siła to wierność Bogu każdego dnia bez kompromisów. Chwała Najwyższemu! 🛡️⚡",
-            "Przepiękne słowa pełne nadziei. Otwórzmy serca na Boże prowadzenie w każdej minucie dzisiejszego dnia! 🌸🕊️"
+            "Dla wszystkich małżeństw i par polecam gorąco ten wspaniały biblijny wykład Romana Chałupki: https://polskieradio.cc/randki-malzenstwo - niesamowicie buduje relacje! ❤️💍",
+            "Przepiękne słowa pełne nadziei. Polecam też to poruszające nagranie Słowa Bożego: https://www.youtube.com/watch?v=OWKwixyQq2c 🌸🕊️"
         ],
         prayer: [
             "Dołączam do modlitwy całym sercem! Jezus jest z Tobą w tej sytuacji i On ma ostatnie słowo. Trwaj w pokoju! 🙏🕊️",
             "Staję w wyłomie razem z Tobą, bracie/siostro. Żaden problem nie jest za duży dla naszego Pana! 🛡️✝️",
             "Wstawiam się w Imieniu Jezusa. Wierzymy i ufamy Bożej obietnicy uzdrowienia i ratunku! ✨🙏",
+            "Pamiętajmy o narodowym wstawiennictwie na żywo: https://polskieradio.cc/modlitwa - módlmy się razem w czasie rzeczywistym! 🕊️🛡️",
             "Nie jesteś sam w tej walce. Nasza wspólnota łączy się w modlitwie. Bóg już działa! ❤️🕊️"
         ],
         media: [
             "Wspaniały klimat uwielbienia! Niech ta muzyka i Słowo zanoszą chwałę przed sam Boży Tron. Podajemy dalej! 🎬📖",
+            "A na wieczorne umocnienie polecam wartościowe kino chrześcijańskie bez reklam: https://polskieradio.cc/vod - poruszające filmy wiary! 🍿✨",
             "Ta stacja wnosi tyle pokoju i światła do mojego domu. Słucham podczas codziennych obowiązków i odpoczynku. Dziękuję! 🎵🌿",
             "Doskonała jakość i niesamowite namaszczenie. Niech Bóg błogosławi całą redakcję Christian Culture! 📻✨"
         ],
@@ -7592,6 +7595,331 @@ export const LuminaCommentsEngine = {
         }
     },
 
+    isTrustedAuthor(comment) {
+        if (!comment) return false;
+        const slug = (comment.authorSlug || '').toLowerCase();
+        const role = (comment.authorRole || comment.authorBadge || '').toLowerCase();
+        const name = (comment.author || '').toLowerCase();
+
+        const trustedSlugs = [
+            'cezaryrgowski', 'cezary', 'wiolettarogowska', 'wioletta',
+            'andrzejthiel', 'andrzej', 'jolawojcik', 'jola',
+            'zbyszekgieron', 'zbyszek', 'zofiadudek', 'zofia',
+            'ccmen', 'ccwomen', 'studiodobregoslowa', 'sds',
+            'pawelmurawski', 'magdalena', 'radiocc', 'osobowoscplus'
+        ];
+
+        if (trustedSlugs.includes(slug)) return true;
+        if (comment.isTrusted || comment.verified || comment.isMissionAuto) return true;
+        if (role.includes('założyciel') || role.includes('współzałożyciel') || role.includes('lider') || 
+            role.includes('wstawiennik') || role.includes('wspólnota') || role.includes('wydawnictwo') || 
+            role.includes('świadectwo') || role.includes('formacja') || role.includes('partner') ||
+            role.includes('profil misyjny') || role.includes('redakcja') || role.includes('oficjalny')) {
+            return true;
+        }
+        if (name.includes('cezary') || name.includes('wioletta') || name.includes('andrzej thiel') || name.includes('studio dobrego')) {
+            return true;
+        }
+
+        const me = this.getCurrentCommenter();
+        if (me && me.slug === slug && (me.slug === 'cezaryrgowski' || me.badge)) {
+            return true;
+        }
+
+        return false;
+    },
+
+    createCommentLinkPreviewCardHtml(url, commentId) {
+        if (!url) return '';
+        const rawUrl = String(url).trim();
+        const safeUrl = encodeURI(rawUrl).replace(/"/g, '&quot;');
+        const lowerUrl = rawUrl.toLowerCase();
+
+        // 1. YouTube Video Preview
+        const ytId = extractYouTubeId(rawUrl);
+        if (ytId) {
+            return `
+                <div class="comment-preview-card" id="comment_preview_${commentId}">
+                    <div class="comment-preview-thumb-wrap" onclick="LuminaComments.openCommentYouTubePlayer('${commentId}', '${ytId}')" title="Kliknij, aby odtworzyć wideo">
+                        <img src="https://i.ytimg.com/vi/${ytId}/hqdefault.jpg" alt="Wideo YouTube" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='worship_logo.png';">
+                        <div class="comment-preview-play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <div id="comment_yt_embed_${commentId}" class="comment-yt-embed-wrap" style="display:none;"></div>
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge badge-youtube"><i class="fa-brands fa-youtube"></i> Wideo YouTube</span>
+                            <span class="comment-preview-domain">youtube.com</span>
+                        </div>
+                        <h4 class="comment-preview-title">Wideo Wiary • Obejrzyj nagranie w komentarzu</h4>
+                        <p class="comment-preview-desc">Kliknij miniaturę powyżej, aby obejrzeć materiał wideo bezpośrednio na Tablicy, lub przejdź do YouTube.</p>
+                        <div class="comment-preview-footer">
+                            <button type="button" class="comment-preview-btn" onclick="LuminaComments.openCommentYouTubePlayer('${commentId}', '${ytId}')">
+                                <i class="fa-solid fa-play"></i> Odtwórz wideo
+                            </button>
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-active-link" style="font-size:0.75rem;">
+                                YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. Randki & Małżeństwo (Roman Chałupka)
+        if (lowerUrl.includes('randki-malzenstwo') || lowerUrl.includes('kurs-malzenski')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-thumb-wrap">
+                        <img src="randki_malzenstwo_plakat_hq.webp" alt="Kurs Małżeński" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='tlo_profilowe_wioletta.jpg';">
+                    </div>
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge"><i class="fa-solid fa-heart"></i> Kurs Małżeński</span>
+                            <span class="comment-preview-domain">polskieradio.cc</span>
+                        </div>
+                        <h4 class="comment-preview-title">Randki & Małżeństwo • Roman Chałupka</h4>
+                        <p class="comment-preview-desc">Prawdziwe szczęście w rodzinie – 18 odcinków wykładów biblijnych dla narzeczonych, par i małżeństw. Oglądaj bez opłat.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                                <i class="fa-solid fa-graduation-cap"></i> Otwórz Kurs 🕊️
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. Kino Chrześcijańskie VOD
+        if (lowerUrl.includes('/vod') || lowerUrl.includes('kino')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-thumb-wrap">
+                        <img src="vod_hity_kina.webp" alt="VOD Kino Chrześcijańskie" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='promo_dzj.jpg';">
+                    </div>
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge"><i class="fa-solid fa-film"></i> Kino Chrześcijańskie</span>
+                            <span class="comment-preview-domain">polskieradio.cc/vod</span>
+                        </div>
+                        <h4 class="comment-preview-title">Kino VOD Christian Culture • Bez Opłat i Bez Reklam</h4>
+                        <p class="comment-preview-desc">Poruszające filmy fabularne, biografie wiary i historyczne dramaty z polskim lektorem na żądanie 24/7.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                                <i class="fa-solid fa-play"></i> Oglądaj w VOD 🍿
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. Dom Modlitwy & Wstawiennictwo Live
+        if (lowerUrl.includes('/modlitwa') || lowerUrl.includes('zjednoczeni-za-polske')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-thumb-wrap">
+                        <img src="lion_jewish_flag.jpg" alt="Dom Modlitwy" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                    </div>
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge"><i class="fa-solid fa-hands-praying"></i> Wstawiennictwo Live</span>
+                            <span class="comment-preview-domain">polskieradio.cc/modlitwa</span>
+                        </div>
+                        <h4 class="comment-preview-title">Narodowy Dom Modlitwy • Zjednoczeni za Polskę</h4>
+                        <p class="comment-preview-desc">Wstawiennictwo czasu rzeczywistego. Zgłoś swoją intencję i módl się razem z tysiącami wierzących.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                                <i class="fa-solid fa-hands-praying"></i> Módl się TERAZ 🕊️
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 5. MojaBiblia (Pismo Święte)
+        if (lowerUrl.includes('mojabiblia')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge"><i class="fa-solid fa-book-bible"></i> Pismo Święte</span>
+                            <span class="comment-preview-domain">polskieradio.cc/mojabiblia</span>
+                        </div>
+                        <h4 class="comment-preview-title">MojaBiblia • Interlinearne Studium Słowa Bożego</h4>
+                        <p class="comment-preview-desc">Tekst Pisma Świętego UBG, kody Stronga, słowniki greki i hebrajskiego oraz rozważania.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                                <i class="fa-solid fa-book-open"></i> Czytaj Biblię 📖
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 6. Polskie Radio CC Live / Player
+        if (lowerUrl.includes('polskieradio.cc') || lowerUrl.includes('player')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge"><i class="fa-solid fa-radio"></i> Radio na Żywo</span>
+                            <span class="comment-preview-domain">polskieradio.cc</span>
+                        </div>
+                        <h4 class="comment-preview-title">Polskie Radio Christian Culture Live</h4>
+                        <p class="comment-preview-desc">Muzyka Uwielbienia & Słowo Boże 24/7. Transmisja bez przerw, budująca wiarę w Twoim domu.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                                <i class="fa-solid fa-play"></i> Słuchaj na żywo 📻
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 7. Patronite
+        if (lowerUrl.includes('patronite.pl')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge" style="background:rgba(239,68,68,0.2); color:#fca5a5; border-color:rgba(239,68,68,0.4);"><i class="fa-solid fa-heart"></i> Patronite CC</span>
+                            <span class="comment-preview-domain">patronite.pl/osobowoscplus</span>
+                        </div>
+                        <h4 class="comment-preview-title">Wesprzyj Misję Christian Culture na Patronite</h4>
+                        <p class="comment-preview-desc">Twoje wsparcie pozwala nam rozwijać bezpłatne media chrześcijańskie i wysyłać bezpłatne egzemplarze Biblii.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn" style="background:linear-gradient(135deg,#ef4444,#f97316); color:#fff;">
+                                <i class="fa-solid fa-heart"></i> Zostań Patronem ❤️
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 8. WhatsApp
+        if (lowerUrl.includes('chat.whatsapp.com')) {
+            return `
+                <div class="comment-preview-card">
+                    <div class="comment-preview-body">
+                        <div class="comment-preview-badge-row">
+                            <span class="comment-preview-badge" style="background:rgba(34,197,94,0.2); color:#86efac; border-color:rgba(34,197,94,0.4);"><i class="fa-brands fa-whatsapp"></i> Społeczność WhatsApp</span>
+                            <span class="comment-preview-domain">chat.whatsapp.com</span>
+                        </div>
+                        <h4 class="comment-preview-title">Oficjalna Grupa Wspólnotowa Christian Culture</h4>
+                        <p class="comment-preview-desc">Dołącz do grupy modlitewno-wspólnotowej. Bądź na bieżąco z codziennymi rozważaniami i intencjami.</p>
+                        <div class="comment-preview-footer">
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn" style="background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff;">
+                                <i class="fa-brands fa-whatsapp"></i> Dołącz do Grupy 💬
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 9. Dowolna inna witryna zewnętrzna
+        let domain = rawUrl.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+        return `
+            <div class="comment-preview-card">
+                <div class="comment-preview-body">
+                    <div class="comment-preview-badge-row">
+                        <span class="comment-preview-badge"><i class="fa-solid fa-globe"></i> Link Zewnętrzny</span>
+                        <span class="comment-preview-domain">${escapeHtml(domain)}</span>
+                    </div>
+                    <h4 class="comment-preview-title">${escapeHtml(domain)} • Odsłonięta treść polecana przez zaufany profil</h4>
+                    <p class="comment-preview-desc">Zweryfikowany odnośnik opublikowany przez zaufanego członka społeczności.</p>
+                    <div class="comment-preview-footer">
+                        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-preview-btn">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz link 🔗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    openCommentYouTubePlayer(commentId, ytId) {
+        const previewCard = document.getElementById('comment_preview_' + commentId);
+        if (!previewCard) return;
+        const thumbWrap = previewCard.querySelector('.comment-preview-thumb-wrap');
+        const embedWrap = document.getElementById('comment_yt_embed_' + commentId);
+        if (thumbWrap && embedWrap) {
+            thumbWrap.style.display = 'none';
+            embedWrap.style.display = 'block';
+            embedWrap.innerHTML = `
+                <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1" 
+                        title="Wideo YouTube w komentarzu" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+            `;
+        }
+    },
+
+    formatCommentText(rawText, comment = null) {
+        if (!rawText) return '';
+        const isTrusted = comment ? this.isTrustedAuthor(comment) : false;
+        const commentId = comment?.id || ('tmp_' + Date.now());
+
+        // Sanityzacja HTML
+        let text = escapeHtml(rawText);
+
+        // Regex wykrywający URL
+        const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
+        const foundUrls = text.match(urlRegex) || [];
+
+        if (isTrusted) {
+            // ZAUFANE PROFILE: aktywne, klikalne linki z ikoną
+            text = text.replace(urlRegex, (url) => {
+                let display = url.replace(/^https?:\/\/(www\.)?/, '');
+                if (display.length > 40) display = display.substring(0, 37) + '...';
+                const safeUrl = encodeURI(url).replace(/"/g, '&quot;');
+                return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="comment-active-link"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i> ${display}</a>`;
+            });
+        } else {
+            // NIEZAUFANE PROFILE: link bezpieczny bez podglądu
+            text = text.replace(urlRegex, (url) => {
+                let display = url.replace(/^https?:\/\/(www\.)?/, '');
+                if (display.length > 40) display = display.substring(0, 37) + '...';
+                return `<span class="comment-untrusted-link"><i class="fa-solid fa-link"></i> ${display}</span>`;
+            });
+        }
+
+        // Formatuje @mentions
+        text = text.replace(/(^|[\s>(])@([a-zA-Z0-9_]+)/g, (match, p1, handle) => {
+            const hInfo = typeof resolveMentionHandle === 'function' ? resolveMentionHandle(handle) : null;
+            const nameAttr = (hInfo && hInfo.name) ? escapeHtml(hInfo.name) : escapeHtml(handle);
+            const urlAttr = (hInfo && hInfo.url) ? encodeURI(hInfo.url) : `lumina-profile.html?u=${encodeURIComponent(handle)}`;
+            return `${p1}<a href="${urlAttr}" class="lumina-mention-pill" title="Profil: ${nameAttr}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`;
+        });
+
+        // Formatuje #hashtags
+        text = text.replace(/(^|[\s>(])#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, p1, tag) => {
+            const safeTag = escapeHtml(tag);
+            const encTag = encodeURIComponent(tag);
+            return `${p1}<a href="lumina-tablica.html?q=%23${encTag}" class="lumina-hashtag-pill" data-tag="${safeTag}" title="Filtruj #${safeTag}" onclick="if(window.filterFeedByTag){event.preventDefault();event.stopPropagation();window.filterFeedByTag('${safeTag}');}else{event.stopPropagation();}"><i class="fa-solid fa-hashtag"></i>${safeTag}</a>`;
+        });
+
+        // Zamiana \n na <br>
+        text = text.replace(/\n/g, '<br>');
+
+        // JEŚLI PROFIL JEST ZAUFANY i w komentarzu jest co najmniej jeden link:
+        // Odsłoń w komentarzu jego treść (Rich Preview Card / Embed Player)
+        if (isTrusted && foundUrls.length > 0) {
+            const firstUrl = foundUrls[0];
+            const previewCardHtml = this.createCommentLinkPreviewCardHtml(firstUrl, commentId);
+            if (previewCardHtml) {
+                text += previewCardHtml;
+            }
+        }
+
+        return text;
+    },
+
     insertFaithChip(postId, chipText) {
         const input = document.getElementById('comment_input_' + postId);
         if (!input) return;
@@ -7783,7 +8111,7 @@ export const LuminaCommentsEngine = {
                     </div>
                 </div>
 
-                <div class="comment-text-content">${this.formatCommentText(c.text)}</div>
+                <div class="comment-text-content">${this.formatCommentText(c.text, c)}</div>
 
                 <!-- Inline Edit Form (Hidden by default) -->
                 <div class="comment-inline-edit-wrap" style="display:none;">
