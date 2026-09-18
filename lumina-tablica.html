@@ -203,7 +203,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/christian-culture-design-system.css?v=20260919_tags_mentions">
+    <link rel="stylesheet" href="/css/christian-culture-design-system.css?v=20260919_lounge_pro">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Community Core Posts Data -->
@@ -4204,7 +4204,7 @@
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
-    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20260913_fix_v3">
+    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20260919_lounge_pro">
     <link rel="stylesheet" href="/css/lumina-profile.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-feed.css?v=20260916_sort_touch_v3">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
@@ -6297,9 +6297,9 @@
                     <div id="dmActiveConversationBox" style="display: none; flex-direction: column; height: 100%; min-height: 0;">
                         <!-- Chat Room Header (Meta Messenger Style) -->
                         <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08); min-height: 58px; gap: 8px;">
-                            <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
+                            <div class="chat-header-user-info" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
                                 <button type="button" class="messenger-back-btn" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 6px; flex-shrink: 0;" title="Powrót do listy rozmów"><i class="fa-solid fa-arrow-left"></i></button>
-                                <div style="position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <div class="chat-header-avatar-wrap" style="position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                     <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; max-width: 44px; max-height: 44px; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #c084fc; display: block; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                                     <span style="position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px; min-width: 11px; min-height: 11px; border-radius: 50%; background: #10b981; border: 2px solid #070d1e; flex-shrink: 0; pointer-events: none;"></span>
                                 </div>
@@ -6308,7 +6308,7 @@
                                         Rozmowa Prywatna
                                     </div>
                                     <div style="font-size: 0.70rem; color: #10b981; display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        <span style="width: 6px; height: 6px; min-width: 6px; min-height: 6px; border-radius: 50%; background: #10b981; display: inline-block; flex-shrink: 0;"></span> Aktywny(a) teraz • Bezpieczna Rozmowa ✨
+                                        <span style="width: 6px; height: 6px; min-width: 6px; min-height: 6px; border-radius: 50%; background: #10b981; display: inline-block; flex-shrink: 0;"></span> <span class="chat-status-full">Aktywny(a) teraz • Bezpieczna Rozmowa ✨</span><span class="chat-status-compact">Aktywny(a) teraz ✨</span>
                                     </div>
                                 </div>
                             </div>
@@ -6330,9 +6330,14 @@
                                     <i class="fa-solid fa-tower-broadcast" style="color: #F5DC9A;"></i>
                                     <span>Sync-Faith Lounge • Dla Dwojga</span>
                                 </div>
-                                <div class="sync-lounge-status-pill" id="syncLoungeStatusPill">
-                                    <span style="width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block;"></span>
-                                    <span id="syncLoungeStatusText">Zsynchronizowano co do sekundy</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div class="sync-lounge-status-pill" id="syncLoungeStatusPill">
+                                        <span style="width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block;"></span>
+                                        <span id="syncLoungeStatusText"><span class="sync-status-full">Zsynchronizowano co do sekundy</span><span class="sync-status-compact">Zsynchronizowano</span></span>
+                                    </div>
+                                    <button type="button" class="sync-lounge-close-btn" onclick="toggleSyncFaithLounge()" title="Zwiń Odtwarzacz">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -6353,7 +6358,7 @@
                             <div class="sync-player-card" id="syncPlayerCard">
                                 <!-- Radio Player View -->
                                 <div id="syncRadioView" class="sync-radio-wrap">
-                                    <img src="tlo_pr_cc.jpg" alt="Radio Christian Culture" class="sync-radio-cover">
+                                    <img src="tlo_pr_cc.jpg" alt="Radio Christian Culture" class="sync-radio-cover" style="width: 52px; height: 52px; min-width: 52px; min-height: 52px; max-width: 52px; max-height: 52px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(212,169,74,0.4); flex-shrink: 0;">
                                     <div class="sync-radio-info">
                                         <div class="sync-radio-title">Radio Christian Culture 24/7</div>
                                         <div class="sync-radio-sub" id="syncRadioSub">Wspólne budowanie w Słowie i uwielbieniu 🕊️</div>
