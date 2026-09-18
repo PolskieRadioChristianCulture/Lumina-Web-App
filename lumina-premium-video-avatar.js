@@ -40,6 +40,13 @@
             desc: 'Dynamiczna pętla misyjna Christian Culture'
         },
         {
+            id: 'preset_sds_official',
+            title: 'Studio Dobrego Słowa • Apokalipsa Live',
+            badge: 'Studio DeeS',
+            url: 'https://www.youtube.com/watch?v=hHug_C6XDPU',
+            desc: 'Oficjalna transmisja wideo Studio Dobrego Słowa (@StudioDeeS)'
+        },
+        {
             id: 'preset_light_welcome',
             title: 'Cześć! Dobrze, że jesteś ✨',
             badge: 'Powitanie',
@@ -281,12 +288,12 @@
                     white-space: nowrap;
                     text-decoration: none;
 
-                    /* NA ŻYCZENIE - UKRYTY DOMYŚLNIE, POJAWIA SIĘ PO KLIKNIĘCIU W AWATAR */
-                    opacity: 0;
-                    visibility: hidden;
-                    pointer-events: none;
-                    transform: translateY(-8px) scale(0.85);
-                    transition: opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.25s;
+                    /* WIDOCZNY PRZYCISK DLA PROFILI LUB PO NAJECHANIU / KLIKNIĘCIU */
+                    opacity: 0.95;
+                    visibility: visible;
+                    pointer-events: auto;
+                    transform: none;
+                    transition: opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
                 }
 
                 .btn-video-avatar-badge.is-visible,

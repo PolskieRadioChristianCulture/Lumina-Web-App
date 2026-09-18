@@ -311,6 +311,12 @@
             box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
             margin-top: -60px;
             background: #0b1838;
+            cursor: pointer;
+            overflow: visible !important;
+        }
+
+        .avatar-wrap.has-premium-video {
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.7), 0 0 25px rgba(239, 68, 68, 0.5);
         }
 
         .avatar-img {
@@ -319,6 +325,76 @@
             border-radius: 50%;
             object-fit: cover;
             display: block;
+        }
+
+        .avatar-wrap .avatar-edit-overlay {
+            position: absolute !important;
+            inset: 0 !important;
+            border-radius: 50% !important;
+            background: rgba(0, 0, 0, 0.65) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #fff !important;
+            font-size: 1.4rem !important;
+            opacity: 0 !important;
+            border: none !important;
+            cursor: pointer !important;
+            transition: opacity 0.2s ease !important;
+            z-index: 10 !important;
+        }
+
+        .avatar-wrap:hover .avatar-edit-overlay {
+            opacity: 1 !important;
+        }
+
+        .btn-video-avatar-badge {
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            z-index: 12;
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+            color: #fff;
+            border: 1.5px solid rgba(15, 23, 42, 0.95);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.7), 0 0 14px rgba(245,158,11,0.5);
+            white-space: nowrap;
+            text-decoration: none;
+            opacity: 0.95;
+            visibility: visible;
+            pointer-events: auto;
+            transform: none;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-video-avatar-badge:hover {
+            transform: scale(1.08);
+            opacity: 1;
+        }
+
+        /* Post author avatar fixed 46px - pancerne zabezpieczenie przed rozciąganiem logo */
+        .post-avatar,
+        .post-header .post-avatar,
+        .post-author-img,
+        .post-author-box img {
+            width: 46px !important;
+            height: 46px !important;
+            min-width: 46px !important;
+            min-height: 46px !important;
+            max-width: 46px !important;
+            max-height: 46px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            flex-shrink: 0 !important;
+            border: 2px solid #ef4444 !important;
+            display: block !important;
         }
 
         .avatar-badge-check {
@@ -336,6 +412,7 @@
             font-size: 0.85rem;
             border: 3px solid var(--navy-surface);
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+            z-index: 11;
         }
 
         .head-actions {
@@ -1257,10 +1334,18 @@
         <!-- Profile Head Info Card -->
         <div class="profile-head-card">
             <div class="head-top-row">
-                <div class="avatar-wrap">
-                    <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="avatar-img">
-                    <span class="avatar-badge-check" title="Oficjalny Zweryfikowany Profil Misji CC"><i class="fa-solid fa-check"></i></span>
+                <div class="avatar-wrap has-premium-video" id="sdsAvatarWrap" onclick="openSdsAvatarModal(event)" title="Kliknij, aby zmienić zdjęcie lub wideo profilowe">
+                    <video id="profileAvatarVideoEl" class="avatar-video-element" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="studiodobregoslowa_avatar.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:#000;"></video>
+                    <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
+                    <button type="button" class="avatar-edit-overlay" onclick="openSdsAvatarModal(event)" title="Zmień zdjęcie lub wideo profilowe" style="z-index:10;">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <button type="button" class="btn-video-avatar-badge is-visible" onclick="event.stopPropagation(); if(window.LuminaPremiumAvatar) window.LuminaPremiumAvatar.openModal('studiodobregoslowa');" title="10s Wideo Profilowe • Opcja Premium / Patron CC" style="z-index:12;">
+                        <i class="fa-solid fa-play"></i> 10s Wideo
+                    </button>
+                    <span class="avatar-badge-check" title="Oficjalny Zweryfikowany Profil Misji CC" style="z-index:11;"><i class="fa-solid fa-check"></i></span>
                 </div>
+                <input type="file" id="sdsAvatarFileInput" accept="image/*" style="display:none;" onchange="handleSdsAvatarSelected(event)">
 
                 <div class="head-actions">
                     <button class="btn-action-primary" onclick="toggleFollowProfile(this)">
@@ -1376,6 +1461,55 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
+                <!-- 🔴 KANAŁ NADAWCZY: Apokalipsa: Księga Nadziei — LIVE (NA STAŁE JAKO PIERWSZY POST U GÓRY) -->
+                <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:24px;">
+                    <div class="post-header">
+                        <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-avatar" style="width:46px; height:46px; min-width:46px; min-height:46px; max-width:46px; max-height:46px; border-radius:50%; object-fit:cover; border:2px solid #ef4444; flex-shrink:0; display:block;">
+                        <div style="flex:1;">
+                            <div class="post-author" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                                <span>Studio Dobrego Słowa</span>
+                                <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span>
+                                <span class="pinned-post-badge" style="background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); color:#fca5a5; font-size:0.70rem; font-weight:800; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-thumbtack"></i> PRZYPIĘTY KANAŁ NADAWCZY</span>
+                            </div>
+                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO 24/7 • APOKALIPSA: KSIĘGA NADZIEI</div>
+                        </div>
+                        <div class="live-viewer-chip">
+                            <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA NA ŻYWO</span>
+                        </div>
+                    </div>
+
+                    <div class="post-content">
+                        <div style="font-weight:800;color:#fff;font-size:1.12rem;margin-bottom:6px;">🔴 APOKALIPSA: KSIĘGA NADZIEI — Kompletny Kurs Biblijny</div>
+                        <div style="color:#cbd5e1;font-size:0.92rem;line-height:1.55;">
+                            Wielu ludzi kojarzy Księgę Objawienia wyłącznie z katastrofami i lękiem. Jednak pierwsze słowa tej księgi mówią o Objawieniu Jezusa Chrystusa jako Zwycięzcy! Bóg ma pełną kontrolę nad historią świata, a ostateczne słowo należy do Baranka. Zostań z nami w Słowie Bożym! 🕊️
+                        </div>
+                    </div>
+
+                    <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
+                    <div class="mission-live-player-wrapper">
+                        <iframe src="apokalipsa-ksiega-nadziei-live.html?muted=1&mute=1&in_mcr=1"
+                                title="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa LIVE"
+                                allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share"
+                                allowfullscreen
+                                loading="eager"></iframe>
+                        <div class="mission-live-player-overlay">
+                            <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)">
+                                <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
+                            </button>
+                            <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-expand-live">
+                                <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="post-footer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">156</span></button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (141)</button>
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Kanał</a>
+                        <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                    </div>
+                </article>
+
                 <!-- ✍️ KOMPOZYTOR POSTÓW: Studio Dobrego Słowa -->
                 <div class="feed-composer-card" id="sdsPostComposer">
                     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.80rem;">
@@ -1427,55 +1561,6 @@
 
                     <input type="file" id="composerImgFileInput" accept="image/*" style="display:none;" onchange="handleComposerImgSelected(event)">
                 </div>
-
-                <!-- 🔴 KANAŁ NADAWCZY: Apokalipsa: Księga Nadziei — LIVE (NA STAŁE JAKO PIERWSZY POST) -->
-                <article class="post-card mission-live-broadcast-card" id="post_live_sds_apokalipsa" style="margin-bottom:24px;">
-                    <div class="post-header">
-                        <img src="studiodobregoslowa_avatar.jpg" onerror="this.src='lumina_icon.jpg'" alt="Studio Dobrego Słowa" class="post-avatar">
-                        <div style="flex:1;">
-                            <div class="post-author" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
-                                <span>Studio Dobrego Słowa</span>
-                                <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span>
-                                <span class="pinned-post-badge" style="background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); color:#fca5a5; font-size:0.70rem; font-weight:800; padding:2px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-thumbtack"></i> PRZYPIĘTY KANAŁ NADAWCZY</span>
-                            </div>
-                            <div class="post-time">🔴 TRANSMISJA NA ŻYWO 24/7 • APOKALIPSA: KSIĘGA NADZIEI</div>
-                        </div>
-                        <div class="live-viewer-chip">
-                            <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA NA ŻYWO</span>
-                        </div>
-                    </div>
-
-                    <div class="post-content">
-                        <div style="font-weight:800;color:#fff;font-size:1.12rem;margin-bottom:6px;">🔴 APOKALIPSA: KSIĘGA NADZIEI — Kompletny Kurs Biblijny</div>
-                        <div style="color:#cbd5e1;font-size:0.92rem;line-height:1.55;">
-                            Wielu ludzi kojarzy Księgę Objawienia wyłącznie z katastrofami i lękiem. Jednak pierwsze słowa tej księgi mówią o Objawieniu Jezusa Chrystusa jako Zwycięzcy! Bóg ma pełną kontrolę nad historią świata, a ostateczne słowo należy do Baranka. Zostań z nami w Słowie Bożym! 🕊️
-                        </div>
-                    </div>
-
-                    <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
-                    <div class="mission-live-player-wrapper">
-                        <iframe src="apokalipsa-ksiega-nadziei-live.html?muted=1&mute=1&in_mcr=1"
-                                title="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa LIVE"
-                                allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share"
-                                allowfullscreen
-                                loading="eager"></iframe>
-                        <div class="mission-live-player-overlay">
-                            <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)">
-                                <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
-                            </button>
-                            <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-expand-live">
-                                <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="post-footer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
-                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">156</span></button>
-                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen! (141)</button>
-                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="post-action-btn" style="text-decoration:none;color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Kanał</a>
-                        <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
-                    </div>
-                </article>
 
                 <!-- Dynamiczny strumień postów opublikowanych na profilu SDS (poniżej kanału nadawczego) -->
                 <div id="localPostsStream"></div>
@@ -2166,15 +2251,150 @@
         // Inicjalizacja przy załadowaniu DOM
         document.addEventListener('DOMContentLoaded', function() {
             loadSavedCover();
+            loadSavedAvatar();
             loadSdsPosts();
         });
         if (document.readyState !== 'loading') {
             loadSavedCover();
+            loadSavedAvatar();
             loadSdsPosts();
         }
+
+        function openSdsAvatarModal(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            const m = document.getElementById('sdsAvatarChoiceModal');
+            if (m) m.classList.add('open');
+        }
+
+        function closeSdsAvatarModal(e) {
+            if (e && e.target && e.target !== document.getElementById('sdsAvatarChoiceModal')) return;
+            const m = document.getElementById('sdsAvatarChoiceModal');
+            if (m) m.classList.remove('open');
+        }
+
+        function openSdsVideoAvatarCreator() {
+            closeSdsAvatarModal();
+            if (window.LuminaPremiumAvatar) {
+                window.LuminaPremiumAvatar.openModal('studiodobregoslowa');
+            }
+        }
+
+        function triggerSdsPhotoUpload() {
+            closeSdsAvatarModal();
+            const input = document.getElementById('sdsAvatarFileInput');
+            if (input) input.click();
+        }
+
+        function handleSdsAvatarSelected(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            showToast('⏳ Przetwarzanie zdjęcia profilowego...');
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                localStorage.setItem('lumina_avatar_studiodobregoslowa', dataUrl);
+                const avatarImg = document.getElementById('avatarImgEl');
+                if (avatarImg) avatarImg.src = dataUrl;
+                
+                // Ukryj wideo na rzecz wgranego zdjęcia
+                localStorage.setItem('lumina_avatar_video_studiodobregoslowa', '');
+                const v = document.getElementById('profileAvatarVideoEl');
+                if (v) v.style.display = 'none';
+                
+                try {
+                    const pRaw = localStorage.getItem('lumina_profile_studiodobregoslowa') || '{}';
+                    const p = JSON.parse(pRaw);
+                    p.avatar = dataUrl;
+                    delete p.avatarVideo;
+                    localStorage.setItem('lumina_profile_studiodobregoslowa', JSON.stringify(p));
+                    if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                        window.LuminaDB.saveProfileToCloud('studiodobregoslowa', p);
+                    }
+                } catch(err) {}
+                
+                showToast('✨ Nowe zdjęcie profilowe zostało zapisane!');
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function restoreSdsDefaultAvatar() {
+            closeSdsAvatarModal();
+            localStorage.removeItem('lumina_avatar_studiodobregoslowa');
+            localStorage.removeItem('lumina_avatar_video_studiodobregoslowa');
+            const avatarImg = document.getElementById('avatarImgEl');
+            if (avatarImg) avatarImg.src = 'studiodobregoslowa_avatar.jpg';
+            const v = document.getElementById('profileAvatarVideoEl');
+            if (v) {
+                v.src = 'czesc_dobrze_ze_jestes.mp4';
+                v.style.display = 'block';
+                v.load();
+                v.play().catch(() => {});
+            }
+            if (window.LuminaPremiumAvatar) {
+                window.LuminaPremiumAvatar.mountVideoAvatars('studiodobregoslowa');
+            }
+            showToast('✨ Przywrócono domyślny awatar Studio Dobrego Słowa!');
+        }
+
+        function loadSavedAvatar() {
+            const savedAvatar = localStorage.getItem('lumina_avatar_studiodobregoslowa');
+            const savedVideo = localStorage.getItem('lumina_avatar_video_studiodobregoslowa');
+            
+            const avatarImg = document.getElementById('avatarImgEl');
+            const videoEl = document.getElementById('profileAvatarVideoEl');
+            
+            if (savedAvatar && avatarImg) {
+                avatarImg.src = savedAvatar;
+            }
+            
+            if (savedVideo !== null && savedVideo === '') {
+                // Użytkownik ustawił statyczne zdjęcie i wyłączył wideo
+                if (videoEl) videoEl.style.display = 'none';
+            } else if (savedVideo) {
+                if (videoEl && (!window.LuminaPremiumAvatar || !window.LuminaPremiumAvatar.getYouTubeId(savedVideo))) {
+                    videoEl.src = savedVideo;
+                    videoEl.style.display = 'block';
+                    videoEl.load();
+                    videoEl.play().catch(() => {});
+                }
+            } else {
+                if (videoEl) {
+                    videoEl.src = 'czesc_dobrze_ze_jestes.mp4';
+                    videoEl.style.display = 'block';
+                    videoEl.load();
+                    videoEl.play().catch(() => {});
+                }
+            }
+        }
     </script>
+
+    <!-- ── Avatar Choice Modal ── -->
+    <div class="modal-overlay" id="sdsAvatarChoiceModal" onclick="closeSdsAvatarModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width:440px; text-align:center;">
+            <div class="modal-title" style="justify-content:center; margin-bottom:14px;">
+                <span style="font-size:1.15rem; font-weight:800; color:#fff;"><i class="fa-solid fa-camera-rotate" style="color:#ef4444;"></i> Zdjęcie & Wideo Profilowe</span>
+                <button type="button" class="modal-close-btn" onclick="closeSdsAvatarModal()">&times;</button>
+            </div>
+            <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:18px;">
+                Wybierz, co chcesz ustawić jako awatar profilu <b>Studio Dobrego Słowa</b>:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="btn-action-primary" onclick="openSdsVideoAvatarCreator()" style="background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; padding:12px 18px; font-size:0.92rem; font-weight:800; justify-content:center; box-shadow:0 4px 14px rgba(245,158,11,0.4); cursor:pointer;">
+                    <i class="fa-solid fa-video"></i> 🎬 Ustaw 10s Wideo Profilowe (YouTube / MP4)
+                </button>
+                <button type="button" class="btn-action-secondary" onclick="triggerSdsPhotoUpload()" style="padding:12px 18px; font-size:0.92rem; font-weight:700; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; cursor:pointer;">
+                    <i class="fa-solid fa-image"></i> 📷 Wgraj nowe Zdjęcie z dysku
+                </button>
+                <button type="button" class="btn-action-secondary" onclick="restoreSdsDefaultAvatar()" style="padding:10px 18px; font-size:0.82rem; color:#fca5a5; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); justify-content:center; cursor:pointer;">
+                    <i class="fa-solid fa-rotate-left"></i> Przywróć Domyślny Awatar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="lumina-admin-profile-suite.js?v=20260918_autolink_1x1"></script>
-    <script src="lumina-premium-video-avatar.js"></script>
+    <script src="lumina-premium-video-avatar.js?v=20260918_video_fix"></script>
     <script src="js/lumina-followed-friends.js" defer></script>
 </body>
 </html>
