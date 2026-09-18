@@ -151,8 +151,8 @@
             <div class="lmp-left" onclick="window.LuminaMiniPlayer.onLeftClick(event)" title="${station.name}">
                 <div class="lmp-cover-wrap">
                     <img src="${station.logo}" alt="${station.name}" class="lmp-cover-img" id="lmpCoverImg" onerror="this.src='logo_radio_cc.jpg'">
-                    <div class="lmp-mini-play-indicator">
-                        <i class="fa-solid fa-play"></i>
+                    <div class="lmp-mini-play-indicator" id="lmpMiniPlayIndicator">
+                        <i class="fa-solid ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>
                     </div>
                 </div>
                 <div class="lmp-info">
@@ -223,6 +223,7 @@
         const subEl = document.getElementById('lmpSubtitle');
         const coverEl = document.getElementById('lmpCoverImg');
         const playIcon = document.getElementById('lmpPlayIcon');
+        const miniPlayIndicator = document.getElementById('lmpMiniPlayIndicator');
 
         if (titleEl) titleEl.textContent = station.name;
         if (subEl) subEl.textContent = station.sub;
@@ -235,10 +236,16 @@
             if (playIcon) {
                 playIcon.className = 'fa-solid fa-pause';
             }
+            if (miniPlayIndicator) {
+                miniPlayIndicator.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
         } else {
             containerEl.classList.remove('playing');
             if (playIcon) {
                 playIcon.className = 'fa-solid fa-play';
+            }
+            if (miniPlayIndicator) {
+                miniPlayIndicator.innerHTML = '<i class="fa-solid fa-play"></i>';
             }
         }
 
