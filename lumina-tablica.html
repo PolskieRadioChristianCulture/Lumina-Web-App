@@ -8487,17 +8487,17 @@
                 { name: 'OsobowośćPLUS', slug: 'osobowoscplus', tag: 'Rozwój duchowy', avatar: 'logo_osobowosc_plus.jpg', verified: false },
             ];
 
-            // Rotacja karuzeli — różny zestaw przy każdym ładowaniu feedu
-            let _profileCarouselOffset = 0;
+            // Rotacja karuzeli — różny zestaw przy każdym ładowaniu feedu (różny offset → różny miks)
+            let _profileCarouselOffset = Math.floor(Math.random() * 10);
+            let _profileCarouselIdx = 0;
             function buildProfilesCarouselHtml() {
-                const count = 5;
-                const profiles = [];
-                for (let i = 0; i < count; i++) {
-                    profiles.push(LUMINA_FEED_PROFILES[(_profileCarouselOffset + i) % LUMINA_FEED_PROFILES.length]);
-                }
-                _profileCarouselOffset = (_profileCarouselOffset + 3) % LUMINA_FEED_PROFILES.length;
-                const cards = profiles.map(p => `
-                    <div class="profile-carousel-card" onclick="window.location.href='lumina-profile.html?user=${p.slug}'" title="Zobacz profil: ${p.name}">
+                // Wszystkie 10 profili, ale zaczynamy od innego punktu przy każdej karuzeli
+                const offset = (_profileCarouselOffset + _profileCarouselIdx * 3) % LUMINA_FEED_PROFILES.length;
+                _profileCarouselIdx++;
+                const uid = 'fc' + Date.now() + _profileCarouselIdx;
+                const cards = LUMINA_FEED_PROFILES.map((_, i) => {
+                    const p = LUMINA_FEED_PROFILES[(offset + i) % LUMINA_FEED_PROFILES.length];
+                    return `<div class="profile-carousel-card" onclick="window.location.href='lumina-profile.html?user=${p.slug}'" title="Zobacz profil: ${p.name}">
                         <div class="profile-carousel-avatar-wrap">
                             <img class="profile-carousel-avatar" src="${p.avatar}" alt="${p.name}" loading="lazy" onerror="this.src='lumina_logo_portal.jpg'">
                             ${p.verified ? `<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>` : ''}
@@ -8505,7 +8505,8 @@
                         <div class="profile-carousel-name">${p.name}</div>
                         <div class="profile-carousel-tag">${p.tag}</div>
                         <button class="profile-carousel-btn" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?user=${p.slug}'">Zobacz profil</button>
-                    </div>`).join('');
+                    </div>`;
+                }).join('');
                 return `
                 <div class="profiles-carousel-block" aria-label="Sekcja: Poznajmy się bliżej">
                     <div class="profiles-carousel-header">
@@ -8515,9 +8516,20 @@
                         </div>
                         <span style="font-size:0.65rem; color:#64748b; font-weight:600;">Społeczność LUMINA</span>
                     </div>
-                    <div class="profiles-carousel-scroll">${cards}</div>
+                    <div class="profiles-carousel-nav-wrap">
+                        <button class="profiles-carousel-nav-btn nav-prev" data-target="${uid}" aria-label="Poprzedni profil" title="Poprzedni">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <div class="profiles-carousel-scroll" id="${uid}">
+                            ${cards}
+                        </div>
+                        <button class="profiles-carousel-nav-btn nav-next" data-target="${uid}" aria-label="Następny profil" title="Następny">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>`;
             }
+
 
             // ── Feed render z karuzelą co 8 postów ──
             const PROFILE_CAROUSEL_EVERY = 4;
@@ -9047,6 +9059,8 @@
             if (window.LuminaViewportMediaManager?.scanAndObserve) {
                 window.LuminaViewportMediaManager.scanAndObserve();
             }
+            // Inicjuj nawigację (strzałki + drag) dla karuzel wstawionych przez renderFeed
+            initFeedCarousels(container);
         }
 
         function filterFeed(type, btn) {
@@ -13332,10 +13346,70 @@
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════
-     STATYCZNA KARUZELA PROFILI — pod kompozerem, nad feedem
-     Wypełniana niezależnie od renderFeed() przy każdym ładowaniu strony
+     KARUZELE PROFILI — wspólna logika nawigacji (strzałki + drag)
+     Używana przez statyczną karuzelę i wszystkie karuzele w feedzie
      ═══════════════════════════════════════════════════════════════════ -->
 <script>
+// ── Wspólna funkcja nawigacji karuzeli ───────────────────────────────────────
+// scroll    — element .profiles-carousel-scroll
+// prevBtn   — przycisk ◀ (może być null)
+// nextBtn   — przycisk ▶ (może być null)
+window.initCarouselNav = function(scroll, prevBtn, nextBtn) {
+    if (!scroll) return;
+    var STEP = 240;
+    function updateBtns() {
+        if (prevBtn) prevBtn.disabled = scroll.scrollLeft <= 2;
+        if (nextBtn) nextBtn.disabled = scroll.scrollLeft >= scroll.scrollWidth - scroll.clientWidth - 2;
+    }
+    if (prevBtn) prevBtn.addEventListener('click', function() { scroll.scrollBy({ left: -STEP, behavior: 'smooth' }); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { scroll.scrollBy({ left:  STEP, behavior: 'smooth' }); });
+    scroll.addEventListener('scroll', updateBtns, { passive: true });
+    updateBtns();
+
+    // Mouse-drag
+    var isDown = false, startX = 0, scrollStart = 0;
+    scroll.style.cursor = 'grab';
+    scroll.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.profile-carousel-btn') || e.target.closest('a')) return;
+        isDown = true; startX = e.pageX; scrollStart = scroll.scrollLeft;
+        scroll.classList.add('is-grabbing'); scroll.style.cursor = 'grabbing';
+        e.preventDefault();
+    });
+    document.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        scroll.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+    document.addEventListener('mouseup', function() {
+        if (!isDown) return;
+        isDown = false; scroll.classList.remove('is-grabbing'); scroll.style.cursor = 'grab';
+        updateBtns();
+    });
+    // Kółko myszy → scroll poziomy
+    scroll.addEventListener('wheel', function(e) {
+        if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+        e.preventDefault();
+        scroll.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
+        updateBtns();
+    }, { passive: false });
+};
+
+// ── Inicjuj karuzele wstrzyknięte przez renderFeed() ─────────────────────────
+// Wywołane przez renderFeed po każdym przerenderowaniu kontenera feedu.
+// Szuka przycisków z data-target="<scrollId>" i podpina nawigację.
+window.initFeedCarousels = function(container) {
+    if (!container) return;
+    container.querySelectorAll('.profiles-carousel-nav-wrap').forEach(function(wrap) {
+        var scroll  = wrap.querySelector('.profiles-carousel-scroll');
+        var prevBtn = wrap.querySelector('.nav-prev');
+        var nextBtn = wrap.querySelector('.nav-next');
+        if (scroll && !scroll._navInited) {
+            scroll._navInited = true;
+            window.initCarouselNav(scroll, prevBtn, nextBtn);
+        }
+    });
+};
+
+// ── Statyczna karuzela profili (pod kompozerem) ───────────────────────────────
 (function initStaticProfilesCarousel() {
     var PROFILES = [
         { name: 'Cezary Rogowski',      slug: 'cezaryrgowski',      tag: 'Dowódca CC',             avatar: 'avatar_cezary_official.jpg',         verified: true  },
@@ -13352,7 +13426,6 @@
     function run() {
         var scroll = document.getElementById('staticProfilesCarouselScroll');
         if (!scroll) return;
-        // Lekkie losowanie — zawsze inna kolejność przy ładowaniu
         var offset = Math.floor(Math.random() * PROFILES.length);
         var cards = '';
         for (var i = 0; i < PROFILES.length; i++) {
@@ -13361,71 +13434,18 @@
             cards += '<div class="profile-carousel-card" onclick="window.location.href=\'lumina-profile.html?user=' + p.slug + '\'" title="Zobacz profil: ' + p.name + '">'
                    + '<div class="profile-carousel-avatar-wrap">'
                    + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" onerror="this.src=\'lumina_logo_portal.jpg\'">'
-                   + badge
-                   + '</div>'
+                   + badge + '</div>'
                    + '<div class="profile-carousel-name">' + p.name + '</div>'
                    + '<div class="profile-carousel-tag">' + p.tag + '</div>'
                    + '<button class="profile-carousel-btn" onclick="event.stopPropagation();window.location.href=\'lumina-profile.html?user=' + p.slug + '\'">Zobacz profil</button>'
                    + '</div>';
         }
         scroll.innerHTML = cards;
-
-        // ── Przyciski strzałek ──────────────────────────────────────────────
-        var btnPrev = document.getElementById('staticCarouselPrev');
-        var btnNext = document.getElementById('staticCarouselNext');
-        var STEP = 240; // px na jedno kliknięcie
-        function updateBtns() {
-            if (!btnPrev || !btnNext) return;
-            btnPrev.disabled = scroll.scrollLeft <= 2;
-            btnNext.disabled = scroll.scrollLeft >= scroll.scrollWidth - scroll.clientWidth - 2;
-        }
-        if (btnPrev) {
-            btnPrev.addEventListener('click', function() {
-                scroll.scrollBy({ left: -STEP, behavior: 'smooth' });
-            });
-        }
-        if (btnNext) {
-            btnNext.addEventListener('click', function() {
-                scroll.scrollBy({ left: STEP, behavior: 'smooth' });
-            });
-        }
-        scroll.addEventListener('scroll', updateBtns, { passive: true });
-        updateBtns();
-
-        // ── Mouse-drag (kliknij i przeciągnij — desktop) ───────────────────
-        var isDown = false;
-        var startX = 0;
-        var scrollStart = 0;
-        scroll.style.cursor = 'grab';
-        scroll.addEventListener('mousedown', function(e) {
-            // Ignoruj kliknięcia w przyciski wewnętrzne
-            if (e.target.closest('.profile-carousel-btn') || e.target.closest('a')) return;
-            isDown = true;
-            startX = e.pageX;
-            scrollStart = scroll.scrollLeft;
-            scroll.classList.add('is-grabbing');
-            scroll.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
-        document.addEventListener('mousemove', function(e) {
-            if (!isDown) return;
-            var dx = e.pageX - startX;
-            scroll.scrollLeft = scrollStart - dx;
-        });
-        document.addEventListener('mouseup', function() {
-            if (!isDown) return;
-            isDown = false;
-            scroll.classList.remove('is-grabbing');
-            scroll.style.cursor = 'grab';
-            updateBtns();
-        });
-        // Kółko myszy → scroll poziomy (gdy kursor nad karuzelą)
-        scroll.addEventListener('wheel', function(e) {
-            if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return; // poziomy scroll — pomiń
-            e.preventDefault();
-            scroll.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
-            updateBtns();
-        }, { passive: false });
+        window.initCarouselNav(
+            scroll,
+            document.getElementById('staticCarouselPrev'),
+            document.getElementById('staticCarouselNext')
+        );
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', run);
@@ -13434,6 +13454,7 @@
     }
 })();
 </script>
+
 
 <!-- ═══════════════════════════════════════════════════════════════════
      VOD AD — Gwarancja Autoplay z Fallbackiem na GIF
