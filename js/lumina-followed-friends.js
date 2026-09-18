@@ -706,55 +706,15 @@
                 animation: friendsToastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
-            /* Opcje relacji na kafelku siatki (3-dots) */
-            .followed-card-opt-btn {
-                position: absolute;
-                top: 2px;
-                right: 2px;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: rgba(15, 23, 42, 0.85);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                color: #cbd5e1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.68rem;
-                cursor: pointer;
-                z-index: 4;
-                transition: all 0.2s;
-                backdrop-filter: blur(4px);
-                -webkit-backdrop-filter: blur(4px);
-                opacity: 0.85;
-            }
-
-            .followed-friend-item:hover .followed-card-opt-btn,
-            .followed-card-opt-btn:hover {
-                opacity: 1;
-                color: #facc15;
-                border-color: #facc15;
-                background: rgba(15, 23, 42, 0.98);
-                transform: scale(1.12);
-            }
-
-            .followed-friend-link {
-                text-decoration: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                color: inherit;
-            }
-
-            .followed-friend-badge, .followed-check-badge {
-                cursor: pointer;
-                transition: transform 0.15s ease, box-shadow 0.15s ease;
-            }
-
-            .followed-friend-badge:hover, .followed-check-badge:hover {
-                transform: scale(1.25);
-                box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+            .followed-card-opt-btn,
+            .followed-friend-badge,
+            .followed-check-badge {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                width: 0 !important;
+                height: 0 !important;
             }
 
             /* ── MODAL RELACJI I ZARZĄDZANIA ── */
