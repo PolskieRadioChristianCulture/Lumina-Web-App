@@ -1570,6 +1570,28 @@
     }, 1000);
 
     document.body.insertAdjacentHTML('beforeend', navHtml);
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // AUTO-INIEKCJA MINI-PLAYERA AUDIO DLA CAŁEGO PORTALU LUMINA
+    // ══════════════════════════════════════════════════════════════════════════
+    try {
+        if (!document.getElementById('luminaMiniPlayerCSS')) {
+            const lmpCss = document.createElement('link');
+            lmpCss.id = 'luminaMiniPlayerCSS';
+            lmpCss.rel = 'stylesheet';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v3';
+            document.head.appendChild(lmpCss);
+        }
+        if (!window.LuminaMiniPlayer && !document.getElementById('luminaMiniPlayerScript')) {
+            const lmpScript = document.createElement('script');
+            lmpScript.id = 'luminaMiniPlayerScript';
+            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v3';
+            lmpScript.defer = true;
+            document.body.appendChild(lmpScript);
+        }
+    } catch(e) {
+        console.warn('[LuminaBottomNav] Błąd auto-iniekcji Mini-Playera:', e);
+    }
     // ══════════════════════════════════════════════════════════════════════════
     // GLOBALNY MOBILNY PASEK LOGOWANIA / REJESTRACJI (ZAŁÓŻ KONTO | LOGOWANIE)
     // ══════════════════════════════════════════════════════════════════════════
