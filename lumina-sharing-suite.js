@@ -46,6 +46,10 @@
                 pointer-events: auto;
             }
 
+            .lumina-sheet-drag-handle {
+                display: none;
+            }
+
             .lumina-share-card {
                 width: 100%;
                 max-width: 520px;
@@ -65,6 +69,54 @@
 
             .lumina-share-overlay.active .lumina-share-card {
                 transform: scale(1) translateY(0);
+            }
+
+            @media (max-width: 768px) {
+                .lumina-share-overlay {
+                    align-items: flex-end !important;
+                    padding: 0 !important;
+                }
+
+                .lumina-share-card {
+                    max-width: 100% !important;
+                    border-radius: 28px 28px 0 0 !important;
+                    border-bottom: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    border-top: 2px solid rgba(250, 204, 21, 0.6) !important;
+                    padding: 12px 20px calc(24px + env(safe-area-inset-bottom, 16px)) 20px !important;
+                    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.95), 0 0 30px rgba(250, 204, 21, 0.25) !important;
+                    transform: translateY(100%) !important;
+                    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                    margin: 0 !important;
+                    touch-action: pan-y;
+                    will-change: transform;
+                    max-height: 88vh !important;
+                    overflow-y: auto !important;
+                    gap: 14px !important;
+                }
+
+                .lumina-share-overlay.active .lumina-share-card {
+                    transform: translateY(0) !important;
+                }
+
+                .lumina-sheet-drag-handle {
+                    display: block !important;
+                    width: 44px;
+                    height: 5px;
+                    background: rgba(255, 255, 255, 0.32);
+                    border-radius: 999px;
+                    margin: 0 auto 8px auto;
+                    cursor: grab;
+                    touch-action: none;
+                    transition: background 0.2s ease, width 0.2s ease;
+                }
+
+                .lumina-sheet-drag-handle:active,
+                .lumina-share-card.is-dragging .lumina-sheet-drag-handle {
+                    background: #facc15 !important;
+                    width: 52px !important;
+                }
             }
 
             .lumina-share-header {
@@ -112,7 +164,8 @@
 
             @media (max-width: 480px) {
                 .lumina-share-grid {
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-columns: repeat(3, 1fr) !important;
+                    gap: 8px !important;
                 }
             }
 
@@ -294,6 +347,7 @@
 
         div.innerHTML = `
             <div class="lumina-share-card" onclick="event.stopPropagation()">
+                <div class="lumina-sheet-drag-handle" id="luminaShareDragHandle" title="Przeciągnij w dół, aby zamknąć"></div>
                 <div class="lumina-share-header">
                     <div class="lumina-share-title-wrap">
                         <i class="fa-solid fa-share-nodes"></i>
@@ -343,6 +397,63 @@
         `;
         document.body.appendChild(div);
 
+        // ── Touch Gesture: Swipe-to-Dismiss on Mobile ──
+        const card = div.querySelector('.lumina-share-card');
+        const dragHandle = div.querySelector('#luminaShareDragHandle');
+        const header = div.querySelector('.lumina-share-header');
+
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        const onTouchStart = (e) => {
+            if (window.innerWidth > 768) return;
+            const target = e.target;
+            if (dragHandle.contains(target) || header.contains(target) || card.scrollTop <= 0) {
+                startY = e.touches[0].clientY;
+                currentY = startY;
+                isDragging = true;
+                card.classList.add('is-dragging');
+                card.style.transition = 'none';
+            }
+        };
+
+        const onTouchMove = (e) => {
+            if (!isDragging) return;
+            currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            if (deltaY > 0) {
+                card.style.transform = `translateY(${deltaY}px)`;
+                if (e.cancelable) e.preventDefault();
+            } else {
+                card.style.transform = `translateY(${deltaY * 0.15}px)`;
+            }
+        };
+
+        const onTouchEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            card.classList.remove('is-dragging');
+            const deltaY = currentY - startY;
+            card.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
+            if (deltaY > 80) {
+                closeShareModal();
+            } else {
+                card.style.transform = 'translateY(0)';
+            }
+        };
+
+        card.addEventListener('touchstart', onTouchStart, { passive: true });
+        card.addEventListener('touchmove', onTouchMove, { passive: false });
+        card.addEventListener('touchend', onTouchEnd, { passive: true });
+
+        // Global Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && div.classList.contains('active')) {
+                closeShareModal();
+            }
+        });
+
         // Push toast DOM
         const pushDiv = document.createElement('div');
         pushDiv.id = 'luminaPushToastPrompt';
@@ -382,12 +493,31 @@
         if (inputEl) inputEl.value = url;
 
         const overlay = document.getElementById('luminaShareModalOverlay');
-        if (overlay) overlay.classList.add('active');
+        if (overlay) {
+            const card = overlay.querySelector('.lumina-share-card');
+            if (card) {
+                card.style.transform = '';
+                card.style.transition = '';
+            }
+            overlay.classList.add('active');
+        }
     }
 
     function closeShareModal() {
         const overlay = document.getElementById('luminaShareModalOverlay');
-        if (overlay) overlay.classList.remove('active');
+        if (!overlay) return;
+        const card = overlay.querySelector('.lumina-share-card');
+        if (card && window.innerWidth <= 768) {
+            card.style.transition = 'transform 0.26s cubic-bezier(0.4, 0, 1, 1)';
+            card.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                card.style.transform = '';
+                card.style.transition = '';
+            }, 260);
+        } else {
+            overlay.classList.remove('active');
+        }
     }
 
     function executeShareTo(platform) {
