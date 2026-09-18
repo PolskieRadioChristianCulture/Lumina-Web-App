@@ -222,14 +222,14 @@ export const OMNI_BASE_PROFILES = [
         slug: 'studiodobregoslowa',
         name: 'Studio Dobrego Słowa',
         handle: '@sds',
-        aliases: ['studio dobrego slowa', 'studiods', 'studiods.pl', 'studiodees', 'apokalipsa live', 'herbaciarnia cc', 'pila', 'podcast'],
+        aliases: ['studio dobrego slowa', 'studiods', 'studiods.pl', 'studiodees', 'apokalipsa live', 'herbaciarnia dobrego slowa', 'herbaciarnia', 'pila', 'podcast'],
         city: 'Piła, Polska',
         job: 'Kanał YouTube @StudioDeeS • studiods.pl 🎙️',
-        bio: 'Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC.',
+        bio: 'Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni Dobrego Słowa.',
         avatar: 'studiodobregoslowa_avatar.jpg',
         url: 'lumina.studiodobregoslowa.html',
         type: 'channel',
-        badge: 'Kanał YouTube CC'
+        badge: 'Kanał YouTube @StudioDeeS'
     },
     {
         id: 'osobowoscplus',
