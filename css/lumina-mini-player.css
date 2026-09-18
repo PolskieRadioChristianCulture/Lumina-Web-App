@@ -1,0 +1,476 @@
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA PERSISTENT MINI-PLAYER (css/lumina-mini-player.css)
+ * Standard Dynamic Island / Spotify-grade Audio Experience dla Portalu LUMINA
+ * ══════════════════════════════════════════════════════════════════════════
+ */
+
+:root {
+    --lmp-bg: rgba(9, 14, 30, 0.92);
+    --lmp-blur: blur(24px) saturate(190%);
+    --lmp-border: rgba(250, 204, 21, 0.32);
+    --lmp-border-playing: rgba(250, 204, 21, 0.65);
+    --lmp-gold: #facc15;
+    --lmp-gold-dark: #ca8a04;
+    --lmp-cyan: #38bdf8;
+    --lmp-shadow: 0 14px 38px rgba(0, 0, 0, 0.8), 0 0 22px rgba(250, 204, 21, 0.16);
+    --lmp-shadow-playing: 0 16px 42px rgba(0, 0, 0, 0.85), 0 0 28px rgba(250, 204, 21, 0.3);
+    --lmp-zindex: 9998;
+}
+
+/* ── KONTENER GŁÓWNY MINI-PLAYERA ── */
+#luminaMiniPlayerContainer {
+    position: fixed;
+    z-index: var(--lmp-zindex);
+    bottom: 96px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 28px);
+    max-width: 440px;
+    height: 54px;
+    background: var(--lmp-bg);
+    backdrop-filter: var(--lmp-blur);
+    -webkit-backdrop-filter: var(--lmp-blur);
+    border: 1.5px solid var(--lmp-border);
+    border-radius: 28px;
+    box-shadow: var(--lmp-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 0 10px;
+    box-sizing: border-box;
+    user-select: none;
+    touch-action: manipulation;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+    visibility: visible;
+}
+
+#luminaMiniPlayerContainer.playing {
+    border-color: var(--lmp-border-playing);
+    box-shadow: var(--lmp-shadow-playing);
+}
+
+/* ── LEWA SEKCJA: OKŁADKA / AVATAR STACJI ── */
+.lmp-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    cursor: pointer;
+}
+
+.lmp-cover-wrap {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid rgba(250, 204, 21, 0.4);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #070e24;
+}
+
+.lmp-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+#luminaMiniPlayerContainer.playing .lmp-cover-img {
+    animation: lmpRotateCover 18s linear infinite;
+}
+
+@keyframes lmpRotateCover {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ── ŚRODEK: TEKST I ANIMOWANY EQUALIZER ── */
+.lmp-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
+    line-height: 1.25;
+}
+
+.lmp-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.lmp-title {
+    color: #f8fafc;
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lmp-live-badge {
+    background: rgba(239, 68, 68, 0.25);
+    border: 1px solid rgba(239, 68, 68, 0.6);
+    color: #fca5a5;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 6px;
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.lmp-live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: lmpPulseRed 1.4s infinite;
+}
+
+@keyframes lmpPulseRed {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Animowany Equalizer */
+.lmp-equalizer {
+    display: none;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+#luminaMiniPlayerContainer.playing .lmp-equalizer {
+    display: inline-flex;
+}
+
+.lmp-eq-bar {
+    width: 2.5px;
+    background: var(--lmp-gold);
+    border-radius: 1px;
+}
+
+.lmp-eq-bar:nth-child(1) { height: 4px; animation: lmpEq 0.7s infinite alternate ease-in-out; }
+.lmp-eq-bar:nth-child(2) { height: 10px; animation: lmpEq 0.9s 0.2s infinite alternate ease-in-out; }
+.lmp-eq-bar:nth-child(3) { height: 6px; animation: lmpEq 0.6s 0.4s infinite alternate ease-in-out; }
+
+@keyframes lmpEq {
+    0% { height: 3px; }
+    100% { height: 12px; }
+}
+
+.lmp-subtitle {
+    color: #94a3b8;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.70rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── PRAWE KONTROLKI ── */
+.lmp-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Przycisk zmiany stacji */
+.lmp-btn-stations {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.lmp-btn-stations:hover {
+    background: rgba(250, 204, 21, 0.2);
+    border-color: var(--lmp-gold);
+    color: var(--lmp-gold);
+    transform: scale(1.05);
+}
+
+/* Główny przycisk Play/Pause */
+.lmp-btn-play {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+    border: none;
+    color: #0b142e;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(250, 204, 21, 0.4);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0;
+}
+
+.lmp-btn-play:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(250, 204, 21, 0.6);
+}
+
+.lmp-btn-play:active {
+    transform: scale(0.95);
+}
+
+.lmp-btn-play i {
+    margin-left: 1.5px; /* Optyczne wycentrowanie trójkąta play */
+}
+
+#luminaMiniPlayerContainer.playing .lmp-btn-play i {
+    margin-left: 0;
+}
+
+/* Przycisk Zwiń / Zamknij */
+.lmp-btn-minimize {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.lmp-btn-minimize:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── TRYB ZMINIMALIZOWANY (FLOATING FLOATER BADGE) ── */
+#luminaMiniPlayerContainer.minimized {
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border-radius: 50%;
+    left: auto;
+    right: 16px;
+    transform: none;
+    border-color: var(--lmp-gold);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(250, 204, 21, 0.3);
+    cursor: pointer;
+}
+
+#luminaMiniPlayerContainer.minimized .lmp-info,
+#luminaMiniPlayerContainer.minimized .lmp-controls {
+    display: none !important;
+}
+
+#luminaMiniPlayerContainer.minimized .lmp-left {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#luminaMiniPlayerContainer.minimized .lmp-cover-wrap {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Znak odtwarzania w trybie zminimalizowanym */
+.lmp-mini-play-indicator {
+    display: none;
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--lmp-gold);
+    color: #0b142e;
+    font-size: 0.55rem;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+#luminaMiniPlayerContainer.minimized.playing .lmp-mini-play-indicator {
+    display: flex;
+}
+
+/* ── ROZWIJANY WYBÓR STACJI (STATION PICKER POPUP) ── */
+.lmp-stations-popup {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 290px;
+    background: rgba(11, 18, 42, 0.96);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1.5px solid rgba(250, 204, 21, 0.4);
+    border-radius: 18px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 24px rgba(250, 204, 21, 0.2);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10001;
+}
+
+.lmp-stations-popup.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.lmp-station-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.lmp-station-option:hover,
+.lmp-station-option.active {
+    background: rgba(250, 204, 21, 0.12);
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+.lmp-station-option-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(250, 204, 21, 0.4);
+    flex-shrink: 0;
+}
+
+.lmp-station-option-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.lmp-station-option-title {
+    color: #f8fafc;
+    font-size: 0.80rem;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lmp-station-option-sub {
+    color: #94a3b8;
+    font-size: 0.68rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lmp-station-option-badge {
+    color: var(--lmp-gold);
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.lmp-station-option.active .lmp-station-option-badge {
+    opacity: 1;
+}
+
+/* ── RESPONSYWNOŚĆ NA SMARTFONACH (<= 900px) ── */
+@media (max-width: 900px) {
+    #luminaMiniPlayerContainer {
+        bottom: calc(68px + env(safe-area-inset-bottom, 8px));
+        width: calc(100% - 20px);
+        max-width: 390px;
+        height: 50px;
+        padding: 0 6px 0 8px;
+    }
+
+    #luminaMiniPlayerContainer.minimized {
+        bottom: calc(74px + env(safe-area-inset-bottom, 8px));
+        right: 12px;
+        width: 44px;
+        height: 44px;
+    }
+
+    .lmp-cover-wrap {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+
+    .lmp-title {
+        font-size: 0.78rem;
+    }
+
+    .lmp-subtitle {
+        font-size: 0.65rem;
+    }
+
+    .lmp-btn-play {
+        width: 34px;
+        height: 34px;
+        font-size: 0.88rem;
+    }
+
+    .lmp-btn-stations {
+        width: 30px;
+        height: 30px;
+        font-size: 0.78rem;
+    }
+
+    .lmp-stations-popup {
+        width: calc(100vw - 40px);
+        max-width: 320px;
+    }
+}

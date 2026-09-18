@@ -852,6 +852,7 @@
     </style>
     <script src="lumina-mobile-back-guard.js?v=20260825_v1"></script>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
+    <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v1">
 </head>
 <body>
 
@@ -996,7 +997,7 @@
                     <p style="font-size:0.88rem;color:#cbd5e1;margin-bottom:14px;">
                         Słuchaj Polskiego Radia CC w pracy, w drodze i podczas cichej modlitwy w domu.
                     </p>
-                    <a href="https://polskieradio.cc" target="_blank" class="btn-action-primary" style="background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;width:100%;justify-content:center;text-decoration:none;">
+                    <a href="https://polskieradio.cc" target="_blank" class="btn-action-primary" onclick="if(window.LuminaMiniPlayer){event.preventDefault();window.LuminaMiniPlayer.play('radiocc');}" style="background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;width:100%;justify-content:center;text-decoration:none;">
                         Odtwórz Radio Live ➔
                     </a>
                 </div>
@@ -1245,7 +1246,7 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
                         </div>
 
                         <div style="display:flex;align-items:center;gap:8px;">
-                            <a href="https://polskieradio.cc" target="_blank" class="post-action-btn">
+                            <a href="https://polskieradio.cc" target="_blank" class="post-action-btn" onclick="if(window.LuminaMiniPlayer){event.preventDefault();window.LuminaMiniPlayer.play('radiocc');}">
                                 <i class="fa-solid fa-play" style="color:#06b6d4;"></i> Słuchaj Teraz
                             </a>
                             <button class="post-action-btn" onclick="openShareModal()">
@@ -1577,5 +1578,6 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
     <script src="lumina-admin-profile-suite.js"></script>
     <script src="lumina-premium-video-avatar.js"></script>
     <script src="js/lumina-followed-friends.js" defer></script>
+    <script src="js/lumina-mini-player.js?v=20260918_v1" defer></script>
 </body>
 </html>
