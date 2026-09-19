@@ -17,6 +17,8 @@
     <meta name="theme-color" content="#070a12">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="canonical" href="https://polskieradio.cc/player">
+    <link rel="alternate" type="application/rss+xml" title="Polskie Radio Christian Culture • Podcast RSS" href="https://polskieradio.cc/podcast.xml">
+    <link rel="alternate" type="application/rss+xml" title="LUMINA • Tablica Społeczności i Rozważania RSS" href="https://polskieradio.cc/tablica.xml">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
+    <script src="js/lumina-rss-suite.js" defer></script>
 
     <!-- Tailwind CSS -->
     <!-- Static Compiled Tailwind CSS (100% Bulletproof & Immune to Cloudflare Rocket Loader) -->
@@ -318,6 +321,10 @@
                         <i class="fa-solid fa-book-bible text-sm text-[#D4A94A]"></i>
                         <span>Moja Biblia Interlinearna</span>
                     </a>
+                    <button type="button" onclick="openRssSubscriptionModal()" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-400/90 hover:text-amber-300 hover:bg-amber-500/10 transition border border-amber-500/20">
+                        <i class="fa-solid fa-square-rss text-sm text-amber-400"></i>
+                        <span>Podcast &amp; RSS Hub</span>
+                    </button>
                 </div>
 
                 <!-- Sekcja: KANAŁY RADIOWE LIVE -->

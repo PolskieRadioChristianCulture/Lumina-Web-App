@@ -9,6 +9,7 @@
     "dev:lumina": "vite",
     "build:lumina": "vite build",
     "start": "node server.js",
+    "generate:rss": "node scripts/generate_rss_feeds.cjs",
     "build": "vite build",
     "test:guardian": "node straznik-kodu-check.js",
     "test:guardian:extended": "node scripts/straznik-kodu-check.js",

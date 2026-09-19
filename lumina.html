@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- RSS Auto-Discovery (Apple Podcasts, Spotify, Feed Readers) -->
+    <link rel="alternate" type="application/rss+xml" title="Polskie Radio Christian Culture • Podcast RSS" href="https://polskieradio.cc/podcast.xml">
+    <link rel="alternate" type="application/rss+xml" title="LUMINA • Tablica Społeczności i Rozważania RSS" href="https://polskieradio.cc/tablica.xml">
 <script>
         // ── STRAŻNIK AUTENTYCZNOŚCI ZDJĘĆ LUMINA (@Strażnik SMCC) ──
         function isLuminaRealPhoto(url) {
@@ -391,6 +394,7 @@
     <script src="lumina-sharing-suite.js?v=20260918_sheet_v1"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
+    <script src="js/lumina-rss-suite.js" defer></script>
     <script>if(window.executeLuminaStartRouting) window.executeLuminaStartRouting();</script>
 
     <style>
@@ -4453,6 +4457,7 @@
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span data-i18n="nav.recommendPortal">Polecaj Portal</span></button>
                     <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span data-i18n="nav.myProfile">Mój Profil</span></a>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openPersonalSettingsModal==='function') openPersonalSettingsModal();"><i class="fa-solid fa-sliders" style="color:#facc15;"></i> <span>Ustawienia aplikacji</span></button>
+                    <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openRssSubscriptionModal==='function') openRssSubscriptionModal();"><i class="fa-solid fa-square-rss" style="color:#f59e0b;"></i> <span>Podcast &amp; RSS Hub</span></button>
                     
                     <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
                     
