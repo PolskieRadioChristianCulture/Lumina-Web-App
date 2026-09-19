@@ -212,7 +212,9 @@
     <!-- Lumina Community Core Posts Data -->
     <script src="js/lumina-community-posts.js?v=20260919_tags_mentions"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=4.2.0_tags_mentions"></script>
+    <script type="module" src="lumina-db.js?v=20260919_comments_live_v5"></script>
+    <script src="js/lumina-comments-engine.js?v=20260919_v25"></script>
+
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
@@ -9773,37 +9775,57 @@
         }
 
         function toggleComments(postId, authorSlug) {
-            if (window.LuminaComments) {
-                window.LuminaComments.toggleComments(postId, authorSlug);
+            const engine = window.LuminaComments || window.LuminaCommentsEngine || (window.LuminaDB && window.LuminaDB.LuminaComments);
+            if (engine && typeof engine.toggleComments === 'function') {
+                engine.toggleComments(postId, authorSlug);
             } else {
-                const section = document.getElementById('comments_' + postId);
+                let section = document.getElementById('comments_' + postId) || document.getElementById('comments_post_' + postId);
                 if (section) {
                     section.classList.toggle('open');
                     section.style.display = section.classList.contains('open') ? 'block' : 'none';
+                    if (section.classList.contains('open') && (!section.innerHTML || section.innerHTML.trim() === '')) {
+                        section.innerHTML = `
+                            <div class="comment-input-composer-v2" style="padding:12px; display:flex; gap:10px; align-items:flex-start;">
+                                <img src="lumina_icon.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                                <div style="flex:1;">
+                                    <textarea id="comment_input_${postId}" class="comment-textarea-v2" placeholder="Napisz budujący komentarz, świadectwo lub Amen..." rows="1" style="width:100%;box-sizing:border-box;"></textarea>
+                                    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+                                        <button type="button" class="comment-submit-btn-v2" onclick="submitComment('${postId}')"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="comment_list_${postId}" class="comments-list-v2"></div>
+                        `;
+                    }
                 }
             }
         }
 
         function submitComment(postId) {
-            if (window.LuminaComments) {
-                window.LuminaComments.submitComment(postId);
+            const engine = window.LuminaComments || window.LuminaCommentsEngine || (window.LuminaDB && window.LuminaDB.LuminaComments);
+            if (engine && typeof engine.submitComment === 'function') {
+                engine.submitComment(postId);
             } else {
-                const input = document.getElementById('input_' + postId);
+                const input = document.getElementById('comment_input_' + postId) || document.getElementById('input_' + postId);
                 const list = document.getElementById('comment_list_' + postId);
-                if (!input || !list) return;
+                if (!input) return;
                 const text = input.value.trim();
                 if (!text) return;
-                const newComment = document.createElement('div');
-                newComment.className = 'comment-item';
-                newComment.innerHTML = `
-                    <img loading="lazy" decoding="async" src="avatar_new1.jpg" alt="Ja" class="comment-avatar">
-                    <div class="comment-bubble">
-                        <b style="color:#f472b6;">Ty:</b> ${text}
-                    </div>
-                `;
-                list.appendChild(newComment);
+                if (list) {
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment-item-v2';
+                    newComment.style.cssText = 'display:flex;gap:10px;margin-bottom:12px;padding:8px;background:rgba(255,255,255,0.04);border-radius:12px;';
+                    newComment.innerHTML = `
+                        <img loading="lazy" decoding="async" src="avatar_new1.jpg" alt="Ja" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                        <div style="flex:1;">
+                            <div style="font-size:0.8rem;font-weight:700;color:#f472b6;margin-bottom:2px;">Ty <span style="font-size:0.7rem;color:#94a3b8;font-weight:normal;">• przed chwilą</span></div>
+                            <div style="font-size:0.85rem;color:#f1f5f9;line-height:1.4;">${text}</div>
+                        </div>
+                    `;
+                    list.prepend(newComment);
+                }
                 input.value = '';
-                showToast('Komentarz został pomyślnie dodany! ✨✨');
+                if (typeof showToast === 'function') showToast('Komentarz został pomyślnie dodany! ✨✨');
             }
         }
 
