@@ -523,6 +523,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadDailyReflection();
             loadCudaDailyReflection();
+            setTimeout(() => {
+                if (typeof window.checkAndTriggerSundayMissionAppealPush === 'function') {
+                    window.checkAndTriggerSundayMissionAppealPush();
+                }
+            }, 2500);
         });
     </script>
     <style>
@@ -9135,6 +9140,222 @@
             }
         };
 
+        // ── Kopiowanie Danych Wsparcia Misji CC (BLIK, Nr Konta) ──
+        window.copyMissionSupportData = function(text, label) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    if (typeof showToast === 'function') {
+                        showToast(`${label} skopiowany do schowka! Bóg zapłać! 🕊️`);
+                    } else {
+                        alert(`${label} skopiowany do schowka: ${text}`);
+                    }
+                }).catch(() => {
+                    prompt(`Skopiuj ${label}:`, text);
+                });
+            } else {
+                prompt(`Skopiuj ${label}:`, text);
+            }
+        };
+
+        // ── Niedzielny Apel Misyjny Christian Culture (W każdą niedzielę o 09:00) ──
+        window.getSundayMissionAppealPost = function() {
+            const now = new Date();
+            const isSunday = (now.getDay() === 0 && now.getHours() >= 9);
+            const urlParams = new URLSearchParams(window.location.search);
+            const force = (urlParams.get('sundayAppeal') === '1' || window.location.hash.includes('sundayAppeal') || urlParams.get('post') === 'post_sunday_mission_appeal');
+
+            if (!isSunday && !force) {
+                return null;
+            }
+
+            return {
+                id: 'post_sunday_mission_appeal',
+                type: 'sunday_mission_appeal',
+                _isSundayAppeal: true,
+                _isSpecialRender: true,
+                author: 'Christian Culture',
+                authorRole: '🌿 Apel Misyjny • Razem budujemy Boże Dzieło ✨',
+                authorAvatar: 'avatar_cezary_official.jpg',
+                authorSlug: 'cezaryrgowski',
+                time: 'W każdą niedzielę o 09:00 • Apel Misyjny CC',
+                title: '🌿 APEL MISYJNY CHRISTIAN CULTURE',
+                image: 'apel_misyjny_cc.webp',
+                likes: 396,
+                amen: 348,
+                _pinned: true
+            };
+        };
+
+        window.buildSundayMissionAppealCardHtml = function(item) {
+            const isSpotlight = (window.location.hash.includes('sundayAppeal') || (new URLSearchParams(window.location.search)).get('post') === 'post_sunday_mission_appeal');
+            return `
+                <article class="post-card-1x1 post-card-sunday-appeal ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="width:100%; border:1.5px solid rgba(74, 222, 128, 0.55) !important; background:linear-gradient(180deg, #09171b 0%, #060e12 100%) !important; box-shadow:0 16px 48px rgba(0,0,0,0.85), 0 0 35px rgba(34,197,94,0.2) !important; border-radius:20px; margin-bottom:24px; position:relative;">
+                    <!-- Top Header -->
+                    <div class="post-top-header" style="border-bottom:1px solid rgba(74,222,128,0.2); padding-bottom:12px;">
+                        <a href="lumina.cezaryrgowski.html" class="post-author-box" style="text-decoration:none; color:inherit;">
+                            <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Christian Culture" class="post-author-img" style="border-radius:50%; border:2px solid #4ade80; object-fit:cover;" onerror="this.src='lumina_logo_portal.jpg'">
+                            <div style="min-width:0; overflow:hidden;">
+                                <div class="post-author-name" style="color:#fff; display:flex; align-items:center; gap:6px; font-size:0.98rem; font-weight:800;">
+                                    Christian Culture <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.8rem;" title="Oficjalne konto misyjne"></i>
+                                    <span style="font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:10px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; box-shadow:0 2px 8px rgba(16,185,129,0.4);"><i class="fa-solid fa-seedling"></i> Dzieło Misyjne CC</span>
+                                </div>
+                                <div class="post-author-role" style="color:#86efac; font-size:0.75rem; font-weight:600;">
+                                    W każdą niedzielę o 09:00 • Razem budujemy Boże Dzieło 🌿🤍
+                                </div>
+                            </div>
+                        </a>
+                        <div class="post-header-actions">
+                            <span class="badge-type-tag" style="background:linear-gradient(135deg,rgba(34,197,94,0.3),rgba(16,185,129,0.35)); border:1px solid #22c55e; color:#bbf7d0; font-weight:800; padding:4px 10px; box-shadow:0 0 12px rgba(34,197,94,0.3);" title="Niedzielny Apel Misyjny">
+                                <i class="fa-solid fa-leaf" style="color:#4ade80;"></i> <span class="badge-type-tag-text">APEL MISYJNY</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Media: Grafika Apelu Misyjnego (1:1 HD) -->
+                    <div class="media-container-1x1" style="width:100%; border-radius:18px; overflow:hidden; border:1.5px solid rgba(74,222,128,0.35); background:#000; margin-bottom:16px; box-shadow:0 8px 26px rgba(0,0,0,0.65);">
+                        <img src="apel_misyjny_cc.webp" onerror="this.onerror=null; this.src='apel_misyjny_cc.png';" alt="Apel Misyjny Christian Culture – Wesprzyj Misję" loading="eager" style="width:100%; height:auto; display:block; object-fit:cover;">
+                    </div>
+
+                    <!-- Details Box & Content -->
+                    <div class="post-details-box" style="padding:0 6px 14px;">
+                        <h2 style="font-family:'Outfit',sans-serif; font-size:1.35rem; font-weight:900; color:#fff; margin:0 0 12px 0; letter-spacing:0.3px; line-height:1.3; display:flex; align-items:center; gap:8px;">
+                            <span style="color:#4ade80;">🌿</span> APEL MISYJNY CHRISTIAN CULTURE
+                        </h2>
+
+                        <div class="post-desc-text" style="font-size:0.95rem; color:#e2e8f0; line-height:1.75; font-family:'Plus Jakarta Sans',sans-serif;">
+                            <p style="margin:0 0 12px 0; font-weight:700; color:#f8fafc; font-size:1.05rem;">
+                                Dzień Dobry!
+                            </p>
+                            <p style="margin:0 0 14px 0;">
+                                <b>Razem budujemy Christian Culture 🌿🤍</b><br>
+                                Dzisiejsza niedziela to czas wdzięczności za wspólnotę, którą tworzymy. Nasza misja uświęcenia i budowy cyfrowego ekosystemu Christian Culture rozwija się dzięki Bożej łasce oraz Twojemu zaangażowaniu. 🙏
+                            </p>
+                            <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(74,222,128,0.25); border-radius:14px; padding:12px 16px; margin-bottom:16px;">
+                                <div style="font-size:0.92rem; font-weight:800; color:#86efac; margin-bottom:6px;">
+                                    Zostań Partnerem Misyjnym! Możesz wesprzeć nasze działania:
+                                </div>
+                                <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; font-size:0.90rem; color:#cbd5e1;">
+                                    <li><b>Modlitwą:</b> Polecając nasze treści i aplikację <a href="https://cclite.pl" target="_blank" rel="noopener" style="color:#38bdf8; font-weight:700; text-decoration:none;">cclite.pl</a> bliskim.</li>
+                                    <li><b>Finansowo:</b> Każdy dar pomaga nam utrzymać infrastrukturę i docierać z Ewangelią do kolejnych serc.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- ══ GŁÓWNY PRZYCISK: SZYBKIE WSPARCIE (REVOLUT) ══ -->
+                        <div style="margin: 18px 0 14px;">
+                            <a href="https://revolut.me/christianculture" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:54px; background:linear-gradient(135deg, #0075eb 0%, #0052cc 100%); color:#ffffff; font-size:1.08rem; font-weight:900; border-radius:27px; text-decoration:none; box-shadow:0 6px 24px rgba(0,117,235,0.5), 0 0 16px rgba(0,117,235,0.3); transition:all 0.2s; border:1px solid rgba(255,255,255,0.2);" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                                <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:currentColor; flex-shrink:0;">
+                                    <path d="M19.78 6.06c-1.2-1.2-2.9-1.94-4.83-1.94H6.5v15.76h3.69v-5.2h3.92l3.78 5.2h4.48l-4.32-5.94c2.25-.85 3.73-2.9 3.73-5.32 0-1.02-.32-1.92-1-2.56zm-4.73 4.29h-4.86V7.63h4.86c1.33 0 2.29.9 2.29 2.15 0 1.25-.96 2.15-2.29 2.15z"/>
+                                </svg>
+                                <span>SZYBKIE WSPARCIE (REVOLUT) ➜</span>
+                            </a>
+                        </div>
+
+                        <!-- ══ DODATKOWE KANAŁY WSPARCIA ══ -->
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; margin-bottom:14px;">
+                            <!-- Patronite -->
+                            <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" style="min-height:44px; padding:8px 12px; border-radius:14px; background:linear-gradient(135deg, #e11d48, #be123c); color:#fff; font-size:0.80rem; font-weight:800; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; box-shadow:0 3px 12px rgba(225,29,72,0.35); text-align:center;">
+                                <i class="fa-solid fa-heart"></i> Patronite
+                            </a>
+
+                            <!-- BLIK -->
+                            <button type="button" onclick="copyMissionSupportData('537147043', 'Numer telefonu do wpłat BLIK (537 147 043)')" style="min-height:44px; padding:8px 12px; border-radius:14px; background:linear-gradient(135deg, #7c3aed, #6d28d9); color:#fff; font-size:0.80rem; font-weight:800; display:flex; align-items:center; justify-content:center; gap:6px; border:none; cursor:pointer; box-shadow:0 3px 12px rgba(124,58,237,0.35); text-align:center;">
+                                <i class="fa-solid fa-mobile-screen-button"></i> BLIK: 537 147 043
+                            </button>
+
+                            <!-- Nr konta -->
+                            <button type="button" onclick="copyMissionSupportData('48291000060000000005272629', 'Numer konta bankowego Christian Culture')" style="min-height:44px; padding:8px 12px; border-radius:14px; background:linear-gradient(135deg, #0d9488, #0f766e); color:#fff; font-size:0.80rem; font-weight:800; display:flex; align-items:center; justify-content:center; gap:6px; border:none; cursor:pointer; box-shadow:0 3px 12px rgba(13,148,136,0.35); text-align:center;">
+                                <i class="fa-solid fa-building-columns"></i> Kopiuj Nr Konta
+                            </button>
+                        </div>
+
+                        <!-- Ramka danych bankowych -->
+                        <div style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px 14px; font-size:0.78rem; color:#94a3b8; display:flex; flex-direction:column; gap:4px; text-align:center;">
+                            <div>Nr konta: <b style="color:#fff; font-family:monospace; font-size:0.84rem;">48 2910 0006 0000 0000 0527 2629</b></div>
+                            <div>Tytuł przelewu: <b style="color:#facc15;">„Dar misyjny”</b></div>
+                        </div>
+
+                        <p style="margin:14px 0 0 0; font-size:0.88rem; color:#cbd5e1; line-height:1.6; font-style:italic;">
+                            Dziękujemy, że jesteś częścią tego dzieła. Niech Pan błogosławi Twój dzień i daje Ci pokój, który przewyższa wszelki rozum.<br>
+                            <b style="color:#4ade80; font-style:normal;">Christian Culture ✨🔥</b>
+                        </p>
+                    </div>
+
+                    <!-- Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                            <button class="post-action-btn action-like" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> <span class="count">${item.likes || 396}</span></button>
+                            <button class="post-action-btn action-amen" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying" style="color:#facc15;"></i> <span class="amen-count">${item.amen || 348}</span><span class="btn-text"> Amen</span></button>
+                            <button type="button" class="post-action-btn action-pray-now" onclick="triggerPostPrayer('${item.id}', 'Christian Culture', this)" title="Modlitwa za Dzieło Misyjne CC"><i class="fa-solid fa-hands-praying" style="color:var(--cc-gold,#D4A94A);"></i> <span class="pray-live-badge"><span class="pray-pulse-dot"></span> <span class="pray-count" id="prayCount_${item.id}">12</span></span> <span class="btn-text">Modlę się za Misję 🕊️</span></button>
+                            <button class="post-action-btn action-comments action-icon-only" onclick="toggleComments('${item.id}', 'cezaryrgowski')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(item.id) : 8})</span></button>
+                        </div>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <button class="post-action-btn action-share action-icon-only" onclick="sharePostLink('${item.id}')" title="Udostępnij Apel Misyjny"><i class="fa-solid fa-share-nodes"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Comments Drawer V2 -->
+                    <div class="comments-section-v2" id="comments_${item.id}"></div>
+                </article>
+            `;
+        };
+
+        window.checkAndTriggerSundayMissionAppealPush = function() {
+            try {
+                const now = new Date();
+                const isSunday = (now.getDay() === 0 && now.getHours() >= 9);
+                const urlParams = new URLSearchParams(window.location.search);
+                const force = urlParams.get('testSundayPush') === '1';
+
+                if (!isSunday && !force) return;
+
+                const pad = (n) => n < 10 ? '0' + n : n;
+                const sundayKey = `lumina_sunday_appeal_pushed_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
+
+                if (localStorage.getItem(sundayKey) && !force) return;
+
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    const notifTitle = '🌿 APEL MISYJNY CHRISTIAN CULTURE • Niedziela';
+                    const notifOptions = {
+                        body: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Kliknij, aby wesprzeć Bożą misję!',
+                        icon: 'lumina_icon.jpg',
+                        badge: 'lumina_icon.jpg',
+                        image: 'apel_misyjny_cc.webp',
+                        tag: 'lumina_sunday_mission_appeal',
+                        renotify: true,
+                        requireInteraction: true,
+                        vibrate: [300, 100, 300],
+                        data: {
+                            url: 'https://polskieradio.cc/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal',
+                            type: 'sunday_appeal'
+                        },
+                        actions: [
+                            { action: 'revolut', title: '🌍 Szybkie wsparcie' },
+                            { action: 'open_appeal', title: '📖 Zobacz Apel na Tablicy' }
+                        ]
+                    };
+
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.ready.then(reg => {
+                            if (reg && reg.showNotification) {
+                                reg.showNotification(notifTitle, notifOptions);
+                            } else {
+                                new Notification(notifTitle, notifOptions);
+                            }
+                        }).catch(() => {
+                            new Notification(notifTitle, notifOptions);
+                        });
+                    } else {
+                        new Notification(notifTitle, notifOptions);
+                    }
+                    localStorage.setItem(sundayKey, Date.now().toString());
+                    console.log('[LUMINA] Wyemitowano niedzielne powiadomienie push apelu misyjnego.');
+                }
+            } catch(e) {
+                console.warn('[LUMINA Sunday Push Check Error]:', e);
+            }
+        };
+
         // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
             const container = document.getElementById('feedStream1x1');
@@ -9177,13 +9398,21 @@
             }
 
             // 👑 JEŚLI UŻYTKOWNIK WŁAŚNIE OPUBLIKOWAŁ POST — ZARAZ POD ROZWAŻANIEM NA GÓRZE TABLICY!
-            const freshUserPosts = userPosts.filter(p => p._isNewlyPublished || p._isFreshSpotlight);
+            const freshUserPosts = userPosts.filter(p => p._isFreshSpotlight);
             freshUserPosts.forEach(fp => {
                 fp._isFreshSpotlight = true;
                 if (!combined.some(it => it.id === fp.id)) {
                     combined.push(fp);
                 }
             });
+
+            // 🌿 NIEDZIELNY APEL MISYJNY CHRISTIAN CULTURE (W każdą niedzielę o 09:00 lub z linku)
+            if (typeof window.getSundayMissionAppealPost === 'function') {
+                const sundayAppeal = window.getSundayMissionAppealPost();
+                if (sundayAppeal && !combined.some(it => it.id === sundayAppeal.id)) {
+                    combined.push(sundayAppeal);
+                }
+            }
 
             // 2. POZYCJA 2: Reklama Oficjalnego Patrona Misji Christian Culture (KONCEPT STUDIO)
             combined.push({
@@ -9227,7 +9456,7 @@
                 if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
                 }
-                if (p._isFreshSpotlight || p._isNewlyPublished) {
+                if (p._isFreshSpotlight) {
                     return; // Już w spotlight na samej górze!
                 }
                 if (pinnedPostIds.includes(p.id)) {
@@ -9387,7 +9616,10 @@
             combined = combined.filter(item => {
                 if (item._isBroadcastChannel) return true;
                 const authorKey = item.authorSlug || item.author;
-                return !window.LuminaDB?.isUserBlocked(authorKey);
+                if (typeof window.LuminaDB?.isUserBlocked === 'function') {
+                    return !window.LuminaDB.isUserBlocked(authorKey);
+                }
+                return true;
             });
 
             // Mobile-first progressive feed: render a small, useful first page
@@ -9583,6 +9815,13 @@
                             </div>
                         </article>
                     `;
+                }
+
+                // ── 0A. NIEDZIELNY APEL MISYJNY CHRISTIAN CULTURE (W każdą niedzielę o 09:00) ──
+                if (item.type === 'sunday_mission_appeal' || item._isSundayAppeal) {
+                    return (typeof buildSundayMissionAppealCardHtml === 'function') 
+                        ? buildSundayMissionAppealCardHtml(item)
+                        : '';
                 }
 
                 // ── 0. Oficjalny Patron Misji Christian Culture (KONCEPT STUDIO) ──
@@ -10025,7 +10264,7 @@
                 window.LuminaViewportMediaManager.scanAndObserve();
             }
             // Inicjuj nawigację (strzałki + drag) dla karuzel wstawionych przez renderFeed
-            initFeedCarousels(container);
+            if (typeof window.initFeedCarousels === 'function') { window.initFeedCarousels(container); } else if (typeof initFeedCarousels === 'function') { initFeedCarousels(container); }
             if (window.LuminaComments) {
                 window.LuminaComments.initAllPostCommentCounters();
             }
@@ -10206,6 +10445,17 @@
             }
             if (!postObj && window._luminaDailyReflection && window._luminaDailyReflection.id === postId) {
                 postObj = window._luminaDailyReflection;
+            }
+            if (!postObj && postId === 'post_sunday_mission_appeal') {
+                postObj = {
+                    id: 'post_sunday_mission_appeal',
+                    author: 'Christian Culture',
+                    authorAvatar: 'avatar_cezary_official.jpg',
+                    title: '🌿 APEL MISYJNY CHRISTIAN CULTURE',
+                    text: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Wspieraj Bożą misję!',
+                    image: 'apel_misyjny_cc.webp',
+                    url: window.location.origin + window.location.pathname + '?post=post_sunday_mission_appeal#sundayAppeal'
+                };
             }
 
             const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);

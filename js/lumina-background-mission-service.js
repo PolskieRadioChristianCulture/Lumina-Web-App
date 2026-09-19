@@ -170,16 +170,72 @@
         localStorage.setItem('lumina_pwa_banner_dismissed', Date.now().toString());
     };
 
+    // ── 3B. SUNDAY MISSION APPEAL NOTIFICATION (W każdą niedzielę o 09:00) ──
+    async function checkSundayMissionAppealNotification() {
+        try {
+            const now = new Date();
+            const isSunday = (now.getDay() === 0 && now.getHours() >= 9);
+            const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
+            const force = urlParams && urlParams.get('testSundayPush') === '1';
+
+            if (!isSunday && !force) return;
+
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const sundayKey = `lumina_sunday_appeal_pushed_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
+
+            if (localStorage.getItem(sundayKey) && !force) return;
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notifTitle = '🌿 APEL MISYJNY CHRISTIAN CULTURE • Niedziela';
+                const notifOptions = {
+                    body: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Kliknij, aby wesprzeć Bożą misję!',
+                    icon: 'lumina_icon.jpg',
+                    badge: 'lumina_icon.jpg',
+                    image: 'apel_misyjny_cc.webp',
+                    tag: 'lumina_sunday_mission_appeal',
+                    renotify: true,
+                    requireInteraction: true,
+                    vibrate: [300, 100, 300],
+                    data: {
+                        url: 'https://polskieradio.cc/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal',
+                        type: 'sunday_appeal'
+                    },
+                    actions: [
+                        { action: 'revolut', title: '🌍 Szybkie wsparcie' },
+                        { action: 'open_appeal', title: '📖 Zobacz Apel na Tablicy' }
+                    ]
+                };
+
+                if ('serviceWorker' in navigator) {
+                    const reg = await navigator.serviceWorker.ready.catch(() => null);
+                    if (reg && reg.showNotification) {
+                        await reg.showNotification(notifTitle, notifOptions);
+                    } else {
+                        new Notification(notifTitle, notifOptions);
+                    }
+                } else {
+                    new Notification(notifTitle, notifOptions);
+                }
+                localStorage.setItem(sundayKey, Date.now().toString());
+                console.log('[LUMINA Background] Wyemitowano niedzielne powiadomienie apelu misyjnego.');
+            }
+        } catch(e) {
+            console.warn('[LUMINA Background Sunday Check Error]:', e);
+        }
+    }
+
     // ── 4. INITIALIZATION ──
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             registerBackgroundServiceWorker();
             setupSystemMediaSession();
             setTimeout(setupPwaInstallBanner, 2000);
+            setTimeout(checkSundayMissionAppealNotification, 3000);
         });
     } else {
         registerBackgroundServiceWorker();
         setupSystemMediaSession();
         setTimeout(setupPwaInstallBanner, 2000);
+        setTimeout(checkSundayMissionAppealNotification, 3000);
     }
 })();

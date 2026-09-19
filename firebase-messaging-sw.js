@@ -107,7 +107,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.6-20260914-fullsync';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.7-20260919-sundayappeal';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -120,7 +120,8 @@ const APP_SHELL_ASSETS = [
     './lumina-icon-192.png',
     './lumina-icon-512.png',
     './icon.png',
-    './lumina_icon.jpg'
+    './lumina_icon.jpg',
+    './apel_misyjny_cc.webp'
 ];
 
 self.addEventListener('install', (event) => {
@@ -308,9 +309,20 @@ function handleLuminaNotificationClick(event) {
     const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
     const isPublic = data.type === 'public' || data.type === 'public_chat' || data.openPublicChat || (data.data && data.data.type === 'public');
 
+    if (action === 'revolut' || action === 'support') {
+        if (clients.openWindow) {
+            event.waitUntil(clients.openWindow('https://revolut.me/christianculture'));
+            return;
+        }
+    }
+
     let targetUrl = data.url;
 
-    if (action === 'watch') {
+    if (action === 'revolut') {
+        targetUrl = 'https://revolut.me/christianculture';
+    } else if (action === 'open_appeal' || data.type === 'sunday_appeal') {
+        targetUrl = '/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal';
+    } else if (action === 'watch') {
         targetUrl = data.url || '/master';
     } else if (action === 'program') {
         targetUrl = '/program';
