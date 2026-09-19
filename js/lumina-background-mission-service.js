@@ -224,18 +224,75 @@
         }
     }
 
+    // ── 3C. DAILY MISSION EVENING NOTIFICATION (Codziennie o 19:00 z przyciskiem modlitwy i BLIK) ──
+    async function checkDailyMissionEveningNotification() {
+        try {
+            const now = new Date();
+            const isEvening = (now.getHours() >= 19);
+            const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
+            const force = urlParams && (urlParams.get('testDailyPush') === '1' || urlParams.get('testMissionPush') === '1');
+
+            if (!isEvening && !force) return;
+
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const dailyKey = `lumina_daily_mission_pushed_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
+
+            if (localStorage.getItem(dailyKey) && !force) return;
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notifTitle = '🕊️ Codzienna Misja • Christian Culture';
+                const notifOptions = {
+                    body: 'Wieczorny czas wdzięczności i wspólnej modlitwy. Poświęć chwilę na modlitwę za Polskę i wesprzyj dzieło Boże!',
+                    icon: 'lumina_icon.jpg',
+                    badge: 'lumina-push-badge-v4.1.5.svg',
+                    image: 'apel_misyjny_cc.webp',
+                    tag: 'lumina-daily-mission-evening',
+                    renotify: true,
+                    requireInteraction: true,
+                    vibrate: [250, 100, 250],
+                    data: {
+                        url: 'https://polskieradio.cc/modlitwa',
+                        type: 'daily_mission'
+                    },
+                    actions: [
+                        { action: 'prayer', title: '🙏 Pomódl się' },
+                        { action: 'blik', title: '📱 Misyjny BLIK' }
+                    ]
+                };
+
+                if ('serviceWorker' in navigator) {
+                    const reg = await navigator.serviceWorker.ready.catch(() => null);
+                    if (reg && reg.showNotification) {
+                        await reg.showNotification(notifTitle, notifOptions);
+                    } else {
+                        new Notification(notifTitle, notifOptions);
+                    }
+                } else {
+                    new Notification(notifTitle, notifOptions);
+                }
+                localStorage.setItem(dailyKey, Date.now().toString());
+                console.log('[LUMINA Background] Wyemitowano wieczorne powiadomienie Codziennej Misji o 19:00.');
+            }
+        } catch(e) {
+            console.warn('[LUMINA Background Daily Mission Push Error]:', e);
+        }
+    }
+    window.checkDailyMissionEveningNotification = checkDailyMissionEveningNotification;
+
     // ── 4. INITIALIZATION ──
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            registerBackgroundServiceWorker();
-            setupSystemMediaSession();
-            setTimeout(setupPwaInstallBanner, 2000);
-            setTimeout(checkSundayMissionAppealNotification, 3000);
-        });
-    } else {
+    function initServices() {
         registerBackgroundServiceWorker();
         setupSystemMediaSession();
         setTimeout(setupPwaInstallBanner, 2000);
         setTimeout(checkSundayMissionAppealNotification, 3000);
+        setTimeout(checkDailyMissionEveningNotification, 3500);
+        // Cykliczne sprawdzanie w tle co 60 sekund (np. gdy użytkownik ma otwartą kartę o 18:59)
+        setInterval(checkDailyMissionEveningNotification, 60000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initServices);
+    } else {
+        initServices();
     }
 })();

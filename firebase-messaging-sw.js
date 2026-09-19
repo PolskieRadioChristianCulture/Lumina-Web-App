@@ -68,6 +68,12 @@ try {
                 { action: 'open', title: '💬 Dołącz do rozmowy' }
             ];
             urlToOpen = '/lumina.html?openPublicChat=1';
+        } else if (type === 'daily_mission') {
+            actions = [
+                { action: 'prayer', title: '🙏 Pomódl się' },
+                { action: 'blik', title: '📱 Misyjny BLIK' }
+            ];
+            urlToOpen = data.url || '/modlitwa';
         } else if (type === 'tv_schedule' || type === 'tv24' || type === 'live') {
             actions = [
                 { action: 'watch', title: '📺 Oglądaj w CC TV24' },
@@ -77,7 +83,7 @@ try {
         }
 
         const tag = data.tag || notification.tag || data.notificationId || data.eventId || (type ? `lumina_${type}` : 'lumina_notification');
-        const requireInteraction = (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd');
+        const requireInteraction = (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd' || type === 'daily_mission');
 
         const notificationOptions = {
             body: body,
@@ -107,7 +113,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.7-20260919-sundayappeal';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.8-20260919-dailymission';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -263,6 +269,11 @@ self.addEventListener('push', (event) => {
             { action: 'read', title: '📖 Zobacz Wpis' },
             { action: 'like', title: '❤️ Polub' }
         ];
+    } else if (type === 'daily_mission') {
+        actions = [
+            { action: 'prayer', title: '🙏 Pomódl się' },
+            { action: 'blik', title: '📱 Misyjny BLIK' }
+        ];
     } else if (type === 'direct_message' || type === 'direct_message_request' || type === 'mention') {
         actions = [
             { action: 'reply', title: '💬 Odpowiedz' },
@@ -283,7 +294,7 @@ self.addEventListener('push', (event) => {
         tag: notification.tag || data.tag || `lumina_${type}_${Date.now()}`,
         renotify: true,
         vibrate: [200, 100, 200],
-        requireInteraction: (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd'),
+        requireInteraction: (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd' || type === 'daily_mission'),
         actions: actions
     };
 
@@ -318,7 +329,11 @@ function handleLuminaNotificationClick(event) {
 
     let targetUrl = data.url;
 
-    if (action === 'revolut') {
+    if (action === 'prayer') {
+        targetUrl = '/modlitwa';
+    } else if (action === 'blik') {
+        targetUrl = '/lumina-tablica.html?blik=1#blik';
+    } else if (action === 'revolut') {
         targetUrl = 'https://revolut.me/christianculture';
     } else if (action === 'open_appeal' || data.type === 'sunday_appeal') {
         targetUrl = '/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal';
