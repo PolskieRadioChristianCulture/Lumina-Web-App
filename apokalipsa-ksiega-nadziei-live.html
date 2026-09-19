@@ -402,18 +402,22 @@
                 tagEl.textContent = "KURS BIBLIJNY • ODCINEK " + episodeIndex + " (DZIEŃ " + dayOfYear + ")";
             }
 
+            const pageOrigin = (window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'https://polskieradio.cc';
             player = new YT.Player('yt-player', {
                 height: '100%',
                 width: '100%',
+                host: 'https://www.youtube.com',
                 playerVars: {
                     autoplay: 1,
                     controls: 0,
                     rel: 0,
                     modestbranding: 1,
                     enablejsapi: 1,
+                    mute: 1,
                     listType: 'playlist',
                     list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
-                    index: targetZeroBasedIndex
+                    index: targetZeroBasedIndex,
+                    origin: pageOrigin
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -435,6 +439,7 @@
                     index: targetZeroBasedIndex,
                     startSeconds: 0
                 });
+                event.target.playVideo();
             } catch(e) {
                 console.log("loadPlaylist error:", e);
             }
@@ -542,8 +547,11 @@
 
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({ type: 'APOKALIPSA_KSIEGA_NADZIEI_FINISHED' }, '*');
+                    window.parent.postMessage({ type: 'KSIEGA_NADZIEI_FINISHED' }, '*');
+                    window.parent.postMessage({ type: 'PROGRAM_FINISHED' }, '*');
+                    window.parent.postMessage('KSIEGA_NADZIEI_FINISHED', '*');
                 } else {
-                    window.location.href = "index.html";
+                    window.location.href = "master";
                 }
             }
         }

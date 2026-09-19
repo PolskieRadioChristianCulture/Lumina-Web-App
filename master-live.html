@@ -1151,7 +1151,7 @@
                 muteSubframe();
                 return;
             }
-            if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'RANDKI_MALZENSTWO_FINISHED' || type === 'PROGRAM_FINISHED') {
+            if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'APOKALIPSA_KSIEGA_NADZIEI_FINISHED' || type === 'RANDKI_MALZENSTWO_FINISHED' || type === 'PROGRAM_FINISHED') {
                 console.log("MCR: Received completion signal (" + type + ") from sub-channel. Ending special slot immediately!");
                 endSpecialSlot();
             }
