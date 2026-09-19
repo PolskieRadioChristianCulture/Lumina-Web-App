@@ -77,8 +77,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Lumina Realtime Engine -->
     <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_mobile_clean_v1">
+    <link rel="stylesheet" href="css/christian-culture-design-system.css">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
     <script>window._currentProfileSlug = 'andrzejthiel';</script>
@@ -3002,11 +3002,16 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                             <button class="post-action-btn" onclick="togglePostAmen(this, '${escapeHtml(id)}')">
                                 <i class="fa-solid fa-hands-praying"></i> Amen (<span>${parseInt(p.amen, 10) || 0}</span>)
                             </button>
+                            <button class="post-action-btn action-comments" onclick="toggleComments('${escapeHtml(id)}', 'andrzejthiel')" title="Komentarze">
+                                <i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(id) : 2})</span>
+                            </button>
                         </div>
                         <div style="display:flex;align-items:center;gap:8px;">
                             <button class="post-action-btn" onclick="openShareAndrzejModal()"><i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie</button>
                         </div>
                     </div>
+                    <!-- Expandable Comments Drawer V2 -->
+                    <div class="comments-section-v2" id="comments_${escapeHtml(id)}"></div>
                 </article>`;
         }
 
@@ -3127,6 +3132,17 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                 console.warn('[Andrzej Feed] Initialization note:', e);
             }
         }
+
+        window.toggleComments = function(postId, authorSlug) {
+            if (window.LuminaComments) {
+                window.LuminaComments.toggleComments(postId, authorSlug || 'andrzejthiel');
+            }
+        };
+        window.submitComment = function(postId) {
+            if (window.LuminaComments) {
+                window.LuminaComments.submitComment(postId);
+            }
+        };
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => startAndrzejFeed());

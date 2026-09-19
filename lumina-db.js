@@ -6835,7 +6835,9 @@ try {
 
 export const LuminaLivePrayer = {
     _listeners: new Set(),
-    
+    _activeFloatingQueue: [],
+    _initialized: false,
+
     init() {
         if (typeof window === 'undefined') return;
         if (this._initialized) return;
@@ -7228,7 +7230,115 @@ export const LuminaCommentsEngine = {
         ]
     },
 
+    getCommentsCss() {
+        return ".comments-section-v2displaynonebackgroundrgba(814280.96)backdrop-filterblur(14px)-webkit-backdrop-filterblur(14px)border-top1px solid rgba(212169740.22)border-radius0 0 20px 20pxpadding16px 18px 20pxbox-sizingborder-boxwidth100%animationcommentsSlideDown 0.26s cubic-bezier(0.1610.31).comments-section-v2.opendisplayblock@keyframes commentsSlideDownfromopacity0transformtranslateY(-8px)toopacity1transformtranslateY(0).comment-faith-chips-bardisplayflexgap8pxoverflow-xautopadding-bottom10pxmargin-bottom12pxscrollbar-widthnonebox-sizingborder-boxwidth100%.comment-faith-chips-bar-webkit-scrollbardisplaynone.comment-faith-chipbackgroundrgba(2552552550.06)border1px solid rgba(212169740.3)color#f1f5f9border-radius20pxpadding6px 13pxfont-size0.78remfont-weight600white-spacenowrapcursorpointerdisplayinline-flexalign-itemscentergap6pxtransitionall 0.2s cubic-bezier(0.20.80.21)user-selectnone.comment-faith-chiphoverbackgroundrgba(212169740.18)border-color#facc15color#ffftransformtranslateY(-1px).comment-faith-chipactivetransformscale(0.96).comment-input-composer-v2displayflexgap10pxalign-itemsflex-startmargin-bottom18pxbackgroundrgba(2552552550.03)padding10px 12pxborder-radius16pxborder1px solid rgba(2552552550.08)box-sizingborder-boxwidth100%.comment-my-avatarwidth38pxheight38pxborder-radius50%object-fitcoverborder1.5px solid rgba(212169740.4)flex-shrink0.comment-input-wrapflex1positionrelativedisplayflexflex-directioncolumngap6pxbox-sizingborder-boxmin-width0.comment-textarea-v2width100%box-sizingborder-boxbackgroundrgba(1523420.85)border1px solid rgba(2552552550.16)border-radius12pxpadding10px 14pxcolor#f8fafcfont-size0.88remfont-familyinheritresizenonemin-height44pxmax-height120pxoutlinenoneline-height1.45transitionborder-color 0.2sbox-shadow 0.2s.comment-textarea-v2focusborder-color#facc15box-shadow0 0 0 2px rgba(250204210.2).comment-submit-bardisplayflexjustify-contentspace-betweenalign-itemscenter.comment-replying-to-badgefont-size0.74remcolor#38bdf8displayflexalign-itemscentergap4px.comment-cancel-reply-btnbackgroundnonebordernonecolor#f87171cursorpointerfont-size0.72rempadding2px 4px.comment-submit-btn-v2backgroundlinear-gradient(135deg#d4a94a#facc15)color#0b1120bordernonefont-weight800font-size0.82rempadding8px 18pxborder-radius24pxcursorpointerdisplayinline-flexalign-itemscentergap6pxbox-shadow0 4px 12px rgba(212169740.35)transitionall 0.2smargin-leftautomin-height38px.comment-submit-btn-v2hovertransformtranslateY(-1px)box-shadow0 6px 16px rgba(212169740.5).comment-submit-btn-v2activetransformscale(0.97).comments-list-v2displayflexflex-directioncolumngap12px.comment-item-v2displayflexgap10pxpositionrelativetransitionbackground-color 0.2s.comment-item-v2.pinned-commentbackgroundrgba(250204210.05)border1px solid rgba(250204210.25)border-radius14pxpadding10pxbox-shadow0 2px 10px rgba(250204210.08).comment-avatar-linkflex-shrink0.comment-avatar-v2width34pxheight34pxborder-radius50%object-fitcoverborder1.5px solid rgba(2552552550.12).comment-body-v2flex1min-width0.comment-bubble-v2backgroundrgba(2552552550.05)border1px solid rgba(2552552550.08)border-radius14pxpadding9px 13pxcolor#f1f5f9font-size0.85remline-height1.5positionrelative.comment-header-rowdisplayflexalign-itemscenterjustify-contentspace-betweenmargin-bottom4pxgap8px.comment-author-namefont-weight700color#ffftext-decorationnonefont-size0.86remdisplayinline-flexalign-itemscentergap6px.comment-author-namehovercolor#facc15.comment-badge-pillfont-size0.65remfont-weight700padding1px 7pxborder-radius10pxbackgroundrgba(212169740.18)border1px solid rgba(212169740.35)color#fef08aletter-spacing0.3px.comment-pinned-indicatorfont-size0.68remfont-weight800color#facc15displayinline-flexalign-itemscentergap4pxmargin-bottom4px.comment-time-v2font-size0.72remcolor#94a3b8white-spacenowrap.comment-edited-tagfont-size0.68remcolor#94a3b8font-styleitalicmargin-left4px.comment-text-contentcolor#e2e8f0word-breakbreak-word.comment-actions-bar-v2displayflexalign-itemscentergap12pxmargin-top5pxpadding-left4px.comment-action-linkbackgroundnonebordernonecolor#94a3b8font-size0.75remfont-weight600cursorpointerdisplayinline-flexalign-itemscentergap4pxpadding2px 4pxtransitioncolor 0.15stransform 0.15s.comment-action-linkhovercolor#fff.comment-action-link.active-likecolor#f43f5e.comment-action-link.active-amencolor#facc15font-weight800.comment-more-btnbackgroundnonebordernonecolor#64748bcursorpointerpadding4px 6pxfont-size0.85remborder-radius6pxtransitionall 0.2smargin-leftauto.comment-more-btnhovercolor#cbd5e1backgroundrgba(2552552550.08).comment-dropdown-menupositionabsoluteright10pxtop30pxbackground#0f172aborder1px solid rgba(2552552550.15)border-radius12pxbox-shadow0 10px 25px rgba(0000.6)padding6pxz-index50displaynoneflex-directioncolumnmin-width140px.comment-dropdown-menu.opendisplayflex.comment-dropdown-itembackgroundnonebordernonecolor#cbd5e1font-size0.78rempadding7px 10pxtext-alignleftcursorpointerborder-radius8pxdisplayflexalign-itemscentergap8pxtransitionbackground 0.15s.comment-dropdown-itemhoverbackgroundrgba(2552552550.08)color#fff.comment-dropdown-item.item-dangercolor#f87171.comment-dropdown-item.item-dangerhoverbackgroundrgba(23968680.15).comment-hidden-placeholderbackgroundrgba(2552552550.03)border1px dashed rgba(2552552550.15)border-radius10pxpadding8px 12pxfont-size0.75remcolor#94a3b8displayflexalign-itemscenterjustify-contentspace-betweengap8px.btn-reveal-hiddenbackgroundnoneborder1px solid rgba(2552552550.2)color#facc15font-size0.72rempadding2px 8pxborder-radius10pxcursorpointer.comment-inline-edit-wrapdisplayflexflex-directioncolumngap8pxmargin-top4px.comment-inline-edit-textareawidth100%backgroundrgba(1523420.95)border1px solid #facc15border-radius10pxpadding8px 10pxcolor#ffffont-size0.85remfont-familyinheritresizeverticalmin-height50px.comment-inline-edit-buttonsdisplayflexjustify-contentflex-endgap6px.comment-edit-btn-savebackground#facc15color#0b1120bordernonefont-weight700font-size0.74rempadding4px 12pxborder-radius14pxcursorpointer.comment-edit-btn-cancelbackgroundrgba(2552552550.1)color#cbd5e1bordernonefont-size0.74rempadding4px 10pxborder-radius14pxcursorpointer.comment-active-linkcolor#38bdf8text-decorationunderlinetext-underline-offset3pxfont-weight600displayinline-flexalign-itemscentergap4pxword-breakbreak-alltransitioncolor 0.2s ease.comment-active-linkhovercolor#7dd3fctext-decorationunderline.comment-untrusted-linkcolor#94a3b8text-decorationnonefont-size0.84remword-breakbreak-all.comment-preview-cardmargin-top10pxbackgroundrgba(1523420.85)border1px solid rgba(212169740.35)border-radius14pxoverflowhiddendisplayflexflex-directioncolumnbox-shadow0 4px 16px rgba(0000.4)transitiontransform 0.2s easeborder-color 0.2s easemax-width100%box-sizingborder-box.comment-preview-cardhoverborder-colorrgba(250204210.7).comment-preview-thumb-wrappositionrelativewidth100%aspect-ratio16 / 9max-height180pxbackground#000overflowhidden.comment-preview-thumbwidth100%height100%object-fitcoverdisplayblocktransitiontransform 0.3s ease.comment-preview-cardhover .comment-preview-thumbtransformscale(1.03).comment-preview-play-overlaypositionabsolutetop50%left50%transformtranslate(-50%-50%)backgroundrgba(0000.65)border2px solid #facc15color#fffwidth46pxheight46pxborder-radius50%displayflexalign-itemscenterjustify-contentcenterfont-size1.1rembox-shadow0 0 16px rgba(250204210.5)cursorpointertransitionall 0.2s ease.comment-preview-cardhover .comment-preview-play-overlaybackground#facc15color#0b1120transformtranslate(-50%-50%) scale(1.1).comment-preview-bodypadding10px 14px 12pxdisplayflexflex-directioncolumngap4px.comment-preview-badge-rowdisplayflexalign-itemscenterjustify-contentspace-betweenmargin-bottom2px.comment-preview-badgefont-size0.68remfont-weight800text-transformuppercaseletter-spacing0.5pxpadding2px 8pxborder-radius6pxbackgroundrgba(212169740.2)color#fef08aborder1px solid rgba(212169740.4)displayinline-flexalign-itemscentergap4px.comment-preview-badge.badge-youtubebackgroundrgba(23968680.2)color#fca5a5border-colorrgba(23968680.4).comment-preview-domainfont-size0.7remcolor#94a3b8.comment-preview-titlefont-size0.88remfont-weight700color#fffline-height1.35margin0.comment-preview-descfont-size0.78remcolor#cbd5e1line-height1.4margin0display-webkit-box-webkit-line-clamp2-webkit-box-orientverticaloverflowhidden.comment-preview-footermargin-top6pxdisplayflexalign-itemscenterjustify-contentflex-endgap8px.comment-preview-btnbackgroundlinear-gradient(135deg#d4a94a#facc15)color#0b1120bordernonefont-weight700font-size0.74rempadding5px 12pxborder-radius14pxcursorpointerdisplayinline-flexalign-itemscentergap5pxtext-decorationnonetransitionfilter 0.2s easetransform 0.1s ease.comment-preview-btnhoverfilterbrightness(1.1)transformtranslateY(-1px).comment-yt-embed-wrappositionrelativewidth100%aspect-ratio16 / 9min-height180pxborder-radius12pxoverflowhiddenmargin-top8pxborder1px solid rgba(250204210.3)box-shadow0 4px 16px rgba(0000.5).comment-yt-embed-wrap iframewidth100%height100%bordernonedisplayblock";
+    },
+
+    ensureStylesInjected() {
+        if (typeof document === 'undefined') return;
+        if (document.getElementById('lumina-comments-styles-v2')) return;
+        try {
+            const styleEl = document.createElement('style');
+            styleEl.id = 'lumina-comments-styles-v2';
+            styleEl.textContent = this.getCommentsCss();
+            document.head.appendChild(styleEl);
+        } catch(e) {}
+    },
+
+    _isAttaching: false,
+
+    autoAttachToAllFeedCards() {
+        if (typeof document === 'undefined' || this._isAttaching) return;
+        this._isAttaching = true;
+        try {
+            this.ensureStylesInjected();
+            const cards = document.querySelectorAll('.feed-card:not([data-comments-attached]), .feed-post-card:not([data-comments-attached]), .post-card:not([data-comments-attached]), article.feed-post-card:not([data-comments-attached]), article:not([data-comments-attached])');
+            cards.forEach(card => {
+                const footer = card.querySelector('.post-actions-bar, .post-actions, .post-footer, .feed-actions, .post-act-bar');
+                if (!footer && !card.classList.contains('feed-card') && !card.classList.contains('feed-post-card') && !card.classList.contains('post-card')) {
+                    return; // pomin karty bez paska akcji
+                }
+                card.setAttribute('data-comments-attached', 'true');
+                let rawId = card.id || card.getAttribute('data-post-id');
+                if (!rawId) {
+                    const snippet = (card.textContent || '').trim().substring(0, 20).replace(/[^a-zA-Z0-9]/g, '_');
+                    rawId = 'post_gen_' + (snippet || 'card') + '_' + Math.abs((card.textContent || '').length);
+                    card.id = rawId;
+                }
+                const postId = rawId.startsWith('post_') ? rawId.replace(/^post_/, '') : rawId;
+                const targetSecId = 'comments_' + rawId;
+                const fallbackSecId = 'comments_' + postId;
+
+                let drawer = card.querySelector('.comments-section-v2');
+                if (!drawer) {
+                    drawer = document.createElement('div');
+                    drawer.className = 'comments-section-v2';
+                    drawer.id = targetSecId;
+                    card.appendChild(drawer);
+                }
+
+                if (!card.querySelector('.action-comments')) {
+                    if (footer) {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'post-action-btn action-comments post-act-btn';
+                        btn.title = 'Komentarze';
+                        const count = this.getCommentCount(rawId) || this.getCommentCount(postId) || 2;
+                        btn.innerHTML = `<i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${count})</span>`;
+                        btn.setAttribute('onclick', `toggleComments('${rawId}')`);
+                        btn.onclick = (e) => {
+                            if (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
+                            this.toggleComments(rawId);
+                        };
+
+                        const shareOrMsg = footer.querySelector('.action-share, [onclick*="share"], [onclick*="openMessageModal"], .btn-action-secondary');
+                        if (shareOrMsg) {
+                            footer.insertBefore(btn, shareOrMsg);
+                        } else {
+                            footer.appendChild(btn);
+                        }
+                    }
+                }
+            });
+        } catch(err) {
+            console.warn('[LuminaComments] autoAttach note:', err);
+        } finally {
+            this._isAttaching = false;
+        }
+    },
+
     init() {
+        this.ensureStylesInjected();
+        this.autoAttachToAllFeedCards();
+
+        if (typeof MutationObserver !== 'undefined' && typeof document !== 'undefined') {
+            let debounceTimer = null;
+            const observer = new MutationObserver((mutations) => {
+                if (this._isAttaching) return;
+                let hasRelevantNodes = false;
+                for (const m of mutations) {
+                    for (const n of m.addedNodes) {
+                        if (n.nodeType === 1 && !n.classList?.contains('comments-section-v2') && !n.classList?.contains('comment-item-v2')) {
+                            hasRelevantNodes = true;
+                            break;
+                        }
+                    }
+                    if (hasRelevantNodes) break;
+                }
+                if (!hasRelevantNodes) return;
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    this.autoAttachToAllFeedCards();
+                }, 300);
+            });
+            const target = document.body || document.documentElement;
+            if (target) {
+                observer.observe(target, { childList: true, subtree: true });
+            }
+        }
         if (_commentsBroadcastChan && !this._hasBroadcastListener) {
             this._hasBroadcastListener = true;
             _commentsBroadcastChan.onmessage = (ev) => {
@@ -8005,8 +8115,17 @@ export const LuminaCommentsEngine = {
     },
 
     toggleComments(postId, postAuthorSlug) {
-        const section = document.getElementById('comments_' + postId);
+        this.ensureStylesInjected();
+        let section = document.getElementById('comments_' + postId);
+        if (!section && typeof postId === 'string' && postId.startsWith('post_')) {
+            section = document.getElementById('comments_' + postId.replace(/^post_/, ''));
+        }
+        if (!section && typeof postId === 'string' && !postId.startsWith('post_')) {
+            section = document.getElementById('comments_post_' + postId);
+        }
         if (!section) return;
+
+        const cleanPostId = section.id.replace(/^comments_/, '');
         const isOpen = section.classList.contains('open');
         if (isOpen) {
             section.classList.remove('open');
@@ -8014,21 +8133,33 @@ export const LuminaCommentsEngine = {
         } else {
             section.classList.add('open');
             section.style.display = 'block';
-            this.refreshCommentsSection(postId, postAuthorSlug);
-            const input = document.getElementById('comment_input_' + postId);
-            if (input) input.focus();
+            this.refreshCommentsSection(cleanPostId, postAuthorSlug);
+            setTimeout(() => {
+                try {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } catch(e) {}
+                const input = document.getElementById('comment_input_' + cleanPostId);
+                if (input) input.focus();
+            }, 120);
         }
     },
 
     submitComment(postId) {
-        const input = document.getElementById('comment_input_' + postId);
+        let input = document.getElementById('comment_input_' + postId);
+        if (!input && typeof postId === 'string' && postId.startsWith('post_')) {
+            input = document.getElementById('comment_input_' + postId.replace(/^post_/, ''));
+        }
+        if (!input && typeof postId === 'string' && !postId.startsWith('post_')) {
+            input = document.getElementById('comment_input_post_' + postId);
+        }
         if (!input) return;
+        const actualPostId = input.id.replace(/^comment_input_/, '');
         const text = input.value.trim();
         if (!text) return;
         const replyTo = input.dataset.replyTo || null;
-        this.addComment(postId, text, replyTo);
+        this.addComment(actualPostId, text, replyTo);
         input.value = '';
-        this.cancelReply(postId);
+        this.cancelReply(actualPostId);
     },
 
     renderCommentsListHtml(postId, postAuthorSlug) {
@@ -8204,10 +8335,18 @@ window.submitComment = function(postId) {
 if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => LuminaCommentsEngine.initAllPostCommentCounters(), 500);
+            LuminaCommentsEngine.init();
+            setTimeout(() => {
+                LuminaCommentsEngine.autoAttachToAllFeedCards();
+                LuminaCommentsEngine.initAllPostCommentCounters();
+            }, 500);
         });
     } else {
-        setTimeout(() => LuminaCommentsEngine.initAllPostCommentCounters(), 500);
+        LuminaCommentsEngine.init();
+        setTimeout(() => {
+            LuminaCommentsEngine.autoAttachToAllFeedCards();
+            LuminaCommentsEngine.initAllPostCommentCounters();
+        }, 500);
     }
     // Zamknięcie otwartych dropdownów po kliknięciu poza nimi
     document.addEventListener('click', (e) => {
