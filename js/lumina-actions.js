@@ -31,6 +31,9 @@ export function openModal(id) {
 export function closeModal(id) {
     const el = document.getElementById(id);
     if (el) el.classList.remove('open');
+    if (id === 'directMessagesModal' && typeof window !== 'undefined' && typeof window.stopAllSyncLoungeStreams === 'function') {
+        window.stopAllSyncLoungeStreams(false);
+    }
 }
 
 // Profile Heart (Like) Action with Live Counter

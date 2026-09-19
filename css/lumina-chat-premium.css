@@ -1114,3 +1114,207 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
     transform: translateY(-1px);
 }
 
+/* ==========================================================================
+   SYNC-FAITH LOUNGE: ADVANCED STREAM CONTROLS & PLACEHOLDERS (JOMA-STREAM-CTRL)
+   ========================================================================== */
+.sync-lounge-stop-all-btn {
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fca5a5;
+    font-weight: 800;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.sync-lounge-stop-all-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+    color: #fff;
+    border-color: #ef4444;
+}
+
+.sync-radio-stop-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fca5a5;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.sync-radio-stop-btn:hover {
+    background: rgba(239, 68, 68, 0.35);
+    color: #fff;
+    border-color: #ef4444;
+}
+
+.sync-stream-control-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 2px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sync-stream-btn {
+    padding: 5px 12px;
+    border-radius: 9px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s ease;
+    border: none;
+}
+.sync-stream-btn.danger {
+    background: rgba(239, 68, 68, 0.18);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fca5a5;
+}
+.sync-stream-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.32);
+    color: #fff;
+}
+.sync-stream-btn.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+}
+.sync-stream-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+.sync-stream-btn.play-state {
+    background: linear-gradient(135deg, #D4A94A, #B88D34);
+    color: #0A0A0F;
+    border: 1px solid #F5DC9A;
+    box-shadow: 0 2px 8px rgba(212, 169, 74, 0.3);
+}
+.sync-stream-btn.play-state:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+.sync-stream-meta-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sync-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.sync-pulse-dot.green {
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+.sync-pulse-dot.red {
+    background: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+.sync-pulse-dot.gray {
+    background: #64748b;
+}
+
+.sync-media-placeholder {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 220px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(212, 169, 74, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.sync-placeholder-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.35);
+    transition: filter 0.2s;
+}
+.sync-media-placeholder:hover .sync-placeholder-img {
+    filter: brightness(0.45);
+}
+.sync-placeholder-overlay {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    padding: 10px;
+}
+.sync-placeholder-big-play {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4A94A, #B88D34);
+    color: #0A0A0F;
+    border: none;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 18px rgba(212, 169, 74, 0.5);
+    cursor: pointer;
+    transition: transform 0.18s, filter 0.18s;
+}
+.sync-placeholder-big-play:hover {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+}
+.sync-placeholder-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #F5DC9A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.sync-placeholder-hint {
+    font-size: 0.72rem;
+    color: #e2e8f0;
+}
+
+@media (max-width: 640px) {
+    .sync-stop-all-text {
+        display: none !important;
+    }
+    .sync-lounge-stop-all-btn {
+        padding: 0 !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        border-radius: 8px !important;
+        justify-content: center !important;
+    }
+}
+
+

@@ -6330,9 +6330,12 @@
                                     <i class="fa-solid fa-tower-broadcast" style="color: #F5DC9A;"></i>
                                     <span>Sync-Faith Lounge • Dla Dwojga</span>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <button type="button" class="sync-lounge-stop-all-btn" id="btnSyncLoungeStopAll" onclick="stopAllSyncLoungeStreams(true)" title="Wyłącz i zatrzymaj seans">
+                                        <i class="fa-solid fa-power-off"></i> <span class="sync-stop-all-text">Wyłącz seans</span>
+                                    </button>
                                     <div class="sync-lounge-status-pill" id="syncLoungeStatusPill">
-                                        <span style="width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block;"></span>
+                                        <span style="width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block;" id="syncLoungeStatusDot"></span>
                                         <span id="syncLoungeStatusText"><span class="sync-status-full">Zsynchronizowano co do sekundy</span><span class="sync-status-compact">Zsynchronizowano</span></span>
                                     </div>
                                     <button type="button" class="sync-lounge-close-btn" onclick="toggleSyncFaithLounge()" title="Zwiń Odtwarzacz">
@@ -6363,28 +6366,83 @@
                                         <div class="sync-radio-title">Radio Christian Culture 24/7</div>
                                         <div class="sync-radio-sub" id="syncRadioSub">Wspólne budowanie w Słowie i uwielbieniu 🕊️</div>
                                     </div>
-                                    <button type="button" class="sync-play-btn" id="btnSyncRadioPlay" onclick="toggleSyncRadioPlay()" title="Włącz / Wyłącz Radio">
-                                        <i class="fa-solid fa-play" id="iconSyncRadioPlay"></i>
-                                    </button>
-                                    <audio id="syncRadioAudio" src="https://stream.zeno.fm/50sfeegv208uv" preload="none"></audio>
+                                    <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                                        <button type="button" class="sync-play-btn" id="btnSyncRadioPlay" onclick="toggleSyncRadioPlay()" title="Włącz / Wstrzymaj Radio">
+                                            <i class="fa-solid fa-play" id="iconSyncRadioPlay"></i>
+                                        </button>
+                                        <button type="button" class="sync-radio-stop-btn" id="btnSyncRadioStop" onclick="stopSyncRadio(true)" title="Całkowicie zatrzymaj i wyłącz radio">
+                                            <i class="fa-solid fa-stop"></i>
+                                        </button>
+                                    </div>
+                                    <audio id="syncRadioAudio" preload="none"></audio>
                                 </div>
 
                                 <!-- CCTV24 Live TV View -->
-                                <div id="syncTvView" style="display:none; flex-direction:column; gap:6px;">
-                                    <div class="sync-video-container">
+                                <div id="syncTvView" style="display:none; flex-direction:column; gap:8px;">
+                                    <div class="sync-video-container" id="syncTvContainer">
                                         <iframe id="syncTvIframe" src="" title="CCTV24 Worship Live" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                                        <div id="syncTvPlaceholder" class="sync-media-placeholder" style="display:none;" onclick="startSyncTvVideo(true)">
+                                            <img src="tlo_cctv.jpg" alt="CCTV24 Live TV" class="sync-placeholder-img" onerror="this.src='tlo_pr_cc.jpg'">
+                                            <div class="sync-placeholder-overlay">
+                                                <button type="button" class="sync-placeholder-big-play" onclick="event.stopPropagation(); startSyncTvVideo(true);" title="Uruchom CCTV24 TV">
+                                                    <i class="fa-solid fa-play"></i>
+                                                </button>
+                                                <div class="sync-placeholder-badge"><i class="fa-solid fa-tv"></i> CCTV24 Worship TV</div>
+                                                <div class="sync-placeholder-hint">Transmisja wyłączona • Kliknij, aby włączyć na żywo</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style="font-size:0.75rem; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
-                                        <span><i class="fa-solid fa-tv" style="color:#ef4444;"></i> CCTV24 Worship Na Żywo</span>
-                                        <span style="color:#F5DC9A; font-weight:700;">Wspólny seans</span>
+                                    
+                                    <!-- TV Stream Action Bar -->
+                                    <div class="sync-stream-control-bar">
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <button type="button" id="btnSyncTvToggle" class="sync-stream-btn danger" onclick="toggleSyncTvPlay()">
+                                                <i class="fa-solid fa-power-off" id="iconSyncTvPower"></i> <span id="labelSyncTvPower">Wyłącz TV</span>
+                                            </button>
+                                            <button type="button" id="btnSyncTvMute" class="sync-stream-btn secondary" onclick="toggleSyncTvMute()">
+                                                <i class="fa-solid fa-volume-high" id="iconSyncTvVolume"></i> <span id="labelSyncTvVolume">Dźwięk</span>
+                                            </button>
+                                        </div>
+                                        <div class="sync-stream-meta-status">
+                                            <span class="sync-pulse-dot red" id="dotSyncTvLive"></span>
+                                            <span id="textSyncTvLive" style="font-size:0.75rem; color:#cbd5e1; font-weight:700;">Transmisja aktywna</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Nie Bylejaki Kurs Małżeński View -->
-                                <div id="syncCourseView" style="display:none; flex-direction:column; gap:6px;">
-                                    <div class="sync-video-container">
-                                        <iframe id="syncCourseIframe" src="" title="Nie Bylejaki Kurs Małżeński" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                                <div id="syncCourseView" style="display:none; flex-direction:column; gap:8px;">
+                                    <div class="sync-video-container" id="syncCourseContainer">
+                                        <iframe id="syncCourseIframe" src="" title="Nie Bylejaki Kurs Małżeński" allow="autoplay; fullscreen; picture-in-picture; accelerometer; clipboard-write; encrypted-media; gyroscope;" allowfullscreen loading="lazy"></iframe>
+                                        <div id="syncCoursePlaceholder" class="sync-media-placeholder" style="display:none;" onclick="startSyncCourseVideo(true)">
+                                            <img id="syncCoursePlaceholderImg" src="randki_malzenstwo_plakat_hq.webp" alt="Kurs Małżeński" class="sync-placeholder-img" onerror="this.src='tlo_profilowe_wioletta.jpg'">
+                                            <div class="sync-placeholder-overlay">
+                                                <button type="button" class="sync-placeholder-big-play" onclick="event.stopPropagation(); startSyncCourseVideo(true);" title="Uruchom Kurs">
+                                                    <i class="fa-solid fa-play"></i>
+                                                </button>
+                                                <div class="sync-placeholder-badge"><i class="fa-solid fa-heart"></i> Kurs Małżeński</div>
+                                                <div class="sync-placeholder-hint" id="syncCoursePlaceholderTitle">Odcinek 1 • Kliknij, aby uruchomić wideo</div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <!-- Course Action Bar -->
+                                    <div class="sync-stream-control-bar">
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <button type="button" id="btnSyncCourseToggle" class="sync-stream-btn danger" onclick="toggleSyncCoursePlay()">
+                                                <i class="fa-solid fa-power-off" id="iconSyncCoursePower"></i> <span id="labelSyncCoursePower">Wyłącz wideo</span>
+                                            </button>
+                                            <button type="button" id="btnSyncCoursePause" class="sync-stream-btn secondary" onclick="pauseOrResumeSyncCourseVideo()">
+                                                <i class="fa-solid fa-pause" id="iconSyncCoursePause"></i> <span id="labelSyncCoursePause">Wstrzymaj</span>
+                                            </button>
+                                        </div>
+                                        <div class="sync-stream-meta-status">
+                                            <span class="sync-pulse-dot green" id="dotSyncCourseLive"></span>
+                                            <span id="textSyncCourseStatus" style="font-size:0.75rem; color:#cbd5e1; font-weight:700;">Seans aktywny</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Selektor odcinka -->
                                     <div style="display:flex; flex-direction:column; gap:4px;">
                                         <label for="syncCourseSelect" style="font-size:0.70rem; color:#94a3b8; font-weight:700; text-transform:uppercase;">Wybierz odcinek cyklu:</label>
                                         <select id="syncCourseSelect" class="sync-episode-select" onchange="onSyncCourseEpisodeChanged(this.value)">
@@ -9780,7 +9838,11 @@
         }
 
         function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('open');
+            if (id === 'directMessagesModal' && typeof window.stopAllSyncLoungeStreams === 'function') {
+                window.stopAllSyncLoungeStreams(false);
+            }
         }
 
         function selectCampaignType(type) {
@@ -11790,6 +11852,9 @@
         }
 
         function returnToConversationsList() {
+            if (typeof window.stopAllSyncLoungeStreams === 'function') {
+                window.stopAllSyncLoungeStreams(false);
+            }
             if (activeChatUnsubscribe) {
                 activeChatUnsubscribe();
                 activeChatUnsubscribe = null;
@@ -11869,6 +11934,37 @@
         let _syncLoungeActiveChatId = null;
         let _syncLoungeCurrentSource = 'radio';
         let _syncLoungeSubscribed = false;
+        let _syncTvIsPlaying = false;
+        let _syncTvIsMuted = true;
+        let _syncCourseIsPlaying = false;
+        let _syncCourseIsPaused = false;
+        let _syncCourseCurrentEp = 1;
+
+        const SYNC_RADIO_STREAM_URL = 'https://stream.zeno.fm/vz96pvl3pnktv';
+
+        const SYNC_KURS_MALZENSKI_EPISODES = [
+            { num: 1, title: 'Cztery wielkie sekrety rodzinnego szczęścia', id: 'OWKwixyQq2c' },
+            { num: 2, title: 'Czy to rzeczywiście miłość?', id: 'gtGiaco7rwI' },
+            { num: 3, title: 'Zasady dobrej rodzinnej łączności', id: 'FtY7zvLNK0A' },
+            { num: 4, title: 'Co zrobić z gniewem i złością?', id: 'lqQ1f8L9F_s' },
+            { num: 5, title: 'Jak rozwiązywać konflikty?', id: 'g2T49iFvdT8' },
+            { num: 6, title: 'Jak radzić sobie ze stresem i depresją?', id: 'dF5-cQ7bN0Q' },
+            { num: 7, title: 'Pieniądze w rodzinie', id: 'W6JgRz9kF_o' },
+            { num: 8, title: 'Jak wychowywać dzieci?', id: 'bZ3nJcQ-21w' },
+            { num: 9, title: 'Gdy dziecko dorasta', id: '2J2F7L-6kQ0' },
+            { num: 10, title: 'Gdy małżeństwo przeżywa kryzys', id: 'p5l-qHk6j4Y' },
+            { num: 11, title: 'Jak przebaczać i zacząć od nowa?', id: 'rV1d1JzQh9o' },
+            { num: 12, title: 'Seksualność w małżeństwie', id: 'u8hZ_k1bN5g' },
+            { num: 13, title: 'Wierność i zaufanie', id: 'qZ8x-bM6K78' },
+            { num: 14, title: 'Duchowy wymiar rodziny', id: 'n7kL_w8B9g0' },
+            { num: 15, title: 'Rola męża i ojca', id: 'm4nZ_j5K6h8' },
+            { num: 16, title: 'Rola żony i matki', id: 'v9pL_d7Q1s4' },
+            { num: 17, title: 'Jak budować dom pełen miłości?', id: 't6kM_z4V1j0' },
+            { num: 18, title: 'Boże błogosławieństwo dla rodziny', id: 'x5nL_k9B3w8' }
+        ];
+        if (typeof window !== 'undefined' && window.LuminaDB) {
+            window.LuminaDB.KURS_MALZENSKI_EPISODES = SYNC_KURS_MALZENSKI_EPISODES;
+        }
 
         window.toggleSyncFaithLounge = function() {
             const panel = document.getElementById('syncFaithLoungePanel');
@@ -11908,26 +12004,7 @@
         function populateSyncCourseOptions() {
             const sel = document.getElementById('syncCourseSelect');
             if (!sel || sel.options.length > 0) return;
-            const eps = (window.LuminaDB && window.LuminaDB.KURS_MALZENSKI_EPISODES) ? window.LuminaDB.KURS_MALZENSKI_EPISODES : [
-                { num: 1, title: 'Cztery wielkie sekrety rodzinnego szczęścia', id: 'OWKwixyQq2c' },
-                { num: 2, title: 'Czy to rzeczywiście miłość?', id: 'gtGiaco7rwI' },
-                { num: 3, title: 'Zasady dobrej rodzinnej łączności', id: 'FtY7zvLNK0A' },
-                { num: 4, title: 'Co zrobić z gniewem i złością?', id: 'lqQ1f8L9F_s' },
-                { num: 5, title: 'Jak rozwiązywać konflikty?', id: 'g2T49iFvdT8' },
-                { num: 6, title: 'Jak radzić sobie ze stresem i depresją?', id: 'dF5-cQ7bN0Q' },
-                { num: 7, title: 'Pieniądze w rodzinie', id: 'W6JgRz9kF_o' },
-                { num: 8, title: 'Jak wychowywać dzieci?', id: 'bZ3nJcQ-21w' },
-                { num: 9, title: 'Gdy dziecko dorasta', id: '2J2F7L-6kQ0' },
-                { num: 10, title: 'Gdy małżeństwo przeżywa kryzys', id: 'p5l-qHk6j4Y' },
-                { num: 11, title: 'Jak przebaczać i zacząć od nowa?', id: 'rV1d1JzQh9o' },
-                { num: 12, title: 'Seksualność w małżeństwie', id: 'u8hZ_k1bN5g' },
-                { num: 13, title: 'Wierność i zaufanie', id: 'qZ8x-bM6K78' },
-                { num: 14, title: 'Duchowy wymiar rodziny', id: 'n7kL_w8B9g0' },
-                { num: 15, title: 'Rola męża i ojca', id: 'm4nZ_j5K6h8' },
-                { num: 16, title: 'Rola żony i matki', id: 'v9pL_d7Q1s4' },
-                { num: 17, title: 'Jak budować dom pełen miłości?', id: 't6kM_z4V1j0' },
-                { num: 18, title: 'Boże błogosławieństwo dla rodziny', id: 'x5nL_k9B3w8' }
-            ];
+            const eps = (window.LuminaDB && window.LuminaDB.KURS_MALZENSKI_EPISODES) || SYNC_KURS_MALZENSKI_EPISODES;
             eps.forEach(ep => {
                 const opt = document.createElement('option');
                 opt.value = ep.num;
@@ -11954,27 +12031,18 @@
             if (viewTv) viewTv.style.display = source === 'tv' ? 'flex' : 'none';
             if (viewCourse) viewCourse.style.display = source === 'course' ? 'flex' : 'none';
 
-            // Zatrzymujemy radio jeśli przełączamy na wideo
-            const radioAudio = document.getElementById('syncRadioAudio');
-            if (source !== 'radio' && radioAudio && !radioAudio.paused) {
-                radioAudio.pause();
-                updateSyncRadioPlayButton(false);
-            }
+            // Zatrzymujemy inne źródła, by nie grały równolegle (Mutual Exclusion)
+            if (source !== 'radio') stopSyncRadio(false);
+            if (source !== 'tv') stopSyncTvVideo(false);
+            if (source !== 'course') stopSyncCourseVideo(false);
 
-            // Ładujemy wideo TV
-            const tvIframe = document.getElementById('syncTvIframe');
-            if (source === 'tv' && tvIframe) {
-                if (!tvIframe.src || !tvIframe.src.includes('cctv24-worship-live')) {
-                    tvIframe.src = 'cctv24-worship-live.html?muted=1&in_lounge=1';
-                }
-            }
-
-            // Ładujemy wideo kursu
-            if (source === 'course') {
+            if (source === 'tv') {
+                startSyncTvVideo(false);
+            } else if (source === 'course') {
                 populateSyncCourseOptions();
                 const sel = document.getElementById('syncCourseSelect');
                 const epNum = sel ? parseInt(sel.value, 10) || 1 : 1;
-                loadSyncCourseVideo(epNum);
+                startSyncCourseVideo(false, epNum);
             }
 
             if (!skipBroadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
@@ -11986,25 +12054,54 @@
             }
         };
 
-        window.toggleSyncRadioPlay = function() {
+        // ── RADIO CC CONTROLLER ──
+        window.startSyncRadio = function(broadcast = true) {
             const audio = document.getElementById('syncRadioAudio');
             if (!audio) return;
-            const isPlaying = !audio.paused;
-            if (isPlaying) {
-                audio.pause();
-                updateSyncRadioPlayButton(false);
-            } else {
-                audio.play().catch(() => {});
-                updateSyncRadioPlayButton(true);
+            if (!audio.src || !audio.src.includes('stream.zeno.fm')) {
+                audio.src = SYNC_RADIO_STREAM_URL + '?t=' + Date.now();
             }
+            audio.play().catch(e => console.warn('Sync radio play error:', e));
+            updateSyncRadioPlayButton(true);
 
-            if (_syncLoungeActiveChatId && window.LuminaSyncLounge) {
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
                 const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
                 window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
                     ...curState,
                     tab: 'radio',
-                    isPlaying: !isPlaying
+                    isPlaying: true,
+                    isStopped: false
                 });
+            }
+        };
+
+        window.stopSyncRadio = function(broadcast = true) {
+            const audio = document.getElementById('syncRadioAudio');
+            if (audio) {
+                audio.pause();
+                audio.removeAttribute('src'); // Zrywa połączenie sieciowe i bufor
+                audio.load();
+            }
+            updateSyncRadioPlayButton(false);
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'radio',
+                    isPlaying: false,
+                    isStopped: true
+                });
+            }
+        };
+
+        window.toggleSyncRadioPlay = function() {
+            const audio = document.getElementById('syncRadioAudio');
+            if (!audio) return;
+            if (audio.paused || !audio.src) {
+                startSyncRadio(true);
+            } else {
+                stopSyncRadio(true);
             }
         };
 
@@ -12015,64 +12112,359 @@
                 icon.className = playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
             }
             if (sub) {
-                sub.textContent = playing ? 'Strumień aktywny • Słuchacie wspólnie Radia CC 📻' : 'Wspólne budowanie w Słowie i uwielbieniu 🕊️';
+                sub.textContent = playing ? 'Strumień aktywny • Słuchacie wspólnie Radia CC 📻' : 'Strumień wyłączony • Kliknij Odtwórz 🕊️';
+            }
+        }
+
+        // ── CCTV24 TV CONTROLLER ──
+        window.startSyncTvVideo = function(broadcast = true) {
+            _syncTvIsPlaying = true;
+            const iframe = document.getElementById('syncTvIframe');
+            const placeholder = document.getElementById('syncTvPlaceholder');
+            if (placeholder) placeholder.style.display = 'none';
+            if (iframe) {
+                iframe.style.display = 'block';
+                const targetSrc = `cctv24-worship-live.html?muted=${_syncTvIsMuted ? '1' : '0'}&in_lounge=1`;
+                if (!iframe.src || !iframe.src.includes('cctv24-worship-live')) {
+                    iframe.src = targetSrc;
+                }
+            }
+            updateSyncTvControls(true);
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'tv',
+                    isPlaying: true,
+                    isStopped: false
+                });
+            }
+        };
+
+        window.stopSyncTvVideo = function(broadcast = true) {
+            _syncTvIsPlaying = false;
+            const iframe = document.getElementById('syncTvIframe');
+            const placeholder = document.getElementById('syncTvPlaceholder');
+            if (iframe) {
+                iframe.src = ''; // Twarde zatrzymanie odtwarzania w iframe
+                iframe.style.display = 'none';
+            }
+            if (placeholder) placeholder.style.display = 'flex';
+            updateSyncTvControls(false);
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'tv',
+                    isPlaying: false,
+                    isStopped: true
+                });
+            }
+        };
+
+        window.toggleSyncTvPlay = function() {
+            if (_syncTvIsPlaying) {
+                stopSyncTvVideo(true);
+            } else {
+                startSyncTvVideo(true);
+            }
+        };
+
+        window.toggleSyncTvMute = function() {
+            _syncTvIsMuted = !_syncTvIsMuted;
+            const iframe = document.getElementById('syncTvIframe');
+            const icon = document.getElementById('iconSyncTvVolume');
+            const label = document.getElementById('labelSyncTvVolume');
+            if (icon) icon.className = _syncTvIsMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+            if (label) label.textContent = _syncTvIsMuted ? 'Wyciszony' : 'Dźwięk';
+
+            if (iframe && _syncTvIsPlaying) {
+                try {
+                    iframe.contentWindow.postMessage({ type: 'SET_MUTE', muted: _syncTvIsMuted }, '*');
+                } catch(e) {}
+                try {
+                    const url = new URL(iframe.src, window.location.href);
+                    url.searchParams.set('muted', _syncTvIsMuted ? '1' : '0');
+                    if (iframe.src !== url.toString()) iframe.src = url.toString();
+                } catch(e) {}
+            }
+        };
+
+        function updateSyncTvControls(isPlaying) {
+            const btn = document.getElementById('btnSyncTvToggle');
+            const icon = document.getElementById('iconSyncTvPower');
+            const label = document.getElementById('labelSyncTvPower');
+            const dot = document.getElementById('dotSyncTvLive');
+            const text = document.getElementById('textSyncTvLive');
+            if (btn) {
+                btn.className = isPlaying ? 'sync-stream-btn danger' : 'sync-stream-btn play-state';
+            }
+            if (icon) icon.className = isPlaying ? 'fa-solid fa-power-off' : 'fa-solid fa-play';
+            if (label) label.textContent = isPlaying ? 'Wyłącz TV' : 'Włącz TV';
+            if (dot) dot.className = isPlaying ? 'sync-pulse-dot red' : 'sync-pulse-dot gray';
+            if (text) text.textContent = isPlaying ? 'Transmisja aktywna' : 'Transmisja wyłączona';
+        }
+
+        // ── KURS MAŁŻEŃSKI (YOUTUBE) CONTROLLER ──
+        function sendYoutubeCommand(iframe, func, args) {
+            if (iframe && iframe.contentWindow) {
+                try {
+                    iframe.contentWindow.postMessage(JSON.stringify({
+                        event: 'command',
+                        func: func,
+                        args: args || []
+                    }), '*');
+                } catch(e) {}
+            }
+        }
+
+        window.startSyncCourseVideo = function(broadcast = true, epNum = null) {
+            if (epNum) _syncCourseCurrentEp = parseInt(epNum, 10) || 1;
+            const eps = (window.LuminaDB && window.LuminaDB.KURS_MALZENSKI_EPISODES) || SYNC_KURS_MALZENSKI_EPISODES;
+            const ep = eps.find(e => e.num === _syncCourseCurrentEp) || eps[0];
+            if (!ep || !ep.id) return;
+
+            _syncCourseIsPlaying = true;
+            _syncCourseIsPaused = false;
+            const iframe = document.getElementById('syncCourseIframe');
+            const placeholder = document.getElementById('syncCoursePlaceholder');
+            if (placeholder) placeholder.style.display = 'none';
+            if (iframe) {
+                iframe.style.display = 'block';
+                const targetSrc = `https://www.youtube-nocookie.com/embed/${ep.id}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`;
+                if (iframe.src !== targetSrc) {
+                    iframe.src = targetSrc;
+                } else {
+                    sendYoutubeCommand(iframe, 'playVideo');
+                }
+            }
+            updateSyncCourseControls('playing');
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'course',
+                    courseEpisode: _syncCourseCurrentEp,
+                    isPlaying: true,
+                    isPaused: false,
+                    isStopped: false
+                });
+            }
+        };
+
+        window.stopSyncCourseVideo = function(broadcast = true) {
+            _syncCourseIsPlaying = false;
+            _syncCourseIsPaused = false;
+            const iframe = document.getElementById('syncCourseIframe');
+            const placeholder = document.getElementById('syncCoursePlaceholder');
+            if (iframe) {
+                iframe.src = ''; // Twarde zatrzymanie YouTube
+                iframe.style.display = 'none';
+            }
+            if (placeholder) placeholder.style.display = 'flex';
+            updateSyncCourseControls('stopped');
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                    ...curState,
+                    tab: 'course',
+                    courseEpisode: _syncCourseCurrentEp,
+                    isPlaying: false,
+                    isPaused: false,
+                    isStopped: true
+                });
+            }
+        };
+
+        window.toggleSyncCoursePlay = function() {
+            if (_syncCourseIsPlaying) {
+                stopSyncCourseVideo(true);
+            } else {
+                startSyncCourseVideo(true, _syncCourseCurrentEp);
+            }
+        };
+
+        window.pauseOrResumeSyncCourseVideo = function(broadcast = true) {
+            const iframe = document.getElementById('syncCourseIframe');
+            if (!_syncCourseIsPlaying) {
+                startSyncCourseVideo(broadcast, _syncCourseCurrentEp);
+                return;
+            }
+            if (_syncCourseIsPaused) {
+                _syncCourseIsPaused = false;
+                sendYoutubeCommand(iframe, 'playVideo');
+                updateSyncCourseControls('playing');
+                if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                    const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                    window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                        ...curState,
+                        tab: 'course',
+                        courseEpisode: _syncCourseCurrentEp,
+                        isPlaying: true,
+                        isPaused: false,
+                        isStopped: false
+                    });
+                }
+            } else {
+                _syncCourseIsPaused = true;
+                sendYoutubeCommand(iframe, 'pauseVideo');
+                updateSyncCourseControls('paused');
+                if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
+                    const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
+                    window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
+                        ...curState,
+                        tab: 'course',
+                        courseEpisode: _syncCourseCurrentEp,
+                        isPlaying: true,
+                        isPaused: true,
+                        isStopped: false
+                    });
+                }
+            }
+        };
+
+        function updateSyncCourseControls(status) {
+            const btnToggle = document.getElementById('btnSyncCourseToggle');
+            const iconPower = document.getElementById('iconSyncCoursePower');
+            const labelPower = document.getElementById('labelSyncCoursePower');
+            const btnPause = document.getElementById('btnSyncCoursePause');
+            const iconPause = document.getElementById('iconSyncCoursePause');
+            const labelPause = document.getElementById('labelSyncCoursePause');
+            const dot = document.getElementById('dotSyncCourseLive');
+            const text = document.getElementById('textSyncCourseStatus');
+
+            if (status === 'playing') {
+                if (btnToggle) btnToggle.className = 'sync-stream-btn danger';
+                if (iconPower) iconPower.className = 'fa-solid fa-power-off';
+                if (labelPower) labelPower.textContent = 'Wyłącz wideo';
+                if (btnPause) {
+                    btnPause.disabled = false;
+                    btnPause.style.opacity = '1';
+                }
+                if (iconPause) iconPause.className = 'fa-solid fa-pause';
+                if (labelPause) labelPause.textContent = 'Wstrzymaj';
+                if (dot) dot.className = 'sync-pulse-dot green';
+                if (text) text.textContent = 'Seans aktywny';
+            } else if (status === 'paused') {
+                if (btnToggle) btnToggle.className = 'sync-stream-btn danger';
+                if (iconPower) iconPower.className = 'fa-solid fa-power-off';
+                if (labelPower) labelPower.textContent = 'Wyłącz wideo';
+                if (btnPause) {
+                    btnPause.disabled = false;
+                    btnPause.style.opacity = '1';
+                }
+                if (iconPause) iconPause.className = 'fa-solid fa-play';
+                if (labelPause) labelPause.textContent = 'Wznów';
+                if (dot) dot.className = 'sync-pulse-dot gray';
+                if (text) text.textContent = 'Wstrzymano (Pauza)';
+            } else { // stopped
+                if (btnToggle) btnToggle.className = 'sync-stream-btn play-state';
+                if (iconPower) iconPower.className = 'fa-solid fa-play';
+                if (labelPower) labelPower.textContent = 'Włącz wideo';
+                if (btnPause) {
+                    btnPause.disabled = true;
+                    btnPause.style.opacity = '0.45';
+                }
+                if (iconPause) iconPause.className = 'fa-solid fa-pause';
+                if (labelPause) labelPause.textContent = 'Wstrzymaj';
+                if (dot) dot.className = 'sync-pulse-dot gray';
+                if (text) text.textContent = 'Wideo wyłączone';
             }
         }
 
         window.onSyncCourseEpisodeChanged = function(epNum) {
             const num = parseInt(epNum, 10) || 1;
-            loadSyncCourseVideo(num);
+            _syncCourseCurrentEp = num;
+            const eps = (window.LuminaDB && window.LuminaDB.KURS_MALZENSKI_EPISODES) || SYNC_KURS_MALZENSKI_EPISODES;
+            const ep = eps.find(e => e.num === num) || eps[0];
+            const titleEl = document.getElementById('syncCoursePlaceholderTitle');
+            if (titleEl && ep) titleEl.textContent = `Odcinek ${num}: ${ep.title}`;
 
-            if (_syncLoungeActiveChatId && window.LuminaSyncLounge) {
+            startSyncCourseVideo(true, num);
+        };
+
+        // ── MASTER KILL-SWITCH (ZATRZYMAJ WSZYSTKO) ──
+        window.stopAllSyncLoungeStreams = function(broadcast = true) {
+            stopSyncRadio(false);
+            stopSyncTvVideo(false);
+            stopSyncCourseVideo(false);
+
+            if (broadcast && _syncLoungeActiveChatId && window.LuminaSyncLounge) {
                 const curState = window.LuminaSyncLounge.getState(_syncLoungeActiveChatId);
                 window.LuminaSyncLounge.broadcastState(_syncLoungeActiveChatId, {
                     ...curState,
-                    tab: 'course',
-                    courseEpisode: num
+                    isStopped: true,
+                    isPlaying: false,
+                    isPaused: false,
+                    tab: _syncLoungeCurrentSource
                 });
             }
-        };
-
-        function loadSyncCourseVideo(epNum) {
-            const iframe = document.getElementById('syncCourseIframe');
-            if (!iframe) return;
-            const eps = window.LuminaDB?.KURS_MALZENSKI_EPISODES || [];
-            const ep = eps.find(e => e.num === epNum) || eps[0];
-            if (ep && ep.id) {
-                const targetSrc = `https://www.youtube-nocookie.com/embed/${ep.id}?autoplay=1&rel=0&playsinline=1`;
-                if (iframe.src !== targetSrc) {
-                    iframe.src = targetSrc;
-                }
+            if (typeof window.showToast === 'function') {
+                window.showToast('Zatrzymano wszystkie strumienie seansu ⏹️');
             }
-        }
+        };
 
         function applySyncLoungeState(state, isSelf) {
             if (!state) return;
             const statusText = document.getElementById('syncLoungeStatusText');
             if (statusText) {
-                statusText.textContent = isSelf ? 'Zsynchronizowano co do sekundy' : 'Zsynchronizowano z rozmówcą ●';
+                statusText.innerHTML = isSelf 
+                    ? '<span class="sync-status-full">Zsynchronizowano co do sekundy</span><span class="sync-status-compact">Zsynchronizowano</span>'
+                    : '<span class="sync-status-full">Zsynchronizowano z rozmówcą ●</span><span class="sync-status-compact">Wspólny seans ●</span>';
             }
 
             if (state.tab && state.tab !== _syncLoungeCurrentSource) {
                 switchSyncLoungeSource(state.tab, true);
             }
 
+            if (state.isStopped) {
+                if (state.tab === 'radio') stopSyncRadio(false);
+                else if (state.tab === 'tv') stopSyncTvVideo(false);
+                else if (state.tab === 'course') stopSyncCourseVideo(false);
+                return;
+            }
+
             if (state.tab === 'radio') {
                 const audio = document.getElementById('syncRadioAudio');
-                if (audio) {
-                    if (state.isPlaying && audio.paused) {
-                        audio.play().catch(() => {});
-                        updateSyncRadioPlayButton(true);
-                    } else if (!state.isPlaying && !audio.paused) {
-                        audio.pause();
-                        updateSyncRadioPlayButton(false);
-                    }
+                if (state.isPlaying) {
+                    if (!audio || audio.paused || !audio.src) startSyncRadio(false);
+                } else {
+                    stopSyncRadio(false);
                 }
-            } else if (state.tab === 'course' && state.courseEpisode) {
-                const sel = document.getElementById('syncCourseSelect');
-                if (sel && parseInt(sel.value, 10) !== state.courseEpisode) {
-                    sel.value = state.courseEpisode;
-                    loadSyncCourseVideo(state.courseEpisode);
+            } else if (state.tab === 'tv') {
+                if (state.isPlaying) {
+                    if (!_syncTvIsPlaying) startSyncTvVideo(false);
+                } else {
+                    stopSyncTvVideo(false);
+                }
+            } else if (state.tab === 'course') {
+                if (state.courseEpisode && state.courseEpisode !== _syncCourseCurrentEp) {
+                    _syncCourseCurrentEp = state.courseEpisode;
+                    const sel = document.getElementById('syncCourseSelect');
+                    if (sel) sel.value = state.courseEpisode;
+                }
+                if (state.isPaused) {
+                    if (!_syncCourseIsPaused) {
+                        _syncCourseIsPaused = true;
+                        const iframe = document.getElementById('syncCourseIframe');
+                        sendYoutubeCommand(iframe, 'pauseVideo');
+                        updateSyncCourseControls('paused');
+                    }
+                } else if (state.isPlaying) {
+                    if (!_syncCourseIsPlaying) {
+                        startSyncCourseVideo(false, _syncCourseCurrentEp);
+                    } else if (_syncCourseIsPaused) {
+                        _syncCourseIsPaused = false;
+                        const iframe = document.getElementById('syncCourseIframe');
+                        sendYoutubeCommand(iframe, 'playVideo');
+                        updateSyncCourseControls('playing');
+                    }
+                } else {
+                    stopSyncCourseVideo(false);
                 }
             }
         }
