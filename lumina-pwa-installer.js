@@ -611,7 +611,7 @@
         // Wymuszenie reinstalacji na urządzeniach mobilnych (jeśli nie w trybie standalone PWA)
         const isMobileDevice = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
         if (isMobileDevice && !isRunningStandalone() && sessionStorage.getItem(DISMISS_INSTALL_KEY) !== 'true') {
-            setTimeout(showInstallBanner, 2200);
+            setTimeout(showInstallBanner, 25000);
         }
 
         window.addEventListener('appinstalled', () => {

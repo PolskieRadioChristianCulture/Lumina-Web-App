@@ -4504,6 +4504,18 @@
                 <p class="hero-subtitle" data-i18n="hero_subtitle" style="margin-bottom: 10px; font-size: 0.82rem; line-height: 1.35; max-width: 620px;">
                     Poznaj ludzi, którzy budują relacje oparte na wierze i wartościach • Świadectwa • Modlitwa
                 </p>
+                <!-- ✨ GŁÓWNE WEZWANIE DO DZIAŁANIA (CTA) DLA NOWEGO UŻYTKOWNIKA ✨ -->
+                <div class="hero-cta-actions" id="heroGuestCta" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; margin-bottom: 6px;">
+                    <button type="button" class="btn-hero-join-prominent" onclick="if(window.openRegister) window.openRegister(); else if(window.openAuth) window.openAuth('register');" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; min-height: 44px; background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 800; border-radius: 999px; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4), 0 0 16px rgba(168, 85, 247, 0.3); transition: all 0.2s ease;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #fef08a;"></i>
+                        <span>Dołącz bezpłatnie – utwórz profil w 2 minuty</span>
+                        <i class="fa-solid fa-arrow-right" style="font-size: 0.78rem;"></i>
+                    </button>
+                    <button type="button" class="btn-hero-login-subtle" onclick="if(window.openLogin) window.openLogin(); else if(window.openAuth) window.openAuth('login');" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; min-height: 44px; background: rgba(255, 255, 255, 0.08); color: #f1f5f9; font-family: 'Outfit', sans-serif; font-size: 0.86rem; font-weight: 700; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.22); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s ease;">
+                        <i class="fa-solid fa-right-to-bracket" style="color: #facc15;"></i>
+                        <span>Mam już konto • Zaloguj</span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -4525,43 +4537,6 @@
                         <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
                         <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
-                    </div>
-                </div>
-                <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC - CENTRUM NA START) -->
-                <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
-                    <div class="card-photo">
-                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
-                            <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
-                            <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
-                        </video>
-                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
-                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        
-                        <!-- Pulsujący Przycisk do Sklepu -->
-                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 💍 KURS DLA RANDKOWICZÓW & PAR: Nie Bylejaki Kurs Małżeński (Roman Chałupka) -->
-                <div class="profile-card mission-profile-card featured-course-card" id="card_kurs_malzenski" onclick="window.open('https://www.youtube.com/playlist?list=PLdsZ3vCpkBY8', '_blank')" data-category="all misja relacje randki kobieta mezczyzna mlodzi" style="cursor:pointer; border: 2px solid rgba(236, 72, 153, 0.65); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);">
-                    <div class="card-photo" style="background:#070e24;">
-                        <img src="nie-bylejaki-kurs-malzenski.webp" onerror="this.src='nie-bylejaki-kurs-malzenski.png'" alt="Nie Bylejaki Kurs Małżeński" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;">
-                        <button class="card-heart liked" onclick="event.stopPropagation(); toggleLike(event,this,'kurs_malzenski','Kurs Małżeński','nie-bylejaki-kurs-malzenski.webp')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">100% MATCH</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fbcfe8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(236,72,153,0.18); border:1px solid rgba(236,72,153,0.45); padding:2px 8px; border-radius:6px; width:fit-content;">
-                            <i class="fa-solid fa-heart"></i> DLA RANDKOWICZÓW & PAR
-                        </div>
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px; font-size:1.05rem;">
-                            Kurs Małżeński <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Christian Culture • <b style="color:#f472b6;">💍 Roman Chałupka</b></div>
-                        <div class="card-desc">"Bo miłość to decyzja, nie przypadek! Prawdziwe szczęście w rodzinie — fundament pod dojrzałe małżeństwo."</div>
                     </div>
                 </div>
 
@@ -5093,6 +5068,65 @@
                 <i class="fa-solid fa-paper-plane"></i>
                 <span class="filter-chip-text">Polecaj</span>
             </button>
+        </div>
+    </section>
+
+    <!-- ══════════ STREFA ROZWOJU, MAŁŻEŃSTWA & SKLEP CC (PARTNERZY MISYJNI) ══════════ -->
+    <section class="lumina-mission-showcase-section" id="strefaMisyjna" style="max-width: 1200px; margin: 18px auto 10px; padding: 0 16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding: 0 4px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem; box-shadow:0 0 12px rgba(236,72,153,0.4);">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                    <h3 style="font-family:'Outfit',sans-serif; font-size:1.05rem; font-weight:800; color:#fff; margin:0; letter-spacing:-0.2px;">Strefa Wzrostu & Misja CC</h3>
+                    <p style="font-size:0.75rem; color:#94a3b8; margin:0;">Przygotowanie do dojrzałego małżeństwa, dobre relacje oraz oficjalny sklep</p>
+                </div>
+            </div>
+            <span style="font-size:0.68rem; color:#c084fc; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); padding:4px 10px; border-radius:10px;">
+                ✨ Misja & Wartości
+            </span>
+        </div>
+        <div class="mission-showcase-row" style="display: flex; gap: 16px; overflow-x: auto; padding: 4px 4px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
+            
+            <!-- ✨ REKLAMA WIDEO: Dobrze, że jesteś (Sklep CC) -->
+            <div class="profile-card video-card featured original-promo-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc" style="flex: 0 0 300px; max-width: 320px;">
+                <div class="card-photo">
+                    <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                        <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
+                        <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
+                    </video>
+                    <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                        <i class="fa-solid fa-volume-xmark"></i>
+                    </button>
+                    <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                    
+                    <!-- Pulsujący Przycisk do Sklepu -->
+                    <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                        <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
+                    </a>
+                </div>
+            </div>
+
+            <!-- 💍 KURS DLA RANDKOWICZÓW & PAR: Nie Bylejaki Kurs Małżeński (Roman Chałupka) -->
+            <div class="profile-card mission-profile-card featured-course-card" id="card_kurs_malzenski" onclick="window.open('https://www.youtube.com/playlist?list=PLdsZ3vCpkBY8', '_blank')" data-category="all misja relacje randki kobieta mezczyzna mlodzi" style="flex: 0 0 300px; max-width: 320px; cursor:pointer; border: 2px solid rgba(236, 72, 153, 0.65); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);">
+                <div class="card-photo" style="background:#070e24;">
+                    <img src="nie-bylejaki-kurs-malzenski.webp" onerror="this.src='nie-bylejaki-kurs-malzenski.png'" alt="Nie Bylejaki Kurs Małżeński" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;">
+                    <button class="card-heart liked" onclick="event.stopPropagation(); toggleLike(event,this,'kurs_malzenski','Kurs Małżeński','nie-bylejaki-kurs-malzenski.webp')"><i class="fa-solid fa-heart"></i></button>
+                    <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">100% MATCH</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fbcfe8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(236,72,153,0.18); border:1px solid rgba(236,72,153,0.45); padding:2px 8px; border-radius:6px; width:fit-content;">
+                        <i class="fa-solid fa-heart"></i> DLA RANDKOWICZÓW & PAR
+                    </div>
+                    <div class="card-name" style="display:flex;align-items:center;gap:6px; font-size:1.05rem;">
+                        Kurs Małżeński <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                    </div>
+                    <div class="card-city">📍 Christian Culture • <b style="color:#f472b6;">💍 Roman Chałupka</b></div>
+                    <div class="card-desc">"Bo miłość to decyzja, nie przypadek! Prawdziwe szczęście w rodzinie — fundament pod dojrzałe małżeństwo."</div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -5839,7 +5873,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             <!-- Tab Switcher -->
             <div style="display:flex; background:rgba(255,255,255,0.06); border-radius:12px; padding:4px; margin-bottom:20px;">
                 <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" style="flex:1; padding:9px; border-radius:8px; border:none; background:#a855f7; color:#fff; font-weight:700; font-family:inherit; font-size:0.86rem; cursor:pointer; transition:all 0.2s;">Logowanie</button>
-                <button type="button" id="authTabRegBtn" onclick="switchAuthTab('register')" style="flex:1; padding:9px; border-radius:8px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.86rem; cursor:pointer; transition:all 0.2s;">Załóż Profil Randkowy ✨</button>
+                <button type="button" id="authTabRegBtn" onclick="switchAuthTab('register')" style="flex:1; padding:9px; border-radius:8px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.86rem; cursor:pointer; transition:all 0.2s;">Załóż Bezpłatny Profil ✨</button>
             </div>
 
             <!-- ── PANEL 1: LOGOWANIE ── -->
@@ -5881,6 +5915,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         <div class="form-row">
                             <label>Twoje Imię</label>
                             <input type="text" id="obName" placeholder="np. Joanna lub Michał">
+                        </div>
+                        <div class="form-row" style="margin-bottom:12px;">
+                            <label style="font-size:0.78rem; color:#94a3b8; display:block; margin-bottom:4px;"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> Cel relacji / Czego szukasz w LUMINA:</label>
+                            <select id="obRelationGoal" style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(236,72,153,0.4); color:#fff; font-family:inherit; font-weight:600;">
+                                <option value="malzenstwo" style="background:#0b1838;" selected>💍 Małżeństwo & Chrześcijańska Miłość</option>
+                                <option value="przyjazn" style="background:#0b1838;">🤝 Przyjaźń, Wartości & Wspólne Pasje</option>
+                                <option value="modlitwa" style="background:#0b1838;">🕊️ Wspólna Modlitwa & Społeczność Wiary</option>
+                                <option value="nowy_poczatek" style="background:#0b1838;">🌿 Nowy początek (Wdowiec / Wdowa / Samotni)</option>
+                            </select>
                         </div>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
                             <div>
@@ -6798,6 +6841,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const name = nameInput ? nameInput.value.trim() : '';
             const gender = document.getElementById('obGender')?.value || 'kobieta';
             const lookingFor = document.getElementById('obLookingFor')?.value || 'mezczyzna';
+            const relationGoal = document.getElementById('obRelationGoal')?.value || 'malzenstwo';
             const ageVal = parseInt(document.getElementById('obAge')?.value, 10);
             const age = !isNaN(ageVal) && ageVal >= 18 ? ageVal : 25;
             const city = document.getElementById('obCity')?.value.trim() || 'Warszawa';
@@ -6836,6 +6880,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 name: name,
                 gender: gender,
                 lookingFor: lookingFor,
+                relationGoal: relationGoal,
                 age: age,
                 city: city,
                 email: email,
@@ -6919,6 +6964,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         if (user) {
                             if (profilePill) profilePill.style.display = 'flex';
                             if (authBtn) authBtn.style.display = 'none';
+                            const heroGuestCta = document.getElementById('heroGuestCta');
+                            if (heroGuestCta) heroGuestCta.style.display = 'none';
                             if (navName) navName.textContent = profile?.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Profil');
                             if (navAvatar && (profile?.avatar || user.photoURL)) {
                                 navAvatar.src = profile?.avatar || user.photoURL;
@@ -6926,6 +6973,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         } else {
                             if (profilePill) profilePill.style.display = 'none';
                             if (authBtn) authBtn.style.display = 'block';
+                            const heroGuestCta = document.getElementById('heroGuestCta');
+                            if (heroGuestCta) heroGuestCta.style.display = 'flex';
                         }
                     });
                 } else {
@@ -6956,14 +7005,106 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             // Immediate UI update
             const profilePill = document.getElementById('userNavProfile');
             const authBtn = document.getElementById('authCtaBtn');
+            const heroGuestCta = document.getElementById('heroGuestCta');
             if (profilePill) profilePill.style.display = 'none';
             if (authBtn) authBtn.style.display = 'block';
+            if (heroGuestCta) heroGuestCta.style.display = 'flex';
 
             showToast('Wylogowano pomyślnie z portalu LUMINA ✨');
         };
     </script>
 
     <script>
+        // ── Early Global Initialization & Defaults ──
+        window.DEFAULT_COMMUNITY_PROFILES = [
+            { slug: 'cezaryrgowski', name: 'Cezary Rogowski', job: 'Założyciel Christian Culture ✨', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel', isMission: true },
+            { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', job: 'Liderka Społeczności & Współzałożycielka 🌸', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Liderka CC', isMission: true },
+            { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
+            { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Autor rozważań Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
+            { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
+            { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
+            { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
+            { slug: 'u_robertukaszpio_5668', uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_mariankampa_mmsa', name: 'Marian Kampa', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'andrzejhamera', name: 'Andrzej Hamera', job: 'Właściciel KONCEPT – Studio Mebli Kuchennych na Wymiar 🪚', city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Wiara', isMission: true },
+            { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Kobiety Christian Culture • Modlitwa 🌸', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Kobiety CC', isMission: false },
+            { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'tomek', name: 'Tomasz', job: 'Społeczność LUMINA ✨', city: 'Gdańsk, Polska', avatar: 'avatar_widget_tomek.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Warszawa, Polska', avatar: 'avatar_widget_ania.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'lumina', name: 'Portal LUMINA', job: 'Chrześcijańska Platforma Społecznościowa ✨', city: 'Polska', avatar: 'lumina_logo_portal.jpg', badge: '👑 Oficjalny Portal', isMission: true }
+        ];
+
+        // ── Auth & Modal Navigation Handlers ──
+        window.openAuth = function(tab = 'login') {
+            const m = document.getElementById('authModal');
+            if (m) {
+                m.style.display = 'flex';
+                m.classList.add('open');
+                if (typeof switchAuthTab === 'function') {
+                    switchAuthTab(tab);
+                }
+            }
+        };
+        window.openLogin = function() {
+            window.openAuth('login');
+        };
+        window.openRegister = function() {
+            window.openAuth('register');
+        };
+        window.openAuthModal = function(tab = 'login') {
+            window.openAuth(tab);
+        };
+        window.openQuickRegisterModal = function() {
+            window.openAuth('register');
+        };
+        window.openModal = function(id) {
+            if (id === 'authModal') {
+                window.openAuth('login');
+                return;
+            }
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = 'flex';
+                el.classList.add('open');
+            }
+        };
+        window.closeModal = function(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('open');
+                el.style.display = 'none';
+                if (id === 'directMessagesModal') {
+                    el.classList.remove('is-fullscreen');
+                    const card = el.querySelector('.lumina-messenger-modal-card') || el.querySelector('.modal-card');
+                    if (card) card.classList.remove('is-fullscreen');
+                    const icon = document.getElementById('iconChatFullscreen');
+                    if (icon) icon.className = 'fa-solid fa-expand';
+                    const btn = document.getElementById('btnChatFullscreen');
+                    if (btn) btn.title = 'Pełny ekran czatu';
+                }
+            }
+        };
+
+        // URL hash routing: #login, #register, #rejestracja, #dolacz
+        function handleUrlAuthHash() {
+            const hash = (window.location.hash || '').toLowerCase();
+            if (hash === '#login' || hash === '#logowanie') {
+                window.openAuth('login');
+            } else if (hash === '#register' || hash === '#rejestracja' || hash === '#dolacz' || hash === '#onboarding') {
+                window.openAuth('register');
+            }
+        }
+        window.addEventListener('hashchange', handleUrlAuthHash);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handleUrlAuthHash);
+        } else {
+            handleUrlAuthHash();
+        }
+
         // ── Radio Player Control (Official Stream ZenoFM: https://stream.zeno.fm/umej2cuqncluv) ──
         window.toggleRadio = function() {
             if (window.LuminaRadio) {
@@ -7838,8 +7979,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const dbProfilesList = (typeof window.PROFILES_DB === 'object' && window.PROFILES_DB) 
                     ? Object.values(window.PROFILES_DB) 
                     : [];
-                const defaultProfilesList = (typeof DEFAULT_COMMUNITY_PROFILES !== 'undefined' && Array.isArray(DEFAULT_COMMUNITY_PROFILES))
-                    ? DEFAULT_COMMUNITY_PROFILES
+                const defaultProfilesList = (typeof window.DEFAULT_COMMUNITY_PROFILES !== 'undefined' && Array.isArray(window.DEFAULT_COMMUNITY_PROFILES))
+                    ? window.DEFAULT_COMMUNITY_PROFILES
                     : [];
                 const candidatesPool = [
                     ...dbProfilesList,
@@ -8043,8 +8184,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 </svg>
                                 <span id="btnLuminaFollowGoogleText">Zaloguj się z Google</span>
                             </button>
-                            <button type="button" class="btn-lumina-email-login-link" style="background:none;border:none;cursor:pointer;" onclick="window.closeLoginToFollowModal(); openModal('authModal');">
-                                Masz konto z hasłem? Zaloguj się przez e-mail
+                            <button type="button" class="btn-lumina-register-prominent" onclick="window.closeLoginToFollowModal(); if(window.openAuth) window.openAuth('register');" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; background:linear-gradient(135deg, #ec4899, #a855f7); color:#fff; font-weight:800; font-size:0.92rem; border-radius:30px; border:none; cursor:pointer; box-shadow:0 4px 16px rgba(236,72,153,0.35); font-family:inherit;">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <span>Nie masz konta? Załóż profil w 2 minuty ✨</span>
+                            </button>
+                            <button type="button" class="btn-lumina-email-login-link" style="background:none;border:none;cursor:pointer; color:#94a3b8; font-size:0.82rem; text-decoration:underline; margin-top:4px;" onclick="window.closeLoginToFollowModal(); if(window.openAuth) window.openAuth('login');">
+                                Masz już konto? Zaloguj się przez e-mail
                             </button>
                         </div>
                     </div>
@@ -10975,7 +11120,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         let currentDmFilter = 'all';
         let currentDmSearchQuery = '';
 
-        const DEFAULT_COMMUNITY_PROFILES = [
+        const DEFAULT_COMMUNITY_PROFILES = window.DEFAULT_COMMUNITY_PROFILES || [
             { slug: 'cezaryrgowski', name: 'Cezary Rogowski', job: 'Założyciel Christian Culture ✨', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel', isMission: true },
             { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', job: 'Liderka Społeczności & Współzałożycielka 🌸', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Liderka CC', isMission: true },
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
@@ -11823,7 +11968,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
-<div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
+<div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: none; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
         <div style="line-height: 1.45; color: #e2e8f0;">
             ✨ Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
@@ -11877,7 +12022,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     };
 
     try {
-        if (localStorage.getItem('lumina_cookie_consent')) {
+        if (!localStorage.getItem('lumina_cookie_consent')) {
+            setTimeout(() => {
+                const b = document.getElementById('lumina-cookie-banner');
+                if (b) b.style.display = 'flex';
+            }, 4000);
+        } else {
             const b = document.getElementById('lumina-cookie-banner');
             if (b) b.remove();
             const bNav = document.getElementById('luminaCookieConsentBanner');
@@ -12718,11 +12868,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }, { threshold: [0.1, 0.45, 0.8] });
 
         function registerVisibleVideos() {
-            var carousel = document.getElementById('profilesCarousel');
-            if (!carousel) return;
-            carousel.querySelectorAll('video').forEach(function(v) {
+            document.querySelectorAll('video, #profilesCarousel video, #strefaMisyjna video').forEach(function(v) {
                 v.preload = 'metadata';
-                videoObserver.observe(v);
+                if (typeof videoObserver !== 'undefined' && videoObserver && videoObserver.observe) {
+                    videoObserver.observe(v);
+                }
             });
         }
 

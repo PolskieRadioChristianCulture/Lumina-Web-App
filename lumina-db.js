@@ -4347,8 +4347,12 @@ export function openLoginToFollowModal(targetSlug, targetData = {}, onSuccess = 
                         </svg>
                         <span id="btnLuminaFollowGoogleText">Zaloguj się z Google</span>
                     </button>
-                    <a href="lumina.html#login" class="btn-lumina-email-login-link">
-                        Masz konto z hasłem? Zaloguj się przez e-mail
+                    <button type="button" class="btn-lumina-register-prominent" onclick="window.closeLoginToFollowModal(); if(window.openAuth) window.openAuth('register'); else window.location.href='lumina.html#register';" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; background:linear-gradient(135deg, #ec4899, #a855f7); color:#fff; font-weight:800; font-size:0.92rem; border-radius:30px; border:none; cursor:pointer; box-shadow:0 4px 16px rgba(236,72,153,0.35); font-family:inherit;">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Nie masz konta? Załóż profil w 2 minuty ✨</span>
+                    </button>
+                    <a href="lumina.html#login" class="btn-lumina-email-login-link" onclick="window.closeLoginToFollowModal(); if(window.openAuth) { window.openAuth('login'); return false; }">
+                        Masz już konto? Zaloguj się przez e-mail
                     </a>
                 </div>
             </div>
