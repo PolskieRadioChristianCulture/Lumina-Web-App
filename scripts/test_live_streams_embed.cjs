@@ -43,7 +43,14 @@ server.listen(PORT, async () => {
     const page = await context.newPage();
 
     try {
-        console.log('1. Verifying Tablica Społeczności Live Stream...');
+        console.log('0. Verifying TV Epafraz removal from master-live.html schedule...');
+        const masterLiveHtml = fs.readFileSync(path.join(ROOT_DIR, 'master-live.html'), 'utf-8');
+        if (masterLiveHtml.includes('tv-epafraz-live.html')) {
+            throw new Error('master-live.html still contains references to tv-epafraz-live.html in schedule!');
+        }
+        console.log('✅ master-live.html completely free from tv-epafraz-live.html!');
+
+        console.log('1. Verifying Tablica Społeczności Live Stream & Mute/Unmute...');
         await page.goto(`http://127.0.0.1:${PORT}/lumina-tablica.html`, { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(2000);
 
@@ -60,10 +67,38 @@ server.listen(PORT, async () => {
         const isUnmuteTablicaVisible = await unmuteBtnTablica.isVisible();
         console.log(`Tablica Unmute button visible: ${isUnmuteTablicaVisible}`);
 
+        // Check initial default muted state
+        let tablicaBtnText = (await unmuteBtnTablica.innerText()).trim();
+        let tablicaBtnUnmuted = await unmuteBtnTablica.getAttribute('data-unmuted');
+        console.log(`Initial Tablica button state: text="${tablicaBtnText}", data-unmuted="${tablicaBtnUnmuted}"`);
+        if (tablicaBtnUnmuted !== 'false' || !tablicaBtnText.includes('Włącz Dźwięk')) {
+            throw new Error(`Tablica default state is not muted: ${tablicaBtnText}, data-unmuted=${tablicaBtnUnmuted}`);
+        }
+
+        // Click to unmute
+        await unmuteBtnTablica.click();
+        await page.waitForTimeout(500);
+        tablicaBtnText = (await unmuteBtnTablica.innerText()).trim();
+        tablicaBtnUnmuted = await unmuteBtnTablica.getAttribute('data-unmuted');
+        console.log(`Unmuted Tablica button state: text="${tablicaBtnText}", data-unmuted="${tablicaBtnUnmuted}"`);
+        if (tablicaBtnUnmuted !== 'true' || !tablicaBtnText.includes('Wycisz Dźwięk')) {
+            throw new Error(`Tablica failed to enter unmuted state: ${tablicaBtnText}`);
+        }
+
+        // Click again to mute back
+        await unmuteBtnTablica.click();
+        await page.waitForTimeout(500);
+        tablicaBtnText = (await unmuteBtnTablica.innerText()).trim();
+        tablicaBtnUnmuted = await unmuteBtnTablica.getAttribute('data-unmuted');
+        console.log(`Muted-again Tablica button state: text="${tablicaBtnText}", data-unmuted="${tablicaBtnUnmuted}"`);
+        if (tablicaBtnUnmuted !== 'false' || !tablicaBtnText.includes('Włącz Dźwięk')) {
+            throw new Error(`Tablica failed to return to muted state: ${tablicaBtnText}`);
+        }
+
         await tablicaLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/efe2b5a3-471d-49c7-bfc1-2def07e07138/verified_tablica_live_stream.png' });
         console.log('Saved screenshot: verified_tablica_live_stream.png');
 
-        console.log('2. Verifying Cezary Personal Profile Live Stream...');
+        console.log('2. Verifying Cezary Personal Profile Live Stream & Mute/Unmute...');
         await page.goto(`http://127.0.0.1:${PORT}/lumina.cezaryrgowski.html`, { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(2000);
 
@@ -80,10 +115,38 @@ server.listen(PORT, async () => {
         const isUnmuteCezaryVisible = await unmuteBtnCezary.isVisible();
         console.log(`Cezary Unmute button visible: ${isUnmuteCezaryVisible}`);
 
+        // Check initial default muted state
+        let cezaryBtnText = (await unmuteBtnCezary.innerText()).trim();
+        let cezaryBtnUnmuted = await unmuteBtnCezary.getAttribute('data-unmuted');
+        console.log(`Initial Cezary button state: text="${cezaryBtnText}", data-unmuted="${cezaryBtnUnmuted}"`);
+        if (cezaryBtnUnmuted !== 'false' || !cezaryBtnText.includes('Włącz Dźwięk')) {
+            throw new Error(`Cezary default state is not muted: ${cezaryBtnText}, data-unmuted=${cezaryBtnUnmuted}`);
+        }
+
+        // Click to unmute
+        await unmuteBtnCezary.click();
+        await page.waitForTimeout(500);
+        cezaryBtnText = (await unmuteBtnCezary.innerText()).trim();
+        cezaryBtnUnmuted = await unmuteBtnCezary.getAttribute('data-unmuted');
+        console.log(`Unmuted Cezary button state: text="${cezaryBtnText}", data-unmuted="${cezaryBtnUnmuted}"`);
+        if (cezaryBtnUnmuted !== 'true' || !cezaryBtnText.includes('Wycisz Dźwięk')) {
+            throw new Error(`Cezary failed to enter unmuted state: ${cezaryBtnText}`);
+        }
+
+        // Click again to mute back
+        await unmuteBtnCezary.click();
+        await page.waitForTimeout(500);
+        cezaryBtnText = (await unmuteBtnCezary.innerText()).trim();
+        cezaryBtnUnmuted = await unmuteBtnCezary.getAttribute('data-unmuted');
+        console.log(`Muted-again Cezary button state: text="${cezaryBtnText}", data-unmuted="${cezaryBtnUnmuted}"`);
+        if (cezaryBtnUnmuted !== 'false' || !cezaryBtnText.includes('Włącz Dźwięk')) {
+            throw new Error(`Cezary failed to return to muted state: ${cezaryBtnText}`);
+        }
+
         await cezaryLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/efe2b5a3-471d-49c7-bfc1-2def07e07138/verified_cezary_live_stream.png' });
         console.log('Saved screenshot: verified_cezary_live_stream.png');
 
-        console.log('🎉 BOTH LIVE STREAMS VERIFIED PERFECTLY WITH 24/7 CC TV MASTER CONTROL PLAYER!');
+        console.log('🎉 ALL CHECKS PASSED: TV EPAFRAZ EXCLUDED & MUTE/UNMUTE WORKING FLAWLESSLY!');
     } catch (err) {
         console.error('❌ Test failed:', err);
         process.exitCode = 1;

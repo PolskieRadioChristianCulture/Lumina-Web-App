@@ -5902,7 +5902,7 @@
                                 loading="eager"
                                 style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
                         <div class="mission-live-player-overlay">
-                            <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                            <button type="button" class="btn-unmute-live" data-unmuted="false" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
                                 <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
                             </button>
                             <a href="master-live.html" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
@@ -11422,7 +11422,7 @@
                         allowfullscreen 
                         style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
                 <div class="mission-live-player-overlay">
-                    <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                    <button type="button" class="btn-unmute-live" data-unmuted="false" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
                         <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
                     </button>
                     <a href="${streamUrl.split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
@@ -11437,24 +11437,38 @@
             const iframe = card.querySelector('iframe');
             const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';
 
+            function applyDeepMediaMute(doc, shouldMute) {
+                if (!doc) return;
+                try {
+                    doc.querySelectorAll('audio, video').forEach(media => {
+                        media.muted = shouldMute;
+                        if (!shouldMute) {
+                            media.volume = 1.0;
+                            media.play().catch(() => {});
+                        } else {
+                            media.pause();
+                        }
+                    });
+                    doc.querySelectorAll('iframe').forEach(subIf => {
+                        try {
+                            const subDoc = subIf.contentDocument || (subIf.contentWindow && subIf.contentWindow.document);
+                            if (subDoc) applyDeepMediaMute(subDoc, shouldMute);
+                            if (subIf.contentWindow) {
+                                subIf.contentWindow.postMessage({ type: shouldMute ? 'MUTE_AUDIO' : 'UNMUTE_AUDIO' }, '*');
+                                subIf.contentWindow.postMessage(shouldMute ? 'MUTE_AUDIO' : 'UNMUTE_AUDIO', '*');
+                                subIf.contentWindow.postMessage(shouldMute ? '{"event":"command","func":"mute","args":""}' : '{"event":"command","func":"unMute","args":""}', '*');
+                            }
+                        } catch(e) {}
+                    });
+                } catch(e) {}
+            }
+
             if (!isCurrentlyUnmuted) {
+                // UNMUTE
                 if (iframe) {
                     try {
                         const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
-                        if (innerDoc) {
-                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
-                            if (innerAudio) {
-                                innerAudio.muted = false;
-                                innerAudio.volume = 1.0;
-                                innerAudio.play().catch(function(){});
-                            }
-                            const innerVideo = innerDoc.querySelector('video');
-                            if (innerVideo) {
-                                innerVideo.muted = false;
-                                innerVideo.volume = 1.0;
-                                innerVideo.play().catch(function(){});
-                            }
-                        }
+                        if (innerDoc) applyDeepMediaMute(innerDoc, false);
                         if (iframe.contentWindow) {
                             iframe.contentWindow._worshipUserInteracted = true;
                             if (typeof iframe.contentWindow.worshipSyncAndPlay === 'function') {
@@ -11478,15 +11492,11 @@
                 btn.style.borderColor = '#22c55e';
                 btn.style.color = '#86efac';
             } else {
+                // MUTE
                 if (iframe) {
                     try {
                         const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
-                        if (innerDoc) {
-                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
-                            if (innerAudio) innerAudio.muted = true;
-                            const innerVideo = innerDoc.querySelector('video');
-                            if (innerVideo) innerVideo.muted = true;
-                        }
+                        if (innerDoc) applyDeepMediaMute(innerDoc, true);
                     } catch(e) {}
 
                     if (iframe.contentWindow) {

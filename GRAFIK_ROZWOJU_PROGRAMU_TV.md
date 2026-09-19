@@ -22,7 +22,7 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **10:00 – 10:55** | **🔥 Apokalipsa: Księga Nadziei** | Kompletny Kurs Biblijny proroctw Księgi Objawienia | `apokalipsa-ksiega-nadziei-live.html` |
 | **10:55 – 12:00** | **☀️ Zjednoczeni za Polskę — Pasmo Południowe** | Modlitwa południowa, werset dnia, intencje widzów | `zapolske-live.html` |
 | **12:00 – 13:00** | **🎶 Biblia Śpiewana (Wydanie Południowe)** | Śpiewane Przypowieści Salomona i utwory uwielbienia | `biblia-spiewana-live.html` |
-| **13:00 – 15:00** | **📖 TV Epafraz — Główne Pasmo Biblijne** | Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca (24 Serie) | `tv-epafraz-live.html` |
+| **13:00 – 15:00** | **🎶 Biblia Śpiewana & Uwielbienie — Pasmo Główne** | Śpiewane Przypowieści Salomona i muzyka chwały Christian Culture | `biblia-spiewana-live.html` |
 | **15:00 – 15:06** | **📌 Apokalipsa Dzień po Dniu** | Popołudniowy komentarz dnia | `apokalipsa-live.html` |
 | **15:06 – 16:00** | **🎶 Biblia Śpiewana — Pasmo Popołudniowe** | Spokojne kompozycje muzyczne i wersety Pisma Świętego | `biblia-spiewana-live.html` |
 | **16:00 – 18:00** | **🎵 Śpiewajmy Panu — Codzienny Blok Muzyczny** | 2-godzinny blok z utworami uwielbienia i nowościami Christian Culture Music (Odtwarzanie Losowe 24/7) | `spiewajmy-panu-live.html` |

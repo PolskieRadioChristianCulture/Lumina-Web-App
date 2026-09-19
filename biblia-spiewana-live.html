@@ -3462,6 +3462,12 @@ function getWeatherPreset(city) {
             var audio = document.getElementById("stream-audio");
             if (!audio) return;
 
+            var isParamMuted = window.location.search.includes('muted=1') || window.location.search.includes('mute=1') || window.location.search.includes('in_mcr=1') || (window.self !== window.top);
+            if (isParamMuted) {
+                audio.muted = true;
+                audio.volume = 0;
+            }
+
             var DEFAULT_PLAYLIST = [
                 { id: "biblia_spiewana_1", title: "Śpiewane Przypowieści Salomona - Rozdział 1", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3" },
                 { id: "biblia_spiewana_2", title: "Śpiewane Przypowieści Salomona - Rozdział 2", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%202.mp3" },
@@ -3614,13 +3620,15 @@ function getWeatherPreset(city) {
                     console.warn("Could not fetch remote biblia_spiewana_playlist.json, using static inline playlist:", err);
                 });
 
-            // Unlock audio on click/touch
+            // Unlock audio on click/touch only if NOT embedded in muted mode
             function handleUserGestureAudio() {
+                if (isParamMuted && !window._explicitUnmuteRequested) return;
                 window._worshipUserInteracted = true;
                 hideUnmuteBanner();
                 var audioEl = document.getElementById('stream-audio');
                 if (audioEl) {
                     audioEl.muted = false;
+                    audioEl.volume = 1.0;
                     if (audioEl.paused || !audioEl.src || audioEl.ended) {
                         syncAndPlay();
                     }
@@ -3629,10 +3637,12 @@ function getWeatherPreset(city) {
 
             var bannerEl = document.getElementById('masterUnmuteBanner');
             if (bannerEl) bannerEl.addEventListener("click", handleUserGestureAudio);
-            document.addEventListener("click", handleUserGestureAudio);
-            document.addEventListener("touchstart", handleUserGestureAudio);
-            window.addEventListener("click", handleUserGestureAudio);
-            window.addEventListener("touchstart", handleUserGestureAudio);
+            if (!isParamMuted) {
+                document.addEventListener("click", handleUserGestureAudio);
+                document.addEventListener("touchstart", handleUserGestureAudio);
+                window.addEventListener("click", handleUserGestureAudio);
+                window.addEventListener("touchstart", handleUserGestureAudio);
+            }
 
             // Watchdog: auto-restart if audio paused unexpectedly after interaction
             setInterval(function() {
@@ -3738,17 +3748,31 @@ function getWeatherPreset(city) {
 
     window.addEventListener('message', function(e) {
         if (!e || !e.data) return;
-        var type = e.data.type || e.data;
+        var type = '';
+        if (typeof e.data === 'string') {
+            try {
+                var parsed = JSON.parse(e.data);
+                type = parsed.type || parsed.event || parsed.func || '';
+            } catch(err) {
+                type = e.data;
+            }
+        } else if (typeof e.data === 'object') {
+            type = e.data.type || e.data.func || '';
+        }
+
         var audio = document.getElementById('stream-audio');
         if (type === 'MUTE_AUDIO' || type === 'mute') {
+            window._explicitUnmuteRequested = false;
             if (audio) {
                 audio.muted = true;
-                audio.pause();
+                audio.volume = 0;
             }
         } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
+            window._explicitUnmuteRequested = true;
             window._worshipUserInteracted = true;
             if (audio) {
                 audio.muted = false;
+                audio.volume = 1.0;
                 if (audio.paused || !audio.src || audio.ended) {
                     if (typeof window.worshipSyncAndPlay === 'function') {
                         window.worshipSyncAndPlay();
