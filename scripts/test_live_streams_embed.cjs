@@ -52,11 +52,15 @@ server.listen(PORT, async () => {
         const tablicaIframe = tablicaLiveCard.locator('iframe');
         const tablicaSrc = await tablicaIframe.getAttribute('src');
         console.log(`Tablica Live Iframe src: ${tablicaSrc}`);
-        if (!tablicaSrc || !tablicaSrc.includes('3jLgje71T64')) {
-            throw new Error('Tablica Live iframe src does not contain 3jLgje71T64');
+        if (!tablicaSrc || !tablicaSrc.includes('master-live.html')) {
+            throw new Error('Tablica Live iframe src does not contain master-live.html');
         }
 
-        await tablicaLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/b8e70404-cded-4025-a7c7-c97ad691b990/verified_tablica_live_stream.png' });
+        const unmuteBtnTablica = tablicaLiveCard.locator('.btn-unmute-live');
+        const isUnmuteTablicaVisible = await unmuteBtnTablica.isVisible();
+        console.log(`Tablica Unmute button visible: ${isUnmuteTablicaVisible}`);
+
+        await tablicaLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/efe2b5a3-471d-49c7-bfc1-2def07e07138/verified_tablica_live_stream.png' });
         console.log('Saved screenshot: verified_tablica_live_stream.png');
 
         console.log('2. Verifying Cezary Personal Profile Live Stream...');
@@ -68,14 +72,18 @@ server.listen(PORT, async () => {
         const cezaryIframe = cezaryLiveCard.locator('iframe');
         const cezarySrc = await cezaryIframe.getAttribute('src');
         console.log(`Cezary Live Iframe src: ${cezarySrc}`);
-        if (!cezarySrc || !cezarySrc.includes('U9nSC8rnWfM')) {
-            throw new Error('Cezary Live iframe src does not contain U9nSC8rnWfM');
+        if (!cezarySrc || !cezarySrc.includes('master-live.html')) {
+            throw new Error('Cezary Live iframe src does not contain master-live.html');
         }
 
-        await cezaryLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/b8e70404-cded-4025-a7c7-c97ad691b990/verified_cezary_live_stream.png' });
+        const unmuteBtnCezary = cezaryLiveCard.locator('.btn-unmute-live');
+        const isUnmuteCezaryVisible = await unmuteBtnCezary.isVisible();
+        console.log(`Cezary Unmute button visible: ${isUnmuteCezaryVisible}`);
+
+        await cezaryLiveCard.screenshot({ path: 'C:/Users/czark/.gemini/antigravity/brain/efe2b5a3-471d-49c7-bfc1-2def07e07138/verified_cezary_live_stream.png' });
         console.log('Saved screenshot: verified_cezary_live_stream.png');
 
-        console.log('🎉 BOTH LIVE STREAMS VERIFIED PERFECTLY!');
+        console.log('🎉 BOTH LIVE STREAMS VERIFIED PERFECTLY WITH 24/7 CC TV MASTER CONTROL PLAYER!');
     } catch (err) {
         console.error('❌ Test failed:', err);
         process.exitCode = 1;

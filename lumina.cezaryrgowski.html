@@ -3975,20 +3975,30 @@
                             <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.55; margin-bottom:12px;">Oficjalna transmisja na żywo Założyciela Christian Culture. Nauczania, rozważania Słowa Bożego, relacje z misji oraz osobiste spotkanie ze społecznością wiary.</div>
                         </div>
                         
-                        <!-- EMBEDDED YOUTUBE LIVE BROADCAST PLAYER -->
+                        <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
                         <div class="mission-live-player-wrapper" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; background:#000; box-shadow:0 8px 30px rgba(0,0,0,0.7); border:1.5px solid rgba(212,175,55,0.35);">
-                            <iframe src="https://www.youtube-nocookie.com/embed/U9nSC8rnWfM?autoplay=1&enablejsapi=1&rel=0" 
-                                    title="Cezary Rogowski • Transmisja na Żywo" 
+                            <iframe src="master-live.html?muted=1&mute=1&in_mcr=1" 
+                                    title="Telewizja Christian Culture TV 24/7 • Transmisja na Żywo" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                     allowfullscreen 
                                     loading="eager"
                                     style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
+                            
+                            <div class="mission-live-player-overlay">
+                                <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                                    <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
+                                </button>
+                                <a href="master-live.html" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
+                                    <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                                </a>
+                            </div>
                         </div>
 
                         <div class="post-footer">
                             <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">348</span><span class="btn-text"> Polubień</span></button>
                             <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (312)</span></button>
-                            <a href="https://www.youtube.com/live/U9nSC8rnWfM" target="_blank" rel="noopener noreferrer" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Czat na YouTube</span></a>
+                            <a href="master-live.html" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-tv" style="color:#ffd700;"></i><span class="btn-text"> Oglądaj w TV</span></a>
+                            <a href="https://youtube.com/@ChristianCultureTV/live" target="_blank" rel="noopener noreferrer" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Kanał YouTube</span></a>
                             <button class="post-action-btn action-share" onclick="if(window.openShareModal) window.openShareModal({ title: '🔴 Transmisja na Żywo Cezarego Rogowskiego', url: 'https://polskieradio.cc/lumina.cezaryrgowski' }); else if(window.openMessageModal) openMessageModal();"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
                         </div>
                     </article>
