@@ -453,24 +453,56 @@
 
         // ── 2. Dual Playlist Setup ──
         const PLAYLISTS = {
-            1: { id: "PLxrP7xbQu3RCgzgYLu9kpq3D0FR4nMX0v", label: "Totalny Atak — Prof. Walter Veith",              subtitle: "Proroctwa biblijne, historia świata i walka dobra ze złem" },
-            2: { id: "PLKOxPWmme0G0",                      label: "Prof. Walter Veith | Wykłady na Czas Końca", subtitle: "Seria wykładów profetycznych na czasy ostateczne" }
+            1: { id: "PLxrP7xbQu3RCgzgYLu9kpq3D0FR4nMX0v", count: 38, label: "Totalny Atak — Prof. Walter Veith",              subtitle: "Proroctwa biblijne, historia świata i walka dobra ze złem" },
+            2: { id: "PLKOxPWmme0G0",                      count: 10, label: "Prof. Walter Veith | Wykłady na Czas Końca", subtitle: "Seria wykładów profetycznych na czasy ostateczne" }
         };
         let currentPlaylist = 1;
 
         const isPreloadMuted = window.location.search.includes('muted=1');
         const muteParam = isPreloadMuted ? '&mute=1' : '';
 
+        function getDayOfYear(date = new Date()) {
+            const start = new Date(date.getFullYear(), 0, 0);
+            const diff = date - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        function getTargetEpisodeIndex(count = 38) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const epParam = urlParams.get('ep') || urlParams.get('index') || urlParams.get('odcinek');
+            if (epParam !== null) {
+                const parsed = parseInt(epParam, 10);
+                if (!isNaN(parsed) && parsed >= 0) {
+                    return parsed >= count ? (parsed % count) : (parsed > 0 && parsed <= count ? parsed - 1 : parsed);
+                }
+            }
+            const dayOfYear = getDayOfYear();
+            return (dayOfYear - 1) % count;
+        }
+
         function loadPlaylist(num, autoplay = true) {
-            const pl = PLAYLISTS[num];
+            const pl = PLAYLISTS[num] || PLAYLISTS[1];
+            const targetIndex = getTargetEpisodeIndex(pl.count || 38);
+            const episodeNum = targetIndex + 1;
             const playerIframe = document.getElementById("yt-player");
             const autoplayParam = autoplay ? '1' : '0';
             if (playerIframe) {
-                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${pl.id}&autoplay=${autoplayParam}&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
+                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${pl.id}&index=${targetIndex}&autoplay=${autoplayParam}&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
+            }
+            if (player && typeof player.loadPlaylist === 'function') {
+                try {
+                    player.loadPlaylist({
+                        list: pl.id,
+                        listType: 'playlist',
+                        index: targetIndex,
+                        startSeconds: 0
+                    });
+                } catch(e) {}
             }
             // Update series label in header
             const titleLabel = document.getElementById('series-title-label');
-            if (titleLabel) titleLabel.textContent = pl.label.toUpperCase();
+            if (titleLabel) titleLabel.textContent = `${pl.label.toUpperCase()} • CZĘŚĆ ${episodeNum}`;
 
             // Update switcher buttons style
             document.getElementById('btn-pl1').style.background = num === 1 ? 'var(--gold-primary)' : 'rgba(10,14,23,0.85)';
@@ -578,6 +610,17 @@
         }, 15000);
 
         function onPlayerReady(event) {
+            const pl = PLAYLISTS[currentPlaylist] || PLAYLISTS[1];
+            const targetIndex = getTargetEpisodeIndex(pl.count || 38);
+            try {
+                if (typeof event.target.playVideoAt === 'function') {
+                    const currentIndex = typeof event.target.getPlaylistIndex === 'function' ? event.target.getPlaylistIndex() : -1;
+                    if (currentIndex !== targetIndex) {
+                        event.target.playVideoAt(targetIndex);
+                    }
+                }
+            } catch(e) {}
+
             if (isPreloadMuted) {
                 try { event.target.mute(); } catch(e) {}
             }

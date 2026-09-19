@@ -1365,33 +1365,54 @@
           }
         ];
 
-        // Determine starting playlist index (URL param or localStorage or 0)
+        function getDayOfYear(date = new Date()) {
+            const start = new Date(date.getFullYear(), 0, 0);
+            const diff = date - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        // Determine starting playlist index (URL param or daily rotation)
         function getInitialPlaylistIndex() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('series')) {
-                const s = parseInt(urlParams.get('series'));
+                const s = parseInt(urlParams.get('series'), 10);
                 if (!isNaN(s) && s >= 1 && s <= EPAFRAZ_PLAYLISTS.length) {
                     return s - 1;
                 }
             }
             if (urlParams.has('p')) {
-                const p = parseInt(urlParams.get('p'));
+                const p = parseInt(urlParams.get('p'), 10);
                 if (!isNaN(p) && p >= 0 && p < EPAFRAZ_PLAYLISTS.length) {
                     return p;
                 }
             }
-            const saved = localStorage.getItem('epafraz_playlist_idx');
-            if (saved !== null) {
-                const parsed = parseInt(saved);
-                if (!isNaN(parsed) && parsed >= 0 && parsed < EPAFRAZ_PLAYLISTS.length) {
-                    return parsed;
+            if (urlParams.has('day')) {
+                const d = parseInt(urlParams.get('day'), 10);
+                if (!isNaN(d) && d >= 1) {
+                    return (d - 1) % EPAFRAZ_PLAYLISTS.length;
                 }
             }
-            return 0; // Default #1: Apokalipsa - Palla (Podcast)
+            // Rotacja codzienna: każdego dnia inna seria z 24 dostępnych
+            const dayOfYear = getDayOfYear();
+            return (dayOfYear - 1) % EPAFRAZ_PLAYLISTS.length;
+        }
+
+        function getInitialVideoIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('ep')) {
+                const ep = parseInt(urlParams.get('ep'), 10);
+                if (!isNaN(ep) && ep >= 1) return ep - 1;
+            }
+            if (urlParams.has('index')) {
+                const idx = parseInt(urlParams.get('index'), 10);
+                if (!isNaN(idx) && idx >= 0) return idx;
+            }
+            return 0;
         }
 
         let currentPlaylistIndex = getInitialPlaylistIndex();
-        let currentVideoIndex = 0;
+        let currentVideoIndex = getInitialVideoIndex();
         let player = null;
         let isPreloadMuted = window.location.search.includes('muted=1');
         let consecutiveErrors = 0;

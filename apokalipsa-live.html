@@ -557,15 +557,9 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 3. Verified Published Videos ──
-        // ── 3. Exact Published Episodes Mapping ──
-        const episodeMap = {
-            220: { id: "chkMvI3r1as", title: "APOKALIPSA dzień po dniu - #220 | Podwójne żniwo" },
-            221: { id: "ajrEVdBRRCk", title: "APOKALIPSA dzień po dniu - #221 | Gotowe do zbioru żniwo" },
-            222: { id: "wlr9lnyLogI", title: "APOKALIPSA dzień po dniu - #222 | Późny deszcz" },
-            223: { id: "vBejFzrk4yE", title: "APOKALIPSA dzień po dniu - #223 | Drugie żniwa" },
-            224: { id: "eDVc8t-Hk44", title: "APOKALIPSA dzień po dniu - #224 | Bezbożne winogrona" }
-        };
+        // ── 3. 365-Day Apokalipsa Dzień po Dniu Playlist Setup ──
+        const PLAYLIST_ID = "PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix";
+        const TOTAL_EPISODES = 365;
 
         function getDayOfYear() {
             const now = new Date();
@@ -575,11 +569,19 @@
             return Math.floor(diff / oneDay);
         }
 
-        const dayOfYear = getDayOfYear(); // Today (11 Aug) = Day 223
-        const selectedVideo = episodeMap[dayOfYear] || episodeMap[223];
+        const urlParams = new URLSearchParams(window.location.search);
+        let dayOfYear = getDayOfYear();
+        if (urlParams.has('ep') || urlParams.has('day')) {
+            const parsed = parseInt(urlParams.get('ep') || urlParams.get('day'), 10);
+            if (!isNaN(parsed) && parsed >= 1) {
+                dayOfYear = parsed;
+            }
+        }
+        const targetZeroBasedIndex = (dayOfYear - 1) % TOTAL_EPISODES;
+        const currentEpisodeNum = targetZeroBasedIndex + 1;
 
-        document.getElementById('episode-tag-label').textContent = `APOKALIPSA DZIEŃ PO DNIU • ODCINEK ${dayOfYear} z 365`;
-        document.getElementById('episode-title-label').textContent = selectedVideo.title;
+        document.getElementById('episode-tag-label').textContent = `APOKALIPSA DZIEŃ PO DNIU • ODCINEK ${currentEpisodeNum} z 365`;
+        document.getElementById('episode-title-label').textContent = `Apokalipsa Dzień po Dniu — Odcinek #${currentEpisodeNum}`;
 
         // ── 4. YouTube Iframe Player ──
         const isPreloadMuted = window.location.search.includes('muted=1');
@@ -587,7 +589,7 @@
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
             const muteParam = isPreloadMuted ? '&mute=1' : '';
-            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1${muteParam}`;
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${PLAYLIST_ID}&index=${targetZeroBasedIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1${muteParam}`;
         }
 
         window.addEventListener('message', (e) => {
@@ -662,7 +664,28 @@
             } catch(e) {}
         }
 
+        function updateVideoTitle() {
+            try {
+                if (player && typeof player.getVideoData === 'function') {
+                    const data = player.getVideoData();
+                    if (data && data.title && data.title.trim().length > 0) {
+                        const titleEl = document.getElementById('episode-title-label');
+                        if (titleEl) titleEl.textContent = data.title;
+                    }
+                }
+            } catch(e) {}
+        }
+
         function onPlayerReady(event) {
+            try {
+                if (typeof event.target.playVideoAt === 'function') {
+                    const cur = typeof event.target.getPlaylistIndex === 'function' ? event.target.getPlaylistIndex() : -1;
+                    if (cur !== targetZeroBasedIndex) {
+                        event.target.playVideoAt(targetZeroBasedIndex);
+                    }
+                }
+            } catch(e) {}
+
             if (isPreloadMuted) {
                 try { event.target.mute(); } catch(e) {}
             }
@@ -745,11 +768,13 @@
             } catch(e) {}
         }, 1000);
 
-        // Fallback safety timeout (3.5 minutes = 210,000ms)
-        setTimeout(finishEpisode, 210000);
+        // Fallback safety timeout (8 minutes = 480,000ms)
+        setTimeout(finishEpisode, 480000);
 
         function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                updateVideoTitle();
+            } else if (event.data === YT.PlayerState.ENDED) {
                 finishEpisode();
             }
         }

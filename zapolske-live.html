@@ -2487,18 +2487,15 @@
                 if (currentDay !== loadedDate) {
                     loadedDate = currentDay;
                     
-                    // If a manual day selection is active in safeStorage, increment it by 1
-                    if (safeStorage.getItem("dzj_stream_day")) {
-                        let nextDay = (parseInt(safeStorage.getItem("dzj_stream_day"), 10) + 1) % reflectionsData.length;
-                        safeStorage.setItem("dzj_stream_day", nextDay);
-                        currentDayIndex = nextDay;
-                        if (daySelect) daySelect.value = nextDay;
-                    }
+                    // Clear any manual day override on day change
+                    safeStorage.removeItem("dzj_stream_day");
+                    safeStorage.setItem("dzj_stream_saved_date", new Date().toISOString().split('T')[0]);
                     
-                    // Reload matched index (either updated manual day or today's matching date)
+                    // Reload matched index for today's matching date
                     const todayStr = new Date().toISOString().split('T')[0];
                     const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
-                    let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
+                    let matchedIdx = (foundIdx !== -1) ? foundIdx : (reflectionsData.length - 1);
+                    currentDayIndex = matchedIdx;
                     if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
                     
                     // Re-render reflection text and adapt layout if timezone changed background requirements
@@ -3003,7 +3000,8 @@ function getWeatherPreset(city) {
             }, 8000);
 
             // Load saved settings
-            if (safeStorage.getItem("dzj_stream_day")) {
+            const todayInitStr = new Date().toISOString().split('T')[0];
+            if (safeStorage.getItem("dzj_stream_day") && safeStorage.getItem("dzj_stream_saved_date") === todayInitStr) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
 
@@ -3073,6 +3071,7 @@ function getWeatherPreset(city) {
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
                 safeStorage.setItem("dzj_stream_day", daySelect.value);
+                safeStorage.setItem("dzj_stream_saved_date", new Date().toISOString().split('T')[0]);
                 safeStorage.setItem("dzj_stream_image", bgImageSelect.value);
                 safeStorage.setItem("dzj_stream_video", bgVideoSelect.value);
                 safeStorage.setItem("dzj_stream_duration", slideDurationInput.value);
@@ -3770,7 +3769,13 @@ function getWeatherPreset(city) {
                     const latestIdx = reflectionsData.findIndex(r => r.date === todayStr);
                     currentDayIndex = (latestIdx !== -1) ? latestIdx : (reflectionsData.length - 1);
                     
-                    if (safeStorage.getItem("dzj_stream_day")) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('day') || urlParams.has('d')) {
+                        const dVal = parseInt(urlParams.get('day') || urlParams.get('d'), 10);
+                        if (!isNaN(dVal) && dVal >= 0 && dVal < reflectionsData.length) {
+                            currentDayIndex = dVal;
+                        }
+                    } else if (safeStorage.getItem("dzj_stream_day") && safeStorage.getItem("dzj_stream_saved_date") === todayStr) {
                         currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
                     }
                     
