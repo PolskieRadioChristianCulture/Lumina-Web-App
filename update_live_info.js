@@ -142,13 +142,22 @@ async function runUpdateCycle() {
     try {
         let modified = false;
         
-        // Run both updates
+        // Run updates
         const streamModified = await updateLiveStreamId();
         if (streamModified) modified = true;
         
         const newsModified = await updateNews();
         if (newsModified) modified = true;
         
+        // Part 3: Synchronizacja Cuda Każdego Dnia
+        try {
+            console.log("Running Cuda Kazdego Dnia synchronization...");
+            const { execSync } = require('child_process');
+            execSync('node sync_cuda_kazdego_dnia.js', { cwd: __dirname, stdio: 'inherit' });
+        } catch (cudaErr) {
+            console.error("Cuda synchronization error:", cudaErr.message);
+        }
+
         if (modified) {
             const { execSync } = require('child_process');
             execSync('git add index.html news.json', { cwd: __dirname });
@@ -156,7 +165,7 @@ async function runUpdateCycle() {
             execSync('git push origin main', { cwd: __dirname });
             console.log("Successfully pushed updates to GitHub.");
         } else {
-            console.log("No modifications found. Git push skipped.");
+            console.log("No modifications found for stream/news. Git push skipped.");
         }
     } catch (e) {
         console.error("Master cycle error:", e);
@@ -164,3 +173,4 @@ async function runUpdateCycle() {
 }
 
 runUpdateCycle();
+
