@@ -4332,6 +4332,9 @@
             cursor: pointer;
             transition: background 0.5s ease;
         }
+        @media (max-width: 680px) {
+            .hero-section { min-height: auto !important; }
+        }
         .hero-content {
             transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
@@ -4540,71 +4543,6 @@
                     </div>
                 </div>
 
-                <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
-                    <div class="card-photo">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'noemi','Noemi','avatar_noemi.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Noemi</div>
-                        <div class="card-city">📍 Wrocław • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
-                        <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
-                    </div>
-                </div>
-
-                <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_osobowoscplus" data-profile-slug="osobowoscplus" onclick="window.location.href='lumina/osobowoscplus'" data-category="misja mezczyzna" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            OSOBOWOŚĆ + <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Christian Culture • <b style="color:#8b5cf6;">👑 Formacja & Wiara</b></div>
-                        <div class="card-desc">"Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje."</div>
-                    </div>
-                </div>
-
-                <!-- 4. Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
-                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
-                        </div>
-                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">✨ 30 listopada 1955</b></div>
-                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
-                    </div>
-                </div>
-
-                <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina/radiocc'" data-category="misja" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Christian Culture','christian_culture_carousel_photo.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Christian Culture <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Cała Polska • <b style="color:#f59e0b;">✨ Radio Uwielbienia 24/7</b></div>
-                        <div class="card-desc">"Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę."</div>
-                    </div>
-                </div>
-
                 <!-- 6. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
                 <div class="profile-card home-wioletta-card" id="card_profile_wiolettarogowska" data-profile-slug="wiolettarogowska" data-category="kobieta zalozyciele" onclick="openCommunityProfile('wiolettarogowska')">
                     <div class="card-photo">
@@ -4636,93 +4574,7 @@
                     </div>
                 </div>
 
-                <!-- 7. Dawid (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
-                    <div class="card-photo">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_dawid.jpg" onerror="this.src='avatar_dawid.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_dawid.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">📍 Poznań • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
-                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
-                    </div>
-                </div>
-
-                <!-- 8. MISJA 3: STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbatka między słowami) -->
-                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina/studiodobregoslowa'" data-category="misja media" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="studiodobregoslowa_karuzela.webp" onerror="this.src='studiodobregoslowa_karuzela.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_karuzela.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">✨ @StudioDeeS • studiods.pl</b></div>
-                        <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i herbaciarnia „Herbatka między słowami”."</div>
-                    </div>
-                </div>
-
-                <!-- 9. Weronika (Kobieta) -->
-                <div class="profile-card" id="card_profile_weronika" data-profile-slug="weronika" onclick="openCommunityProfile('weronika')" data-category="kobieta mlodzi">
-                    <div class="card-photo">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_weronika_hq_2026.jpg?v=20260825_urszula_real_face_v370" onerror="this.src='avatar_weronika.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_weronika.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Weronika, 25</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
-                        <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
-                    </div>
-                </div>
-
-                <!-- 10. MISJA 4: Christian Culture TV (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_cctv" data-profile-slug="cctv" onclick="window.location.href='lumina/cctv'" data-category="misja" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Christian Culture TV <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Warszawa • <b style="color:#ef4444;">✨ Telewizja CCTV24</b></div>
-                        <div class="card-desc">"Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne."</div>
-                    </div>
-                </div>
-
-                <!-- 11. Tomasz (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_tomek" data-profile-slug="tomek" onclick="openCommunityProfile('tomek')" data-category="mezczyzna mlodzi">
-                    <div class="card-photo">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'tomek','Tomasz','avatar_widget_tomek.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #059669, #10b981);">94%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Tomasz, 31</div>
-                        <div class="card-city">📍 Gdańsk • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
-                        <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
-                    </div>
-                </div>
-                <!-- ✨ REKLAMA WIDEO 3: Dobrze, że jesteś - LIVE TV24 (Christian Culture TV Na Żywo) -->
-                <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
+id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
                         <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
                             <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
@@ -4736,46 +4588,6 @@
                         <a href="https://polskieradio.cc/master" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse" style="background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6);">
                             <i class="fa-solid fa-tv"></i> OGLĄDAJ LIVE TV24 ➜
                         </a>
-                    </div>
-                </div>
-
-                <!-- 11b. Jola Wójcik (Biblijny Czas Modlitwy • Polskie Radio CC) -->
-                <div class="profile-card" id="card_profile_jolawojcik" data-profile-slug="jolawojcik" onclick="openCommunityProfile('jolawojcik')" data-category="kobieta misja" style="cursor:pointer;">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="background:linear-gradient(135deg,#a855f7,#ec4899); border:1px solid rgba(255,255,255,0.3);">
-                            <i class="fa-solid fa-hands-praying" style="color:#fde047; font-size:0.65rem;"></i> MODLITWA
-                        </div>
-                        <img src="avatar_jolawojcik.jpg" onerror="this.src='lumina_icon.jpg'" alt="Jola Wójcik" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'jolawojcik','Jola Wójcik','avatar_jolawojcik.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fde047; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.35); padding:2px 8px; border-radius:6px; width:fit-content;">🕊️ BIBLIJNY CZAS MODLITWY</div>
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Jola Wójcik <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Zweryfikowany Profil"></i>
-                        </div>
-                        <div class="card-city">📍 Polska • <b style="color:#facc15;">🕊️ Polskie Radio CC</b></div>
-                        <div class="card-desc">"Razem z Polskim Radiem Christian Culture zapraszam do wspólnej modlitwy i rozważania Słowa Bożego."</div>
-                    </div>
-                </div>
-
-                <!-- 11b-1. Zbyszek Gieroń (Profil Misyjny • Świadectwo & Wiara) -->
-                <div class="profile-card mission-profile-card" id="card_profile_zbyszekgieron" data-profile-slug="zbyszekgieron" onclick="openCommunityProfile('zbyszekgieron')" data-category="misja mezczyzna spolecznosc" style="cursor:pointer;">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:1px solid rgba(255,255,255,0.3);">
-                            <i class="fa-solid fa-cross" style="color:#fde047; font-size:0.65rem;"></i> MISJA
-                        </div>
-                        <img src="avatar_zbyszek_gieron.jpg" onerror="this.src='lumina_icon.jpg'" alt="Zbyszek Gieroń" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'zbyszekgieron','Zbyszek Gieroń','avatar_zbyszek_gieron.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #3b82f6, #6366f1);">98%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; width:fit-content;">🕊️ PROFIL MISYJNY</div>
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Zbyszek Gieroń <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Zweryfikowany Profil Misyjny"></i>
-                        </div>
-                        <div class="card-city">📍 Polska • <b style="color:#38bdf8;">🕊️ Świadectwo & Wiara</b></div>
-                        <div class="card-desc">"Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa. Dzielę się Słowem Bożym i świadectwem wiary."</div>
                     </div>
                 </div>
 
@@ -4928,21 +4740,206 @@
                     </div>
                 </div>
 
-                <!-- 12. Magdalena (Kobieta) -->
-                <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'magdalena','Magdalena','avatar_magdalena.png')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
+
+
+            </div>
+            <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Filtry Wartości, Polecaj) - pod karuzelą -->
+        <div class="discovery-filters-wrap">
+            <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
+            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
+            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
+            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
+            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal(event)" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
+                <i class="fa-solid fa-sliders" style="color:#facc15; pointer-events:none;"></i>
+                <span class="filter-chip-text" style="pointer-events:none;">Filtry Wartości ⚙️</span>
+            </button>
+
+            <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
+            <button type="button" class="filter-chip" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span class="filter-chip-text">Polecaj</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ══════════ STREFA ROZWOJU, MAŁŻEŃSTWA & SKLEP CC (PARTNERZY MISYJNI) ══════════ -->
+    <section class="cards-section lumina-mission-showcase-section" id="strefaMisyjna" style="margin-top: 0;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding: 0 4px; max-width:1200px; margin-left:auto; margin-right:auto; padding-left:16px; padding-right:16px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem; box-shadow:0 0 12px rgba(236,72,153,0.4);">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                    <h3 style="font-family:'Outfit',sans-serif; font-size:1.05rem; font-weight:800; color:#fff; margin:0; letter-spacing:-0.2px;">Strefa Wzrostu &amp; Misja CC</h3>
+                    <p style="font-size:0.75rem; color:#94a3b8; margin:0;">Przygotowanie do dojrzałego małżeństwa, dobre relacje oraz oficjalny sklep</p>
+                </div>
+            </div>
+            <span style="font-size:0.68rem; color:#c084fc; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); padding:4px 10px; border-radius:10px;">
+                ✨ Misja &amp; Wartości
+            </span>
+        </div>
+        <div class="carousel-container">
+            <button class="carousel-btn left" onclick="scrollMissionCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="profiles-grid" id="missionCarousel">
+
+                <!-- ✨ REKLAMA WIDEO: Dobrze, że jesteś (Sklep CC) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
+                    <div class="card-photo">
+                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                            <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
+                            <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 💍 KURS DLA RANDKOWICZÓW & PAR: Nie Bylejaki Kurs Małżeński (Roman Chałupka) -->
+                <div class="profile-card mission-profile-card featured-course-card" id="card_kurs_malzenski" onclick="window.open('https://www.youtube.com/playlist?list=PLdsZ3vCpkBY8', '_blank')" data-category="all misja relacje randki kobieta mezczyzna mlodzi" style="cursor:pointer; border: 2px solid rgba(236, 72, 153, 0.65); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);">
+                    <div class="card-photo" style="background:#070e24;">
+                        <img src="nie-bylejaki-kurs-malzenski.webp" onerror="this.src='nie-bylejaki-kurs-malzenski.png'" alt="Nie Bylejaki Kurs Małżeński" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;">
+                        <button class="card-heart liked" onclick="event.stopPropagation(); toggleLike(event,this,'kurs_malzenski','Kurs Małżeński','nie-bylejaki-kurs-malzenski.webp')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">100% MATCH</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Magdalena, 43</div>
-                        <div class="card-city">📍 Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
-                        <div class="card-desc">"Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości."</div>
+                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fbcfe8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(236,72,153,0.18); border:1px solid rgba(236,72,153,0.45); padding:2px 8px; border-radius:6px; width:fit-content;">
+                            <i class="fa-solid fa-heart"></i> DLA RANDKOWICZÓW &amp; PAR
+                        </div>
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px; font-size:1.05rem;">
+                            Kurs Małżeński <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#f472b6;">💍 Roman Chałupka</b></div>
+                        <div class="card-desc">"Bo miłość to decyzja, nie przypadek! Prawdziwe szczęście w rodzinie — fundament pod dojrzałe małżeństwo."</div>
+                    </div>
+                </div>
+
+                <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_osobowoscplus" data-profile-slug="osobowoscplus" onclick="window.location.href='lumina/osobowoscplus'" data-category="misja mezczyzna" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            OSOBOWOŚĆ + <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#8b5cf6;">👑 Formacja &amp; Wiara</b></div>
+                        <div class="card-desc">"Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje."</div>
+                    </div>
+                </div>
+
+                <!-- 4. Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
+                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
+                        </div>
+                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">✨ 30 listopada 1955</b></div>
+                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
+                    </div>
+                </div>
+
+                <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina/radiocc'" data-category="misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Christian Culture','christian_culture_carousel_photo.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Christian Culture <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Cała Polska • <b style="color:#f59e0b;">✨ Radio Uwielbienia 24/7</b></div>
+                        <div class="card-desc">"Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę."</div>
+                    </div>
+                </div>
+
+                <!-- 8. MISJA 3: STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbatka między słowami) -->
+                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina/studiodobregoslowa'" data-category="misja media" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="studiodobregoslowa_karuzela.webp" onerror="this.src='studiodobregoslowa_karuzela.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_karuzela.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">✨ @StudioDeeS • studiods.pl</b></div>
+                        <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i herbaciarnia „Herbatka między słowami"."</div>
+                    </div>
+                </div>
+
+                <!-- 10. MISJA 4: Christian Culture TV (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_cctv" data-profile-slug="cctv" onclick="window.location.href='lumina/cctv'" data-category="misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Christian Culture TV <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ef4444;">✨ Telewizja CCTV24</b></div>
+                        <div class="card-desc">"Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne."</div>
+                    </div>
+                </div>
+
+                <!-- 11b. Jola Wójcik (Biblijny Czas Modlitwy • Polskie Radio CC) -->
+                <div class="profile-card" id="card_profile_jolawojcik" data-profile-slug="jolawojcik" onclick="openCommunityProfile('jolawojcik')" data-category="kobieta misja" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="background:linear-gradient(135deg,#a855f7,#ec4899); border:1px solid rgba(255,255,255,0.3);">
+                            <i class="fa-solid fa-hands-praying" style="color:#fde047; font-size:0.65rem;"></i> MODLITWA
+                        </div>
+                        <img src="avatar_jolawojcik.jpg" onerror="this.src='lumina_icon.jpg'" alt="Jola Wójcik" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'jolawojcik','Jola Wójcik','avatar_jolawojcik.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fde047; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.35); padding:2px 8px; border-radius:6px; width:fit-content;">🕊️ BIBLIJNY CZAS MODLITWY</div>
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Jola Wójcik <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Zweryfikowany Profil"></i>
+                        </div>
+                        <div class="card-city">📍 Polska • <b style="color:#facc15;">🕊️ Polskie Radio CC</b></div>
+                        <div class="card-desc">"Razem z Polskim Radiem Christian Culture zapraszam do wspólnej modlitwy i rozważania Słowa Bożego."</div>
+                    </div>
+                </div>
+
+                <!-- 11b-1. Zbyszek Gieroń (Profil Misyjny • Świadectwo & Wiara) -->
+                <div class="profile-card mission-profile-card" id="card_profile_zbyszekgieron" data-profile-slug="zbyszekgieron" onclick="openCommunityProfile('zbyszekgieron')" data-category="misja mezczyzna spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:1px solid rgba(255,255,255,0.3);">
+                            <i class="fa-solid fa-cross" style="color:#fde047; font-size:0.65rem;"></i> MISJA
+                        </div>
+                        <img src="avatar_zbyszek_gieron.jpg" onerror="this.src='lumina_icon.jpg'" alt="Zbyszek Gieroń" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'zbyszekgieron','Zbyszek Gieroń','avatar_zbyszek_gieron.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #3b82f6, #6366f1);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; width:fit-content;">🕊️ PROFIL MISYJNY</div>
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Zbyszek Gieroń <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Zweryfikowany Profil Misyjny"></i>
+                        </div>
+                        <div class="card-city">📍 Polska • <b style="color:#38bdf8;">🕊️ Świadectwo &amp; Wiara</b></div>
+                        <div class="card-desc">"Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa. Dzielę się Słowem Bożym i świadectwem wiary."</div>
                     </div>
                 </div>
 
@@ -4959,24 +4956,6 @@
                         </div>
                         <div class="card-city">📍 Polska • <b style="color:#0ea5e9;">🛡️ Męska Wspólnota Wiary</b></div>
                         <div class="card-desc">"Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo."</div>
-                    </div>
-                </div>
-
-                <!-- 14. Anna (Kobieta) -->
-                <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
-                    <div class="card-photo">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'anna','Anna','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match">94%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Anna</div>
-                        <div class="card-city">📍 Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
-                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
                 </div>
 
@@ -5012,121 +4991,8 @@
                     </div>
                 </div>
 
-                <!-- 16. Piotr (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_piotr" data-profile-slug="piotr" onclick="openCommunityProfile('piotr')" data-category="mezczyzna mlodzi">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'piotr','Piotr','lumina_piotr2.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match">88%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Piotr, 31</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
-                        <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
-                    </div>
-                </div>
-
-                <!-- 17. Julia (Kobieta) -->
-                <div class="profile-card" id="card_profile_julia" data-profile-slug="julia" onclick="openCommunityProfile('julia')" data-category="kobieta mlodzi">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                        </div>
-                        <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'julia','Julia','lumina_julia2.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match">91%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Julia, 26</div>
-                        <div class="card-city">📍 Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
-                        <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
-                    </div>
-                </div>
-
             </div>
-            <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-
-        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Filtry Wartości, Polecaj) - pod karuzelą -->
-        <div class="discovery-filters-wrap">
-            <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
-            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
-            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
-            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="openAdvancedFiltersModal(event)" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
-                <i class="fa-solid fa-sliders" style="color:#facc15; pointer-events:none;"></i>
-                <span class="filter-chip-text" style="pointer-events:none;">Filtry Wartości ⚙️</span>
-            </button>
-
-            <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
-            <button type="button" class="filter-chip" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span class="filter-chip-text">Polecaj</span>
-            </button>
-        </div>
-    </section>
-
-    <!-- ══════════ STREFA ROZWOJU, MAŁŻEŃSTWA & SKLEP CC (PARTNERZY MISYJNI) ══════════ -->
-    <section class="lumina-mission-showcase-section" id="strefaMisyjna" style="max-width: 1200px; margin: 18px auto 10px; padding: 0 16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding: 0 4px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem; box-shadow:0 0 12px rgba(236,72,153,0.4);">
-                    <i class="fa-solid fa-crown"></i>
-                </div>
-                <div>
-                    <h3 style="font-family:'Outfit',sans-serif; font-size:1.05rem; font-weight:800; color:#fff; margin:0; letter-spacing:-0.2px;">Strefa Wzrostu & Misja CC</h3>
-                    <p style="font-size:0.75rem; color:#94a3b8; margin:0;">Przygotowanie do dojrzałego małżeństwa, dobre relacje oraz oficjalny sklep</p>
-                </div>
-            </div>
-            <span style="font-size:0.68rem; color:#c084fc; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); padding:4px 10px; border-radius:10px;">
-                ✨ Misja & Wartości
-            </span>
-        </div>
-        <div class="mission-showcase-row" style="display: flex; gap: 16px; overflow-x: auto; padding: 4px 4px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
-            
-            <!-- ✨ REKLAMA WIDEO: Dobrze, że jesteś (Sklep CC) -->
-            <div class="profile-card video-card featured original-promo-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc" style="flex: 0 0 300px; max-width: 320px;">
-                <div class="card-photo">
-                    <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
-                        <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
-                        <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
-                    </video>
-                    <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                        <i class="fa-solid fa-volume-xmark"></i>
-                    </button>
-                    <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                    
-                    <!-- Pulsujący Przycisk do Sklepu -->
-                    <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                        <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
-                    </a>
-                </div>
-            </div>
-
-            <!-- 💍 KURS DLA RANDKOWICZÓW & PAR: Nie Bylejaki Kurs Małżeński (Roman Chałupka) -->
-            <div class="profile-card mission-profile-card featured-course-card" id="card_kurs_malzenski" onclick="window.open('https://www.youtube.com/playlist?list=PLdsZ3vCpkBY8', '_blank')" data-category="all misja relacje randki kobieta mezczyzna mlodzi" style="flex: 0 0 300px; max-width: 320px; cursor:pointer; border: 2px solid rgba(236, 72, 153, 0.65); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);">
-                <div class="card-photo" style="background:#070e24;">
-                    <img src="nie-bylejaki-kurs-malzenski.webp" onerror="this.src='nie-bylejaki-kurs-malzenski.png'" alt="Nie Bylejaki Kurs Małżeński" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block;">
-                    <button class="card-heart liked" onclick="event.stopPropagation(); toggleLike(event,this,'kurs_malzenski','Kurs Małżeński','nie-bylejaki-kurs-malzenski.webp')"><i class="fa-solid fa-heart"></i></button>
-                    <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">100% MATCH</div>
-                </div>
-                <div class="card-body">
-                    <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#fbcfe8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(236,72,153,0.18); border:1px solid rgba(236,72,153,0.45); padding:2px 8px; border-radius:6px; width:fit-content;">
-                        <i class="fa-solid fa-heart"></i> DLA RANDKOWICZÓW & PAR
-                    </div>
-                    <div class="card-name" style="display:flex;align-items:center;gap:6px; font-size:1.05rem;">
-                        Kurs Małżeński <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                    </div>
-                    <div class="card-city">📍 Christian Culture • <b style="color:#f472b6;">💍 Roman Chałupka</b></div>
-                    <div class="card-desc">"Bo miłość to decyzja, nie przypadek! Prawdziwe szczęście w rodzinie — fundament pod dojrzałe małżeństwo."</div>
-                </div>
-            </div>
-
+            <button class="carousel-btn right" onclick="scrollMissionCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </section>
 
@@ -9776,6 +9642,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             setTimeout(() => {
                 window.updateCenterActiveCard();
             }, 350);
+        };
+
+        window.scrollMissionCarousel = function(dir) {
+            const el = document.getElementById('missionCarousel');
+            if (el) el.scrollBy({ left: dir * 320, behavior: 'smooth' });
         };
 
         window.snapToNearestCard = function() {
