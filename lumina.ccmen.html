@@ -902,6 +902,7 @@
                         <i class="fa-solid fa-heart"></i> Obserwuj / Polub
                     </button>
                     <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:10px 18px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span></a>
+                    <button type="button" class="btn-action-secondary btn-action-blik" onclick="copyMissionBlikNumber()" title="Wsparcie misyjne BLIK: 537 137 043" style="background:linear-gradient(135deg, #7c3aed, #6d28d9); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; cursor:pointer; box-shadow:0 4px 14px rgba(124,58,237,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-mobile-screen-button" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Misyjny BLIK</span></button>
                     <button class="btn-action-secondary" onclick="openShareModal()">
                         <i class="fa-solid fa-share-nodes"></i> Polecaj Profil
                     </button>
@@ -1336,6 +1337,30 @@ Współczesny świat często myli siłę z dominacją. Biblia uczy nas, że najs
     </script>
     <script src="lumina-admin-profile-suite.js?v=20260918_autolink_1x1"></script>
     <script src="lumina-premium-video-avatar.js"></script>
-    <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer></script>
+    <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer>
+        window.copyMissionBlikNumber = function() {
+            const blikFormatted = '537 137 043';
+            const blikRaw = '537137043';
+            const msg = '📱 Skopiowano numer Misyjnego BLIK: ' + blikFormatted + ' — Bóg zapłać za wsparcie Misji Christian Culture! 🌿🤍';
+            function notifySuccess() {
+                if (typeof showToast === 'function') {
+                    showToast(msg);
+                } else if (typeof window.showToast === 'function') {
+                    window.showToast(msg);
+                } else {
+                    prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+                }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(blikRaw).then(() => {
+                    notifySuccess();
+                }).catch(() => {
+                    prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+                });
+            } else {
+                prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+            }
+        };
+</script>
 </body>
 </html>

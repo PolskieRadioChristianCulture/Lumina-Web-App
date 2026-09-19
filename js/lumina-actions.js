@@ -154,3 +154,30 @@ if (typeof window !== 'undefined') {
     window.copyProfileLink = copyProfileLink;
     window.toggleRadio = toggleRadio;
 }
+
+export function copyMissionBlikNumber() {
+    const blikFormatted = '537 137 043';
+    const blikRaw = '537137043';
+    const msg = '📱 Skopiowano numer Misyjnego BLIK: ' + blikFormatted + ' — Bóg zapłać za wsparcie Misji Christian Culture! 🌿🤍';
+    function notifySuccess() {
+        if (typeof showToast === 'function') {
+            showToast(msg);
+        } else if (typeof window.showToast === 'function') {
+            window.showToast(msg);
+        } else {
+            prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+        }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(blikRaw).then(() => {
+            notifySuccess();
+        }).catch(() => {
+            prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+        });
+    } else {
+        prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+    }
+}
+if (typeof window !== 'undefined') {
+    window.copyMissionBlikNumber = copyMissionBlikNumber;
+}

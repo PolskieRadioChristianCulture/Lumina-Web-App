@@ -3828,6 +3828,7 @@
                     <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
                     <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span></a>
+                    <button type="button" class="btn-action-secondary btn-action-blik" onclick="copyMissionBlikNumber()" title="Wsparcie misyjne BLIK: 537 137 043" style="background:linear-gradient(135deg, #7c3aed, #6d28d9); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; cursor:pointer; box-shadow:0 4px 14px rgba(124,58,237,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-mobile-screen-button" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Misyjny BLIK</span></button>
                     
                     <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
                         <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
@@ -11048,7 +11049,31 @@
     <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
     <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-admin-media-replacer.js?v=20260917_autohide_final_v10"></script>
-    <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer></script>
+    <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer>
+        window.copyMissionBlikNumber = function() {
+            const blikFormatted = '537 137 043';
+            const blikRaw = '537137043';
+            const msg = '📱 Skopiowano numer Misyjnego BLIK: ' + blikFormatted + ' — Bóg zapłać za wsparcie Misji Christian Culture! 🌿🤍';
+            function notifySuccess() {
+                if (typeof showToast === 'function') {
+                    showToast(msg);
+                } else if (typeof window.showToast === 'function') {
+                    window.showToast(msg);
+                } else {
+                    prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+                }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(blikRaw).then(() => {
+                    notifySuccess();
+                }).catch(() => {
+                    prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+                });
+            } else {
+                prompt('Numer telefonu do wpłat BLIK Christian Culture:', blikFormatted);
+            }
+        };
+</script>
 </body>
 </html>
 
