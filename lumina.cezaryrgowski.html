@@ -3956,46 +3956,38 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
 
-                    <!-- 🔴 1. GŁÓWNY PRZYPIĘTY POST: TV LIVE INSTRUMENTAL 24/7 (NAD PLAYLISTĄ YT) -->
-                    <article class="post-card mission-live-broadcast-card" id="post_live_cezary_instrumental_top" style="margin-bottom: 22px; border-color: rgba(142, 45, 226, 0.45); box-shadow: 0 8px 32px rgba(142, 45, 226, 0.15);">
+                    <!-- 🔴 1. GŁÓWNY PRZYPIĘTY POST: TRANSMISJA NA ŻYWO CEZARY ROGOWSKI (YOUTUBE LIVE) -->
+                    <article class="post-card mission-live-broadcast-card" id="post_live_cezary_personal_stream" style="margin-bottom: 22px; border-color: rgba(220, 38, 38, 0.55); box-shadow: 0 10px 36px rgba(220, 38, 38, 0.22), 0 0 20px rgba(212, 175, 55, 0.15);">
                         <div class="post-header">
-                            <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="post-avatar">
+                            <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="post-avatar" style="border: 2px solid #ef4444; box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);">
                             <div>
                                 <div class="post-author">Cezary Rogowski <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span></div>
-                                <div class="post-time">🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7</div>
+                                <div class="post-time" style="color:#fca5a5; font-weight:700;">🔴 TRANSMISJA NA ŻYWO • PROFIL OSOBISTY CEZAREGO ROGOWSKIEGO</div>
                             </div>
-                            <div class="live-viewer-chip" style="margin-left:auto; background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.35); color:#ffd700; padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:6px;">
-                                <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA 24/7</span>
+                            <div class="live-viewer-chip" style="margin-left:auto; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-satellite-dish" style="color:#ef4444;"></i> <span>TRANSMISJA LIVE</span>
                             </div>
                         </div>
                         <div class="post-content">
-                            <div style="font-weight:800; color:#fff; font-size:1.12rem; margin-bottom:6px; line-height:1.35;">🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture</div>
-                            <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.55;">Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.</div>
+                            <div style="font-weight:800; color:#fff; font-size:1.15rem; margin-bottom:6px; line-height:1.35;">🔴 Transmisja na Żywo Cezarego Rogowskiego</div>
+                            <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.55; margin-bottom:12px;">Oficjalna transmisja na żywo Założyciela Christian Culture. Nauczania, rozważania Słowa Bożego, relacje z misji oraz osobiste spotkanie ze społecznością wiary.</div>
                         </div>
                         
-                        <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
-                        <div class="mission-live-player-wrapper">
-                            <iframe src="cctv24-worship-live.html?muted=1&mute=1&in_mcr=1" 
-                                    title="Instrumental Worship Music CC • TV LIVE 24/7"
-                                    allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
+                        <!-- EMBEDDED YOUTUBE LIVE BROADCAST PLAYER -->
+                        <div class="mission-live-player-wrapper" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; background:#000; box-shadow:0 8px 30px rgba(0,0,0,0.7); border:1.5px solid rgba(212,175,55,0.35);">
+                            <iframe src="https://www.youtube-nocookie.com/embed/U9nSC8rnWfM?autoplay=1&enablejsapi=1&rel=0" 
+                                    title="Cezary Rogowski • Transmisja na Żywo" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                     allowfullscreen 
-                                    loading="eager"></iframe>
-                            
-                            <div class="mission-live-player-overlay">
-                                <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
-                                    <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
-                                </button>
-                                <a href="cctv24-worship-live.html" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
-                                    <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
-                                </a>
-                            </div>
+                                    loading="eager"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
                         </div>
 
                         <div class="post-footer">
                             <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">348</span><span class="btn-text"> Polubień</span></button>
                             <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (312)</span></button>
-                            <a href="cctv24-worship-live.html" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                            <a href="https://www.youtube.com/live/U9nSC8rnWfM" target="_blank" rel="noopener noreferrer" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Czat na YouTube</span></a>
+                            <button class="post-action-btn action-share" onclick="if(window.openShareModal) window.openShareModal({ title: '🔴 Transmisja na Żywo Cezarego Rogowskiego', url: 'https://polskieradio.cc/lumina.cezaryrgowski' }); else if(window.openMessageModal) openMessageModal();"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
                         </div>
                     </article>
 
