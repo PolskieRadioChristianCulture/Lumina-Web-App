@@ -1575,196 +1575,241 @@
 /* ==========================================================================
    SYNC-FAITH LOUNGE: ADVANCED STREAM CONTROLS & PLACEHOLDERS (JOMA-STREAM-CTRL)
    ========================================================================== */
+#btnSyncLoungeStopAll,
 .sync-lounge-stop-all-btn {
-  background: rgba(239, 68, 68, 0.16);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  color: #fca5a5;
-  font-weight: 800;
-  font-size: 0.72rem;
-  padding: 4px 10px;
-  border-radius: 12px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: all 0.2s;
-  flex-shrink: 0;
+  background: rgba(239, 68, 68, 0.18) !important;
+  border: 1px solid rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+  font-family: var(--cc-font-sans, 'Manrope', 'Plus Jakarta Sans', sans-serif) !important;
+  font-weight: 800 !important;
+  font-size: 0.74rem !important;
+  padding: 5px 12px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+  line-height: 1.2 !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2) !important;
+  text-decoration: none !important;
+  outline: none !important;
+  flex-shrink: 0 !important;
 }
+#btnSyncLoungeStopAll:hover,
 .sync-lounge-stop-all-btn:hover {
-  background: rgba(239, 68, 68, 0.3);
-  color: #fff;
-  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.32) !important;
+  color: #fff !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+}
+#btnSyncLoungeStopAll:active,
+.sync-lounge-stop-all-btn:active {
+  transform: scale(0.97) !important;
 }
 
+#btnSyncRadioStop,
 .sync-radio-stop-btn {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.16);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  color: #fca5a5;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.82rem;
-  transition: all 0.2s;
-  flex-shrink: 0;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(239, 68, 68, 0.18) !important;
+  border: 1px solid rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  font-size: 0.82rem !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2) !important;
+  outline: none !important;
 }
+#btnSyncRadioStop:hover,
 .sync-radio-stop-btn:hover {
-  background: rgba(239, 68, 68, 0.35);
-  color: #fff;
-  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.35) !important;
+  color: #fff !important;
+  border-color: #ef4444 !important;
 }
 
 .sync-stream-control-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 2px;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 6px 2px !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
 }
 
+#btnSyncCourseToggle,
+#btnSyncTvToggle,
 .sync-stream-btn {
-  padding: 5px 12px;
-  border-radius: 9px;
-  font-size: 0.74rem;
-  font-weight: 800;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.18s ease;
-  border: none;
+  font-family: var(--cc-font-sans, 'Manrope', 'Plus Jakarta Sans', sans-serif) !important;
+  padding: 6px 14px !important;
+  border-radius: 10px !important;
+  font-size: 0.74rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.18s ease !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  outline: none !important;
+  flex-shrink: 0 !important;
 }
+#btnSyncCourseToggle.danger,
+#btnSyncTvToggle.danger,
 .sync-stream-btn.danger {
-  background: rgba(239, 68, 68, 0.18);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.18) !important;
+  border: 1px solid rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2) !important;
 }
+#btnSyncCourseToggle.danger:hover,
+#btnSyncTvToggle.danger:hover,
 .sync-stream-btn.danger:hover {
-  background: rgba(239, 68, 68, 0.32);
-  color: #fff;
+  background: rgba(239, 68, 68, 0.32) !important;
+  color: #fff !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
 }
+#btnSyncCoursePause,
+#btnSyncTvMute,
 .sync-stream-btn.secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #cbd5e1 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
 }
+#btnSyncCoursePause:hover,
+#btnSyncTvMute:hover,
 .sync-stream-btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+  border-color: rgba(212, 169, 74, 0.5) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
 }
+#btnSyncCourseToggle.play-state,
+#btnSyncTvToggle.play-state,
 .sync-stream-btn.play-state {
-  background: linear-gradient(135deg, #D4A94A, #B88D34);
-  color: #0A0A0F;
-  border: 1px solid #F5DC9A;
-  box-shadow: 0 2px 8px rgba(212, 169, 74, 0.3);
+  background: linear-gradient(135deg, #D4A94A, #B88D34) !important;
+  color: #0A0A0F !important;
+  border: 1px solid #F5DC9A !important;
+  box-shadow: 0 2px 10px rgba(212, 169, 74, 0.35) !important;
 }
+#btnSyncCourseToggle.play-state:hover,
+#btnSyncTvToggle.play-state:hover,
 .sync-stream-btn.play-state:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.1);
+  transform: translateY(-1px) !important;
+  filter: brightness(1.1) !important;
+  box-shadow: 0 4px 14px rgba(212, 169, 74, 0.5) !important;
 }
 
 .sync-stream-meta-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
 
 .sync-pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
 }
 .sync-pulse-dot.green {
-  background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  background: #22c55e !important;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6) !important;
 }
 .sync-pulse-dot.red {
-  background: #ef4444;
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  background: #ef4444 !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important;
 }
 .sync-pulse-dot.gray {
-  background: #64748b;
+  background: #64748b !important;
 }
 
 .sync-media-placeholder {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 220px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #000;
-  border: 1px solid rgba(212, 169, 74, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  max-height: 220px !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: #000 !important;
+  border: 1px solid rgba(212, 169, 74, 0.25) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
 }
 .sync-placeholder-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.35);
-  transition: filter 0.2s;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  filter: brightness(0.35) !important;
+  transition: filter 0.2s !important;
 }
 .sync-media-placeholder:hover .sync-placeholder-img {
-  filter: brightness(0.45);
+  filter: brightness(0.45) !important;
 }
 .sync-placeholder-overlay {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
-  padding: 10px;
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  text-align: center !important;
+  padding: 10px !important;
 }
 .sync-placeholder-big-play {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #D4A94A, #B88D34);
-  color: #0A0A0F;
-  border: none;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 18px rgba(212, 169, 74, 0.5);
-  cursor: pointer;
-  transition: transform 0.18s, filter 0.18s;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #D4A94A, #B88D34) !important;
+  color: #0A0A0F !important;
+  border: none !important;
+  font-size: 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 18px rgba(212, 169, 74, 0.5) !important;
+  cursor: pointer !important;
+  transition: transform 0.18s, filter 0.18s !important;
 }
 .sync-placeholder-big-play:hover {
-  transform: scale(1.08);
-  filter: brightness(1.1);
+  transform: scale(1.08) !important;
+  filter: brightness(1.1) !important;
 }
 .sync-placeholder-badge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: #F5DC9A;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  color: #F5DC9A !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 .sync-placeholder-hint {
-  font-size: 0.72rem;
-  color: #e2e8f0;
+  font-size: 0.72rem !important;
+  color: #e2e8f0 !important;
 }
 
 @media (max-width: 640px) {
   .sync-stop-all-text {
     display: none !important;
   }
+  #btnSyncLoungeStopAll,
   .sync-lounge-stop-all-btn {
     padding: 0 !important;
     width: 32px !important;
@@ -1774,5 +1819,3 @@
     justify-content: center !important;
   }
 }
-
-
