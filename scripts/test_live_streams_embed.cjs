@@ -43,12 +43,15 @@ server.listen(PORT, async () => {
     const page = await context.newPage();
 
     try {
-        console.log('0. Verifying TV Epafraz removal from master-live.html schedule...');
+        console.log('0. Verifying TV Epafraz & Kino removal from master-live.html schedule...');
         const masterLiveHtml = fs.readFileSync(path.join(ROOT_DIR, 'master-live.html'), 'utf-8');
         if (masterLiveHtml.includes('tv-epafraz-live.html')) {
             throw new Error('master-live.html still contains references to tv-epafraz-live.html in schedule!');
         }
-        console.log('✅ master-live.html completely free from tv-epafraz-live.html!');
+        if (masterLiveHtml.includes('kino-live.html')) {
+            throw new Error('master-live.html still contains references to kino-live.html in schedule!');
+        }
+        console.log('✅ master-live.html completely free from tv-epafraz-live.html & kino-live.html!');
 
         console.log('1. Verifying Tablica Społeczności Live Stream & Mute/Unmute...');
         await page.goto(`http://127.0.0.1:${PORT}/lumina-tablica.html`, { waitUntil: 'domcontentloaded' });

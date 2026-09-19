@@ -701,10 +701,6 @@
                 title: "CODZIENNE UWIELBIENIE — BLOK MUZYCZNY",
                 desc: "Najpiękniejsze utwory uwielbienia i nowości muzyczne Christian Culture Music"
             },
-            "kino-live.html": {
-                title: "CHRZEŚCIJAŃSKI BLOK FILMOWY",
-                desc: "Wyjątkowe seanse filmowe i dokumentalne z przesłaniem na życzenie"
-            },
             "studium-live.html": {
                 title: "STUDIUM TELEWIZYJNE PISMA ŚWIĘTEGO",
                 desc: "Wyczerpujący 572-odcinkowy wykład biblijny werset po wersecie"
@@ -847,7 +843,7 @@
             else if (hour >= 18 && hour < 20) {
                 blockKey = "18_20_evening_" + dayOfWeek;
                 if (dayOfWeek === 0) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
-                else if (dayOfWeek === 6) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+                else if (dayOfWeek === 6) channel = "biblia-spiewana-live.html"; // Bezpieczne pasmo muzyczne CC (filmy wyłącznie w strefie VOD)
                 else channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
             }
             // 13) 20:00 - 20:52: Studium Telewizyjne Pisma Świętego Wieczór

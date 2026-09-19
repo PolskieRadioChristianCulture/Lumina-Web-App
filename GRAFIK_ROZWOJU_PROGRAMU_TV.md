@@ -27,7 +27,7 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **15:06 – 16:00** | **🎶 Biblia Śpiewana — Pasmo Popołudniowe** | Spokojne kompozycje muzyczne i wersety Pisma Świętego | `biblia-spiewana-live.html` |
 | **16:00 – 18:00** | **🎵 Śpiewajmy Panu — Codzienny Blok Muzyczny** | 2-godzinny blok z utworami uwielbienia i nowościami Christian Culture Music (Odtwarzanie Losowe 24/7) | `spiewajmy-panu-live.html` |
 | **18:00 – 20:00 (Pon – Pt)** | **⚔️ Totalny Atak — Wykłady Biblijne** | Seria wykładów apologetycznych i profetycznych prof. Waltera Veitha | `totalny-atak-live.html` |
-| **18:00 – 20:00 (Sobota)** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo | `kino-live.html` |
+| **18:00 – 20:00 (Sobota)** | **🎶 Biblia Śpiewana & Muzyka Uwielbienia (Wydanie Sobotnie)** | Autorska muzyka chwały Christian Culture Music (filmy fabularne wyłącznie na życzenie w strefie VOD) | `biblia-spiewana-live.html` |
 | **18:00 – 20:00 (Niedziela)** | **💬 Świadectwa — Cykl Historii Wiary** | Poruszające historie nawróceń, przemiany życia i uzdrowień (Cykl 11 filmów w rotacji) | `swiadectwa-live.html` |
 | **20:00 – 21:00** | **📖 Studium Telewizyjne Pisma Świętego** | Wydanie wieczorne wykładu werset po wersecie | `studium-live.html` |
 | **21:00 – 21:06** | **📌 Apokalipsa Dzień po Dniu** | Wieczorny komentarz dnia | `apokalipsa-live.html` |
