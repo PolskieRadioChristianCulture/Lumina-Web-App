@@ -6264,6 +6264,21 @@
                     <span style="width:6px; height:6px; border-radius:50%; background:#22c55e;"></span> Publiczny
                 </span>
             </div>
+            <!-- Baner logowania Google dla gości -->
+            <div id="qpGuestAuthBanner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(212, 175, 55, 0.12)); border:1px solid rgba(66, 133, 244, 0.4); border-radius:12px; padding:10px 14px; margin-bottom:14px;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; color:#e2e8f0;">
+                    <svg viewBox="0 0 24 24" style="width:18px; height:18px; flex-shrink:0;">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Zaloguj się przez Google, aby publikować pod swoim profilem</span>
+                </div>
+                <button type="button" onclick="executeGoogleAuthForPost(false)" style="background:#ffffff; color:#1f2937; border:none; border-radius:18px; padding:6px 14px; font-size:0.78rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(0,0,0,0.3); white-space:nowrap; transition:all 0.2s;">
+                    Zaloguj się
+                </button>
+            </div>
 
             <form id="quickPostForm" onsubmit="submitQuickPost(event)">
                 <!-- 1. Opcjonalny tytuł wpisu -->
@@ -6352,6 +6367,52 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ══════════ MODAL BRAMKI LOGOWANIA GOOGLE DLA PUBLIKACJI POSTA ══════════ -->
+    <div class="modal-overlay" id="luminaGoogleAuthGateModal" style="z-index: 999999;">
+        <div class="modal-card" style="max-width: 480px; width: 92%; background: linear-gradient(180deg, #0d1326 0%, #060914 100%); border: 1.5px solid rgba(212, 175, 55, 0.55); border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.25); padding: 28px 24px; text-align: center; position: relative;">
+            <button class="modal-close-btn" onclick="closeModal('luminaGoogleAuthGateModal')" title="Zamknij okno" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; border-radius:50%; width:36px; height:36px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+
+            <!-- Ikona & Aureola -->
+            <div style="width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:linear-gradient(135deg, rgba(212,175,55,0.25), rgba(66,133,244,0.2)); border:2px solid #d4af37; display:flex; align-items:center; justify-content:center; box-shadow:0 0 25px rgba(212,175,55,0.4);">
+                <i class="fa-solid fa-dove" style="font-size:2rem; color:#ffd700;"></i>
+            </div>
+
+            <h3 style="font-family:'Cinzel',serif; font-size:1.4rem; color:#fff; margin:0 0 8px 0; letter-spacing:0.5px;">Dołącz do Społeczności LUMINA 🕊️</h3>
+            
+            <p style="font-size:0.92rem; color:#cbd5e1; line-height:1.55; margin:0 0 18px 0;">
+                Twój wpis jest gotowy do publikacji! Zaloguj się jednym kliknięciem przez <b>Google</b>, aby założyć darmowy profil chrześcijański i natychmiast opublikować swoje świadectwo na Tablicy.
+            </p>
+
+            <!-- Atuty logowania Google -->
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:12px 16px; margin-bottom:20px; text-align:left; display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; align-items:center; gap:10px; font-size:0.82rem; color:#e2e8f0;">
+                    <i class="fa-solid fa-check" style="color:#22c55e;"></i> <span>Automatyczny, darmowy profil chrześcijański</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; font-size:0.82rem; color:#e2e8f0;">
+                    <i class="fa-solid fa-shield-halved" style="color:#38bdf8;"></i> <span>100% bezpieczeństwa i zero haseł do zapamiętywania</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; font-size:0.82rem; color:#e2e8f0;">
+                    <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> <span>Wpis opublikuje się pod Twoim prawdziwym nazwiskiem</span>
+                </div>
+            </div>
+
+            <!-- Główny przycisk logowania Google -->
+            <button type="button" id="btnGoogleAuthGateLogin" onclick="executeGoogleAuthForPost(true)" style="width:100%; min-height:50px; background:#ffffff; color:#1f2937; border:none; border-radius:28px; font-size:1rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow:0 6px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.2); transition:all 0.25s;">
+                <svg viewBox="0 0 24 24" style="width:22px; height:22px; flex-shrink:0;">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span id="btnGoogleAuthGateLoginText">Zaloguj się przez Google</span>
+            </button>
+
+            <div style="margin-top:14px; font-size:0.75rem; color:#64748b;">
+                Twoje dane są chronione zgodnie z chrześcijańskimi wartościami portalu LUMINA.
+            </div>
         </div>
     </div>
 
@@ -10319,10 +10380,30 @@
         // ── Quick Post Composer ("Co dobrego u Ciebie?") Logic ──
         let attachedQpImageDataUrl = null;
 
+        function isLuminaUserAuthenticated() {
+            try {
+                if (localStorage.getItem('lumina_admin') === '1') return true;
+                const curUser = localStorage.getItem('lumina_current_user');
+                if (curUser) {
+                    const u = JSON.parse(curUser);
+                    if (u && (u.uid || u.email)) return true;
+                }
+                const curProf = localStorage.getItem('lumina_current_user_profile');
+                if (curProf) {
+                    const p = JSON.parse(curProf);
+                    if (p && p.name && (p.uid || p.email || (p.slug && p.slug !== 'cezaryrgowski'))) {
+                        return true;
+                    }
+                }
+                if (window.LuminaDB && window.LuminaDB.currentUser) return true;
+            } catch(e) {}
+            return false;
+        }
+
         function getActiveAuthorPersona() {
             if (window.LuminaDB && typeof window.LuminaDB.getActiveMissionPersona === 'function') {
                 const p = window.LuminaDB.getActiveMissionPersona();
-                if (p && p.name) return p;
+                if (p && p.name && (p.name !== 'Cezary Rogowski' || localStorage.getItem('lumina_admin') === '1')) return p;
             }
             try {
                 const raw = localStorage.getItem('lumina_current_user_profile');
@@ -10333,20 +10414,30 @@
                             id: u.id || u.uid || 'user_' + (u.slug || 'active'),
                             name: u.name,
                             role: u.role || 'Społeczność LUMINA ✨',
-                            avatar: u.avatar || u.photoURL || 'avatar_cezary_official.jpg',
-                            slug: u.slug || 'cezaryrgowski',
+                            avatar: u.avatar || u.photoURL || 'icon.png',
+                            slug: u.slug || 'u_active',
                             badge: u.badge || 'Społeczność LUMINA'
                         };
                     }
                 }
             } catch(e) {}
+            if (localStorage.getItem('lumina_admin') === '1') {
+                return {
+                    id: 'cezary_rogowski',
+                    name: 'Cezary Rogowski',
+                    role: '✨ Założyciel Christian Culture',
+                    avatar: 'avatar_cezary_official.jpg',
+                    slug: 'cezaryrgowski',
+                    badge: '✨ Założyciel CC'
+                };
+            }
             return {
-                id: 'cezary_rogowski',
-                name: 'Cezary Rogowski',
-                role: '✨ Założyciel Christian Culture',
-                avatar: 'avatar_cezary_official.jpg',
-                slug: 'cezaryrgowski',
-                badge: '✨ Założyciel CC'
+                id: 'u_gosc',
+                name: 'Nowy Członek Społeczności',
+                role: '🕊️ Dołącz do LUMINA',
+                avatar: 'icon.png',
+                slug: 'gosc',
+                badge: 'Gość ✨'
             };
         }
 
@@ -10367,6 +10458,10 @@
             const modalRole = document.getElementById('qpModalAuthorRole');
             if (modalRole && persona.role) {
                 modalRole.textContent = persona.role;
+            }
+            const guestBanner = document.getElementById('qpGuestAuthBanner');
+            if (guestBanner) {
+                guestBanner.style.display = isLuminaUserAuthenticated() ? 'none' : 'flex';
             }
         }
 
@@ -10455,7 +10550,74 @@
             }
         }
 
-        async function submitQuickPost(event) {
+        window.openLuminaGoogleAuthGateModal = function() {
+            const modal = document.getElementById('luminaGoogleAuthGateModal');
+            if (modal) {
+                modal.classList.add('open');
+            }
+        };
+
+        window.executeGoogleAuthForPost = async function(autoPublishAfter = true) {
+            const btn = document.getElementById('btnGoogleAuthGateLogin');
+            const textEl = document.getElementById('btnGoogleAuthGateLoginText');
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.75';
+            }
+            if (textEl) {
+                textEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie z Google...';
+            }
+
+            try {
+                const loginFn = window.loginWithGoogle || (window.LuminaDB && window.LuminaDB.loginWithGoogle);
+                if (typeof loginFn !== 'function') {
+                    throw new Error('Usługa logowania Google inicjalizuje się. Spróbuj za chwilę.');
+                }
+
+                const userProfile = await loginFn();
+                if (userProfile) {
+                    closeModal('luminaGoogleAuthGateModal');
+                    updateQuickPostBarAuthorUI();
+                    if (typeof showToast === 'function') {
+                        showToast('Szczęść Boże! Witaj w LUMINA 🕊️');
+                    }
+
+                    if (autoPublishAfter) {
+                        const submitBtn = document.getElementById('qpSubmitBtn');
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publikowanie wpisu...';
+                        }
+                        setTimeout(() => {
+                            submitQuickPost(null, true);
+                        }, 350);
+                    }
+                } else {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                    }
+                    if (textEl) {
+                        textEl.innerText = 'Zaloguj się przez Google';
+                    }
+                    if (typeof showToast === 'function') {
+                        showToast('Logowanie zostało anulowane. Twój wpis pozostał w wersji roboczej.');
+                    }
+                }
+            } catch(err) {
+                console.error('[LUMINA Auth Gate Error]:', err);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }
+                if (textEl) {
+                    textEl.innerText = 'Spróbuj ponownie przez Google';
+                }
+                alert(err.message || 'Wystąpił problem z połączeniem Google. Spróbuj ponownie.');
+            }
+        };
+
+        async function submitQuickPost(event, isBypassAuth = false) {
             if (event && event.preventDefault) event.preventDefault();
 
             const title = (document.getElementById('qpTitleInput') ? document.getElementById('qpTitleInput').value.trim() : '');
@@ -10476,6 +10638,12 @@
 
             if (!text && !finalImage && !videoUrl) {
                 alert('Wpisz treść wpisu lub dodaj zdjęcie/wideo!');
+                return;
+            }
+
+            // ── BRAMKA LOGOWANIA GOOGLE DLA NOWYCH UŻYTKOWNIKÓW ──
+            if (!isBypassAuth && !isLuminaUserAuthenticated()) {
+                openLuminaGoogleAuthGateModal();
                 return;
             }
 
