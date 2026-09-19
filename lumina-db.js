@@ -1946,7 +1946,10 @@ export async function publishUniversalPost(postData) {
         amen: postData.amen || 0,
         time: postData.time || 'Przed chwilą • 🌍 Publiczny',
         createdAtTimestamp: postData.createdAtTimestamp || Date.now(),
-        createdAtDateStr: new Date().toISOString()
+        createdAtDateStr: new Date().toISOString(),
+        isRepost: !!postData.isRepost,
+        repostComment: postData.repostComment || '',
+        sharedPost: postData.sharedPost || null
     };
 
     // 1. Save to Author's Local Profile Posts

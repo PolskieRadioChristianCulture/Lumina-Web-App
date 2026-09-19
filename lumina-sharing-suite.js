@@ -200,9 +200,93 @@
             .lumina-share-btn.btn-twitter:hover { background: #000; color: #fff; border-color: rgba(255,255,255,0.4); }
             .lumina-share-btn.btn-sms:hover { background: #10b981; color: #000; border-color: #10b981; }
             .lumina-share-btn.btn-native:hover { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border-color: #f59e0b; }
+            .lumina-share-btn.btn-repost-quick:hover { background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.2)); border-color: #f59e0b; color: #fde047; }
 
             .lumina-share-btn i {
                 font-size: 1.35rem;
+            }
+
+            /* ── Repost na własnym profilu ("Udostępnij u siebie") ── */
+            .lumina-share-repost-banner {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 14px;
+                background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(217, 119, 6, 0.08));
+                border: 1.5px solid rgba(245, 158, 11, 0.45);
+                border-radius: 14px;
+                cursor: pointer;
+                transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+                user-select: none;
+                -webkit-user-select: none;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            }
+
+            .lumina-share-repost-banner:hover {
+                background: linear-gradient(135deg, rgba(245, 158, 11, 0.26), rgba(217, 119, 6, 0.16));
+                border-color: rgba(245, 158, 11, 0.75);
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
+            }
+
+            .lumina-share-repost-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #000;
+                font-size: 1.15rem;
+                flex-shrink: 0;
+                box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+            }
+
+            .lumina-share-repost-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .lumina-share-repost-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 0.94rem;
+                font-weight: 800;
+                color: #fff;
+                font-family: 'Outfit', sans-serif;
+            }
+
+            .lumina-share-repost-badge {
+                font-size: 0.65rem;
+                font-weight: 800;
+                padding: 2px 7px;
+                border-radius: 10px;
+                background: rgba(250, 204, 21, 0.2);
+                border: 1px solid rgba(250, 204, 21, 0.5);
+                color: #fde047;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+            }
+
+            .lumina-share-repost-sub {
+                font-size: 0.76rem;
+                color: #cbd5e1;
+                margin-top: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .lumina-share-repost-arrow {
+                color: #f59e0b;
+                font-size: 0.95rem;
+                transition: transform 0.2s;
+            }
+
+            .lumina-share-repost-banner:hover .lumina-share-repost-arrow {
+                transform: translateX(3px);
             }
 
             .lumina-share-link-row {
@@ -348,50 +432,117 @@
         div.innerHTML = `
             <div class="lumina-share-card" onclick="event.stopPropagation()">
                 <div class="lumina-sheet-drag-handle" id="luminaShareDragHandle" title="Przeciągnij w dół, aby zamknąć"></div>
-                <div class="lumina-share-header">
-                    <div class="lumina-share-title-wrap">
-                        <i class="fa-solid fa-share-nodes"></i>
-                        <h3 class="lumina-share-title" id="luminaShareModalHeading">Poleć & Udostępnij</h3>
+                
+                <!-- ══ WIDOK 1: Główne Opcje Udostępniania ══ -->
+                <div id="luminaShareMainView">
+                    <div class="lumina-share-header">
+                        <div class="lumina-share-title-wrap">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            <h3 class="lumina-share-title" id="luminaShareModalHeading">Poleć & Udostępnij</h3>
+                        </div>
+                        <button type="button" onclick="window.closeShareModal()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer; padding:4px;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <button type="button" onclick="window.closeShareModal()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer; padding:4px;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+
+                    <!-- Baner "Udostępnij u siebie" na własnym profilu LUMINA -->
+                    <div class="lumina-share-repost-banner" id="luminaShareRepostBanner" onclick="window.openLuminaRepostComposer()" role="button" tabindex="0" title="Udostępnij ten wpis na własnym profilu LUMINA" style="margin-bottom:14px;">
+                        <div class="lumina-share-repost-icon">
+                            <i class="fa-solid fa-repeat"></i>
+                        </div>
+                        <div class="lumina-share-repost-info">
+                            <div class="lumina-share-repost-title">
+                                <span>Udostępnij u siebie</span>
+                                <span class="lumina-share-repost-badge">Na profilu</span>
+                            </div>
+                            <div class="lumina-share-repost-sub" id="luminaShareRepostSub">Opublikuj ten wpis na swoim profilu LUMINA 🕊️</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right lumina-share-repost-arrow"></i>
+                    </div>
+
+                    <div class="lumina-share-preview-box" id="luminaSharePreviewText" style="margin-bottom:14px;">
+                        Odkryj chrześcijański portal społecznościowy LUMINA...
+                    </div>
+
+                    <div class="lumina-share-grid" style="margin-bottom:14px;">
+                        <button type="button" class="lumina-share-btn btn-repost-quick" onclick="window.openLuminaRepostComposer()" title="Udostępnij na swoim profilu LUMINA">
+                            <i class="fa-solid fa-repeat" style="color:#f59e0b;"></i>
+                            <span style="color:#fef08a; font-weight:800;">U siebie</span>
+                        </button>
+                        <button type="button" class="lumina-share-btn btn-whatsapp" onclick="window.executeShareTo('whatsapp')">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </button>
+                        <button type="button" class="lumina-share-btn btn-facebook" onclick="window.executeShareTo('facebook')">
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </button>
+                        <button type="button" class="lumina-share-btn btn-telegram" onclick="window.executeShareTo('telegram')">
+                            <i class="fa-brands fa-telegram"></i>
+                            <span>Telegram</span>
+                        </button>
+                        <button type="button" class="lumina-share-btn btn-twitter" onclick="window.executeShareTo('twitter')">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            <span>X / Twitter</span>
+                        </button>
+                        <button type="button" class="lumina-share-btn btn-native" onclick="window.executeShareTo('native')">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <span>Więcej...</span>
+                        </button>
+                    </div>
+
+                    <div class="lumina-share-link-row">
+                        <input type="text" readonly class="lumina-share-link-input" id="luminaShareUrlInput" value="${window.location.href}">
+                        <button type="button" class="lumina-share-copy-btn" onclick="window.copyShareModalUrl()">
+                            <i class="fa-solid fa-copy"></i> Kopiuj Link
+                        </button>
+                    </div>
                 </div>
 
-                <div class="lumina-share-preview-box" id="luminaSharePreviewText">
-                    Odkryj chrześcijański portal społecznościowy LUMINA...
-                </div>
+                <!-- ══ WIDOK 2: Edytor Repostu na Profilu ("Udostępnij u siebie") ══ -->
+                <div id="luminaShareComposerView" style="display:none; flex-direction:column; gap:12px;">
+                    <div class="lumina-share-header">
+                        <button type="button" onclick="window.backToShareMainView()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#cbd5e1; border-radius:10px; padding:6px 12px; font-size:0.78rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-family:inherit;">
+                            <i class="fa-solid fa-arrow-left"></i> Wróć
+                        </button>
+                        <div class="lumina-share-title-wrap" style="flex:1; justify-content:center;">
+                            <i class="fa-solid fa-repeat" style="color:#f59e0b;"></i>
+                            <h3 class="lumina-share-title" style="font-size:1.02rem;">Udostępnij na profilu</h3>
+                        </div>
+                        <button type="button" onclick="window.closeShareModal()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer; padding:4px;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
 
-                <div class="lumina-share-grid">
-                    <button type="button" class="lumina-share-btn btn-whatsapp" onclick="window.executeShareTo('whatsapp')">
-                        <i class="fa-brands fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </button>
-                    <button type="button" class="lumina-share-btn btn-facebook" onclick="window.executeShareTo('facebook')">
-                        <i class="fa-brands fa-facebook-f"></i>
-                        <span>Facebook</span>
-                    </button>
-                    <button type="button" class="lumina-share-btn btn-telegram" onclick="window.executeShareTo('telegram')">
-                        <i class="fa-brands fa-telegram"></i>
-                        <span>Telegram</span>
-                    </button>
-                    <button type="button" class="lumina-share-btn btn-twitter" onclick="window.executeShareTo('twitter')">
-                        <i class="fa-brands fa-x-twitter"></i>
-                        <span>X / Twitter</span>
-                    </button>
-                    <button type="button" class="lumina-share-btn btn-sms" onclick="window.executeShareTo('sms')">
-                        <i class="fa-solid fa-comment-sms"></i>
-                        <span>SMS</span>
-                    </button>
-                    <button type="button" class="lumina-share-btn btn-native" onclick="window.executeShareTo('native')">
-                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                        <span>Więcej...</span>
-                    </button>
-                </div>
+                    <!-- Kto udostępnia (Aktywny profil) -->
+                    <div id="luminaRepostAuthorRow" style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+                        <img id="luminaRepostUserAvatar" src="avatar_cezary_official.jpg" alt="Twój profil" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;" onerror="this.src='lumina_icon.jpg'">
+                        <div style="min-width:0; flex:1;">
+                            <div id="luminaRepostUserName" style="font-weight:700; font-size:0.88rem; color:#fff;">Cezary Rogowski</div>
+                            <div style="font-size:0.72rem; color:#94a3b8; display:flex; align-items:center; gap:4px;">
+                                <i class="fa-solid fa-earth-americas" style="font-size:0.65rem; color:#38bdf8;"></i>
+                                <span>Publikujesz na swoim profilu • Publiczny</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="lumina-share-link-row">
-                    <input type="text" readonly class="lumina-share-link-input" id="luminaShareUrlInput" value="${window.location.href}">
-                    <button type="button" class="lumina-share-copy-btn" onclick="window.copyShareModalUrl()">
-                        <i class="fa-solid fa-copy"></i> Kopiuj Link
-                    </button>
+                    <!-- Pole na własny komentarz -->
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                        <label for="luminaRepostCommentInput" style="font-size:0.76rem; font-weight:700; color:#cbd5e1;">Twój komentarz do wpisu (opcjonalnie):</label>
+                        <textarea id="luminaRepostCommentInput" class="lumina-repost-textarea" placeholder="Napisz coś od siebie... Jak ten wpis Cię poruszył? 🕊️✨" rows="3" style="width:100%; border-radius:12px; background:rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:0.88rem; padding:10px 12px; resize:vertical; outline:none; transition:border-color 0.2s; box-sizing:border-box;"></textarea>
+                    </div>
+
+                    <!-- Podgląd cytowanego wpisu -->
+                    <div id="luminaRepostQuotePreview" style="border:1px dashed rgba(245,158,11,0.5); background:rgba(15,23,42,0.65); border-radius:14px; padding:12px; max-height:160px; overflow-y:auto;">
+                        <!-- dynamic quote content -->
+                    </div>
+
+                    <!-- Przyciski akcji -->
+                    <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
+                        <button type="button" onclick="window.backToShareMainView()" style="flex:1; min-height:44px; padding:10px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-weight:700; font-size:0.84rem; cursor:pointer; font-family:inherit;">
+                            Anuluj
+                        </button>
+                        <button type="button" id="btnSubmitLuminaRepost" onclick="window.submitLuminaRepost()" style="flex:2; min-height:44px; padding:10px 16px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#000; font-weight:800; font-size:0.88rem; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(245,158,11,0.35);">
+                            <i class="fa-solid fa-repeat"></i>
+                            <span>Opublikuj na moim profilu 🕊️</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -472,6 +623,65 @@
         document.body.appendChild(pushDiv);
     }
 
+    // ── Helper HTML Escaper ──
+    function escapeLuminaHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // ── Active User Profile Resolver ──
+    function getActiveLuminaUserProfile() {
+        // 1. LuminaDB getCurrentProfile
+        if (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') {
+            const p = window.LuminaDB.getCurrentProfile();
+            if (p && p.name && p.slug && p.slug !== 'guest' && p.slug !== 'gosc') return p;
+        }
+        // 2. Explicit current user slug profile
+        const curSlug = localStorage.getItem('lumina_current_user_slug');
+        if (curSlug && curSlug !== 'guest' && curSlug !== 'gosc') {
+            try {
+                const raw = localStorage.getItem(`lumina_profile_${curSlug}`);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.name) return parsed;
+                }
+            } catch(e) {}
+        }
+        // 3. Known profile keys
+        const profileKeys = ['lumina_current_user_profile', 'lumina_my_profile', 'lumina_main_user_profile'];
+        for (const k of profileKeys) {
+            try {
+                const raw = localStorage.getItem(k);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.name) return parsed;
+                }
+            } catch(e) {}
+        }
+        // 4. Cezary Rogowski fallback if admin or on Cezary's page
+        const isAdmin = localStorage.getItem('lumina_admin') === '1' || localStorage.getItem('lumina_auth_master_admin') === 'true';
+        if (isAdmin || window.location.pathname.includes('cezary')) {
+            return {
+                name: 'Cezary Rogowski',
+                slug: 'cezaryrgowski',
+                avatar: 'avatar_cezary_official.jpg',
+                role: 'Założyciel Christian Culture 🕊️'
+            };
+        }
+        // 5. Default Lumina member
+        return {
+            name: 'Użytkownik LUMINA',
+            slug: curSlug || 'u_spolecznosc',
+            avatar: 'lumina_icon.jpg',
+            role: 'Społeczność LUMINA ✨'
+        };
+    }
+
     // ── Social Share Functions ──
     function openShareModal(options = {}) {
         injectSharingStyles();
@@ -480,8 +690,12 @@
         const title = options.title || 'LUMINA • Chrześcijańska Społeczność';
         const text = options.text || 'Odkryj chrześcijański portal społecznościowy LUMINA – przestrzeń wartościowych relacji, wiary i inspiracji. 🕊️✨';
         const url = options.url || window.location.href;
+        const post = options.post || options.postData || null;
 
-        currentSharePayload = { title, text, url };
+        currentSharePayload = { title, text, url, post };
+
+        // Reset to Step 1
+        backToShareMainView();
 
         const headingEl = document.getElementById('luminaShareModalHeading');
         if (headingEl) headingEl.textContent = options.heading || 'Poleć & Udostępnij';
@@ -491,6 +705,16 @@
 
         const inputEl = document.getElementById('luminaShareUrlInput');
         if (inputEl) inputEl.value = url;
+
+        const repostSubEl = document.getElementById('luminaShareRepostSub');
+        if (repostSubEl) {
+            if (post) {
+                const authorName = post.author || 'autora';
+                repostSubEl.textContent = `Opublikuj wpis ${authorName} na swoim profilu LUMINA 🕊️`;
+            } else {
+                repostSubEl.textContent = 'Poleć ten portal na swoim profilu LUMINA 🕊️';
+            }
+        }
 
         const overlay = document.getElementById('luminaShareModalOverlay');
         if (overlay) {
@@ -506,6 +730,7 @@
     function closeShareModal() {
         const overlay = document.getElementById('luminaShareModalOverlay');
         if (!overlay) return;
+        backToShareMainView();
         const card = overlay.querySelector('.lumina-share-card');
         if (card && window.innerWidth <= 768) {
             card.style.transition = 'transform 0.26s cubic-bezier(0.4, 0, 1, 1)';
@@ -518,6 +743,256 @@
         } else {
             overlay.classList.remove('active');
         }
+    }
+
+    // ── Repost Composer Navigation & Actions ──
+    function openLuminaRepostComposer() {
+        const user = getActiveLuminaUserProfile();
+        const post = currentSharePayload.post || {
+            id: 'portal_lumina_' + Date.now(),
+            author: currentSharePayload.title || 'LUMINA',
+            text: currentSharePayload.text || 'Odkryj portal społecznościowy LUMINA 🕊️',
+            url: currentSharePayload.url || window.location.href,
+            authorAvatar: 'lumina_icon.jpg'
+        };
+
+        const mainView = document.getElementById('luminaShareMainView');
+        const composerView = document.getElementById('luminaShareComposerView');
+        if (!mainView || !composerView) return;
+
+        // Populate user info
+        const userAvatarEl = document.getElementById('luminaRepostUserAvatar');
+        const userNameEl = document.getElementById('luminaRepostUserName');
+        if (userAvatarEl) userAvatarEl.src = user.avatar || 'lumina_icon.jpg';
+        if (userNameEl) userNameEl.textContent = user.name || 'Twój Profil';
+
+        // Clear comment input
+        const commentInput = document.getElementById('luminaRepostCommentInput');
+        if (commentInput) {
+            commentInput.value = '';
+        }
+
+        // Build preview of quoted post
+        const previewEl = document.getElementById('luminaRepostQuotePreview');
+        if (previewEl) {
+            const author = post.author || 'LUMINA';
+            const avatar = post.authorAvatar || 'lumina_icon.jpg';
+            const text = post.text || post.desc || currentSharePayload.text || '';
+            const title = post.title || '';
+            const snippet = text.length > 180 ? (text.substring(0, 180) + '...') : text;
+
+            let mediaPreview = '';
+            if (post.image) {
+                mediaPreview = `<div style="margin-top:8px; border-radius:10px; overflow:hidden; max-height:120px; background:#000;">
+                    <img src="${post.image}" style="width:100%; height:120px; object-fit:cover; display:block;" alt="${escapeLuminaHtml(author)}">
+                </div>`;
+            }
+
+            previewEl.innerHTML = `
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                    <img src="${avatar}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.2);" onerror="this.src='lumina_icon.jpg'">
+                    <div style="font-size:0.82rem; font-weight:700; color:#f8fafc; display:flex; align-items:center; gap:4px;">
+                        <span>${escapeLuminaHtml(author)}</span>
+                        <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.68rem;"></i>
+                    </div>
+                </div>
+                ${title ? `<div style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:4px;">${escapeLuminaHtml(title)}</div>` : ''}
+                <div style="font-size:0.80rem; color:#cbd5e1; line-height:1.45;">${escapeLuminaHtml(snippet)}</div>
+                ${mediaPreview}
+            `;
+        }
+
+        mainView.style.display = 'none';
+        composerView.style.display = 'flex';
+
+        setTimeout(() => {
+            if (commentInput) commentInput.focus();
+        }, 120);
+    }
+
+    function backToShareMainView() {
+        const mainView = document.getElementById('luminaShareMainView');
+        const composerView = document.getElementById('luminaShareComposerView');
+        if (mainView && composerView) {
+            composerView.style.display = 'none';
+            mainView.style.display = 'block';
+        }
+    }
+
+    async function submitLuminaRepost() {
+        const btn = document.getElementById('btnSubmitLuminaRepost');
+        const commentInput = document.getElementById('luminaRepostCommentInput');
+        const userComment = commentInput ? commentInput.value.trim() : '';
+
+        const user = getActiveLuminaUserProfile();
+        const quoted = currentSharePayload.post || {
+            id: 'portal_lumina_' + Date.now(),
+            author: currentSharePayload.title || 'LUMINA',
+            text: currentSharePayload.text || 'Odkryj portal społecznościowy LUMINA 🕊️',
+            url: currentSharePayload.url || window.location.href,
+            authorAvatar: 'lumina_icon.jpg'
+        };
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publikowanie...';
+        }
+
+        const repostId = 'post_repost_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+        const newPost = {
+            id: repostId,
+            type: 'post',
+            isRepost: true,
+            repostComment: userComment,
+            text: userComment || `Udostępniono wpis: ${quoted.author || 'LUMINA'}`,
+            title: userComment ? '' : `Udostępnienie wpisu: ${quoted.author || 'LUMINA'}`,
+            author: user.name,
+            authorSlug: user.slug,
+            authorAvatar: user.avatar,
+            authorRole: user.role || 'Społeczność LUMINA ✨',
+            _sortTs: Date.now(),
+            sharedPost: {
+                id: quoted.id || ('quoted_' + Date.now()),
+                author: quoted.author || 'LUMINA',
+                authorSlug: quoted.authorSlug || '',
+                authorAvatar: quoted.authorAvatar || 'lumina_icon.jpg',
+                authorRole: quoted.authorRole || '',
+                title: quoted.title || '',
+                text: quoted.text || quoted.desc || '',
+                image: quoted.image || null,
+                videoUrl: quoted.videoUrl || quoted.youtubeUrl || null,
+                time: quoted.time || '',
+                url: quoted.url || (window.location.origin + window.location.pathname + '#' + (quoted.id || ''))
+            },
+            likes: 1,
+            amen: 0,
+            time: 'Przed chwilą • Udostępniono 🕊️',
+            createdAtTimestamp: Date.now(),
+            createdAtDateStr: new Date().toISOString()
+        };
+
+        // 1. Zapis do pamięci podręcznej najświeższego wpisu (Lumina Quick Publisher Spotlight)
+        try {
+            localStorage.setItem('lumina_recent_published_post', JSON.stringify(newPost));
+        } catch(e) {}
+
+        // 2. Bezpośredni zapis do profilu autora w LocalStorage (offline-first)
+        try {
+            const profileKey = `lumina_profile_${user.slug}`;
+            const rawProfile = localStorage.getItem(profileKey);
+            let profileObj = rawProfile ? JSON.parse(rawProfile) : { name: user.name, slug: user.slug, posts: [] };
+            if (!Array.isArray(profileObj.posts)) profileObj.posts = [];
+            profileObj.posts.unshift(newPost);
+            localStorage.setItem(profileKey, JSON.stringify(profileObj));
+
+            if (user.slug === 'cezaryrgowski') {
+                ['lumina_main_user_profile', 'lumina_current_user_profile', 'lumina_my_profile'].forEach(k => {
+                    try {
+                        const r = localStorage.getItem(k);
+                        let p = r ? JSON.parse(r) : null;
+                        if (p) {
+                            if (!Array.isArray(p.posts)) p.posts = [];
+                            p.posts.unshift(newPost);
+                            localStorage.setItem(k, JSON.stringify(p));
+                        }
+                    } catch(err) {}
+                });
+            }
+        } catch(e) {}
+
+        // 3. Zapis do lumina_cloud_posts_cache
+        try {
+            const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+            let cloudPosts = rawCloud ? JSON.parse(rawCloud) : [];
+            cloudPosts.unshift(newPost);
+            localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudPosts));
+        } catch(e) {}
+
+        // 4. Publikacja przez LuminaDB jeśli dostępne
+        if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+            try {
+                await window.LuminaDB.publishUniversalPost(newPost);
+            } catch(e) {
+                console.warn('LuminaDB publishUniversalPost warning:', e);
+            }
+        }
+
+        // 5. Rozgłoszenie zdarzeń reaktywnych
+        window.dispatchEvent(new CustomEvent('lumina_post_published', { detail: newPost }));
+        window.dispatchEvent(new Event('storage'));
+
+        // 6. Odświeżenie widoków na aktywnej stronie
+        if (typeof window.renderFeed === 'function') {
+            window.renderFeed();
+        }
+        if (typeof window.renderPosts === 'function') {
+            window.renderPosts();
+        }
+
+        // 7. Sukces & Zamknięcie
+        closeShareModal();
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-repeat"></i> Opublikuj na moim profilu 🕊️';
+        }
+
+        if (typeof showToast === 'function') {
+            showToast('Wpis został pomyślnie udostępniony na Twoim profilu! ✨🕊️');
+        } else {
+            alert('Wpis został pomyślnie udostępniony na Twoim profilu! ✨🕊️');
+        }
+    }
+
+    // ── Universal Quoted Post Card Builder ──
+    function buildQuotedPostHtml(sp) {
+        if (!sp) return '';
+        const author = escapeLuminaHtml(sp.author || 'Użytkownik LUMINA');
+        const avatar = sp.authorAvatar || 'lumina_icon.jpg';
+        const title = sp.title ? escapeLuminaHtml(sp.title) : '';
+        const text = sp.text ? escapeLuminaHtml(sp.text) : (sp.desc ? escapeLuminaHtml(sp.desc) : '');
+        const time = sp.time ? escapeLuminaHtml(sp.time) : '';
+        const url = sp.url || (sp.id ? ('#' + sp.id) : '');
+
+        let mediaHtml = '';
+        if (sp.image) {
+            mediaHtml = `
+                <div style="margin-top:10px; border-radius:12px; overflow:hidden; max-height:280px; background:#000; border:1px solid rgba(255,255,255,0.08);">
+                    <img src="${sp.image}" alt="${author}" style="width:100%; height:auto; max-height:280px; object-fit:cover; display:block;" loading="lazy" onerror="this.style.display='none'">
+                </div>`;
+        } else if (sp.videoUrl || sp.youtubeUrl) {
+            const rawVid = sp.videoUrl || sp.youtubeUrl;
+            const ytMatch = String(rawVid).match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+            if (ytMatch && ytMatch[1]) {
+                mediaHtml = `
+                    <div style="margin-top:10px; border-radius:12px; overflow:hidden; aspect-ratio:16/9; background:#000;">
+                        <iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0" style="width:100%; height:100%; border:none; display:block;" allowfullscreen loading="lazy"></iframe>
+                    </div>`;
+            }
+        }
+
+        return `
+        <div class="lumina-quoted-post-card" style="margin-top:10px; margin-bottom:12px; padding:14px; border-radius:16px; background:linear-gradient(135deg, rgba(15,23,42,0.85), rgba(30,41,59,0.75)); border:1.5px solid rgba(245,158,11,0.35); box-shadow:0 4px 18px rgba(0,0,0,0.35);">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+                    <img src="${avatar}" alt="${author}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.2);" onerror="this.src='lumina_icon.jpg'">
+                    <div style="min-width:0; overflow:hidden;">
+                        <div style="font-weight:700; font-size:0.86rem; color:#f8fafc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
+                            <span>${author}</span>
+                            <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.7rem;"></i>
+                        </div>
+                        ${time ? `<div style="font-size:0.70rem; color:#94a3b8;">${time}</div>` : ''}
+                    </div>
+                </div>
+                ${url ? `
+                <a href="${url}" style="padding:4px 10px; border-radius:10px; background:rgba(250,204,21,0.12); border:1px solid rgba(250,204,21,0.3); color:#facc15; font-size:0.72rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+                    <span>Zobacz oryginał</span> <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
+                </a>` : ''}
+            </div>
+            ${title ? `<div style="font-weight:700; font-size:0.95rem; color:#fff; margin-bottom:6px;">${title}</div>` : ''}
+            ${text ? `<div style="font-size:0.85rem; color:#cbd5e1; line-height:1.55; white-space:pre-line;">${text}</div>` : ''}
+            ${mediaHtml}
+        </div>
+        `;
     }
 
     function executeShareTo(platform) {
@@ -576,7 +1051,6 @@
         });
     }
 
-    // Helper wrappers
     function openShareLuminaModal() {
         openShareModal({
             heading: 'Poleć Portal LUMINA 🕊️✨',
@@ -587,16 +1061,66 @@
     }
 
     function sharePostLink(postId, postData = {}) {
-        const url = window.location.origin + '/lumina-tablica.html#' + postId;
-        const author = postData.author || 'Członek Społeczności';
-        const title = postData.title || `Wpis autora ${author} w portalu LUMINA`;
-        const snippet = postData.text ? (postData.text.length > 120 ? postData.text.substring(0, 120) + '...' : postData.text) : 'Przeczytaj ten budujący wpis na Tablicy Społeczności LUMINA.';
+        const url = window.location.origin + (window.location.pathname.includes('tablica') ? window.location.pathname : '/lumina-tablica.html') + '#' + postId;
+        let resolvedPost = postData && postData.id ? { ...postData } : null;
+
+        // Auto-resolve post from feed or DOM if not passed
+        if (!resolvedPost) {
+            try {
+                if (typeof window.getUserFeedPosts === 'function') {
+                    const all = window.getUserFeedPosts();
+                    resolvedPost = all.find(p => p && p.id === postId);
+                }
+                if (!resolvedPost && window._luminaDailyReflection && window._luminaDailyReflection.id === postId) {
+                    resolvedPost = window._luminaDailyReflection;
+                }
+            } catch(e) {}
+        }
+
+        if (!resolvedPost) {
+            const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
+            if (postEl) {
+                const authorEl = postEl.querySelector('.post-author-name') || postEl.querySelector('.author-name') || postEl.querySelector('.post-author') || postEl.querySelector('h4');
+                const textEl = postEl.querySelector('.post-desc-text') || postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
+                const titleEl = postEl.querySelector('.post-headline') || postEl.querySelector('.post-title');
+                const avatarEl = postEl.querySelector('.post-author-img') || postEl.querySelector('.post-avatar');
+                const imgEl = postEl.querySelector('.media-container-1x1 img') || postEl.querySelector('.post-image');
+
+                resolvedPost = {
+                    id: postId,
+                    author: authorEl ? authorEl.textContent.trim().replace(/\s+NA ŻYWO.*/i, '').replace(/[\r\n]+/g, ' ') : 'Członek Społeczności',
+                    authorAvatar: avatarEl ? avatarEl.src : 'lumina_icon.jpg',
+                    title: titleEl ? titleEl.textContent.trim() : '',
+                    text: textEl ? textEl.textContent.trim() : '',
+                    image: imgEl ? imgEl.src : null,
+                    url: url
+                };
+            }
+        }
+
+        if (!resolvedPost) {
+            resolvedPost = {
+                id: postId,
+                author: 'Członek Społeczności',
+                authorAvatar: 'lumina_icon.jpg',
+                title: '',
+                text: '',
+                url: url
+            };
+        } else if (!resolvedPost.url) {
+            resolvedPost.url = url;
+        }
+
+        const author = resolvedPost.author || 'Członek Społeczności';
+        const title = resolvedPost.title || `Wpis autora ${author} w portalu LUMINA`;
+        const snippet = resolvedPost.text ? (resolvedPost.text.length > 120 ? resolvedPost.text.substring(0, 120) + '...' : resolvedPost.text) : 'Przeczytaj ten budujący wpis na Tablicy Społeczności LUMINA.';
 
         openShareModal({
             heading: 'Udostępnij Wpis 💬✨',
             title: title,
             text: `„${snippet}” – ${author} w portalu LUMINA 🕊️`,
-            url: url
+            url: url,
+            post: resolvedPost
         });
     }
 
@@ -672,6 +1196,10 @@
     window.openShareLuminaModal = openShareLuminaModal;
     window.sharePostLink = sharePostLink;
     window.openShareProfileModal = openShareProfileModal;
+    window.openLuminaRepostComposer = openLuminaRepostComposer;
+    window.backToShareMainView = backToShareMainView;
+    window.submitLuminaRepost = submitLuminaRepost;
+    window.buildQuotedPostHtml = buildQuotedPostHtml;
     window.requestLuminaPushNotifications = requestLuminaPushNotifications;
     window.dismissPushToast = dismissPushToast;
 

@@ -222,7 +222,7 @@
     <script type="module" src="lumina-tablica.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.2_20260918_SMART_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
-    <script src="lumina-sharing-suite.js?v=20260918_sheet_v1"></script>
+    <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/lumina-rss-suite.js" defer></script>
@@ -9726,7 +9726,7 @@
                             <a href="${authorLink}" class="post-author-box">
                                 <img loading="lazy" decoding="async" src="${authorAvatarSrc}" alt="${item.author}" class="post-author-img" style="object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
                                 <div style="min-width:0; overflow:hidden;">
-                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem; flex-shrink:0;"></i> ${topBadgeHtml}</div>
+                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem; flex-shrink:0;"></i> ${topBadgeHtml} ${item.isRepost ? `<span class="badge-repost-pill" style="background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.45); color:#facc15; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:10px; margin-left:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-repeat"></i> Udostępnił(a)</span>` : ''}</div>
                                     <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
                                 </div>
                             </a>
@@ -9833,6 +9833,7 @@
 
                             // 5. Rzeczywista Grafika Wpisu (lub Kampanii) — jeśli wpis nie posiada grafiki ani nie jest kampanią, NIE renderuj fałszywego placeholdera
                             if (!item.image && !isCampaign) return '';
+                            if (item.isRepost) return ''; // Grafika jest wyrenderowana w ramce cytowanego posta!
                             const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
                             const mediaTag = isVideoMedia 
                                 ? `<div class="lumina-video-wrapper">
@@ -9855,6 +9856,7 @@
                         <div class="post-details-box">
                             ${item.title ? `<div class="post-headline">${item.title}</div>` : ''}
                             ${richResult.html ? `<div class="post-desc-text">${richResult.html}</div>` : ''}
+                            ${(item.isRepost && item.sharedPost && window.buildQuotedPostHtml) ? window.buildQuotedPostHtml(item.sharedPost) : ''}
                             ${effectiveEmbedHtml || ''}
                             ${eventInfoHtml}
                             ${ctaHtml}
@@ -10085,20 +10087,55 @@
             const url = window.location.origin + window.location.pathname + '#' + postId;
             let postText = '';
             let postAuthor = '';
+            let postAvatar = '';
+            let postImage = '';
+            let postTitle = '';
+            let postObj = null;
+
+            if (typeof getUserFeedPosts === 'function') {
+                const posts = getUserFeedPosts();
+                postObj = posts.find(p => p && p.id === postId);
+            }
+            if (!postObj && window._luminaDailyReflection && window._luminaDailyReflection.id === postId) {
+                postObj = window._luminaDailyReflection;
+            }
+
             const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
             if (postEl) {
-                const authorEl = postEl.querySelector('.post-author-name') || postEl.querySelector('.author-name') || postEl.querySelector('h4');
-                const textEl = postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
-                if (authorEl) postAuthor = authorEl.textContent.trim();
+                const authorEl = postEl.querySelector('.post-author-name') || postEl.querySelector('.author-name') || postEl.querySelector('.post-author') || postEl.querySelector('h4');
+                const textEl = postEl.querySelector('.post-desc-text') || postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
+                const titleEl = postEl.querySelector('.post-headline') || postEl.querySelector('.post-title');
+                const avatarEl = postEl.querySelector('.post-author-img') || postEl.querySelector('.post-avatar');
+                const imgEl = postEl.querySelector('.media-container-1x1 img') || postEl.querySelector('.post-image');
+
+                if (authorEl) postAuthor = authorEl.textContent.trim().replace(/\s+NA ŻYWO.*/i, '').replace(/[\r\n]+/g, ' ');
                 if (textEl) postText = textEl.textContent.trim();
+                if (titleEl) postTitle = titleEl.textContent.trim();
+                if (avatarEl && avatarEl.src) postAvatar = avatarEl.src;
+                if (imgEl && imgEl.src) postImage = imgEl.src;
+            }
+
+            if (!postObj) {
+                postObj = {
+                    id: postId,
+                    author: postAuthor || 'Członek Społeczności',
+                    authorAvatar: postAvatar || 'lumina_icon.jpg',
+                    title: postTitle,
+                    text: postText,
+                    image: postImage,
+                    url: url
+                };
+            } else if (!postObj.url) {
+                postObj.url = url;
             }
 
             if (typeof window.openShareModal === 'function') {
                 window.openShareModal({
                     heading: 'Udostępnij Wpis 💬✨',
-                    title: postAuthor ? `Wpis: ${postAuthor}` : 'Wpis w portalu LUMINA',
-                    text: postText ? (postText.length > 140 ? postText.substring(0, 140) + '...' : postText) : 'Zobacz ten budujący wpis na Tablicy Społeczności LUMINA.',
-                    url: url
+                    title: postAuthor ? `Wpis: ${postAuthor}` : (postObj.title || 'Wpis w portalu LUMINA'),
+                    text: postText ? (postText.length > 140 ? postText.substring(0, 140) + '...' : postText) : (postObj.text || 'Zobacz ten budujący wpis na Tablicy Społeczności LUMINA.'),
+                    url: url,
+                    post: postObj
                 });
             } else {
                 navigator.clipboard.writeText(url).then(() => {
@@ -13989,7 +14026,11 @@
 
         window.addEventListener('storage', () => {
             syncFounderAvatar();
-            scheduleRenderFeed();
+            if (typeof scheduleRenderFeed === 'function') {
+                scheduleRenderFeed();
+            } else if (typeof renderFeed === 'function') {
+                renderFeed();
+            }
         });
 
         window.openStoryFromTablicaPost = function(postId) {
