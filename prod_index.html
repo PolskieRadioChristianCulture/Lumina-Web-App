@@ -2729,13 +2729,19 @@
                 }
                 // 16:00 - 18:00 (Codzienne Uwielbienie — Blok Muzyczny 2h)
                 else if (timeInMinutes >= 16 * 60 && timeInMinutes < 18 * 60) {
+                    let eveningTitle = "Totalny Atak — Wykłady";
+                    if (dayOfWeek === 6) eveningTitle = "Chrześcijański Blok Filmowy (Kino CC)";
+                    else if (dayOfWeek === 0) eveningTitle = "Świadectwa — Cykl Historii Wiary";
                     current = { title: "Codzienne Uwielbienie (Blok Muzyczny 24/7)", url: "master" };
-                    next = { time: "18:00", title: "Totalny Atak — Wykłady" };
+                    next = { time: "18:00", title: eveningTitle };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
-                // 18:00 - 20:00 (Totalny Atak — codziennie)
+                // 18:00 - 20:00 (Kino w sobotę, Świadectwa w niedzielę, Totalny Atak pon-pt)
                 else if (timeInMinutes >= 18 * 60 && timeInMinutes < 20 * 60) {
-                    current = { title: "Totalny Atak — Wykłady Biblijne", url: "master" };
+                    let eveningTitle = "Totalny Atak — Wykłady Biblijne";
+                    if (dayOfWeek === 6) eveningTitle = "Chrześcijański Blok Filmowy (Kino CC)";
+                    else if (dayOfWeek === 0) eveningTitle = "Świadectwa — Cykl Historii Wiary";
+                    current = { title: eveningTitle, url: "master" };
                     next = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "21:00", title: "Apokalipsa dzień po dniu" };
                 }

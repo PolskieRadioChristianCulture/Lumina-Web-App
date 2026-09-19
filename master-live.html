@@ -766,14 +766,9 @@
 
         let activeFrameIndex = 0; // 0 = Frame A, 1 = Frame B
         let currentUrl = null;
-        let isSpecialSlotActive = false;
-        let apokalipsaDoneHours = { 9: false, 15: false, 21: false };
-        let ksiegaNadzieiDoneHours = { 10: false, 22: false };
-        let studiumDoneHours = { 8: false, 20: false };
-        let spiewajmyPanuDoneHours = { 16: false };
-        let kinoDoneHours = { 18: false, 19: false };
+        let currentBlockKey = null;
+        let earlyFinishedSlots = {};
         let isSafeMonetizationMode = false;
-        let safetyTimeout = null;
         let isSwitchingWithBumper = false;
 
         function getActiveFrame() {
@@ -785,169 +780,148 @@
         }
 
         function endSpecialSlot() {
-            if (safetyTimeout) {
-                clearTimeout(safetyTimeout);
-                safetyTimeout = null;
+            if (currentBlockKey) {
+                console.log("MCR: Oznaczono slot bloku jako przedwcześnie ukończony:", currentBlockKey);
+                earlyFinishedSlots[currentBlockKey] = true;
             }
-            if (isSpecialSlotActive) {
-                isSpecialSlotActive = false;
-                const baseChannel = getActiveBaseChannel();
-                switchChannel(baseChannel);
-            }
+            checkSchedule();
         }
 
-        function getActiveBaseChannel() {
-            const now = new Date();
+        function getScheduleState(now = new Date()) {
+            const dayOfWeek = now.getDay(); // 0 = Niedziela, 5 = Piątek, 6 = Sobota
             const hour = now.getHours();
+            const min = now.getMinutes();
 
-            if (hour >= 0 && hour < 6) return "nocne-czuwanie-live.html";
-            if (hour >= 6 && hour < 10) return "zapolske-live.html";
-            if (hour >= 13 && hour < 15) return "tv-epafraz-live.html";
-            if (hour >= 16 && hour < 18) return "spiewajmy-panu-live.html";
-            if (hour >= 18 && hour < 20) {
-                const dayOfWeek = now.getDay();
-                if (dayOfWeek === 0) return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
-                if (dayOfWeek === 6) return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
-                return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
+            let blockKey = "";
+            let channel = "";
+
+            // 1) 08:00 - 08:52: Studium Telewizyjne Pisma Świętego Poranek
+            if (hour === 8 && min < 52) {
+                blockKey = "08_studium";
+                channel = earlyFinishedSlots["08_studium"] ? "zapolske-live.html" : "studium-live.html";
             }
-            return "biblia-spiewana-live.html";
+            // 2) 08:52 - 09:00: Zjednoczeni za Polskę Przedpołudnie
+            else if (hour === 8 && min >= 52) {
+                blockKey = "08_52_zapolske";
+                channel = "zapolske-live.html";
+            }
+            // 3) 09:00 - 09:06: Apokalipsa Dzień po Dniu Poranek
+            else if (hour === 9 && min < 6) {
+                blockKey = "09_apokalipsa";
+                channel = earlyFinishedSlots["09_apokalipsa"] ? "zapolske-live.html" : "apokalipsa-live.html";
+            }
+            // 4) 09:06 - 10:00: Zjednoczeni za Polskę Przedpołudnie
+            else if (hour === 9 && min >= 6) {
+                blockKey = "09_06_zapolske";
+                channel = "zapolske-live.html";
+            }
+            // 5) 10:00 - 10:55: Apokalipsa: Księga Nadziei
+            else if (hour === 10 && min < 55) {
+                blockKey = "10_ksiega_nadziei";
+                channel = earlyFinishedSlots["10_ksiega_nadziei"] ? "zapolske-live.html" : "apokalipsa-ksiega-nadziei-live.html";
+            }
+            // 6) 10:55 - 12:00: Zjednoczeni za Polskę (Pasmo Południowe)
+            else if ((hour === 10 && min >= 55) || hour === 11) {
+                blockKey = "11_zapolske_poludnie";
+                channel = "zapolske-live.html";
+            }
+            // 7) 12:00 - 13:00: Biblia Śpiewana (Wydanie Południowe)
+            else if (hour === 12) {
+                blockKey = "12_biblia_spiewana_poludnie";
+                channel = "biblia-spiewana-live.html";
+            }
+            // 8) 13:00 - 15:00: TV Epafraz — Główne Pasmo Biblijne
+            else if (hour >= 13 && hour < 15) {
+                blockKey = "13_15_tv_epafraz";
+                channel = "tv-epafraz-live.html";
+            }
+            // 9) 15:00 - 15:06: Apokalipsa Dzień po Dniu Popołudnie
+            else if (hour === 15 && min < 6) {
+                blockKey = "15_apokalipsa";
+                channel = earlyFinishedSlots["15_apokalipsa"] ? "biblia-spiewana-live.html" : "apokalipsa-live.html";
+            }
+            // 10) 15:06 - 16:00: Biblia Śpiewana (Wydanie Popołudniowe)
+            else if (hour === 15 && min >= 6) {
+                blockKey = "15_06_biblia_spiewana";
+                channel = "biblia-spiewana-live.html";
+            }
+            // 11) 16:00 - 18:00: Śpiewajmy Panu — Codzienne Uwielbienie
+            else if (hour >= 16 && hour < 18) {
+                blockKey = "16_18_spiewajmy_panu";
+                channel = "spiewajmy-panu-live.html";
+            }
+            // 12) 18:00 - 20:00: Pasmo Wieczorne
+            else if (hour >= 18 && hour < 20) {
+                blockKey = "18_20_evening_" + dayOfWeek;
+                if (dayOfWeek === 0) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
+                else if (dayOfWeek === 6) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+                else channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
+            }
+            // 13) 20:00 - 20:52: Studium Telewizyjne Pisma Świętego Wieczór
+            else if (hour === 20 && min < 52) {
+                blockKey = "20_studium";
+                channel = earlyFinishedSlots["20_studium"] ? "biblia-spiewana-live.html" : "studium-live.html";
+            }
+            // 14) 20:52 - 21:00: Biblia Śpiewana
+            else if (hour === 20 && min >= 52) {
+                blockKey = "20_52_biblia_spiewana";
+                channel = "biblia-spiewana-live.html";
+            }
+            // 15) 21:00 - 21:06: Apokalipsa Dzień po Dniu Wieczór
+            else if (hour === 21 && min < 6) {
+                blockKey = "21_apokalipsa";
+                channel = earlyFinishedSlots["21_apokalipsa"] ? "biblia-spiewana-live.html" : "apokalipsa-live.html";
+            }
+            // 16) 21:06 - 22:00: Biblia Śpiewana (Finał Dnia)
+            else if (hour === 21 && min >= 6) {
+                blockKey = "21_06_biblia_spiewana";
+                channel = "biblia-spiewana-live.html";
+            }
+            // 17) 22:00 - 22:55: Randki & Małżeństwo (Pt, Sob, Ndz) lub Apokalipsa: Księga Nadziei (Pon - Czw)
+            else if (hour === 22 && min < 55) {
+                const isWeekendNight = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+                blockKey = "22_special_" + (isWeekendNight ? "randki" : "ksiega");
+                const targetSpecial = isWeekendNight ? "randki-malzenstwo-live.html" : "apokalipsa-ksiega-nadziei-live.html";
+                channel = earlyFinishedSlots[blockKey] ? "nocne-czuwanie-live.html" : targetSpecial;
+            }
+            // 18) 06:00 - 08:00: Zjednoczeni za Polskę Poranek
+            else if (hour >= 6 && hour < 8) {
+                blockKey = "06_08_zapolske_poranek";
+                channel = "zapolske-live.html";
+            }
+            // 19) 22:55 - 06:00: Nocne Czuwanie & Worship
+            else {
+                blockKey = "night_nocne_czuwanie";
+                channel = "nocne-czuwanie-live.html";
+            }
+
+            return { blockKey, channel };
         }
 
         function checkSchedule() {
             if (isSwitchingWithBumper) return;
 
             const now = new Date();
-            const hour = now.getHours();
-            const min = now.getMinutes();
+            const { blockKey, channel } = getScheduleState(now);
 
-            // 1) Trigger "Studium Telewizyjne Pisma Świętego" (08:00, 20:00 - 60 min slot)
-            if (hour === 8 || hour === 20) {
-                if (min < 55) {
-                    if (!studiumDoneHours[hour]) {
-                        studiumDoneHours[hour] = true;
-                        isSpecialSlotActive = true;
-                        switchChannel("studium-live.html");
-
-                        safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for Studium slot.");
-                            endSpecialSlot();
-                        }, 3300000);
-                        return;
-                    }
-                } else if (isSpecialSlotActive && currentUrl === "studium-live.html") {
-                    endSpecialSlot();
-                }
-            } else {
-                if (hour !== 8) studiumDoneHours[8] = false;
-                if (hour !== 20) studiumDoneHours[20] = false;
-            }
-
-            // 2) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00 - 6 min slot)
-            if (hour === 9 || hour === 15 || hour === 21) {
-                if (min < 6) {
-                    if (!apokalipsaDoneHours[hour]) {
-                        apokalipsaDoneHours[hour] = true;
-                        isSpecialSlotActive = true;
-                        switchChannel("apokalipsa-live.html");
-                        
-                        safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for Apokalipsa slot.");
-                            endSpecialSlot();
-                        }, 390000);
-                        return;
-                    }
-                } else if (isSpecialSlotActive && currentUrl === "apokalipsa-live.html") {
-                    endSpecialSlot();
-                }
-            } else {
-                if (hour !== 9) apokalipsaDoneHours[9] = false;
-                if (hour !== 15) apokalipsaDoneHours[15] = false;
-                if (hour !== 21) apokalipsaDoneHours[21] = false;
-            }
-
-            // 3) Trigger Pasmo 10:00 (Apokalipsa: Księga Nadziei) oraz Pasmo Wieczorne 22:00 (Randki & Małżeństwo w Pt, Sob, Ndz)
-            if (hour === 10 || hour === 22) {
-                const dayOfWeek = now.getDay(); // 0 = Niedziela, 5 = Piątek, 6 = Sobota
-                const isWeekendNight = (hour === 22 && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0));
-                const targetSlotChannel = (hour === 10) 
-                    ? "apokalipsa-ksiega-nadziei-live.html" 
-                    : (isWeekendNight ? "randki-malzenstwo-live.html" : "apokalipsa-ksiega-nadziei-live.html");
-
-                if (min < 55) {
-                    if (!ksiegaNadzieiDoneHours[hour] || currentUrl !== targetSlotChannel) {
-                        ksiegaNadzieiDoneHours[hour] = true;
-                        isSpecialSlotActive = true;
-                        if (currentUrl !== targetSlotChannel) {
-                            switchChannel(targetSlotChannel);
-                        }
-
-                        if (!safetyTimeout) {
-                            safetyTimeout = setTimeout(() => {
-                                console.log("MCR: Safety timeout reached for 22:00 / 10:00 slot.");
-                                endSpecialSlot();
-                            }, 3300000);
-                        }
-                        return;
-                    }
-                } else if (isSpecialSlotActive && (currentUrl === "apokalipsa-ksiega-nadziei-live.html" || currentUrl === "randki-malzenstwo-live.html")) {
-                    endSpecialSlot();
-                }
-            } else {
-                if (hour !== 10) ksiegaNadzieiDoneHours[10] = false;
-                if (hour !== 22) ksiegaNadzieiDoneHours[22] = false;
-            }
-
-            // 3b) Trigger "TV Epafraz — Główne Pasmo Biblijne" (13:00 - 15:00 daily 2-hour block)
-            if (hour >= 13 && hour < 15) {
-                isSpecialSlotActive = true;
-                if (currentUrl !== "tv-epafraz-live.html") {
-                    switchChannel("tv-epafraz-live.html");
-                }
-                return;
-            } else {
-                if (isSpecialSlotActive && currentUrl === "tv-epafraz-live.html") {
-                    isSpecialSlotActive = false;
-                }
-            }
-
-            // 4) Trigger "Codzienne Uwielbienie" (16:00 - 18:00 daily 2-hour music block)
-            if (hour >= 16 && hour < 18) {
-                isSpecialSlotActive = true;
-                if (currentUrl !== "spiewajmy-panu-live.html") {
-                    switchChannel("spiewajmy-panu-live.html");
-                }
-                return;
-            } else {
-                if (isSpecialSlotActive && currentUrl === "spiewajmy-panu-live.html") {
-                    isSpecialSlotActive = false;
-                }
-            }
-
-            // 5) Trigger Evening Shows (18:00 - 20:00): Totalny Atak codziennie
-            if (hour >= 18 && hour < 20) {
-                isSpecialSlotActive = true;
-                const targetAtakChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
-                if (currentUrl !== targetAtakChannel) {
-                    switchChannel(targetAtakChannel);
-                }
-                return;
-            } else {
-                if (isSpecialSlotActive && (currentUrl === "totalny-atak-live.html" || currentUrl === "biblia-spiewana-live.html")) {
-                    isSpecialSlotActive = false;
-                }
-            }
-
-            if (!isSpecialSlotActive) {
-                const targetChannel = getActiveBaseChannel();
-                if (currentUrl !== targetChannel) {
-                    switchChannel(targetChannel);
-                }
+            if (currentBlockKey === null) {
+                // Initial load
+                currentBlockKey = blockKey;
+                switchChannel(channel);
+            } else if (currentBlockKey !== blockKey) {
+                console.log("MCR: Przejście do nowego bloku ramówkowego [" + currentBlockKey + " -> " + blockKey + "]: " + channel);
+                currentBlockKey = blockKey;
+                // Force transition with bumper overlay for new scheduled block
+                switchChannel(channel, true);
+            } else if (currentUrl !== channel) {
+                console.log("MCR: Wymiana kanału w ramach bloku [" + blockKey + "]: " + currentUrl + " -> " + channel);
+                switchChannel(channel);
             }
         }
 
-        function switchChannel(newChannel) {
-            if (currentUrl === newChannel) return;
-            console.log("MCR: Przełączanie kanału na " + newChannel);
+        function switchChannel(newChannel, force = false) {
+            if (currentUrl === newChannel && !force) return;
+            console.log("MCR: Przełączanie kanału na " + newChannel + (force ? " (wymuszone przejście do nowego bloku)" : ""));
             status.textContent = "MCR: " + newChannel;
             const isFirstLoad = (currentUrl === null);
             currentUrl = newChannel;

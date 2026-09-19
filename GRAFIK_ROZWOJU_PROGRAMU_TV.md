@@ -18,13 +18,15 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **06:00 – 08:00** | **☀️ Poranek „Zjednoczeni za Polskę”** | Modlitwa poranna, werset dnia, intencje widzów na ekranie | `zapolske-live.html` |
 | **08:00 – 09:00** | **📖 Studium Telewizyjne Pisma Świętego** | Głębokie studium Słowa Bożego werset po wersecie (572 odcinki) | `studium-live.html` |
 | **09:00 – 09:06** | **📌 Apokalipsa Dzień po Dniu** | Krótka etiuda komentarzowa dnia | `apokalipsa-live.html` |
-| **09:06 – 10:00** | **🌱 Wzrastanie w Wierze & Styl Życia** | Relacje, rodzina, dyskusje, chrześcijańska codzienność | `master-live.html` |
-| **10:00 – 11:00** | **🔥 Apokalipsa: Księga Nadziei** | Kompletny Kurs Biblijny proroctw Księgi Objawienia | `apokalipsa-ksiega-nadziei-live.html` |
-| **11:00 – 12:00** | **💬 Świadectwa Życia & Wywiady** | Historie nawróceń, przemiany życia, inspirujące reportaże | `master-live.html` |
-| **12:00 – 15:00** | **🎶 Biblia Śpiewana & Worship** | Śpiewane Przypowieści Salomona i utwory uwielbienia | `biblia-spiewana-live.html` |
+| **09:06 – 10:00** | **☀️ Zjednoczeni za Polskę — Przedpołudnie** | Modlitwa i transmisja radiowo-telewizyjna | `zapolske-live.html` |
+| **10:00 – 10:55** | **🔥 Apokalipsa: Księga Nadziei** | Kompletny Kurs Biblijny proroctw Księgi Objawienia | `apokalipsa-ksiega-nadziei-live.html` |
+| **10:55 – 12:00** | **☀️ Zjednoczeni za Polskę — Pasmo Południowe** | Modlitwa południowa, werset dnia, intencje widzów | `zapolske-live.html` |
+| **12:00 – 13:00** | **🎶 Biblia Śpiewana (Wydanie Południowe)** | Śpiewane Przypowieści Salomona i utwory uwielbienia | `biblia-spiewana-live.html` |
+| **13:00 – 15:00** | **📖 TV Epafraz — Główne Pasmo Biblijne** | Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca (24 Serie) | `tv-epafraz-live.html` |
 | **15:00 – 15:06** | **📌 Apokalipsa Dzień po Dniu** | Popołudniowy komentarz dnia | `apokalipsa-live.html` |
 | **15:06 – 16:00** | **🎶 Biblia Śpiewana — Pasmo Popołudniowe** | Spokojne kompozycje muzyczne i wersety Pisma Świętego | `biblia-spiewana-live.html` |
 | **16:00 – 18:00** | **🎵 Śpiewajmy Panu — Codzienny Blok Muzyczny** | 2-godzinny blok z utworami uwielbienia i nowościami Christian Culture Music (Odtwarzanie Losowe 24/7) | `spiewajmy-panu-live.html` |
+| **18:00 – 20:00 (Pon – Pt)** | **⚔️ Totalny Atak — Wykłady Biblijne** | Seria wykładów apologetycznych i profetycznych prof. Waltera Veitha | `totalny-atak-live.html` |
 | **18:00 – 20:00 (Sobota)** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo | `kino-live.html` |
 | **18:00 – 20:00 (Niedziela)** | **💬 Świadectwa — Cykl Historii Wiary** | Poruszające historie nawróceń, przemiany życia i uzdrowień (Cykl 11 filmów w rotacji) | `swiadectwa-live.html` |
 | **20:00 – 21:00** | **📖 Studium Telewizyjne Pisma Świętego** | Wydanie wieczorne wykładu werset po wersecie | `studium-live.html` |
