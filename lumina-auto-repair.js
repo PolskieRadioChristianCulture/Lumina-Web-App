@@ -683,12 +683,16 @@
 
             let ultimateFallback = 'lumina_icon.jpg';
             if (isAvatar) {
-                if (originalSrc.includes('wioletta')) ultimateFallback = 'avatar_wioletta_official.jpg';
+                if (originalSrc.includes('cezary')) ultimateFallback = 'avatar_cezary_official.jpg';
+                else if (originalSrc.includes('wioletta')) ultimateFallback = 'avatar_wioletta_official.jpg';
+                else if (originalSrc.includes('jola')) ultimateFallback = 'avatar_jolawojcik.jpg';
+                else if (originalSrc.includes('zofia')) ultimateFallback = 'avatar_zofia_dudek.jpg';
+                else if (originalSrc.includes('zbyszek') || originalSrc.includes('gieron')) ultimateFallback = 'avatar_zbyszek_gieron.jpg';
                 else if (originalSrc.includes('hamera')) ultimateFallback = 'avatar_andrzej_hamera.jpg';
                 else if (originalSrc.includes('thiel') || (originalSrc.includes('andrzej') && !originalSrc.includes('hamera'))) ultimateFallback = 'avatar_andrzej_thiel.jpg';
                 else if (originalSrc.includes('magdalena')) ultimateFallback = 'avatar_magdalena.png';
                 else if (originalSrc.includes('women') || originalSrc.includes('ccwomen')) ultimateFallback = 'logo_cc_women.jpg';
-                else ultimateFallback = 'avatar_cezary_official.jpg';
+                else ultimateFallback = 'lumina_icon.jpg';
             } else if (isCover) {
                 ultimateFallback = 'lumina_default_cover.jpg';
             } else if (isLogo) {

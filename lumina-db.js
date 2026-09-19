@@ -2611,7 +2611,7 @@ export async function publishCloudShort(shortData) {
         title: shortData.title || 'Rolka Wiary • Społeczność LUMINA 🕊️',
         author: shortData.author || 'Świadek Wiary',
         authorSlug: shortData.authorSlug || 'radiocc',
-        authorAvatar: shortData.authorAvatar || 'avatar_cezary_official.jpg',
+        authorAvatar: shortData.authorAvatar || 'lumina_icon.jpg',
         authorBadge: shortData.authorBadge || '🕊️ Świadectwo',
         videoType: shortData.videoType || 'mp4',
         videoSrc: shortData.videoSrc,
@@ -3132,7 +3132,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
 
     const senderName = messageObj.senderName || myProfile?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
-    const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
+    const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'logo_radio_cc.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     // Pierwsza wiadomość jest prośbą o kontakt. Istniejące, historyczne czaty
@@ -3421,7 +3421,7 @@ export async function sendPublicChatMessage(messageObj) {
     }
     const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
     const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
-    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'logo_radio_cc.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     const fullMsg = {
@@ -4894,10 +4894,10 @@ export const LUMINA_HANDLES = {
     'zbyszek': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
     'zbyszekgieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
     'gieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
-    'jola': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jola.jpg', badge: '🕊️ Społeczność LUMINA' },
-    'jolawojcik': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jola.jpg', badge: '🕊️ Społeczność LUMINA' },
-    'zofia': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia.jpg', badge: '🌿 Społeczność LUMINA' },
-    'zofiadudek': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia.jpg', badge: '🌿 Społeczność LUMINA' },
+    'jola': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Społeczność LUMINA' },
+    'jolawojcik': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Społeczność LUMINA' },
+    'zofia': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Społeczność LUMINA' },
+    'zofiadudek': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Społeczność LUMINA' },
     'bibliaaudio': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
     'bibliaaudiochristianculture': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
     'u_bibliaaudiochristianculture_3248': { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', url: 'lumina-profile.html?u=u_bibliaaudiochristianculture_3248', avatar: 'avatar_biblia_audio.gif', badge: '📖 Biblia Audio CC' },
@@ -7188,9 +7188,9 @@ export const LuminaCommentsEngine = {
     // Baza zaufanych profili misyjnych do naturalnego dialogu
     _trustedMissionProfiles: [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
-        { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jola.jpg', badge: '🕊️ Wstawiennik LUMINA' },
+        { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Wstawiennik LUMINA' },
         { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🛡️ Świadectwo Wiary' },
-        { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia.jpg', badge: '🌿 Mądrość & Modlitwa' },
+        { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Mądrość & Modlitwa' },
         { slug: 'ccmen', name: 'CC MEN', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota' },
         { slug: 'ccwomen', name: 'CC WOMEN', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kobieca Formacja' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
@@ -7372,7 +7372,7 @@ export const LuminaCommentsEngine = {
 
         let name = curProfile?.name || curUser?.displayName || 'Gość LUMINA';
         let slug = curProfile?.slug || (curUser?.email ? curUser.email.split('@')[0] : 'user');
-        let avatar = curProfile?.avatar || curUser?.photoURL || 'avatar_cezary_official.jpg';
+        let avatar = curProfile?.avatar || curUser?.photoURL || 'lumina_icon.jpg';
         let badge = curProfile?.badge || curProfile?.job || 'Społeczność LUMINA';
 
         // Auto-detect Cezary Rogowski if admin
@@ -7390,6 +7390,43 @@ export const LuminaCommentsEngine = {
         }
 
         return { name, slug, avatar, badge };
+    },
+
+    // Pancerny Strażnik Tożsamości Komentarzy (Identity Guard)
+    _sanitizeComment(c) {
+        if (!c) return c;
+        const authorName = (c.author || '').toLowerCase();
+        const authorSlug = (c.authorSlug || '').toLowerCase();
+        const isCezary = (authorSlug === 'cezaryrgowski' || authorName.includes('cezary'));
+        const isJola = (authorSlug === 'jolawojcik' || authorName.includes('jola'));
+        const isZofia = (authorSlug === 'zofiadudek' || authorName.includes('zofia'));
+        const isZbyszek = (authorSlug === 'zbyszekgieron' || authorName.includes('zbyszek') || authorName.includes('gieroń') || authorName.includes('gieron'));
+        const isAndrzejThiel = (authorSlug === 'andrzejthiel' || authorName.includes('thiel'));
+        const isAndrzejHamera = (authorSlug === 'andrzejhamera' || authorName.includes('hamera'));
+        const isWioletta = (authorSlug === 'wiolettarogowska' || authorName.includes('wioletta'));
+
+        if (isJola) {
+            c.authorAvatar = 'avatar_jolawojcik.jpg';
+        } else if (isZofia) {
+            c.authorAvatar = 'avatar_zofia_dudek.jpg';
+        } else if (isZbyszek) {
+            c.authorAvatar = 'avatar_zbyszek_gieron.jpg';
+        } else if (isAndrzejThiel) {
+            c.authorAvatar = 'avatar_andrzej_thiel.jpg';
+        } else if (isAndrzejHamera) {
+            c.authorAvatar = 'avatar_andrzej_hamera.jpg';
+        } else if (isWioletta) {
+            c.authorAvatar = 'avatar_wioletta_official.jpg';
+        } else if (!isCezary) {
+            // BEZWZGLĘDNA REGUŁA: Nikt poza Dowódcą Cezarym Rogowskim nie ma prawa mieć Jego zdjęcia!
+            if (c.authorAvatar && (c.authorAvatar.includes('cezary') || c.authorAvatar.includes('christian_culture_carousel'))) {
+                c.authorAvatar = 'lumina_icon.jpg';
+            }
+        }
+        if (!c.authorAvatar) {
+            c.authorAvatar = isCezary ? 'avatar_cezary_official.jpg' : 'lumina_icon.jpg';
+        }
+        return c;
     },
 
     // Generowanie naturalnego dialogu profili misyjnych (tylko raz per post)
@@ -7439,7 +7476,7 @@ export const LuminaCommentsEngine = {
             const timeOffsetMinutes = 15 + ((absHash + i * 29) % 180);
             const commentTime = now - (timeOffsetMinutes * 60 * 1000);
 
-            generated.push({
+            generated.push(this._sanitizeComment({
                 id: `comm_${postId}_mission_${i}`,
                 postId: postId,
                 author: profile.name,
@@ -7456,7 +7493,7 @@ export const LuminaCommentsEngine = {
                 hidden: false,
                 edited: false,
                 isMissionAuto: true
-            });
+            }));
         }
 
         return generated;
@@ -7470,7 +7507,17 @@ export const LuminaCommentsEngine = {
             try {
                 const parsed = JSON.parse(stored);
                 if (Array.isArray(parsed)) {
-                    return this._sortComments(parsed);
+                    let dirty = false;
+                    const sanitized = parsed.map(c => {
+                        const prevAvatar = c.authorAvatar;
+                        const safe = this._sanitizeComment(c);
+                        if (safe.authorAvatar !== prevAvatar) dirty = true;
+                        return safe;
+                    });
+                    if (dirty) {
+                        try { localStorage.setItem(key, JSON.stringify(sanitized)); } catch(e) {}
+                    }
+                    return this._sortComments(sanitized);
                 }
             } catch(e) {}
         }
@@ -7493,8 +7540,9 @@ export const LuminaCommentsEngine = {
 
     saveComments(postId, comments) {
         const key = this._commentsKeyPrefix + postId;
+        const sanitized = Array.isArray(comments) ? comments.map(c => this._sanitizeComment(c)) : [];
         try {
-            localStorage.setItem(key, JSON.stringify(comments));
+            localStorage.setItem(key, JSON.stringify(sanitized));
         } catch(e) {}
 
         this.updatePostCommentCountBadge(postId);
@@ -7828,7 +7876,7 @@ export const LuminaCommentsEngine = {
             return `
                 <div class="comment-preview-card">
                     <div class="comment-preview-thumb-wrap">
-                        <img src="lion_jewish_flag.jpg" alt="Dom Modlitwy" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                        <img src="lion_jewish_flag.jpg" alt="Dom Modlitwy" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                     </div>
                     <div class="comment-preview-body">
                         <div class="comment-preview-badge-row">
@@ -8193,7 +8241,7 @@ export const LuminaCommentsEngine = {
             return `
                 <div class="comment-item-v2 ${c.pinned ? 'pinned-comment' : ''}" id="comment_item_${c.id}">
                     <a href="${c.authorSlug ? ('lumina.html?u=' + c.authorSlug) : '#'}" class="comment-avatar-link">
-                        <img loading="lazy" decoding="async" src="${c.authorAvatar || 'lumina_icon.jpg'}" alt="${escapeHtml(c.author)}" class="comment-avatar-v2" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <img loading="lazy" decoding="async" src="${(this._sanitizeComment(c)).authorAvatar || 'lumina_icon.jpg'}" alt="${escapeHtml(c.author)}" class="comment-avatar-v2" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                     </a>
                     <div class="comment-body-v2">
                         ${this._renderSingleCommentBubbleHtml(postId, c, canManage, isMyComment)}

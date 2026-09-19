@@ -39,9 +39,9 @@
     // Baza zaufanych profili misyjnych do naturalnego dialogu
     _trustedMissionProfiles: [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
-        { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jola.jpg', badge: '🕊️ Wstawiennik LUMINA' },
+        { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Wstawiennik LUMINA' },
         { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🛡️ Świadectwo Wiary' },
-        { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia.jpg', badge: '🌿 Mądrość & Modlitwa' },
+        { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Mądrość & Modlitwa' },
         { slug: 'ccmen', name: 'CC MEN', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota' },
         { slug: 'ccwomen', name: 'CC WOMEN', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kobieca Formacja' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
@@ -223,7 +223,7 @@
 
         let name = curProfile?.name || curUser?.displayName || 'Gość LUMINA';
         let slug = curProfile?.slug || (curUser?.email ? curUser.email.split('@')[0] : 'user');
-        let avatar = curProfile?.avatar || curUser?.photoURL || 'avatar_cezary_official.jpg';
+        let avatar = curProfile?.avatar || curUser?.photoURL || 'lumina_icon.jpg';
         let badge = curProfile?.badge || curProfile?.job || 'Społeczność LUMINA';
 
         // Auto-detect Cezary Rogowski if admin
@@ -238,9 +238,51 @@
             slug = 'wiolettarogowska';
             avatar = 'avatar_wioletta_official.jpg';
             badge = '🌸 Współzałożycielka CC';
+        } else {
+            // KATEGORYCZNY ZAKAZ: Nikt poza Cezarym Rogowskim nie może otrzymać zdjęcia Dowódcy!
+            if (avatar && (avatar.includes('cezary') || avatar.includes('christian_culture_carousel'))) {
+                avatar = 'lumina_icon.jpg';
+            }
         }
 
         return { name, slug, avatar, badge };
+    },
+
+    // Pancerny Strażnik Tożsamości Komentarzy (Identity Guard)
+    _sanitizeComment(c) {
+        if (!c) return c;
+        const authorName = (c.author || '').toLowerCase();
+        const authorSlug = (c.authorSlug || '').toLowerCase();
+        const isCezary = (authorSlug === 'cezaryrgowski' || authorName.includes('cezary'));
+        const isJola = (authorSlug === 'jolawojcik' || authorName.includes('jola'));
+        const isZofia = (authorSlug === 'zofiadudek' || authorName.includes('zofia'));
+        const isZbyszek = (authorSlug === 'zbyszekgieron' || authorName.includes('zbyszek') || authorName.includes('gieroń') || authorName.includes('gieron'));
+        const isAndrzejThiel = (authorSlug === 'andrzejthiel' || authorName.includes('thiel'));
+        const isAndrzejHamera = (authorSlug === 'andrzejhamera' || authorName.includes('hamera'));
+        const isWioletta = (authorSlug === 'wiolettarogowska' || authorName.includes('wioletta'));
+
+        if (isJola) {
+            c.authorAvatar = 'avatar_jolawojcik.jpg';
+        } else if (isZofia) {
+            c.authorAvatar = 'avatar_zofia_dudek.jpg';
+        } else if (isZbyszek) {
+            c.authorAvatar = 'avatar_zbyszek_gieron.jpg';
+        } else if (isAndrzejThiel) {
+            c.authorAvatar = 'avatar_andrzej_thiel.jpg';
+        } else if (isAndrzejHamera) {
+            c.authorAvatar = 'avatar_andrzej_hamera.jpg';
+        } else if (isWioletta) {
+            c.authorAvatar = 'avatar_wioletta_official.jpg';
+        } else if (!isCezary) {
+            // BEZWZGLĘDNA REGUŁA: Nikt poza Dowódcą Cezarym Rogowskim nie ma prawa mieć Jego zdjęcia!
+            if (c.authorAvatar && (c.authorAvatar.includes('cezary') || c.authorAvatar.includes('christian_culture_carousel'))) {
+                c.authorAvatar = 'lumina_icon.jpg';
+            }
+        }
+        if (!c.authorAvatar) {
+            c.authorAvatar = isCezary ? 'avatar_cezary_official.jpg' : 'lumina_icon.jpg';
+        }
+        return c;
     },
 
     // Generowanie naturalnego dialogu profili misyjnych (tylko raz per post)
@@ -290,7 +332,7 @@
             const timeOffsetMinutes = 15 + ((absHash + i * 29) % 180);
             const commentTime = now - (timeOffsetMinutes * 60 * 1000);
 
-            generated.push({
+            generated.push(this._sanitizeComment({
                 id: `comm_${postId}_mission_${i}`,
                 postId: postId,
                 author: profile.name,
@@ -307,7 +349,7 @@
                 hidden: false,
                 edited: false,
                 isMissionAuto: true
-            });
+            }));
         }
 
         return generated;
@@ -321,7 +363,17 @@
             try {
                 const parsed = JSON.parse(stored);
                 if (Array.isArray(parsed)) {
-                    return this._sortComments(parsed);
+                    let dirty = false;
+                    const sanitized = parsed.map(c => {
+                        const prevAvatar = c.authorAvatar;
+                        const safe = this._sanitizeComment(c);
+                        if (safe.authorAvatar !== prevAvatar) dirty = true;
+                        return safe;
+                    });
+                    if (dirty) {
+                        try { localStorage.setItem(key, JSON.stringify(sanitized)); } catch(e) {}
+                    }
+                    return this._sortComments(sanitized);
                 }
             } catch(e) {}
         }
@@ -344,8 +396,9 @@
 
     saveComments(postId, comments) {
         const key = this._commentsKeyPrefix + postId;
+        const sanitized = Array.isArray(comments) ? comments.map(c => this._sanitizeComment(c)) : [];
         try {
-            localStorage.setItem(key, JSON.stringify(comments));
+            localStorage.setItem(key, JSON.stringify(sanitized));
         } catch(e) {}
 
         this.updatePostCommentCountBadge(postId);
@@ -1044,7 +1097,7 @@
             return `
                 <div class="comment-item-v2 ${c.pinned ? 'pinned-comment' : ''}" id="comment_item_${c.id}">
                     <a href="${c.authorSlug ? ('lumina.html?u=' + c.authorSlug) : '#'}" class="comment-avatar-link">
-                        <img loading="lazy" decoding="async" src="${c.authorAvatar || 'lumina_icon.jpg'}" alt="${escapeHtml(c.author)}" class="comment-avatar-v2" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <img loading="lazy" decoding="async" src="${(this._sanitizeComment(c)).authorAvatar || 'lumina_icon.jpg'}" alt="${escapeHtml(c.author)}" class="comment-avatar-v2" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                     </a>
                     <div class="comment-body-v2">
                         ${this._renderSingleCommentBubbleHtml(postId, c, canManage, isMyComment)}
