@@ -4387,24 +4387,61 @@
             pointer-events: none !important;
         }
 
+        body.user-is-guest .bottom-layout {
+            grid-template-columns: 1fr !important;
+            max-width: 860px !important;
+            margin: 0 auto !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+            justify-items: center !important;
+        }
+        body.user-is-guest .why-section {
+            width: 100% !important;
+            max-width: 820px !important;
+            margin: 0 auto !important;
+            align-items: center !important;
+        }
+        body.user-is-guest .why-grid {
+            width: 100% !important;
+            max-width: 820px !important;
+            margin: 0 auto !important;
+        }
+
         .guest-carousel-cta {
             max-width: 760px;
             margin: 14px auto 2px;
-            padding: 14px 18px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 14px;
-            flex-wrap: wrap;
+            gap: 12px;
             text-align: center;
             color: #e2e8f0;
             background: rgba(15, 23, 42, 0.82);
             border: 1px solid rgba(192, 132, 252, 0.42);
             border-radius: 16px;
         }
-        .guest-carousel-cta strong { color: #fff; }
+        .guest-cta-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-align: center;
+        }
+        .guest-cta-title {
+            color: #fff;
+            display: block;
+            line-height: 1.4;
+        }
+        .guest-cta-line2 {
+            display: block;
+            color: #e2e8f0;
+            font-size: 0.98rem;
+        }
         .guest-carousel-cta button {
             min-height: 44px;
-            padding: 10px 18px;
+            padding: 10px 24px;
             border: 0;
             border-radius: 999px;
             color: #fff;
@@ -4415,7 +4452,7 @@
             box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
         }
         @media (max-width: 680px) {
-            .guest-carousel-cta { margin-inline: 12px; font-size: 0.92rem; }
+            .guest-carousel-cta { margin-inline: 12px; font-size: 0.92rem; padding: 14px 16px; }
             .guest-carousel-cta button { width: 100%; }
         }
     </style>
@@ -4788,7 +4825,10 @@
         </div>
 
         <div class="guest-carousel-cta lumina-guest-only" id="guestCarouselCta" role="region" aria-label="Dołącz do społeczności">
-            <span><strong>Chcesz napisać, obserwować i poznawać osoby o podobnych wartościach?</strong> Załóż bezpłatny profil.</span>
+            <span class="guest-cta-text">
+                <strong class="guest-cta-title">Chcesz napisać, obserwować i poznawać osoby o podobnych wartościach?</strong>
+                <span class="guest-cta-line2">Załóż bezpłatny profil.</span>
+            </span>
             <button type="button" onclick="openAuth('register')">Załóż profil</button>
         </div>
 
