@@ -819,12 +819,46 @@
                     overflow-x: auto !important;
                     scrollbar-width: none !important;
                 }
-                #directMessagesModal .chat-header-bar button {
+                #directMessagesModal .chat-header-bar > div:last-child button {
                     white-space: nowrap !important;
                     padding: 9px 14px !important;
                     font-size: 0.82rem !important;
                     gap: 7px !important;
                     flex: 1 1 auto !important;
+                }
+                #directMessagesModal .chat-fullscreen-btn,
+                #directMessagesModal button#btnChatFullscreen {
+                    width: 36px !important;
+                    height: 36px !important;
+                    min-width: 36px !important;
+                    max-width: 36px !important;
+                    min-height: 36px !important;
+                    max-height: 36px !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    flex: 0 0 36px !important;
+                    border-radius: 10px !important;
+                    border: 1px solid rgba(168,85,247,0.35) !important;
+                    background: rgba(168,85,247,0.12) !important;
+                    color: #c084fc !important;
+                    font-size: 0.95rem !important;
+                    cursor: pointer !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    box-sizing: border-box !important;
+                    transition: all 0.2s ease !important;
+                    flex-shrink: 0 !important;
+                }
+                #directMessagesModal .chat-fullscreen-btn:hover,
+                #directMessagesModal button#btnChatFullscreen:hover {
+                    background: rgba(168, 85, 247, 0.28) !important;
+                    border-color: rgba(192, 132, 252, 0.6) !important;
+                    color: #e9d5ff !important;
+                }
+                #directMessagesModal .chat-fullscreen-btn:active,
+                #directMessagesModal button#btnChatFullscreen:active {
+                    transform: scale(0.93) !important;
                 }
             }
 
@@ -873,7 +907,9 @@
             }
 
             @media (max-width: 768px) {
-                .chat-fullscreen-btn {
+                .chat-fullscreen-btn,
+                #directMessagesModal .chat-fullscreen-btn,
+                #directMessagesModal button#btnChatFullscreen {
                     display: none !important;
                 }
             }
@@ -922,13 +958,14 @@
         btn.onclick = window.toggleChatFullscreen;
         btn.title = 'Pełny ekran czatu';
         btn.className = 'chat-fullscreen-btn';
-        btn.style.cssText = 'align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex-shrink:0;';
+        btn.style.cssText = 'align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; max-width:36px; min-height:36px; max-height:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex:0 0 36px; flex-shrink:0; padding:0; margin:0; box-sizing:border-box;';
         btn.innerHTML = '<i class="fa-solid fa-expand" id="iconChatFullscreen"></i>';
 
         const parent = closeBtn.parentNode;
-        if (parent.style.display !== 'flex') {
+        if (!parent.classList.contains('chat-header-actions')) {
             const wrapper = document.createElement('div');
-            wrapper.style.cssText = 'display:flex; align-items:center; gap:6px;';
+            wrapper.className = 'chat-header-actions';
+            wrapper.style.cssText = 'display:flex; align-items:center; gap:6px; flex-shrink:0;';
             parent.insertBefore(wrapper, closeBtn);
             wrapper.appendChild(btn);
             wrapper.appendChild(closeBtn);

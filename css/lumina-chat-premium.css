@@ -171,19 +171,47 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
 }
 
 /* Przycisk fullscreen — widoczny na desktopie, ukryty na mobile */
-.chat-fullscreen-btn {
-    display: inline-flex;
+.chat-fullscreen-btn,
+#directMessagesModal .chat-fullscreen-btn,
+#directMessagesModal button#btnChatFullscreen {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex: 0 0 36px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(168, 85, 247, 0.35) !important;
+    background: rgba(168, 85, 247, 0.12) !important;
+    color: #c084fc !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
 }
-.chat-fullscreen-btn:hover {
+.chat-fullscreen-btn:hover,
+#directMessagesModal .chat-fullscreen-btn:hover,
+#directMessagesModal button#btnChatFullscreen:hover {
     background: rgba(168, 85, 247, 0.28) !important;
     border-color: rgba(192, 132, 252, 0.6) !important;
     color: #e9d5ff !important;
 }
-.chat-fullscreen-btn:active {
-    transform: scale(0.93);
+.chat-fullscreen-btn:active,
+#directMessagesModal .chat-fullscreen-btn:active,
+#directMessagesModal button#btnChatFullscreen:active {
+    transform: scale(0.93) !important;
 }
 @media (max-width: 768px) {
-    .chat-fullscreen-btn {
+    .chat-fullscreen-btn,
+    #directMessagesModal .chat-fullscreen-btn,
+    #directMessagesModal button#btnChatFullscreen {
         display: none !important;
     }
 }
