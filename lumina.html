@@ -4511,7 +4511,7 @@
                 <div class="hero-cta-actions" id="heroGuestCta" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; margin-bottom: 6px;">
                     <button type="button" class="btn-hero-join-prominent" onclick="if(window.openRegister) window.openRegister(); else if(window.openAuth) window.openAuth('register');" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; min-height: 44px; background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 800; border-radius: 999px; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4), 0 0 16px rgba(168, 85, 247, 0.3); transition: all 0.2s ease;">
                         <i class="fa-solid fa-wand-magic-sparkles" style="color: #fef08a;"></i>
-                        <span>Dołącz bezpłatnie – utwórz profil w 2 minuty</span>
+                        <span>Dołącz bezpłatnie – zacznij w minutę</span>
                         <i class="fa-solid fa-arrow-right" style="font-size: 0.78rem;"></i>
                     </button>
                     <button type="button" class="btn-hero-login-subtle" onclick="if(window.openLogin) window.openLogin(); else if(window.openAuth) window.openAuth('login');" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; min-height: 44px; background: rgba(255, 255, 255, 0.08); color: #f1f5f9; font-family: 'Outfit', sans-serif; font-size: 0.86rem; font-weight: 700; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.22); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s ease;">
@@ -4574,7 +4574,7 @@
                     </div>
                 </div>
 
-id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
                         <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
                             <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
@@ -5766,6 +5766,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             <!-- ── PANEL 2: 3-KROKOWY KREATOR PROFILU ONBOARDING ── -->
             <div id="authRegisterPanel" style="display:none;">
+                <button type="button" class="btn-google" id="btnGoogleRegister" onclick="handleGoogleAuthAction(this)">
+                    <img loading="lazy" decoding="async" src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Zacznij przez Google
+                </button>
+                <div class="auth-divider"><span>LUB UTWÓRZ KONTO E-MAILEM</span></div>
                 <!-- Step Indicator -->
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; position:relative;">
                     <div style="position:absolute; top:50%; left:15%; right:15%; height:2px; background:rgba(255,255,255,0.1); z-index:1;"></div>
@@ -6443,12 +6447,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         window.goToWizardStep = function(step) {
             if (step === 2) {
-                const termsAccepted = document.getElementById('obTermsAccepted');
-            if (termsAccepted && !termsAccepted.checked) {
-                showToast('Prosimy o zaakceptowanie Regulaminu i Polityki Prywatności.');
-                return;
-            }
-            const name = document.getElementById('obName').value.trim();
+                const name = document.getElementById('obName').value.trim();
                 const age = parseInt(document.getElementById('obAge').value);
                 const city = document.getElementById('obCity').value.trim();
                 const email = document.getElementById('obEmail').value.trim();
@@ -6537,8 +6536,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }
 
         // ── Direct Google Auth (Zero Blocking Flags) ──
-        window.handleGoogleAuthAction = async function() {
-            const btn = document.getElementById('btnGoogleAuth');
+        window.handleGoogleAuthAction = async function(triggerButton) {
+            const btn = triggerButton || document.getElementById('btnGoogleAuth');
             if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie z Google...'; }
             setAuthStatusMsg('🕊️ Otwieranie bezpiecznego logowania Google...', false);
             
@@ -6582,7 +6581,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     setAuthStatusMsg('❤️ Błąd logowania Google: ' + (error.message || error.code), true);
                 }
             } finally {
-                if (btn) { btn.disabled = false; btn.innerHTML = '<img loading="lazy" decoding="async" src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google'; }
+                if (btn) {
+                    btn.disabled = false;
+                    const label = btn.id === 'btnGoogleRegister' ? 'Zacznij przez Google' : 'Kontynuuj przez Google';
+                    btn.innerHTML = '<img loading="lazy" decoding="async" src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> ' + label;
+                }
             }
         };
 

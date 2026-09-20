@@ -17,6 +17,9 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 function db() { return window.luminaDb || (window.LuminaDB && window.LuminaDB.db); }
+function hasAuthenticatedUser() {
+    return Boolean(window.LuminaDB?.getCurrentUser?.()?.uid);
+}
 function myId() {
     const u = window.LuminaDB?.getCurrentUser?.();
     const p = window.LuminaDB?.getCurrentProfile?.();
@@ -268,18 +271,21 @@ if (typeof window !== 'undefined') {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 try {
-                    checkInDailyActivity();
-                    listenForNewBadges();
+                    if (hasAuthenticatedUser()) {
+                        checkInDailyActivity();
+                        listenForNewBadges();
+                    }
                 } catch(e) {}
             }, 1200);
         });
     } else {
         setTimeout(() => {
             try {
-                checkInDailyActivity();
-                listenForNewBadges();
+                if (hasAuthenticatedUser()) {
+                    checkInDailyActivity();
+                    listenForNewBadges();
+                }
             } catch(e) {}
         }, 1200);
     }
 }
-
