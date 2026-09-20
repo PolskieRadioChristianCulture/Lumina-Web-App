@@ -1539,10 +1539,14 @@
             width: 100% !important;
             border-radius: var(--radius-md);
             margin-bottom: 14px;
-            max-height: none !important;
+            max-height: 640px !important;
             height: auto !important;
             object-fit: contain !important;
             display: block !important;
+            transition: transform 0.3s ease;
+        }
+        .post-image:hover {
+            transform: scale(1.015);
         }
 
         .post-footer {

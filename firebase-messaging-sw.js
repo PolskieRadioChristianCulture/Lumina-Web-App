@@ -113,7 +113,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.8-20260919-dailymission';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.9-20260920-blik537137043';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -127,6 +127,7 @@ const APP_SHELL_ASSETS = [
     './lumina-icon-512.png',
     './icon.png',
     './lumina_icon.jpg',
+    './apel_misyjny_cc.webp?v=20260920_blik537137043',
     './apel_misyjny_cc.webp'
 ];
 

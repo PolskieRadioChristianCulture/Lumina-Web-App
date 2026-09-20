@@ -1171,6 +1171,24 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             background: #000;
         }
+        .rich-youtube-embed.vertical-916,
+        .profile-video-wrapper.vertical-916 {
+            aspect-ratio: 9 / 16 !important;
+            max-width: 380px !important;
+            width: 100% !important;
+            margin: 12px auto 14px !important;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+        }
+        .profile-video-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
         .rich-youtube-embed iframe {
             width: 100%;
             height: 100%;
@@ -2152,14 +2170,18 @@
             width: 100% !important;
             border-radius: 12px;
             margin-bottom: 14px;
-            max-height: none !important;
+            max-height: 640px !important;
             height: auto !important;
             object-fit: contain !important;
             object-position: center center !important;
-            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6), #070b14);
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4), #070b14);
             display: block !important;
             margin-left: auto !important;
             margin-right: auto !important;
+            transition: transform 0.3s ease;
+        }
+        .post-image:hover {
+            transform: scale(1.015);
         }
 
         .post-footer {
@@ -6492,13 +6514,26 @@
                 if (!effectiveEmbedHtml && p.youtubeUrl) {
                     const parsedInfo = parseYouTubeEmbedUrl ? parseYouTubeEmbedUrl(p.youtubeUrl) : null;
                     if (parsedInfo) {
+                        const isVertical = p.is916 || p.isShort || String(p.youtubeUrl).includes('/shorts/') || (p.text && p.text.includes('/shorts/'));
                         effectiveEmbedHtml = `
-                            <div class="rich-youtube-embed">
+                            <div class="rich-youtube-embed ${isVertical ? 'vertical-916' : ''}" style="${isVertical ? 'aspect-ratio:9/16; max-width:380px; margin:12px auto 14px;' : 'aspect-ratio:16/9; width:100%;'}">
                                 <iframe src="${parsedInfo.embedUrl}" 
                                         title="${escapeHtml(p.title || 'Wideo YouTube')}" 
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                         referrerpolicy="strict-origin-when-cross-origin"
                                         allowfullscreen></iframe>
+                            </div>
+                        `;
+                    }
+                }
+                if (!effectiveEmbedHtml && (p.video || p.videoUrl)) {
+                    const rawVid = p.video || p.videoUrl;
+                    const isMp4 = rawVid && (rawVid.endsWith('.mp4') || rawVid.includes('.mp4'));
+                    if (isMp4) {
+                        const isVertical = p.is916 || p.isShort || String(rawVid).includes('short') || (p.text && (p.text.includes('#rolka') || p.text.includes('/shorts/')));
+                        effectiveEmbedHtml = `
+                            <div class="profile-video-wrapper ${isVertical ? 'vertical-916' : ''}" style="${isVertical ? 'aspect-ratio:9/16; max-width:380px; margin:12px auto 14px; border-radius:16px; overflow:hidden;' : 'aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden; margin:12px 0 14px;'}">
+                                <video src="${rawVid}" controls playsinline webkit-playsinline preload="metadata" poster="${p.image || ''}" style="width:100%; height:100%; max-height:640px; object-fit:contain; display:block; background:#000;"></video>
                             </div>
                         `;
                     }

@@ -669,7 +669,7 @@
             left: 0;
             right: 0;
             height: calc(100% + 470px);
-            background: #0A0A0F url('lumina_hero_bg.jpg?v=20260822') center top / cover no-repeat;
+            background: #0A0A0F;
             z-index: 0;
             border-radius: 0;
             overflow: hidden;
@@ -2945,7 +2945,7 @@
         /* ──────────────────── FLOATING 3D SCRIPTURE CARDS ──────────────────── */
         .scripture-strip {
             max-width: 1040px;
-            margin: 0 auto 36px;
+            margin: 28px auto 36px;
             padding: 0 16px;
             display: flex;
             gap: 16px;
@@ -3072,7 +3072,7 @@
                 flex-direction: column;
                 gap: 12px;
                 padding: 0 12px;
-                margin: 0 auto 30px;
+                margin: 24px auto 30px;
             }
             .scripture-card:nth-child(1), .scripture-card:nth-child(2) { animation: none; transform: none; }
             .nav-radio-sub { display: none; }
@@ -7986,10 +7986,18 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             if (window._lastGeneratedBaseSet !== baseSet) {
                 window._lastGeneratedBaseSet = baseSet;
-                // Renderuj unikalny zestaw kart (bez potrajania)
-                carousel.innerHTML = baseSet;
+                const prevScrollLeft = carousel.scrollLeft;
+                // Renderuj 3 kolejne zestawy: [Zestaw 1 (Klon)] [Zestaw 2 (Środkowy)] [Zestaw 3 (Klon)]
+                carousel.innerHTML = baseSet + baseSet + baseSet;
+                if (prevScrollLeft > 0) {
+                    carousel.scrollLeft = prevScrollLeft;
+                } else {
+                    setTimeout(() => {
+                        window.centerMiddleSetPromo(false);
+                    }, 60);
+                }
                 
-                // Immediately activate and play all 3 promotional videos across all sets
+                // Immediately activate and play all promotional videos across all sets
                 setTimeout(function() {
                     if (typeof window._registerVisibleVideos === 'function') {
                         window._registerVisibleVideos();
@@ -9734,6 +9742,28 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window.pauseCarouselAutoplayTemporarily(6000);
             }
 
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount >= 1) {
+                const firstCard = visibleCards[0];
+                const midCard = visibleCards[singleSetCount];
+                if (firstCard && midCard) {
+                    const singleSetWidth = midCard.offsetLeft - firstCard.offsetLeft;
+                    if (singleSetWidth > 0) {
+                        if (carousel.scrollLeft >= singleSetWidth * 1.85) {
+                            const prev = carousel.style.scrollBehavior;
+                            carousel.style.scrollBehavior = 'auto';
+                            carousel.scrollLeft -= singleSetWidth;
+                            carousel.style.scrollBehavior = prev;
+                        } else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
+                            const prev = carousel.style.scrollBehavior;
+                            carousel.style.scrollBehavior = 'auto';
+                            carousel.scrollLeft += singleSetWidth;
+                            carousel.style.scrollBehavior = prev;
+                        }
+                    }
+                }
+            }
+
             const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
             let closestIdx = 0;
             let minDiff = Infinity;
@@ -9751,6 +9781,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (nextIdx >= visibleCards.length) nextIdx = 0;
 
             const targetCard = visibleCards[nextIdx];
+            if (!targetCard) return;
             const cardLeft = targetCard.offsetLeft;
             const cardWidth = targetCard.offsetWidth;
             const carouselWidth = carousel.clientWidth;
@@ -9759,8 +9790,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
 
             setTimeout(() => {
+                if (typeof window.handleInfiniteScrollBoundary === 'function') {
+                    window.handleInfiniteScrollBoundary();
+                }
                 window.updateCenterActiveCard();
-            }, 350);
+            }, 380);
         };
 
         /* ══════════════════════════════════════════════════════════════════════════
@@ -9821,6 +9855,28 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window.pauseMissionCarouselAutoplayTemporarily(6000);
             }
 
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount >= 1) {
+                const firstCard = visibleCards[0];
+                const midCard = visibleCards[singleSetCount];
+                if (firstCard && midCard) {
+                    const singleSetWidth = midCard.offsetLeft - firstCard.offsetLeft;
+                    if (singleSetWidth > 0) {
+                        if (carousel.scrollLeft >= singleSetWidth * 1.85) {
+                            const prev = carousel.style.scrollBehavior;
+                            carousel.style.scrollBehavior = 'auto';
+                            carousel.scrollLeft -= singleSetWidth;
+                            carousel.style.scrollBehavior = prev;
+                        } else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
+                            const prev = carousel.style.scrollBehavior;
+                            carousel.style.scrollBehavior = 'auto';
+                            carousel.scrollLeft += singleSetWidth;
+                            carousel.style.scrollBehavior = prev;
+                        }
+                    }
+                }
+            }
+
             const carouselCenter = carousel.scrollLeft + (carousel.clientWidth / 2);
             let closestIdx = 0;
             let minDiff = Infinity;
@@ -9838,6 +9894,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (nextIdx >= visibleCards.length) nextIdx = 0;
 
             const targetCard = visibleCards[nextIdx];
+            if (!targetCard) return;
             const cardLeft = targetCard.offsetLeft;
             const cardWidth = targetCard.offsetWidth;
             const carouselWidth = carousel.clientWidth;
@@ -9846,8 +9903,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
 
             setTimeout(() => {
+                if (typeof window.handleInfiniteMissionScrollBoundary === 'function') {
+                    window.handleInfiniteMissionScrollBoundary();
+                }
                 window.updateMissionCenterActiveCard();
-            }, 350);
+            }, 380);
         };
 
         window.snapMissionToNearestCard = function() {
@@ -9877,6 +9937,44 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
             }
             window.updateMissionCenterActiveCard();
+        };
+
+        let isInfiniteMissionLoopResetting = false;
+        let originalMissionCardsHtml = null;
+
+        window.handleInfiniteMissionScrollBoundary = function() {
+            if (isInfiniteMissionLoopResetting) return;
+            const carousel = document.getElementById('missionCarousel');
+            if (!carousel) return;
+
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
+
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount < 1) return;
+
+            const firstCard = visibleCards[0];
+            const midCard = visibleCards[singleSetCount];
+            if (!firstCard || !midCard) return;
+
+            const singleSetWidth = midCard.offsetLeft - firstCard.offsetLeft;
+            if (singleSetWidth <= 0) return;
+
+            if (carousel.scrollLeft >= singleSetWidth * 1.85) {
+                isInfiniteMissionLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft -= singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteMissionLoopResetting = false; }, 60);
+            } else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
+                isInfiniteMissionLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft += singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteMissionLoopResetting = false; }, 60);
+            }
         };
 
         window.updateMissionCenterActiveCard = function() {
@@ -9929,6 +10027,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             });
 
+            // Check infinite boundary during continuous swipe/scroll
+            if (typeof window.handleInfiniteMissionScrollBoundary === 'function') {
+                window.handleInfiniteMissionScrollBoundary();
+            }
+
             if (isNewCardCentered && !isMissionCarouselInteracting) {
                 const isVideoCard = closestCard.classList.contains('video-card') || !!closestCard.querySelector('video');
                 const nextInterval = isVideoCard ? 9000 : 4500;
@@ -9943,13 +10046,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
 
-            let targetCard = visibleCards[0];
-            for (let i = 0; i < visibleCards.length; i++) {
+            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
+
+            let targetCard = visibleCards[singleSetCount];
+            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
                 if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || (visibleCards[i].id && visibleCards[i].id.includes('promoAdCard')))) {
                     targetCard = visibleCards[i];
                     break;
                 }
             }
+            if (!targetCard) targetCard = visibleCards[singleSetCount] || visibleCards[0];
 
             const cardLeft = targetCard.offsetLeft;
             const cardWidth = targetCard.offsetWidth;
@@ -9967,6 +10073,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         window.initMissionCarousel = function() {
             const carousel = document.getElementById('missionCarousel');
             if (!carousel) return;
+
+            if (!originalMissionCardsHtml) {
+                const initialCards = Array.from(carousel.children);
+                if (initialCards.length) {
+                    originalMissionCardsHtml = initialCards.map(c => c.outerHTML).join('');
+                }
+            }
+
+            if (originalMissionCardsHtml) {
+                carousel.innerHTML = originalMissionCardsHtml + originalMissionCardsHtml + originalMissionCardsHtml;
+                if (typeof window._registerVisibleVideos === 'function') {
+                    window._registerVisibleVideos();
+                }
+            }
 
             setTimeout(() => {
                 window.centerMiddleSetMissionPromo(false);
@@ -10125,7 +10245,38 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         };
 
         window.handleInfiniteScrollBoundary = function() {
-            // Unikalny zestaw kart - płynna nawigacja bez duplikatów
+            if (isInfiniteLoopResetting) return;
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
+
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount < 1) return;
+
+            const firstCard = visibleCards[0];
+            const midCard = visibleCards[singleSetCount];
+            if (!firstCard || !midCard) return;
+
+            const singleSetWidth = midCard.offsetLeft - firstCard.offsetLeft;
+            if (singleSetWidth <= 0) return;
+
+            if (carousel.scrollLeft >= singleSetWidth * 1.85) {
+                isInfiniteLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft -= singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
+            } else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
+                isInfiniteLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft += singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
+            }
         };
 
         window.updateCenterActiveCard = function() {
@@ -10178,6 +10329,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             });
 
+            // Check infinite boundary during continuous swipe/scroll
+            if (typeof window.handleInfiniteScrollBoundary === 'function') {
+                window.handleInfiniteScrollBoundary();
+            }
+
             if (isNewCardCentered && !isCarouselInteracting) {
                 const isVideoCard = closestCard.classList.contains('video-card') || !!closestCard.querySelector('video');
                 const nextInterval = isVideoCard ? 9000 : 3500;
@@ -10192,13 +10348,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
 
-            let targetCard = visibleCards[1] || visibleCards[0];
-            for (let i = 0; i < visibleCards.length; i++) {
+            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
+
+            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount];
+            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
                 if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || (visibleCards[i].id && visibleCards[i].id.includes('promoAdCard')))) {
                     targetCard = visibleCards[i];
                     break;
                 }
             }
+            if (!targetCard) targetCard = visibleCards[singleSetCount] || visibleCards[0];
 
             const cardLeft = targetCard.offsetLeft;
             const cardWidth = targetCard.offsetWidth;

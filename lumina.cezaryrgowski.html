@@ -2071,14 +2071,18 @@
             width: 100% !important;
             border-radius: 12px;
             margin-bottom: 14px;
-            max-height: none !important;
+            max-height: 640px !important;
             height: auto !important;
             object-fit: contain !important;
             object-position: center center !important;
-            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6), #070b14);
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4), #070b14);
             display: block !important;
             margin-left: auto !important;
             margin-right: auto !important;
+            transition: transform 0.3s ease;
+        }
+        .post-image:hover {
+            transform: scale(1.015);
         }
 
         .post-footer {
@@ -8067,18 +8071,25 @@
         function renderVideoPlayerHtml(videoUrl) {
             if (!videoUrl) return '';
             const ytId = getYouTubeId(videoUrl);
+            const isVertical = String(videoUrl).includes('/shorts/') || String(videoUrl).includes('short');
             if (ytId) {
-                return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+                if (isVertical) {
+                    return `<div style="position:relative; aspect-ratio:9/16; max-width:380px; width:100%; margin:12px auto; overflow:hidden; border-radius:16px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%; border:none; display:block; border-radius:16px;"></iframe>
+                    </div>`;
+                }
+                return `<div style="position:relative; aspect-ratio:16/9; width:100%; overflow:hidden; border-radius:16px; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%; border:none; display:block; border-radius:16px;"></iframe>
                 </div>`;
             }
             if (videoUrl.endsWith('.mp4') || videoUrl.includes('firebasestorage') || videoUrl.includes('.mp4?')) {
-                return `<div style="border-radius:16px; overflow:hidden; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-                    <video src="${videoUrl}" controls playsinline style="width:100%; max-height:420px; display:block; border-radius:16px;"></video>
+                const isMp4Vertical = isVertical || videoUrl.includes('portrait') || videoUrl.includes('916');
+                return `<div style="border-radius:16px; overflow:hidden; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5); ${isMp4Vertical ? 'aspect-ratio:9/16; max-width:380px; width:100%; margin:12px auto;' : 'aspect-ratio:16/9; width:100%;'}">
+                    <video src="${videoUrl}" controls playsinline style="width:100%; height:100%; max-height:640px; object-fit:contain; display:block; border-radius:16px; background:#000;"></video>
                 </div>`;
             }
-            return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000;">
-                <iframe src="${videoUrl}" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+            return `<div style="position:relative; aspect-ratio:16/9; width:100%; overflow:hidden; border-radius:16px; margin-top:12px; background:#000;">
+                <iframe src="${videoUrl}" frameborder="0" allowfullscreen style="width:100%; height:100%; border:none; display:block; border-radius:16px;"></iframe>
             </div>`;
         }
 

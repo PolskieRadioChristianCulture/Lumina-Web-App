@@ -2053,73 +2053,97 @@
             transform: scale(1.015);
         }
 
-        /* ── GLOBAL STRICT IMAGE & MEDIA FULL DISPLAY (NO CROPPING) ── */
+        /* ── GLOBAL ADAPTIVE IMAGE & MEDIA CONTAINER (DOPASOWANIE DO WSZYSTKICH FORM MULTIMEDIALNYCH) ── */
+        .campaign-media-container,
         .media-container-1x1 {
             width: 100%;
-            min-height: 220px;
-            max-height: 520px;
+            height: auto;
+            min-height: 0;
+            max-height: none;
             position: relative;
-            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6), #070b14);
-            overflow: hidden;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            margin: 0 auto !important;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .media-img-1x1 {
-            width: 100% !important;
-            height: auto !important;
-            max-height: 500px !important;
-            object-fit: contain !important;
-            object-position: center center !important;
-            display: block !important;
-            margin: 0 auto !important;
-            transition: transform 0.35s ease;
-        }
-        .post-details-box img,
-        .post-desc-text img,
-        .rich-embed-img,
-        .post-card-1x1 img:not(.post-author-img):not(.comment-avatar) {
-            display: block !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            object-position: center center !important;
-            text-align: center !important;
-        }
-        .broadcast-preview-wrap {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            margin: 0 auto 14px !important;
-        }
-        .broadcast-preview-img {
-            object-position: center center !important;
-            margin: 0 auto !important;
-        }
-        .media-container-1x1 {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            background: #0b1120;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4), #070b14);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
+
+        .campaign-img-full,
         .media-img-1x1 {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 640px;
             object-fit: contain;
             object-position: center center;
             display: block;
-            transition: transform 0.4s ease;
+            margin: 0 auto;
+            transition: transform 0.35s ease;
         }
+
+        .post-card-1x1:hover .campaign-img-full,
         .post-card-1x1:hover .media-img-1x1 {
-            transform: scale(1.03);
+            transform: scale(1.015);
+        }
+
+        .post-details-box img,
+        .post-desc-text img,
+        .rich-embed-img,
+        .post-card-1x1 img:not(.post-author-img):not(.comment-avatar) {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            object-position: center center;
+            text-align: center;
+        }
+        .broadcast-preview-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto 14px;
+        }
+        .broadcast-preview-img {
+            object-position: center center;
+            margin: 0 auto;
+        }
+
+        /* Obrazy i grafiki w kartach: naturalne proporcje bez ucinania */
+        .media-container-1x1:not([style*="aspect-ratio"]) {
+            width: 100%;
+            height: auto;
+            min-height: 0;
+            max-height: none;
+        }
+
+        /* Pionowe wideo 9:16 (Shorts / Rolki) — proporcje 9:16 i zoptymalizowana ergonomiczna szerokość */
+        .media-container-1x1[style*="aspect-ratio:9/16"],
+        .media-container-1x1[style*="aspect-ratio: 9/16"],
+        .media-container-1x1[style*="aspect-ratio:9 / 16"],
+        .rich-youtube-embed.vertical-916 {
+            aspect-ratio: 9 / 16 !important;
+            max-width: 380px !important;
+            width: 100% !important;
+            margin: 0 auto 14px !important;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Poziome wideo 16:9 (Standardowe wideo i transmisje na żywo) */
+        .media-container-1x1[style*="aspect-ratio:16/9"],
+        .media-container-1x1[style*="aspect-ratio: 16/9"],
+        .media-container-1x1[style*="aspect-ratio:16 / 9"] {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            max-height: none;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #000;
         }
 
         /* ── IN-VIEWPORT VIDEO AUTOPLAY & ERGONOMIC UNMUTE BUTTON ── */
@@ -2127,17 +2151,21 @@
             position: relative;
             width: 100%;
             height: 100%;
+            max-height: 640px;
             overflow: hidden;
             background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 16px;
         }
         .lumina-feed-video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            max-height: 640px;
+            object-fit: contain;
             display: block;
+            background: #000;
         }
         .btn-feed-video-sound {
             position: absolute;
@@ -9193,7 +9221,7 @@
                 authorSlug: 'cezaryrgowski',
                 time: 'W każdą niedzielę o 09:00 • Apel Misyjny CC',
                 title: '🌿 APEL MISYJNY CHRISTIAN CULTURE',
-                image: 'apel_misyjny_cc.webp',
+                image: 'apel_misyjny_cc.webp?v=20260920_blik537137043',
                 likes: 396,
                 amen: 348,
                 _pinned: true
@@ -9227,7 +9255,7 @@
 
                     <!-- Media: Grafika Apelu Misyjnego (1:1 HD) -->
                     <div class="media-container-1x1" style="width:100%; border-radius:18px; overflow:hidden; border:1.5px solid rgba(74,222,128,0.35); background:#000; margin-bottom:16px; box-shadow:0 8px 26px rgba(0,0,0,0.65);">
-                        <img src="apel_misyjny_cc.webp" onerror="this.onerror=null; this.src='apel_misyjny_cc.png';" alt="Apel Misyjny Christian Culture – Wesprzyj Misję" loading="eager" style="width:100%; height:auto; display:block; object-fit:cover;">
+                        <img src="apel_misyjny_cc.webp?v=20260920_blik537137043" onerror="this.onerror=null; this.src='apel_misyjny_cc.png?v=20260920_blik537137043';" alt="Apel Misyjny Christian Culture – Wesprzyj Misję" loading="eager" style="width:100%; height:auto; display:block; object-fit:cover;">
                     </div>
 
                     <!-- Details Box & Content -->
@@ -9334,7 +9362,7 @@
                         body: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Kliknij, aby wesprzeć Bożą misję!',
                         icon: 'lumina_icon.jpg',
                         badge: 'lumina_icon.jpg',
-                        image: 'apel_misyjny_cc.webp',
+                        image: 'apel_misyjny_cc.webp?v=20260920_blik537137043',
                         tag: 'lumina_sunday_mission_appeal',
                         renotify: true,
                         requireInteraction: true,
@@ -10051,7 +10079,8 @@
                         } else {
                             const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
                             if (ytId) {
-                                effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+                                const isVertical = item.is916 || item.isShort || String(targetYt).includes('/shorts/') || (item.text && item.text.includes('/shorts/'));
+                                effectiveEmbedHtml = `<div class="rich-youtube-embed ${isVertical ? 'vertical-916' : ''}" style="${isVertical ? 'aspect-ratio:9/16; max-width:380px; margin:0 auto 14px;' : 'aspect-ratio:16/9; width:100%;'}"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
                             }
                         }
                     }
@@ -10196,8 +10225,12 @@
                             if (!item.image && !isCampaign) return '';
                             if (item.isRepost) return ''; // Grafika jest wyrenderowana w ramce cytowanego posta!
                             const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
+                            const isMp4Vertical = isVideoMedia && (item.is916 || item.isShort || (item.text && (item.text.includes('#rolka') || item.text.includes('/shorts/'))));
+                            const videoWrapperStyle = isMp4Vertical 
+                                ? 'aspect-ratio:9/16; max-width:380px; width:100%; margin:0 auto 14px; border-radius:18px;' 
+                                : 'aspect-ratio:16/9; width:100%; border-radius:18px; margin-bottom:14px;';
                             const mediaTag = isVideoMedia 
-                                ? `<div class="lumina-video-wrapper">
+                                ? `<div class="lumina-video-wrapper" style="${videoWrapperStyle}">
                                     <video src="${cardImgSrc}" class="lumina-feed-video ${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" autoplay muted playsinline webkit-playsinline loop preload="metadata" poster="${item.posterImage || 'vod_hity_kina_poster.jpg'}" onerror="this.poster='logo_cc.png'"></video>
                                     <button type="button" class="btn-feed-video-sound" onclick="toggleFeedVideoAudio(this, event)" title="Dotknij, by włączyć dźwięk" aria-label="Włącz lub wyłącz dźwięk">
                                         <i class="fa-solid fa-volume-xmark sound-icon-muted"></i>
@@ -10209,7 +10242,7 @@
                             return isCampaign ? `
                                 <div class="campaign-media-container">${mediaTag}</div>
                             ` : `
-                                <div class="media-container-1x1">${mediaTag}</div>
+                                <div class="media-container-1x1" style="${isVideoMedia ? (isMp4Vertical ? 'aspect-ratio:9/16; max-width:380px; margin:0 auto 14px;' : 'aspect-ratio:16/9; width:100%; margin-bottom:14px;') : ''}">${mediaTag}</div>
                             `;
                         })()}
 
