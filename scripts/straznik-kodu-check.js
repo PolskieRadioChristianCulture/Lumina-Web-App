@@ -432,6 +432,97 @@ function checkInlineScriptSyntax() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
+// REGUŁA L — Jeden kanoniczny standard profili LUMINA
+// Nowy użytkownik ma być rekordem danych renderowanym przez lumina-profile,
+// a nie kolejną kopią wielotysięcznego pliku HTML. Wyjątek wymaga jawnej,
+// udokumentowanej zgody właściciela produktu.
+// ══════════════════════════════════════════════════════════════════════════
+const CANONICAL_PROFILE_FILE = 'lumina-profile.html';
+const PROFILE_STANDARD_STYLESHEET = 'css/lumina-profile-standard.css';
+const LEGACY_DEDICATED_PROFILE_FILES = new Set([
+  'lumina.andrzejthiel.html',
+  'lumina.ccmen.html',
+  'lumina.cctv.html',
+  'lumina.ccwomen.html',
+  'lumina.cezaryrgowski.html',
+  'lumina.jolawojcik.html',
+  'lumina.magdalena.html',
+  'lumina.osobowoscplus.html',
+  'lumina.pawelmurawski.html',
+  'lumina.radiocc.html',
+  'lumina.studiodobregoslowa.html',
+  'lumina.wiolettarogowska.html',
+  'lumina.zbyszekgieron.html',
+  'lumina.zofiadudek.html',
+]);
+
+function hasApprovedProfileException(content) {
+  return /<!--\s*LUMINA_PROFILE_EXCEPTION:\s*approved-by=Cezary Rogowski;\s*scope=[^;<>]+;\s*reason=[^<>]+-->/i.test(content);
+}
+
+function isFullProfileSurface(content) {
+  return /class=["'][^"']*\bprofile-container\b/.test(content)
+    && /class=["'][^"']*\bprofile-head-card\b/.test(content);
+}
+
+function checkLuminaProfileStandard() {
+  checksRun++;
+
+  for (const f of HTML_FILES) {
+    const content = readFile(f);
+    if (!isFullProfileSurface(content)) continue;
+
+    const standardLinks = content.match(/css\/lumina-profile-standard\.css(?:\?[^"'>\s]+)?/g) || [];
+    if (standardLinks.length !== 1) {
+      report(
+        'L-PROFILE-STANDARD-MISSING',
+        f,
+        `Pełny profil musi ładować dokładnie jeden wspólny arkusz /${PROFILE_STANDARD_STYLESHEET}; znaleziono: ${standardLinks.length}.`
+      );
+    }
+
+    if (!/<body[^>]*class=["'][^"']*\blumina-profile-standard\b[^"']*["']/i.test(content)) {
+      report('L-PROFILE-BODY-CONTRACT', f, 'Brak klasy "lumina-profile-standard" na elemencie <body>.');
+    }
+
+    const mobileLayerIndex = content.indexOf('lumina-mobile-premium.css');
+    const standardLayerIndex = content.indexOf('lumina-profile-standard.css');
+    if (mobileLayerIndex !== -1 && standardLayerIndex !== -1 && standardLayerIndex < mobileLayerIndex) {
+      report(
+        'L-PROFILE-CASCADE-ORDER',
+        f,
+        'Wspólny standard profilu musi być ładowany po starszej warstwie lumina-mobile-premium.css.'
+      );
+    }
+
+    const isDedicatedPersonFile = /^lumina\.[^.]+\.html$/i.test(f);
+    const isGrandfathered = LEGACY_DEDICATED_PROFILE_FILES.has(f);
+    const approvedException = hasApprovedProfileException(content);
+    if (isDedicatedPersonFile && !isGrandfathered && !approvedException) {
+      report(
+        'L-NEW-DEDICATED-PROFILE-FORBIDDEN',
+        f,
+        `Nowy profil nie może być osobnym plikiem HTML. Dodaj użytkownika jako dane i użyj ${CANONICAL_PROFILE_FILE}?u=<slug>. ` +
+        'Wyjątek wymaga wyraźnej zgody Cezarego Rogowskiego i znacznika LUMINA_PROFILE_EXCEPTION.'
+      );
+    }
+
+    const profileCssLinks = [...content.matchAll(/<link[^>]+href=["']([^"']*profile[^"']*\.css(?:\?[^"']*)?)["'][^>]*>/gi)]
+      .map(match => match[1].split('?')[0].replace(/^\//, ''));
+    const unapprovedLayers = profileCssLinks.filter(href =>
+      href !== 'css/lumina-profile.css' && href !== PROFILE_STANDARD_STYLESHEET
+    );
+    if (unapprovedLayers.length && !approvedException) {
+      report(
+        'L-UNAPPROVED-PROFILE-OVERRIDE',
+        f,
+        `Dodatkowa warstwa profilu (${[...new Set(unapprovedLayers)].join(', ')}) wymaga wyraźnej zgody i znacznika LUMINA_PROFILE_EXCEPTION.`
+      );
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
 // URUCHOMIENIE WSZYSTKICH REGUŁ
 // ══════════════════════════════════════════════════════════════════════════
 checkCssFlexDirectionConflicts();
@@ -445,6 +536,7 @@ checkAggressiveDomPolling();
 checkOnErrorIdentitySubstitution();
 checkInlineScriptSyntax();
 checkExternalScriptSyntax();
+checkLuminaProfileStandard();
 
 // ══════════════════════════════════════════════════════════════════════════
 // RAPORT

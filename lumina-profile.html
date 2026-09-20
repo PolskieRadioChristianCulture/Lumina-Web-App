@@ -268,7 +268,7 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260915_hamera_steel_v420"></script>
+    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -3104,10 +3104,12 @@
     }
 </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
+    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260920_profile_standard_v1">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <script src="js/lumina-mission-blik.js"></script>
+    <script src="js/lumina-support-project.js?v=20260920_support_project_v1" defer></script>
 </head>
-<body>
+<body class="lumina-profile-standard">
 
     <!-- Audio Player for Radio Christian Culture -->
     <audio id="ccRadioAudio" preload="none"></audio>
@@ -7246,10 +7248,22 @@
             // 2. Publikacja w LuminaDB (Firestore lumina_posts -> Tablica Społeczności)
             if (window.LuminaDB?.publishUniversalPost) {
                 try {
-                    await window.LuminaDB.publishUniversalPost(newPost);
+                    const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
+                    if (!publishedPost?.cloudDocumentId) {
+                        throw new Error('Serwer nie potwierdził zapisu wpisu.');
+                    }
                 } catch(err) {
-                    console.warn('LuminaDB publish error:', err);
+                    console.error('LuminaDB publish error:', err);
+                    cur.posts = cur.posts.filter(post => post.id !== newPost.id);
+                    try {
+                        localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    } catch(e) {}
+                    showToast(err?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.');
+                    return;
                 }
+            } else {
+                showToast('Moduł publikacji LUMINA nie jest jeszcze gotowy. Spróbuj ponownie.');
+                return;
             }
 
             // 3. Zapis do chmury profilu

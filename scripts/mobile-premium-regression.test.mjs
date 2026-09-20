@@ -13,6 +13,24 @@ const mobilePages = [
   'rolki.html',
 ];
 
+const standardizedProfilePages = [
+  'lumina-profile.html',
+  'lumina.andrzejthiel.html',
+  'lumina.ccmen.html',
+  'lumina.cctv.html',
+  'lumina.ccwomen.html',
+  'lumina.cezaryrgowski.html',
+  'lumina.wiolettarogowska.html',
+  'lumina.jolawojcik.html',
+  'lumina.magdalena.html',
+  'lumina.osobowoscplus.html',
+  'lumina.pawelmurawski.html',
+  'lumina.radiocc.html',
+  'lumina.studiodobregoslowa.html',
+  'lumina.zbyszekgieron.html',
+  'lumina.zofiadudek.html',
+];
+
 test('every primary Lumina surface loads the shared mobile layer once', async () => {
   for (const file of mobilePages) {
     const html = await readFile(file, 'utf8');
@@ -33,6 +51,61 @@ test('mobile layer provides Android-safe layout and interaction safeguards', asy
   assert.match(css, /#profilesCarousel \.profile-card\.active-center-card[\s\S]*transform:\s*none/);
   assert.match(css, /max-width:\s*380px[\s\S]*\.btn-nav-more[\s\S]*display:\s*none/);
   assert.match(css, /\.shorts-header \.header-title-box[\s\S]*display:\s*none/);
+});
+
+test('every full profile uses the shared late-loading layout contract', async () => {
+  for (const file of standardizedProfilePages) {
+    const html = await readFile(file, 'utf8');
+    const standardLinks = html.match(/css\/lumina-profile-standard\.css(?:\?[^"'>\s]+)?/g) || [];
+    assert.equal(standardLinks.length, 1, `${file} must load the profile standard exactly once`);
+    assert.match(html, /<body[^>]*class="[^"]*lumina-profile-standard[^"]*"/,
+      `${file} must opt into the profile standard`);
+    assert.ok(
+      html.indexOf('lumina-profile-standard.css') > html.indexOf('lumina-mobile-premium.css'),
+      `${file} must load the profile standard after legacy mobile overrides`,
+    );
+  }
+});
+
+test('profile standard preserves readable controls and stable responsive geometry', async () => {
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  assert.match(css, /--profile-shell-width:\s*1200px/);
+  assert.match(css, /\.cover-wrapper[\s\S]*aspect-ratio:\s*16 \/ 5 !important/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*aspect-ratio:\s*16 \/ 6 !important/);
+  assert.match(css, /\.head-actions[\s\S]*overflow-x:\s*auto !important/);
+  assert.match(css, /\.profile-nav-tabs[\s\S]*\.tab-text[\s\S]*display:\s*inline !important/);
+  assert.match(css, /env\(safe-area-inset-bottom/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+});
+
+test('current and future profile posts expose exactly three project support methods', async () => {
+  const surfaces = ['lumina-tablica.html', ...standardizedProfilePages];
+  for (const file of surfaces) {
+    const html = await readFile(file, 'utf8');
+    const scripts = html.match(/js\/lumina-support-project\.js(?:\?[^"'>\s]+)?/g) || [];
+    assert.equal(scripts.length, 1, `${file} must load the support action exactly once`);
+  }
+
+  const support = await readFile('js/lumina-support-project.js', 'utf8');
+  assert.match(support, /MutationObserver/);
+  assert.match(support, /querySelectorAll\?\.\('\.post-card'\)/);
+  assert.match(support, />Wspieraj projekt</);
+  assert.match(support, /537 137 043/);
+  assert.match(support, /https:\/\/revolut\.me\/christianculture/);
+  assert.match(support, /https:\/\/patronite\.pl\/osobowoscplus/);
+  assert.match(support, /live\|broadcast\|transmisj\|stream/);
+});
+
+test('repository policy makes the canonical profile standard a guarded invariant', async () => {
+  const agents = await readFile('AGENTS.md', 'utf8');
+  const guardian = await readFile('scripts/straznik-kodu-check.js', 'utf8');
+  assert.match(agents, /REGUŁA NADRZĘDNA PROFILI LUMINA — JEDEN STANDARD/);
+  assert.match(agents, /Nowy użytkownik jest rekordem danych, nie nowym plikiem HTML/);
+  assert.match(agents, /LUMINA_PROFILE_EXCEPTION: approved-by=Cezary Rogowski/);
+  assert.match(guardian, /L-NEW-DEDICATED-PROFILE-FORBIDDEN/);
+  assert.match(guardian, /L-PROFILE-STANDARD-MISSING/);
+  assert.match(guardian, /L-UNAPPROVED-PROFILE-OVERRIDE/);
+  assert.match(guardian, /checkLuminaProfileStandard\(\)/);
 });
 
 test('feed progressively renders posts and preserves notification deep links', async () => {
@@ -125,7 +198,7 @@ test('Hamera profile uses the kitchen-furniture identity and excludes Thiel post
   assert.match(db, /s\.includes\('hamera'\)[\s\S]*return null/);
   assert.match(profile, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
   assert.match(profilesDb, /post_ah_film_hf3h8guGxkc[\s\S]*Hf3h8guGxkc/);
-  assert.match(profile, /lumina-db\.js\?v=20260915_hamera_steel_v420/);
+  assert.match(profile, /lumina-db\.js\?v=20260920_post_persistence_v1/);
   assert.match(profile, /avatar_andrzej_hamera\.jpg/);
   assert.match(db, /avatar_andrzej_hamera\.jpg/);
   assert.doesNotMatch(profile.slice(profile.indexOf("'andrzejhamera':"), profile.indexOf("'u_andrzejhamera':")), /Studio Reklamy|Poligraf/i);
@@ -169,4 +242,20 @@ test('public copy avoids absolute safety claims and stale invite links', async (
   assert.doesNotMatch(home, /Zero Fake \/ Zero Botów|Vision AI|lumina\.christianculture\.pl/);
   assert.doesNotMatch(feed, /100% bezpieczeństwa|Infolinia \+48 730/);
   assert.match(home, /https:\/\/polskieradio\.cc\/lumina/);
+});
+
+test('post publishing requires Firestore confirmation and authenticated ownership', async () => {
+  const db = await readFile('lumina-db.js', 'utf8');
+  const feed = await readFile('lumina-tablica.html', 'utf8');
+  const profile = await readFile('lumina-profile.html', 'utf8');
+  const composer = await readFile('js/lumina-messenger-composer.js', 'utf8');
+
+  assert.match(db, /const authorUid = postData\.authorUid \|\| authenticatedUser\?\.uid \|\| null/);
+  assert.match(db, /authorUid: authorUid/);
+  assert.match(db, /cloudDocumentId = cloudDoc\.id/);
+  assert.match(db, /throw new Error\(reason\)/);
+  assert.match(feed, /if \(!publishedPost\?\.cloudDocumentId\)/);
+  assert.match(profile, /if \(!publishedPost\?\.cloudDocumentId\)/);
+  assert.match(composer, /if \(!publishedPost\?\.cloudDocumentId\)/);
+  assert.match(feed, /compressAndReadImage\(file, 900, 900, 0\.82/);
 });

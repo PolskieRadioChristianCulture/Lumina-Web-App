@@ -1,0 +1,403 @@
+/*
+ * LUMINA Profile Standard v1
+ * One late-loading layout contract for every public profile.
+ * Personal colours and content stay local; geometry and responsive behaviour do not.
+ */
+
+html body.lumina-profile-standard {
+    --profile-shell-width: 1200px;
+    --profile-page-gutter: clamp(12px, 2.4vw, 24px);
+    --profile-card-radius: 20px;
+    overflow-x: clip !important;
+}
+
+body.lumina-profile-standard .profile-container {
+    box-sizing: border-box !important;
+    width: min(100%, var(--profile-shell-width)) !important;
+    max-width: var(--profile-shell-width) !important;
+    margin-inline: auto !important;
+    padding: 0 var(--profile-page-gutter) 88px !important;
+}
+
+body.lumina-profile-standard #profilePublicView {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+body.lumina-profile-standard .cover-wrapper {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 5 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: 0 0 var(--profile-card-radius) var(--profile-card-radius) !important;
+    background: #080d1a !important;
+}
+
+body.lumina-profile-standard .cover-photo,
+body.lumina-profile-standard .cover-video,
+body.lumina-profile-standard .cover-video-iframe {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+body.lumina-profile-standard .profile-head-card {
+    box-sizing: border-box !important;
+    position: relative !important;
+    width: calc(100% - 40px) !important;
+    max-width: none !important;
+    margin: -48px auto 0 !important;
+    padding: 24px !important;
+    overflow: visible !important;
+    border-radius: var(--profile-card-radius) !important;
+}
+
+body.lumina-profile-standard .profile-head-top,
+body.lumina-profile-standard .profile-head-main {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+}
+
+body.lumina-profile-standard .profile-head-main {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 20px !important;
+}
+
+body.lumina-profile-standard .avatar-wrap {
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    flex: 0 0 120px !important;
+    margin: 0 !important;
+}
+
+body.lumina-profile-standard .head-user-details {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    text-align: left !important;
+}
+
+body.lumina-profile-standard .head-user-name {
+    justify-content: flex-start !important;
+    max-width: 100% !important;
+    margin: 0 0 8px !important;
+    overflow-wrap: anywhere !important;
+}
+
+body.lumina-profile-standard .head-user-tagline {
+    justify-content: flex-start !important;
+    max-width: 100% !important;
+    gap: 7px !important;
+}
+
+body.lumina-profile-standard .head-actions {
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-flow: row wrap !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 18px 0 0 !important;
+    padding: 16px 0 0 !important;
+    gap: 9px !important;
+    overflow: visible !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.lumina-profile-standard .head-actions > button,
+body.lumina-profile-standard .head-actions > a {
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 42px !important;
+    max-width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    flex: 0 0 auto !important;
+    padding: 0 16px !important;
+    border-radius: 999px !important;
+    color: #fff !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+}
+
+body.lumina-profile-standard .head-actions > button i,
+body.lumina-profile-standard .head-actions > a i {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    font-size: 1rem !important;
+    color: currentColor !important;
+}
+
+body.lumina-profile-standard .head-actions .btn-text,
+body.lumina-profile-standard .head-actions #followBtnText,
+body.lumina-profile-standard .head-actions #followCountBadge,
+body.lumina-profile-standard .head-actions #heartBtnText,
+body.lumina-profile-standard .head-actions #heartCountBadge,
+body.lumina-profile-standard .head-actions .btn-divider {
+    display: inline !important;
+    color: inherit !important;
+    font-size: inherit !important;
+}
+
+body.lumina-profile-standard .head-actions .btn-action-gear,
+body.lumina-profile-standard .head-actions .btn-action-share,
+body.lumina-profile-standard .head-actions .btn-action-logout,
+body.lumina-profile-standard .head-actions .btn-action-more {
+    width: 42px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+}
+
+body.lumina-profile-standard .profile-nav-tabs {
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 16px 0 0 !important;
+    padding: 8px 0 0 !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: thin !important;
+}
+
+body.lumina-profile-standard .profile-nav-tabs .tab-btn {
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    flex: 0 0 auto !important;
+    padding: 0 14px !important;
+    border-radius: 12px !important;
+    font-size: 0.78rem !important;
+    color: #94a3b8 !important;
+}
+
+body.lumina-profile-standard .profile-nav-tabs .tab-btn i,
+body.lumina-profile-standard .profile-nav-tabs .tab-btn .tab-text {
+    display: inline !important;
+    color: inherit !important;
+    font-size: inherit !important;
+}
+
+body.lumina-profile-standard .profile-nav-tabs .tab-btn.active {
+    color: #facc15 !important;
+}
+
+body.lumina-profile-standard .profile-body-grid {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(250px, 320px) minmax(0, 1fr) !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 20px !important;
+    margin-top: 20px !important;
+}
+
+body.lumina-profile-standard .founder-3col {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 280px) !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 18px !important;
+    margin-top: 20px !important;
+}
+
+body.lumina-profile-standard .profile-body-grid > *,
+body.lumina-profile-standard .founder-3col > *,
+body.lumina-profile-standard .center-founder-feed,
+body.lumina-profile-standard .left-founder-wing,
+body.lumina-profile-standard .right-founder-wing {
+    min-width: 0 !important;
+    max-width: 100% !important;
+}
+
+body.lumina-profile-standard .post-card,
+body.lumina-profile-standard .sidebar-card {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    border-radius: var(--profile-card-radius) !important;
+}
+
+body.lumina-profile-standard :is(button, a, input, textarea, select):focus-visible {
+    outline: 3px solid #facc15 !important;
+    outline-offset: 3px !important;
+}
+
+@media (max-width: 1100px) {
+    body.lumina-profile-standard .founder-3col {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    body.lumina-profile-standard .center-founder-feed {
+        order: 1 !important;
+    }
+
+    body.lumina-profile-standard .left-founder-wing {
+        order: 2 !important;
+    }
+
+    body.lumina-profile-standard .right-founder-wing {
+        order: 3 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    html body.lumina-profile-standard {
+        --profile-page-gutter: 10px;
+        --profile-card-radius: 18px;
+        padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    body.lumina-profile-standard .profile-container {
+        padding: 0 var(--profile-page-gutter) calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    body.lumina-profile-standard .cover-wrapper {
+        aspect-ratio: 16 / 6 !important;
+        border-radius: 0 0 16px 16px !important;
+    }
+
+    body.lumina-profile-standard .profile-head-card {
+        width: 100% !important;
+        margin: 10px auto 0 !important;
+        padding: 18px 14px !important;
+        overflow: hidden !important;
+    }
+
+    body.lumina-profile-standard .profile-head-main {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    body.lumina-profile-standard .avatar-wrap {
+        width: 92px !important;
+        height: 92px !important;
+        min-width: 92px !important;
+        min-height: 92px !important;
+        flex-basis: 92px !important;
+    }
+
+    body.lumina-profile-standard .head-user-details,
+    body.lumina-profile-standard .head-user-name {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    body.lumina-profile-standard .head-user-name {
+        font-size: clamp(1.25rem, 6vw, 1.55rem) !important;
+        line-height: 1.22 !important;
+    }
+
+    body.lumina-profile-standard .head-user-tagline {
+        justify-content: center !important;
+        font-size: 0.74rem !important;
+    }
+
+    body.lumina-profile-standard .head-actions {
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        margin-top: 14px !important;
+        padding: 14px 2px 8px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        overscroll-behavior-inline: contain !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+
+    body.lumina-profile-standard .head-actions::-webkit-scrollbar,
+    body.lumina-profile-standard .profile-nav-tabs::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    body.lumina-profile-standard .head-actions > button,
+    body.lumina-profile-standard .head-actions > a {
+        min-width: max-content !important;
+        padding: 0 14px !important;
+    }
+
+    body.lumina-profile-standard .head-actions .btn-action-gear,
+    body.lumina-profile-standard .head-actions .btn-action-share,
+    body.lumina-profile-standard .head-actions .btn-action-logout,
+    body.lumina-profile-standard .head-actions .btn-action-more {
+        min-width: 42px !important;
+        flex-basis: 42px !important;
+        padding: 0 !important;
+    }
+
+    body.lumina-profile-standard .profile-nav-tabs {
+        margin-top: 12px !important;
+        padding-bottom: 4px !important;
+    }
+
+    body.lumina-profile-standard .profile-nav-tabs .tab-btn {
+        padding: 0 12px !important;
+    }
+
+    body.lumina-profile-standard .profile-body-grid,
+    body.lumina-profile-standard .founder-3col {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        margin-top: 14px !important;
+    }
+
+    body.lumina-profile-standard .profile-body-grid > *,
+    body.lumina-profile-standard .founder-3col > *,
+    body.lumina-profile-standard .left-founder-wing,
+    body.lumina-profile-standard .center-founder-feed,
+    body.lumina-profile-standard .right-founder-wing {
+        width: 100% !important;
+    }
+
+    body.lumina-profile-standard .post-card,
+    body.lumina-profile-standard .sidebar-card {
+        padding: 14px !important;
+        margin-bottom: 12px !important;
+    }
+}
+
+@media (max-width: 390px) {
+    body.lumina-profile-standard .profile-container {
+        padding-inline: 6px !important;
+    }
+
+    body.lumina-profile-standard .profile-head-card {
+        padding-inline: 10px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.lumina-profile-standard *,
+    body.lumina-profile-standard *::before,
+    body.lumina-profile-standard *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
