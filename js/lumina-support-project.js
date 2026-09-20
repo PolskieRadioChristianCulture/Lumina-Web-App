@@ -14,30 +14,95 @@
             card.dataset.postType,
             card.dataset.category,
         ].filter(Boolean).join(' ').toLowerCase();
-        return !/(^|[\s_-])(live|broadcast|transmisj|stream)([\s_-]|$)/.test(marker)
-            && !card.querySelector('iframe[src*="stream"], [data-live="true"], .live-badge, .broadcast-badge');
+        return !card.querySelector('iframe[src*="stream"], iframe[src*="master-live"], iframe[src*="worship"], iframe[src*="cctv24"], [data-live="true"], .live-badge, .broadcast-badge')
+            && !((/(^|[\s_-])(live|broadcast|transmisj|stream)([\s_-]|$)/.test(marker)) && card.querySelector('.mission-live-player-wrapper, iframe'));
     }
 
-    function getActionHost(card) {
-        return card.querySelector('.post-actions, .post-action-row, .post-footer-actions, .post-footer') || card;
+    function getMediaHosts(card) {
+        const hosts = [];
+
+        // 1. Explicit wrappers used across Tablica and Profiles (excluding small link preview thumbs)
+        const wraps = card.querySelectorAll(
+            '.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .video-wrapper, .rich-youtube-embed, .post-media-wrap, .aspect-ratio-9-16'
+        );
+        wraps.forEach(w => {
+            if (!w.querySelector('iframe[src*="master-live"], iframe[src*="worship"], iframe[src*="cctv24"]') && !w.closest('.rich-og-preview-card, .og-preview, .link-preview')) {
+                hosts.push(w);
+            }
+        });
+
+        // 2. Images inside post (post-image, reflection covers, content photos, excluding avatars and link preview thumbnails)
+        const imgs = card.querySelectorAll('img.post-image, .post-content img, .post-content-pro img, .reflection-card-cover, .reflection-link img, .post-body img');
+        imgs.forEach(img => {
+            const isAvatar = img.closest('.post-author-box, .post-avatar, .post-header, .post-header-pro, .quick-post-avatar, .author-avatar, .avatar, .modal-author-avatar');
+            const isThumb = img.closest('.rich-og-thumb-wrapper, .rich-og-preview-card, .link-preview-card, .og-preview');
+            const isSmall = (img.naturalWidth > 0 && img.naturalWidth < 120) || img.classList.contains('emoji') || img.classList.contains('icon');
+            if (!isAvatar && !isThumb && !isSmall && !hosts.some(h => h.contains(img))) {
+                const parent = img.parentElement;
+                if (parent && parent !== card) {
+                    hosts.push(parent);
+                }
+            }
+        });
+
+        // 3. Videos and embedded players
+        const mediaTags = card.querySelectorAll('video, iframe');
+        mediaTags.forEach(el => {
+            const src = (el.src || '').toLowerCase();
+            const isLive = src.includes('master-live') || src.includes('worship') || src.includes('cctv24') || src.includes('stream-scene');
+            const isThumb = el.closest('.rich-og-preview-card, .link-preview-card');
+            if (!isLive && !isThumb && !hosts.some(h => h.contains(el))) {
+                const parent = el.parentElement;
+                if (parent && parent !== card) {
+                    hosts.push(parent);
+                }
+            }
+        });
+
+        return [...new Set(hosts)];
     }
 
-    function decoratePost(card) {
-        if (!isEligiblePost(card) || card.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) return;
+    function createSupportButton() {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = SUPPORT_BUTTON_CLASS;
         button.setAttribute('aria-haspopup', 'dialog');
         button.setAttribute('aria-controls', MODAL_ID);
         button.innerHTML = '<i class="fa-solid fa-heart" aria-hidden="true"></i><span>Wspieraj projekt</span>';
-        button.addEventListener('click', openModal);
-        getActionHost(card).appendChild(button);
+        button.addEventListener('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            openModal();
+        });
+        return button;
+    }
+
+    function decoratePost(card) {
+        if (!isEligiblePost(card)) return;
+
+        const mediaHosts = getMediaHosts(card);
+        if (mediaHosts.length > 0) {
+            mediaHosts.forEach(host => {
+                if (host.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) return;
+                host.setAttribute('data-lumina-media-host', 'true');
+                if (window.getComputedStyle(host).position === 'static') {
+                    host.style.position = 'relative';
+                }
+                host.appendChild(createSupportButton());
+            });
+        } else {
+            const fallbackHost = card.querySelector('.post-actions, .post-action-row, .post-footer-actions, .post-footer') || card;
+            if (!card.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) {
+                fallbackHost.appendChild(createSupportButton());
+            }
+        }
     }
 
     function decoratePosts(root) {
         if (!(root instanceof Element || root instanceof Document)) return;
-        if (root.matches?.('.post-card')) decoratePost(root);
+        if (root.matches?.('.post-card, .post-card-1x1')) decoratePost(root);
         root.querySelectorAll?.('.post-card').forEach(decoratePost);
+        root.querySelectorAll?.('.post-card-1x1').forEach(decoratePost);
     }
 
     function copyBlik() {
@@ -126,11 +191,13 @@
         const style = document.createElement('style');
         style.id = 'luminaSupportProjectStyles';
         style.textContent = `
-            .${SUPPORT_BUTTON_CLASS}{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 13px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(15,23,42,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#f8fafc;font:700 .78rem/1.1 inherit;cursor:pointer;transition:background .2s ease,transform .2s ease,border-color .2s ease}
-            .${SUPPORT_BUTTON_CLASS}:hover{background:rgba(190,24,93,.72);border-color:rgba(251,113,133,.65);transform:translateY(-1px)}
-            .${SUPPORT_BUTTON_CLASS} i{color:#fb7185}.lumina-support-modal[hidden]{display:none!important}.lumina-support-modal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:18px}.lumina-support-modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.76);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+            .${SUPPORT_BUTTON_CLASS}{position:absolute;bottom:12px;left:12px;z-index:15;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 14px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(15,23,42,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#f8fafc;font:700 .78rem/1.1 inherit;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.5);transition:background .2s ease,transform .2s ease,border-color .2s ease,box-shadow .2s ease;pointer-events:auto}
+            .${SUPPORT_BUTTON_CLASS}:hover{background:rgba(190,24,93,.85);border-color:rgba(251,113,133,.8);transform:translateY(-2px);box-shadow:0 6px 22px rgba(225,29,72,.45)}
+            .${SUPPORT_BUTTON_CLASS} i{color:#fb7185;font-size:.85rem;filter:drop-shadow(0 0 5px rgba(251,113,133,.6))}
+            .post-actions .${SUPPORT_BUTTON_CLASS},.post-action-row .${SUPPORT_BUTTON_CLASS},.post-footer .${SUPPORT_BUTTON_CLASS},.post-footer-actions .${SUPPORT_BUTTON_CLASS}{position:static;margin-left:auto}
+            .lumina-support-modal[hidden]{display:none!important}.lumina-support-modal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:18px}.lumina-support-modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.76);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
             .lumina-support-modal-card{box-sizing:border-box;position:relative;width:min(100%,460px);padding:28px 22px 22px;border:1px solid rgba(255,255,255,.16);border-radius:24px;background:linear-gradient(145deg,#111c37,#080e1f);box-shadow:0 28px 70px rgba(0,0,0,.62);color:#fff;text-align:center}.lumina-support-modal-close{position:absolute;top:12px;right:12px;width:40px;height:40px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:rgba(255,255,255,.07);color:#fff;cursor:pointer}.lumina-support-modal-icon{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,#ec4899,#be123c);font-size:1.4rem}.lumina-support-modal-card h2{margin:0 0 8px;font:800 1.5rem/1.2 'Outfit',sans-serif}.lumina-support-modal-card>p{margin:0 auto 18px;color:#cbd5e1;font-size:.88rem;line-height:1.5}.lumina-support-methods{display:grid;gap:10px}.lumina-support-method{box-sizing:border-box;display:flex;align-items:center;gap:13px;width:100%;min-height:62px;padding:11px 14px;border:1px solid rgba(255,255,255,.13);border-radius:16px;color:#fff;text-align:left;text-decoration:none;cursor:pointer}.lumina-support-method>i{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:rgba(255,255,255,.13)}.lumina-support-method span{display:grid;gap:3px}.lumina-support-method strong{font-size:.92rem}.lumina-support-method small{color:#e2e8f0;font-size:.73rem}.lumina-support-blik{background:linear-gradient(135deg,#7c3aed,#5b21b6)}.lumina-support-revolut{background:linear-gradient(135deg,#087bea,#0754c7)}.lumina-support-patronite{background:linear-gradient(135deg,#e11d48,#be123c)}body.lumina-support-modal-open{overflow:hidden!important}
-            @media(max-width:768px){.${SUPPORT_BUTTON_CLASS}{min-height:34px;padding:6px 11px;font-size:.72rem}.lumina-support-modal{padding:10px}.lumina-support-modal-card{padding:26px 14px 16px;border-radius:20px}.lumina-support-method{min-height:58px}}
+            @media(max-width:768px){.${SUPPORT_BUTTON_CLASS}{bottom:10px;left:10px;min-height:32px;padding:5px 12px;font-size:.72rem}.lumina-support-modal{padding:10px}.lumina-support-modal-card{padding:26px 14px 16px;border-radius:20px}.lumina-support-method{min-height:58px}}
             @media(prefers-reduced-motion:reduce){.${SUPPORT_BUTTON_CLASS}{transition:none}}
         `;
         document.head.appendChild(style);
@@ -148,6 +215,13 @@
             if (event.key === 'Escape') closeModal();
         });
     }
+
+    window.LuminaSupportProject = {
+        openModal,
+        closeModal,
+        copyBlik,
+        decoratePosts
+    };
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();
