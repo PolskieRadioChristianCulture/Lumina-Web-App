@@ -101,6 +101,18 @@ test('homepage keeps product features behind account creation', async () => {
   assert.match(html, /window\.setLuminaAuthView\(Boolean\(user\)\)/);
 });
 
+test('carousel activity controls stay separated and post counts use published profile data', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+
+  assert.match(html, /\\.card-activity-badges\\s*\\{[\\s\\S]*?top:\\s*60px;[\\s\\S]*?gap:\\s*10px;/);
+  assert.match(html, /@media \\(max-width: 900px\\)[\\s\\S]*?\\.card-activity-badges\\s*\\{[\\s\\S]*?top:\\s*68px;[\\s\\S]*?gap:\\s*12px;/);
+  assert.match(html, /window\\.LuminaDB\\.getAuthorPosts\\(slug, name\\)/);
+  assert.match(html, /post\\.published !== false/);
+  assert.match(html, /window\\.addEventListener\\('lumina_post_published'/);
+  assert.doesNotMatch(html, /cleanSlug\\.includes\\('pawel'\\)[\\s\\S]*?count = 2/);
+  assert.doesNotMatch(html, /Andrzej Hamera – 2 wpisy/);
+});
+
 test('Hamera profile uses the kitchen-furniture identity and excludes Thiel posts', async () => {
   const profile = await readFile('lumina-profile.html', 'utf8');
   const profilesDb = await readFile('js/lumina-db-profiles.js', 'utf8');

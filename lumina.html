@@ -1950,14 +1950,22 @@
         /* ══════════ CAROUSEL CARD ACTIVITY BADGES (ENVELOPE & CHAT) ══════════ */
         .card-activity-badges {
             position: absolute;
-            top: 56px;
+            top: 60px;
             right: 12px;
             z-index: 6;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 6px;
+            gap: 10px;
             pointer-events: auto;
+        }
+
+        @media (max-width: 900px) {
+            .card-activity-badges {
+                /* Serce ma na telefonie 44 px wysokości i zaczyna się 12 px od góry. */
+                top: 68px;
+                gap: 12px;
+            }
         }
 
         .card-badge-envelope {
@@ -4801,15 +4809,7 @@
                         </button>
                         <button class="card-heart" onclick="toggleLike(event,this,'andrzejhamera','Andrzej Hamera','avatar_andrzej_hamera.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
-                        <div class="card-activity-badges" data-activity-badges-for="andrzejhamera">
-                            <button type="button" class="card-badge-envelope" title="Andrzej Hamera – 2 wpisy na profilu i tablicy społeczności" onclick="handleCardEnvelopeClick(event, 'andrzejhamera')">
-                                <i class="fa-solid fa-envelope"></i>
-                                <span class="card-badge-count">2</span>
-                            </button>
-                            <button type="button" class="card-badge-chat" title="Andrzej Hamera – kliknij, aby porozmawiać" onclick="handleCardChatClick(event, 'andrzejhamera', 'Andrzej Hamera', 'avatar_andrzej_hamera.jpg')">
-                                <i class="fa-solid fa-comment-dots"></i>
-                            </button>
-                        </div>
+                        <div class="card-activity-badges" data-activity-badges-for="andrzejhamera"></div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Andrzej Hamera, 52</div>
@@ -8512,6 +8512,25 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         // ══════════ CAROUSEL ACTIVITY BADGES ENGINE (ENVELOPE POSTS & CHAT) ══════════
         window.getProfilePostCount = function(slug, name) {
             if (!slug && !name) return 0;
+
+            // Jedno źródło prawdy: liczba wpisów jest identyczna z listą,
+            // którą silnik profilu rzeczywiście publikuje i wyświetla.
+            if (window.LuminaDB && typeof window.LuminaDB.getAuthorPosts === 'function') {
+                try {
+                    const profilePosts = window.LuminaDB.getAuthorPosts(slug, name);
+                    if (Array.isArray(profilePosts)) {
+                        return profilePosts.filter(post => post &&
+                            post.deleted !== true &&
+                            post.hidden !== true &&
+                            post.published !== false &&
+                            String(post.status || '').toLowerCase() !== 'draft'
+                        ).length;
+                    }
+                } catch(e) {
+                    console.warn('Lumina: nie udało się policzyć wpisów profilu', e);
+                }
+            }
+
             const cleanSlug = String(slug || '').toLowerCase().trim().replace(/^u_/, '');
             const normSlug = cleanSlug.replace(/[^a-z0-9]/g, '');
             const normName = String(name || '').toLowerCase().trim().replace(/\s+/g, ' ');
@@ -8586,18 +8605,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     }
                 });
             } catch(e) {}
-
-            // 3. Sprawdź bazowe wpisy redakcyjne / założycielskie w razie braku wpisów w pamięci
-            if (count === 0) {
-                if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) count = 6;
-                else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) count = 4;
-                else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) count = 3;
-                else if (cleanSlug.includes('zbyszek') || cleanName.includes('zbyszek')) count = 4;
-                else if (cleanSlug.includes('jola') || cleanName.includes('jola')) count = 3;
-                else if (cleanSlug.includes('pawel') || cleanName.includes('pawel')) count = 2;
-                else if (cleanSlug.includes('zofia') || cleanName.includes('zofia')) count = 2;
-                else if (cleanSlug.includes('radiocc') || cleanSlug.includes('cctv')) count = 5;
-            }
 
             return count;
         };
@@ -8746,6 +8753,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 badgesWrap.innerHTML = badgesHtml;
             });
         };
+
+        // Nowy wpis natychmiast aktualizuje licznik, bez odświeżania strony.
+        window.addEventListener('lumina_post_published', () => {
+            setTimeout(window.syncCarouselActivityBadges, 0);
+        });
 
         // Automatyczny start przy ładowaniu strony
         if (document.readyState === 'loading') {
