@@ -588,7 +588,8 @@
     }
 
     /* Profile carousel on homepage has custom JS touch drag handlers that dispatch vertical scrolling. */
-    #profilesCarousel {
+    #profilesCarousel,
+    #missionCarousel {
         overflow-y: hidden !important;
         overscroll-behavior-x: contain;
         overscroll-behavior-y: auto;
@@ -735,7 +736,10 @@
     /* Enlarged/raised cards were clipped by the carousel's scroll port. */
     #profilesCarousel .profile-card,
     #profilesCarousel .profile-card.featured,
-    #profilesCarousel .profile-card.active-center-card {
+    #profilesCarousel .profile-card.active-center-card,
+    #missionCarousel .profile-card,
+    #missionCarousel .profile-card.featured,
+    #missionCarousel .profile-card.active-center-card {
         transform: none !important;
     }
 
