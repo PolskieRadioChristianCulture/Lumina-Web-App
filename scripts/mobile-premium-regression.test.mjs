@@ -56,6 +56,8 @@ test('narrow-phone settings stay available when the compact action is hidden', a
 
 test('homepage carousel distinguishes vertical scrolling from a profile tap', async () => {
   const html = await readFile('lumina.html', 'utf8');
+  assert.match(html, /class="profile-card video-card featured original-promo-card" id="promoAdCard3"/);
+  assert.doesNotMatch(html, /\nid="promoAdCard3"/);
   assert.match(html, /const deltaY = Math\.abs\(touch\.clientY - _carouselPointerStartY\)/);
   assert.match(html, /const isGesture = _carouselGestureMoved \|\| deltaX > 8 \|\| deltaY > 8 \|\| scrollDelta > 8/);
   assert.match(html, /const isHorizontalSwipe = deltaX > 40 && deltaX > deltaY \* 1\.2/);
@@ -63,6 +65,23 @@ test('homepage carousel distinguishes vertical scrolling from a profile tap', as
   assert.match(html, /_suppressCarouselClickUntil = Date\.now\(\) \+ 500/);
   assert.match(html, /carousel\.addEventListener\('touchcancel'/);
   assert.match(html, /carousel\.addEventListener\('click',[\s\S]*\{ capture: true \}\)/);
+});
+
+test('registration starts cleanly and guest-only services stay quiet', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  const badges = await readFile('lumina-badges-engine.js', 'utf8');
+  const typing = await readFile('lumina-chat-typing.js', 'utf8');
+
+  assert.match(html, /Dołącz bezpłatnie – zacznij w minutę/);
+  assert.match(html, /id="btnGoogleRegister"[\s\S]*Zacznij przez Google/);
+
+  const stepTwoGuard = html.slice(
+    html.indexOf('window.goToWizardStep = function(step)'),
+    html.indexOf('window.handleObAvatarChange')
+  );
+  assert.doesNotMatch(stepTwoGuard, /obTermsAccepted/);
+  assert.match(badges, /if \(hasAuthenticatedUser\(\)\)[\s\S]*checkInDailyActivity\(\)/);
+  assert.match(typing, /!hasAuthenticatedUser\(\)/);
 });
 
 test('Hamera profile uses the kitchen-furniture identity and excludes Thiel posts', async () => {
@@ -94,4 +113,3 @@ test('master admin HUD requires explicit PIN session and prevents duplicate bars
   assert.doesNotMatch(profile, /if \(uSlug === 'cezaryrgowski'\) isMaster = true/);
   assert.match(adminSuite, /sessionStorage\.getItem\('lumina_auth_master_admin'\) === 'true'/);
 });
-

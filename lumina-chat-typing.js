@@ -12,6 +12,10 @@ import {
 
 function db() { return window.luminaDb; }
 
+function hasAuthenticatedUser() {
+    return Boolean(window.LuminaDB?.getCurrentUser?.()?.uid);
+}
+
 function myId() {
     const u = window.LuminaDB?.getCurrentUser?.();
     const p = window.LuminaDB?.getCurrentProfile?.();
@@ -26,7 +30,7 @@ function myId() {
 let clearTimer = null;
 
 async function setTypingStatus(chatId, isTyping) {
-    if (!db() || !chatId) return;
+    if (!db() || !chatId || !hasAuthenticatedUser()) return;
     clearTimeout(clearTimer);
     try {
         await setDoc(doc(db(), 'lumina_typing', chatId), { [myId()]: isTyping ? Date.now() : deleteField() }, { merge: true });
@@ -47,7 +51,7 @@ function notifyTyping(chatId) {
 const typingBindings = new Map();
 
 function listenToTypingStatus(chatId, onUpdate) {
-    if (!db() || !chatId) return () => {};
+    if (!db() || !chatId || !hasAuthenticatedUser()) return () => {};
     return onSnapshot(doc(db(), 'lumina_typing', chatId), (snap) => {
         if (!snap.exists()) return onUpdate([]);
         const data = snap.data();
