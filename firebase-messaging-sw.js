@@ -34,7 +34,7 @@ try {
             ? (data.avatar || data.icon || notification.icon || defaultIcon)
             : (notification.icon || data.icon || defaultIcon);
         const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
-        let urlToOpen = data.url || './lumina.html';
+        let urlToOpen = data.url || '/lumina';
 
         let actions = [
             { action: 'open', title: 'Otwórz LUMINA 🕊️' }
@@ -62,12 +62,12 @@ try {
                 { action: 'reply', title: '💬 Odpowiedz' },
                 { action: 'open', title: 'Otwórz Czat' }
             ];
-            if (data.senderId) urlToOpen = `./lumina.html?openChat=${encodeURIComponent(data.senderId)}`;
+            if (data.senderId) urlToOpen = `/lumina?openChat=${encodeURIComponent(data.senderId)}`;
         } else if (type === 'public_chat') {
             actions = [
                 { action: 'open', title: '💬 Dołącz do rozmowy' }
             ];
-            urlToOpen = '/lumina.html?openPublicChat=1';
+            urlToOpen = '/lumina?openPublicChat=1';
         } else if (type === 'daily_mission') {
             actions = [
                 { action: 'prayer', title: '🙏 Pomódl się' },
@@ -253,7 +253,7 @@ self.addEventListener('push', (event) => {
         ? (data.avatar || data.icon || notification.icon || defaultIcon)
         : (notification.icon || data.icon || defaultIcon);
     const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
-    const url = data.url || './lumina.html';
+    const url = data.url || '/lumina';
 
     let actions = [
         { action: 'open', title: 'Otwórz LUMINA 🕊️' }
@@ -350,9 +350,9 @@ function handleLuminaNotificationClick(event) {
             ? data.url 
             : `/lumina-tablica.html?postId=${encodeURIComponent(postId || '')}${authorSlug ? '&author=' + encodeURIComponent(authorSlug) : ''}`;
     } else if (isPublic) {
-        targetUrl = `/lumina.html?openPublicChat=1`;
+        targetUrl = `/lumina?openPublicChat=1`;
     } else if (sender) {
-        targetUrl = `/lumina.html?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
+        targetUrl = `/lumina?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
     } else if (!targetUrl) {
         targetUrl = '/lumina';
     }
@@ -361,9 +361,9 @@ function handleLuminaNotificationClick(event) {
     let fullTargetUrl;
     try {
         const parsed = new URL(targetUrl, self.location.origin);
-        fullTargetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina.html';
+        fullTargetUrl = parsed.origin === self.location.origin ? parsed.href : self.location.origin + '/lumina';
     } catch (_) {
-        fullTargetUrl = self.location.origin + '/lumina.html';
+        fullTargetUrl = self.location.origin + '/lumina';
     }
 
     const postPayload = {
