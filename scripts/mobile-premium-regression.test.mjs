@@ -84,6 +84,23 @@ test('registration starts cleanly and guest-only services stay quiet', async () 
   assert.match(typing, /!hasAuthenticatedUser\(\)/);
 });
 
+test('homepage keeps product features behind account creation', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+
+  assert.match(html, /<body class="user-is-guest">/);
+  assert.match(html, /id="luminaGuestConversionMode"/);
+  assert.match(html, /body\.user-is-guest \.discovery-filters-wrap/);
+  assert.match(html, /body\.user-is-guest #strefaMisyjna/);
+  assert.match(html, /body\.user-is-guest #luminaBottomNav/);
+  assert.match(html, /body\.user-is-guest #lumina-notification-center/);
+  assert.match(html, /body\.user-is-guest \.card-heart/);
+  assert.match(html, /id="guestCarouselCta"[\s\S]*Załóż profil/);
+  assert.match(html, /window\.setLuminaAuthView = function\(isAuthenticated\)/);
+  assert.match(html, /classList\.toggle\('user-is-authenticated', Boolean\(isAuthenticated\)\)/);
+  assert.match(html, /classList\.toggle\('user-is-guest', !isAuthenticated\)/);
+  assert.match(html, /window\.setLuminaAuthView\(Boolean\(user\)\)/);
+});
+
 test('Hamera profile uses the kitchen-furniture identity and excludes Thiel posts', async () => {
   const profile = await readFile('lumina-profile.html', 'utf8');
   const profilesDb = await readFile('js/lumina-db-profiles.js', 'utf8');

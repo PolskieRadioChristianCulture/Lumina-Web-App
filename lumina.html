@@ -4344,10 +4344,85 @@
             transform: translateY(-8px) !important;
         }
     </style>
+    <style id="luminaGuestConversionMode">
+        /* Przed utworzeniem konta pokazujemy prostą stronę informacyjną.
+           Funkcje społecznościowe wracają automatycznie po uwierzytelnieniu. */
+        .lumina-guest-only { display: none !important; }
+        body.user-is-guest .lumina-guest-only { display: flex !important; }
+        body.user-is-authenticated .lumina-guest-only { display: none !important; }
+
+        body.user-is-guest .mobile-nav-search-btn,
+        body.user-is-guest #navSearchWrapper,
+        body.user-is-guest #radioWidget,
+        body.user-is-guest .nav-menu-wrapper,
+        body.user-is-guest .btn-nav-support,
+        body.user-is-guest .discovery-filters-wrap,
+        body.user-is-guest #strefaMisyjna,
+        body.user-is-guest #todayDevotionalBanner,
+        body.user-is-guest .tablica-preview-widget,
+        body.user-is-guest .card-heart,
+        body.user-is-guest .btn-carousel-follow-pulse,
+        body.user-is-guest .card-match,
+        body.user-is-guest .card-activity-badges,
+        body.user-is-guest #luminaFloatingChatBtn,
+        body.user-is-guest #luminaBottomNav,
+        body.user-is-guest #luminaBottomMenuPopup,
+        body.user-is-guest #luminaMiniPlayerContainer,
+        body.user-is-guest #lumina-notification-center,
+        body.user-is-guest #luminaPushSoftPrompt,
+        body.user-is-guest .lumina-pwa-banner,
+        body.user-is-guest #luminaIosModal,
+        body.user-is-guest #directMessagesModal,
+        body.user-is-guest #personalSettingsModal,
+        body.user-is-guest #luminaAdvancedFiltersModal,
+        body.user-is-guest #adminPinModal,
+        body.user-is-guest #recommendModal,
+        body.user-is-guest #supportLuminaModal,
+        body.user-is-guest #devotionalModal,
+        body.user-is-guest #googleDriveModal,
+        body.user-is-guest #matchCelebrationModal,
+        body.user-is-guest #luminaProfileQuickActionsModal,
+        body.user-is-guest #modalAllOnlineUsers {
+            display: none !important;
+            pointer-events: none !important;
+        }
+
+        .guest-carousel-cta {
+            max-width: 760px;
+            margin: 14px auto 2px;
+            padding: 14px 18px;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            text-align: center;
+            color: #e2e8f0;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(192, 132, 252, 0.42);
+            border-radius: 16px;
+        }
+        .guest-carousel-cta strong { color: #fff; }
+        .guest-carousel-cta button {
+            min-height: 44px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 999px;
+            color: #fff;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+        }
+        @media (max-width: 680px) {
+            .guest-carousel-cta { margin-inline: 12px; font-size: 0.92rem; }
+            .guest-carousel-cta button { width: 100%; }
+        }
+    </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
 </head>
-<body>
+<body class="user-is-guest">
 <script>
     (function() {
         try {
@@ -4710,6 +4785,11 @@
 
             </div>
             <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="guest-carousel-cta lumina-guest-only" id="guestCarouselCta" role="region" aria-label="Dołącz do społeczności">
+            <span><strong>Chcesz napisać, obserwować i poznawać osoby o podobnych wartościach?</strong> Załóż bezpłatny profil.</span>
+            <button type="button" onclick="openAuth('register')">Załóż profil</button>
         </div>
 
         <!-- Discovery Match Filters (Filtry Wartości, Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Polecaj) - pod karuzelą -->
@@ -6809,10 +6889,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         };
 
         // ── Global Auth State Synchronization ──
+        window.setLuminaAuthView = function(isAuthenticated) {
+            if (!document.body) return;
+            document.body.classList.toggle('user-is-authenticated', Boolean(isAuthenticated));
+            document.body.classList.toggle('user-is-guest', !isAuthenticated);
+        };
+
         window.addEventListener('DOMContentLoaded', () => {
             const checkAuth = () => {
                 if (window.LuminaDB) {
                     window.LuminaDB.onAuthChange((user, profile) => {
+                        window.setLuminaAuthView(Boolean(user));
                         const profilePill = document.getElementById('userNavProfile');
                         const authBtn = document.getElementById('authCtaBtn');
                         const navName = document.getElementById('userNavName');
@@ -6866,6 +6953,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (profilePill) profilePill.style.display = 'none';
             if (authBtn) authBtn.style.display = 'block';
             if (heroGuestCta) heroGuestCta.style.display = 'flex';
+            window.setLuminaAuthView(false);
 
             showToast('Wylogowano pomyślnie z portalu LUMINA ✨');
         };
