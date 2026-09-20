@@ -1911,6 +1911,8 @@ export async function publishUniversalPost(postData) {
     const authorName = postData.author || 'Użytkownik LUMINA';
     const authorAvatar = postData.authorAvatar || 'lumina_icon.jpg';
     const authorRole = postData.authorRole || 'Społeczność LUMINA ✨';
+    const authenticatedUser = auth?.currentUser || currentUserState || null;
+    const authorUid = postData.authorUid || authenticatedUser?.uid || null;
 
     const rawCombinedText = `${postData.text || ''} ${postData.desc || ''} ${postData.title || ''}`;
     let autoYtId = extractYouTubeId(postData.videoUrl || postData.youtubeUrl || '');
@@ -1940,6 +1942,7 @@ export async function publishUniversalPost(postData) {
         gdriveEmbed: postData.gdriveEmbed || null,
         author: authorName,
         authorSlug: slug,
+        authorUid: authorUid,
         authorAvatar: authorAvatar,
         authorRole: authorRole,
         likes: postData.likes || 1,
@@ -1952,7 +1955,31 @@ export async function publishUniversalPost(postData) {
         sharedPost: postData.sharedPost || null
     };
 
-    // 1. Save to Author's Local Profile Posts
+    // 1. Trwały zapis jest źródłem prawdy. Dopiero po jego potwierdzeniu
+    // aktualizujemy pamięć urządzenia i interfejs.
+    if (!db) {
+        throw new Error('Połączenie z bazą LUMINA nie jest dostępne. Wpis nie został opublikowany.');
+    }
+    if (!authorUid && !postData.isDevotion) {
+        throw new Error('Sesja użytkownika wygasła. Zaloguj się ponownie przed publikacją.');
+    }
+
+    let cloudDocumentId = null;
+    try {
+        const cloudDoc = await addDoc(collection(db, 'lumina_posts'), {
+            ...normalizedPost,
+            createdAtTimestamp: serverTimestamp()
+        });
+        cloudDocumentId = cloudDoc.id;
+    } catch(err) {
+        console.error('Lumina Firestore addDoc error:', err);
+        const reason = err?.code === 'permission-denied'
+            ? 'Brak uprawnień do publikacji. Zaloguj się ponownie.'
+            : 'Nie udało się zapisać wpisu w chmurze LUMINA.';
+        throw new Error(reason);
+    }
+
+    // 2. Save to Author's Local Profile Posts
     try {
         const isCezary = slug.includes('cezary') || authorName.toLowerCase().includes('cezary');
         const isWioletta = slug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
@@ -1998,7 +2025,7 @@ export async function publishUniversalPost(postData) {
         console.warn('Lumina: Błąd zapisu posta w profilu autora:', e);
     }
 
-    // 2. Save to Public Feed Local Cache (lumina_cloud_posts_cache & lumina_cc_campaigns)
+    // 3. Save to Public Feed Local Cache (lumina_cloud_posts_cache & lumina_cc_campaigns)
     try {
         const rawFeed = localStorage.getItem('lumina_cloud_posts_cache');
         const feedList = rawFeed ? JSON.parse(rawFeed) : [];
@@ -2017,23 +2044,11 @@ export async function publishUniversalPost(postData) {
         }
     } catch(e) {}
 
-    // 3. Save to Firestore Cloud Collection lumina_posts
-    if (db) {
-        try {
-            await addDoc(collection(db, 'lumina_posts'), {
-                ...normalizedPost,
-                createdAtTimestamp: serverTimestamp()
-            });
-        } catch(err) {
-            console.warn('Lumina Firestore addDoc error:', err.message);
-        }
-    }
-
     // 4. Dispatch Global Events to trigger instant reactive re-renders
     window.dispatchEvent(new CustomEvent('lumina_post_published', { detail: normalizedPost }));
     window.dispatchEvent(new Event('storage'));
 
-    return normalizedPost;
+    return { ...normalizedPost, cloudDocumentId };
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -8438,4 +8453,3 @@ if (typeof window !== 'undefined') {
         };
     }
 }
-

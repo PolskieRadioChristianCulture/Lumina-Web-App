@@ -595,10 +595,35 @@
         // 3. Zapis w silniku LuminaDB (chmura Firestore & synchronizacja zdarzeń)
         if (window.LuminaDB?.publishUniversalPost) {
             try {
-                await window.LuminaDB.publishUniversalPost(newPost);
+                const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
+                if (!publishedPost?.cloudDocumentId) {
+                    throw new Error('Serwer nie potwierdził zapisu wpisu.');
+                }
             } catch(e) {
-                console.warn('LuminaDB universal publish error:', e);
+                console.error('LuminaDB universal publish error:', e);
+                keysToUpdate.forEach(k => {
+                    try {
+                        const raw = localStorage.getItem(k);
+                        if (!raw) return;
+                        const profile = JSON.parse(raw);
+                        if (Array.isArray(profile.posts)) {
+                            profile.posts = profile.posts.filter(post => post.id !== newPost.id);
+                            localStorage.setItem(k, JSON.stringify(profile));
+                        }
+                    } catch(err) {}
+                });
+                try {
+                    const cached = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cached.filter(post => post.id !== newPost.id)));
+                } catch(err) {}
+                if (window.showToast) {
+                    window.showToast(e?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.');
+                }
+                return;
             }
+        } else {
+            if (window.showToast) window.showToast('Moduł publikacji LUMINA nie jest jeszcze gotowy.');
+            return;
         }
 
         // Asynchroniczne doczytanie pełnego OpenGraph w tle (dla kart sklepów, produktów i stron WWW)

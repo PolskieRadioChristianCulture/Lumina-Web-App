@@ -385,7 +385,7 @@
         globalThis.LUMINA_PUSH_WORKER_DIRECT_ENABLED = true;
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=4.1.7"></script>
+    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -6638,7 +6638,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 return window.LuminaDB;
             }
             try {
-                const mod = await import('./lumina-db.js?v=4.1.7');
+                const mod = await import('./lumina-db.js?v=20260920_post_persistence_v1');
                 window.LuminaDB = mod.default || mod || window.LuminaDB;
                 return window.LuminaDB;
             } catch(e) {
@@ -6662,7 +6662,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                 if (typeof authFn !== 'function') {
                     // Direct dynamic import execution
-                    const mod = await import('./lumina-db.js?v=4.1.7');
+                    const mod = await import('./lumina-db.js?v=20260920_post_persistence_v1');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
@@ -8387,7 +8387,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     authFn = (dbEngine && dbEngine.loginWithGoogle) || window.loginWithGoogle;
                 }
                 if (typeof authFn !== 'function') {
-                    const mod = await import('./lumina-db.js?v=4.1.7');
+                    const mod = await import('./lumina-db.js?v=20260920_post_persistence_v1');
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
