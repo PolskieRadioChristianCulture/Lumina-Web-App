@@ -4646,7 +4646,7 @@
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
         <div class="carousel-container">
-            <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="carousel-btn left" onclick="scrollCarousel(-1)" aria-label="Poprzednie profile"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
@@ -4657,7 +4657,7 @@
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
+                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 50</div>
                         <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
@@ -4821,7 +4821,7 @@
 
 
             </div>
-            <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="carousel-btn right" onclick="scrollCarousel(1)" aria-label="Następne profile"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
         </div>
 
         <div class="guest-carousel-cta lumina-guest-only" id="guestCarouselCta" role="region" aria-label="Dołącz do społeczności">
@@ -4854,7 +4854,7 @@
     <!-- ══════════ STREFA ROZWOJU, MAŁŻEŃSTWA & SKLEP CC (PARTNERZY MISYJNI) ══════════ -->
     <section class="cards-section lumina-mission-showcase-section" id="strefaMisyjna" style="margin-top: 0;">
         <div class="carousel-container">
-            <button class="carousel-btn left" onclick="scrollMissionCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="carousel-btn left" onclick="scrollMissionCarousel(-1)" aria-label="Poprzednie inicjatywy"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
             <div class="profiles-grid" id="missionCarousel">
 
                 <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC) -->
@@ -5100,7 +5100,7 @@
                 </div>
 
             </div>
-            <button class="carousel-btn right" onclick="scrollMissionCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="carousel-btn right" onclick="scrollMissionCarousel(1)" aria-label="Następne inicjatywy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
         </div>
     </section>
 
@@ -5260,7 +5260,7 @@
                         <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                     </summary>
                     <div class="qna-answer">
-                        <p><strong>LUMINA (Christian Culture)</strong> to suwerenny, najwyższej klasy chrześcijański portal relacji i wartości, stworzony jako bezpieczna alternatywa dla świeckich platform (TikTok, Instagram, Facebook, Tinder).</p>
+                        <p><strong>LUMINA (Christian Culture)</strong> to rozwijany chrześcijański portal społecznościowo-relacyjny, który pomaga poznawać osoby kierujące się wiarą i wspólnymi wartościami.</p>
                         <p>Naszą misją jest łączenie ludzi wierzących na fundamencie Chrystusa — w celu budowania trwałych, świętych małżeństw, wartościowych chrześcijańskich przyjaźni, dzielenia się świadectwami Bożego działania oraz wzajemnej modlitwy wstawienniczej.</p>
                     </div>
                 </details>
@@ -5275,7 +5275,7 @@
                         <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                     </summary>
                     <div class="qna-answer">
-                        <p>Lumina Connect opiera się na wyjaśnialnym algorytmie <em>Explainable AI Match</em>, który analizuje wspólne fundamenty wiary (100%), cele życiowe (95%), wartości moralne (92%) oraz lokalizację.</p>
+                        <p>Lumina Connect tworzy orientacyjne rekomendacje na podstawie informacji podanych przez użytkowników, m.in. celu relacji, wartości, wyznania i lokalizacji. Wynik procentowy pomaga porównać profile, ale nie jest gwarancją udanej relacji.</p>
                         <p>Zamiast płytkiego i przedmiotowego „swipe'owania”, oferujemy 3 bezstresowe akcje wejścia:</p>
                         <ul>
                             <li>👋 <strong>Poznajmy się:</strong> Delikatne chrześcijańskie przywitanie.</li>
@@ -5304,16 +5304,16 @@
                     <summary class="qna-summary">
                         <div class="qna-q-title">
                             <span class="qna-badge-q">4</span>
-                            <span>Jak LUMINA dba o bezpieczeństwo i autentyczność profili (Zero Fake / Zero Botów)?</span>
+                            <span>Jak LUMINA wspiera bezpieczeństwo i autentyczność profili?</span>
                         </div>
                         <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                     </summary>
                     <div class="qna-answer">
-                        <p>Wdrożyliśmy zaawansowany system <em>Lumina Trust System</em>:</p>
+                        <p>Bezpieczeństwo wspieramy przez kilka uzupełniających się rozwiązań:</p>
                         <ul>
-                            <li>🛡️ <strong>Weryfikacja twarzy Vision AI:</strong> Eliminacja profili ze zdjęciami krajobrazów, zwierząt czy fałszywych postaci.</li>
-                            <li>📱 <strong>Weryfikacja SMS:</strong> Potwierdzenie realności każdego numeru telefonu.</li>
-                            <li>🔒 <strong>Zero tolerancji dla hejtu i botów:</strong> Pełna ochrona godności, prywatności i danych osobowych (RODO art. 9).</li>
+                            <li>🛡️ <strong>Logowanie i oznaczenia:</strong> konto może korzystać z e-maila, Google albo — gdy funkcja jest dostępna — numeru telefonu. Odznaka weryfikacji nie jest przyznawana automatycznie.</li>
+                            <li>🚩 <strong>Zgłoszenia i moderacja:</strong> użytkownicy mogą zgłaszać profile i treści naruszające zasady społeczności.</li>
+                            <li>🔒 <strong>Ochrona danych:</strong> ustawienia widoczności i procedury bezpieczeństwa ograniczają ryzyko, ale żadna platforma nie może zagwarantować całkowitego braku fałszywych kont.</li>
                         </ul>
                     </div>
                 </details>
@@ -5481,7 +5481,7 @@
 
             
             <!-- TAB 3: COMMANDER VIP MISSION CHAT (Exclusive for authorized emails: nazirczarkes@gmail.com, radiochristianculture@gmail.com) -->
-            <div id="messengerCommanderView" style="display: none; flex-direction: column; flex: 1; min-height: 0; background:#070d1e;">
+            <div id="messengerCommanderView" hidden inert aria-hidden="true" style="display: none; flex-direction: column; flex: 1; min-height: 0; background:#070d1e;">
                 <!-- VIP Room Header info -->
                 <div style="padding:8px 14px; background:linear-gradient(135deg, rgba(245,158,11,0.15), rgba(139,92,246,0.15)); border-bottom:1px solid rgba(245,158,11,0.3); display:flex; justify-content:space-between; align-items:center;">
                     <div style="font-size:0.75rem; color:#fde047; font-weight:800; display:flex; align-items:center; gap:6px;">
@@ -5998,10 +5998,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                         <div style="margin-bottom:16px; text-align:left;">
                             <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.76rem; color:#cbd5e1; cursor:pointer; line-height:1.45;">
-                                <input type="checkbox" id="obTermsAccepted" required style="margin-top:2px; accent-color:#a855f7; width:16px; height:16px; cursor:pointer;" checked>
+                                <input type="checkbox" id="obTermsAccepted" required style="margin-top:2px; accent-color:#a855f7; width:16px; height:16px; cursor:pointer;">
                                 <span>
-                                    Akceptuję <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color:#c084fc; text-decoration:underline; font-weight:700;">Regulamin Portalu</a> oraz <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color:#c084fc; text-decoration:underline; font-weight:700;">Politykę Prywatności & RODO</a> portalu LUMINA.
+                                    Akceptuję <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color:#c084fc; text-decoration:underline; font-weight:700;">Regulamin Portalu</a> oraz <a href="privacy.html" target="_blank" rel="noopener" style="color:#c084fc; text-decoration:underline; font-weight:700;">Politykę Prywatności</a> portalu LUMINA.
                                 </span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.76rem; color:#cbd5e1; cursor:pointer; line-height:1.45; margin-top:12px;">
+                                <input type="checkbox" id="obSensitiveDataConsent" required style="margin-top:2px; accent-color:#a855f7; width:16px; height:16px; cursor:pointer;">
+                                <span>Wyrażam wyraźną zgodę na przetwarzanie informacji o wyznaniu i preferencjach relacyjnych w celu utworzenia profilu oraz dopasowywania osób. Zgodę mogę wycofać w ustawieniach lub kontaktując się z administratorem.</span>
                             </label>
                         </div>
 
@@ -6035,7 +6039,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 <p>Użytkownicy zobowiązują się do traktowania innych z szacunkiem i godnością. Bezwzględnie zabrania się publikowania treści o charakterze wulgarnym, pornograficznym, nienawistnym, komercyjnego spamu oraz nękania innych użytkowników. Konta naruszające te zasady są natychmiastowo i trwale blokowane.</p>
 
                 <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">3. Ochrona Danych Osobowych (RODO)</h4>
-                <p>Administratorem danych jest Christian Culture. Dane podane w profilu (imię, wiek, miasto, stan cywilny, opis, werset) przetwarzane są wyłącznie w celu umożliwienia nawiązywania relacji i prezentacji w społeczności LUMINA. Dane nie są odsprzedawane ani przekazywane podmiotom trzecim.</p>
+                <p>Administratorem danych jest Polskie Radio Christian Culture. Dane profilu służą do działania społeczności i funkcji dopasowania. Korzystamy z dostawców infrastruktury działających jako podmioty przetwarzające; danych nie sprzedajemy. Szczegóły, podstawy prawne i prawa użytkownika opisuje pełna <a href="privacy.html" target="_blank" rel="noopener" style="color:#c084fc;">Polityka Prywatności</a>.</p>
 
                 <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">4. Moderacja i Bezpieczeństwo</h4>
                 <p>Każdy użytkownik ma prawo zgłosić profil lub wpis naruszający regulamin za pomocą przycisku zgłoszenia. Zespół moderacyjny rozpatruje zgłoszenia na bieżąco. Użytkownik w dowolnym momencie może edytować lub usunąć swoje konto.</p>
@@ -6063,7 +6067,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 14px 16px; text-align: left; margin-bottom: 20px;">
                 <div style="font-size: 0.74rem; font-weight: 700; color: #f472b6; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;"><i class="fa-solid fa-envelope-open-text"></i> Treść polecenia do wysłania:</div>
                 <p id="recommendShareMessage" style="font-size: 0.86rem; color: #e2e8f0; margin: 0; line-height: 1.5; font-style: italic;">"Cześć! Chcę polecić Ci chrześcijański portal społecznościowy LUMINA – piękną przestrzeń wartościowych relacji, wiary i inspiracji. Sprawdź portal tutaj:"</p>
-                <div style="margin-top: 8px; font-size: 0.82rem; font-weight: 700; color: #38bdf8; word-break: break-all;" id="recommendShareUrl">https://lumina.christianculture.pl</div>
+                <div style="margin-top: 8px; font-size: 0.82rem; font-weight: 700; color: #38bdf8; word-break: break-all;" id="recommendShareUrl">https://polskieradio.cc/lumina</div>
             </div>
 
             <!-- Action Share Grid -->
@@ -6095,7 +6099,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
 
     <!-- ══════════ ENCRYPTED ADMIN PIN & MASTER CONTROL MODAL ══════════ -->
-    <div class="modal-overlay" id="adminPinModal" onclick="if(event.target===this) closeModal('adminPinModal')">
+    <div class="modal-overlay" id="adminPinModal" hidden inert aria-hidden="true">
         <div class="modal-card" style="max-width: 440px; background: #0b142e; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.18); border-radius: 24px; padding: 26px 22px; position: relative;">
             <button class="modal-close-btn" onclick="closeModal('adminPinModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
 
@@ -6255,7 +6259,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span id="luminaAppVersionBadge" class="lumina-app-version-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.8</span>
+                        <span id="luminaAppVersionBadge" class="lumina-app-version-badge" style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.9</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -6845,6 +6849,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 goToWizardStep(1);
                 return;
             }
+            if (!document.getElementById('obTermsAccepted')?.checked) {
+                showToast('Zaakceptuj Regulamin i Politykę Prywatności.');
+                goToWizardStep(3);
+                return;
+            }
+            if (!document.getElementById('obSensitiveDataConsent')?.checked) {
+                showToast('Do utworzenia profilu potrzebna jest wyraźna zgoda dotycząca danych wrażliwych.');
+                goToWizardStep(3);
+                return;
+            }
 
             const btn = document.getElementById('btnSubmitWizard');
             if (btn) { btn.disabled = true; btn.textContent = '🕊️ Tworzenie profilu...'; }
@@ -6871,7 +6885,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 cover: 'lumina_default_cover.jpg',
                 status: 'Panna/Kawaler',
                 matchScore: '98%',
-                isVerified: true,
+                isVerified: false,
+                privacyConsent: true,
+                sensitiveDataConsent: true,
+                consentVersion: '2026-09-20',
+                consentAt: new Date().toISOString(),
                 visibility: 'public',
                 tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
                 photos: [initialAvatar],
@@ -7053,6 +7071,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             }
             const el = document.getElementById(id);
             if (el) {
+                el.removeAttribute('inert');
+                el.setAttribute('aria-hidden', 'false');
                 el.style.display = 'flex';
                 el.classList.add('open');
             }
@@ -7060,6 +7080,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         window.closeModal = function(id) {
             const el = document.getElementById(id);
             if (el) {
+                el.setAttribute('aria-hidden', 'true');
+                el.setAttribute('inert', '');
                 el.classList.remove('open');
                 el.style.display = 'none';
                 if (id === 'directMessagesModal') {
@@ -8960,12 +8982,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         // ══════════ ENCRYPTED MASTER ADMIN PIN & SECURITY ENGINE ══════════
         window.openAdminPinModal = function() {
+            showToast('Panel administracyjny nie jest dostępny w publicznym portalu.');
+            return;
             const modal = document.getElementById('adminPinModal');
             if (!modal) return;
-            
-            const isMaster = (typeof window.LuminaSecurity !== 'undefined' && window.LuminaSecurity.isMasterAdmin()) ||
-                             sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                             localStorage.getItem('lumina_auth_master_admin') === 'true';
             
             const lockedView = document.getElementById('adminPinLockedView');
             const unlockedView = document.getElementById('adminPinUnlockedView');
@@ -9018,17 +9038,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             try {
                 if (typeof window.LuminaSecurity !== 'undefined' && typeof window.LuminaSecurity.unlockMasterAdmin === 'function') {
                     unlocked = await window.LuminaSecurity.unlockMasterAdmin(pin);
-                } else {
-                    // Direct Web Crypto API SHA-256 fallback
-                    const msgBuffer = new TextEncoder().encode(pin);
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                    if (hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91') {
-                        sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                        localStorage.setItem('lumina_auth_master_admin', 'true');
-                        unlocked = true;
-                    }
                 }
             } catch(err) {
                 console.error('Błąd weryfikacji kryptograficznej PIN:', err);
@@ -9280,6 +9289,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         window.closeModal = function(id) { 
             const el = document.getElementById(id);
             if (el) {
+                el.setAttribute('aria-hidden', 'true');
+                el.setAttribute('inert', '');
                 el.classList.remove('open');
                 el.style.display = 'none';
                 if (id === 'directMessagesModal') {

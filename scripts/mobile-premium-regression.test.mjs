@@ -104,12 +104,12 @@ test('homepage keeps product features behind account creation', async () => {
 test('carousel activity controls stay separated and post counts use published profile data', async () => {
   const html = await readFile('lumina.html', 'utf8');
 
-  assert.match(html, /\\.card-activity-badges\\s*\\{[\\s\\S]*?top:\\s*60px;[\\s\\S]*?gap:\\s*10px;/);
-  assert.match(html, /@media \\(max-width: 900px\\)[\\s\\S]*?\\.card-activity-badges\\s*\\{[\\s\\S]*?top:\\s*68px;[\\s\\S]*?gap:\\s*12px;/);
-  assert.match(html, /window\\.LuminaDB\\.getAuthorPosts\\(slug, name\\)/);
-  assert.match(html, /post\\.published !== false/);
-  assert.match(html, /window\\.addEventListener\\('lumina_post_published'/);
-  assert.doesNotMatch(html, /cleanSlug\\.includes\\('pawel'\\)[\\s\\S]*?count = 2/);
+  assert.match(html, /\.card-activity-badges\s*\{[\s\S]*?top:\s*60px;[\s\S]*?gap:\s*10px;/);
+  assert.match(html, /@media \(max-width: 900px\)[\s\S]*?\.card-activity-badges\s*\{[\s\S]*?top:\s*68px;[\s\S]*?gap:\s*12px;/);
+  assert.match(html, /window\.LuminaDB\.getAuthorPosts\(slug, name\)/);
+  assert.match(html, /post\.published !== false/);
+  assert.match(html, /window\.addEventListener\('lumina_post_published'/);
+  assert.doesNotMatch(html, /cleanSlug\.includes\('pawel'\)[\s\S]*?count = 2/);
   assert.doesNotMatch(html, /Andrzej Hamera – 2 wpisy/);
 });
 
@@ -141,4 +141,32 @@ test('master admin HUD requires explicit PIN session and prevents duplicate bars
   assert.doesNotMatch(profile, /<div class="admin-master-hud" id="adminMasterHud">/);
   assert.doesNotMatch(profile, /if \(uSlug === 'cezaryrgowski'\) isMaster = true/);
   assert.match(adminSuite, /sessionStorage\.getItem\('lumina_auth_master_admin'\) === 'true'/);
+});
+
+test('registration requires explicit privacy consent and avoids fake verification', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  assert.match(html, /id="obTermsAccepted" required(?![^>]*checked)/);
+  assert.match(html, /id="obSensitiveDataConsent" required(?![^>]*checked)/);
+  assert.match(html, /if \(!document\.getElementById\('obSensitiveDataConsent'\)\?\.checked\)/);
+  assert.match(html, /sensitiveDataConsent: true/);
+  assert.match(html, /isVerified: false/);
+  assert.doesNotMatch(html, /eec0ae2663b74fdb9fb9981e92f1b2cc/);
+});
+
+test('privacy policy reflects Lumina data processing and user rights', async () => {
+  const policy = await readFile('privacy.html', 'utf8');
+  assert.match(policy, /szczególne kategorie danych/);
+  assert.match(policy, /art\. 9 ust\. 2 lit\. a RODO/);
+  assert.match(policy, /Google\/Firebase/);
+  assert.match(policy, /Prawo żądać dostępu|prawo żądać dostępu/i);
+  assert.doesNotMatch(policy, /nie gromadzą ani nie przechowują żadnych danych osobowych/i);
+  assert.doesNotMatch(policy, /googletagmanager/);
+});
+
+test('public copy avoids absolute safety claims and stale invite links', async () => {
+  const home = await readFile('lumina.html', 'utf8');
+  const feed = await readFile('lumina-tablica.html', 'utf8');
+  assert.doesNotMatch(home, /Zero Fake \/ Zero Botów|Vision AI|lumina\.christianculture\.pl/);
+  assert.doesNotMatch(feed, /100% bezpieczeństwa|Infolinia \+48 730/);
+  assert.match(home, /https:\/\/polskieradio\.cc\/lumina/);
 });
