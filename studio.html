@@ -1,237 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl" class="dark">
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Y4EFTVBPE3');
-  </script>
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>CC STUDIO DAW — Biblia Audio Studio | Christian Culture</title>
-  <meta name="description" content="Profesjonalne studio nagrań słuchowisk biblijnych CC STUDIO DAW: kompletny tekst Pisma Świętego UBG, podział ról, neuralna synteza mowy, własne nagrania lektorskie z mikrofonu, mastering radiowy -16 LUFS oraz generator wideo MP4 4K dla YouTube.">
-  <meta name="keywords" content="Biblia Audio Studio, CC STUDIO DAW, słuchowiska biblijne, Uwspółcześniona Biblia Gdańska, Pismo Święte UBG, nagrywanie Biblii, reżyseria audio, mastering radiowy, EBU R128, -16 LUFS, generator wideo YouTube, Christian Culture, polskieradio.cc">
-  <meta name="author" content="Christian Culture / PolskieRadio.cc">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="theme-color" content="#0a0c10">
-  <link rel="canonical" href="https://polskieradio.cc/studio">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>CC STUDIO DAW — Biblia Audio Studio | Christian Culture</title>
+    <meta name="description" content="Profesjonalne studio do przekształcania rozdziałów biblijnych w radiowe słuchowiska i filmy wideo na YouTube (MP4) z podziałem na role, zsynchronizowanymi napisami, wizualizacją dźwięku i masteringiem emisyjnym dla Christian Culture." />
+    <meta name="keywords" content="Biblia Audio Studio, CC STUDIO DAW, słuchowiska biblijne, Uwspółcześniona Biblia Gdańska, Pismo Święte UBG, nagrywanie Biblii, reżyseria audio, mastering radiowy, EBU R128, -16 LUFS, generator wideo YouTube, Christian Culture, polskieradio.cc" />
+    <meta name="author" content="Christian Culture / PolskieRadio.cc" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0a0c10" />
+    <link rel="canonical" href="https://polskieradio.cc/studio" />
 
-  <!-- Open Graph / Facebook / WhatsApp -->
-  <meta property="og:site_name" content="CC STUDIO DAW — Christian Culture">
-  <meta property="og:title" content="CC STUDIO DAW — Biblia Audio Studio Christian Culture">
-  <meta property="og:description" content="Twórz profesjonalne słuchowiska biblijne: wierny tekst Pisma Świętego UBG, głosy aktorskie, nagrania mikrofonowe, mastering WAV/MP3 i wideo MP4 4K.">
-  <meta property="og:url" content="https://polskieradio.cc/studio">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="pl_PL">
-  <meta property="og:image" content="https://polskieradio.cc/Logo%20Biblia%20Audio%20CC.jpg">
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:site_name" content="CC STUDIO DAW — Christian Culture" />
+    <meta property="og:title" content="CC STUDIO DAW — Biblia Audio Studio | Christian Culture" />
+    <meta property="og:description" content="Profesjonalne studio do realizacji wielogłosowych audycji biblijnych: kompletny tekst Pisma Świętego UBG, głosy aktorskie, własne nagrania z mikrofonu oraz emisyjny mastering -16 LUFS z wideo MP4 dla YouTube." />
+    <meta property="og:url" content="https://polskieradio.cc/studio" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:image" content="https://polskieradio.cc/Logo%20Biblia%20Audio%20CC.jpg" />
 
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/christian-culture-design-system.css">
-
-  <style>
-    :root {
-      --bg-dark: #0a0c10;
-      --panel-dark: #10141e;
-      --gold-primary: #f59e0b;
-      --gold-bright: #fbbf24;
-      --accent-orange: #ff7a00;
-      --border-subtle: #1e2638;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background-color: var(--bg-dark);
-      color: #e2e8f0;
-      font-family: 'Manrope', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-    header.studio-nav {
-      background: rgba(16, 20, 30, 0.95);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.75rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .brand-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: white;
-    }
-    .brand-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--gold-bright);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      text-transform: uppercase;
-    }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .btn-nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.15s ease;
-    }
-    .btn-nav-outline {
-      background: #141926;
-      color: #cbd5e1;
-      border: 1px solid #28334a;
-    }
-    .btn-nav-outline:hover {
-      background: #1c2336;
-      color: white;
-      border-color: var(--gold-primary);
-    }
-    .btn-nav-gold {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0b0f17;
-      font-weight: 700;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
-    }
-    .btn-nav-gold:hover {
-      filter: brightness(1.1);
-      transform: translateY(-1px);
-    }
-    .studio-viewport-container {
-      flex: 1;
-      width: 100%;
-      height: calc(100vh - 58px);
-      position: relative;
-      background: #0d1117;
-    }
-    iframe#studio-app-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    .fallback-card {
-      position: absolute;
-      inset: 0;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
-      background: #0a0d14;
-    }
-  </style>
-</head>
-<body>
-  <header class="studio-nav">
-    <a href="https://polskieradio.cc" class="brand-link" title="Powrót do strony głównej PolskieRadio.cc">
-      <img src="Logo%20Biblia%20Audio%20CC.jpg" alt="Biblia Audio CC" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover;">
-      <div>
-        <div style="font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; line-height: 1.1;">
-          CC STUDIO DAW
-        </div>
-        <div style="font-size: 0.7rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">
-          Biblia Audio Christian Culture
-        </div>
-      </div>
-      <span class="brand-badge">PRODUKCJA EMISYJNA</span>
-    </a>
-
-    <div class="nav-actions">
-      <a href="https://polskieradio.cc/mojabiblia" class="btn-nav btn-nav-outline" title="Interlinearna MojaBiblia">
-        <i class="fa-solid fa-book-bible" style="color: var(--gold-bright);"></i>
-        <span>MojaBiblia</span>
-      </a>
-      <a href="https://polskieradio.cc/player" class="btn-nav btn-nav-outline" title="Odtwarzacz Audio PolskieRadio.cc">
-        <i class="fa-solid fa-play" style="color: var(--gold-bright);"></i>
-        <span>Radio 24/7</span>
-      </a>
-      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-gold" title="Wesprzyj projekt dobrowolnym darem">
-        <i class="fa-solid fa-heart"></i>
-        <span>Wesprzyj Studio</span>
-      </a>
-    </div>
-  </header>
-
-  <main class="studio-viewport-container">
-    <iframe
-      id="studio-app-frame"
-      src="http://localhost:3005"
-      allow="microphone; camera; clipboard-write; autoplay; display-capture"
-      title="Biblia Audio Studio Christian Culture DAW"
-    ></iframe>
-
-    <div id="studio-fallback-view" class="fallback-card">
-      <div style="max-width: 600px; background: #111622; border: 1px solid #243044; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
-        <i class="fa-solid fa-microphone-lines" style="font-size: 3rem; color: var(--gold-bright); margin-bottom: 1rem;"></i>
-        <h1 style="font-family: 'Fraunces', serif; font-size: 1.5rem; color: white; margin-bottom: 0.5rem;">
-          Biblia Audio Studio Christian Culture
-        </h1>
-        <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; margin-bottom: 1.5rem;">
-          Profesjonalne środowisko DAW do realizacji wielogłosowych audycji biblijnych: kompletny tekst Pisma Świętego UBG, głosy aktorskie, własne nagrania z mikrofonu oraz emisyjny mastering -16 LUFS z wideo MP4 4K.
-        </p>
-        <a id="direct-launch-btn" href="http://localhost:3005" class="btn-nav btn-nav-gold" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
-          <i class="fa-solid fa-sliders"></i>
-          <span>Uruchom Pulpit Studia Audio</span>
-        </a>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    // Dynamic port / host resolution
-    const params = new URLSearchParams(window.location.search);
-    const targetPort = params.get('port') || '3005';
-    const targetHost = params.get('host') || ('http://localhost:' + targetPort);
-    const frame = document.getElementById('studio-app-frame');
-    const directBtn = document.getElementById('direct-launch-btn');
-    if (frame) frame.src = targetHost;
-    if (directBtn) directBtn.href = targetHost;
-
-    let loaded = false;
-    if (frame) {
-      frame.addEventListener('load', () => {
-        loaded = true;
-      });
-    }
-
-    setTimeout(() => {
-      const fallback = document.getElementById('studio-fallback-view');
-      if (!loaded && window.location.hostname !== 'localhost' && window.location.protocol === 'https:' && targetHost.startsWith('http://localhost')) {
-        // Mixed content security notice if HTTPS parent cannot reach local HTTP frame directly
-        if (fallback) fallback.style.display = 'flex';
-      }
-    }, 2500);
-  </script>
-</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" crossorigin href="/studio-assets/index-bimGLNTw.css" />
+    <script type="module" crossorigin src="/studio-assets/index-Ir_puCg5.js"></script>
+  </head>
+  <body class="bg-[#0b0e14] text-slate-100 min-h-screen selection:bg-amber-500 selection:text-black antialiased">
+    <div id="root"></div>
+  </body>
 </html>
