@@ -42,11 +42,6 @@ export default {
         },
       });
     }
-    if (url.pathname === '/studio' || url.pathname === '/studio/' || url.pathname.startsWith('/studio/')) {
-      const studioUrl = new URL(request.url);
-      studioUrl.pathname = '/studio.html';
-      return env.ASSETS.fetch(new Request(studioUrl, request));
-    }
     return env.ASSETS.fetch(request);
   },
 };
