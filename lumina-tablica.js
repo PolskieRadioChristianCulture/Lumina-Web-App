@@ -278,6 +278,15 @@ class LuminaTablicaEngine {
         });
 
         this.feedContainer.innerHTML = html;
+
+        // ── POST-RENDER HOOK: re-apply Wspieraj Projekt buttons after every feed render ──
+        // renderFeed() replaces entire innerHTML, destroying any previously placed support buttons.
+        // We call decoratePosts() synchronously (after DOM write) and again with a short delay
+        // to handle cards injected by lumina-tablica.html async (loadDailyReflection etc.)
+        if (window.LuminaSupportProject?.decoratePosts) {
+            window.LuminaSupportProject.decoratePosts(document);
+            setTimeout(() => window.LuminaSupportProject?.decoratePosts?.(document), 600);
+        }
     }
 
     // ── 4. PUBLIKACJA NOWYCH POSTÓW ──

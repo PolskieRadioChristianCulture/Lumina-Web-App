@@ -226,6 +226,12 @@
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape') closeModal();
         });
+
+        // Safety net — re-dekoracje po asynchronicznym renderze kart (loadDailyReflection itp.)
+        // Karty poza feedContainer nie są objęte post-render hookiem w renderFeed(),
+        // więc przechwytujemy je tutaj z opóźnieniem dopasowanym do Firebase round-trip.
+        setTimeout(() => decoratePosts(document), 1200);
+        setTimeout(() => decoratePosts(document), 3500);
     }
 
     window.LuminaSupportProject = {
