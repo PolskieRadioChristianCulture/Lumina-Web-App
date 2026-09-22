@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Y4EFTVBPE3');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="p:domain_verify" content="534315dc73d3789714ea4ec89f8c941a"/>
+<title>Mój Werset Dnia — Christian Culture | PolskieRadio.cc</title>
+<meta name="description" content="Wyszukiwarka Słowa Bożego i generator pięknych kart z wersetami biblijnymi. Wylosuj lub wyszukaj werset, stwórz kartę i podziel się nią. Część ekosystemu Christian Culture.">
+<meta property="og:title" content="Mój Werset Dnia — Christian Culture">
+<meta property="og:description" content="Co dzisiaj mówi do Ciebie Słowo? Wylosuj lub wyszukaj werset i stwórz piękną kartę do udostępnienia.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80">
+<meta property="og:url" content="https://polskieradio.cc/werset-dnia">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0a1a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter','sans-serif'],
+        serif: ['Playfair Display','serif'],
+      },
+      animation: {
+        'fade-in': 'fadeIn .8s ease-out',
+        'fade-up': 'fadeUp .7s ease-out',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite',
+        'card-glow': 'cardGlow 3s ease-in-out infinite',
+      },
+      keyframes: {
+        fadeIn: {'0%':{opacity:'0'},'100%':{opacity:'1'}},
+        fadeUp: {'0%':{opacity:'0',transform:'translateY(20px)'},'100%':{opacity:'1',transform:'translateY(0)'}},
+        cardGlow: {'0%,100%':{boxShadow:'0 0 30px rgba(167,139,250,0.2)'},'50%':{boxShadow:'0 0 60px rgba(167,139,250,0.5)'}},
+      }
+    }
+  }
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;background:#0a0a1a;color:#f1f5f9}
+
+/* CC NAV */
+#cc-nav{background:rgba(10,10,26,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(167,139,250,0.1)}
+
+/* GRADIENT HERO BG */
+.hero-bg{
+  background:
+    radial-gradient(ellipse 100% 60% at 50% -10%, rgba(109,40,217,0.3) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(49,46,129,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(30,27,75,0.3) 0%, transparent 50%),
+    #0a0a1a;
+}
+
+/* VERSE CARD */
+.verse-card{
+  background: linear-gradient(135deg, rgba(49,46,129,0.9) 0%, rgba(30,27,75,0.95) 50%, rgba(15,23,42,0.98) 100%);
+  border:1px solid rgba(167,139,250,0.3);
+  backdrop-filter:blur(20px);
+  animation: cardGlow 3s ease-in-out infinite;
+}
+
+/* SEARCH */
+.search-box{
+  background:rgba(30,27,75,0.6);
+  border:1px solid rgba(167,139,250,0.2);
+  backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.search-box:focus-within{
+  border-color:rgba(167,139,250,0.6);
+  box-shadow:0 0 0 3px rgba(139,92,246,0.15);
+}
+
+/* TOPIC PILLS */
+.topic-pill{
+  background:rgba(49,46,129,0.5);
+  border:1px solid rgba(167,139,250,0.2);
+  transition:all .25s ease;
+  cursor:pointer;
+}
+.topic-pill:hover{
+  background:rgba(109,40,217,0.6);
+  border-color:rgba(167,139,250,0.5);
+  transform:translateY(-2px);
+}
+
+/* FEATURE CARD */
+.feature-card{
+  background:linear-gradient(135deg,rgba(30,27,75,0.7),rgba(15,23,42,0.8));
+  border:1px solid rgba(167,139,250,0.12);
+  backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.feature-card:hover{border-color:rgba(167,139,250,0.35);transform:translateY(-4px)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0a0a1a}
+::-webkit-scrollbar-thumb{background:#4c1d95;border-radius:2px}
+
+/* VERSE DISPLAY */
+.verse-display{
+  min-height:120px;
+  transition:all .4s ease;
+}
+
+/* GRADIENT TEXT */
+.purple-gradient{background:linear-gradient(135deg,#a78bfa,#818cf8,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gold-gradient{background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+</style>
+</head>
+<body class="hero-bg min-h-screen">
+
+<!-- CC TOP NAV -->
+<nav id="cc-nav" class="fixed top-0 left-0 right-0 z-50 py-2.5 px-4 flex items-center justify-between">
+  <a href="https://polskieradio.cc" class="flex items-center gap-2 group">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="3" fill="#a78bfa"/>
+      <path d="M2 12h3M19 12h3M12 2v3M12 19v3" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="text-xs font-bold tracking-widest text-gray-400 group-hover:text-purple-400 transition-colors uppercase">PolskieRadio.cc</span>
+  </a>
+  <div class="flex items-center gap-4">
+    <a href="https://polskieradio.cc/mojabiblia" class="hidden sm:flex text-xs text-gray-500 hover:text-purple-400 transition-colors items-center gap-1">
+      <span>📖</span> Moja Biblia
+    </a>
+    <a href="https://polskieradio.cc" class="text-xs text-gray-500 hover:text-gray-300 transition-colors flex items-center gap-1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Powrót
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="pt-24 pb-10 px-4 animate-fade-in">
+  <div class="container mx-auto max-w-5xl text-center">
+    <div class="inline-flex items-center gap-2 bg-purple-900/30 border border-purple-500/30 text-purple-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest uppercase">
+      ✝ Słowo Boże na dziś
+    </div>
+    <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4">
+      <span class="text-white">Mój</span>
+      <span class="purple-gradient"> Werset</span>
+      <span class="text-white"> Dnia</span>
+    </h1>
+    <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+      Co dzisiaj mówi do Ciebie Słowo? Wylosuj werset, wyszukaj odpowiedź na swoje pytanie i stwórz piękną kartę do udostępnienia.
+    </p>
+
+    <!-- SEARCH BOX -->
+    <div class="max-w-2xl mx-auto mb-6">
+      <div class="search-box rounded-2xl flex items-center gap-3 px-4 py-3">
+        <svg class="text-purple-400 flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input
+          id="verseSearch"
+          type="text"
+          placeholder="Wyszukaj werset, temat, słowo kluczowe…"
+          class="bg-transparent flex-1 text-gray-100 placeholder-gray-500 outline-none text-base"
+          oninput="searchVerses(this.value)"
+          onkeydown="if(event.key==='Enter')searchVerses(this.value)"
+        >
+        <button onclick="drawRandomVerse()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors flex-shrink-0 flex items-center gap-1.5">
+          <span>🎲</span> Losuj
+        </button>
+      </div>
+    </div>
+
+    <!-- TOPIC PILLS -->
+    <div class="flex flex-wrap gap-2 justify-center mb-10" id="topicPills">
+      <button onclick="filterByTopic('wiara')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">🙏 Wiara</button>
+      <button onclick="filterByTopic('nadzieja')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">⭐ Nadzieja</button>
+      <button onclick="filterByTopic('miłość')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">❤️ Miłość</button>
+      <button onclick="filterByTopic('mądrość')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">📖 Mądrość</button>
+      <button onclick="filterByTopic('pokój')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">🕊️ Pokój</button>
+      <button onclick="filterByTopic('modlitwa')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">✝️ Modlitwa</button>
+      <button onclick="filterByTopic('uzdrowienie')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">💚 Uzdrowienie</button>
+      <button onclick="filterByTopic('siła')" class="topic-pill text-xs text-gray-300 px-3 py-1.5 rounded-full">💪 Siła</button>
+    </div>
+  </div>
+</section>
+
+<!-- VERSE CARD -->
+<section class="pb-12 px-4">
+  <div class="container mx-auto max-w-2xl">
+    <div class="verse-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+      <!-- Background cross decoration -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+        <svg width="300" height="300" viewBox="0 0 100 100" fill="none">
+          <rect x="42" y="8" width="16" height="84" rx="4" fill="#a78bfa"/>
+          <rect x="8" y="32" width="84" height="16" rx="4" fill="#a78bfa"/>
+        </svg>
+      </div>
+
+      <div class="relative z-10">
+        <!-- Daily label -->
+        <div class="inline-flex items-center gap-2 text-purple-400 text-xs font-bold tracking-widest uppercase mb-6">
+          <div class="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"></div>
+          Werset Dnia · <span id="todayDate"></span>
+        </div>
+
+        <!-- Verse text -->
+        <div class="verse-display mb-6" id="verseDisplay">
+          <blockquote class="font-serif text-xl md:text-2xl lg:text-3xl text-gray-100 italic leading-relaxed mb-4" id="verseText">
+            „Wszystko mogę w Tym, który mnie wzmacnia."
+          </blockquote>
+          <cite class="text-purple-300 font-bold text-sm tracking-widest uppercase not-italic" id="verseRef">
+            Filipian 4:13 BW
+          </cite>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+          <button onclick="drawRandomVerse()" class="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-purple-900/40">
+            <span>🎲</span> Losuj nowy
+          </button>
+          <button onclick="copyVerse()" id="copyBtn" class="flex items-center justify-center gap-2 border border-purple-500/40 hover:border-purple-400 text-purple-300 hover:text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-200">
+            <span>📋</span> Kopiuj
+          </button>
+          <button onclick="shareVerse()" class="flex items-center justify-center gap-2 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-200">
+            <span>📤</span> Udostępnij
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search results -->
+    <div id="searchResults" class="mt-4 hidden">
+      <div id="resultsList" class="space-y-2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-16 px-4 border-t border-white/5">
+  <div class="container mx-auto max-w-5xl">
+    <div class="text-center mb-12">
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-3">Co potrafisz z Wersetem Dnia</h2>
+      <p class="text-gray-400 max-w-xl mx-auto">Pełna aplikacja dostępna jako część ekosystemu Christian Culture</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">🔍</div>
+        <h3 class="font-bold text-white text-lg mb-2">Wyszukiwarka Słowa</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Szybkie wyszukiwanie po księdze, temacie lub słowie kluczowym w całym Piśmie Świętym.</p>
+      </div>
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">🎨</div>
+        <h3 class="font-bold text-white text-lg mb-2">Generator Kart</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Stwórz piękną kartę z wersetem — różne tła, formaty 1:1, 4:5, 9:16. Pobierz lub udostępnij bezpośrednio.</p>
+      </div>
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">📚</div>
+        <h3 class="font-bold text-white text-lg mb-2">Tematy i Hubs</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Przeglądaj wersety pogrupowane tematycznie: wiara, miłość, nadzieja, mądrość, uzdrowienie i wiele więcej.</p>
+      </div>
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">❓</div>
+        <h3 class="font-bold text-white text-lg mb-2">Pytania i Odpowiedzi</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Co Biblia mówi o lęku? O pieniądzach? O miłości? Znajdź odpowiedź Słowa na swoje życiowe pytania.</p>
+      </div>
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">🔔</div>
+        <h3 class="font-bold text-white text-lg mb-2">Powiadomienia</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Ustaw codzienne przypomnienie o porannym wersecie. Niech Słowo Boże rozpoczyna Twój dzień.</p>
+      </div>
+      <div class="feature-card p-6 rounded-2xl">
+        <div class="text-3xl mb-3">💜</div>
+        <h3 class="font-bold text-white text-lg mb-2">Ulubione LUMINA</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Zaloguj się przez LUMINA i zapisuj ulubione wersety. Twoja kolekcja Słowa dostępna wszędzie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY WORD SECTION -->
+<section class="py-16 px-4 border-t border-white/5">
+  <div class="container mx-auto max-w-4xl">
+    <div class="text-center mb-10">
+      <h2 class="font-serif text-3xl font-bold text-white mb-2">Wersety na każdą potrzebę</h2>
+      <p class="text-gray-400">Kliknij temat i odkryj Słowo Boże</p>
+    </div>
+    <div id="topicVerses" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 px-4 border-t border-white/5">
+  <div class="container mx-auto max-w-3xl text-center">
+    <div class="feature-card p-12 rounded-3xl">
+      <div class="text-5xl mb-6">✝️</div>
+      <h2 class="font-serif text-3xl font-bold text-white mb-4">Część Ekosystemu Christian Culture</h2>
+      <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+        <strong class="text-purple-300">Werset Dnia</strong> to jeden z modułów portalu LUMINA i platformy PolskieRadio.cc — globalnego centrum chrześcijańskiej kultury, muzyki i Słowa Bożego.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://polskieradio.cc" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-purple-900/40">
+          🌐 PolskieRadio.cc
+        </a>
+        <a href="https://polskieradio.cc/mojabiblia" class="border border-purple-500/40 hover:border-purple-400 text-purple-300 hover:text-white font-semibold py-3 px-8 rounded-2xl transition-all duration-200">
+          📖 Moja Biblia Interlinearna
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black/40 border-t border-white/5 py-8 text-center px-4">
+  <p class="font-serif text-gray-400 italic text-sm mb-2">„Słowo Twoje jest lampą nogom moim i światłością ścieżce mojej." — Psalm 119:105 BW</p>
+  <p class="text-gray-600 text-xs mt-3">&copy; <span id="yr"></span> Christian Culture Network · <a href="https://polskieradio.cc" class="hover:text-purple-400 transition-colors">PolskieRadio.cc</a></p>
+</footer>
+
+<script>
+// ============================================================
+// BIBLE VERSES DATABASE (embedded, no API required)
+// ============================================================
+const VERSES = [
+  {id:1, text:"Wszystko mogę w Tym, który mnie wzmacnia.", ref:"Filipian 4:13", topics:["siła","wiara"]},
+  {id:2, text:"Ja jestem zmartwychwstaniem i życiem. Kto wierzy we Mnie, choćby i umarł, żyć będzie.", ref:"Jana 11:25", topics:["wiara","nadzieja"]},
+  {id:3, text:"Bóg jest miłością.", ref:"1 Jana 4:16", topics:["miłość","wiara"]},
+  {id:4, text:"Błogosławieni czystego serca, albowiem oni Boga oglądać będą.", ref:"Mateusza 5:8", topics:["wiara","mądrość"]},
+  {id:5, text:"Pokój zostawiam wam, pokój mój daję wam; nie jako świat daje, Ja wam daję. Niech się nie trwoży serce wasze ani się nie lęka.", ref:"Jana 14:27", topics:["pokój","wiara"]},
+  {id:6, text:"Pan jest pasterzem moim, nie brak mi niczego.", ref:"Psalm 23:1", topics:["wiara","nadzieja","pokój"]},
+  {id:7, text:"Szukajcie najpierw Królestwa Bożego i jego sprawiedliwości, a wszystko inne będzie wam dodane.", ref:"Mateusza 6:33", topics:["wiara","mądrość"]},
+  {id:8, text:"Ufaj Panu z całego serca i nie polegaj na swoim rozumie.", ref:"Przysłów 3:5", topics:["wiara","mądrość"]},
+  {id:9, text:"Miłujcie wrogów waszych i módlcie się za tych, którzy was prześladują.", ref:"Mateusza 5:44", topics:["miłość","modlitwa"]},
+  {id:10, text:"Proście, a będzie wam dane; szukajcie, a znajdziecie; kołaczcie, a będzie wam otworzone.", ref:"Mateusza 7:7", topics:["modlitwa","wiara","nadzieja"]},
+  {id:11, text:"Boć tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny.", ref:"Jana 3:16", topics:["miłość","wiara","nadzieja"]},
+  {id:12, text:"Słowo Twoje jest lampą nogom moim i światłością ścieżce mojej.", ref:"Psalm 119:105", topics:["mądrość","wiara"]},
+  {id:13, text:"Panie, wysłuchaj modlitwę moją i wołanie moje niech do Ciebie dotrze.", ref:"Psalm 102:1", topics:["modlitwa"]},
+  {id:14, text:"On leczy skruszonych na sercu i opatruje ich rany.", ref:"Psalm 147:3", topics:["uzdrowienie","nadzieja"]},
+  {id:15, text:"Bo znam zamysły, jakie mam o was — wyrocznia Pana — zamysły pełne pokoju, a nie zguby, by zapewnić wam przyszłość i nadzieję.", ref:"Jeremiasza 29:11", topics:["nadzieja","pokój"]},
+  {id:16, text:"Przychodźcie do Mnie wszyscy, którzy jesteście utrudzeni i obciążeni, a Ja was pokrzepię.", ref:"Mateusza 11:28", topics:["pokój","uzdrowienie","nadzieja"]},
+  {id:17, text:"Ja przyszedłem po to, aby owce miały życie i miały je w obfitości.", ref:"Jana 10:10", topics:["wiara","nadzieja"]},
+  {id:18, text:"Nie bój się, bom ja z tobą; nie lękaj się, bom ja Bogiem twoim.", ref:"Izajasza 41:10", topics:["siła","wiara","pokój"]},
+  {id:19, text:"Nikt nie ma większej miłości od tej, gdy ktoś życie swoje oddaje za przyjaciół swoich.", ref:"Jana 15:13", topics:["miłość"]},
+  {id:20, text:"Módlcie się nieustannie.", ref:"1 Tesaloniczan 5:17", topics:["modlitwa"]},
+  {id:21, text:"Pan jest siłą i tarczą moją; w Nim zaufało serce moje i dostąpiłem pomocy.", ref:"Psalm 28:7", topics:["siła","wiara"]},
+  {id:22, text:"Bądź cierpliwy w modlitwie, uważaj i dziękuj Bogu w każdej sprawie.", ref:"Kolosan 4:2", topics:["modlitwa","mądrość"]},
+  {id:23, text:"Łaską bowiem jesteście zbawieni przez wiarę. A to pochodzi nie od was, lecz jest darem Boga.", ref:"Efezjan 2:8", topics:["wiara"]},
+  {id:24, text:"Umocnię cię i wesprę cię, i podtrzymam cię prawicą moją sprawiedliwości.", ref:"Izajasza 41:10", topics:["siła","nadzieja"]},
+  {id:25, text:"A wiemy, że Bóg z tymi, którzy Go miłują, współdziała we wszystkim dla ich dobra.", ref:"Rzymian 8:28", topics:["wiara","nadzieja","miłość"]},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentVerse = VERSES[Math.floor(Math.random() * VERSES.length)];
+let activeTopicFilter = null;
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
+  // Show a deterministic daily verse based on date
+  const dayIndex = Math.floor(Date.now() / 86400000) % VERSES.length;
+  showVerse(VERSES[dayIndex]);
+  renderTopicVerses();
+});
+
+// ============================================================
+// VERSE FUNCTIONS
+// ============================================================
+function showVerse(verse, animate=true) {
+  currentVerse = verse;
+  const textEl = document.getElementById('verseText');
+  const refEl = document.getElementById('verseRef');
+
+  if(animate) {
+    textEl.style.opacity = '0';
+    refEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.innerHTML = `„${verse.text}"`;
+      refEl.textContent = verse.ref + ' BW';
+      textEl.style.transition = 'opacity .4s ease';
+      refEl.style.transition = 'opacity .4s ease';
+      textEl.style.opacity = '1';
+      refEl.style.opacity = '1';
+    }, 200);
+  } else {
+    textEl.innerHTML = `„${verse.text}"`;
+    refEl.textContent = verse.ref + ' BW';
+  }
+}
+
+function drawRandomVerse() {
+  const pool = activeTopicFilter
+    ? VERSES.filter(v => v.topics.includes(activeTopicFilter))
+    : VERSES;
+  const v = pool[Math.floor(Math.random() * pool.length)];
+  showVerse(v);
+  hideSearch();
+
+  // Scroll to card on mobile
+  document.querySelector('.verse-card').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function filterByTopic(topic) {
+  activeTopicFilter = topic;
+  const pool = VERSES.filter(v => v.topics.includes(topic));
+  if(pool.length) showVerse(pool[Math.floor(Math.random() * pool.length)]);
+  // Highlight active pill
+  document.querySelectorAll('.topic-pill').forEach(p => {
+    p.classList.toggle('bg-purple-600', p.textContent.toLowerCase().includes(topic.slice(0,4)));
+    p.classList.toggle('border-purple-400', p.textContent.toLowerCase().includes(topic.slice(0,4)));
+  });
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function searchVerses(query) {
+  const q = query.trim().toLowerCase();
+  const resultsEl = document.getElementById('searchResults');
+  const listEl = document.getElementById('resultsList');
+
+  if(q.length < 2) { resultsEl.classList.add('hidden'); return; }
+
+  const results = VERSES.filter(v =>
+    v.text.toLowerCase().includes(q) ||
+    v.ref.toLowerCase().includes(q) ||
+    v.topics.some(t => t.includes(q))
+  );
+
+  if(!results.length) {
+    listEl.innerHTML = `<div class="text-center text-gray-500 py-4 text-sm">Brak wyników dla „${query}"</div>`;
+    resultsEl.classList.remove('hidden');
+    return;
+  }
+
+  listEl.innerHTML = results.slice(0,6).map(v => `
+    <div onclick="showVerse(${JSON.stringify(v).replace(/"/g,'&quot;')});hideSearch();"
+         class="cursor-pointer bg-indigo-950/60 border border-purple-500/20 hover:border-purple-400/50 rounded-2xl p-4 transition-all duration-200 hover:-translate-y-0.5">
+      <p class="font-serif text-gray-200 italic text-sm mb-1">„${v.text.substring(0,100)}${v.text.length>100?'…':''}"</p>
+      <p class="text-purple-400 text-xs font-bold">${v.ref} BW</p>
+    </div>
+  `).join('');
+  resultsEl.classList.remove('hidden');
+}
+
+function hideSearch() {
+  document.getElementById('searchResults').classList.add('hidden');
+  document.getElementById('verseSearch').value = '';
+}
+
+// ============================================================
+// COPY & SHARE
+// ============================================================
+async function copyVerse() {
+  const text = `„${currentVerse.text}" — ${currentVerse.ref} BW\n\nŹródło: polskieradio.cc/werset-dnia`;
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById('copyBtn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span>✅</span> Skopiowano!';
+    btn.classList.add('text-green-400','border-green-500/40');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('text-green-400','border-green-500/40'); }, 2000);
+  } catch(e) { alert('Skopiuj: ' + text); }
+}
+
+async function shareVerse() {
+  const text = `„${currentVerse.text}" — ${currentVerse.ref} BW\n\nŹródło: polskieradio.cc/werset-dnia`;
+  if(navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Werset Dnia — Christian Culture',
+        text,
+        url: 'https://polskieradio.cc/werset-dnia'
+      });
+    } catch(e) {}
+  } else {
+    copyVerse();
+  }
+}
+
+// ============================================================
+// TOPIC VERSES SECTION
+// ============================================================
+function renderTopicVerses() {
+  const topics = [
+    {key:'wiara', icon:'🙏', label:'Wiara'},
+    {key:'pokój', icon:'🕊️', label:'Pokój'},
+    {key:'siła', icon:'💪', label:'Siła'},
+    {key:'nadzieja', icon:'⭐', label:'Nadzieja'},
+  ];
+
+  const container = document.getElementById('topicVerses');
+  container.innerHTML = topics.map(t => {
+    const pool = VERSES.filter(v => v.topics.includes(t.key));
+    const v = pool[Math.floor(Date.now()/86400000) % pool.length] || pool[0];
+    return `
+      <div class="feature-card p-6 rounded-2xl cursor-pointer" onclick="showVerse(${JSON.stringify(v).replace(/"/g,'&quot;')});document.querySelector('.verse-card').scrollIntoView({behavior:'smooth',block:'center'})">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-2xl">${t.icon}</span>
+          <span class="text-purple-300 text-xs font-bold uppercase tracking-widest">${t.label}</span>
+        </div>
+        <p class="font-serif text-gray-200 italic text-sm leading-relaxed mb-2">„${v.text}"</p>
+        <p class="text-purple-400 text-xs font-bold">${v.ref} BW</p>
+      </div>
+    `;
+  }).join('');
+}
+</script>
+</body>
+</html>
