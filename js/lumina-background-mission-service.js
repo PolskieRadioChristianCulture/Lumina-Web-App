@@ -17,7 +17,7 @@
         if (!('serviceWorker' in navigator)) return;
 
         try {
-            const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync', { scope: '/', updateViaCache: 'none' });
+            const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v415', { scope: '/', updateViaCache: 'none' });
             console.log('[LUMINA Background Mission] Service Worker zarejestrowany:', reg.scope);
 
             // Rejestracja Periodic Background Sync (Android Chrome/Edge/Samsung Browser)
@@ -170,129 +170,16 @@
         localStorage.setItem('lumina_pwa_banner_dismissed', Date.now().toString());
     };
 
-    // ── 3B. SUNDAY MISSION APPEAL NOTIFICATION (W każdą niedzielę o 09:00) ──
-    async function checkSundayMissionAppealNotification() {
-        try {
-            const now = new Date();
-            const isSunday = (now.getDay() === 0 && now.getHours() >= 9);
-            const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
-            const force = urlParams && urlParams.get('testSundayPush') === '1';
-
-            if (!isSunday && !force) return;
-
-            const pad = (n) => n < 10 ? '0' + n : n;
-            const sundayKey = `lumina_sunday_appeal_pushed_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
-
-            if (localStorage.getItem(sundayKey) && !force) return;
-
-            if ('Notification' in window && Notification.permission === 'granted') {
-                const notifTitle = '🌿 APEL MISYJNY CHRISTIAN CULTURE • Niedziela';
-                const notifOptions = {
-                    body: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Kliknij, aby wesprzeć Bożą misję!',
-                    icon: 'lumina_icon.jpg',
-                    badge: 'lumina_icon.jpg',
-                    image: 'apel_misyjny_cc.webp?v=20260920_blik537137043',
-                    tag: 'lumina_sunday_mission_appeal',
-                    renotify: true,
-                    requireInteraction: true,
-                    vibrate: [300, 100, 300],
-                    data: {
-                        url: 'https://polskieradio.cc/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal',
-                        type: 'sunday_appeal'
-                    },
-                    actions: [
-                        { action: 'revolut', title: '🌍 Szybkie wsparcie' },
-                        { action: 'open_appeal', title: '📖 Zobacz Apel na Tablicy' }
-                    ]
-                };
-
-                if ('serviceWorker' in navigator) {
-                    const reg = await navigator.serviceWorker.ready.catch(() => null);
-                    if (reg && reg.showNotification) {
-                        await reg.showNotification(notifTitle, notifOptions);
-                    } else {
-                        new Notification(notifTitle, notifOptions);
-                    }
-                } else {
-                    new Notification(notifTitle, notifOptions);
-                }
-                localStorage.setItem(sundayKey, Date.now().toString());
-                console.log('[LUMINA Background] Wyemitowano niedzielne powiadomienie apelu misyjnego.');
-            }
-        } catch(e) {
-            console.warn('[LUMINA Background Sunday Check Error]:', e);
-        }
-    }
-
-    // ── 3C. DAILY MISSION EVENING NOTIFICATION (Codziennie o 19:00 z przyciskiem modlitwy i BLIK) ──
-    async function checkDailyMissionEveningNotification() {
-        try {
-            const now = new Date();
-            const isEvening = (now.getHours() >= 19);
-            const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
-            const force = urlParams && (urlParams.get('testDailyPush') === '1' || urlParams.get('testMissionPush') === '1');
-
-            if (!isEvening && !force) return;
-
-            const pad = (n) => n < 10 ? '0' + n : n;
-            const dailyKey = `lumina_daily_mission_pushed_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
-
-            if (localStorage.getItem(dailyKey) && !force) return;
-
-            if ('Notification' in window && Notification.permission === 'granted') {
-                const notifTitle = '🕊️ Codzienna Misja • Christian Culture';
-                const notifOptions = {
-                    body: 'Wieczorny czas wdzięczności i wspólnej modlitwy. Poświęć chwilę na modlitwę za Polskę i wesprzyj dzieło Boże!',
-                    icon: 'lumina_icon.jpg',
-                    badge: 'lumina-push-badge-v4.1.5.svg',
-                    image: 'apel_misyjny_cc.webp?v=20260920_blik537137043',
-                    tag: 'lumina-daily-mission-evening',
-                    renotify: true,
-                    requireInteraction: true,
-                    vibrate: [250, 100, 250],
-                    data: {
-                        url: 'https://polskieradio.cc/modlitwa',
-                        type: 'daily_mission'
-                    },
-                    actions: [
-                        { action: 'prayer', title: '🙏 Pomódl się' },
-                        { action: 'blik', title: '📱 Misyjny BLIK' }
-                    ]
-                };
-
-                if ('serviceWorker' in navigator) {
-                    const reg = await navigator.serviceWorker.ready.catch(() => null);
-                    if (reg && reg.showNotification) {
-                        await reg.showNotification(notifTitle, notifOptions);
-                    } else {
-                        new Notification(notifTitle, notifOptions);
-                    }
-                } else {
-                    new Notification(notifTitle, notifOptions);
-                }
-                localStorage.setItem(dailyKey, Date.now().toString());
-                console.log('[LUMINA Background] Wyemitowano wieczorne powiadomienie Codziennej Misji o 19:00.');
-            }
-        } catch(e) {
-            console.warn('[LUMINA Background Daily Mission Push Error]:', e);
-        }
-    }
-    window.checkDailyMissionEveningNotification = checkDailyMissionEveningNotification;
-
     // ── 4. INITIALIZATION ──
-    function initServices() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            registerBackgroundServiceWorker();
+            setupSystemMediaSession();
+            setTimeout(setupPwaInstallBanner, 2000);
+        });
+    } else {
         registerBackgroundServiceWorker();
         setupSystemMediaSession();
         setTimeout(setupPwaInstallBanner, 2000);
-        setTimeout(checkSundayMissionAppealNotification, 3000);
-        setTimeout(checkDailyMissionEveningNotification, 3500);
-        // Cykliczne sprawdzanie w tle co 60 sekund (np. gdy użytkownik ma otwartą kartę o 18:59)
-        setInterval(checkDailyMissionEveningNotification, 60000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initServices);
-    } else {
-        initServices();
     }
 })();

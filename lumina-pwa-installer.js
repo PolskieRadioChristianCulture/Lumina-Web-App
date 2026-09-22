@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '4.1.6';
+    const CURRENT_CLIENT_VERSION = '4.1.1';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -14,7 +14,6 @@
     let deferredInstallPrompt = null;
     let swRegistration = null;
     let updatePromptActive = false;
-    let controllerReloaded = false;
 
     // 1. Standalone / Installed Detection
     function isRunningStandalone() {
@@ -35,33 +34,26 @@
     // 3. Register and Monitor Service Worker (Purge old versions)
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
-            // Aktywacja nowego Workera nie może sama przeładowywać strony.
-            // Na telefonach i PWA controllerchange występuje przy odtworzeniu klienta
-            // i wywołanie reload() powoduje nieskończoną pętlę przeładowań.
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                controllerReloaded = true;
-                console.log('[LUMINA PWA] Nowy Service Worker aktywny.');
-            });
             window.addEventListener('load', async () => {
                 try {
                     // Wymuszone usuwanie przestarzałych pamięci podręcznych
                     if ('caches' in window) {
                         const keys = await caches.keys();
                         await Promise.all(keys.map(k => {
-                            if (!k.includes('v4.1.4')) {
+                            if (!k.includes('v4.1.1')) {
                                 console.log('[LUMINA PWA] Czyszczenie starego cache:', k);
                                 return caches.delete(k);
                             }
                         }));
                     }
 
-                    // Bypass the HTTP/SW cache so every device fetches the forced build.
+                    // Updating the existing registration preserves its push subscription.
                 } catch (e) {}
 
-                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync', { scope: '/', updateViaCache: 'none' })
+                navigator.serviceWorker.register('/firebase-messaging-sw.js?v=20260913_v416', { scope: '/', updateViaCache: 'none' })
                     .then((reg) => {
                         swRegistration = reg;
-                        console.log('[LUMINA PWA] Service Worker v4.1.4 zarejestrowany. Scope:', reg.scope);
+                        console.log('[LUMINA PWA] Service Worker v4.1.5 zarejestrowany. Scope:', reg.scope);
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
@@ -89,8 +81,7 @@
             if (targetWorker) {
                 targetWorker.postMessage({ type: 'SKIP_WAITING' });
             }
-            // FIX v4.1.5: update() tylko gdy forcePrompt=true (nie przy kazdej wizycie)
-            if (swRegistration && forcePrompt) {
+            if (swRegistration) {
                 swRegistration.update().catch(() => {});
             }
 
@@ -99,18 +90,12 @@
                 const res = await fetch('version.json?t=' + Date.now(), { cache: 'no-cache' });
                 if (res.ok) {
                     const verData = await res.json();
-                    const reinstalled = localStorage.getItem('lumina_reinstalled_v415');
-                    // FIX v4.1.5: forceReinstall honorowane tylko raz (gdy brak guardu)
-                    const isNewVer = verData && (
-                        reinstalled
-                            ? verData.version !== CURRENT_CLIENT_VERSION
-                            : (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall)
-                    );
+                    const isNewVer = verData && (verData.version !== CURRENT_CLIENT_VERSION || verData.forceReinstall);
+                    const reinstalled = localStorage.getItem('lumina_reinstalled_v411');
 
                     if (isNewVer || !reinstalled) {
-                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.4)');
-                        localStorage.setItem('lumina_reinstalled_v415', 'true');
-                        localStorage.removeItem('lumina_reinstalled_v414'); // Usun stary klucz
+                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na mobile (v4.1.1)');
+                        localStorage.setItem('lumina_reinstalled_v411', 'true');
                         localStorage.removeItem(DISMISS_INSTALL_KEY);
                         sessionStorage.removeItem(DISMISS_INSTALL_KEY);
 
@@ -460,9 +445,9 @@
             <div class="lumina-pwa-content">
                 <div class="lumina-pwa-title">
                     <span>LUMINA App</span>
-                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v${CURRENT_CLIENT_VERSION}</span>
+                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">v4.1.1</span>
                 </div>
-                <div class="lumina-pwa-desc">Zainstaluj nową wersję v${CURRENT_CLIENT_VERSION} na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
+                <div class="lumina-pwa-desc">Zainstaluj nową wersję v4.1.1 na telefonie! Błyskawiczny dostęp i powiadomienia. 🕊️📱</div>
             </div>
             <div class="lumina-pwa-actions">
                 <button type="button" class="lumina-pwa-btn-install" id="btnPwaInstallAction">
@@ -572,14 +557,7 @@
     }
 
     // 10. Initialization
-    function syncVersionBadges() {
-        document.querySelectorAll('.lumina-app-version-badge, #luminaAppVersionBadge').forEach(el => {
-            el.textContent = 'v' + CURRENT_CLIENT_VERSION;
-        });
-    }
-
     function init() {
-        syncVersionBadges();
         registerLuminaServiceWorker();
         injectPWAStyles();
 
@@ -593,12 +571,17 @@
 
         setInterval(() => {
             checkForUpdatesFromServer();
+            if (swRegistration) {
+                swRegistration.update().catch(() => {});
+            }
         }, 15 * 60 * 1000);
 
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
-                // FIX v4.1.5: usunięto bezwarunkowy swRegistration.update()
                 checkForUpdatesFromServer();
+                if (swRegistration) {
+                    swRegistration.update().catch(() => {});
+                }
             }
         });
 
@@ -611,7 +594,7 @@
         // Wymuszenie reinstalacji na urządzeniach mobilnych (jeśli nie w trybie standalone PWA)
         const isMobileDevice = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
         if (isMobileDevice && !isRunningStandalone() && sessionStorage.getItem(DISMISS_INSTALL_KEY) !== 'true') {
-            setTimeout(showInstallBanner, 25000);
+            setTimeout(showInstallBanner, 2200);
         }
 
         window.addEventListener('appinstalled', () => {
