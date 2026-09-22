@@ -182,6 +182,7 @@
             }
 
             // Zatrzymaj poprzedni
+            window.LuminaReflectionTTS?.stop();
             if (_activeBtn && _activeBtn !== btn) stopSpeech();
 
             const title   = extractTitle(card);
@@ -203,6 +204,7 @@
     /*  Dekorowanie pojedynczego posta                                     */
     /* ------------------------------------------------------------------ */
     function decoratePost(card) {
+        if (card && window.LuminaReflectionTTS?.isReflection(card)) return;
         if (!card || card.dataset.ttsDecorated === '1') return;
 
         // Pomijamy kanały live broadcast

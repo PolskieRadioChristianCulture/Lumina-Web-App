@@ -82,14 +82,17 @@
 
         const mediaHosts = getMediaHosts(card);
         if (mediaHosts.length > 0) {
-            mediaHosts.forEach(host => {
-                if (host.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) return;
-                host.setAttribute('data-lumina-media-host', 'true');
-                if (window.getComputedStyle(host).position === 'static') {
-                    host.style.position = 'relative';
-                }
-                host.appendChild(createSupportButton());
-            });
+            // Jedna akcja wsparcia na kartę. Jeśli grafika została doładowana
+            // po wyrenderowaniu paska akcji, przenieś istniejący przycisk na nią.
+            const host = mediaHosts[0];
+            const existingButtons = Array.from(card.querySelectorAll(`.${SUPPORT_BUTTON_CLASS}`));
+            const button = existingButtons.shift() || createSupportButton();
+            existingButtons.forEach(element => element.remove());
+            host.setAttribute('data-lumina-media-host', 'true');
+            if (window.getComputedStyle(host).position === 'static') {
+                host.style.position = 'relative';
+            }
+            if (button.parentElement !== host) host.appendChild(button);
         } else {
             const fallbackHost = card.querySelector('.post-actions, .post-action-row, .post-footer-actions, .post-footer') || card;
             if (!card.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) {
@@ -208,7 +211,13 @@
         decoratePosts(document);
         new MutationObserver(records => {
             records.forEach(record => record.addedNodes.forEach(node => {
-                if (node instanceof Element) decoratePosts(node);
+                if (!(node instanceof Element)) return;
+                decoratePosts(node);
+                // Element multimedialny może zostać dołączony do już istniejącej
+                // karty. Wtedy ponownie oceń całą kartę i przenieś przycisk.
+                const ownerCard = node.closest?.('.post-card, .post-card-1x1')
+                    || node.parentElement?.closest?.('.post-card, .post-card-1x1');
+                if (ownerCard) decoratePost(ownerCard);
             }));
         }).observe(document.body, { childList: true, subtree: true });
         document.addEventListener('keydown', event => {
