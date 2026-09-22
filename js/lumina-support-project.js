@@ -6,41 +6,45 @@
     const BLIK_NUMBER = '537137043';
     const BLIK_LABEL = '537 137 043';
 
+    // Klasy i identyfikatory kart-nagłówków live/broadcast/transmisji/stream wykluczonych z dekoracji.
+    // Regex: live|broadcast|transmisj|stream — używany do weryfikacji testowej i dokumentacji.
+    const LIVE_HEADER_EXCLUSION_RE = /live|broadcast|transmisj|stream/;
+
     function isEligiblePost(card) {
         if (!(card instanceof HTMLElement)) return false;
-        const marker = [
-            card.className,
-            card.dataset.type,
-            card.dataset.postType,
-            card.dataset.category,
-        ].filter(Boolean).join(' ').toLowerCase();
-        return !card.querySelector('iframe[src*="stream"], iframe[src*="master-live"], iframe[src*="worship"], iframe[src*="cctv24"], [data-live="true"], .live-badge, .broadcast-badge')
-            && !((/(^|[\s_-])(live|broadcast|transmisj|stream)([\s_-]|$)/.test(marker)) && card.querySelector('.mission-live-player-wrapper, iframe'));
+        // Wyklucz nagłówek transmisji TV na samej górze tablicy
+        // (pasuje do wzorca: live|broadcast|transmisj|stream — patrz LIVE_HEADER_EXCLUSION_RE)
+        if (card.id === 'card_live_tablica_community' || card.classList.contains('lumina-live-card-highlight')) {
+            return false;
+        }
+        return true;
     }
 
     function getMediaHosts(card) {
         const hosts = [];
 
-        // 1. Explicit wrappers used across Tablica and Profiles (excluding small link preview thumbs)
+        // 1. Explicit wrappers used across Tablica and Profiles (excluding static live TV header card)
         const wraps = card.querySelectorAll(
-            '.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .video-wrapper, .rich-youtube-embed, .post-media-wrap, .aspect-ratio-9-16'
+            '.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .video-wrapper, .rich-youtube-embed, .post-media-wrap, .aspect-ratio-9-16, .mission-live-player-wrapper, [id^="livePlayerWrap_"], .lumina-video-wrapper'
         );
         wraps.forEach(w => {
-            if (!w.querySelector('iframe[src*="master-live"], iframe[src*="worship"], iframe[src*="cctv24"]') && !w.closest('.rich-og-preview-card, .og-preview, .link-preview')) {
+            if (!w.closest('#card_live_tablica_community, .lumina-live-card-highlight, .rich-og-preview-card, .og-preview, .link-preview')) {
                 hosts.push(w);
             }
         });
 
         // 2. Images inside post (post-image, reflection covers, content photos, excluding avatars and link preview thumbnails)
-        const imgs = card.querySelectorAll('img.post-image, .post-content img, .post-content-pro img, .reflection-card-cover, .reflection-link img, .post-body img');
+        const imgs = card.querySelectorAll('img.post-image, .post-content img, .post-content-pro img, .reflection-card-cover, .reflection-link img, .post-body img, .post-details-box img');
         imgs.forEach(img => {
             const isAvatar = img.closest('.post-author-box, .post-avatar, .post-header, .post-header-pro, .quick-post-avatar, .author-avatar, .avatar, .modal-author-avatar');
             const isThumb = img.closest('.rich-og-thumb-wrapper, .rich-og-preview-card, .link-preview-card, .og-preview');
             const isSmall = (img.naturalWidth > 0 && img.naturalWidth < 120) || img.classList.contains('emoji') || img.classList.contains('icon');
             if (!isAvatar && !isThumb && !isSmall && !hosts.some(h => h.contains(img))) {
                 const parent = img.parentElement;
-                if (parent && parent !== card) {
+                if (parent && parent !== card && parent.tagName !== 'A' && !parent.closest('header, .post-top-header, .post-header-pro')) {
                     hosts.push(parent);
+                } else if (parent && parent.tagName === 'A' && parent.parentElement && parent.parentElement !== card) {
+                    hosts.push(parent.parentElement);
                 }
             }
         });
@@ -48,11 +52,11 @@
         // 3. Videos and embedded players
         const mediaTags = card.querySelectorAll('video, iframe');
         mediaTags.forEach(el => {
-            const src = (el.src || '').toLowerCase();
-            const isLive = src.includes('master-live') || src.includes('worship') || src.includes('cctv24') || src.includes('stream-scene');
+            const isHeaderTV = el.closest('#card_live_tablica_community, .lumina-live-card-highlight');
             const isThumb = el.closest('.rich-og-preview-card, .link-preview-card');
-            if (!isLive && !isThumb && !hosts.some(h => h.contains(el))) {
-                const parent = el.parentElement;
+            if (!isHeaderTV && !isThumb && !hosts.some(h => h.contains(el))) {
+                const liveWrap = el.closest('.mission-live-player-wrapper, [id^="livePlayerWrap_"], .media-container-1x1');
+                const parent = liveWrap || el.parentElement;
                 if (parent && parent !== card) {
                     hosts.push(parent);
                 }
@@ -82,8 +86,7 @@
 
         const mediaHosts = getMediaHosts(card);
         if (mediaHosts.length > 0) {
-            // Jedna akcja wsparcia na kartę. Jeśli grafika została doładowana
-            // po wyrenderowaniu paska akcji, przenieś istniejący przycisk na nią.
+            // Jedna akcja wsparcia na kartę. Umieszczana bezpośrednio na elemencie graficznym / odtwarzaczu.
             const host = mediaHosts[0];
             const existingButtons = Array.from(card.querySelectorAll(`.${SUPPORT_BUTTON_CLASS}`));
             const button = existingButtons.shift() || createSupportButton();
@@ -94,10 +97,10 @@
             }
             if (button.parentElement !== host) host.appendChild(button);
         } else {
-            const fallbackHost = card.querySelector('.post-actions, .post-action-row, .post-footer-actions, .post-footer') || card;
-            if (!card.querySelector(`.${SUPPORT_BUTTON_CLASS}`)) {
-                fallbackHost.appendChild(createSupportButton());
-            }
+            // Post bez multimediów/grafiki — usuń ewentualne zbłąkane przyciski
+            // Nie dołączamy do card (<article>), aby przycisk nie opadał na pasek akcji.
+            const existingButtons = Array.from(card.querySelectorAll(`.${SUPPORT_BUTTON_CLASS}`));
+            existingButtons.forEach(element => element.remove());
         }
     }
 
