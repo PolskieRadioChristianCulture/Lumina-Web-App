@@ -398,27 +398,28 @@
 
                 #luminaPushSoftPrompt {
                     position: fixed;
-                    bottom: calc(84px + env(safe-area-inset-bottom, 16px));
+                    bottom: calc(88px + env(safe-area-inset-bottom, 16px));
                     left: 50%;
                     transform: translateX(-50%);
-                    z-index: 999998;
-                    width: calc(100% - 32px);
+                    z-index: 1000000000 !important;
+                    width: calc(100% - 28px);
                     max-width: 440px;
                     animation: slideUpPrompt 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                     transition: opacity 0.3s ease, transform 0.3s ease;
+                    pointer-events: auto !important;
                 }
                 #luminaPushSoftPrompt.fade-out {
                     opacity: 0;
                     transform: translateX(-50%) translateY(20px);
+                    pointer-events: none !important;
                 }
                 .lumina-push-soft-card {
-                    background: rgba(11, 18, 38, 0.96);
-                    backdrop-filter: blur(18px);
-                    -webkit-backdrop-filter: blur(18px);
-                    border: 1.5px solid rgba(250, 204, 21, 0.6);
+                    background: #0f172a;
+                    background: linear-gradient(135deg, #0f172a, #0b1226);
+                    border: 1.5px solid rgba(250, 204, 21, 0.85);
                     border-radius: 20px;
-                    padding: 12px 14px;
-                    box-shadow: 0 16px 45px rgba(0,0,0,0.8), 0 0 25px rgba(250, 204, 21, 0.25);
+                    padding: 14px 16px;
+                    box-shadow: 0 16px 50px rgba(0,0,0,0.95), 0 0 30px rgba(250, 204, 21, 0.25);
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -426,16 +427,16 @@
                     font-family: 'Plus Jakarta Sans', sans-serif;
                 }
                 .push-soft-icon {
-                    width: 38px;
-                    height: 38px;
+                    width: 40px;
+                    height: 40px;
                     border-radius: 50%;
-                    background: linear-gradient(135deg, rgba(236,72,153,0.3), rgba(139,92,246,0.3));
-                    border: 1px solid rgba(250, 204, 21, 0.7);
+                    background: linear-gradient(135deg, rgba(236,72,153,0.35), rgba(139,92,246,0.35));
+                    border: 1px solid rgba(250, 204, 21, 0.85);
                     color: #facc15;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.1rem;
+                    font-size: 1.15rem;
                     flex-shrink: 0;
                     animation: pulseBell 2s infinite;
                 }
@@ -448,56 +449,67 @@
                     min-width: 0;
                 }
                 .push-soft-title {
-                    font-size: 0.86rem;
+                    font-size: 0.88rem;
                     font-weight: 800;
                     color: #facc15;
                     font-family: 'Outfit', sans-serif;
                     margin-bottom: 2px;
                 }
                 .push-soft-desc {
-                    font-size: 0.74rem;
+                    font-size: 0.76rem;
                     color: #cbd5e1;
                     line-height: 1.35;
                 }
                 .push-soft-actions {
                     display: flex;
                     align-items: center;
-                    gap: 6px;
+                    gap: 8px;
                     flex-shrink: 0;
                 }
                 .push-soft-btn-enable {
                     background: linear-gradient(135deg, #ec4899, #8b5cf6);
-                    border: 1px solid rgba(250, 204, 21, 0.6);
+                    border: 1px solid rgba(250, 204, 21, 0.8);
                     color: #fff;
                     font-weight: 800;
-                    font-size: 0.8rem;
-                    padding: 8px 14px;
-                    border-radius: 20px;
+                    font-size: 0.82rem;
+                    min-height: 44px;
+                    padding: 8px 16px;
+                    border-radius: 22px;
                     cursor: pointer;
                     white-space: nowrap;
-                    box-shadow: 0 4px 14px rgba(236,72,153,0.4);
-                    transition: transform 0.2s;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(236,72,153,0.45);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                }
+                .push-soft-btn-enable:hover {
+                    box-shadow: 0 6px 20px rgba(236,72,153,0.65);
+                    transform: scale(1.03);
                 }
                 .push-soft-btn-enable:active {
-                    transform: scale(0.94);
+                    transform: scale(0.95);
                 }
                 .push-soft-btn-close {
-                    background: rgba(255,255,255,0.08);
-                    border: none;
-                    color: #94a3b8;
-                    width: 28px;
-                    height: 28px;
+                    background: rgba(255,255,255,0.12);
+                    border: 1px solid rgba(255,255,255,0.18);
+                    color: #cbd5e1;
+                    min-width: 44px;
+                    min-height: 44px;
+                    width: 44px;
+                    height: 44px;
                     border-radius: 50%;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 0.8rem;
+                    font-size: 0.95rem;
                     transition: all 0.2s;
                 }
                 .push-soft-btn-close:hover {
                     color: #fff;
-                    background: rgba(255,255,255,0.18);
+                    background: rgba(255,255,255,0.22);
+                    transform: scale(1.05);
                 }
                 @keyframes slideUpPrompt {
                     from { opacity: 0; transform: translateX(-50%) translateY(30px); }
@@ -554,13 +566,16 @@
         }
 
         // 3a. Sposób C: Kontekstowe Mikro-Zaproszenie (Contextual Push Prompt)
-        showContextualPrompt(contextType = 'general', targetName = '') {
-            if (!("Notification" in window) || Notification.permission !== "default") return;
+        showContextualPrompt(contextType = 'general', targetName = '', force = false) {
+            // Jeśli powiadomienia są już aktywne i to nie jest tryb wymuszony, nie ma potrzeby pytać
+            if (!force && ("Notification" in window) && Notification.permission === "granted") return;
 
             try {
-                const dismissed = localStorage.getItem('lumina_push_prompt_dismissed');
-                if (dismissed && (Date.now() - parseInt(dismissed, 10) < 48 * 3600 * 1000)) {
-                    return; // Odroczone na 48h (pełna dyskrecja i poszanowanie użytkownika)
+                if (!force) {
+                    const dismissed = localStorage.getItem('lumina_push_prompt_dismissed');
+                    if (dismissed && (Date.now() - parseInt(dismissed, 10) < 48 * 3600 * 1000)) {
+                        return; // Odroczone na 48h (pełna dyskrecja i poszanowanie użytkownika)
+                    }
                 }
             } catch(e) {}
 
@@ -570,16 +585,19 @@
             let title = '✨ Bądź na bieżąco z Misją';
             let desc = 'Otrzymuj poranne rozważania i wiadomości w społeczności LUMINA.';
             let iconClass = 'fa-solid fa-bell';
+            const escapePromptText = (value) => String(value || '').replace(/[&<>"']/g, (character) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[character]);
 
             if (contextType === 'chat') {
                 title = '💬 Powiadomienie o odpowiedzi';
-                const safeName = targetName ? `<strong>${targetName}</strong>` : 'rozmówca';
+                const safeName = targetName ? `<strong>${escapePromptText(targetName)}</strong>` : 'rozmówca';
                 desc = `Chcesz otrzymać powiadomienie na telefon, gdy ${safeName} Ci odpisze?`;
                 iconClass = 'fa-solid fa-comments';
             } else if (contextType === 'follow') {
-                const safeName = targetName ? `<strong>${targetName}</strong>` : 'ten profil';
+                const safeName = targetName ? `<strong>${escapePromptText(targetName)}</strong>` : 'ten profil';
                 title = `✨ Śledź aktywność`;
-                desc = `Otrzymuj powiadomienia, gdy ${safeName} doda nowe rozważanie lub wpis.`;
+                desc = `Włącz powiadomienia, gdy ${safeName} doda nowe rozważanie lub wpis.`;
                 iconClass = 'fa-solid fa-user-plus';
             } else if (contextType === 'like' || contextType === 'react') {
                 title = '❤️ Bądź na bieżąco';
@@ -606,14 +624,27 @@
             `;
             document.body.appendChild(promptEl);
 
+            // BEZ AGRESYWNEGO ZNIKANIA:
+            // Czas na spokojne przeczytanie wynosi pełne 60 sekund.
+            // Każdy ruch myszką lub dotknięcie palcem na telefonie CAŁKOWICIE ANULUJE timer,
+            // dając użytkownikowi 100% kontroli i czasu!
             if (this._contextualPromptTimer) clearTimeout(this._contextualPromptTimer);
+            const cancelTimer = () => {
+                if (this._contextualPromptTimer) {
+                    clearTimeout(this._contextualPromptTimer);
+                    this._contextualPromptTimer = null;
+                }
+            };
+            promptEl.addEventListener('mouseenter', cancelTimer);
+            promptEl.addEventListener('touchstart', cancelTimer, { passive: true });
+
             this._contextualPromptTimer = setTimeout(() => {
                 const el = document.getElementById('luminaPushSoftPrompt');
                 if (el) {
                     el.classList.add('fade-out');
                     setTimeout(() => el.remove(), 300);
                 }
-            }, 15000);
+            }, 60000);
         }
 
         initSoftPrompt() {
@@ -621,6 +652,10 @@
         }
 
         dismissSoftPrompt() {
+            if (this._contextualPromptTimer) {
+                clearTimeout(this._contextualPromptTimer);
+                this._contextualPromptTimer = null;
+            }
             try {
                 localStorage.setItem('lumina_push_prompt_dismissed', Date.now().toString());
             } catch(e) {}
@@ -1154,18 +1189,6 @@ window.syncLuminaPushTokenSilently = async function() {
             const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
             await window.LuminaDB.requestNotificationPermission(userSlug);
         }
-        return false;
-    }
-};
-
-// ── Cicha synchronizacja tokena FCM w tle przy starcie ──
-window.syncLuminaPushTokenSilently = async function() {
-    if (!("Notification" in window) || Notification.permission !== "granted") return;
-    try {
-        if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-            const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
-            await window.LuminaDB.requestNotificationPermission(userSlug);
-        }
     } catch(e) {}
 };
 
@@ -1178,9 +1201,9 @@ if (document.readyState === 'loading') {
 }
 
 // ── Sposób C: Globalne wywołania mikro-zaproszenia kontekstowego ──
-window.showLuminaContextualPushPrompt = function(contextType, targetName) {
+window.showLuminaContextualPushPrompt = function(contextType, targetName, force = false) {
     if (window.LuminaNotifications && typeof window.LuminaNotifications.showContextualPrompt === 'function') {
-        window.LuminaNotifications.showContextualPrompt(contextType, targetName);
+        window.LuminaNotifications.showContextualPrompt(contextType, targetName, force);
     }
 };
 

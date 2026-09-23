@@ -27,9 +27,14 @@ try {
 
         const title = notification.title || data.title || 'LUMINA ✨';
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
-        const icon = (type === 'direct_message' && (data.avatar || notification.icon)) ? (data.avatar || notification.icon) : './lumina-notif-icon-v2.png';
+        const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
+        const defaultIcon = origin + '/lumina-notif-icon-v2.png';
+        const defaultBadge = origin + '/lumina-push-badge-v4.1.5.svg';
+        const icon = type === 'direct_message'
+            ? (data.avatar || data.icon || notification.icon || defaultIcon)
+            : (notification.icon || data.icon || defaultIcon);
         const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
-        let urlToOpen = data.url || './lumina.html';
+        let urlToOpen = data.url || '/lumina';
 
         let actions = [
             { action: 'open', title: 'Otwórz LUMINA 🕊️' }
@@ -52,17 +57,23 @@ try {
                 { action: 'like', title: '❤️ Polub' }
             ];
             if (data.postId) urlToOpen = `./lumina-tablica.html?postId=${encodeURIComponent(data.postId)}`;
-        } else if (type === 'direct_message' || type === 'mention') {
+        } else if (type === 'direct_message' || type === 'direct_message_request' || type === 'mention') {
             actions = [
                 { action: 'reply', title: '💬 Odpowiedz' },
                 { action: 'open', title: 'Otwórz Czat' }
             ];
-            if (data.senderId) urlToOpen = `./lumina.html?openChat=${encodeURIComponent(data.senderId)}`;
+            if (data.senderId) urlToOpen = `/lumina?openChat=${encodeURIComponent(data.senderId)}`;
         } else if (type === 'public_chat') {
             actions = [
                 { action: 'open', title: '💬 Dołącz do rozmowy' }
             ];
             urlToOpen = '/lumina?openPublicChat=1';
+        } else if (type === 'daily_mission') {
+            actions = [
+                { action: 'prayer', title: '🙏 Pomódl się' },
+                { action: 'blik', title: '📱 Misyjny BLIK' }
+            ];
+            urlToOpen = data.url || '/modlitwa';
         } else if (type === 'tv_schedule' || type === 'tv24' || type === 'live') {
             actions = [
                 { action: 'watch', title: '📺 Oglądaj w CC TV24' },
@@ -72,12 +83,12 @@ try {
         }
 
         const tag = data.tag || notification.tag || data.notificationId || data.eventId || (type ? `lumina_${type}` : 'lumina_notification');
-        const requireInteraction = (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd');
+        const requireInteraction = (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd' || type === 'daily_mission');
 
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: './lumina-badge-v2.png',
+            badge: defaultBadge,
             image: image,
             tag: tag,
             renotify: true,
@@ -98,24 +109,26 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.5)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.1.4)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.6-20260913-perfect-icons';
+const CACHE_NAME = 'lumina-pwa-cache-v4.1.9-20260920-blik537137043';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
     './lumina-tablica.html',
     './lumina-profile.html',
     './manifest-lumina.json',
-    './lumina-badge-v2.png',
+    './lumina-push-badge-v4.1.5.svg',
+    './lumina-badge-monochrome.png',
     './lumina-notif-icon-v2.png',
     './lumina-icon-192.png',
     './lumina-icon-512.png',
-    './lumina-badge-monochrome.png',
     './icon.png',
-    './lumina_icon.jpg'
+    './lumina_icon.jpg',
+    './apel_misyjny_cc.webp?v=20260920_blik537137043',
+    './apel_misyjny_cc.webp'
 ];
 
 self.addEventListener('install', (event) => {
@@ -232,11 +245,16 @@ self.addEventListener('push', (event) => {
     if (payload.from) return;
     const type = data.type || 'general';
 
+    const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
+    const defaultIcon = origin + '/lumina-notif-icon-v2.png';
+    const defaultBadge = origin + '/lumina-push-badge-v4.1.5.svg';
     const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
     const body = notification.body || data.body || 'Otrzymałeś nową wiadomość w portalu LUMINA.';
-    const icon = notification.icon || data.icon || './lumina-icon-192.png';
-    const image = notification.image || data.image || data.imageUrl || undefined;
-    const url = data.url || './lumina.html';
+    const icon = type === 'direct_message'
+        ? (data.avatar || data.icon || notification.icon || defaultIcon)
+        : (notification.icon || data.icon || defaultIcon);
+    const image = notification.image || data.image || data.imageUrl || (type === 'tv_schedule' ? (data.icon || data.poster || undefined) : undefined);
+    const url = data.url || '/lumina';
 
     let actions = [
         { action: 'open', title: 'Otwórz LUMINA 🕊️' }
@@ -252,7 +270,12 @@ self.addEventListener('push', (event) => {
             { action: 'read', title: '📖 Zobacz Wpis' },
             { action: 'like', title: '❤️ Polub' }
         ];
-    } else if (type === 'direct_message' || type === 'mention') {
+    } else if (type === 'daily_mission') {
+        actions = [
+            { action: 'prayer', title: '🙏 Pomódl się' },
+            { action: 'blik', title: '📱 Misyjny BLIK' }
+        ];
+    } else if (type === 'direct_message' || type === 'direct_message_request' || type === 'mention') {
         actions = [
             { action: 'reply', title: '💬 Odpowiedz' },
             { action: 'open', title: 'Otwórz Czat' }
@@ -262,7 +285,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: body,
         icon: icon,
-        badge: './lumina-badge-v2.png',
+        badge: defaultBadge,
         image: image,
         data: {
             url: url,
@@ -272,7 +295,7 @@ self.addEventListener('push', (event) => {
         tag: notification.tag || data.tag || `lumina_${type}_${Date.now()}`,
         renotify: true,
         vibrate: [200, 100, 200],
-        requireInteraction: (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd'),
+        requireInteraction: (type === 'direct_message' || type === 'direct_message_request' || type === 'mention' || type === 'devotion' || type === 'ckd' || type === 'daily_mission'),
         actions: actions
     };
 
@@ -298,9 +321,24 @@ function handleLuminaNotificationClick(event) {
     const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
     const isPublic = data.type === 'public' || data.type === 'public_chat' || data.openPublicChat || (data.data && data.data.type === 'public');
 
+    if (action === 'revolut' || action === 'support') {
+        if (clients.openWindow) {
+            event.waitUntil(clients.openWindow('https://revolut.me/christianculture'));
+            return;
+        }
+    }
+
     let targetUrl = data.url;
 
-    if (action === 'watch') {
+    if (action === 'prayer') {
+        targetUrl = '/modlitwa';
+    } else if (action === 'blik') {
+        targetUrl = '/lumina-tablica.html?blik=1#blik';
+    } else if (action === 'revolut') {
+        targetUrl = 'https://revolut.me/christianculture';
+    } else if (action === 'open_appeal' || data.type === 'sunday_appeal') {
+        targetUrl = '/lumina-tablica.html?post=post_sunday_mission_appeal#sundayAppeal';
+    } else if (action === 'watch') {
         targetUrl = data.url || '/master';
     } else if (action === 'program') {
         targetUrl = '/program';
@@ -403,7 +441,7 @@ self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'lumina-daily-mission-sync') {
         console.log('[SW] Periodic background mission sync triggered');
         event.waitUntil(
-            caches.open('lumina-dynamic-v4.1.1-20260909').then((cache) => {
+            caches.open('lumina-dynamic-v4.1.4-20260914-delivery-fix').then((cache) => {
                 return fetch('./lumina-tablica.html?sync=1', { cache: 'no-cache' })
                     .then((response) => {
                         if (response && response.ok) cache.put('./lumina-tablica.html', response.clone());

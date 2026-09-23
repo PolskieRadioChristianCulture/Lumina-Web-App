@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- RSS Auto-Discovery (Apple Podcasts, Spotify, Feed Readers) -->
@@ -10336,6 +10336,11 @@
             if (typeof window.initFeedCarousels === 'function') { window.initFeedCarousels(container); } else if (typeof initFeedCarousels === 'function') { initFeedCarousels(container); }
             if (window.LuminaComments) {
                 window.LuminaComments.initAllPostCommentCounters();
+            }
+            // ── POST-RENDER HOOK: re-apply Wspieraj Projekt buttons ──
+            if (window.LuminaSupportProject?.decoratePosts) {
+                window.LuminaSupportProject.decoratePosts(document);
+                setTimeout(() => window.LuminaSupportProject?.decoratePosts?.(document), 300);
             }
         }
 
