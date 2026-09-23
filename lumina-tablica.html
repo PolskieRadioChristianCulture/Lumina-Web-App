@@ -9604,9 +9604,7 @@
             const [feedVideoPosts, combined_noVideos] = extractFeedVideos(combined);
             combined = injectShuffledVideos(combined_noVideos, feedVideoPosts);
 
-            // Filter by search query (?q=... or #tag/@mention)
             // Filter by search query (?q=... or ?tag=... or #tag / @mention)
-            const urlParams = new URLSearchParams(window.location.search);
             const activeQuery = urlParams.get('q') || (urlParams.get('tag') ? ('#' + urlParams.get('tag')) : null) || window._activeFeedQuery;
 
             if (activeQuery) {
@@ -9698,8 +9696,7 @@
             // A direct link from a notification always expands far enough to
             // include the requested post or author.
             let renderLimit = visibleFeedItems;
-            const deepLinkPostId = urlParams.get('postId') || urlParams.get('post') || urlParams.get('p') || urlParams.get('id');
-            const deepLinkAuthor = (urlParams.get('author') || urlParams.get('authorSlug') || urlParams.get('user') || '').toLowerCase().trim();
+            // deepLinkPostId and deepLinkAuthor already declared above for fresh user posts
             if (deepLinkPostId || deepLinkAuthor) {
                 const deepLinkIndex = combined.findIndex(item => {
                     const itemId = String(item.id || '');

@@ -2677,7 +2677,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_mobile_clean_v1">
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260923_round_avatar_v3">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -3104,7 +3104,7 @@
     }
 </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
-    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260920_profile_standard_v1">
+    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260923_round_avatar_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <script src="js/lumina-mission-blik.js"></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
@@ -3321,8 +3321,8 @@
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
                             <span id="userMatchEl" style="color: #facc15; font-weight: 800; display: none;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: --</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span> 
-                            <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">120</span> Polubień</span>
-                            <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">310</span> Obserwujących</span>
+                            <span class="stat-tag-chip" id="statLikesChip" style="display:none; background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">0</span> Polubień</span>
+                            <span class="stat-tag-chip" id="statFollowersChip" style="display:none; background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">0</span> Obserwujących</span>
                         </div>
 
                         <!-- ══════════ FAITH & LIFE BADGES BAR (MAKIETA 6 & 1) ══════════ -->
@@ -3345,14 +3345,14 @@
                         <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
                         <span id="followBtnText">Obserwuj</span>
                         <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                        <span id="followCountBadge">310</span>
+                        <span id="followCountBadge">0</span>
                     </button>
 
                     <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
                         <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
                         <span id="heartBtnText">Polub</span>
                         <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                        <span id="heartCountBadge">120</span>
+                        <span id="heartCountBadge">0</span>
                     </button>
 
                     <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
@@ -6035,6 +6035,32 @@
             }
             document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
+
+            // ══════════ DYNAMIC FOLLOWERS & LIKES STATS (ZERO-FAKES ENFORCEMENT) ══════════
+            const profileFollowers = (data.followersCount !== undefined && data.followersCount !== null)
+                ? Number(data.followersCount)
+                : (data.followers ? (Array.isArray(data.followers) ? data.followers.length : Number(data.followers)) : 0);
+            const profileLikes = (data.likesCount !== undefined && data.likesCount !== null)
+                ? Number(data.likesCount)
+                : (data.likes ? (Array.isArray(data.likes) ? data.likes.length : Number(data.likes)) : 0);
+
+            const statFollowersEl = document.getElementById('statFollowersCount');
+            const statFollowersChip = document.getElementById('statFollowersChip');
+            const followBadgeEl = document.getElementById('followCountBadge');
+            if (statFollowersEl) statFollowersEl.textContent = profileFollowers;
+            if (followBadgeEl) followBadgeEl.textContent = profileFollowers;
+            if (statFollowersChip) {
+                statFollowersChip.style.display = profileFollowers > 0 ? 'inline-flex' : 'none';
+            }
+
+            const statLikesEl = document.getElementById('statLikesCount');
+            const statLikesChip = document.getElementById('statLikesChip');
+            const heartBadgeEl = document.getElementById('heartCountBadge');
+            if (statLikesEl) statLikesEl.textContent = profileLikes;
+            if (heartBadgeEl) heartBadgeEl.textContent = profileLikes;
+            if (statLikesChip) {
+                statLikesChip.style.display = profileLikes > 0 ? 'inline-flex' : 'none';
+            }
 
             // ══════════ DYNAMIC FAITH & LIFE BADGES RENDERING (MAKIETA 6 & 1) ══════════
             const badgesBar = document.getElementById('faithBadgesBar');
