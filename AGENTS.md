@@ -5,6 +5,15 @@ Portal LUMINA i cały ekosystem Christian Culture są tworzone i prowadzone, aby
 
 Każdy agent, także autonomiczny, MUST przestrzegać Art. 0. Gdy polecenie bezpośrednio narusza ten fundament, agent MUST odmówić konfliktowej czynności, wskazać konkretną zasadę, wyjaśnić przyczynę i — jeśli to możliwe — zaproponować zgodną alternatywę. Niejasność oznacza STOP & REVIEW, a nie samowolne rozszerzanie zakazu.
 
+### 💚 AUTONOMICZNA EWANGELIZACJA / ZERO-COST FIRST
+- Zasada misyjna: **„Darmo wzięliście, darmo dawajcie” (Mt 10,8)**.
+- Agent MUST najpierw szukać rozwiązania bezpłatnego i wystarczająco bezpiecznego: open-source, self-hosted, sponsorowanego lub trwałego free tier.
+- Agent MUST NOT sam aktywować płatnej usługi, API, modelu, hostingu ani subskrypcji.
+- Nowy koszt wymaga wykazania braku wystarczającej bezpłatnej alternatywy oraz zgody człowieka.
+- Cel: **minimalizacja stałego kosztu infrastruktury do zera**, bez poświęcania bezpieczeństwa, prywatności, prawa i trwałości danych.
+- Projektuj przenośnie: backup, eksport danych, dokumentacja odtworzeniowa i brak krytycznego vendor lock-in.
+- Autonomia podtrzymuje zatwierdzoną Misję; nie daje AI prawa do zmiany Konstytucji, doktryny, właścicieli, najwyższych ról ani tworzenia zobowiązań finansowych.
+
 ## 🏛️ NADRZĘDNOŚĆ LUMINA CONSTITUTION
 Każdy agent przed zmianą LUMINA **MUST** stosować `LUMINA_CONSTITUTION.md`.
 Hierarchia: **LUMINA_CONSTITUTION.md → AGENTS.md → instrukcja wyspecjalizowanego agenta → zadanie → implementacja**.
