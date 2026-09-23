@@ -56,6 +56,26 @@ Dla zachowania jednoznaczności intencji założycielskiej przyjmuje się nastę
 4. Ciągłość techniczna musi opierać się na udokumentowanym planie sukcesji ludzi: odpowiedzialności, dostępu do domen, repozytoriów, hostingu, baz, kopii zapasowych, finansów i procedur awaryjnych.
 5. Przyszli administratorzy i opiekunowie Misji powinni zachować ten fundament jako warunek ciągłości tożsamości Christian Culture.
 
+
+### Art. 0.5. Autonomiczna Ewangelizacja — „Darmo wzięliście, darmo dawajcie”
+1. Strategicznym kierunkiem Christian Culture jest **autonomiczna ewangelizacja**: systemy mają być projektowane tak, aby podstawowa działalność misyjna mogła być bezpiecznie kontynuowana przy możliwie najmniejszej zależności od stałej pracy jednej osoby.
+2. Zasadą misyjną jest: **„Darmo wzięliście, darmo dawajcie” (Mt 10,8)**. Dostęp do Ewangelii, modlitwy, podstawowych treści biblijnych i zasadniczej działalności misyjnej nie może być uzależniony od zapłaty.
+3. Architektura MUST preferować rozwiązania **bezpłatne, open-source, self-hosted, sponsorowane, objęte trwałym free tier lub możliwe do utrzymania bez obowiązkowych opłat**, o ile spełniają wymagania bezpieczeństwa, prywatności, legalności, niezawodności i ciągłości.
+4. Agent MUST przed zaproponowaniem płatnej usługi sprawdzić, czy istnieje funkcjonalnie wystarczające bezpłatne rozwiązanie. Jeśli bezpieczne rozwiązanie bezpłatne istnieje, SHOULD być preferowane.
+5. Agent MUST NOT samodzielnie aktywować płatnej subskrypcji, płatnego API, płatnego hostingu, płatnego modelu AI ani zasobu naliczającego koszty.
+6. Każdy komponent potencjalnie generujący koszty MUST mieć limity, monitoring i zabezpieczenie przed niekontrolowanym naliczaniem opłat, jeśli infrastruktura na to pozwala.
+7. Celem architektonicznym jest **minimalizacja kosztu stałego do zera**. Jeżeli z przyczyn technicznych, prawnych lub bezpieczeństwa kosztu nie da się uniknąć, agent MUST ujawnić ten fakt, uzasadnić konieczność i uzyskać zgodę uprawnionego człowieka przed utworzeniem nowego zobowiązania finansowego.
+8. „Bezpłatne” nie może oznaczać pozornego oszczędzania kosztem bezpieczeństwa użytkowników, prywatności, utraty danych, naruszenia prawa, uzależnienia od nieprzenośnego dostawcy ani wykorzystania użytkownika jako ukrytej formy zapłaty jego danymi.
+9. System SHOULD być projektowany tak, aby krytyczne elementy można było przenieść do alternatywnego bezpłatnego lub samodzielnie utrzymywanego rozwiązania bez utraty danych i tożsamości Misji.
+
+### Art. 0.6. „Misja Trwa” — autonomia bez przejęcia władzy przez AI
+1. Christian Culture nie może być technologicznie uzależnione od ciągłej obecności jednej osoby.
+2. Automatyzacja ma podtrzymywać **misję**, a nie zastępować człowieka jako właściciela moralnej, prawnej lub administracyjnej odpowiedzialności.
+3. W przypadku długotrwałej nieobecności Założyciela system może kontynuować wyłącznie wcześniej zatwierdzone, odwracalne i bezpieczne procesy: emisję, publikację zatwierdzonych cykli, monitoring, backupy, ochronę infrastruktury i inne procedury jawnie dopuszczone w planie ciągłości.
+4. System MUST NOT z powodu samej nieobecności Założyciela: zmieniać Konstytucji, doktryny, zasad moralnych, właścicieli, beneficjentów, ról najwyższego poziomu, polityki prywatności ani podejmować nowych zobowiązań finansowych.
+5. Potencjalny przyszły opiekun Misji musi świadomie przyjąć odpowiedzialność; pokrewieństwo samo w sobie nie nadaje automatycznie dostępu do systemów.
+6. Architektura SHOULD eliminować single points of failure poprzez redundancję, eksportowalne dane, kopie zapasowe, dokumentację odtworzeniową, monitoring i możliwość wymiany dostawcy.
+
 ---
 
 ## ROZDZIAŁ I. FUNDAMENT DUCHOWY I ETYCZNY
