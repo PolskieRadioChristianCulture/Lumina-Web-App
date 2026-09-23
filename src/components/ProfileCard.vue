@@ -16,7 +16,7 @@ const avatarUrl = computed(() => {
   if (props.profile.avatar && props.profile.avatar.trim() !== '') {
     return props.profile.avatar;
   }
-  return props.profile.gender === 'kobieta' ? 'avatar_wioletta_official.jpg' : 'avatar_new1.jpg';
+  return 'lumina_icon.jpg';
 });
 
 const isFounder = computed(() => {

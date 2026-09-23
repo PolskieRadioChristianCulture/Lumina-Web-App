@@ -1253,6 +1253,21 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
                         photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [f.avatar?.stringValue || 'lumina_icon.jpg'],
                         posts: []
                     };
+
+                    // Żelazna ochrona tożsamości Dowódcy — zakaz zdjęcia Dowódcy na profilach obcych
+                    const pSlugLower = (profileData.slug || '').toLowerCase();
+                    const pNameLower = (profileData.name || '').toLowerCase();
+                    const isCmd = pSlugLower.includes('cezary') || pNameLower.includes('cezary');
+                    const isWife = pSlugLower.includes('wioletta') || pNameLower.includes('wioletta');
+                    if (!isCmd && !isWife) {
+                        if (profileData.avatar && (profileData.avatar.includes('avatar_new1') || profileData.avatar.includes('avatar_cezary') || profileData.avatar.includes('cezary_rgowski') || profileData.avatar.includes('cezary_rogowski'))) {
+                            profileData.avatar = 'lumina_icon.jpg';
+                        }
+                        if (Array.isArray(profileData.photos)) {
+                            profileData.photos = profileData.photos.filter(p => p && !p.includes('avatar_new1') && !p.includes('avatar_cezary') && !p.includes('cezary'));
+                            if (profileData.photos.length === 0) profileData.photos = ['lumina_icon.jpg'];
+                        }
+                    }
                     try {
                         localStorage.setItem(localKey, JSON.stringify(profileData));
                         if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug.toLowerCase()}`, JSON.stringify(profileData));
@@ -1735,6 +1750,31 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                                 avatarVideo: 'wioletta_rogowska_video_avatar.mp4',
                                 status: 'Mężatka',
                                 job: 'Współzałożycielka Christian Culture',
+                                updatedAt: serverTimestamp()
+                            }, { merge: true });
+                        } catch(err) {}
+                    }
+                }
+
+                // Żelazny zakaz prywatnego zdjęcia Dowódcy na obcych profilach (wyjątek wyłącznie dla żony Wioletty)
+                const isCmdProfile = slugLower.includes('cezary') || nameLower.includes('cezary');
+                const isWifeProfile = slugLower.includes('wioletta') || nameLower.includes('wioletta');
+                if (!isCmdProfile && !isWifeProfile) {
+                    let profileContaminated = false;
+                    if (p.avatar && (p.avatar.includes('avatar_new1') || p.avatar.includes('avatar_cezary') || p.avatar.includes('cezary_rgowski') || p.avatar.includes('cezary_rogowski'))) {
+                        p.avatar = 'lumina_icon.jpg';
+                        profileContaminated = true;
+                    }
+                    if (Array.isArray(p.photos) && p.photos.some(ph => ph && (ph.includes('avatar_new1') || ph.includes('avatar_cezary') || ph.includes('cezary')))) {
+                        p.photos = p.photos.filter(ph => ph && !ph.includes('avatar_new1') && !ph.includes('avatar_cezary') && !ph.includes('cezary'));
+                        if (p.photos.length === 0) p.photos = ['lumina_icon.jpg'];
+                        profileContaminated = true;
+                    }
+                    if (profileContaminated) {
+                        try {
+                            setDoc(doc(db, 'lumina_profiles', d.id), {
+                                avatar: p.avatar,
+                                photos: p.photos,
                                 updatedAt: serverTimestamp()
                             }, { merge: true });
                         } catch(err) {}

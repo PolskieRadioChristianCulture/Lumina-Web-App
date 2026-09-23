@@ -18,7 +18,8 @@
         'christian_culture_carousel',
         'avatar_christian_culture_hq',
         'tlo_profilowe_cezary',
-        'cezary_mobile_stable'
+        'cezary_mobile_stable',
+        'avatar_new1'
     ];
 
     function isCommanderAsset(urlOrStr) {
@@ -27,10 +28,15 @@
         return COMMANDER_PATTERNS.some(p => lower.includes(p));
     }
 
-    function isCommanderSlug(slug) {
+    // Wyjątek z rozkazu Dowódcy: tylko profil Cezarego i profil jego żony Wioletty
+    function isAllowedCommanderAsset(slug) {
         if (!slug) return false;
         const s = slug.toLowerCase().trim();
-        return s === 'cezaryrgowski' || s === 'cezary_wioletta' || s === 'cezary' || s === 'cezaryrogowski';
+        return s === 'cezaryrgowski' || s === 'cezary_wioletta' || s === 'cezary' || s === 'cezaryrogowski' || s === 'wiolettarogowska' || s === 'wioletta';
+    }
+
+    function isCommanderSlug(slug) {
+        return isAllowedCommanderAsset(slug);
     }
 
     function getProperProfileAvatar(slug) {
@@ -139,13 +145,22 @@
             const urlParams = new URLSearchParams(window.location.search);
             const curSlug = (urlParams.get('u') || window.location.pathname.split('/').pop()?.replace('lumina.', '')?.replace('.html', '') || '').toLowerCase().trim();
             if (curSlug && !isCommanderSlug(curSlug)) {
-                const mainAvatars = document.querySelectorAll('#profileMainAvatar, #profileHeroAvatar, .profile-main-avatar, .profile-hero-avatar');
+                const mainAvatars = document.querySelectorAll('#avatarImgEl, .avatar-img, #profileMainAvatar, #profileHeroAvatar, .profile-main-avatar, .profile-hero-avatar, #userNavAvatar, .user-nav-avatar, #myComposerAvatar, .composer-avatar');
                 mainAvatars.forEach(av => {
                     if (av && isCommanderAsset(av.src)) {
                         const cleanSrc = getProperProfileAvatar(curSlug);
                         console.warn('[LUMINA IDENTITY GUARD] Reverting illegal Commander photo on profile page ' + curSlug + ' to ' + cleanSrc);
                         av.src = cleanSrc;
                         av.setAttribute('src', cleanSrc);
+                    }
+                });
+
+                // Zabezpieczenie zdjęć wpisów i galerii obcego profilu
+                document.querySelectorAll('.post-avatar, .gallery-item img, .cover-photo, #coverPhotoEl, .post-image').forEach(img => {
+                    if (img && isCommanderAsset(img.src)) {
+                        console.warn('[LUMINA IDENTITY GUARD] Reverting illegal Commander asset on non-commander profile element:', img);
+                        img.src = 'lumina_icon.jpg';
+                        img.setAttribute('src', 'lumina_icon.jpg');
                     }
                 });
             }
@@ -172,19 +187,20 @@
     // 3. Monitorowanie DOM (MutationObserver) – pancerne zabezpieczenie przed dynamicznym wstrzyknięciem
     if (typeof MutationObserver !== 'undefined') {
         const observer = new MutationObserver((mutations) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const curSlug = (urlParams.get('u') || window.location.pathname.split('/').pop()?.replace('lumina.', '')?.replace('.html', '') || '').toLowerCase().trim();
+
             for (let i = 0; i < mutations.length; i++) {
                 const mut = mutations[i];
                 if (mut.type === 'attributes' && mut.attributeName === 'src') {
                     const target = mut.target;
                     if (target && target.tagName === 'IMG' && isCommanderAsset(target.src)) {
                         const card = target.closest('.profile-card, [data-profile-slug]');
-                        if (card) {
-                            const slug = (card.getAttribute('data-profile-slug') || card.id?.replace('card_profile_', '') || '').toLowerCase().trim();
-                            if (slug && !isCommanderSlug(slug)) {
-                                const cleanSrc = getProperProfileAvatar(slug);
-                                target.src = cleanSrc;
-                                target.setAttribute('src', cleanSrc);
-                            }
+                        const slug = card ? (card.getAttribute('data-profile-slug') || card.id?.replace('card_profile_', '') || '').toLowerCase().trim() : curSlug;
+                        if (slug && !isCommanderSlug(slug)) {
+                            const cleanSrc = getProperProfileAvatar(slug);
+                            target.src = cleanSrc;
+                            target.setAttribute('src', cleanSrc);
                         }
                     }
                 }

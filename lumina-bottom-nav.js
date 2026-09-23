@@ -1147,11 +1147,11 @@
                 
                 <div style="display:flex; flex-direction:column; gap:10px;" id="ccMessagesModalList">
                     <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='/lumina';">
-                        <img src="avatar_cezary_official.jpg" alt="Cezary" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
+                        <img src="lumina_icon.jpg" alt="LUMINA" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski</span>
-                                <span style="font-size:0.72rem; color:#facc15; font-weight:700;">Kawa</span>
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Zespół LUMINA</span>
+                                <span style="font-size:0.72rem; color:#facc15; font-weight:700;">Oficjalne</span>
                             </div>
                             <div style="font-size:0.78rem; color:#cbd5e1; margin-top:2px;">Witaj w portalu LUMINA! Szczęść Boże 🕊️</div>
                         </div>

@@ -512,9 +512,9 @@
 
                     <!-- Kto udostępnia (Aktywny profil) -->
                     <div id="luminaRepostAuthorRow" style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-                        <img id="luminaRepostUserAvatar" src="avatar_cezary_official.jpg" alt="Twój profil" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;" onerror="this.src='lumina_icon.jpg'">
+                        <img id="luminaRepostUserAvatar" src="lumina_icon.jpg" alt="Twój profil" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;" onerror="this.src='lumina_icon.jpg'">
                         <div style="min-width:0; flex:1;">
-                            <div id="luminaRepostUserName" style="font-weight:700; font-size:0.88rem; color:#fff;">Cezary Rogowski</div>
+                            <div id="luminaRepostUserName" style="font-weight:700; font-size:0.88rem; color:#fff;">Twój Profil</div>
                             <div style="font-size:0.72rem; color:#94a3b8; display:flex; align-items:center; gap:4px;">
                                 <i class="fa-solid fa-earth-americas" style="font-size:0.65rem; color:#38bdf8;"></i>
                                 <span>Publikujesz na swoim profilu • Publiczny</span>

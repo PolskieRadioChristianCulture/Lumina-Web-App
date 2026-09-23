@@ -127,7 +127,7 @@ export const PROFILES_DB = {
         verseRef: '— List do Filipian 4, 13',
         bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości. Wierzę w siłę wspólnej modlitwy, zaufanie Bogu i budowanie trwałej relacji na fundamencie Chrystusa.',
         tags: ['Modlitwa', 'Zaufanie', 'Wierność', 'Pismo Święte', 'Poznań'],
-        photos: ['avatar_magdalena.png', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_magdalena.png', 'lumina_default_cover.jpg'],
         posts: [
             {
                 id: 'post_magdalena_1',
@@ -251,7 +251,7 @@ export const PROFILES_DB = {
         verseRef: '— Psalm 28, 7',
         bio: 'Głęboka wiara, miłość do muzyki chrześcijańskiej i pasja do natury. Szukam mężczyzny, dla którego Bóg jest przewodnikiem w codziennym życiu.',
         tags: ['Góry', 'Poezja', 'Fortepian', 'Ewangelizacja', 'Projektowanie'],
-        photos: ['avatar_noemi.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_noemi.jpg', 'lumina_default_cover.jpg'],
         posts: [
             {
                 id: 'post_noemi_1',
@@ -436,7 +436,7 @@ export const PROFILES_DB = {
         verseRef: '— Księga Jozuego 1, 9',
         bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku. Szukam kobiety o łagodnym sercu, z którą stworzymy bezpieczny i ciepły dom.',
         tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Biblia'],
-        photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
         posts: [
             {
                 id: 'post_t1',

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -4800,7 +4800,7 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'];
             
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
@@ -4867,7 +4867,7 @@
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'];
+                cur.photos = ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'];
             }
             
             if (index < 0 || index >= cur.photos.length) return;

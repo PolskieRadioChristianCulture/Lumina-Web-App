@@ -6864,7 +6864,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (btn) { btn.disabled = true; btn.textContent = '🕊️ Tworzenie profilu...'; }
 
             let targetUid = 'u_' + name.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
-            const initialAvatar = obAvatarDataUrl && obAvatarDataUrl.length > 50 ? obAvatarDataUrl : (gender === 'kobieta' ? 'lumina_anna2.jpg' : 'avatar_new1.jpg');
+            const initialAvatar = obAvatarDataUrl && obAvatarDataUrl.length > 50 ? obAvatarDataUrl : 'lumina_icon.jpg';
 
             const profileData = {
                 uid: targetUid,

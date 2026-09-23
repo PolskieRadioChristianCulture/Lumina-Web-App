@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -4477,7 +4477,7 @@
                 verseRef: '— List do Filipian 4, 13',
                 bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości. Wierzę w siłę wspólnej modlitwy, zaufanie Bogu i budowanie trwałej relacji na fundamencie Chrystusa.',
                 tags: ['Modlitwa', 'Zaufanie', 'Wierność', 'Pismo Święte', 'Poznań'],
-                photos: ['avatar_magdalena.png', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
+                photos: ['avatar_magdalena.png', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_magdalena_1',
@@ -4684,7 +4684,7 @@
                 verseRef: '— Księga Jozuego 1, 9',
                 bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku. Szukam kobiety o łagodnym sercu, z którą stworzymy bezpieczny i ciepły dom.',
                 tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Biblia'],
-                photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
+                photos: ['avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_t1',
@@ -6171,6 +6171,15 @@
                 ? (data.avatar || 'lumina_logo.jpg') // wymuszony werdykt serwera — cache lokalny nie może go ominąć
                 : (localStorage.getItem('lumina_avatar_' + slug) || data.avatar || (slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg'));
             
+            // Żelazna ochrona tożsamości Dowódcy — zakaz zdjęcia Dowódcy na profilach obcych (wyjątek tylko dla żony Wioletty)
+            const isCmd = slug.includes('cezary');
+            const isWife = slug.includes('wioletta');
+            if (!isCmd && !isWife) {
+                if (targetAv && (targetAv.includes('avatar_new1') || targetAv.includes('avatar_cezary') || targetAv.includes('cezary_rgowski') || targetAv.includes('cezary_rogowski'))) {
+                    targetAv = 'lumina_icon.jpg';
+                }
+            }
+
             if (targetAv && (targetAv.includes('googleusercontent.com/a/') || targetAv === 'icon.png' || !targetAv)) {
                 targetAv = 'lumina_icon.jpg';
             }
@@ -6260,9 +6269,13 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            let photos = Array.isArray(data.photos) ? data.photos : ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
             const slug = getRequestedUserSlug();
-            if (slug.includes('cezary')) {
+            const isCommander = slug.includes('cezary');
+            const isWife = slug.includes('wioletta');
+            let photos = Array.isArray(data.photos) ? data.photos : (isCommander ? ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'] : []);
+            if (!isCommander && !isWife) {
+                photos = photos.filter(p => typeof p === 'string' && !p.includes('cezary') && !p.includes('avatar_cezary') && !p.includes('avatar_new1'));
+            } else if (isCommander) {
                 photos = photos.filter(p => typeof p === 'string' && !p.includes('tomek') && !p.includes('avatar_widget_tomek'));
                 if (photos.length === 0) photos = ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
             }
@@ -6570,11 +6583,23 @@
                     effectiveEmbedHtml = rich.embedHtml || '';
                 }
 
+                const isCmdProfile = slug.includes('cezary');
+                const isWifeProfile = slug.includes('wioletta');
+                if (!isCmdProfile && !isWifeProfile) {
+                    if (p.image && (p.image.includes('avatar_new1') || p.image.includes('avatar_cezary') || p.image.includes('cezary'))) {
+                        p.image = null;
+                    }
+                    if (p.authorAvatar && (p.authorAvatar.includes('avatar_new1') || p.authorAvatar.includes('avatar_cezary') || p.authorAvatar.includes('cezary'))) {
+                        p.authorAvatar = 'lumina_icon.jpg';
+                    }
+                }
                 const hasRealPostImage = p.image && String(p.image).trim() !== '' && !String(p.image).includes('lumina_icon.jpg');
 
                 let effectivePostAvatar = p.authorAvatar || data.avatar || 'lumina_icon.jpg';
                 if (isHameraProfile && (effectivePostAvatar.includes('thiel') || effectivePostAvatar.includes('lumina_icon') || !effectivePostAvatar)) {
                     effectivePostAvatar = 'avatar_andrzej_hamera.jpg';
+                } else if (!isCmdProfile && !isWifeProfile && (effectivePostAvatar.includes('avatar_new1') || effectivePostAvatar.includes('avatar_cezary') || effectivePostAvatar.includes('cezary'))) {
+                    effectivePostAvatar = 'lumina_icon.jpg';
                 }
 
                 return `
@@ -8675,7 +8700,7 @@
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest_' + Math.random().toString(36).substr(2,6));
             const senderId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
             const senderName = myProfile?.name || myUser?.name || currentProf?.name || localStorage.getItem('lumina_current_user_name') || 'Gość LUMINA';
-            const senderAvatar = myProfile?.avatar || myUser?.avatar || currentProf?.avatar || 'avatar_new1.jpg';
+            const senderAvatar = myProfile?.avatar || myUser?.avatar || currentProf?.avatar || 'lumina_icon.jpg';
             
             let senderBadge = '✨ Społeczność';
             if (senderId === 'cezaryrgowski') senderBadge = '✨ Założyciel';

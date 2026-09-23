@@ -373,7 +373,7 @@ function handleLuminaNotificationClick(event) {
         chatData: {
             senderId: sender,
             senderName: data.senderName || '',
-            senderAvatar: data.avatar || data.icon || 'avatar_cezary_official.jpg',
+            senderAvatar: data.avatar || data.icon || 'lumina_icon.jpg',
             type: isPublic ? 'public' : 'private',
             messageId: msgId
         }

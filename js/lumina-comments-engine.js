@@ -732,7 +732,7 @@
             return `
                 <div class="comment-preview-card">
                     <div class="comment-preview-thumb-wrap">
-                        <img src="lion_jewish_flag.jpg" alt="Dom Modlitwy" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                        <img src="lion_jewish_flag.jpg" alt="Dom Modlitwy" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                     </div>
                     <div class="comment-preview-body">
                         <div class="comment-preview-badge-row">

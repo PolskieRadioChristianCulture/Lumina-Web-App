@@ -21,8 +21,8 @@
             role: 'Założyciel 👑',
             url: 'lumina.cezaryrgowski.html',
             city: 'Ostrowiec Św.',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'wiolettarogowska',
@@ -32,8 +32,8 @@
             role: 'Współzałożycielka 🌸',
             url: 'lumina.wiolettarogowska.html',
             city: 'Ostrowiec Św.',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'zbyszekgieron',
@@ -43,8 +43,8 @@
             role: 'Profil Misyjny 🕊️',
             url: 'lumina.zbyszekgieron.html',
             city: 'Polska',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'andrzejthiel',
@@ -54,8 +54,8 @@
             role: 'Lider CC 🛡️',
             url: 'lumina.andrzejthiel.html',
             city: 'Gdańsk',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'jolawojcik',
@@ -65,8 +65,8 @@
             role: 'Czas Modlitwy 🙏',
             url: 'lumina.jolawojcik.html',
             city: 'Lublin',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'magdalena',
@@ -76,8 +76,8 @@
             role: 'Świadectwo 🕊️',
             url: 'lumina.magdalena.html',
             city: 'Poznań',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'pawelmurawski',
@@ -87,8 +87,8 @@
             role: 'Życie z Bogiem ✝️',
             url: 'lumina.pawelmurawski.html',
             city: 'Kraków',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'zofiadudek',
@@ -98,8 +98,8 @@
             role: 'Rodzina 🌿',
             url: 'lumina.zofiadudek.html',
             city: 'Wrocław',
-            defaultFriend: true,
-            defaultFollowed: true
+            defaultFriend: false,
+            defaultFollowed: false
         },
         {
             slug: 'tomek',
@@ -954,12 +954,6 @@
             if (val === 'accepted' || val === 'pending') return val;
             if (val === '0' || val === 'none') return null;
         } catch (e) {}
-
-        // Domyślny status relacji dla ambasadorów/kontaktów
-        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
-        if (item && item.defaultFriend) {
-            return 'accepted';
-        }
         return null;
     }
 
@@ -1014,9 +1008,7 @@
             return window.isFollowingLocally(slug);
         }
 
-        // Domyślny status obserwowany
-        const item = COMMUNITY_FRIENDS.find(f => f.slug === slug);
-        return Boolean(item && item.defaultFollowed);
+        return false;
     }
 
     function toggleFollow(slug) {
@@ -1229,6 +1221,7 @@
         const allFriends = getFriendsData(currentProfileSlug);
         const friendsCount = allFriends.filter(f => f.isFriend).length;
         const followedCount = allFriends.filter(f => f.isFollowed).length;
+        const totalConnections = friendsCount + followedCount;
         const isMaster = checkIsMasterAdmin();
 
         const profileBioMap = {
@@ -1238,10 +1231,15 @@
             'andrzejthiel': 'Lider męskich grup, formacja i wzrost duchowy w Bożej prawdzie.',
             'jolawojcik': 'Wstawiennictwo, modlitwa i wsparcie dla potrzebujących serc.'
         };
-        const subtext = profileBioMap[currentProfileSlug] || 'Osoby ze społeczności LUMINA, z którymi budujesz braterstwo i wiarę:';
+        let subtext = profileBioMap[currentProfileSlug];
+        if (!subtext) {
+            subtext = totalConnections === 0
+                ? 'Ten profil nie dodał jeszcze znajomych ani nie obserwuje osób w społeczności LUMINA.'
+                : 'Osoby ze społeczności LUMINA, z którymi budujesz braterstwo i wiarę:';
+        }
 
-        // Filtrowanie według aktywnej zakładki
-        let filteredByTab = allFriends;
+        // Filtrowanie według aktywnej zakładki: w zakładce 'all' pokazuj tylko rzeczywistych znajomych/obserwowanych
+        let filteredByTab = allFriends.filter(f => f.isFriend || f.isFollowed);
         if (currentFilterTab === 'friends') {
             filteredByTab = allFriends.filter(f => f.isFriend);
         } else if (currentFilterTab === 'followed') {
@@ -1300,7 +1298,7 @@
             ${!isSearching ? `
                 <div class="friends-filter-tabs">
                     <button type="button" class="friends-tab-btn ${currentFilterTab === 'all' ? 'active' : ''}" data-tab="all">
-                        Wszyscy (${allFriends.length})
+                        Wszyscy (${totalConnections})
                     </button>
                     <button type="button" class="friends-tab-btn ${currentFilterTab === 'friends' ? 'active' : ''}" data-tab="friends" title="Osoby z obustronną relacją znajomości">
                         Znajomi 🤝 (${friendsCount})
@@ -1371,7 +1369,7 @@
             ` : `
                 <!-- ── SIATKA 3 KOLUMNY (STANDARDOWY WIDOK) ── -->
                 <div class="followed-friends-grid">
-                    ${displayGridFriends.map(f => `
+                    ${displayGridFriends.length > 0 ? displayGridFriends.map(f => `
                         <div class="followed-friend-item ${f.isFriend ? 'is-friend' : ''} ${f.isFollowed ? 'is-active-follow' : ''}" data-slug="${f.slug}">
                             <div class="followed-avatar-wrapper">
                                 <a href="${f.url}" class="followed-avatar-anchor" title="${f.name} • ${f.role}">
@@ -1406,7 +1404,13 @@
                                 </div>
                             </a>
                         </div>
-                    `).join('')}
+                    `).join('') : `
+                        <div style="grid-column:1 / -1; text-align:center; padding:22px 14px; background:rgba(255,255,255,0.02); border:1px dashed rgba(250,204,21,0.25); border-radius:16px;">
+                            <i class="fa-solid fa-user-plus" style="font-size:1.5rem; color:#facc15; margin-bottom:8px; display:block; opacity:0.85;"></i>
+                            <div style="font-size:0.82rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">Brak znajomych i obserwowanych z automatu</div>
+                            <div style="font-size:0.72rem; color:#94a3b8; line-height:1.4;">Ten profil nie ma jeszcze powiązań. Wpisz imię w szukajce powyżej, aby znaleźć osoby ze społeczności i wysłać zaproszenie.</div>
+                        </div>
+                    `}
 
                     <!-- Dodatkowy kafelek Odkryj więcej -->
                     <a href="lumina.html" class="followed-friend-item" title="Odkryj więcej profili w katalogu LUMINA">

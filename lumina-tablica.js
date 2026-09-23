@@ -323,7 +323,7 @@ class LuminaTablicaEngine {
         const curProf = this.db.getCurrentProfile?.() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
 
         const authorName = curProf?.name || curUser?.displayName || 'Użytkownik LUMINA';
-        const authorAvatar = curProf?.avatar || curUser?.photoURL || 'avatar_new1.jpg';
+        const authorAvatar = curProf?.avatar || curUser?.photoURL || 'lumina_icon.jpg';
         const authorSlug = curProf?.slug || (curUser ? curUser.uid : 'user_' + Date.now());
         const authorRole = curProf?.job || curProf?.role || 'Społeczność LUMINA ✨';
 
