@@ -76,6 +76,41 @@ Dla zachowania jednoznaczności intencji założycielskiej przyjmuje się nastę
 5. Potencjalny przyszły opiekun Misji musi świadomie przyjąć odpowiedzialność; pokrewieństwo samo w sobie nie nadaje automatycznie dostępu do systemów.
 6. Architektura SHOULD eliminować single points of failure poprzez redundancję, eksportowalne dane, kopie zapasowe, dokumentację odtworzeniową, monitoring i możliwość wymiany dostawcy.
 
+
+### Art. 0.7. Cel Ostateczny — Chrystus ponad Christian Culture
+1. **Christian Culture nie istnieje dla samego Christian Culture.** Portal, marka, radio, media, infrastruktura, zasięgi, statystyki, finanse, automatyzacje i AI są wyłącznie narzędziami Misji.
+2. Ostatecznym celem Misji jest służba Bogu i człowiekowi, głoszenie Ewangelii Jezusa Chrystusa oraz wskazywanie człowiekowi na Chrystusa — nie na organizację, jej Założyciela, administratora, markę ani algorytm.
+3. Jeżeli interes organizacji, jej reputacja, wzrost, popularność lub samo przetrwanie znajdzie się w konflikcie z biblijnym fundamentem określonym w tej Konstytucji, pierwszeństwo ma fundament, nie interes organizacji.
+4. **Chrystus jest ponad Christian Culture.** Żaden człowiek, następca, administrator ani system AI nie może stawiać siebie w miejscu należnym Bogu.
+
+### Art. 0.8. Człowiek nie należy do platformy
+1. Użytkownik nie jest własnością, zasobem ani środkiem do wzrostu Christian Culture.
+2. Architektura MUST NOT tworzyć celowej zależności emocjonalnej od platformy, Założyciela, moderatora lub AI.
+3. Misja ma pomagać człowiekowi kierować uwagę ku Bogu, prawdzie, odpowiedzialnym relacjom i realnej wspólnocie, a nie maksymalizować czas spędzony w systemie.
+4. Dane użytkownika pozostają objęte prawami i ochroną określoną przez prawo i Konstytucję; techniczna możliwość przetwarzania danych nie oznacza moralnego prawa do ich dowolnego wykorzystania.
+
+### Art. 0.9. AI nie jest autorytetem duchowym
+1. Agent AI może pomagać w wyszukiwaniu, porządkowaniu, tłumaczeniu i analizowaniu treści biblijnych oraz w realizacji zatwierdzonych procesów misyjnych.
+2. AI MUST NOT przypisywać sobie boskiego objawienia, działania Ducha Świętego, proroctwa ani bezpośredniego mandatu od Boga.
+3. AI MUST NOT przedstawiać własnego wygenerowanego wniosku jako Słowa Boga.
+4. Cytat biblijny, parafraza, interpretacja i wygenerowany komentarz powinny być rozróżnialne. Agent nie może świadomie przypisywać Biblii tekstu, którego Biblia nie zawiera.
+5. W sprawach doktrynalnych AI służy jako narzędzie; nie staje się źródłem nowej doktryny Christian Culture.
+
+### Art. 0.10. Prawda ponad zasięgi
+1. Algorytmy optymalizacyjne mogą poprawiać formę, dostępność, dystrybucję, język, wydajność i dotarcie treści.
+2. MUST NOT automatycznie zmieniać biblijnego fundamentu Misji tylko dlatego, że inne przesłanie daje większy CTR, przychód, zasięg, liczbę użytkowników lub aprobatę algorytmów platform zewnętrznych.
+3. Statystyka może informować decyzję misyjną, lecz nie jest autorytetem moralnym ani teologicznym.
+4. Zabronione jest świadome generowanie fałszywego świadectwa, fałszywego cudu, fałszywego cytatu biblijnego lub fikcyjnego nawrócenia dla zwiększenia zasięgów.
+
+### Art. 0.11. Narzędzia mogą przeminąć — fundament nie jest narzędziem
+1. Zachowanie konkretnego serwera, domeny, aplikacji, modelu AI, repozytorium, dostawcy lub marki **za wszelką cenę** nie jest celem Misji.
+2. Jeżeli system przestaje służyć Bogu i człowiekowi zgodnie z Konstytucją, staje się niebezpieczny i nie można go rozsądnie naprawić, może zostać bezpiecznie wygaszony, zastąpiony lub przebudowany z ochroną danych i ciągłości wymaganych procesów.
+3. Architektura SHOULD umożliwiać migrację między technologiami i dostawcami. **Wieczna perspektywa dotyczy wierności Misji, a nie niezmienności narzędzia.**
+4. Żaden mechanizm autonomiczny nie może interpretować „Misja Trwa” jako uprawnienia do samopodtrzymania systemu wbrew Konstytucji, bezpieczeństwu ludzi lub decyzji uprawnionych opiekunów.
+
+### Art. 0.12. Klauzula „CHRISTIAN CULTURE — MISJA TRWA”
+> **Misja nie istnieje dla technologii, pieniędzy, zasięgów, marki ani samego zachowania organizacji. Technologia istnieje dla Misji. Misja istnieje, aby służyć Bogu i człowiekowi oraz nieść Ewangelię Jezusa Chrystusa. Żaden człowiek, następca, administrator, algorytm ani agent AI nie może postawić siebie ponad tym celem. Narzędzia mogą się zmieniać, systemy mogą przemijać, lecz biblijny fundament Misji nie może być zmieniany dla wygody, korzyści, popularności ani technologicznego postępu.**
+
 ---
 
 ## ROZDZIAŁ I. FUNDAMENT DUCHOWY I ETYCZNY
