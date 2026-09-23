@@ -7939,16 +7939,21 @@
                     }
 
                     const isCkd = (cp.category === 'ckd') || (cp.isDevotion === true) || (cp.authorSlug === 'andrzejthiel') || String(cp.title || '').toUpperCase().includes('CUDA KAŻDEGO DNIA');
+                    const isVerseCard = (cp.type === 'verse_card') || (cp.category === 'verse_card') || String(cp.id || '').startsWith('post_werset_') || String(cp.title || '').includes('Mój Werset Dnia');
+                    const isVeryFresh = sortTs > (Date.now() - 48 * 3600 * 1000);
                     if (cp.sourceSlug) seenSlugs.add(cp.sourceSlug);
 
                     posts.push({
                         ...cp,
                         id: cp.id,
-                        type: cp.type || 'post',
-                        category: cp.category || (isCkd ? 'ckd' : 'general'),
+                        type: cp.type || (isVerseCard ? 'verse_card' : 'post'),
+                        category: cp.category || (isCkd ? 'ckd' : (isVerseCard ? 'verse_card' : 'general')),
                         isDevotion: isCkd,
+                        _isVerseCard: isVerseCard,
+                        _isFreshSpotlight: !!(cp._isFreshSpotlight || (isVerseCard && isVeryFresh)),
+                        _isNewlyPublished: !!(cp._isNewlyPublished || (isVerseCard && isVeryFresh)),
                         author: cp.author || cp.authorName || 'Użytkownik LUMINA',
-                        authorRole: cp.authorRole || (isCkd ? 'Cuda Każdego Dnia 📖✨ • Sieradz' : 'Społeczność LUMINA ✨'),
+                        authorRole: cp.authorRole || (isCkd ? 'Cuda Każdego Dnia 📖✨ • Sieradz' : (isVerseCard ? 'Mój Werset Dnia 📖✨' : 'Społeczność LUMINA ✨')),
                         authorAvatar: cp.authorAvatar || cp.avatar || (isCkd ? 'avatar_andrzej_thiel.jpg' : 'icon.png'),
                         authorSlug: cp.authorSlug || (isCkd ? 'andrzejthiel' : ''),
                         time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
@@ -9447,28 +9452,30 @@
                 return { id: 'broadcast_ch_' + idx, _isBroadcastChannel: true, _chIdx: idx, type: 'all' };
             }
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const deepLinkPostId = urlParams.get('postId') || urlParams.get('post') || urlParams.get('p') || urlParams.get('id') || urlParams.get('highlight');
+            const deepLinkAuthor = (urlParams.get('author') || urlParams.get('authorSlug') || urlParams.get('user') || '').toLowerCase().trim();
+            window._luminaTargetPostId = deepLinkPostId;
+            window._luminaTargetAuthor = deepLinkAuthor;
+
             let combined = [];
 
-            // ═══════════════════════════════════════════════════════════════════════════════
-            // 👑 ŻELAZNY STANDARD SZCZYTU TABLICY LUMINA (TRZY STAŁE POZYCJE):
-            // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski) — NA SAMEJ GÓRZE
-            // 2. Oficjalny Patron Misji: KONCEPT STUDIO — ZARAZ POD „Dobrze, że jesteś”
-            // 3. Rozważanie z serii „Cuda Każdego Dnia” (Andrzej Thiel — zawsze najnowsze)
-            // ═══════════════════════════════════════════════════════════════════════════════
-
-            // 1. POZYCJA 1: Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
-            if (window._luminaDailyReflection) {
-                combined.push(window._luminaDailyReflection);
-            }
-
-            // 👑 JEŚLI UŻYTKOWNIK WŁAŚNIE OPUBLIKOWAŁ POST — ZARAZ POD ROZWAŻANIEM NA GÓRZE TABLICY!
-            const freshUserPosts = userPosts.filter(p => p._isFreshSpotlight);
+            // 👑 1. NOWO OPUBLIKOWANY POST (Z Werset Dnia / Tablicy / linku ?post=) — ZAWSZE JAKO PIERWSZY POST NA SAMEJ GÓRZE!
+            const freshUserPosts = userPosts.filter(p => p._isFreshSpotlight || p._isNewlyPublished || (deepLinkPostId && (p.id === deepLinkPostId || p.id === 'post_' + deepLinkPostId)));
+            freshUserPosts.sort((a, b) => (b._sortTs || 0) - (a._sortTs || 0));
             freshUserPosts.forEach(fp => {
                 fp._isFreshSpotlight = true;
                 if (!combined.some(it => it.id === fp.id)) {
                     combined.push(fp);
                 }
             });
+
+            // 2. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
+            if (window._luminaDailyReflection) {
+                if (!combined.some(it => it.id === window._luminaDailyReflection.id)) {
+                    combined.push(window._luminaDailyReflection);
+                }
+            }
 
             // 🌿 NIEDZIELNY APEL MISYJNY CHRISTIAN CULTURE (W każdą niedzielę o 09:00 lub z linku)
             if (typeof window.getSundayMissionAppealPost === 'function') {
@@ -10012,7 +10019,8 @@
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
 
                 let badgeHtml = '';
-                if (item._isFreshSpotlight || item._isNewlyPublished) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; box-shadow:0 0 14px rgba(245,158,11,0.5);" title="Twój Opublikowany Wpis"><i class="fa-solid fa-sparkles"></i> <span class="badge-type-tag-text">Twój Opublikowany Wpis</span></span>';
+                if (item._isVerseCard || item.type === 'verse_card' || item.category === 'verse_card' || (item.id && String(item.id).startsWith('post_werset_')) || (item.title && String(item.title).includes('Mój Werset Dnia'))) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,#dfb872,#b38938); border:none; color:#000; font-weight:800; box-shadow:0 0 14px rgba(223,184,114,0.6);" title="Mój Werset Dnia • Opublikowano w LUMINA"><i class="fa-solid fa-book-bible"></i> <span class="badge-type-tag-text">Mój Werset Dnia ✨</span></span>';
+                else if (item._isFreshSpotlight || item._isNewlyPublished) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; box-shadow:0 0 14px rgba(245,158,11,0.5);" title="Twój Opublikowany Wpis"><i class="fa-solid fa-sparkles"></i> <span class="badge-type-tag-text">Twój Opublikowany Wpis</span></span>';
                 else if (item._isFeedVideo || (item.image && (item.image.endsWith('.mp4') || item.image.includes('.mp4')))) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg,rgba(236,72,153,0.35),rgba(168,85,247,0.35)); border:1px solid #ec4899; color:#fbcfe8; font-weight:800; box-shadow:0 0 12px rgba(236,72,153,0.35);" title="Rolka Wiary"><i class="fa-solid fa-play" style="color:#f472b6;"></i> <span class="badge-type-tag-text">Rolka Wiary</span></span>';
                 else if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);" title="Przypięty Wpis"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24;"></i> <span class="badge-type-tag-text">Przypięty Wpis</span></span>';
                 else if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;" title="Rozważanie Dnia"><i class="fa-solid fa-sun"></i> <span class="badge-type-tag-text">Rozważanie Dnia</span></span>';
@@ -10342,6 +10350,28 @@
                 window.LuminaSupportProject.decoratePosts(document);
                 setTimeout(() => window.LuminaSupportProject?.decoratePosts?.(document), 300);
             }
+
+            // ── Auto-scroll & Highlight for deepLinkPostId (?post=... / ?highlight=...) ──
+            try {
+                if (deepLinkPostId && !window._hasScrolledToTargetPost) {
+                    window._hasScrolledToTargetPost = true;
+                    setTimeout(() => {
+                        const targetEl = document.getElementById(deepLinkPostId) ||
+                                         document.getElementById('post_' + deepLinkPostId) ||
+                                         document.querySelector(`[data-post-id="${deepLinkPostId}"]`);
+                        if (targetEl) {
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            targetEl.style.transition = 'box-shadow 0.6s ease, transform 0.4s ease';
+                            targetEl.style.boxShadow = '0 0 45px rgba(223, 184, 114, 0.85)';
+                            targetEl.style.transform = 'scale(1.015)';
+                            setTimeout(() => {
+                                targetEl.style.boxShadow = '';
+                                targetEl.style.transform = '';
+                            }, 4500);
+                        }
+                    }, 400);
+                }
+            } catch(e) {}
         }
 
         function filterFeed(type, btn) {
