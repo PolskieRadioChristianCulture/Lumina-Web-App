@@ -104,9 +104,9 @@
         100% { transform: scale(1); box-shadow: 0 0 10px rgba(34, 197, 94, 0.9); }
     }
 
-    .avatar-status-badge,
-    .avatar-status-badge.online,
-    .avatar-status-badge[data-status="online"] {
+    .user-nav-avatar .avatar-status-badge,
+    .user-nav-avatar .avatar-status-badge.online,
+    .user-nav-avatar .avatar-status-badge[data-status="online"] {
         position: absolute !important;
         bottom: 8px !important;
         right: 8px !important;
@@ -123,9 +123,9 @@
         transition: all 0.3s ease !important;
     }
 
-    .avatar-status-badge.offline,
-    .avatar-status-badge[data-status="offline"],
-    body:not(.user-is-authenticated) .avatar-status-badge {
+    .user-nav-avatar .avatar-status-badge.offline,
+    .user-nav-avatar .avatar-status-badge[data-status="offline"],
+    body:not(.user-is-authenticated) .user-nav-avatar .avatar-status-badge {
         background: #ef4444 !important;
         box-shadow: 0 0 14px rgba(239, 68, 68, 0.95), 0 0 24px rgba(239, 68, 68, 0.6) !important;
         animation: luminaPulseRed 1.8s infinite ease-in-out !important;
@@ -1700,38 +1700,28 @@
             }
         }
 
-        // 6. 🔴/🟢 DIODA PRZY ZDJĘCIU PROFILOWYM (Czerwona = Wylogowany, Zielona = Zalogowany)
-        const avatarWraps = document.querySelectorAll('.avatar-wrap, .head-avatar-wrapper, .profile-avatar-wrap, .head-top-row .avatar-wrap');
-        avatarWraps.forEach(wrap => {
-            let badge = wrap.querySelector('.avatar-status-badge');
-            if (!badge) {
-                badge = document.createElement('div');
-                badge.className = 'avatar-status-badge';
-                wrap.appendChild(badge);
-            }
-            if (isAuthenticated) {
-                badge.className = 'avatar-status-badge online';
-                badge.setAttribute('data-status', 'online');
-                badge.setAttribute('title', isMaster ? '🟢 Zalogowany (Główny Administrator Portalu)' : '🟢 Zalogowany (Aktywny w Społeczności)');
-                badge.onclick = (e) => {
-                    e.stopPropagation();
-                    const toast = window.showToast || alert;
-                    toast(isMaster ? '👑 Status: Zalogowany (Master Admin)' : '🟢 Status: Zalogowany (Aktywny)');
-                };
-            } else {
-                badge.className = 'avatar-status-badge offline';
-                badge.setAttribute('data-status', 'offline');
-                badge.setAttribute('title', '🔴 Wylogowany • Kliknij tutaj, aby się zalogować!');
-                badge.onclick = (e) => {
-                    e.stopPropagation();
-                    if (window.triggerSecretAdminPrompt) {
-                        window.triggerSecretAdminPrompt(e);
-                    } else if (window.triggerLuminaLogin) {
-                        window.triggerLuminaLogin(e);
-                    }
-                };
-            }
-        });
+        // 6. 🔴/🟢 DIODA PRZY ZDJĘCIU PROFILOWYM — dotyczy WYŁĄCZNIE paska nawigacji i własnego profilu (nigdy nie fałszuje cudzego profilu)
+        const isViewingOtherProfile = window.location.pathname.includes('lumina-profile') || window.location.search.includes('u=');
+        if (!isViewingOtherProfile) {
+            const avatarWraps = document.querySelectorAll('.head-top-row .avatar-wrap, .user-nav-avatar');
+            avatarWraps.forEach(wrap => {
+                let badge = wrap.querySelector('.avatar-status-badge');
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.className = 'avatar-status-badge';
+                    wrap.appendChild(badge);
+                }
+                if (isAuthenticated) {
+                    badge.className = 'avatar-status-badge online';
+                    badge.setAttribute('data-status', 'online');
+                    badge.setAttribute('title', isMaster ? '👑 Zalogowany (Główny Administrator Portalu)' : '🟢 Zalogowany (Aktywny w Społeczności)');
+                } else {
+                    badge.className = 'avatar-status-badge offline';
+                    badge.setAttribute('data-status', 'offline');
+                    badge.setAttribute('title', '🔴 Wylogowany • Kliknij tutaj, aby się zalogować!');
+                }
+            });
+        }
 
         // 7. 🔴/🟢 DIODA W OKIENKU PUBLIKACJI POSTÓW (Composer)
         const composerWraps = document.querySelectorAll('.composer-avatar-wrap');
@@ -1756,43 +1746,7 @@
             }
         });
 
-        // 8. 🔴/🟢 JASNY KOMUNIKAT TEKSTOWY (Status Pill w nagłówku profilu)
-        const taglineBoxes = document.querySelectorAll('.head-user-tagline, .profile-head-top, .head-user-details');
-        if (taglineBoxes.length > 0) {
-            const targetContainer = document.querySelector('.head-user-tagline') || taglineBoxes[0];
-            if (targetContainer) {
-                let statusPill = targetContainer.querySelector('.lumina-auth-status-pill');
-                if (!statusPill) {
-                    statusPill = document.createElement('span');
-                    statusPill.className = 'lumina-auth-status-pill';
-                    targetContainer.appendChild(statusPill);
-                }
-                if (isAuthenticated) {
-                    statusPill.className = 'lumina-auth-status-pill online';
-                    statusPill.innerHTML = isMaster 
-                        ? '<i class="fa-solid fa-circle" style="color:#22c55e; font-size:0.55rem;"></i> 👑 Administrator (Zalogowany)' 
-                        : '<i class="fa-solid fa-circle" style="color:#22c55e; font-size:0.55rem;"></i> Zalogowany';
-                    statusPill.title = 'Sesja aktywna. Kliknij, aby zarządzać panelem.';
-                    statusPill.onclick = (e) => {
-                        e.stopPropagation();
-                        if (isMaster && window.LuminaAdminSuite?.openAllProfilesManager) {
-                            window.LuminaAdminSuite.openAllProfilesManager();
-                        } else if (window.showToast) {
-                            window.showToast('🟢 Twoja sesja jest aktywna!');
-                        }
-                    };
-                } else {
-                    statusPill.className = 'lumina-auth-status-pill offline';
-                    statusPill.innerHTML = '<i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.55rem;"></i> Wylogowany (Zaloguj się)';
-                    statusPill.title = 'Nie jesteś zalogowany. Kliknij tutaj, aby się zalogować!';
-                    statusPill.onclick = (e) => {
-                        e.stopPropagation();
-                        if (window.triggerSecretAdminPrompt) window.triggerSecretAdminPrompt(e);
-                        else if (window.triggerLuminaLogin) window.triggerLuminaLogin(e);
-                    };
-                }
-            }
-        }
+        // 8. Weryfikacja: nie wstrzykujemy sztucznych pigułek logowania do cudzego profilu (eliminacja fikcji)
 
         // 9. 🧡 UNIWERSALNY PRZYCISK: ZOSTAŃ PATRONEM (Patronite)
         // Gwarantuje obecność przycisku na KAŻDYM obecnym i przyszłym profilu

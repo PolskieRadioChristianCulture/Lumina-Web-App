@@ -1435,6 +1435,9 @@
             box-shadow: 0 0 14px rgba(34, 197, 94, 0.95), 0 2px 8px rgba(0, 0, 0, 0.8) !important;
             z-index: 40 !important;
             pointer-events: none !important;
+            display: none !important; /* Domyślnie ukryta - zero fikcji */
+        }
+        .avatar-status-badge.is-online {
             display: block !important;
         }
         @media (max-width: 768px) {
@@ -6062,6 +6065,20 @@
                 statLikesChip.style.display = profileLikes > 0 ? 'inline-flex' : 'none';
             }
 
+            // ══════════ GENUINE ONLINE STATUS (ZERO-FAKES ENFORCEMENT) ══════════
+            const statusBadgeEl = document.querySelector('.avatar-status-badge');
+            const isUserTrulyOnline = !!(data.isOnline === true || (data.lastSeen && (Date.now() - new Date(data.lastSeen).getTime() < 5 * 60 * 1000)));
+            if (statusBadgeEl) {
+                if (isUserTrulyOnline) {
+                    statusBadgeEl.classList.add('is-online');
+                    statusBadgeEl.style.display = 'block';
+                    statusBadgeEl.title = 'Użytkownik Online';
+                } else {
+                    statusBadgeEl.classList.remove('is-online');
+                    statusBadgeEl.style.display = 'none';
+                }
+            }
+
             // ══════════ DYNAMIC FAITH & LIFE BADGES RENDERING (MAKIETA 6 & 1) ══════════
             const badgesBar = document.getElementById('faithBadgesBar');
             if (badgesBar) {
@@ -10154,7 +10171,7 @@
 
     <script src="js/lumina-admin-media-replacer.js?v=20260917_autohide_final_v10"></script>
     <script src="lumina-admin-profile-suite.js?v=20260918_autolink_1x1"></script>
-    <script src="lumina-premium-video-avatar.js"></script>
+    <script src="lumina-premium-video-avatar.js?v=20260923_no_face_cover_v2"></script>
 <script>
 
         // ── TOP NAV COLLAPSIBLE DRAWER CONTROLLER ──

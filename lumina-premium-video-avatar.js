@@ -270,14 +270,15 @@
 
                 .btn-video-avatar-badge {
                     position: absolute;
-                    top: 6px;
-                    right: 6px;
-                    z-index: 10;
+                    bottom: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 25;
                     background: linear-gradient(135deg, #f59e0b, #ec4899);
                     color: #fff;
                     border: 1.5px solid rgba(15, 23, 42, 0.95);
                     border-radius: 20px;
-                    padding: 4px 10px;
+                    padding: 3px 9px;
                     font-size: 0.68rem;
                     font-weight: 800;
                     display: inline-flex;
@@ -287,27 +288,14 @@
                     box-shadow: 0 4px 14px rgba(0,0,0,0.7), 0 0 14px rgba(245,158,11,0.5);
                     white-space: nowrap;
                     text-decoration: none;
-
-                    /* WIDOCZNY PRZYCISK DLA PROFILI LUB PO NAJECHANIU / KLIKNIĘCIU */
                     opacity: 0.95;
                     visibility: visible;
                     pointer-events: auto;
-                    transform: none;
-                    transition: opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-                }
-
-                .btn-video-avatar-badge.is-visible,
-                .avatar-wrap.show-video-badge .btn-video-avatar-badge,
-                .head-avatar-wrapper.show-video-badge .btn-video-avatar-badge,
-                .profile-avatar-wrap.show-video-badge .btn-video-avatar-badge {
-                    opacity: 1;
-                    visibility: visible;
-                    pointer-events: auto;
-                    transform: translateY(0) scale(1);
+                    transition: transform 0.2s ease, opacity 0.2s ease;
                 }
 
                 .btn-video-avatar-badge:hover {
-                    transform: translateY(0) scale(1.08);
+                    transform: translateX(-50%) scale(1.08);
                     box-shadow: 0 6px 18px rgba(0,0,0,0.85), 0 0 18px rgba(236,72,153,0.8);
                 }
 
@@ -652,9 +640,15 @@
         }
 
         injectVideoTriggerButtons() {
+            const currentSlug = this.detectCurrentSlug();
+            const hasVideo = !!this.getVideoForSlug(currentSlug);
             const avatarWraps = document.querySelectorAll('.avatar-wrap, .head-avatar-wrapper, .profile-avatar-wrap');
             avatarWraps.forEach(wrap => {
                 let badge = wrap.querySelector('.btn-video-avatar-badge');
+                if (!hasVideo) {
+                    if (badge) badge.remove();
+                    return;
+                }
                 if (!badge) {
                     badge = document.createElement('button');
                     badge.type = 'button';
