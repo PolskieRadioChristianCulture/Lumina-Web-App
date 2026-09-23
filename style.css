@@ -3316,12 +3316,12 @@ html {
 
 /* Standard Ekosystemu @SE26/27: Obsidian & Imperial Gold - Subtelna Poświata 3D & Klasa */
 #actionsList {
-    background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%) !important;
-    border: 1px solid rgba(212, 169, 74, 0.15) !important;
+    background: #0a0b0f !important; /* Pancerne, 100% nieprzezroczyste tło — zero prześwitywania strony pod spodem */
+    border: 1px solid rgba(212, 169, 74, 0.28) !important;
     border-radius: 20px !important;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 169, 74, 0.08), inset 0 1px 1px rgba(255, 235, 170, 0.18) !important;
-    backdrop-filter: blur(28px) !important;
-    -webkit-backdrop-filter: blur(28px) !important;
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.98), 0 0 30px rgba(212, 169, 74, 0.12), inset 0 1px 1px rgba(255, 235, 170, 0.22) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     max-height: calc(100vh - 85px);
     max-height: calc(100dvh - 85px);
     overflow-y: auto !important;
@@ -3356,14 +3356,120 @@ html {
 .shortcut-block {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(212, 169, 74, 0.14);
-    border-radius: 14px;
-    padding: 8px;
+    gap: 6px !important;
+    background: #111319 !important; /* Wyraźny, ciemny kontener kolumny */
+    border: 1px solid rgba(212, 169, 74, 0.20) !important;
+    border-radius: 14px !important;
+    padding: 10px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
+}
+
+/* Nagłówek sekcji w kolumnie (np. STACJE & MEDIA LIVE) */
+.shortcut-block > div:first-child {
+    font-size: 0.72rem !important;
+    letter-spacing: 1.2px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 2px !important;
+    color: var(--gold-primary) !important;
+    border-bottom: 1px solid rgba(212, 169, 74, 0.25) !important;
+}
+
+/* Każda pojedyncza pozycja skrótu — solidny kafelek, wysoki kontrast */
+#actionsList a,
+#actionsList div[onmouseover] {
+    background: #161822 !important; /* Solidny ciemny kafelek — pełna czytelność */
+    border: 1px solid rgba(212, 169, 74, 0.20) !important;
+    padding: 8px 10px !important;
+    gap: 10px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+#actionsList a:hover,
+#actionsList div[onmouseover]:hover {
+    background: rgba(212, 169, 74, 0.16) !important;
+    border-color: rgba(212, 169, 74, 0.55) !important;
+    transform: translateX(2px);
+}
+
+/* Ikona okrągła — powiększona z 28px do 36px */
+#actionsList a > div:first-child,
+#actionsList div[onmouseover] > div:first-child {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 50% !important;
+    background: rgba(212, 169, 74, 0.14) !important;
+    border: 1.5px solid rgba(212, 169, 74, 0.35) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#actionsList a > div:first-child i,
+#actionsList div[onmouseover] > div:first-child i {
+    font-size: 0.95rem !important;
+    color: var(--gold-primary) !important;
+}
+
+/* Tytuł pozycji (biały bold) — 0.78rem → 0.88rem */
+#actionsList span[style*="font-weight: 800"][style*="color: #fff"],
+#actionsList span[style*="font-weight: 800"][style*="color:#fff"],
+#actionsList span[style*="font-weight: 900"][style*="color: #fff"],
+#actionsList span[style*="font-weight: 900"][style*="color:#fff"] {
+    font-size: 0.88rem !important;
+    color: #ffffff !important;
+    letter-spacing: 0.2px !important;
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* Podtytuł (szary) — większy + wyższy kontrast */
+#actionsList span[style*="color: rgba(255,255,255,0.55)"],
+#actionsList span[style*="color:rgba(255,255,255,0.55)"],
+#actionsList span[style*="font-size: 0.58rem"] {
+    font-size: 0.72rem !important;
+    color: rgba(255, 255, 255, 0.80) !important;
+    font-family: 'Inter', sans-serif !important;
+    line-height: 1.3 !important;
+}
+
+/* Podtytuł złoty (np. "Greka • Hebrajski") */
+#actionsList span[style*="color: var(--gold-light)"] {
+    font-size: 0.72rem !important;
+    color: #fde68a !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}
+
+/* Infolinia — dedykowany wyróżnik */
+#shortcutHelpline {
+    background: linear-gradient(135deg, rgba(212, 169, 74, 0.16) 0%, rgba(26, 22, 12, 0.95) 100%) !important;
+    border: 1px solid rgba(212, 169, 74, 0.45) !important;
+}
+#shortcutHelpline span:first-child {
+    font-size: 0.62rem !important;
+    color: #fde68a !important;
+    letter-spacing: 1px !important;
+}
+#shortcutHelpline span:last-child {
+    font-size: 0.92rem !important;
+    color: #ffffff !important;
+    letter-spacing: 0.6px !important;
+}
+
+/* Badges / tagi (AUDIO 24/7, INTERLINEARNA itp.) */
+#actionsList span[style*="border-radius: 4px"] {
+    font-size: 0.58rem !important;
+    padding: 2px 6px !important;
+    background: rgba(212, 169, 74, 0.22) !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(212, 169, 74, 0.45) !important;
+    letter-spacing: 0.6px !important;
 }
 
 @media (max-width: 900px) {
@@ -3377,6 +3483,27 @@ html {
     .shortcuts-blocks-container {
         grid-template-columns: 1fr !important;
         gap: 8px !important;
+    }
+    #actionsList a,
+    #actionsList div[onmouseover] {
+        padding: 9px 10px !important;
+        gap: 10px !important;
+    }
+    #actionsList a > div:first-child,
+    #actionsList div[onmouseover] > div:first-child {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        font-size: 0.95rem !important;
+    }
+    #actionsList span[style*="font-weight: 800"][style*="color: #fff"],
+    #actionsList span[style*="font-weight: 800"][style*="color:#fff"] {
+        font-size: 0.90rem !important;
+    }
+    #actionsList span[style*="color: rgba(255,255,255,0.55)"],
+    #actionsList span[style*="font-size: 0.58rem"] {
+        font-size: 0.72rem !important;
+        color: rgba(255, 255, 255, 0.82) !important;
     }
 }
 
