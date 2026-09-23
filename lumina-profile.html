@@ -3273,8 +3273,8 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg" style="display:none;"></video>
-                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg?v=20260923_official_standard" style="display:none;"></video>
+                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg?v=20260923_official_standard" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -5186,6 +5186,73 @@
                 photos: ['lumina_icon.jpg', 'lumina_default_cover.jpg'],
                 posts: []
             },
+            'u_tijanihammed_9980': {
+                uid: 'u_tijanihammed_9980',
+                slug: 'u_tijanihammed_9980',
+                name: 'Tijani Hammed',
+                age: 28,
+                gender: 'mezczyzna',
+                lookingFor: 'kobieta',
+                city: 'Warsaw',
+                avatar: 'avatar_tijanihammed.jpg',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Społeczność LUMINA ✨',
+                role: 'Społeczność LUMINA ✨',
+                church: '',
+                denom: 'Rzymskokatolickie',
+                status: 'Panna/Kawaler',
+                pin: '7777',
+                visibility: 'public',
+                matchScore: '98%',
+                stats: { friends: '0', posts: '1', likes: '1' },
+                friends: [],
+                following: [],
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: '1 J 4, 8',
+                bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości.',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                photos: ['avatar_tijanihammed.jpg'],
+                posts: [
+                    {
+                        id: 'post_init_1790174266646',
+                        author: 'Tijani Hammed',
+                        time: 'Wczoraj • ✨ Witaj w LUMINA',
+                        text: 'Szczęść Boże wszystkim! Cieszę się, że dołączyłem/am do społeczności LUMINA. „Wszystko mogę w Tym, który mnie umacnia”',
+                        likes: 1,
+                        image: 'avatar_tijanihammed.jpg'
+                    }
+                ]
+            },
+            'tijanihammed': {
+                uid: 'u_tijanihammed_9980',
+                slug: 'u_tijanihammed_9980',
+                name: 'Tijani Hammed',
+                age: 28,
+                gender: 'mezczyzna',
+                lookingFor: 'kobieta',
+                city: 'Warsaw',
+                avatar: 'avatar_tijanihammed.jpg',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Społeczność LUMINA ✨',
+                role: 'Społeczność LUMINA ✨',
+                church: '',
+                denom: 'Rzymskokatolickie',
+                status: 'Panna/Kawaler',
+                pin: '7777',
+                visibility: 'public',
+                matchScore: '98%',
+                stats: { friends: '0', posts: '1', likes: '1' },
+                friends: [],
+                following: [],
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: '1 J 4, 8',
+                bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości.',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                photos: ['avatar_tijanihammed.jpg'],
+                posts: []
+            },
             'andrzejhamera': {
                 uid: 'andrzejhamera',
                 slug: 'andrzejhamera',
@@ -5381,6 +5448,25 @@
                     verified: true,
                     isMissionAccount: false,
                     photos: ['avatar_pawel_murawski.jpg']
+                };
+            }
+
+            // Twarde zabezpieczenie profilu Tijani Hammed (Warszawa, 28 lat)
+            if (slug === 'u_tijanihammed_9980' || slug === 'tijanihammed' || slug.includes('tijanihammed')) {
+                const baseTijani = PROFILES_DB['u_tijanihammed_9980'] || {};
+                const cloud = (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug || window._cloudProfileData.slug === 'u_tijanihammed_9980')) ? window._cloudProfileData : {};
+                return {
+                    ...baseTijani,
+                    ...cloud,
+                    name: 'Tijani Hammed',
+                    age: 28,
+                    city: 'Warsaw',
+                    denom: 'Rzymskokatolickie',
+                    status: 'Panna/Kawaler',
+                    avatar: 'avatar_tijanihammed.jpg',
+                    cover: 'lumina_default_cover.jpg',
+                    coverPosY: '50%',
+                    photos: ['avatar_tijanihammed.jpg']
                 };
             }
 
@@ -6217,8 +6303,10 @@
             // Żelazna ochrona tożsamości Dowódcy — zakaz zdjęcia Dowódcy na profilach obcych (wyjątek tylko dla żony Wioletty)
             const isCmd = slug.includes('cezary');
             const isWife = slug.includes('wioletta');
-            if (!isCmd && !isWife) {
-                if (targetAv && (targetAv.includes('avatar_new1') || targetAv.includes('avatar_cezary') || targetAv.includes('cezary_rgowski') || targetAv.includes('cezary_rogowski'))) {
+            if (slug === 'u_tijanihammed_9980' || slug === 'tijanihammed' || slug.includes('tijanihammed')) {
+                targetAv = 'avatar_tijanihammed.jpg';
+            } else if (!isCmd && !isWife) {
+                if (targetAv && (targetAv.includes('avatar_cezary') || targetAv.includes('cezary_rgowski') || targetAv.includes('cezary_rogowski'))) {
                     targetAv = 'lumina_icon.jpg';
                 }
             }
@@ -10408,7 +10496,7 @@
     </div>
 </div>
 
-    <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer></script>
+    <script src="js/lumina-followed-friends.js?v=20260923_honest_zero_friends_v7" defer></script>
     <script src="js/lumina-mini-player.js?v=20260918_v5" defer>
         </script>
 </body>

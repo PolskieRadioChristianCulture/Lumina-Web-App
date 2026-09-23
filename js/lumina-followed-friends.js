@@ -1175,7 +1175,49 @@
 
     // Pobiera listę z przypisanymi statusami
     function getFriendsData(currentProfileSlug) {
-        const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== currentProfileSlug && !isDeletedProfile(f.slug));
+        const slug = (currentProfileSlug || '').toLowerCase();
+        
+        // Zalogowany użytkownik w sesji
+        let mySlug = '';
+        try {
+            const curUser = window.LuminaDB?.getCurrentUser?.();
+            const curProf = window.LuminaDB?.getCurrentProfile?.() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+            mySlug = (curProf?.slug || curProf?.uid || curUser?.uid || localStorage.getItem('lumina_user_slug') || '').toLowerCase();
+        } catch(e) {}
+
+        const isForeignProfile = slug && mySlug && slug !== mySlug && !slug.includes(mySlug) && !mySlug.includes(slug);
+
+        // Jeśli jesteśmy na profilu innego użytkownika (np. u_tijanihammed_9980):
+        // NIGDY nie wyświetlaj znajomych/obserwowanych z localStorage osoby przeglądającej stronę!
+        // Wyświetlaj WYŁĄCZNIE rzeczywistych znajomych przypisanych do tego profilu w bazie.
+        if (isForeignProfile) {
+            const profileData = (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug))
+                ? window._cloudProfileData
+                : (window.PROFILES_DB ? (window.PROFILES_DB[slug] || window.PROFILES_DB['u_' + slug]) : null);
+            
+            const profileFriends = Array.isArray(profileData?.friends) ? profileData.friends : [];
+            const profileFollowed = Array.isArray(profileData?.following) ? profileData.following : [];
+
+            // Jeśli profil nie dodał jeszcze nikogo (np. nowy użytkownik na start) -> 0 powiązań!
+            if (profileFriends.length === 0 && profileFollowed.length === 0) {
+                return [];
+            }
+
+            const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== slug && !isDeletedProfile(f.slug));
+            return friends.map(f => {
+                const isFr = profileFriends.includes(f.slug);
+                const isFoll = profileFollowed.includes(f.slug);
+                return {
+                    ...f,
+                    isFollowed: isFoll,
+                    friendStatus: isFr ? 'accepted' : null,
+                    isFriend: isFr
+                };
+            }).filter(f => f.isFriend || f.isFollowed);
+        }
+
+        // Jeśli to własny profil (lub strona główna / tablica)
+        const friends = COMMUNITY_FRIENDS.filter(f => f.slug !== slug && !isDeletedProfile(f.slug));
 
         const mapped = friends.map(f => {
             const followed = isFollowing(f.slug);
@@ -1531,7 +1573,7 @@
         if (path.includes('osobowoscplus')) return 'osobowoscplus';
 
         const params = new URLSearchParams(window.location.search);
-        const user = params.get('user') || params.get('slug') || params.get('profile');
+        const user = params.get('u') || params.get('user') || params.get('slug') || params.get('profile');
         if (user) return user.toLowerCase();
 
         return '';
