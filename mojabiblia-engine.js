@@ -1377,6 +1377,55 @@
       }
     }
 
+    parseUrlParams() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookParam = urlParams.get('book') || urlParams.get('b');
+        const chParam = urlParams.get('chapter') || urlParams.get('ch') || urlParams.get('c');
+        const vParam = urlParams.get('verse') || urlParams.get('v');
+        const modeParam = urlParams.get('mode') || urlParams.get('m');
+        const qParam = urlParams.get('q') || urlParams.get('ref');
+
+        if (modeParam && ['interlinear', 'parallel', 'reader'].includes(modeParam)) {
+          this.currentMode = modeParam;
+        }
+
+        if (qParam) {
+          this.handleSearch(qParam);
+          return;
+        }
+
+        if (bookParam) {
+          const rawB = bookParam.trim().toLowerCase();
+          const found = this.books.find(b =>
+            b.id.toLowerCase() === rawB ||
+            b.shortPl.toLowerCase() === rawB ||
+            b.namePl.toLowerCase() === rawB ||
+            b.namePl.toLowerCase().includes(rawB)
+          );
+          if (found) {
+            this.currentBookId = found.id;
+          }
+        }
+
+        if (chParam) {
+          const chNum = parseInt(chParam, 10);
+          if (!isNaN(chNum) && chNum >= 1) {
+            this.currentChapter = chNum;
+          }
+        }
+
+        if (vParam) {
+          const vNum = parseInt(vParam, 10);
+          if (!isNaN(vNum) && vNum >= 1) {
+            this.currentVerse = vNum;
+          }
+        }
+      } catch (e) {
+        console.warn('[MojaBiblia] Błąd parsowania parametrów URL:', e);
+      }
+    }
+
     // ── DYNAMICZNA OPTYMALIZACJA SEO & META-TAGÓW (AIO / LLMs / Social OpenGraph) ──
     updateSEO() {
       try {

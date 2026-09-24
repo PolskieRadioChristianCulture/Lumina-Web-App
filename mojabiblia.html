@@ -2361,6 +2361,18 @@
       }
     }
 
+    /* Podświetlenie wersetu przy przejściu z Wersetu Dnia / Deep Link */
+    .mb-verse-target-highlight {
+      border: 2px solid var(--gold-bright, #facc15) !important;
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.5), 0 0 65px rgba(212, 175, 55, 0.25) !important;
+      animation: mbPulseGlow 2.5s ease-in-out infinite alternate;
+      border-radius: 16px;
+    }
+    @keyframes mbPulseGlow {
+      from { box-shadow: 0 0 18px rgba(250, 204, 21, 0.35); }
+      to { box-shadow: 0 0 45px rgba(250, 204, 21, 0.7); }
+    }
+
     /* Ukryte audio */
     #mbRadioAudio {
       display: none;
