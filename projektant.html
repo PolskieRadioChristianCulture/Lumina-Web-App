@@ -114,9 +114,9 @@
 
     /* Background Ken Burns Zoom Animation */
     @keyframes kenburns {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.12); }
-      100% { transform: scale(1); }
+      0% { transform: scale(1); transform-origin: center 15%; }
+      50% { transform: scale(1.08); transform-origin: center 20%; }
+      100% { transform: scale(1); transform-origin: center 15%; }
     }
     .animate-kenburns {
       animation: kenburns 16s ease-in-out infinite alternate;
@@ -152,9 +152,9 @@
 
   <!-- ==================== BACKGROUND SLIDESHOW LAYER ==================== -->
   <div id="bg-slideshow" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div id="bg-slide-1" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-75 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg');"></div>
-    <div id="bg-slide-2" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_2.jpg');"></div>
-    <div id="bg-slide-3" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_3.jpg');"></div>
+    <div id="bg-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-75 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg'); background-position: center 12%;"></div>
+    <div id="bg-slide-2" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_2.jpg'); background-position: center 12%;"></div>
+    <div id="bg-slide-3" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_3.jpg'); background-position: center 12%;"></div>
     <!-- Scrim / Vignette -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/60"></div>
   </div>
@@ -288,6 +288,71 @@
 
         <button type="button" onclick="closeLuminaPopup(true)" class="w-full py-2 text-center text-xs text-gray-400 hover:text-white transition-colors">
           Kontynuuj projektowanie jako gość &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL WYSYŁKI PROJEKTU DO WERYFIKACJI E-MAIL ==================== -->
+  <div id="email-dispatch-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300" onclick="if(event.target === this) closeEmailDispatchModal()">
+    <div class="relative w-full max-w-lg bg-gradient-to-br from-[#1b1509] via-[#121212] to-[#0a0a0a] border-2 border-gold/70 rounded-3xl p-6 sm:p-7 shadow-[0_0_60px_rgba(221,166,28,0.35)] transform transition-all animate-fade-in" onclick="event.stopPropagation()">
+      <!-- Close button -->
+      <button type="button" onclick="closeEmailDispatchModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-all" title="Zamknij">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-14 h-14 rounded-2xl bg-gold/15 border border-gold/40 flex items-center justify-center text-2xl text-gold mx-auto mb-3">
+          <i class="fa-solid fa-paper-plane"></i>
+        </div>
+        <h3 class="text-lg sm:text-xl font-bold text-white tracking-wide">Wyślij projekt do weryfikacji YIS</h3>
+        <p class="text-xs text-gray-300 mt-1">
+          Wybierz najwygodniejszy sposób przesłania specyfikacji do Your Imagination Studio:
+        </p>
+        <div class="inline-flex items-center gap-2 mt-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold">
+          <span>Adres odbiorcy:</span>
+          <span class="font-bold select-all">yourimaginationstudio@gmail.com</span>
+        </div>
+      </div>
+
+      <!-- Notification pill: specification copied -->
+      <div id="modal-copied-toast" class="bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-2.5 mb-4 text-center text-xs text-emerald-300 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span>Specyfikacja projektu została skopiowana do Twojego schowka!</span>
+      </div>
+
+      <!-- Action Buttons Grid -->
+      <div class="space-y-2.5 mb-4">
+        <!-- Option 1: Gmail in browser -->
+        <a id="dispatch-gmail-link" href="#" target="_blank" class="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-lg">
+          <i class="fa-brands fa-google text-base"></i>
+          <span>Otwórz w Gmail (Przeglądarka)</span>
+        </a>
+
+        <!-- Option 2: Default desktop mail client -->
+        <a id="dispatch-mailto-link" href="#" class="w-full py-3 px-4 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-lg">
+          <i class="fa-solid fa-envelope text-base"></i>
+          <span>Otwórz w programie pocztowym (Outlook / Mail)</span>
+        </a>
+
+        <!-- Option 3: Copy to clipboard -->
+        <button type="button" onclick="copyProjectSpecificationModal()" class="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-gray-200 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-white/15 transition-all">
+          <i class="fa-regular fa-copy text-gold"></i>
+          <span id="modal-copy-btn-text">Skopiuj całą treść i adres do schowka</span>
+        </button>
+      </div>
+
+      <!-- Compact Textarea with full spec -->
+      <div class="mt-3">
+        <label class="block text-[11px] font-semibold text-gray-400 mb-1">
+          Podgląd treści zamówienia (do wklejenia w wiadomości):
+        </label>
+        <textarea id="dispatch-spec-textarea" readonly rows="4" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-[11px] text-gray-300 font-mono focus:outline-none select-all"></textarea>
+      </div>
+
+      <div class="mt-3 text-center">
+        <button type="button" onclick="closeEmailDispatchModal(); switchTab('history');" class="text-xs text-gray-400 hover:text-gold transition-colors">
+          Przejdź do historii moich projektów &rarr;
         </button>
       </div>
     </div>
@@ -583,14 +648,55 @@
           <div class="py-2 max-w-xl mx-auto">
             <div class="text-center mb-5">
               <h2 class="text-lg sm:text-xl font-bold text-gold tracking-wide uppercase">DODAJ GRAFIKĘ LUB LOGO</h2>
-              <p class="text-xs text-gray-400 mt-1">Prześlij swój plik obrazu, logo firmy lub szkic inspiracji</p>
+              <p class="text-xs text-gray-400 mt-1">Wybierz oficjalną autorską grafikę YIS lub wgraj własny plik graficzny</p>
+            </div>
+
+            <!-- OFICJALNA AUTORSKA GRAFIKA POGLĄDOWA YIS (GRATIS) -->
+            <div id="preset-graphic-card" class="bg-gradient-to-br from-gold/15 via-black/60 to-black/80 border-2 border-gold rounded-2xl p-4 sm:p-5 mb-5 shadow-xl transition-all">
+              <div class="flex flex-col sm:flex-row items-center gap-4">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-white/10 p-2 flex items-center justify-center border border-gold/40 flex-shrink-0">
+                  <img src="/images/yis/jezus_jest_droga.png" alt="Jezus jest Drogą" class="w-full h-full object-contain filter drop-shadow">
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <div class="flex items-center justify-center sm:justify-start gap-2 flex-wrap mb-1">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-gold text-black uppercase tracking-wider">
+                      Oficjalna grafika YIS • Gratis
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase">
+                      Auto-kalibracja
+                    </span>
+                  </div>
+                  <h3 class="text-sm sm:text-base font-bold text-white mb-1">
+                    „Jezus jest Drogą, Prawdą i Życiem” (Jan 14:6)
+                  </h3>
+                  <p class="text-[11px] text-gray-300 leading-relaxed mb-3">
+                    Autorska grafika Christian Culture & Your Imagination Studio w stylu streetwear/grunge. Możesz bezpłatnie wykorzystać ją w swoim projekcie realizowanym w YIS – dopasuje się i wykalibruje sama do wybranego produktu i koloru!
+                  </p>
+                  <div class="flex items-center justify-center sm:justify-start gap-2">
+                    <button type="button" id="btn-use-preset-graphic" onclick="usePresetGraphic()" class="px-4 py-2 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md">
+                      <i class="fa-solid fa-check"></i>
+                      <span id="btn-preset-text">Wybrana do projektu (Aktywna)</span>
+                    </button>
+                    <button type="button" id="btn-remove-preset-graphic" onclick="removeUploadedImage()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white text-xs font-semibold transition-all">
+                      Brak grafiki
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider: LUB WŁASNY PLIK -->
+            <div class="flex items-center gap-3 my-5">
+              <div class="h-px bg-white/15 flex-1"></div>
+              <span class="text-xs uppercase text-gray-400 font-bold tracking-wider">lub wgraj własną grafikę z dysku</span>
+              <div class="h-px bg-white/15 flex-1"></div>
             </div>
 
             <!-- Upload Info Alert Box -->
-            <div class="bg-gold/10 border border-gold/30 rounded-2xl p-4 mb-5 flex items-start gap-3">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-3.5 mb-4 flex items-start gap-3">
               <i class="fa-solid fa-circle-info text-gold text-base mt-0.5"></i>
-              <div class="text-xs text-gray-200 leading-relaxed">
-                <strong class="text-gold font-bold">Wskazówka:</strong> Plik wgrany poniżej posłuży do natychmiastowej makiety na żywo. Pełnowymiarowy plik źródłowy (PNG/PDF/TIFF) dołączysz jako załącznik do końcowej wiadomości e-mail.
+              <div class="text-xs text-gray-300 leading-relaxed">
+                <strong class="text-white font-bold">Wskazówka:</strong> Wgrany plik od razu wykalibruje się na podglądzie odzieży. Pełnowymiarowy plik źródłowy (PNG/PDF/TIFF) dołączysz jako załącznik do końcowego e-maila.
               </div>
             </div>
 
@@ -611,7 +717,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="text-xs font-bold text-brandGreen flex items-center gap-1">
-                    <i class="fa-solid fa-check-circle"></i> Grafika wgrana pomyślnie
+                    <i class="fa-solid fa-check-circle"></i> Własna grafika wgrana pomyślnie
                   </span>
                   <button type="button" onclick="event.stopPropagation(); removeUploadedImage()" class="px-2.5 py-1 rounded-lg bg-brandRed/20 text-brandRed hover:bg-brandRed/30 text-xs font-bold transition-all">
                     Usuń
@@ -1273,6 +1379,9 @@
 
     const AVAILABLE_SIZES = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL', '5XL'];
 
+    // Oficjalna autorska grafika chrześcijańska YIS do bezpłatnego wykorzystania
+    const PRESET_SAMPLE_GRAPHIC = '/images/yis/jezus_jest_droga.png';
+
     // --- State Model ---
     const state = {
       currentStep: 0,
@@ -1284,7 +1393,8 @@
       selectedSize: 'M',
       selectedFormat: 'Średni',
       selectedPrintPlacement: 'Przód',
-      uploadedImageBase64: null,
+      uploadedImageBase64: PRESET_SAMPLE_GRAPHIC,
+      graphicMode: 'preset', // 'preset', 'custom', or 'none'
       personalizedText: '',
       mockupSide: 'front', // 'front' or 'back'
       needDesignProject: false,
@@ -1645,15 +1755,22 @@
     }
 
     // --- GRAPHIC & TEXT HANDLING ---
+    function usePresetGraphic() {
+      state.uploadedImageBase64 = PRESET_SAMPLE_GRAPHIC;
+      state.graphicMode = 'preset';
+      updateGraphicUI();
+      renderMockup();
+      saveDraft();
+    }
+
     function handleImageUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (event) => {
         state.uploadedImageBase64 = event.target.result;
-        document.getElementById('dropzone-empty').classList.add('hidden');
-        document.getElementById('dropzone-preview').classList.remove('hidden');
-        document.getElementById('uploaded-img-preview').src = state.uploadedImageBase64;
+        state.graphicMode = 'custom';
+        updateGraphicUI();
         renderMockup();
         saveDraft();
       };
@@ -1662,11 +1779,48 @@
 
     function removeUploadedImage() {
       state.uploadedImageBase64 = null;
-      document.getElementById('image-file-input').value = '';
-      document.getElementById('dropzone-preview').classList.add('hidden');
-      document.getElementById('dropzone-empty').classList.remove('hidden');
+      state.graphicMode = 'none';
+      const fileInput = document.getElementById('image-file-input');
+      if (fileInput) fileInput.value = '';
+      updateGraphicUI();
       renderMockup();
       saveDraft();
+    }
+
+    function updateGraphicUI() {
+      const card = document.getElementById('preset-graphic-card');
+      const btnText = document.getElementById('btn-preset-text');
+      const dropEmpty = document.getElementById('dropzone-empty');
+      const dropPrev = document.getElementById('dropzone-preview');
+      const prevImg = document.getElementById('uploaded-img-preview');
+
+      const isPreset = state.graphicMode === 'preset' || state.uploadedImageBase64 === PRESET_SAMPLE_GRAPHIC;
+      if (isPreset) {
+        if (card) {
+          card.classList.add('border-gold', 'bg-gold/15');
+          card.classList.remove('border-white/10', 'bg-white/5');
+        }
+        if (btnText) btnText.textContent = 'Wybrana do projektu (Aktywna)';
+        if (dropEmpty) dropEmpty.classList.remove('hidden');
+        if (dropPrev) dropPrev.classList.add('hidden');
+      } else if (state.graphicMode === 'custom' && state.uploadedImageBase64) {
+        if (card) {
+          card.classList.remove('border-gold', 'bg-gold/15');
+          card.classList.add('border-white/10', 'bg-white/5');
+        }
+        if (btnText) btnText.textContent = 'Wybierz tę grafikę (Gratis)';
+        if (dropEmpty) dropEmpty.classList.add('hidden');
+        if (dropPrev) dropPrev.classList.remove('hidden');
+        if (prevImg) prevImg.src = state.uploadedImageBase64;
+      } else {
+        if (card) {
+          card.classList.remove('border-gold', 'bg-gold/15');
+          card.classList.add('border-white/10', 'bg-white/5');
+        }
+        if (btnText) btnText.textContent = 'Wybierz tę grafikę (Gratis)';
+        if (dropEmpty) dropEmpty.classList.remove('hidden');
+        if (dropPrev) dropPrev.classList.add('hidden');
+      }
     }
 
     function updatePersonalizedText(val) {
@@ -1703,20 +1857,59 @@
 
       const isLightBg = ['#FFFFFF', '#C0C0C0', '#FBDF0A', '#88C9EE'].includes(state.selectedColorHex);
       const strokeColor = isLightBg ? '#333333' : '#666666';
-      const bodyColor = state.selectedColorHex;
+      const bodyColor = state.selectedColorHex || '#1A1A1A';
 
-      // Print size scale based on format
-      let printWidth = 50;
-      let printHeight = 50;
-      let printY = 85;
-      if (state.selectedFormat === 'Logo') {
-        printWidth = 30; printHeight = 30; printY = 75;
-      } else if (state.selectedFormat === 'Mały') {
-        printWidth = 48; printHeight = 48; printY = 80;
-      } else if (state.selectedFormat === 'Średni') {
-        printWidth = 75; printHeight = 75; printY = 85;
-      } else if (state.selectedFormat === 'Duży') {
-        printWidth = 100; printHeight = 100; printY = 90;
+      // Auto-calibrated Print Zone Dimensions & Placement based on Product & Format
+      let printWidth = 88;
+      let printHeight = 88;
+      let printY = 74;
+      let printLeft = 'calc(50% - 44px)';
+
+      if (state.selectedProductType === 'Koszulka' || state.selectedProductType === 'Bluza') {
+        const isHoodie = state.selectedProductType === 'Bluza';
+        if (state.selectedFormat === 'Logo') {
+          printWidth = 36;
+          printHeight = 36;
+          printY = isHoodie ? 74 : 68;
+          printLeft = state.mockupSide === 'front' ? '29%' : 'calc(50% - 18px)';
+        } else if (state.selectedFormat === 'Mały') {
+          printWidth = 60;
+          printHeight = 60;
+          printY = isHoodie ? 78 : 74;
+          printLeft = 'calc(50% - 30px)';
+        } else if (state.selectedFormat === 'Średni') {
+          printWidth = 88;
+          printHeight = 88;
+          printY = isHoodie ? 76 : 72;
+          printLeft = 'calc(50% - 44px)';
+        } else if (state.selectedFormat === 'Duży') {
+          printWidth = 115;
+          printHeight = 118;
+          printY = isHoodie ? 74 : 68;
+          printLeft = 'calc(50% - 57.5px)';
+        }
+      } else if (state.selectedProductType === 'Kubek') {
+        if (state.selectedFormat === 'Logo') {
+          printWidth = 35; printHeight = 35; printY = 88;
+        } else if (state.selectedFormat === 'Mały') {
+          printWidth = 48; printHeight = 48; printY = 82;
+        } else if (state.selectedFormat === 'Średni') {
+          printWidth = 68; printHeight = 68; printY = 76;
+        } else if (state.selectedFormat === 'Duży') {
+          printWidth = 82; printHeight = 82; printY = 72;
+        }
+        printLeft = 'calc(50% - ' + (printWidth / 2) + 'px)';
+      } else { // Czapka
+        if (state.selectedFormat === 'Logo') {
+          printWidth = 28; printHeight = 20; printY = 118;
+        } else if (state.selectedFormat === 'Mały') {
+          printWidth = 38; printHeight = 25; printY = 114;
+        } else if (state.selectedFormat === 'Średni') {
+          printWidth = 52; printHeight = 32; printY = 110;
+        } else if (state.selectedFormat === 'Duży') {
+          printWidth = 64; printHeight = 38; printY = 106;
+        }
+        printLeft = 'calc(50% - ' + (printWidth / 2) + 'px)';
       }
 
       // Check whether this side should display print
@@ -1777,9 +1970,6 @@
         `;
       } else if (state.selectedProductType === 'Kubek') {
         // Mug SVG
-        printY = 70;
-        printWidth = 55;
-        printHeight = 55;
         svgContent = `
           <svg viewBox="0 0 240 240" class="w-full h-full drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
             <!-- Mug Handle -->
@@ -1794,9 +1984,6 @@
         `;
       } else {
         // Cap SVG
-        printY = 115;
-        printWidth = 40;
-        printHeight = 25;
         svgContent = `
           <svg viewBox="0 0 240 240" class="w-full h-full drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
             <!-- Visor / Bill -->
@@ -1815,16 +2002,29 @@
 
       // Print layer overlay (Image or Monogram + Custom Text)
       let printOverlayHtml = '';
-      if (showPrintOnThisSide) {
+      if (showPrintOnThisSide && state.uploadedImageBase64) {
         const textColor = isLightBg ? '#000000' : '#FFFFFF';
-        const imageSource = state.uploadedImageBase64 || '/images/yis/your_imagination_studio_transparent.png';
+        const imageSource = state.uploadedImageBase64;
         const customTextSnippet = state.personalizedText.trim();
 
+        // Color contrast auto-calibration for transparent dark graphics (like Jezus jest Drogą)
+        let colorFilter = 'filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));';
+        const isPreset = imageSource === PRESET_SAMPLE_GRAPHIC || (typeof imageSource === 'string' && imageSource.includes('jezus_jest_droga'));
+        if (isPreset) {
+          if (!isLightBg) {
+            // Auto-calibration: white typography on dark garments
+            colorFilter = 'filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.6));';
+          } else {
+            // Auto-calibration: black typography on light garments
+            colorFilter = 'filter: drop-shadow(0 1px 3px rgba(0,0,0,0.2));';
+          }
+        }
+
         printOverlayHtml = `
-          <div class="mockup-print-area absolute pointer-events-none flex flex-col items-center justify-center p-1"
-               style="top: ${printY}px; width: ${printWidth}px; max-height: ${printHeight}px; left: calc(50% - ${printWidth / 2}px);">
+          <div class="mockup-print-area absolute pointer-events-none flex flex-col items-center justify-center p-0 transition-all duration-300"
+               style="top: ${printY}px; width: ${printWidth}px; height: ${printHeight}px; left: ${printLeft};">
             
-            <img src="${imageSource}" alt="Nadruk" class="max-w-full max-h-16 object-contain filter drop-shadow-md">
+            <img src="${imageSource}" alt="Nadruk" class="w-full h-full object-contain transition-all duration-300" style="${colorFilter}">
             
             ${customTextSnippet ? `
               <span class="text-[7px] sm:text-[8px] font-bold text-center mt-1 leading-tight line-clamp-2 px-0.5" 
@@ -1839,7 +2039,7 @@
       container.innerHTML = svgContent + printOverlayHtml;
 
       // Update info badge
-      document.getElementById('mockup-info-left').textContent = `${state.selectedProductType} • ${state.selectedSize} (${state.selectedFormat})`;
+      document.getElementById('mockup-info-left').textContent = `${state.selectedProductType || 'Produkt'} • ${state.selectedSize} (${state.selectedFormat})`;
       document.getElementById('mockup-info-right').textContent = `Kolor: ${state.selectedColor.split(' ')[0]}`;
     }
 
@@ -1865,8 +2065,8 @@
     }
 
     function updatePricing() {
-      // Jeśli jesteśmy na etapie wstępnym lub produkt bazowy nie został jeszcze wybrany, wycena poglądowa wynosi 0,00 zł
-      if (state.currentStep === 0 || !state.selectedProductType || state.productBasePrice === 0) {
+      // W krokach 1 i 2 (indeksy 0 i 1) oraz przed aktywnym wyborem produktu bazowego cena ZAWSZE wynosi 0,00 zł
+      if (state.currentStep < 2 || !state.selectedProductType || state.productBasePrice <= 0) {
         const formattedTotal = '0,00 zł';
         const tag = document.getElementById('header-price-tag');
         if (tag) tag.textContent = formattedTotal;
@@ -1875,16 +2075,30 @@
         return { total: 0, itemBase: 0, printTotal: 0, designFee: 0, singlePrintCost: 0 };
       }
 
-      // Print cost: 20 zł for single side (or mug/cap), 40 zł for both sides
-      let singlePrintCost = 20;
-      if (state.selectedPrintPlacement === 'Oba') {
-        singlePrintCost = 40;
+      // 1. Koszt bazy produktu (naliczany od wyboru w kroku 3)
+      const qty = Math.max(1, state.quantity || 1);
+      const itemBase = state.productBasePrice * qty;
+
+      // 2. Koszt nadruku - sumowany w czasie rzeczywistym od wyboru formatu druku (krok 5, indeks >= 4)
+      let singlePrintCost = 0;
+      if (state.currentStep >= 4) {
+        if (state.selectedPrintPlacement === 'Oba') {
+          singlePrintCost = 40;
+        } else if (state.selectedPrintPlacement === 'Przód' || state.selectedPrintPlacement === 'Tył') {
+          singlePrintCost = 20;
+        } else if (state.selectedProductType === 'Kubek' || state.selectedProductType === 'Czapka') {
+          singlePrintCost = 15;
+        }
       }
-      
-      const itemBase = state.productBasePrice * state.quantity;
-      const printTotal = singlePrintCost * state.quantity;
-      const designFee = state.needDesignProject ? 50 : 0;
-      const shipping = state.shippingCost || 17;
+      const printTotal = singlePrintCost * qty;
+
+      // 3. Dodatkowe opracowanie graficzne (opcja z kroku 9, indeks >= 8)
+      const designFee = (state.currentStep >= 8 && state.needDesignProject) ? 50 : 0;
+
+      // 4. Koszt dostawy - doliczany dopiero w kroku wyboru metody wysyłki (krok 9, indeks >= 8)
+      const shipping = (state.currentStep >= 8) ? (state.shippingCost || 17) : 0;
+
+      // Suma bieżąca w czasie rzeczywistym
       const total = itemBase + printTotal + designFee + shipping;
 
       const formattedTotal = `${total.toFixed(2).replace('.', ',')} zł`;
@@ -2047,6 +2261,7 @@
         alert('Proszę uzupełnić wszystkie wymagane dane zamawiającego (Imię, Nazwisko, E-mail, Telefon, Adres) przed wysłaniem projektu!');
         state.currentStep = 9; // go to step 9 (Dane Zamawiającego)
         updateStepUI();
+        window.scrollTo({ top: 120, behavior: 'smooth' });
         return false;
       }
       return true;
@@ -2054,20 +2269,27 @@
 
     function buildOrderEmailBody() {
       const { total } = updatePricing();
+      let graphicInfo = 'Standardowy monogram YIS / tylko treść typograficzna';
+      if (state.uploadedImageBase64 === PRESET_SAMPLE_GRAPHIC || (typeof state.uploadedImageBase64 === 'string' && state.uploadedImageBase64.includes('jezus_jest_droga'))) {
+        graphicInfo = 'Oficjalna autorska grafika YIS: "Jezus jest Drogą, Prawdą i Życiem" (Gratis w projekcie • Auto-kalibracja)';
+      } else if (state.uploadedImageBase64) {
+        graphicInfo = 'Własny plik graficzny użytkownika (dołączony w załączniku wiadomości)';
+      }
+
       return `Dzień dobry,
 
-Chciał(a)bym przekazać gotowy projekt grafiki użytkowej do bezpłatnej weryfikacji technicznej i wyceny w Your Imagination Studio (YIS).
+Chciał(a)bym przekazać gotowy projekt chrześcijańskiej grafiki użytkowej do bezpłatnej weryfikacji technicznej i wyceny w Your Imagination Studio (YIS).
 
 --- PROJEKT: CHRZEŚCIJAŃSKA GRAFIKA UŻYTKOWA ---
-• Produkt bazowy: ${state.selectedProductType}
+• Produkt bazowy: ${state.selectedProductType || 'Koszulka'}
 • Kolor produktu: ${state.selectedColor}
 • Rozmiar: ${state.selectedSize}
 • Format nadruku: ${state.selectedFormat}
 • Umiejscowienie nadruku: ${state.selectedPrintPlacement}
 • Ilość sztuk: ${state.quantity}
+• Wybrana grafika: ${graphicInfo}
 • Spersonalizowany tekst / cytat: ${state.personalizedText.trim() ? `"${state.personalizedText.trim()}"` : '(brak)'}
-• Opracowanie graficzne YIS (3 koncepcje): ${state.needDesignProject ? 'TAK (+50 zł)' : 'NIE (własna grafika / gotowy wzór)'}
-• Status pliku graficznego: ${state.uploadedImageBase64 ? 'Plik załączony do niniejszej wiadomości' : 'Standardowy monogram YIS / tylko treść typograficzna'}
+• Opracowanie graficzne YIS (3 koncepcje): ${state.needDesignProject ? 'TAK (+50 zł)' : 'NIE (gotowy wzór)'}
 
 --- DANE KONTAKTOWE I DOSTAWA ---
 • Zamawiający: ${state.firstName} ${state.lastName}
@@ -2162,6 +2384,64 @@ Tel: ${state.phoneNumber}`;
       document.body.removeChild(ta);
     }
 
+    function openEmailDispatchModal() {
+      const modal = document.getElementById('email-dispatch-modal');
+      const subject = `[YIS Chrześcijańska Grafika Użytkowa] Projekt do weryfikacji i wyceny: ${state.firstName} ${state.lastName}`;
+      const body = buildOrderEmailBody();
+      const encodedSubject = encodeURIComponent(subject);
+      const encodedBody = encodeURIComponent(body);
+
+      // 1. Bezpośredni link Gmail Web Compose
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=yourimaginationstudio@gmail.com&su=${encodedSubject}&body=${encodedBody}`;
+      const gmailBtn = document.getElementById('dispatch-gmail-link');
+      if (gmailBtn) gmailBtn.href = gmailUrl;
+
+      // 2. Domyślny program pocztowy klienta (mailto)
+      const mailtoUrl = `mailto:yourimaginationstudio@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
+      const mailtoBtn = document.getElementById('dispatch-mailto-link');
+      if (mailtoBtn) mailtoBtn.href = mailtoUrl;
+
+      // 3. Wypełnienie pola textarea do skopiowania
+      const ta = document.getElementById('dispatch-spec-textarea');
+      if (ta) ta.value = body;
+
+      // 4. Automatyczne skopiowanie specyfikacji do schowka
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(body).then(() => {
+          const toast = document.getElementById('modal-copied-toast');
+          if (toast) toast.classList.remove('hidden');
+        }).catch(() => {});
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeEmailDispatchModal() {
+      const modal = document.getElementById('email-dispatch-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function copyProjectSpecificationModal() {
+      const body = buildOrderEmailBody();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(body).then(() => {
+          const btnText = document.getElementById('modal-copy-btn-text');
+          if (btnText) btnText.textContent = '✓ SKOPIOWANO DO SCHOWKA!';
+          setTimeout(() => {
+            if (btnText) btnText.textContent = 'Skopiuj całą treść i adres do schowka';
+          }, 2500);
+        }).catch(() => copyFallback(body));
+      } else {
+        copyFallback(body);
+      }
+    }
+
     function submitProjectForVerification(channel) {
       if (channel === 'whatsapp') {
         submitOrderViaWhatsApp();
@@ -2174,16 +2454,21 @@ Tel: ${state.phoneNumber}`;
       if (!validateForm()) return;
       archiveOrder('WERYFIKACJA MAIL');
 
+      // Próba uruchomienia systemowego programu pocztowego
       const subject = `[YIS Chrześcijańska Grafika Użytkowa] Projekt do weryfikacji i wyceny: ${state.firstName} ${state.lastName}`;
       const body = buildOrderEmailBody();
       const mailtoUrl = `mailto:yourimaginationstudio@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-      window.location.href = mailtoUrl;
+      try {
+        const tempLink = document.createElement('a');
+        tempLink.href = mailtoUrl;
+        tempLink.click();
+      } catch (e) {
+        console.warn('Mailto direct invoke failed:', e);
+      }
 
-      setTimeout(() => {
-        alert('Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową specyfikacją projektu skierowaną do yourimaginationstudio@gmail.com.\n\nDołącz ewentualne pliki graficzne lub logo w wysokiej rozdzielczości jako załącznik i kliknij Wyślij!');
-        switchTab('history');
-      }, 600);
+      // Otwórz modal z opcjami (Gmail, program pocztowy, skopiuj)
+      openEmailDispatchModal();
     }
 
     function submitOrderViaWhatsApp() {
