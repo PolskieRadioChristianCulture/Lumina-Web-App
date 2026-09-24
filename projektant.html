@@ -152,11 +152,11 @@
 
   <!-- ==================== BACKGROUND SLIDESHOW LAYER ==================== -->
   <div id="bg-slideshow" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div id="bg-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-30 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg'); background-position: center 12%;"></div>
+    <div id="bg-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-50 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg'); background-position: center 12%;"></div>
     <div id="bg-slide-2" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_2.jpg'); background-position: center 12%;"></div>
     <div id="bg-slide-3" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_3.jpg'); background-position: center 12%;"></div>
-    <!-- Deepened Scrim / Vignette for crystal-clear readability -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black/90"></div>
+    <!-- Zrównoważony scrim / winieta (pomiędzy jasnym a ciemnym dla idealnego balansu) -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/75"></div>
   </div>
 
   <!-- ==================== TOP NAVIGATION (#cc-nav) ==================== -->
@@ -218,7 +218,7 @@
 
   <!-- ==================== MAIN HERO HEADER ==================== -->
   <section class="relative z-10 pt-6 pb-6 px-4 text-center">
-    <div class="max-w-3xl mx-auto flex flex-col items-center bg-black/65 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+    <div class="max-w-3xl mx-auto flex flex-col items-center bg-black/45 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 shadow-xl">
       
       <!-- Prominent Christian Graphic Art Badge -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-gold/20 to-amber-500/20 border border-gold/40 text-gold text-xs font-extrabold uppercase tracking-widest mb-3 shadow-lg shadow-gold/10">
@@ -2732,7 +2732,7 @@ Tel: ${state.phoneNumber}`;
         const bg = document.getElementById(`bg-slide-${i}`);
         if (bg) {
           if (i === index + 1) {
-            bg.style.opacity = '0.30';
+            bg.style.opacity = '0.50';
           } else {
             bg.style.opacity = '0';
           }
