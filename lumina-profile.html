@@ -1440,6 +1440,16 @@
         .avatar-status-badge.is-online {
             display: block !important;
         }
+        .avatar-wrap .avatar-status-badge:not(.is-online),
+        .avatar-wrap .avatar-status-badge.offline,
+        .avatar-wrap .avatar-status-badge[data-status="offline"],
+        .avatar-status-badge.offline,
+        .avatar-status-badge[data-status="offline"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
         @media (max-width: 768px) {
             .avatar-status-badge {
                 bottom: 5px !important;
@@ -10066,7 +10076,7 @@
     <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=4.2.0_20260918_v5" defer></script>
+    <script src="lumina-bottom-nav.js?v=20260924_honest_zero_fakes_v1" defer></script>
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
