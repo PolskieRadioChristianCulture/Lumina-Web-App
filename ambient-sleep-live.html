@@ -301,18 +301,19 @@
         /* --- FLOATING SCRIPTURE CARD (Kojące Słowo Boże na Noc) --- */
         .scripture-center-card {
             position: absolute;
-            top: 260px;
+            top: 190px;
             left: 50%;
             transform: translateX(-50%);
-            width: 1080px;
+            width: 1160px;
             z-index: 15;
-            background: rgba(4, 7, 14, 0.72);
-            border: 1px solid rgba(212, 175, 55, 0.28);
-            border-top: 3px solid var(--gold-primary);
-            padding: 36px 54px;
+            background: rgba(3, 6, 12, 0.22);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-top: 2px solid var(--gold-primary);
+            padding: 26px 48px;
             border-radius: 24px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
             text-align: center;
             transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -352,7 +353,7 @@
             font-weight: 700;
             line-height: 1.5;
             color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.9);
             margin-bottom: 16px;
         }
 
@@ -362,6 +363,7 @@
             color: var(--gold-primary);
             letter-spacing: 1.5px;
             font-style: italic;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
         }
 
         /* --- ACTIVE PRESET & SOUND HUD (DOLNA CZĘŚĆ EKRANU) --- */
@@ -531,14 +533,14 @@
 
         /* --- TICKER TRACK BAR --- */
         .bottom-ticker-bar {
-            height: 44px;
-            background: rgba(4, 6, 12, 0.85);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 12px;
+            height: 56px;
+            background: rgba(4, 6, 12, 0.88);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             overflow: hidden;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             box-shadow: 0 8px 25px var(--glass-shadow);
         }
 
@@ -546,21 +548,22 @@
             background: linear-gradient(135deg, #F3E5AB, #D4AF37) !important;
             color: #05070B !important;
             font-weight: 900;
-            font-size: 0.78rem;
-            padding: 0 20px;
+            font-size: 0.95rem;
+            padding: 0 24px;
             height: 100%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            letter-spacing: 1px;
+            gap: 10px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
             flex-shrink: 0;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.6);
             z-index: 2;
         }
 
         .ticker-label i {
             color: #05070B !important;
+            font-size: 1.15rem;
         }
 
         .ticker-track-wrapper {
@@ -583,20 +586,290 @@
         .ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-right: 50px;
-            font-size: 0.84rem;
-            font-weight: 500;
-            color: #cbd5e1;
+            gap: 12px;
+            margin-right: 65px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
         }
 
         .ticker-item i {
             color: var(--gold-primary);
+            font-size: 1.25rem;
         }
 
         .ticker-highlight {
             color: #ffffff;
+            font-weight: 800;
+            font-size: 1.18rem;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+        }
+
+        
+        /* --- LIVE SOUND MIXER CONSOLE --- */
+        .live-mixer-panel {
+            background: rgba(6, 10, 18, 0.88);
+            border: 1px solid var(--glass-border);
+            border-top: 2px solid var(--gold-primary);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 18px 26px;
+            box-shadow: 0 16px 40px var(--glass-shadow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 500px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .live-mixer-panel.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: -16px;
+            opacity: 0;
+            pointer-events: none;
+            border-width: 0;
+        }
+
+        .mixer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .mixer-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mixer-icon-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            font-size: 0.95rem;
+        }
+
+        .mixer-heading {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+        }
+
+        .mixer-subheading {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .mixer-presets-quick {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .presets-label {
+            font-size: 0.75rem;
+            color: var(--gold-light);
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 4px;
+        }
+
+        .btn-preset-pill {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-preset-pill:hover,
+        .btn-preset-pill.active {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-primary);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-mixer-close {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-mixer-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--gold-primary);
+        }
+
+        /* Faders Grid */
+        .mixer-faders-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .fader-card {
+            background: rgba(14, 20, 32, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .fader-card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(18, 26, 42, 0.75);
+        }
+
+        .fader-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fader-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fader-label i {
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+        }
+
+        .fader-pct {
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: var(--gold-light);
+            font-family: monospace;
+        }
+
+        .fader-control-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fader-range {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .fader-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F3E5AB, #D4AF37);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            transition: transform 0.15s ease;
+        }
+
+        .fader-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.9);
+        }
+
+        .fader-mute-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.72rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .fader-mute-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .fader-mute-btn.muted {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+
+        .binaural-modes-toggle {
+            display: flex;
+            gap: 3px;
+        }
+
+        .btn-bin-mode {
+            flex: 1;
+            padding: 3px 4px;
+            border-radius: 5px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-bin-mode.active {
+            background: rgba(56, 189, 248, 0.22);
+            border-color: #38bdf8;
+            color: #ffffff;
+        }
+
+        .btn-hud-control.active-mixer {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.18);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
         }
 
         /* --- UNMUTE / AUTOPLAY OVERLAY --- */
@@ -728,6 +1001,120 @@
 
         <!-- 4. BOTTOM HUD & SOUND STATUS BAR -->
         <div class="bottom-hud-wrapper">
+            <!-- LIVE SOUND MIXER CONSOLE -->
+            <div class="live-mixer-panel" id="liveMixerPanel">
+                <div class="mixer-header">
+                    <div class="mixer-title-group">
+                        <div class="mixer-icon-badge"><i class="fa-solid fa-sliders"></i></div>
+                        <div>
+                            <div class="mixer-heading">MIKSER DŹWIĘKÓW LIVE</div>
+                            <div class="mixer-subheading">Dostosuj głośność poszczególnych ścieżek bezpośrednio z pozycji kanału</div>
+                        </div>
+                    </div>
+                    <div class="mixer-presets-quick">
+                        <span class="presets-label">Presety:</span>
+                        <button type="button" class="btn-preset-pill active" id="btn-pre-0" onclick="applyPreset(0)">🌙 Głęboki Sen</button>
+                        <button type="button" class="btn-preset-pill" id="btn-pre-1" onclick="applyPreset(1)">🔥 Kominek & Deszcz</button>
+                        <button type="button" class="btn-preset-pill" id="btn-pre-2" onclick="applyPreset(2)">🌊 Noc nad Oceanem</button>
+                        <button type="button" class="btn-preset-pill" id="btn-pre-3" onclick="applyPreset(3)">🌲 Nocny Las</button>
+                        <button type="button" class="btn-preset-pill" id="btn-pre-4" onclick="applyPreset(4)">✨ Modlitwa</button>
+                    </div>
+                    <button type="button" class="btn-mixer-close" onclick="toggleMixerPanel()" title="Zwiń / Rozwiń mikser">
+                        <i class="fa-solid fa-chevron-down" id="mixerToggleIcon"></i>
+                    </button>
+                </div>
+
+                <!-- 7 Faders: 6 sounds + binaural -->
+                <div class="mixer-faders-grid">
+                    <!-- 1. Szum Brązowy -->
+                    <div class="fader-card" id="fader-brown">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-water"></i> Szum Brązowy</span>
+                            <span class="fader-pct" id="pct-brown">45%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-brown" min="0" max="100" value="45" oninput="onFaderInput('brown', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-brown" onclick="toggleChannelMute('brown')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Prawdziwy Deszcz -->
+                    <div class="fader-card" id="fader-rain">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-cloud-rain"></i> Deszcz</span>
+                            <span class="fader-pct" id="pct-rain">40%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-rain" min="0" max="100" value="40" oninput="onFaderInput('rain', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-rain" onclick="toggleChannelMute('rain')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Trzaskający Kominek -->
+                    <div class="fader-card" id="fader-fire">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-fire"></i> Kominek</span>
+                            <span class="fader-pct" id="pct-fire">30%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-fire" min="0" max="100" value="30" oninput="onFaderInput('fire', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-fire" onclick="toggleChannelMute('fire')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Fale Oceanu -->
+                    <div class="fader-card" id="fader-ocean">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-water-ladder"></i> Fale Oceanu</span>
+                            <span class="fader-pct" id="pct-ocean">35%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-ocean" min="0" max="100" value="35" oninput="onFaderInput('ocean', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-ocean" onclick="toggleChannelMute('ocean')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Nocny Las -->
+                    <div class="fader-card" id="fader-forest">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-tree"></i> Nocny Las</span>
+                            <span class="fader-pct" id="pct-forest">25%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-forest" min="0" max="100" value="25" oninput="onFaderInput('forest', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-forest" onclick="toggleChannelMute('forest')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Ciepły Pad Harmoniczny -->
+                    <div class="fader-card" id="fader-pad">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-mountain-sun"></i> Pad C Maj 7</span>
+                            <span class="fader-pct" id="pct-pad">30%</span>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-pad" min="0" max="100" value="30" oninput="onFaderInput('pad', this.value)">
+                            <button type="button" class="fader-mute-btn" id="mutebtn-pad" onclick="toggleChannelMute('pad')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- 7. Fale Binauralne Delta/Theta -->
+                    <div class="fader-card binaural-fader" id="fader-binaural">
+                        <div class="fader-top">
+                            <span class="fader-label"><i class="fa-solid fa-brain"></i> Fale Mózgowe</span>
+                            <span class="fader-pct" id="pct-delta">30%</span>
+                        </div>
+                        <div class="binaural-modes-toggle">
+                            <button type="button" class="btn-bin-mode active" id="bin-mode-delta" onclick="setBinauralMode('delta')">Delta (3Hz)</button>
+                            <button type="button" class="btn-bin-mode" id="bin-mode-theta" onclick="setBinauralMode('theta')">Theta (6Hz)</button>
+                            <button type="button" class="btn-bin-mode" id="bin-mode-none" onclick="setBinauralMode('none')">Wyłącz</button>
+                        </div>
+                        <div class="fader-control-row">
+                            <input type="range" class="fader-range" id="range-delta" min="0" max="100" value="30" oninput="onFaderInput('delta', this.value)">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="hud-status-bar">
                 <div class="hud-left-info">
                     <div class="preset-badge">
@@ -763,6 +1150,10 @@
                 </div>
 
                 <div class="hud-right-actions">
+                    <button type="button" class="btn-hud-control active-mixer" id="btnToggleMixer" onclick="toggleMixerPanel()">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span id="labelToggleMixer">Mikser Dźwięków</span>
+                    </button>
                     <button type="button" class="btn-hud-control" id="btnMuteToggle" onclick="toggleAudioMute()">
                         <i class="fa-solid fa-volume-high" id="iconMute"></i>
                         <span id="labelMute">Wycisz</span>
@@ -1283,6 +1674,172 @@
             }
             draw();
         }
+
+        
+        // ── 6b. Interactive Live Mixer Controls ──
+        let binauralMode = 'delta'; // 'delta' | 'theta' | 'none'
+        const channelMutedStates = {};
+
+        function onFaderInput(key, value) {
+            if (!isAudioInitialized) {
+                userUnlockAudio();
+            }
+            const val = parseFloat(value) / 100.0;
+            const pctEl = document.getElementById('pct-' + key);
+            if (pctEl) pctEl.textContent = value + '%';
+
+            if (key === 'delta') {
+                audioChannels.delta.volume = val;
+                if (binauralMode !== 'none' && audioChannels.delta.gain && audioCtx) {
+                    audioChannels.delta.gain.gain.setTargetAtTime(val * 0.4, audioCtx.currentTime, 0.05);
+                }
+            } else {
+                audioChannels[key].volume = val;
+                if (audioChannels[key].gain && audioCtx) {
+                    audioChannels[key].gain.gain.setTargetAtTime(val, audioCtx.currentTime, 0.05);
+                }
+            }
+
+            // Mark preset as Custom
+            document.getElementById('currentPresetLabel').textContent = 'Miks Własny';
+            for (let i = 0; i < 5; i++) {
+                const btn = document.getElementById('btn-pre-' + i);
+                if (btn) btn.classList.remove('active');
+            }
+
+            renderHudBars();
+        }
+
+        function toggleChannelMute(key) {
+            if (!isAudioInitialized) userUnlockAudio();
+            channelMutedStates[key] = !channelMutedStates[key];
+            const isChMuted = channelMutedStates[key];
+            const btn = document.getElementById('mutebtn-' + key);
+            const range = document.getElementById('range-' + key);
+            const pct = document.getElementById('pct-' + key);
+
+            if (isChMuted) {
+                if (btn) {
+                    btn.classList.add('muted');
+                    btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                }
+                if (key === 'delta') {
+                    if (audioChannels.delta.gain && audioCtx) {
+                        audioChannels.delta.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+                    }
+                } else if (audioChannels[key].gain && audioCtx) {
+                    audioChannels[key].gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+                }
+                if (pct) pct.textContent = 'WYŁ';
+            } else {
+                if (btn) {
+                    btn.classList.remove('muted');
+                    btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                }
+                const vol = range ? parseFloat(range.value) / 100 : audioChannels[key].volume;
+                if (key === 'delta') {
+                    if (binauralMode !== 'none' && audioChannels.delta.gain && audioCtx) {
+                        audioChannels.delta.gain.gain.setTargetAtTime(vol * 0.4, audioCtx.currentTime, 0.05);
+                    }
+                } else if (audioChannels[key].gain && audioCtx) {
+                    audioChannels[key].gain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.05);
+                }
+                if (pct && range) pct.textContent = range.value + '%';
+            }
+            renderHudBars();
+        }
+
+        function setBinauralMode(mode) {
+            if (!isAudioInitialized) userUnlockAudio();
+            binauralMode = mode;
+
+            document.querySelectorAll('.btn-bin-mode').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('bin-mode-' + mode);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if (!audioChannels.delta.leftOsc || !audioCtx) return;
+
+            if (mode === 'none') {
+                if (audioChannels.delta.gain) {
+                    audioChannels.delta.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+                }
+                const pct = document.getElementById('pct-delta');
+                if (pct) pct.textContent = 'WYŁ';
+                const ind = document.getElementById('ind-delta');
+                if (ind) ind.classList.remove('active');
+            } else {
+                const range = document.getElementById('range-delta');
+                const vol = range ? parseFloat(range.value) / 100 : 0.3;
+                if (audioChannels.delta.gain) {
+                    audioChannels.delta.gain.gain.setTargetAtTime(vol * 0.4, audioCtx.currentTime, 0.1);
+                }
+                const pct = document.getElementById('pct-delta');
+                if (pct && range) pct.textContent = range.value + '%';
+
+                const ind = document.getElementById('ind-delta');
+                if (ind) ind.classList.add('active');
+
+                if (mode === 'delta') {
+                    audioChannels.delta.leftOsc.frequency.setValueAtTime(150.0, audioCtx.currentTime);
+                    audioChannels.delta.rightOsc.frequency.setValueAtTime(153.0, audioCtx.currentTime); // 3 Hz Delta
+                    if (ind) ind.innerHTML = '<i class="fa-solid fa-brain"></i> Fale Delta (3 Hz)';
+                } else if (mode === 'theta') {
+                    audioChannels.delta.leftOsc.frequency.setValueAtTime(150.0, audioCtx.currentTime);
+                    audioChannels.delta.rightOsc.frequency.setValueAtTime(156.0, audioCtx.currentTime); // 6 Hz Theta
+                    if (ind) ind.innerHTML = '<i class="fa-solid fa-brain"></i> Fale Theta (6 Hz)';
+                }
+            }
+        }
+
+        let isMixerCollapsed = false;
+        function toggleMixerPanel() {
+            const panel = document.getElementById('liveMixerPanel');
+            const icon = document.getElementById('mixerToggleIcon');
+            const btn = document.getElementById('btnToggleMixer');
+            if (!panel) return;
+
+            isMixerCollapsed = !isMixerCollapsed;
+            if (isMixerCollapsed) {
+                panel.classList.add('collapsed');
+                if (icon) icon.className = 'fa-solid fa-chevron-up';
+                if (btn) btn.classList.remove('active-mixer');
+            } else {
+                panel.classList.remove('collapsed');
+                if (icon) icon.className = 'fa-solid fa-chevron-down';
+                if (btn) btn.classList.add('active-mixer');
+                if (!isAudioInitialized) userUnlockAudio();
+            }
+        }
+
+        // Synchronize fader values with presets
+        const originalApplyPreset = applyPreset;
+        applyPreset = function(presetIdx) {
+            originalApplyPreset(presetIdx);
+            const preset = BROADCAST_PRESETS[currentPresetIdx];
+            if (!preset) return;
+
+            // Update preset quick buttons
+            for (let i = 0; i < 5; i++) {
+                const btn = document.getElementById('btn-pre-' + i);
+                if (btn) {
+                    if (i === currentPresetIdx) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            }
+
+            // Sync faders UI
+            const keys = ['brown', 'rain', 'fire', 'ocean', 'forest', 'pad', 'delta'];
+            keys.forEach(k => {
+                const val = preset.vols[k];
+                if (val !== undefined) {
+                    const range = document.getElementById('range-' + k);
+                    const pct = document.getElementById('pct-' + k);
+                    const pctVal = Math.round(val * 100);
+                    if (range) range.value = pctVal;
+                    if (pct) pct.textContent = pctVal + '%';
+                }
+            });
+        };
 
         // ── 7. MCR & User Mute Control ──
         function toggleAudioMute() {
