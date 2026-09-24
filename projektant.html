@@ -104,6 +104,13 @@
       min-height: 44px;
       touch-action: manipulation;
     }
+    footer a, footer span, footer i, footer img {
+      min-height: unset !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      line-height: 1 !important;
+      vertical-align: middle !important;
+    }
 
     /* Background Ken Burns Zoom Animation */
     @keyframes kenburns {
@@ -145,11 +152,11 @@
 
   <!-- ==================== BACKGROUND SLIDESHOW LAYER ==================== -->
   <div id="bg-slideshow" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div id="bg-slide-1" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-25 dark:opacity-20 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg');"></div>
+    <div id="bg-slide-1" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-75 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg');"></div>
     <div id="bg-slide-2" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_2.jpg');"></div>
     <div id="bg-slide-3" class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_3.jpg');"></div>
     <!-- Scrim / Vignette -->
-    <div class="absolute inset-0 bg-gradient-to-b from-[#121212]/90 via-[#121212]/75 to-[#121212] dark:from-[#121212]/95 dark:via-[#121212]/85 dark:to-[#121212]"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/60"></div>
   </div>
 
   <!-- ==================== TOP NAVIGATION (#cc-nav) ==================== -->
@@ -1252,21 +1259,21 @@
   <audio id="radio-audio" preload="none"></audio>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="relative z-10 border-t border-white/10 py-6 px-4 bg-black/80 backdrop-blur-md">
+  <footer class="relative z-10 border-t border-white/10 py-6 px-4 bg-black/85 backdrop-blur-md">
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs">
       <!-- Left: Logo + Brand + Portal Link -->
-      <div class="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start">
-        <img src="/images/yis/your_imagination_studio_transparent.png" alt="Your Imagination Studio" class="w-6 h-6 object-contain filter drop-shadow">
-        <span class="font-bold text-gray-300 whitespace-nowrap">Your Imagination Studio &copy; 2026</span>
-        <span class="text-gray-600 select-none">•</span>
-        <a href="https://polskieradio.cc" class="text-gray-400 hover:text-gold transition-colors whitespace-nowrap font-medium">PolskieRadio.cc</a>
+      <div class="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start leading-none min-h-[24px]">
+        <img src="/images/yis/your_imagination_studio_transparent.png" alt="Your Imagination Studio" class="w-6 h-6 object-contain flex-shrink-0">
+        <span class="font-bold text-gray-300 whitespace-nowrap leading-none">Your Imagination Studio &copy; 2026</span>
+        <span class="text-gray-600 select-none leading-none">•</span>
+        <a href="https://polskieradio.cc" class="text-gray-400 hover:text-gold transition-colors whitespace-nowrap font-medium leading-none">PolskieRadio.cc</a>
       </div>
 
       <!-- Right: Official Contact Email -->
-      <div class="flex items-center gap-2 justify-center sm:justify-end">
-        <i class="fa-regular fa-envelope text-gold text-xs"></i>
-        <a href="mailto:yourimaginationstudio@gmail.com" class="text-gray-400 hover:text-gold transition-colors whitespace-nowrap">
-          Kontakt: <span class="text-gray-300 hover:text-gold font-medium">yourimaginationstudio@gmail.com</span>
+      <div class="flex items-center justify-center sm:justify-end leading-none min-h-[24px]">
+        <a href="mailto:yourimaginationstudio@gmail.com" class="inline-flex items-center gap-2 text-gray-400 hover:text-gold transition-colors whitespace-nowrap leading-none group">
+          <i class="fa-regular fa-envelope text-gold text-xs group-hover:scale-110 transition-transform"></i>
+          <span class="leading-none">Kontakt: <span class="text-gray-300 group-hover:text-gold font-medium leading-none">yourimaginationstudio@gmail.com</span></span>
         </a>
       </div>
     </div>
@@ -2473,7 +2480,7 @@ Tel: ${state.phoneNumber}`;
         const bg = document.getElementById(`bg-slide-${i}`);
         if (bg) {
           if (i === index + 1) {
-            bg.style.opacity = '0.22';
+            bg.style.opacity = '0.75';
           } else {
             bg.style.opacity = '0';
           }
