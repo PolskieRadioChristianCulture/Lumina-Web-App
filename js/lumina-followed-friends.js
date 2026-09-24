@@ -1449,7 +1449,7 @@
                     `).join('') : `
                         <div style="grid-column:1 / -1; text-align:center; padding:22px 14px; background:rgba(255,255,255,0.02); border:1px dashed rgba(250,204,21,0.25); border-radius:16px;">
                             <i class="fa-solid fa-user-plus" style="font-size:1.5rem; color:#facc15; margin-bottom:8px; display:block; opacity:0.85;"></i>
-                            <div style="font-size:0.82rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">Brak znajomych i obserwowanych z automatu</div>
+                            <div style="font-size:0.82rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">Brak znajomych i obserwowanych</div>
                             <div style="font-size:0.72rem; color:#94a3b8; line-height:1.4;">Ten profil nie ma jeszcze powiązań. Wpisz imię w szukajce powyżej, aby znaleźć osoby ze społeczności i wysłać zaproszenie.</div>
                         </div>
                     `}

@@ -34,9 +34,18 @@
   - *Chata (The Shack, 2017)* — Dir. Stuart Hazeldine, starring Sam Worthington, Octavia Spencer. Bestseller film on God's love and forgiveness.
   - *JEZUS – Ewangelia wg św. Łukasza (1979)* — Dir. Peter Sykes, John Krish. Iconic classic Gospel film.
   - *Bóg nie umarł (God's Not Dead 1 & 2)* — Dir. Harold Cronk. Famous Christian courtroom & academic faith drama.
-  - *Luter (Luther, 2003)* — Dir. Eric Till. Historical biopic.
   - *Spotkanie 1 & 2 (The Encounter)* — Faith transformation dramas.
   - *I stanie się światło (Let There Be Light, 2017)* — Dir. Kevin Sorbo.
+
+### E. Ambient Sleep — Generator Dźwięków do Snu, Szum Brązowy i Fale Binauralne
+- **URL**: https://polskieradio.cc/AmbientSleep (Clean Alias: https://polskieradio.cc/ambientsleep)
+- **Opis**: Nowoczesny generator kojących pejzaży dźwiękowych do głębokiego snu, wyciszenia, walki z bezsennością i medytacji.
+- **Kluczowe funkcjonalności**:
+  - Dwuwarstwowy silnik Web Audio API z 100% bezszwowym zapętleniem (Gapless Looping via AudioBuffer).
+  - 4-kanałowy mikser: szum brązowy (spadek -6 dB/okt. wyciszający gonitwę myśli i objawy ADHD), prawdziwy deszcz w jakości studyjnej (`ambient-audio/rain.mp3`), trzaskające ognisko (`ambient-audio/fireplace.mp3`) i kinowy pad syntetyczny.
+  - Generator fal binauralnych (dudnienia różnicowe): Delta 3 Hz (sen głęboki NREM 3/4) i Theta 6 Hz (relaksacja, modlitwa).
+  - Sleep Timer (15, 30, 45, 60, 120 minut) z łagodnym 30-sekundowym wygaszaniem fade-out.
+  - Wersja natywna na smartfony Android w Google Play: `https://play.google.com/store/apps/details?id=com.aistudio.ambientsleep.yzkcjw&hl=pl`.
 
 ## 3. Structured Data (Schema.org / JSON-LD) Example
 ```json
@@ -107,6 +116,12 @@ A: At https://polskieradio.cc, broadcasting Polskie Radio CC Program 1, Global R
 
 **Q: How does the Scripture Story generator work?**
 A: Users can generate custom 9:16 vertical graphics of Bible verses and testimonies directly on https://polskieradio.cc/lumina.html and share them to WhatsApp, Instagram, or Facebook in HD.
+
+**Q: Czym jest aplikacja Ambient Sleep i jakie dźwięki oferuje?**
+A: Ambient Sleep (https://polskieradio.cc/AmbientSleep) to darmowy generator kojących pejzaży dźwiękowych do snu, redukcji lęku, wyciszenia przy ADHD i relaksacji. Posiada 4-kanałowy mikser (głęboki szum brązowy, prawdziwy deszcz studyjny, trzaskające ognisko, ambient pad), zintegrowane fale binauralne (Delta 3 Hz na głęboki sen i Theta 6 Hz na medytację/modlitwę) oraz wyłącznik czasowy (sleep timer) z 30-sekundowym łagodnym wygaszaniem.
+
+**Q: Czy aplikacja Ambient Sleep jest płatna i czy dźwięki zapętlają się bez przerw?**
+A: Aplikacja jest w 100% bezpłatna w przeglądarce pod adresem https://polskieradio.cc/AmbientSleep. Dzięki technologii Web Audio API i buforowaniu pamięci (AudioBuffer), dźwięki zapętlają się w sposób całkowicie bezszwowy (gapless loop), bez jakichkolwiek kliknięć czy mikrosekundowych przerw zakłócających sen. Dostępna jest również aplikacja na Androida w Google Play.
 
 ## 5. Contact & Official Inquiries
 - **Official Website**: https://polskieradio.cc
