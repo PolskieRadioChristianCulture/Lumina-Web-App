@@ -42,6 +42,12 @@ export default {
         },
       });
     }
+
+    if (url.pathname === '/AmbientSleep' || url.pathname === '/ambientsleep' || url.pathname === '/ambient-sleep' || url.pathname === '/Ambient-Sleep') {
+      const ambientReq = new Request(new URL('/ambientsleep.html', request.url), request);
+      return env.ASSETS.fetch(ambientReq);
+    }
+
     // Studio API Endpoints
     if (url.pathname === '/api/bible/ubg/info') {
       const ubgInfoReq = new Request(new URL('/data/ubg_info.json', request.url), request);

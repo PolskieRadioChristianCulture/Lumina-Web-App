@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ambient Sleep — Christian Culture Network</title>
+  <meta name="description" content="Nowoczesna, relaksująca aplikacja dźwiękowa do snu i wyciszenia. Odkryj szum brązowy, dźwięki natury, fale binauralne i kinowe tła dźwiękowe.">
+  <link rel="icon" type="image/jpeg" href="ambient_logo.jpg">
+  <link rel="apple-touch-icon" href="ambient_logo.jpg">
+  <meta property="og:title" content="Ambient Sleep — Christian Culture">
+  <meta property="og:description" content="Znajdź swoje idealne środowisko snu z polskiej platformy Christian Culture.">
+  <meta property="og:image" content="ambient_hero.jpg">
+  <meta name="theme-color" content="#030509">
+
+  <!-- Google Fonts: Inter & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-midnight: #030509;
+      --bg-cosmic: #070b14;
+      --bg-card: rgba(18, 24, 38, 0.7);
+      --bg-card-hover: rgba(26, 34, 52, 0.85);
+      --gold-primary: #C5A059;
+      --gold-light: #E0C287;
+      --gold-glow: rgba(197, 160, 89, 0.25);
+      --text-main: #F1F4F9;
+      --text-muted: #8E9BAE;
+      --border-subtle: rgba(197, 160, 89, 0.2);
+      --border-highlight: rgba(197, 160, 89, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-midnight);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(11, 23, 44, 0.8) 0%, transparent 50%),
+        radial-gradient(circle at 0% 50%, rgba(7, 11, 20, 0.9) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+
+    /* Top App Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(3, 5, 9, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .brand-title-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title-main {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold-primary);
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-mission-support {
+      background: linear-gradient(135deg, rgba(197, 160, 89, 0.2), rgba(197, 160, 89, 0.05));
+      border: 1px solid var(--border-highlight);
+      color: var(--gold-light);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-mission-support:hover {
+      background: var(--gold-primary);
+      color: #030509;
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    /* Container */
+    .main-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Hero Section */
+    .hero-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      background: #000;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px 24px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      filter: saturate(1.15) brightness(0.85);
+      transition: transform 10s ease;
+    }
+
+    .hero-card:hover .hero-bg {
+      transform: scale(1.03);
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(3, 5, 9, 0.95) 10%, rgba(3, 5, 9, 0.4) 60%, rgba(3, 5, 9, 0.1) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 580px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(197, 160, 89, 0.15);
+      border: 1px solid var(--border-highlight);
+      color: var(--gold-light);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      color: #c9d2de;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .hero-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-main-play {
+      background: linear-gradient(135deg, #DFB872, #C5A059);
+      color: #07090E;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .btn-main-play:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(197, 160, 89, 0.6);
+    }
+
+    .btn-main-play.active {
+      background: #E53935;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
+    }
+
+    .timer-badge-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    .timer-badge-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14, 20, 32, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 6px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(197, 160, 89, 0.15);
+      color: var(--gold-light);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Section Headers */
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .sec-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sec-badge {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Sound Mixer Grid */
+    .mixer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .sound-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 18px;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sound-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-highlight);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .sound-card.active {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+    }
+
+    .sound-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gold-primary);
+    }
+
+    .sound-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sound-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sound-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(197, 160, 89, 0.1);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+    }
+
+    .sound-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sound-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .sound-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-sound-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-sound-btn.playing {
+      background: var(--gold-primary);
+      color: #030509;
+      border-color: var(--gold-primary);
+    }
+
+    /* Slider Bar */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .slider-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(197, 160, 89, 0.6);
+      transition: transform 0.15s;
+    }
+
+    .slider-row input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .vol-value {
+      font-size: 0.75rem;
+      font-weight: 600;
+      width: 35px;
+      text-align: right;
+      color: var(--gold-light);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Binaural Waves Card */
+    .binaural-card {
+      background: linear-gradient(135deg, rgba(16, 22, 36, 0.85), rgba(7, 11, 20, 0.95));
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .binaural-glow {
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 150px;
+      height: 150px;
+      background: rgba(197, 160, 89, 0.15);
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .binaural-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .binaural-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .binaural-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(197, 160, 89, 0.2);
+      border: 1px solid var(--border-highlight);
+      color: var(--gold-light);
+      letter-spacing: 1px;
+    }
+
+    .binaural-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .binaural-btn {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .binaural-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .binaural-btn.active {
+      background: rgba(197, 160, 89, 0.2);
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(197, 160, 89, 0.25);
+    }
+
+    /* KONCEPT Advertising Banner */
+    .ad-container {
+      margin: 30px auto 20px auto;
+      text-align: center;
+    }
+
+    .ad-label {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .ad-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 10px;
+      max-width: 728px;
+      margin: 0 auto;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .ad-card:hover {
+      transform: scale(1.005);
+      border-color: var(--border-highlight);
+    }
+
+    .ad-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    /* Extended YouTube Section */
+    .yt-section {
+      background: rgba(11, 16, 26, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .yt-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 14px;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .yt-item:hover {
+      background: rgba(197, 160, 89, 0.08);
+      border-color: var(--border-subtle);
+      transform: translateY(-2px);
+    }
+
+    .yt-item-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .yt-item-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Fixed Bottom Player Bar */
+    .bottom-player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(5, 8, 14, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(197, 160, 89, 0.25);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .player-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: all 0.3s;
+    }
+
+    .pulse-dot.live {
+      background: #4CAF50;
+      box-shadow: 0 0 10px #4CAF50;
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .player-status-text {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .player-active-tracks {
+      font-size: 0.7rem;
+      color: var(--gold-light);
+    }
+
+    .player-center {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .player-timer-info {
+      font-size: 0.78rem;
+      font-family: monospace;
+      color: var(--gold-light);
+      background: rgba(197, 160, 89, 0.1);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Modal Styling (Wsparcie Misyjne) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #0d0f15;
+      border: 1px solid rgba(223, 184, 114, 0.4);
+      border-radius: 28px;
+      padding: 24px;
+      max-width: 620px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+      animation: modalFadeIn 0.3s ease-out;
+      margin: auto;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.92) translateY(15px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .modal-header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+
+    .modal-cross-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .modal-banner-h {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-banner-h h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .modal-banner-h h2 span {
+      color: #ef4444;
+    }
+
+    .modal-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .pillar-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin: 0 auto 6px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .pillar-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .support-options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .support-tile {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .support-tile:hover {
+      border-color: rgba(197, 160, 89, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .support-btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .support-btn-action:hover {
+      opacity: 0.9;
+    }
+
+    /* Timer Modal */
+    .timer-dialog {
+      background: #0b101c;
+      border: 1px solid var(--border-highlight);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 340px;
+      width: 100%;
+      margin: auto;
+      text-align: center;
+    }
+
+    .timer-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .timer-opt-btn {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .timer-opt-btn.active, .timer-opt-btn:hover {
+      background: rgba(197, 160, 89, 0.2);
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 600px) {
+      .hero-title { font-size: 1.35rem; }
+      .app-header { padding: 10px 14px; }
+      .modal-card { padding: 18px 14px; }
+      .modal-banner-h h2 { font-size: 1.35rem; }
+      .support-options-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Navigation -->
+  <header class="app-header">
+    <a href="https://polskieradio.cc" class="brand-wrap">
+      <img src="ambient_logo.jpg" alt="Ambient Sleep Logo" class="brand-logo-img">
+      <div class="brand-title-box">
+        <span class="brand-title-main">AMBIENT SLEEP</span>
+        <span class="brand-sub">Christian Culture Network</span>
+      </div>
+    </a>
+    <div class="header-actions">
+      <button type="button" class="btn-mission-support" onclick="openMissionModal()">
+        <i class="fa-solid fa-heart" style="color: #ef4444;"></i>
+        <span>Wsparcie</span>
+      </button>
+      <a href="https://polskieradio.cc" class="timer-badge-btn" style="padding: 8px 12px; font-size: 0.75rem;" title="Powrót do radia">
+        <i class="fa-solid fa-radio"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+
+    <!-- Hero Showcase -->
+    <section class="hero-card">
+      <img src="ambient_hero.jpg" alt="Ambient Sleep Atmosphere" class="hero-bg">
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i class="fa-solid fa-moon"></i> Strefa Spokoju & Wyciszenia
+        </div>
+        <h1 class="hero-title">Znajdź Swoje Idealne Środowisko Snu</h1>
+        <p class="hero-desc">Doświadcz głębokiego relaksu dzięki mikserowi szumów, prawdziwym dźwiękom natury, falom binauralnym i wyciszającym tłom dźwiękowym.</p>
+        <div class="hero-controls">
+          <button id="masterPlayBtn" class="btn-main-play" onclick="toggleMasterPlay()">
+            <i class="fa-solid fa-play" id="masterPlayIcon"></i>
+            <span id="masterPlayText">START LISTENING FREE</span>
+          </button>
+          <button class="timer-badge-btn" onclick="openTimerModal()">
+            <i class="fa-regular fa-clock"></i>
+            <span id="timerBadgeLabel">Wyłącznik czasowy: Wył.</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('mixer')">
+        <i class="fa-solid fa-sliders"></i> Mikser Dźwięków
+      </button>
+      <button class="tab-btn" onclick="switchTab('binaural')">
+        <i class="fa-solid fa-brain"></i> Fale Mózgowe
+      </button>
+      <button class="tab-btn" onclick="switchTab('extended')">
+        <i class="fa-brands fa-youtube"></i> Sesje 10H
+      </button>
+    </div>
+
+    <!-- TAB 1: Sound Mixer -->
+    <div id="tab-mixer" class="tab-pane">
+      <div class="sec-head">
+        <div class="sec-title">
+          <i class="fa-solid fa-sliders"></i> Osobisty Mikser Snów
+        </div>
+        <span class="sec-badge">4 Kanały Audio</span>
+      </div>
+
+      <div class="mixer-grid">
+        <!-- 1. Brown Noise -->
+        <div class="sound-card active" id="card-brown_noise">
+          <div class="sound-card-header">
+            <div class="sound-info">
+              <div class="sound-icon-box"><i class="fa-solid fa-water"></i></div>
+              <div class="sound-titles">
+                <span class="sound-title">Głęboki Szum Brązowy</span>
+                <span class="sound-desc">Baza kojąca układ nerwowy</span>
+              </div>
+            </div>
+            <button class="toggle-sound-btn" id="btn-toggle-brown_noise" onclick="toggleChannel('brown_noise')">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="vol-brown_noise" min="0" max="100" value="40" oninput="setChannelVolume('brown_noise', this.value)">
+            <span class="vol-value" id="val-brown_noise">40%</span>
+          </div>
+        </div>
+
+        <!-- 2. Rain Sound -->
+        <div class="sound-card active" id="card-rain">
+          <div class="sound-card-header">
+            <div class="sound-info">
+              <div class="sound-icon-box"><i class="fa-solid fa-cloud-showers-heavy"></i></div>
+              <div class="sound-titles">
+                <span class="sound-title">Deszcz na Szybie</span>
+                <span class="sound-desc">Kojący szum kropel na oknie</span>
+              </div>
+            </div>
+            <button class="toggle-sound-btn" id="btn-toggle-rain" onclick="toggleChannel('rain')">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="vol-rain" min="0" max="100" value="45" oninput="setChannelVolume('rain', this.value)">
+            <span class="vol-value" id="val-rain">45%</span>
+          </div>
+        </div>
+
+        <!-- 3. Fireplace -->
+        <div class="sound-card active" id="card-fireplace">
+          <div class="sound-card-header">
+            <div class="sound-info">
+              <div class="sound-icon-box"><i class="fa-solid fa-fire"></i></div>
+              <div class="sound-titles">
+                <span class="sound-title">Trzaskający Kominek</span>
+                <span class="sound-desc">Płonące drewno w drewnianej chacie</span>
+              </div>
+            </div>
+            <button class="toggle-sound-btn" id="btn-toggle-fireplace" onclick="toggleChannel('fireplace')">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="vol-fireplace" min="0" max="100" value="35" oninput="setChannelVolume('fireplace', this.value)">
+            <span class="vol-value" id="val-fireplace">35%</span>
+          </div>
+        </div>
+
+        <!-- 4. Ambient Pad -->
+        <div class="sound-card active" id="card-ambient_pad">
+          <div class="sound-card-header">
+            <div class="sound-info">
+              <div class="sound-icon-box"><i class="fa-solid fa-mountain-sun"></i></div>
+              <div class="sound-titles">
+                <span class="sound-title">Wyciszający Pad (CCN)</span>
+                <span class="sound-desc">Ciepła harmonia akordowa</span>
+              </div>
+            </div>
+            <button class="toggle-sound-btn" id="btn-toggle-ambient_pad" onclick="toggleChannel('ambient_pad')">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="vol-ambient_pad" min="0" max="100" value="50" oninput="setChannelVolume('ambient_pad', this.value)">
+            <span class="vol-value" id="val-ambient_pad">50%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Binaural Waves -->
+    <div id="tab-binaural" class="tab-pane" style="display: none;">
+      <div class="binaural-card">
+        <div class="binaural-glow"></div>
+        <div class="binaural-header">
+          <div class="binaural-title">
+            <i class="fa-solid fa-headphones"></i> Fale Binauralne (Synchronizacja Półkul)
+          </div>
+          <span class="binaural-badge">Stereo HQ</span>
+        </div>
+        <p style="font-size: 0.82rem; color: #a2b0c5; line-height: 1.5;">
+          Fale binauralne oddziałują na częstotliwości fal mózgowych, ułatwiając wejście w stan głębokiego relaksu lub regenerującego snu NREM. 
+          <strong>Wskazówka:</strong> Użyj słuchawek stereo, aby doświadczyć rezonansu częstotliwości.
+        </p>
+
+        <div class="binaural-options">
+          <button class="binaural-btn active" id="binaural-btn-none" onclick="setBinaural('none')">
+            <i class="fa-solid fa-ban"></i><br>Wyłączone
+          </button>
+          <button class="binaural-btn" id="binaural-btn-delta" onclick="setBinaural('delta')">
+            <i class="fa-solid fa-moon"></i><br>Fale Delta (3 Hz)<br><span style="font-size:0.65rem; color:var(--text-muted);">Głęboki sen NREM</span>
+          </button>
+          <button class="binaural-btn" id="binaural-btn-theta" onclick="setBinaural('theta')">
+            <i class="fa-solid fa-spa"></i><br>Fale Theta (6 Hz)<br><span style="font-size:0.65rem; color:var(--text-muted);">Medytacja i spokój</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Extended Sessions -->
+    <div id="tab-extended" class="tab-pane" style="display: none;">
+      <div class="yt-section">
+        <div class="sec-title" style="margin-bottom: 6px;">
+          <i class="fa-brands fa-youtube" style="color: #ff0000;"></i> 10-Godzinne Sesje Filmowe na YouTube
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">
+          Długie, całonocne sesje dźwiękowo-wizualne z ekosystemu Christian Culture Network, idealne do odtwarzania na telewizorze lub monitorze.
+        </p>
+
+        <div class="yt-grid">
+          <a href="https://www.youtube.com/results?search_query=Christian+Culture+Brown+Noise+10+Hours" target="_blank" rel="noopener noreferrer" class="yt-item">
+            <span class="yt-item-title"><i class="fa-solid fa-play"></i> 10H Głęboki Szum Brązowy</span>
+            <span class="yt-item-sub">Komfortowy głęboki bas dla regeneracji</span>
+          </a>
+          <a href="https://www.youtube.com/results?search_query=Christian+Culture+Rain+on+Window+10+Hours" target="_blank" rel="noopener noreferrer" class="yt-item">
+            <span class="yt-item-title"><i class="fa-solid fa-play"></i> 10H Deszcz na Szybie & Burza</span>
+            <span class="yt-item-sub">Wyciszenie i oczyszczenie umysłu</span>
+          </a>
+          <a href="https://www.youtube.com/results?search_query=Christian+Culture+Fireplace+10+Hours" target="_blank" rel="noopener noreferrer" class="yt-item">
+            <span class="yt-item-title"><i class="fa-solid fa-play"></i> 10H Kominek w Chacie Górskiej</span>
+            <span class="yt-item-sub">Przytulne ciepło i relaks</span>
+          </a>
+          <a href="https://www.youtube.com/results?search_query=Christian+Culture+Ambient+Pad+10+Hours" target="_blank" rel="noopener noreferrer" class="yt-item">
+            <span class="yt-item-title"><i class="fa-solid fa-play"></i> 10H Kosmiczny Pad Solarny</span>
+            <span class="yt-item-sub">Harmonia duchowa i modlitewna</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONCEPT Sponsor Advertising Banner -->
+    <div class="ad-container">
+      <span class="ad-label">Oficjalny Partner</span>
+      <div class="ad-card">
+        <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer">
+          <img src="oficjalny_sponsor.jpg" alt="Koncept Studio — Meble na Wymiar Lublin">
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Fixed Bottom Audio Player Bar -->
+  <aside class="bottom-player-bar">
+    <div class="player-left">
+      <div class="pulse-dot" id="livePulseDot"></div>
+      <div>
+        <div class="player-status-text" id="bottomStatusTitle">Czuwanie sesji snu</div>
+        <div class="player-active-tracks" id="bottomStatusTracks">Wszystkie kanały gotowe</div>
+      </div>
+    </div>
+    <div class="player-center">
+      <span class="player-timer-info" id="timerBottomDisplay" style="display: none;">00:00</span>
+      <button class="btn-main-play" style="padding: 8px 18px; font-size: 0.8rem;" onclick="toggleMasterPlay()">
+        <i class="fa-solid fa-play" id="miniPlayIcon"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MISSION SUPPORT MODAL (100% Kalka ze wzorca werset-dnia.polskieradio.cc) -->
+  <div class="modal-overlay" id="missionModalOverlay" onclick="handleModalBackdropClick(event)">
+    <div class="modal-card" id="missionModalCard">
+      <button type="button" class="modal-close-btn" onclick="closeMissionModal()" title="Zamknij okno">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-header-top">
+        <div class="modal-cross-icon">✝</div>
+        <div>
+          <div style="font-family:'Cinzel', serif; font-size:0.95rem; font-weight:700; color:#fff; letter-spacing:1px;">CHRISTIAN CULTURE</div>
+          <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1.5px;">Media z Wartościami</div>
+        </div>
+      </div>
+
+      <div class="modal-banner-h">
+        <h2>WESPRZYJ <span>MISJĘ</span></h2>
+        <div style="font-family:'Cinzel', serif; font-size:0.8rem; font-weight:700; color:#dfb872; letter-spacing:2px; margin-top:2px;">CHRISTIAN CULTURE</div>
+        <p style="font-size:0.85rem; color:#b0bac9; margin-top:8px; line-height:1.5;">
+          Razem docieramy z Ewangelią do ludzi na całym świecie. Każda modlitwa, udostępnienie i dar mają realne znaczenie.
+        </p>
+      </div>
+
+      <div class="modal-pillars">
+        <div>
+          <div class="pillar-icon" style="background:rgba(223, 184, 114, 0.15); color:#dfb872;"><i class="fa-solid fa-hands-praying"></i></div>
+          <div class="pillar-label">MÓDL SIĘ</div>
+        </div>
+        <div>
+          <div class="pillar-icon" style="background:rgba(59, 130, 246, 0.15); color:#60a5fa;"><i class="fa-solid fa-share-nodes"></i></div>
+          <div class="pillar-label">UDOSTĘPNIAJ</div>
+        </div>
+        <div>
+          <div class="pillar-icon" style="background:rgba(239, 68, 68, 0.15); color:#f87171;"><i class="fa-solid fa-heart"></i></div>
+          <div class="pillar-label">WSPIERAJ</div>
+        </div>
+      </div>
+
+      <div class="support-options-grid">
+        <!-- Patronite -->
+        <div class="support-tile">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="width:24px; height:24px; border-radius:6px; background:rgba(239,68,68,0.2); color:#ef4444; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.75rem;">P</span>
+              <strong style="font-size:0.85rem; color:#fff;">PATRONITE</strong>
+            </div>
+            <div style="font-size:0.72rem; color:var(--text-muted);">patronite.pl/osobowoscplus</div>
+          </div>
+          <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="support-btn-action" style="background:#ef4444; color:#fff;">
+            <span>ZOSTAŃ PATRONEM</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <!-- Revolut -->
+        <div class="support-tile">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="width:24px; height:24px; border-radius:6px; background:#0075eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.75rem;">R</span>
+              <strong style="font-size:0.85rem; color:#fff;">Revolut</strong>
+            </div>
+            <div style="font-size:0.72rem; color:var(--text-muted);">revolut.me/christianculture</div>
+          </div>
+          <a href="https://revolut.me/christianculture" target="_blank" rel="noopener noreferrer" class="support-btn-action" style="background:#0075eb; color:#fff;">
+            <span>SZYBKIE WSPARCIE</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <!-- BLIK -->
+        <div class="support-tile">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="width:28px; height:22px; border-radius:6px; background:#111; border:1px solid #c084fc; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.65rem;">blik</span>
+              <strong style="font-size:0.85rem; color:#fff;">BLIK na numer:</strong>
+            </div>
+            <div style="font-family:monospace; font-size:0.95rem; font-weight:700; color:var(--gold-light);">537 137 043</div>
+          </div>
+          <button type="button" class="support-btn-action" style="background:rgba(147, 51, 234, 0.3); border:1px solid rgba(168, 85, 247, 0.4); color:#e9d5ff;" onclick="copyText('537 137 043', this, 'SKOPIOWANO NUMER!')">
+            <i class="fa-regular fa-copy"></i> <span>KOPIUJ NUMER BLIK</span>
+          </button>
+        </div>
+
+        <!-- Przelew Bankowy -->
+        <div class="support-tile">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <i class="fa-solid fa-building-columns" style="color:#34d399;"></i>
+              <strong style="font-size:0.85rem; color:#fff;">Przelew bankowy:</strong>
+            </div>
+            <div style="font-family:monospace; font-size:0.7rem; color:#d1d5db; background:rgba(0,0,0,0.4); padding:4px 6px; border-radius:6px; word-break:break-all;">
+              48 2910 0006 0000 0000 0527 2629
+            </div>
+            <div style="font-size:0.68rem; color:var(--text-muted); margin-top:2px;">Tytuł: <em>„Dar misyjny”</em></div>
+          </div>
+          <button type="button" class="support-btn-action" style="background:rgba(16, 185, 129, 0.25); border:1px solid rgba(16, 185, 129, 0.4); color:#a7f3d0;" onclick="copyText('48291000060000000005272629', this, 'SKOPIOWANO KONTO!')">
+            <i class="fa-regular fa-copy"></i> <span>KOPIUJ NUMER KONTA</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; display:flex; align-items:center; justify-content:space-between; font-size:0.75rem;">
+        <a href="https://cclite.pl" target="_blank" rel="noopener noreferrer" style="color:var(--gold-light); text-decoration:none;">
+          <i class="fa-solid fa-mobile-screen"></i> cclite.pl
+        </a>
+        <span style="color:var(--text-muted);">Bóg zapłać za Twoje serce!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLEEP TIMER MODAL -->
+  <div class="modal-overlay" id="timerModalOverlay" onclick="handleTimerBackdropClick(event)">
+    <div class="timer-dialog">
+      <h3 style="font-family:'Cinzel', serif; color:var(--gold-light); font-size:1.1rem; margin-bottom:6px;">
+        <i class="fa-regular fa-clock"></i> Wyłącznik Czasowy
+      </h3>
+      <p style="font-size:0.75rem; color:var(--text-muted);">Dźwięki zostaną płynnie wyciszone pod koniec sesji.</p>
+      
+      <div class="timer-options-grid">
+        <button class="timer-opt-btn" onclick="setSleepTimer(0)">Wyłączony</button>
+        <button class="timer-opt-btn" onclick="setSleepTimer(15)">15 minut</button>
+        <button class="timer-opt-btn" onclick="setSleepTimer(30)">30 minut</button>
+        <button class="timer-opt-btn" onclick="setSleepTimer(45)">45 minut</button>
+        <button class="timer-opt-btn" onclick="setSleepTimer(60)">1 godzina</button>
+        <button class="timer-opt-btn" onclick="setSleepTimer(120)">2 godziny</button>
+      </div>
+
+      <button type="button" class="btn-main-play" style="width:100%; justify-content:center; padding:10px;" onclick="closeTimerModal()">
+        Gotowe
+      </button>
+    </div>
+  </div>
+
+  <!-- WEB AUDIO SYNTHESIS & REAL AUDIO ENGINE -->
+  <script>
+    // --- Application State ---
+    let isMasterPlaying = false;
+    let audioCtx = null;
+    let timerTotalSeconds = 0;
+    let timerRemainingSeconds = 0;
+    let timerInterval = null;
+    let fadeMultiplier = 1.0;
+
+    // Channels configuration
+    const channels = {
+      brown_noise: { volume: 0.40, enabled: true, node: null, gainNode: null, type: 'synth' },
+      rain: { volume: 0.45, enabled: true, node: null, gainNode: null, type: 'audio', src: 'audio/rain.mp3', audioBuffer: null },
+      fireplace: { volume: 0.35, enabled: true, node: null, gainNode: null, type: 'audio', src: 'audio/fireplace.mp3', audioBuffer: null },
+      ambient_pad: { volume: 0.50, enabled: true, node: null, gainNode: null, type: 'synth' }
+    };
+
+    let binauralState = {
+      type: 'none', // 'none' | 'delta' | 'theta'
+      leftOsc: null,
+      rightOsc: null,
+      leftGain: null,
+      rightGain: null,
+      merger: null
+    };
+
+    // Preload audio buffers for 100% gapless looping
+    async function preloadAudioFile(channelKey) {
+      try {
+        const ctx = getAudioContext();
+        const ch = channels[channelKey];
+        if (ch.audioBuffer) return ch.audioBuffer;
+        const resp = await fetch(ch.src);
+        if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
+        const arrayBuf = await resp.arrayBuffer();
+        const decoded = await ctx.decodeAudioData(arrayBuf);
+        ch.audioBuffer = decoded;
+        return decoded;
+      } catch (err) {
+        console.warn(`Could not preload audio buffer for ${channelKey}:`, err);
+        return null;
+      }
+    }
+
+    // --- Audio Context Initialization ---
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // --- Synthesizers for Gapless Looping ---
+    function createBrownNoiseNode(ctx) {
+      const bufferSize = 5 * ctx.sampleRate; // 5 sec loop
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const output = buffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        lastOut = (lastOut * 0.975) + (white * 0.025);
+        output[i] = lastOut * 3.5;
+      }
+      // Clickless loop crossfade
+      const fade = Math.min(2000, bufferSize / 10);
+      for (let i = 0; i < fade; i++) {
+        const factor = i / fade;
+        output[i] *= factor;
+        output[bufferSize - 1 - i] *= factor;
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+      return source;
+    }
+
+    function createAmbientPadNode(ctx) {
+      // Warm chord C Major 7 (C3, G3, B3, E4)
+      const freqs = [130.81, 196.00, 246.94, 329.63];
+      const masterGain = ctx.createGain();
+      masterGain.gain.value = 0.22;
+
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 450 + (idx * 120);
+
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+
+        // Subtle LFO detune
+        const lfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
+        lfo.frequency.value = 0.08 + (idx * 0.03);
+        lfoGain.gain.value = 2.5;
+        lfo.connect(osc.frequency);
+        lfo.start();
+
+        osc.connect(filter);
+        filter.connect(masterGain);
+        osc.start();
+      });
+
+      return masterGain;
+    }
+
+    // --- Master Playback Orchestration ---
+    function toggleMasterPlay() {
+      const ctx = getAudioContext();
+      isMasterPlaying = !isMasterPlaying;
+
+      if (isMasterPlaying) {
+        startAllAudioChannels();
+      } else {
+        stopAllAudioChannels();
+      }
+      updateUI();
+    }
+
+    async function startAllAudioChannels() {
+      const ctx = getAudioContext();
+
+      // 1. Brown Noise
+      if (channels.brown_noise.enabled) {
+        if (!channels.brown_noise.node) {
+          const source = createBrownNoiseNode(ctx);
+          const gain = ctx.createGain();
+          gain.gain.value = channels.brown_noise.volume * fadeMultiplier;
+          source.connect(gain);
+          gain.connect(ctx.destination);
+          source.start(0);
+          channels.brown_noise.node = source;
+          channels.brown_noise.gainNode = gain;
+        }
+      }
+
+      // 2. Ambient Pad
+      if (channels.ambient_pad.enabled) {
+        if (!channels.ambient_pad.gainNode) {
+          const padNode = createAmbientPadNode(ctx);
+          const gain = ctx.createGain();
+          gain.gain.value = channels.ambient_pad.volume * fadeMultiplier;
+          padNode.connect(gain);
+          gain.connect(ctx.destination);
+          channels.ambient_pad.node = padNode;
+          channels.ambient_pad.gainNode = gain;
+        }
+      }
+
+      // 3. Rain (Gapless Buffer or HTML5 Audio loop)
+      startRecordedTrack('rain', 800);
+
+      // 4. Fireplace (Gapless Buffer or HTML5 Audio loop)
+      startRecordedTrack('fireplace', 250);
+
+      // 5. Binaural Beats
+      if (binauralState.type !== 'none') {
+        applyBinauralAudio();
+      }
+    }
+
+    async function startRecordedTrack(channelKey, filterFreq) {
+      const ctx = getAudioContext();
+      const ch = channels[channelKey];
+      if (!ch.enabled) return;
+
+      if (ch.node) return; // already playing
+
+      const gain = ctx.createGain();
+      gain.gain.value = ch.volume * fadeMultiplier;
+      gain.connect(ctx.destination);
+      ch.gainNode = gain;
+
+      // Try playing via decoded AudioBuffer for 100% gapless sample-accurate loop
+      try {
+        let buffer = ch.audioBuffer;
+        if (!buffer) {
+          buffer = await preloadAudioFile(channelKey);
+        }
+        if (buffer && isMasterPlaying && ch.enabled) {
+          const source = ctx.createBufferSource();
+          source.buffer = buffer;
+          source.loop = true;
+          source.connect(gain);
+          source.start(0);
+          ch.node = source;
+          return;
+        }
+      } catch (err) {
+        console.warn(`Buffer playback error for ${channelKey}, falling back to Audio element:`, err);
+      }
+
+      // Fallback: HTML5 Audio element loop
+      if (!ch.audioElement) {
+        const audio = new Audio();
+        audio.src = ch.src;
+        audio.loop = true;
+        audio.crossOrigin = 'anonymous';
+
+        audio.addEventListener('error', () => {
+          console.log(`Fallback synth for ${channelKey} active`);
+          startFallbackNoise(channelKey, filterFreq);
+        });
+
+        try {
+          const trackSource = ctx.createMediaElementSource(audio);
+          trackSource.connect(gain);
+          ch.audioElement = audio;
+          audio.play().catch(e => {
+            console.warn(`Audio play failed:`, e);
+            startFallbackNoise(channelKey, filterFreq);
+          });
+        } catch(e) {
+          audio.volume = ch.volume * fadeMultiplier;
+          audio.play().catch(e=>startFallbackNoise(channelKey, filterFreq));
+          ch.audioElement = audio;
+        }
+      } else {
+        ch.audioElement.play().catch(e => console.warn(e));
+      }
+    }
+
+    function startFallbackNoise(channelKey, filterFreq) {
+      const ctx = getAudioContext();
+      const ch = channels[channelKey];
+      if (ch.fallbackNode) return;
+
+      const bufferSize = 4 * ctx.sampleRate;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = channelKey === 'fireplace' ? 'bandpass' : 'lowpass';
+      filter.frequency.value = filterFreq;
+
+      const gain = ctx.createGain();
+      gain.gain.value = ch.volume * fadeMultiplier * (channelKey === 'fireplace' ? 0.35 : 0.6);
+
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      source.start();
+
+      ch.fallbackNode = source;
+      ch.gainNode = gain;
+    }
+
+    function stopAllAudioChannels() {
+      // Brown noise
+      if (channels.brown_noise.node) {
+        try { channels.brown_noise.node.stop(); } catch(e){}
+        channels.brown_noise.node = null;
+        channels.brown_noise.gainNode = null;
+      }
+      // Ambient pad
+      if (channels.ambient_pad.node) {
+        channels.ambient_pad.node = null;
+        channels.ambient_pad.gainNode = null;
+      }
+      // Rain
+      if (channels.rain.node) {
+        try { channels.rain.node.stop(); } catch(e){}
+        channels.rain.node = null;
+      }
+      if (channels.rain.audioElement) {
+        channels.rain.audioElement.pause();
+      }
+      if (channels.rain.fallbackNode) {
+        try { channels.rain.fallbackNode.stop(); } catch(e){}
+        channels.rain.fallbackNode = null;
+      }
+      // Fireplace
+      if (channels.fireplace.node) {
+        try { channels.fireplace.node.stop(); } catch(e){}
+        channels.fireplace.node = null;
+      }
+      if (channels.fireplace.audioElement) {
+        channels.fireplace.audioElement.pause();
+      }
+      if (channels.fireplace.fallbackNode) {
+        try { channels.fireplace.fallbackNode.stop(); } catch(e){}
+        channels.fireplace.fallbackNode = null;
+      }
+      // Binaural
+      stopBinauralAudio();
+    }
+
+    // --- Channel Volume & Toggles ---
+    function setChannelVolume(channelKey, val) {
+      const floatVal = val / 100;
+      channels[channelKey].volume = floatVal;
+      document.getElementById(`val-${channelKey}`).textContent = `${val}%`;
+
+      if (channels[channelKey].gainNode) {
+        channels[channelKey].gainNode.gain.value = floatVal * fadeMultiplier;
+      }
+    }
+
+    function toggleChannel(channelKey) {
+      channels[channelKey].enabled = !channels[channelKey].enabled;
+      const card = document.getElementById(`card-${channelKey}`);
+      const btn = document.getElementById(`btn-toggle-${channelKey}`);
+
+      if (channels[channelKey].enabled) {
+        card.classList.add('active');
+        btn.classList.add('playing');
+        if (isMasterPlaying) {
+          if (channelKey === 'brown_noise' || channelKey === 'ambient_pad') {
+            startAllAudioChannels();
+          } else if (channels[channelKey].audioElement) {
+            channels[channelKey].audioElement.play().catch(e=>console.warn(e));
+            if (channels[channelKey].gainNode) {
+              channels[channelKey].gainNode.gain.value = channels[channelKey].volume * fadeMultiplier;
+            }
+          }
+        }
+      } else {
+        card.classList.remove('active');
+        btn.classList.remove('playing');
+        if (channels[channelKey].gainNode) {
+          channels[channelKey].gainNode.gain.value = 0;
+        }
+        if (channels[channelKey].audioElement) {
+          channels[channelKey].audioElement.pause();
+        }
+      }
+      updateActiveSummary();
+    }
+
+    // --- Binaural Beats Engine ---
+    function setBinaural(type) {
+      binauralState.type = type;
+      ['none', 'delta', 'theta'].forEach(t => {
+        const btn = document.getElementById(`binaural-btn-${t}`);
+        if (btn) {
+          if (t === type) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      });
+
+      if (isMasterPlaying) {
+        if (type === 'none') {
+          stopBinauralAudio();
+        } else {
+          applyBinauralAudio();
+        }
+      }
+      updateActiveSummary();
+    }
+
+    function applyBinauralAudio() {
+      stopBinauralAudio();
+      const ctx = getAudioContext();
+
+      const baseFreq = 100.0;
+      const beatFreq = binauralState.type === 'delta' ? 3.0 : 6.0;
+
+      const merger = ctx.createChannelMerger(2);
+
+      // Left Ear
+      const oscL = ctx.createOscillator();
+      const gainL = ctx.createGain();
+      oscL.type = 'sine';
+      oscL.frequency.value = baseFreq;
+      gainL.gain.value = 0.25 * fadeMultiplier;
+      oscL.connect(gainL);
+      gainL.connect(merger, 0, 0);
+
+      // Right Ear
+      const oscR = ctx.createOscillator();
+      const gainR = ctx.createGain();
+      oscR.type = 'sine';
+      oscR.frequency.value = baseFreq + beatFreq;
+      gainR.gain.value = 0.25 * fadeMultiplier;
+      oscR.connect(gainR);
+      gainR.connect(merger, 0, 1);
+
+      merger.connect(ctx.destination);
+
+      oscL.start();
+      oscR.start();
+
+      binauralState.leftOsc = oscL;
+      binauralState.rightOsc = oscR;
+      binauralState.leftGain = gainL;
+      binauralState.rightGain = gainR;
+      binauralState.merger = merger;
+    }
+
+    function stopBinauralAudio() {
+      if (binauralState.leftOsc) {
+        try { binauralState.leftOsc.stop(); } catch(e){}
+        binauralState.leftOsc = null;
+      }
+      if (binauralState.rightOsc) {
+        try { binauralState.rightOsc.stop(); } catch(e){}
+        binauralState.rightOsc = null;
+      }
+      binauralState.merger = null;
+    }
+
+    // --- Sleep Timer Logic ---
+    function openTimerModal() {
+      document.getElementById('timerModalOverlay').classList.add('open');
+    }
+
+    function closeTimerModal() {
+      document.getElementById('timerModalOverlay').classList.remove('open');
+    }
+
+    function handleTimerBackdropClick(e) {
+      if (e.target.id === 'timerModalOverlay') closeTimerModal();
+    }
+
+    function setSleepTimer(minutes) {
+      clearInterval(timerInterval);
+      fadeMultiplier = 1.0;
+
+      if (minutes <= 0) {
+        timerTotalSeconds = 0;
+        timerRemainingSeconds = 0;
+        document.getElementById('timerBadgeLabel').textContent = 'Wyłącznik czasowy: Wył.';
+        document.getElementById('timerBottomDisplay').style.display = 'none';
+        closeTimerModal();
+        return;
+      }
+
+      timerTotalSeconds = minutes * 60;
+      timerRemainingSeconds = timerTotalSeconds;
+      document.getElementById('timerBadgeLabel').textContent = `Wyłącznik: ${minutes} min`;
+      document.getElementById('timerBottomDisplay').style.display = 'inline-block';
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        timerRemainingSeconds--;
+        updateTimerDisplay();
+
+        // Smooth fade out during final 30 seconds
+        if (timerRemainingSeconds <= 30 && timerRemainingSeconds > 0) {
+          fadeMultiplier = timerRemainingSeconds / 30;
+          applyFaderVolumes();
+        }
+
+        if (timerRemainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          toggleMasterPlay();
+          fadeMultiplier = 1.0;
+          document.getElementById('timerBadgeLabel').textContent = 'Wyłącznik czasowy: Wył.';
+          document.getElementById('timerBottomDisplay').style.display = 'none';
+        }
+      }, 1000);
+
+      closeTimerModal();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerRemainingSeconds / 60);
+      const s = timerRemainingSeconds % 60;
+      document.getElementById('timerBottomDisplay').textContent = 
+        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function applyFaderVolumes() {
+      Object.keys(channels).forEach(k => {
+        if (channels[k].gainNode) {
+          channels[k].gainNode.gain.value = channels[k].volume * fadeMultiplier;
+        }
+      });
+      if (binauralState.leftGain && binauralState.rightGain) {
+        binauralState.leftGain.gain.value = 0.25 * fadeMultiplier;
+        binauralState.rightGain.gain.value = 0.25 * fadeMultiplier;
+      }
+    }
+
+    // --- UI Synchronisation ---
+    function updateUI() {
+      const masterBtn = document.getElementById('masterPlayBtn');
+      const masterIcon = document.getElementById('masterPlayIcon');
+      const masterText = document.getElementById('masterPlayText');
+      const miniIcon = document.getElementById('miniPlayIcon');
+      const pulseDot = document.getElementById('livePulseDot');
+      const bottomTitle = document.getElementById('bottomStatusTitle');
+
+      if (isMasterPlaying) {
+        masterBtn.classList.add('active');
+        masterIcon.className = 'fa-solid fa-pause';
+        masterText.textContent = 'PAUSE AMBIENT';
+        miniIcon.className = 'fa-solid fa-pause';
+        pulseDot.classList.add('live');
+        bottomTitle.textContent = 'Aktywna sesja snu';
+      } else {
+        masterBtn.classList.remove('active');
+        masterIcon.className = 'fa-solid fa-play';
+        masterText.textContent = 'START LISTENING FREE';
+        miniIcon.className = 'fa-solid fa-play';
+        pulseDot.classList.remove('live');
+        bottomTitle.textContent = 'Czuwanie sesji snu';
+      }
+      updateActiveSummary();
+    }
+
+    function updateActiveSummary() {
+      const active = [];
+      if (channels.brown_noise.enabled) active.push('Szum');
+      if (channels.rain.enabled) active.push('Deszcz');
+      if (channels.fireplace.enabled) active.push('Kominek');
+      if (channels.ambient_pad.enabled) active.push('Pad');
+      if (binauralState.type !== 'none') {
+        active.push(binauralState.type === 'delta' ? 'Delta 3Hz' : 'Theta 6Hz');
+      }
+
+      document.getElementById('bottomStatusTracks').textContent = 
+        active.length > 0 ? `Aktywne: ${active.join(', ')}` : 'Brak aktywnych kanałów';
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+
+      document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(`tab-${tabId}`).style.display = 'block';
+    }
+
+    // --- Mission Support Modal Functions ---
+    function openMissionModal() {
+      document.getElementById('missionModalOverlay').classList.add('open');
+    }
+
+    function closeMissionModal() {
+      document.getElementById('missionModalOverlay').classList.remove('open');
+    }
+
+    function handleModalBackdropClick(e) {
+      if (e.target.id === 'missionModalOverlay') closeMissionModal();
+    }
+
+    // Exit intent trigger on desktop (po 4 sekundach od wejścia)
+    let exitTriggered = false;
+    setTimeout(() => {
+      document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 15 && !exitTriggered && !sessionStorage.getItem('cc_ambient_exit_shown')) {
+          exitTriggered = true;
+          sessionStorage.setItem('cc_ambient_exit_shown', 'true');
+          openMissionModal();
+        }
+      });
+    }, 4000);
+
+    function copyText(str, btn, successMsg) {
+      navigator.clipboard.writeText(str).then(() => {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `<i class="fa-solid fa-check" style="color:#34d399;"></i> <span>${successMsg}</span>`;
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+        }, 2500);
+      }).catch(err => {
+        console.error('Kopiowanie nie powiodło się', err);
+      });
+    }
+
+    // Keyboard ESC listener
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMissionModal();
+        closeTimerModal();
+      }
+    });
+  </script>
+</body>
+</html>

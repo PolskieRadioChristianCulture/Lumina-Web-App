@@ -88,6 +88,14 @@ class LuminaTablicaEngine {
 
         const missionBanners = [
             {
+                type: 'mission_ambient_sleep',
+                title: 'Ambient Sleep • Nowy Generator i Mikser Snów Christian Culture',
+                tag: '🌙 NOWOŚĆ • AMBIENT SLEEP',
+                desc: 'Odkryj autorski mikser do snu i relaksu: prawdziwy szum deszczu, kominek, fale mózgowe Delta/Theta i kojące tła dźwiękowe. Bez przerw i bez reklam Google.',
+                image: 'ambient_hero.jpg',
+                link: 'AmbientSleep'
+            },
+            {
                 type: 'mission_vod',
                 title: 'VOD Christian Culture • Film „JEZUS” (Ewangelia wg św. Łukasza)',
                 tag: '🎬 KINO CHRZEŚCIJAŃSKIE VOD',
