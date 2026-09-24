@@ -227,27 +227,66 @@
 
   <!-- ==================== LUMINA COMMUNITY AUTH STATUS BANNER ==================== -->
   <section class="relative z-20 max-w-4xl mx-auto px-4 mb-4">
-    <!-- Unauthenticated Banner (CTA) -->
-    <div id="lumina-login-cta-banner" class="bg-gradient-to-r from-amber-950/40 via-purple-950/30 to-black/70 border border-gold/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl backdrop-blur-md">
-      <div class="flex items-start gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-gold/15 border border-gold/40 flex items-center justify-center text-gold text-2xl flex-shrink-0">
+    <!-- Unauthenticated Banner (CTA) - now triggers popup -->
+    <div id="lumina-login-cta-banner" class="hidden"></div>
+  </section>
+
+  <!-- ==================== WYSKAKUJĄCY BANER VIP LUMINA (KROK 1) ==================== -->
+  <div id="lumina-popup-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300" onclick="if(event.target === this) closeLuminaPopup(true)">
+    <div class="relative w-full max-w-xl bg-gradient-to-br from-[#1d1406] via-[#160d26] to-[#0a0a0a] border-2 border-gold/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(221,166,28,0.35)] transform transition-all animate-fade-in" onclick="event.stopPropagation()">
+      <!-- Close button -->
+      <button type="button" onclick="closeLuminaPopup(true)" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-all" title="Zamknij i przejdź do kreatora">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-start gap-4 mb-4">
+        <div class="w-14 h-14 rounded-2xl bg-gold/20 border border-gold/50 flex items-center justify-center text-gold text-2xl flex-shrink-0 shadow-lg shadow-gold/20">
           <i class="fa-solid fa-crown"></i>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h3 class="text-sm font-bold text-white">Chrześcijańska Grafika Użytkowa • Odblokuj Wszystkie Funkcje</h3>
-            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-gold text-black uppercase tracking-wider">LUMINA VIP</span>
+        <div class="pr-6">
+          <div class="flex flex-wrap items-center gap-2 mb-1.5">
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-extrabold bg-gold text-black uppercase tracking-wider">LUMINA VIP</span>
+            <span class="text-[11px] font-semibold text-gray-400">Twoje Studio Kreatywne</span>
           </div>
-          <p class="text-xs text-gray-300 mt-1 leading-relaxed">
-            Zaloguj się kontem Google przez portal LUMINA. Uzyskasz <strong>automatyczne członkostwo w chrześcijańskiej społeczności twórców</strong>, zapisywanie projektów w chmurze, 1-klik wypełnianie danych oraz priorytetową wycenę na <em>yourimaginationstudio@gmail.com</em>.
-          </p>
+          <h3 class="text-base sm:text-lg font-bold text-white leading-snug">
+            Chrześcijańska Grafika Użytkowa • Odblokuj Wszystkie Funkcje
+          </h3>
         </div>
       </div>
-      <button type="button" onclick="window.ccLoginWithGoogle()" class="flex-shrink-0 px-5 py-2.5 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-gold/20 transition-all hover:scale-105">
-        <i class="fa-brands fa-google text-sm"></i>
-        <span>Zaloguj z Google</span>
-      </button>
+
+      <p class="text-xs sm:text-sm text-gray-300 mb-5 leading-relaxed">
+        Zaloguj się kontem Google przez portal LUMINA. Uzyskasz <strong>automatyczne członkostwo w chrześcijańskiej społeczności twórców</strong>, zapisywanie projektów w chmurze, 1-klik wypełnianie danych oraz priorytetową wycenę na <em class="text-gold font-semibold">yourimaginationstudio@gmail.com</em>.
+      </p>
+
+      <div class="bg-black/60 border border-white/10 rounded-2xl p-4 mb-5 space-y-2.5 text-xs text-gray-300">
+        <div class="flex items-center gap-2.5">
+          <i class="fa-solid fa-check text-gold text-sm"></i>
+          <span>Automatyczne członkostwo w chrześcijańskiej społeczności twórców LUMINA</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <i class="fa-solid fa-check text-gold text-sm"></i>
+          <span>1-klik autouzupełnianie danych zamawiającego (Imię, Nazwisko, E-mail)</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <i class="fa-solid fa-check text-gold text-sm"></i>
+          <span>Bezpłatna weryfikacja techniczna grafika i szybka wycena na yourimaginationstudio@gmail.com</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button type="button" onclick="loginWithGoogleFromPopup()" class="w-full py-3.5 px-4 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-xl shadow-gold/30 transition-all hover:scale-[1.01]">
+          <i class="fa-brands fa-google text-base"></i>
+          <span>ZALOGUJ Z GOOGLE</span>
+        </button>
+
+        <button type="button" onclick="closeLuminaPopup(true)" class="w-full py-2 text-center text-xs text-gray-400 hover:text-white transition-colors">
+          Kontynuuj projektowanie jako gość &rarr;
+        </button>
+      </div>
     </div>
+  </div>
+
+  <section class="relative z-20 max-w-4xl mx-auto px-4 mb-4">
 
     <!-- Authenticated Banner (Active Member) -->
     <div id="lumina-member-active-banner" class="hidden bg-gradient-to-r from-emerald-950/40 via-amber-950/30 to-black/70 border border-emerald-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl backdrop-blur-md">
@@ -814,9 +853,9 @@
 
             <div id="auth-login-hint" class="mb-4 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs text-gray-300">
               <span class="text-[11px] sm:text-xs">Zaloguj się kontem Google, aby wypełnić dane 1 kliknięciem</span>
-              <button type="button" onclick="window.ccLoginWithGoogle()" class="px-2.5 py-1 rounded-lg bg-gold/20 hover:bg-gold text-gold hover:text-black font-bold text-xs transition-all flex items-center gap-1.5">
+              <button type="button" onclick="openLuminaPopup()" class="px-2.5 py-1 rounded-lg bg-gold/20 hover:bg-gold text-gold hover:text-black font-bold text-xs transition-all flex items-center gap-1.5">
                 <i class="fa-brands fa-google text-[10px]"></i>
-                <span>Zaloguj</span>
+                <span>Zaloguj z Google</span>
               </button>
             </div>
 
@@ -1317,6 +1356,13 @@
       initBackgroundSlideshow();
       renderHistory();
       initAudioPlayer();
+
+      // Wyskakujący baner VIP przy pierwszym kroku projektowym
+      setTimeout(() => {
+        if (!state.isLuminaMember && !sessionStorage.getItem('yis_lumina_popup_seen')) {
+          openLuminaPopup();
+        }
+      }, 1500);
     });
 
     // Reactive listener for LUMINA Global Auth events
@@ -1328,6 +1374,38 @@
         checkLuminaUser();
       }
     });
+
+    // --- WYSKAKUJĄCY BANER VIP LUMINA ---
+    function openLuminaPopup() {
+      if (state.isLuminaMember) return;
+      const popup = document.getElementById('lumina-popup-modal');
+      if (popup) {
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeLuminaPopup(advanceStep = false) {
+      const popup = document.getElementById('lumina-popup-modal');
+      if (popup) {
+        popup.classList.add('hidden');
+        popup.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+      sessionStorage.setItem('yis_lumina_popup_seen', 'true');
+      if (advanceStep && state.currentStep === 0) {
+        state.currentStep = 1;
+        updateStepUI();
+        saveDraft();
+        window.scrollTo({ top: 120, behavior: 'smooth' });
+      }
+    }
+
+    function loginWithGoogleFromPopup() {
+      closeLuminaPopup(false);
+      window.ccLoginWithGoogle();
+    }
 
     // --- LUMINA INTEGRATION & GOOGLE AUTH AUTOFILL ---
     function checkLuminaUser() {
@@ -1345,6 +1423,7 @@
         if (user && user.uid) {
           state.isLuminaMember = true;
           state.luminaUser = user;
+          closeLuminaPopup(false);
           if (ctaBanner) ctaBanner.classList.add('hidden');
           if (memberBanner) {
             memberBanner.classList.remove('hidden');
@@ -1376,7 +1455,7 @@
         } else {
           state.isLuminaMember = false;
           state.luminaUser = null;
-          if (ctaBanner) ctaBanner.classList.remove('hidden');
+          if (ctaBanner) ctaBanner.classList.add('hidden');
           if (memberBanner) {
             memberBanner.classList.add('hidden');
             memberBanner.classList.remove('flex');
@@ -1510,6 +1589,11 @@
     }
 
     function nextStep() {
+      // Wyskakujący baner VIP przy przejściu z kroku wstępnego do projektowania
+      if (state.currentStep === 0 && !state.isLuminaMember && !sessionStorage.getItem('yis_lumina_popup_seen')) {
+        openLuminaPopup();
+        return;
+      }
       if (state.currentStep < state.totalSteps - 1) {
         state.currentStep++;
         updateStepUI();
