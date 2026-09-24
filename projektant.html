@@ -32,7 +32,7 @@
   <link rel="canonical" href="https://polskieradio.cc/projektant">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/images/yis/yis_logo.png">
+  <link rel="icon" type="image/png" href="/images/yis/your_imagination_studio_transparent.png">
 
   <!-- Google tag (gtag.js) GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
@@ -292,7 +292,7 @@
     <div id="lumina-member-active-banner" class="hidden bg-gradient-to-r from-emerald-950/40 via-amber-950/30 to-black/70 border border-emerald-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl backdrop-blur-md">
       <div class="flex items-center gap-3.5">
         <div class="relative">
-          <img id="lumina-active-avatar" src="/images/yis/yis_logo.png" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-gold object-cover">
+          <img id="lumina-active-avatar" src="/images/yis/your_imagination_studio_transparent.png" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-gold object-contain bg-black/60 p-1">
           <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black"></span>
         </div>
         <div>
@@ -378,14 +378,9 @@
       <!-- STEP CONTENTS CONTAINER -->
       <div class="bg-charcoal-card/90 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl min-h-[460px] flex flex-col justify-between">
         
-        <!-- STEP 0 (Krok 1): Wstęp, Monogram i Luksusowy Slideshow -->
+        <!-- STEP 0 (Krok 1): Wstęp i Luksusowy Slideshow -->
         <div id="step-pane-0" class="step-pane">
-          <div class="text-center py-4 flex flex-col items-center">
-            <!-- Interlocking Brand Emblem -->
-            <div class="w-32 h-32 mb-4 relative flex items-center justify-center">
-              <img src="/images/yis/yis_logo.png" alt="YIS Monogram" class="w-28 h-28 object-contain filter drop-shadow-[0_0_20px_rgba(221,166,28,0.3)]">
-            </div>
-
+          <div class="text-center py-2 flex flex-col items-center">
             <h2 class="text-xl sm:text-2xl font-display font-black tracking-widest text-gold mb-2">
               POKAŻ TO, CO CHCESZ POWIEDZIEĆ
             </h2>
@@ -1252,16 +1247,22 @@
   <audio id="radio-audio" preload="none"></audio>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="relative z-10 border-t border-white/10 py-8 px-4 text-center text-xs text-gray-500 bg-black/60 backdrop-blur-md">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <img src="/images/yis/yis_logo.png" alt="YIS" class="w-6 h-6 object-contain">
-        <span class="font-bold text-gray-300">Your Imagination Studio &copy; 2026</span>
-        <span class="text-gray-600">•</span>
-        <a href="https://polskieradio.cc" class="hover:text-gold transition-colors">PolskieRadio.cc</a>
+  <footer class="relative z-10 border-t border-white/10 py-6 px-4 bg-black/80 backdrop-blur-md">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs">
+      <!-- Left: Logo + Brand + Portal Link -->
+      <div class="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start">
+        <img src="/images/yis/your_imagination_studio_transparent.png" alt="Your Imagination Studio" class="w-6 h-6 object-contain filter drop-shadow">
+        <span class="font-bold text-gray-300 whitespace-nowrap">Your Imagination Studio &copy; 2026</span>
+        <span class="text-gray-600 select-none">•</span>
+        <a href="https://polskieradio.cc" class="text-gray-400 hover:text-gold transition-colors whitespace-nowrap font-medium">PolskieRadio.cc</a>
       </div>
-      <div class="flex items-center gap-4 text-gray-400">
-        <a href="mailto:yourimaginationstudio@gmail.com" class="hover:text-gold transition-colors">Kontakt: yourimaginationstudio@gmail.com</a>
+
+      <!-- Right: Official Contact Email -->
+      <div class="flex items-center gap-2 justify-center sm:justify-end">
+        <i class="fa-regular fa-envelope text-gold text-xs"></i>
+        <a href="mailto:yourimaginationstudio@gmail.com" class="text-gray-400 hover:text-gold transition-colors whitespace-nowrap">
+          Kontakt: <span class="text-gray-300 hover:text-gold font-medium">yourimaginationstudio@gmail.com</span>
+        </a>
       </div>
     </div>
   </footer>
@@ -1849,7 +1850,7 @@
       let printOverlayHtml = '';
       if (showPrintOnThisSide) {
         const textColor = isLightBg ? '#000000' : '#FFFFFF';
-        const imageSource = state.uploadedImageBase64 || '/images/yis/yis_logo.png';
+        const imageSource = state.uploadedImageBase64 || '/images/yis/your_imagination_studio_transparent.png';
         const customTextSnippet = state.personalizedText.trim();
 
         printOverlayHtml = `
