@@ -289,6 +289,25 @@
       min-height: 100vh;
       overflow-x: hidden;
       padding-bottom: 90px;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url('ambient_hero.webp');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      opacity: 0.16;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-header, .main-wrap, .bottom-bar, .modal-overlay {
+      position: relative;
+      z-index: 1;
     }
 
     /* Top App Header */
@@ -400,8 +419,9 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.55;
-      filter: saturate(1.15) brightness(0.85);
+      object-position: center 30%;
+      opacity: 0.68;
+      filter: saturate(1.1) brightness(0.9);
       transition: transform 10s ease;
     }
 
@@ -1360,7 +1380,7 @@
 
     <!-- Hero Showcase -->
     <section class="hero-card">
-      <img src="ambient_hero.jpg" alt="Ambient Sleep Atmosphere" class="hero-bg">
+      <img src="ambient_hero.webp" alt="Ambient Sleep Atmosphere" class="hero-bg">
       <div class="hero-gradient"></div>
       <div class="hero-content">
         <div class="hero-tag">
