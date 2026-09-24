@@ -152,11 +152,11 @@
 
   <!-- ==================== BACKGROUND SLIDESHOW LAYER ==================== -->
   <div id="bg-slideshow" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div id="bg-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-75 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg'); background-position: center 12%;"></div>
+    <div id="bg-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-30 animate-kenburns" style="background-image: url('/images/yis/slide_1.jpg'); background-position: center 12%;"></div>
     <div id="bg-slide-2" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_2.jpg'); background-position: center 12%;"></div>
     <div id="bg-slide-3" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0 animate-kenburns" style="background-image: url('/images/yis/slide_3.jpg'); background-position: center 12%;"></div>
-    <!-- Scrim / Vignette -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/60"></div>
+    <!-- Deepened Scrim / Vignette for crystal-clear readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black/90"></div>
   </div>
 
   <!-- ==================== TOP NAVIGATION (#cc-nav) ==================== -->
@@ -217,8 +217,8 @@
   </header>
 
   <!-- ==================== MAIN HERO HEADER ==================== -->
-  <section class="relative z-10 pt-6 pb-4 px-4 text-center">
-    <div class="max-w-4xl mx-auto flex flex-col items-center">
+  <section class="relative z-10 pt-6 pb-6 px-4 text-center">
+    <div class="max-w-3xl mx-auto flex flex-col items-center bg-black/65 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
       
       <!-- Prominent Christian Graphic Art Badge -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-gold/20 to-amber-500/20 border border-gold/40 text-gold text-xs font-extrabold uppercase tracking-widest mb-3 shadow-lg shadow-gold/10">
@@ -229,9 +229,9 @@
       <div class="relative mb-3 group">
         <img src="/images/yis/your_imagination_studio_transparent.png" alt="Your Imagination Studio Logo" class="h-20 sm:h-24 object-contain filter drop-shadow-[0_4px_20px_rgba(221,166,28,0.25)] transition-transform duration-500 group-hover:scale-105">
       </div>
-      <h1 class="text-xs uppercase font-extrabold tracking-[0.3em] text-gold mb-1">YOUR IMAGINATION STUDIO</h1>
-      <p class="text-xl sm:text-2xl font-serif italic text-gray-200 tracking-wide mb-2">„Pokaż to, co chcesz powiedzieć”</p>
-      <p class="text-xs sm:text-sm text-gray-300 max-w-2xl font-light leading-relaxed">
+      <h1 class="text-xs uppercase font-extrabold tracking-[0.3em] text-gold mb-1 drop-shadow-md">YOUR IMAGINATION STUDIO</h1>
+      <p class="text-xl sm:text-2xl font-serif italic text-white tracking-wide mb-2 drop-shadow-md">„Pokaż to, co chcesz powiedzieć”</p>
+      <p class="text-xs sm:text-sm text-gray-200 max-w-2xl font-normal leading-relaxed drop-shadow">
         Chrześcijańska Grafika Użytkowa – Projektuj autorskie koszulki, bluzy, kubki i czapki z przesłaniem wiary, nadziei i miłości. Zaloguj się przez Google za pomocą portalu LUMINA, aby odblokować pełnię funkcji społeczności i wysłać gotowy projekt do bezpłatnej wyceny.
       </p>
     </div>
@@ -2732,7 +2732,7 @@ Tel: ${state.phoneNumber}`;
         const bg = document.getElementById(`bg-slide-${i}`);
         if (bg) {
           if (i === index + 1) {
-            bg.style.opacity = '0.75';
+            bg.style.opacity = '0.30';
           } else {
             bg.style.opacity = '0';
           }
