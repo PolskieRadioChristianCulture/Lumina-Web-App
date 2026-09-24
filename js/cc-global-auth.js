@@ -324,6 +324,10 @@
 
     // 4. Uniwersalne Logowanie Google
     window.ccLoginWithGoogle = async function(customRedirect = null) {
+        if (!customRedirect) {
+            customRedirect = window.location.pathname || window.location.href;
+        }
+
         const btns = document.querySelectorAll('.cc-auth-google-btn');
         btns.forEach(b => {
             b.style.opacity = '0.7';
@@ -333,7 +337,7 @@
         try {
             if (!window.loginWithGoogle && !window.LuminaDB?.loginWithGoogle) {
                 try {
-                    const luminaModule = await import('./lumina-db.js?v=' + Date.now());
+                    const luminaModule = await import('/lumina-db.js?v=' + Date.now());
                     if (luminaModule && luminaModule.loginWithGoogle) {
                         window.loginWithGoogle = luminaModule.loginWithGoogle;
                     }
@@ -345,7 +349,7 @@
             const loginFn = window.loginWithGoogle || window.LuminaDB?.loginWithGoogle;
             if (typeof loginFn !== 'function') {
                 const target = customRedirect ? `?redirect=${encodeURIComponent(customRedirect)}` : '';
-                window.location.href = `lumina-login.html${target}`;
+                window.location.href = `/lumina-login${target}`;
                 return;
             }
 
@@ -365,7 +369,7 @@
             showAuthToast(`✨ Szczęść Boże, ${userName}! Witamy w społeczności LUMINA 🕊️`);
             renderAuthWidgets();
 
-            if (customRedirect) {
+            if (customRedirect && customRedirect !== window.location.href && customRedirect !== window.location.pathname) {
                 setTimeout(() => {
                     window.location.href = customRedirect;
                 }, 800);

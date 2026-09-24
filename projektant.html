@@ -45,6 +45,11 @@
 
   <!-- Universal LUMINA & CC Google Auth Script -->
   <script src="/js/cc-global-auth.js" defer></script>
+  <script type="module">
+    import { loginWithGoogle, ensureDbReady } from '/lumina-db.js';
+    window.loginWithGoogle = loginWithGoogle;
+    window.ensureDbReady = ensureDbReady;
+  </script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -1405,7 +1410,7 @@
 
     function loginWithGoogleFromPopup() {
       closeLuminaPopup(false);
-      window.ccLoginWithGoogle();
+      window.ccLoginWithGoogle('/projektant');
     }
 
     // --- LUMINA INTEGRATION & GOOGLE AUTH AUTOFILL ---

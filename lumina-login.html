@@ -37,7 +37,8 @@
                     const r = params.get('redirect') || params.get('to') || params.get('target');
                     let target = 'lumina';
                     if (r) {
-                        if (r === 'tablica' || r.includes('tablica')) target = 'tablica';
+                        if (r.includes('projektant')) target = '/projektant';
+                        else if (r === 'tablica' || r.includes('tablica')) target = 'tablica';
                         else if (r === 'profil' || r.includes('profil')) target = 'profil';
                         else target = r;
                     }
@@ -238,6 +239,7 @@
             const params = new URLSearchParams(window.location.search);
             const r = params.get('redirect') || params.get('to') || params.get('target');
             if (r) {
+                if (r.includes('projektant')) return '/projektant';
                 if (r === 'tablica' || r.includes('tablica')) return 'tablica';
                 if (r === 'profil' || r.includes('profil')) return 'profil';
                 if (r.startsWith('http') || r.startsWith('/')) return r;
