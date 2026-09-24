@@ -40,7 +40,7 @@
 
     function getProperProfileAvatar(slug) {
         const s = (slug || '').toLowerCase().trim();
-        if (s === 'u_tijanihammed_9980' || s.includes('tijanihammed')) return 'avatar_tijanihammed.jpg';
+        if (s === 'u_tijanihammed_9980' || s.includes('tijanihammed')) return 'avatar_tijanihammed.jpg?v=20260924_real_avatar';
         if (s === 'dawid') return 'avatar_dawid.jpg';
         if (s === 'noemi') return 'avatar_noemi.jpg';
         if (s === 'weronika') return 'avatar_weronika.jpg';
