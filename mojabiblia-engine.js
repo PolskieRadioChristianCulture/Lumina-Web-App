@@ -83,6 +83,9 @@
       this.currentBookId = 'JHN';
       this.currentChapter = 1;
       this.currentVerse = null;
+      this.currentVerseEnd = null;
+      this.fromSource = null;
+      this.returnSlug = null;
       this.currentMode = 'interlinear'; // 'interlinear' | 'parallel' | 'reader'
       this.activeTranslations = ['UBG', 'BW', 'BT', 'BG'];
       this.reverseInterlinear = true;
@@ -166,25 +169,99 @@
     }
 
     parseUrlParams() {
-      const params = new URLSearchParams(window.location.search);
-      const book = params.get('book');
-      const ch = params.get('ch');
-      const v = params.get('v');
-      const mode = params.get('mode');
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookParam = urlParams.get('book') || urlParams.get('b');
+        const chParam = urlParams.get('chapter') || urlParams.get('ch') || urlParams.get('c');
+        const vParam = urlParams.get('verse') || urlParams.get('v') || urlParams.get('w');
+        const vEndParam = urlParams.get('verse_end') || urlParams.get('ve');
+        const rangeParam = urlParams.get('range');
+        const modeParam = urlParams.get('mode') || urlParams.get('m');
+        const qParam = urlParams.get('q') || urlParams.get('ref');
+        const fromParam = urlParams.get('from');
+        const slugParam = urlParams.get('slug');
 
-      if (book) this.currentBookId = book.toUpperCase();
-      if (ch) this.currentChapter = parseInt(ch, 10) || 1;
-      if (v) this.currentVerse = parseInt(v, 10);
-      if (mode && ['interlinear', 'parallel', 'reader'].includes(mode)) {
-        this.currentMode = mode;
+        if (fromParam) this.fromSource = fromParam;
+        if (slugParam) this.returnSlug = slugParam;
+
+        if (modeParam && ['interlinear', 'parallel', 'reader'].includes(modeParam)) {
+          this.currentMode = modeParam;
+        }
+
+        if (qParam) {
+          this.handleSearch(qParam);
+          return;
+        }
+
+        if (bookParam) {
+          const rawB = bookParam.trim().toLowerCase();
+          const found = this.books.find(b =>
+            b.id.toLowerCase() === rawB ||
+            b.shortPl.toLowerCase() === rawB ||
+            b.namePl.toLowerCase() === rawB ||
+            b.namePl.toLowerCase().includes(rawB)
+          );
+          if (found) {
+            this.currentBookId = found.id;
+          } else {
+            this.currentBookId = bookParam.trim().toUpperCase();
+          }
+        }
+
+        if (chParam) {
+          const chNum = parseInt(chParam, 10);
+          if (!isNaN(chNum) && chNum >= 1) {
+            this.currentChapter = chNum;
+          }
+        }
+
+        if (vParam) {
+          const vStr = String(vParam).trim();
+          const rangeMatch = vStr.match(/^(\d+)(?:[-–—](\d+))?$/);
+          if (rangeMatch) {
+            this.currentVerse = parseInt(rangeMatch[1], 10);
+            if (rangeMatch[2]) {
+              this.currentVerseEnd = parseInt(rangeMatch[2], 10);
+            }
+          } else {
+            const vNum = parseInt(vStr, 10);
+            if (!isNaN(vNum) && vNum >= 1) {
+              this.currentVerse = vNum;
+            }
+          }
+        }
+
+        if (vEndParam) {
+          const veNum = parseInt(vEndParam, 10);
+          if (!isNaN(veNum) && veNum >= 1) {
+            this.currentVerseEnd = veNum;
+          }
+        }
+
+        if (rangeParam && !this.currentVerseEnd) {
+          const rMatch = String(rangeParam).match(/^(\d+)[-–—](\d+)$/);
+          if (rMatch) {
+            if (!this.currentVerse) this.currentVerse = parseInt(rMatch[1], 10);
+            this.currentVerseEnd = parseInt(rMatch[2], 10);
+          }
+        }
+
+        if (!this.currentVerse && window.location.hash) {
+          const hashMatch = window.location.hash.match(/#verse-(\d+)/);
+          if (hashMatch) {
+            this.currentVerse = parseInt(hashMatch[1], 10);
+          }
+        }
+      } catch (e) {
+        console.warn('[MojaBiblia] Błąd parsowania parametrów URL:', e);
       }
     }
 
     async loadMetadataAndLexicon() {
       try {
         const [booksRes, lexRes] = await Promise.all([
-          fetch('data/bible/bible_books_metadata.json'),
-          fetch('data/bible/strong_lexicon.json')
+          fetch('/data/bible/bible_books_metadata.json'),
+          fetch('/data/bible/strong_lexicon.json')
         ]);
 
         if (booksRes.ok) {
@@ -245,13 +322,13 @@
 
     prevChapter() {
       if (this.currentChapter > 1) {
-        this.loadChapter(this.currentBookId, this.currentChapter - 1);
+        this.loadChapter(this.currentBookId, this.currentChapter - 1, false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const currentIdx = this.books.findIndex(b => b.id === this.currentBookId);
         if (currentIdx > 0) {
           const prevBook = this.books[currentIdx - 1];
-          this.loadChapter(prevBook.id, prevBook.chapters);
+          this.loadChapter(prevBook.id, prevBook.chapters, false);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           this.showToast('To jest pierwszy rozdział Pisma Świętego (Rdz 1)');
@@ -263,13 +340,13 @@
       const currentBook = this.books.find(b => b.id === this.currentBookId);
       const maxCh = currentBook ? currentBook.chapters : 50;
       if (this.currentChapter < maxCh) {
-        this.loadChapter(this.currentBookId, this.currentChapter + 1);
+        this.loadChapter(this.currentBookId, this.currentChapter + 1, false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const currentIdx = this.books.findIndex(b => b.id === this.currentBookId);
         if (currentIdx > -1 && currentIdx < this.books.length - 1) {
           const nextBook = this.books[currentIdx + 1];
-          this.loadChapter(nextBook.id, 1);
+          this.loadChapter(nextBook.id, 1, false);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           this.showToast('Dotarłeś do ostatniego rozdziału Pisma Świętego (Ap 22)');
@@ -277,9 +354,13 @@
       }
     }
 
-    async loadChapter(bookId, chapterNum) {
+    async loadChapter(bookId, chapterNum, keepVerse = true) {
       this.currentBookId = bookId;
       this.currentChapter = chapterNum;
+      if (!keepVerse) {
+        this.currentVerse = null;
+        this.currentVerseEnd = null;
+      }
       this.updateUrl();
 
       if (this.bookSelect && this.bookSelect.value !== bookId) {
@@ -312,7 +393,7 @@
       let data = null;
 
       try {
-        const res = await fetch(`data/bible/${fileKey}`);
+        const res = await fetch(`/data/bible/${fileKey}`);
         if (res.ok) {
           data = await res.json();
         }
@@ -414,16 +495,100 @@
 
       this.applyFontSize();
 
-      // Scroll to verse if requested
+      // Renderowanie banera powrotu / głębszego studium dla Wersetu Dnia
+      this.renderIntegrationBanner();
+
+      // Precyzyjne wielowersowe podświetlenie i inteligentne przewinięcie
       if (this.currentVerse) {
-        setTimeout(() => {
-          const el = document.getElementById(`verse-${this.currentVerse}`);
+        this.highlightAndScrollToVerse(this.currentVerse, this.currentVerseEnd);
+      }
+    }
+
+    renderIntegrationBanner() {
+      const bannerSlot = document.getElementById('mbIntegrationBannerSlot');
+      if (!bannerSlot) return;
+
+      if (this.fromSource === 'werset-dnia') {
+        const bName = this.currentChapterData?.bookName || this.getBookName(this.currentBookId);
+        const ch = this.currentChapter;
+        let vRefStr = '';
+        if (this.currentVerse) {
+          vRefStr = `:${this.currentVerse}`;
+          if (this.currentVerseEnd && this.currentVerseEnd > this.currentVerse) {
+            vRefStr += `-${this.currentVerseEnd}`;
+          }
+        }
+        const returnUrl = this.returnSlug 
+          ? `https://werset-dnia.polskieradio.cc/#w/${this.returnSlug}`
+          : 'https://werset-dnia.polskieradio.cc/';
+
+        bannerSlot.innerHTML = `
+          <div class="mb-integration-banner" id="mbIntegrationBanner">
+            <div class="mb-integration-banner-left">
+              <div class="mb-integration-badge"><i class="fa-solid fa-sparkles"></i> GŁĘBSZE STUDIUM • WERSET DNIA</div>
+              <div class="mb-integration-title">Księga: <strong>${bName} ${ch}${vRefStr}</strong></div>
+              <div class="mb-integration-sub">Tryb analityczny: Oryginał interlinearny · Kody Stronga · Przekłady UBG, BW, BT, BG</div>
+            </div>
+            <a href="${returnUrl}" class="mb-integration-return-btn" id="mbIntegrationReturnBtn" title="Powrót do wersetu w aplikacji Werset Dnia">
+              <i class="fa-solid fa-arrow-left"></i> Wróć do karty wersetu
+            </a>
+          </div>
+        `;
+        bannerSlot.style.display = 'block';
+      } else {
+        bannerSlot.innerHTML = '';
+        bannerSlot.style.display = 'none';
+      }
+    }
+
+    highlightAndScrollToVerse(verseStart, verseEnd) {
+      const vStart = parseInt(verseStart, 10);
+      if (isNaN(vStart) || vStart < 1) return;
+      const vEnd = verseEnd && !isNaN(parseInt(verseEnd, 10)) ? parseInt(verseEnd, 10) : vStart;
+
+      // Wyczyszczenie dotychczasowych podświetleń
+      document.querySelectorAll('.mb-verse-target-highlight').forEach(el => {
+        el.classList.remove('mb-verse-target-highlight');
+      });
+
+      const applyHighlightAndScroll = (attempt = 1) => {
+        const firstEl = document.getElementById(`verse-${vStart}`);
+        if (!firstEl) {
+          if (attempt <= 8) {
+            setTimeout(() => applyHighlightAndScroll(attempt + 1), 60 * attempt);
+          }
+          return;
+        }
+
+        // Dodanie podświetlenia dla całego zakresu wersetów (np. 5 i 6)
+        for (let i = vStart; i <= vEnd; i++) {
+          const el = document.getElementById(`verse-${i}`);
           if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             el.classList.add('mb-verse-target-highlight');
           }
-        }, 150);
-      }
+        }
+
+        // Obliczenie wysokości nagłówków i marginesu
+        const headerEl = document.querySelector('.mb-header');
+        const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 75;
+        const bannerEl = document.getElementById('mbIntegrationBanner');
+        const bannerHeight = (bannerEl && bannerEl.style.display !== 'none') ? bannerEl.getBoundingClientRect().height : 0;
+        const offset = headerHeight + bannerHeight + 20;
+
+        const elRect = firstEl.getBoundingClientRect();
+        const absoluteElementTop = elRect.top + window.pageYOffset;
+        const targetScrollY = Math.max(0, absoluteElementTop - offset);
+
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: attempt === 1 ? 'smooth' : 'auto'
+        });
+
+        // Wzmocnienie skupienia wzroku
+        firstEl.setAttribute('tabindex', '-1');
+      };
+
+      requestAnimationFrame(() => applyHighlightAndScroll(1));
     }
 
     // ── 1. WIDOK INTERLINEARNY (Wzór HiperBiblia + STEPBible) ──
@@ -819,7 +984,7 @@
       // Lazy-loading leksykonu jeśli brak hasła
       if (!this.lexicon[strongCode] && (prefix === 'G' || prefix === 'H')) {
         try {
-          const chunkRes = await fetch(`data/bible/lexicon/${prefix}.json`);
+          const chunkRes = await fetch(`/data/bible/lexicon/${prefix}.json`);
           if (chunkRes.ok) {
             const chunkData = await chunkRes.json();
             Object.assign(this.lexicon, chunkData);
@@ -1365,64 +1530,36 @@
         const url = new URL(window.location);
         url.searchParams.set('book', this.currentBookId);
         url.searchParams.set('ch', this.currentChapter);
+        url.searchParams.set('chapter', this.currentChapter);
         url.searchParams.set('mode', this.currentMode);
         if (this.currentVerse) {
           url.searchParams.set('v', this.currentVerse);
+          url.searchParams.set('verse', this.currentVerse);
+          if (this.currentVerseEnd && this.currentVerseEnd > this.currentVerse) {
+            url.searchParams.set('range', `${this.currentVerse}-${this.currentVerseEnd}`);
+            url.searchParams.set('verse_end', this.currentVerseEnd);
+          } else {
+            url.searchParams.delete('range');
+            url.searchParams.delete('verse_end');
+          }
         } else {
           url.searchParams.delete('v');
+          url.searchParams.delete('verse');
+          url.searchParams.delete('range');
+          url.searchParams.delete('verse_end');
         }
-        window.history.replaceState({ book: this.currentBookId, ch: this.currentChapter, mode: this.currentMode, v: this.currentVerse }, '', url);
+        if (this.fromSource) url.searchParams.set('from', this.fromSource);
+        if (this.returnSlug) url.searchParams.set('slug', this.returnSlug);
+
+        window.history.replaceState({
+          book: this.currentBookId,
+          ch: this.currentChapter,
+          mode: this.currentMode,
+          v: this.currentVerse,
+          vEnd: this.currentVerseEnd
+        }, '', url);
       } catch (e) {
         console.warn('[MojaBiblia] Błąd aktualizacji adresu URL:', e);
-      }
-    }
-
-    parseUrlParams() {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const bookParam = urlParams.get('book') || urlParams.get('b');
-        const chParam = urlParams.get('chapter') || urlParams.get('ch') || urlParams.get('c');
-        const vParam = urlParams.get('verse') || urlParams.get('v');
-        const modeParam = urlParams.get('mode') || urlParams.get('m');
-        const qParam = urlParams.get('q') || urlParams.get('ref');
-
-        if (modeParam && ['interlinear', 'parallel', 'reader'].includes(modeParam)) {
-          this.currentMode = modeParam;
-        }
-
-        if (qParam) {
-          this.handleSearch(qParam);
-          return;
-        }
-
-        if (bookParam) {
-          const rawB = bookParam.trim().toLowerCase();
-          const found = this.books.find(b =>
-            b.id.toLowerCase() === rawB ||
-            b.shortPl.toLowerCase() === rawB ||
-            b.namePl.toLowerCase() === rawB ||
-            b.namePl.toLowerCase().includes(rawB)
-          );
-          if (found) {
-            this.currentBookId = found.id;
-          }
-        }
-
-        if (chParam) {
-          const chNum = parseInt(chParam, 10);
-          if (!isNaN(chNum) && chNum >= 1) {
-            this.currentChapter = chNum;
-          }
-        }
-
-        if (vParam) {
-          const vNum = parseInt(vParam, 10);
-          if (!isNaN(vNum) && vNum >= 1) {
-            this.currentVerse = vNum;
-          }
-        }
-      } catch (e) {
-        console.warn('[MojaBiblia] Błąd parsowania parametrów URL:', e);
       }
     }
 
@@ -1539,12 +1676,13 @@
         return;
       }
 
-      // Wyszukiwanie wersetu (np. Jan 1:1, Rdz 1:1, Ps 23:1, Rz 8:28, 1Kor 13)
-      const refMatch = q.match(/^([1-3]?\s*[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s]+)\s+(\d+)(?:[:.](\d+))?$/);
+      // Wyszukiwanie wersetu (np. Jan 1:1, Rdz 1:1, Ps 23:1-3, Przypowieści 3:5-6, Rz 8:28, 1Kor 13)
+      const refMatch = q.match(/^([1-3]?\s*[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s]+)\s+(\d+)(?:[:.](\d+))?(?:\s*[-–—]\s*(\d+))?$/);
       if (refMatch) {
         const rawBook = refMatch[1].replace(/\s+/g, ' ').trim().toLowerCase();
         const ch = parseInt(refMatch[2], 10);
         const v = refMatch[3] ? parseInt(refMatch[3], 10) : null;
+        const vEnd = refMatch[4] ? parseInt(refMatch[4], 10) : null;
 
         const foundBook = this.books.find(b =>
           b.namePl.toLowerCase().includes(rawBook) ||
@@ -1555,7 +1693,8 @@
 
         if (foundBook) {
           this.currentVerse = v;
-          this.loadChapter(foundBook.id, ch);
+          this.currentVerseEnd = vEnd;
+          this.loadChapter(foundBook.id, ch, true);
           return;
         }
       }
