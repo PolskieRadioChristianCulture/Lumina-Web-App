@@ -222,7 +222,7 @@
 
   <!-- ==================== MAIN HERO HEADER (AUTO-DISMISS INTRO) ==================== -->
   <section id="hero-header-section" class="relative z-10 pt-4 pb-2 px-4 text-center transition-all duration-700">
-    <div id="hero-header-card" class="relative max-w-3xl mx-auto flex flex-col items-center bg-black/30 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-7 shadow-2xl transition-all duration-700 transform">
+    <div id="hero-header-card" class="relative max-w-3xl mx-auto flex flex-col items-center bg-black/20 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-7 shadow-2xl transition-all duration-700 transform">
       <!-- Direct Close Button -->
       <button type="button" onclick="dismissHeroIntro()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-all" title="Zamknij okno informacyjne">
         <i class="fa-solid fa-xmark text-sm"></i>
@@ -385,7 +385,7 @@
 
   <!-- ==================== MAIN TABS BAR ==================== -->
   <nav class="relative z-20 max-w-4xl mx-auto px-4 mb-6">
-    <div class="grid grid-cols-4 bg-charcoal-card/45 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-xl">
+    <div class="grid grid-cols-4 bg-charcoal-card/35 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-xl">
       <button onclick="switchTab('creator')" id="tab-btn-creator" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all text-black bg-gold shadow-md">
         <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
         <span>Kreator YIS</span>
@@ -418,7 +418,7 @@
     <div id="tab-creator" class="tab-content">
 
       <!-- STEP CONTENTS CONTAINER -->
-      <div class="bg-charcoal-card/60 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl min-h-[460px] flex flex-col justify-between">
+      <div class="bg-charcoal-card/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl min-h-[460px] flex flex-col justify-between">
         
         <!-- STEP 0 (Krok 1): Wstęp i Luksusowy Slideshow -->
         <div id="step-pane-0" class="step-pane">
@@ -1149,7 +1149,7 @@
       </div>
 
       <!-- ==================== PROGRESS BAR CARD (NAD STOPKĄ) ==================== -->
-      <div class="bg-charcoal-card/45 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-5 mt-5 shadow-2xl">
+      <div class="bg-charcoal-card/35 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-5 mt-5 shadow-2xl">
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-0.5 rounded-full bg-gold/20 text-gold text-xs font-extrabold uppercase tracking-wider">
@@ -1511,7 +1511,7 @@
 
     // Step titles mapping
     const stepTitles = [
-      'Logo & Cytat',
+      '',  // krok 1 - brak etykiety
       'O Projekcie',
       'Typ Produktu',
       'Kolor i Rozmiar',
