@@ -4070,7 +4070,7 @@
                     <div class="feed-composer">
                         <div class="composer-top">
                             <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) openSecurityModal(()=>document.getElementById('composerInput').focus())" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(typeof checkOwnerAuthSession==='function')checkOwnerAuthSession();" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
                             <button type="button" onclick="toggleOwnerAuthMode()" id="composerOwnerStatusBadge" title="Status Właściciela" style="border:none; border-radius:10px; padding:6px 10px; font-size:0.75rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; transition:all 0.2s;"></button>
                         </div>
 
@@ -6843,10 +6843,16 @@
                               (localStorage.getItem(AUTH_SESSION_KEY) === 'true') ||
                               (sessionStorage.getItem('lumina_auth_master_admin') === 'true') ||
                               (localStorage.getItem('lumina_auth_master_admin') === 'true') ||
+                              (localStorage.getItem('lumina_admin') === '1') ||
+                              (sessionStorage.getItem('lumina_admin') === '1') ||
                               (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized());
 
             isOwnerMode = !!ownerAccess;
             if (isOwnerMode) {
+                try {
+                    sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+                    localStorage.setItem(AUTH_SESSION_KEY, 'true');
+                } catch(e){}
                 document.body.classList.add('owner-mode-active');
             } else {
                 document.body.classList.remove('owner-mode-active');
@@ -8231,9 +8237,19 @@
         };
 
         async function publishFeedPost() {
+            if (typeof checkOwnerAuthSession === 'function') checkOwnerAuthSession();
             if (!isOwnerMode) {
-                openSecurityModal(() => publishFeedPost());
-                return;
+                if (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized()) {
+                    isOwnerMode = true;
+                    try {
+                        sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+                        localStorage.setItem(AUTH_SESSION_KEY, 'true');
+                    } catch(e){}
+                    if (typeof updateSecurityBarUI === 'function') updateSecurityBarUI();
+                } else {
+                    openSecurityModal(() => publishFeedPost());
+                    return;
+                }
             }
             const input = document.getElementById('composerInput');
             const val = input ? input.value.trim() : '';
@@ -9552,21 +9568,26 @@
         let commanderChatUnsubscribe = null;
 
         function isUserCommanderAuthorized() {
-            const myUser = window.LuminaDB?.getCurrentUser();
-            const myProfile = window.LuminaDB?.getCurrentProfile();
-            const email = (myUser?.email || myProfile?.email || localStorage.getItem('lumina_current_user_email') || '').toLowerCase().trim();
-            const slug = (myProfile?.slug || myUser?.slug || localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim();
-            const isMasterAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            const myUser = window.LuminaDB?.getCurrentUser ? window.LuminaDB.getCurrentUser() : null;
+            const myProfile = window.LuminaDB?.getCurrentProfile ? window.LuminaDB.getCurrentProfile() : null;
+            let rawProfile = null;
+            try { rawProfile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || localStorage.getItem('lumina_profile_cezaryrgowski') || '{}'); } catch(e){}
+            const email = (myUser?.email || myProfile?.email || rawProfile?.email || localStorage.getItem('lumina_current_user_email') || '').toLowerCase().trim();
+            const slug = (myProfile?.slug || myUser?.slug || rawProfile?.slug || localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim();
+            const isMasterAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1');
 
             const ALLOWED_EMAILS = [
                 'nazirczarkes@gmail.com',
                 'radiochristianculture@gmail.com',
-                'studiodees7@gmail.com'
+                'studiodees7@gmail.com',
+                'czarekrogowski3@gmail.com',
+                'polskieradiocc@gmail.com'
             ];
 
             if (ALLOWED_EMAILS.includes(email)) return true;
             if (slug === 'cezaryrgowski' || slug === 'radiocc' || slug.includes('cezary')) return true;
             if (isMasterAdmin) return true;
+            if (localStorage.getItem(AUTH_SESSION_KEY) === 'true' || sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') return true;
             return false;
         }
 

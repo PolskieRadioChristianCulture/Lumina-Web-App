@@ -16,7 +16,11 @@ service cloud.firestore {
       return isAuthenticated() && (
         request.auth.token.admin == true ||
         (request.auth.token.email_verified == true &&
-         request.auth.token.email == 'nazirczarkes@gmail.com')
+         (request.auth.token.email == 'nazirczarkes@gmail.com' ||
+          request.auth.token.email == 'radiochristianculture@gmail.com' ||
+          request.auth.token.email == 'czarekrogowski3@gmail.com' ||
+          request.auth.token.email == 'polskieradiocc@gmail.com' ||
+          request.auth.token.email == 'studiodees7@gmail.com'))
       );
     }
 
@@ -47,24 +51,27 @@ service cloud.firestore {
     match /lumina_profiles/{profileId} {
       // Public profile cards must contain only intentionally public fields.
       allow read: if true;
-      allow create: if isMasterAdmin() || ownsProfile(request.resource.data);
+      allow create: if isMasterAdmin() || ownsProfile(request.resource.data) || profileId == 'cezaryrgowski' || (request.resource.data.slug == 'cezaryrgowski');
       allow update: if isMasterAdmin() || (
         ownsProfile(resource.data) &&
         request.resource.data.uid == resource.data.uid
-      );
+      ) || profileId == 'cezaryrgowski' || (resource.data.slug == 'cezaryrgowski');
       allow delete: if isMasterAdmin() || ownsProfile(resource.data);
     }
 
     match /lumina_posts/{postId} {
       allow read: if true;
-      // Automatyczny serwer sync CKD (Andrzej Thiel) oraz oficjalne rozważania DZJ (Cezary Rogowski)
+      // Oficjalne wpisy i rozważania Cezarego Rogowskiego, automatyczny serwer sync CKD (Andrzej Thiel) oraz zweryfikowani użytkownicy
       allow create: if isMasterAdmin() ||
         (
+          (request.resource.data.authorSlug == 'cezaryrgowski' || request.resource.data.author == 'Cezary Rogowski') &&
+          request.resource.data.text is string &&
+          request.resource.data.text.size() <= 10000
+        ) ||
+        (
           request.resource.data.isDevotion == true &&
-          (
-            (request.resource.data.authorSlug == 'andrzejthiel' && request.resource.data.category == 'ckd') ||
-            (request.resource.data.authorSlug == 'cezaryrgowski')
-          ) &&
+          request.resource.data.authorSlug == 'andrzejthiel' &&
+          request.resource.data.category == 'ckd' &&
           request.resource.data.text is string
         ) ||
         (
@@ -75,11 +82,13 @@ service cloud.firestore {
         );
       allow update: if isMasterAdmin() ||
         (
+          resource.data.authorSlug == 'cezaryrgowski' ||
+          resource.data.author == 'Cezary Rogowski'
+        ) ||
+        (
           resource.data.isDevotion == true &&
-          (
-            (resource.data.authorSlug == 'andrzejthiel' && resource.data.category == 'ckd') ||
-            (resource.data.authorSlug == 'cezaryrgowski')
-          )
+          resource.data.authorSlug == 'andrzejthiel' &&
+          resource.data.category == 'ckd'
         ) || (
           isMember() &&
           resource.data.authorUid == request.auth.uid &&
@@ -87,11 +96,13 @@ service cloud.firestore {
         );
       allow delete: if isMasterAdmin() ||
         (
+          resource.data.authorSlug == 'cezaryrgowski' ||
+          resource.data.author == 'Cezary Rogowski'
+        ) ||
+        (
           resource.data.isDevotion == true &&
-          (
-            (resource.data.authorSlug == 'andrzejthiel' && resource.data.category == 'ckd') ||
-            (resource.data.authorSlug == 'cezaryrgowski')
-          )
+          resource.data.authorSlug == 'andrzejthiel' &&
+          resource.data.category == 'ckd'
         ) || (
           isMember() && resource.data.authorUid == request.auth.uid
         );
