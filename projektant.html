@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Kreator Odzieży i Gadżetów | Your Imagination Studio (YIS) – PolskieRadio.cc</title>
+  <title>Kreator Odzieży i Gadżetów | Chrześcijańska Grafika Użytkowa – Your Imagination Studio (YIS) – PolskieRadio.cc</title>
   
-  <meta name="description" content="Zaprojektuj unikalny styl w Your Imagination Studio (YIS). Kreuj autorskie koszulki, bluzy, kubki i czapki w luksusowym wydaniu z własną grafiką, napisem i profesjonalnym drukiem.">
-  <meta name="keywords" content="projektant odzieży, koszulka z nadrukiem, bluza z nadrukiem, kubek z nadrukiem, czapka z haftem, Your Imagination Studio, YIS, chrześcijańska odzież, PolskieRadio.cc, Christian Culture">
+  <meta name="description" content="Chrześcijańska Grafika Użytkowa w Your Imagination Studio (YIS). Kreuj autorskie koszulki, bluzy, kubki i czapki w luksusowym wydaniu z przesłaniem wiary, logowaniem Google przez portal LUMINA oraz bezpłatną weryfikacją na yourimaginationstudio@gmail.com.">
+  <meta name="keywords" content="Chrześcijańska Grafika Użytkowa, projektant odzieży, koszulka z nadrukiem, bluza z nadrukiem, kubek z nadrukiem, czapka z haftem, Your Imagination Studio, YIS, chrześcijańska odzież, portal LUMINA, PolskieRadio.cc, Christian Culture">
   <meta name="author" content="Your Imagination Studio & Christian Culture">
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polskieradio.cc/projektant">
-  <meta property="og:title" content="Your Imagination Studio (YIS) – Kreator Odzieży i Gadżetów">
-  <meta property="og:description" content="Pokaż to, co chcesz powiedzieć. Projektuj autorskie koszulki, bluzy, kubki i czapki w luksusowej jakości z podglądem na żywo.">
+  <meta property="og:title" content="Chrześcijańska Grafika Użytkowa – Your Imagination Studio (YIS)">
+  <meta property="og:description" content="Pokaż to, co chcesz powiedzieć. Projektuj autorskie koszulki, bluzy, kubki i czapki z przesłaniem wiary, integracją LUMINA i weryfikacją grafika.">
   <meta property="og:image" content="https://polskieradio.cc/images/yis/your_imagination_studio_transparent.png">
   <meta property="og:locale" content="pl_PL">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://polskieradio.cc/projektant">
-  <meta name="twitter:title" content="Your Imagination Studio (YIS) – Kreator Odzieży i Gadżetów">
-  <meta name="twitter:description" content="Pokaż to, co chcesz powiedzieć. Projektuj autorskie ubrania i gadżety z podglądem 3D.">
+  <meta name="twitter:title" content="Chrześcijańska Grafika Użytkowa – Your Imagination Studio (YIS)">
+  <meta name="twitter:description" content="Pokaż to, co chcesz powiedzieć. Projektuj autorskie ubrania i gadżety z podglądem na żywo.">
   <meta name="twitter:image" content="https://polskieradio.cc/images/yis/your_imagination_studio_transparent.png">
 
   <!-- Pinterest Verification -->
@@ -42,6 +42,9 @@
     gtag('js', new Date());
     gtag('config', 'G-Y4EFTVBPE3');
   </script>
+
+  <!-- Universal LUMINA & CC Google Auth Script -->
+  <script src="/js/cc-global-auth.js" defer></script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -145,7 +148,7 @@
   </div>
 
   <!-- ==================== TOP NAVIGATION (#cc-nav) ==================== -->
-  <header id="cc-nav" class="relative z-40 bg-black/80 backdrop-blur-md border-b border-white/10 sticky top-0">
+  <header id="cc-nav" class="relative z-40 bg-black/85 backdrop-blur-md border-b border-white/10 sticky top-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
       
       <!-- Brand Link -->
@@ -165,13 +168,13 @@
         </a>
       </div>
 
-      <!-- Quick Links & Radio Mini Player -->
-      <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Quick Links, Radio Mini Player & LUMINA Google Auth -->
+      <div class="flex items-center gap-2 sm:gap-3">
         <!-- Live Radio Mini Player -->
         <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1 text-xs gap-2 min-h-[36px]">
           <button id="mini-play-btn" onclick="toggleRadioPlay()" class="text-gold hover:text-white transition-colors focus:outline-none flex items-center gap-1.5" title="Włącz / Wyłącz Radio YIS">
             <i id="mini-play-icon" class="fa-solid fa-play text-xs"></i>
-            <span id="mini-station-name" class="font-medium text-[11px] max-w-[90px] sm:max-w-[130px] truncate">YIS Radio PL</span>
+            <span id="mini-station-name" class="font-medium text-[11px] max-w-[80px] sm:max-w-[120px] truncate">YIS Radio PL</span>
           </button>
           <div id="mini-equalizer" class="hidden items-end gap-0.5 h-3">
             <span class="w-1 bg-gold rounded-full eq-bar-1"></span>
@@ -185,9 +188,12 @@
           <i class="fa-solid fa-globe text-[11px] text-sky-400"></i> LUMINA
         </a>
         
-        <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gold/10 hover:bg-gold/20 text-gold text-xs font-bold border border-gold/30 transition-all" title="Oficjalny Sklep YIS na Creator-Spring">
+        <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="hidden lg:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gold/10 hover:bg-gold/20 text-gold text-xs font-bold border border-gold/30 transition-all" title="Oficjalny Sklep YIS na Creator-Spring">
           <i class="fa-solid fa-bag-shopping text-[11px]"></i> Sklep
         </a>
+
+        <!-- Universal LUMINA & CC Google Auth Widget Container -->
+        <div class="cc-auth-widget-container" data-cc-auth-mount="true"></div>
 
         <!-- Dark / Light theme toggle -->
         <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-gold hover:border-gold/40 transition-colors" title="Zmień motyw jasny/ciemny">
@@ -201,14 +207,76 @@
   <!-- ==================== MAIN HERO HEADER ==================== -->
   <section class="relative z-10 pt-6 pb-4 px-4 text-center">
     <div class="max-w-4xl mx-auto flex flex-col items-center">
+      
+      <!-- Prominent Christian Graphic Art Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-gold/20 to-amber-500/20 border border-gold/40 text-gold text-xs font-extrabold uppercase tracking-widest mb-3 shadow-lg shadow-gold/10">
+        <i class="fa-solid fa-cross text-xs"></i>
+        <span>CHRZEŚCIJAŃSKA GRAFIKA UŻYTKOWA</span>
+      </div>
+
       <div class="relative mb-3 group">
         <img src="/images/yis/your_imagination_studio_transparent.png" alt="Your Imagination Studio Logo" class="h-20 sm:h-24 object-contain filter drop-shadow-[0_4px_20px_rgba(221,166,28,0.25)] transition-transform duration-500 group-hover:scale-105">
       </div>
       <h1 class="text-xs uppercase font-extrabold tracking-[0.3em] text-gold mb-1">YOUR IMAGINATION STUDIO</h1>
       <p class="text-xl sm:text-2xl font-serif italic text-gray-200 tracking-wide mb-2">„Pokaż to, co chcesz powiedzieć”</p>
-      <p class="text-xs sm:text-sm text-gray-400 max-w-xl font-light">
-        Interaktywne studio projektowe grafiki użytkowej na odzież i akcesoria. Skonfiguruj produkt, dodaj grafikę i otrzymaj autorskie ubrania w jakości premium.
+      <p class="text-xs sm:text-sm text-gray-300 max-w-2xl font-light leading-relaxed">
+        Chrześcijańska Grafika Użytkowa – Projektuj autorskie koszulki, bluzy, kubki i czapki z przesłaniem wiary, nadziei i miłości. Zaloguj się przez Google za pomocą portalu LUMINA, aby odblokować pełnię funkcji społeczności i wysłać gotowy projekt do bezpłatnej wyceny.
       </p>
+    </div>
+  </section>
+
+  <!-- ==================== LUMINA COMMUNITY AUTH STATUS BANNER ==================== -->
+  <section class="relative z-20 max-w-4xl mx-auto px-4 mb-4">
+    <!-- Unauthenticated Banner (CTA) -->
+    <div id="lumina-login-cta-banner" class="bg-gradient-to-r from-amber-950/40 via-purple-950/30 to-black/70 border border-gold/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl backdrop-blur-md">
+      <div class="flex items-start gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-gold/15 border border-gold/40 flex items-center justify-center text-gold text-2xl flex-shrink-0">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm font-bold text-white">Chrześcijańska Grafika Użytkowa • Odblokuj Wszystkie Funkcje</h3>
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-gold text-black uppercase tracking-wider">LUMINA VIP</span>
+          </div>
+          <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+            Zaloguj się kontem Google przez portal LUMINA. Uzyskasz <strong>automatyczne członkostwo w chrześcijańskiej społeczności twórców</strong>, zapisywanie projektów w chmurze, 1-klik wypełnianie danych oraz priorytetową wycenę na <em>yourimaginationstudio@gmail.com</em>.
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="window.ccLoginWithGoogle()" class="flex-shrink-0 px-5 py-2.5 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-gold/20 transition-all hover:scale-105">
+        <i class="fa-brands fa-google text-sm"></i>
+        <span>Zaloguj z Google</span>
+      </button>
+    </div>
+
+    <!-- Authenticated Banner (Active Member) -->
+    <div id="lumina-member-active-banner" class="hidden bg-gradient-to-r from-emerald-950/40 via-amber-950/30 to-black/70 border border-emerald-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl backdrop-blur-md">
+      <div class="flex items-center gap-3.5">
+        <div class="relative">
+          <img id="lumina-active-avatar" src="/images/yis/yis_logo.png" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-gold object-cover">
+          <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <span id="lumina-active-name">Przyjacielu</span>
+              <i class="fa-solid fa-circle-check text-gold text-xs"></i>
+            </h3>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-gold/20 text-gold border border-gold/40 uppercase tracking-wider">
+              Członek Społeczności LUMINA
+            </span>
+          </div>
+          <p class="text-xs text-emerald-400/90 mt-0.5">
+            Wszystkie funkcje odblokowane • Aktywny status twórcy Chrześcijańskiej Grafiki Użytkowej • Priorytetowa weryfikacja
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="https://polskieradio.cc/lumina" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/10 transition-all">
+          <i class="fa-solid fa-id-card text-gold"></i>
+          <span>Mój Profil LUMINA</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -732,7 +800,24 @@
           <div class="py-2 max-w-xl mx-auto">
             <div class="text-center mb-5">
               <h2 class="text-lg sm:text-xl font-bold text-gold tracking-wide uppercase">DANE ZAMAWIAJĄCEGO</h2>
-              <p class="text-xs text-gray-400 mt-1">Podaj dane do wysyłki i kontaktu w sprawie projektu</p>
+              <p class="text-xs text-gray-400 mt-1">Podaj dane do wysyłki i kontaktu w sprawie weryfikacji projektu</p>
+            </div>
+
+            <!-- Auto-fill indicator from LUMINA -->
+            <div id="auth-autofill-indicator" class="hidden mb-4 p-3.5 rounded-xl bg-gold/15 border border-gold/40 flex items-center justify-between text-xs text-gold">
+              <span class="flex items-center gap-2 font-bold">
+                <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                <span>Dane uzupełnione z Twojego konta LUMINA</span>
+              </span>
+              <span class="text-[11px] text-gray-300">Możesz je edytować</span>
+            </div>
+
+            <div id="auth-login-hint" class="mb-4 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs text-gray-300">
+              <span class="text-[11px] sm:text-xs">Zaloguj się kontem Google, aby wypełnić dane 1 kliknięciem</span>
+              <button type="button" onclick="window.ccLoginWithGoogle()" class="px-2.5 py-1 rounded-lg bg-gold/20 hover:bg-gold text-gold hover:text-black font-bold text-xs transition-all flex items-center gap-1.5">
+                <i class="fa-brands fa-google text-[10px]"></i>
+                <span>Zaloguj</span>
+              </button>
             </div>
 
             <div class="space-y-3">
@@ -747,9 +832,15 @@
                 </div>
               </div>
 
-              <div>
-                <label for="input-phone" class="block text-xs font-semibold text-gray-300 mb-1">Numer telefonu *</label>
-                <input type="tel" id="input-phone" placeholder="np. +48 123 456 789" oninput="saveUserData()" class="w-full bg-white/5 border border-white/20 focus:border-gold rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-all">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="input-email" class="block text-xs font-semibold text-gray-300 mb-1">Adres e-mail *</label>
+                  <input type="email" id="input-email" placeholder="np. jan.kowalski@gmail.com" oninput="saveUserData()" class="w-full bg-white/5 border border-white/20 focus:border-gold rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-all">
+                </div>
+                <div>
+                  <label for="input-phone" class="block text-xs font-semibold text-gray-300 mb-1">Numer telefonu *</label>
+                  <input type="tel" id="input-phone" placeholder="np. +48 123 456 789" oninput="saveUserData()" class="w-full bg-white/5 border border-white/20 focus:border-gold rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none transition-all">
+                </div>
               </div>
 
               <div>
@@ -758,7 +849,7 @@
               </div>
 
               <p class="text-[11px] text-gray-400">
-                * Pola wymagane przed wygenerowaniem oficjalnego zamówienia e-mail / WhatsApp.
+                * Pola wymagane przed wygenerowaniem oficjalnego zamówienia do weryfikacji grafika.
               </p>
             </div>
           </div>
@@ -768,8 +859,29 @@
         <div id="step-pane-10" class="step-pane hidden">
           <div class="py-2 max-w-xl mx-auto">
             <div class="text-center mb-5">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/15 text-gold text-[10px] font-extrabold uppercase tracking-wider mb-2">
+                <i class="fa-solid fa-check-double"></i> GOTOWY PROJEKT
+              </div>
               <h2 class="text-lg sm:text-xl font-bold text-gold tracking-wide uppercase">KUMULACJA I REALIZACJA</h2>
-              <p class="text-xs text-gray-400 mt-1">Podsumowanie specyfikacji Twojego projektu i kosztorys</p>
+              <p class="text-xs text-gray-400 mt-1">Weryfikacja techniczna grafika i kosztorys przed drukiem</p>
+            </div>
+
+            <!-- Dedicated Verification Notice Box -->
+            <div class="bg-gradient-to-r from-gold/15 via-black/50 to-gold/10 border border-gold/40 rounded-2xl p-4 sm:p-5 mb-5 shadow-lg">
+              <div class="flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center text-gold text-lg flex-shrink-0">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <div class="text-xs text-gray-200 leading-relaxed">
+                  <div class="flex items-center gap-2 mb-1">
+                    <strong class="text-sm font-bold text-white">Bezpłatna Weryfikacja i Wycena Projektu</strong>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black bg-gold text-black uppercase">Standard YIS</span>
+                  </div>
+                  Twój kompletny projekt trafia bezpośrednio do studia Your Imagination Studio na adres:
+                  <a href="mailto:yourimaginationstudio@gmail.com" class="text-gold font-extrabold underline">yourimaginationstudio@gmail.com</a>.
+                  Grafik zweryfikuje format, rozdzielczość i przygotuje finalną wizualizację do Twojej akceptacji przed płatnością i produkcją.
+                </div>
+              </div>
             </div>
 
             <!-- Receipt Breakdown Card -->
@@ -804,6 +916,7 @@
                 <div><strong class="text-gray-200">Format nadruku:</strong> <span id="sum-format">Średni (~80mm)</span></div>
                 <div id="sum-text-row"><strong class="text-gray-200">Tekst:</strong> <span id="sum-text">„Dobrze, że jesteś”</span></div>
                 <div><strong class="text-gray-200">Zamawiający:</strong> <span id="sum-customer">Jan Kowalski, tel. +48...</span></div>
+                <div id="sum-membership-row" class="text-gold font-bold"><i class="fa-solid fa-certificate text-[10px]"></i> <span id="sum-membership">Członek Społeczności LUMINA</span></div>
               </div>
             </div>
 
@@ -811,20 +924,25 @@
             <div class="bg-white/5 border border-white/10 rounded-xl p-3.5 mb-5 flex items-start gap-2.5 text-xs text-gray-300">
               <i class="fa-solid fa-paperclip text-gold mt-0.5"></i>
               <span>
-                <strong>Pamiętaj:</strong> Jeśli posiadasz plik graficzny (logo/grafikę w pełnej rozdzielczości), dołącz go jako załącznik do wygenerowanej wiadomości e-mail.
+                <strong>Pamiętaj:</strong> Jeśli posiadasz plik graficzny (logo/grafikę w pełnej rozdzielczości), dołącz go jako załącznik do tworzonej wiadomości e-mail do <strong>yourimaginationstudio@gmail.com</strong>.
               </span>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="space-y-2.5">
-              <button type="button" onclick="submitOrderViaEmail()" class="w-full py-3.5 px-4 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-gold/20 transition-all">
-                <i class="fa-solid fa-paper-plane text-sm"></i>
-                <span>WYŚLIJ ZAMÓWIENIE (E-MAIL)</span>
+            <!-- Action Buttons for Verification & Submission -->
+            <div class="space-y-3">
+              <button type="button" onclick="submitProjectForVerification('email')" class="w-full py-4 px-4 rounded-xl bg-gold hover:bg-gold-hover text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-xl shadow-gold/25 transition-all transform hover:scale-[1.01]">
+                <i class="fa-solid fa-envelope-circle-check text-base"></i>
+                <span>WYŚLIJ DO WERYFIKACJI I WYCENY (E-MAIL)</span>
               </button>
 
-              <button type="button" onclick="submitOrderViaWhatsApp()" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all">
+              <button type="button" onclick="copyProjectSpecification()" id="copy-spec-btn" class="w-full py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-white/15 transition-all">
+                <i class="fa-regular fa-copy text-gold"></i>
+                <span id="copy-spec-text">SKOPIUJ SPECYFIKACJĘ DO SCHOWKA</span>
+              </button>
+
+              <button type="button" onclick="submitProjectForVerification('whatsapp')" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all">
                 <i class="fa-brands fa-whatsapp text-base"></i>
-                <span>ZAMÓW PRZEZ WHATSAPP</span>
+                <span>KONSULTACJA PROJEKTU PRZEZ WHATSAPP</span>
               </button>
             </div>
           </div>
@@ -1160,8 +1278,12 @@
       quantity: 1,
       firstName: '',
       lastName: '',
+      email: '',
       phoneNumber: '',
       address: '',
+      // LUMINA Auth & VIP
+      isLuminaMember: false,
+      luminaUser: null,
       // Radio
       isPlaying: false,
       currentStationName: 'YIS Radio Polska',
@@ -1186,6 +1308,7 @@
     // --- INIT ---
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedDraft();
+      checkLuminaUser();
       initColorPalette();
       initSizeSelector();
       updateStepUI();
@@ -1195,6 +1318,77 @@
       renderHistory();
       initAudioPlayer();
     });
+
+    // Reactive listener for LUMINA Global Auth events
+    window.addEventListener('lumina-auth-state', () => {
+      checkLuminaUser();
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'lumina_current_user' || e.key === 'lumina_current_user_profile') {
+        checkLuminaUser();
+      }
+    });
+
+    // --- LUMINA INTEGRATION & GOOGLE AUTH AUTOFILL ---
+    function checkLuminaUser() {
+      try {
+        const userRaw = localStorage.getItem('lumina_current_user');
+        const profRaw = localStorage.getItem('lumina_current_user_profile');
+        const user = userRaw ? JSON.parse(userRaw) : null;
+        const profile = profRaw ? JSON.parse(profRaw) : null;
+        const ctaBanner = document.getElementById('lumina-login-cta-banner');
+        const memberBanner = document.getElementById('lumina-member-active-banner');
+        const autofillInd = document.getElementById('auth-autofill-indicator');
+        const loginHint = document.getElementById('auth-login-hint');
+        const sumMembershipRow = document.getElementById('sum-membership-row');
+
+        if (user && user.uid) {
+          state.isLuminaMember = true;
+          state.luminaUser = user;
+          if (ctaBanner) ctaBanner.classList.add('hidden');
+          if (memberBanner) {
+            memberBanner.classList.remove('hidden');
+            memberBanner.classList.add('flex');
+            const nameEl = document.getElementById('lumina-active-name');
+            const avatarEl = document.getElementById('lumina-active-avatar');
+            if (nameEl) nameEl.textContent = profile?.name || user.displayName || 'Członek Społeczności';
+            if (avatarEl && (profile?.avatar || user.photoURL)) avatarEl.src = profile?.avatar || user.photoURL;
+          }
+          if (autofillInd) autofillInd.classList.remove('hidden');
+          if (loginHint) loginHint.classList.add('hidden');
+          if (sumMembershipRow) sumMembershipRow.classList.remove('hidden');
+
+          // Auto-fill user credentials into state & inputs if empty
+          if (!state.firstName && user.displayName) {
+            const parts = user.displayName.split(' ');
+            state.firstName = parts[0] || '';
+            state.lastName = parts.slice(1).join(' ') || '';
+            const fnInput = document.getElementById('input-first-name');
+            const lnInput = document.getElementById('input-last-name');
+            if (fnInput && !fnInput.value) fnInput.value = state.firstName;
+            if (lnInput && !lnInput.value) lnInput.value = state.lastName;
+          }
+          if (!state.email && user.email) {
+            state.email = user.email;
+            const emInput = document.getElementById('input-email');
+            if (emInput && !emInput.value) emInput.value = state.email;
+          }
+        } else {
+          state.isLuminaMember = false;
+          state.luminaUser = null;
+          if (ctaBanner) ctaBanner.classList.remove('hidden');
+          if (memberBanner) {
+            memberBanner.classList.add('hidden');
+            memberBanner.classList.remove('flex');
+          }
+          if (autofillInd) autofillInd.classList.add('hidden');
+          if (loginHint) loginHint.classList.remove('hidden');
+          if (sumMembershipRow) sumMembershipRow.classList.add('hidden');
+        }
+      } catch(e) {
+        console.warn('Lumina check error:', e);
+      }
+    }
 
     // --- TAB SWITCHING ---
     function switchTab(tabId) {
@@ -1673,15 +1867,26 @@
 
       const custName = `${state.firstName} ${state.lastName}`.trim() || '(nie podano)';
       const custPhone = state.phoneNumber.trim() || '';
-      document.getElementById('sum-customer').textContent = `${custName}${custPhone ? ', tel. ' + custPhone : ''}`;
+      const custEmail = state.email.trim() || '';
+      document.getElementById('sum-customer').textContent = `${custName}${custPhone ? ', tel. ' + custPhone : ''}${custEmail ? ', ' + custEmail : ''}`;
+
+      const memRow = document.getElementById('sum-membership-row');
+      if (memRow) {
+        if (state.isLuminaMember) {
+          memRow.classList.remove('hidden');
+        } else {
+          memRow.classList.add('hidden');
+        }
+      }
     }
 
     // --- USER DATA & DRAFT PERSISTENCE ---
     function saveUserData() {
-      state.firstName = document.getElementById('input-first-name').value;
-      state.lastName = document.getElementById('input-last-name').value;
-      state.phoneNumber = document.getElementById('input-phone').value;
-      state.address = document.getElementById('input-address').value;
+      state.firstName = document.getElementById('input-first-name')?.value || '';
+      state.lastName = document.getElementById('input-last-name')?.value || '';
+      state.email = document.getElementById('input-email')?.value || '';
+      state.phoneNumber = document.getElementById('input-phone')?.value || '';
+      state.address = document.getElementById('input-address')?.value || '';
       saveDraft();
     }
 
@@ -1703,6 +1908,7 @@
           quantity: state.quantity,
           firstName: state.firstName,
           lastName: state.lastName,
+          email: state.email,
           phoneNumber: state.phoneNumber,
           address: state.address,
           savedAt: new Date().toISOString()
@@ -1750,6 +1956,11 @@
             const ln = document.getElementById('input-last-name');
             if (ln) ln.value = draft.lastName;
           }
+          if (draft.email) {
+            state.email = draft.email;
+            const em = document.getElementById('input-email');
+            if (em) em.value = draft.email;
+          }
           if (draft.phoneNumber) {
             state.phoneNumber = draft.phoneNumber;
             const ph = document.getElementById('input-phone');
@@ -1768,8 +1979,8 @@
 
     // --- ORDER SUBMISSION & HISTORY ---
     function validateForm() {
-      if (!state.firstName.trim() || !state.lastName.trim() || !state.phoneNumber.trim() || !state.address.trim()) {
-        alert('Proszę uzupełnić wszystkie wymagane dane zamawiającego (Imię, Nazwisko, Telefon, Adres) przed wysłaniem zamówienia!');
+      if (!state.firstName.trim() || !state.lastName.trim() || !state.email.trim() || !state.phoneNumber.trim() || !state.address.trim()) {
+        alert('Proszę uzupełnić wszystkie wymagane dane zamawiającego (Imię, Nazwisko, E-mail, Telefon, Adres) przed wysłaniem projektu!');
         state.currentStep = 9; // go to step 9 (Dane Zamawiającego)
         updateStepUI();
         return false;
@@ -1781,33 +1992,37 @@
       const { total } = updatePricing();
       return `Dzień dobry,
 
-Chciał(a)bym złożyć zapytanie o projekt i wycenę odzieży w Your Imagination Studio (YIS).
+Chciał(a)bym przekazać gotowy projekt grafiki użytkowej do bezpłatnej weryfikacji technicznej i wyceny w Your Imagination Studio (YIS).
 
---- SPECYFIKACJA PRODUKTU ---
+--- PROJEKT: CHRZEŚCIJAŃSKA GRAFIKA UŻYTKOWA ---
 • Produkt bazowy: ${state.selectedProductType}
 • Kolor produktu: ${state.selectedColor}
 • Rozmiar: ${state.selectedSize}
 • Format nadruku: ${state.selectedFormat}
-• Umiejscowienie: ${state.selectedPrintPlacement}
+• Umiejscowienie nadruku: ${state.selectedPrintPlacement}
 • Ilość sztuk: ${state.quantity}
-• Spersonalizowany tekst: ${state.personalizedText.trim() ? `"${state.personalizedText.trim()}"` : '(brak)'}
-• Projekt graficzny (3 propozycje): ${state.needDesignProject ? 'TAK (+50 zł)' : 'NIE'}
-• Własna grafika: ${state.uploadedImageBase64 ? 'Załączona do tego maila' : 'Monogram YIS / Tylko tekst'}
+• Spersonalizowany tekst / cytat: ${state.personalizedText.trim() ? `"${state.personalizedText.trim()}"` : '(brak)'}
+• Opracowanie graficzne YIS (3 koncepcje): ${state.needDesignProject ? 'TAK (+50 zł)' : 'NIE (własna grafika / gotowy wzór)'}
+• Status pliku graficznego: ${state.uploadedImageBase64 ? 'Plik załączony do niniejszej wiadomości' : 'Standardowy monogram YIS / tylko treść typograficzna'}
 
---- DANE DO DOSTAWY ---
+--- DANE KONTAKTOWE I DOSTAWA ---
 • Zamawiający: ${state.firstName} ${state.lastName}
+• Adres e-mail: ${state.email}
 • Numer telefonu: ${state.phoneNumber}
-• Adres wysyłki / Paczkomat: ${state.address}
-• Wybrana metoda: ${state.selectedShippingMethod} (${state.shippingCost} zł)
+• Adres dostawy / Paczkomat: ${state.address}
+• Preferowana metoda wysyłki: ${state.selectedShippingMethod} (${state.shippingCost} zł)
+• Status w Społeczności LUMINA: ${state.isLuminaMember ? 'Zalogowany Członek Społeczności LUMINA VIP' : 'Użytkownik Gość'}
 
---- KOSZT BAZOWY ZAMÓWIENIA ---
+--- WSTĘPNA KALKULACJA KOSZTÓW ---
 • Szacowana kwota łączna: ~${total} PLN
 
-(W załączniku przesyłam ewentualne pliki graficzne / inspiracje w wysokiej rozdzielczości).
-Proszę o potwierdzenie przyjęcia zapytania do realizacji i przesłanie danych do płatności.
+(W załączniku przesyłam ewentualne pliki graficzne / inspiracje w wysokiej rozdzielczości do weryfikacji przez grafika).
+Proszę o sprawdzenie plików pod kątem druku oraz przesłanie ostatecznej wyceny i potwierdzenia na adres e-mail: ${state.email || 'nadawcy'}.
 
 Z poważaniem,
-${state.firstName} ${state.lastName}`;
+${state.firstName} ${state.lastName}
+E-mail: ${state.email}
+Tel: ${state.phoneNumber}`;
     }
 
     function archiveOrder(status = 'WYSŁANE MAIL') {
@@ -1831,6 +2046,7 @@ ${state.firstName} ${state.lastName}`;
           totalPrice: total,
           firstName: state.firstName,
           lastName: state.lastName,
+          email: state.email,
           phoneNumber: state.phoneNumber,
           address: state.address,
           status: status
@@ -1844,28 +2060,74 @@ ${state.firstName} ${state.lastName}`;
       }
     }
 
+    function copyProjectSpecification() {
+      const text = buildOrderEmailBody();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById('copy-spec-btn');
+          const txt = document.getElementById('copy-spec-text');
+          if (txt) txt.textContent = '✓ SKOPIOWANO SPECYFIKACJĘ!';
+          if (btn) btn.classList.add('border-gold', 'text-gold');
+          setTimeout(() => { 
+            if (txt) txt.textContent = 'SKOPIUJ SPECYFIKACJĘ DO SCHOWKA';
+            if (btn) btn.classList.remove('border-gold', 'text-gold');
+          }, 2500);
+        }).catch(err => {
+          copyFallback(text);
+        });
+      } else {
+        copyFallback(text);
+      }
+    }
+
+    function copyFallback(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        const txt = document.getElementById('copy-spec-text');
+        if (txt) txt.textContent = '✓ SKOPIOWANO SPECYFIKACJĘ!';
+        setTimeout(() => { if (txt) txt.textContent = 'SKOPIUJ SPECYFIKACJĘ DO SCHOWKA'; }, 2500);
+      } catch(e) {
+        alert('Zaznacz tekst specyfikacji i skopiuj ręcznie.');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function submitProjectForVerification(channel) {
+      if (channel === 'whatsapp') {
+        submitOrderViaWhatsApp();
+      } else {
+        submitOrderViaEmail();
+      }
+    }
+
     function submitOrderViaEmail() {
       if (!validateForm()) return;
-      archiveOrder('WYSŁANE MAIL');
+      archiveOrder('WERYFIKACJA MAIL');
 
-      const subject = `[YIS Studio] Nowe zapytanie o projekt od: ${state.firstName} ${state.lastName}`;
+      const subject = `[YIS Chrześcijańska Grafika Użytkowa] Projekt do weryfikacji i wyceny: ${state.firstName} ${state.lastName}`;
       const body = buildOrderEmailBody();
       const mailtoUrl = `mailto:yourimaginationstudio@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
       window.location.href = mailtoUrl;
 
       setTimeout(() => {
-        alert('Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową treścią zamówienia do yourimaginationstudio@gmail.com. Dołącz ewentualne pliki graficzne jako załącznik i kliknij Wyślij!');
+        alert('Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową specyfikacją projektu skierowaną do yourimaginationstudio@gmail.com.\n\nDołącz ewentualne pliki graficzne lub logo w wysokiej rozdzielczości jako załącznik i kliknij Wyślij!');
         switchTab('history');
-      }, 500);
+      }, 600);
     }
 
     function submitOrderViaWhatsApp() {
       if (!validateForm()) return;
-      archiveOrder('WYSŁANE WHATSAPP');
+      archiveOrder('KONSULTACJA WA');
 
       const { total } = updatePricing();
-      const text = `Dzień dobry YIS! Chciał(a)bym zamówić:\n• Produkt: ${state.selectedProductType} (${state.selectedSize})\n• Kolor: ${state.selectedColor}\n• Ilość: ${state.quantity} szt.\n• Tekst: ${state.personalizedText || '(brak)'}\n• Kwota szacunkowa: ~${total} PLN\n• Zamawiający: ${state.firstName} ${state.lastName}, tel. ${state.phoneNumber}\n• Dostawa: ${state.selectedShippingMethod} (${state.address})`;
+      const text = `Dzień dobry YIS! Chciał(a)bym przekazać projekt chrześcijańskiej grafiki użytkowej do weryfikacji:\n• Produkt: ${state.selectedProductType} (${state.selectedSize})\n• Kolor: ${state.selectedColor}\n• Ilość: ${state.quantity} szt.\n• Tekst: ${state.personalizedText || '(brak)'}\n• Kwota szacunkowa: ~${total} PLN\n• Zamawiający: ${state.firstName} ${state.lastName}\n• E-mail: ${state.email}\n• Tel: ${state.phoneNumber}\n• Dostawa: ${state.selectedShippingMethod} (${state.address})`;
       
       const waUrl = `https://chat.whatsapp.com/Gq54lFzdH5AFhrMEDvnwVD`;
       window.open(waUrl, '_blank');
@@ -1962,6 +2224,32 @@ ${state.firstName} ${state.lastName}`;
         document.getElementById('custom-text-input').value = state.personalizedText;
         state.needDesignProject = !!o.needDesign;
         document.getElementById('need-design-checkbox').checked = state.needDesignProject;
+
+        if (o.firstName) {
+          state.firstName = o.firstName;
+          const fn = document.getElementById('input-first-name');
+          if (fn) fn.value = o.firstName;
+        }
+        if (o.lastName) {
+          state.lastName = o.lastName;
+          const ln = document.getElementById('input-last-name');
+          if (ln) ln.value = o.lastName;
+        }
+        if (o.email) {
+          state.email = o.email;
+          const em = document.getElementById('input-email');
+          if (em) em.value = o.email;
+        }
+        if (o.phoneNumber) {
+          state.phoneNumber = o.phoneNumber;
+          const ph = document.getElementById('input-phone');
+          if (ph) ph.value = o.phoneNumber;
+        }
+        if (o.address) {
+          state.address = o.address;
+          const ad = document.getElementById('input-address');
+          if (ad) ad.value = o.address;
+        }
 
         state.currentStep = 7; // go straight to visualization
         updateStepUI();
