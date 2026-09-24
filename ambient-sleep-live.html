@@ -298,74 +298,6 @@
             letter-spacing: 1.5px;
         }
 
-        /* --- FLOATING SCRIPTURE CARD (Kojące Słowo Boże na Noc) --- */
-        .scripture-center-card {
-            position: absolute;
-            top: 190px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1160px;
-            z-index: 15;
-            background: rgba(3, 6, 12, 0.22);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-top: 2px solid var(--gold-primary);
-            padding: 26px 48px;
-            border-radius: 24px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-            text-align: center;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .scripture-center-card.hidden {
-            opacity: 0;
-            transform: translateX(-50%) translateY(20px);
-            pointer-events: none;
-        }
-
-        .scripture-top-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(212, 175, 55, 0.12);
-            color: var(--gold-primary);
-            font-size: 1.2rem;
-            margin-bottom: 16px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .scripture-tag-title {
-            font-size: 0.8rem;
-            color: var(--gold-light);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .scripture-text-quote {
-            font-family: 'Cinzel', serif;
-            font-size: 1.85rem;
-            font-weight: 700;
-            line-height: 1.5;
-            color: #ffffff;
-            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.9);
-            margin-bottom: 16px;
-        }
-
-        .scripture-reference {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--gold-primary);
-            letter-spacing: 1.5px;
-            font-style: italic;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-        }
-
         /* --- ACTIVE PRESET & SOUND HUD (DOLNA CZĘŚĆ EKRANU) --- */
         .bottom-hud-wrapper {
             position: absolute;
@@ -985,20 +917,6 @@
             </div>
         </header>
 
-        <!-- 3. FLOATING SCRIPTURE CARD (Kojące Słowo Boże) -->
-        <section class="scripture-center-card" id="scriptureCard">
-            <div class="scripture-top-icon">
-                <i class="fa-solid fa-moon"></i>
-            </div>
-            <div class="scripture-tag-title">BOŻY POKÓJ NA DOBRANOC</div>
-            <div class="scripture-text-quote" id="scriptureQuote">
-                „W pokoju się położę i zasnę, bo Ty sam, Panie, sprawiasz, że bezpiecznie mieszkam.”
-            </div>
-            <div class="scripture-reference" id="scriptureRef">
-                — Psalm 4:9
-            </div>
-        </section>
-
         <!-- 4. BOTTOM HUD & SOUND STATUS BAR -->
         <div class="bottom-hud-wrapper">
             <!-- LIVE SOUND MIXER CONSOLE -->
@@ -1182,16 +1100,28 @@
                 <div class="ticker-track-wrapper">
                     <div class="ticker-track">
                         <div class="ticker-item">
+                            <i class="fa-solid fa-dove"></i>
+                            <span>„W pokoju się położę i zasnę, bo Ty sam, Panie, sprawiasz, że bezpiecznie mieszkam.” <span class="ticker-highlight">— Psalm 4:9</span></span>
+                        </div>
+                        <div class="ticker-item">
                             <i class="fa-solid fa-moon"></i>
-                            <span>Spokojny sen i wyciszenie układu nerwowego w pokoju Bożym.</span>
+                            <span>„Gdy się położysz, nie będziesz się bał, a gdy zaśniesz, twój sen będzie słodki.” <span class="ticker-highlight">— Przyp 3:24</span></span>
                         </div>
                         <div class="ticker-item">
                             <i class="fa-solid fa-sliders"></i>
                             <span>Miksuj własne dźwięki natury i szum brązowy: <span class="ticker-highlight">polskieradio.cc/AmbientSleep</span></span>
                         </div>
                         <div class="ticker-item">
+                            <i class="fa-solid fa-hands-praying"></i>
+                            <span>„Przyjdźcie do mnie wszyscy, którzy jesteście spracowani i obciążeni, a Ja wam dam ukojenie.” <span class="ticker-highlight">— Mt 11:28</span></span>
+                        </div>
+                        <div class="ticker-item">
                             <i class="fa-solid fa-mobile-screen"></i>
                             <span>Pobierz darmową aplikację mobilną: <span class="ticker-highlight">cclite.pl</span></span>
+                        </div>
+                        <div class="ticker-item">
+                            <i class="fa-solid fa-peace"></i>
+                            <span>„Pokój zostawiam wam, mój pokój wam daję. Niech się nie trwoży serce wasze.” <span class="ticker-highlight">— J 14:27</span></span>
                         </div>
                         <div class="ticker-item">
                             <i class="fa-solid fa-heart"></i>
@@ -1204,16 +1134,28 @@
 
                         <!-- Duplicate for infinite marquee loop -->
                         <div class="ticker-item">
+                            <i class="fa-solid fa-dove"></i>
+                            <span>„W pokoju się położę i zasnę, bo Ty sam, Panie, sprawiasz, że bezpiecznie mieszkam.” <span class="ticker-highlight">— Psalm 4:9</span></span>
+                        </div>
+                        <div class="ticker-item">
                             <i class="fa-solid fa-moon"></i>
-                            <span>Spokojny sen i wyciszenie układu nerwowego w pokoju Bożym.</span>
+                            <span>„Gdy się położysz, nie będziesz się bał, a gdy zaśniesz, twój sen będzie słodki.” <span class="ticker-highlight">— Przyp 3:24</span></span>
                         </div>
                         <div class="ticker-item">
                             <i class="fa-solid fa-sliders"></i>
                             <span>Miksuj własne dźwięki natury i szum brązowy: <span class="ticker-highlight">polskieradio.cc/AmbientSleep</span></span>
                         </div>
                         <div class="ticker-item">
+                            <i class="fa-solid fa-hands-praying"></i>
+                            <span>„Przyjdźcie do mnie wszyscy, którzy jesteście spracowani i obciążeni, a Ja wam dam ukojenie.” <span class="ticker-highlight">— Mt 11:28</span></span>
+                        </div>
+                        <div class="ticker-item">
                             <i class="fa-solid fa-mobile-screen"></i>
                             <span>Pobierz darmową aplikację mobilną: <span class="ticker-highlight">cclite.pl</span></span>
+                        </div>
+                        <div class="ticker-item">
+                            <i class="fa-solid fa-peace"></i>
+                            <span>„Pokój zostawiam wam, mój pokój wam daję. Niech się nie trwoży serce wasze.” <span class="ticker-highlight">— J 14:27</span></span>
                         </div>
                         <div class="ticker-item">
                             <i class="fa-solid fa-heart"></i>
@@ -1294,37 +1236,6 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
-
-        // ── 3. Kojące Wersety Biblijne (Rotacja co 45s) ──
-        const SCRIPTURES = [
-            { quote: "„W pokoju się położę i zasnę, bo Ty sam, Panie, sprawiasz, że bezpiecznie mieszkam.”", ref: "— Psalm 4:9" },
-            { quote: "„Gdy się położysz, nie będziesz się bał, a gdy zaśniesz, twój sen będzie słodki.”", ref: "— Księga Przysłów 3:24" },
-            { quote: "„Przyjdźcie do mnie wszyscy, którzy jesteście spracowani i obciążeni, a Ja wam dam ukojenie.”", ref: "— Ewangelia Mateusza 11:28" },
-            { quote: "„Pokój zostawiam wam, mój pokój wam daję. Niech się nie trwoży serce wasze ani się nie lęka.”", ref: "— Ewangelia Jana 14:27" },
-            { quote: "„Nie zdrzemnie się ani nie zaśnie Ten, który czuwa nad tobą. Pan jest twoim stróżem.”", ref: "— Psalm 121:3-5" },
-            { quote: "„Zrzuć na Pana swój ciężar, a On cię podtrzyma; nie dopuści nigdy, by zachwiał się sprawiedliwy.”", ref: "— Psalm 55:23" },
-            { quote: "„Wszystkie wasze troski złóżcie na Niego, gdyż On ma o was staranie.”", ref: "— 1 List Piotra 5:7" },
-            { quote: "„Ten, kto mieszka pod osłoną Najwyższego, odpoczywać będzie w cieniu Wszechmocnego.”", ref: "— Psalm 91:1" },
-            { quote: "„Pan jest moim pasterzem, niczego mi nie braknie. Na zielonych niwach daje mi odpoczynek.”", ref: "— Psalm 23:1-2" },
-            { quote: "„Bo ja znam myśli, które mam o was — mówi Pan — myśli o pokoju, a nie o nieszczęściu.”", ref: "— Księga Jeremiasza 29:11" },
-            { quote: "„Cicho bądźcie i wiedzcie, że Ja jestem Bogiem.”", ref: "— Psalm 46:11" },
-            { quote: "„Temu, którego umysł jest stały, zachowujesz pokój, pokój, bo w tobie pokłada ufność.”", ref: "— Księga Izajasza 26:3" }
-        ];
-
-        let currentScriptureIdx = 0;
-        function rotateScripture() {
-            const card = document.getElementById('scriptureCard');
-            if (!card) return;
-            card.classList.add('hidden');
-            setTimeout(() => {
-                currentScriptureIdx = (currentScriptureIdx + 1) % SCRIPTURES.length;
-                const item = SCRIPTURES[currentScriptureIdx];
-                document.getElementById('scriptureQuote').textContent = item.quote;
-                document.getElementById('scriptureRef').textContent = item.ref;
-                card.classList.remove('hidden');
-            }, 1200);
-        }
-        setInterval(rotateScripture, 45000);
 
         // ── 4. Cinematic Background Crossfading (Ken-Burns) ──
         let activeBgIndex = 1;
