@@ -43,10 +43,13 @@ export default {
       });
     }
 
-    if (url.pathname === '/AmbientSleep' || url.pathname === '/ambientsleep' || url.pathname === '/ambient-sleep' || url.pathname === '/Ambient-Sleep') {
-      const ambientReq = new Request(new URL('/ambientsleep.html', request.url), request);
-      return env.ASSETS.fetch(ambientReq);
+    const p = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (p === '/ambientsleep' || p === '/ambient-sleep') {
+      const ambientUrl = new URL(request.url);
+      ambientUrl.pathname = '/ambientsleep';
+      return env.ASSETS.fetch(new Request(ambientUrl, request));
     }
+
 
     // Studio API Endpoints
     if (url.pathname === '/api/bible/ubg/info') {
