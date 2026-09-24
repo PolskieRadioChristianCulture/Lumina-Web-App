@@ -14,29 +14,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="p:domain_verify" content="534315dc73d3789714ea4ec89f8c941a"/>
 <title>Holistyczny Coaching – Paweł Murawski | PolskieRadio.cc</title>
-<meta name="description" content="Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym. Odzyskaj harmonię i wewnętrzną wolność. Wsparcie dla osób zmagających się z uzależnieniami i kryzysami życiowymi.">
-<meta property="og:title" content="Holistyczny Coaching – Paweł Murawski">
-<meta property="og:description" content="Odzyskaj harmonię i wewnętrzną wolność dzięki wsparciu, które łączy rozwój duchowy, fizyczny i emocjonalny.">
+<meta name="description" content="Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym. Odzyskaj harmonię i wewnętrzną wolność. Ciało, Dusza, Duch. Wsparcie w uzależnieniach i kryzysach życiowych.">
+<meta property="og:site_name" content="PolskieRadio.cc – Christian Culture">
+<meta property="og:title" content="Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym">
+<meta property="og:description" content="Odzyskaj harmonię i zacznij żyć pełnią Bożego planu. Profesjonalny coaching chrześcijański łączący rozwój duchowy, emocjonalny i fizyczny.">
 <meta property="og:image" content="https://lh3.googleusercontent.com/d/1uSUhnXOFGkMn5T6OQTh0PBswdQfSVJmk">
-<meta property="og:url" content="https://polskieradio.cc/Holistyczny-Coaching">
+<meta property="og:url" content="https://polskieradio.cc/holistyczny-coaching">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym">
+<meta name="twitter:description" content="Odzyskaj harmonię i zacznij żyć pełnią Bożego planu. Ciało • Dusza • Duch.">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/d/1uSUhnXOFGkMn5T6OQTh0PBswdQfSVJmk">
 <meta name="theme-color" content="#030712">
 
+<link rel="icon" type="image/jpeg" href="avatar_pawel_murawski.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
-        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          display: ['Plus Jakarta Sans', 'sans-serif'],
+        },
         animation: {
           'fadeIn': 'fadeIn 0.8s ease-in-out',
           'fadeInUp': 'fadeInUp 0.7s ease-out',
+          'pulse-call': 'pulseCall 2s infinite',
         },
         keyframes: {
           fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
           fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          pulseCall: {
+            '0%, 100%': { transform: 'scale(1)' },
+            '50%': { transform: 'scale(1.08)' }
+          }
         }
       }
     }
@@ -55,36 +71,35 @@
     z-index: 9999;
     transition: opacity 0.8s ease, visibility 0.8s ease;
   }
-  #welcome-splash.hidden { opacity: 0; visibility: hidden; }
+  #welcome-splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
   /* Typewriter cursor */
   .tw-cursor {
     display: inline-block;
-    animation: blink 0.5s step-start infinite;
+    animation: blink 0.6s step-start infinite;
   }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-  /* Profile card header hover */
-  .card-bg:hover { transform: scale(1.05); }
-  .card-bg { transition: transform 1s ease; }
+  /* Top nav bar */
+  #cc-nav {
+    background: rgba(3, 7, 18, 0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
 
-  /* Verse fade */
-  .verse-text { animation: fadeIn 0.8s ease-in-out; }
-
-  /* CC nav top bar */
-  #cc-nav { background: rgba(3,7,18,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #111827; }
-  ::-webkit-scrollbar-thumb { background: #1d4ed8; border-radius: 3px; }
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 7px; }
+  ::-webkit-scrollbar-track { background: #030712; }
+  ::-webkit-scrollbar-thumb { background: #1d4ed8; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
 </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
+<body class="bg-gray-950 text-gray-100 min-h-screen selection:bg-blue-700">
 
-<!-- ==================== WELCOME SPLASH ==================== -->
-<div id="welcome-splash" role="status" aria-label="Ładowanie strony">
-  <div class="text-center px-6">
+<!-- ==================== WELCOME SPLASH (v1.1.4) ==================== -->
+<div id="welcome-splash" role="status" aria-label="Ekran powitalny">
+  <div class="text-center px-6 animate-fadeIn">
     <div class="w-20 h-1.5 bg-blue-600 mx-auto mb-8 rounded-full"></div>
     <p class="text-gray-100 text-4xl md:text-6xl font-bold mb-4 tracking-tight">
       Dobrze, że jesteś.
@@ -95,316 +110,514 @@
   </div>
 </div>
 
-<!-- ==================== CC TOP NAV ==================== -->
-<div id="cc-nav" class="fixed top-0 left-0 right-0 z-50 py-2 px-4 flex items-center justify-between">
-  <a href="https://polskieradio.cc" class="flex items-center gap-2 group">
+<!-- ==================== TOP NAVIGATION BAR ==================== -->
+<div id="cc-nav" class="fixed top-0 left-0 right-0 z-50 py-2.5 px-4 flex items-center justify-between">
+  <a href="https://polskieradio.cc" class="flex items-center gap-2 group min-h-[44px]">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="1.5"/>
-      <path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" fill="#3b82f6"/>
-      <path d="M2 12h3M19 12h3M12 2v3M12 19v3" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="12" cy="12" r="10" stroke="#38bdf8" stroke-width="1.8"/>
+      <path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" fill="#38bdf8"/>
+      <path d="M2 12h3M19 12h3M12 2v3M12 19v3" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
     </svg>
-    <span class="text-xs font-semibold tracking-widest text-gray-400 group-hover:text-blue-400 transition-colors uppercase">PolskieRadio.cc</span>
+    <span class="text-xs font-semibold tracking-widest text-gray-300 group-hover:text-blue-400 transition-colors uppercase">PolskieRadio.cc</span>
   </a>
-  <a href="https://polskieradio.cc" class="text-xs text-gray-500 hover:text-gray-300 transition-colors flex items-center gap-1">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-    Powrót do radia
-  </a>
+
+  <!-- INTEGRACJA Z PROFILEM LUMINA (PAWEŁ MURAWSKI) -->
+  <div class="flex items-center gap-3">
+    <a href="https://polskieradio.cc/pawelmurawski"
+       class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-900/60 to-sky-900/60 border border-blue-500/40 text-blue-200 hover:text-white hover:border-blue-400 transition-all text-xs font-bold shadow-sm min-h-[44px]"
+       title="Otwórz oficjalny profil Pawła Murawskiego w portalu społecznościowym LUMINA">
+      <img src="avatar_pawel_murawski.jpg" alt="Paweł Murawski" class="w-5 h-5 rounded-full object-cover border border-sky-400" onerror="this.src='https://lh3.googleusercontent.com/d/1uSUhnXOFGkMn5T6OQTh0PBswdQfSVJmk'">
+      <span>Mój Profil na LUMINA</span>
+      <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-sky-400"></i>
+    </a>
+
+    <a href="https://polskieradio.cc" class="text-xs text-gray-400 hover:text-gray-200 transition-colors flex items-center gap-1 min-h-[44px] px-2 hidden sm:inline-flex">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Radio CC
+    </a>
+  </div>
 </div>
 
-<!-- ==================== MAIN HEADER ==================== -->
-<header class="pt-16 py-6 bg-gray-900 shadow-md text-gray-100 sticky top-8 z-40">
+<!-- ==================== MAIN HEADER (v1.1.4) ==================== -->
+<header class="pt-20 pb-6 bg-gray-900 shadow-md text-gray-100 sticky top-0 z-40 border-b border-gray-800/80">
   <div class="container mx-auto px-4 text-center">
     <h1 class="text-xl md:text-2xl font-bold tracking-wide">
       Paweł Murawski
-      <span class="block text-sm md:text-base font-normal text-blue-400 tracking-widest uppercase mt-0.5">
-        Holistyczny Coaching · Biblijne Wsparcie
+      <span class="block text-sm md:inline md:ml-3 md:text-base font-normal text-blue-400 tracking-widest uppercase mt-0.5">
+        Holistyczny Coaching · W Duchu Biblijnym
       </span>
     </h1>
   </div>
 </header>
 
-<!-- ==================== MAIN CONTENT ==================== -->
+<!-- ==================== MAIN CONTENT (v1.1.4) ==================== -->
 <main>
-  <div class="container mx-auto px-4 py-12 lg:py-20">
+  <div class="container mx-auto px-4 py-10 lg:py-16">
 
-    <!-- HERO: Profile card + Description -->
-    <div class="relative flex flex-col lg:flex-row gap-12 items-start">
+    <!-- HERO SECTION -->
+    <section id="hero" class="mb-24 lg:mb-32">
+      <div class="relative flex flex-col lg:flex-row gap-12 items-start">
 
-      <!-- PROFILE CARD (sticky on desktop) -->
-      <div class="w-full lg:w-5/12 lg:sticky lg:top-32 z-10">
-        <div class="relative mx-auto max-w-sm lg:max-w-none bg-gray-800 rounded-[2.5rem] shadow-2xl text-center border border-gray-700 overflow-visible">
+        <!-- ── KOLUMNA Z KARTĄ PROFILOWĄ (STICKY) ── -->
+        <div class="w-full lg:w-5/12 lg:sticky lg:top-28 z-10">
+          <div class="relative mx-auto max-w-sm lg:max-w-none bg-gray-800 rounded-[2.5rem] shadow-2xl text-center border border-gray-700 overflow-visible">
 
-          <!-- Card header background -->
-          <div class="h-40 relative rounded-t-[2.5rem] overflow-hidden">
-            <div class="card-bg absolute inset-0 bg-cover bg-center"
-                 style="background-image: url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=1000&auto=format&fit=crop')"
-                 aria-hidden="true"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-800 via-transparent to-black/20" aria-hidden="true"></div>
-          </div>
-
-          <!-- Profile photo -->
-          <div class="absolute left-1/2 -translate-x-1/2 top-24 z-30 p-1.5 bg-gray-800 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.6)] ring-1 ring-gray-700">
-            <div class="w-32 h-32 rounded-full border-4 border-blue-600 overflow-hidden shadow-inner transition-all duration-300 hover:border-blue-400">
-              <img
-                src="https://lh3.googleusercontent.com/d/1uSUhnXOFGkMn5T6OQTh0PBswdQfSVJmk"
-                alt="Paweł Murawski – Coach Holistyczny"
-                class="h-full w-full object-cover object-top"
-                loading="eager"
-                onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'"
-              >
-            </div>
-          </div>
-
-          <!-- Card body -->
-          <div class="pt-20 pb-8 px-6">
-            <h2 class="text-2xl font-bold text-gray-50 mb-1">Paweł Murawski</h2>
-            <p class="text-blue-400 text-sm font-semibold tracking-widest uppercase mb-5">Coach Holistyczny</p>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 justify-center mb-6">
-              <span class="bg-blue-900/30 text-blue-400 text-xs font-semibold px-3 py-1 rounded-full border border-blue-800/40">Rozwój Duchowy</span>
-              <span class="bg-purple-900/30 text-purple-400 text-xs font-semibold px-3 py-1 rounded-full border border-purple-800/40">Uzależnienia</span>
-              <span class="bg-emerald-900/30 text-emerald-400 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-800/40">Kryzysy Życiowe</span>
-              <span class="bg-amber-900/30 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full border border-amber-800/40">Biblijne Wsparcie</span>
+            <!-- Nagłówek karty z tłem tematycznym -->
+            <div class="h-40 relative rounded-t-[2.5rem] overflow-hidden">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
+                   style="background-image: url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=1000&auto=format&fit=crop')"
+                   aria-hidden="true"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-gray-800 via-transparent to-black/20" aria-hidden="true"></div>
             </div>
 
-            <!-- Contact quick links in card -->
-            <div class="flex flex-col gap-3">
-              <a href="tel:+48730958583"
-                class="flex items-center justify-center gap-2 bg-green-900/20 hover:bg-green-900/40 text-green-400 text-sm font-semibold py-3 px-4 rounded-xl border border-green-800/30 transition-all duration-200 hover:-translate-y-0.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.44 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-                +48 730 958 583
-              </a>
-              <a href="mailto:kontakt@coachholistyczny.pl"
-                class="flex items-center justify-center gap-2 bg-blue-900/20 hover:bg-blue-900/40 text-blue-400 text-sm font-semibold py-3 px-4 rounded-xl border border-blue-800/30 transition-all duration-200 hover:-translate-y-0.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                kontakt@coachholistyczny.pl
-              </a>
-              <a href="https://www.coachholistyczny.pl" target="_blank" rel="noopener"
-                class="flex items-center justify-center gap-2 bg-gray-700/40 hover:bg-gray-700/70 text-gray-300 text-sm font-semibold py-3 px-4 rounded-xl border border-gray-600/30 transition-all duration-200 hover:-translate-y-0.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                www.coachholistyczny.pl
-              </a>
+            <!-- Zdjęcie profilowe (z opcją interaktywnej zmiany w v1.1.4) -->
+            <div class="absolute left-1/2 -translate-x-1/2 top-24 z-30 p-1.5 bg-gray-800 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.6)] ring-1 ring-gray-700">
+              <div id="avatarContainer"
+                   class="w-32 h-32 rounded-full border-4 border-blue-600 cursor-pointer overflow-hidden flex items-center justify-center shadow-inner group transition-all duration-300 hover:border-blue-400 hover:shadow-blue-500/20"
+                   onclick="document.getElementById('avatarFileInput').click()"
+                   tabindex="0"
+                   role="button"
+                   aria-label="Kliknij, aby wgrać własne zdjęcie profilowe">
+                <img id="avatarImg"
+                     src="https://lh3.googleusercontent.com/d/1uSUhnXOFGkMn5T6OQTh0PBswdQfSVJmk"
+                     alt="Paweł Murawski"
+                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                     onerror="this.src='avatar_pawel_murawski.jpg'">
+                <input type="file"
+                       id="avatarFileInput"
+                       class="hidden"
+                       accept="image/*"
+                       onchange="handleAvatarUpload(event)"
+                       aria-label="Prześlij nowe zdjęcie profilowe">
+              </div>
+            </div>
+
+            <div class="px-8 pt-24 pb-8">
+              <h3 class="text-2xl font-bold text-gray-100 tracking-tight">Paweł Murawski</h3>
+              <p class="text-blue-400 font-medium italic mt-1 uppercase text-xs tracking-[0.2em]">Holistyczny Coach Biblijny</p>
+
+              <!-- Trzy filary: Ciało • Dusza • Duch (v1.1.4) -->
+              <div class="mt-6 flex justify-center gap-2.5 flex-wrap">
+                <span class="px-4 py-1.5 bg-blue-900/40 text-blue-200 text-[11px] uppercase font-bold rounded-full border border-blue-700/30 backdrop-blur-sm shadow-sm">Ciało</span>
+                <span class="px-4 py-1.5 bg-blue-900/40 text-blue-200 text-[11px] uppercase font-bold rounded-full border border-blue-700/30 backdrop-blur-sm shadow-sm">Dusza</span>
+                <span class="px-4 py-1.5 bg-blue-900/40 text-blue-200 text-[11px] uppercase font-bold rounded-full border border-blue-700/30 backdrop-blur-sm shadow-sm">Duch</span>
+              </div>
+
+              <!-- ── INTEGRACJA DWUSTRONNA Z PORTALEM LUMINA ── -->
+              <div class="mt-7 pt-6 border-t border-gray-700/60">
+                <a href="https://polskieradio.cc/pawelmurawski"
+                   class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-700 via-sky-600 to-blue-600 hover:from-blue-600 hover:to-sky-500 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 border border-sky-400/30 min-h-[44px]">
+                  <i class="fa-solid fa-users text-sky-200 text-base"></i>
+                  <span>Zobacz mój profil na LUMINA</span>
+                  <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+                </a>
+                <p class="text-[11px] text-gray-400 mt-2">
+                  Społeczność Wiary • Wiadomości • Świadectwo na portalu LUMINA
+                </p>
+              </div>
+
+              <!-- Szybkie kontakty w karcie -->
+              <div class="mt-6 flex flex-col gap-2.5">
+                <a href="tel:+48730958583"
+                   class="flex items-center justify-center gap-2.5 bg-green-950/40 hover:bg-green-900/50 text-green-300 text-sm font-semibold py-3 px-4 rounded-xl border border-green-800/40 transition-all duration-200 hover:-translate-y-0.5 min-h-[44px]">
+                  <i class="fa-solid fa-phone text-green-400"></i>
+                  <span>+48 730 958 583</span>
+                </a>
+                <a href="mailto:kontakt@coachholistyczny.pl"
+                   class="flex items-center justify-center gap-2.5 bg-blue-950/40 hover:bg-blue-900/50 text-blue-300 text-sm font-semibold py-3 px-4 rounded-xl border border-blue-800/40 transition-all duration-200 hover:-translate-y-0.5 min-h-[44px]">
+                  <i class="fa-solid fa-envelope text-blue-400"></i>
+                  <span>kontakt@coachholistyczny.pl</span>
+                </a>
+                <a href="https://www.coachholistyczny.pl" target="_blank" rel="noopener"
+                   class="flex items-center justify-center gap-2.5 bg-gray-900/50 hover:bg-gray-700/50 text-gray-300 text-sm font-semibold py-3 px-4 rounded-xl border border-gray-700/40 transition-all duration-200 hover:-translate-y-0.5 min-h-[44px]">
+                  <i class="fa-solid fa-globe text-gray-400"></i>
+                  <span>www.coachholistyczny.pl</span>
+                </a>
+              </div>
+
             </div>
           </div>
         </div>
 
-        <!-- VERSE OF THE DAY (below card on desktop) -->
-        <div class="mt-8 bg-gray-800 p-8 rounded-3xl shadow-lg text-center border-t-8 border-blue-600 transition hover:shadow-2xl hover:shadow-blue-900/20">
-          <h3 class="text-xs font-bold text-blue-400 mb-4 uppercase tracking-widest">Słowo dla Twojego serca</h3>
-          <div id="verse-display" class="min-h-[100px] flex flex-col justify-center">
-            <p class="text-gray-500 italic text-sm">Kliknij przycisk, aby otrzymać Słowo od Boga na dziś.</p>
+        <!-- ── KOLUMNA Z TEKSTEM I KARTAMI CECH (v1.1.4) ── -->
+        <div class="w-full lg:w-7/12 space-y-10 py-2">
+
+          <!-- TYPEWRITER HERO HEADLINE (v1.1.4) -->
+          <div class="prose prose-invert lg:prose-xl max-w-none">
+            <h2 id="typewriterHeadline" class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-50 leading-[1.15] mb-6 min-h-[100px] md:min-h-[130px] text-center lg:text-left tracking-tight">
+              <!-- Renderowane dynamicznie przez skrypt Typewriter -->
+            </h2>
+
+            <!-- OPIS GŁÓWNY W RAMCE GLASSMORPHISM -->
+            <div class="bg-gray-800/80 backdrop-blur-md p-8 md:p-10 rounded-[2.5rem] shadow-2xl border border-gray-700/50 leading-relaxed text-gray-300 text-base md:text-lg relative overflow-hidden mx-auto">
+              <div class="absolute top-0 right-0 w-36 h-36 bg-blue-500/10 blur-3xl rounded-full pointer-events-none"></div>
+              <p class="whitespace-pre-line relative z-10 font-light text-center lg:text-left leading-relaxed">
+Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym. Odzyskaj harmonię i wewnętrzną wolność dzięki wsparciu, które łączy rozwój duchowy, fizyczny i emocjonalny. W swojej pracy kieruję się mądrością Pisma Świętego, pomagając odnaleźć spokój i nową drogę życia. 
+
+Specjalizuję się w profesjonalnym wsparciu dla osób:
+• pragnących całościowego rozwoju osobistego,
+• zmagających się z uzależnieniami (alkoholizm, narkomania, hazard, seksoholizm),
+• szukających wyjścia z życiowych kryzysów.
+
+Razem odkrywamy Boży plan dla Twojego życia.
+              </p>
+            </div>
           </div>
-          <button id="verse-btn" onclick="showVerse()"
-            class="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-sm font-bold rounded-full shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            ✦ Nowy werset
+
+          <!-- DWIE KARTY FOTOREALISTYCZNE Z CECHAMI (v1.1.4) -->
+          <div class="grid grid-cols-1 gap-8">
+
+            <!-- Karta 1: Fundament Biblijny -->
+            <div class="group relative min-h-[300px] md:min-h-[320px] rounded-[3rem] shadow-2xl overflow-hidden transition-all duration-500 hover:shadow-blue-600/20 border border-gray-700/40">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                   style="background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800')"
+                   aria-hidden="true"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-black/85 via-black/50 to-transparent"></div>
+
+              <div class="relative h-full flex flex-col p-8 md:p-12 z-10">
+                <!-- Ikona Zakładki (Bookmark) -->
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl ring-4 ring-blue-600/20 group-hover:bg-blue-500 transition-colors">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 5c0-1.103.897-2 2-2h10c1.103 0 2 .897 2 2v16.192l-7-3.5-7 3.5V5z" />
+                  </svg>
+                </div>
+
+                <div class="mt-auto">
+                  <h4 class="text-2xl md:text-3xl font-extrabold text-white mb-3 tracking-tight">Fundament Biblijny</h4>
+                  <p class="text-gray-100 text-base md:text-lg font-medium leading-relaxed opacity-95 max-w-xl">
+                    Opieramy Twój rozwój na ponadczasowej prawdzie Słowa Bożego.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Karta 2: Pełna Wolność -->
+            <div class="group relative min-h-[300px] md:min-h-[320px] rounded-[3rem] shadow-2xl overflow-hidden transition-all duration-500 hover:shadow-blue-600/20 border border-gray-700/40">
+              <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                   style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800')"
+                   aria-hidden="true"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-black/85 via-black/50 to-transparent"></div>
+
+              <div class="relative h-full flex flex-col p-8 md:p-12 z-10">
+                <!-- Ikona Uśmiechu (Smile) -->
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl ring-4 ring-blue-600/20 group-hover:bg-blue-500 transition-colors">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
+                    <circle cx="8.5" cy="10.5" r="1.5" />
+                    <circle cx="15.5" cy="10.5" r="1.5" />
+                    <path d="M12 18c2.28 0 4.37-1.1 5.7-2.71l-1.45-1.04C15.17 15.5 13.68 16 12 16s-3.17-.5-4.25-1.75l-1.45 1.04C7.63 16.9 9.72 18 12 18z" />
+                  </svg>
+                </div>
+
+                <div class="mt-auto">
+                  <h4 class="text-2xl md:text-3xl font-extrabold text-white mb-3 tracking-tight">Pełna Wolność</h4>
+                  <p class="text-gray-100 text-base md:text-lg font-medium leading-relaxed opacity-95 max-w-xl">
+                    Pracujemy nad wyjściem z nałogów i kryzysów ku radosnemu życiu.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CYTAT ZACHĘTY (v1.1.4) -->
+          <div class="bg-blue-900/15 border border-blue-800/40 p-8 rounded-[2.5rem] text-center backdrop-blur-sm shadow-inner">
+            <p class="text-blue-300 font-medium italic text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+              „Wierzę, że nie ma sytuacji bez wyjścia. Z Jezusem każda ciemność staje się światłem. Pozwól, że pomogę Ci je odnaleźć.”
+            </p>
+            <div class="mt-3 text-xs uppercase font-bold tracking-widest text-blue-400/80">Paweł Murawski</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SEKCJA SŁOWA BOŻEGO: VERSE OF THE DAY (v1.1.4) ── -->
+    <section id="verse" class="mb-24 lg:mb-32">
+      <div class="relative max-w-2xl mx-auto">
+        <div class="absolute inset-0 bg-blue-600/10 blur-3xl rounded-full pointer-events-none"></div>
+        <div class="relative bg-gray-800 p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center border-t-8 border-blue-600 border border-gray-700/60 transform transition hover:shadow-blue-900/20">
+          <h3 class="text-2xl md:text-3xl font-bold text-blue-400 mb-6 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bible"></i> Słowo dla Twojego serca
+          </h3>
+          <div id="verseDisplay" class="min-h-[120px] flex flex-col justify-center">
+            <p class="text-gray-400 text-base md:text-lg">
+              Zatrzymaj się na chwilę. Pozwól Słowu Bożemu Cię odświeżyć i umocnić.
+            </p>
+          </div>
+          <button id="verseBtn"
+                  onclick="handleGetRandomVerse()"
+                  class="mt-8 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold py-4 px-10 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 shadow-xl uppercase tracking-widest text-xs md:text-sm min-h-[44px]">
+            <span id="verseBtnLabel">✦ Odbierz inspirację</span>
           </button>
         </div>
       </div>
+    </section>
 
-      <!-- DESCRIPTION COLUMN -->
-      <div class="w-full lg:w-7/12 space-y-10">
+    <!-- ── SEKCJA KONTAKTU: CONTACT CARD (v1.1.4 + LUMINA) ── -->
+    <section id="contact" class="mb-20">
+      <div class="relative z-10 bg-gray-800 p-8 md:p-12 rounded-[3rem] shadow-2xl text-center mx-auto max-w-4xl border border-gray-700/60">
+        <h3 class="text-3xl md:text-4xl font-extrabold text-blue-400 mb-4 tracking-tight">Zacznijmy rozmowę</h3>
+        <p class="text-gray-300 mb-10 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+          Nie musisz przechodzić przez to sam. Jestem tu, by Cię wesprzeć w Twojej drodze do wolności i harmonii w Chrystusie.
+        </p>
 
-        <!-- Typewriter hero text -->
-        <div class="bg-gray-800/50 rounded-[2rem] p-8 md:p-10 border border-gray-700/50 shadow-xl">
-          <div class="w-12 h-1 bg-blue-600 mb-6 rounded-full"></div>
-          <p id="typewriter-el" class="text-gray-300 text-lg md:text-xl leading-relaxed min-h-[160px]"></p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+
+          <!-- Telefon -->
+          <a href="tel:+48730958583"
+             class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700/60 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-green-700/40 min-h-[44px]"
+             aria-label="Zadzwoń do Pawła Murawskiego pod numer +48 730 958 583">
+            <div class="w-16 h-16 bg-green-900/20 group-hover:bg-green-900/40 rounded-full flex items-center justify-center mb-4 transition-colors">
+              <svg class="w-8 h-8 text-green-500 group-hover:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-gray-100">Zadzwoń</span>
+            <span class="text-sm text-green-400 mt-1 font-semibold">+48 730 958 583</span>
+          </a>
+
+          <!-- E-mail -->
+          <a href="mailto:kontakt@coachholistyczny.pl"
+             class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700/60 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-blue-700/40 min-h-[44px]"
+             aria-label="Napisz e-mail do Pawła Murawskiego">
+            <div class="w-16 h-16 bg-blue-900/20 group-hover:bg-blue-900/40 rounded-full flex items-center justify-center mb-4 transition-colors">
+              <svg class="w-8 h-8 text-blue-400 group-hover:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-gray-100">Napisz e-mail</span>
+            <span class="text-sm text-blue-400 mt-1 underline break-all">kontakt@coachholistyczny.pl</span>
+          </a>
+
+          <!-- WWW -->
+          <a href="https://www.coachholistyczny.pl" target="_blank" rel="noopener"
+             class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700/60 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-gray-500/40 min-h-[44px]"
+             aria-label="Odwiedź stronę coachholistyczny.pl">
+            <div class="w-16 h-16 bg-gray-700/30 group-hover:bg-gray-600/40 rounded-full flex items-center justify-center mb-4 transition-colors">
+              <svg class="w-8 h-8 text-gray-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-gray-100">Strona Internetowa</span>
+            <span class="text-sm text-gray-300 mt-1">coachholistyczny.pl</span>
+          </a>
+
+          <!-- Dedykowana Karta Portalu LUMINA -->
+          <a href="https://polskieradio.cc/pawelmurawski"
+             class="group flex flex-col items-center justify-center bg-gradient-to-br from-blue-950/80 to-sky-950/80 hover:from-blue-900/90 hover:to-sky-900/90 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-sky-500/30 hover:border-sky-400 min-h-[44px]"
+             aria-label="Przejdź do profilu Pawła Murawskiego na portalu LUMINA">
+            <div class="w-16 h-16 bg-sky-500/20 group-hover:bg-sky-500/30 rounded-full flex items-center justify-center mb-4 transition-colors text-sky-400">
+              <i class="fa-solid fa-comments text-2xl"></i>
+            </div>
+            <span class="text-lg font-bold text-white flex items-center gap-1.5">
+              Portal LUMINA <i class="fa-solid fa-arrow-up-right-from-square text-xs text-sky-400"></i>
+            </span>
+            <span class="text-xs text-sky-300 mt-1 text-center">Napisz prywatną wiadomość w chrześcijańskiej sieci</span>
+          </a>
+
         </div>
-
-        <!-- Specjalizacje cards -->
-        <div>
-          <h2 class="text-2xl font-bold text-gray-100 mb-6">Obszary wsparcia</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-700/50 group hover:border-blue-700/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-32 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                   style="background-image: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800')"></div>
-              <div class="p-5">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="text-blue-400 text-xl">✝️</span>
-                  <h3 class="font-bold text-gray-100">Rozwój Duchowy</h3>
-                </div>
-                <p class="text-gray-400 text-sm leading-relaxed">Całościowy rozwój osobisty zakorzeniony w mądrości Pisma Świętego i Bożym planie dla Twojego życia.</p>
-              </div>
-            </div>
-
-            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-700/50 group hover:border-purple-700/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-32 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                   style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800')"></div>
-              <div class="p-5">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="text-purple-400 text-xl">🕊️</span>
-                  <h3 class="font-bold text-gray-100">Wyjście z Uzależnień</h3>
-                </div>
-                <p class="text-gray-400 text-sm leading-relaxed">Profesjonalne wsparcie dla osób zmagających się z alkoholizmem, narkomanią, hazardem i seksoholizmem.</p>
-              </div>
-            </div>
-
-            <div class="bg-gray-800 rounded-2xl shadow-lg border border-gray-700/50 hover:border-emerald-700/50 transition-all duration-300 hover:-translate-y-1 md:col-span-2">
-              <div class="p-5">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="text-emerald-400 text-xl">🌿</span>
-                  <h3 class="font-bold text-gray-100">Kryzysy Życiowe</h3>
-                </div>
-                <p class="text-gray-400 text-sm leading-relaxed">Pomoc w trudnych momentach życia — rozstania, utrata pracy, choroba, brak sensu. Razem odkrywamy nową drogę i Boże prowadzenie w Twoim życiu.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Bible verse highlight -->
-        <blockquote class="relative bg-gray-800/60 rounded-2xl p-8 border-l-4 border-blue-600 shadow-inner">
-          <p class="text-gray-200 text-lg italic leading-relaxed mb-3">
-            „Wszystko mogę w Chrystusie, który mnie umacnia."
-          </p>
-          <cite class="text-blue-400 text-sm font-semibold not-italic">Filipian 4:13 BW</cite>
-        </blockquote>
-
       </div>
-    </div>
-
-    <!-- CONTACT CTA -->
-    <div class="mt-20 relative z-10 bg-gray-800 p-8 md:p-12 rounded-[3rem] shadow-xl text-center mx-auto max-w-4xl border border-gray-700/50">
-      <h3 class="text-3xl md:text-4xl font-bold text-blue-400 mb-4">Zacznijmy rozmowę</h3>
-      <p class="text-gray-300 mb-10 text-lg max-w-2xl mx-auto">
-        Nie musisz przechodzić przez to sam. Jestem tu, by Cię wesprzeć w Twojej drodze do wolności.
-      </p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-
-        <a href="tel:+48730958583"
-          class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-green-700/40"
-          aria-label="Zadzwoń do Pawła Murawskiego pod numer +48 730 958 583">
-          <div class="w-16 h-16 bg-green-900/20 group-hover:bg-green-900/40 rounded-full flex items-center justify-center mb-4 transition-colors">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.44 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-          </div>
-          <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Telefon</span>
-          <span class="text-green-400 font-bold text-sm">+48 730 958 583</span>
-        </a>
-
-        <a href="mailto:kontakt@coachholistyczny.pl"
-          class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-blue-700/40"
-          aria-label="Napisz e-mail do Pawła Murawskiego">
-          <div class="w-16 h-16 bg-blue-900/20 group-hover:bg-blue-900/40 rounded-full flex items-center justify-center mb-4 transition-colors">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          </div>
-          <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">E-mail</span>
-          <span class="text-blue-400 font-bold text-xs break-all">kontakt@coachholistyczny.pl</span>
-        </a>
-
-        <a href="https://www.coachholistyczny.pl" target="_blank" rel="noopener"
-          class="group flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-700 p-6 rounded-2xl transition-all duration-300 shadow-md transform hover:-translate-y-1 border border-transparent hover:border-gray-500/40"
-          aria-label="Odwiedź stronę coachholistyczny.pl">
-          <div class="w-16 h-16 bg-gray-700/30 group-hover:bg-gray-600/40 rounded-full flex items-center justify-center mb-4 transition-colors">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Strona WWW</span>
-          <span class="text-gray-300 font-bold text-sm">coachholistyczny.pl</span>
-        </a>
-
-      </div>
-    </div>
+    </section>
 
   </div>
 </main>
 
-<!-- ==================== FOOTER ==================== -->
-<footer class="bg-gray-900 text-gray-100 mt-12">
-  <div class="py-10 text-center container mx-auto px-4 border-b border-gray-800/50">
+<!-- ==================== PŁYWAJĄCE PRZYCISKI KONTAKTOWE (v1.1.4) ==================== -->
+<div class="fixed bottom-6 right-6 flex flex-col space-y-4 md:bottom-10 md:right-10 z-50">
+  <!-- Pływający przycisk słuchawki telefonu - zielony pulsujący -->
+  <a href="tel:+48730958583"
+     class="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-green-500 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-green-400 min-h-[44px] min-w-[44px]"
+     aria-label="Zadzwoń do Pawła Murawskiego pod numer +48 730 958 583">
+    <svg class="w-8 h-8 animate-pulse-call" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+    </svg>
+  </a>
+
+  <!-- Pływający przycisk e-mail - biały -->
+  <a href="mailto:kontakt@coachholistyczny.pl"
+     class="w-16 h-16 bg-white text-gray-900 rounded-full flex items-center justify-center shadow-2xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300 min-h-[44px] min-w-[44px]"
+     aria-label="Wyślij e-mail do Pawła Murawskiego na adres kontakt@coachholistyczny.pl">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+    </svg>
+  </a>
+</div>
+
+<!-- ==================== FOOTER (v1.1.4) ==================== -->
+<footer class="bg-gray-900 text-gray-100 mt-16 border-t border-gray-800">
+  <div class="py-10 text-center container mx-auto px-4 border-b border-gray-800/60">
     <div class="mb-6">
-      <div class="w-16 h-1 bg-blue-600 mx-auto mb-4"></div>
-      <p class="text-lg font-semibold italic text-blue-400 max-w-2xl mx-auto">
-        „Odkryj drogę do prawdziwej wolności i harmonii. Paweł Murawski jest gotowy, by Cię wesprzeć w tej podróży."
+      <div class="w-16 h-1 bg-blue-600 mx-auto mb-4 rounded-full"></div>
+      <p class="text-lg md:text-xl font-semibold italic text-blue-400 max-w-2xl mx-auto">
+        „Odkryj drogę do prawdziwej wolności i harmonii. Paweł Murawski jest gotowy, by Cię wesprzeć w tej podróży.”
       </p>
     </div>
-    <p class="text-sm opacity-50">
-      &copy; <span id="footer-year"></span> Paweł Murawski. Wszystkie prawa zastrzeżone.
+    <p class="text-sm opacity-60">
+      &copy; <span id="footerYear"></span> Paweł Murawski. Wszystkie prawa zastrzeżone.
     </p>
   </div>
-  <div class="py-6 text-center">
-    <a href="https://polskieradio.cc" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-400 transition-colors">
+  <div class="py-5 text-center flex items-center justify-center gap-4 flex-wrap text-xs text-gray-500">
+    <a href="https://polskieradio.cc" class="hover:text-blue-400 transition-colors flex items-center gap-1.5 min-h-[44px]">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/></svg>
       Część ekosystemu PolskieRadio.cc | Christian Culture
+    </a>
+    <span>•</span>
+    <a href="https://polskieradio.cc/pawelmurawski" class="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1 min-h-[44px]">
+      <i class="fa-solid fa-users"></i> Profil Pawła na portalu LUMINA
     </a>
   </div>
 </footer>
 
 <!-- ==================== JAVASCRIPT ==================== -->
 <script>
-// ---- Bible verses data ----
-var BIBLE_VERSES = [
+// ---- 1. Bible Verses Data (v1.1.4 - pełne 10 wersetów) ----
+const BIBLE_VERSES = [
   { text: "Wszystko mogę w Chrystusie, który mnie umacnia.", reference: "Filipian 4:13 BW" },
   { text: "Pan jest pasterzem moim, niczego mi nie zabraknie.", reference: "Psalm 23:1 BW" },
   { text: "Niech się nie trwoży serce wasze; wierzcie w Boga i we Mnie wierzcie.", reference: "Jan 14:1 BW" },
-  { text: "Wzywaj mnie, gdy jesteś w ucisku, a Ja cię wyratuję i będziesz Mi chwałę oddawał.", reference: "Psalm 50:15 BW" },
-  { text: "Szukajcie naprzód Królestwa Bożego i Jego sprawiedliwości, a wszystko inne będzie wam dodane.", reference: "Mateusza 6:33 BW" },
-  { text: "Ufaj Panu z całego serca, a nie polegaj na swoim rozumie; na wszystkich drogach swoich uznawaj Go, a On prostować będzie ścieżki twoje.", reference: "Przysłów 3:5-6 BW" },
-  { text: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny.", reference: "Jana 3:16 BW" },
+  { text: "A Bóg pokoju, który wskrzesił z martwych wielkiego Pasterza owiec przez krew przymierza wiecznego, Pana naszego Jezusa, niech was wyposaży we wszelkie dobro, abyście spełniali wolę jego, sprawując w was to, co miłe jest w oczach jego, przez Jezusa Chrystusa, któremu niech będzie chwała na wieki wieków. Amen.", reference: "Hebrajczyków 13:20-21 BW" },
+  { text: "Bo nie dał nam Bóg ducha bojaźni, lecz mocy i miłości, i trzeźwego myślenia.", reference: "2 Tymoteusza 1:7 BW" },
+  { text: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny.", reference: "Jan 3:16 BW" },
+  { text: "Nie lękaj się, bom Ja z tobą; nie trwóż się, bom Ja Bogiem twoim! Wzmacniam cię i wspomagam, podtrzymuję cię prawicą sprawiedliwości mojej.", reference: "Izajasz 41:10 BW" },
+  { text: "Przyjdźcie do Mnie wszyscy, którzy utrudzeni i obciążeni jesteście, a Ja wam dam ukojenie.", reference: "Mateusz 11:28 BW" },
+  { text: "Bóg, który jest bogaty w miłosierdzie, dla wielkiej miłości swojej, którą nas umiłował, i nas, którzy umarliśmy przez upadki, ożywił wraz z Chrystusem - łaską zbawieni jesteście.", reference: "Efezjan 2:4-5 BW" },
+  { text: "A ufność, którą mamy do Niego, polega na tym, że jeśli o coś prosimy według Jego woli, wysłuchuje nas.", reference: "1 Jana 5:14 BW" }
 ];
 
-// ---- Main description for typewriter ----
-var MAIN_DESCRIPTION = "Paweł Murawski – Holistyczny Coaching w Duchu Biblijnym. Odzyskaj harmonię i wewnętrzną wolność dzięki wsparciu, które łączy rozwój duchowy, fizyczny i emocjonalny. W swojej pracy kieruję się mądrością Pisma Świętego, pomagając odnaleźć spokój i nową drogę życia. Specjalizuję się w profesjonalnym wsparciu dla osób pragnących całościowego rozwoju osobistego, zmagających się z uzależnieniami (alkoholizm, narkomania, hazard, seksoholizm), szukających wyjścia z życiowych kryzysów. Razem odkrywamy Boży plan dla Twojego życia.";
+// ---- 2. Welcome Splash Screen (2500ms) ----
+window.addEventListener('DOMContentLoaded', () => {
+  const splash = document.getElementById('welcome-splash');
+  setTimeout(() => {
+    if (splash) {
+      splash.classList.add('hidden');
+    }
+  }, 2500);
 
-// ---- Welcome splash ----
-(function() {
-  var splash = document.getElementById('welcome-splash');
-  setTimeout(function() { splash.classList.add('hidden'); }, 2500);
-})();
+  // Footer Year
+  const yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ---- Footer year ----
-document.getElementById('footer-year').textContent = new Date().getFullYear();
+  // Wczytanie zapisanego zdjęcia awatara z localStorage
+  const savedAvatar = localStorage.getItem('pawel_murawski_custom_avatar');
+  if (savedAvatar) {
+    const avatarImg = document.getElementById('avatarImg');
+    if (avatarImg) avatarImg.src = savedAvatar;
+  }
 
-// ---- Typewriter effect ----
-(function() {
-  var el = document.getElementById('typewriter-el');
-  var i = 0;
-  var speed = 28;
-  var cursor = document.createElement('span');
-  cursor.className = 'tw-cursor text-blue-400 font-light';
-  cursor.textContent = '|';
+  // Uruchomienie Typewritera w nagłówku
+  initTypewriter();
+
+  // Inicjalne losowanie wersetu
+  handleGetRandomVerse();
+});
+
+// ---- 3. Typewriter Effect (v1.1.4: "Odzyskaj harmonię i zacznij żyć pełnią Bożego planu.") ----
+function initTypewriter() {
+  const headlineEl = document.getElementById('typewriterHeadline');
+  if (!headlineEl) return;
+
+  const fullText = "Odzyskaj harmonię i zacznij żyć pełnią Bożego planu.";
+  const highlightWord = "harmonię";
+  let charIndex = 0;
+  const speed = 55;
+
+  // Tworzymy kursor
+  const cursor = document.createElement('span');
+  cursor.className = 'tw-cursor bg-blue-400 w-1.5 h-[1.1em] align-middle ml-1.5 inline-block';
+  cursor.textContent = '';
+
+  function renderCurrentText(currentString) {
+    headlineEl.innerHTML = '';
+    
+    if (currentString.includes(highlightWord)) {
+      const parts = currentString.split(highlightWord);
+      headlineEl.appendChild(document.createTextNode(parts[0]));
+      
+      const span = document.createElement('span');
+      span.className = 'text-blue-400';
+      span.textContent = highlightWord;
+      headlineEl.appendChild(span);
+
+      if (parts[1]) {
+        headlineEl.appendChild(document.createTextNode(parts[1]));
+      }
+    } else {
+      headlineEl.appendChild(document.createTextNode(currentString));
+    }
+    
+    headlineEl.appendChild(cursor);
+  }
 
   function type() {
-    if (i < MAIN_DESCRIPTION.length) {
-      el.textContent = MAIN_DESCRIPTION.slice(0, ++i);
-      el.appendChild(cursor);
+    if (charIndex <= fullText.length) {
+      renderCurrentText(fullText.slice(0, charIndex));
+      charIndex++;
       setTimeout(type, speed);
     } else {
-      setTimeout(function() { cursor.style.display = 'none'; }, 2000);
+      // Zakończenie pisania - kursor mruga
+      setTimeout(() => {
+        cursor.style.opacity = '0.5';
+      }, 3000);
     }
   }
 
-  setTimeout(type, 2700);
-})();
+  // Rozpoczęcie po schowaniu splash screena
+  setTimeout(type, 2600);
+}
 
-// ---- Verse of the day ----
-var lastVerseIndex = -1;
-function showVerse() {
-  var idx;
-  do { idx = Math.floor(Math.random() * BIBLE_VERSES.length); }
-  while (idx === lastVerseIndex && BIBLE_VERSES.length > 1);
+// ---- 4. Random Verse Generator (v1.1.4) ----
+let lastVerseIndex = -1;
+function handleGetRandomVerse() {
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * BIBLE_VERSES.length);
+  } while (idx === lastVerseIndex && BIBLE_VERSES.length > 1);
   lastVerseIndex = idx;
 
-  var v = BIBLE_VERSES[idx];
-  var display = document.getElementById('verse-display');
-  display.innerHTML = '';
+  const verse = BIBLE_VERSES[idx];
+  const display = document.getElementById('verseDisplay');
+  const btnLabel = document.getElementById('verseBtnLabel');
+  if (!display) return;
 
-  var wrapper = document.createElement('div');
-  wrapper.className = 'verse-text';
+  display.innerHTML = `
+    <div class="animate-fadeIn">
+      <p class="italic text-lg md:text-xl text-gray-200 leading-relaxed font-serif">
+        &bdquo;${verse.text}&rdquo;
+      </p>
+      <p class="mt-4 text-blue-400 font-bold tracking-wider text-sm uppercase">
+        — ${verse.reference}
+      </p>
+    </div>
+  `;
 
-  var text = document.createElement('p');
-  text.className = 'text-gray-200 text-lg italic font-light leading-relaxed mb-3';
-  text.textContent = '\u201e' + v.text + '\u201d';
+  if (btnLabel) {
+    btnLabel.textContent = "✦ Inne Słowo";
+  }
+}
 
-  var ref = document.createElement('cite');
-  ref.className = 'text-blue-400 text-xs font-bold not-italic tracking-wider uppercase';
-  ref.textContent = v.reference;
+// ---- 5. Uploading Custom Avatar (v1.1.4 handleImageUpload) ----
+function handleAvatarUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
 
-  wrapper.appendChild(text);
-  wrapper.appendChild(ref);
-  display.appendChild(wrapper);
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const avatarImg = document.getElementById('avatarImg');
+    if (avatarImg) {
+      avatarImg.src = dataUrl;
+    }
+    try {
+      localStorage.setItem('pawel_murawski_custom_avatar', dataUrl);
+    } catch (err) {
+      console.warn("Avatar too large for localStorage", err);
+    }
+  };
+  reader.readAsDataURL(file);
 }
 </script>
 
 </body>
-<!-- deployed 2026-09-22T11:22 -->
 </html>

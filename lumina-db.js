@@ -4925,9 +4925,9 @@ export function extractYouTubePlaylistId(url) {
 }
 
 export const LUMINA_HANDLES = {
-    'pawel': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'pawelmurawski': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'u_yciezywymbogiem_4231': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawel': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '🌿 Holistyczny Coaching' },
+    'pawelmurawski': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '🌿 Holistyczny Coaching' },
+    'u_yciezywymbogiem_4231': { slug: 'pawelmurawski', name: 'Paweł Murawski', url: 'lumina.pawelmurawski.html', avatar: 'avatar_pawel_murawski.jpg', badge: '🌿 Holistyczny Coaching' },
     'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
@@ -7256,7 +7256,7 @@ export const LuminaCommentsEngine = {
         { slug: 'ccmen', name: 'CC MEN', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota' },
         { slug: 'ccwomen', name: 'CC WOMEN', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kobieca Formacja' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎬 Partner Medialny' },
-        { slug: 'pawelmurawski', name: 'Paweł Murawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+        { slug: 'pawelmurawski', name: 'Paweł Murawski', avatar: 'avatar_pawel_murawski.jpg', badge: '🌿 Holistyczny Coaching' },
         { slug: 'magdalena', name: 'Magdalena', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' }
     ],
 
