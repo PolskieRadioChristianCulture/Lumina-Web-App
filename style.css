@@ -3326,7 +3326,8 @@ html {
     height: 100dvh !important;
     max-height: 100dvh !important;
     z-index: 99999 !important;
-    background: rgba(10, 11, 15, 0.98) !important;
+    background: #0a0b0f !important;
+    background-color: #0a0b0f !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -3513,6 +3514,8 @@ html {
 
 @media (max-width: 900px) {
     #actionsList {
+        background: #0a0b0f !important;
+        background-color: #0a0b0f !important;
         width: 100vw !important;
         height: 100vh !important;
         height: 100dvh !important;
