@@ -4717,6 +4717,26 @@
                     </div>
                 </div>
 
+                <!-- 11b-4. Mariusz „Złota Rączka” (Premier HeatFix • Wielka Brytania) -->
+                <div class="profile-card" id="card_profile_mariusz" data-profile-slug="mariusz" onclick="openCommunityProfile('mariusz')" data-category="mezczyzna spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;">
+                            <i class="fa-solid fa-fire" style="color:#000; font-size:0.65rem;"></i> GAS SAFE 🇬🇧
+                        </div>
+                        <img src="avatar_mariusz.jpg" onerror="this.src='lumina_icon.jpg'" alt="Mariusz Złota Rączka" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
+                        <button class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, 'mariusz', 'Mariusz Złota Rączka', 'avatar_mariusz.jpg')">
+                            <i class="fa-solid fa-bell"></i> OBSERWUJ
+                        </button>
+                        <button class="card-heart" onclick="toggleLike(event,this,'mariusz','Mariusz Złota Rączka','avatar_mariusz.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">97%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Mariusz „Złota Rączka”</div>
+                        <div class="card-city">📍 UK / Londyn • <span style="color:#f59e0b;font-weight:800;font-size:0.72rem;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.35);padding:2px 7px;border-radius:8px;">🛠️ Premier HeatFix</span></div>
+                        <div class="card-desc">"Premier HeatFix – Gas Safe Registered & Złota Rączka w UK. Uczciwość, rzetelność i wsparcie seniorów."</div>
+                    </div>
+                </div>
+
                 <!-- 11c. Urszula / Ula (Członkini Społeczności LUMINA • Kraków) -->
                 <div class="profile-card" id="card_profile_u_urszula_7685" data-profile-slug="u_urszula_7685" onclick="openCommunityProfile('u_urszula_7685')" data-category="kobieta spolecznosc" style="cursor:pointer;">
                     <div class="card-photo" style="position:relative;">
@@ -7034,6 +7054,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Wiara', isMission: true },
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Kobiety Christian Culture • Modlitwa 🌸', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Kobiety CC', isMission: false },
             { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'mariusz', name: 'Mariusz "Złota Rączka"', job: 'Premier HeatFix • Gas Safe & Złota Rączka 🇬🇧', city: 'Wielka Brytania (UK)', avatar: 'avatar_mariusz.jpg', badge: '🛠️ Złota Rączka', isMission: false },
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
             { slug: 'tomek', name: 'Tomasz', job: 'Społeczność LUMINA ✨', city: 'Gdańsk, Polska', avatar: 'avatar_widget_tomek.webp', badge: '✨ Społeczność', isMission: false },
@@ -7526,6 +7547,33 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 isVerified: true,
                 profileUrl: 'lumina-profile.html?u=u_yciezywymbogiem_4231'
             },
+            'mariusz': {
+                slug: 'mariusz',
+                name: 'Mariusz "Złota Rączka"',
+                city: 'Wielka Brytania (UK)',
+                gender: 'mezczyzna',
+                avatar: 'avatar_mariusz.jpg',
+                job: 'Premier HeatFix • Gas Safe & Złota Rączka 🇬🇧',
+                verse: '„Wszystko, cokolwiek czynicie, z serca wykonujcie jak dla Pana, a nie dla ludzi” (Kol 3, 23)',
+                bio: 'Premier HeatFix – Gas Safe Registered instalator i złota rączka w UK. 20+ lat doświadczenia, hydraulika, ogrzewanie, elektryka, wsparcie dla seniorów.',
+                matchScore: '97%',
+                isVerified: true,
+                profileUrl: 'lumina.mariusz.html'
+            },
+            'zlota-raczka': {
+                slug: 'mariusz',
+                name: 'Mariusz "Złota Rączka"',
+                city: 'Wielka Brytania (UK)',
+                avatar: 'avatar_mariusz.jpg',
+                profileUrl: 'lumina.mariusz.html'
+            },
+            'mariusz-zlota-raczka': {
+                slug: 'mariusz',
+                name: 'Mariusz "Złota Rączka"',
+                city: 'Wielka Brytania (UK)',
+                avatar: 'avatar_mariusz.jpg',
+                profileUrl: 'lumina.mariusz.html'
+            },
             'u_urszula_7685': {
                 slug: 'u_urszula_7685',
                 name: 'Urszula',
@@ -7820,6 +7868,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     'lumina', 'christianculture', 'christian_culture', 'portal_lumina', 'portallumina', 'radiochristianculture',
                     'jolawojcik', 'u_urszula_7685', 'urszula', 'ula', 'u_ula',
                     'zbyszekgieron', 'zofiadudek', 'u_yciezywymbogiem_4231', 'pawelmurawski', 'pawel', 'nhjyeuo4nxm8fifejphmi9rtqv12',
+                    'mariusz', 'zlota-raczka', 'mariusz-zlota-raczka',
                     'u_robertukaszpio_5668', 'robertukaszpio', 'robert',
                     'u_zytagrzesik_7502', 'zytagrzesik', 'zyta',
                     'u_mariankampa_mmsa', 'mariankampa_mmsa', 'mariankampa', 'marian',
@@ -7830,6 +7879,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     'cezary rogowski', 'wioletta rogowska', 'andrzej thiel', 'christian culture', 'polskie radio cc', 
                     'telewizja cctv', 'christian culture tv', 'cc men', 'cc women', 'studio dobrego słowa', 'osobowość plus', 
                     'noemi', 'dawid', 'weronika', 'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena',
+                    'mariusz', 'mariusz "złota rączka"', 'mariusz złota rączka',
                     'lumina', 'portal lumina', 'radio christian culture', 'misja christian culture',
                     'jola wójcik', 'jola wojcik',
                     'urszula', 'ula', 'urszula k.', 'zbyszek gieroń', 'zofia dudek', 'paweł murawski', 'pawel murawski',
@@ -8679,7 +8729,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             } catch(e) {}
 
             // 3. Aktywni uczestnicy czatu z bazy demo/społeczności
-            const activeChatSlugs = ['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'u_urszula_7685', 'urszula', 'ula', 'noemi', 'dawid', 'zbyszekgieron', 'pawelmurawski', 'radiocc'];
+            const activeChatSlugs = ['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'u_urszula_7685', 'urszula', 'ula', 'noemi', 'dawid', 'zbyszekgieron', 'pawelmurawski', 'mariusz', 'radiocc'];
             if (activeChatSlugs.some(s => cleanSlug.includes(s.replace(/^u_/, '')) || normSlug === s.replace(/^u_/, '').replace(/[^a-z0-9]/g, ''))) {
                 return true;
             }
@@ -8953,6 +9003,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (lower.includes('zbyszek') || lower.includes('gieron')) slug = 'zbyszekgieron';
             else if (lower.includes('zofia') || lower.includes('dudek')) slug = 'zofiadudek';
             else if (lower.includes('paweł') || lower.includes('pawel') || lower.includes('murawski')) slug = 'pawelmurawski';
+            else if (lower.includes('mariusz') || lower.includes('złot') || lower.includes('zlot') || lower.includes('rączk') || lower.includes('raczk') || lower.includes('heatfix')) slug = 'mariusz';
             else if (lower.includes('cezary')) slug = 'cezaryrgowski';
             else slug = lower.replace(/\s+/g, '');
 
@@ -8969,6 +9020,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
             else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
             else if (slug === 'pawelmurawski' || slug === 'pawel' || slug === 'u_yciezywymbogiem_4231' || slug.includes('murawski')) window.location.href = 'pawelmurawski';
+            else if (slug === 'mariusz' || slug === 'zlota-raczka' || slug === 'mariusz-zlota-raczka' || slug.includes('mariusz') || slug.includes('heatfix')) window.location.href = 'mariusz';
             else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
             else if (slug === 'jolawojcik' || slug === 'jola') window.location.href = 'lumina.jolawojcik.html';
             else if (slug === 'studiodobregoslowa') window.location.href = 'lumina.studiodobregoslowa.html';
@@ -11651,6 +11703,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Wiara', isMission: true },
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Kobiety Christian Culture • Modlitwa 🌸', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Kobiety CC', isMission: false },
             { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'mariusz', name: 'Mariusz "Złota Rączka"', job: 'Premier HeatFix • Gas Safe & Złota Rączka 🇬🇧', city: 'Wielka Brytania (UK)', avatar: 'avatar_mariusz.jpg', badge: '🛠️ Złota Rączka', isMission: false },
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
             { slug: 'tomek', name: 'Tomasz', job: 'Społeczność LUMINA ✨', city: 'Gdańsk, Polska', avatar: 'avatar_widget_tomek.webp', badge: '✨ Społeczność', isMission: false },
