@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOLOS – Platforma Rozwoju Osobistego, Uświęcenia i Zarządzania Czasem | PolskieRadio.cc</title>
-  <meta name="description" content="HOLOS – interaktywna platforma chrześcijańskiego rozwoju osobistego, uświęcenia i zarządzania czasem. Koło 5 sektorów życia, kalkulator szafarstwa, cykl słoneczny, Szabat w sobotę, AI Mentor Aura oraz Radio HOLOS.">
-  <meta name="keywords" content="HOLOS, rozwój osobisty, zarządzanie czasem, uświęcenie, szafarstwo, szabat sobota, cykl słoneczny, wiara, finanse biblijne, Christian Culture">
+  <meta name="description" content="HOLOS – interaktywna platforma chrześcijańskiego rozwoju osobistego, uświęcenia i zarządzania czasem. Koło 5 sektorów życia, kalkulator szafarstwa 10%, cykl słoneczny, Szabat w sobotę, AI Mentor Aura (z opcją własnego API), integracja z portalem LUMINA i Radio HOLOS.">
+  <meta name="keywords" content="HOLOS, rozwój osobisty, zarządzanie czasem, uświęcenie, szafarstwo, szabat sobota, cykl słoneczny, wiara, finanse biblijne, Christian Culture, LUMINA">
   <link rel="canonical" href="https://polskieradio.cc/holos">
   <meta name="robots" content="index, follow">
 
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polskieradio.cc/holos">
   <meta property="og:title" content="HOLOS – Platforma Rozwoju Osobistego i Uświęcenia Czasu">
-  <meta property="og:description" content="Interaktywny system zarządzania życiem w 5 sektorach. Cykl słoneczny, biblijny Szabat w sobotę, kalkulator szafarstwa i AI Mentor Aura.">
+  <meta property="og:description" content="Zarządzaj 5 sektorami życia w harmonii z Bogiem. Cykl słoneczny, Szabat w sobotę, kalkulator szafarstwa, AI Mentor Aura i integracja z LUMINA.">
   <meta property="og:image" content="https://polskieradio.cc/images/holos/holos_emblem.jpg">
   <meta property="og:locale" content="pl_PL">
   <meta property="og:site_name" content="PolskieRadio.cc – Christian Culture">
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HOLOS – Żywa Platforma Chrześcijańskiego Rozwoju">
-  <meta name="twitter:description" content="Zarządzaj 5 sektorami życia, uświęcaj czas w rytmie szabatu, rozwijaj talenty.">
+  <meta name="twitter:description" content="5 sektorów życia, uświęcenie czasu, Szabat w sobotę, AI Mentor Aura i logowanie przez portal LUMINA.">
   <meta name="twitter:image" content="https://polskieradio.cc/images/holos/holos_emblem.jpg">
 
   <!-- Pinterest verify -->
@@ -29,6 +29,12 @@
 
   <!-- Favicon -->
   <link rel="icon" href="/images/holos/img_holos_logo.jpg" type="image/jpeg">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Universal CC & LUMINA Google Auth Connector -->
+  <script src="/js/cc-global-auth.js" defer></script>
 
   <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
@@ -49,7 +55,7 @@
         "name": "HOLOS – Platforma Rozwoju Osobistego, Uświęcenia i Zarządzania Czasem",
         "url": "https://polskieradio.cc/holos",
         "applicationCategory": "LifestyleApplication",
-        "description": "Holistyczna chrześcijańska platforma zarządzania czasem, finansami i uświęceniem w 5 sektorach życia. Zawiera interaktywne Koło Życia, kalkulator szafarstwa, cykl słoneczny z biblijnym Szabatem w sobotę oraz radio internetowe.",
+        "description": "Holistyczna chrześcijańska platforma zarządzania czasem, finansami i uświęceniem w 5 sektorach życia. Zawiera interaktywne Koło Życia, kalkulator szafarstwa 10%, cykl słoneczny ze Szabatem w sobotę, AI Mentor Aura (z opcją własnego API) oraz integrację ze społecznością LUMINA.",
         "publisher": {
           "@type": "Organization",
           "name": "Christian Culture",
@@ -64,7 +70,7 @@
             "name": "Czym jest platforma HOLOS?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "HOLOS to chrześcijańska platforma osobistego rozwoju, uświęcenia i holistycznego zarządzania czasem. Integruje 5 kluczowych sektorów życia (Wiara, Relacje, Zdrowie, Finanse/Szafarstwo, Rozwój Talentów), kalkulator biblijnego podziału dóbr, zegar cyklu słonecznego z biblijnym Szabatem w sobotę, generator architektury dnia oraz radio internetowe na żywo."
+              "text": "HOLOS to chrześcijańska platforma osobistego rozwoju, uświęcenia i holistycznego zarządzania czasem. Integruje 5 kluczowych sektorów życia (Wiara, Relacje, Zdrowie, Finanse/Szafarstwo, Rozwój Talentów), kalkulator biblijnego szafarstwa 10%, zegar cyklu słonecznego z biblijnym Szabatem w sobotę, AI Mentora Aurę oraz radio internetowe na żywo."
             }
           },
           {
@@ -72,31 +78,23 @@
             "name": "Kiedy przypada biblijny Szabat (SABBATH) w HOLOS?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Biblijny Szabat (SABBATH) przypada w SOBOTĘ. Zgodnie z rachubą biblijną i cyklem słonecznym rozpoczyna się on w piątek o zachodzie słońca i trwa do zachodu słońca w sobotę. W tym czasie platforma HOLOS przełącza się w stan szabatowego odpoczynku, wyciszenia pracy, wyłączenia handlu i regeneracji duchowo-cielesnej."
+              "text": "Biblijny Szabat (SABBATH) to SOBOTA. Zgodnie z rachubą biblijną i cyklem słonecznym rozpoczyna się on w piątek o zachodzie słońca i trwa do zachodu słońca w sobotę. W tym czasie platforma HOLOS przełącza się w stan szabatowego odpoczynku, wyciszenia pracy, wyłączenia handlu i regeneracji duchowo-cielesnej."
             }
           },
           {
             "@type": "Question",
-            "name": "Jak działa interaktywne Koło Życia w HOLOS?",
+            "name": "Czy mogę podpiąć własne API do AI Mentora Aura?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Koło Życia pozwala ocenić wierność w 5 sektorach: Wiara (modlitwa, Słowo), Relacje (małżeństwo, rodzina), Zdrowie (ciało jako świątynia), Finanse (dziesięcina, oszczędności) oraz Rozwój (Deep Work, talenty). System oblicza całkowity wskaźnik harmonii (Holos Score) i pomaga zidentyfikować obszary wymagające wzmocnienia."
+              "text": "Tak, jest to dostępna funkcja na życzenie (Bring Your Own Key - BYOK). W panelu Mentora Aura możesz wprowadzić swój własny klucz Google Gemini API (AI Studio), co daje bezpośredni, nielimitowany dostęp do modeli Gemini Flash/Pro z własnymi promptami i pełną prywatnością."
             }
           },
           {
             "@type": "Question",
-            "name": "Co to jest kalkulator szafarstwa?",
+            "name": "Jak działa integracja z portalem LUMINA i logowanie Google?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "To narzędzie realizujące biblijną zasadę zarządzania finansami: oddanie 10% dziesięciny na cele Boże i wsparcie innych, odłożenie funduszu przezorności (oszczędności) oraz mądre zagospodarowanie budżetu domowego bez wpadania w niewolę długów."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Jak AI Mentor Aura pomaga w codziennym uświęceniu?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Aura analizuje obciążenie, poziom snu, wierność domowi i czas pracy, wydając jedną z czterech decyzji mentorskich: Intense Focus (głębokie skupienie), Rest (odpoczynek w Bogu), Tough Love (napomnienie w prawdzie) lub Encouragement (umocnienie w wierze)."
+              "text": "Logując się jednym kliknięciem przez Google za pośrednictwem portalu LUMINA, Twoje wyniki Koła Życia, intencje dnia i notatki szafarza synchronizują się z Twoim uniwersalnym kontem CC ID, dając dostęp do społeczności i czatu na tablicy LUMINA."
             }
           }
         ]
@@ -187,12 +185,27 @@
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0, 242, 254, 0.15);
     }
+    .card-img-zoom {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover .card-img-zoom {
+      transform: scale(1.05);
+    }
     .sabbath-active-theme {
       border-color: #38BDF8 !important;
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(155, 81, 224, 0.10)) !important;
     }
     input[type=range] {
       accent-color: #00F2FE;
+    }
+    /* Aura circular pulse */
+    .aura-orb-outer {
+      background: radial-gradient(circle, rgba(155, 81, 224, 0.4) 0%, rgba(79, 172, 254, 0.15) 50%, transparent 70%);
+      animation: auraPulse 4s ease-in-out infinite alternate;
+    }
+    @keyframes auraPulse {
+      0% { transform: scale(0.92); opacity: 0.7; }
+      100% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 30px rgba(155, 81, 224, 0.6)); }
     }
   </style>
 </head>
@@ -201,6 +214,8 @@
   <!-- ═══════════════════════════════════════════ CC TOP NAV BAR ═══ -->
   <nav class="cc-nav fixed top-0 left-0 right-0 z-50">
     <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      
+      <!-- Logo CC -->
       <a href="https://polskieradio.cc" class="flex items-center gap-2 text-sm text-text-secondary hover:text-holos-turquoise transition-colors font-medium">
         <svg class="w-4 h-4 text-holos-turquoise" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -210,31 +225,38 @@
       </a>
 
       <!-- Quick Jump Menu -->
-      <div class="hidden md:flex items-center gap-5 text-xs font-semibold text-text-secondary">
+      <div class="hidden lg:flex items-center gap-4 text-xs font-semibold text-text-secondary">
         <a href="#cykl-sloneczny" class="hover:text-holos-sky transition-colors flex items-center gap-1">
-          <span>☀️</span> Cykl Słoneczny & Szabat
+          <span>☀️</span> Szabat (Sobota)
+        </a>
+        <a href="#sektory-galeria" class="hover:text-holos-turquoise transition-colors flex items-center gap-1">
+          <span>🖼️</span> 5 Sektorów
         </a>
         <a href="#kolo-zycia" class="hover:text-holos-turquoise transition-colors flex items-center gap-1">
-          <span>☸️</span> Koło 5 Sektorów
+          <span>☸️</span> Koło Życia
         </a>
         <a href="#szafarstwo" class="hover:text-holos-gold transition-colors flex items-center gap-1">
           <span>💰</span> Szafarstwo 10%
         </a>
-        <a href="#generator-dnia" class="hover:text-holos-green transition-colors flex items-center gap-1">
-          <span>⏱️</span> Planer Uświęcenia
-        </a>
         <a href="#aura-mentor" class="hover:text-holos-purple transition-colors flex items-center gap-1">
-          <span>✦</span> AI Aura
+          <span>✦</span> AI Aura (BYOK)
+        </a>
+        <a href="#integracja-lumina" class="hover:text-cc-gold transition-colors flex items-center gap-1">
+          <span>🕊️</span> LUMINA
         </a>
       </div>
 
-      <div class="flex items-center gap-3">
+      <!-- Right Action Items: Auth & Radio -->
+      <div class="flex items-center gap-2.5">
+        <!-- Universal CC & LUMINA Auth Widget Mount -->
+        <div class="cc-auth-widget-container" data-cc-auth-mount></div>
+
         <a href="#radio" class="text-xs px-3 py-1.5 rounded-full bg-holos-turquoise/10 border border-holos-turquoise/30 text-holos-turquoise hover:bg-holos-turquoise/20 transition-all font-medium flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-holos-turquoise animate-ping"></span>
-          <span>Radio Live</span>
+          <span class="hidden sm:inline">Radio Live</span>
         </a>
-        <a href="https://polskieradio.cc/lumina" class="text-xs text-text-tertiary hover:text-cc-gold transition-colors hidden sm:inline">LUMINA</a>
       </div>
+
     </div>
   </nav>
 
@@ -272,18 +294,18 @@
 
       <!-- Subtitle -->
       <p class="text-base sm:text-xl font-normal text-text-secondary max-w-3xl mx-auto mb-8 leading-relaxed">
-        Kompletna, żywa platforma harmonii życia w Bogu. Koło 5 Sektorów, Biblijny Szabat w Sobotę, kalkulator szafarstwa 10%, generator uświęcenia dnia i AI Mentor Aura.
+        Kompletna platforma harmonii życia w Bogu. Koło 5 Sektorów, Biblijny Szabat w Sobotę, kalkulator szafarstwa 10%, AI Mentor Aura (z opcją własnego API) i pełna integracja z portalem LUMINA.
       </p>
 
       <!-- Key Action Buttons -->
       <div class="flex flex-wrap gap-4 justify-center items-center mb-10">
         <a href="#kolo-zycia"
            class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-sm sm:text-base hover:brightness-110 transition-all shadow-xl glow-turquoise flex items-center gap-2">
-          <span>☸️</span> Zbadaj Swoje Koło Życia
+          <span>☸️</span> Zbadaj Koło Życia
         </a>
-        <a href="#cykl-sloneczny"
-           class="px-7 py-3.5 rounded-2xl glassmorphism border border-holos-sky/40 text-holos-sky font-bold text-sm sm:text-base hover:bg-holos-sky/10 transition-all flex items-center gap-2">
-          <span>🕊️</span> Zegar Szabatowy (Sobota)
+        <a href="#aura-mentor"
+           class="px-7 py-3.5 rounded-2xl glassmorphism border border-holos-purple/40 text-purple-300 font-bold text-sm sm:text-base hover:bg-holos-purple/10 transition-all flex items-center gap-2">
+          <span>✦</span> AI Mentor Aura (Własne API)
         </a>
         <a href="#radio"
            class="px-7 py-3.5 rounded-2xl glassmorphism border border-white/15 text-white font-bold text-sm sm:text-base hover:border-holos-gold/60 hover:text-holos-gold transition-all flex items-center gap-2">
@@ -307,7 +329,7 @@
         </div>
         <div class="glassmorphism rounded-2xl p-3.5 border border-white/5 text-center">
           <div class="text-xs text-text-tertiary uppercase tracking-wider mb-1">AI Mentor Aura</div>
-          <div class="text-emerald-400 font-bold text-sm sm:text-base">Gemini Silnik Aktywny</div>
+          <div class="text-emerald-400 font-bold text-sm sm:text-base">Gemini Silnik / BYOK</div>
         </div>
       </div>
 
@@ -335,7 +357,6 @@
         
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
           
-          <!-- Sun Arc / Stage Indicator -->
           <div class="w-full md:w-1/2 text-center md:text-left">
             <div class="flex items-center gap-3 mb-2">
               <span id="sun-cycle-badge" class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-holos-sky/20 text-holos-sky border border-holos-sky/40">
@@ -352,7 +373,6 @@
               Czas budowania talentów, wykonywania powołania zawodowego i realizacji bloków Deep Work.
             </p>
 
-            <!-- Rules of the Current Phase -->
             <div id="sun-cycle-rules" class="space-y-2 text-xs">
               <div class="flex items-center gap-2 text-text-secondary">
                 <span class="text-holos-turquoise">✓</span>
@@ -369,7 +389,6 @@
             </div>
           </div>
 
-          <!-- Sabbath Countdown / Phase Gauge -->
           <div class="w-full md:w-1/2 flex flex-col items-center justify-center p-6 rounded-2xl bg-white/5 border border-white/5 text-center">
             <div class="text-xs uppercase tracking-widest text-text-tertiary font-bold mb-2">Do najbliższego Szabatu (Sobota):</div>
             <div id="countdown-display" class="text-3xl sm:text-4xl font-mono font-black text-holos-sky tracking-wider mb-2">
@@ -379,7 +398,6 @@
               Odliczanie do zachodu słońca w Piątek
             </div>
 
-            <!-- Manual Simulator Controls for testing doctrine -->
             <div class="pt-4 border-t border-white/10 w-full flex flex-col gap-2">
               <div class="text-[11px] text-text-tertiary">Przetestuj fazy cyklu w systemie:</div>
               <div class="flex flex-wrap gap-1.5 justify-center">
@@ -407,7 +425,176 @@
     </div>
   </section>
 
-  <!-- ═════════════════════════════════════════ MODUŁ: KOŁO 5 SEKTORÓW ŻYCIA ════════════════ -->
+  <!-- ═════════════════════════════════════════ MODUŁ: 5 SEKTORÓW ŻYCIA (WIZUALNA GALERIA HD) ═ -->
+  <section id="sektory-galeria" class="py-20 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism text-xs text-holos-gold font-semibold mb-4 border border-holos-gold/30">
+          ✦ Architektura Harmonijnego Życia
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+          5 Filarów Każdego Dnia
+        </h2>
+        <p class="text-text-secondary max-w-2xl mx-auto text-base sm:text-lg">
+          Człowiek to integralna całość. Zamiast chaosu i wiecznego braku czasu — uporządkowany rytm oparty na Bożych zasadach.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+
+        <!-- Sektor 1: Wiara -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-white/10 flex flex-col">
+          <div class="h-48 overflow-hidden relative">
+            <img src="/images/holos/holos_faith.jpg" alt="Wiara i Duchowość" class="w-full h-full object-cover card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-turquoise/40 text-[11px] font-bold text-holos-turquoise uppercase tracking-wider">
+              Sektor 1 · Fundament
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Wiara & Duchowość</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Poranny rytuał modlitwy, osobista lektura Pisma Świętego i wieczorny rachunek sumienia. Fundament, który nadaje sens wszystkim obowiązkom.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise font-medium">Poranny Rytuał</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise font-medium">Medytacja Słowa</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise font-medium">Monk Mode</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sektor 2: Relacje -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-white/10 flex flex-col">
+          <div class="h-48 overflow-hidden relative">
+            <img src="/images/holos/holos_family.jpg" alt="Relacje i Rodzina" class="w-full h-full object-cover card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-indigo/40 text-[11px] font-bold text-holos-indigo uppercase tracking-wider">
+              Sektor 2 · Przymierze
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Relacje & Rodzina</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Wierność małżeńska, uważna obecność przy dzieciach, budowanie wspólnoty i dialog. Czas z bliskimi wpisany w kalendarz jako święty priorytet.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo font-medium">Dialog Małżeński</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo font-medium">Wspólne Spacery</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo font-medium">Family Mode</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sektor 3: Zdrowie -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-white/10 flex flex-col">
+          <div class="h-48 overflow-hidden relative">
+            <img src="/images/holos/holos_health.jpg" alt="Zdrowie i Świątynia Ducha" class="w-full h-full object-cover card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-green/40 text-[11px] font-bold text-holos-green uppercase tracking-wider">
+              Sektor 3 · Świątynia
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Zdrowie & Ciało</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Twoje ciało to świątynia Ducha Świętego. Protokół regeneracji: świadomy ruch, dyscyplina odżywiania, higiena snu i wczesny rozruch poranny.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-green/10 text-holos-green font-medium">Dyscyplina Snu</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-green/10 text-holos-green font-medium">Ruch & Witalność</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-green/10 text-holos-green font-medium">Post Cyfrowy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sektor 4: Finanse / Szafarstwo -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-white/10 flex flex-col">
+          <div class="h-48 overflow-hidden relative">
+            <img src="/images/holos/holos_stewardship.jpg" alt="Biblijne Szafarstwo Finansowe" class="w-full h-full object-cover card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-gold/40 text-[11px] font-bold text-holos-gold uppercase tracking-wider">
+              Sektor 4 · Szafarstwo
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Finanse & Szafarstwo</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Pieniądze jako narzędzie Królestwa Bożego. Zasada 10% dziesięciny, transparentny budżet domowy, mądre oszczędności i wolność od długów.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-gold/10 text-holos-gold font-medium">Dziesięcina 10%</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-gold/10 text-holos-gold font-medium">Budżet Szafarza</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-gold/10 text-holos-gold font-medium">Oszczędności</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sektor 5: Rozwój / Deep Work -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-white/10 flex flex-col">
+          <div class="h-48 overflow-hidden relative">
+            <img src="/images/holos/holos_deepwork.jpg" alt="Rozwój Talentów i Deep Work" class="w-full h-full object-cover card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-purple/40 text-[11px] font-bold text-holos-purple uppercase tracking-wider">
+              Sektor 5 · Talenty
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Rozwój & Praca Głęboka</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Bloki Deep Work, rozwijanie darów i kompetencji rynkowych. Praca wykonywana z sercem „jak dla Pana”, dająca realną wartość społeczeństwu.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-purple/10 text-holos-purple font-medium">Deep Work (4h)</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-purple/10 text-holos-purple font-medium">Talenty i Misja</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-purple/10 text-holos-purple font-medium">Mistrzostwo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sabbath Mode Card -->
+        <div class="glassmorphism rounded-3xl overflow-hidden glass-card-hover border border-holos-sky/30 flex flex-col bg-gradient-to-b from-holos-sky/5 to-transparent">
+          <div class="h-48 overflow-hidden relative bg-slate-900 flex items-center justify-center">
+            <img src="/images/holos/holos_hero_bg.jpg" alt="Cykl Szabatowy" class="w-full h-full object-cover opacity-60 card-img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pure-black/70 backdrop-blur-md border border-holos-sky/40 text-[11px] font-bold text-holos-sky uppercase tracking-wider">
+              Rytm Słoneczny · Odpoczynek
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-4xl filter drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]">🕊️</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2 text-gradient-turquoise">Święty Szabat (Sobota)</h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Sobotni odpoczynek Pana. Wstrzymanie pracy i gonitwy za wynikami. Przełączenie w stan kontemplacji, ciszy, wspólnego stołu i odnowienia sił duchowych.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-holos-sky/10 text-holos-sky font-medium">Święty Spokój</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-sky/10 text-holos-sky font-medium">Brak Ekranów</span>
+              <span class="px-2.5 py-1 rounded-lg bg-holos-sky/10 text-holos-sky font-medium">Regeneracja</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════ MODUŁ: KOŁO 5 SEKTORÓW ŻYCIA (RADAR) ═════════ -->
   <section id="kolo-zycia" class="py-20 px-4 bg-gradient-to-b from-transparent via-surface/30 to-transparent">
     <div class="max-w-6xl mx-auto">
 
@@ -425,17 +612,14 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12">
         
-        <!-- Interactive Wheel Visualizer (Canvas/SVG Radar) -->
         <div class="lg:col-span-5 flex flex-col items-center justify-center glassmorphism rounded-3xl p-6 border border-white/10 text-center">
           <div class="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
             <svg id="wheel-svg" class="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-              <!-- Radar circles -->
               <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               <circle cx="100" cy="100" r="20" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               
-              <!-- Polygon filled -->
               <polygon id="wheel-polygon" points="100,100 100,100 100,100 100,100 100,100"
                        fill="rgba(0, 242, 254, 0.25)" stroke="#00F2FE" stroke-width="2"/>
             </svg>
@@ -449,10 +633,8 @@
           </div>
         </div>
 
-        <!-- 5 Sliders Controls -->
         <div class="lg:col-span-7 space-y-4">
           
-          <!-- Sektor 1: Wiara -->
           <div class="glassmorphism rounded-2xl p-4 border border-holos-turquoise/20">
             <div class="flex justify-between items-center mb-1">
               <div class="flex items-center gap-2">
@@ -465,7 +647,6 @@
             <div class="text-[11px] text-text-tertiary mt-1">Poranny rytuał modlitwy, lektura Słowa, rachunek sumienia</div>
           </div>
 
-          <!-- Sektor 2: Relacje -->
           <div class="glassmorphism rounded-2xl p-4 border border-holos-indigo/20">
             <div class="flex justify-between items-center mb-1">
               <div class="flex items-center gap-2">
@@ -478,7 +659,6 @@
             <div class="text-[11px] text-text-tertiary mt-1">Uważna obecność bez telefonu, dialog małżeński, dzieci</div>
           </div>
 
-          <!-- Sektor 3: Zdrowie -->
           <div class="glassmorphism rounded-2xl p-4 border border-holos-green/20">
             <div class="flex justify-between items-center mb-1">
               <div class="flex items-center gap-2">
@@ -491,7 +671,6 @@
             <div class="text-[11px] text-text-tertiary mt-1">Ciało jako świątynia Ducha: sen, nawodnienie, regularny ruch</div>
           </div>
 
-          <!-- Sektor 4: Finanse -->
           <div class="glassmorphism rounded-2xl p-4 border border-holos-gold/20">
             <div class="flex justify-between items-center mb-1">
               <div class="flex items-center gap-2">
@@ -504,7 +683,6 @@
             <div class="text-[11px] text-text-tertiary mt-1">Dziesięcina 10%, dyscyplina budżetu, oszczędności, brak długów</div>
           </div>
 
-          <!-- Sektor 5: Rozwój -->
           <div class="glassmorphism rounded-2xl p-4 border border-holos-purple/20">
             <div class="flex justify-between items-center mb-1">
               <div class="flex items-center gap-2">
@@ -561,7 +739,6 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           
-          <!-- Dziesięcina 10% -->
           <div class="p-5 rounded-2xl bg-holos-gold/10 border border-holos-gold/30 flex flex-col justify-between">
             <div>
               <div class="text-xs font-bold text-holos-gold uppercase tracking-wider mb-1">1. Dziesięcina (10%)</div>
@@ -571,7 +748,6 @@
             <div class="mt-3 text-[10px] text-holos-gold font-bold uppercase">Pierwszeństwo serca</div>
           </div>
 
-          <!-- Oszczędności 20% -->
           <div class="p-5 rounded-2xl bg-holos-green/10 border border-holos-green/30 flex flex-col justify-between">
             <div>
               <div class="text-xs font-bold text-holos-green uppercase tracking-wider mb-1">2. Oszczędności (20%)</div>
@@ -581,7 +757,6 @@
             <div class="mt-3 text-[10px] text-holos-green font-bold uppercase">Bezpieczeństwo domu</div>
           </div>
 
-          <!-- Budżet Życia 70% -->
           <div class="p-5 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between">
             <div>
               <div class="text-xs font-bold text-text-primary uppercase tracking-wider mb-1">3. Koszty Życia (70%)</div>
@@ -625,7 +800,6 @@
         </p>
       </div>
 
-      <!-- Generator Settings Form -->
       <div class="glassmorphism rounded-3xl p-6 sm:p-8 border border-white/10 mb-8">
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -658,14 +832,12 @@
           </div>
         </div>
 
-        <!-- Generated Time Blocks Checklist -->
         <div id="schedule-blocks-container" class="space-y-3">
           <!-- Dynamically populated -->
         </div>
 
       </div>
 
-      <!-- Notes and Intention Box -->
       <div class="glassmorphism rounded-3xl p-6 sm:p-8 border border-white/10">
         <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
           <span>✍️</span> Intencja Dnia & Zapiski Szafarza
@@ -692,88 +864,210 @@
     </div>
   </section>
 
-  <!-- ═════════════════════════════════════════ MODUŁ: AI MENTOR AURA ════════════════════════ -->
+  <!-- ═════════════════════════════════════════ MODUŁ: AI MENTOR AURA (BYOK & INTEGRACJA) ══════ -->
   <section id="aura-mentor" class="py-20 px-4 relative">
     <div class="max-w-5xl mx-auto">
 
-      <div class="glassmorphism rounded-3xl p-8 sm:p-12 border border-holos-purple/30 glow-purple relative overflow-hidden">
+      <!-- Główna karta Aury - Styl z uploaded screenshotu + Podpięcie własnego API -->
+      <div class="glassmorphism rounded-3xl p-6 sm:p-10 border border-holos-purple/40 glow-purple relative overflow-hidden bg-gradient-to-br from-surface via-[#14101e] to-surface">
         
-        <div class="flex flex-col lg:flex-row gap-10 items-center">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
           
-          <!-- Mentor Portrait -->
-          <div class="flex-shrink-0 relative">
-            <div class="relative w-56 sm:w-64 rounded-3xl overflow-hidden p-1 bg-gradient-to-br from-holos-purple via-holos-indigo to-holos-turquoise glow-purple">
-              <img
-                src="/images/holos/aura_portrait.jpg"
-                alt="Aura AI Mentor"
-                class="w-full h-72 sm:h-80 object-cover rounded-2xl"
-              >
-              <div class="absolute bottom-3 left-3 right-3 bg-pure-black/85 backdrop-blur-md rounded-xl p-3 border border-white/10 text-center">
-                <div class="flex items-center justify-center gap-2 text-xs font-bold text-white mb-0.5">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>Aura AI Mentor</span>
-                </div>
-                <div class="text-[11px] text-text-tertiary">Silnik Decyzyjny · Gemini Model</div>
+          <!-- Lewa kolumna: Glowing Orb z 4-ramienną gwiazdą (jak na zrzucie ekranu) oraz portret -->
+          <div class="flex-shrink-0 flex flex-col items-center">
+            <div class="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full aura-orb-outer"></div>
+              <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-[#5b21b6] via-[#3b82f6] to-[#06b6d4] flex items-center justify-center shadow-[0_0_50px_rgba(155,81,224,0.6)] border border-white/20">
+                <span class="text-white text-5xl sm:text-6xl drop-shadow-[0_0_20px_#fff]">✦</span>
               </div>
+            </div>
+            <!-- Subtelny avatar fotograficzny Mentora -->
+            <div class="mt-4 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-pure-black/60 border border-white/10 text-xs">
+              <img src="/images/holos/aura_portrait.jpg" alt="Aura Portrait" class="w-6 h-6 rounded-full object-cover border border-holos-turquoise">
+              <span class="text-white font-semibold">Aura</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             </div>
           </div>
 
-          <!-- Interactive Decision Generator -->
-          <div class="flex-1 text-center lg:text-left">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-holos-purple/10 border border-holos-purple/30 text-xs text-holos-purple font-semibold mb-4">
-              ✦ Silnik Decyzyjny Mentora
+          <!-- Prawa kolumna: Tytuł, opis i 4 kafelki (Intense Focus, Encouragement, Rest, Tough Love) -->
+          <div class="flex-1 text-center lg:text-left w-full">
+            
+            <!-- Badge z informacją o funkcji na życzenie (Własne API) -->
+            <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1 rounded-full bg-holos-purple/15 border border-holos-purple/40 text-xs text-purple-300 font-semibold mb-4">
+              <span>✦ Gemini AI · Intelligence Engine</span>
+              <span class="hidden sm:inline text-white/30">•</span>
+              <span class="text-holos-turquoise font-bold">Funkcja na życzenie: Z możliwością podpięcia własnego API</span>
             </div>
             
-            <h2 class="text-3xl sm:text-4xl font-black text-white mb-3">
-              Ocena Biometryczno-Duchowa
+            <!-- Nagłówek -->
+            <h2 class="text-3xl sm:text-5xl font-black text-white mb-3">
+              AI Mentor <span class="text-gradient-turquoise">Aura</span>
             </h2>
             
-            <p class="text-text-secondary text-sm leading-relaxed mb-6">
-              Aura analizuje Twój stan zmęczenia, obecność w domu i wierność zobowiązaniom, generując trafną decyzję:
+            <!-- Opis -->
+            <p class="text-text-secondary text-sm sm:text-base leading-relaxed mb-6">
+              Aura to inteligentny asystent życiowy napędzany przez Gemini AI. Analizuje Twój rytm dnia, poziom energii, wierność rodzinie i szafarstwo — a następnie wydaje spersonalizowaną decyzję na najbliższe godziny.
             </p>
 
-            <div class="grid grid-cols-2 gap-3 mb-6">
-              <div>
-                <label class="block text-[11px] text-text-tertiary mb-1">Godziny snu dzisiejszej nocy:</label>
-                <select id="aura-sleep" class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-3 py-2 text-white text-xs">
-                  <option value="4">Poniżej 5h (Deficyt snu)</option>
-                  <option value="6" selected>6 – 7h (Przeciętny)</option>
-                  <option value="8">8h+ (Pełna regeneracja)</option>
-                </select>
+            <!-- 4 Kafelki Stanów Mentora (dokładny układ z przesłanego zrzutu) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              
+              <!-- 1. Intense Focus -->
+              <div onclick="previewDecision('INTENSE_FOCUS')" class="cursor-pointer p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-holos-turquoise/40 hover:bg-white/10 transition-all text-left flex items-start gap-3">
+                <span class="text-amber-400 text-lg">⚡</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-turquoise uppercase tracking-wider">INTENSE FOCUS</div>
+                  <div class="text-xs text-text-secondary">Głęboka praca teraz</div>
+                </div>
               </div>
 
-              <div>
-                <label class="block text-[11px] text-text-tertiary mb-1">Czas dla rodziny w tym tygodniu:</label>
-                <select id="aura-family" class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-3 py-2 text-white text-xs">
-                  <option value="low">Krytycznie mały (praca dominuje)</option>
-                  <option value="medium" selected>Umiarkowany</option>
-                  <option value="high">Wysoki i uważny</option>
-                </select>
+              <!-- 2. Encouragement -->
+              <div onclick="previewDecision('ENCOURAGEMENT')" class="cursor-pointer p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-holos-gold/40 hover:bg-white/10 transition-all text-left flex items-start gap-3">
+                <span class="text-amber-300 text-lg">💛</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-gold uppercase tracking-wider">ENCOURAGEMENT</div>
+                  <div class="text-xs text-text-secondary">Utrzymaj kurs</div>
+                </div>
               </div>
+
+              <!-- 3. Rest -->
+              <div onclick="previewDecision('REST')" class="cursor-pointer p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-holos-sky/40 hover:bg-white/10 transition-all text-left flex items-start gap-3">
+                <span class="text-sky-300 text-lg">🌙</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-sky uppercase tracking-wider">REST</div>
+                  <div class="text-xs text-text-secondary">Czas na regenerację</div>
+                </div>
+              </div>
+
+              <!-- 4. Tough Love -->
+              <div onclick="previewDecision('TOUGH_LOVE')" class="cursor-pointer p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-holos-red/40 hover:bg-white/10 transition-all text-left flex items-start gap-3">
+                <span class="text-red-400 text-lg">🔥</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-red uppercase tracking-wider">TOUGH LOVE</div>
+                  <div class="text-xs text-text-secondary">Stań w prawdzie</div>
+                </div>
+              </div>
+
             </div>
 
-            <button onclick="requestAuraDecision()" class="w-full sm:w-auto px-7 py-3 rounded-2xl bg-holos-purple text-white font-extrabold text-sm hover:brightness-110 transition-all shadow-lg glow-purple">
-              ✦ Poproś Aurę o Werdykt Życiowy
-            </button>
-
-            <!-- Aura Live Decision Output Box -->
-            <div id="aura-output-box" class="mt-6 p-4 rounded-2xl bg-white/5 border border-holos-purple/40 text-left hidden">
-              <div class="flex items-center gap-2 mb-2">
-                <span id="aura-output-tone-badge" class="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-purple text-white">
-                  INTENSE FOCUS
+            <!-- Panel Funkcji na Życzenie: Własne API (BYOK - Google Gemini) -->
+            <div class="p-4 rounded-2xl bg-pure-black/50 border border-white/10 text-left">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">🔑</span>
+                  <span class="text-xs font-bold text-white">Podepnij Własny Klucz Gemini API (Funkcja na życzenie)</span>
+                </div>
+                <span id="api-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-text-tertiary">
+                  Tryb wbudowany
                 </span>
-                <span class="text-xs text-text-tertiary">Decyzja na najbliższe godziny:</span>
               </div>
-              <p id="aura-output-message" class="text-white text-sm leading-relaxed mb-3">
-                Wszystkie obszary szafarstwa pracują w synergii. Skoncentruj się na realizacji dzisiejszego powołania.
+              <p class="text-[11px] text-text-tertiary mb-3">
+                Wprowadź swój klucz z <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer" class="text-holos-turquoise underline">Google AI Studio</a>. Klucz zapisuje się wyłącznie w Twojej przeglądarce i umożliwia nielimitowane zapytania do modeli Gemini.
               </p>
-              <div id="aura-output-action" class="text-xs text-holos-turquoise font-semibold">
-                Rekomendowane działanie: 4h Deep Work bez powiadomień.
+              <div class="flex gap-2 mb-2">
+                <input type="password" id="gemini-api-key-input" placeholder="AIzaSy..."
+                       class="flex-1 bg-surface border border-white/15 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-holos-purple">
+                <button onclick="saveApiKey()" class="px-3.5 py-2 rounded-xl bg-holos-purple text-white font-bold text-xs hover:brightness-110 transition-all">
+                  Zapisz
+                </button>
+                <button onclick="clearApiKey()" class="px-3 py-2 rounded-xl bg-white/5 text-text-tertiary text-xs hover:text-white transition-all">
+                  Wyczyść
+                </button>
               </div>
+
+              <!-- Pole bezpośredniego zapytania do Aury -->
+              <div class="mt-3 pt-3 border-t border-white/5">
+                <label class="block text-[11px] text-text-secondary font-semibold mb-1">Zadaj pytanie Mentorowi Aura:</label>
+                <div class="flex gap-2">
+                  <input type="text" id="aura-question-input" placeholder="np. Aura, brakuje mi dyscypliny w modlitwie, od czego zacząć?"
+                         class="flex-1 bg-surface border border-white/15 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-holos-turquoise">
+                  <button onclick="askAuraCustom()" id="btn-ask-aura" class="px-4 py-2 rounded-xl bg-holos-turquoise text-pure-black font-extrabold text-xs hover:brightness-110 transition-all">
+                    Zapytaj
+                  </button>
+                </div>
+              </div>
+
+              <!-- Wyjście odpowiedzi Aury -->
+              <div id="aura-output-box" class="mt-4 p-4 rounded-xl bg-white/5 border border-holos-purple/40 text-left hidden">
+                <div class="flex items-center justify-between mb-2">
+                  <span id="aura-output-tone-badge" class="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-purple text-white">
+                    INTENSE FOCUS
+                  </span>
+                  <span id="aura-engine-tag" class="text-[10px] text-text-tertiary">Silnik Christian Culture</span>
+                </div>
+                <p id="aura-output-message" class="text-white text-sm leading-relaxed mb-2 font-medium">
+                  Wszystkie obszary szafarstwa pracują w synergii. Skoncentruj się na realizacji dzisiejszego powołania.
+                </p>
+                <div id="aura-output-action" class="text-xs text-holos-turquoise font-semibold">
+                  Rekomendowane: 4h Deep Work bez powiadomień.
+                </div>
+              </div>
+
             </div>
 
           </div>
 
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════ MODUŁ: PEŁNA INTEGRACJA Z LUMINA ═════════════ -->
+  <section id="integracja-lumina" class="py-20 px-4 bg-gradient-to-b from-surface/20 to-transparent relative">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="glassmorphism rounded-3xl p-8 sm:p-12 border border-cc-gold/30 glow-gold relative overflow-hidden bg-gradient-to-br from-surface via-[#181611] to-surface">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cc-gold/15 border border-cc-gold/30 text-xs text-amber-300 font-bold mb-3">
+            <span>🕊️</span> Pełna Integracja z Ekosystemem Christian Culture
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+            Logowanie Google dla <span class="text-gradient-gold">Pełnych Korzyści</span>
+          </h2>
+          <p class="text-text-secondary text-sm sm:text-base leading-relaxed">
+            Standardowo jak dla wszystkich podstron w ekosystemie (Radio, VOD, Dobrze że jesteś, Projektant): jedno logowanie Google przez portal LUMINA daje Ci pełną ciągłość profilu.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+            <div class="w-10 h-10 rounded-xl bg-cc-gold/10 text-cc-gold text-lg flex items-center justify-center mx-auto mb-2">☁️</div>
+            <div class="text-xs font-bold text-white mb-1">Chmura Koła Życia</div>
+            <div class="text-[11px] text-text-tertiary">Twoje oceny 5 sektorów nie znikają po wyczyszczeniu przeglądarki.</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+            <div class="w-10 h-10 rounded-xl bg-holos-turquoise/10 text-holos-turquoise text-lg flex items-center justify-center mx-auto mb-2">✍️</div>
+            <div class="text-xs font-bold text-white mb-1">Profil Szafarza</div>
+            <div class="text-[11px] text-text-tertiary">Intencje modlitewne i notatki powiązane z Twoim kontem CC ID.</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+            <div class="w-10 h-10 rounded-xl bg-holos-purple/10 text-holos-purple text-lg flex items-center justify-center mx-auto mb-2">💬</div>
+            <div class="text-xs font-bold text-white mb-1">Tablica Społeczności</div>
+            <div class="text-[11px] text-text-tertiary">Wspólne grupy wzrostu, świadectwa i czat z braćmi w wierze.</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 text-lg flex items-center justify-center mx-auto mb-2">🛡️</div>
+            <div class="text-xs font-bold text-white mb-1">Jedno CC ID</div>
+            <div class="text-[11px] text-text-tertiary">Dostęp do wszystkich narzędzi w polskieradio.cc bez haseł.</div>
+          </div>
+
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="window.ccLoginWithGoogle()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] text-pure-black font-extrabold text-sm sm:text-base hover:brightness-110 transition-all shadow-xl flex items-center justify-center gap-3">
+            <i class="fa-brands fa-google text-lg"></i>
+            <span>Zaloguj się przez Google (LUMINA)</span>
+          </button>
+          <a href="https://polskieradio.cc/lumina" class="w-full sm:w-auto px-8 py-4 rounded-2xl glassmorphism border border-white/15 text-white font-bold text-sm sm:text-base hover:border-cc-gold transition-all text-center">
+            Przejdź do Portalu LUMINA →
+          </a>
         </div>
 
       </div>
@@ -798,7 +1092,6 @@
         </p>
       </div>
 
-      <!-- 3 Channels Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
         <!-- Kanał 1: Radio Rozwój -->
@@ -869,7 +1162,6 @@
 
       </div>
 
-      <!-- Live Player Bar Widget -->
       <div id="live-player-bar" class="glassmorphism rounded-2xl p-4 border border-holos-turquoise/40 flex flex-col sm:flex-row items-center justify-between gap-4 hidden">
         <div class="flex items-center gap-3">
           <div class="w-3 h-3 rounded-full bg-holos-turquoise animate-ping"></div>
@@ -888,7 +1180,7 @@
     </div>
   </section>
 
-  <!-- ═════════════════════════════════════════ MODUŁ: FAQ DOKTRYNALNE & OPERACYJNE ══════════ -->
+  <!-- ═════════════════════════════════════════ MODUŁ: FAQ ═══════════════════════════════════ -->
   <section class="py-20 px-4 bg-gradient-to-b from-surface/30 to-transparent">
     <div class="max-w-3xl mx-auto">
 
@@ -913,13 +1205,25 @@
 
         <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
           <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-bold text-base" itemprop="name">
-            Czym różni się HOLOS od zwykłych aplikacji do planowania czasu?
+            Jak działa funkcja na życzenie: podpięcie własnego klucza API?
             <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </summary>
           <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-            <span itemprop="text">Większość narzędzi skupia się wyłącznie na produktywności i zyskach. HOLOS stawia na uświęcenie człowieka i równowagę 5 sektorów (Wiara, Relacje, Zdrowie, Finanse/Szafarstwo, Rozwój), wpisując pracę w Boży porządek stworzenia i szabatowego odpoczynku.</span>
+            <span itemprop="text">W panelu AI Mentora Aura możesz wkleić swój bezpłatny klucz z Google AI Studio. System łączy się bezpośrednio z modelami Gemini 1.5 Flash / 2.0 bez limitów i bez pośrednictwa zewnętrznych serwerów, zachowując 100% prywatności.</span>
+          </div>
+        </details>
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-bold text-base" itemprop="name">
+            Dlaczego warto zalogować się przez Google (LUMINA)?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">Logowanie Google integruje HOLOS z całym ekosystemem Christian Culture. Twoje oceny Koła Życia i notatki zapisują się w Twoim profilu, a Ty zyskujesz dostęp do społeczności na tablicy portalu LUMINA.</span>
           </div>
         </details>
 
@@ -932,18 +1236,6 @@
           </summary>
           <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
             <span itemprop="text">Kalkulator automatycznie wydziela pierwsze 10% przychodu jako święte pierwociny przeznaczone na wsparcie Królestwa Bożego, dzieł miłosierdzia i zboru, 20% na oszczędności przezornościowe, a pozostałe 70% na zrównoważony budżet domowy.</span>
-          </div>
-        </details>
-
-        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-bold text-base" itemprop="name">
-            Czy moje dane i notatki w HOLOS są prywatne?
-            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </summary>
-          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-            <span itemprop="text">Tak. Wszystkie wyliczenia Koła Życia, kalkulatora szafarstwa, intencje i notatki są przetwarzane i zapisywane bezpośrednio w Twojej przeglądarce (Local Storage). Nie są wysyłane do zewnętrznych korporacji reklamowych.</span>
           </div>
         </details>
 
@@ -982,10 +1274,7 @@
 
   <script>
     /* -------------------------------------------------------------
-       1. CYKL SŁONECZNY & SZABAT (SOBOTA) - DOKTRYNA BIBLIJNA
-       Szabat: Piątek po zachodzie słońca (18:00) do Soboty zachód słońca (18:00).
-       Dzień Przygotowania: Czwartek po zachodzie do Piątku 18:00.
-       Dni Powszednie: Od zachodu słońca w Sobotę do Czwartku zachód.
+       1. CYKL SŁONECZNY & SZABAT (SOBOTA)
     ------------------------------------------------------------- */
     let simulatedPhase = null;
 
@@ -995,17 +1284,14 @@
       const now = new Date();
       const dayOfWeek = now.getDay(); // 0=Nd, 1=Pn, 2=Wt, 3=Śr, 4=Cz, 5=Pt, 6=Sb
       const hour = now.getHours();
-      const isAfterSunset = hour >= 18; // Uproszczony zachód słońca 18:00
+      const isAfterSunset = hour >= 18;
 
-      // Piątek po zachodzie LUB Sobota przed zachodem = ŚWIĘTY SZABAT
       if ((dayOfWeek === 5 && isAfterSunset) || (dayOfWeek === 6 && !isAfterSunset)) {
         return 'sabbath';
       }
-      // Czwartek po zachodzie LUB Piątek przed zachodem = DZIEŃ PRZYGOTOWANIA
       if ((dayOfWeek === 4 && isAfterSunset) || (dayOfWeek === 5 && !isAfterSunset)) {
         return 'preparation';
       }
-      // W pozostałym czasie = DZIEŃ POWSZEDNI
       return 'standard';
     }
 
@@ -1064,7 +1350,6 @@
         statSabbath.className = "text-text-secondary font-bold text-sm sm:text-base";
       }
 
-      // Live Countdown to Friday 18:00 (Sunset)
       updateCountdown();
     }
 
@@ -1073,7 +1358,6 @@
       const currentDay = now.getDay();
       let targetFriday = new Date(now);
       
-      // Oblicz najbliższy piątek 18:00
       let daysUntilFriday = (5 - currentDay + 7) % 7;
       if (daysUntilFriday === 0 && now.getHours() >= 18) {
         daysUntilFriday = 7;
@@ -1118,7 +1402,6 @@
       document.getElementById('radar-score-percent').innerText = avg + '%';
       document.getElementById('stat-holos-score').innerText = avg + '% (' + (avg >= 75 ? 'Równowaga' : 'Korekta') + ')';
 
-      // Draw SVG Polygon Radar
       const center = 100;
       const maxR = 80;
       const values = [faith, rel, health, fin, dev];
@@ -1134,7 +1417,6 @@
 
       document.getElementById('wheel-polygon').setAttribute('points', points.join(' '));
 
-      // Verdict
       const minVal = Math.min(...values);
       const sectorNames = ['Wiara', 'Relacje', 'Zdrowie', 'Finanse', 'Rozwój'];
       const lowestSector = sectorNames[values.indexOf(minVal)];
@@ -1191,7 +1473,7 @@
     }
 
     /* -------------------------------------------------------------
-       4. GENERATOR DNIA & UŚWIĘCENIE CZASU
+       4. GENERATOR DNIA
     ------------------------------------------------------------- */
     function generateSchedule() {
       const role = document.getElementById('user-role').value;
@@ -1266,34 +1548,147 @@
     }
 
     /* -------------------------------------------------------------
-       5. AI MENTOR AURA - SILNIK DECYZYJNY
+       5. AI MENTOR AURA - OBSŁUGA WŁASNEGO API (BYOK) & HEURYSTYKI
     ------------------------------------------------------------- */
-    function requestAuraDecision() {
-      const sleep = parseInt(document.getElementById('aura-sleep').value);
-      const family = document.getElementById('aura-family').value;
+    function getStoredApiKey() {
+      return localStorage.getItem('holos_gemini_api_key') || '';
+    }
+
+    function saveApiKey() {
+      const val = document.getElementById('gemini-api-key-input').value.trim();
+      if (!val) {
+        clearApiKey();
+        return;
+      }
+      localStorage.setItem('holos_gemini_api_key', val);
+      updateApiStatusUI();
+      alert("✅ Klucz Gemini API został zapisany w Twojej przeglądarce!");
+    }
+
+    function clearApiKey() {
+      localStorage.removeItem('holos_gemini_api_key');
+      document.getElementById('gemini-api-key-input').value = '';
+      updateApiStatusUI();
+      alert("Klucz API usunięty. Wrócono do wbudowanego silnika CC.");
+    }
+
+    function updateApiStatusUI() {
+      const key = getStoredApiKey();
+      const badge = document.getElementById('api-status-badge');
+      const input = document.getElementById('gemini-api-key-input');
+      if (key) {
+        badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        badge.innerText = "Własne API Aktywne";
+        input.value = key;
+      } else {
+        badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-text-tertiary";
+        badge.innerText = "Tryb wbudowany";
+      }
+    }
+
+    function previewDecision(tone) {
       const box = document.getElementById('aura-output-box');
       const badge = document.getElementById('aura-output-tone-badge');
       const msg = document.getElementById('aura-output-message');
       const act = document.getElementById('aura-output-action');
+      const tag = document.getElementById('aura-engine-tag');
 
       box.classList.remove('hidden');
+      tag.innerText = "Podgląd Wzorca Mentora";
 
-      if (sleep <= 5) {
+      if (tone === 'INTENSE_FOCUS') {
+        badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-turquoise text-pure-black";
+        badge.innerText = "INTENSE FOCUS";
+        msg.innerText = "Wszystkie obszary szafarstwa pracują w synergii. Skoncentruj się na realizacji dzisiejszego powołania z pełną wiarą.";
+        act.innerText = "Rekomendowane: 4 godziny nieprzerwanej pracy głębokiej bez powiadomień.";
+      } else if (tone === 'ENCOURAGEMENT') {
+        badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-gold text-pure-black";
+        badge.innerText = "ENCOURAGEMENT";
+        msg.innerText = "Małe, systematyczne kroki budują wielkie dzieło Boże. Twoja dzisiejsza wierność zaowocuje trwałym owocem.";
+        act.innerText = "Rekomendowane: Trwaj w powziętym rytmie. Podziękuj Bogu za postęp.";
+      } else if (tone === 'REST') {
         badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-sky text-pure-black";
         badge.innerText = "REST & REGENERACJA";
-        msg.innerText = "Twój organizm jest w ostrym deficycie snu. Próba forsowania wielogodzinnego Deep Work przyniesie jedynie frustrację i błędy. Przełam pychę samowystarczalności i zaplanuj wczesny spoczynek.";
-        act.innerText = "Rekomendowane: Skróć bloki pracy, wyjdź na 30-minutowy spacer i wyłącz ekrany przed 21:00.";
-      } else if (family === 'low') {
+        msg.innerText = "Odpoczynek to także wyraz wiary. Sam Bóg odpoczął w Szabat. Zostaw troski w Jego rękach i zregeneruj siły.";
+        act.innerText = "Rekomendowane: Spacer na łonie natury, wyciszenie ekranów, wczesny sen.";
+      } else if (tone === 'TOUGH_LOVE') {
         badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-red text-white";
-        badge.innerText = "TOUGH LOVE · NAPOMNIENIE";
-        msg.innerText = "Budujesz karierę lub projekty, ale zaniedbujesz swoje przymierze. Rodzina nie potrzebuje Twoich sukcesów za cenę Twojej nieobecności. Stań w prawdzie: dziś wieczór należy do domu.";
-        act.innerText = "Rekomendowane: Zablokuj telefon w innym pokoju i spędź 2 godziny z bliskimi.";
-      } else {
-        badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-turquoise text-pure-black";
-        badge.innerText = "INTENSE FOCUS · MONK MODE";
-        msg.innerText = "Twoje fundamenty (sen i relacje) są zabezpieczone. To jest Twój czas na owocną pracę głęboką. Wykorzystaj dany Ci talent i zrealizuj najważniejsze zadanie dnia z pełną wiarą.";
-        act.innerText = "Rekomendowane: 4 godziny nieprzerwanej pracy w blokach 50/10 min.";
+        badge.innerText = "TOUGH LOVE";
+        msg.innerText = "Sukcesy zawodowe nie zastąpią Twojej obecności w domu. Stań w prawdzie: unikasz trudnej rozmowy lub uciekasz w ekran.";
+        act.innerText = "Rekomendowane: Zablokuj telefon w innym pokoju i spędź wieczór z bliskimi.";
       }
+    }
+
+    async function askAuraCustom() {
+      const q = document.getElementById('aura-question-input').value.trim();
+      const apiKey = getStoredApiKey();
+      const box = document.getElementById('aura-output-box');
+      const badge = document.getElementById('aura-output-tone-badge');
+      const msg = document.getElementById('aura-output-message');
+      const act = document.getElementById('aura-output-action');
+      const tag = document.getElementById('aura-engine-tag');
+      const btn = document.getElementById('btn-ask-aura');
+
+      if (!q) {
+        alert("Wpisz pytanie do Mentora Aura.");
+        return;
+      }
+
+      box.classList.remove('hidden');
+      btn.disabled = true;
+      btn.innerText = "Myślę...";
+
+      if (apiKey) {
+        // Użyj bezpośrednio własnego klucza Gemini API
+        tag.innerText = "Gemini 1.5 Flash (Własne API)";
+        badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-500 text-pure-black";
+        badge.innerText = "GEMINI LIVE";
+        msg.innerText = "Konsultuję odpowiedź z modelem Gemini...";
+        act.innerText = "";
+
+        try {
+          const sysPrompt = "Jesteś Aura – chrześcijańskim mentorem życia, rozwoju osobistego i szafarstwa w ekosystemie Christian Culture (HOLOS). Pomagasz użytkownikowi uświęcać czas, rozwijać 5 sektorów (Wiara, Relacje, Zdrowie, Finanse/Dziesięcina 10%, Rozwój Talentów) oraz szanować biblijny Szabat w sobotę. Odpowiadaj zwięźle, mądrze, z Bożą miłością i konkretną radą działania.";
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{ text: `${sysPrompt}\n\nPytanie użytkownika: ${q}` }]
+              }]
+            })
+          });
+          const data = await res.json();
+          if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+            msg.innerText = data.candidates[0].content.parts[0].text;
+            act.innerText = "✦ Odpowiedź wygenerowana przez Twój klucz Gemini API";
+          } else {
+            msg.innerText = "Błąd odpowiedzi z Gemini API. Sprawdź poprawność klucza.";
+            act.innerText = JSON.stringify(data.error || "Brak danych");
+          }
+        } catch (e) {
+          msg.innerText = "Nie udało się połączyć z API Gemini: " + e.message;
+          act.innerText = "Sprawdź połączenie internetowe i klucz API.";
+        }
+      } else {
+        // Fallback: Wbudowany silnik heurystyczny ekosystemu Christian Culture
+        tag.innerText = "Wbudowany Silnik CC";
+        badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-purple text-white";
+        badge.innerText = "AURA ADVICE";
+        
+        let reply = "Pamiętaj, że każdy Twój dzień jest darem Boga. Aby zrealizować ten cel, zacznij od 15-minutowego porannego wyciszenia w Słowie, wyznacz 1 kluczowy blok Deep Work i spędź wieczór z rodziną w uważnej obecności.";
+        if (q.toLowerCase().includes("modlit") || q.toLowerCase().includes("wiara")) {
+          reply = "Wierność w modlitwie nie zależy od natchnienia, lecz od uświęconej decyzji. Zaplanuj nienaruszalne 20 minut o świcie w ciszy z Pismem Świętym — zanim włączysz telefon.";
+        } else if (q.toLowerCase().includes("pienią") || q.toLowerCase().includes("finans") || q.toLowerCase().includes("dziesięcin")) {
+          reply = "Zasada szafarstwa brzmi: pierwsze 10% przychodu oddaj Bogu i na pomoc braciom. Gdy stawiasz Królestwo Boże na pierwszym miejscu, budżet domowy zyskuje Boże błogosławieństwo i ład.";
+        } else if (q.toLowerCase().includes("szabat") || q.toLowerCase().includes("odpocz")) {
+          reply = "Pamiętaj o dniu szabatu: to Sobota! Od zachodu słońca w piątek do zachodu w sobotę wyłącz ekrany i pracę komercyjną. To czas świętego odpoczynku w Bogu i z rodziną.";
+        }
+        msg.innerText = reply;
+        act.innerText = "Rekomendowane: Wpisz tę intencję do swojego Dziennika Szafarza powyżej.";
+      }
+
+      btn.disabled = false;
+      btn.innerText = "Zapytaj";
     }
 
     /* -------------------------------------------------------------
@@ -1356,6 +1751,7 @@
       calcStewardship();
       generateSchedule();
       loadDailyIntention();
+      updateApiStatusUI();
     });
   </script>
 
