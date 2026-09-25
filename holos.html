@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>HOLOS – Portal Życia i Uświęcenia Czasu | „Od 5 minut do wieczności” | PolskieRadio.cc</title>
-  <meta name="description" content="HOLOS 2.1 – Nowoczesny, immersyjny chrześcijański portal życia. Biblia, Koło 5 Sektorów, 5·10·15, dwustronna synchronizacja Google Calendar, Szabat w sobotę, Szafarstwo 10% oraz AI Mentor Aura.">
+  <title>HOLOS – Przestrzeń Życia i Uświęcenia Czasu | „Od 5 minut do wieczności” | PolskieRadio.cc</title>
+  <meta name="description" content="HOLOS 2.3 – Doświadczenie premium: Przestrzeń życia, uświęcenia czasu i wierności. Biblia, Koło 5 Sektorów, 5·10·15, dwustronna synchronizacja Google Calendar, Szabat w sobotę, Szafarstwo 10% oraz AI Mentor Aura.">
   <meta name="keywords" content="HOLOS, portal życia, Life OS, rozwój osobisty, zarządzanie czasem, 5 10 15, szafarstwo, szabat sobota, cykl słoneczny, Google Calendar, Christian Culture, LUMINA">
   <link rel="canonical" href="https://polskieradio.cc/holos">
   <meta name="robots" content="index, follow">
@@ -12,8 +12,8 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polskieradio.cc/holos">
-  <meta property="og:title" content="HOLOS – Portal Życia i Uświęcenia Czasu">
-  <meta property="og:description" content="Od 5 minut do wieczności. Biblia • Życie • Czas • Relacje • Misja.">
+  <meta property="og:title" content="HOLOS – Przestrzeń Życia i Uświęcenia Czasu">
+  <meta property="og:description" content="Od 5 minut do wieczności. Żyj świadomie. Wzrastaj. Nie trać kierunku.">
   <meta property="og:image" content="https://polskieradio.cc/images/holos/holos_emblem.jpg">
   <meta property="og:locale" content="pl_PL">
   <meta property="og:site_name" content="PolskieRadio.cc – Christian Culture">
@@ -43,10 +43,10 @@
     "@graph": [
       {
         "@type": "WebApplication",
-        "name": "HOLOS – Portal Życia i Uświęcenia Czasu",
+        "name": "HOLOS – Przestrzeń Życia i Uświęcenia Czasu",
         "url": "https://polskieradio.cc/holos",
         "applicationCategory": "LifestyleApplication",
-        "description": "Nowoczesny, immersyjny chrześcijański portal życia integrujący Dziś, metodę 5·10·15, Planer Google Calendar, Koło 5 Sektorów, Słowo Boże, Szafarstwo 10% oraz AI Mentora Aura."
+        "description": "Doświadczenie premium: Przestrzeń życia łącząca wierność Bogu, metodę 5·10·15, Planer Google Calendar, Koło 5 Sektorów, Słowo Boże, Szafarstwo 10% oraz AI Mentora Aura."
       }
     ]
   }
@@ -69,10 +69,10 @@
             'holos-red': '#EF4444',
             'cc-gold': '#C4A35A',
             'pure-black': '#000000',
-            'dark-bg': '#07080D',
-            'surface-dark': '#0E1017',
-            'surface-card': '#141722',
-            'surface-border': '#1E2333',
+            'dark-bg': '#06070B',
+            'surface-dark': '#0B0D14',
+            'surface-card': '#10131E',
+            'surface-border': '#1A1E2D',
             'text-primary': '#FFFFFF',
             'text-secondary': '#CBD5E1',
             'text-tertiary': '#94A3B8'
@@ -87,39 +87,56 @@
   </script>
 
   <style>
-    /* Custom Scrollbar */
+    /* Custom Scrollbar - Subtelny & Spokojny */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #07080d; }
-    ::-webkit-scrollbar-thumb { background: #1e2333; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #2d354d; }
+    ::-webkit-scrollbar-track { background: #06070b; }
+    ::-webkit-scrollbar-thumb { background: #1a1e2d; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #283047; }
 
-    /* Glass Surfaces */
-    .glass-portal {
-      background: rgba(14, 16, 23, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+    /* Spatial Ambient Background */
+    #spatial-ambient-glow {
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(0, 242, 254, 0.08) 0%, rgba(79, 172, 254, 0.04) 30%, rgba(155, 81, 224, 0.02) 55%, transparent 75%);
     }
-    .glass-card-portal {
-      background: rgba(20, 23, 34, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+
+    /* Glass Surfaces - Dojrzałe Szkło */
+    .glass-spatial {
+      background: rgba(11, 13, 20, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .glass-card-spatial {
+      background: rgba(16, 19, 30, 0.4);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .glass-input {
-      background: rgba(10, 12, 18, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(8, 10, 15, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: #ffffff;
+      transition: all 0.25s ease;
     }
     .glass-input:focus {
       border-color: #00F2FE;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.25);
+      box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.2);
     }
 
-    /* Ambient Lighting */
-    .hero-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.15) 0%, rgba(79, 172, 254, 0.08) 35%, rgba(7, 8, 13, 0) 70%);
+    /* Spatial 3D Tilt Transitions */
+    .spatial-tilt {
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+      will-change: transform;
+    }
+
+    /* Signature Object: 5·10·15 Layers */
+    .signature-tier {
+      transform-style: preserve-3d;
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .signature-tier:hover {
+      transform: translateY(-4px) translateZ(16px);
     }
 
     /* Capsule Pill Nav */
@@ -131,19 +148,10 @@
       color: #ffffff;
     }
     .pill-nav-item.active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
-      border: 1px solid rgba(0, 242, 254, 0.4);
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(79, 172, 254, 0.18));
+      border: 1px solid rgba(0, 242, 254, 0.35);
       color: #00F2FE;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
-    }
-
-    /* Horizontal snap carousel */
-    .snap-carousel {
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    .snap-item {
-      scroll-snap-align: start;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
     }
 
     /* Range slider custom */
@@ -151,7 +159,7 @@
       -webkit-appearance: none;
       height: 6px;
       border-radius: 4px;
-      background: #1e2333;
+      background: #1a1e2d;
       outline: none;
     }
     input[type=range]::-webkit-slider-thumb {
@@ -168,25 +176,46 @@
     input[type=range]::-webkit-slider-thumb:hover {
       transform: scale(1.2);
     }
+
+    /* Smooth Button Microinteractions */
+    button, a {
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    button:active, a:active {
+      transform: scale(0.98);
+    }
+
+    /* Preferences reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 
 <body class="bg-dark-bg text-text-primary font-sans antialiased selection:bg-holos-turquoise/30 flex flex-col min-h-screen overflow-x-hidden relative pb-16 md:pb-14">
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 1. GÓRNY PASEK PORTALU (MINIMALISTYCZNY & PRZESTRZENNY)                       -->
+  <!-- WARSTWA 1: SPATIAL AMBIENT GLOW (ŚWIATŁO W TLE)                              -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <header id="app-topbar" class="sticky top-0 z-40 h-16 bg-dark-bg/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-8 flex items-center justify-between transition-all">
+  <div id="spatial-ambient-glow" class="fixed inset-0 pointer-events-none z-0 transition-opacity duration-1000"></div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <!-- WARSTWA 3: GÓRNY PASEK PORTALU (DOJRZAŁY, MINIMALISTYCZNY GLASS)             -->
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <header id="app-topbar" class="sticky top-0 z-40 h-16 bg-dark-bg/75 backdrop-blur-xl border-b border-white/5 px-4 sm:px-8 flex items-center justify-between transition-all">
     
-    <!-- Lewa strona: Drawer Trigger + Brand -->
+    <!-- Lewa strona: Trigger Drawera + Brand -->
     <div class="flex items-center gap-3 sm:gap-4">
-      <!-- Przycisk Lewego Drawera (Szybki Dostęp) -->
       <button onclick="toggleLeftDrawer()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-2 group" title="Otwórz menu szybkiego dostępu (☰)">
         <i class="fa-solid fa-bars text-sm group-hover:text-holos-turquoise transition-colors"></i>
         <span class="hidden sm:inline">Menu</span>
       </button>
 
-      <!-- Brand Logo -->
       <a href="/holos" class="flex items-center gap-2.5 group">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-holos-turquoise to-holos-indigo p-0.5 shadow-md flex items-center justify-center">
           <div class="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">
@@ -196,13 +225,13 @@
         <div class="flex flex-col">
           <div class="flex items-center gap-2">
             <span class="font-black text-base tracking-wider bg-gradient-to-r from-white via-slate-100 to-holos-turquoise bg-clip-text text-transparent">HOLOS</span>
-            <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase tracking-widest bg-holos-turquoise/15 text-holos-turquoise border border-holos-turquoise/30">PORTAL ŻYCIA</span>
+            <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase tracking-widest bg-holos-turquoise/15 text-holos-turquoise border border-holos-turquoise/30">LIFE OS</span>
           </div>
         </div>
       </a>
     </div>
 
-    <!-- Środek: Poziome Kapsułki Szybkiego Skoku (Capsule Nav Pills) -->
+    <!-- Środek: Kapsułki Nawigacji Szybkiego Skoku (Capsule Nav Pills) -->
     <nav class="hidden lg:flex items-center gap-1.5 bg-surface-card/60 p-1.5 rounded-full border border-white/5 backdrop-blur-md">
       <a href="#sekcja-dzisiaj" class="pill-nav-item active px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">DZIŚ</a>
       <a href="#sekcja-51015" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">5·10·15</a>
@@ -216,21 +245,18 @@
       </a>
     </nav>
 
-    <!-- Prawa strona: Akcje, Command Palette, Prawy Drawer (TERAZ), CC ID -->
+    <!-- Prawa strona: Akcje, Wyszukiwarka, Trigger TERAZ, CC ID -->
     <div class="flex items-center gap-2 sm:gap-3">
-      <!-- Quick Capture Button -->
       <button onclick="openQuickCapture()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md flex items-center gap-1.5">
         <i class="fa-solid fa-plus text-xs"></i>
         <span class="hidden sm:inline">Wpisz</span>
       </button>
 
-      <!-- Command Palette Search Trigger -->
       <button onclick="openCommandPalette()" class="px-2.5 py-1.5 rounded-xl bg-surface-card hover:bg-white/10 text-text-tertiary hover:text-white border border-white/5 text-xs transition-all flex items-center gap-1.5" title="Szukaj w HOLOS (Ctrl+K)">
         <i class="fa-solid fa-magnifying-glass text-xs"></i>
         <span class="hidden xl:inline text-[10px] text-text-tertiary font-mono bg-white/5 px-1 py-0.5 rounded">Ctrl K</span>
       </button>
 
-      <!-- Przycisk Prawego Drawera (TERAZ) -->
       <button onclick="toggleRightDrawer()" class="px-3 py-1.5 rounded-xl bg-surface-card hover:bg-white/10 text-text-secondary hover:text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-2 group" title="Otwórz aktywny panel TERAZ">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="hidden sm:inline">TERAZ</span>
@@ -248,14 +274,13 @@
   </header>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 2. LEWY DRAWER (CHOWANY SZYBKI DOSTĘP)                                        -->
+  <!-- WARSTWA 3: LEWY DRAWER (CHOWANY SZYBKI DOSTĘP)                               -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <div id="left-drawer-backdrop" onclick="closeDrawers()" class="fixed inset-0 bg-pure-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
   <aside id="left-drawer" class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-surface-dark/95 backdrop-blur-2xl border-r border-white/10 z-50 transform -translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between shadow-2xl">
     <div class="p-6 overflow-y-auto space-y-6">
       
-      <!-- Nagłówek Drawera -->
       <div class="flex items-center justify-between pb-4 border-b border-white/10">
         <div class="flex items-center gap-2.5">
           <span class="text-sm font-black tracking-wider text-white">SZYBKI DOSTĘP</span>
@@ -266,7 +291,6 @@
         </button>
       </div>
 
-      <!-- Grupa 1: Rytm Dnia & Czas -->
       <div class="space-y-1">
         <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">Rytm Dnia</div>
         <a href="#sekcja-dzisiaj" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
@@ -275,7 +299,7 @@
         </a>
         <a href="#sekcja-51015" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
           <span class="text-base text-amber-400">⚡</span>
-          <span>5·10·15 Formacja & Działanie</span>
+          <span>5·10·15 Działanie</span>
         </a>
         <a href="#sekcja-kalendarz" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
           <span class="text-base">📅</span>
@@ -283,7 +307,6 @@
         </a>
       </div>
 
-      <!-- Grupa 2: 5 Sektorów Życia -->
       <div class="space-y-1">
         <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">5 Sektorów Życia</div>
         <a href="#sekcja-kolo" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
@@ -300,7 +323,6 @@
         </a>
       </div>
 
-      <!-- Grupa 3: Duchowość & Ekosystem -->
       <div class="space-y-1">
         <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">Słowo & Wspólnota</div>
         <a href="#sekcja-slowo" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
@@ -323,7 +345,6 @@
 
     </div>
 
-    <!-- Stopka Drawera -->
     <div class="p-6 border-t border-white/10 text-center">
       <div class="text-[10px] text-text-tertiary">Christian Culture © 2026</div>
       <div class="text-[9px] text-holos-turquoise font-mono mt-0.5">Od 5 minut do wieczności</div>
@@ -331,14 +352,13 @@
   </aside>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 3. PRAWY DRAWER (CHOWANY AKTYWNY STAN „TERAZ”)                               -->
+  <!-- WARSTWA 3: PRAWY DRAWER (CHOWANY AKTYWNY STAN „TERAZ”)                       -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <div id="right-drawer-backdrop" onclick="closeDrawers()" class="fixed inset-0 bg-pure-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
   <aside id="right-drawer" class="fixed inset-y-0 right-0 w-88 max-w-[85vw] bg-surface-dark/95 backdrop-blur-2xl border-l border-white/10 z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between shadow-2xl">
     <div class="p-6 overflow-y-auto space-y-6">
       
-      <!-- Nagłówek Drawera TERAZ -->
       <div class="flex items-center justify-between pb-4 border-b border-white/10">
         <div class="flex items-center gap-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -353,7 +373,7 @@
       </div>
 
       <!-- Karta: NASTĘPNE WYDARZENIE -->
-      <div class="p-4 rounded-2xl glass-card-portal space-y-2">
+      <div class="p-4 rounded-2xl glass-card-spatial space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">NASTĘPNE WYDARZENIE</span>
           <span id="now-cal-badge" class="text-[9px] font-mono text-holos-turquoise">Google Cal</span>
@@ -365,7 +385,7 @@
       </div>
 
       <!-- Karta: TIMER 5·10·15 -->
-      <div class="p-5 rounded-2xl glass-card-portal space-y-4">
+      <div class="p-5 rounded-2xl glass-card-spatial space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">TIMER 5·10·15</span>
           <span id="timer-active-label" class="text-[10px] font-bold text-amber-400">GOTOWY</span>
@@ -395,7 +415,7 @@
       </div>
 
       <!-- Karta: ZEGAR SZABATU (SOBOTA) -->
-      <div id="sabbath-main-card" class="p-4 rounded-2xl glass-card-portal space-y-2 border border-white/5">
+      <div id="sabbath-main-card" class="p-4 rounded-2xl glass-card-spatial space-y-2 border border-white/5">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">CYKL SŁONECZNY</span>
           <span id="stat-sabbath-status" class="text-[10px] font-bold text-holos-turquoise">Sobota</span>
@@ -407,7 +427,7 @@
       </div>
 
       <!-- Karta: SZYBKIE PYTANIE DO AURY -->
-      <div class="p-4 rounded-2xl glass-card-portal space-y-2">
+      <div class="p-4 rounded-2xl glass-card-spatial space-y-2">
         <div class="flex items-center gap-1.5">
           <span class="text-holos-turquoise text-xs">✦</span>
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">ZAPYTAJ AURĘ</span>
@@ -424,46 +444,50 @@
   </aside>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 4. GŁÓWNY IMMERSYJNY PORTAL ŻYCIA (100% PEŁNA SZEROKOŚĆ)                     -->
+  <!-- WARSTWA 2: GŁÓWNY IMMERSYJNY PORTAL ŻYCIA (CONTENT SURFACES)                  -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <main id="center-portal" class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24">
+  <main id="center-portal" class="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-24 sm:space-y-36">
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4A. HERO: OD 5 MINUT DO WIECZNOŚCI                                         -->
+    <!-- HERO: MOMENT „WOW” (PRZESTRZEŃ, SPOKÓJ, GŁĘBIA)                            -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <section id="hero" class="relative text-center py-12 sm:py-20 overflow-hidden rounded-3xl glass-portal border border-white/10 hero-glow">
-      <div class="max-w-4xl mx-auto px-4 space-y-6">
+    <section id="hero" class="relative text-center py-24 sm:py-36 rounded-3xl glass-spatial border border-white/10 overflow-hidden spatial-tilt">
+      
+      <!-- Subtelna Mgławica i Blask w Tle Hero -->
+      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-holos-turquoise/15 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative max-w-3xl mx-auto px-4 space-y-8">
         
-        <!-- Sabbath Context Badge (Sunset context) -->
-        <div id="hero-sun-cycle-banner" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-text-secondary backdrop-blur-md">
-          <span id="hero-sun-icon" class="text-base">⏳</span>
+        <!-- Context Badge: Szabat / Data -->
+        <div id="hero-sun-cycle-banner" class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-text-secondary backdrop-blur-md shadow-lg">
+          <span id="hero-sun-icon" class="text-sm">⏳</span>
           <div id="hero-sun-text" class="text-xs">
             <span id="countdown-label">Do Szabatu (Sobota):</span> <strong id="countdown-display" class="font-mono text-holos-turquoise">--:--:--</strong>
           </div>
         </div>
 
-        <div class="space-y-3">
+        <!-- Typography: Emocjonalny Kontrast -->
+        <div class="space-y-4">
           <div class="text-[11px] font-black tracking-widest uppercase text-holos-turquoise">CHRISTIAN CULTURE • LIFE OS</div>
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight">
+          <h1 class="text-5xl sm:text-7xl font-black text-white tracking-tight leading-tight">
             HOLOS
           </h1>
-          <p class="text-xl sm:text-2xl font-serif italic text-slate-200 tracking-wide">
+          <p class="text-2xl sm:text-3xl font-serif italic text-slate-200 tracking-wide">
             Od 5 minut do wieczności
           </p>
-          <p class="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
-            Biblia • Życie • Czas • Relacje • Misja. Portal, który inspiruje do życia — i pozwala natychmiast przejść do działania.
+          <p class="text-sm sm:text-base font-light text-text-secondary max-w-lg mx-auto leading-relaxed">
+            Żyj świadomie. Wzrastaj. Nie trać kierunku.
           </p>
         </div>
 
-        <!-- Hero Actions -->
-        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <a href="#sekcja-dzisiaj" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-black text-xs sm:text-sm transition-all shadow-xl flex items-center gap-2">
+        <!-- Hero Action: Pojedynczy, Czysty Przycisk -->
+        <div class="pt-2 flex flex-col items-center gap-4">
+          <a href="#sekcja-dzisiaj" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-holos-turquoise via-holos-indigo to-holos-purple hover:brightness-110 text-pure-black font-black text-sm transition-all shadow-2xl flex items-center gap-2.5">
             <i class="fa-solid fa-play text-xs"></i>
             <span>ROZPOCZNIJ DZIEŃ</span>
           </a>
-          <a href="#sekcja-51015" class="px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-extrabold text-xs sm:text-sm border border-white/10 transition-all flex items-center gap-2">
-            <span class="text-amber-400">⚡</span>
-            <span>OTWÓRZ 5·10·15</span>
+          <a href="#sekcja-dzisiaj" class="text-xs text-text-tertiary hover:text-white transition-colors flex items-center gap-1.5 pt-2">
+            <span>↓ Odkryj swój dzisiejszy dzień</span>
           </a>
         </div>
 
@@ -471,31 +495,33 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4B. SEKCJA 1: DZISIAJ (POZIOMY RYTM DNIA)                                  -->
+    <!-- SEKCJA 1: DZISIAJ (EDITORIAL STORYTELLING & POZIOMY RYTM)                  -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <section id="sekcja-dzisiaj" class="scroll-mt-24 space-y-6">
+    <section id="sekcja-dzisiaj" class="scroll-mt-24 space-y-8">
       
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">DZISIAJ</span>
-          <h2 class="text-2xl sm:text-3xl font-black text-white">Twój Rytm Dnia</h2>
+      <!-- Nagłówek Emocjonalny -->
+      <div class="space-y-2 border-b border-white/5 pb-4">
+        <span class="text-[11px] font-black uppercase tracking-widest text-holos-turquoise">DZISIAJ</span>
+        <h2 class="text-3xl sm:text-4xl font-serif italic text-white">Nie musisz zrobić wszystkiego. Zrób to, co naprawdę ważne.</h2>
+        <div class="flex items-center gap-3 pt-1">
+          <span class="text-xs font-bold text-text-secondary" id="today-full-date-label">PIĄTEK, 25 WRZEŚNIA 2026</span>
+          <span id="sun-cycle-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">
+            DZIEŃ ROBOCZY
+          </span>
         </div>
-        <span id="sun-cycle-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">
-          DZIEŃ ROBOCZY
-        </span>
       </div>
 
-      <!-- Poziomy Moduł: Lewo (Priorytety i Formacja) ↔ Prawo (Twój Rytm i Agenda) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Rytm Poziomy 60/40 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Lewa Strona (7 kolumn): Poranne 5+10 i Priorytety -->
-        <div class="lg:col-span-7 p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+        <div class="lg:col-span-7 p-8 sm:p-10 rounded-3xl glass-spatial border border-white/10 space-y-6 spatial-tilt">
           
           <!-- Poranne 5 + 10 -->
-          <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 space-y-3">
+          <div class="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-surface-card to-transparent border border-amber-500/20 space-y-3">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2.5">
-                <span class="text-xl">🙏</span>
+                <span class="text-2xl">🙏</span>
                 <h3 class="text-sm font-black uppercase tracking-wider text-white">Poranne 5 + 10</h3>
               </div>
               <span class="text-xs font-mono text-amber-300 font-bold">15 minut</span>
@@ -503,14 +529,14 @@
             <p class="text-xs text-text-secondary leading-relaxed">
               5 minut ciszy i modlitwy przed Bogiem + 10 minut karmienia się Słowem. Zacznij dzień od Ducha.
             </p>
-            <div class="flex gap-2 pt-1">
-              <button onclick="startSpecificTimer(15, 'Poranne 5+10: Modlitwa i Słowo')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
-                Rozpocznij Poranek
+            <div class="pt-1">
+              <button onclick="startSpecificTimer(15, 'Poranne 5+10: Modlitwa i Słowo')" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
+                Rozpocznij Poranek (15 min)
               </button>
             </div>
           </div>
 
-          <!-- 3 Priorytety Dnia -->
+          <!-- 3 Priorytety Wierności -->
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Najważniejsze Dzisiaj</h3>
@@ -518,7 +544,7 @@
             </div>
 
             <!-- Dynamiczny Baner Priorytetu z Koła Życia -->
-            <div id="schedule-priority-banner" class="p-4 rounded-xl bg-holos-sky/10 border border-holos-sky/20 flex items-start gap-3">
+            <div id="schedule-priority-banner" class="p-4 rounded-2xl bg-holos-sky/10 border border-holos-sky/20 flex items-start gap-3">
               <span class="text-lg text-holos-sky shrink-0 mt-0.5">💡</span>
               <div class="text-xs">
                 <div class="font-bold text-white mb-0.5">Sugerowany Priorytet Naprawczy:</div>
@@ -529,16 +555,16 @@
             </div>
 
             <!-- Lista 3 Priorytetów -->
-            <div class="space-y-2">
-              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
                 <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
                 <input type="text" value="Poranne 5+10: Modlitwa w ciszy i Werset Dnia" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
               </div>
-              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+              <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
                 <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
                 <input type="text" value="Główny blok Deep Work: Praca twórcza i realizacja zlecenia" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
               </div>
-              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+              <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
                 <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
                 <input type="text" value="Świątynia Ducha: Spacer i regeneracja bez ekranów" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
               </div>
@@ -546,7 +572,7 @@
           </div>
 
           <!-- Wieczorne 15 -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-surface-dark border border-white/5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-surface-dark border border-white/5">
             <div>
               <div class="text-xs font-bold text-white flex items-center gap-2">
                 <span>🌙</span> Wieczorne 15:
@@ -560,34 +586,34 @@
 
         </div>
 
-        <!-- Prawa Strona (5 kolumn): Harmonogram i Intencja Dnia -->
-        <div class="lg:col-span-5 p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+        <!-- Prawa Strona (5 kolumn): Harmonogram i Intencja Szafarza -->
+        <div class="lg:col-span-5 p-8 sm:p-10 rounded-3xl glass-spatial border border-white/10 space-y-6 spatial-tilt">
           
           <div>
-            <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center justify-between mb-4">
               <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Twój Rytm Czasu</h3>
               <div class="flex gap-1">
-                <button onclick="generateSchedule('standard')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Std</button>
-                <button onclick="generateSchedule('monk')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Monk</button>
-                <button onclick="generateSchedule('rest')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Odpoczynek</button>
+                <button onclick="generateSchedule('standard')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Std</button>
+                <button onclick="generateSchedule('monk')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Monk</button>
+                <button onclick="generateSchedule('rest')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Odpoczynek</button>
               </div>
             </div>
 
             <!-- Kontener Bloków Harmonogramu (ID zachowane!) -->
-            <div id="schedule-blocks-container" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+            <div id="schedule-blocks-container" class="space-y-2 max-h-64 overflow-y-auto pr-1">
               <!-- Renderowane dynamicznie przez generateSchedule() -->
             </div>
           </div>
 
           <!-- Intencja Dnia & Notatki (ID zachowane!) -->
-          <div class="space-y-3 pt-3 border-t border-white/5">
+          <div class="space-y-3 pt-4 border-t border-white/5">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold text-white uppercase tracking-wider">Intencja Dnia</span>
               <span id="saved-intention-badge" class="hidden text-[10px] text-emerald-400 font-bold">Zapisano ✓</span>
             </div>
-            <input type="text" id="input-intention" placeholder="W czym chcę być dzisiaj wierny Bogu?" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
-            <textarea id="input-notes" rows="3" placeholder="Notatki szafarza, Boże odpowiedzi, owoce dnia..." class="w-full px-3 py-2 rounded-xl glass-input text-xs resize-none"></textarea>
-            <button onclick="saveDailyIntention()" class="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all">
+            <input type="text" id="input-intention" placeholder="W czym chcę być dzisiaj wierny Bogu?" class="w-full px-4 py-2.5 rounded-xl glass-input text-xs">
+            <textarea id="input-notes" rows="3" placeholder="Notatki szafarza, Boże odpowiedzi, owoce dnia..." class="w-full px-4 py-2.5 rounded-xl glass-input text-xs resize-none"></textarea>
+            <button onclick="saveDailyIntention()" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all">
               Zapisz Intencję
             </button>
           </div>
@@ -599,68 +625,81 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4C. SEKCJA 2: 5·10·15 (SILNIK DZIAŁANIA — 3 INTERAKTYWNE KARTY)            -->
+    <!-- SEKCJA 2: 5·10·15 (SIGNATURE OBJECT — ZAGNIEŻDŻONE WARSTWY PRZESTRZENNE)    -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <section id="sekcja-51015" class="scroll-mt-24 space-y-6">
+    <section id="sekcja-51015" class="scroll-mt-24 space-y-10">
       
-      <div class="text-center space-y-2 max-w-2xl mx-auto">
-        <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">METODA DZIAŁANIA</span>
-        <h2 class="text-3xl sm:text-4xl font-black text-white">5 · 10 · 15</h2>
-        <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
-          Od drobnych aktów posłuszeństwa do wielkich Bożych projektów. Wybierz swój rytm.
+      <div class="text-center space-y-3 max-w-2xl mx-auto">
+        <span class="text-[11px] font-black uppercase tracking-widest text-amber-400">SIGNATURE OBJECT</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white">HOLOS 5 · 10 · 15</h2>
+        <p class="text-sm font-light text-text-secondary leading-relaxed">
+          Zamiast chaosu — trzy zagnieżdżone warstwy czasu. Dotknij, aby wejść w działanie.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Trójwymiarowa, zagnieżdżona struktura warstwowa 5·10·15 -->
+      <div class="max-w-4xl mx-auto space-y-4">
         
-        <!-- Karta 1: 5 MINUT -->
-        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-emerald-400/40 transition-all group">
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-3xl font-black group-hover:scale-110 transition-transform">
-            5
+        <!-- Warstwa 1 (Górna / Akcja natychmiastowa): 5 MINUT -->
+        <div class="signature-tier p-6 sm:p-8 rounded-3xl glass-spatial border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-surface-card to-transparent shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 group cursor-pointer" onclick="startSpecificTimer(5, 'Zadanie 5 min — Zrób teraz')">
+          <div class="flex items-center gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-3xl font-black group-hover:scale-110 transition-transform shrink-0">
+              5
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-black uppercase tracking-wider text-white">TERAZ — Zrób Natychmiast</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300">≤ 5 MIN</span>
+              </div>
+              <p class="text-xs text-text-secondary max-w-xl leading-relaxed">
+                Zadanie, które zajmuje chwilę. Krótka modlitwa za kogoś, szklanka wody, telefon z przymierza. Nie odkładaj — zrób teraz.
+              </p>
+            </div>
           </div>
-          <div class="space-y-1">
-            <h3 class="text-base font-black text-white uppercase tracking-wider">Zrób Teraz</h3>
-            <div class="text-xs text-emerald-400 font-bold">≤ 5 minut</div>
-          </div>
-          <p class="text-xs text-text-secondary leading-relaxed">
-            Drobne zadania, krótka modlitwa za kogoś, szklanka wody, odpisanie na ważną wiadomość. Nie odkładaj — zrób natychmiast.
-          </p>
-          <button onclick="startSpecificTimer(5, 'Zadanie 5 min — Zrób teraz')" class="w-full py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-extrabold text-xs border border-emerald-500/30 transition-all">
-            Uruchom 5 min
+          <button class="px-5 py-2.5 rounded-xl bg-emerald-500/20 group-hover:bg-emerald-500 text-emerald-300 group-hover:text-pure-black font-extrabold text-xs border border-emerald-500/40 transition-all shrink-0">
+            Uruchom Stoper (5 min)
           </button>
         </div>
 
-        <!-- Karta 2: 10–15 MINUT -->
-        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-amber-400/40 transition-all group">
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-3xl font-black group-hover:scale-110 transition-transform">
-            10
+        <!-- Warstwa 2 (Środkowa / Blok formacji): 10–15 MINUT -->
+        <div class="signature-tier p-6 sm:p-8 rounded-3xl glass-spatial border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-surface-card to-transparent shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 group cursor-pointer" onclick="startSpecificTimer(10, 'Blok 10 min — Zaplanuj na dziś')">
+          <div class="flex items-center gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-3xl font-black group-hover:scale-110 transition-transform shrink-0">
+              10
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-black uppercase tracking-wider text-white">DZISIAJ — Zaplanuj Blok Formacji</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">10 – 15 MIN</span>
+              </div>
+              <p class="text-xs text-text-secondary max-w-xl leading-relaxed">
+                Przerwa na studium rozdziału Pisma, rachunek szafarza, spacer oddechu przed kolejnym etapem dnia.
+              </p>
+            </div>
           </div>
-          <div class="space-y-1">
-            <h3 class="text-base font-black text-white uppercase tracking-wider">Zaplanuj Dzisiaj</h3>
-            <div class="text-xs text-amber-400 font-bold">10 – 15 minut</div>
-          </div>
-          <p class="text-xs text-text-secondary leading-relaxed">
-            Krótka przerwa formacyjna, lektura rozdziału Pisma, rachunek szafarza, porządek na stanowisku pracy.
-          </p>
-          <button onclick="startSpecificTimer(10, 'Blok 10 min — Zaplanuj na dziś')" class="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
-            Uruchom 10 min
+          <button class="px-5 py-2.5 rounded-xl bg-amber-400 group-hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md shrink-0">
+            Uruchom Stoper (10 min)
           </button>
         </div>
 
-        <!-- Karta 3: 15+ MINUT (DEEP WORK) -->
-        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-holos-turquoise/40 transition-all group">
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-holos-turquoise/10 border border-holos-turquoise/20 flex items-center justify-center text-holos-turquoise text-3xl font-black group-hover:scale-110 transition-transform">
-            15+
+        <!-- Warstwa 3 (Głęboka / Deep Work & Kalendarz): 15+ MINUT -->
+        <div class="signature-tier p-6 sm:p-8 rounded-3xl glass-spatial border border-holos-turquoise/30 bg-gradient-to-r from-holos-turquoise/10 via-surface-card to-transparent shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 group cursor-pointer" onclick="window.location.hash='#sekcja-kalendarz'">
+          <div class="flex items-center gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-holos-turquoise/20 border border-holos-turquoise/40 flex items-center justify-center text-holos-turquoise text-3xl font-black group-hover:scale-110 transition-transform shrink-0">
+              15+
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-black uppercase tracking-wider text-white">ZAPLANUJ — Deep Work & Kalendarz</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-holos-turquoise/20 text-holos-turquoise">&gt; 15 MIN</span>
+              </div>
+              <p class="text-xs text-text-secondary max-w-xl leading-relaxed">
+                Dzieło twórcze, realizacja projektów, głęboka rozmowa bez ekranów. Zablokuj dedykowany czas w Kalendarzu Google.
+              </p>
+            </div>
           </div>
-          <div class="space-y-1">
-            <h3 class="text-base font-black text-white uppercase tracking-wider">Deep Work & Termin</h3>
-            <div class="text-xs text-holos-turquoise font-bold">&gt; 15 minut</div>
-          </div>
-          <p class="text-xs text-text-secondary leading-relaxed">
-            Bloki skupienia, realizacja strategicznych zadań, głęboki czas z rodziną bez ekranów. Zablokuj czas w kalendarzu.
-          </p>
-          <a href="#sekcja-kalendarz" class="block w-full py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md">
-            Zablokuj w Kalendarzu
+          <a href="#sekcja-kalendarz" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md shrink-0">
+            Otwórz Kalendarz →
           </a>
         </div>
 
@@ -669,31 +708,33 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4D. SEKCJA 3: KOŁO ŻYCIA (DUŻA, PRZESTRZENNA WIZUALIZACJA)                 -->
+    <!-- SEKCJA 3: KOŁO ŻYCIA (HERO VISUALIZATION — ORGANICZNE ŚWIATŁO & SCORE)      -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <section id="sekcja-kolo" class="scroll-mt-24 space-y-8">
+    <section id="sekcja-kolo" class="scroll-mt-24 space-y-10">
       
-      <div class="text-center space-y-2 max-w-2xl mx-auto">
-        <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">AUTODIAGNOZA WIERNOŚCI</span>
-        <h2 class="text-3xl sm:text-4xl font-black text-white">Koło 5 Sektorów Życia</h2>
-        <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
-          Zbadaj harmonię w 5 biblijnych obszarach. Przesuń suwaki, aby obliczyć swój rzeczywisty Holos Score.
+      <div class="text-center space-y-3 max-w-2xl mx-auto">
+        <span class="text-[11px] font-black uppercase tracking-widest text-holos-turquoise">HARMONIA 5 OBSZARÓW</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white">Koło Życia & Holos Score</h2>
+        <p class="text-sm font-light text-text-secondary leading-relaxed">
+          Życie nie jest zbiorem liczb. To przymierze wierności. Zobacz, gdzie Bóg wzywa cię do wzrostu.
         </p>
       </div>
 
-      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="p-8 sm:p-14 rounded-3xl glass-spatial border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center spatial-tilt">
         
-        <!-- Lewa Strona (5 kolumn): Duży Radar SVG & Score -->
-        <div class="lg:col-span-5 flex flex-col items-center justify-center text-center space-y-4">
-          <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+        <!-- Lewa Strona (5 kolumn): Duży Świetlny Radar SVG & Score -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center text-center space-y-6">
+          <div class="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center">
+            
+            <!-- Poświata w tle Koła -->
+            <div class="absolute inset-0 bg-holos-turquoise/10 rounded-full blur-3xl pointer-events-none"></div>
+
             <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-2xl">
-              <!-- Okręgi -->
               <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
               <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
               <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
               <circle cx="200" cy="200" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
 
-              <!-- Osie -->
               <line x1="200" y1="200" x2="200" y2="40" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
               <line x1="200" y1="200" x2="352" y2="151" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
               <line x1="200" y1="200" x2="294" y2="330" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
@@ -701,15 +742,15 @@
               <line x1="200" y1="200" x2="48" y2="151" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
 
               <!-- Dynamiczny Wielokąt Radaru (ID zachowane!) -->
-              <polygon id="radar-path" points="200,80 320,160 270,300 130,300 80,160" fill="rgba(0, 242, 254, 0.28)" stroke="#00F2FE" stroke-width="3"></polygon>
+              <polygon id="radar-path" points="200,80 320,160 270,300 130,300 80,160" fill="rgba(0, 242, 254, 0.25)" stroke="#00F2FE" stroke-width="3"></polygon>
               <g id="radar-points"></g>
             </svg>
 
             <!-- Wskaźnik Holos Score (ID zachowane!) -->
             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <div class="text-[11px] text-text-tertiary uppercase tracking-widest font-black">HOLOS SCORE</div>
-              <div id="stat-holos-score" class="text-4xl font-black text-white tracking-tight">--</div>
-              <div id="stat-holos-status" class="text-xs text-holos-turquoise font-bold">Czeka na diagnozę</div>
+              <div class="text-[10px] text-text-tertiary uppercase tracking-widest font-black">HOLOS SCORE</div>
+              <div id="stat-holos-score" class="text-4xl sm:text-5xl font-black text-white tracking-tight">--</div>
+              <div id="stat-holos-status" class="text-xs text-holos-turquoise font-bold mt-1">Czeka na diagnozę</div>
             </div>
           </div>
 
@@ -720,37 +761,37 @@
         </div>
 
         <!-- Prawa Strona (7 kolumn): Przestronne Suwaki 5 Sektorów -->
-        <div class="lg:col-span-7 space-y-5">
+        <div class="lg:col-span-7 space-y-6">
           <div class="space-y-4">
             <!-- 1. Wiara -->
-            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+            <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 space-y-2">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-white">🙏 1. Wiara i Duchowość</span>
-                <span id="val-faith" class="text-holos-turquoise font-mono">50%</span>
+                <span id="val-faith" class="text-amber-400 font-mono">50%</span>
               </div>
               <input type="range" id="slider-faith" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
             </div>
 
             <!-- 2. Relacje -->
-            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+            <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 space-y-2">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-white">❤️ 2. Relacje i Rodzina</span>
-                <span id="val-family" class="text-holos-turquoise font-mono">50%</span>
+                <span id="val-family" class="text-red-400 font-mono">50%</span>
               </div>
               <input type="range" id="slider-family" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
             </div>
 
             <!-- 3. Zdrowie -->
-            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+            <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 space-y-2">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-white">🏃 3. Zdrowie i Ciało (Świątynia Ducha)</span>
-                <span id="val-body" class="text-holos-turquoise font-mono">50%</span>
+                <span id="val-body" class="text-emerald-400 font-mono">50%</span>
               </div>
               <input type="range" id="slider-body" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
             </div>
 
             <!-- 4. Finanse -->
-            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+            <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 space-y-2">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-white">💰 4. Finanse i Szafarstwo 10%</span>
                 <span id="val-money" class="text-holos-turquoise font-mono">50%</span>
@@ -759,17 +800,17 @@
             </div>
 
             <!-- 5. Rozwój -->
-            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+            <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 space-y-2">
               <div class="flex justify-between text-xs font-bold">
                 <span class="text-white">🎯 5. Praca i Rozwój Talentów</span>
-                <span id="val-work" class="text-holos-turquoise font-mono">50%</span>
+                <span id="val-work" class="text-indigo-400 font-mono">50%</span>
               </div>
               <input type="range" id="slider-work" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
             </div>
           </div>
 
           <div class="flex items-center justify-between pt-2">
-            <button onclick="saveWheelLocal()" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition-all flex items-center gap-2">
+            <button onclick="saveWheelLocal()" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition-all flex items-center gap-2">
               <i class="fa-solid fa-floppy-disk text-xs"></i>
               <span>Zapisz Diagnozę</span>
             </button>
@@ -784,76 +825,73 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4E. SEKCJA 4: 5 SEKTORÓW (HORIZONTAL SNAP CAROUSEL HD)                     -->
+    <!-- SEKCJA 4: PIĘĆ SEKTORÓW — PIĘĆ ŚWIATÓW (ATMOSFERA I DUŻE FOTOGRAFIE 60/40)   -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <section id="sekcja-sektory" class="scroll-mt-24 space-y-6">
+    <section id="sekcja-sektory" class="scroll-mt-24 space-y-12">
       
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">DOŚWIADCZENIE WIZUALNE</span>
-          <h2 class="text-2xl sm:text-3xl font-black text-white">5 Sektorów Życia</h2>
-        </div>
-        <div class="text-xs text-text-tertiary hidden sm:block">← Przewiń poziomo →</div>
+      <div class="space-y-2 border-b border-white/5 pb-4">
+        <span class="text-[11px] font-black uppercase tracking-widest text-holos-turquoise">PIĘĆ ŚWIATÓW</span>
+        <h2 class="text-3xl sm:text-4xl font-serif italic text-white">Każdy sektor ma własną duszę i własne powołanie.</h2>
       </div>
 
-      <div class="flex gap-6 overflow-x-auto snap-carousel pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div class="space-y-8">
         
-        <!-- Sektor 1: Wiara -->
-        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
-          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_faith.jpg');"></div>
-          <div class="p-6 space-y-2">
-            <div class="text-xs font-black uppercase text-amber-400">1. Wiara i Duchowość</div>
-            <h3 class="text-base font-bold text-white leading-tight">Fundament Przymierza</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Cisza, modlitwa, posłuszeństwo Bogu i codzienne karmienie się Słowem. Bez tego sektora wszystkie inne tracą sens.
+        <!-- Świat 1: WIARA (Światło, cisza, przestrzeń) -->
+        <div class="p-6 sm:p-10 rounded-3xl glass-spatial border border-amber-500/20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center spatial-tilt">
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-2xl h-64 sm:h-80 bg-cover bg-center" style="background-image: url('/images/holos/holos_faith.jpg');"></div>
+          <div class="lg:col-span-5 space-y-3">
+            <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">ŚWIATŁO • CISZA • PRZESTRZEŃ</span>
+            <h3 class="text-2xl font-black text-white">1. Wiara i Duchowość</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              Cisza przed tronem Boga, modlitwa i karmienie się czystym Słowem. Bez tego fundamentu człowiek błądzi w zgiełku własnych myśli.
             </p>
           </div>
         </div>
 
-        <!-- Sektor 2: Relacje -->
-        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
-          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_family.jpg');"></div>
-          <div class="p-6 space-y-2">
-            <div class="text-xs font-black uppercase text-red-400">2. Relacje i Rodzina</div>
-            <h3 class="text-base font-bold text-white leading-tight">Czas Przymierza</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Obecność bez telefonu w dłoni, budowanie małżeństwa, troska o dzieci i braterska miłość we wspólnocie.
+        <!-- Świat 2: RELACJE (Ciepło, człowiek, bliskość) -->
+        <div class="p-6 sm:p-10 rounded-3xl glass-spatial border border-red-500/20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center spatial-tilt">
+          <div class="lg:col-span-5 space-y-3 order-2 lg:order-1">
+            <span class="text-[10px] font-black uppercase tracking-widest text-red-400">CIEPŁO • CZŁOWIEK • PRZYMIERZE</span>
+            <h3 class="text-2xl font-black text-white">2. Relacje i Rodzina</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              Obecność z bliskimi bez ekranu w dłoni. Słuchanie sercem. Budowanie przymierza małżeńskiego i troska o dzieci.
+            </p>
+          </div>
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-2xl h-64 sm:h-80 bg-cover bg-center order-1 lg:order-2" style="background-image: url('/images/holos/holos_family.jpg');"></div>
+        </div>
+
+        <!-- Świat 3: ZDROWIE (Ruch, natura, energia) -->
+        <div class="p-6 sm:p-10 rounded-3xl glass-spatial border border-emerald-500/20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center spatial-tilt">
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-2xl h-64 sm:h-80 bg-cover bg-center" style="background-image: url('/images/holos/holos_health.jpg');"></div>
+          <div class="lg:col-span-5 space-y-3">
+            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400">NATURA • RUCH • ENERGIA</span>
+            <h3 class="text-2xl font-black text-white">3. Zdrowie i Ciało</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              Ciało jest świątynią Ducha Świętego. Zdrowy sen przed 22:30, czysty pokarm i codzienny ruch pozwalają ci wiernie służyć powołaniu.
             </p>
           </div>
         </div>
 
-        <!-- Sektor 3: Zdrowie -->
-        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
-          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_health.jpg');"></div>
-          <div class="p-6 space-y-2">
-            <div class="text-xs font-black uppercase text-emerald-400">3. Zdrowie i Ciało</div>
-            <h3 class="text-base font-bold text-white leading-tight">Świątynia Ducha Świętego</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Dyscyplina snu, czysty pokarm, ruch i regeneracja. Twoje ciało jest narzędziem do pełnienia woli Bożej.
+        <!-- Świat 4: FINANSE (Ład, stabilność, odpowiedzialność) -->
+        <div class="p-6 sm:p-10 rounded-3xl glass-spatial border border-holos-turquoise/20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center spatial-tilt">
+          <div class="lg:col-span-5 space-y-3 order-2 lg:order-1">
+            <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">ŁAD • STABILNOŚĆ • WOLNOŚĆ</span>
+            <h3 class="text-2xl font-black text-white">4. Finanse i Szafarstwo</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              Uczciwość, brak długów konsumpcyjnych i wierność w dziesięcinie 10%. Pieniądze są narzędziem w ręku Bożego szafarza.
             </p>
           </div>
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-2xl h-64 sm:h-80 bg-cover bg-center order-1 lg:order-2" style="background-image: url('/images/holos/holos_stewardship.jpg');"></div>
         </div>
 
-        <!-- Sektor 4: Finanse -->
-        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
-          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_stewardship.jpg');"></div>
-          <div class="p-6 space-y-2">
-            <div class="text-xs font-black uppercase text-holos-turquoise">4. Finanse i Szafarstwo</div>
-            <h3 class="text-base font-bold text-white leading-tight">Wierność w Bogactwie</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Uczciwość, brak długów konsumpcyjnych, hojność i wierność w dziesięcinie 10%. Wolność finansowa ku Bożej chwale.
-            </p>
-          </div>
-        </div>
-
-        <!-- Sektor 5: Rozwój -->
-        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
-          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_deepwork.jpg');"></div>
-          <div class="p-6 space-y-2">
-            <div class="text-xs font-black uppercase text-indigo-400">5. Praca i Rozwój Talentów</div>
-            <h3 class="text-base font-bold text-white leading-tight">Mistrzostwo Szafarza</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Praca wykonywana z serca, jak dla samego Pana, a nie dla ludzi. Rozwijanie powierzonych darów w pokorze.
+        <!-- Świat 5: ROZWÓJ (Droga, horyzont, odkrywanie) -->
+        <div class="p-6 sm:p-10 rounded-3xl glass-spatial border border-indigo-500/20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center spatial-tilt">
+          <div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-2xl h-64 sm:h-80 bg-cover bg-center" style="background-image: url('/images/holos/holos_deepwork.jpg');"></div>
+          <div class="lg:col-span-5 space-y-3">
+            <span class="text-[10px] font-black uppercase tracking-widest text-indigo-400">DROGA • HORYZONT • MISTRZOSTWO</span>
+            <h3 class="text-2xl font-black text-white">5. Praca i Rozwój Talentów</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              Praca wykonywana z serca, jak dla samego Pana, a nie dla ludzi. Rozwijanie powierzonych darów w pokorze i wierności.
             </p>
           </div>
         </div>
@@ -863,21 +901,20 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4F. SEKCJA 5: SZAFARSTWO 10% (FINANSE KRÓLESTWA)                           -->
+    <!-- SEKCJA 5: SZAFARSTWO 10% (BIBLIJNA EKONOMIA)                               -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
     <section id="sekcja-szafarstwo" class="scroll-mt-24 space-y-8">
       
-      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 max-w-4xl mx-auto space-y-8">
+      <div class="p-8 sm:p-14 rounded-3xl glass-spatial border border-white/10 max-w-4xl mx-auto space-y-8 spatial-tilt">
         
         <div class="text-center space-y-2">
           <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">BIBLIJNA EKONOMIA</span>
-          <h2 class="text-3xl font-black text-white">Kalkulator Szafarstwa 10%</h2>
+          <h2 class="text-3xl sm:text-4xl font-black text-white">Kalkulator Szafarstwa 10%</h2>
           <p class="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
             Zasada 10 / 20 / 70: Dziesięcina Bogu, przezorność szafarza i zdrowe koszty życia.
           </p>
         </div>
 
-        <!-- Pole Przychodu (ID zachowane!) -->
         <div class="p-5 rounded-2xl bg-surface-dark border border-white/5 space-y-2 max-w-md mx-auto">
           <label class="block text-xs font-bold text-text-tertiary">Twój Miesięczny Przychód Netto (PLN):</label>
           <div class="relative">
@@ -886,24 +923,23 @@
           </div>
         </div>
 
-        <!-- Wyniki 10 / 20 / 70 (ID zachowane!) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="p-6 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-center space-y-2">
             <div class="text-[10px] font-black text-amber-300 uppercase tracking-widest">10% DZIESIĘCINA (BÓG)</div>
             <div id="calc-tithe" class="text-3xl font-black text-amber-400">600 PLN</div>
-            <p class="text-xs text-text-tertiary leading-relaxed">Wierność w pierwszych owocach na dzieła Królestwa Bożego.</p>
+            <p class="text-xs text-text-tertiary leading-relaxed">Wierność w pierwszych owocach na Królestwo Boże.</p>
           </div>
 
           <div class="p-6 rounded-2xl bg-holos-turquoise/10 border border-holos-turquoise/20 text-center space-y-2">
             <div class="text-[10px] font-black text-holos-turquoise uppercase tracking-widest">20% OSZCZĘDNOŚCI (PRZEZORNOŚĆ)</div>
             <div id="calc-savings" class="text-3xl font-black text-holos-turquoise">1 200 PLN</div>
-            <p class="text-xs text-text-tertiary leading-relaxed">Fundusz awaryjny, przezorność biblijna i inwestycje przyszłości.</p>
+            <p class="text-xs text-text-tertiary leading-relaxed">Fundusz awaryjny i mądre inwestycje przyszłości.</p>
           </div>
 
           <div class="p-6 rounded-2xl bg-surface-dark border border-white/5 text-center space-y-2">
             <div class="text-[10px] font-black text-text-tertiary uppercase tracking-widest">70% KOSZTY ŻYCIA</div>
             <div id="calc-living" class="text-3xl font-black text-white">4 200 PLN</div>
-            <p class="text-xs text-text-tertiary leading-relaxed">Mieszkanie, rachunki, pożywienie i codzienne potrzeby rodziny.</p>
+            <p class="text-xs text-text-tertiary leading-relaxed">Mieszkanie, rachunki, pożywienie i codzienne potrzeby.</p>
           </div>
         </div>
 
@@ -912,7 +948,7 @@
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4G. SEKCJA 6: KALENDARZ GOOGLE (P0 — SPOKOJNY, MINIMALISTYCZNY ORGANIZER)   -->
+    <!-- SEKCJA 6: KALENDARZ GOOGLE (P0 — SPOKOJNY, PRZESTRZENNY ORGANIZER)         -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
     <section id="sekcja-kalendarz" class="scroll-mt-24 space-y-6">
       
@@ -926,8 +962,7 @@
         </div>
       </div>
 
-      <!-- Karta Połączenia i Akcji (ID zachowane!) -->
-      <div id="gcal-connection-card" class="p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+      <div id="gcal-connection-card" class="p-8 sm:p-10 rounded-3xl glass-spatial border border-white/10 space-y-6 spatial-tilt">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="space-y-1">
             <h3 id="gcal-status-title" class="text-base font-extrabold text-white">Dwukierunkowa Synchronizacja Kalendarza</h3>
@@ -940,19 +975,15 @@
           </div>
 
           <div id="gcal-actions-container" class="flex flex-wrap items-center gap-2 shrink-0">
-            <!-- Renderowane dynamicznie przez kontroler -->
+            <!-- Renderowane dynamicznie -->
           </div>
         </div>
 
-        <!-- Alert błędu (ID zachowane!) -->
         <div id="gcal-error-alert" class="hidden p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
           <strong id="gcal-error-title" class="text-red-300 font-bold">Uwaga:</strong> <span id="gcal-error-message">Wystąpił błąd synchronizacji.</span>
         </div>
 
-        <!-- Siatka Zdarzeń i Nowego Zdarzenia -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-white/5">
-          
-          <!-- Lista Zdarzeń (7 kolumn) -->
           <div class="lg:col-span-7 space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold uppercase tracking-wider text-white">Zsynchronizowane Wydarzenia</span>
@@ -965,7 +996,6 @@
             </div>
           </div>
 
-          <!-- Szybkie Tworzenie Zdarzenia (5 kolumn) -->
           <div class="lg:col-span-5 p-5 rounded-2xl bg-surface-dark border border-white/5 space-y-3">
             <div class="text-xs font-extrabold uppercase tracking-wider text-white">Dodaj Wydarzenie</div>
             <input type="text" id="gcal-new-title" placeholder="Tytuł zadania / spotkania" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
@@ -984,10 +1014,8 @@
               Utwórz w Google Calendar
             </button>
           </div>
-
         </div>
 
-        <!-- Konsola E2E Diagnostic Suite (ID zachowane!) -->
         <div class="p-4 rounded-2xl bg-pure-black/50 border border-white/5 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -1009,7 +1037,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4H. SEKCJA 7: SŁOWO (PISMO ŚWIĘTE, WERSET, DOBRZE ŻE JESTEŚ)               -->
+    <!-- SEKCJA 7: SŁOWO (PISMO ŚWIĘTE, WERSET, DOBRZE ŻE JESTEŚ)                   -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
     <section id="sekcja-slowo" class="scroll-mt-24 space-y-6">
       
@@ -1018,36 +1046,34 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
         <h2 class="text-3xl font-black text-white">Słowo Boże & Refleksja</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        <!-- Karta Werset Dnia -->
-        <div class="p-8 rounded-3xl glass-portal border border-white/10 space-y-4 flex flex-col justify-between">
+        <div class="p-8 sm:p-10 rounded-3xl glass-spatial border border-white/10 space-y-4 flex flex-col justify-between spatial-tilt">
           <div class="space-y-3">
             <div class="text-[10px] font-bold text-holos-turquoise uppercase tracking-widest">WERSET DNIA</div>
-            <blockquote class="text-lg font-serif italic text-white leading-relaxed">
+            <blockquote class="text-xl font-serif italic text-white leading-relaxed">
               „Z całego serca zaufaj Panu, a na własnym rozumie nie polegaj. We wszystkich swoich drogach zważaj na Niego, a On prostować będzie twoje ścieżki.”
             </blockquote>
             <div class="text-xs font-bold text-amber-400">— Księga Przysłów 3:5-6 (UBG)</div>
           </div>
           <div class="pt-2">
-            <a href="/mojabiblia" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-all">
+            <a href="/mojabiblia" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-all">
               <span>Zbadaj w MojaBiblia Interlinearna</span>
               <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Karta Dobrze, że jesteś & Audio -->
-        <div class="p-8 rounded-3xl glass-portal border border-white/10 space-y-4 flex flex-col justify-between">
+        <div class="p-8 sm:p-10 rounded-3xl glass-spatial border border-white/10 space-y-4 flex flex-col justify-between spatial-tilt">
           <div class="space-y-3">
             <div class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">ROZWAŻANIE CODZIENNE</div>
-            <h3 class="text-lg font-bold text-white">Oczekuj Pana z odwagą</h3>
-            <p class="text-xs text-text-secondary leading-relaxed">
+            <h3 class="text-xl font-bold text-white">Oczekuj Pana z odwagą</h3>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
               Niezależnie od okoliczności, które cię otaczają, pamiętaj, że Bóg nie jest zaskoczony twoim położeniem. Zaufaj Jego suwerennej dobroci.
             </p>
           </div>
           <div class="pt-2">
-            <button onclick="toggleRadio('https://stream.zeno.fm/gn3uhltrrytuv', 'Pismo Święte & Biblia Audio')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
+            <button onclick="toggleRadio('https://stream.zeno.fm/gn3uhltrrytuv', 'Pismo Święte & Biblia Audio')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
               <i class="fa-solid fa-headphones text-xs"></i>
               <span>Włącz Kanał Biblia Audio</span>
             </button>
@@ -1059,11 +1085,11 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     </section>
 
     <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 4I. SEKCJA 8: AI MENTOR AURA (BYOK GEMINI API & AMBIENT MENTOR)            -->
+    <!-- SEKCJA 8: AI MENTOR AURA (AMBIENT MENTOR — BYOK GEMINI API)                -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
     <section id="sekcja-aura" class="scroll-mt-24 space-y-6">
       
-      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 space-y-8 max-w-4xl mx-auto">
+      <div class="p-8 sm:p-14 rounded-3xl glass-spatial border border-white/10 space-y-8 max-w-4xl mx-auto spatial-tilt">
         
         <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-white/10 text-center sm:text-left">
           <div id="aura-orb" class="w-20 h-20 rounded-full bg-gradient-to-tr from-holos-turquoise via-holos-indigo to-holos-purple p-1 shadow-2xl flex items-center justify-center shrink-0">
@@ -1084,27 +1110,25 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
           </div>
         </div>
 
-        <!-- 4 Tryby Decyzyjne -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <button onclick="previewDecision('focus')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-turquoise/40 text-left transition-all group">
+          <button onclick="previewDecision('focus')" class="p-4 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-turquoise/40 text-left transition-all group">
             <div class="text-xs font-black text-white group-hover:text-holos-turquoise">INTENSE FOCUS</div>
             <div class="text-[10px] text-text-tertiary mt-0.5">Odetnij dystrakcje</div>
           </button>
-          <button onclick="previewDecision('encouragement')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-amber-400/40 text-left transition-all group">
+          <button onclick="previewDecision('encouragement')" class="p-4 rounded-2xl bg-surface-dark border border-white/5 hover:border-amber-400/40 text-left transition-all group">
             <div class="text-xs font-black text-white group-hover:text-amber-400">ENCOURAGEMENT</div>
             <div class="text-[10px] text-text-tertiary mt-0.5">Boża łaska w trudzie</div>
           </button>
-          <button onclick="previewDecision('rest')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-sky/40 text-left transition-all group">
+          <button onclick="previewDecision('rest')" class="p-4 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-sky/40 text-left transition-all group">
             <div class="text-xs font-black text-white group-hover:text-holos-sky">REST & SABBATH</div>
             <div class="text-[10px] text-text-tertiary mt-0.5">Święty odpoczynek</div>
           </button>
-          <button onclick="previewDecision('tough_love')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-red-400/40 text-left transition-all group">
+          <button onclick="previewDecision('tough_love')" class="p-4 rounded-2xl bg-surface-dark border border-white/5 hover:border-red-400/40 text-left transition-all group">
             <div class="text-xs font-black text-white group-hover:text-red-400">TOUGH LOVE</div>
             <div class="text-[10px] text-text-tertiary mt-0.5">Odpowiedzialność</div>
           </button>
         </div>
 
-        <!-- Okno Dialogowe Aury (ID zachowane!) -->
         <div class="space-y-3">
           <label class="block text-xs font-bold text-text-tertiary">O czym chcesz dziś porozmawiać z Aurą?</label>
           <div class="flex gap-2">
@@ -1115,7 +1139,6 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
             </button>
           </div>
 
-          <!-- Odpowiedź Aury (ID zachowane!) -->
           <div id="aura-response-box" class="hidden p-5 rounded-2xl bg-surface-dark border border-white/10 space-y-2">
             <div class="flex items-center justify-between text-xs font-bold text-holos-turquoise">
               <span>Odpowiedź Mentora Aura:</span>
@@ -1125,7 +1148,6 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
           </div>
         </div>
 
-        <!-- Konfiguracja Własnego Klucza API (BYOK, ID zachowane!) -->
         <div class="p-4 rounded-2xl bg-surface-dark/70 border border-white/5 space-y-2">
           <div class="flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-2">
@@ -1149,7 +1171,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
   </main>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 5. DOLNY MINI-PLAYER RADIOWY (PERSISTENT RADIO HOLOS)                        -->
+  <!-- WARSTWA 3: DOLNY MINI-PLAYER RADIOWY (PERSISTENT RADIO HOLOS)                -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <div id="live-player-bar" class="fixed bottom-0 left-0 right-0 h-14 bg-dark-bg/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-4 sm:px-8 z-40">
     <div class="flex items-center gap-3">
@@ -1161,7 +1183,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
           <span class="text-[9px] font-black uppercase tracking-wider text-holos-turquoise">RADIO HOLOS</span>
           <span id="player-title" class="text-xs font-bold text-white truncate max-w-[140px] sm:max-w-xs">Spokój & Kontemplacja</span>
         </div>
-        <span class="hidden sm:block text-[9px] text-text-tertiary -mt-0.5">Muzyka nie przerywa podczas przeglądania portalu</span>
+        <span class="hidden sm:block text-[9px] text-text-tertiary -mt-0.5">Muzyka nie przerywa podczas przewijania portalu</span>
       </div>
     </div>
 
@@ -1180,12 +1202,12 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 6. MODALE: QUICK CAPTURE & COMMAND PALETTE                                   -->
+  <!-- WARSTWA 3: MODALE (QUICK CAPTURE & COMMAND PALETTE)                          -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
 
   <!-- Modal 1: Quick Capture -->
   <div id="modal-quick-capture" class="fixed inset-0 bg-pure-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target===this) closeQuickCapture()">
-    <div class="w-full max-w-md rounded-3xl glass-portal border border-white/10 p-6 space-y-4 shadow-2xl">
+    <div class="w-full max-w-md rounded-3xl glass-spatial border border-white/10 p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
         <div class="flex items-center gap-2">
           <span class="text-holos-turquoise font-black text-sm">⚡</span>
@@ -1240,7 +1262,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
 
   <!-- Modal 2: Command Palette (Ctrl+K) -->
   <div id="modal-command-palette" class="fixed inset-0 bg-pure-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20 p-4 hidden" onclick="if(event.target===this) closeCommandPalette()">
-    <div class="w-full max-w-lg rounded-3xl glass-portal border border-white/10 p-4 space-y-3 shadow-2xl">
+    <div class="w-full max-w-lg rounded-3xl glass-spatial border border-white/10 p-4 space-y-3 shadow-2xl">
       <div class="flex items-center gap-2 px-2 pb-2 border-b border-white/10">
         <i class="fa-solid fa-magnifying-glass text-xs text-holos-turquoise"></i>
         <input type="text" id="cp-input" oninput="filterCommands(this.value)" placeholder="Szukaj w HOLOS (np. kalendarz, szabat, finanse, werset)..." class="flex-1 bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none">
@@ -1253,7 +1275,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
         </a>
         <a href="#sekcja-51015" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span class="text-amber-400">⚡</span> <span>5·10·15 Silnik Działania</span></span>
+          <span class="flex items-center gap-2"><span class="text-amber-400">⚡</span> <span>5·10·15 Signature Object</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
         </a>
         <a href="#sekcja-kalendarz" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
@@ -1265,7 +1287,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
         </a>
         <a href="#sekcja-sektory" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span>🖼️</span> <span>Galeria 5 Sektorów HD</span></span>
+          <span class="flex items-center gap-2"><span>🖼️</span> <span>Pięć Światów (5 Sektorów HD)</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
         </a>
         <a href="#sekcja-szafarstwo" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
@@ -1288,11 +1310,48 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
   <audio id="global-radio-audio" preload="none"></audio>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 7. SKRYPTY LOGICZNE (100% ZACHOWANE METODY I IDENTYFIKATORY)                 -->
+  <!-- SKRYPTY LOGICZNE & SPATIAL ENGINE                                            -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <script>
     /* -------------------------------------------------------------
-       1. CHOWANE DRAWERY (LEFT & RIGHT) — HOLOS 2.1
+       1. SPATIAL LIGHT & 3D TILT ENGINE (BEZ CIĘŻKICH BIBLIOTEK)
+    ------------------------------------------------------------- */
+    const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+
+    // Dynamiczny ruch światła za kursorem na desktopie
+    if (!isMobileDevice) {
+      document.addEventListener('mousemove', (e) => {
+        const x = ((e.clientX / window.innerWidth) * 100).toFixed(1);
+        const y = ((e.clientY / window.innerHeight) * 100).toFixed(1);
+        document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+        document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+      }, { passive: true });
+    }
+
+    // Subtelny 3D tilt na wyróżnionych kartach (.spatial-tilt)
+    if (!isMobileDevice && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.spatial-tilt').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = (((y - centerY) / centerY) * -2.5).toFixed(2);
+          const rotateY = (((x - centerX) / centerX) * 3).toFixed(2);
+          
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(8px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+      });
+    }
+
+    /* -------------------------------------------------------------
+       2. CHOWANE DRAWERY (LEFT & RIGHT)
     ------------------------------------------------------------- */
     function toggleLeftDrawer() {
       const drawer = document.getElementById('left-drawer');
@@ -1348,7 +1407,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     });
 
     /* -------------------------------------------------------------
-       2. QUICK CAPTURE & SILNIK 5·10·15
+       3. QUICK CAPTURE & SILNIK 5·10·15
     ------------------------------------------------------------- */
     let selectedQcDuration = 5;
 
@@ -1406,7 +1465,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       3. COMMAND PALETTE (CTRL+K)
+       4. COMMAND PALETTE (CTRL+K)
     ------------------------------------------------------------- */
     function openCommandPalette() {
       const cp = document.getElementById('modal-command-palette');
@@ -1430,7 +1489,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       4. TIMER 5·10·15 (PRAWY DRAWER TERAZ)
+       5. TIMER 5·10·15 (PRAWY DRAWER TERAZ)
     ------------------------------------------------------------- */
     let timerTotalSeconds = 15 * 60;
     let timerRemainingSeconds = 15 * 60;
@@ -1533,11 +1592,11 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       5. CYKL SŁONECZNY & SZABAT W SOBOTĘ
+       6. CYKL SŁONECZNY & SZABAT W SOBOTĘ
     ------------------------------------------------------------- */
     function getSunCyclePhase() {
       const now = new Date();
-      const dayOfWeek = now.getDay(); // 0=Nd, 1=Pn, 2=Wt, 3=Śr, 4=Cz, 5=Pt, 6=Sb
+      const dayOfWeek = now.getDay();
       const hour = now.getHours();
       const isAfterSunset = hour >= 18;
 
@@ -1621,7 +1680,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       6. TOŻSAMOŚĆ CC ID & DANE DOMENOWE
+       7. TOŻSAMOŚĆ CC ID & DANE DOMENOWE
     ------------------------------------------------------------- */
     function getCcUser() {
       try {
@@ -1650,7 +1709,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       7. KOŁO ŻYCIA, HOLOS SCORE & RADAR SVG
+       8. KOŁO ŻYCIA, HOLOS SCORE & RADAR SVG
     ------------------------------------------------------------- */
     const sectors = ['faith', 'family', 'body', 'money', 'work'];
     let currentLowestSector = 'faith';
@@ -1749,7 +1808,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       8. KALKULATOR SZAfarSTWA (10 / 20 / 70)
+       9. KALKULATOR SZAFARSTWA (10 / 20 / 70)
     ------------------------------------------------------------- */
     function calcStewardship() {
       const incomeInput = document.getElementById('input-income');
@@ -1769,7 +1828,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       9. GENERATOR DNIA & INTENCJA
+       10. GENERATOR DNIA & INTENCJA
     ------------------------------------------------------------- */
     function generateSchedule(type = 'standard') {
       const container = document.getElementById('schedule-blocks-container');
@@ -1801,7 +1860,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
 
       const items = schedules[type] || schedules.standard;
       container.innerHTML = items.map((item, idx) => `
-        <div class="flex items-center justify-between p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all text-xs">
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all text-xs">
           <div class="flex items-center gap-2.5">
             <input type="checkbox" id="block-chk-${idx}" onchange="toggleBlockStrike(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 focus:ring-0 cursor-pointer">
             <span class="font-mono text-text-tertiary text-[11px]">${item.time}</span>
@@ -1862,7 +1921,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       10. AI MENTOR AURA (BYOK GEMINI API & HEURISTIC FALLBACK)
+       11. AI MENTOR AURA (BYOK GEMINI API & HEURISTIC FALLBACK)
     ------------------------------------------------------------- */
     function getStoredApiKey() {
       return localStorage.getItem('holos_gemini_api_key') || '';
@@ -1966,7 +2025,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       11. PERSISTENT LIVE RADIO PLAYER
+       12. PERSISTENT LIVE RADIO PLAYER
     ------------------------------------------------------------- */
     const audioEl = document.getElementById('global-radio-audio');
     const playerBar = document.getElementById('live-player-bar');
@@ -2030,7 +2089,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
     }
 
     /* -------------------------------------------------------------
-       12. INTERSECTION OBSERVER DLA CAPSULE PILL NAV
+       13. INTERSECTION OBSERVER & START PLATFORMY
     ------------------------------------------------------------- */
     window.addEventListener('DOMContentLoaded', () => {
       updateSunCycleUI();
@@ -2043,14 +2102,23 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
       updateApiStatusUI();
       setTimerDuration(15);
 
-      // Podświetlanie kapsułek w zależności od przewijanej sekcji
+      // Aktualizacja pełnej daty w nagłówku Dziś
+      const now = new Date();
+      const dateEl = document.getElementById('today-full-date-label');
+      if (dateEl) {
+        const days = ['NIEDZIELA', 'PONIEDZIAŁEK', 'WTOREK', 'ŚRODA', 'CZWARTEK', 'PIĄTEK', 'SOBOTA'];
+        const months = ['STYCZNIA', 'LUTEGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+        dateEl.innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+      }
+
+      // Podświetlanie paska kapsułek
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.pill-nav-item');
 
       window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(sec => {
-          const top = sec.offsetTop - 120;
+          const top = sec.offsetTop - 140;
           if (window.scrollY >= top) {
             current = sec.getAttribute('id');
           }
@@ -2083,10 +2151,10 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
   </script>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 8. KONTROLER GOOGLE CALENDAR P0 (100% ZACHOWANA INTEGRACJA)                   -->
+  <!-- WARSTWA 3: KONTROLER GOOGLE CALENDAR P0 (100% ZACHOWANA INTEGRACJA)           -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <script type="module">
-    import { holosCalendar } from '/js/holos-calendar-sync.js?v=20260925_gcal_v3';
+    import { holosCalendar } from '/js/holos-calendar-sync.js?v=20260925_gcal_v4';
 
     // Subskrypcja stanu silnika kalendarza
     holosCalendar.subscribe((state) => {
@@ -2186,7 +2254,7 @@ Gotowy do uruchomienia testu dwustronnej synchronizacji...
         const startStr = ev.start ? new Date(ev.start).toLocaleString('pl-PL', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : 'Cały dzień';
         const endStr = ev.end ? new Date(ev.end).toLocaleTimeString('pl-PL', {hour:'2-digit', minute:'2-digit'}) : '';
         return `
-          <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all flex items-center justify-between gap-3 group">
+          <div class="p-4 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all flex items-center justify-between gap-3 group">
             <div class="space-y-1">
               <div class="text-xs font-bold text-white group-hover:text-holos-turquoise transition-colors">${ev.summary || 'Bez tytułu'}</div>
               <div class="text-[11px] text-text-tertiary flex items-center gap-2">
