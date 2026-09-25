@@ -9003,7 +9003,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (lower.includes('zbyszek') || lower.includes('gieron')) slug = 'zbyszekgieron';
             else if (lower.includes('zofia') || lower.includes('dudek')) slug = 'zofiadudek';
             else if (lower.includes('paweł') || lower.includes('pawel') || lower.includes('murawski')) slug = 'pawelmurawski';
-            else if (lower.includes('mariusz') || lower.includes('złot') || lower.includes('zlot') || lower.includes('rączk') || lower.includes('raczk') || lower.includes('heatfix')) slug = 'mariusz';
+            else if (lower.includes('studio dobrego') || lower.includes('studiodobre') || lower.includes('sds') || lower.includes('studiodes') || (lower.includes('mariusz') && (lower.includes('studio') || lower.includes('sds') || lower.includes('słowa') || lower.includes('slowa')))) slug = 'studiodobregoslowa';
+            else if (lower.includes('złot') || lower.includes('zlot') || lower.includes('rączk') || lower.includes('raczk') || lower.includes('heatfix') || lower.includes('premier') || lower.includes('mariusz')) slug = 'mariusz';
             else if (lower.includes('cezary')) slug = 'cezaryrgowski';
             else slug = lower.replace(/\s+/g, '');
 
@@ -9020,10 +9021,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
             else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
             else if (slug === 'pawelmurawski' || slug === 'pawel' || slug === 'u_yciezywymbogiem_4231' || slug.includes('murawski')) window.location.href = 'pawelmurawski';
-            else if (slug === 'mariusz' || slug === 'zlota-raczka' || slug === 'mariusz-zlota-raczka' || slug.includes('mariusz') || slug.includes('heatfix')) window.location.href = 'mariusz';
+            else if (slug === 'studiodobregoslowa' || slug === 'sds' || slug.includes('studiodobregoslowa')) window.location.href = 'lumina.studiodobregoslowa.html';
+            else if (slug === 'mariusz' || slug === 'zlota-raczka' || slug === 'mariusz-zlota-raczka' || slug.includes('heatfix') || (slug.includes('mariusz') && !slug.includes('studio') && !slug.includes('sds'))) window.location.href = 'mariusz';
             else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
             else if (slug === 'jolawojcik' || slug === 'jola') window.location.href = 'lumina.jolawojcik.html';
-            else if (slug === 'studiodobregoslowa') window.location.href = 'lumina.studiodobregoslowa.html';
             else if (slug === 'osobowoscplus') window.location.href = 'lumina.osobowoscplus.html';
             else if (slug === 'radiocc') window.location.href = 'lumina.radiocc.html';
             else if (slug === 'cctv') window.location.href = 'lumina.cctv.html';
