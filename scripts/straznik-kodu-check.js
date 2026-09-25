@@ -417,7 +417,7 @@ function checkInlineScriptSyntax() {
     while ((m = re.exec(content)) !== null) {
       const attrs = m[1];
       if (/\bsrc\s*=/.test(attrs)) continue; // zewnętrzny plik, nie ma co sprawdzać tutaj
-      if (/type\s*=\s*["'](application\/ld\+json|application\/json)["']/.test(attrs)) continue; // dane, nie JS
+      if (/type\s*=\s*["'](application\/ld\+json|application\/json|importmap)["']/.test(attrs)) continue; // dane, nie JS
       i++;
       // Usuń wieloliniowe importy (ES modules) przed sprawdzeniem — new Function() ich nie obsługuje.
       const code = m[2].replace(/^\s*import\s*\{[^}]*\}\s*from\s*['"][^'"]+['"]\s*;?/gm, '')

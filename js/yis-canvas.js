@@ -579,6 +579,29 @@
     }
 
     if (obj.type === 'image') {
+      let dpiWidgetHtml = '';
+      if (window.YisPrintQuality) {
+        const pWidth = obj.naturalWidth || 1200;
+        const pHeight = obj.naturalHeight || 1200;
+        const dpiData = window.YisPrintQuality.computeEffectiveDpi(pWidth, pHeight, state.productType, obj.width);
+        const quality = window.YisPrintQuality.evaluateQuality(dpiData.effectiveDpi, dpiData.printWidthCm, dpiData.printHeightCm, obj.hasTransparency, obj.url && obj.url.includes('jezus_jest_droga'));
+        
+        dpiWidgetHtml = `
+          <!-- DYNAMICZNY WSKAŹNIK DPI I JAKOŚCI DRUKU (Etap 3) -->
+          <div id="${isMobile ? 'm-' : ''}img-dpi-box" class="p-3 rounded-xl border transition-all ${quality.badgeBgClass}">
+            <div class="flex items-center justify-between mb-1">
+              <span id="${isMobile ? 'm-' : ''}img-dpi-title" class="font-extrabold text-xs flex items-center gap-1.5">
+                <span id="${isMobile ? 'm-' : ''}img-dpi-dot" class="w-2 h-2 rounded-full" style="background-color: ${quality.colorHex}"></span>
+                ${quality.title}
+              </span>
+              <span id="${isMobile ? 'm-' : ''}img-dpi-dims" class="text-[10px] font-mono font-bold text-gray-400">${dpiData.dimensionsText}</span>
+            </div>
+            <p id="${isMobile ? 'm-' : ''}img-dpi-msg" class="text-xs leading-snug">${quality.message}</p>
+            <p id="${isMobile ? 'm-' : ''}img-dpi-rec" class="text-[10px] mt-1 text-gray-400 leading-tight">${quality.recommendation}</p>
+          </div>
+        `;
+      }
+
       return `
         <div class="space-y-4">
           <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
@@ -594,6 +617,8 @@
               </button>
             </div>
           </div>
+
+          ${dpiWidgetHtml}
 
           <!-- Skala / Rozmiar -->
           <div>
@@ -674,6 +699,26 @@
           if (valLabel) valLabel.textContent = val + 'px';
           const aspect = (obj.height || 1) / (obj.width || 1);
           updateSelected({ width: val, height: Math.round(val * aspect) });
+
+          // Natychmiastowa aktualizacja wskaźnika DPI na żywo (Etap 3)
+          if (window.YisPrintQuality) {
+            const pWidth = obj.naturalWidth || 1200;
+            const pHeight = obj.naturalHeight || 1200;
+            const dpiData = window.YisPrintQuality.computeEffectiveDpi(pWidth, pHeight, state.productType, val);
+            const quality = window.YisPrintQuality.evaluateQuality(dpiData.effectiveDpi, dpiData.printWidthCm, dpiData.printHeightCm, obj.hasTransparency, obj.url && obj.url.includes('jezus_jest_droga'));
+
+            const box = document.getElementById(`${prefix}img-dpi-box`);
+            const title = document.getElementById(`${prefix}img-dpi-title`);
+            const dims = document.getElementById(`${prefix}img-dpi-dims`);
+            const msg = document.getElementById(`${prefix}img-dpi-msg`);
+            const rec = document.getElementById(`${prefix}img-dpi-rec`);
+
+            if (box) box.className = 'p-3 rounded-xl border transition-all ' + quality.badgeBgClass;
+            if (title) title.innerHTML = `<span class="w-2 h-2 rounded-full inline-block" style="background-color: ${quality.colorHex}"></span> ${quality.title}`;
+            if (dims) dims.textContent = dpiData.dimensionsText;
+            if (msg) msg.textContent = quality.message;
+            if (rec) rec.textContent = quality.recommendation;
+          }
         });
       }
 

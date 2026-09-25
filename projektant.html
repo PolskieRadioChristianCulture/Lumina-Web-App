@@ -55,6 +55,7 @@
   <script src="/js/yis-pricing.js"></script>
   <script src="/js/yis-project-store.js"></script>
   <script src="/js/yis-canvas.js"></script>
+  <script src="/js/yis-print-quality.js"></script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -954,21 +955,60 @@
               <div id="dropzone-empty">
                 <i class="fa-solid fa-cloud-arrow-up text-3xl text-gold mb-2"></i>
                 <h4 class="text-sm font-bold text-white mb-1">Kliknij lub przeciągnij plik graficzny</h4>
-                <p class="text-xs text-gray-400">Obsługiwane formaty: PNG, JPG, SVG, WebP (max 10MB)</p>
+                <p class="text-xs text-gray-300 font-medium">Obsługiwane formaty: <strong class="text-gold">PNG z przezroczystością, JPG, WebP</strong> (do 15MB)</p>
+                <p class="text-[11px] text-gray-400 mt-1">Pliki wektorowe (SVG, PDF) prześlij bezpośrednio do weryfikacji mailowej YIS.</p>
               </div>
 
               <!-- Uploaded Preview -->
-              <div id="dropzone-preview" class="hidden flex flex-col items-center">
-                <div class="w-32 h-32 rounded-xl overflow-hidden border border-gold/40 bg-black/50 p-2 mb-3 relative">
+              <div id="dropzone-preview" class="hidden flex flex-col items-center w-full">
+                <div class="w-32 h-32 rounded-2xl overflow-hidden border border-gold/40 bg-black/50 p-2 mb-3 relative shadow-inner">
                   <img id="uploaded-img-preview" src="" alt="Podgląd grafiki" class="w-full h-full object-contain">
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-bold text-brandGreen flex items-center gap-1">
-                    <i class="fa-solid fa-check-circle"></i> Własna grafika wgrana pomyślnie
+                <div class="flex items-center gap-2 mb-4">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <i class="fa-solid fa-check-circle"></i> Plik wgrany pomyślnie
                   </span>
-                  <button type="button" onclick="event.stopPropagation(); removeUploadedImage()" class="px-2.5 py-1 rounded-lg bg-brandRed/20 text-brandRed hover:bg-brandRed/30 text-xs font-bold transition-all">
-                    Usuń
+                  <button type="button" onclick="event.stopPropagation(); removeUploadedImage()" class="px-3 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition-all">
+                    Usuń grafikę
                   </button>
+                </div>
+
+                <!-- WIDGET ANALIZY DRUKU PRINT QUALITY ENGINE (Etap 3) -->
+                <div id="print-quality-analysis-box" class="w-full max-w-md bg-black/60 border border-white/15 rounded-2xl p-4 text-left shadow-xl space-y-3">
+                  <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span class="text-xs font-extrabold text-gold uppercase tracking-wider flex items-center gap-1.5">
+                      <i class="fa-solid fa-microchip"></i> Analiza Jakości Druku (YIS)
+                    </span>
+                    <span id="pq-file-size" class="text-[11px] font-mono text-gray-400">0 MB</span>
+                  </div>
+
+                  <!-- Parametry pliku: Piksele, Wymiary w cm, Przezroczystość -->
+                  <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/8">
+                      <span class="text-[10px] text-gray-400 block font-semibold">Rozdzielczość pliku:</span>
+                      <span id="pq-pixels" class="font-bold text-white font-mono">-</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-xl border border-white/8">
+                      <span class="text-[10px] text-gray-400 block font-semibold">Wymiar nadruku:</span>
+                      <span id="pq-dimensions" class="font-bold text-white font-mono">-</span>
+                    </div>
+                  </div>
+
+                  <!-- Kanał alfa / Przezroczystość -->
+                  <div id="pq-transparency-row" class="flex items-center gap-2 text-xs p-2 rounded-xl bg-white/5 border border-white/8">
+                    <i id="pq-transparency-icon" class="fa-solid fa-shapes text-gold"></i>
+                    <span id="pq-transparency-text" class="text-gray-200">Badanie kanału przezroczystości...</span>
+                  </div>
+
+                  <!-- Efektywne DPI Badge i Rekomendacja -->
+                  <div id="pq-status-card" class="p-3 rounded-xl border transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                      <span id="pq-badge-title" class="font-bold text-xs flex items-center gap-1.5"></span>
+                      <span id="pq-badge-dpi" class="text-xs font-mono font-black"></span>
+                    </div>
+                    <p id="pq-badge-msg" class="text-xs leading-relaxed text-gray-200"></p>
+                    <p id="pq-badge-rec" class="text-[11px] mt-1 text-gray-400 leading-tight"></p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1246,6 +1286,30 @@
               </div>
               <h2 class="text-lg sm:text-xl font-bold text-gold tracking-wide uppercase">KUMULACJA I REALIZACJA</h2>
               <p class="text-xs text-gray-400 mt-1">Weryfikacja techniczna grafika i kosztorys przed drukiem</p>
+            </div>
+
+            <!-- WARNING CHECKBOX FOR LOW DPI (Etap 3 Truthful UI) -->
+            <div id="summary-low-dpi-warning" class="hidden bg-rose-950/40 border-2 border-rose-500/50 rounded-2xl p-4 sm:p-5 mb-5 shadow-xl">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/40 flex items-center justify-center text-lg flex-shrink-0 mt-0.5">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="flex-1 text-xs text-gray-200">
+                  <div class="flex items-center gap-2 mb-1">
+                    <strong class="text-sm font-bold text-rose-300">Wykryto Niską Rozdzielczość Grafiki</strong>
+                    <span id="summary-low-dpi-tag" class="px-2 py-0.5 rounded text-[10px] font-black bg-rose-500 text-white uppercase">&lt; 150 DPI</span>
+                  </div>
+                  <p class="text-gray-300 leading-relaxed mb-3">
+                    Twoja grafika przy wybranym rozmiarze nadruku ma mniej niż 150 DPI. W gotowym druku drobne detale mogą być nieostre. Możesz zmniejszyć rozmiar grafiki na makiecie w Kroku 8 lub przekazać plik do bezpłatnej weryfikacji przez grafika YIS.
+                  </p>
+                  <label class="flex items-start gap-2.5 cursor-pointer bg-black/40 p-3 rounded-xl border border-rose-500/30 hover:border-rose-400 transition-colors">
+                    <input type="checkbox" id="ack-low-dpi-checkbox" class="accent-rose-500 w-4 h-4 mt-0.5 cursor-pointer flex-shrink-0" />
+                    <span class="text-xs text-gray-200 leading-tight">
+                      Świadomie przekazuję grafikę o niższej rozdzielczości — proszę grafika YIS o bezpłatną weryfikację i pomoc techniczną przed drukiem.
+                    </span>
+                  </label>
+                </div>
+              </div>
             </div>
 
             <!-- Dedicated Verification Notice Box -->
@@ -2118,6 +2182,23 @@
     }
 
     // --- STEP NAVIGATION ---
+    
+    function checkLowDpiWarning() {
+      const warnBox = document.getElementById('summary-low-dpi-warning');
+      if (!warnBox) return;
+
+      const isCustom = state.graphicMode === 'custom' && state.uploadedImageBase64;
+      const report = state.imageQualityReport;
+
+      if (isCustom && report && report.requiresWarningCheck) {
+        warnBox.classList.remove('hidden');
+        const tag = document.getElementById('summary-low-dpi-tag');
+        if (tag) tag.textContent = report.dpi + ' DPI';
+      } else {
+        warnBox.classList.add('hidden');
+      }
+    }
+  
     function updateStepUI() {
       // Bounds
       if (state.currentStep < 0) state.currentStep = 0;
@@ -2167,6 +2248,7 @@
         renderMockup();
       }
       if (state.currentStep === 10) {
+        checkLowDpiWarning();
         updateSummaryRecap();
       } else {
         updatePricing();
@@ -2296,18 +2378,79 @@
       saveDraft();
     }
 
-    function handleImageUpload(e) {
+    async function handleImageUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        state.uploadedImageBase64 = event.target.result;
+
+      if (!window.YisPrintQuality) {
+        console.error('YisPrintQuality module not loaded');
+        return;
+      }
+
+      try {
+        const analysis = await window.YisPrintQuality.analyzeImageFile(file);
+
+        if (!analysis.isValid) {
+          alert((analysis.errorTitle || 'Błąd pliku') + ':\n\n' + (analysis.errorMessage || 'Nieobsługiwany format.'));
+          e.target.value = '';
+          return;
+        }
+
+        state.uploadedImageBase64 = analysis.dataUrl;
         state.graphicMode = 'custom';
+        state.imageAnalysis = analysis;
+
+        // Oblicz DPI dla domyślnego rozmiaru w strefie
+        const dpiData = window.YisPrintQuality.computeEffectiveDpi(analysis.width, analysis.height, state.selectedProductType, 140);
+        const quality = window.YisPrintQuality.evaluateQuality(dpiData.effectiveDpi, dpiData.printWidthCm, dpiData.printHeightCm, analysis.hasTransparency, false);
+        state.imageQualityReport = quality;
+
+        // Zaktualizuj widget analizy w Kroku 5
+        renderPrintQualityWidget(analysis, dpiData, quality);
+
+        // Zaktualizuj Canvas Studio
+        if (window.YisCanvas) {
+          window.YisCanvas.addImage(analysis.dataUrl, {
+            name: file.name,
+            naturalWidth: analysis.width,
+            naturalHeight: analysis.height,
+            hasTransparency: analysis.hasTransparency
+          });
+        }
+
         updateGraphicUI();
         renderMockup();
         saveDraft();
-      };
-      reader.readAsDataURL(file);
+      } catch (err) {
+        console.error('Error in handleImageUpload:', err);
+        alert('Wystąpił błąd podczas analizy pliku graficznego: ' + err.message);
+      }
+    }
+
+    function renderPrintQualityWidget(analysis, dpiData, quality) {
+      const box = document.getElementById('print-quality-analysis-box');
+      if (!box) return;
+
+      document.getElementById('pq-file-size').textContent = analysis.fileSizeFormatted || '';
+      document.getElementById('pq-pixels').textContent = analysis.width + ' × ' + analysis.height + ' px';
+      document.getElementById('pq-dimensions').textContent = dpiData.dimensionsText;
+
+      const transText = document.getElementById('pq-transparency-text');
+      const transIcon = document.getElementById('pq-transparency-icon');
+      if (analysis.hasTransparency) {
+        transText.textContent = 'Wykryto przezroczyste tło (PNG) — idealne do druku na tkaninach';
+        transIcon.className = 'fa-solid fa-check text-emerald-400';
+      } else {
+        transText.textContent = 'Jednolite tło — grafik YIS bezpłatnie usunie tło przed drukiem';
+        transIcon.className = 'fa-solid fa-circle-info text-amber-400';
+      }
+
+      const card = document.getElementById('pq-status-card');
+      card.className = 'p-3 rounded-xl border transition-all ' + quality.badgeBgClass;
+      document.getElementById('pq-badge-title').textContent = quality.title;
+      document.getElementById('pq-badge-dpi').textContent = quality.dpi + ' DPI';
+      document.getElementById('pq-badge-msg').textContent = quality.message;
+      document.getElementById('pq-badge-rec').textContent = quality.recommendation;
     }
 
     function removeUploadedImage() {
@@ -3033,6 +3176,14 @@ Tel: ${state.phoneNumber}`;
     }
 
     function submitProjectForVerification(channel) {
+      // Weryfikacja akceptacji niskiego DPI (Etap 3 Truthful UI)
+      const ackBox = document.getElementById('summary-low-dpi-warning');
+      const ackCheck = document.getElementById('ack-low-dpi-checkbox');
+      if (ackBox && !ackBox.classList.contains('hidden') && ackCheck && !ackCheck.checked) {
+        alert('UWAGA DOTYCZĄCA JAKOŚCI DRUKU:\n\nTwoja grafika ma niską rozdzielczość (< 150 DPI). Zaznacz pole świadomej akceptacji lub zmniejsz rozmiar grafiki na makiecie, aby uzyskać lepszą ostrość.');
+        ackCheck.focus();
+        return;
+      }
       if (channel === 'whatsapp') {
         submitOrderViaWhatsApp();
       } else {
