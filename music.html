@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>CC MUSIC | Christian Culture — Słuchaj • Odkrywaj • Pobieraj</title>
+    <meta name="description" content="Oficjalne centrum muzyczne Christian Culture. Słuchaj TOP TEN, albumów Boże Granie, Śpiew Aniołów, streamingu na 25 platformach i pobieraj darmowe utwory MP3.">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="music.song">
+    <meta property="og:title" content="CC MUSIC | Christian Culture — Słuchaj • Odkrywaj • Pobieraj">
+    <meta property="og:description" content="Oficjalne centrum muzyczne Christian Culture: TOP TEN, albumy, streaming na 25 platformach, darmowe pobieranie MP3.">
+    <meta property="og:image" content="https://polskieradio.cc/images/tlo_menu_cc.jpg">
+    <meta property="og:url" content="https://polskieradio.cc/music">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #07090D;
+            --surface-card: #11141B;
+            --surface-hover: #171c26;
+            --gold-primary: #D4A94A;
+            --gold-light: #FDE047;
+            --cyan-accent: #38bdf8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-gold: rgba(212, 169, 74, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 80% 10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 90%, rgba(212, 169, 74, 0.08) 0%, transparent 60%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Top Nav */
+        .music-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 9, 13, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(212, 169, 74, 0.25), rgba(0, 0, 0, 0.8));
+            border: 1.5px solid var(--gold-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-badge {
+            font-size: 0.62rem;
+            color: var(--gold-light);
+            background: rgba(212, 169, 74, 0.2);
+            border: 1px solid rgba(212, 169, 74, 0.4);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-nav-primary {
+            background: linear-gradient(135deg, rgba(212, 169, 74, 0.3), rgba(212, 169, 74, 0.1));
+            border: 1.5px solid var(--gold-primary);
+            color: #ffffff;
+        }
+
+        .btn-nav-primary:hover {
+            background: rgba(212, 169, 74, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-nav-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: #e2e8f0;
+        }
+
+        .btn-nav-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 20px 80px 20px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 10px 30px 10px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 169, 74, 0.15);
+            border: 1px solid rgba(212, 169, 74, 0.35);
+            color: var(--gold-primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: #94a3b8;
+            max-width: 680px;
+            margin: 0 auto 28px auto;
+            line-height: 1.6;
+        }
+
+        /* Platform Badges Row */
+        .platforms-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .platform-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #11141B;
+            border: 1px solid var(--border-subtle);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .platform-pill:hover {
+            border-color: var(--gold-primary);
+            background: #171c26;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .platform-pill i {
+            font-size: 1rem;
+        }
+        .platform-pill.spotify i { color: #1DB954; }
+        .platform-pill.apple i { color: #FC3C44; }
+        .platform-pill.tidal i { color: #000; background: #fff; border-radius: 50%; padding: 2px; }
+        .platform-pill.soundcloud i { color: #FF5500; }
+        .platform-pill.youtube i { color: #FF0000; }
+
+        /* Section Titles */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 48px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .section-title i {
+            color: var(--gold-primary);
+        }
+
+        /* Grid */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        /* Music Track / Album Card */
+        .music-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.22s;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .music-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(212, 169, 74, 0.12);
+        }
+
+        .music-card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .track-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: rgba(212, 169, 74, 0.8);
+            width: 32px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .album-cover {
+            width: 54px;
+            height: 54px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(212, 169, 74, 0.25), rgba(15, 17, 23, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--gold-primary);
+            flex-shrink: 0;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .track-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-track {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .btn-track:hover {
+            background: rgba(212, 169, 74, 0.2);
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+        }
+
+        .btn-track.download {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.25);
+            color: #38bdf8;
+        }
+
+        .btn-track.download:hover {
+            background: rgba(56, 189, 248, 0.25);
+            color: #fff;
+        }
+
+        /* Banner CTA */
+        .cta-box {
+            margin-top: 56px;
+            background: linear-gradient(135deg, rgba(212, 169, 74, 0.15), rgba(7, 9, 13, 0.95));
+            border: 1.5px solid var(--gold-primary);
+            border-radius: 18px;
+            padding: 36px 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .cta-box h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .cta-box p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .footer a {
+            color: var(--gold-primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid-cards {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="music-header">
+        <a href="/" class="brand-link" title="Wróć do PolskieRadio.cc">
+            <div class="brand-icon">
+                <i class="fa-solid fa-music"></i>
+            </div>
+            <div class="brand-title">
+                CC MUSIC
+                <span class="brand-badge">HUB 2026</span>
+            </div>
+        </a>
+        <div class="nav-actions">
+            <a href="/player" class="btn-nav btn-nav-primary">
+                <i class="fa-solid fa-circle-play"></i> Player CC
+            </a>
+            <a href="/" class="btn-nav btn-nav-ghost">
+                <i class="fa-solid fa-arrow-left"></i> PolskieRadio.cc
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-tag">
+                <i class="fa-solid fa-compact-disc"></i> Oficjalny Katalog Muzyki Chrześcijańskiej
+            </div>
+            <h1 class="hero-title">Słuchaj • Odkrywaj • Pobieraj</h1>
+            <p class="hero-subtitle">
+                Odkryj autorskie pieśni uwielbienia, utwory refleksyjne oraz pełne albumy Christian Culture. Dostępne na 25 platformach streamingowych oraz do pobrania bez opłat.
+            </p>
+
+            <!-- 25 Platform Streaming Links -->
+            <div class="platforms-strip">
+                <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="platform-pill spotify">
+                    <i class="fa-brands fa-spotify"></i> Spotify
+                </a>
+                <a href="https://soundcloud.com/cezary-rogowski/wojownik-chrystusa" target="_blank" rel="noopener" class="platform-pill soundcloud">
+                    <i class="fa-brands fa-soundcloud"></i> SoundCloud
+                </a>
+                <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="platform-pill tidal">
+                    <i class="fa-solid fa-wave-square"></i> TIDAL
+                </a>
+                <a href="https://youtube.com/@radiochristianculture" target="_blank" rel="noopener" class="platform-pill youtube">
+                    <i class="fa-brands fa-youtube"></i> YouTube Music
+                </a>
+                <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="platform-pill apple">
+                    <i class="fa-brands fa-apple"></i> Apple Music
+                </a>
+                <span class="platform-pill" style="opacity: 0.6;">
+                    + 20 innych platform
+                </span>
+            </div>
+        </section>
+
+        <!-- SECTION: TOP TEN -->
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fa-solid fa-fire"></i> TOP TEN Utworów Christian Culture
+            </h2>
+            <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-nav btn-nav-ghost">
+                Odtwórz na Spotify <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        </div>
+
+        <div class="grid-cards">
+            <!-- 1 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">01</span>
+                    <div class="album-cover"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Wojownik Chrystusa</h3>
+                        <p class="track-artist">Cezary Rogowski • Christian Culture</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://soundcloud.com/cezary-rogowski/wojownik-chrystusa" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculture" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz FREE</a>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">02</span>
+                    <div class="album-cover"><i class="fa-solid fa-dove"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">W Taką Ciszę</h3>
+                        <p class="track-artist">Christian Culture Worship</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">03</span>
+                    <div class="album-cover"><i class="fa-solid fa-heart"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Jesteś Cudem</h3>
+                        <p class="track-artist">Christian Culture Studio</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">04</span>
+                    <div class="album-cover"><i class="fa-solid fa-hands-praying"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Śpiew Aniołów</h3>
+                        <p class="track-artist">Chór & Instrumentaliści CC</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">05</span>
+                    <div class="album-cover"><i class="fa-solid fa-cross"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Oddaj Życie Jezusowi</h3>
+                        <p class="track-artist">Christian Culture Band</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">06</span>
+                    <div class="album-cover"><i class="fa-solid fa-sun"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Powołany do Światła</h3>
+                        <p class="track-artist">Christian Culture</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">07</span>
+                    <div class="album-cover"><i class="fa-solid fa-star"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Urodzony z Ducha</h3>
+                        <p class="track-artist">Cezary Rogowski</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">08</span>
+                    <div class="album-cover"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Będę Chwalił Pana</h3>
+                        <p class="track-artist">Worship LIVE CC</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 9 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">09</span>
+                    <div class="album-cover"><i class="fa-solid fa-water"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Wierzę i Ufam</h3>
+                        <p class="track-artist">Christian Culture</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="music-card">
+                <div class="music-card-top">
+                    <span class="track-num">10</span>
+                    <div class="album-cover"><i class="fa-solid fa-peace"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Pokój z Wami</h3>
+                        <p class="track-artist">Christian Culture Refleksje</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://open.spotify.com/artist/3ZgXCNnAllDbNDtzk4jkg6" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Posłuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: ALBUMY -->
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fa-solid fa-record-vinyl"></i> Oficjalny Katalog Albumów
+            </h2>
+            <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-nav btn-nav-ghost">
+                Wszystkie Albumy Linktree <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        </div>
+
+        <div class="grid-cards">
+            <div class="music-card">
+                <div class="music-card-top">
+                    <div class="album-cover"><i class="fa-solid fa-guitar"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Boże Granie</h3>
+                        <p class="track-artist">Album Studyjny • 12 utworów</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz Album</a>
+                </div>
+            </div>
+
+            <div class="music-card">
+                <div class="music-card-top">
+                    <div class="album-cover"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Top Ten Vol. 1 & Vol. 2</h3>
+                        <p class="track-artist">Kompilacja przebojów uwielbienia</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <div class="music-card">
+                <div class="music-card-top">
+                    <div class="album-cover"><i class="fa-solid fa-feather"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Śpiew Aniołów</h3>
+                        <p class="track-artist">Muzyka Uwielbienia & Chór</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <div class="music-card">
+                <div class="music-card-top">
+                    <div class="album-cover"><i class="fa-solid fa-moon"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Muzyka Refleksyjna</h3>
+                        <p class="track-artist">Do modlitwy, wyciszenia i snu</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="/ambientsleep" class="btn-track"><i class="fa-solid fa-play"></i> Odtwarzaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+
+            <div class="music-card">
+                <div class="music-card-top">
+                    <div class="album-cover"><i class="fa-solid fa-hands"></i></div>
+                    <div class="track-info">
+                        <h3 class="track-title">Śpiewajmy Panu (Cz. 1, 2, 3)</h3>
+                        <p class="track-artist">Trylogia Pieśni Kościoła</p>
+                    </div>
+                </div>
+                <div class="track-actions">
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    <a href="https://linktr.ee/christianculturemusic" target="_blank" rel="noopener" class="btn-track download"><i class="fa-solid fa-download"></i> Pobierz</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Box -->
+        <section class="cta-box">
+            <i class="fa-solid fa-heart" style="font-size: 2.2rem; color: #ef4444; margin-bottom: 12px;"></i>
+            <h3>Zostań Patronem Muzyki Christian Culture</h3>
+            <p>
+                Twoje wsparcie pozwala nam nagrywać nowe pieśni, tworzyć słuchowiska biblijne i udostępniać muzykę za darmo dla tysięcy wierzących na całym świecie.
+            </p>
+            <a href="/#support-modal" class="btn-nav btn-nav-primary" style="padding: 12px 28px; font-size: 0.95rem;">
+                <i class="fa-solid fa-hand-holding-heart"></i> Wesprzyj Misję Muzyczną
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Polskie Radio Christian Culture • <a href="/">Strona Główna</a> • <a href="/player">Player CC</a> • <a href="/network">CC Network</a></p>
+    </footer>
+
+</body>
+</html>

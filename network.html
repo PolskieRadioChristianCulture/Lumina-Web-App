@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>CC NETWORK | Christian Culture — 40+ Kanałów • Jedna Misja</title>
+    <meta name="description" content="Oficjalny katalog sieci Christian Culture Network. Ponad 40 kanałów tematycznych: media, muzyka, Biblia, rodzina, młodzież, edukacja i ewangelizacja.">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CC NETWORK | Christian Culture — 40+ Kanałów • Jedna Misja">
+    <meta property="og:description" content="Odkryj 40+ kanałów wideo, stacji i projektów multimedialnych Christian Culture Network.">
+    <meta property="og:image" content="https://polskieradio.cc/images/tlo_menu_cc.jpg">
+    <meta property="og:url" content="https://polskieradio.cc/network">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #07090D;
+            --surface-card: #11141B;
+            --surface-hover: #171c26;
+            --gold-primary: #D4A94A;
+            --gold-light: #FDE047;
+            --cyan-accent: #38bdf8;
+            --purple-accent: #c084fc;
+            --emerald-accent: #34d399;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-gold: rgba(212, 169, 74, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 85% 15%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 15% 85%, rgba(212, 169, 74, 0.09) 0%, transparent 60%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Top Nav */
+        .network-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 9, 13, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(0, 0, 0, 0.8));
+            border: 1.5px solid var(--cyan-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan-accent);
+            font-size: 1.15rem;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-badge {
+            font-size: 0.62rem;
+            color: var(--cyan-accent);
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-nav-primary {
+            background: linear-gradient(135deg, rgba(212, 169, 74, 0.3), rgba(212, 169, 74, 0.1));
+            border: 1.5px solid var(--gold-primary);
+            color: #ffffff;
+        }
+
+        .btn-nav-primary:hover {
+            background: rgba(212, 169, 74, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-nav-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: #e2e8f0;
+        }
+
+        .btn-nav-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 32px 20px 80px 20px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 10px 20px 10px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: var(--cyan-accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: #94a3b8;
+            max-width: 720px;
+            margin: 0 auto 28px auto;
+            line-height: 1.6;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter-box {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            position: relative;
+        }
+
+        .search-filter-box input {
+            width: 100%;
+            height: 48px;
+            background: #11141B;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 0 20px 0 46px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #fff;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-filter-box input:focus {
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), 0 6px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .search-filter-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: #11141B;
+            border: 1px solid var(--border-subtle);
+            color: #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: #171c26;
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--cyan-accent);
+            color: var(--cyan-accent);
+        }
+
+        /* Sections */
+        .category-group {
+            margin-bottom: 46px;
+        }
+
+        .category-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .category-title i {
+            font-size: 1.15rem;
+        }
+        .cat-main i { color: var(--gold-primary); }
+        .cat-media i { color: #f43f5e; }
+        .cat-music i { color: #a855f7; }
+        .cat-bible i { color: #eab308; }
+        .cat-family i { color: #ec4899; }
+        .cat-knowledge i { color: #10b981; }
+
+        /* Channel Grid */
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 16px;
+        }
+
+        .channel-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.22s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .channel-card:hover {
+            background: var(--surface-hover);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(56, 189, 248, 0.12);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .channel-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .channel-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .channel-desc {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        .card-bottom {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .badge-type {
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+        }
+
+        .btn-subscribe {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 0, 0, 0.15);
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            color: #ff4d4d;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-subscribe:hover {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .footer a {
+            color: var(--cyan-accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .channel-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="network-header">
+        <a href="/" class="brand-link" title="Wróć do PolskieRadio.cc">
+            <div class="brand-icon">
+                <i class="fa-solid fa-globe"></i>
+            </div>
+            <div class="brand-title">
+                CC NETWORK
+                <span class="brand-badge">40+ KANAŁÓW</span>
+            </div>
+        </a>
+        <div class="nav-actions">
+            <a href="https://linktr.ee/christianculturenetwork" target="_blank" rel="noopener" class="btn-nav btn-nav-primary">
+                <i class="fa-solid fa-link"></i> Linktree Network
+            </a>
+            <a href="/" class="btn-nav btn-nav-ghost">
+                <i class="fa-solid fa-arrow-left"></i> PolskieRadio.cc
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-tag">
+                <i class="fa-solid fa-tower-broadcast"></i> Cyfrowy Ekosystem Multimedialny
+            </div>
+            <h1 class="hero-title">40+ Kanałów • Jedna Misja</h1>
+            <p class="hero-subtitle">
+                Odkryj pełną sieć kanałów tematycznych Christian Culture Network. Media, muzyka, Biblia, rodzina, młodzież, apologetyka i inspirujące audycje.
+            </p>
+
+            <!-- Search -->
+            <div class="search-filter-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="channelSearch" placeholder="Szukaj kanału np. worship, kids, academy, prayer..." autocomplete="off">
+            </div>
+
+            <!-- Categories Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+                <button class="tab-btn active" data-category="all">Wszystkie (40+)</button>
+                <button class="tab-btn" data-category="main">Główne</button>
+                <button class="tab-btn" data-category="media">Media & TV</button>
+                <button class="tab-btn" data-category="music">Muzyka</button>
+                <button class="tab-btn" data-category="bible">Biblia & Modlitwa</button>
+                <button class="tab-btn" data-category="family">Rodzina & Życie</button>
+                <button class="tab-btn" data-category="knowledge">Wiedza & Misja</button>
+            </div>
+        </section>
+
+        <!-- GROUP 1: GŁÓWNE -->
+        <div class="category-group" data-group="main">
+            <h2 class="category-title cat-main">
+                <i class="fa-solid fa-star"></i> Kanały Główne Ekosystemu
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="polskie radio christian culture radio stacja glowna audycje">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: var(--gold-primary);"><i class="fa-solid fa-radio"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Polskie Radio CC</h3>
+                            <p class="channel-desc">Oficjalny kanał główny radia i programów na żywo</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">GŁÓWNY</span>
+                        <a href="https://youtube.com/@radiochristianculture" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="christian culture tv cctv network studio filmy">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-tv"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Christian Culture TV</h3>
+                            <p class="channel-desc">Centrum wideo, reportaży, wykładów i filmów</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">TELEWIZJA</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="osobowość plus cezary rogowski wywiady inspiracje rozmowy o+">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #ec4899;"><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Osobowość Plus (O+)</h3>
+                            <p class="channel-desc">Inspirujące wywiady, rozwój osobisty i historie wiary</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">ROZMOWY</span>
+                        <a href="https://youtube.com/@osobowoscplus" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="werset dnia csb cytaty slowo boze krotkie">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #f59e0b;"><i class="fa-solid fa-bible"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Werset Dnia CC</h3>
+                            <p class="channel-desc">Codzienne wersety biblijne, grafiki i rozważania</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">SŁOWO</span>
+                        <a href="/werset-dnia" class="btn-subscribe" style="background: rgba(212,169,74,0.15); border-color: var(--gold-primary); color: var(--gold-light);"><i class="fa-solid fa-arrow-right"></i> Zobacz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GROUP 2: MEDIA & TV -->
+        <div class="category-group" data-group="media">
+            <h2 class="category-title cat-media">
+                <i class="fa-solid fa-film"></i> Media, Kobiety & Mężczyźni
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="rcc tv24 cctv24 live worship transmisje">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #ef4444;"><i class="fa-solid fa-tower-broadcast"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">RCC TV24 LIVE</h3>
+                            <p class="channel-desc">Telewizja internetowa i transmisje 24/7</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">LIVE 24/7</span>
+                        <a href="/smart-tv" class="btn-subscribe"><i class="fa-solid fa-play"></i> Smart TV</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc women kobiety wiara relacje rodzina piekno">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #f472b6;"><i class="fa-solid fa-venus"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Women</h3>
+                            <p class="channel-desc">Dla kobiet pragnących żyć w bliskości z Bogiem</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">KOBIETY</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc men mezczyzni odwaga przywodztwo charakter">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-mars"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Men</h3>
+                            <p class="channel-desc">Dla mężczyzn budujących wiarę, siłę i charakter</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">MĘŻCZYŹNI</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cctv24 worship live uwielbienie non stop 24/7">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #a855f7;"><i class="fa-solid fa-hands-praying"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CCTV24 Worship</h3>
+                            <p class="channel-desc">Muzyka uwielbienia i modlitwy bez przerwy</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">UWIELBIENIE</span>
+                        <a href="/cctv24-worship" class="btn-subscribe"><i class="fa-solid fa-play"></i> Oglądaj</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GROUP 3: MUZYKA -->
+        <div class="category-group" data-group="music">
+            <h2 class="category-title cat-music">
+                <i class="fa-solid fa-music"></i> Muzyka & Uwielbienie
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="cc pop muzyka rozrywkowa hity christian pop">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #a855f7;"><i class="fa-solid fa-guitar"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC POP</h3>
+                            <p class="channel-desc">Współczesna chrześcijańska muzyka pop i uwielbienie</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">MUZYKA</span>
+                        <a href="/music" class="btn-subscribe"><i class="fa-solid fa-headphones"></i> Słuchaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc worship uwielbienie chor chwala modlitwa">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-fire"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Worship</h3>
+                            <p class="channel-desc">Głębokie uwielbienie Bożej obecności i pieśni chwały</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">UWIELBIENIE</span>
+                        <a href="/music" class="btn-subscribe"><i class="fa-solid fa-headphones"></i> Słuchaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="nature sounds dzwiek natury relaks ambient sleep deszcz las">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #34d399;"><i class="fa-solid fa-leaf"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Nature Sounds CC</h3>
+                            <p class="channel-desc">Kojące dźwięki natury i Bożej kreacji do snu i modlitwy</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">RELAKS</span>
+                        <a href="/ambientsleep" class="btn-subscribe"><i class="fa-solid fa-play"></i> Odtwórz</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="top seven cc lista przebojow glosowanie hity">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #eab308;"><i class="fa-solid fa-ranking-star"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Top Seven CC</h3>
+                            <p class="channel-desc">Najchętniej słuchane utwory muzyki chrześcijańskiej</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">LISTA</span>
+                        <a href="/music" class="btn-subscribe"><i class="fa-solid fa-headphones"></i> TOP 10</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GROUP 4: BIBLIA & MODLITWA -->
+        <div class="category-group" data-group="bible">
+            <h2 class="category-title cat-bible">
+                <i class="fa-solid fa-book-bible"></i> Biblia & Modlitwa
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="cc prayer 24 modlitwa wstawiennicza non stop czuwanie">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #eab308;"><i class="fa-solid fa-hands-praying"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Prayer 24</h3>
+                            <p class="channel-desc">Ciągła modlitwa wstawiennicza i czuwanie</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">MODLITWA</span>
+                        <a href="/modlitwa" class="btn-subscribe"><i class="fa-solid fa-heart"></i> Ściana Modlitwy</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc bible deep glebokie studium pisma wersety greka hebrajski">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-book-open-reader"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Bible Deep</h3>
+                            <p class="channel-desc">Wnikliwe analizy Pisma Świętego i kontekstu biblijnego</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">STUDIUM</span>
+                        <a href="/mojabiblia" class="btn-subscribe"><i class="fa-solid fa-arrow-right"></i> MojaBiblia</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="biblia audio cc sluchowiska nagrania lektor">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #f59e0b;"><i class="fa-solid fa-headphones"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Biblia Audio CC</h3>
+                            <p class="channel-desc">Dramatyzowane nagrania i lektorskie czytania Pisma</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">AUDIO</span>
+                        <a href="/player" class="btn-subscribe"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="apokalipsa proroctwa studium eschatologia jan">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #ef4444;"><i class="fa-solid fa-fire"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">Apokalipsa Dzień po Dniu</h3>
+                            <p class="channel-desc">Prorocza seria wykładów i wyjaśnień Księgi Objawienia</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">SERIA</span>
+                        <a href="/apokalipsa" class="btn-subscribe"><i class="fa-solid fa-play"></i> Oglądaj</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GROUP 5: RODZINA & ŻYCIE -->
+        <div class="category-group" data-group="family">
+            <h2 class="category-title cat-family">
+                <i class="fa-solid fa-people-roof"></i> Rodzina & Życie
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="cc marriage malzenstwo zwiazek relacja randki narzeczenstwo">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #ec4899;"><i class="fa-solid fa-heart"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Marriage</h3>
+                            <p class="channel-desc">Budowanie trwałego, szczęśliwego małżeństwa na fundamencie Słowa</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">MAŁŻEŃSTWO</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc rodzina wychowanie dzieci dom cieplo">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-house-chimney-window"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Rodzina</h3>
+                            <p class="channel-desc">Chrześcijańskie wychowanie, domowe ciepło i rodzicielstwo</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">RODZINA</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc kids dzieci bajki animacje opowiesci biblijne">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #f59e0b;"><i class="fa-solid fa-child"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Kids</h3>
+                            <p class="channel-desc">Bezpieczne treści, animacje i historie biblijne dla najmłodszych</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">DZIECI</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc youth mlodziez nastolatki szkola pasja powolanie">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #10b981;"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Youth & Teens</h3>
+                            <p class="channel-desc">Wyzwania młodego pokolenia, autentyczna wiara i pasja</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">MŁODZIEŻ</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GROUP 6: WIEDZA & MISJA -->
+        <div class="category-group" data-group="knowledge">
+            <h2 class="category-title cat-knowledge">
+                <i class="fa-solid fa-graduation-cap"></i> Wiedza, Apologetyka & Misja
+            </h2>
+            <div class="channel-grid">
+                <div class="channel-card" data-keywords="cc academy edukacja kursy teologia wyklady nauka">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #10b981;"><i class="fa-solid fa-school"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Academy</h3>
+                            <p class="channel-desc">Kursy online, wykłady teologiczne i rozwój intelektualny</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">EDUKACJA</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc apologetyka obrona wiary ateizm dowody prawda nauka">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #38bdf8;"><i class="fa-solid fa-scale-balanced"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Apologetyka</h3>
+                            <p class="channel-desc">Rzetelne odpowiedzi na trudne pytania i obrona prawdy Ewangelii</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">APOLOGETYKA</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc historia swiadectwa kosciol reformacja postacie">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #f59e0b;"><i class="fa-solid fa-landmark"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Historia & Świadectwa</h3>
+                            <p class="channel-desc">Wydarzenia z dziejów wiary oraz poruszające świadectwa nawróceń</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">HISTORIA</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-keywords="cc life skills rozwoj praca finanse organizacja czas">
+                    <div class="card-top">
+                        <div class="channel-avatar" style="border-color: #a855f7;"><i class="fa-solid fa-compass"></i></div>
+                        <div class="channel-details">
+                            <h3 class="channel-name">CC Life Skills</h3>
+                            <p class="channel-desc">Praktyczne umiejętności życiowe, finanse i etyka zawodowa</p>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="badge-type">ROZWÓJ</span>
+                        <a href="https://www.youtube.com/@ChristianCultureNetwork" target="_blank" rel="noopener" class="btn-subscribe"><i class="fa-brands fa-youtube"></i> Oglądaj</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Polskie Radio Christian Culture • <a href="/">Strona Główna</a> • <a href="/music">CC Music</a> • <a href="/player">Player CC</a></p>
+    </footer>
+
+    <!-- Search & Filter JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('channelSearch');
+            const tabs = document.querySelectorAll('.tab-btn');
+            const cards = document.querySelectorAll('.channel-card');
+            const groups = document.querySelectorAll('.category-group');
+
+            let currentCategory = 'all';
+            let currentSearch = '';
+
+            function filterChannels() {
+                const q = currentSearch.trim().toLowerCase();
+
+                groups.forEach(group => {
+                    const groupCat = group.getAttribute('data-group');
+                    let groupMatches = 0;
+
+                    // If tab is not 'all' and not matching groupCat, hide whole group
+                    if (currentCategory !== 'all' && currentCategory !== groupCat) {
+                        group.classList.add('hidden');
+                        return;
+                    }
+
+                    const groupCards = group.querySelectorAll('.channel-card');
+                    groupCards.forEach(card => {
+                        const text = card.textContent.toLowerCase();
+                        const kw = (card.getAttribute('data-keywords') || '').toLowerCase();
+                        const match = (!q || text.includes(q) || kw.includes(q));
+
+                        card.classList.toggle('hidden', !match);
+                        if (match) groupMatches++;
+                    });
+
+                    group.classList.toggle('hidden', groupMatches === 0);
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    currentSearch = e.target.value;
+                    filterChannels();
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.getAttribute('data-category');
+                    filterChannels();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
