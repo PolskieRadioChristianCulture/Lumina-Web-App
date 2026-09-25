@@ -235,6 +235,9 @@
         <a href="#kolo-zycia" class="hover:text-holos-turquoise transition-colors flex items-center gap-1">
           <span>☸️</span> Koło Życia
         </a>
+        <a href="#kalendarz-google" class="hover:text-holos-turquoise transition-colors flex items-center gap-1 text-white">
+          <span>📅</span> Kalendarz Google
+        </a>
         <a href="#szafarstwo" class="hover:text-holos-gold transition-colors flex items-center gap-1">
           <span>💰</span> Szafarstwo 10%
         </a>
@@ -878,6 +881,179 @@
         <div id="saved-intention-badge" class="hidden p-3 rounded-xl bg-holos-turquoise/10 border border-holos-turquoise/30 text-xs text-holos-turquoise font-medium mb-4 flex items-center justify-between">
           <span id="saved-intention-text"></span>
           <span class="text-emerald-400 font-bold">✓ Aktywna</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════ MODUŁ: GOOGLE CALENDAR P0 & DWUSTRONNA SYNCHRONIZACJA ═════ -->
+  <section id="kalendarz-google" class="py-20 px-4 relative">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism text-xs text-holos-turquoise font-bold mb-3 border border-holos-turquoise/30">
+          📅 Fundament HOLOS: Prawdziwy Kalendarz Google (P0)
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+          Google Calendar & <span class="text-gradient-turquoise">Harmonogram Życia</span>
+        </h2>
+        <p class="text-text-secondary max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          Biblia odpowiada: <em class="text-white">Dlaczego i według jakich wartości żyję?</em> Kalendarz odpowiada: <em class="text-white">Kiedy konkretnie to zrobię?</em> HOLOS łączy oba narzędzia w jeden spójny system działania.
+        </p>
+      </div>
+
+      <!-- Karta Stanu Połączenia (Zgodna w 100% z Master Planem P0) -->
+      <div id="gcal-connection-card" class="glassmorphism rounded-3xl p-6 sm:p-8 border border-white/10 glow-turquoise relative overflow-hidden mb-8">
+        
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-white/10">
+          
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-3">
+              <span id="gcal-status-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-text-tertiary border border-white/10">
+                Sprawdzanie połączenia...
+              </span>
+              <span id="gcal-last-sync-time" class="text-xs text-text-tertiary font-mono">--:--</span>
+            </div>
+            <h3 id="gcal-status-title" class="text-xl sm:text-2xl font-bold text-white">
+              Google Calendar
+            </h3>
+            <p id="gcal-status-desc" class="text-xs text-text-secondary max-w-xl leading-relaxed">
+              HOLOS potrzebuje dostępu do Kalendarza Google, aby wyświetlać i — jeśli wyrazisz zgodę — planować wydarzenia. Stosujemy zasadę najmniejszych uprawnień (wyłącznie zakres <code class="text-holos-turquoise">calendar.events</code>).
+            </p>
+          </div>
+
+          <!-- Przyciski akcji sterowania kalendarzem -->
+          <div id="gcal-actions-container" class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-start md:justify-end">
+            <!-- Dynamicznie renderowane -->
+          </div>
+
+        </div>
+
+        <!-- Banner błędu / ostrzeżenia -->
+        <div id="gcal-error-alert" class="hidden mt-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-300">
+          <div class="font-bold flex items-center gap-2 mb-1">
+            <span>⚠️</span> <span id="gcal-error-title">Błąd Google Calendar API</span>
+          </div>
+          <p id="gcal-error-message" class="text-[11px] leading-relaxed"></p>
+        </div>
+
+        <!-- Wskaźniki techniczne (Tryb Live, Zero Atrap, nextSyncToken) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-2">
+          <div class="p-3 rounded-xl bg-pure-black/40 border border-white/5 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-text-tertiary">Model OAuth</div>
+            <div class="text-xs font-bold text-white mt-0.5">Incremental Opt-In</div>
+          </div>
+          <div class="p-3 rounded-xl bg-pure-black/40 border border-white/5 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-text-tertiary">Zakres Uprawnień</div>
+            <div class="text-xs font-bold text-holos-turquoise mt-0.5">calendar.events</div>
+          </div>
+          <div class="p-3 rounded-xl bg-pure-black/40 border border-white/5 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-text-tertiary">Mechanizm Sync</div>
+            <div class="text-xs font-bold text-emerald-400 mt-0.5">nextSyncToken</div>
+          </div>
+          <div class="p-3 rounded-xl bg-pure-black/40 border border-white/5 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-text-tertiary">Zdarzenia w pamięci</div>
+            <div id="gcal-events-count" class="text-xs font-bold text-holos-gold mt-0.5">0 wydarzeń</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Główny Widok Agendy Wydarzeń & Zarządzania -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8">
+        
+        <!-- Lewa kolumna: Lista prawdziwych wydarzeń z Google Calendar -->
+        <div class="lg:col-span-7 glassmorphism rounded-3xl p-6 sm:p-8 border border-white/10">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">📆</span>
+              <h3 class="text-lg font-bold text-white">Agenda Wydarzeń Google</h3>
+            </div>
+            <button onclick="window.holosCalendarSyncNow()" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-holos-turquoise/40 text-xs text-holos-turquoise font-semibold transition-all flex items-center gap-1.5">
+              <span>🔄</span> Odśwież
+            </button>
+          </div>
+
+          <div id="gcal-events-list" class="space-y-3">
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-tertiary">
+              Kalendarz nie został jeszcze połączony. Kliknij „Połącz Google Calendar”, aby wczytać swoje rzeczywiste wydarzenia.
+            </div>
+          </div>
+        </div>
+
+        <!-- Prawa kolumna: Szybkie dodawanie wydarzenia & Diagnostyka E2E -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Formularz dodawania wydarzenia (HOLOS -> Google) -->
+          <div class="glassmorphism rounded-3xl p-6 border border-white/10">
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span>➕</span> Zaplanuj w Kalendarzu Google
+            </h4>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[11px] text-text-tertiary uppercase font-bold mb-1">Nazwa Wydarzenia:</label>
+                <input type="text" id="gcal-new-title" placeholder="np. Modlitwa & Lektura Słowa / Praca Głęboka"
+                       class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-holos-turquoise">
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[11px] text-text-tertiary uppercase font-bold mb-1">Początek:</label>
+                  <input type="datetime-local" id="gcal-new-start"
+                         class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-2.5 py-2 text-white text-xs focus:outline-none focus:border-holos-turquoise">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-text-tertiary uppercase font-bold mb-1">Koniec:</label>
+                  <input type="datetime-local" id="gcal-new-end"
+                         class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-2.5 py-2 text-white text-xs focus:outline-none focus:border-holos-turquoise">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] text-text-tertiary uppercase font-bold mb-1">Sektor HOLOS:</label>
+                <select id="gcal-new-category" class="w-full bg-pure-black/60 border border-white/15 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-holos-turquoise">
+                  <option value="Wiara">Wiara & Duchowość</option>
+                  <option value="Relacje">Relacje & Rodzina</option>
+                  <option value="Zdrowie">Zdrowie & Ciało</option>
+                  <option value="Finanse">Finanse & Szafarstwo</option>
+                  <option value="Rozwój" selected>Rozwój Talentów & Deep Work</option>
+                </select>
+              </div>
+
+              <button onclick="window.holosCalendarCreateNewEvent()" class="w-full mt-2 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
+                Zapisz Bezpośrednio w Google Calendar
+              </button>
+            </div>
+          </div>
+
+          <!-- Konsola Automatycznego Testu E2E (Sekcja 33 Master Planu) -->
+          <div class="glassmorphism rounded-3xl p-6 border border-holos-gold/30 glow-gold">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-xs font-black text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
+                <span>🧪</span> BRAMA ZERO ATRAP — TEST E2E (P0)
+              </h4>
+              <span id="gcal-test-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-text-tertiary">
+                Gotowy do testu
+              </span>
+            </div>
+            
+            <p class="text-[11px] text-text-secondary leading-relaxed mb-4">
+              Przeprowadza pełny cykl testowy Definition of Done bezpośrednio na żywym Google Calendar API: <strong class="text-white">Połącz → Odczytaj → Utwórz → Zweryfikuj → Zmień → Usuń → Sprawdź brak duplikatów</strong>.
+            </p>
+
+            <button onclick="window.holosCalendarRunE2ETest()" id="btn-run-gcal-test" class="w-full py-2.5 rounded-xl bg-amber-400 text-pure-black font-extrabold text-xs hover:bg-amber-300 transition-all flex items-center justify-center gap-2 shadow-lg">
+              <span>▶️</span> Uruchom Pełny Test Produkcyjny E2E
+            </button>
+
+            <!-- Konsola logów testowych -->
+            <div id="gcal-test-console" class="mt-4 p-3 rounded-xl bg-pure-black/80 border border-white/10 font-mono text-[10px] text-text-secondary max-h-48 overflow-y-auto hidden space-y-1">
+              <!-- Logi w czasie rzeczywistym -->
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -1955,5 +2131,283 @@ Odpowiadaj bezpośrednio, zwięźle, po polsku, mądrze i biblijnie, proponując
     });
   </script>
 
+  <!-- ═════════════════════════════════════════ KONTROLER GOOGLE CALENDAR P0 ═════════════════ -->
+  <script type="module">
+    import { holosCalendar } from '/js/holos-calendar-sync.js?v=20260925_gcal_v1';
+
+    // Subskrypcja stanu silnika kalendarza
+    holosCalendar.subscribe((state) => {
+      renderCalendarUI(state);
+    });
+
+    function renderCalendarUI(state) {
+      const badge = document.getElementById('gcal-status-badge');
+      const timeEl = document.getElementById('gcal-last-sync-time');
+      const descEl = document.getElementById('gcal-status-desc');
+      const actionsEl = document.getElementById('gcal-actions-container');
+      const alertEl = document.getElementById('gcal-error-alert');
+      const msgEl = document.getElementById('gcal-error-message');
+      const countEl = document.getElementById('gcal-events-count');
+      const listEl = document.getElementById('gcal-events-list');
+
+      if (!badge || !actionsEl || !listEl) return;
+
+      // Status Badge & Texts
+      if (state.status === 'CONNECTED') {
+        badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+        badge.innerHTML = "Google Calendar ✓ Połączony";
+        timeEl.innerText = state.lastSync ? `Ostatnia synchronizacja: ${new Date(state.lastSync).toLocaleTimeString('pl-PL', {hour:'2-digit', minute:'2-digit'})}` : 'Zsynchronizowano';
+        descEl.innerHTML = `Połączono z kontem: <strong class="text-white">${state.email || 'Konto Google'}</strong>. Dwukierunkowa synchronizacja aktywna przez mechanizm <code class="text-holos-turquoise">nextSyncToken</code>.`;
+        
+        actionsEl.innerHTML = `
+          <button onclick="window.holosCalendarSyncNow()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm">
+            <span>🔄</span> Synchronizuj Teraz
+          </button>
+          <button onclick="window.holosCalendarDisconnect()" class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-bold text-xs transition-all flex items-center gap-1.5">
+            <span>🔌</span> Odłącz
+          </button>
+        `;
+      } else if (state.status === 'CONNECTING' || state.status === 'SYNCING') {
+        badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-holos-sky/20 text-holos-sky border border-holos-sky/40 animate-pulse";
+        badge.innerHTML = state.status === 'CONNECTING' ? "Łączenie z Google..." : "Synchronizacja przyrostowa...";
+        actionsEl.innerHTML = `<span class="text-xs text-text-tertiary">Proszę czekać...</span>`;
+      } else if (state.status === 'AUTH_REQUIRED') {
+        badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40";
+        badge.innerHTML = "Sesja Kalendarza Wygasła";
+        timeEl.innerText = "--:--";
+        descEl.innerText = "Token dostępowy OAuth wygasł. Kliknij przycisk poniżej, aby odświeżyć autoryzację bez utraty danych.";
+        actionsEl.innerHTML = `
+          <button onclick="window.holosCalendarConnect()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md flex items-center gap-1.5">
+            <span>🔑</span> Odśwież Sesję Kalendarza
+          </button>
+        `;
+      } else if (state.status === 'ERROR') {
+        badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/40";
+        badge.innerHTML = "Błąd Połączenia";
+        timeEl.innerText = "--:--";
+        actionsEl.innerHTML = `
+          <button onclick="window.holosCalendarConnect()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-1.5">
+            <span>🔁</span> Spróbuj Ponownie
+          </button>
+        `;
+      } else {
+        // DISCONNECTED
+        badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-text-tertiary border border-white/10";
+        badge.innerHTML = "Google Calendar: Niepołączony";
+        timeEl.innerText = "--:--";
+        descEl.innerHTML = `HOLOS potrzebuje dostępu do Kalendarza Google, aby wyświetlać i — jeśli wyrazisz zgodę — planować wydarzenia. Zgodnie z zasadą najmniejszych uprawnień prosimy wyłącznie o zakres <code class="text-holos-turquoise">calendar.events</code>.`;
+        actionsEl.innerHTML = `
+          <button onclick="window.holosCalendarConnect()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-black text-xs hover:brightness-110 transition-all shadow-lg flex items-center gap-2">
+            <span>📅</span> Połącz Google Calendar
+          </button>
+        `;
+      }
+
+      // Alert błędu
+      if (state.lastError && (state.status === 'ERROR' || state.status === 'AUTH_REQUIRED')) {
+        alertEl.classList.remove('hidden');
+        msgEl.innerText = state.lastError;
+      } else {
+        alertEl.classList.add('hidden');
+      }
+
+      // Licznik wydarzeń
+      countEl.innerText = `${state.events.length} wydarzeń`;
+
+      // Renderowanie listy wydarzeń
+      if (!state.isConnected) {
+        listEl.innerHTML = `
+          <div class="p-8 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-tertiary">
+            Kalendarz nie został jeszcze połączony. Kliknij <strong class="text-white">„Połącz Google Calendar”</strong>, aby wczytać swoje rzeczywiste wydarzenia.
+          </div>
+        `;
+        return;
+      }
+
+      if (state.events.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-8 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-secondary">
+            Brak zaplanowanych wydarzeń w najbliższym oknie czasowym. Użyj formularza po prawej stronie, aby dodać pierwsze wydarzenie.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = '';
+      state.events.forEach((ev) => {
+        const item = document.createElement('div');
+        item.className = "p-3.5 rounded-2xl bg-white/5 border border-white/5 hover:border-white/15 transition-all flex items-start justify-between gap-3";
+
+        let timeStr = "Cały dzień";
+        if (!ev.allDay && ev.startTime) {
+          const s = new Date(ev.startTime);
+          const e = ev.endTime ? new Date(ev.endTime) : null;
+          timeStr = s.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }) +
+                    (e ? ` – ${e.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}` : '');
+        }
+
+        const dateStr = ev.startTime ? new Date(ev.startTime).toLocaleDateString('pl-PL', { weekday: 'short', day: 'numeric', month: 'short' }) : '';
+
+        item.innerHTML = `
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold text-white">${ev.title}</span>
+              <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 font-extrabold border border-emerald-500/20">SYNCED ✓</span>
+            </div>
+            <div class="text-[11px] text-text-tertiary flex items-center gap-3">
+              <span>🕒 ${timeStr}</span>
+              <span>📅 ${dateStr}</span>
+            </div>
+            ${ev.description ? `<div class="text-[10px] text-text-tertiary mt-1 italic line-clamp-1">${ev.description}</div>` : ''}
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="window.holosCalendarPromptEdit('${ev.googleEventId}', '${encodeURIComponent(ev.title)}')" title="Edytuj w Google Calendar" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 text-xs text-text-secondary hover:text-white transition-colors flex items-center justify-center">
+              ✏️
+            </button>
+            <button onclick="window.holosCalendarPromptDelete('${ev.googleEventId}', '${encodeURIComponent(ev.title)}')" title="Usuń z Google Calendar" class="w-7 h-7 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 transition-colors flex items-center justify-center">
+              🗑️
+            </button>
+          </div>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    // Inicjalizacja silnika przy załadowaniu
+    holosCalendar.init().catch(err => {
+      console.warn('[HolosCalendar] Błąd inicjalizacji:', err);
+    });
+
+    // Ekspozycja metod dla interfejsu HTML
+    window.holosCalendarConnect = async function() {
+      try {
+        await holosCalendar.connect();
+      } catch (e) {
+        alert("Błąd połączenia z Google Calendar: " + e.message);
+      }
+    };
+
+    window.holosCalendarDisconnect = function() {
+      if (confirm("Czy na pewno chcesz odłączyć Kalendarz Google od HOLOS?")) {
+        holosCalendar.disconnect();
+      }
+    };
+
+    window.holosCalendarSyncNow = async function() {
+      try {
+        await holosCalendar.syncEvents();
+      } catch (e) {
+        alert("Błąd synchronizacji: " + e.message);
+      }
+    };
+
+    window.holosCalendarCreateNewEvent = async function() {
+      const title = document.getElementById('gcal-new-title').value.trim();
+      const start = document.getElementById('gcal-new-start').value;
+      const end = document.getElementById('gcal-new-end').value;
+      const category = document.getElementById('gcal-new-category').value;
+
+      if (!title) {
+        alert("Wpisz nazwę wydarzenia.");
+        return;
+      }
+      if (!start || !end) {
+        alert("Wybierz czas rozpoczęcia i zakończenia wydarzenia.");
+        return;
+      }
+      if (new Date(end) <= new Date(start)) {
+        alert("Czas zakończenia musi być późniejszy niż czas rozpoczęcia.");
+        return;
+      }
+
+      try {
+        await holosCalendar.createEvent({
+          summary: title,
+          startTime: start,
+          endTime: end,
+          category: category
+        });
+        document.getElementById('gcal-new-title').value = '';
+        alert("✅ Wydarzenie zostało pomyślnie utworzone w Twoim Kalendarzu Google!");
+      } catch (e) {
+        alert("Nie udało się zapisać w Google Calendar: " + e.message);
+      }
+    };
+
+    window.holosCalendarPromptEdit = async function(eventId, encTitle) {
+      const currentTitle = decodeURIComponent(encTitle);
+      const newTitle = prompt("Zmień nazwę wydarzenia w Google Calendar:", currentTitle);
+      if (newTitle && newTitle.trim() && newTitle.trim() !== currentTitle) {
+        try {
+          await holosCalendar.updateEvent(eventId, { summary: newTitle.trim() });
+          alert("✅ Wydarzenie zaktualizowane w Google Calendar!");
+        } catch (e) {
+          alert("Błąd aktualizacji: " + e.message);
+        }
+      }
+    };
+
+    window.holosCalendarPromptDelete = async function(eventId, encTitle) {
+      const currentTitle = decodeURIComponent(encTitle);
+      if (confirm(`Czy na pewno usunąć wydarzenie „${currentTitle}” z Google Calendar?`)) {
+        try {
+          await holosCalendar.deleteEvent(eventId);
+          alert("✅ Wydarzenie zostało usunięte z Google Calendar!");
+        } catch (e) {
+          alert("Błąd usuwania: " + e.message);
+        }
+      }
+    };
+
+    window.holosCalendarRunE2ETest = async function() {
+      const btn = document.getElementById('btn-run-gcal-test');
+      const badge = document.getElementById('gcal-test-badge');
+      const consoleBox = document.getElementById('gcal-test-console');
+
+      btn.disabled = true;
+      btn.innerText = "Trwa testowanie...";
+      badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 animate-pulse";
+      badge.innerText = "Test w toku";
+      consoleBox.classList.remove('hidden');
+      consoleBox.innerHTML = '';
+
+      const logToConsole = (line, results) => {
+        const p = document.createElement('div');
+        p.innerText = line;
+        if (line.includes('PASS')) p.className = "text-emerald-400 font-bold";
+        else if (line.includes('FAIL')) p.className = "text-red-400 font-bold";
+        consoleBox.appendChild(p);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+      };
+
+      try {
+        const res = await holosCalendar.runE2ETest(logToConsole);
+        if (res.allPass) {
+          badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300";
+          badge.innerText = "100% PASS ✓";
+        } else {
+          badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-300";
+          badge.innerText = "TEST FAILED ✗";
+        }
+      } catch (err) {
+        logToConsole(`Krytyczny błąd: ${err.message}`, false);
+        badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-300";
+        badge.innerText = "BŁĄD";
+      }
+
+      btn.disabled = false;
+      btn.innerText = "▶️ Uruchom Ponownie Test E2E";
+    };
+
+    // Ustawienie domyślnych dat w formularzu na dzisiaj
+    const now = new Date();
+    const pad = n => n.toString().padStart(2, '0');
+    const startDefault = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours()+1)}:00`;
+    const endDefault = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours()+2)}:00`;
+    const startInp = document.getElementById('gcal-new-start');
+    const endInp = document.getElementById('gcal-new-end');
+    if (startInp && !startInp.value) startInp.value = startDefault;
+    if (endInp && !endInp.value) endInp.value = endDefault;
+  </script>
 </body>
 </html>
