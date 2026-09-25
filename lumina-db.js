@@ -767,19 +767,31 @@ export async function loginWithGoogle() {
         }
 
         let result = null;
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+        
         try {
+            if (isMobile) {
+                console.log('[LuminaDB] Urządzenie mobilne wykryte — uruchamiam bezpieczny signInWithRedirect');
+                await signInWithRedirect(activeAuth, googleProvider);
+                return { isRedirecting: true };
+            }
             result = await signInWithPopup(activeAuth, googleProvider);
         } catch(popupErr) {
             console.warn('Google Auth popup notice:', popupErr.code, popupErr.message);
-            // Jeśli użytkownik sam zamknął okienko popupu — NIE robimy błędu ani redirectu!
+            // Jeśli użytkownik sam zamknął okienko popupu — nie wymuszamy błędu
             if (popupErr.code === 'auth/popup-closed-by-user') {
                 return null;
             }
-            // Gdy popup został zablokowany przez blokadę wyskakujących okienek w przeglądarce mobilnej
-            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request') {
-                const blockedErr = new Error("Twoja przeglądarka zablokowała okno logowania Google. Zezwól na wyskakujące okienka na tej stronie lub spróbuj zalogować się adresem e-mail.");
-                blockedErr.code = 'auth/popup-blocked';
-                throw blockedErr;
+            // Gdy popup został zablokowany przez blokadę przeglądarki — automatyczny fallback do Redirect
+            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request' || popupErr.code === 'auth/internal-error') {
+                console.log('[LuminaDB] Popup zablokowany — fallback do signInWithRedirect');
+                try {
+                    await signInWithRedirect(activeAuth, googleProvider);
+                    return { isRedirecting: true };
+                } catch(redErr) {
+                    console.error('[LuminaDB] Redirect Auth Error:', redErr);
+                    throw redErr;
+                }
             }
             throw popupErr;
         }

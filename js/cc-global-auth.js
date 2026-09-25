@@ -354,6 +354,9 @@
             }
 
             const res = await loginFn();
+            if (res && res.isRedirecting) {
+                return;
+            }
             if (!res) {
                 btns.forEach(b => {
                     b.style.opacity = '1';
