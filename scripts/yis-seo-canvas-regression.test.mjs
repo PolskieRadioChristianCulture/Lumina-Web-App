@@ -73,7 +73,6 @@ test('Schema.org: JSON-LD exists, parses cleanly, and contains linked @graph ent
   assert.ok(types.includes('BreadcrumbList'), 'Must include BreadcrumbList');
   assert.ok(types.includes('FAQPage'), 'Must include FAQPage');
 
-  // Verify stable @id linkages
   const org = parsed['@graph'].find(e => e['@type'] === 'Organization');
   assert.equal(org['@id'], 'https://polskieradio.cc/#organization');
   
@@ -133,8 +132,8 @@ test('Crawling: _redirects enforces 301 on aliases to canonical /projektant', ()
   assert.ok(redirectsContent.includes('/projektant /projektant 200'));
 });
 
-// ── 5. CANVAS & WORKSPACE MODULE TESTS (Etap 2) ──────────────────────────────
-test('Canvas: yis-canvas.js defines front/back, undo/redo, drag/resize/rotate, and touch', () => {
+// ── 5. CANVAS & WORKSPACE MODULE TESTS (Etap 2 & Etap 2.1) ───────────────────
+test('Canvas: yis-canvas.js exports complete API and state persistence', () => {
   assert.ok(canvasJsContent.includes('window.YisCanvas'), 'Must export YisCanvas API');
   assert.ok(canvasJsContent.includes('setSide'), 'Must support side switching');
   assert.ok(canvasJsContent.includes('addText'), 'Must support text addition');
@@ -145,13 +144,35 @@ test('Canvas: yis-canvas.js defines front/back, undo/redo, drag/resize/rotate, a
   assert.ok(canvasJsContent.includes('moveLayer'), 'Must support layer ordering');
   assert.ok(canvasJsContent.includes('undo'), 'Must support undo');
   assert.ok(canvasJsContent.includes('redo'), 'Must support redo');
-  assert.ok(canvasJsContent.includes('touch-action: none'), 'Must support touch interaction without scroll conflict');
+  assert.ok(canvasJsContent.includes('openBottomSheet'), 'Must support mobile bottom sheet');
+  assert.ok(canvasJsContent.includes('closeBottomSheet'), 'Must support closing bottom sheet');
 });
 
-// ── 6. MOBILE & RESPONSIVENESS CHECKS ────────────────────────────────────────
-test('Mobile: Container classes prevent horizontal overflow on 360px/390px/412px', () => {
+test('Canvas UX: Word-break & long text handling prevents text overflow', () => {
+  assert.ok(canvasJsContent.includes('word-break: break-word'), 'Must break long words');
+  assert.ok(canvasJsContent.includes('overflow-wrap: break-word'), 'Must wrap overflow text');
+  assert.ok(canvasJsContent.includes('white-space: pre-wrap'), 'Must preserve line breaks cleanly');
+});
+
+test('Canvas Mobile UX: Bottom sheet, bottom toolbar and 44px touch targets', () => {
+  assert.ok(canvasJsContent.includes('yis-mobile-bottom-sheet'), 'Must define mobile bottom sheet');
+  assert.ok(canvasJsContent.includes('m-btn-add-txt'), 'Must have mobile bottom toolbar button for text');
+  assert.ok(canvasJsContent.includes('m-btn-add-img'), 'Must have mobile bottom toolbar button for image');
+  assert.ok(canvasJsContent.includes('m-btn-switch-side'), 'Must have mobile side switch button');
+  assert.ok(canvasJsContent.includes('min-h-[48px]'), 'Must provide >= 44px touch targets on toolbar');
+  assert.ok(canvasJsContent.includes('inset: -10px'), 'Must provide enlarged touch hitbox on resize/rotate handles');
+});
+
+test('Mobile Safari Safeguard: Mobile text inputs use text-base (>=16px) to prevent auto-zoom', () => {
+  assert.ok(canvasJsContent.includes('text-base focus:border-gold'), 'Mobile inputs must use >= 16px to prevent iOS auto-zoom');
+});
+
+// ── 6. MOBILE RESPONSIVENESS & ZERO HORIZONTAL OVERFLOW ───────────────────────
+test('Mobile Viewport Safeguards: 360px, 390px, 412px compliance', () => {
   assert.ok(htmlContent.includes('max-w-4xl mx-auto px-4'));
   assert.ok(htmlContent.includes('max-w-3xl mx-auto'));
   assert.ok(htmlContent.includes('overflow-hidden'));
   assert.ok(!htmlContent.includes('min-w-[500px]'), 'Should not have hardcoded desktop-only min-widths');
+  assert.ok(!htmlContent.includes('w-[400px]'), 'Fixed widths must not exceed 360px on mobile elements');
+  assert.ok(canvasJsContent.includes('max-w-[310px]'), 'Canvas stage must fit comfortably inside 360px viewport (360 - 32px padding = 328px)');
 });
