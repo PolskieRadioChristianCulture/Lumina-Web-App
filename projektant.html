@@ -164,6 +164,13 @@
       align-items: center !important;
       box-sizing: border-box !important;
     }
+
+    /* Wybrany produkt bazowy — wyraźna złota ramka */
+    .product-choice-card.prod-selected {
+      border-color: #C4A35A !important;
+      background-color: rgba(196, 163, 90, 0.10) !important;
+      box-shadow: 0 0 0 1px #C4A35A, 0 0 18px rgba(196, 163, 90, 0.25) !important;
+    }
   </style>
 </head>
 <body class="bg-[#121212] text-gray-100 min-h-screen font-sans antialiased selection:bg-gold selection:text-black transition-colors duration-300">
@@ -1795,11 +1802,9 @@
       ['Koszulka', 'Bluza', 'Kubek', 'Czapka'].forEach(p => {
         const card = document.getElementById(`prod-card-${p}`);
         if (p === type) {
-          card.classList.add('border-gold');
-          card.classList.remove('border-transparent');
+          card.classList.add('prod-selected');
         } else {
-          card.classList.remove('border-gold');
-          card.classList.add('border-transparent');
+          card.classList.remove('prod-selected');
         }
       });
 
