@@ -3358,6 +3358,24 @@ html {
     transform: scale(1) !important;
 }
 
+/* 50% Darkened Menu Background Image */
+.menu-cc-bg-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/tlo_menu_cc.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+
 /* Ambient Glow in Top-Right (Earth Atmosphere Glow) */
 .menu-cc-bg-glow {
     position: absolute;
