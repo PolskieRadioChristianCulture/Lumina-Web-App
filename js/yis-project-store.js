@@ -65,7 +65,16 @@
 
     const projectId = existingProject?.projectId || generateFriendlyProjectId(2026);
     const internalId = existingProject?.internalId || ('proj_' + timestamp.toString(36) + '_' + Math.random().toString(36).slice(2, 7));
-    const currentRevision = (existingProject?.revision || 0) + 1;
+
+    // Rewizja: roboczy szkic ma rewizję 1 (lub zachowuje bieżącą dopóki jest w stanie SZKIC).
+    // Dopiero po przekazaniu poprzedniej rewizji do weryfikacji (status !== 'SZKIC'), kolejna edycja tworzy nową rewizję (v2, v3...).
+    let currentRevision = existingProject?.revision || 1;
+    let currentStatus = existingProject?.status || 'SZKIC';
+
+    if (existingProject && existingProject.status && existingProject.status !== 'SZKIC') {
+      currentRevision = (existingProject.revision || 1) + 1;
+      currentStatus = 'SZKIC';
+    }
 
     // Model danych projektu
     const project = {
@@ -78,7 +87,7 @@
       userId: state.luminaUser ? state.luminaUser.uid : 'guest',
       userEmail: state.email || (state.luminaUser ? state.luminaUser.email : null),
       isGuest: !state.luminaUser,
-      status: existingProject?.status || 'SZKIC',
+      status: currentStatus,
 
       product: {
         type: state.selectedProductType || 'Koszulka',

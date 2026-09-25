@@ -96,6 +96,18 @@
         });
       }
 
+      const MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024; // 15 MB
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        return resolve({
+          isValid: false,
+          fileName: file.name,
+          fileSize: file.size,
+          fileSizeFormatted: formatBytes(file.size),
+          errorTitle: 'Rozmiar pliku przekracza 15 MB',
+          errorMessage: `Twój plik ma ${formatBytes(file.size)}. Maksymalny rozmiar obsługiwany w kreatorze to 15 MB. Większe pliki (np. grafiki o wysokiej rozdzielczości) prześlij jako załącznik e-mailem bezpośrednio do weryfikacji YIS.`
+        });
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target.result;
