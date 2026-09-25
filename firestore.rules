@@ -281,7 +281,19 @@ service cloud.firestore {
         request.resource.data.status == 'pending';
       allow read: if isMasterAdmin() || resource.data.approved == true;
       allow update, delete: if isMasterAdmin();
+    // YIS Design Studio 2.0 - Kanoniczne projekty odzieży i gadżetów
+    match /yis_projects/{projectId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create: if isMember() && request.resource.data.userId == request.auth.uid && request.resource.data.status in ['SZKIC', 'DO WERYFIKACJI'];
+      allow update: if isMasterAdmin() || (
+        isMember() &&
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == request.auth.uid &&
+        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['status']) || request.resource.data.status in ['SZKIC', 'DO WERYFIKACJI'])
+      );
+      allow delete: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
     }
+
     match /{document=**} {
       allow read, write: if isMasterAdmin();
     }
