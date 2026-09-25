@@ -3978,17 +3978,19 @@ html {
     }
 }
 
-/* --- Responsive: Mobile (max-width: 900px) — Modern Accordion Command Center --- */
+/* --- Responsive: Mobile (max-width: 900px) — Edge-to-Edge Accordion Command Center --- */
 @media (max-width: 900px) {
     #actionsList {
         padding: 0 !important;
     }
     .menu-cc-wrapper {
-        padding: 16px 14px 48px 14px !important;
+        padding: 16px 0 48px 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
     }
     .menu-cc-topbar {
         gap: 12px;
-        padding-bottom: 14px;
+        padding: 0 16px 14px 16px !important;
         margin-bottom: 14px;
     }
     .menu-cc-brand {
@@ -4018,6 +4020,7 @@ html {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        padding: 0 16px !important;
         margin-bottom: 16px;
     }
     .strip-pills-row {
@@ -4036,27 +4039,39 @@ html {
         flex: 0 0 240px !important;
     }
 
-    /* Mobile Accordion Grid */
+    /* Mobile Accordion Grid — Full Bleed Edge to Edge */
     .menu-cc-grid {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 8px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     .cc-col {
-        border-radius: 14px !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        background: rgba(13, 16, 23, 0.94) !important;
+        backdrop-filter: blur(14px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: none !important;
     }
     .cc-col-banner {
         display: none; /* Hide banner on mobile accordion for ultra clean performance */
     }
     .cc-col-header {
         cursor: pointer !important;
-        padding: 12px 14px !important;
+        padding: 14px 16px !important;
     }
     .cc-col-title {
-        font-size: 0.82rem !important;
+        font-size: 0.84rem !important;
     }
     .cc-accordion-icon {
         display: block !important;
+        padding-right: 2px;
     }
     .cc-col.collapsed .cc-col-cards {
         display: none !important;
@@ -4067,8 +4082,14 @@ html {
     .cc-col:not(.collapsed) .cc-accordion-icon {
         transform: rotate(0deg) !important;
     }
+    .cc-col-cards {
+        padding: 8px 14px 14px 14px !important;
+        gap: 8px !important;
+    }
     .cc-card {
         padding: 10px 12px !important;
+        border-radius: 12px !important;
+        min-height: 48px !important;
     }
     .cc-card-icon {
         width: 36px !important;
@@ -4081,6 +4102,9 @@ html {
     }
     .cc-card-sub {
         font-size: 0.65rem !important;
+    }
+    .menu-cc-no-results {
+        padding: 40px 16px !important;
     }
 }
 
