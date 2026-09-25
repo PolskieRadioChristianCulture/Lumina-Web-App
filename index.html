@@ -251,7 +251,7 @@
 
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
-    <link rel="stylesheet" href="style.css?v=37">
+    <link rel="stylesheet" href="style.css?v=38">
     <style>
         /* Aggressive Google Translate Banner and Offsets Hider */
         .goog-te-banner-frame,
@@ -697,351 +697,472 @@
                         </div>
                     </button>
                     
-                    <!-- Pełnoekranowy Hub Nawigacyjny: MENU CC -->
-                    <div id="actionsList">
-                        <div class="menu-cc-wrapper">
-                            <!-- Header inside MENU CC -->
-                            <div class="menu-cc-header" style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(212, 169, 74, 0.22); flex-shrink: 0;">
-                                <div style="display: flex; align-items: center; gap: 14px;">
-                                    <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, rgba(212, 169, 74, 0.22), rgba(0,0,0,0.8)); border: 1.5px solid rgba(212, 169, 74, 0.45); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(212, 169, 74, 0.25);">
-                                        <i class="fa-solid fa-layer-group" style="color: var(--gold-primary); font-size: 1.25rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column;">
-                                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                            <h2 style="font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900; color: #ffffff; letter-spacing: 2px; margin: 0; line-height: 1;">MENU CC</h2>
-                                            <span style="font-size: 0.62rem; color: #fbbf24; font-weight: 800; background: rgba(212, 169, 74, 0.18); border: 1px solid rgba(212, 169, 74, 0.4); padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.8px;">5 SEKCJI EKOSYSTEMU</span>
-                                        </div>
-                                        <span style="font-size: 0.72rem; color: rgba(255, 255, 255, 0.55); font-family: 'Inter', sans-serif; margin-top: 3px;">Centrum nawigacyjne chrześcijańskiego radia, telewizji, mediów i usług</span>
-                                    </div>
-                                </div>
-                                
-                                <button id="actionsCloseBtn" aria-label="Zamknij MENU CC" title="Zamknij MENU CC (ESC)" style="display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(212, 169, 74, 0.35); color: #fff; padding: 10px 18px; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.88rem;" onmouseover="this.style.background='rgba(212,169,74,0.2)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(212,169,74,0.35)';">
-                                    <i class="fa-solid fa-xmark" style="font-size: 1.15rem; color: var(--gold-primary);"></i>
-                                    <span>Zamknij</span>
-                                </button>
-                            </div>
-
-                            <!-- 5 Equal Cascading Blocks Side-By-Side -->
-                            <div class="shortcuts-blocks-container">
-                            <!-- SEKCJA 1: STACJE & MEDIA LIVE -->
-                            <div class="shortcut-block block-1" style="opacity: 1 !important; visibility: visible !important;">
-                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
-                                    <i class="fa-solid fa-tower-broadcast" style="font-size: 0.72rem;"></i> Stacje & Media LIVE
-                                </div>
-
-                                <!-- Shortcut: PLAYER -->
-                                <a href="https://polskieradio.cc/player" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(212, 169, 74,0.15); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.4)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(212, 169, 74,0.15)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">PLAYER CC</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Radio Biblia • Audycje</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Ambient Sleep -->
-                                <a href="AmbientSleep" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212, 169, 74,0.08); border: 1px solid rgba(212, 169, 74,0.35); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.18)'; this.style.borderColor='rgba(212, 169, 74,0.6)';" onmouseout="this.style.background='rgba(212, 169, 74,0.08)'; this.style.borderColor='rgba(212, 169, 74,0.35)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1px solid var(--gold-primary); flex-shrink: 0; box-shadow: 0 0 6px rgba(212, 169, 74, 0.4);">
-                                        <img loading="lazy" decoding="async" src="ambient_logo.jpg" alt="Ambient Sleep" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Ambient Sleep</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.25); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.45); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: var(--gold-light); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Mikser snu • Fale 3Hz/6Hz</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Smart TV CC -->
-                                <a href="tv" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Smart TV CC</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ekran telewizora & pilot</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: VOD Christian Culture -->
-                                <a href="vod" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-clapperboard" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">VOD CC</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Filmy z wartościami</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Program TV 24/7 -->
-                                <a href="program.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-calendar-days" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Dziś • Tydzień</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Nadawaj z nami (OBS) -->
-                                <a href="nadawaj" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-signal" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- SEKCJA 2: SŁOWO & DUCHOWOŚĆ -->
-                            <div class="shortcut-block block-2" style="opacity: 1 !important; visibility: visible !important;">
-                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
-                                    <i class="fa-solid fa-book-bible" style="font-size: 0.72rem;"></i> Słowo & Duchowość
-                                </div>
-
-                                <!-- Shortcut: MojaBiblia -->
-                                <a href="https://polskieradio.cc/mojabiblia" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212, 169, 74,0.08); border: 1px solid rgba(212, 169, 74,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.18)'; this.style.borderColor='rgba(212, 169, 74,0.5)';" onmouseout="this.style.background='rgba(212, 169, 74,0.08)'; this.style.borderColor='rgba(212, 169, 74,0.3)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #D4A94A, #aa820a); flex-shrink: 0; box-shadow: 0 2px 6px rgba(212, 169, 74, 0.35);">
-                                        <i class="fa-solid fa-book-bible" style="color: #000; font-size: 0.82rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">MojaBiblia</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.25); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.45); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">INTERLINEARNA</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: var(--gold-light); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Greka • Hebrajski • Strong</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Werset Dnia -->
-                                <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212, 169, 74,0.08); border: 1px solid rgba(212, 169, 74,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.18)'; this.style.borderColor='rgba(212, 169, 74,0.5)';" onmouseout="this.style.background='rgba(212, 169, 74,0.08)'; this.style.borderColor='rgba(212, 169, 74,0.3)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #dfb872, #9a7432); flex-shrink: 0; box-shadow: 0 2px 6px rgba(212, 169, 74, 0.35);">
-                                        <i class="fa-solid fa-scroll" style="color: #000; font-size: 0.82rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Werset Dnia</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.25); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.45); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: var(--gold-light); font-family: 'Inter', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Karty Słowa • Generator</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Dobrze, że jesteś -->
-                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <img loading="lazy" decoding="async" src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Modlitwa (Zjednoczeni za Polskę) -->
-                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Ściana Modlitwy</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">NARODOWA</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zjednoczeni za Polskę</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Biblia do pobrania -->
-                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-file-arrow-down" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
-                                    </div>
-                                </a>
-
-                            </div>
-
-                            <!-- SEKCJA 3: SPOŁECZNOŚĆ -->
-                            <div class="shortcut-block block-3" style="opacity: 1 !important; visibility: visible !important;">
-                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
-                                    <i class="fa-solid fa-users" style="font-size: 0.72rem;"></i> Społeczność
-                                </div>
-
-                                <!-- Shortcut: LUMINA -->
-                                <a href="lumina" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Portal LUMINA</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Sieć relacji & wartości</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Herbatka między słowami -->
-                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-mug-hot" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- SEKCJA 4: NARZĘDZIA -->
-                            <div class="shortcut-block block-4" style="opacity: 1 !important; visibility: visible !important;">
-                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
-                                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 0.72rem;"></i> Narzędzia
-                                </div>
-
-                                <!-- Shortcut: Kreator Kalendarza 2027 -->
-                                <a href="kalendarz2027" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-calendar-plus" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Kalendarz 2027</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">A4/PDF</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Kreator do druku</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Bank Treści -->
-                                <a href="bank-tresci.html" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-download" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Bank Treści</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Darmowe materiały</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Aplikacja Webowa CC -->
-                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-mobile-screen" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Projektant CC -->
-                                <a href="projektant" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-pen-ruler" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Projektant CC</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">STUDIO</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Kreator grafik CC</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Language Toggle -->
-                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-language" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
-                                        <span id="langToggleText" style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- SEKCJA 5: USŁUGI -->
-                            <div class="shortcut-block block-5" style="opacity: 1 !important; visibility: visible !important;">
-                                <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">
-                                    <i class="fa-solid fa-handshake-angle" style="font-size: 0.72rem;"></i> Usługi
-                                </div>
-
-                                <!-- Shortcut: Helpline Nadzieja CC -->
-                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(212, 169, 74,0.08); border: 1px solid rgba(212, 169, 74,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212, 169, 74,0.18)'; this.style.borderColor='rgba(212, 169, 74,0.6)';" onmouseout="this.style.background='rgba(212, 169, 74,0.08)'; this.style.borderColor='rgba(212, 169, 74,0.3)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #D4A94A, #aa820a); flex-shrink: 0; box-shadow: 0 0 8px rgba(212, 169, 74,0.4);">
-                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.55rem; font-weight: 700; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja</span>
-                                        <span style="font-size: 0.78rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Premier HeatFix -->
-                                <a href="https://polskieradio.cc/premier-heatfix" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-fire-burner" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Premier HeatFix</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">UK</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Gaz & hydraulika UK</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: Holistyczny Coaching -->
-                                <a href="https://polskieradio.cc/holistyczny-coaching" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(212, 169, 74, 0.4); flex-shrink: 0; box-shadow: 0 0 6px rgba(212, 169, 74, 0.2);">
-                                        <img loading="lazy" decoding="async" src="avatar_pawel_murawski.jpg" alt="Holistyczny Coaching - Paweł Murawski" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                                            <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Holistyczny Coaching</span>
-                                            <span style="font-size: 0.52rem; background: rgba(212, 169, 74,0.15); color: #fbbf24; border: 1px solid rgba(212, 169, 74,0.35); padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; white-space: nowrap;">COACHING</span>
-                                        </div>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Paweł Murawski • Rozwój</span>
-                                    </div>
-                                </a>
-
-                                <!-- Shortcut: SMS Subscriptions -->
-                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(212, 169, 74,0.12)'; this.style.borderColor='rgba(212, 169, 74,0.35)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.06)';">
-                                    <div style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 169, 74,0.12); border: 1px solid rgba(212, 169, 74,0.3); flex-shrink: 0;">
-                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.8rem;"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15; min-width: 0;">
-                                        <span style="font-size: 0.78rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
-                                        <span style="font-size: 0.58rem; color: rgba(255,255,255,0.55); font-family: 'Inter', sans-serif;">Słowo Boże na telefon</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- ==========================================
+         MENU CC — CC COMMAND CENTER (PREMIUM 2026 ECOSYSTEM HUB)
+         Full-screen Navigation, Real-time Search, Surface/Glass Cards, Thematic Columns
+         ========================================== -->
+    <div id="actionsList" class="cc-command-center" role="dialog" aria-modal="true" aria-label="CC Command Center">
+        <!-- Ambient Glow in Top-Right (Earth Atmosphere Glow) -->
+        <div class="menu-cc-bg-glow"></div>
+
+        <div class="menu-cc-wrapper">
+            <!-- Top Navigation / Search Bar -->
+            <header class="menu-cc-topbar">
+                <!-- Brand Info -->
+                <div class="menu-cc-brand">
+                    <div class="menu-cc-logo-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="menu-cc-brand-text">
+                        <h2 class="menu-cc-title">MENU CC</h2>
+                        <p class="menu-cc-tagline">Centrum nawigacyjne chrześcijańskiego radia, telewizji, mediów i usług</p>
+                    </div>
+                </div>
+
+                <!-- Modern Search Box with Ctrl+K shortcut -->
+                <div class="menu-cc-search">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="menuCcSearchInput" placeholder="Czego szukasz w ekosystemie Christian Culture?" autocomplete="off" spellcheck="false" aria-label="Szukaj w ekosystemie Christian Culture">
+                    <kbd class="search-kbd-badge">Ctrl K</kbd>
+                    <button id="menuCcSearchClear" class="search-clear-btn" aria-label="Wyczyść szukanie" style="display: none;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Close Button -->
+                <button id="actionsCloseBtn" class="menu-cc-close-btn" aria-label="Zamknij MENU CC" title="Zamknij (ESC)">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Zamknij</span>
+                </button>
+            </header>
+
+            <!-- Top Pinned: Najczęściej używane -->
+            <section class="menu-cc-quick-strip" aria-label="Najczęściej używane">
+                <div class="strip-label">
+                    <i class="fa-solid fa-star"></i>
+                    <span>NAJCZĘŚCIEJ UŻYWANE</span>
+                </div>
+                <div class="strip-pills-row">
+                    <a href="https://polskieradio.cc/player" class="strip-pill-card pill-media" data-title="PLAYER CC" data-keywords="player radio audycje audio muzyka na żywo">
+                        <div class="pill-icon"><i class="fa-solid fa-bars-staggered"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">PLAYER CC</span>
+                            <span class="pill-desc">Radio Biblia 24/7</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
+                    <a href="lumina" class="strip-pill-card pill-spolecznosc" data-title="LUMINA" data-keywords="lumina społeczność portal znajomi grupy tablica">
+                        <div class="pill-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">LUMINA</span>
+                            <span class="pill-desc">Społeczność CC</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
+                    <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" class="strip-pill-card pill-slowo" data-title="Werset Dnia" data-keywords="werset dnia biblia słowo cytat generator">
+                        <div class="pill-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">Werset Dnia</span>
+                            <span class="pill-desc">Biblia na dziś</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
+                    <a href="tv" class="strip-pill-card pill-media" data-title="Smart TV CC" data-keywords="smart tv telewizja online stream ekran 6 stacji">
+                        <div class="pill-icon"><i class="fa-solid fa-tv"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">Smart TV CC</span>
+                            <span class="pill-desc">Telewizja online</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
+                    <a href="cctv24-pl.html" class="strip-pill-card pill-slowo" data-title="Dobrze, że jesteś" data-keywords="dobrze że jesteś codzienne rozważania tts bartek">
+                        <div class="pill-icon"><i class="fa-solid fa-heart"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">Dobrze, że jesteś</span>
+                            <span class="pill-desc">Codzienne rozważania</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 5 Columns Container (Desktop 5 columns / Mobile Accordion) -->
+            <main class="menu-cc-grid" id="menuCcGrid">
+                <!-- COL 1: STACJE & MEDIA LIVE (Cyan/Blue) -->
+                <div class="cc-col cc-col-media" data-col="media">
+                    <div class="cc-col-banner">
+                        <img src="images/menu_col_media.jpg" alt="Stacje & Media LIVE" loading="lazy">
+                        <div class="cc-col-banner-overlay"></div>
+                    </div>
+                    <div class="cc-col-header" data-toggle="accordion">
+                        <div class="cc-col-title-wrap">
+                            <div class="cc-col-title"><i class="fa-solid fa-tower-broadcast"></i> STACJE & MEDIA LIVE</div>
+                            <div class="cc-col-subtitle">Radio, telewizja i transmisja na żywo</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
+                    </div>
+                    <div class="cc-col-cards">
+                        <a href="https://polskieradio.cc/player" class="cc-card" data-keywords="player cc audio radio biblia audycje 24/7">
+                            <div class="cc-card-icon"><i class="fa-solid fa-circle-play"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">PLAYER CC</span>
+                                    <span class="cc-card-badge">AUDIO 24/7</span>
+                                </div>
+                                <span class="cc-card-sub">Radio Biblia • Audycje</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="AmbientSleep" class="cc-card" data-keywords="ambient sleep mikser snu fale 3hz 8hz odpoczynek noc">
+                            <div class="cc-card-icon"><i class="fa-solid fa-moon"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Ambient Sleep</span>
+                                    <span class="cc-card-badge">NOWOŚĆ</span>
+                                </div>
+                                <span class="cc-card-sub">Mikser snu • Fale 3Hz/8Hz</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="tv" class="cc-card" data-keywords="smart tv cc 6 stacji ekran telewizora pilot online live">
+                            <div class="cc-card-icon"><i class="fa-solid fa-tv"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Smart TV CC</span>
+                                    <span class="cc-card-badge">6 STACJI</span>
+                                </div>
+                                <span class="cc-card-sub">Ekran telewizora & pilot</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="vod" class="cc-card" data-keywords="vod cc kino 24/7 filmy z wartościami seriale wideo">
+                            <div class="cc-card-icon"><i class="fa-solid fa-clapperboard"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">VOD CC</span>
+                                    <span class="cc-card-badge">KINO 24/7</span>
+                                </div>
+                                <span class="cc-card-sub">Filmy z wartościami</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="program.html" class="cc-card" data-keywords="program tv ramówka dziś tydzień nadchodzące audycje">
+                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Program TV & Ramówka</span>
+                                </div>
+                                <span class="cc-card-sub">Dziś • Tydzień • Nadchodzące</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="nadawaj" class="cc-card" data-keywords="nadawaj z nami obs stream pobierz sygnał live retransmisja">
+                            <div class="cc-card-icon"><i class="fa-solid fa-signal"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Nadawaj z nami</span>
+                                </div>
+                                <span class="cc-card-sub">Pobierz sygnał dla OBS</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- COL 2: SŁOWO & DUCHOWOŚĆ (Warm Gold) -->
+                <div class="cc-col cc-col-slowo" data-col="slowo">
+                    <div class="cc-col-banner">
+                        <img src="images/menu_col_slowo.jpg" alt="Słowo & Duchowość" loading="lazy">
+                        <div class="cc-col-banner-overlay"></div>
+                    </div>
+                    <div class="cc-col-header" data-toggle="accordion">
+                        <div class="cc-col-title-wrap">
+                            <div class="cc-col-title"><i class="fa-solid fa-book-bible"></i> SŁOWO & DUCHOWOŚĆ</div>
+                            <div class="cc-col-subtitle">Biblia, rozważania i treści duchowe</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
+                    </div>
+                    <div class="cc-col-cards">
+                        <a href="https://polskieradio.cc/mojabiblia" class="cc-card" data-keywords="mojabiblia interlinearna greka hebrajski strong pismo święte">
+                            <div class="cc-card-icon"><i class="fa-solid fa-book-bible"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">MojaBiblia</span>
+                                    <span class="cc-card-badge">INTERLINEARNA</span>
+                                </div>
+                                <span class="cc-card-sub">Greka • Hebrajski • Strong</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" class="cc-card" data-keywords="werset dnia karty słowa generator cytaty pismo">
+                            <div class="cc-card-icon"><i class="fa-solid fa-scroll"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Werset Dnia</span>
+                                    <span class="cc-card-badge">NOWOŚĆ</span>
+                                </div>
+                                <span class="cc-card-sub">Karty Słowa • Generator</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="cctv24-pl.html" class="cc-card" data-keywords="dobrze że jesteś codzienne rozważania bartek tts audio">
+                            <div class="cc-card-icon cc-card-avatar">
+                                <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" loading="lazy">
+                            </div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Dobrze, że jesteś</span>
+                                </div>
+                                <span class="cc-card-sub">Codzienne rozważania</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="modlitwa.html" class="cc-card" data-keywords="ściana modlitwy narodowa zjednoczeni za polskę intencje modlitewne">
+                            <div class="cc-card-icon"><i class="fa-solid fa-hands-praying"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Ściana Modlitwy</span>
+                                    <span class="cc-card-badge">NARODOWA</span>
+                                </div>
+                                <span class="cc-card-sub">Zjednoczeni za Polskę</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="biblia-do-pobrania.html" class="cc-card" data-keywords="biblia do pobrania darmowy plik pdf pismo święte pobierz">
+                            <div class="cc-card-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Biblia do pobrania</span>
+                                </div>
+                                <span class="cc-card-sub">Darmowy plik PDF</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- COL 3: SPOŁECZNOŚĆ (Purple/Violet) -->
+                <div class="cc-col cc-col-spolecznosc" data-col="spolecznosc">
+                    <div class="cc-col-banner">
+                        <img src="images/menu_col_spolecznosc.jpg" alt="Społeczność" loading="lazy">
+                        <div class="cc-col-banner-overlay"></div>
+                    </div>
+                    <div class="cc-col-header" data-toggle="accordion">
+                        <div class="cc-col-title-wrap">
+                            <div class="cc-col-title"><i class="fa-solid fa-users"></i> SPOŁECZNOŚĆ</div>
+                            <div class="cc-col-subtitle">Ludzie, relacje i wartości</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
+                    </div>
+                    <div class="cc-col-cards">
+                        <a href="lumina" class="cc-card" data-keywords="portal lumina sieć relacji wartości posty tablica społeczność">
+                            <div class="cc-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Portal LUMINA</span>
+                                    <span class="cc-card-badge">PORTAL</span>
+                                </div>
+                                <span class="cc-card-sub">Sieć relacji & wartości</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="herbatka/index.html" class="cc-card" data-keywords="herbatka między słowami poczytaj i posłuchaj opowiadania kawa herbata">
+                            <div class="cc-card-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Herbatka między słowami</span>
+                                </div>
+                                <span class="cc-card-sub">Poczytaj i posłuchaj</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="lumina" class="cc-card" data-keywords="grupy tematyczne dyskusje pasja wsparcie lumina społeczność">
+                            <div class="cc-card-icon"><i class="fa-solid fa-people-group"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Grupy tematyczne</span>
+                                </div>
+                                <span class="cc-card-sub">Dyskusje • Pasja • Wsparcie</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="lumina-profile.html" class="cc-card" data-keywords="profile użytkowników poznaj społeczność autorzy członkowie">
+                            <div class="cc-card-icon"><i class="fa-solid fa-user-group"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Profile użytkowników</span>
+                                </div>
+                                <span class="cc-card-sub">Poznaj społeczność</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="modlitwa.html" class="cc-card" data-keywords="wydarzenia cc spotkania modlitwy live transmisje zjazdy">
+                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Wydarzenia CC</span>
+                                </div>
+                                <span class="cc-card-sub">Spotkania • Modlitwy • LIVE</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- COL 4: NARZĘDZIA (Emerald Green) -->
+                <div class="cc-col cc-col-narzedzia" data-col="narzedzia">
+                    <div class="cc-col-banner">
+                        <img src="images/menu_col_narzedzia.jpg" alt="Narzędzia" loading="lazy">
+                        <div class="cc-col-banner-overlay"></div>
+                    </div>
+                    <div class="cc-col-header" data-toggle="accordion">
+                        <div class="cc-col-title-wrap">
+                            <div class="cc-col-title"><i class="fa-solid fa-screwdriver-wrench"></i> NARZĘDZIA</div>
+                            <div class="cc-col-subtitle">Kreatywność i rozszerzenia misji</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
+                    </div>
+                    <div class="cc-col-cards">
+                        <a href="kalendarz2027" class="cc-card" data-keywords="kalendarz 2027 a4 pdf kreator do druku harmonogram">
+                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Kalendarz 2027</span>
+                                    <span class="cc-card-badge">A4/PDF</span>
+                                </div>
+                                <span class="cc-card-sub">Kreator do druku</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="bank-tresci.html" class="cc-card" data-keywords="bank treści darmowe materiały pliki audio grafiki wideo">
+                            <div class="cc-card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Bank Treści</span>
+                                </div>
+                                <span class="cc-card-sub">Darmowe materiały</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" class="cc-card" data-keywords="aplikacja cc web pwa telefon smartfon zainstaluj">
+                            <div class="cc-card-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Aplikacja CC Web</span>
+                                </div>
+                                <span class="cc-card-sub">christian-culture.web.app</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="projektant" class="cc-card" data-keywords="projektant cc studio kreator grafik canva yis design projekt">
+                            <div class="cc-card-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Projektant CC</span>
+                                    <span class="cc-card-badge">STUDIO</span>
+                                </div>
+                                <span class="cc-card-sub">Kreator grafik CC</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <div id="shortcutLangRow" class="cc-card" role="button" tabindex="0" data-keywords="język language polish english zmień na angielski translate">
+                            <div class="cc-card-icon"><i class="fa-solid fa-language"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Język / Language</span>
+                                </div>
+                                <span id="langToggleText" class="cc-card-sub">Zmień na angielski</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COL 5: USŁUGI (Warm Amber / Red) -->
+                <div class="cc-col cc-col-uslugi" data-col="uslugi">
+                    <div class="cc-col-banner">
+                        <img src="images/menu_col_uslugi.jpg" alt="Usługi" loading="lazy">
+                        <div class="cc-col-banner-overlay"></div>
+                    </div>
+                    <div class="cc-col-header" data-toggle="accordion">
+                        <div class="cc-col-title-wrap">
+                            <div class="cc-col-title"><i class="fa-solid fa-handshake-angle"></i> USŁUGI</div>
+                            <div class="cc-col-subtitle">Wsparcie, rozwój i pomoc</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
+                    </div>
+                    <div class="cc-col-cards">
+                        <a href="tel:+48730958583" id="shortcutHelpline" class="cc-card cc-card-highlight" data-keywords="infolinia nadzieja telefon rozmowa pomoc wsparcie duchowe kryzys +48730958583">
+                            <div class="cc-card-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Infolinia Nadzieja</span>
+                                </div>
+                                <span class="cc-card-sub" style="font-weight: 800; color: #fff;">+48 730 958 583</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/premier-heatfix" class="cc-card" data-keywords="premier heatfix uk gaz hydraulika kotły londyn heating boiler">
+                            <div class="cc-card-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Premier HeatFix</span>
+                                    <span class="cc-card-badge">UK</span>
+                                </div>
+                                <span class="cc-card-sub">Gaz & hydraulika UK</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/holistyczny-coaching" class="cc-card" data-keywords="holistyczny coaching paweł murawski rozwój terapia wolność kryzysy uzależnienia">
+                            <div class="cc-card-icon cc-card-avatar">
+                                <img src="avatar_pawel_murawski.jpg" alt="Paweł Murawski" loading="lazy">
+                            </div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Holistyczny Coaching</span>
+                                    <span class="cc-card-badge">COACHING</span>
+                                </div>
+                                <span class="cc-card-sub">Paweł Murawski • Rozwój</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <div id="shortcutSmsRow" class="cc-card" role="button" tabindex="0" data-keywords="subskrypcje sms słowo boże na telefon wiadomości codzienne cytaty">
+                            <div class="cc-card-icon"><i class="fa-solid fa-comment-sms"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Subskrypcje SMS</span>
+                                </div>
+                                <span class="cc-card-sub">Słowo Boże na telefon</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </div>
+                        <a href="#support-modal" id="shortcutSupportRow" class="cc-card" data-keywords="wsparcie misji zostań partnerem cc darowizna blik wspieram przelew misja">
+                            <div class="cc-card-icon" style="color: #ef4444;"><i class="fa-solid fa-heart"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Wsparcie Misji</span>
+                                </div>
+                                <span class="cc-card-sub">Zostań Partnerem CC</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <!-- No search results state -->
+            <div id="menuCcNoResults" class="menu-cc-no-results" style="display: none;">
+                <i class="fa-solid fa-circle-question"></i>
+                <h3>Nie znaleziono w ekosystemie</h3>
+                <p>Spróbuj wpisać inne słowo, np. <em>player, biblia, lumina, telewizja, kalendarz</em>.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- SIDE DRAWER NAVIGATION -->
     <div class="side-drawer" id="sideDrawer">
@@ -2635,18 +2756,21 @@
  
             // Sync button label on load
             function syncLangButton() {
+                const langToggleText = document.getElementById('langToggleText');
                 if (langBtn) {
                     if (isEnglish()) {
                         langBtn.title = 'Przełącz na język polski 🇵🇱';
                         if (langSubtitle) langSubtitle.textContent = 'Zmień na polski';
+                        if (langToggleText) langToggleText.textContent = 'Zmień na polski';
                     } else {
                         langBtn.title = 'Switch to English 🇬🇧';
                         if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
+                        if (langToggleText) langToggleText.textContent = 'Zmień na angielski';
                     }
                 }
             }
             syncLangButton();
- 
+
             if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -2667,12 +2791,15 @@
                     }
                 });
             }
- 
-            // --- Expandable Quick Actions Controller (Pełnoekranowe MENU CC) ---
+
+            // --- Expandable Quick Actions Controller (Pełnoekranowe MENU CC / CC Command Center) ---
             const actionsToggleBtn = document.getElementById("actionsToggleBtn");
             const actionsList = document.getElementById("actionsList");
             const actionsToggleIcon = document.getElementById("actionsToggleIcon");
             const actionsCloseBtn = document.getElementById("actionsCloseBtn");
+            const menuCcSearchInput = document.getElementById("menuCcSearchInput");
+            const menuCcSearchClear = document.getElementById("menuCcSearchClear");
+            const menuCcNoResults = document.getElementById("menuCcNoResults");
             
             function openMenuCC() {
                 if (!actionsList) return;
@@ -2686,6 +2813,12 @@
                 const authDrop = document.getElementById("ccAuthDropdown");
                 if (authDrop && authDrop.classList.contains("open")) {
                     authDrop.classList.remove("open");
+                }
+                if (menuCcSearchInput) {
+                    setTimeout(() => {
+                        menuCcSearchInput.focus();
+                        menuCcSearchInput.select();
+                    }, 120);
                 }
             }
 
@@ -2718,12 +2851,116 @@
                 });
             }
 
-            // Close on ESC key
+            // Close on ESC key & Ctrl+K / '/' shortcut
             document.addEventListener("keydown", (e) => {
                 if (e.key === "Escape" && actionsList && actionsList.classList.contains("open")) {
                     closeMenuCC();
+                } else if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "k")) {
+                    e.preventDefault();
+                    if (actionsList && actionsList.classList.contains("open")) {
+                        if (menuCcSearchInput) menuCcSearchInput.focus();
+                    } else {
+                        openMenuCC();
+                    }
+                } else if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+                    e.preventDefault();
+                    openMenuCC();
                 }
             });
+
+            // Real-time Search in MENU CC
+            function filterMenuCC(query) {
+                const q = (query || "").trim().toLowerCase();
+                const cards = actionsList ? actionsList.querySelectorAll(".cc-card") : [];
+                const pills = actionsList ? actionsList.querySelectorAll(".strip-pill-card") : [];
+                const cols = actionsList ? actionsList.querySelectorAll(".cc-col") : [];
+                let totalMatches = 0;
+
+                if (menuCcSearchClear) {
+                    menuCcSearchClear.style.display = q ? "block" : "none";
+                }
+
+                if (!q) {
+                    // Reset all
+                    cards.forEach(card => card.classList.remove("hidden"));
+                    pills.forEach(pill => pill.classList.remove("hidden"));
+                    cols.forEach(col => col.classList.remove("hidden"));
+                    if (menuCcNoResults) menuCcNoResults.style.display = "none";
+                    return;
+                }
+
+                // Filter Quick Strip Pills
+                pills.forEach(pill => {
+                    const title = (pill.getAttribute("data-title") || pill.textContent).toLowerCase();
+                    const kw = (pill.getAttribute("data-keywords") || "").toLowerCase();
+                    const match = title.includes(q) || kw.includes(q);
+                    pill.classList.toggle("hidden", !match);
+                });
+
+                // Filter Columns & Cards
+                cols.forEach(col => {
+                    const colCards = col.querySelectorAll(".cc-card");
+                    let colMatches = 0;
+                    colCards.forEach(card => {
+                        const text = card.textContent.toLowerCase();
+                        const kw = (card.getAttribute("data-keywords") || "").toLowerCase();
+                        const match = text.includes(q) || kw.includes(q);
+                        card.classList.toggle("hidden", !match);
+                        if (match) {
+                            colMatches++;
+                            totalMatches++;
+                        }
+                    });
+
+                    if (colMatches > 0) {
+                        col.classList.remove("hidden");
+                        col.classList.remove("collapsed");
+                    } else {
+                        col.classList.add("hidden");
+                    }
+                });
+
+                if (menuCcNoResults) {
+                    menuCcNoResults.style.display = totalMatches === 0 ? "block" : "none";
+                }
+            }
+
+            if (menuCcSearchInput) {
+                menuCcSearchInput.addEventListener("input", (e) => {
+                    filterMenuCC(e.target.value);
+                });
+            }
+
+            if (menuCcSearchClear) {
+                menuCcSearchClear.addEventListener("click", () => {
+                    if (menuCcSearchInput) {
+                        menuCcSearchInput.value = "";
+                        filterMenuCC("");
+                        menuCcSearchInput.focus();
+                    }
+                });
+            }
+
+            // Mobile Accordion Toggle for .cc-col-header
+            if (actionsList) {
+                actionsList.querySelectorAll(".cc-col-header").forEach(header => {
+                    header.addEventListener("click", (e) => {
+                        if (window.innerWidth <= 900) {
+                            const col = header.closest(".cc-col");
+                            if (col) {
+                                col.classList.toggle("collapsed");
+                            }
+                        }
+                    });
+                });
+
+                // Auto-close MENU CC on link click
+                actionsList.querySelectorAll("a.cc-card, a.strip-pill-card").forEach(link => {
+                    link.addEventListener("click", () => {
+                        setTimeout(closeMenuCC, 150);
+                    });
+                });
+            }
 
             // Shortcuts integration triggers
             const shortcutSmsRow = document.getElementById("shortcutSmsRow");
