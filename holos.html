@@ -321,7 +321,7 @@
         </div>
         <div class="glassmorphism rounded-2xl p-3.5 border border-white/5 text-center">
           <div class="text-xs text-text-tertiary uppercase tracking-wider mb-1">Twój Holos Score</div>
-          <div id="stat-holos-score" class="text-holos-turquoise font-bold text-sm sm:text-base">76% (Równowaga)</div>
+          <div id="stat-holos-score" class="text-holos-turquoise font-bold text-xs sm:text-sm">Rozpocznij autodiagnozę</div>
         </div>
         <div class="glassmorphism rounded-2xl p-3.5 border border-white/5 text-center">
           <div class="text-xs text-text-tertiary uppercase tracking-wider mb-1">Szafarstwo 10%</div>
@@ -624,12 +624,15 @@
                        fill="rgba(0, 242, 254, 0.25)" stroke="#00F2FE" stroke-width="2"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <div id="radar-score-percent" class="text-4xl font-black text-white">76%</div>
-              <div class="text-[11px] text-holos-turquoise uppercase tracking-widest font-bold">Holos Score</div>
+              <div id="radar-score-percent" class="text-3xl sm:text-4xl font-black text-white">76%</div>
+              <div id="radar-score-caption" class="text-[11px] text-holos-turquoise uppercase tracking-widest font-bold">Wzór poglądowy</div>
             </div>
           </div>
-          <div id="wheel-verdict" class="mt-4 text-xs text-text-secondary font-medium">
-            Stabilna równowaga. Zadbaj o wyrównanie najniższego sektora.
+          <div id="radar-mode-badge" class="mt-3 px-3 py-1 rounded-full text-[11px] font-medium bg-white/5 border border-white/10 text-text-tertiary">
+            Wartości przykładowe — przesuń suwaki, aby obliczyć własny wynik
+          </div>
+          <div id="wheel-verdict" class="mt-3 text-xs text-text-secondary font-medium">
+            Przykładowy rozkład sektorów. Przesuń suwaki, aby poznać swój prawdziwy Holos Score.
           </div>
         </div>
 
@@ -643,7 +646,7 @@
               </div>
               <span id="val-faith" class="text-xs font-bold text-holos-turquoise">80%</span>
             </div>
-            <input type="range" id="range-faith" min="0" max="100" value="80" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel()">
+            <input type="range" id="range-faith" min="0" max="100" value="80" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel(true)">
             <div class="text-[11px] text-text-tertiary mt-1">Poranny rytuał modlitwy, lektura Słowa, rachunek sumienia</div>
           </div>
 
@@ -655,7 +658,7 @@
               </div>
               <span id="val-relations" class="text-xs font-bold text-holos-indigo">75%</span>
             </div>
-            <input type="range" id="range-relations" min="0" max="100" value="75" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel()">
+            <input type="range" id="range-relations" min="0" max="100" value="75" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel(true)">
             <div class="text-[11px] text-text-tertiary mt-1">Uważna obecność bez telefonu, dialog małżeński, dzieci</div>
           </div>
 
@@ -667,7 +670,7 @@
               </div>
               <span id="val-health" class="text-xs font-bold text-holos-green">70%</span>
             </div>
-            <input type="range" id="range-health" min="0" max="100" value="70" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel()">
+            <input type="range" id="range-health" min="0" max="100" value="70" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel(true)">
             <div class="text-[11px] text-text-tertiary mt-1">Ciało jako świątynia Ducha: sen, nawodnienie, regularny ruch</div>
           </div>
 
@@ -679,7 +682,7 @@
               </div>
               <span id="val-finances" class="text-xs font-bold text-holos-gold">85%</span>
             </div>
-            <input type="range" id="range-finances" min="0" max="100" value="85" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel()">
+            <input type="range" id="range-finances" min="0" max="100" value="85" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel(true)">
             <div class="text-[11px] text-text-tertiary mt-1">Dziesięcina 10%, dyscyplina budżetu, oszczędności, brak długów</div>
           </div>
 
@@ -691,11 +694,15 @@
               </div>
               <span id="val-development" class="text-xs font-bold text-holos-purple">70%</span>
             </div>
-            <input type="range" id="range-development" min="0" max="100" value="70" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel()">
+            <input type="range" id="range-development" min="0" max="100" value="70" class="w-full h-1.5 bg-white/10 rounded-lg cursor-pointer" oninput="updateWheel(true)">
             <div class="text-[11px] text-text-tertiary mt-1">4 godziny głębokiej pracy, pomnażanie darów, nauka</div>
           </div>
 
-          <div class="flex justify-end gap-3 pt-2">
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2">
+            <div id="holos-sync-status" class="text-xs text-text-tertiary flex items-center gap-1.5">
+              <span>☁️</span>
+              <span id="holos-sync-label">Pamięć lokalna (Zaloguj przez LUMINA dla chmury CC ID)</span>
+            </div>
             <button onclick="saveWheelLocal()" class="px-5 py-2.5 rounded-xl bg-holos-turquoise text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
               Zapisz Wyniki w Pamięci Szafarza
             </button>
@@ -727,7 +734,7 @@
       <div class="glassmorphism rounded-3xl p-6 sm:p-10 border border-holos-gold/30 glow-gold">
         <div class="mb-8">
           <label class="block text-xs uppercase tracking-wider text-text-tertiary font-bold mb-2">
-            Wpisz Miesięczny lub Bieżący Przychód (PLN):
+            Wpisz Miesięczny lub Bieżący Przychód (PLN) <span class="text-holos-gold/80 font-normal lowercase">(przykładowo 6 000 zł — wpisz własną kwotę)</span>:
           </label>
           <div class="relative">
             <input type="number" id="stewardship-income" value="6000" min="0" step="100"
@@ -830,6 +837,20 @@
               <option value="temper">Niecierpliwość w domu</option>
             </select>
           </div>
+        </div>
+
+        <!-- Priorytet Autodiagnozy (Koło 5 Sektorów) -->
+        <div id="schedule-priority-banner" class="mb-4 p-3.5 rounded-2xl bg-gradient-to-r from-holos-turquoise/15 via-holos-indigo/10 to-transparent border border-holos-turquoise/30 flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2.5">
+            <span class="text-lg">🎯</span>
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-text-tertiary font-bold">Kluczowy Priorytet z Autodiagnozy:</div>
+              <div id="schedule-priority-text" class="text-xs sm:text-sm font-bold text-white">Wykonaj diagnozę Koła Życia, aby ustalić priorytet</div>
+            </div>
+          </div>
+          <span id="schedule-priority-tag" class="text-[10px] px-2.5 py-1 rounded-lg bg-holos-turquoise/20 text-holos-turquoise font-extrabold uppercase">
+            Auto Focus
+          </span>
         </div>
 
         <div id="schedule-blocks-container" class="space-y-3">
@@ -1383,9 +1404,51 @@
     }
 
     /* -------------------------------------------------------------
-       2. INTERAKTYWNE KOŁO 5 SEKTORÓW ŻYCIA
+       2. ARCHITEKTURA TOŻSAMOŚCI CC ID & SYNCHRONIZACJA
     ------------------------------------------------------------- */
-    function updateWheel() {
+    function getCcUser() {
+      try {
+        const userStr = localStorage.getItem('lumina_current_user');
+        const profStr = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile');
+        const user = userStr ? JSON.parse(userStr) : null;
+        const profile = profStr ? JSON.parse(profStr) : null;
+        if (user && user.uid) return { user, profile };
+      } catch(e) {}
+      return null;
+    }
+
+    function getStorageKey(base) {
+      const cc = getCcUser();
+      if (cc && cc.user && cc.user.uid) {
+        return `${base}_${cc.user.uid}`;
+      }
+      return base;
+    }
+
+    function updateSyncUI() {
+      const syncLabel = document.getElementById('holos-sync-label');
+      const cc = getCcUser();
+      if (syncLabel) {
+        if (cc && cc.user && cc.user.uid) {
+          const name = cc.profile?.name || cc.user.displayName || 'Użytkownik CC ID';
+          syncLabel.innerHTML = `<span class="text-emerald-400 font-bold">✓ CC ID:</span> Synchronizacja aktywna (${name})`;
+        } else {
+          syncLabel.innerHTML = `Pamięć lokalna (<a href="#integracja-lumina" class="text-holos-turquoise underline">Zaloguj przez LUMINA</a> dla chmury CC ID)`;
+        }
+      }
+    }
+
+    /* -------------------------------------------------------------
+       3. INTERAKTYWNE KOŁO 5 SEKTORÓW ŻYCIA (AUTODIAGNOZA)
+    ------------------------------------------------------------- */
+    let isAssessmentCustomized = false;
+    let currentLowestSector = { name: 'Zdrowie & Ciało', val: 70 };
+
+    function updateWheel(isCustom = null) {
+      if (isCustom !== null) {
+        isAssessmentCustomized = isCustom;
+      }
+
       const faith = parseInt(document.getElementById('range-faith').value);
       const rel = parseInt(document.getElementById('range-relations').value);
       const health = parseInt(document.getElementById('range-health').value);
@@ -1400,13 +1463,46 @@
 
       const avg = Math.round((faith + rel + health + fin + dev) / 5);
       document.getElementById('radar-score-percent').innerText = avg + '%';
-      document.getElementById('stat-holos-score').innerText = avg + '% (' + (avg >= 75 ? 'Równowaga' : 'Korekta') + ')';
 
+      const statScore = document.getElementById('stat-holos-score');
+      const radarCaption = document.getElementById('radar-score-caption');
+      const radarBadge = document.getElementById('radar-mode-badge');
+      const verdictEl = document.getElementById('wheel-verdict');
+
+      const values = [faith, rel, health, fin, dev];
+      const sectorNames = ['Wiara & Duchowość', 'Relacje & Rodzina', 'Zdrowie & Ciało', 'Finanse & Szafarstwo', 'Rozwój Talentów'];
+      const minVal = Math.min(...values);
+      const lowestSector = sectorNames[values.indexOf(minVal)];
+      currentLowestSector = { name: lowestSector, val: minVal };
+
+      if (isAssessmentCustomized) {
+        statScore.innerText = `${avg}% (${avg >= 75 ? 'Równowaga' : 'Korekta'})`;
+        statScore.className = "text-holos-turquoise font-bold text-sm sm:text-base";
+        if (radarCaption) radarCaption.innerText = "Twój Holos Score";
+        if (radarBadge) {
+          radarBadge.className = "mt-3 px-3 py-1 rounded-full text-[11px] font-bold bg-holos-turquoise/15 border border-holos-turquoise/30 text-holos-turquoise";
+          radarBadge.innerText = "Twoja autodiagnoza aktywna · Pamiętaj o zapisie";
+        }
+        if (minVal < 50) {
+          verdictEl.innerHTML = `<span class="text-holos-red font-bold">⚠️ Uwaga:</span> Sektor <strong>${lowestSector} (${minVal}%)</strong> jest krytycznie osłabiony. Uwzględnij go w planie dnia poniżej.`;
+        } else {
+          verdictEl.innerHTML = `Najmocniejszy punkt: <strong>${sectorNames[values.indexOf(Math.max(...values))]}</strong>. Najniższy do wzmocnienia: <strong>${lowestSector} (${minVal}%)</strong>.`;
+        }
+      } else {
+        statScore.innerText = "Rozpocznij autodiagnozę";
+        statScore.className = "text-holos-turquoise font-bold text-xs sm:text-sm";
+        if (radarCaption) radarCaption.innerText = "Wzór poglądowy";
+        if (radarBadge) {
+          radarBadge.className = "mt-3 px-3 py-1 rounded-full text-[11px] font-medium bg-white/5 border border-white/10 text-text-tertiary";
+          radarBadge.innerText = "Wartości przykładowe — przesuń suwaki, aby obliczyć własny wynik";
+        }
+        verdictEl.innerHTML = `Przykładowy rozkład sektorów. Przesuń suwaki, aby poznać swój prawdziwy Holos Score.`;
+      }
+
+      // Rysowanie wielokąta radaru
       const center = 100;
       const maxR = 80;
-      const values = [faith, rel, health, fin, dev];
       const points = [];
-
       for (let i = 0; i < 5; i++) {
         const angle = (i * 2 * Math.PI) / 5;
         const r = (values[i] / 100) * maxR;
@@ -1414,36 +1510,38 @@
         const y = center + r * Math.sin(angle);
         points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
       }
-
       document.getElementById('wheel-polygon').setAttribute('points', points.join(' '));
 
-      const minVal = Math.min(...values);
-      const sectorNames = ['Wiara', 'Relacje', 'Zdrowie', 'Finanse', 'Rozwój'];
-      const lowestSector = sectorNames[values.indexOf(minVal)];
-
-      const verdictEl = document.getElementById('wheel-verdict');
-      if (minVal < 50) {
-        verdictEl.innerHTML = `<span class="text-holos-red font-bold">⚠️ Uwaga:</span> Sektor <strong>${lowestSector} (${minVal}%)</strong> jest krytycznie osłabiony. Zaplanuj działanie naprawcze.`;
-      } else {
-        verdictEl.innerHTML = `Najmocniejszy punkt to <strong>${sectorNames[values.indexOf(Math.max(...values))]}</strong>. Najniższy: <strong>${lowestSector} (${minVal}%)</strong>.`;
-      }
+      updateSchedulePriority();
     }
 
     function saveWheelLocal() {
+      isAssessmentCustomized = true;
       const data = {
         faith: document.getElementById('range-faith').value,
         rel: document.getElementById('range-relations').value,
         health: document.getElementById('range-health').value,
         fin: document.getElementById('range-finances').value,
         dev: document.getElementById('range-development').value,
+        isCustom: true,
         updatedAt: new Date().toISOString()
       };
-      localStorage.setItem('holos_wheel_data', JSON.stringify(data));
-      alert("✅ Koło Życia zostało zapisane w pamięci szafarza!");
+      const key = getStorageKey('holos_wheel_data');
+      localStorage.setItem(key, JSON.stringify(data));
+      updateWheel(true);
+      generateSchedule();
+
+      const cc = getCcUser();
+      if (cc && cc.user && cc.user.uid) {
+        alert("✅ Wyniki autodiagnozy zostały powiązane z Twoim kontem CC ID!");
+      } else {
+        alert("✅ Wyniki autodiagnozy zostały zapisane w pamięci przeglądarki!");
+      }
     }
 
     function loadWheelLocal() {
-      const saved = localStorage.getItem('holos_wheel_data');
+      const key = getStorageKey('holos_wheel_data');
+      const saved = localStorage.getItem(key) || localStorage.getItem('holos_wheel_data');
       if (saved) {
         try {
           const d = JSON.parse(saved);
@@ -1452,13 +1550,15 @@
           document.getElementById('range-health').value = d.health || 70;
           document.getElementById('range-finances').value = d.fin || 85;
           document.getElementById('range-development').value = d.dev || 70;
+          updateWheel(d.isCustom === true);
+          return;
         } catch(e) {}
       }
-      updateWheel();
+      updateWheel(false);
     }
 
     /* -------------------------------------------------------------
-       3. KALKULATOR BIBLIJNEGO SZAfarstwa
+       4. KALKULATOR BIBLIJNEGO SZAFARSTWA
     ------------------------------------------------------------- */
     function calcStewardship() {
       const incomeInput = parseFloat(document.getElementById('stewardship-income').value) || 0;
@@ -1473,8 +1573,24 @@
     }
 
     /* -------------------------------------------------------------
-       4. GENERATOR DNIA
+       5. GENERATOR UŚWIĘCENIA DNIA (PETLA PRODUKTU)
     ------------------------------------------------------------- */
+    function updateSchedulePriority() {
+      const pText = document.getElementById('schedule-priority-text');
+      const pTag = document.getElementById('schedule-priority-tag');
+      if (!pText) return;
+
+      if (isAssessmentCustomized && currentLowestSector) {
+        pText.innerHTML = `Sektor <strong class="text-holos-turquoise">${currentLowestSector.name} (${currentLowestSector.val}%)</strong> wymaga dziś szczególnego wzmocnienia.`;
+        pTag.innerText = "Priorytet Dnia";
+        pTag.className = "text-[10px] px-2.5 py-1 rounded-lg bg-holos-turquoise/20 text-holos-turquoise font-extrabold uppercase";
+      } else {
+        pText.innerText = "Wykonaj diagnozę Koła Życia powyżej, aby system wyznaczył priorytet dnia.";
+        pTag.innerText = "Wzór / Oczekiwanie";
+        pTag.className = "text-[10px] px-2.5 py-1 rounded-lg bg-white/10 text-text-tertiary font-bold uppercase";
+      }
+    }
+
     function generateSchedule() {
       const role = document.getElementById('user-role').value;
       const spiritual = document.getElementById('user-spiritual').value;
@@ -1492,24 +1608,51 @@
       let familyTime = "16:30 – Czas Przymierza (Rodzina i Bliscy)";
       if (role === 'single') familyTime = "16:30 – Czas Budowania Więzi & Spotkanie Wspólnoty";
 
+      // Dynamiczny blok naprawczy na podstawie najsłabszego sektora
+      let priorityBlock = null;
+      if (currentLowestSector) {
+        const sName = currentLowestSector.name;
+        const sVal = currentLowestSector.val;
+        if (sName.includes('Wiara')) {
+          priorityBlock = { time: "12:30", title: `Priorytet Autodiagnozy: Wzmocnienie Wiary (${sVal}%)`, desc: "Nienaruszalne 20 min w ciszy ze Słowem Bożym i modlitwą dziękczynną", mode: "Wiara Focus", color: "holos-turquoise" };
+        } else if (sName.includes('Relacje')) {
+          priorityBlock = { time: "16:00", title: `Priorytet Autodiagnozy: Czas Przymierza z Rodziną (${sVal}%)`, desc: "Odłóż smartfon do innego pokoju. 60 min uważnej obecności i rozmowy w cztery oczy", mode: "Relacje Focus", color: "holos-indigo" };
+        } else if (sName.includes('Zdrowie')) {
+          priorityBlock = { time: "14:00", title: `Priorytet Autodiagnozy: Protokół Świątyni Ducha (${sVal}%)`, desc: "30-minutowy marsz na świeżym powietrzu, nawodnienie i regeneracja fizyczna", mode: "Zdrowie Focus", color: "holos-green" };
+        } else if (sName.includes('Finanse')) {
+          priorityBlock = { time: "18:00", title: `Priorytet Autodiagnozy: Przegląd Budżetu Szafarza (${sVal}%)`, desc: "Weryfikacja dziesięciny 10%, audyt zbędnych subskrypcji i plan spłaty zobowiązań", mode: "Szafarz Focus", color: "holos-gold" };
+        } else {
+          priorityBlock = { time: "10:30", title: `Priorytet Autodiagnozy: Blok Deep Work na Talent Kluczowy (${sVal}%)`, desc: "2 godziny maksymalnego skupienia bez rozpraszaczy nad głównym projektem powołania", mode: "Talenty Focus", color: "holos-purple" };
+        }
+      }
+
       const blocks = [
         { time: "06:00", title: "Poranny Rytuał & Modlitwa", desc: `Medytacja Słowa, intencja dnia, modlitwa (${prayerTime})`, mode: "Monk Mode", color: "holos-turquoise" },
+        priorityBlock,
         { time: "09:00", title: "Blok Głęboki (Deep Work)", desc: "4 godziny pracy bez rozpraszaczy dla budowania talentów", mode: "Creator Mode", color: "holos-purple" },
-        { time: "14:00", title: "Protokół Witalności Świątyni", desc: "Spacer, ruch na świeżym powietrzu, nawodnienie i oddech", mode: "Health Mode", color: "holos-green" },
-        { time: "16:30", title: familyTime, desc: "Obecność na 100%, wspólny stół, rozmowa bez telefonu", mode: "Family Mode", color: "holos-indigo" },
-        { time: "19:00", title: "Zwycięstwo nad nawykiem", desc: habitLabel, mode: "Discipline", color: "holos-gold" },
-        { time: "21:00", title: "Wieczorne Dziękczynienie & Spoczynek", desc: "Rachunek sumienia, podsumowanie szafarstwa, sen regeneracyjny", mode: "Peace Mode", color: "holos-sky" }
-      ];
+        { time: "14:30", title: "Protokół Witalności Świątyni", desc: "Spacer, ruch na świeżym powietrzu, nawodnienie i oddech", mode: "Health Mode", color: "holos-green" },
+        { time: "17:00", title: familyTime, desc: "Obecność na 100%, wspólny stół, rozmowa bez telefonu", mode: "Family Mode", color: "holos-indigo" },
+        { time: "19:30", title: "Zwycięstwo nad nawykiem", desc: habitLabel, mode: "Discipline", color: "holos-gold" },
+        { time: "21:30", title: "Wieczorne Dziękczynienie & Spoczynek", desc: "Rachunek sumienia, podsumowanie szafarstwa, sen regeneracyjny", mode: "Peace Mode", color: "holos-sky" }
+      ].filter(Boolean);
 
       const container = document.getElementById('schedule-blocks-container');
       container.innerHTML = '';
 
+      const savedPlanKey = getStorageKey('holos_daily_plan');
+      let savedChecks = {};
+      try {
+        savedChecks = JSON.parse(localStorage.getItem(savedPlanKey) || '{}');
+      } catch(e) {}
+
       blocks.forEach((b, idx) => {
+        const isChecked = !!savedChecks[idx];
+        const isPriority = b.title.includes('Priorytet Autodiagnozy');
         const item = document.createElement('div');
-        item.className = "flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5 hover:border-white/15 transition-all";
+        item.className = `flex items-center gap-3 p-3.5 rounded-2xl ${isPriority ? 'bg-holos-turquoise/10 border border-holos-turquoise/30' : 'bg-white/5 border border-white/5'} hover:border-white/15 transition-all`;
         item.innerHTML = `
-          <input type="checkbox" id="block-chk-${idx}" class="w-5 h-5 rounded cursor-pointer accent-[#00F2FE]" onchange="toggleBlockStrike(${idx})">
-          <div class="flex-1" id="block-text-${idx}">
+          <input type="checkbox" id="block-chk-${idx}" ${isChecked ? 'checked' : ''} class="w-5 h-5 rounded cursor-pointer accent-[#00F2FE]" onchange="toggleBlockStrike(${idx})">
+          <div class="flex-1 ${isChecked ? 'line-through opacity-50' : ''}" id="block-text-${idx}">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-white">${b.time} – ${b.title}</span>
               <span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-${b.color} font-bold">${b.mode}</span>
@@ -1529,26 +1672,42 @@
       } else {
         text.classList.remove('line-through', 'opacity-50');
       }
+
+      const savedPlanKey = getStorageKey('holos_daily_plan');
+      let savedChecks = {};
+      try {
+        savedChecks = JSON.parse(localStorage.getItem(savedPlanKey) || '{}');
+      } catch(e) {}
+      savedChecks[idx] = chk.checked;
+      localStorage.setItem(savedPlanKey, JSON.stringify(savedChecks));
     }
 
     function saveDailyIntention() {
       const val = document.getElementById('daily-intention-input').value.trim();
       if (!val) return;
-      localStorage.setItem('holos_daily_intention', val);
+      const key = getStorageKey('holos_daily_intention');
+      localStorage.setItem(key, val);
       document.getElementById('saved-intention-text').innerText = `„${val}”`;
       document.getElementById('saved-intention-badge').classList.remove('hidden');
+
+      const cc = getCcUser();
+      if (cc && cc.user && cc.user.uid) {
+        alert("✅ Intencja dnia powiązana z profilem CC ID!");
+      }
     }
 
     function loadDailyIntention() {
-      const saved = localStorage.getItem('holos_daily_intention');
+      const key = getStorageKey('holos_daily_intention');
+      const saved = localStorage.getItem(key) || localStorage.getItem('holos_daily_intention');
       if (saved) {
         document.getElementById('saved-intention-text').innerText = `„${saved}”`;
         document.getElementById('saved-intention-badge').classList.remove('hidden');
+        document.getElementById('daily-intention-input').value = saved;
       }
     }
 
     /* -------------------------------------------------------------
-       5. AI MENTOR AURA - OBSŁUGA WŁASNEGO API (BYOK) & HEURYSTYKI
+       6. AI MENTOR AURA (BYOK & INIEKCJA KONTEKSTU AUTODIAGNOZY)
     ------------------------------------------------------------- */
     function getStoredApiKey() {
       return localStorage.getItem('holos_gemini_api_key') || '';
@@ -1638,16 +1797,28 @@
       btn.disabled = true;
       btn.innerText = "Myślę...";
 
+      const currentIntent = localStorage.getItem(getStorageKey('holos_daily_intention')) || 'Nie zdefiniowano';
+      const roleVal = document.getElementById('user-role').value;
+      const sunPhase = getSunCyclePhase();
+      const lowestStr = currentLowestSector ? `${currentLowestSector.name} (${currentLowestSector.val}%)` : 'Brak autodiagnozy';
+
       if (apiKey) {
-        // Użyj bezpośrednio własnego klucza Gemini API
         tag.innerText = "Gemini 1.5 Flash (Własne API)";
         badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-500 text-pure-black";
         badge.innerText = "GEMINI LIVE";
-        msg.innerText = "Konsultuję odpowiedź z modelem Gemini...";
+        msg.innerText = "Konsultuję odpowiedź z modelem Gemini w kontekście Twojej autodiagnozy...";
         act.innerText = "";
 
         try {
-          const sysPrompt = "Jesteś Aura – chrześcijańskim mentorem życia, rozwoju osobistego i szafarstwa w ekosystemie Christian Culture (HOLOS). Pomagasz użytkownikowi uświęcać czas, rozwijać 5 sektorów (Wiara, Relacje, Zdrowie, Finanse/Dziesięcina 10%, Rozwój Talentów) oraz szanować biblijny Szabat w sobotę. Odpowiadaj zwięźle, mądrze, z Bożą miłością i konkretną radą działania.";
+          const sysPrompt = `Jesteś Aura – chrześcijańskim mentorem życia, rozwoju osobistego i szafarstwa w ekosystemie Christian Culture (HOLOS).
+Kontekst użytkownika:
+- Autodiagnoza 5 sektorów: najsłabszy sektor to ${lowestStr}
+- Rola życiowa: ${roleVal}
+- Cykl słoneczny / Szabat: ${sunPhase} (Pamiętaj: Biblijny Szabat to SOBOTA, od piątku 18:00 do soboty 18:00)
+- Intencja dnia: ${currentIntent}
+
+Odpowiadaj bezpośrednio, zwięźle, po polsku, mądrze i biblijnie, proponując 1 konkretny krok naprawczy zsynchronizowany z powyższą diagnozą.`;
+
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1660,7 +1831,7 @@
           const data = await res.json();
           if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
             msg.innerText = data.candidates[0].content.parts[0].text;
-            act.innerText = "✦ Odpowiedź wygenerowana przez Twój klucz Gemini API";
+            act.innerText = `✦ Odpowiedź uwzględnia Twój priorytet: ${currentLowestSector ? currentLowestSector.name : 'HOLOS'}`;
           } else {
             msg.innerText = "Błąd odpowiedzi z Gemini API. Sprawdź poprawność klucza.";
             act.innerText = JSON.stringify(data.error || "Brak danych");
@@ -1670,21 +1841,31 @@
           act.innerText = "Sprawdź połączenie internetowe i klucz API.";
         }
       } else {
-        // Fallback: Wbudowany silnik heurystyczny ekosystemu Christian Culture
-        tag.innerText = "Wbudowany Silnik CC";
+        tag.innerText = "Wbudowany Silnik CC Life OS";
         badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-holos-purple text-white";
         badge.innerText = "AURA ADVICE";
         
-        let reply = "Pamiętaj, że każdy Twój dzień jest darem Boga. Aby zrealizować ten cel, zacznij od 15-minutowego porannego wyciszenia w Słowie, wyznacz 1 kluczowy blok Deep Work i spędź wieczór z rodziną w uważnej obecności.";
-        if (q.toLowerCase().includes("modlit") || q.toLowerCase().includes("wiara")) {
-          reply = "Wierność w modlitwie nie zależy od natchnienia, lecz od uświęconej decyzji. Zaplanuj nienaruszalne 20 minut o świcie w ciszy z Pismem Świętym — zanim włączysz telefon.";
-        } else if (q.toLowerCase().includes("pienią") || q.toLowerCase().includes("finans") || q.toLowerCase().includes("dziesięcin")) {
-          reply = "Zasada szafarstwa brzmi: pierwsze 10% przychodu oddaj Bogu i na pomoc braciom. Gdy stawiasz Królestwo Boże na pierwszym miejscu, budżet domowy zyskuje Boże błogosławieństwo i ład.";
-        } else if (q.toLowerCase().includes("szabat") || q.toLowerCase().includes("odpocz")) {
-          reply = "Pamiętaj o dniu szabatu: to Sobota! Od zachodu słońca w piątek do zachodu w sobotę wyłącz ekrany i pracę komercyjną. To czas świętego odpoczynku w Bogu i z rodziną.";
+        let reply = `W świetle Twojej autodiagnozy kluczowym obszarem uwagi jest dziś ${lowestStr}. `;
+        if (sunPhase === 'sabbath') {
+          reply += "Pamiętaj, że dziś trwa Święty Szabat (Sobota) – odłóż zmagania komercyjne, wejdź w odpoczynek Boży i pozwól Duchowi Świętemu odnowić Twoje siły. ";
+        } else if (sunPhase === 'preparation') {
+          reply += "Dziś jest Dzień Przygotowania (Piątek) – domknij zaległe zadania przed zachodem słońca, by z czystym sercem wejść w sobotni odpoczynek. ";
+        } else {
+          reply += "Każdy dzień powszedni jest darem do pomnażania talentów. ";
         }
+
+        if (q.toLowerCase().includes("modlit") || q.toLowerCase().includes("wiara")) {
+          reply += "Wierność w modlitwie nie zależy od natchnienia, lecz od uświęconej decyzji: zaplanuj nienaruszalne 20 minut o świcie w ciszy z Pismem Świętym — zanim włączysz smartfon.";
+        } else if (q.toLowerCase().includes("pienią") || q.toLowerCase().includes("finans") || q.toLowerCase().includes("dziesięcin")) {
+          reply += "Zasada szafarstwa brzmi: pierwsze 10% przychodu oddaj Bogu i na pomoc braciom. Gdy stawiasz Królestwo Boże na pierwszym miejscu, budżet domowy zyskuje Boże błogosławieństwo i ład.";
+        } else if (q.toLowerCase().includes("szabat") || q.toLowerCase().includes("odpocz")) {
+          reply += "Biblijny Szabat to Sobota! Od zachodu słońca w piątek do zachodu w sobotę wyłącz ekrany i pracę komercyjną. To czas świętego odpoczynku w Bogu i z rodziną.";
+        } else {
+          reply += `Aby osiągnąć ten cel, zacznij od wzmocnienia sektora ${lowestStr}, wyznacz 1 kluczowy blok Deep Work i uczyń z tego swoją intencję dnia: „${currentIntent}”.`;
+        }
+
         msg.innerText = reply;
-        act.innerText = "Rekomendowane: Wpisz tę intencję do swojego Dziennika Szafarza powyżej.";
+        act.innerText = `Rekomendowane: Zrealizuj blok priorytetu (${lowestStr}) w harmonogramie dnia powyżej.`;
       }
 
       btn.disabled = false;
@@ -1692,7 +1873,7 @@
     }
 
     /* -------------------------------------------------------------
-       6. AUDIO RADIO LIVE & ZENO.FM
+       7. AUDIO RADIO LIVE & ZENO.FM
     ------------------------------------------------------------- */
     const audioEl = document.getElementById('global-radio-audio');
     const playerBar = document.getElementById('live-player-bar');
@@ -1743,15 +1924,34 @@
       }
     }
 
-    // Inicjalizacja przy załadowaniu strony
+    /* -------------------------------------------------------------
+       8. CYKL ŻYCIA PLATFORMY & REAKCJA NA EVENTY AUTH
+    ------------------------------------------------------------- */
     window.addEventListener('DOMContentLoaded', () => {
       updateSunCycleUI();
       setInterval(updateSunCycleUI, 1000);
+      updateSyncUI();
       loadWheelLocal();
       calcStewardship();
       generateSchedule();
       loadDailyIntention();
       updateApiStatusUI();
+    });
+
+    window.addEventListener('lumina-auth-state', () => {
+      updateSyncUI();
+      loadWheelLocal();
+      loadDailyIntention();
+      generateSchedule();
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'lumina_current_user' || e.key === 'lumina_current_user_profile') {
+        updateSyncUI();
+        loadWheelLocal();
+        loadDailyIntention();
+        generateSchedule();
+      }
     });
   </script>
 
