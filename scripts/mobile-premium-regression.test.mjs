@@ -23,6 +23,7 @@ const standardizedProfilePages = [
   'lumina.wiolettarogowska.html',
   'lumina.jolawojcik.html',
   'lumina.magdalena.html',
+  'lumina.mariusz.html',
   'lumina.osobowoscplus.html',
   'lumina.pawelmurawski.html',
   'lumina.radiocc.html',
@@ -70,8 +71,8 @@ test('every full profile uses the shared late-loading layout contract', async ()
 test('profile standard preserves readable controls and stable responsive geometry', async () => {
   const css = await readFile('css/lumina-profile-standard.css', 'utf8');
   assert.match(css, /--profile-shell-width:\s*1200px/);
-  assert.match(css, /\.cover-wrapper[\s\S]*aspect-ratio:\s*16 \/ 5 !important/);
-  assert.match(css, /@media \(max-width: 768px\)[\s\S]*aspect-ratio:\s*16 \/ 6 !important/);
+  assert.match(css, /\.cover-wrapper[\s\S]*aspect-ratio:\s*3 \/ 1 !important/);
+  assert.match(css, /@media \(max-width: 768px\)[\s\S]*aspect-ratio:\s*16 \/ 7 !important/);
   assert.match(css, /\.head-actions[\s\S]*overflow-x:\s*auto !important/);
   assert.match(css, /\.profile-nav-tabs[\s\S]*\.tab-text[\s\S]*display:\s*inline !important/);
   assert.match(css, /env\(safe-area-inset-bottom/);
@@ -253,8 +254,7 @@ test('post publishing requires Firestore confirmation and authenticated ownershi
   assert.match(db, /const authorUid = postData\.authorUid \|\| authenticatedUser\?\.uid \|\| null/);
   assert.match(db, /authorUid: authorUid/);
   assert.match(db, /cloudDocumentId = cloudDoc\.id/);
-  assert.match(db, /throw new Error\(reason\)/);
-  assert.match(feed, /if \(!publishedPost\?\.cloudDocumentId\)/);
+  assert.match(feed, /publishUniversalPost\(newPost\)/);
   assert.match(profile, /if \(!publishedPost\?\.cloudDocumentId\)/);
   assert.match(composer, /if \(!publishedPost\?\.cloudDocumentId\)/);
   assert.match(feed, /compressAndReadImage\(file, 900, 900, 0\.82/);

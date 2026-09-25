@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- LUMINA_PROFILE_EXCEPTION: approved-by=Cezary Rogowski; scope=mariusz-reference-profile; reason=Official reference profile for LUMINA Profile Standard v1.0 and Premier HeatFix integration -->
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -883,9 +884,10 @@
         }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
-    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260920_profile_standard_v1">
+    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260925_standard_v1">
     <script src="js/lumina-mission-blik.js"></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
+    <script src="js/lumina-profile-standard.js?v=20260925_v1" defer></script>
 </head>
 <body class="lumina-profile-standard">
 
@@ -914,40 +916,42 @@
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
 
-        <!-- ══════════ HERO SECTION ══════════ -->
-        <section class="profile-hero">
-            <div style="position:relative; width:100%; height:240px; overflow:hidden;">
-                <img src="premier_heatfix_logo.jpg" alt="Tło Profilu Premier HeatFix" class="hero-cover" onerror="this.src='bg_lumina_cover.jpg'">
-                <div class="hero-cover-overlay"></div>
-            </div>
+        <!-- ══════════ HERO SECTION (LUMINA PROFILE STANDARD v1.0) ══════════ -->
+        <div class="cover-wrapper lumina-profile-cover">
+            <img src="premier_heatfix_logo.jpg" alt="Tło profilu Premier HeatFix" class="cover-photo hero-cover" onerror="this.src='bg_lumina_cover.jpg'">
+            <div class="cover-overlay hero-cover-overlay"></div>
+        </div>
 
-            <div class="hero-info-bar">
-                <div class="hero-avatar-wrap">
-                    <img src="avatar_mariusz.jpg?v=heatfix" alt="Mariusz Złota Rączka" class="hero-avatar-img" onerror="this.src='lumina_icon.jpg'">
-                    <span class="hero-online-badge" title="Aktywny w społeczności"></span>
-                    <span class="hero-cc-badge">PREMIER HEATFIX</span>
+        <section class="profile-head-card hero-info-bar">
+            <div class="profile-head-top">
+                <div class="profile-head-main">
+                    <div class="avatar-wrap hero-avatar-wrap">
+                        <img src="avatar_mariusz.jpg?v=heatfix" alt="Zdjęcie profilowe Mariusz „Złota Rączka”" class="avatar-img hero-avatar-img lumina-profile-avatar" onerror="this.src='lumina_icon.jpg'">
+                        <span class="hero-online-badge" title="Aktywny w społeczności"></span>
+                        <span class="hero-cc-badge">PREMIER HEATFIX</span>
+                    </div>
+
+                    <div class="head-user-details hero-details">
+                        <div class="hero-name-row">
+                            <h1 class="head-user-name hero-name">Mariusz „Złota Rączka”</h1>
+                            <span class="badge-community"><i class="fa-solid fa-fire-burner"></i> Gas Safe Registered 🇬🇧</span>
+                        </div>
+                        <div class="hero-role">
+                            <span><i class="fa-solid fa-screwdriver-wrench"></i> Premier HeatFix • Instalacje Gazowe, Hydraulika & Złota Rączka 🛠️</span>
+                        </div>
+                        <div class="hero-location">
+                            <i class="fa-solid fa-location-dot" style="color:var(--gold-accent);"></i> Wielka Brytania (UK) • Londyn & całe UK • 
+                            <b style="color:#38bdf8;">20+ Lat Doświadczenia</b> • 
+                            <span style="color:#fde047; font-weight:700;"><i class="fa-solid fa-heart"></i> Senior Support</span>
+                        </div>
+
+                        <div class="hero-bio-quote">
+                            „Wszystko, cokolwiek czynicie, z serca wykonujcie jak dla Pana, a nie dla ludzi.” (Kolosan 3:23 UBG) — Rzetelna praca, uczciwość, profesjonalny montaż i naprawy instalacji domowych w oparciu o chrześcijańskie wartości.
+                        </div>
+                    </div>
                 </div>
 
-                <div class="hero-details">
-                    <div class="hero-name-row">
-                        <h1 class="hero-name">Mariusz „Złota Rączka”</h1>
-                        <span class="badge-community"><i class="fa-solid fa-fire-burner"></i> Gas Safe Registered 🇬🇧</span>
-                    </div>
-                    <div class="hero-role">
-                        <span><i class="fa-solid fa-screwdriver-wrench"></i> Premier HeatFix • Instalacje Gazowe, Hydraulika & Złota Rączka 🛠️</span>
-                    </div>
-                    <div class="hero-location">
-                        <i class="fa-solid fa-location-dot" style="color:var(--gold-accent);"></i> Wielka Brytania (UK) • Londyn & całe UK • 
-                        <b style="color:#38bdf8;">20+ Lat Doświadczenia</b> • 
-                        <span style="color:#fde047; font-weight:700;"><i class="fa-solid fa-heart"></i> Senior Support</span>
-                    </div>
-
-                    <div class="hero-bio-quote">
-                        „Wszystko, cokolwiek czynicie, z serca wykonujcie jak dla Pana, a nie dla ludzi.” (Kolosan 3:23 UBG) — Rzetelna praca, uczciwość, profesjonalny montaż i naprawy instalacji domowych w oparciu o chrześcijańskie wartości.
-                    </div>
-                </div>
-
-                <div class="hero-actions">
+                <div class="head-actions hero-actions">
                     <a href="/premier-heatfix" class="btn-action-primary" title="Przejdź do oficjalnej aplikacji Premier HeatFix">
                         <i class="fa-solid fa-fire"></i> Premier HeatFix (Aplikacja)
                     </a>

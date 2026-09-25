@@ -1952,8 +1952,7 @@ export async function publishUniversalPost(postData) {
     const authorAvatar = postData.authorAvatar || 'lumina_icon.jpg';
     const authorRole = postData.authorRole || 'Społeczność LUMINA ✨';
     const authenticatedUser = auth?.currentUser || currentUserState || null;
-    const isCezaryAuthor = slug.includes('cezary') || authorName.toLowerCase().includes('cezary');
-    let authorUid = postData.authorUid || authenticatedUser?.uid || (isCezaryAuthor ? '1zHaEXihQZgz8nzebR0DyC7wLG93' : null);
+    const authorUid = postData.authorUid || authenticatedUser?.uid || null;
 
     const rawCombinedText = `${postData.text || ''} ${postData.desc || ''} ${postData.title || ''}`;
     let autoYtId = extractYouTubeId(postData.videoUrl || postData.youtubeUrl || '');
@@ -2002,7 +2001,7 @@ export async function publishUniversalPost(postData) {
         try {
             const cloudDoc = await addDoc(collection(db, 'lumina_posts'), {
                 ...normalizedPost,
-                authorUid: authorUid || (isCezaryAuthor ? '1zHaEXihQZgz8nzebR0DyC7wLG93' : null),
+                authorUid: authorUid,
                 createdAtTimestamp: serverTimestamp()
             });
             cloudDocumentId = cloudDoc.id;
