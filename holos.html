@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOLOS – Rozwój Osobisty i Zarządzanie Czasem | PolskieRadio.cc</title>
+  <meta name="description" content="HOLOS – aplikacja chrześcijańskiego rozwoju osobistego. Zarządzaj czasem, rozwijaj cnoty, słuchaj radia HOLOS. Wiara, relacje, zdrowie, finanse i rozwój w jednym miejscu.">
+  <meta name="keywords" content="HOLOS, rozwój osobisty, zarządzanie czasem, chrześcijański coach, wiara, finanse, zdrowie, radio chrześcijańskie, Christian Culture">
+  <link rel="canonical" href="https://polskieradio.cc/holos">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://polskieradio.cc/holos">
+  <meta property="og:title" content="HOLOS – Chrześcijański Rozwój Osobisty | PolskieRadio.cc">
+  <meta property="og:description" content="Zarządzaj 5 sektorami życia: Wiara, Relacje, Zdrowie, Finanse i Rozwój. Aplikacja HOLOS + Radio w jednym miejscu.">
+  <meta property="og:image" content="https://polskieradio.cc/images/holos/img_holos_logo.jpg">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="PolskieRadio.cc – Christian Culture">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HOLOS – Chrześcijański Rozwój Osobisty">
+  <meta name="twitter:description" content="5 sektorów życia. AI Mentor Aura. Radio HOLOS. Aplikacja na Android.">
+  <meta name="twitter:image" content="https://polskieradio.cc/images/holos/img_holos_logo.jpg">
+
+  <!-- Pinterest verify -->
+  <meta name="p:domain_verify" content="534315dc73d3789714ea4ec89f8c941a">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/images/holos/img_holos_logo.jpg" type="image/jpeg">
+
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y4EFTVBPE3');
+  </script>
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "MobileApplication",
+        "name": "HOLOS",
+        "url": "https://polskieradio.cc/holos",
+        "description": "Chrześcijańska aplikacja rozwoju osobistego. Zarządzanie czasem w 5 sektorach życia: Wiara, Relacje, Zdrowie, Finanse i Rozwój. AI Mentor Aura.",
+        "operatingSystem": "Android",
+        "applicationCategory": "LifestyleApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "PLN"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Christian Culture",
+          "url": "https://polskieradio.cc"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Czym jest HOLOS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "HOLOS to chrześcijańska aplikacja mobilna do zarządzania czasem i rozwoju osobistego. Pomaga zarządzać 5 sektorami życia: Wiara/Duchowość, Relacje/Rodzina, Zdrowie, Finanse (Szafarstwo) i Rozwój (kompetencje, talenty). Zawiera AI Mentora Aurę, Radio HOLOS oraz narzędzia planowania dnia."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Co to jest AI Mentor Aura w HOLOS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aura to inteligentny asystent życiowy zbudowany na Gemini AI. Analizuje Twój rytm dnia, wierność rodzinie, szafarstwo finansowe i wysyła spersonalizowane decyzje: skupienie, odpoczynek, intensywna praca lub trudna miłość – zawsze zakorzenione w wartościach chrześcijańskich."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Co to jest Radio HOLOS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Radio HOLOS to 3 strumienie audio na żywo: Holos Culture (Radio Rozwój), Holos Global (Radio Skupienie) i Holos Audio (Inspiracje). W niedzielę włącza się tryb SABBATH – muzyka regeneracyjna i cisza duchowa."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Na jakie systemy dostępna jest aplikacja HOLOS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "HOLOS jest dostępny na Android. Aplikacja jest bezpłatna."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Jak HOLOS łączy się z Christian Culture?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "HOLOS jest częścią ekosystemu Christian Culture – radia Biblia Audio CC i portalu polskieradio.cc. Integruje się z treściami duchowymi, rozważaniami i programami radia."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'holos-turquoise': '#00F2FE',
+            'holos-indigo': '#4FACFE',
+            'holos-gold': '#FFD700',
+            'holos-purple': '#9B51E0',
+            'holos-green': '#10B981',
+            'holos-sky': '#38BDF8',
+            'holos-red': '#EF4444',
+            'pure-black': '#000000',
+            'dark-bg': '#0A0A0F',
+            'surface': '#18181B',
+            'surface-2': '#27272A',
+            'text-primary': '#FFFFFF',
+            'text-secondary': '#A1A1AA',
+            'text-tertiary': '#71717A',
+            'cc-gold': '#D4AF37',
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            glow: {
+              'from': { boxShadow: '0 0 20px #00F2FE40' },
+              'to': { boxShadow: '0 0 40px #00F2FE80, 0 0 80px #4FACFE40' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0A0A0F; }
+    .gradient-hero {
+      background: radial-gradient(ellipse at 20% 50%, #00F2FE15 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, #9B51E040 0%, transparent 60%),
+                  radial-gradient(ellipse at 50% 100%, #4FACFE10 0%, transparent 60%),
+                  linear-gradient(135deg, #0A0A0F 0%, #0D0D1A 50%, #0A0A0F 100%);
+    }
+    .sector-card:hover { transform: translateY(-4px); }
+    .sector-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .radio-card:hover { transform: scale(1.02); }
+    .radio-card { transition: transform 0.2s ease; }
+    .glassmorphism {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .glow-turquoise { box-shadow: 0 0 30px #00F2FE30; }
+    .glow-purple { box-shadow: 0 0 30px #9B51E040; }
+    .glow-gold { box-shadow: 0 0 30px #FFD70030; }
+    .text-gradient-turquoise {
+      background: linear-gradient(135deg, #00F2FE, #4FACFE);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-gradient-gold {
+      background: linear-gradient(135deg, #FFD700, #D4AF37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .aura-orb {
+      background: radial-gradient(circle, #9B51E080, #4FACFE40, transparent);
+      animation: float 6s ease-in-out infinite;
+    }
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0A0A0F; }
+    ::-webkit-scrollbar-thumb { background: #4FACFE40; border-radius: 2px; }
+    /* CC nav bar */
+    .cc-nav { background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,242,254,0.12); }
+  </style>
+</head>
+<body class="text-text-primary font-sans">
+
+  <!-- ═══════════════════════════════════════════ CC TOP NAV BAR ═══ -->
+  <nav class="cc-nav fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a href="https://polskieradio.cc" class="flex items-center gap-2 text-sm text-text-secondary hover:text-holos-turquoise transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="hidden sm:inline">PolskieRadio.cc</span>
+        <span class="sm:hidden">CC</span>
+      </a>
+      <div class="flex items-center gap-1">
+        <span class="text-xs text-text-tertiary hidden sm:inline">Christian Culture</span>
+        <div class="w-1 h-1 rounded-full bg-holos-turquoise mx-2 animate-pulse hidden sm:block"></div>
+        <span class="text-sm font-bold text-gradient-turquoise tracking-widest">HOLOS</span>
+      </div>
+      <a href="https://polskieradio.cc/lumina" class="text-xs text-text-tertiary hover:text-cc-gold transition-colors">LUMINA</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ HERO ═══════════════ -->
+  <section class="gradient-hero min-h-screen flex flex-col items-center justify-center pt-14 px-4 relative overflow-hidden">
+
+    <!-- Background decorative orbs -->
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full aura-orb opacity-20 pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full aura-orb opacity-10 pointer-events-none" style="animation-delay: 3s;"></div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+
+      <!-- Logo -->
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <div class="absolute inset-0 rounded-full bg-holos-turquoise opacity-20 blur-2xl scale-150"></div>
+          <img
+            src="/images/holos/img_holos_logo.jpg"
+            alt="Logo HOLOS – Chrześcijański Rozwój Osobisty"
+            class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-holos-turquoise glow-turquoise animate-float"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div class="hidden w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-surface-2 border-2 border-holos-turquoise items-center justify-center glow-turquoise animate-float">
+            <span class="text-4xl">✦</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tagline chip -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism border border-holos-turquoise/30 text-xs text-holos-turquoise font-medium mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-holos-turquoise animate-pulse"></span>
+        Chrześcijański Rozwój Osobisty · Christian Culture
+      </div>
+
+      <!-- H1 -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+        <span class="text-gradient-turquoise">HOLOS</span>
+      </h1>
+
+      <!-- H2 / Subtitle -->
+      <h2 class="text-xl sm:text-2xl font-semibold text-text-primary mb-4">
+        Zarządzanie Czasem · Rozwój Osobisty · Wiara
+      </h2>
+
+      <!-- Description -->
+      <p class="text-text-secondary text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+        Aplikacja mobilna, która integruje <strong class="text-holos-turquoise">5 sektorów Twojego życia</strong>
+        w jeden spójny system. AI Mentor Aura, Radio HOLOS i kalendarz głębokiej pracy —
+        wszystko zakorzenione w wartościach chrześcijańskich.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-holos-turquoise text-pure-black font-bold text-base hover:bg-holos-indigo transition-all duration-300 glow-turquoise">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.18 23.76c.36.2.78.22 1.14.06l12.5-7.22-2.68-2.68-10.96 9.84zM.5 1.42C.19 1.78 0 2.3 0 2.96v18.08c0 .66.19 1.18.5 1.54l.08.08 10.12-10.12v-.24L.58 1.34l-.08.08zM20.34 10.44l-2.66-1.54-2.98 2.98 2.98 2.98 2.68-1.54c.76-.44.76-1.44-.02-1.88zM4.32.18L16.82 7.4l-2.68 2.68L3.18.24C3.54.08 3.96.1 4.32.3v-.12z"/>
+          </svg>
+          Pobierz na Android
+        </a>
+        <a href="#sektory"
+           class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl glassmorphism border border-holos-turquoise/30 text-holos-turquoise font-semibold text-base hover:border-holos-turquoise/70 transition-all duration-300">
+          Poznaj HOLOS
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+      <div class="w-px h-8 bg-gradient-to-b from-transparent to-holos-turquoise"></div>
+      <div class="w-1.5 h-1.5 rounded-full bg-holos-turquoise animate-bounce"></div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════ 5 SEKTORÓW ═══════════ -->
+  <section id="sektory" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism text-xs text-holos-gold font-medium mb-4">
+          ✦ Architektura Życia
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">5 Sektorów Holos</h2>
+        <p class="text-text-secondary max-w-xl mx-auto">
+          Każdy sektor to oddzielna przestrzeń celów, nawyków i postępu — razem tworzą pełny obraz życia w równowadze.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Sektor 1: Wiara -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-turquoise/20 hover:border-holos-turquoise/50 hover:glow-turquoise">
+          <div class="w-12 h-12 rounded-2xl bg-holos-turquoise/10 border border-holos-turquoise/30 flex items-center justify-center mb-4 text-2xl">
+            🙏
+          </div>
+          <div class="text-xs text-holos-turquoise font-semibold uppercase tracking-widest mb-1">Sektor 1</div>
+          <h3 class="text-xl font-bold text-white mb-3">Wiara i Duchowość</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Poranny rytuał, modlitwa, lektura Pisma, wieczorna refleksja.
+            Fundament, na którym budują się wszystkie pozostałe sektory.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise text-xs">Poranny Rytuał</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise text-xs">Modlitwa</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-turquoise/10 text-holos-turquoise text-xs">Refleksja</span>
+          </div>
+        </div>
+
+        <!-- Sektor 2: Relacje -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-indigo/20 hover:border-holos-indigo/50">
+          <div class="w-12 h-12 rounded-2xl bg-holos-indigo/10 border border-holos-indigo/30 flex items-center justify-center mb-4 text-2xl">
+            👨‍👩‍👧‍👦
+          </div>
+          <div class="text-xs text-holos-indigo font-semibold uppercase tracking-widest mb-1">Sektor 2</div>
+          <h3 class="text-xl font-bold text-white mb-3">Relacje i Rodzina</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Czas z bliskimi, wspólne cele, dialog małżeński.
+            Buduj relacje świadomie i celowo każdego dnia.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo text-xs">Czas z Rodziną</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo text-xs">Wspólne Cele</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-indigo/10 text-holos-indigo text-xs">Małżeństwo</span>
+          </div>
+        </div>
+
+        <!-- Sektor 3: Zdrowie -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-green/20 hover:border-holos-green/50">
+          <div class="w-12 h-12 rounded-2xl bg-holos-green/10 border border-holos-green/30 flex items-center justify-center mb-4 text-2xl">
+            💪
+          </div>
+          <div class="text-xs text-holos-green font-semibold uppercase tracking-widest mb-1">Sektor 3</div>
+          <h3 class="text-xl font-bold text-white mb-3">Zdrowie i Ciało</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Protokół zdrowia fizycznego — ruch, odżywianie, sen.
+            Twoje ciało to świątynia; traktuj je jak misję.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-green/10 text-holos-green text-xs">Trening</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-green/10 text-holos-green text-xs">Odżywianie</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-green/10 text-holos-green text-xs">Sen</span>
+          </div>
+        </div>
+
+        <!-- Sektor 4: Finanse -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-gold/20 hover:border-holos-gold/50 hover:glow-gold">
+          <div class="w-12 h-12 rounded-2xl bg-holos-gold/10 border border-holos-gold/30 flex items-center justify-center mb-4 text-2xl">
+            💰
+          </div>
+          <div class="text-xs text-holos-gold font-semibold uppercase tracking-widest mb-1">Sektor 4</div>
+          <h3 class="text-xl font-bold text-white mb-3">Finanse — Szafarstwo</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Dziesięcina, oszczędności, budżet. Chrześcijańskie szafarstwo
+            jako forma wdzięczności i odpowiedzialności przed Bogiem.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-gold/10 text-holos-gold text-xs">Dziesięcina 10%</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-gold/10 text-holos-gold text-xs">Oszczędności</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-gold/10 text-holos-gold text-xs">Budżet</span>
+          </div>
+        </div>
+
+        <!-- Sektor 5: Rozwój -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-purple/20 hover:border-holos-purple/50 hover:glow-purple">
+          <div class="w-12 h-12 rounded-2xl bg-holos-purple/10 border border-holos-purple/30 flex items-center justify-center mb-4 text-2xl">
+            🧠
+          </div>
+          <div class="text-xs text-holos-purple font-semibold uppercase tracking-widest mb-1">Sektor 5</div>
+          <h3 class="text-xl font-bold text-white mb-3">Rozwój i Talenty</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Deep Work, umiejętności, kompetencje. Buduj talenty,
+            które służą Bogu i ludziom — każdego dnia po 4 godziny.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-purple/10 text-holos-purple text-xs">Deep Work</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-purple/10 text-holos-purple text-xs">Talenty</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-purple/10 text-holos-purple text-xs">Nawyki</span>
+          </div>
+        </div>
+
+        <!-- Cykl słoneczny -->
+        <div class="sector-card glassmorphism rounded-3xl p-6 border border-holos-sky/20 hover:border-holos-sky/50">
+          <div class="w-12 h-12 rounded-2xl bg-holos-sky/10 border border-holos-sky/30 flex items-center justify-center mb-4 text-2xl">
+            ☀️
+          </div>
+          <div class="text-xs text-holos-sky font-semibold uppercase tracking-widest mb-1">Cykl Słoneczny</div>
+          <h3 class="text-xl font-bold text-white mb-3">Tryb SABBATH</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            W niedzielę HOLOS automatycznie przełącza się w tryb Regeneracji —
+            muzyka spokoju, cisza duchowa, czas z rodziną.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2 py-1 rounded-lg bg-holos-sky/10 text-holos-sky text-xs">Niedziela</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-sky/10 text-holos-sky text-xs">Regeneracja</span>
+            <span class="px-2 py-1 rounded-lg bg-holos-sky/10 text-holos-sky text-xs">Sabbath</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ AI MENTOR AURA ══════════ -->
+  <section class="py-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-holos-purple/5 to-transparent pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto relative">
+
+      <div class="glassmorphism rounded-3xl p-8 sm:p-12 border border-holos-purple/30 glow-purple relative overflow-hidden">
+        <!-- Decorative orb -->
+        <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-holos-purple/10 blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row gap-10 items-center">
+          <!-- Aura orb visual -->
+          <div class="flex-shrink-0 relative">
+            <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-holos-purple/60 to-holos-indigo/40 flex items-center justify-center border border-holos-purple/50 animate-float" style="box-shadow: 0 0 60px #9B51E040;">
+              <span class="text-5xl sm:text-6xl">✦</span>
+            </div>
+            <div class="absolute inset-0 rounded-full border border-holos-purple/20 animate-ping" style="animation-duration: 3s;"></div>
+          </div>
+
+          <div>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-holos-purple/10 border border-holos-purple/30 text-xs text-holos-purple font-medium mb-4">
+              ✦ Gemini AI · Intelligence Engine
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+              AI Mentor <span class="text-gradient-turquoise">Aura</span>
+            </h2>
+            <p class="text-text-secondary text-base leading-relaxed mb-6">
+              Aura to inteligentny asystent życiowy napędzany przez Gemini AI.
+              Analizuje Twój rytm dnia, poziom energii, wierność rodzinie i szafarstwo —
+              a następnie wydaje spersonalizowaną decyzję na najbliższe godziny.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                <span class="text-xl">⚡</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-turquoise">INTENSE FOCUS</div>
+                  <div class="text-xs text-text-tertiary">Głęboka praca teraz</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                <span class="text-xl">💛</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-gold">ENCOURAGEMENT</div>
+                  <div class="text-xs text-text-tertiary">Utrzymaj kurs</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                <span class="text-xl">🌙</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-sky">REST</div>
+                  <div class="text-xs text-text-tertiary">Czas na regenerację</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                <span class="text-xl">🔥</span>
+                <div>
+                  <div class="text-xs font-bold text-holos-red">TOUGH LOVE</div>
+                  <div class="text-xs text-text-tertiary">Stań w prawdzie</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ RADIO HOLOS ════════════ -->
+  <section class="py-20 px-4 bg-gradient-to-b from-transparent to-surface/30">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism text-xs text-holos-turquoise font-medium mb-4">
+          📻 Na żywo · Zeno.fm
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Radio HOLOS</h2>
+        <p class="text-text-secondary max-w-lg mx-auto">
+          Trzy strumienie audio zaprojektowane pod tryby dnia: skupienie, głęboka praca i wieczorna inspiracja.
+          W niedzielę — wyłącznie tryb SABBATH.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+
+        <!-- Stacja 1 -->
+        <div class="radio-card glassmorphism rounded-3xl p-6 border border-holos-turquoise/20 hover:border-holos-turquoise/50 text-center">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-br from-holos-turquoise to-holos-indigo flex items-center justify-center mx-auto mb-4 text-pure-black font-bold text-lg" style="box-shadow: 0 0 20px #00F2FE40;">
+            🎵
+          </div>
+          <div class="text-xs text-holos-turquoise font-semibold uppercase tracking-widest mb-1">Holos Culture</div>
+          <h3 class="text-lg font-bold text-white mb-2">Radio Rozwój</h3>
+          <p class="text-text-secondary text-sm mb-4">Muzyka i treści wspierające głęboka pracę i koncentrację.</p>
+          <a href="https://stream.zeno.fm/vz96pvl3pnktv" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-holos-turquoise/10 border border-holos-turquoise/30 text-holos-turquoise text-sm font-medium hover:bg-holos-turquoise/20 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-holos-turquoise animate-pulse"></span>
+            Słuchaj
+          </a>
+        </div>
+
+        <!-- Stacja 2 -->
+        <div class="radio-card glassmorphism rounded-3xl p-6 border border-holos-purple/20 hover:border-holos-purple/50 text-center">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-br from-holos-purple to-holos-indigo flex items-center justify-center mx-auto mb-4 text-white font-bold text-lg" style="box-shadow: 0 0 20px #9B51E040;">
+            🎧
+          </div>
+          <div class="text-xs text-holos-purple font-semibold uppercase tracking-widest mb-1">Holos Global</div>
+          <h3 class="text-lg font-bold text-white mb-2">Radio Skupienie</h3>
+          <p class="text-text-secondary text-sm mb-4">Ambient i modlitwa — cisza, w której słyszysz Boga.</p>
+          <a href="https://stream.zeno.fm/umej2cuqncluv" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-holos-purple/10 border border-holos-purple/30 text-holos-purple text-sm font-medium hover:bg-holos-purple/20 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-holos-purple animate-pulse"></span>
+            Słuchaj
+          </a>
+        </div>
+
+        <!-- Stacja 3 -->
+        <div class="radio-card glassmorphism rounded-3xl p-6 border border-holos-gold/20 hover:border-holos-gold/50 text-center">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-br from-holos-gold to-cc-gold flex items-center justify-center mx-auto mb-4 text-pure-black font-bold text-lg" style="box-shadow: 0 0 20px #FFD70040;">
+            ✨
+          </div>
+          <div class="text-xs text-holos-gold font-semibold uppercase tracking-widest mb-1">Holos Audio</div>
+          <h3 class="text-lg font-bold text-white mb-2">Inspiracje</h3>
+          <p class="text-text-secondary text-sm mb-4">Cytaty, rozważania, słowa, które zmieniają perspektywę.</p>
+          <a href="https://stream.zeno.fm/gn3uhltrrytuv" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-holos-gold/10 border border-holos-gold/30 text-holos-gold text-sm font-medium hover:bg-holos-gold/20 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-holos-gold animate-pulse"></span>
+            Słuchaj
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Sabbath note -->
+      <div class="mt-6 flex items-center justify-center gap-3 glassmorphism rounded-2xl px-6 py-4 border border-holos-sky/20">
+        <span class="text-xl">🌿</span>
+        <p class="text-sm text-text-secondary">
+          <strong class="text-holos-sky">Tryb SABBATH (Niedziela):</strong>
+          W dzień odpoczynku aplikacja przełącza się automatycznie w tryb regeneracyjny — muzyka ciszy i wyciszenia.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ PLANNER DNIA ════════════ -->
+  <section class="py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glassmorphism text-xs text-holos-green font-medium mb-4">
+          📅 Algorytm Czasu
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Twój Dzień, Twoja Misja</h2>
+        <p class="text-text-secondary max-w-xl mx-auto">
+          HOLOS generuje optymalny harmonogram dnia na podstawie Twojego profilu i poziomu duchowego.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div class="flex items-center gap-4 glassmorphism rounded-2xl p-4 border border-holos-turquoise/15">
+          <div class="w-10 h-10 rounded-xl bg-holos-turquoise/10 flex items-center justify-center text-lg flex-shrink-0">⏰</div>
+          <div>
+            <div class="text-sm font-bold text-white">06:00 – Poranny Rytuał</div>
+            <div class="text-xs text-text-tertiary">Modlitwa · Lektura · Wyciszenie</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 glassmorphism rounded-2xl p-4 border border-holos-purple/15">
+          <div class="w-10 h-10 rounded-xl bg-holos-purple/10 flex items-center justify-center text-lg flex-shrink-0">🧠</div>
+          <div>
+            <div class="text-sm font-bold text-white">09:00 – Praca Głęboka</div>
+            <div class="text-xs text-text-tertiary">Deep Work · 4 godziny skupienia</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 glassmorphism rounded-2xl p-4 border border-holos-green/15">
+          <div class="w-10 h-10 rounded-xl bg-holos-green/10 flex items-center justify-center text-lg flex-shrink-0">🏃</div>
+          <div>
+            <div class="text-sm font-bold text-white">14:00 – Protokół Zdrowia</div>
+            <div class="text-xs text-text-tertiary">Ruch · Spacer · Mobilność</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 glassmorphism rounded-2xl p-4 border border-holos-indigo/15">
+          <div class="w-10 h-10 rounded-xl bg-holos-indigo/10 flex items-center justify-center text-lg flex-shrink-0">👨‍👩‍👧</div>
+          <div>
+            <div class="text-sm font-bold text-white">16:00 – Czas z Rodziną</div>
+            <div class="text-xs text-text-tertiary">Relacje · Dialog · Wspólne cele</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 glassmorphism rounded-2xl p-4 border border-holos-gold/15 sm:col-span-2">
+          <div class="w-10 h-10 rounded-xl bg-holos-gold/10 flex items-center justify-center text-lg flex-shrink-0">🌙</div>
+          <div>
+            <div class="text-sm font-bold text-white">21:00 – Wieczorna Refleksja</div>
+            <div class="text-xs text-text-tertiary">Wdzięczność · Rachunek sumienia · Sen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ FAQ ════════════════════ -->
+  <section class="py-20 px-4 bg-gradient-to-b from-surface/20 to-transparent">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="text-center mb-14">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Często zadawane pytania</h2>
+        <p class="text-text-secondary">Wszystko, co warto wiedzieć o HOLOS.</p>
+      </div>
+
+      <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-semibold" itemprop="name">
+            Czym jest HOLOS?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">HOLOS to chrześcijańska aplikacja mobilna do zarządzania czasem i rozwoju osobistego. Pomaga zarządzać 5 sektorami życia: Wiara/Duchowość, Relacje/Rodzina, Zdrowie, Finanse (Szafarstwo) i Rozwój. Zawiera AI Mentora Aurę, Radio HOLOS oraz narzędzia planowania dnia.</span>
+          </div>
+        </details>
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-semibold" itemprop="name">
+            Co to jest AI Mentor Aura?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">Aura to inteligentny asystent życiowy oparty na Gemini AI. Analizuje Twój rytm dnia, wierność rodzinie, szafarstwo finansowe i wysyła spersonalizowane decyzje: skupienie, odpoczynek, intensywna praca lub trudna miłość — zawsze zakorzenione w wartościach chrześcijańskich.</span>
+          </div>
+        </details>
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-semibold" itemprop="name">
+            Co to jest Radio HOLOS?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">Radio HOLOS to 3 strumienie audio na żywo: Holos Culture (Radio Rozwój), Holos Global (Radio Skupienie) i Holos Audio (Inspiracje). W niedzielę włącza się tryb SABBATH — muzyka regeneracyjna i cisza duchowa.</span>
+          </div>
+        </details>
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-semibold" itemprop="name">
+            Na jakie systemy dostępna jest aplikacja?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">HOLOS jest dostępny na Android. Aplikacja jest bezpłatna. Strony radiowe HOLOS można słuchać bezpośrednio przez przeglądarkę bez pobierania aplikacji.</span>
+          </div>
+        </details>
+
+        <details class="glassmorphism rounded-2xl border border-white/8 group" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-white font-semibold" itemprop="name">
+            Jak HOLOS łączy się z Christian Culture?
+            <svg class="w-5 h-5 text-text-tertiary transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-text-secondary text-sm leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+            <span itemprop="text">HOLOS jest częścią ekosystemu Christian Culture — radia Biblia Audio CC i portalu polskieradio.cc. Integruje treści duchowe, rozważania i programy radia w jeden system zarządzania życiem chrześcijanina.</span>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ CTA DOWNLOAD ════════════ -->
+  <section class="py-20 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="glassmorphism rounded-3xl p-10 border border-holos-turquoise/20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-holos-turquoise/5 to-holos-purple/5 pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="text-5xl mb-6">📱</div>
+          <h2 class="text-3xl font-bold text-white mb-4">Zacznij dzisiaj</h2>
+          <p class="text-text-secondary mb-8 max-w-md mx-auto">
+            Pobierz HOLOS na Android i zacznij zarządzać swoim życiem
+            według chrześcijańskich wartości — zupełnie bezpłatnie.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-holos-turquoise text-pure-black font-bold text-base hover:opacity-90 transition-opacity glow-turquoise">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.18 23.76c.36.2.78.22 1.14.06l12.5-7.22-2.68-2.68-10.96 9.84zM.5 1.42C.19 1.78 0 2.3 0 2.96v18.08c0 .66.19 1.18.5 1.54l.08.08 10.12-10.12v-.24L.58 1.34l-.08.08zM20.34 10.44l-2.66-1.54-2.98 2.98 2.98 2.98 2.68-1.54c.76-.44.76-1.44-.02-1.88zM4.32.18L16.82 7.4l-2.68 2.68L3.18.24C3.54.08 3.96.1 4.32.3v-.12z"/>
+              </svg>
+              Google Play
+            </a>
+            <a href="https://polskieradio.cc" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl glassmorphism border border-white/20 text-white font-semibold text-base hover:border-holos-turquoise/50 transition-all duration-300">
+              ← PolskieRadio.cc
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ FOOTER ═════════════════ -->
+  <footer class="border-t border-white/5 py-10 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div class="text-center sm:text-left">
+          <div class="flex items-center gap-2 mb-1 justify-center sm:justify-start">
+            <span class="text-gradient-turquoise font-bold text-lg">HOLOS</span>
+            <span class="text-text-tertiary text-sm">by</span>
+            <a href="https://polskieradio.cc" class="text-cc-gold font-semibold text-sm hover:text-holos-gold transition-colors">Christian Culture</a>
+          </div>
+          <p class="text-text-tertiary text-xs">Chrześcijański Rozwój Osobisty · Zarządzanie Czasem</p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-text-tertiary">
+          <a href="https://polskieradio.cc" class="hover:text-white transition-colors">Radio CC</a>
+          <a href="https://polskieradio.cc/lumina" class="hover:text-white transition-colors">LUMINA</a>
+          <a href="https://polskieradio.cc/dobrze-ze-jestes" class="hover:text-white transition-colors">Dobrze, że jesteś</a>
+          <a href="https://polskieradio.cc/player" class="hover:text-white transition-colors">Player</a>
+        </div>
+      </div>
+      <div class="text-center mt-8 text-xs text-text-tertiary">
+        © 2026 Christian Culture · <a href="https://polskieradio.cc" class="hover:text-holos-turquoise transition-colors">polskieradio.cc</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
