@@ -11060,13 +11060,18 @@
                 window.cloudFeedPosts.unshift(newPost);
             }
 
-            // 2. Zapis w profilu autora oraz w Firestore
+            // 2. Zapis w profilu autora oraz w Firestore (wymaga trwałego potwierdzenia)
             try {
                 if (window.LuminaDB?.publishUniversalPost) {
-                    await window.LuminaDB.publishUniversalPost(newPost);
+                    const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
+                    if (!publishedPost?.cloudDocumentId) {
+                        throw new Error('Serwer nie potwierdził zapisu wpisu w chmurze LUMINA.');
+                    }
                 }
             } catch(e) {
-                console.warn('LuminaDB notice:', e);
+                console.error('Błąd publikacji LuminaDB:', e);
+                showToast(e?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.');
+                return;
             }
 
             // Gwarancja zapisu w profilu autora w localStorage

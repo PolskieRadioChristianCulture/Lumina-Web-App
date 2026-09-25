@@ -691,23 +691,38 @@
                 
                 <div class="quick-actions-menu" id="quickActionsMenu" style="position: relative; display: flex; align-items: center; gap: 8px;">
                     <!-- Main Toggle Button -->
-                    <button class="sms-button toggle-trigger" id="actionsToggleBtn" aria-label="Menu skrótów" title="Menu skrótów" style="z-index: 110; margin-right: 0;">
+                    <button class="sms-button toggle-trigger" id="actionsToggleBtn" aria-label="MENU CC" title="MENU CC" style="z-index: 110; margin-right: 0;">
                         <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); border: 1.5px solid var(--border-gold-low); transition: all 0.3s ease;">
                             <i class="fa-solid fa-plus" id="actionsToggleIcon" style="color: var(--gold-primary); font-size: 1.15rem; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;"></i>
                         </div>
                     </button>
                     
-                    <!-- Vertical Dropdown Shortcuts Panel (3-Section Cohesive Grid) -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 940px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: #0a0b0f; border: 1px solid rgba(212, 169, 74, 0.28); border-radius: 20px; padding: 14px; box-shadow: 0 25px 65px rgba(0, 0, 0, 0.98), 0 0 30px rgba(212, 169, 74, 0.12), inset 0 1px 1px rgba(255, 235, 170, 0.22); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
-                        
-                        <!-- Header inside shortcuts panel -->
-                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.15); font-family: 'Cinzel', serif; text-align: left; display: flex; align-items: center; justify-content: space-between;">
-                            <span><i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture</span>
-                            <span style="font-size: 0.58rem; color: var(--gold-light); font-weight: 600; text-transform: none; letter-spacing: 0.5px;">4 Sekcje Ekosystemu</span>
-                        </div>
+                    <!-- Pełnoekranowy Hub Nawigacyjny: MENU CC -->
+                    <div id="actionsList">
+                        <div class="menu-cc-wrapper">
+                            <!-- Header inside MENU CC -->
+                            <div class="menu-cc-header" style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(212, 169, 74, 0.22); flex-shrink: 0;">
+                                <div style="display: flex; align-items: center; gap: 14px;">
+                                    <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, rgba(212, 169, 74, 0.22), rgba(0,0,0,0.8)); border: 1.5px solid rgba(212, 169, 74, 0.45); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(212, 169, 74, 0.25);">
+                                        <i class="fa-solid fa-layer-group" style="color: var(--gold-primary); font-size: 1.25rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                            <h2 style="font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900; color: #ffffff; letter-spacing: 2px; margin: 0; line-height: 1;">MENU CC</h2>
+                                            <span style="font-size: 0.62rem; color: #fbbf24; font-weight: 800; background: rgba(212, 169, 74, 0.18); border: 1px solid rgba(212, 169, 74, 0.4); padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.8px;">5 SEKCJI EKOSYSTEMU</span>
+                                        </div>
+                                        <span style="font-size: 0.72rem; color: rgba(255, 255, 255, 0.55); font-family: 'Inter', sans-serif; margin-top: 3px;">Centrum nawigacyjne chrześcijańskiego radia, telewizji, mediów i usług</span>
+                                    </div>
+                                </div>
+                                
+                                <button id="actionsCloseBtn" aria-label="Zamknij MENU CC" title="Zamknij MENU CC (ESC)" style="display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(212, 169, 74, 0.35); color: #fff; padding: 10px 18px; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.88rem;" onmouseover="this.style.background='rgba(212,169,74,0.2)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(212,169,74,0.35)';">
+                                    <i class="fa-solid fa-xmark" style="font-size: 1.15rem; color: var(--gold-primary);"></i>
+                                    <span>Zamknij</span>
+                                </button>
+                            </div>
 
-                        <!-- 3 Equal Cascading Blocks Side-By-Side -->
-                        <div class="shortcuts-blocks-container">
+                            <!-- 5 Equal Cascading Blocks Side-By-Side -->
+                            <div class="shortcuts-blocks-container">
                             <!-- SEKCJA 1: STACJE & MEDIA LIVE -->
                             <div class="shortcut-block block-1" style="opacity: 1 !important; visibility: visible !important;">
                                 <div style="font-size: 0.62rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212, 169, 74,0.18); font-family: 'Cinzel', serif; display: flex; align-items: center; gap: 6px;">

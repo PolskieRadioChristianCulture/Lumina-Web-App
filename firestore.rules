@@ -59,6 +59,18 @@ service cloud.firestore {
       allow delete: if isMasterAdmin() || ownsProfile(resource.data);
     }
 
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+      allow delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+    }
+
+    match /user_posts/{postId} {
+      allow read: if true;
+      allow create: if isMasterAdmin() || (isMember() && request.resource.data.authorUid == request.auth.uid);
+      allow update, delete: if isMasterAdmin() || (isMember() && resource.data.authorUid == request.auth.uid);
+    }
+
     match /lumina_posts/{postId} {
       allow read: if true;
       // Oficjalne wpisy i rozważania Cezarego Rogowskiego, automatyczny serwer sync CKD (Andrzej Thiel) oraz zweryfikowani użytkownicy

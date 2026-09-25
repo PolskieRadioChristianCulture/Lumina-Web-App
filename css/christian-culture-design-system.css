@@ -15,10 +15,14 @@
   --cc-void-card: rgba(18, 18, 26, 0.88);
   --cc-void-trans: rgba(10, 10, 15, 0.75);
 
-  --cc-gold: #D4A94A;
-  --cc-gold-soft: #E8C97A;
-  --cc-gold-glow: rgba(212, 169, 74, 0.28);
-  --cc-gold-subtle: rgba(212, 169, 74, 0.12);
+  /* --- PALETA BARW: CC CHAMPAGNE GOLD (DESIGN SYSTEM 2026) --- */
+  --cc-gold: #C4A35A;
+  --cc-gold-hover: #D4B578;
+  --cc-gold-light: #E2CC9A;
+  --cc-gold-dark: #A08040;
+  --cc-gold-soft: #E2CC9A;
+  --cc-gold-glow: rgba(196, 163, 90, 0.28);
+  --cc-gold-subtle: rgba(196, 163, 90, 0.12);
 
   --cc-ember: #B23A2E;
   --cc-ember-soft: #D3564A;

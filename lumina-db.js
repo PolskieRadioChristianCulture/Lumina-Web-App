@@ -1995,22 +1995,29 @@ export async function publishUniversalPost(postData) {
         sharedPost: postData.sharedPost || null
     };
 
-    // 1. Zapis w chmurze Firestore z gwarancją niezawodności
+    // 1. Trwały zapis jest źródłem prawdy. Dopiero po jego potwierdzeniu
+    // aktualizujemy pamięć urządzenia i interfejs.
+    if (!db) {
+        throw new Error('Połączenie z bazą LUMINA nie jest dostępne. Wpis nie został opublikowany.');
+    }
+    if (!authorUid && !postData.isDevotion) {
+        throw new Error('Sesja użytkownika wygasła. Zaloguj się ponownie przed publikacją.');
+    }
+
     let cloudDocumentId = null;
-    if (db) {
-        try {
-            const cloudDoc = await addDoc(collection(db, 'lumina_posts'), {
-                ...normalizedPost,
-                authorUid: authorUid,
-                createdAtTimestamp: serverTimestamp()
-            });
-            cloudDocumentId = cloudDoc.id;
-        } catch(err) {
-            console.warn('Lumina Firestore addDoc notice (falling back to local cache):', err);
-            cloudDocumentId = normalizedPost.id || ('post_cloud_' + Date.now());
-        }
-    } else {
-        cloudDocumentId = normalizedPost.id || ('post_local_' + Date.now());
+    try {
+        const cloudDoc = await addDoc(collection(db, 'lumina_posts'), {
+            ...normalizedPost,
+            authorUid: authorUid,
+            createdAtTimestamp: serverTimestamp()
+        });
+        cloudDocumentId = cloudDoc.id;
+    } catch(err) {
+        console.error('Lumina Firestore addDoc error:', err);
+        const reason = err?.code === 'permission-denied'
+            ? 'Brak uprawnień do publikacji. Zaloguj się ponownie.'
+            : 'Nie udało się zapisać wpisu w chmurze LUMINA.';
+        throw new Error(reason);
     }
 
     // 2. Save to Author's Local Profile Posts
