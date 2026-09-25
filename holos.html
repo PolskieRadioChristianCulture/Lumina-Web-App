@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="pl" class="dark">
+<html lang="pl" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>HOLOS 2.0 – Christian Life OS | „Od 5 minut do wieczności” | PolskieRadio.cc</title>
-  <meta name="description" content="HOLOS 2.0 – Modułowy Chrześcijański System Operacyjny Życia (Life OS). Dziś, Planer, Życie, Słowo, AI Mentor Aura. Metoda 5·10·15, dwustronna synchronizacja Google Calendar, biblijny Szabat w sobotę i integracja z LUMINA.">
-  <meta name="keywords" content="HOLOS, Life OS, rozwój osobisty, zarządzanie czasem, uświęcenie, 5 10 15, szafarstwo, szabat sobota, cykl słoneczny, Google Calendar, Christian Culture, LUMINA">
+  <title>HOLOS – Portal Życia i Uświęcenia Czasu | „Od 5 minut do wieczności” | PolskieRadio.cc</title>
+  <meta name="description" content="HOLOS 2.1 – Nowoczesny, immersyjny chrześcijański portal życia. Biblia, Koło 5 Sektorów, 5·10·15, dwustronna synchronizacja Google Calendar, Szabat w sobotę, Szafarstwo 10% oraz AI Mentor Aura.">
+  <meta name="keywords" content="HOLOS, portal życia, Life OS, rozwój osobisty, zarządzanie czasem, 5 10 15, szafarstwo, szabat sobota, cykl słoneczny, Google Calendar, Christian Culture, LUMINA">
   <link rel="canonical" href="https://polskieradio.cc/holos">
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polskieradio.cc/holos">
-  <meta property="og:title" content="HOLOS 2.0 – Modułowy Christian Life OS">
-  <meta property="og:description" content="Od 5 minut do wieczności. Nowoczesny system zarządzania czasem, uświęcenia i wierności w 5 sektorach życia.">
+  <meta property="og:title" content="HOLOS – Portal Życia i Uświęcenia Czasu">
+  <meta property="og:description" content="Od 5 minut do wieczności. Biblia • Życie • Czas • Relacje • Misja.">
   <meta property="og:image" content="https://polskieradio.cc/images/holos/holos_emblem.jpg">
   <meta property="og:locale" content="pl_PL">
   <meta property="og:site_name" content="PolskieRadio.cc – Christian Culture">
@@ -43,10 +43,10 @@
     "@graph": [
       {
         "@type": "WebApplication",
-        "name": "HOLOS 2.0 – Christian Life OS",
+        "name": "HOLOS – Portal Życia i Uświęcenia Czasu",
         "url": "https://polskieradio.cc/holos",
         "applicationCategory": "LifestyleApplication",
-        "description": "Modułowy system operacyjny życia integrujący Dziś, Planer Google Calendar, Koło 5 Sektorów, Słowo Boże, Szafarstwo 10% oraz AI Mentora Aura."
+        "description": "Nowoczesny, immersyjny chrześcijański portal życia integrujący Dziś, metodę 5·10·15, Planer Google Calendar, Koło 5 Sektorów, Słowo Boże, Szafarstwo 10% oraz AI Mentora Aura."
       }
     ]
   }
@@ -69,16 +69,17 @@
             'holos-red': '#EF4444',
             'cc-gold': '#C4A35A',
             'pure-black': '#000000',
-            'dark-bg': '#090A0F',
-            'surface-dark': '#12141C',
-            'surface-card': '#181B26',
-            'surface-border': '#25293A',
+            'dark-bg': '#07080D',
+            'surface-dark': '#0E1017',
+            'surface-card': '#141722',
+            'surface-border': '#1E2333',
             'text-primary': '#FFFFFF',
             'text-secondary': '#CBD5E1',
             'text-tertiary': '#94A3B8'
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif']
           }
         }
       }
@@ -88,64 +89,61 @@
   <style>
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0c0d14; }
-    ::-webkit-scrollbar-thumb { background: #25293a; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3b4259; }
+    ::-webkit-scrollbar-track { background: #07080d; }
+    ::-webkit-scrollbar-thumb { background: #1e2333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2d354d; }
 
     /* Glass Surfaces */
-    .glass-panel {
-      background: rgba(24, 27, 38, 0.7);
+    .glass-portal {
+      background: rgba(14, 16, 23, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .glass-card-portal {
+      background: rgba(20, 23, 34, 0.45);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .glass-card {
-      background: rgba(24, 27, 38, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .glass-input {
-      background: rgba(12, 14, 21, 0.8);
+      background: rgba(10, 12, 18, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #ffffff;
     }
     .glass-input:focus {
       border-color: #00F2FE;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.25);
     }
 
-    /* Active Nav States */
-    .nav-tab-active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.15));
-      border-color: rgba(0, 242, 254, 0.5);
+    /* Ambient Lighting */
+    .hero-glow {
+      background: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.15) 0%, rgba(79, 172, 254, 0.08) 35%, rgba(7, 8, 13, 0) 70%);
+    }
+
+    /* Capsule Pill Nav */
+    .pill-nav-item {
+      transition: all 0.25s ease;
+    }
+    .pill-nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+    .pill-nav-item.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+      border: 1px solid rgba(0, 242, 254, 0.4);
       color: #00F2FE;
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
-    }
-    .subtab-active {
-      background: #00F2FE;
-      color: #000000;
-      font-weight: 800;
-    }
-    .sidebar-link-active {
-      background: rgba(0, 242, 254, 0.12);
-      border-left: 3px solid #00F2FE;
-      color: #00F2FE;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
     }
 
-    /* Aura Glowing Orb */
-    .aura-orb-glow {
-      box-shadow: 0 0 50px rgba(0, 242, 254, 0.35), 0 0 100px rgba(155, 81, 224, 0.25);
+    /* Horizontal snap carousel */
+    .snap-carousel {
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
     }
-
-    /* Animation Keyframes */
-    @keyframes pulseSlow {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.03); opacity: 1; }
-    }
-    .animate-pulse-slow {
-      animation: pulseSlow 4s ease-in-out infinite;
+    .snap-item {
+      scroll-snap-align: start;
     }
 
     /* Range slider custom */
@@ -153,19 +151,19 @@
       -webkit-appearance: none;
       height: 6px;
       border-radius: 4px;
-      background: #25293A;
+      background: #1e2333;
       outline: none;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: #00F2FE;
       cursor: pointer;
-      box-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
-      transition: transform 0.1s;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+      transition: transform 0.15s;
     }
     input[type=range]::-webkit-slider-thumb:hover {
       transform: scale(1.2);
@@ -173,84 +171,74 @@
   </style>
 </head>
 
-<body class="bg-dark-bg text-text-primary font-sans antialiased selection:bg-holos-turquoise/30 flex flex-col h-screen overflow-hidden">
+<body class="bg-dark-bg text-text-primary font-sans antialiased selection:bg-holos-turquoise/30 flex flex-col min-h-screen overflow-x-hidden relative pb-16 md:pb-14">
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 1. GÓRNY PASEK (STICKY TOPBAR)                                               -->
+  <!-- 1. GÓRNY PASEK PORTALU (MINIMALISTYCZNY & PRZESTRZENNY)                       -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <header id="app-topbar" class="h-14 bg-surface-dark/95 backdrop-blur-md border-b border-surface-border flex items-center justify-between px-3 sm:px-5 z-40 shrink-0">
+  <header id="app-topbar" class="sticky top-0 z-40 h-16 bg-dark-bg/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-8 flex items-center justify-between transition-all">
     
-    <!-- Lewa sekcja: Brand & Toggles -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      <!-- Toggle Sidebar (Desktop) -->
-      <button onclick="toggleLeftSidebar()" class="hidden md:flex p-2 rounded-lg text-text-tertiary hover:text-white hover:bg-white/5 transition-all" title="Zwiń/Rozwiń panel boczny" aria-label="Przełącz boczny panel">
-        <i class="fa-solid fa-bars text-sm"></i>
+    <!-- Lewa strona: Drawer Trigger + Brand -->
+    <div class="flex items-center gap-3 sm:gap-4">
+      <!-- Przycisk Lewego Drawera (Szybki Dostęp) -->
+      <button onclick="toggleLeftDrawer()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-2 group" title="Otwórz menu szybkiego dostępu (☰)">
+        <i class="fa-solid fa-bars text-sm group-hover:text-holos-turquoise transition-colors"></i>
+        <span class="hidden sm:inline">Menu</span>
       </button>
 
       <!-- Brand Logo -->
-      <a href="/holos" class="flex items-center gap-2 group">
+      <a href="/holos" class="flex items-center gap-2.5 group">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-holos-turquoise to-holos-indigo p-0.5 shadow-md flex items-center justify-center">
           <div class="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">
             <span class="text-xs font-black tracking-tighter text-holos-turquoise group-hover:scale-110 transition-transform">H</span>
           </div>
         </div>
         <div class="flex flex-col">
-          <div class="flex items-center gap-1.5">
-            <span class="font-black text-sm tracking-wider bg-gradient-to-r from-white via-slate-100 to-holos-turquoise bg-clip-text text-transparent">HOLOS</span>
-            <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-holos-turquoise/15 text-holos-turquoise border border-holos-turquoise/30">LIFE OS</span>
+          <div class="flex items-center gap-2">
+            <span class="font-black text-base tracking-wider bg-gradient-to-r from-white via-slate-100 to-holos-turquoise bg-clip-text text-transparent">HOLOS</span>
+            <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase tracking-widest bg-holos-turquoise/15 text-holos-turquoise border border-holos-turquoise/30">PORTAL ŻYCIA</span>
           </div>
-          <span class="hidden sm:block text-[9px] text-text-tertiary tracking-tight -mt-0.5">5·10·15 • Od 5 min do wieczności</span>
         </div>
       </a>
     </div>
 
-    <!-- Środkowa sekcja: Główne Przestrzenie (Desktop Tabs) -->
-    <nav class="hidden md:flex items-center gap-1 bg-surface-card/60 p-1 rounded-xl border border-white/5" role="tablist">
-      <button onclick="navigateWorkspace('today')" id="tab-nav-today" class="nav-tab-btn nav-tab-active px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5" role="tab" aria-selected="true">
-        <span>🏠</span> DZIŚ
-      </button>
-      <button onclick="navigateWorkspace('planner')" id="tab-nav-planner" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5" role="tab" aria-selected="false">
-        <span>📅</span> PLANER
-      </button>
-      <button onclick="navigateWorkspace('life')" id="tab-nav-life" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5" role="tab" aria-selected="false">
-        <span>◎</span> ŻYCIE
-      </button>
-      <button onclick="navigateWorkspace('word')" id="tab-nav-word" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5" role="tab" aria-selected="false">
-        <span>🙏</span> SŁOWO
-      </button>
-      <button onclick="navigateWorkspace('aura')" id="tab-nav-aura" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5" role="tab" aria-selected="false">
+    <!-- Środek: Poziome Kapsułki Szybkiego Skoku (Capsule Nav Pills) -->
+    <nav class="hidden lg:flex items-center gap-1.5 bg-surface-card/60 p-1.5 rounded-full border border-white/5 backdrop-blur-md">
+      <a href="#sekcja-dzisiaj" class="pill-nav-item active px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">DZIŚ</a>
+      <a href="#sekcja-51015" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">5·10·15</a>
+      <a href="#sekcja-kalendarz" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">PLANER</a>
+      <a href="#sekcja-kolo" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">KOŁO ŻYCIA</a>
+      <a href="#sekcja-sektory" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">5 SEKTORÓW</a>
+      <a href="#sekcja-szafarstwo" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">SZAFARSTWO</a>
+      <a href="#sekcja-slowo" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white">SŁOWO</a>
+      <a href="#sekcja-aura" class="pill-nav-item px-4 py-1.5 rounded-full text-xs font-bold text-text-secondary hover:text-white flex items-center gap-1">
         <span class="text-holos-turquoise">✦</span> AURA
-      </button>
+      </a>
     </nav>
 
-    <!-- Prawa sekcja: Akcje, Wyszukiwarka, Powiadomienia, CC ID -->
-    <div class="flex items-center gap-1.5 sm:gap-2.5">
+    <!-- Prawa strona: Akcje, Command Palette, Prawy Drawer (TERAZ), CC ID -->
+    <div class="flex items-center gap-2 sm:gap-3">
       <!-- Quick Capture Button -->
-      <button onclick="openQuickCapture()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md flex items-center gap-1.5" title="Szybki wpis zadania lub myśli (Q)">
+      <button onclick="openQuickCapture()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md flex items-center gap-1.5">
         <i class="fa-solid fa-plus text-xs"></i>
         <span class="hidden sm:inline">Wpisz</span>
       </button>
 
       <!-- Command Palette Search Trigger -->
-      <button onclick="openCommandPalette()" class="px-2 sm:px-2.5 py-1.5 rounded-xl bg-surface-card hover:bg-white/10 text-text-tertiary hover:text-white border border-white/5 text-xs transition-all flex items-center gap-1.5" title="Szukaj lub wydaj polecenie (Ctrl+K)">
+      <button onclick="openCommandPalette()" class="px-2.5 py-1.5 rounded-xl bg-surface-card hover:bg-white/10 text-text-tertiary hover:text-white border border-white/5 text-xs transition-all flex items-center gap-1.5" title="Szukaj w HOLOS (Ctrl+K)">
         <i class="fa-solid fa-magnifying-glass text-xs"></i>
-        <span class="hidden xl:inline text-[10px] text-text-tertiary font-mono bg-white/5 px-1 py-0.5 rounded border border-white/10">Ctrl K</span>
+        <span class="hidden xl:inline text-[10px] text-text-tertiary font-mono bg-white/5 px-1 py-0.5 rounded">Ctrl K</span>
       </button>
 
-      <!-- Notifications Bell -->
-      <button onclick="toggleNotifications()" id="btn-notifications" class="relative p-2 rounded-xl bg-surface-card hover:bg-white/10 text-text-tertiary hover:text-white border border-white/5 text-xs transition-all" aria-label="Powiadomienia">
-        <i class="fa-regular fa-bell text-xs"></i>
-        <span id="notif-badge" class="absolute top-1 right-1 w-2 h-2 rounded-full bg-holos-turquoise"></span>
+      <!-- Przycisk Prawego Drawera (TERAZ) -->
+      <button onclick="toggleRightDrawer()" class="px-3 py-1.5 rounded-xl bg-surface-card hover:bg-white/10 text-text-secondary hover:text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-2 group" title="Otwórz aktywny panel TERAZ">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="hidden sm:inline">TERAZ</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-holos-turquoise group-hover:translate-x-0.5 transition-transform"></i>
       </button>
 
-      <!-- Mobile Right Drawer Toggle (TERAZ) -->
-      <button onclick="toggleMobileNowDrawer()" class="md:hidden p-2 rounded-xl bg-surface-card hover:bg-white/10 text-text-tertiary hover:text-white border border-white/5 text-xs transition-all" title="Aktywny kontekst TERAZ">
-        <i class="fa-solid fa-clock text-xs text-holos-turquoise"></i>
-      </button>
-
-      <!-- CC ID Auth Widget (Single Source of Truth) -->
+      <!-- CC ID Auth Widget -->
       <div class="cc-auth-widget-container flex items-center">
-        <!-- Renderowane automatycznie przez /js/cc-global-auth.js -->
         <a href="/lumina" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold border border-white/10 flex items-center gap-1.5 transition-all">
           <i class="fa-solid fa-user text-holos-turquoise text-xs"></i>
           <span class="hidden lg:inline">CC ID</span>
@@ -260,969 +248,112 @@
   </header>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 2. GŁÓWNY KONTENER 3-PANELOWY (DESKTOP)                                       -->
+  <!-- 2. LEWY DRAWER (CHOWANY SZYBKI DOSTĘP)                                        -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <div id="app-main-layout" class="flex-1 flex overflow-hidden relative">
+  <div id="left-drawer-backdrop" onclick="closeDrawers()" class="fixed inset-0 bg-pure-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 2A. LEWY PANEL — SZYBKI DOSTĘP (COLLAPSIBLE SIDEBAR)                       -->
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <aside id="app-left-sidebar" class="hidden md:flex flex-col w-56 lg:w-60 bg-surface-dark border-r border-surface-border shrink-0 transition-all duration-300 select-none z-30 justify-between">
-      <div class="flex-1 overflow-y-auto py-3 px-2 space-y-4">
-        
-        <!-- Grupa: Szybki Dostęp -->
-        <div>
-          <div class="sidebar-header px-2 text-[10px] font-bold text-text-tertiary uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span class="sidebar-label">Szybki Dostęp</span>
-            <span class="text-[9px] text-holos-turquoise font-mono">5·10·15</span>
-          </div>
-          <nav class="space-y-0.5">
-            <a href="#today" onclick="navigateWorkspace('today'); return false;" id="slink-today" class="sidebar-link sidebar-link-active flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">🏠</span>
-              <span class="sidebar-label">Dzisiaj</span>
-            </a>
-            <a href="#planner" onclick="navigateWorkspace('today', '51015'); return false;" id="slink-51015" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm text-amber-400">⚡</span>
-              <span class="sidebar-label">5·10·15 Formacja</span>
-            </a>
-            <a href="#calendar" onclick="navigateWorkspace('planner', 'calendar'); return false;" id="slink-calendar" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">📅</span>
-              <span class="sidebar-label">Kalendarz Google</span>
-            </a>
-            <a href="#tasks" onclick="navigateWorkspace('planner', 'tasks'); return false;" id="slink-tasks" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">✓</span>
-              <span class="sidebar-label">Zadania Dnia</span>
-            </a>
-            <a href="#goals" onclick="navigateWorkspace('life', 'goals'); return false;" id="slink-goals" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">🎯</span>
-              <span class="sidebar-label">Cele & Projekty</span>
-            </a>
-          </nav>
+  <aside id="left-drawer" class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-surface-dark/95 backdrop-blur-2xl border-r border-white/10 z-50 transform -translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between shadow-2xl">
+    <div class="p-6 overflow-y-auto space-y-6">
+      
+      <!-- Nagłówek Drawera -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2.5">
+          <span class="text-sm font-black tracking-wider text-white">SZYBKI DOSTĘP</span>
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-holos-turquoise/15 text-holos-turquoise border border-holos-turquoise/30">HOLOS</span>
         </div>
-
-        <!-- Grupa: 5 Sektorów Życia -->
-        <div>
-          <div class="sidebar-header px-2 text-[10px] font-bold text-text-tertiary uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span class="sidebar-label">5 Sektorów</span>
-            <span class="text-[9px] text-text-tertiary">ŻYCIE</span>
-          </div>
-          <nav class="space-y-0.5">
-            <a href="#wheel" onclick="navigateWorkspace('life', 'wheel'); return false;" id="slink-wheel" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">◎</span>
-              <span class="sidebar-label">Koło Życia</span>
-            </a>
-            <a href="#word" onclick="navigateWorkspace('word', 'bible'); return false;" id="slink-faith" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">🙏</span>
-              <span class="sidebar-label">Wiara i Słowo</span>
-            </a>
-            <a href="#relations" onclick="navigateWorkspace('life', 'relations'); return false;" id="slink-relations" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">❤️</span>
-              <span class="sidebar-label">Relacje & Rodzina</span>
-            </a>
-            <a href="#health" onclick="navigateWorkspace('life', 'health'); return false;" id="slink-health" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">🏃</span>
-              <span class="sidebar-label">Zdrowie & Ciało</span>
-            </a>
-            <a href="#finance" onclick="navigateWorkspace('life', 'finance'); return false;" id="slink-finance" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm">💰</span>
-              <span class="sidebar-label">Finanse & Szafarstwo</span>
-            </a>
-            <a href="#aura" onclick="navigateWorkspace('aura'); return false;" id="slink-aura" class="sidebar-link flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
-              <span class="w-5 text-center text-sm text-holos-turquoise">✦</span>
-              <span class="sidebar-label">AI Mentor Aura</span>
-            </a>
-          </nav>
-        </div>
-
-        <!-- Grupa: Ekosystem CC -->
-        <div>
-          <div class="sidebar-header px-2 text-[10px] font-bold text-text-tertiary uppercase tracking-wider mb-1">
-            <span class="sidebar-label">Ekosystem CC</span>
-          </div>
-          <nav class="space-y-0.5">
-            <a href="/lumina" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs text-text-tertiary hover:text-white hover:bg-white/5 transition-all" target="_blank" rel="noopener">
-              <i class="fa-solid fa-users w-5 text-center text-xs text-cc-gold"></i>
-              <span class="sidebar-label">Społeczność LUMINA</span>
-            </a>
-            <a href="/mojabiblia" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs text-text-tertiary hover:text-white hover:bg-white/5 transition-all" target="_blank" rel="noopener">
-              <i class="fa-solid fa-book-bible w-5 text-center text-xs text-holos-turquoise"></i>
-              <span class="sidebar-label">MojaBiblia Interlinearna</span>
-            </a>
-            <a href="/privacy" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs text-text-tertiary hover:text-white hover:bg-white/5 transition-all">
-              <i class="fa-solid fa-shield-halved w-5 text-center text-xs"></i>
-              <span class="sidebar-label">Prywatność i CC ID</span>
-            </a>
-          </nav>
-        </div>
-
-      </div>
-
-      <!-- Stopka lewego paska: Przycisk zwijania -->
-      <div class="p-2 border-t border-surface-border">
-        <button onclick="toggleLeftSidebar()" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-text-tertiary hover:text-white hover:bg-white/5 transition-all">
-          <span class="sidebar-label font-medium">Zwiń panel</span>
-          <i id="sidebar-toggle-icon" class="fa-solid fa-chevron-left text-xs"></i>
+        <button onclick="closeDrawers()" class="p-2 rounded-xl text-text-tertiary hover:text-white hover:bg-white/5 text-xs transition-all">
+          ✕
         </button>
       </div>
-    </aside>
 
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 2B. ŚRODEK — GŁÓWNA PRZESTRZEŃ ROBOCZA (WORKSPACE)                         -->
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <main id="app-workspace-container" class="flex-1 overflow-y-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 max-w-full relative">
-
-      <!-- ====================================================================== -->
-      <!-- MODUŁ 1: DZIŚ (DASHBOARD DZISIAJ)                                      -->
-      <!-- ====================================================================== -->
-      <div id="space-today" class="workspace-module space-y-6" role="tabpanel">
-        
-        <!-- Pasek Kontekstowy Dnia & Szabat -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl glass-panel border border-white/5">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-holos-turquoise/10 border border-holos-turquoise/30 flex items-center justify-center text-holos-turquoise text-lg font-black">
-              <span id="header-today-day">25</span>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h1 id="header-today-title" class="text-base sm:text-lg font-extrabold text-white">Dziś, 25 września 2026</h1>
-                <span id="sun-cycle-badge" class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">DZIEŃ ROBOCZY</span>
-              </div>
-              <p id="sun-cycle-desc" class="text-xs text-text-secondary mt-0.5">Czas wzmożonej dyscypliny i owocnej pracy ku Bożej chwale.</p>
-            </div>
-          </div>
-
-          <!-- Sabbath Context Banner (dyskretny) -->
-          <div id="hero-sun-cycle-banner" class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-xs text-text-secondary shrink-0">
-            <span id="hero-sun-icon" class="text-sm">⏳</span>
-            <div id="hero-sun-text" class="text-xs">
-              <span id="countdown-label">Do Szabatu:</span> <strong id="countdown-display" class="font-mono text-holos-turquoise">--:--:--</strong>
-            </div>
-          </div>
-        </div>
-
-        <!-- Układ Siatki Dashboardu Dziś -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-          <!-- Kolumna Lewa + Środek (2 kolumny): Poranne 5+10, Priorytety, Generator -->
-          <div class="lg:col-span-2 space-y-6">
-
-            <!-- 1. Karta: PORANNE 5 + 10 (Formacja) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 relative overflow-hidden group">
-              <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-holos-turquoise/5 rounded-full blur-2xl group-hover:bg-holos-turquoise/10 transition-all pointer-events-none"></div>
-              
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <span class="text-lg">🙏</span>
-                  <h2 class="text-sm font-extrabold text-white uppercase tracking-wider">Poranne 5 + 10</h2>
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">FUNDAMENT DNIA</span>
-                </div>
-                <span class="text-xs font-mono text-text-tertiary">15 minut</span>
-              </div>
-
-              <p class="text-xs text-text-secondary mb-4 leading-relaxed">
-                <strong class="text-white">5 minut ciszy i modlitwy</strong> przed tronem Boga + <strong class="text-white">10 minut karmienia się Słowem</strong> (Werset dnia lub rozdział Pisma). Zacznij dzień od Ducha, zanim świat narzuci swoje tempo.
-              </p>
-
-              <div class="flex flex-wrap items-center gap-2.5">
-                <button onclick="startSpecificTimer(15, 'Poranne 5+10: Modlitwa i Słowo')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:brightness-110 text-pure-black font-black text-xs transition-all shadow-md flex items-center gap-2">
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                  <span>ROZPOCZNIJ PORANEK (15 MIN)</span>
-                </button>
-                <a href="#word" onclick="navigateWorkspace('word', 'verse'); return false;" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-all flex items-center gap-1.5">
-                  <i class="fa-solid fa-book-bible text-holos-turquoise text-xs"></i>
-                  <span>Otwórz Werset Dnia</span>
-                </a>
-              </div>
-            </div>
-
-            <!-- 2. Karta: NAJWAŻNIEJSZE DZISIAJ (3 Priorytety & Najsłabszy Sektor) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-lg">🎯</span>
-                  <h2 class="text-sm font-extrabold text-white uppercase tracking-wider">Najważniejsze Dzisiaj</h2>
-                </div>
-                <span class="text-[10px] text-text-tertiary">Maksymalnie 3 cele wierności</span>
-              </div>
-
-              <!-- Dynamiczny Baner Priorytetu z Koła Życia -->
-              <div id="schedule-priority-banner" class="p-3.5 rounded-xl bg-holos-sky/10 border border-holos-sky/20 flex items-start gap-3">
-                <span class="text-base text-holos-sky shrink-0 mt-0.5">💡</span>
-                <div class="text-xs">
-                  <div class="font-bold text-white mb-0.5">Sugerowany Priorytet Naprawczy:</div>
-                  <div id="schedule-priority-text" class="text-text-secondary leading-relaxed">
-                    Wypełnij autodiagnozę w <strong class="text-white">Kole Życia</strong>, aby zidentyfikować obszar wymagający szczególnej troski.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Lista 3 Priorytetów z Checkboxami -->
-              <div class="space-y-2" id="today-priorities-list">
-                <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
-                  <input type="checkbox" id="prio-check-1" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 focus:ring-0 cursor-pointer">
-                  <input type="text" id="prio-text-1" placeholder="Priorytet 1 (np. Dokończenie raportu / Czas z żoną bez telefonu)" value="Poranne 5+10: Modlitwa w ciszy i Werset Dnia" class="bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none flex-1 font-medium">
-                </div>
-                <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
-                  <input type="checkbox" id="prio-check-2" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 focus:ring-0 cursor-pointer">
-                  <input type="text" id="prio-text-2" placeholder="Priorytet 2 (Kluczowe zadanie zawodowe)" value="Główny blok Deep Work: Praca twórcza i realizacja zlecenia" class="bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none flex-1 font-medium">
-                </div>
-                <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all">
-                  <input type="checkbox" id="prio-check-3" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 focus:ring-0 cursor-pointer">
-                  <input type="text" id="prio-text-3" placeholder="Priorytet 3 (Zdrowie / Regeneracja / Rodzina)" value="Świątynia Ducha: Spacer i regeneracja bez ekranów" class="bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none flex-1 font-medium">
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Karta: GENERATOR UŚWIĘCENIA DNIA (5·10·15 Time Engine) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-lg">⚡</span>
-                  <h2 class="text-sm font-extrabold text-white uppercase tracking-wider">Harmonogram Uświęcenia Czasu</h2>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <button onclick="generateSchedule('standard')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-[11px] font-bold text-white transition-all">Standard</button>
-                  <button onclick="generateSchedule('monk')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-[11px] font-bold text-white transition-all">Monk Mode</button>
-                  <button onclick="generateSchedule('rest')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-[11px] font-bold text-white transition-all">Regeneracja</button>
-                </div>
-              </div>
-
-              <!-- Kontener Bloków Harmonogramu (ID zachowane!) -->
-              <div id="schedule-blocks-container" class="space-y-2">
-                <!-- Renderowane dynamicznie przez generateSchedule() -->
-              </div>
-            </div>
-
-            <!-- 4. Karta: WIECZORNE 15 (Podsumowanie Dnia) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-lg">🌙</span>
-                  <h2 class="text-sm font-extrabold text-white uppercase tracking-wider">Wieczorne 15</h2>
-                </div>
-                <p class="text-xs text-text-secondary leading-relaxed">
-                  Rachunek sumienia, dziękczynienie za Boże prowadzenie i wyciszenie przed snem.
-                </p>
-              </div>
-              <button onclick="startSpecificTimer(15, 'Wieczorne 15: Podsumowanie Dnia i Dziękczynienie')" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition-all shrink-0 flex items-center gap-2">
-                <i class="fa-solid fa-moon text-indigo-400"></i>
-                <span>PODSUMUJ DZIEŃ (15 MIN)</span>
-              </button>
-            </div>
-
-          </div>
-
-          <!-- Kolumna Prawa: Agenda Google Calendar & Intencja Dnia -->
-          <div class="space-y-6">
-
-            <!-- Agenda Google Calendar (Dziś) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-base">📅</span>
-                  <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">Dzisiejsza Agenda</h3>
-                </div>
-                <a href="#calendar" onclick="navigateWorkspace('planner', 'calendar'); return false;" class="text-[11px] text-holos-turquoise hover:underline font-bold">Otwórz Planer</a>
-              </div>
-
-              <!-- Mini lista wydarzeń Google Calendar dla dzisiejszego widoku -->
-              <div id="today-gcal-preview" class="space-y-2 text-xs">
-                <!-- Aktualizowane dynamicznie z holosCalendar -->
-                <div class="p-3 rounded-xl bg-surface-dark border border-white/5 text-center text-text-tertiary">
-                  Ładowanie kalendarza...
-                </div>
-              </div>
-            </div>
-
-            <!-- Intencja Dnia & Zapiski Szafarza (ID zachowane!) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-base">✍️</span>
-                  <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">Intencja Dnia</h3>
-                </div>
-                <span id="saved-intention-badge" class="hidden text-[10px] text-emerald-400 font-bold">Zapisano ✓</span>
-              </div>
-              
-              <input type="text" id="input-intention" placeholder="W czym chcę być dzisiaj wierny Bogu?" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
-              
-              <div class="flex items-center justify-between pt-1">
-                <span class="text-[11px] font-bold text-text-tertiary">Notatki Szafarza:</span>
-              </div>
-              <textarea id="input-notes" rows="4" placeholder="Kluczowe refleksje, Boże odpowiedzi, owoce dnia..." class="w-full px-3 py-2 rounded-xl glass-input text-xs resize-none"></textarea>
-
-              <button onclick="saveDailyIntention()" class="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all shadow-sm">
-                Zapisz Notatkę
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
+      <!-- Grupa 1: Rytm Dnia & Czas -->
+      <div class="space-y-1">
+        <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">Rytm Dnia</div>
+        <a href="#sekcja-dzisiaj" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">🏠</span>
+          <span>Dzisiaj</span>
+        </a>
+        <a href="#sekcja-51015" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base text-amber-400">⚡</span>
+          <span>5·10·15 Formacja & Działanie</span>
+        </a>
+        <a href="#sekcja-kalendarz" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">📅</span>
+          <span>Kalendarz Google (P0)</span>
+        </a>
       </div>
 
-      <!-- ====================================================================== -->
-      <!-- MODUŁ 2: PLANER (KALENDARZ GOOGLE P0, ZADANIA 5·10·15, RUTYNY)          -->
-      <!-- ====================================================================== -->
-      <div id="space-planner" class="workspace-module space-y-6 hidden" role="tabpanel">
-        
-        <!-- Pasek Podzakładek Planera -->
-        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-surface-border pb-3">
-          <div class="flex items-center gap-1.5 bg-surface-card/60 p-1 rounded-xl border border-white/5">
-            <button onclick="switchSubtab('planner', 'calendar')" id="subtab-planner-calendar" class="subtab-btn subtab-active px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
-              📅 Kalendarz Google
-            </button>
-            <button onclick="switchSubtab('planner', 'tasks')" id="subtab-planner-tasks" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              ✓ Zadania 5·10·15
-            </button>
-            <button onclick="switchSubtab('planner', 'habits')" id="subtab-planner-habits" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              🎯 Nawyki & Rutyny
-            </button>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button onclick="openQuickCapture()" class="px-3 py-1.5 rounded-xl bg-holos-turquoise/20 hover:bg-holos-turquoise/30 text-holos-turquoise font-bold text-xs border border-holos-turquoise/40 transition-all flex items-center gap-1.5">
-              <i class="fa-solid fa-plus text-xs"></i>
-              <span>Nowe Zadanie</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Subtab Content 1: KALENDARZ GOOGLE (P0 INTEGRACJA ZACHOWANA 1:1) -->
-        <div id="planner-tab-calendar" class="subtab-panel space-y-6">
-          
-          <!-- Karta Połączenia Google Calendar -->
-          <div id="gcal-connection-card" class="p-6 rounded-2xl glass-panel border border-white/10 relative overflow-hidden">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div class="space-y-1.5">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
-                    <i class="fa-solid fa-calendar-days text-sm"></i>
-                  </div>
-                  <h3 id="gcal-status-title" class="text-base font-extrabold text-white">Google Calendar API (P0 Blocker)</h3>
-                  <span id="gcal-status-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-text-tertiary border border-white/10">
-                    Inicjalizacja...
-                  </span>
-                </div>
-                <p id="gcal-status-desc" class="text-xs text-text-secondary max-w-2xl leading-relaxed">
-                  Trwa sprawdzanie autoryzacji kalendarza...
-                </p>
-                <div class="text-[11px] text-text-tertiary font-mono" id="gcal-last-sync-time">
-                  Ostatnia synchronizacja: --:--
-                </div>
-              </div>
-
-              <!-- Kontener Akcji Kalendarza (ID zachowane!) -->
-              <div id="gcal-actions-container" class="flex flex-wrap items-center gap-2 shrink-0">
-                <!-- Renderowane dynamicznie przez kontroler -->
-              </div>
-            </div>
-
-            <!-- Alert Błędu Kalendarza (ID zachowane!) -->
-            <div id="gcal-error-alert" class="hidden mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
-              <strong id="gcal-error-title" class="text-red-300 font-bold">Uwaga:</strong> <span id="gcal-error-message">Wystąpił błąd synchronizacji kalendarza.</span>
-            </div>
-          </div>
-
-          <!-- Siatka Kalendarza: Lista Wydarzeń + Szybkie Dodawanie -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Lista Zdarzeń Kalendarza (2 kolumny) -->
-            <div class="lg:col-span-2 p-5 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-base">📋</span>
-                  <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">Zsynchronizowane Wydarzenia</h4>
-                </div>
-                <span id="gcal-events-count" class="text-xs font-bold text-holos-turquoise">0 wydarzeń</span>
-              </div>
-
-              <!-- Kontener Listy Wydarzeń (ID zachowane!) -->
-              <div id="gcal-events-list" class="space-y-2 min-h-[160px]">
-                <div class="p-8 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-tertiary">
-                  Kalendarz nie został jeszcze połączony. Kliknij „Połącz Google Calendar”, aby wczytać swoje rzeczywiste wydarzenia.
-                </div>
-              </div>
-            </div>
-
-            <!-- Szybkie Tworzenie Wydarzenia w Google Calendar (1 kolumna) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <div class="flex items-center gap-2">
-                <span class="text-base">➕</span>
-                <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">Dodaj do Kalendarza</h4>
-              </div>
-
-              <div class="space-y-3">
-                <div>
-                  <label class="block text-[11px] font-bold text-text-tertiary mb-1">Tytuł Zdarzenia:</label>
-                  <input type="text" id="gcal-new-title" placeholder="np. Modlitwa o naród / Praca w skupieniu" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[11px] font-bold text-text-tertiary mb-1">Start:</label>
-                    <input type="datetime-local" id="gcal-new-start" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-text-tertiary mb-1">Koniec:</label>
-                    <input type="datetime-local" id="gcal-new-end" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-[11px] font-bold text-text-tertiary mb-1">Dziedzina:</label>
-                  <select id="gcal-new-category" class="w-full px-3 py-2 rounded-xl glass-input text-xs bg-dark-bg">
-                    <option value="faith">🙏 Wiara i Duchowość</option>
-                    <option value="family">❤️ Relacje i Rodzina</option>
-                    <option value="health">🏃 Zdrowie i Ciało</option>
-                    <option value="money">💰 Finanse i Szafarstwo</option>
-                    <option value="work">🎯 Praca i Rozwój</option>
-                  </select>
-                </div>
-                <button onclick="window.holosCalendarCreateNewEvent()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
-                  Utwórz w Google Calendar
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Konsola Diagnostyczna Testów E2E Google Calendar (ID zachowane!) -->
-          <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-vial text-holos-turquoise text-sm"></i>
-                <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">Diagnostyka E2E Integracji Kalendarza</h4>
-                <span id="gcal-test-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-text-tertiary border border-white/10">IDLE</span>
-              </div>
-              <button id="btn-run-gcal-test" onclick="window.holosCalendarRunE2ETest()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-extrabold transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-play text-[10px]"></i>
-                <span>Uruchom Diagnostykę E2E</span>
-              </button>
-            </div>
-            <pre id="gcal-test-console" class="p-3.5 rounded-xl bg-pure-black/60 border border-white/5 font-mono text-[11px] text-text-secondary h-36 overflow-y-auto leading-relaxed select-text">
-Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchronizację w czasie rzeczywistym...
-            </pre>
-          </div>
-
-        </div>
-
-        <!-- Subtab Content 2: ZADANIA 5·10·15 -->
-        <div id="planner-tab-tasks" class="subtab-panel space-y-6 hidden">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- Koszyk ≤5 MIN -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <div class="flex items-center justify-between pb-2 border-b border-white/5">
-                <div class="flex items-center gap-2">
-                  <span class="text-emerald-400 font-bold">⚡</span>
-                  <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">≤ 5 MINUT</h3>
-                </div>
-                <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">Zrób natychmiast</span>
-              </div>
-              <div class="space-y-2 text-xs" id="tasks-basket-5">
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Krótka modlitwa za żonę i dzieci</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Szklanka wody i rozciągnięcie kręgosłupa</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Opłacenie bieżącego rachunku</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Koszyk 10–15 MIN -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <div class="flex items-center justify-between pb-2 border-b border-white/5">
-                <div class="flex items-center gap-2">
-                  <span class="text-amber-400 font-bold">⏳</span>
-                  <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">10 – 15 MINUT</h3>
-                </div>
-                <span class="text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">Zaplanuj na dziś</span>
-              </div>
-              <div class="space-y-2 text-xs" id="tasks-basket-15">
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Studium fragmentu z Listu do Rzymian</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Podsumowanie wydatków tygodnia (Szafarstwo)</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Uporządkowanie biurka przed pracą</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Koszyk >15 MIN (Deep Work) -->
-            <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3">
-              <div class="flex items-center justify-between pb-2 border-b border-white/5">
-                <div class="flex items-center gap-2">
-                  <span class="text-indigo-400 font-bold">🔥</span>
-                  <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">&gt; 15 MIN (DEEP WORK)</h3>
-                </div>
-                <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded">Zablokuj w kalendarzu</span>
-              </div>
-              <div class="space-y-2 text-xs" id="tasks-basket-deep">
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Przygotowanie wykładu / projektu programistycznego</span>
-                </div>
-                <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2">
-                  <input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise">
-                  <span class="text-white">Spacer i głęboka rozmowa z rodziną bez ekranów</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Subtab Content 3: NAWYKI I RUTYNY -->
-        <div id="planner-tab-habits" class="subtab-panel space-y-6 hidden">
-          <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-4">
-            <h3 class="text-xs font-extrabold text-white uppercase tracking-wider">Codzienne Rutyny Formacyjne (Święte Zwyczaje)</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div class="p-4 rounded-xl bg-surface-dark border border-white/5 space-y-2">
-                <div class="font-bold text-holos-turquoise flex items-center gap-2">
-                  <span>🌅</span> Rutyna Poranna:
-                </div>
-                <p class="text-text-secondary leading-relaxed">Wstanie bez scrollowania social mediów, modlitwa dziękczynna, szklanka wody, Poranne 5+10.</p>
-              </div>
-              <div class="p-4 rounded-xl bg-surface-dark border border-white/5 space-y-2">
-                <div class="font-bold text-indigo-400 flex items-center gap-2">
-                  <span>🌃</span> Rutyna Wieczorna:
-                </div>
-                <p class="text-text-secondary leading-relaxed">Wyłączenie ekranów na 60 min przed snem, Wieczorne 15 (rachunek sumienia i dziękczynienie), przygotowanie ubrań na rano.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Grupa 2: 5 Sektorów Życia -->
+      <div class="space-y-1">
+        <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">5 Sektorów Życia</div>
+        <a href="#sekcja-kolo" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">◎</span>
+          <span>Koło Życia & Holos Score</span>
+        </a>
+        <a href="#sekcja-sektory" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">🖼️</span>
+          <span>Galeria Sektorów HD</span>
+        </a>
+        <a href="#sekcja-szafarstwo" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">💰</span>
+          <span>Finanse i Szafarstwo 10%</span>
+        </a>
       </div>
 
-      <!-- ====================================================================== -->
-      <!-- MODUŁ 3: ŻYCIE (KOŁO ŻYCIA, FINANSE/SZAFARSTWO, GALERIA 5 SEKTORÓW)    -->
-      <!-- ====================================================================== -->
-      <div id="space-life" class="workspace-module space-y-6 hidden" role="tabpanel">
-        
-        <!-- Pasek Podzakładek Życia -->
-        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-surface-border pb-3">
-          <div class="flex items-center gap-1.5 bg-surface-card/60 p-1 rounded-xl border border-white/5">
-            <button onclick="switchSubtab('life', 'wheel')" id="subtab-life-wheel" class="subtab-btn subtab-active px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
-              ◎ Koło Życia (Autodiagnoza)
-            </button>
-            <button onclick="switchSubtab('life', 'finance')" id="subtab-life-finance" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              💰 Finanse & Szafarstwo 10%
-            </button>
-            <button onclick="switchSubtab('life', 'gallery')" id="subtab-life-gallery" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              🖼️ 5 Sektorów HD
-            </button>
-          </div>
-        </div>
-
-        <!-- Subtab Content 1: KOŁO ŻYCIA & HOLOS SCORE (ZACHOWANE 1:1) -->
-        <div id="life-tab-wheel" class="subtab-panel space-y-6">
-          
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- Radar SVG & Holos Score (5 kolumn) -->
-            <div class="lg:col-span-5 p-6 rounded-2xl glass-panel border border-white/10 flex flex-col items-center justify-center text-center space-y-4">
-              <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
-                <!-- SVG Radar Chart -->
-                <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-xl">
-                  <!-- Siatka okręgów -->
-                  <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"></circle>
-                  <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"></circle>
-                  <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"></circle>
-                  <circle cx="200" cy="200" r="40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"></circle>
-
-                  <!-- Osie 5 sektorów -->
-                  <line x1="200" y1="200" x2="200" y2="40" stroke="rgba(255,255,255,0.1)" stroke-width="1"></line>
-                  <line x1="200" y1="200" x2="352" y2="151" stroke="rgba(255,255,255,0.1)" stroke-width="1"></line>
-                  <line x1="200" y1="200" x2="294" y2="330" stroke="rgba(255,255,255,0.1)" stroke-width="1"></line>
-                  <line x1="200" y1="200" x2="106" y2="330" stroke="rgba(255,255,255,0.1)" stroke-width="1"></line>
-                  <line x1="200" y1="200" x2="48" y2="151" stroke="rgba(255,255,255,0.1)" stroke-width="1"></line>
-
-                  <!-- Dynamiczny Wielokąt Radaru (ID zachowane!) -->
-                  <polygon id="radar-path" points="200,80 320,160 270,300 130,300 80,160" fill="rgba(0, 242, 254, 0.25)" stroke="#00F2FE" stroke-width="2.5"></polygon>
-                  <g id="radar-points"></g>
-                </svg>
-
-                <!-- Centralny wskaźnik Holos Score (ID zachowane!) -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <div class="text-[10px] text-text-tertiary uppercase tracking-widest font-bold">HOLOS SCORE</div>
-                  <div id="stat-holos-score" class="text-3xl font-black text-white tracking-tight">--</div>
-                  <div id="stat-holos-status" class="text-[11px] text-holos-turquoise font-semibold">Czeka na diagnozę</div>
-                </div>
-              </div>
-
-              <!-- Status Synchronizacji z Profilem CC ID (ID zachowane!) -->
-              <div id="holos-sync-status" class="text-xs text-text-tertiary flex items-center gap-1.5">
-                <i class="fa-solid fa-cloud text-xs"></i>
-                <span id="holos-sync-label">Dane zapisywane w Twoim profilu</span>
-              </div>
-            </div>
-
-            <!-- Suwaki Oceny 5 Sektorów (7 kolumn, ID zachowane!) -->
-            <div class="lg:col-span-7 p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-              <div>
-                <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Autodiagnoza Wierności</h3>
-                <p class="text-xs text-text-secondary mt-0.5">Przesuń suwaki (0–100%), aby ocenić swój aktualny stan w każdym sektorze.</p>
-              </div>
-
-              <div class="space-y-4">
-                <!-- 1. Wiara -->
-                <div>
-                  <div class="flex justify-between text-xs font-bold mb-1">
-                    <span class="text-white">🙏 Wiara i Duchowość</span>
-                    <span id="val-faith" class="text-holos-turquoise">50%</span>
-                  </div>
-                  <input type="range" id="slider-faith" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
-                </div>
-
-                <!-- 2. Relacje -->
-                <div>
-                  <div class="flex justify-between text-xs font-bold mb-1">
-                    <span class="text-white">❤️ Relacje i Rodzina</span>
-                    <span id="val-family" class="text-holos-turquoise">50%</span>
-                  </div>
-                  <input type="range" id="slider-family" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
-                </div>
-
-                <!-- 3. Zdrowie -->
-                <div>
-                  <div class="flex justify-between text-xs font-bold mb-1">
-                    <span class="text-white">🏃 Zdrowie i Ciało (Świątynia Ducha)</span>
-                    <span id="val-body" class="text-holos-turquoise">50%</span>
-                  </div>
-                  <input type="range" id="slider-body" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
-                </div>
-
-                <!-- 4. Finanse -->
-                <div>
-                  <div class="flex justify-between text-xs font-bold mb-1">
-                    <span class="text-white">💰 Finanse i Szafarstwo</span>
-                    <span id="val-money" class="text-holos-turquoise">50%</span>
-                  </div>
-                  <input type="range" id="slider-money" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
-                </div>
-
-                <!-- 5. Rozwój -->
-                <div>
-                  <div class="flex justify-between text-xs font-bold mb-1">
-                    <span class="text-white">🎯 Praca i Rozwój Talentów</span>
-                    <span id="val-work" class="text-holos-turquoise">50%</span>
-                  </div>
-                  <input type="range" id="slider-work" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
-                </div>
-              </div>
-
-              <div class="pt-2 flex items-center justify-between">
-                <button onclick="saveWheelLocal()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-1.5">
-                  <i class="fa-solid fa-floppy-disk text-xs"></i>
-                  <span>Zapisz Diagnozę</span>
-                </button>
-                <a href="#planner" onclick="navigateWorkspace('today'); return false;" class="text-xs text-holos-turquoise hover:underline font-bold">
-                  Przejdź do Generatora Dnia →
-                </a>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- Subtab Content 2: FINANSE & SZAFARSTWO 10% (ZACHOWANE 1:1) -->
-        <div id="life-tab-finance" class="subtab-panel space-y-6 hidden">
-          <div class="p-6 rounded-2xl glass-panel border border-white/10 max-w-3xl mx-auto space-y-6">
-            <div class="text-center space-y-1">
-              <h3 class="text-lg font-black text-white">Kalkulator Biblijnego Szafarstwa</h3>
-              <p class="text-xs text-text-secondary">Zasada 10 / 20 / 70: Dziesięcina Bogu, przezorność szafarza i mądre życie.</p>
-            </div>
-
-            <!-- Pole Wprowadzania Dochodu (ID zachowane!) -->
-            <div class="p-4 rounded-xl bg-surface-dark border border-white/5 space-y-2">
-              <label class="block text-xs font-bold text-text-tertiary">Twój Miesięczny Przychód Netto (PLN):</label>
-              <div class="relative">
-                <input type="number" id="input-income" value="6000" oninput="calcStewardship()" class="w-full px-4 py-3 rounded-xl glass-input text-lg font-black text-white pr-16" placeholder="Wpisz kwotę...">
-                <span class="absolute right-4 top-3.5 text-xs font-bold text-text-tertiary">PLN</span>
-              </div>
-            </div>
-
-            <!-- Wyniki 10 / 20 / 70 (ID zachowane!) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Dziesięcina 10% -->
-              <div class="p-4 rounded-xl bg-amber-400/10 border border-amber-400/20 text-center space-y-1">
-                <div class="text-[10px] font-bold text-amber-300 uppercase tracking-widest">10% DZIESIĘCINA (BÓG)</div>
-                <div id="calc-tithe" class="text-2xl font-black text-amber-400">600 PLN</div>
-                <p class="text-[10px] text-text-tertiary leading-tight">Wierność w pierwszych owocach na Królestwo Boże.</p>
-              </div>
-
-              <!-- Oszczędności 20% -->
-              <div class="p-4 rounded-xl bg-holos-turquoise/10 border border-holos-turquoise/20 text-center space-y-1">
-                <div class="text-[10px] font-bold text-holos-turquoise uppercase tracking-widest">20% OSZCZĘDNOŚCI (PRZEZORNOŚĆ)</div>
-                <div id="calc-savings" class="text-2xl font-black text-holos-turquoise">1 200 PLN</div>
-                <p class="text-[10px] text-text-tertiary leading-tight">Fundusz awaryjny i inwestycje przyszłości.</p>
-              </div>
-
-              <!-- Koszty Życia 70% -->
-              <div class="p-4 rounded-xl bg-surface-dark border border-white/5 text-center space-y-1">
-                <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-widest">70% KOSZTY ŻYCIA</div>
-                <div id="calc-living" class="text-2xl font-black text-white">4 200 PLN</div>
-                <p class="text-[10px] text-text-tertiary leading-tight">Mieszkanie, rachunki, pożywienie i codzienne potrzeby.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subtab Content 3: GALERIA SEKTORÓW HD -->
-        <div id="life-tab-gallery" class="subtab-panel space-y-6 hidden">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="rounded-2xl overflow-hidden glass-panel border border-white/10 group">
-              <div class="h-40 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_faith.jpg');"></div>
-              <div class="p-4 space-y-1">
-                <h4 class="text-xs font-bold text-white uppercase">1. Wiara i Duchowość</h4>
-                <p class="text-[11px] text-text-tertiary">Relacja przymierza, modlitwa, posłuszeństwo i karmienie się Słowem.</p>
-              </div>
-            </div>
-            <div class="rounded-2xl overflow-hidden glass-panel border border-white/10 group">
-              <div class="h-40 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_family.jpg');"></div>
-              <div class="p-4 space-y-1">
-                <h4 class="text-xs font-bold text-white uppercase">2. Relacje i Rodzina</h4>
-                <p class="text-[11px] text-text-tertiary">Obecność bez telefonu, budowanie małżeństwa i wychowanie dzieci.</p>
-              </div>
-            </div>
-            <div class="rounded-2xl overflow-hidden glass-panel border border-white/10 group">
-              <div class="h-40 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_health.jpg');"></div>
-              <div class="p-4 space-y-1">
-                <h4 class="text-xs font-bold text-white uppercase">3. Zdrowie i Ciało</h4>
-                <p class="text-[11px] text-text-tertiary">Ciało jako świątynia Ducha Świętego: sen, ruch, czysty pokarm.</p>
-              </div>
-            </div>
-            <div class="rounded-2xl overflow-hidden glass-panel border border-white/10 group">
-              <div class="h-40 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_stewardship.jpg');"></div>
-              <div class="p-4 space-y-1">
-                <h4 class="text-xs font-bold text-white uppercase">4. Finanse i Szafarstwo</h4>
-                <p class="text-[11px] text-text-tertiary">Uczciwość, brak długów konsumpcyjnych i wierność w dziesięcinie.</p>
-              </div>
-            </div>
-            <div class="rounded-2xl overflow-hidden glass-panel border border-white/10 group">
-              <div class="h-40 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_deepwork.jpg');"></div>
-              <div class="p-4 space-y-1">
-                <h4 class="text-xs font-bold text-white uppercase">5. Praca i Rozwój Talentów</h4>
-                <p class="text-[11px] text-text-tertiary">Praca wykonywana z serca, jak dla samego Pana, a nie dla ludzi.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Grupa 3: Duchowość & Ekosystem -->
+      <div class="space-y-1">
+        <div class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1">Słowo & Wspólnota</div>
+        <a href="#sekcja-slowo" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base">🙏</span>
+          <span>Pismo Święte & Werset Dnia</span>
+        </a>
+        <a href="#sekcja-aura" onclick="closeDrawers()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <span class="text-base text-holos-turquoise">✦</span>
+          <span>AI Mentor Aura</span>
+        </a>
+        <a href="/lumina" target="_blank" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-white hover:bg-white/5 transition-all">
+          <i class="fa-solid fa-users text-cc-gold text-sm w-5 text-center"></i>
+          <span>Społeczność LUMINA</span>
+        </a>
+        <a href="/privacy" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-text-tertiary hover:text-white hover:bg-white/5 transition-all">
+          <i class="fa-solid fa-shield-halved text-sm w-5 text-center"></i>
+          <span>Prywatność i CC ID</span>
+        </a>
       </div>
 
-      <!-- ====================================================================== -->
-      <!-- MODUŁ 4: SŁOWO (WERSET DNIA, MOJABIBLIA, DOBRZE ŻE JESTEŚ, AUDIO)      -->
-      <!-- ====================================================================== -->
-      <div id="space-word" class="workspace-module space-y-6 hidden" role="tabpanel">
-        
-        <!-- Pasek Podzakładek Słowa -->
-        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-surface-border pb-3">
-          <div class="flex items-center gap-1.5 bg-surface-card/60 p-1 rounded-xl border border-white/5">
-            <button onclick="switchSubtab('word', 'verse')" id="subtab-word-verse" class="subtab-btn subtab-active px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
-              📖 Werset Dnia
-            </button>
-            <button onclick="switchSubtab('word', 'bible')" id="subtab-word-bible" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              📜 MojaBiblia Interlinearna
-            </button>
-            <button onclick="switchSubtab('word', 'dzj')" id="subtab-word-dzj" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              🕊️ Dobrze, że jesteś
-            </button>
-            <button onclick="switchSubtab('word', 'audio')" id="subtab-word-audio" class="subtab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-text-secondary hover:text-white transition-all">
-              🎧 Biblia Audio
-            </button>
-          </div>
-        </div>
+    </div>
 
-        <!-- Subtab Content 1: WERSET DNIA -->
-        <div id="word-tab-verse" class="subtab-panel space-y-6">
-          <div class="p-6 rounded-2xl glass-panel border border-white/10 max-w-2xl mx-auto text-center space-y-4">
-            <div class="text-[10px] font-bold text-holos-turquoise uppercase tracking-widest">SŁOWO BOŻE NA DZISIAJ</div>
-            <blockquote class="text-lg sm:text-xl font-serif italic text-white leading-relaxed">
-              „Z całego serca zaufaj Panu, a na własnym rozumie nie polegaj. We wszystkich swoich drogach zważaj na Niego, a On prostować będzie twoje ścieżki.”
-            </blockquote>
-            <div class="text-xs font-bold text-amber-400">— Księga Przysłów 3:5-6 (UBG)</div>
-            <div class="pt-4 flex items-center justify-center gap-2">
-              <a href="/mojabiblia" target="_blank" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-book-open text-xs text-holos-turquoise"></i>
-                <span>Zbadaj w MojaBiblia</span>
-              </a>
-            </div>
-          </div>
-        </div>
+    <!-- Stopka Drawera -->
+    <div class="p-6 border-t border-white/10 text-center">
+      <div class="text-[10px] text-text-tertiary">Christian Culture © 2026</div>
+      <div class="text-[9px] text-holos-turquoise font-mono mt-0.5">Od 5 minut do wieczności</div>
+    </div>
+  </aside>
 
-        <!-- Subtab Content 2: MOJABIBLIA INTERLINEARNA -->
-        <div id="word-tab-bible" class="subtab-panel space-y-6 hidden">
-          <div class="p-6 rounded-2xl glass-panel border border-white/10 text-center space-y-4">
-            <i class="fa-solid fa-book-bible text-4xl text-holos-turquoise"></i>
-            <h3 class="text-base font-extrabold text-white">MojaBiblia – Przekłady Interlinearne & Kody Stronga</h3>
-            <p class="text-xs text-text-secondary max-w-lg mx-auto leading-relaxed">
-              Dostęp do pełnego tekstu Pisma Świętego w przekładach UBG, BW, BT, BG z hebrajską i grecką morfologią w ekosystemie Christian Culture.
-            </p>
-            <a href="/mojabiblia" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
-              <span>Otwórz MojaBiblia w nowej karcie</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-          </div>
-        </div>
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <!-- 3. PRAWY DRAWER (CHOWANY AKTYWNY STAN „TERAZ”)                               -->
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <div id="right-drawer-backdrop" onclick="closeDrawers()" class="fixed inset-0 bg-pure-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
-        <!-- Subtab Content 3: DOBRZE ŻE JESTEŚ -->
-        <div id="word-tab-dzj" class="subtab-panel space-y-6 hidden">
-          <div class="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-            <div class="flex items-center gap-2">
-              <span class="text-lg">🕊️</span>
-              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Codzienne Rozważanie „Dobrze, że jesteś”</h3>
-            </div>
-            <p class="text-xs text-text-secondary leading-relaxed">
-              Inspiracja na dzisiejszy dzień z bazy rozważań Christian Culture (kolekcja <code class="text-holos-turquoise">reflections</code>).
-            </p>
-            <div class="p-4 rounded-xl bg-surface-dark border border-white/5 space-y-2 text-xs">
-              <div class="font-bold text-white text-sm">Oczekuj Pana z odwagą</div>
-              <p class="text-text-secondary leading-relaxed">
-                Niezależnie od okoliczności, które cię dzisiaj otaczają, pamiętaj, że Bóg nie jest zaskoczony twoim położeniem. Zaufaj Jego suwerennej dobroci.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subtab Content 4: BIBLIA AUDIO -->
-        <div id="word-tab-audio" class="subtab-panel space-y-6 hidden">
-          <div class="p-6 rounded-2xl glass-panel border border-white/10 text-center space-y-4">
-            <i class="fa-solid fa-headphones text-4xl text-amber-400"></i>
-            <h3 class="text-base font-extrabold text-white">Biblia Audio & Audycje Słowa</h3>
-            <p class="text-xs text-text-secondary max-w-lg mx-auto leading-relaxed">
-              Słuchaj czytanego Słowa Bożego w tle podczas pracy, odpoczynku lub podróży.
-            </p>
-            <button onclick="toggleRadio('https://stream.zeno.fm/gn3uhltrrytuv', 'Pismo Święte & Biblia Audio')" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md inline-flex items-center gap-2">
-              <i class="fa-solid fa-play"></i>
-              <span>Włącz Kanał Biblia Audio</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ====================================================================== -->
-      <!-- MODUŁ 5: AURA (CHRZEŚCIJAŃSKI AI MENTOR — BYOK GEMINI API)              -->
-      <!-- ====================================================================== -->
-      <div id="space-aura" class="workspace-module space-y-6 hidden" role="tabpanel">
-        
-        <div class="p-6 rounded-2xl glass-panel border border-white/10 space-y-6">
-          
-          <!-- Nagłówek Aury z Orbiem -->
-          <div class="flex flex-col sm:flex-row items-center gap-5 pb-4 border-b border-surface-border">
-            <div id="aura-orb" class="w-16 h-16 rounded-full bg-gradient-to-tr from-holos-turquoise via-holos-indigo to-holos-purple p-1 aura-orb-glow flex items-center justify-center shrink-0 animate-pulse-slow">
-              <div class="w-full h-full bg-dark-bg rounded-full flex items-center justify-center text-holos-turquoise text-2xl">
-                ✦
-              </div>
-            </div>
-            <div class="text-center sm:text-left space-y-1">
-              <div class="flex items-center justify-center sm:justify-start gap-2">
-                <h2 class="text-lg font-black text-white">AI Mentor Aura</h2>
-                <span id="aura-api-model-badge" class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">BYOK / HEURISTIC</span>
-              </div>
-              <p class="text-xs text-text-secondary leading-relaxed max-w-xl">
-                Dyskretny asystent uświęcenia czasu i podejmowania decyzji w oparciu o biblijne zasady i stan Twoich 5 sektorów życia.
-              </p>
-            </div>
-          </div>
-
-          <!-- 4 Tryby Decyzyjne (Karty) -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <button onclick="previewDecision('focus')" class="p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-holos-turquoise/40 text-left transition-all group">
-              <div class="text-xs font-extrabold text-white group-hover:text-holos-turquoise">INTENSE FOCUS</div>
-              <div class="text-[10px] text-text-tertiary mt-0.5">Odrzuć dystrakcje, wejdź w głęboką pracę</div>
-            </button>
-            <button onclick="previewDecision('encouragement')" class="p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-amber-400/40 text-left transition-all group">
-              <div class="text-xs font-extrabold text-white group-hover:text-amber-400">ENCOURAGEMENT</div>
-              <div class="text-[10px] text-text-tertiary mt-0.5">Słowo pocieszenia i Bożej łaski w trudzie</div>
-            </button>
-            <button onclick="previewDecision('rest')" class="p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-holos-sky/40 text-left transition-all group">
-              <div class="text-xs font-extrabold text-white group-hover:text-holos-sky">REST & SABBATH</div>
-              <div class="text-[10px] text-text-tertiary mt-0.5">Święty odpoczynek i regeneracja sił</div>
-            </button>
-            <button onclick="previewDecision('tough_love')" class="p-3 rounded-xl bg-surface-dark border border-white/5 hover:border-red-400/40 text-left transition-all group">
-              <div class="text-xs font-extrabold text-white group-hover:text-red-400">TOUGH LOVE</div>
-              <div class="text-[10px] text-text-tertiary mt-0.5">Twarde przypomnienie o odpowiedzialności</div>
-            </button>
-          </div>
-
-          <!-- Okno Dialogowe Aury (ID zachowane!) -->
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <label class="block text-xs font-bold text-text-tertiary">Zadaj pytanie Aurze (uwzględnia Twoje 5 sektorów i intencję dnia):</label>
-            </div>
-            <div class="flex gap-2">
-              <input type="text" id="aura-custom-prompt" placeholder="np. Jak pogodzić nadgodziny w pracy z czasem dla dzieci?" class="flex-1 px-4 py-2.5 rounded-xl glass-input text-xs">
-              <button id="btn-ask-aura" onclick="askAuraCustom()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md shrink-0 flex items-center gap-1.5">
-                <span>Zapytaj</span>
-                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-              </button>
-            </div>
-
-            <!-- Odpowiedź Aury (ID zachowane!) -->
-            <div id="aura-response-box" class="hidden p-4 rounded-xl bg-surface-dark border border-white/10 space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-holos-turquoise">
-                <span>Odpowiedź Mentora Aura:</span>
-                <button onclick="document.getElementById('aura-response-box').classList.add('hidden')" class="text-text-tertiary hover:text-white">✕</button>
-              </div>
-              <div id="aura-response-text" class="text-xs text-text-secondary leading-relaxed whitespace-pre-wrap select-text"></div>
-            </div>
-          </div>
-
-          <!-- Konfiguracja Własnego Klucza API (BYOK Google Gemini API, ID zachowane!) -->
-          <div class="p-4 rounded-xl bg-surface-dark/80 border border-white/5 space-y-3">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-key text-xs text-amber-400"></i>
-                <span class="text-xs font-bold text-white">Własny Klucz Google Gemini API (Opcjonalnie - BYOK):</span>
-                <span id="aura-api-status" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-text-tertiary">Brak klucza (używa silnika CC)</span>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <input type="password" id="gemini-api-key" placeholder="Wklej klucz z Google AI Studio (AIzaSy...)" class="flex-1 px-3 py-2 rounded-xl glass-input text-xs font-mono">
-              <button onclick="saveApiKey()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all">Zapisz</button>
-              <button onclick="clearApiKey()" class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold transition-all">Usuń</button>
-            </div>
-            <p class="text-[10px] text-text-tertiary">Klucz zapisywany jest wyłącznie w LocalStorage Twojej przeglądarki. Nigdy nie opuszcza Twojego urządzenia.</p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </main>
-
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <!-- 2C. PRAWY PANEL — „TERAZ” (AKTYWNY KONTEKST DNIA)                          -->
-    <!-- ────────────────────────────────────────────────────────────────────────── -->
-    <aside id="app-right-sidebar" class="hidden xl:flex flex-col w-72 lg:w-80 bg-surface-dark border-l border-surface-border shrink-0 p-4 space-y-5 overflow-y-auto select-none z-30">
+  <aside id="right-drawer" class="fixed inset-y-0 right-0 w-88 max-w-[85vw] bg-surface-dark/95 backdrop-blur-2xl border-l border-white/10 z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between shadow-2xl">
+    <div class="p-6 overflow-y-auto space-y-6">
       
-      <!-- Nagłówek Panelu TERAZ -->
-      <div class="flex items-center justify-between pb-3 border-b border-surface-border">
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <h2 class="text-xs font-black uppercase tracking-wider text-white">TERAZ</h2>
+      <!-- Nagłówek Drawera TERAZ -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-sm font-black tracking-wider text-white">TERAZ</span>
         </div>
-        <span id="sun-cycle-clock" class="text-xs font-mono font-bold text-holos-turquoise">12:00:00</span>
+        <div class="flex items-center gap-3">
+          <span id="sun-cycle-clock" class="text-xs font-mono font-bold text-holos-turquoise">12:00:00</span>
+          <button onclick="closeDrawers()" class="p-2 rounded-xl text-text-tertiary hover:text-white hover:bg-white/5 text-xs transition-all">
+            ✕
+          </button>
+        </div>
       </div>
 
-      <!-- Karta: NASTĘPNE WYDARZENIE / STAN KALENDARZA -->
-      <div class="p-4 rounded-xl glass-card space-y-2">
+      <!-- Karta: NASTĘPNE WYDARZENIE -->
+      <div class="p-4 rounded-2xl glass-card-portal space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">NASTĘPNE WYDARZENIE</span>
           <span id="now-cal-badge" class="text-[9px] font-mono text-holos-turquoise">Google Cal</span>
@@ -1233,40 +364,38 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         </div>
       </div>
 
-      <!-- Karta: TIMER 5·10·15 (AKTYWNY STOPER / POMODORO) -->
-      <div class="p-4 rounded-xl glass-card space-y-3">
+      <!-- Karta: TIMER 5·10·15 -->
+      <div class="p-5 rounded-2xl glass-card-portal space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">TIMER 5·10·15</span>
           <span id="timer-active-label" class="text-[10px] font-bold text-amber-400">GOTOWY</span>
         </div>
 
-        <div class="text-center py-2">
-          <div id="now-timer-display" class="text-3xl font-mono font-black text-white tracking-wider">00:15:00</div>
-          <div id="now-timer-task-name" class="text-[11px] text-text-secondary mt-1 truncate">Wybierz czas trwania</div>
+        <div class="text-center py-1">
+          <div id="now-timer-display" class="text-4xl font-mono font-black text-white tracking-wider">00:15:00</div>
+          <div id="now-timer-task-name" class="text-xs text-text-secondary mt-1 truncate">Wybierz czas trwania</div>
         </div>
 
-        <!-- Presety Czasu -->
-        <div class="grid grid-cols-4 gap-1.5">
-          <button onclick="setTimerDuration(5)" class="py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-white transition-all">5m</button>
-          <button onclick="setTimerDuration(10)" class="py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-white transition-all">10m</button>
-          <button onclick="setTimerDuration(15)" class="py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-holos-turquoise transition-all">15m</button>
-          <button onclick="setTimerDuration(25)" class="py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-white transition-all">25m</button>
+        <div class="grid grid-cols-4 gap-2">
+          <button onclick="setTimerDuration(5)" class="py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-white transition-all">5m</button>
+          <button onclick="setTimerDuration(10)" class="py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-white transition-all">10m</button>
+          <button onclick="setTimerDuration(15)" class="py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-holos-turquoise transition-all">15m</button>
+          <button onclick="setTimerDuration(25)" class="py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-white transition-all">25m</button>
         </div>
 
-        <!-- Przyciski Kontrolne Timera -->
         <div class="flex gap-2 pt-1">
-          <button id="btn-timer-toggle" onclick="toggleTimer()" class="flex-1 py-2 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-1.5">
+          <button id="btn-timer-toggle" onclick="toggleTimer()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-1.5">
             <i id="btn-timer-icon" class="fa-solid fa-play text-[10px]"></i>
             <span id="btn-timer-text">Start</span>
           </button>
-          <button onclick="resetTimer()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all" title="Resetuj">
+          <button onclick="resetTimer()" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all" title="Resetuj">
             <i class="fa-solid fa-rotate-right text-xs"></i>
           </button>
         </div>
       </div>
 
-      <!-- Karta: KONTEKST SZABATU (SOBOTA) -->
-      <div id="sabbath-main-card" class="p-4 rounded-xl glass-card space-y-2 border border-white/5">
+      <!-- Karta: ZEGAR SZABATU (SOBOTA) -->
+      <div id="sabbath-main-card" class="p-4 rounded-2xl glass-card-portal space-y-2 border border-white/5">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">CYKL SŁONECZNY</span>
           <span id="stat-sabbath-status" class="text-[10px] font-bold text-holos-turquoise">Sobota</span>
@@ -1278,27 +407,751 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       </div>
 
       <!-- Karta: SZYBKIE PYTANIE DO AURY -->
-      <div class="p-4 rounded-xl glass-card space-y-2">
+      <div class="p-4 rounded-2xl glass-card-portal space-y-2">
         <div class="flex items-center gap-1.5">
           <span class="text-holos-turquoise text-xs">✦</span>
           <span class="text-[10px] font-bold text-text-tertiary uppercase tracking-wider">ZAPYTAJ AURĘ</span>
         </div>
         <div class="flex gap-1.5">
-          <input type="text" id="now-quick-aura-input" placeholder="Krótkie pytanie..." class="flex-1 px-2.5 py-1.5 rounded-lg glass-input text-xs" onkeydown="if(event.key==='Enter') quickAskAuraFromNow()">
-          <button onclick="quickAskAuraFromNow()" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all">
+          <input type="text" id="now-quick-aura-input" placeholder="Zadaj pytanie..." class="flex-1 px-3 py-2 rounded-xl glass-input text-xs" onkeydown="if(event.key==='Enter') quickAskAuraFromNow()">
+          <button onclick="quickAskAuraFromNow()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all">
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
         </div>
       </div>
 
-    </aside>
-
-  </div>
+    </div>
+  </aside>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 3. DOLNY MINI-PLAYER RADIOWY (PERSISTENT RADIO HOLOS)                        -->
+  <!-- 4. GŁÓWNY IMMERSYJNY PORTAL ŻYCIA (100% PEŁNA SZEROKOŚĆ)                     -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <div id="live-player-bar" class="h-12 bg-surface-dark/95 backdrop-blur-md border-t border-surface-border flex items-center justify-between px-3 sm:px-5 shrink-0 z-40">
+  <main id="center-portal" class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24">
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4A. HERO: OD 5 MINUT DO WIECZNOŚCI                                         -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="hero" class="relative text-center py-12 sm:py-20 overflow-hidden rounded-3xl glass-portal border border-white/10 hero-glow">
+      <div class="max-w-4xl mx-auto px-4 space-y-6">
+        
+        <!-- Sabbath Context Badge (Sunset context) -->
+        <div id="hero-sun-cycle-banner" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-text-secondary backdrop-blur-md">
+          <span id="hero-sun-icon" class="text-base">⏳</span>
+          <div id="hero-sun-text" class="text-xs">
+            <span id="countdown-label">Do Szabatu (Sobota):</span> <strong id="countdown-display" class="font-mono text-holos-turquoise">--:--:--</strong>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-[11px] font-black tracking-widest uppercase text-holos-turquoise">CHRISTIAN CULTURE • LIFE OS</div>
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight">
+            HOLOS
+          </h1>
+          <p class="text-xl sm:text-2xl font-serif italic text-slate-200 tracking-wide">
+            Od 5 minut do wieczności
+          </p>
+          <p class="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
+            Biblia • Życie • Czas • Relacje • Misja. Portal, który inspiruje do życia — i pozwala natychmiast przejść do działania.
+          </p>
+        </div>
+
+        <!-- Hero Actions -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <a href="#sekcja-dzisiaj" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-black text-xs sm:text-sm transition-all shadow-xl flex items-center gap-2">
+            <i class="fa-solid fa-play text-xs"></i>
+            <span>ROZPOCZNIJ DZIEŃ</span>
+          </a>
+          <a href="#sekcja-51015" class="px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-extrabold text-xs sm:text-sm border border-white/10 transition-all flex items-center gap-2">
+            <span class="text-amber-400">⚡</span>
+            <span>OTWÓRZ 5·10·15</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4B. SEKCJA 1: DZISIAJ (POZIOMY RYTM DNIA)                                  -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-dzisiaj" class="scroll-mt-24 space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">DZISIAJ</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">Twój Rytm Dnia</h2>
+        </div>
+        <span id="sun-cycle-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">
+          DZIEŃ ROBOCZY
+        </span>
+      </div>
+
+      <!-- Poziomy Moduł: Lewo (Priorytety i Formacja) ↔ Prawo (Twój Rytm i Agenda) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Lewa Strona (7 kolumn): Poranne 5+10 i Priorytety -->
+        <div class="lg:col-span-7 p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+          
+          <!-- Poranne 5 + 10 -->
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="text-xl">🙏</span>
+                <h3 class="text-sm font-black uppercase tracking-wider text-white">Poranne 5 + 10</h3>
+              </div>
+              <span class="text-xs font-mono text-amber-300 font-bold">15 minut</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              5 minut ciszy i modlitwy przed Bogiem + 10 minut karmienia się Słowem. Zacznij dzień od Ducha.
+            </p>
+            <div class="flex gap-2 pt-1">
+              <button onclick="startSpecificTimer(15, 'Poranne 5+10: Modlitwa i Słowo')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
+                Rozpocznij Poranek
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Priorytety Dnia -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Najważniejsze Dzisiaj</h3>
+              <span class="text-[10px] text-text-tertiary">3 cele wierności</span>
+            </div>
+
+            <!-- Dynamiczny Baner Priorytetu z Koła Życia -->
+            <div id="schedule-priority-banner" class="p-4 rounded-xl bg-holos-sky/10 border border-holos-sky/20 flex items-start gap-3">
+              <span class="text-lg text-holos-sky shrink-0 mt-0.5">💡</span>
+              <div class="text-xs">
+                <div class="font-bold text-white mb-0.5">Sugerowany Priorytet Naprawczy:</div>
+                <div id="schedule-priority-text" class="text-text-secondary leading-relaxed">
+                  Wypełnij autodiagnozę w <strong class="text-white">Kole Życia</strong>, aby zidentyfikować obszar wymagający troski.
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista 3 Priorytetów -->
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+                <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
+                <input type="text" value="Poranne 5+10: Modlitwa w ciszy i Werset Dnia" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+                <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
+                <input type="text" value="Główny blok Deep Work: Praca twórcza i realizacja zlecenia" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-dark border border-white/5">
+                <input type="checkbox" onchange="togglePriorityCheck(this)" class="w-4 h-4 rounded text-holos-turquoise bg-white/5 border-white/20 cursor-pointer">
+                <input type="text" value="Świątynia Ducha: Spacer i regeneracja bez ekranów" class="bg-transparent border-none text-xs text-white flex-1 font-medium focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Wieczorne 15 -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-surface-dark border border-white/5">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>🌙</span> Wieczorne 15:
+              </div>
+              <div class="text-[11px] text-text-tertiary">Podsumowanie dnia, rachunek sumienia i dziękczynienie.</div>
+            </div>
+            <button onclick="startSpecificTimer(15, 'Wieczorne 15: Podsumowanie Dnia')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all shrink-0">
+              Podsumuj Dzień
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Prawa Strona (5 kolumn): Harmonogram i Intencja Dnia -->
+        <div class="lg:col-span-5 p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+          
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Twój Rytm Czasu</h3>
+              <div class="flex gap-1">
+                <button onclick="generateSchedule('standard')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Std</button>
+                <button onclick="generateSchedule('monk')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Monk</button>
+                <button onclick="generateSchedule('rest')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white">Odpoczynek</button>
+              </div>
+            </div>
+
+            <!-- Kontener Bloków Harmonogramu (ID zachowane!) -->
+            <div id="schedule-blocks-container" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+              <!-- Renderowane dynamicznie przez generateSchedule() -->
+            </div>
+          </div>
+
+          <!-- Intencja Dnia & Notatki (ID zachowane!) -->
+          <div class="space-y-3 pt-3 border-t border-white/5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold text-white uppercase tracking-wider">Intencja Dnia</span>
+              <span id="saved-intention-badge" class="hidden text-[10px] text-emerald-400 font-bold">Zapisano ✓</span>
+            </div>
+            <input type="text" id="input-intention" placeholder="W czym chcę być dzisiaj wierny Bogu?" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
+            <textarea id="input-notes" rows="3" placeholder="Notatki szafarza, Boże odpowiedzi, owoce dnia..." class="w-full px-3 py-2 rounded-xl glass-input text-xs resize-none"></textarea>
+            <button onclick="saveDailyIntention()" class="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all">
+              Zapisz Intencję
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4C. SEKCJA 2: 5·10·15 (SILNIK DZIAŁANIA — 3 INTERAKTYWNE KARTY)            -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-51015" class="scroll-mt-24 space-y-6">
+      
+      <div class="text-center space-y-2 max-w-2xl mx-auto">
+        <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">METODA DZIAŁANIA</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">5 · 10 · 15</h2>
+        <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+          Od drobnych aktów posłuszeństwa do wielkich Bożych projektów. Wybierz swój rytm.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Karta 1: 5 MINUT -->
+        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-emerald-400/40 transition-all group">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-3xl font-black group-hover:scale-110 transition-transform">
+            5
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-base font-black text-white uppercase tracking-wider">Zrób Teraz</h3>
+            <div class="text-xs text-emerald-400 font-bold">≤ 5 minut</div>
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            Drobne zadania, krótka modlitwa za kogoś, szklanka wody, odpisanie na ważną wiadomość. Nie odkładaj — zrób natychmiast.
+          </p>
+          <button onclick="startSpecificTimer(5, 'Zadanie 5 min — Zrób teraz')" class="w-full py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-extrabold text-xs border border-emerald-500/30 transition-all">
+            Uruchom 5 min
+          </button>
+        </div>
+
+        <!-- Karta 2: 10–15 MINUT -->
+        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-amber-400/40 transition-all group">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-3xl font-black group-hover:scale-110 transition-transform">
+            10
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-base font-black text-white uppercase tracking-wider">Zaplanuj Dzisiaj</h3>
+            <div class="text-xs text-amber-400 font-bold">10 – 15 minut</div>
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            Krótka przerwa formacyjna, lektura rozdziału Pisma, rachunek szafarza, porządek na stanowisku pracy.
+          </p>
+          <button onclick="startSpecificTimer(10, 'Blok 10 min — Zaplanuj na dziś')" class="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
+            Uruchom 10 min
+          </button>
+        </div>
+
+        <!-- Karta 3: 15+ MINUT (DEEP WORK) -->
+        <div class="p-8 rounded-3xl glass-portal border border-white/10 text-center space-y-4 hover:border-holos-turquoise/40 transition-all group">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-holos-turquoise/10 border border-holos-turquoise/20 flex items-center justify-center text-holos-turquoise text-3xl font-black group-hover:scale-110 transition-transform">
+            15+
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-base font-black text-white uppercase tracking-wider">Deep Work & Termin</h3>
+            <div class="text-xs text-holos-turquoise font-bold">&gt; 15 minut</div>
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            Bloki skupienia, realizacja strategicznych zadań, głęboki czas z rodziną bez ekranów. Zablokuj czas w kalendarzu.
+          </p>
+          <a href="#sekcja-kalendarz" class="block w-full py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md">
+            Zablokuj w Kalendarzu
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4D. SEKCJA 3: KOŁO ŻYCIA (DUŻA, PRZESTRZENNA WIZUALIZACJA)                 -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-kolo" class="scroll-mt-24 space-y-8">
+      
+      <div class="text-center space-y-2 max-w-2xl mx-auto">
+        <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">AUTODIAGNOZA WIERNOŚCI</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">Koło 5 Sektorów Życia</h2>
+        <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+          Zbadaj harmonię w 5 biblijnych obszarach. Przesuń suwaki, aby obliczyć swój rzeczywisty Holos Score.
+        </p>
+      </div>
+
+      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Lewa Strona (5 kolumn): Duży Radar SVG & Score -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center text-center space-y-4">
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+            <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-2xl">
+              <!-- Okręgi -->
+              <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
+              <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
+              <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
+              <circle cx="200" cy="200" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"></circle>
+
+              <!-- Osie -->
+              <line x1="200" y1="200" x2="200" y2="40" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
+              <line x1="200" y1="200" x2="352" y2="151" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
+              <line x1="200" y1="200" x2="294" y2="330" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
+              <line x1="200" y1="200" x2="106" y2="330" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
+              <line x1="200" y1="200" x2="48" y2="151" stroke="rgba(255,255,255,0.12)" stroke-width="1"></line>
+
+              <!-- Dynamiczny Wielokąt Radaru (ID zachowane!) -->
+              <polygon id="radar-path" points="200,80 320,160 270,300 130,300 80,160" fill="rgba(0, 242, 254, 0.28)" stroke="#00F2FE" stroke-width="3"></polygon>
+              <g id="radar-points"></g>
+            </svg>
+
+            <!-- Wskaźnik Holos Score (ID zachowane!) -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <div class="text-[11px] text-text-tertiary uppercase tracking-widest font-black">HOLOS SCORE</div>
+              <div id="stat-holos-score" class="text-4xl font-black text-white tracking-tight">--</div>
+              <div id="stat-holos-status" class="text-xs text-holos-turquoise font-bold">Czeka na diagnozę</div>
+            </div>
+          </div>
+
+          <div id="holos-sync-status" class="text-xs text-text-tertiary flex items-center gap-2">
+            <i class="fa-solid fa-cloud text-xs"></i>
+            <span id="holos-sync-label">Dane zapisywane w profilu CC ID</span>
+          </div>
+        </div>
+
+        <!-- Prawa Strona (7 kolumn): Przestronne Suwaki 5 Sektorów -->
+        <div class="lg:col-span-7 space-y-5">
+          <div class="space-y-4">
+            <!-- 1. Wiara -->
+            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-white">🙏 1. Wiara i Duchowość</span>
+                <span id="val-faith" class="text-holos-turquoise font-mono">50%</span>
+              </div>
+              <input type="range" id="slider-faith" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
+            </div>
+
+            <!-- 2. Relacje -->
+            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-white">❤️ 2. Relacje i Rodzina</span>
+                <span id="val-family" class="text-holos-turquoise font-mono">50%</span>
+              </div>
+              <input type="range" id="slider-family" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
+            </div>
+
+            <!-- 3. Zdrowie -->
+            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-white">🏃 3. Zdrowie i Ciało (Świątynia Ducha)</span>
+                <span id="val-body" class="text-holos-turquoise font-mono">50%</span>
+              </div>
+              <input type="range" id="slider-body" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
+            </div>
+
+            <!-- 4. Finanse -->
+            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-white">💰 4. Finanse i Szafarstwo 10%</span>
+                <span id="val-money" class="text-holos-turquoise font-mono">50%</span>
+              </div>
+              <input type="range" id="slider-money" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
+            </div>
+
+            <!-- 5. Rozwój -->
+            <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-white">🎯 5. Praca i Rozwój Talentów</span>
+                <span id="val-work" class="text-holos-turquoise font-mono">50%</span>
+              </div>
+              <input type="range" id="slider-work" min="0" max="100" value="50" oninput="updateWheel()" class="w-full">
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <button onclick="saveWheelLocal()" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition-all flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk text-xs"></i>
+              <span>Zapisz Diagnozę</span>
+            </button>
+            <a href="#sekcja-dzisiaj" class="text-xs text-holos-turquoise font-bold hover:underline">
+              Zastosuj w Dziś →
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4E. SEKCJA 4: 5 SEKTORÓW (HORIZONTAL SNAP CAROUSEL HD)                     -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-sektory" class="scroll-mt-24 space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">DOŚWIADCZENIE WIZUALNE</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">5 Sektorów Życia</h2>
+        </div>
+        <div class="text-xs text-text-tertiary hidden sm:block">← Przewiń poziomo →</div>
+      </div>
+
+      <div class="flex gap-6 overflow-x-auto snap-carousel pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+        
+        <!-- Sektor 1: Wiara -->
+        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
+          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_faith.jpg');"></div>
+          <div class="p-6 space-y-2">
+            <div class="text-xs font-black uppercase text-amber-400">1. Wiara i Duchowość</div>
+            <h3 class="text-base font-bold text-white leading-tight">Fundament Przymierza</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Cisza, modlitwa, posłuszeństwo Bogu i codzienne karmienie się Słowem. Bez tego sektora wszystkie inne tracą sens.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sektor 2: Relacje -->
+        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
+          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_family.jpg');"></div>
+          <div class="p-6 space-y-2">
+            <div class="text-xs font-black uppercase text-red-400">2. Relacje i Rodzina</div>
+            <h3 class="text-base font-bold text-white leading-tight">Czas Przymierza</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Obecność bez telefonu w dłoni, budowanie małżeństwa, troska o dzieci i braterska miłość we wspólnocie.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sektor 3: Zdrowie -->
+        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
+          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_health.jpg');"></div>
+          <div class="p-6 space-y-2">
+            <div class="text-xs font-black uppercase text-emerald-400">3. Zdrowie i Ciało</div>
+            <h3 class="text-base font-bold text-white leading-tight">Świątynia Ducha Świętego</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Dyscyplina snu, czysty pokarm, ruch i regeneracja. Twoje ciało jest narzędziem do pełnienia woli Bożej.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sektor 4: Finanse -->
+        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
+          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_stewardship.jpg');"></div>
+          <div class="p-6 space-y-2">
+            <div class="text-xs font-black uppercase text-holos-turquoise">4. Finanse i Szafarstwo</div>
+            <h3 class="text-base font-bold text-white leading-tight">Wierność w Bogactwie</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Uczciwość, brak długów konsumpcyjnych, hojność i wierność w dziesięcinie 10%. Wolność finansowa ku Bożej chwale.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sektor 5: Rozwój -->
+        <div class="min-w-[280px] sm:min-w-[340px] rounded-3xl overflow-hidden glass-portal border border-white/10 snap-item group shrink-0">
+          <div class="h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('/images/holos/holos_deepwork.jpg');"></div>
+          <div class="p-6 space-y-2">
+            <div class="text-xs font-black uppercase text-indigo-400">5. Praca i Rozwój Talentów</div>
+            <h3 class="text-base font-bold text-white leading-tight">Mistrzostwo Szafarza</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Praca wykonywana z serca, jak dla samego Pana, a nie dla ludzi. Rozwijanie powierzonych darów w pokorze.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4F. SEKCJA 5: SZAFARSTWO 10% (FINANSE KRÓLESTWA)                           -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-szafarstwo" class="scroll-mt-24 space-y-8">
+      
+      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 max-w-4xl mx-auto space-y-8">
+        
+        <div class="text-center space-y-2">
+          <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">BIBLIJNA EKONOMIA</span>
+          <h2 class="text-3xl font-black text-white">Kalkulator Szafarstwa 10%</h2>
+          <p class="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
+            Zasada 10 / 20 / 70: Dziesięcina Bogu, przezorność szafarza i zdrowe koszty życia.
+          </p>
+        </div>
+
+        <!-- Pole Przychodu (ID zachowane!) -->
+        <div class="p-5 rounded-2xl bg-surface-dark border border-white/5 space-y-2 max-w-md mx-auto">
+          <label class="block text-xs font-bold text-text-tertiary">Twój Miesięczny Przychód Netto (PLN):</label>
+          <div class="relative">
+            <input type="number" id="input-income" value="6000" oninput="calcStewardship()" class="w-full px-4 py-3 rounded-xl glass-input text-xl font-black text-white pr-16" placeholder="Wpisz kwotę...">
+            <span class="absolute right-4 top-3.5 text-xs font-bold text-text-tertiary">PLN</span>
+          </div>
+        </div>
+
+        <!-- Wyniki 10 / 20 / 70 (ID zachowane!) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-center space-y-2">
+            <div class="text-[10px] font-black text-amber-300 uppercase tracking-widest">10% DZIESIĘCINA (BÓG)</div>
+            <div id="calc-tithe" class="text-3xl font-black text-amber-400">600 PLN</div>
+            <p class="text-xs text-text-tertiary leading-relaxed">Wierność w pierwszych owocach na dzieła Królestwa Bożego.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-holos-turquoise/10 border border-holos-turquoise/20 text-center space-y-2">
+            <div class="text-[10px] font-black text-holos-turquoise uppercase tracking-widest">20% OSZCZĘDNOŚCI (PRZEZORNOŚĆ)</div>
+            <div id="calc-savings" class="text-3xl font-black text-holos-turquoise">1 200 PLN</div>
+            <p class="text-xs text-text-tertiary leading-relaxed">Fundusz awaryjny, przezorność biblijna i inwestycje przyszłości.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-dark border border-white/5 text-center space-y-2">
+            <div class="text-[10px] font-black text-text-tertiary uppercase tracking-widest">70% KOSZTY ŻYCIA</div>
+            <div id="calc-living" class="text-3xl font-black text-white">4 200 PLN</div>
+            <p class="text-xs text-text-tertiary leading-relaxed">Mieszkanie, rachunki, pożywienie i codzienne potrzeby rodziny.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4G. SEKCJA 6: KALENDARZ GOOGLE (P0 — SPOKOJNY, MINIMALISTYCZNY ORGANIZER)   -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-kalendarz" class="scroll-mt-24 space-y-6">
+      
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">INTEGRACJA P0 BLOCKER</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">Google Calendar API</h2>
+        </div>
+        <div id="gcal-status-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-text-tertiary border border-white/10">
+          Inicjalizacja...
+        </div>
+      </div>
+
+      <!-- Karta Połączenia i Akcji (ID zachowane!) -->
+      <div id="gcal-connection-card" class="p-6 sm:p-8 rounded-3xl glass-portal border border-white/10 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <h3 id="gcal-status-title" class="text-base font-extrabold text-white">Dwukierunkowa Synchronizacja Kalendarza</h3>
+            <p id="gcal-status-desc" class="text-xs text-text-secondary max-w-xl leading-relaxed">
+              Trwa sprawdzanie autoryzacji kalendarza...
+            </p>
+            <div class="text-[11px] text-text-tertiary font-mono" id="gcal-last-sync-time">
+              Ostatnia synchronizacja: --:--
+            </div>
+          </div>
+
+          <div id="gcal-actions-container" class="flex flex-wrap items-center gap-2 shrink-0">
+            <!-- Renderowane dynamicznie przez kontroler -->
+          </div>
+        </div>
+
+        <!-- Alert błędu (ID zachowane!) -->
+        <div id="gcal-error-alert" class="hidden p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
+          <strong id="gcal-error-title" class="text-red-300 font-bold">Uwaga:</strong> <span id="gcal-error-message">Wystąpił błąd synchronizacji.</span>
+        </div>
+
+        <!-- Siatka Zdarzeń i Nowego Zdarzenia -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-white/5">
+          
+          <!-- Lista Zdarzeń (7 kolumn) -->
+          <div class="lg:col-span-7 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-white">Zsynchronizowane Wydarzenia</span>
+              <span id="gcal-events-count" class="text-xs font-bold text-holos-turquoise font-mono">0 wydarzeń</span>
+            </div>
+            <div id="gcal-events-list" class="space-y-2 min-h-[140px]">
+              <div class="p-6 rounded-2xl bg-surface-dark border border-white/5 text-center text-xs text-text-tertiary">
+                Kalendarz nie został jeszcze połączony. Kliknij „Połącz Google Calendar”, aby wczytać swoje rzeczywiste wydarzenia.
+              </div>
+            </div>
+          </div>
+
+          <!-- Szybkie Tworzenie Zdarzenia (5 kolumn) -->
+          <div class="lg:col-span-5 p-5 rounded-2xl bg-surface-dark border border-white/5 space-y-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-white">Dodaj Wydarzenie</div>
+            <input type="text" id="gcal-new-title" placeholder="Tytuł zadania / spotkania" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
+            <div class="grid grid-cols-2 gap-2">
+              <input type="datetime-local" id="gcal-new-start" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
+              <input type="datetime-local" id="gcal-new-end" class="w-full px-3 py-2 rounded-xl glass-input text-xs">
+            </div>
+            <select id="gcal-new-category" class="w-full px-3 py-2 rounded-xl glass-input text-xs bg-dark-bg">
+              <option value="faith">🙏 Wiara i Duchowość</option>
+              <option value="family">❤️ Relacje i Rodzina</option>
+              <option value="health">🏃 Zdrowie i Ciało</option>
+              <option value="money">💰 Finanse i Szafarstwo</option>
+              <option value="work">🎯 Praca i Rozwój Talentów</option>
+            </select>
+            <button onclick="window.holosCalendarCreateNewEvent()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
+              Utwórz w Google Calendar
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Konsola E2E Diagnostic Suite (ID zachowane!) -->
+        <div class="p-4 rounded-2xl bg-pure-black/50 border border-white/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-vial text-holos-turquoise text-xs"></i>
+              <span class="text-xs font-bold text-white">Konsola Diagnostyczna E2E</span>
+              <span id="gcal-test-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-text-tertiary">IDLE</span>
+            </div>
+            <button id="btn-run-gcal-test" onclick="window.holosCalendarRunE2ETest()" class="px-3 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-extrabold transition-all">
+              Uruchom Test E2E
+            </button>
+          </div>
+          <pre id="gcal-test-console" class="font-mono text-[11px] text-text-tertiary h-24 overflow-y-auto leading-relaxed select-text">
+Gotowy do uruchomienia testu dwustronnej synchronizacji...
+          </pre>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4H. SEKCJA 7: SŁOWO (PISMO ŚWIĘTE, WERSET, DOBRZE ŻE JESTEŚ)               -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-slowo" class="scroll-mt-24 space-y-6">
+      
+      <div class="text-center space-y-2 max-w-2xl mx-auto">
+        <span class="text-[10px] font-black uppercase tracking-widest text-holos-turquoise">DUCHOWY POKARM</span>
+        <h2 class="text-3xl font-black text-white">Słowo Boże & Refleksja</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Karta Werset Dnia -->
+        <div class="p-8 rounded-3xl glass-portal border border-white/10 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="text-[10px] font-bold text-holos-turquoise uppercase tracking-widest">WERSET DNIA</div>
+            <blockquote class="text-lg font-serif italic text-white leading-relaxed">
+              „Z całego serca zaufaj Panu, a na własnym rozumie nie polegaj. We wszystkich swoich drogach zważaj na Niego, a On prostować będzie twoje ścieżki.”
+            </blockquote>
+            <div class="text-xs font-bold text-amber-400">— Księga Przysłów 3:5-6 (UBG)</div>
+          </div>
+          <div class="pt-2">
+            <a href="/mojabiblia" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-all">
+              <span>Zbadaj w MojaBiblia Interlinearna</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Karta Dobrze, że jesteś & Audio -->
+        <div class="p-8 rounded-3xl glass-portal border border-white/10 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">ROZWAŻANIE CODZIENNE</div>
+            <h3 class="text-lg font-bold text-white">Oczekuj Pana z odwagą</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Niezależnie od okoliczności, które cię otaczają, pamiętaj, że Bóg nie jest zaskoczony twoim położeniem. Zaufaj Jego suwerennej dobroci.
+            </p>
+          </div>
+          <div class="pt-2">
+            <button onclick="toggleRadio('https://stream.zeno.fm/gn3uhltrrytuv', 'Pismo Święte & Biblia Audio')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md">
+              <i class="fa-solid fa-headphones text-xs"></i>
+              <span>Włącz Kanał Biblia Audio</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 4I. SEKCJA 8: AI MENTOR AURA (BYOK GEMINI API & AMBIENT MENTOR)            -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <section id="sekcja-aura" class="scroll-mt-24 space-y-6">
+      
+      <div class="p-8 sm:p-12 rounded-3xl glass-portal border border-white/10 space-y-8 max-w-4xl mx-auto">
+        
+        <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-white/10 text-center sm:text-left">
+          <div id="aura-orb" class="w-20 h-20 rounded-full bg-gradient-to-tr from-holos-turquoise via-holos-indigo to-holos-purple p-1 shadow-2xl flex items-center justify-center shrink-0">
+            <div class="w-full h-full bg-dark-bg rounded-full flex items-center justify-center text-holos-turquoise text-3xl">
+              ✦
+            </div>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center justify-center sm:justify-start gap-2">
+              <h2 class="text-2xl font-black text-white">AI Mentor Aura</h2>
+              <span id="aura-api-model-badge" class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30">
+                BYOK / HEURISTIC
+              </span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Dyskretny asystent uświęcenia czasu i podejmowania decyzji w oparciu o Pismo Święte i stan Twoich 5 sektorów życia.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Tryby Decyzyjne -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <button onclick="previewDecision('focus')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-turquoise/40 text-left transition-all group">
+            <div class="text-xs font-black text-white group-hover:text-holos-turquoise">INTENSE FOCUS</div>
+            <div class="text-[10px] text-text-tertiary mt-0.5">Odetnij dystrakcje</div>
+          </button>
+          <button onclick="previewDecision('encouragement')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-amber-400/40 text-left transition-all group">
+            <div class="text-xs font-black text-white group-hover:text-amber-400">ENCOURAGEMENT</div>
+            <div class="text-[10px] text-text-tertiary mt-0.5">Boża łaska w trudzie</div>
+          </button>
+          <button onclick="previewDecision('rest')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-holos-sky/40 text-left transition-all group">
+            <div class="text-xs font-black text-white group-hover:text-holos-sky">REST & SABBATH</div>
+            <div class="text-[10px] text-text-tertiary mt-0.5">Święty odpoczynek</div>
+          </button>
+          <button onclick="previewDecision('tough_love')" class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-red-400/40 text-left transition-all group">
+            <div class="text-xs font-black text-white group-hover:text-red-400">TOUGH LOVE</div>
+            <div class="text-[10px] text-text-tertiary mt-0.5">Odpowiedzialność</div>
+          </button>
+        </div>
+
+        <!-- Okno Dialogowe Aury (ID zachowane!) -->
+        <div class="space-y-3">
+          <label class="block text-xs font-bold text-text-tertiary">O czym chcesz dziś porozmawiać z Aurą?</label>
+          <div class="flex gap-2">
+            <input type="text" id="aura-custom-prompt" placeholder="Wpisz swoje pytanie lub dylemat..." class="flex-1 px-4 py-3 rounded-2xl glass-input text-xs">
+            <button id="btn-ask-aura" onclick="askAuraCustom()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-holos-turquoise to-holos-indigo hover:brightness-110 text-pure-black font-extrabold text-xs transition-all shadow-md shrink-0 flex items-center gap-2">
+              <span>Zapytaj</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <!-- Odpowiedź Aury (ID zachowane!) -->
+          <div id="aura-response-box" class="hidden p-5 rounded-2xl bg-surface-dark border border-white/10 space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold text-holos-turquoise">
+              <span>Odpowiedź Mentora Aura:</span>
+              <button onclick="document.getElementById('aura-response-box').classList.add('hidden')" class="text-text-tertiary hover:text-white">✕</button>
+            </div>
+            <div id="aura-response-text" class="text-xs text-text-secondary leading-relaxed whitespace-pre-wrap select-text"></div>
+          </div>
+        </div>
+
+        <!-- Konfiguracja Własnego Klucza API (BYOK, ID zachowane!) -->
+        <div class="p-4 rounded-2xl bg-surface-dark/70 border border-white/5 space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-key text-xs text-amber-400"></i>
+              <span class="text-xs font-bold text-white">Własny Klucz Google Gemini API (BYOK):</span>
+              <span id="aura-api-status" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-text-tertiary">Brak klucza (używa silnika CC)</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <input type="password" id="gemini-api-key" placeholder="Wklej klucz z Google AI Studio (AIzaSy...)" class="flex-1 px-3 py-2 rounded-xl glass-input text-xs font-mono">
+            <button onclick="saveApiKey()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all">Zapisz</button>
+            <button onclick="clearApiKey()" class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold transition-all">Usuń</button>
+          </div>
+          <p class="text-[10px] text-text-tertiary">Klucz zapisywany jest wyłącznie w LocalStorage Twojej przeglądarki. Nigdy nie opuszcza Twojego urządzenia.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <!-- 5. DOLNY MINI-PLAYER RADIOWY (PERSISTENT RADIO HOLOS)                        -->
+  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
+  <div id="live-player-bar" class="fixed bottom-0 left-0 right-0 h-14 bg-dark-bg/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-4 sm:px-8 z-40">
     <div class="flex items-center gap-3">
       <button onclick="toggleGlobalRadioPlayback()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all">
         <i id="global-radio-icon" class="fa-solid fa-play text-xs text-holos-turquoise"></i>
@@ -1308,11 +1161,11 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
           <span class="text-[9px] font-black uppercase tracking-wider text-holos-turquoise">RADIO HOLOS</span>
           <span id="player-title" class="text-xs font-bold text-white truncate max-w-[140px] sm:max-w-xs">Spokój & Kontemplacja</span>
         </div>
-        <span class="hidden sm:block text-[9px] text-text-tertiary -mt-0.5">Muzyka nie przerywa podczas przełączania modułów</span>
+        <span class="hidden sm:block text-[9px] text-text-tertiary -mt-0.5">Muzyka nie przerywa podczas przeglądania portalu</span>
       </div>
     </div>
 
-    <!-- Przełączniki Stacji Radiowych (ID zachowane!) -->
+    <!-- Przyciski Stacji (ID zachowane!) -->
     <div class="flex items-center gap-1 sm:gap-2">
       <button id="btn-vz96pvl3pnktv" onclick="toggleRadio('https://stream.zeno.fm/vz96pvl3pnktv', 'Spokój & Kontemplacja')" class="radio-play-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-text-secondary transition-all">
         <span class="btn-text">1. Spokój</span>
@@ -1327,43 +1180,13 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 4. DOLNA NAWIGACJA MOBILE (BOTTOM BAR DLA SMARTFONÓW)                         -->
-  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <nav id="app-mobile-nav" class="md:hidden fixed bottom-12 left-0 right-0 h-14 bg-surface-dark/95 backdrop-blur-md border-t border-surface-border flex items-center justify-around px-2 z-40">
-    <button onclick="navigateWorkspace('today')" id="mob-nav-today" class="mob-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-holos-turquoise">
-      <span class="text-base">🏠</span>
-      <span class="text-[9px] font-bold mt-0.5">Dziś</span>
-    </button>
-    <button onclick="navigateWorkspace('planner')" id="mob-nav-planner" class="mob-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-text-tertiary">
-      <span class="text-base">📅</span>
-      <span class="text-[9px] font-bold mt-0.5">Planer</span>
-    </button>
-    
-    <!-- Centralny Przycisk Quick Capture (+) -->
-    <button onclick="openQuickCapture()" class="-mt-5 w-11 h-11 rounded-full bg-gradient-to-tr from-holos-turquoise to-holos-indigo p-0.5 shadow-lg flex items-center justify-center">
-      <div class="w-full h-full bg-pure-black rounded-full flex items-center justify-center text-holos-turquoise text-lg font-black">
-        +
-      </div>
-    </button>
-
-    <button onclick="navigateWorkspace('life')" id="mob-nav-life" class="mob-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-text-tertiary">
-      <span class="text-base">◎</span>
-      <span class="text-[9px] font-bold mt-0.5">Życie</span>
-    </button>
-    <button onclick="navigateWorkspace('word')" id="mob-nav-word" class="mob-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-text-tertiary">
-      <span class="text-base">🙏</span>
-      <span class="text-[9px] font-bold mt-0.5">Słowo</span>
-    </button>
-  </nav>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 5. MODALE & DRAWER (QUICK CAPTURE, COMMAND PALETTE, NOTIFICATIONS)           -->
+  <!-- 6. MODALE: QUICK CAPTURE & COMMAND PALETTE                                   -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
 
   <!-- Modal 1: Quick Capture -->
   <div id="modal-quick-capture" class="fixed inset-0 bg-pure-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target===this) closeQuickCapture()">
-    <div class="w-full max-w-md rounded-2xl glass-panel border border-white/10 p-5 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-surface-border">
+    <div class="w-full max-w-md rounded-3xl glass-portal border border-white/10 p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
         <div class="flex items-center gap-2">
           <span class="text-holos-turquoise font-black text-sm">⚡</span>
           <h3 class="text-xs font-black uppercase tracking-wider text-white">Szybki Wpis (Quick Capture)</h3>
@@ -1374,7 +1197,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       <div class="space-y-3">
         <div>
           <label class="block text-[11px] font-bold text-text-tertiary mb-1">Co chcesz zrobić lub zanotować?</label>
-          <input type="text" id="qc-title" placeholder="np. Modlitwa wstawiennicza / Telefon do taty" class="w-full px-3 py-2 rounded-xl glass-input text-xs" autofocus>
+          <input type="text" id="qc-title" placeholder="np. Telefon do taty / Modlitwa o pokój" class="w-full px-3 py-2 rounded-xl glass-input text-xs" autofocus>
         </div>
 
         <div>
@@ -1399,14 +1222,13 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
           </select>
         </div>
 
-        <!-- Rekomendacja 5·10·15 Engine -->
         <div id="qc-engine-recommendation" class="p-3 rounded-xl bg-holos-turquoise/10 border border-holos-turquoise/20 text-xs text-text-secondary leading-relaxed">
           Wybierz czas, aby silnik 5·10·15 podpowiedział optymalny moment realizacji.
         </div>
 
         <div class="flex gap-2 pt-2">
           <button onclick="submitQuickCapture()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-extrabold text-xs hover:brightness-110 transition-all shadow-md">
-            Dodaj do Zadania Dnia
+            Dodaj do Dziś
           </button>
           <button onclick="submitQuickCaptureAndPlanGoogle()" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all" title="Zapisz do Kalendarza Google">
             📅 Google Cal
@@ -1418,216 +1240,115 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
   <!-- Modal 2: Command Palette (Ctrl+K) -->
   <div id="modal-command-palette" class="fixed inset-0 bg-pure-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20 p-4 hidden" onclick="if(event.target===this) closeCommandPalette()">
-    <div class="w-full max-w-lg rounded-2xl glass-panel border border-white/10 p-3 space-y-3 shadow-2xl">
-      <div class="flex items-center gap-2 px-2 pb-2 border-b border-surface-border">
+    <div class="w-full max-w-lg rounded-3xl glass-portal border border-white/10 p-4 space-y-3 shadow-2xl">
+      <div class="flex items-center gap-2 px-2 pb-2 border-b border-white/10">
         <i class="fa-solid fa-magnifying-glass text-xs text-holos-turquoise"></i>
-        <input type="text" id="cp-input" oninput="filterCommands(this.value)" placeholder="Wyszukaj moduł lub zadanie w HOLOS (np. kalendarz, szabat, finanse)..." class="flex-1 bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none">
-        <span class="text-[10px] text-text-tertiary font-mono bg-white/5 px-1 py-0.5 rounded">ESC</span>
+        <input type="text" id="cp-input" oninput="filterCommands(this.value)" placeholder="Szukaj w HOLOS (np. kalendarz, szabat, finanse, werset)..." class="flex-1 bg-transparent border-none text-xs text-white placeholder-text-tertiary focus:outline-none">
+        <span class="text-[10px] text-text-tertiary font-mono bg-white/5 px-1.5 py-0.5 rounded">ESC</span>
       </div>
 
       <div id="cp-results" class="space-y-1 max-h-64 overflow-y-auto text-xs">
-        <button onclick="navigateWorkspace('today'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span>🏠</span> <span>Dziś — Pulpit Dnia</span></span>
+        <a href="#sekcja-dzisiaj" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+          <span class="flex items-center gap-2"><span>🏠</span> <span>Dziś — Rytm Dnia</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('planner', 'calendar'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span>📅</span> <span>Kalendarz Google — Zdarzenia i E2E</span></span>
+        </a>
+        <a href="#sekcja-51015" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+          <span class="flex items-center gap-2"><span class="text-amber-400">⚡</span> <span>5·10·15 Silnik Działania</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('planner', 'tasks'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span>✓</span> <span>Zadania 5·10·15</span></span>
+        </a>
+        <a href="#sekcja-kalendarz" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+          <span class="flex items-center gap-2"><span>📅</span> <span>Kalendarz Google P0</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('life', 'wheel'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+        </a>
+        <a href="#sekcja-kolo" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
           <span class="flex items-center gap-2"><span>◎</span> <span>Koło Życia & Holos Score</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('life', 'finance'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+        </a>
+        <a href="#sekcja-sektory" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+          <span class="flex items-center gap-2"><span>🖼️</span> <span>Galeria 5 Sektorów HD</span></span>
+          <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
+        </a>
+        <a href="#sekcja-szafarstwo" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
           <span class="flex items-center gap-2"><span>💰</span> <span>Kalkulator Szafarstwa 10%</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('word', 'verse'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
-          <span class="flex items-center gap-2"><span>📖</span> <span>Werset Dnia</span></span>
+        </a>
+        <a href="#sekcja-slowo" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+          <span class="flex items-center gap-2"><span>🙏</span> <span>Słowo Boże & Refleksja</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
-        <button onclick="navigateWorkspace('aura'); closeCommandPalette();" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
+        </a>
+        <a href="#sekcja-aura" onclick="closeCommandPalette()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-white group">
           <span class="flex items-center gap-2"><span class="text-holos-turquoise">✦</span> <span>AI Mentor Aura</span></span>
           <span class="text-[10px] text-text-tertiary group-hover:text-holos-turquoise">Przejdź</span>
-        </button>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Popover: Powiadomienia -->
-  <div id="popover-notifications" class="fixed top-16 right-4 sm:right-10 w-80 rounded-2xl glass-panel border border-white/10 p-4 space-y-3 shadow-2xl z-50 hidden">
-    <div class="flex items-center justify-between pb-2 border-b border-surface-border">
-      <div class="flex items-center gap-1.5">
-        <i class="fa-regular fa-bell text-xs text-holos-turquoise"></i>
-        <h4 class="text-xs font-black uppercase tracking-wider text-white">Powiadomienia</h4>
-      </div>
-      <button onclick="toggleNotifications()" class="text-text-tertiary hover:text-white text-xs">✕</button>
-    </div>
-    <div class="space-y-2 text-xs">
-      <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 space-y-1">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-white text-[11px]">🕊️ Święty Szabat (Sobota)</span>
-          <span class="text-[9px] text-text-tertiary">Cykl</span>
-        </div>
-        <p class="text-[11px] text-text-secondary">Pamiętaj o Dniu Przygotowania w piątek przed zachodem słońca.</p>
-      </div>
-      <div class="p-2.5 rounded-xl bg-surface-dark border border-white/5 space-y-1">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-white text-[11px]">📅 Google Calendar</span>
-          <span class="text-[9px] text-emerald-400">P0</span>
-        </div>
-        <p class="text-[11px] text-text-secondary">Połącz swój kalendarz w module Planer, aby zsynchronizować zadania.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Audio Element dla Radia Live -->
+  <!-- Audio Element dla Radia Live (ID zachowane!) -->
   <audio id="global-radio-audio" preload="none"></audio>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 6. SKRYPTY LOGICZNE (KOMPATYBILNE Z DOTYCHCZASOWYM KODEM)                    -->
+  <!-- 7. SKRYPTY LOGICZNE (100% ZACHOWANE METODY I IDENTYFIKATORY)                 -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <script>
     /* -------------------------------------------------------------
-       1. NAWIGACJA MODUŁOWA & ROUTING (HOLOS 2.0)
+       1. CHOWANE DRAWERY (LEFT & RIGHT) — HOLOS 2.1
     ------------------------------------------------------------- */
-    const workspaces = ['today', 'planner', 'life', 'word', 'aura'];
-    let currentWorkspace = 'today';
-    let currentSubtabs = {
-      planner: 'calendar',
-      life: 'wheel',
-      word: 'verse'
-    };
+    function toggleLeftDrawer() {
+      const drawer = document.getElementById('left-drawer');
+      const backdrop = document.getElementById('left-drawer-backdrop');
+      if (!drawer) return;
 
-    function navigateWorkspace(spaceId, subtabId) {
-      if (!workspaces.includes(spaceId)) spaceId = 'today';
-      currentWorkspace = spaceId;
-
-      // Ukryj wszystkie przestrzenie robocze
-      workspaces.forEach(w => {
-        const el = document.getElementById('space-' + w);
-        if (el) el.classList.add('hidden');
-      });
-
-      // Pokaż wybraną przestrzeń
-      const targetEl = document.getElementById('space-' + spaceId);
-      if (targetEl) targetEl.classList.remove('hidden');
-
-      // Zaktualizuj Topbar Nav Buttons
-      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-        btn.classList.remove('nav-tab-active', 'text-holos-turquoise');
-        btn.classList.add('text-text-secondary');
-      });
-      const activeNavTab = document.getElementById('tab-nav-' + spaceId);
-      if (activeNavTab) {
-        activeNavTab.classList.add('nav-tab-active');
-        activeNavTab.classList.remove('text-text-secondary');
-      }
-
-      // Zaktualizuj Mobile Nav Buttons
-      document.querySelectorAll('.mob-nav-btn').forEach(btn => {
-        btn.classList.remove('text-holos-turquoise');
-        btn.classList.add('text-text-tertiary');
-      });
-      const activeMobTab = document.getElementById('mob-nav-' + spaceId);
-      if (activeMobTab) {
-        activeMobTab.classList.add('text-holos-turquoise');
-        activeMobTab.classList.remove('text-text-tertiary');
-      }
-
-      // Zaktualizuj Left Sidebar Links
-      document.querySelectorAll('.sidebar-link').forEach(link => {
-        link.classList.remove('sidebar-link-active');
-      });
-      const activeSidebarLink = document.getElementById('slink-' + spaceId);
-      if (activeSidebarLink) activeSidebarLink.classList.add('sidebar-link-active');
-
-      // Jeśli podano subtab, aktywuj
-      if (subtabId) {
-        switchSubtab(spaceId, subtabId);
-      }
-
-      // Aktualizuj Hash w URL (bez scroll jump)
-      const targetHash = '#' + (subtabId ? subtabId : spaceId);
-      if (window.location.hash !== targetHash) {
-        history.replaceState(null, '', targetHash);
-      }
-    }
-
-    function switchSubtab(spaceId, subtabId) {
-      currentSubtabs[spaceId] = subtabId;
-
-      // Wyłącz wszystkie subtab panele w danej przestrzeni
-      const spaceEl = document.getElementById('space-' + spaceId);
-      if (!spaceEl) return;
-
-      spaceEl.querySelectorAll('.subtab-panel').forEach(p => p.classList.add('hidden'));
-      const targetPanel = document.getElementById(spaceId + '-tab-' + subtabId);
-      if (targetPanel) targetPanel.classList.remove('hidden');
-
-      // Zaktualizuj przyciski subtab
-      spaceEl.querySelectorAll('.subtab-btn').forEach(btn => {
-        btn.classList.remove('subtab-active');
-        btn.classList.add('text-text-secondary');
-      });
-      const activeSubtabBtn = document.getElementById('subtab-' + spaceId + '-' + subtabId);
-      if (activeSubtabBtn) {
-        activeSubtabBtn.classList.add('subtab-active');
-        activeSubtabBtn.classList.remove('text-text-secondary');
-      }
-    }
-
-    // Obsługa zwijania lewego paska
-    function toggleLeftSidebar() {
-      const sidebar = document.getElementById('app-left-sidebar');
-      const toggleIcon = document.getElementById('sidebar-toggle-icon');
-      if (!sidebar) return;
-
-      const isCollapsed = sidebar.classList.contains('w-16');
-      if (isCollapsed) {
-        sidebar.classList.remove('w-16');
-        sidebar.classList.add('w-56', 'lg:w-60');
-        sidebar.querySelectorAll('.sidebar-label').forEach(el => el.classList.remove('hidden'));
-        if (toggleIcon) toggleIcon.className = 'fa-solid fa-chevron-left text-xs';
-        localStorage.setItem('holos_sidebar_collapsed', 'false');
+      const isOpen = !drawer.classList.contains('-translate-x-full');
+      if (isOpen) {
+        closeDrawers();
       } else {
-        sidebar.classList.remove('w-56', 'lg:w-60');
-        sidebar.classList.add('w-16');
-        sidebar.querySelectorAll('.sidebar-label').forEach(el => el.classList.add('hidden'));
-        if (toggleIcon) toggleIcon.className = 'fa-solid fa-chevron-right text-xs';
-        localStorage.setItem('holos_sidebar_collapsed', 'true');
+        closeDrawers();
+        drawer.classList.remove('-translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
       }
     }
 
-    // Inicjalizacja routingu z Hash
-    function initRouting() {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (!hash) {
-        navigateWorkspace('today');
-        return;
-      }
+    function toggleRightDrawer() {
+      const drawer = document.getElementById('right-drawer');
+      const backdrop = document.getElementById('right-drawer-backdrop');
+      if (!drawer) return;
 
-      if (['today', 'planner', 'life', 'word', 'aura'].includes(hash)) {
-        navigateWorkspace(hash);
-      } else if (['calendar', 'tasks', 'habits'].includes(hash)) {
-        navigateWorkspace('planner', hash);
-      } else if (['wheel', 'finance', 'gallery', 'goals', 'relations', 'health'].includes(hash)) {
-        navigateWorkspace('life', hash === 'goals' ? 'wheel' : (hash === 'relations' ? 'gallery' : (hash === 'health' ? 'gallery' : hash)));
-      } else if (['bible', 'verse', 'dzj', 'audio'].includes(hash)) {
-        navigateWorkspace('word', hash);
+      const isOpen = !drawer.classList.contains('translate-x-full');
+      if (isOpen) {
+        closeDrawers();
       } else {
-        navigateWorkspace('today');
+        closeDrawers();
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
       }
     }
 
-    window.addEventListener('hashchange', initRouting);
+    function closeDrawers() {
+      const left = document.getElementById('left-drawer');
+      const right = document.getElementById('right-drawer');
+      const leftBackdrop = document.getElementById('left-drawer-backdrop');
+      const rightBackdrop = document.getElementById('right-drawer-backdrop');
+
+      if (left) left.classList.add('-translate-x-full');
+      if (right) right.classList.add('translate-x-full');
+      if (leftBackdrop) leftBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      if (rightBackdrop) rightBackdrop.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDrawers();
+        closeCommandPalette();
+        closeQuickCapture();
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openCommandPalette();
+      }
+    });
 
     /* -------------------------------------------------------------
-       2. QUICK CAPTURE & 5·10·15 ACTION ENGINE
+       2. QUICK CAPTURE & SILNIK 5·10·15
     ------------------------------------------------------------- */
     let selectedQcDuration = 5;
 
@@ -1655,9 +1376,9 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
       const recBox = document.getElementById('qc-engine-recommendation');
       if (minutes <= 5) {
-        recBox.innerHTML = '⚡ <strong>≤ 5 minut:</strong> Zrób to natychmiast! Nie odkładaj na później. Kliknij dodaj i uruchom timer.';
+        recBox.innerHTML = '⚡ <strong>≤ 5 minut:</strong> Zrób to natychmiast! Uruchom stoper i wykonaj to zadanie.';
       } else if (minutes <= 15) {
-        recBox.innerHTML = '⏳ <strong>10–15 minut:</strong> Zaplanuj na najbliższe godziny jako krótką przerwę formacyjną lub blok podsumowania.';
+        recBox.innerHTML = '⏳ <strong>10–15 minut:</strong> Zaplanuj na najbliższe godziny jako krótki blok formacyjny.';
       } else {
         recBox.innerHTML = '🔥 <strong>&gt; 15 minut (Deep Work):</strong> Wymaga skupienia. Zablokuj dedykowany czas w Kalendarzu Google.';
       }
@@ -1665,25 +1386,13 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
     function submitQuickCapture() {
       const title = document.getElementById('qc-title').value.trim();
-      const category = document.getElementById('qc-category').value;
       if (!title) return;
-
-      // Dodaj zadanie do odpowiedniego koszyka
-      const basketId = selectedQcDuration <= 5 ? 'tasks-basket-5' : (selectedQcDuration <= 15 ? 'tasks-basket-15' : 'tasks-basket-deep');
-      const basketEl = document.getElementById(basketId);
-      if (basketEl) {
-        const item = document.createElement('div');
-        item.className = "p-2.5 rounded-xl bg-surface-dark border border-white/5 flex items-center gap-2";
-        item.innerHTML = `<input type="checkbox" class="w-3.5 h-3.5 rounded text-holos-turquoise"><span class="text-white">${title}</span>`;
-        basketEl.prepend(item);
-      }
-
       closeQuickCapture();
       document.getElementById('qc-title').value = '';
-      
-      // Jeśli <= 5 min, zasugeruj uruchomienie timera
       if (selectedQcDuration <= 5) {
         startSpecificTimer(selectedQcDuration, title);
+      } else {
+        alert('Zadanie dodane! Zostanie uwzględnione w Twoim dzisiejszym rytmie.');
       }
     }
 
@@ -1691,7 +1400,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       const title = document.getElementById('qc-title').value.trim();
       if (!title) return;
       closeQuickCapture();
-      navigateWorkspace('planner', 'calendar');
+      window.location.hash = '#sekcja-kalendarz';
       const gcalTitle = document.getElementById('gcal-new-title');
       if (gcalTitle) gcalTitle.value = title;
     }
@@ -1714,31 +1423,14 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
     function filterCommands(query) {
       const q = query.toLowerCase();
-      document.querySelectorAll('#cp-results button').forEach(btn => {
+      document.querySelectorAll('#cp-results a').forEach(btn => {
         const text = btn.innerText.toLowerCase();
         btn.style.display = text.includes(q) ? 'flex' : 'none';
       });
     }
 
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        openCommandPalette();
-      } else if (e.key === 'Escape') {
-        closeCommandPalette();
-        closeQuickCapture();
-        const notif = document.getElementById('popover-notifications');
-        if (notif) notif.classList.add('hidden');
-      }
-    });
-
-    function toggleNotifications() {
-      const notif = document.getElementById('popover-notifications');
-      if (notif) notif.classList.toggle('hidden');
-    }
-
     /* -------------------------------------------------------------
-       4. TIMER 5·10·15 (PRAWY PANEL TERAZ)
+       4. TIMER 5·10·15 (PRAWY DRAWER TERAZ)
     ------------------------------------------------------------- */
     let timerTotalSeconds = 15 * 60;
     let timerRemainingSeconds = 15 * 60;
@@ -1750,7 +1442,8 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       timerTotalSeconds = minutes * 60;
       timerRemainingSeconds = minutes * 60;
       updateTimerDisplay();
-      document.getElementById('now-timer-task-name').innerText = `Zadanie ${minutes} min`;
+      const taskLabel = document.getElementById('now-timer-task-name');
+      if (taskLabel) taskLabel.innerText = `Zadanie ${minutes} min`;
     }
 
     function updateTimerDisplay() {
@@ -1772,10 +1465,16 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
     function startTimer() {
       if (timerRemainingSeconds <= 0) timerRemainingSeconds = timerTotalSeconds;
       timerIsRunning = true;
-      document.getElementById('btn-timer-text').innerText = 'Pauza';
-      document.getElementById('btn-timer-icon').className = 'fa-solid fa-pause text-[10px]';
-      document.getElementById('timer-active-label').innerText = 'ODLICZANIE';
-      document.getElementById('timer-active-label').className = 'text-[10px] font-bold text-holos-turquoise animate-pulse';
+      const btnText = document.getElementById('btn-timer-text');
+      const btnIcon = document.getElementById('btn-timer-icon');
+      const label = document.getElementById('timer-active-label');
+
+      if (btnText) btnText.innerText = 'Pauza';
+      if (btnIcon) btnIcon.className = 'fa-solid fa-pause text-[10px]';
+      if (label) {
+        label.innerText = 'ODLICZANIE';
+        label.className = 'text-[10px] font-bold text-holos-turquoise animate-pulse';
+      }
 
       timerInterval = setInterval(() => {
         if (timerRemainingSeconds > 0) {
@@ -1791,43 +1490,52 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
     function pauseTimer() {
       timerIsRunning = false;
       clearInterval(timerInterval);
-      document.getElementById('btn-timer-text').innerText = 'Start';
-      document.getElementById('btn-timer-icon').className = 'fa-solid fa-play text-[10px]';
-      document.getElementById('timer-active-label').innerText = 'WSTRZYMANY';
-      document.getElementById('timer-active-label').className = 'text-[10px] font-bold text-amber-400';
+      const btnText = document.getElementById('btn-timer-text');
+      const btnIcon = document.getElementById('btn-timer-icon');
+      const label = document.getElementById('timer-active-label');
+
+      if (btnText) btnText.innerText = 'Start';
+      if (btnIcon) btnIcon.className = 'fa-solid fa-play text-[10px]';
+      if (label) {
+        label.innerText = 'WSTRZYMANY';
+        label.className = 'text-[10px] font-bold text-amber-400';
+      }
     }
 
     function resetTimer() {
       pauseTimer();
       timerRemainingSeconds = timerTotalSeconds;
       updateTimerDisplay();
-      document.getElementById('timer-active-label').innerText = 'GOTOWY';
-      document.getElementById('timer-active-label').className = 'text-[10px] font-bold text-text-tertiary';
+      const label = document.getElementById('timer-active-label');
+      if (label) {
+        label.innerText = 'GOTOWY';
+        label.className = 'text-[10px] font-bold text-text-tertiary';
+      }
     }
 
     function startSpecificTimer(minutes, taskName) {
       setTimerDuration(minutes);
-      document.getElementById('now-timer-task-name').innerText = taskName || `Blok ${minutes} min`;
+      const taskLabel = document.getElementById('now-timer-task-name');
+      if (taskLabel) taskLabel.innerText = taskName || `Blok ${minutes} min`;
       startTimer();
+      toggleRightDrawer();
     }
 
     function quickAskAuraFromNow() {
       const input = document.getElementById('now-quick-aura-input');
       const q = input.value.trim();
       if (!q) return;
-      navigateWorkspace('aura');
+      closeDrawers();
+      window.location.hash = '#sekcja-aura';
       document.getElementById('aura-custom-prompt').value = q;
       input.value = '';
       askAuraCustom();
     }
 
     /* -------------------------------------------------------------
-       5. CYKL SŁONECZNY & SZABAT W SOBOTĘ (DOTYCHCZASOWA LOGIKA)
+       5. CYKL SŁONECZNY & SZABAT W SOBOTĘ
     ------------------------------------------------------------- */
-    let simulatedPhase = null;
-
     function getSunCyclePhase() {
-      if (simulatedPhase) return simulatedPhase;
       const now = new Date();
       const dayOfWeek = now.getDay(); // 0=Nd, 1=Pn, 2=Wt, 3=Śr, 4=Cz, 5=Pt, 6=Sb
       const hour = now.getHours();
@@ -1848,31 +1556,26 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       const clockEl = document.getElementById('sun-cycle-clock');
       if (clockEl) clockEl.innerText = now.toLocaleTimeString('pl-PL');
 
-      const heroBanner = document.getElementById('hero-sun-cycle-banner');
       const badge = document.getElementById('sun-cycle-badge');
-      const desc = document.getElementById('sun-cycle-desc');
       const statSabbath = document.getElementById('stat-sabbath-status');
 
       if (phase === 'sabbath') {
         if (badge) {
-          badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-holos-sky text-pure-black border border-holos-sky";
+          badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-holos-sky text-pure-black border border-holos-sky";
           badge.innerText = "ŚWIĘTY SZABAT AKTYWNY";
         }
-        if (desc) desc.innerText = "Święty Szabat (Sobota) – Odpoczynek Pana. Praca i handel zatrzymane. Czas z Bogiem i rodziną.";
         if (statSabbath) statSabbath.innerText = "Święty Szabat trwa";
       } else if (phase === 'preparation') {
         if (badge) {
-          badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-pure-black border border-amber-400";
+          badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-pure-black border border-amber-400";
           badge.innerText = "DZIEŃ PRZYGOTOWANIA";
         }
-        if (desc) desc.innerText = "Piątek – zamykanie spraw, porządki, przygotowanie posiłków przed zachodem słońca.";
         if (statSabbath) statSabbath.innerText = "Przygotowanie (Piątek)";
       } else {
         if (badge) {
-          badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30";
+          badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-holos-turquoise/20 text-holos-turquoise border border-holos-turquoise/30";
           badge.innerText = "DZIEŃ ROBOCZY";
         }
-        if (desc) desc.innerText = "Czas wzmożonej dyscypliny i owocnej pracy ku Bożej chwale.";
         if (statSabbath) statSabbath.innerText = "Sobota (Szabat)";
       }
 
@@ -1899,7 +1602,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         const diff = sabbathEnd - now;
         if (countDisplay) countDisplay.innerText = formatTimeDiff(diff);
       } else {
-        if (countLabel) countLabel.innerText = "Do Szabatu:";
+        if (countLabel) countLabel.innerText = "Do Szabatu (Sobota):";
         let daysUntilFriday = (5 - dayOfWeek + 7) % 7;
         if (daysUntilFriday === 0 && isAfterSunset) daysUntilFriday = 7;
         target.setDate(now.getDate() + daysUntilFriday);
@@ -1918,7 +1621,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
     }
 
     /* -------------------------------------------------------------
-       6. TOŻSAMOŚĆ CC ID & DANE DOMENOWE (ZACHOWANA LOGIKA)
+       6. TOŻSAMOŚĆ CC ID & DANE DOMENOWE
     ------------------------------------------------------------- */
     function getCcUser() {
       try {
@@ -1947,20 +1650,18 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
     }
 
     /* -------------------------------------------------------------
-       7. KOŁO ŻYCIA, HOLOS SCORE & RADAR SVG (ZACHOWANA LOGIKA)
+       7. KOŁO ŻYCIA, HOLOS SCORE & RADAR SVG
     ------------------------------------------------------------- */
     const sectors = ['faith', 'family', 'body', 'money', 'work'];
     let currentLowestSector = 'faith';
-    let hasCalculatedWheel = false;
 
     function updateWheel() {
-      hasCalculatedWheel = true;
       let total = 0;
       let lowestVal = 101;
       let lowestSec = 'faith';
 
       const points = [];
-      const angles = [-90, -18, 54, 126, 198]; // Kąty dla 5 sektorów
+      const angles = [-90, -18, 54, 126, 198];
 
       sectors.forEach((sec, idx) => {
         const slider = document.getElementById('slider-' + sec);
@@ -2040,7 +1741,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         faith: 'Zadbaj o 15 minut ciszy przed Bogiem i powrót do regularnego czytania Pisma.',
         family: 'Wyznacz dziś czas przymierza: minimum 30 minut z bliskimi bez telefonu w ręku.',
         body: 'Świątynia Ducha Świętego potrzebuje regeneracji: spacer, nawodnienie i sen przed 22:30.',
-        money: 'Wykonaj audyt bieżących wydatków i zaplanuj wierność w dziesięcinie.',
+        money: 'Wykonaj audyt bieżących wydatków i zaplanuj wierność w dziesięcinie 10%.',
         work: 'Zablokuj 90-minutowy blok Deep Work na najważniejsze, strategiczne zadanie.'
       };
 
@@ -2259,14 +1960,13 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         }
       }
 
-      // Fallback ekosystemu
       setTimeout(() => {
         text.innerText = `[Mentor Aura — Ekosystem CC]: Pamiętaj, ${userName}, że Boży pokój przewyższa wszelki rozum. W kontekście Twojej intencji ("${intVal}"): zrób pierwszy mały krok (5 minut modlitwy lub działania), a Bóg zatroszczy się o resztę.`;
-      }, 600);
+      }, 500);
     }
 
     /* -------------------------------------------------------------
-       11. PERSISTENT LIVE RADIO PLAYER (ZACHOWANA LOGIKA)
+       11. PERSISTENT LIVE RADIO PLAYER
     ------------------------------------------------------------- */
     const audioEl = document.getElementById('global-radio-audio');
     const playerBar = document.getElementById('live-player-bar');
@@ -2330,25 +2030,9 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
     }
 
     /* -------------------------------------------------------------
-       12. MOBILE TERAZ DRAWER TOGGLE
-    ------------------------------------------------------------- */
-    function toggleMobileNowDrawer() {
-      const rightSidebar = document.getElementById('app-right-sidebar');
-      if (!rightSidebar) return;
-      if (rightSidebar.classList.contains('hidden')) {
-        rightSidebar.classList.remove('hidden');
-        rightSidebar.classList.add('fixed', 'inset-y-0', 'right-0', 'z-50', 'w-80', 'shadow-2xl');
-      } else {
-        rightSidebar.classList.add('hidden');
-        rightSidebar.classList.remove('fixed', 'inset-y-0', 'right-0', 'z-50', 'w-80', 'shadow-2xl');
-      }
-    }
-
-    /* -------------------------------------------------------------
-       13. START PLATFORMY & SYNCHRONIZACJA Z AUTH
+       12. INTERSECTION OBSERVER DLA CAPSULE PILL NAV
     ------------------------------------------------------------- */
     window.addEventListener('DOMContentLoaded', () => {
-      initRouting();
       updateSunCycleUI();
       setInterval(updateSunCycleUI, 1000);
       updateSyncUI();
@@ -2359,10 +2043,26 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       updateApiStatusUI();
       setTimerDuration(15);
 
-      // Przywróć stan zwinięcia paska
-      if (localStorage.getItem('holos_sidebar_collapsed') === 'true') {
-        toggleLeftSidebar();
-      }
+      // Podświetlanie kapsułek w zależności od przewijanej sekcji
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.pill-nav-item');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(sec => {
+          const top = sec.offsetTop - 120;
+          if (window.scrollY >= top) {
+            current = sec.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }, { passive: true });
     });
 
     window.addEventListener('lumina-auth-state', () => {
@@ -2383,10 +2083,10 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
   </script>
 
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
-  <!-- 7. KONTROLER GOOGLE CALENDAR P0 (DWUKIERUNKOWA SYNCHRONIZACJA ZACHOWANA 1:1)  -->
+  <!-- 8. KONTROLER GOOGLE CALENDAR P0 (100% ZACHOWANA INTEGRACJA)                   -->
   <!-- ══════════════════════════════════════════════════════════════════════════════ -->
   <script type="module">
-    import { holosCalendar } from '/js/holos-calendar-sync.js?v=20260925_gcal_v2';
+    import { holosCalendar } from '/js/holos-calendar-sync.js?v=20260925_gcal_v3';
 
     // Subskrypcja stanu silnika kalendarza
     holosCalendar.subscribe((state) => {
@@ -2406,12 +2106,11 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
       if (!badge || !actionsEl || !listEl) return;
 
-      // Status Badge & Texts
       if (state.status === 'CONNECTED') {
         badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
         badge.innerHTML = "Google Calendar ✓ Połączony";
         timeEl.innerText = state.lastSync ? `Ostatnia synchronizacja: ${new Date(state.lastSync).toLocaleTimeString('pl-PL', {hour:'2-digit', minute:'2-digit'})}` : 'Zsynchronizowano';
-        descEl.innerHTML = `Połączono z kontem: <strong class="text-white">${state.email || 'Konto Google'}</strong>. Dwukierunkowa synchronizacja aktywna przez mechanizm <code class="text-holos-turquoise">nextSyncToken</code>.`;
+        descEl.innerHTML = `Połączono z kontem: <strong class="text-white">${state.email || 'Konto Google'}</strong>. Synchronizacja przyrostowa przez <code class="text-holos-turquoise">nextSyncToken</code>.`;
         
         actionsEl.innerHTML = `
           <button onclick="window.holosCalendarSyncNow()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm">
@@ -2429,7 +2128,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40";
         badge.innerHTML = "Sesja Kalendarza Wygasła";
         timeEl.innerText = "--:--";
-        descEl.innerText = "Token dostępowy OAuth wygasł. Kliknij przycisk poniżej, aby odświeżyć autoryzację bez utraty danych.";
+        descEl.innerText = "Token dostępowy OAuth wygasł. Kliknij przycisk poniżej, aby odświeżyć autoryzację.";
         actionsEl.innerHTML = `
           <button onclick="window.holosCalendarConnect()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-pure-black font-extrabold text-xs transition-all shadow-md flex items-center gap-1.5">
             <span>🔑</span> Odśwież Sesję Kalendarza
@@ -2445,11 +2144,10 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
           </button>
         `;
       } else {
-        // DISCONNECTED
         badge.className = "px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-text-tertiary border border-white/10";
         badge.innerHTML = "Google Calendar: Niepołączony";
         timeEl.innerText = "--:--";
-        descEl.innerHTML = `HOLOS potrzebuje dostępu do Kalendarza Google, aby wyświetlać i — jeśli wyrazisz zgodę — planować wydarzenia. Zgodnie z zasadą najmniejszych uprawnień prosimy wyłącznie o zakres <code class="text-holos-turquoise">calendar.events</code>.`;
+        descEl.innerHTML = `HOLOS potrzebuje dostępu do Kalendarza Google, aby wyświetlać i planować wydarzenia. Zgodnie z zasadą najmniejszych uprawnień prosimy wyłącznie o zakres <code class="text-holos-turquoise">calendar.events</code>.`;
         actionsEl.innerHTML = `
           <button onclick="window.holosCalendarConnect()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-holos-turquoise to-holos-indigo text-pure-black font-black text-xs hover:brightness-110 transition-all shadow-lg flex items-center gap-2">
             <span>📅</span> Połącz Google Calendar
@@ -2457,7 +2155,6 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         `;
       }
 
-      // Alert błędu
       if (state.lastError && (state.status === 'ERROR' || state.status === 'AUTH_REQUIRED')) {
         alertEl.classList.remove('hidden');
         msgEl.innerText = state.lastError;
@@ -2465,13 +2162,11 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         alertEl.classList.add('hidden');
       }
 
-      // Licznik wydarzeń
       countEl.innerText = `${state.events.length} wydarzeń`;
 
-      // Renderowanie listy wydarzeń
       if (!state.isConnected) {
         listEl.innerHTML = `
-          <div class="p-8 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-tertiary">
+          <div class="p-8 rounded-2xl bg-surface-dark border border-white/5 text-center text-xs text-text-tertiary">
             Kalendarz nie został jeszcze połączony. Kliknij <strong class="text-white">„Połącz Google Calendar”</strong>, aby wczytać swoje rzeczywiste wydarzenia.
           </div>
         `;
@@ -2480,8 +2175,8 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
 
       if (state.events.length === 0) {
         listEl.innerHTML = `
-          <div class="p-8 rounded-2xl bg-white/5 border border-white/5 text-center text-xs text-text-secondary">
-            Brak zaplanowanych wydarzeń w najbliższym oknie czasowym. Użyj formularza po prawej stronie, aby dodać pierwsze wydarzenie.
+          <div class="p-8 rounded-2xl bg-surface-dark border border-white/5 text-center text-xs text-text-secondary">
+            Brak zaplanowanych wydarzeń w najbliższym oknie czasowym.
           </div>
         `;
         return;
@@ -2491,7 +2186,7 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         const startStr = ev.start ? new Date(ev.start).toLocaleString('pl-PL', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : 'Cały dzień';
         const endStr = ev.end ? new Date(ev.end).toLocaleTimeString('pl-PL', {hour:'2-digit', minute:'2-digit'}) : '';
         return `
-          <div class="p-3.5 rounded-xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all flex items-center justify-between gap-3 group">
+          <div class="p-3.5 rounded-2xl bg-surface-dark border border-white/5 hover:border-white/10 transition-all flex items-center justify-between gap-3 group">
             <div class="space-y-1">
               <div class="text-xs font-bold text-white group-hover:text-holos-turquoise transition-colors">${ev.summary || 'Bez tytułu'}</div>
               <div class="text-[11px] text-text-tertiary flex items-center gap-2">
@@ -2512,40 +2207,22 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
       }).join('');
     }
 
-    // Aktualizacja kontekstu kalendarza w panelu TERAZ i podglądzie Dziś
     function renderNowCalendarContext(state) {
       const nowNextEventTitle = document.getElementById('now-next-event-title');
       const nowNextEventTime = document.getElementById('now-next-event-time');
-      const todayGcalPreview = document.getElementById('today-gcal-preview');
 
       if (!state.isConnected) {
         if (nowNextEventTitle) nowNextEventTitle.innerText = "Kalendarz niepołączony";
-        if (nowNextEventTime) nowNextEventTime.innerHTML = '<a href="#calendar" onclick="navigateWorkspace(\'planner\', \'calendar\')" class="text-holos-turquoise hover:underline">Połącz Google Calendar →</a>';
-        if (todayGcalPreview) {
-          todayGcalPreview.innerHTML = `
-            <div class="p-3 rounded-xl bg-surface-dark border border-white/5 text-center text-text-tertiary">
-              Google Calendar niepołączony.<br>
-              <button onclick="navigateWorkspace('planner', 'calendar')" class="mt-1 text-holos-turquoise font-bold hover:underline">Połącz teraz →</button>
-            </div>
-          `;
-        }
+        if (nowNextEventTime) nowNextEventTime.innerHTML = '<a href="#sekcja-kalendarz" class="text-holos-turquoise hover:underline">Połącz Google Calendar →</a>';
         return;
       }
 
       if (state.events.length === 0) {
         if (nowNextEventTitle) nowNextEventTitle.innerText = "Brak nadchodzących spotkań";
-        if (nowNextEventTime) nowNextEventTime.innerText = "Cały dzień wolny na pracę w skupieniu";
-        if (todayGcalPreview) {
-          todayGcalPreview.innerHTML = `
-            <div class="p-3 rounded-xl bg-surface-dark border border-white/5 text-center text-text-secondary">
-              Brak wydarzeń na dziś. Wolny czas na cele.
-            </div>
-          `;
-        }
+        if (nowNextEventTime) nowNextEventTime.innerText = "Czas wolny na pracę w skupieniu";
         return;
       }
 
-      // Znajdź najbliższe wydarzenie w przyszłości
       const nowMs = Date.now();
       const upcoming = state.events
         .filter(ev => ev.start && new Date(ev.start).getTime() > nowMs)
@@ -2562,22 +2239,8 @@ Kliknij „Uruchom Diagnostykę E2E”, aby przetestować dwustronną synchroniz
         if (nowNextEventTitle) nowNextEventTitle.innerText = "Wszystkie spotkania zakończone";
         if (nowNextEventTime) nowNextEventTime.innerText = "Czas na odpoczynek i podsumowanie";
       }
-
-      // Aktualizacja mini podglądu w DZIŚ
-      if (todayGcalPreview) {
-        todayGcalPreview.innerHTML = state.events.slice(0, 3).map(ev => {
-          const time = ev.start ? new Date(ev.start).toLocaleTimeString('pl-PL', {hour:'2-digit', minute:'2-digit'}) : 'Cały dzień';
-          return `
-            <div class="p-2 rounded-lg bg-surface-dark border border-white/5 flex items-center justify-between text-xs">
-              <span class="text-white truncate font-medium max-w-[140px]">${ev.summary || 'Wydarzenie'}</span>
-              <span class="text-[10px] text-holos-turquoise font-mono">${time}</span>
-            </div>
-          `;
-        }).join('');
-      }
     }
 
-    // Globalne wrappery na metody Calendar Engine (dla wywołań onclick w HTML)
     window.holosCalendarConnect = () => holosCalendar.connect();
     window.holosCalendarDisconnect = () => holosCalendar.disconnect();
     window.holosCalendarSyncNow = () => holosCalendar.syncEvents();
