@@ -2438,10 +2438,10 @@
       const transText = document.getElementById('pq-transparency-text');
       const transIcon = document.getElementById('pq-transparency-icon');
       if (analysis.hasTransparency) {
-        transText.textContent = 'Wykryto przezroczyste tło (PNG) — idealne do druku na tkaninach';
+        transText.textContent = 'Wykryto przezroczystość (kanał alfa). Tło nie wymaga automatycznego drukowania jako prostokątnego obszaru. Ostateczna przydatność pliku zostanie potwierdzona podczas bezpłatnej weryfikacji YIS.';
         transIcon.className = 'fa-solid fa-check text-emerald-400';
       } else {
-        transText.textContent = 'Jednolite tło — grafik YIS bezpłatnie usunie tło przed drukiem';
+        transText.textContent = 'Grafika posiada jednolite tło (brak kanału alfa). Zostanie wydrukowana z widocznym tłem lub studio YIS oceni możliwość jego wycięcia podczas bezpłatnej weryfikacji.';
         transIcon.className = 'fa-solid fa-circle-info text-amber-400';
       }
 

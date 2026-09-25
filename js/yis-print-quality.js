@@ -178,7 +178,7 @@
         message: 'Oficjalna grafika Christian Culture YIS przygotowana w pełnym profilu produkcyjnym.',
         recommendation: 'Plik w 100% zoptymalizowany pod druk sitodrukowy i cyfrowy DTF.',
         hasTransparency: true,
-        transparencyNote: 'Wykryto przezroczyste tło — idealne do druku na tkaninie w każdym kolorze.',
+        transparencyNote: 'Wykryto przezroczystość (kanał alfa). Autorska grafika YIS zoptymalizowana pod profil produkcyjny.',
         requiresWarningCheck: false
       };
     }
@@ -199,8 +199,8 @@
         recommendation: 'Krawędzie i detale będą ostre i wyraźne po przeniesieniu na materiał.',
         hasTransparency: hasTransparency,
         transparencyNote: hasTransparency
-          ? 'Wykryto przezroczyste tło (PNG) — idealne do druku na koszulkach w dowolnym kolorze.'
-          : 'Grafika posiada jednolite tło — zostanie wydrukowana z tłem lub grafik YIS bezpłatnie usunie tło przed drukiem.',
+          ? 'Wykryto przezroczystość (kanał alfa). Tło nie wymaga automatycznego drukowania jako prostokątnego obszaru. Ostateczna przydatność pliku zostanie potwierdzona podczas bezpłatnej weryfikacji YIS.'
+          : 'Grafika posiada jednolite tło (brak kanału alfa). Zostanie wydrukowana z widocznym tłem lub studio YIS oceni możliwość jego wycięcia podczas bezpłatnej weryfikacji.',
         requiresWarningCheck: false
       };
     }
@@ -219,8 +219,8 @@
         recommendation: 'Aby uzyskać idealną ostrość, zmniejsz nieco nadruk na makiecie lub prześlij plik o większej rozdzielczości.',
         hasTransparency: hasTransparency,
         transparencyNote: hasTransparency
-          ? 'Wykryto przezroczyste tło (PNG).'
-          : 'Grafika posiada widoczne tło.',
+          ? 'Wykryto przezroczystość (kanał alfa). Tło nie wymaga automatycznego drukowania jako prostokątnego obszaru. Ostateczna przydatność pliku zostanie potwierdzona podczas bezpłatnej weryfikacji YIS.'
+          : 'Grafika posiada jednolite tło (brak kanału alfa). Zostanie wydrukowana z widocznym tłem lub studio YIS oceni możliwość jego wycięcia podczas bezpłatnej weryfikacji.',
         requiresWarningCheck: false
       };
     }
@@ -238,8 +238,8 @@
       recommendation: 'Zmniejsz nadruk na makiecie lub prześlij plik o większej rozdzielczości. Grafik YIS bezpłatnie zweryfikuje plik przed realizacją.',
       hasTransparency: hasTransparency,
       transparencyNote: hasTransparency
-        ? 'Wykryto przezroczyste tło.'
-        : 'Grafika posiada widoczne tło.',
+        ? 'Wykryto przezroczystość (kanał alfa). Tło nie wymaga automatycznego drukowania jako prostokątnego obszaru. Ostateczna przydatność pliku zostanie potwierdzona podczas bezpłatnej weryfikacji YIS.'
+        : 'Grafika posiada jednolite tło (brak kanału alfa). Zostanie wydrukowana z widocznym tłem lub studio YIS oceni możliwość jego wycięcia podczas bezpłatnej weryfikacji.',
       requiresWarningCheck: true
     };
   }
