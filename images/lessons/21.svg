@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#422006"/>
+      <stop offset="50%" stop-color="#713f12"/>
+      <stop offset="100%" stop-color="#190a02"/>
+    </linearGradient>
+
+    <!-- Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Page/Parchment Gradient -->
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+
+    <!-- Flame Gradient -->
+    <linearGradient id="flameGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Celestial Rays Radial -->
+    <radialGradient id="radialRays" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#eab308" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#eab308" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="800" height="450" fill="url(#bgGrad)"/>
+  <rect width="800" height="450" fill="url(#radialRays)"/>
+
+  <!-- Ornate Corner Accents -->
+  <path d="M 20 50 L 20 20 L 50 20" fill="none" stroke="#eab308" stroke-width="2" opacity="0.4"/>
+  <path d="M 780 50 L 780 20 L 750 20" fill="none" stroke="#eab308" stroke-width="2" opacity="0.4"/>
+  <path d="M 20 400 L 20 430 L 50 430" fill="none" stroke="#eab308" stroke-width="2" opacity="0.4"/>
+  <path d="M 780 400 L 780 430 L 750 430" fill="none" stroke="#eab308" stroke-width="2" opacity="0.4"/>
+
+  <!-- Subtle Stars / Particles -->
+  <circle cx="120" cy="80" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="680" cy="110" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="220" cy="360" r="1.5" fill="#fff" opacity="0.4"/>
+  <circle cx="580" cy="330" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="340" cy="70" r="2" fill="#eab308" opacity="0.7"/>
+  <circle cx="480" cy="65" r="2" fill="#eab308" opacity="0.7"/>
+
+  <!-- Top Badge: LEKCJA N -->
+  <g transform="translate(400, 48)">
+    <rect x="-80" y="-14" width="160" height="28" rx="14" fill="#000000" fill-opacity="0.6" stroke="#eab308" stroke-width="1.5"/>
+    <text x="0" y="5" fill="#eab308" font-family="sans-serif" font-size="11" font-weight="900" letter-spacing="3" text-anchor="middle">ZASADA WIARY 21</text>
+  </g>
+
+  <!-- Central Thematic Symbol -->
+  
+      <!-- Golden Scales of Justice and Giving Hands -->
+      <g transform="translate(400, 190) scale(1.3)">
+        <!-- Scale pillar -->
+        <line x1="0" y1="-45" x2="0" y2="45" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/>
+        <line x1="-45" y1="-35" x2="45" y2="-35" stroke="#fbbf24" stroke-width="4"/>
+        <polygon points="0,-48 -8,-35 8,-35" fill="#fde047"/>
+        <!-- Left Pan -->
+        <line x1="-45" y1="-35" x2="-60" y2="5" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="-45" y1="-35" x2="-30" y2="5" stroke="#d97706" stroke-width="1.5"/>
+        <path d="M-65 5 Q-45 25 -25 5 Z" fill="#fbbf24" filter="url(#glow)"/>
+        <!-- Right Pan -->
+        <line x1="45" y1="-35" x2="30" y2="5" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="45" y1="-35" x2="60" y2="5" stroke="#d97706" stroke-width="1.5"/>
+        <path d="M25 5 Q45 25 65 5 Z" fill="#fbbf24" filter="url(#glow)"/>
+      </g>
+    
+
+  <!-- Bottom Vignette / Overlay for Text Legibility -->
+  <rect y="290" width="800" height="160" fill="url(#bgGrad)" opacity="0.85"/>
+  <rect y="290" width="800" height="160" fill="black" opacity="0.3"/>
+
+  <!-- Title & Subtitle -->
+  <text x="400" y="375" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="900" letter-spacing="2" text-anchor="middle" filter="url(#glow)">SZAFARSTWO</text>
+  <text x="400" y="405" fill="#eab308" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="1" text-anchor="middle" opacity="0.9">Wierne Zarządzanie Bożym Błogosławieństwem i Czasem</text>
+</svg>

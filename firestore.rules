@@ -293,6 +293,8 @@ service cloud.firestore {
         request.resource.data.status == 'pending';
       allow read: if isMasterAdmin() || resource.data.approved == true;
       allow update, delete: if isMasterAdmin();
+    }
+
     // YIS Design Studio 2.0 - Kanoniczne projekty odzieży i gadżetów
     match /yis_projects/{projectId} {
       allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
@@ -304,6 +306,60 @@ service cloud.firestore {
         (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['status']) || request.resource.data.status in ['SZKIC', 'DO WERYFIKACJI'])
       );
       allow delete: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+    }
+
+    // ── LUMINA BIBLE ACADEMY (Kolekcje Kursów Biblijnych 28 Zasad Wiary) ──
+    // 1. Postęp w kursach — trwały postęp powiązany ściśle z UID użytkownika
+    match /course_progress/{progressId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.courseId is string &&
+        request.resource.data.lessonId is int;
+      allow update: if isMasterAdmin() || (
+        isMember() && 
+        resource.data.userId == request.auth.uid && 
+        request.resource.data.userId == resource.data.userId
+      );
+      allow delete: if isMasterAdmin();
+    }
+
+    // 2. Osiągnięcia kursowe — czytelne publicznie (dla profili i odznak), zapis ściśle dla właściciela UID
+    match /course_achievements/{achievementId} {
+      allow read: if true;
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.achievementId is string;
+      allow update: if isMasterAdmin() || (
+        isMember() && 
+        resource.data.userId == request.auth.uid && 
+        request.resource.data.userId == resource.data.userId
+      );
+      allow delete: if isMasterAdmin();
+    }
+
+    // 3. Prywatny Dziennik Drogi — BEZWZGLĘDNIE ŚCIŚLE PRYWATNY (tylko właściciel UID)
+    match /course_journal/{journalId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.lessonId is int;
+      allow update: if isMember() && 
+        resource.data.userId == request.auth.uid && 
+        request.resource.data.userId == resource.data.userId;
+      allow delete: if isMember() && resource.data.userId == request.auth.uid;
+    }
+
+    // 4. Zgłoszenia opieki duchowej — POUFNE (tylko autor i administracja)
+    match /spiritual_care_requests/{requestId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.status == 'new' &&
+        request.resource.data.message is string &&
+        request.resource.data.message.size() <= 3000;
+      allow update: if isMasterAdmin();
+      allow delete: if isMasterAdmin();
     }
 
     match /{document=**} {
