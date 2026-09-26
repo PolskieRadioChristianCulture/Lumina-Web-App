@@ -577,6 +577,210 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* ODKRYJ (Discovery) Styles */
+    .discover-item-card {
+      background: rgba(18, 18, 24, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+    .discover-item-card:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+    }
+    .discover-prompt {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .discover-excerpt {
+      background: rgba(212, 175, 55, 0.06);
+      border-left: 3px solid #D4AF37;
+      padding: 10px 14px;
+      border-radius: 0 10px 10px 0;
+      font-style: italic;
+      color: #F3E5AB;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .discover-refs-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* QUIZ Styles */
+    .quiz-card {
+      background: rgba(18, 18, 24, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.25s ease;
+    }
+    .quiz-card.quiz-card-answered {
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+    .quiz-q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .quiz-q-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #D4AF37;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .quiz-q-prompt {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .quiz-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .quiz-option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      color: #E2E8F0;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: rgba(212, 175, 55, 0.4);
+      color: #FFFFFF;
+    }
+    .quiz-option-btn.selected-correct {
+      background: rgba(16, 185, 129, 0.15) !important;
+      border-color: #10B981 !important;
+      color: #A7F3D0 !important;
+    }
+    .quiz-option-btn.selected-wrong {
+      background: rgba(239, 68, 68, 0.15) !important;
+      border-color: #EF4444 !important;
+      color: #FECACA !important;
+    }
+    .quiz-option-btn.show-correct {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border-color: rgba(16, 185, 129, 0.5) !important;
+      color: #A7F3D0 !important;
+    }
+    .quiz-feedback-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(24, 24, 32, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: none;
+    }
+    .quiz-feedback-box.visible {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .quiz-feedback-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .quiz-feedback-title.correct { color: #34D399; }
+    .quiz-feedback-title.wrong { color: #F87171; }
+    .quiz-feedback-text {
+      font-size: 0.84rem;
+      color: #CBD5E1;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .quiz-feedback-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Editorial Review Badge */
+    .editorial-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #FCD34D;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+
+    /* Modal Backdrop & Dialog */
+    .academy-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 16px;
+      transition: opacity 0.25s ease;
+    }
+    .academy-modal-backdrop.hidden {
+      display: none !important;
+    }
+    .academy-modal-card {
+      background: #101017;
+      border: 1.5px solid rgba(212, 175, 55, 0.4);
+      border-radius: 20px;
+      max-width: 520px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.15);
+      text-align: center;
+      position: relative;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
@@ -736,6 +940,73 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ── MODAL: ŚWIADOMA MIGRACJA POSTĘPU GOŚCIA ── -->
+  <div id="migration-consent-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="migration-title">
+    <div class="academy-modal-card">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-2xl">
+        ✨
+      </div>
+      <h3 id="migration-title" class="font-serif font-black text-xl text-white tracking-wide mb-2 uppercase">
+        ZNALEŹLIŚMY POSTĘP Z TEGO URZĄDZENIA
+      </h3>
+      <p id="migration-description" class="text-zinc-300 text-sm leading-relaxed mb-6">
+        W Twojej przeglądarce zapisano ukończone lekcje z sesji gościa. Czy chcesz trwale zapisać ten postęp na Twoim koncie LUMINA, aby mieć do niego dostęp na telefonie i komputerze?
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button type="button" id="btn-migration-accept" class="btn-primary-action w-full sm:w-auto px-6 py-3 min-h-[44px]">
+          <span>ZACHOWAJ MÓJ POSTĘP</span>
+        </button>
+        <button type="button" id="btn-migration-dismiss" class="btn-secondary-action w-full sm:w-auto px-6 py-3 min-h-[44px]">
+          <span>NIE TERAZ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: ODBLOKOWANE OSIĄGNIĘCIE (PREFERENCJE PUBLIKACJI) ── -->
+  <div id="achievement-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="achievement-title">
+    <div class="academy-modal-card">
+      <div id="achievement-icon" class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-yellow-400/20 border border-brand-gold/40 flex items-center justify-center text-3xl shadow-lg shadow-brand-gold/20">
+        🏆
+      </div>
+      <span class="text-brand-gold font-bold text-xs uppercase tracking-widest block mb-1">Nowe Osiągnięcie LUMINA Academy</span>
+      <h3 id="achievement-title" class="font-serif font-black text-xl text-white tracking-wide mb-2">
+        PIERWSZY KROK WIARY
+      </h3>
+      <p id="achievement-description" class="text-zinc-300 text-sm leading-relaxed mb-6">
+        Ukończyłeś swoją pierwszą lekcję w Biblijnej Akademii LUMINA.
+      </p>
+
+      <!-- Opcje publikacji w społeczności -->
+      <div class="p-3.5 bg-zinc-900/90 border border-zinc-800 rounded-xl mb-6 text-left">
+        <span class="text-xs font-bold text-zinc-300 block mb-2">Preferencja publikacji w Społeczności LUMINA:</span>
+        <div class="flex flex-col gap-2 text-xs text-zinc-400">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="achieve-pref" value="ask_each_time" checked class="text-amber-500 focus:ring-amber-400" />
+            <span>Pytaj za każdym razem przed publikacją</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="achieve-pref" value="always" class="text-amber-500 focus:ring-amber-400" />
+            <span>Zawsze automatycznie publikuj moje osiągnięcia</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="achieve-pref" value="never" class="text-amber-500 focus:ring-amber-400" />
+            <span>Nigdy nie publikuj (zachowaj ściśle prywatnie)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button type="button" id="btn-achievement-share" class="btn-primary-action w-full sm:w-auto px-6 py-3 min-h-[44px]">
+          <span>Udostępnij Osiągnięcie</span>
+        </button>
+        <button type="button" id="btn-achievement-close" class="btn-secondary-action w-full sm:w-auto px-6 py-3 min-h-[44px]">
+          <span>Zamknij</span>
+        </button>
+      </div>
     </div>
   </div>
 

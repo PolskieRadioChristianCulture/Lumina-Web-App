@@ -72,9 +72,10 @@ test('8. Reużycie globalnego Auth (brak drugiego niezależnego Google Sign-In)'
   assert.doesNotMatch(kursyHtml, /signInWithPopup/, 'kursy.html nie może dublować implementacji logowania');
 });
 
-test('9. Zasada Zero Atrap: jawne oznaczenia sekcji w trakcie redakcji i autentyczny Dziennik Drogi', () => {
-  assert.match(engineJs, /Pytania Odkrywcze w Redakcji/, 'Sekcja Odkryj bez pytań musi informować o trwającej redakcji');
-  assert.match(engineJs, /Interaktywny Quiz w Przygotowaniu/, 'Sekcja Quiz bez zatwierdzonych pytań nie może udawać działającego quizu');
+test('9. Zasada Zero Atrap: jawne oznaczenia weryfikacji redakcyjnej i autentyczny Dziennik Drogi (Phase 4)', () => {
+  assert.match(engineJs, /reader-discover-container/, 'Sekcja Odkryj musi posiadać interaktywny kontener');
+  assert.match(engineJs, /editorial-badge/, 'Lekcje podlegające weryfikacji redakcyjnej muszą posiadać widoczną odznakę informacyjną');
+  assert.match(engineJs, /reader-quiz-container/, 'Sekcja Quiz musi posiadać interaktywny kontener');
   assert.match(engineJs, /Mój Dziennik Drogi/, 'Dziennik Drogi musi być obecny');
   assert.match(engineJs, /journal-status-indicator/, 'Dziennik musi posiadać wskaźnik statusu zapisu chmurowego');
 });

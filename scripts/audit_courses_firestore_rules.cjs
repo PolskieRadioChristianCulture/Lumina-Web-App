@@ -84,6 +84,39 @@ function evaluateRule({ auth, method, collection, existingData, requestData }) {
     if (method === 'delete') return isMasterAdmin;
   }
 
+  if (collection === 'quiz_attempts') {
+    if (method === 'read') {
+      return isMasterAdmin || (isMember && existingData && existingData.userId === auth.uid);
+    }
+    if (method === 'create') {
+      return isMember && 
+        requestData.userId === auth.uid && 
+        typeof requestData.courseId === 'string' && 
+        (Number.isInteger(requestData.lessonId) || typeof requestData.lessonId === 'string') &&
+        Number.isInteger(requestData.score) &&
+        (Number.isInteger(requestData.total) || Number.isInteger(requestData.totalQuestions));
+    }
+    if (method === 'update') return isMasterAdmin;
+    if (method === 'delete') {
+      return isMasterAdmin || (isMember && existingData && existingData.userId === auth.uid);
+    }
+  }
+
+  if (collection === 'course_preferences') {
+    if (method === 'read') {
+      return isMasterAdmin || (isMember && existingData && existingData.userId === auth.uid);
+    }
+    if (method === 'create' || method === 'update') {
+      return isMember && 
+        requestData.userId === auth.uid && 
+        auth.uid === requestData.docId &&
+        ['ask_each_time', 'always', 'never'].includes(requestData.publishAchievements);
+    }
+    if (method === 'delete') {
+      return isMasterAdmin || (isMember && auth.uid === existingData.docId);
+    }
+  }
+
   return false;
 }
 
@@ -207,6 +240,51 @@ const testCases = [
         note: 'Dziennik Drogi jest bezwzględnie poufny — niedostępny dla gości ani użytkowników anonimowych.' 
       };
     }
+  },
+  {
+    name: '13. A tworzy własny rekord quiz_attempts (QUIZ CREATE)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = { userId: 'user_A', courseId: 'biblijne-zasady-wiary-28', lessonId: 1, score: 2, total: 2 };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'quiz_attempts', requestData: req });
+      return { allowed, expected: true, note: 'Użytkownik A może zapisać wynik swojego quizu.' };
+    }
+  },
+  {
+    name: '14. B nie może czytać prób quizowych A (PRIVATE ATTEMPTS)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com' };
+      const existingA = { userId: 'user_A', lessonId: 1, score: 2, total: 2 };
+      const allowed = evaluateRule({ auth: authB, method: 'read', collection: 'quiz_attempts', existingData: existingA });
+      return { allowed, expected: false, note: 'Wyniki quizów są ściśle prywatne dla danego UID.' };
+    }
+  },
+  {
+    name: '15. A zapisuje preferencję ask_each_time (VALID PREFERENCE)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = { userId: 'user_A', docId: 'user_A', publishAchievements: 'ask_each_time' };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_preferences', requestData: req });
+      return { allowed, expected: true, note: 'Dozwolona wartość preferencji publikacji (ask_each_time).' };
+    }
+  },
+  {
+    name: '16. A próbuje zapisać nieprawidłową preferencję (INVALID PREFERENCE)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = { userId: 'user_A', docId: 'user_A', publishAchievements: 'invalid_mode' };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_preferences', requestData: req });
+      return { allowed, expected: false, note: 'Niedozwolona wartość preferencji zostaje odrzucona przez reguły.' };
+    }
+  },
+  {
+    name: '17. B próbuje zmienić preferencję A (PREFERENCE ANTI-SPOOFING)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com' };
+      const req = { userId: 'user_A', docId: 'user_A', publishAchievements: 'never' };
+      const allowed = evaluateRule({ auth: authB, method: 'update', collection: 'course_preferences', requestData: req });
+      return { allowed, expected: false, note: 'Użytkownik B nie może modyfikować preferencji użytkownika A.' };
+    }
   }
 ];
 
@@ -226,6 +304,8 @@ const hasCourseProgress = rulesContent.includes('match /course_progress/{progres
 const hasCourseJournal = rulesContent.includes('match /course_journal/{journalId}');
 const hasSpiritualCare = rulesContent.includes('match /spiritual_care_requests/{requestId}');
 const hasAchievements = rulesContent.includes('match /course_achievements/{achievementId}');
+const hasQuizAttempts = rulesContent.includes('match /quiz_attempts/{attemptId}');
+const hasCoursePreferences = rulesContent.includes('match /course_preferences/{userId}');
 const hasRequestResourceCheck = rulesContent.includes('request.resource.data.userId == request.auth.uid');
 const hasAntiHijackCheck = rulesContent.includes('request.resource.data.userId == resource.data.userId');
 
@@ -233,14 +313,16 @@ console.log('Reguła match /course_progress obecna:', hasCourseProgress);
 console.log('Reguła match /course_journal obecna:', hasCourseJournal);
 console.log('Reguła match /spiritual_care_requests obecna:', hasSpiritualCare);
 console.log('Reguła match /course_achievements obecna:', hasAchievements);
+console.log('Reguła match /quiz_attempts obecna:', hasQuizAttempts);
+console.log('Reguła match /course_preferences obecna:', hasCoursePreferences);
 console.log('Walidacja request.resource.data.userId (anti-spoofing):', hasRequestResourceCheck);
 console.log('Walidacja request.resource.data.userId == resource.data.userId (anti-hijack):', hasAntiHijackCheck);
 
-const allRulesPresent = hasCourseProgress && hasCourseJournal && hasSpiritualCare && hasAchievements && hasRequestResourceCheck && hasAntiHijackCheck;
+const allRulesPresent = hasCourseProgress && hasCourseJournal && hasSpiritualCare && hasAchievements && hasQuizAttempts && hasCoursePreferences && hasRequestResourceCheck && hasAntiHijackCheck;
 
 if (failed === 0 && allRulesPresent) {
-  console.log(`\n✅ SECURITY GATE: 12/12 SCENARIUSZY ZALICZONYCH (Wymóg Phase 3 Spełniony).`);
-  console.log('Pełna izolacja danych, ochrona przed fałszowaniem UID i prywatność Dziennika Drogi.');
+  console.log(`\n✅ SECURITY GATE: 17/17 SCENARIUSZY ZALICZONYCH (Wymóg Phase 4 Spełniony).`);
+  console.log('Pełna izolacja danych, ochrona przed fałszowaniem UID, prywatność Dziennika Drogi i prób quizowych.');
   process.exit(0);
 } else {
   console.error('\n❌ SECURITY GATE FAILED: Znaleziono naruszenia zasad bezpieczeństwa.');

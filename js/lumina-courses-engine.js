@@ -22,6 +22,7 @@ import {
   LUMINA_COURSES_CORE_28,
   LUMINA_POST_28_CATALOG
 } from '../data/lumina-courses-data.js';
+import { luminaAchievementsEngine } from './lumina-achievements-engine.js';
 
 class LuminaCoursesEngine {
   constructor() {
@@ -64,6 +65,10 @@ class LuminaCoursesEngine {
     this.firebaseDb = null;
     this.firestoreSdk = null;
 
+    // Silnik Osiągnięć i Próby Quizu (Phase 4)
+    this.achievementsEngine = luminaAchievementsEngine;
+    this.quizAttempts = new Map();
+
     this.init();
   }
 
@@ -85,6 +90,10 @@ class LuminaCoursesEngine {
   }
 
   cacheDomElements() {
+    if (typeof document === 'undefined') {
+      this.dom = {};
+      return;
+    }
     this.dom = {
       heroActionBtn: document.getElementById('hero-action-btn'),
       heroStatsBadge: document.getElementById('hero-stats-badge'),
@@ -230,6 +239,9 @@ class LuminaCoursesEngine {
     if (auth) this.firebaseAuth = auth;
     if (db) this.firebaseDb = db;
     if (sdk) this.firestoreSdk = sdk;
+    if (this.achievementsEngine) {
+      this.achievementsEngine.setContext({ auth, db, sdk, user });
+    }
     if (user !== undefined) {
       this.handleAuthStateChange(user, profile);
     }
@@ -254,11 +266,18 @@ class LuminaCoursesEngine {
       this.currentProfile = profile;
       console.log(`[CoursesEngine] Zalogowano użytkownika LUMINA: ${user.uid}`);
 
+      // Inicjalizacja osiągnięć użytkownika
+      if (this.achievementsEngine) {
+        await this.achievementsEngine.initUser(user);
+      }
+
       // Pobranie danych chmurowych z Firestore
       await this.fetchUserCloudData(user.uid);
 
-      // Migracja stanu gościa do chmury (jeśli użytkownik rozpoczął/ukończył lekcje przed logowaniem)
-      await this.migrateGuestProgressToCloud(user.uid);
+      // Świadoma migracja stanu gościa (Modal zamiast automatycznego cichego zapisu)
+      if (this.localCompletedIds.size > 0) {
+        this.promptGuestMigration(user.uid);
+      }
 
       // Aktualizacja UI
       this.renderLessonsGrid();
@@ -416,6 +435,25 @@ class LuminaCoursesEngine {
       this.renderLessonsGrid();
       this.updateHeroState();
 
+      // Ewaluacja osiągnięć po ukończeniu lekcji (Idempotentna)
+      if (isCompleted && this.achievementsEngine && this.currentUser) {
+        try {
+          const completedSet = new Set();
+          for (const [k, v] of this.cloudProgress.entries()) {
+            if (v.status === 'completed') completedSet.add(k);
+          }
+          completedSet.add(lessonIdNum);
+          const unlocked = await this.achievementsEngine.evaluateOnLessonCompleted(completedSet);
+          if (unlocked && unlocked.length > 0) {
+            for (const ach of unlocked) {
+              this.showAchievementUnlocked(ach);
+            }
+          }
+        } catch (errAch) {
+          console.warn('[CoursesEngine] Błąd ewaluacji osiągnięć:', errAch);
+        }
+      }
+
       window.dispatchEvent(
         new CustomEvent('lumina-course-progress-updated', {
           detail: { lessonId: lessonIdNum, status: targetStatus, uid: this.currentUser.uid }
@@ -429,6 +467,153 @@ class LuminaCoursesEngine {
     } finally {
       this.progressSaveInProgress.delete(lockKey);
     }
+  }
+
+  /**
+   * Wyświetla modal świadomej zgody na migrację postępu gościa (Zero cichego nadpisywania)
+   */
+  promptGuestMigration(uid) {
+    if (!uid || this.localCompletedIds.size === 0) return;
+    const modal = document.getElementById('migration-consent-modal');
+    if (!modal) return;
+
+    const desc = document.getElementById('migration-description');
+    if (desc) {
+      desc.textContent = `W Twojej przeglądarce zapisano ukończone lekcje (${this.localCompletedIds.size}) z sesji gościa. Czy chcesz trwale przypisać te osiągnięcia do Twojego konta LUMINA, aby mieć do nich dostęp na każdym urządzeniu?`;
+    }
+
+    modal.classList.remove('hidden');
+
+    const acceptBtn = document.getElementById('btn-migration-accept');
+    const dismissBtn = document.getElementById('btn-migration-dismiss');
+
+    if (acceptBtn) {
+      acceptBtn.onclick = async () => {
+        acceptBtn.disabled = true;
+        acceptBtn.innerHTML = '<span>⏳ Zapisywanie…</span>';
+        await this.migrateGuestProgressToCloud(uid);
+        acceptBtn.disabled = false;
+        acceptBtn.innerHTML = '<span>ZACHOWAJ MÓJ POSTĘP</span>';
+        modal.classList.add('hidden');
+      };
+    }
+
+    if (dismissBtn) {
+      dismissBtn.onclick = () => {
+        modal.classList.add('hidden');
+      };
+    }
+  }
+
+  /**
+   * Prezentacja nowo odblokowanego osiągnięcia oraz obsługa preferencji publikacji
+   */
+  showAchievementUnlocked(achievement) {
+    if (!achievement) return;
+
+    const pref = this.achievementsEngine?.publishPreference || 'ask_each_time';
+
+    if (pref === 'never') {
+      this.showToast(`🏅 Odblokowano osiągnięcie: ${achievement.name} (Zapisano prywatnie)`);
+      return;
+    }
+
+    const modal = document.getElementById('achievement-modal');
+    if (!modal) {
+      this.showToast(`🏆 Nowe osiągnięcie: ${achievement.name}!`);
+      return;
+    }
+
+    const iconEl = document.getElementById('achievement-icon');
+    const titleEl = document.getElementById('achievement-title');
+    const descEl = document.getElementById('achievement-description');
+
+    if (iconEl) iconEl.textContent = achievement.icon || '🏆';
+    if (titleEl) titleEl.textContent = achievement.name || achievement.title;
+    if (descEl) descEl.textContent = achievement.description;
+
+    const radios = modal.querySelectorAll('input[name="achieve-pref"]');
+    radios.forEach((r) => {
+      r.checked = r.value === pref;
+      r.onchange = () => {
+        if (this.achievementsEngine) {
+          this.achievementsEngine.setPublishPreference(r.value);
+        }
+      };
+    });
+
+    modal.classList.remove('hidden');
+
+    const shareBtn = document.getElementById('btn-achievement-share');
+    const closeBtn = document.getElementById('btn-achievement-close');
+
+    if (shareBtn) {
+      shareBtn.onclick = () => {
+        modal.classList.add('hidden');
+        this.showToast(`✨ Dziękujemy! Osiągnięcie „${achievement.name}” zostało przypisane do Twojego konta LUMINA.`);
+      };
+    }
+
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        modal.classList.add('hidden');
+      };
+    }
+  }
+
+  /**
+   * Zapis próby quizu do Firestore (kolekcja quiz_attempts)
+   */
+  async recordQuizAttempt(lessonId, score, totalQuestions, answers) {
+    const lessonIdNum = Number(lessonId);
+    const passed = score >= Math.ceil(totalQuestions / 2);
+
+    const attempt = {
+      lessonId: lessonIdNum,
+      score,
+      totalQuestions,
+      passed,
+      answers,
+      completedAt: new Date().toISOString()
+    };
+
+    this.quizAttempts.set(lessonIdNum, attempt);
+
+    if (this.currentUser && this.firebaseDb && this.firestoreSdk) {
+      try {
+        const { collection, addDoc, serverTimestamp, doc, setDoc } = this.firestoreSdk;
+        const attemptsColl = collection(this.firebaseDb, 'quiz_attempts');
+        await addDoc(attemptsColl, {
+          userId: this.currentUser.uid,
+          courseId: 'biblijne-zasady-wiary-28',
+          lessonId: lessonIdNum,
+          score,
+          totalQuestions,
+          total: totalQuestions,
+          passed,
+          answers,
+          completedAt: serverTimestamp ? serverTimestamp() : new Date(),
+          version: 1
+        });
+
+        const progressDocId = `${this.currentUser.uid}_lesson_${lessonIdNum}`;
+        const progressRef = doc(this.firebaseDb, 'course_progress', progressDocId);
+        await setDoc(progressRef, {
+          quizResult: {
+            score,
+            totalQuestions,
+            passed,
+            updatedAt: serverTimestamp ? serverTimestamp() : new Date()
+          }
+        }, { merge: true });
+
+        console.log(`[CoursesEngine] Zapisano próbę quizu dla lekcji ${lessonIdNum} w Firestore.`);
+      } catch (err) {
+        console.warn('[CoursesEngine] Błąd zapisu quiz_attempts w Firestore:', err);
+      }
+    }
+
+    return attempt;
   }
 
   /**
@@ -646,7 +831,7 @@ class LuminaCoursesEngine {
   }
 
   renderLessonsGrid() {
-    if (!this.dom.lessonsGrid) return;
+    if (!this.dom || !this.dom.lessonsGrid) return;
 
     let filtered = this.lessons;
     if (this.activeStageFilter !== 'all') {
@@ -983,20 +1168,50 @@ class LuminaCoursesEngine {
         </div>
       </section>
 
-      <!-- 5. ODKRYJ (Zero Atrap — Editorial Review Notice) -->
+      <!-- 5. ODKRYJ W PIŚMIE ŚWIĘTYM -->
       <section class="reader-section">
-        <h2 class="reader-section-title">
-          <span class="reader-step-num">5</span>
-          <span>Odkryj w Piśmie Świętym</span>
-        </h2>
-        <div class="reader-notice-box">
-          <div class="flex items-center gap-3">
-            <span class="text-xl text-amber-400">📖</span>
-            <div>
-              <h4 class="text-white font-bold text-sm">Pytania Odkrywcze w Redakcji (Faza 4)</h4>
-              <p class="text-zinc-400 text-xs mt-0.5">Zgodnie z zasadą Zero Atrap i zatwierdzoną hierarchią źródeł, pytania analityczne do tekstu Pisma Świętego zostaną autoryzowane w Fazie 4.</p>
-            </div>
-          </div>
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+          <h2 class="reader-section-title m-0">
+            <span class="reader-step-num">5</span>
+            <span>Odkryj w Piśmie Świętym</span>
+          </h2>
+          ${
+            lesson.discover?.needsEditorialReview
+              ? `<span class="editorial-badge">⚠️ Weryfikacja redakcyjna (Sola Scriptura)</span>`
+              : ''
+          }
+        </div>
+        <div class="reader-discover-container">
+          ${
+            lesson.discover?.items && lesson.discover.items.length > 0
+              ? lesson.discover.items
+                  .map(
+                    (item, idx) => `
+                <div class="discover-item-card">
+                  <div class="discover-prompt">
+                    <span class="text-amber-400 font-bold">Q${idx + 1}.</span>
+                    <span>${item.prompt}</span>
+                  </div>
+                  ${item.readingExcerpt ? `<div class="discover-excerpt">„${item.readingExcerpt}”</div>` : ''}
+                  ${
+                    item.sourceRefs?.length
+                      ? `<div class="discover-refs-wrap">
+                          <span class="text-zinc-500 text-xs font-semibold uppercase">Sigla:</span>
+                          ${item.sourceRefs.map((ref) => `<span class="reader-sigla-tag">${ref}</span>`).join(' ')}
+                          <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-400 hover:underline ml-2">MojaBiblia ↗</a>
+                        </div>`
+                      : ''
+                  }
+                </div>
+              `
+                  )
+                  .join('')
+              : `
+              <div class="reader-notice-box">
+                <p class="text-zinc-400 text-xs">Pytania analityczne do tekstu Pisma Świętego.</p>
+              </div>
+            `
+          }
         </div>
       </section>
 
@@ -1011,19 +1226,76 @@ class LuminaCoursesEngine {
         </div>
       </section>
 
-      <!-- 7. SPRAWDŹ SIĘ (Zero Atrap — Editorial Review Notice) -->
+      <!-- 7. SPRAWDŹ SIĘ — QUIZ BIBLIJNY -->
       <section class="reader-section">
-        <h2 class="reader-section-title">
-          <span class="reader-step-num">7</span>
-          <span>Sprawdź Się — Quiz Biblijny</span>
-        </h2>
-        <div class="reader-notice-box">
-          <div class="flex items-center gap-3">
-            <span class="text-xl text-amber-400">✍️</span>
-            <div>
-              <h4 class="text-white font-bold text-sm">Interaktywny Quiz w Przygotowaniu (Faza 4)</h4>
-              <p class="text-zinc-400 text-xs mt-0.5">Nie prezentujemy niesprawdzonych pytań doktrynalnych. Quiz zostanie zweryfikowany według Pisma Świętego i dokumentu 28 Zasad Wiary.</p>
-            </div>
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+          <h2 class="reader-section-title m-0">
+            <span class="reader-step-num">7</span>
+            <span>Sprawdź Się — Quiz Biblijny</span>
+          </h2>
+          ${
+            lesson.quiz?.needsEditorialReview
+              ? `<span class="editorial-badge">⚠️ Weryfikacja redakcyjna pytań</span>`
+              : ''
+          }
+        </div>
+
+        <div class="reader-quiz-container">
+          ${
+            lesson.quiz?.questions && lesson.quiz.questions.length > 0
+              ? lesson.quiz.questions
+                  .map(
+                    (q, qIdx) => `
+                <div class="quiz-card" id="quiz-card-${q.id}" data-qid="${q.id}" data-correct="${q.correctAnswer}">
+                  <div class="quiz-q-header">
+                    <span class="quiz-q-badge">Pytanie ${qIdx + 1} z ${lesson.quiz.questions.length}</span>
+                    ${q.needsEditorialReview ? '<span class="editorial-badge m-0">Weryfikacja redakcyjna</span>' : ''}
+                  </div>
+                  <p class="quiz-q-prompt">${q.question}</p>
+                  <div class="quiz-options-list" role="radiogroup" aria-label="Odpowiedzi do pytania ${qIdx + 1}">
+                    ${q.options
+                      .map(
+                        (opt, optIdx) => `
+                      <button type="button" class="quiz-option-btn" data-qid="${q.id}" data-opt-idx="${optIdx}" role="radio" aria-checked="false">
+                        <span>${opt}</span>
+                        <span class="quiz-opt-icon text-xs opacity-60">○</span>
+                      </button>
+                    `
+                      )
+                      .join('')}
+                  </div>
+                  <div class="quiz-feedback-box" id="quiz-feedback-${q.id}">
+                    <div class="quiz-feedback-title" id="quiz-feedback-title-${q.id}"></div>
+                    <p class="quiz-feedback-text" id="quiz-feedback-text-${q.id}">${q.explanation}</p>
+                    <div class="quiz-feedback-actions">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        ${
+                          q.scriptureRefs?.length
+                            ? `<span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                               ${q.scriptureRefs.map((ref) => `<span class="reader-sigla-tag">${ref}</span>`).join(' ')}
+                               <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline">Zobacz w Biblii ↗</a>`
+                            : ''
+                        }
+                      </div>
+                      <button type="button" class="btn-secondary-action text-xs py-1.5 px-3 min-h-[36px] quiz-retry-btn" data-qid="${q.id}">
+                        ↺ Spróbuj ponownie
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `
+                  )
+                  .join('')
+              : `
+              <div class="reader-notice-box">
+                <p class="text-zinc-400 text-xs">Pytania quizowe w opracowaniu.</p>
+              </div>
+            `
+          }
+
+          <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
+            <span class="text-base text-brand-gold">💡</span>
+            <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nigdy nie blokuje postępu</strong> — możesz bez przeszkód kontynuować studium, oznaczyć lekcję jako ukończoną lub przejść do kolejnych tematów.</span>
           </div>
         </div>
       </section>
@@ -1308,6 +1580,92 @@ class LuminaCoursesEngine {
         this.openLesson(nextId);
       });
     }
+
+    // 6. Sprawdź Się — Interaktywny Quiz Formacyjny (Zero blokowania postępu)
+    const quizCards = document.querySelectorAll('.quiz-card');
+    const lessonAnswers = {};
+
+    quizCards.forEach((card) => {
+      const qid = card.getAttribute('data-qid');
+      const correctIdx = Number(card.getAttribute('data-correct'));
+      const optionBtns = card.querySelectorAll('.quiz-option-btn');
+      const feedbackBox = document.getElementById(`quiz-feedback-${qid}`);
+      const feedbackTitle = document.getElementById(`quiz-feedback-title-${qid}`);
+      const retryBtn = card.querySelector('.quiz-retry-btn');
+
+      optionBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('selected-correct') || btn.classList.contains('selected-wrong')) {
+            return;
+          }
+
+          const chosenIdx = Number(btn.getAttribute('data-opt-idx'));
+          const isCorrect = chosenIdx === correctIdx;
+          lessonAnswers[qid] = { chosen: chosenIdx, correct: isCorrect };
+
+          optionBtns.forEach((b) => {
+            b.setAttribute('aria-checked', 'false');
+            b.disabled = true;
+          });
+          btn.setAttribute('aria-checked', 'true');
+
+          if (isCorrect) {
+            btn.classList.add('selected-correct');
+            const icon = btn.querySelector('.quiz-opt-icon');
+            if (icon) icon.textContent = '✓';
+            if (feedbackTitle) {
+              feedbackTitle.className = 'quiz-feedback-title correct';
+              feedbackTitle.innerHTML = '<span>✓ Prawidłowa odpowiedź!</span>';
+            }
+          } else {
+            btn.classList.add('selected-wrong');
+            const icon = btn.querySelector('.quiz-opt-icon');
+            if (icon) icon.textContent = '✕';
+            const correctBtn = card.querySelector(`[data-opt-idx="${correctIdx}"]`);
+            if (correctBtn) {
+              correctBtn.classList.add('show-correct');
+              const cIcon = correctBtn.querySelector('.quiz-opt-icon');
+              if (cIcon) cIcon.textContent = '✓';
+            }
+            if (feedbackTitle) {
+              feedbackTitle.className = 'quiz-feedback-title wrong';
+              feedbackTitle.innerHTML = '<span>✕ Sprawdź wyjaśnienie biblijne</span>';
+            }
+          }
+
+          card.classList.add('quiz-card-answered');
+          if (feedbackBox) feedbackBox.classList.add('visible');
+
+          // Sprawdzenie czy wszystkie pytania z tej lekcji zostały rozwiązane
+          const totalQuestions = lesson.quiz?.questions?.length || 0;
+          const answeredCount = Object.keys(lessonAnswers).length;
+
+          if (answeredCount === totalQuestions && totalQuestions > 0) {
+            let correctCount = 0;
+            for (const ans of Object.values(lessonAnswers)) {
+              if (ans.correct) correctCount++;
+            }
+            this.recordQuizAttempt(lesson.id, correctCount, totalQuestions, lessonAnswers);
+            this.showToast(`✍️ Quiz rozwiązany: ${correctCount}/${totalQuestions} poprawnych odpowiedzi!`);
+          }
+        });
+      });
+
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          delete lessonAnswers[qid];
+          card.classList.remove('quiz-card-answered');
+          if (feedbackBox) feedbackBox.classList.remove('visible');
+          optionBtns.forEach((b) => {
+            b.disabled = false;
+            b.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+            b.setAttribute('aria-checked', 'false');
+            const icon = b.querySelector('.quiz-opt-icon');
+            if (icon) icon.textContent = '○';
+          });
+        });
+      }
+    });
   }
 
   /* ──────────────────────────────────────────────────────────────────────────
@@ -1443,6 +1801,7 @@ class LuminaCoursesEngine {
   }
 
   loadLocalGuestState() {
+    if (typeof localStorage === 'undefined') return;
     try {
       const stored = localStorage.getItem('lumina_academy_local_completed');
       if (stored) {
@@ -1464,6 +1823,7 @@ class LuminaCoursesEngine {
   }
 
   saveLocalGuestState() {
+    if (typeof localStorage === 'undefined') return;
     try {
       localStorage.setItem(
         'lumina_academy_local_completed',

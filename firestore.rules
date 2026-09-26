@@ -362,6 +362,30 @@ service cloud.firestore {
       allow delete: if isMasterAdmin();
     }
 
+    // 5. Próby quizowe — wyniki prywatne dla właściciela UID, brak publicznej emisji
+    match /quiz_attempts/{attemptId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.courseId is string &&
+        (request.resource.data.lessonId is int || request.resource.data.lessonId is string) &&
+        request.resource.data.score is int &&
+        ((request.resource.data.keys().hasAny(['totalQuestions']) && request.resource.data.totalQuestions is int) ||
+         (request.resource.data.keys().hasAny(['total']) && request.resource.data.total is int));
+      allow update: if isMasterAdmin();
+      allow delete: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+    }
+
+    // 6. Preferencje publikacji osiągnięć (ask_each_time, always, never) — ściśle prywatne
+    match /course_preferences/{userId} {
+      allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
+      allow create, update: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.auth.uid == userId &&
+        request.resource.data.publishAchievements in ['ask_each_time', 'always', 'never'];
+      allow delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+    }
+
     match /{document=**} {
       allow read, write: if isMasterAdmin();
     }

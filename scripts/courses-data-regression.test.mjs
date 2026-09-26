@@ -144,10 +144,22 @@ test('8. Rozdzielenie lekcji 29–38 od podstawowego programu 28/28', () => {
   });
 });
 
-test('9. Flaga needsEditorialReview dla quizów i pytań odkrywczych', () => {
-  // W Phase 1 quizy i pytania odkrywcze są celowo oznaczone do zatwierdzenia redakcyjnego (nie-halucynowanie)
+test('9. Flaga needsEditorialReview dla quizów i pytań odkrywczych (Phase 4)', () => {
+  // W Phase 4 treści doktrynalne zostały zwalidowane: 26 lekcji zatwierdzonych, dokładnie lekcje 18 i 24 podlegają weryfikacji redakcyjnej
+  let underReviewCount = 0;
   LUMINA_COURSES_CORE_28.forEach(lesson => {
-    assert.strictEqual(lesson.quiz.needsEditorialReview, true, `Quiz w lekcji ${lesson.id} musi mieć flagę needsEditorialReview: true`);
-    assert.strictEqual(lesson.discover.needsEditorialReview, true, `Pytania Odkryj w lekcji ${lesson.id} muszą mieć flagę needsEditorialReview: true`);
+    const isUnderReview = lesson.id === 18 || lesson.id === 24;
+    assert.strictEqual(
+      lesson.quiz.needsEditorialReview,
+      isUnderReview,
+      `Quiz w lekcji ${lesson.id} status needsEditorialReview powinien wynosić ${isUnderReview}`
+    );
+    assert.strictEqual(
+      lesson.discover.needsEditorialReview,
+      isUnderReview,
+      `Odkryj w lekcji ${lesson.id} status needsEditorialReview powinien wynosić ${isUnderReview}`
+    );
+    if (isUnderReview) underReviewCount++;
   });
+  assert.strictEqual(underReviewCount, 2, 'Dokładnie 2 lekcje podlegają weryfikacji redakcyjnej (Lekcje 18 i 24)');
 });
