@@ -309,23 +309,25 @@ service cloud.firestore {
     }
 
     // CC CONTENT CORE — Kanoniczny rejestr treści Christian Culture (Master Plan CC Global 2030)
-    // Ochrona Pancernej Prywatności i Informacji Wewnętrznych:
-    // Rejestr kanoniczny jest dostępny WYŁĄCZNIE dla Master Admina / Operatorów Mission Control
-    // oraz zaufanego backendu Admin SDK.
-    // Publiczny frontend pobiera wyłącznie dedykowane projekcje (np. lumina_posts, reflections).
     match /cc_content/{contentId} {
-      allow read, write: if isMasterAdmin();
+      // Publiczny odczyt dozwolony wyłącznie dla treści opublikowanych lub zweryfikowanych
+      allow read: if isMasterAdmin() || (resource.data.status in ['PUBLISHED', 'VERIFIED']);
+      // Zapis wyłącznie dla Master Admina (lub zaufanego backendu Admin SDK)
+      allow write: if isMasterAdmin();
 
       match /variants/{variantId} {
-        allow read, write: if isMasterAdmin();
+        allow read: if isMasterAdmin() || get(/databases/$(database)/documents/cc_content/$(contentId)).data.status in ['PUBLISHED', 'VERIFIED'];
+        allow write: if isMasterAdmin();
       }
 
       match /assets/{assetId} {
-        allow read, write: if isMasterAdmin();
+        allow read: if isMasterAdmin() || get(/databases/$(database)/documents/cc_content/$(contentId)).data.status in ['PUBLISHED', 'VERIFIED'];
+        allow write: if isMasterAdmin();
       }
 
       match /publications/{pubId} {
-        allow read, write: if isMasterAdmin();
+        allow read: if isMasterAdmin() || get(/databases/$(database)/documents/cc_content/$(contentId)).data.status in ['PUBLISHED', 'VERIFIED'];
+        allow write: if isMasterAdmin();
       }
 
       match /audit/{auditId} {
