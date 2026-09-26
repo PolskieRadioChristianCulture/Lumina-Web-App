@@ -354,6 +354,23 @@ service cloud.firestore {
       allow read, write: if isMasterAdmin();
     }
 
+    // CC Distribution Engine (Faza 3)
+    match /cc_distribution_jobs/{jobId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_publication_manifests/{manifestId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_distribution_plans/{planId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_distribution_killswitch/{docId} {
+      allow read, write: if isMasterAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if isMasterAdmin();
     }

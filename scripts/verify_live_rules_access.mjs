@@ -122,6 +122,66 @@ async function main() {
     }
   }
 
+  // 3f. Attempt unauthenticated read of cc_distribution_jobs
+  process.stdout.write('⏳ Testing unauthenticated read of cc_distribution_jobs... ');
+  try {
+    const djColl = collection(db, 'cc_distribution_jobs');
+    await getDocs(djColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_distribution_jobs!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3g. Attempt unauthenticated read of cc_publication_manifests
+  process.stdout.write('⏳ Testing unauthenticated read of cc_publication_manifests... ');
+  try {
+    const manColl = collection(db, 'cc_publication_manifests');
+    await getDocs(manColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_publication_manifests!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3h. Attempt unauthenticated read of cc_distribution_plans
+  process.stdout.write('⏳ Testing unauthenticated read of cc_distribution_plans... ');
+  try {
+    const dpColl = collection(db, 'cc_distribution_plans');
+    await getDocs(dpColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_distribution_plans!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3i. Attempt unauthenticated read of cc_distribution_killswitch
+  process.stdout.write('⏳ Testing unauthenticated read of cc_distribution_killswitch... ');
+  try {
+    const ksColl = collection(db, 'cc_distribution_killswitch');
+    await getDocs(ksColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_distribution_killswitch!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
   // 4. Verify that public collections (e.g. lumina_posts) remain readable
   process.stdout.write('⏳ Testing unauthenticated read of public lumina_posts... ');
   try {

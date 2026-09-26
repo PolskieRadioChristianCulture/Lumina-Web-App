@@ -41,6 +41,24 @@
         { "fieldPath": "status", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "cc_distribution_jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "contentId", "order": "ASCENDING" },
+        { "fieldPath": "state", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "cc_distribution_jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "platform", "order": "ASCENDING" },
+        { "fieldPath": "state", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
