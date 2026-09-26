@@ -371,6 +371,32 @@ service cloud.firestore {
       allow read, write: if isMasterAdmin();
     }
 
+    // CC Global Observer & Mission Intelligence (Faza 4 / Gate 4.5)
+    // Anonymous: DENIED, Ordinary CC ID: DENIED, MasterAdmin / Backend: least privilege
+    match /cc_analytics_events/{eventId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_analytics_snapshots/{snapshotId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_analytics_rollups/{rollupId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_platform_health/{componentId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_incidents/{incidentId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_observer_jobs/{jobId} {
+      allow read, write: if isMasterAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if isMasterAdmin();
     }
