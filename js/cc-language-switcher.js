@@ -234,6 +234,10 @@
         const candidate = WAVE_1_LOCALES.find(l => l.code.startsWith(browserLang));
 
         if (candidate && candidate.code !== currentLocale) {
+            try {
+                if (sessionStorage.getItem('cc_dismissed_sug_' + candidate.code)) return;
+            } catch (_) {}
+
             const banner = document.createElement('div');
             banner.id = 'cc-lang-suggestion-banner';
             banner.className = 'fixed bottom-4 right-4 max-w-sm bg-obsidian-card border border-cc-gold/40 shadow-2xl rounded-2xl p-3.5 z-50 flex items-center justify-between gap-3 text-xs text-white animate-fade-in';
@@ -245,20 +249,33 @@
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button type="button" id="btnAcceptLangSug" class="px-2.5 py-1 rounded-lg bg-cc-gold text-obsidian font-bold hover:brightness-110 transition">Tak</button>
-                    <button type="button" id="btnDismissLangSug" class="p-1 text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" id="btnDismissLangSug" class="p-1 text-slate-400 hover:text-white transition" aria-label="Zamknij sugestię"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             `;
 
             document.body.appendChild(banner);
 
+            // Telemetria: LANGUAGE_SUGGESTION_SHOWN
+            window.dispatchEvent(new CustomEvent('cc-analytics-event', {
+                detail: { metricType: 'LANGUAGE_SUGGESTION_SHOWN', locale: candidate.code, source: 'BROWSER_LANGUAGE' }
+            }));
+
             banner.querySelector('#btnAcceptLangSug').addEventListener('click', () => {
+                window.dispatchEvent(new CustomEvent('cc-analytics-event', {
+                    detail: { metricType: 'LANGUAGE_SUGGESTION_ACCEPTED', locale: candidate.code }
+                }));
                 storeUserChoice(candidate.code);
                 banner.remove();
                 window.location.href = getTargetUrlForLocale(candidate.code);
             });
 
             banner.querySelector('#btnDismissLangSug').addEventListener('click', () => {
-                storeUserChoice(currentLocale); // Zapamiętujemy obecny
+                window.dispatchEvent(new CustomEvent('cc-analytics-event', {
+                    detail: { metricType: 'LANGUAGE_SUGGESTION_DISMISSED', locale: candidate.code }
+                }));
+                try {
+                    sessionStorage.setItem('cc_dismissed_sug_' + candidate.code, '1');
+                } catch (_) {}
                 banner.remove();
             });
         }
