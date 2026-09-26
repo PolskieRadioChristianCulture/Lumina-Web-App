@@ -16,9 +16,10 @@ const kursyHtml = fs.readFileSync(kursyHtmlPath, 'utf8');
 const engineJs = fs.readFileSync(engineJsPath, 'utf8');
 const redirects = fs.readFileSync(redirectsPath, 'utf8');
 
-test('1. Routing /kursy -> /kursy.html istnieje w _redirects', () => {
+test('1. Routing /kursy oraz /akademia w Cloudflare Pages Clean URLs i _redirects', () => {
   assert.strictEqual(fs.existsSync(kursyHtmlPath), true, 'Plik kursy.html musi istnieć na dysku');
-  assert.match(redirects, /\/kursy\s+\/kursy\.html\s+200/, 'Reguła rewrite /kursy /kursy.html 200 musi być obecna');
+  assert.match(redirects, /\/akademia\s+\/kursy\s+200/, 'Alias /akademia /kursy 200 musi być obecny');
+  assert.doesNotMatch(redirects, /\/kursy\s+\/kursy\.html\s+200/, 'Zakaz szkodliwej reguły zapętlającej 308 (/kursy -> /kursy.html)');
 });
 
 test('2. Nagłówek i SEO: poprawny title, description, canonical, h1', () => {
