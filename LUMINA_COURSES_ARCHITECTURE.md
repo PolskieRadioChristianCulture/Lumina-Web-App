@@ -249,3 +249,47 @@ match /spiritual_care_requests/{requestId} {
 - **NIE WOLNO tworzyć nowego systemu TTS:** Korzystamy z istniejącej architektury `js/lumina-speech-reader.js`.
 - **NIE WOLNO używać atrap UI:** Każdy przycisk „Zapisz”, „Zgłoś”, „Ukończ” musi mieć realny zapis w Firestore lub bezpieczny fallback lokalny z powiadomieniem.
 - **NIE WOLNO dotykać zabezpieczonych kanałów produkcyjnych:** Kanały TV/CCTV (`cctv24-worship.html`, `stream-scene.html` itd.) pozostają nienaruszone (READ-ONLY).
+
+---
+
+## 9. DOKUMENT REFERENCYJNY I CONTENT VALIDATION GATE (ADDENDUM)
+
+### Zatwierdzone źródło referencyjne: `28_Zasad_Wiary_Kosciola_Bozego.pdf`
+Do projektu został włączony oficjalny dokument referencyjny: `28_Zasad_Wiary_Kosciola_Bozego.pdf`. Dokument ten stanowi zatwierdzone źródło referencyjne definiujące zakres 28 zasad wiary programu 28/28 LUMINA Bible Academy.
+
+### Zasada Hierarchii Źródeł
+Przy redakcji, weryfikacji i rozwijaniu treści kursów obowiązuje bezwzględna hierarchia:
+1. **Pismo Święte** — nadrzędny i ostateczny autorytet treści.
+2. **`28_Zasad_Wiary_Kosciola_Bozego.pdf`** — zatwierdzony dokument referencyjny definiujący zakres 28 zasad, granice doktrynalne i kluczowe wersety.
+3. **Istniejące pełne lekcje `cclite.pl`** — materiał rozwijający poszczególne zagadnienia, narrację i strukturę studium.
+4. **Zatwierdzone materiały Christian Culture**.
+
+*Zakaz:* Nie wolno samodzielnie korzystać z zewnętrznych materiałów denominacyjnych do rozszerzania doktryny bez uprzedniej wyraźnej zgody właściciela.
+
+### Rola Dokumentu PDF
+PDF nie zastępuje pełnych lekcji (które zawierają bogatszą narrację dydaktyczną), lecz służy jako:
+- doktrynalny punkt kontrolny,
+- mapa i kanon 28 tematów,
+- źródło podstawowych twierdzeń i definicji,
+- źródło wskazanych fragmentów biblijnych,
+- materiał kontrolny podczas tworzenia sekcji ODKRYJ,
+- materiał kontrolny podczas tworzenia quizów,
+- zabezpieczenie przed zmianą sensu i zniekształceniem teologicznym podczas migracji.
+
+### Content Validation Gate
+Przed zatwierdzeniem finalnej treści każdej z 28 lekcji (zwłaszcza w Fazie 4 i redakcji pytań) następuje porównanie trójstronne:
+`PDF ↔ materiał źródłowy cclite.pl ↔ dane LUMINA Bible Academy`
+Wszelkie istotne rozbieżności są raportowane. Agent nie rozstrzyga samodzielnie rozbieżności doktrynalnych — oznacza je flagą `needsEditorialReview: true` i przedstawia właścicielowi do decyzji.
+
+### Standard Tworzenia Pytań QUIZ / ODKRYJ
+Pytania mogą być formułowane wyłącznie wtedy, gdy odpowiedź wynika bezpośrednio i jednoznacznie z:
+1. Tekstu Biblii wskazanego w lekcji,
+2. Zatwierdzonej treści lekcji,
+3. Dokumentu 28 Zasad Wiary.
+Każde pytanie ma prowadzić użytkownika przede wszystkim do **samodzielnego odkrywania prawdy w Piśmie Świętym**, a nie jedynie do biernego zapamiętywania sformułowań kursu.
+
+### Terminologia Publiczna
+W publicznym interfejsie i materiałach LUMINA zachowujemy standard terminologiczny Christian Culture:
+- **KOŚCIÓŁ BOŻY**
+- Nie eksponujemy partykularnych nazw denominacji.
+
