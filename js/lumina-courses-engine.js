@@ -1,10 +1,18 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * LUMINA BIBLE ACADEMY — COURSE ENGINE MVP (Phase 2)
+ * LUMINA BIBLE ACADEMY — COURSE ENGINE & CLOUD PROGRESS (Phase 3)
  * Plik: js/lumina-courses-engine.js
  * 
- * Silnik interaktywnej platformy 28 Lekcji Biblijnych
- * Zasada nadrzędna: ZERO ATRAP, REUSE > EXTEND, Truthful UI
+ * Silnik platformy 28 Fundamentalnych Lekcji Biblijnych
+ * Architektura: Google OAuth -> LUMINA Identity -> Firestore Source of Truth
+ * 
+ * Moduły:
+ *  1. Cloud Progress Engine (course_progress) — idempotentny, odporny na refreshe
+ *  2. Private Journal Engine (course_journal) — prywatny, debounced autosave
+ *  3. Guest -> LUMINA Migration — bezpieczne scalanie bez degradacji chmury
+ *  4. Single Source of Truth & Zero Atrap UI — rzetelne stany zapisu
+ *  5. Web Speech API Player (TTS) & Web Share API
+ * 
  * © Christian Culture / LUMINA — 2026
  * ══════════════════════════════════════════════════════════════════════════
  */
@@ -24,19 +32,46 @@ class LuminaCoursesEngine {
     this.currentLocale = 'pl';
     this.activeStageFilter = 'all';
 
-    // Lokalne postępy sesyjne gościa (Local UX != Cloud Source of Truth)
+    // Tożsamość użytkownika LUMINA (Single Source of Truth)
+    this.currentUser = null;
+    this.currentProfile = null;
+
+    // Dane zsynchronizowane z chmurą Firestore (Source of Truth dla zalogowanych)
+    // Map<lessonId (int), { status, progressPercent, startedAt, completedAt, lastActivityAt, version }>
+    this.cloudProgress = new Map();
+    // Map<lessonId (int), { discovery, application, prayer, updatedAt, createdAt, version }>
+    this.cloudJournals = new Map();
+
+    // Anonimowy bufor sesyjny gościa (Local UX — wyłącznie do momentu zalogowania)
     this.localCompletedIds = new Set();
     this.localDecisionIds = new Set();
+
+    // Kontrola debounce autosave dla Dziennika Drogi
+    this.journalDebounceTimer = null;
+    this.journalSaveInProgress = false;
+    this.journalPendingPayload = null;
+
+    // Kontrola zapisu postępu (anti-race condition)
+    this.progressSaveInProgress = new Set();
 
     // Kontrola syntezy mowy TTS
     this.speechSynth = typeof window !== 'undefined' ? window.speechSynthesis : null;
     this.currentUtterance = null;
     this.ttsState = 'idle'; // 'idle' | 'playing' | 'paused'
 
+    // Zależności Firebase (wstrzykiwane lub ładowane z modułów ekosystemu)
+    this.firebaseAuth = null;
+    this.firebaseDb = null;
+    this.firestoreSdk = null;
+
     this.init();
   }
 
-  init() {
+  /* ──────────────────────────────────────────────────────────────────────────
+   * INICJALIZACJA I BINDING
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  async init() {
     this.loadLocalGuestState();
     this.cacheDomElements();
     this.bindEvents();
@@ -44,6 +79,9 @@ class LuminaCoursesEngine {
     this.renderLessonsGrid();
     this.updateHeroState();
     this.handleInitialRouting();
+
+    // Inicjalizacja połączenia z Firebase Auth i Firestore
+    await this.initFirebase();
   }
 
   cacheDomElements() {
@@ -61,60 +99,45 @@ class LuminaCoursesEngine {
       readerTitle: document.getElementById('reader-title'),
       readerSubtitle: document.getElementById('reader-subtitle'),
       readerContent: document.getElementById('reader-content'),
-      shareToast: document.getElementById('share-toast')
+      academyToast: document.getElementById('academy-toast')
     };
   }
 
-  loadLocalGuestState() {
-    try {
-      const stored = localStorage.getItem('lumina_academy_local_completed');
-      if (stored) {
-        const arr = JSON.parse(stored);
-        if (Array.isArray(arr)) {
-          this.localCompletedIds = new Set(arr);
-        }
-      }
-      const storedDecisions = localStorage.getItem('lumina_academy_local_decisions');
-      if (storedDecisions) {
-        const arr = JSON.parse(storedDecisions);
-        if (Array.isArray(arr)) {
-          this.localDecisionIds = new Set(arr);
-        }
-      }
-    } catch (e) {
-      console.warn('[CoursesEngine] Nie udało się wczytać stanu lokalnego:', e);
-    }
-  }
-
-  saveLocalGuestState() {
-    try {
-      localStorage.setItem(
-        'lumina_academy_local_completed',
-        JSON.stringify(Array.from(this.localCompletedIds))
-      );
-      localStorage.setItem(
-        'lumina_academy_local_decisions',
-        JSON.stringify(Array.from(this.localDecisionIds))
-      );
-    } catch (e) {
-      console.warn('[CoursesEngine] Błąd zapisu stanu lokalnego:', e);
-    }
-  }
-
   bindEvents() {
-    // Klawiatura: ESC zamyka czytnik
+    // Nawigacja czytnika (klawiatura i przyciski)
+    if (this.dom.readerCloseBtn) {
+      this.dom.readerCloseBtn.addEventListener('click', () => this.closeLesson());
+    }
+
+    if (this.dom.readerPrevBtn) {
+      this.dom.readerPrevBtn.addEventListener('click', () => this.navigateLesson(-1));
+    }
+
+    if (this.dom.readerNextBtn) {
+      this.dom.readerNextBtn.addEventListener('click', () => this.navigateLesson(1));
+    }
+
+    // Obsługa klawiszy ESC, strzałek
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.currentLesson) {
-        this.closeReader();
-      }
+      if (!this.dom.lessonReader || this.dom.lessonReader.classList.contains('hidden')) return;
+      if (e.key === 'Escape') this.closeLesson();
+      if (e.key === 'ArrowLeft' && !e.target.matches('textarea, input')) this.navigateLesson(-1);
+      if (e.key === 'ArrowRight' && !e.target.matches('textarea, input')) this.navigateLesson(1);
     });
 
-    // Zmiana URL (Back / Forward browser buttons)
-    window.addEventListener('popstate', () => {
-      this.handleUrlChange();
-    });
+    // Pasek postępu czytania (scroll listener)
+    if (this.dom.readerContainer) {
+      this.dom.readerContainer.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = this.dom.readerContainer;
+        const total = scrollHeight - clientHeight;
+        const percent = total > 0 ? Math.min(100, Math.round((scrollTop / total) * 100)) : 0;
+        if (this.dom.readerProgressBar) {
+          this.dom.readerProgressBar.style.width = `${percent}%`;
+        }
+      });
+    }
 
-    // Przycisk Hero
+    // Hero Action Button
     if (this.dom.heroActionBtn) {
       this.dom.heroActionBtn.addEventListener('click', () => {
         const nextId = this.getNextRecommendedLessonId();
@@ -122,73 +145,633 @@ class LuminaCoursesEngine {
       });
     }
 
-    // Zamknięcie czytnika
-    if (this.dom.readerCloseBtn) {
-      this.dom.readerCloseBtn.addEventListener('click', () => this.closeReader());
-    }
+    // Popstate (historia przeglądarki)
+    window.addEventListener('popstate', () => {
+      this.handleInitialRouting();
+    });
 
-    // Nawigacja poprzednia / następna lekcja
-    if (this.dom.readerPrevBtn) {
-      this.dom.readerPrevBtn.addEventListener('click', () => {
-        if (!this.currentLesson) return;
-        const prevId = this.currentLesson.id > 1 ? this.currentLesson.id - 1 : 28;
-        this.openLesson(prevId);
-      });
-    }
-
-    if (this.dom.readerNextBtn) {
-      this.dom.readerNextBtn.addEventListener('click', () => {
-        if (!this.currentLesson) return;
-        const nextId = this.currentLesson.id < 28 ? this.currentLesson.id + 1 : 1;
-        this.openLesson(nextId);
-      });
-    }
-
-    // Scroll w czytniku aktualizuje pasek postępu
-    if (this.dom.readerContainer) {
-      this.dom.readerContainer.addEventListener('scroll', () => {
-        this.updateReadingProgressBar();
-      });
-    }
-
-    // Nasłuchiwanie zmian autoryzacji z cc-global-auth
+    // Globalne zdarzenia autoryzacji z LUMINA
     window.addEventListener('lumina-auth-state', (e) => {
-      this.updateHeroState(e.detail?.user);
+      const detail = e.detail || {};
+      this.handleAuthStateChange(detail.user || null, detail.profile || null);
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'lumina_current_user') {
+        try {
+          const user = e.newValue ? JSON.parse(e.newValue) : null;
+          this.handleAuthStateChange(user, null);
+        } catch (_) {}
+      }
     });
   }
 
-  getNextRecommendedLessonId() {
-    for (let i = 1; i <= 28; i++) {
-      if (!this.localCompletedIds.has(i)) {
-        return i;
+  /* ──────────────────────────────────────────────────────────────────────────
+   * FIREBASE & AUTH INTEGRATION (REUSE EKOSYSTEMU)
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  async initFirebase() {
+    if (typeof window === 'undefined') return;
+
+    try {
+      // 1. Sprawdzenie modułu LuminaDB
+      let lumina = window.LuminaDB;
+      if (!lumina) {
+        try {
+          lumina = await import('/lumina-db.js?v=courses_p3');
+        } catch (e) {
+          console.warn('[CoursesEngine] Dynamic import /lumina-db.js notice:', e.message);
+        }
       }
+
+      if (lumina && typeof lumina.ensureDbReady === 'function') {
+        const ready = await lumina.ensureDbReady();
+        if (ready) {
+          this.firebaseAuth = ready.auth;
+          this.firebaseDb = ready.db;
+        }
+      }
+
+      // 2. Ładowanie modułowego SDK Firestore jeśli niedostępne
+      if (!this.firestoreSdk) {
+        try {
+          this.firestoreSdk = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+        } catch (e) {
+          console.warn('[CoursesEngine] Firestore SDK CDN notice:', e.message);
+        }
+      }
+
+      // 3. Nasłuch zmian autoryzacji przez onAuthChange
+      if (lumina && typeof lumina.onAuthChange === 'function') {
+        lumina.onAuthChange((user, profile) => {
+          this.handleAuthStateChange(user, profile);
+        });
+      } else {
+        // Fallback odczytu bieżącego użytkownika z localStorage
+        try {
+          const storedUser = localStorage.getItem('lumina_current_user');
+          const storedProfile = localStorage.getItem('lumina_current_user_profile');
+          if (storedUser) {
+            const user = JSON.parse(storedUser);
+            const profile = storedProfile ? JSON.parse(storedProfile) : null;
+            this.handleAuthStateChange(user, profile);
+          }
+        } catch (_) {}
+      }
+    } catch (err) {
+      console.warn('[CoursesEngine] initFirebase initialization fallback:', err);
     }
-    return 1;
   }
 
-  updateHeroState(authUser = null) {
-    if (!authUser) {
-      try {
-        const stored = localStorage.getItem('lumina_current_user');
-        if (stored) authUser = JSON.parse(stored);
-      } catch (e) {}
+  /**
+   * Metoda wstrzykiwania kontekstu Firebase (dla testów integracyjnych i unit testów)
+   */
+  setFirebaseContext({ auth, db, sdk, user = null, profile = null }) {
+    if (auth) this.firebaseAuth = auth;
+    if (db) this.firebaseDb = db;
+    if (sdk) this.firestoreSdk = sdk;
+    if (user !== undefined) {
+      this.handleAuthStateChange(user, profile);
+    }
+  }
+
+  /**
+   * Obsługa zmiany tożsamości użytkownika (Login / Logout / Switch Account)
+   */
+  async handleAuthStateChange(user, profile) {
+    const previousUid = this.currentUser?.uid;
+    const newUid = user?.uid;
+
+    if (previousUid === newUid && this.currentUser !== null) {
+      // Ta sama sesja — aktualizacja ewentualnych metadanych profilu
+      this.currentProfile = profile || this.currentProfile;
+      return;
     }
 
-    const completedCount = this.localCompletedIds.size;
+    if (user && user.uid) {
+      // ZALOGOWANY UŻYTKOWNIK
+      this.currentUser = user;
+      this.currentProfile = profile;
+      console.log(`[CoursesEngine] Zalogowano użytkownika LUMINA: ${user.uid}`);
+
+      // Pobranie danych chmurowych z Firestore
+      await this.fetchUserCloudData(user.uid);
+
+      // Migracja stanu gościa do chmury (jeśli użytkownik rozpoczął/ukończył lekcje przed logowaniem)
+      await this.migrateGuestProgressToCloud(user.uid);
+
+      // Aktualizacja UI
+      this.renderLessonsGrid();
+      this.updateHeroState();
+
+      // Odświeżenie czytnika jeśli lekcja jest aktualnie otwarta
+      if (this.currentLesson) {
+        this.renderLessonContent(this.currentLesson);
+      }
+    } else {
+      // WYLOGOWANY (CZYSZCZENIE PRYWATNYCH DANYCH Z DOM I PAMIĘCI)
+      console.log('[CoursesEngine] Wylogowano użytkownika — czyszczenie prywatnych danych.');
+      this.currentUser = null;
+      this.currentProfile = null;
+      this.cloudProgress.clear();
+      this.cloudJournals.clear();
+
+      // Czyszczenie pól tekstowych Dziennika Drogi w aktywnym DOM
+      this.clearJournalInputs();
+
+      // Przywrócenie stanu gościa
+      this.renderLessonsGrid();
+      this.updateHeroState();
+
+      if (this.currentLesson) {
+        this.renderLessonContent(this.currentLesson);
+      }
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+   * CLOUD PROGRESS ENGINE (FIRESTORE)
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  /**
+   * Pobiera wszystkie rekordy postępu i wpisy dziennika dla zalogowanego użytkownika
+   * Zapytanie zabezpieczone regułą: where('userId', '==', uid)
+   */
+  async fetchUserCloudData(uid) {
+    if (!uid) return;
+    if (!this.firebaseDb || !this.firestoreSdk) {
+      console.log('[CoursesEngine] Firestore niedostępny — pomijam fetchUserCloudData.');
+      return;
+    }
+
+    try {
+      const { collection, query, where, getDocs } = this.firestoreSdk;
+
+      // 1. Pobranie postępu lekcji
+      const progressColl = collection(this.firebaseDb, 'course_progress');
+      const progressQuery = query(progressColl, where('userId', '==', uid));
+      const progressSnap = await getDocs(progressQuery);
+
+      this.cloudProgress.clear();
+      progressSnap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data && data.lessonId !== undefined) {
+          const lessonIdNum = Number(data.lessonId);
+          this.cloudProgress.set(lessonIdNum, data);
+        }
+      });
+
+      // 2. Pobranie Dziennika Drogi
+      const journalColl = collection(this.firebaseDb, 'course_journal');
+      const journalQuery = query(journalColl, where('userId', '==', uid));
+      const journalSnap = await getDocs(journalQuery);
+
+      this.cloudJournals.clear();
+      journalSnap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data && data.lessonId !== undefined) {
+          const lessonIdNum = Number(data.lessonId);
+          this.cloudJournals.set(lessonIdNum, data);
+        }
+      });
+
+      console.log(
+        `[CoursesEngine] Załadowano z chmury: ${this.cloudProgress.size} lekcji postępu, ${this.cloudJournals.size} wpisów dziennika.`
+      );
+    } catch (err) {
+      console.warn('[CoursesEngine] Błąd podczas pobierania danych z Firestore:', err);
+    }
+  }
+
+  /**
+   * Idempotentny zapis postępu lekcji (not_started -> in_progress -> completed)
+   * Zasada: raz 'completed' nigdy nie ulega degradacji do 'in_progress'.
+   */
+  async recordLessonProgress(lessonId, targetStatus) {
+    const lessonIdNum = Number(lessonId);
+
+    // Tryb Gościa: zapis w buforze lokalnym
+    if (!this.currentUser) {
+      if (targetStatus === 'completed') {
+        this.localCompletedIds.add(lessonIdNum);
+        this.saveLocalGuestState();
+      }
+      this.renderLessonsGrid();
+      this.updateHeroState();
+      return { success: true, mode: 'local' };
+    }
+
+    // Blokada współbieżnych zapisów tej samej lekcji
+    const lockKey = `${this.currentUser.uid}_${lessonIdNum}`;
+    if (this.progressSaveInProgress.has(lockKey)) {
+      return { inProgress: true };
+    }
+
+    // Idempotencja: jeśli lekcja jest już ukończona w chmurze, nie degraduj jej
+    const existing = this.cloudProgress.get(lessonIdNum);
+    if (existing && existing.status === 'completed' && targetStatus !== 'completed') {
+      return { success: true, status: 'completed', alreadyCompleted: true };
+    }
+
+    if (!this.firebaseDb || !this.firestoreSdk) {
+      console.warn('[CoursesEngine] Brak połączenia z Firestore podczas recordLessonProgress.');
+      return { success: false, error: 'NO_FIRESTORE' };
+    }
+
+    this.progressSaveInProgress.add(lockKey);
+
+    try {
+      const { doc, setDoc, serverTimestamp } = this.firestoreSdk;
+      const docId = `${this.currentUser.uid}_lesson_${lessonIdNum}`;
+      const docRef = doc(this.firebaseDb, 'course_progress', docId);
+
+      const isCompleted = targetStatus === 'completed';
+      const payload = {
+        userId: this.currentUser.uid,
+        courseId: 'biblijne-zasady-wiary-28',
+        lessonId: lessonIdNum,
+        status: targetStatus,
+        progressPercent: isCompleted ? 100 : 25,
+        lastActivityAt: serverTimestamp ? serverTimestamp() : new Date(),
+        quizResult: null,
+        version: 1
+      };
+
+      if (isCompleted) {
+        payload.completedAt = serverTimestamp ? serverTimestamp() : new Date();
+      } else if (!existing || !existing.startedAt) {
+        payload.startedAt = serverTimestamp ? serverTimestamp() : new Date();
+      }
+
+      await setDoc(docRef, payload, { merge: true });
+
+      // Zapis do lokalnej pamięci podręcznej chmury
+      this.cloudProgress.set(lessonIdNum, {
+        ...existing,
+        ...payload,
+        completedAt: isCompleted ? (payload.completedAt || new Date()) : (existing?.completedAt || null),
+        lastActivityAt: new Date()
+      });
+
+      this.renderLessonsGrid();
+      this.updateHeroState();
+
+      window.dispatchEvent(
+        new CustomEvent('lumina-course-progress-updated', {
+          detail: { lessonId: lessonIdNum, status: targetStatus, uid: this.currentUser.uid }
+        })
+      );
+
+      return { success: true, mode: 'cloud', status: targetStatus };
+    } catch (err) {
+      console.error('[CoursesEngine] Błąd zapisu postępu do Firestore:', err);
+      return { success: false, error: err.message || err };
+    } finally {
+      this.progressSaveInProgress.delete(lockKey);
+    }
+  }
+
+  /**
+   * Bezpieczna migracja stanu gościa do profilu zalogowanego użytkownika
+   * Zasada: Najbardziej zaawansowany stan wygrywa, brak degradacji ukończonych lekcji
+   */
+  async migrateGuestProgressToCloud(uid) {
+    if (!uid || this.localCompletedIds.size === 0) return;
+    if (!this.firebaseDb || !this.firestoreSdk) return;
+
+    console.log(`[CoursesEngine] Wykryto ${this.localCompletedIds.size} lokalnych lekcji gościa — migracja do chmury...`);
+
+    const toMigrate = Array.from(this.localCompletedIds);
+    let migratedCount = 0;
+
+    for (const lessonId of toMigrate) {
+      const lessonIdNum = Number(lessonId);
+      const cloudItem = this.cloudProgress.get(lessonIdNum);
+
+      // Jeśli w chmurze lekcja nie jest oznaczona jako completed — zapisujemy
+      if (!cloudItem || cloudItem.status !== 'completed') {
+        const res = await this.recordLessonProgress(lessonIdNum, 'completed');
+        if (res.success) migratedCount++;
+      }
+    }
+
+    // Wyczyszczenie bufora gościa po pomyślnej migracji
+    this.localCompletedIds.clear();
+    this.saveLocalGuestState();
+
+    if (migratedCount > 0) {
+      this.showToast(`✨ Pomyślnie zsynchronizowano Twój postęp (${migratedCount} lekcji) z kontem LUMINA 🕊️`);
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+   * DZIENNIK DROGI (PRIVATE JOURNAL & AUTOSAVE)
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  /**
+   * Kolejkuje automatyczny zapis Dziennika Drogi (Debounce 1200ms)
+   */
+  scheduleJournalAutosave(lessonId) {
+    const lessonIdNum = Number(lessonId);
+    const statusPill = document.getElementById('journal-status-indicator');
+
+    if (statusPill) {
+      statusPill.className = 'journal-status-badge saving';
+      statusPill.innerHTML = '<span>✏️ Wprowadzanie zmian…</span>';
+    }
+
+    if (this.journalDebounceTimer) {
+      clearTimeout(this.journalDebounceTimer);
+    }
+
+    this.journalDebounceTimer = setTimeout(() => {
+      this.executeJournalSave(lessonIdNum);
+    }, 1200);
+  }
+
+  /**
+   * Wykonuje fizyczny zapis Dziennika Drogi do Firestore (course_journal)
+   */
+  async executeJournalSave(lessonId) {
+    const lessonIdNum = Number(lessonId);
+    const statusPill = document.getElementById('journal-status-indicator');
+
+    const discoveryEl = document.getElementById('journal-discovery');
+    const applicationEl = document.getElementById('journal-application');
+    const prayerEl = document.getElementById('journal-prayer');
+
+    if (!discoveryEl && !applicationEl && !prayerEl) return;
+
+    const discovery = discoveryEl ? discoveryEl.value : '';
+    const application = applicationEl ? applicationEl.value : '';
+    const prayer = prayerEl ? prayerEl.value : '';
+
+    // Jeśli użytkownik jest gościem — nie ma konta chmurowego
+    if (!this.currentUser) {
+      if (statusPill) {
+        statusPill.className = 'journal-status-badge';
+        statusPill.innerHTML = '<span>🔒 Tryb gościa (zaloguj się, aby zapisać w chmurze)</span>';
+      }
+      return;
+    }
+
+    if (!this.firebaseDb || !this.firestoreSdk) {
+      if (statusPill) {
+        statusPill.className = 'journal-status-badge error';
+        statusPill.innerHTML = `<span>❌ Błąd połączenia z chmurą</span> <button type="button" id="btn-journal-retry" class="underline text-amber-400 font-bold ml-1">Ponów</button>`;
+        this.wireJournalRetry(lessonIdNum);
+      }
+      return;
+    }
+
+    if (statusPill) {
+      statusPill.className = 'journal-status-badge saving';
+      statusPill.innerHTML = '<span>⏳ Zapisywanie w chmurze LUMINA…</span>';
+    }
+
+    this.journalSaveInProgress = true;
+
+    try {
+      const { doc, setDoc, serverTimestamp } = this.firestoreSdk;
+      const docId = `${this.currentUser.uid}_journal_${lessonIdNum}`;
+      const docRef = doc(this.firebaseDb, 'course_journal', docId);
+
+      const existing = this.cloudJournals.get(lessonIdNum);
+      const payload = {
+        userId: this.currentUser.uid,
+        courseId: 'biblijne-zasady-wiary-28',
+        lessonId: lessonIdNum,
+        discovery: discovery.trim(),
+        application: application.trim(),
+        prayer: prayer.trim(),
+        updatedAt: serverTimestamp ? serverTimestamp() : new Date(),
+        version: 1
+      };
+
+      if (!existing || !existing.createdAt) {
+        payload.createdAt = serverTimestamp ? serverTimestamp() : new Date();
+      }
+
+      await setDoc(docRef, payload, { merge: true });
+
+      // Zapis w pamięci podręcznej silnika
+      this.cloudJournals.set(lessonIdNum, {
+        ...existing,
+        ...payload,
+        updatedAt: new Date()
+      });
+
+      const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      if (statusPill) {
+        statusPill.className = 'journal-status-badge saved';
+        statusPill.innerHTML = `<span>✓ Zapisano w chmurze (${nowTime})</span>`;
+      }
+    } catch (err) {
+      console.error('[CoursesEngine] Błąd zapisu Dziennika Drogi do Firestore:', err);
+      // NIGDY NIE CZYŚĆ POLA PO BŁĘDZIE! Tekst pozostaje w textarea.
+      if (statusPill) {
+        statusPill.className = 'journal-status-badge error';
+        statusPill.innerHTML = `<span>❌ Nie udało się zapisać</span> <button type="button" id="btn-journal-retry" class="underline text-amber-400 font-bold ml-1">Ponów próbę</button>`;
+        this.wireJournalRetry(lessonIdNum);
+      }
+    } finally {
+      this.journalSaveInProgress = false;
+    }
+  }
+
+  wireJournalRetry(lessonId) {
+    const retryBtn = document.getElementById('btn-journal-retry');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        this.executeJournalSave(lessonId);
+      });
+    }
+  }
+
+  clearJournalInputs() {
+    const d = document.getElementById('journal-discovery');
+    const a = document.getElementById('journal-application');
+    const p = document.getElementById('journal-prayer');
+    if (d) d.value = '';
+    if (a) a.value = '';
+    if (p) p.value = '';
+    const pill = document.getElementById('journal-status-indicator');
+    if (pill) {
+      pill.className = 'journal-status-badge';
+      pill.innerHTML = '<span>🔒 Prywatny Dziennik Drogi (Tylko dla Twoich oczu)</span>';
+    }
+  }
+
+  getStageForLesson(lesson) {
+    if (!lesson) return null;
+    const stage = this.stages.find((s) => s.id === lesson.stageId || s.id === lesson.stage);
+    if (!stage) return null;
+    const romanMap = { 'etap-1': 'I', 'etap-2': 'II', 'etap-3': 'III', 'etap-4': 'IV', 'etap-5': 'V', 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
+    return {
+      ...stage,
+      roman: stage.roman || romanMap[stage.id] || romanMap[stage.order] || 'I'
+    };
+  }
+
+  renderStagesNav() {
+    if (!this.dom.stagesNav) return;
+
+    let html = `
+      <button type="button" class="stage-pill ${this.activeStageFilter === 'all' ? 'active' : ''}" data-stage-filter="all">
+        Wszystkie (28)
+      </button>
+    `;
+
+    const romanMap = { 'etap-1': 'I', 'etap-2': 'II', 'etap-3': 'III', 'etap-4': 'IV', 'etap-5': 'V', 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
+    this.stages.forEach((stage) => {
+      const roman = stage.roman || romanMap[stage.id] || romanMap[stage.order] || 'I';
+      const activeClass = this.activeStageFilter === String(stage.id) ? 'active' : '';
+      html += `
+        <button type="button" class="stage-pill ${activeClass}" data-stage-filter="${stage.id}">
+          Etap ${roman}: ${stage.title_pl}
+        </button>
+      `;
+    });
+
+    this.dom.stagesNav.innerHTML = html;
+
+    this.dom.stagesNav.querySelectorAll('[data-stage-filter]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const filter = e.currentTarget.getAttribute('data-stage-filter');
+        this.activeStageFilter = filter;
+        this.renderStagesNav();
+        this.renderLessonsGrid();
+      });
+    });
+  }
+
+  renderLessonsGrid() {
+    if (!this.dom.lessonsGrid) return;
+
+    let filtered = this.lessons;
+    if (this.activeStageFilter !== 'all') {
+      filtered = this.lessons.filter((l) => l.stageId === this.activeStageFilter || l.stage === this.activeStageFilter);
+    }
+
+    let html = '';
+
+    filtered.forEach((lesson) => {
+      const stage = this.getStageForLesson(lesson);
+
+      // Ustalenie statusu ukończenia z właściwego źródła
+      const cloudProg = this.cloudProgress.get(lesson.id);
+      const isCloudCompleted = cloudProg && cloudProg.status === 'completed';
+      const isLocalCompleted = !this.currentUser && this.localCompletedIds.has(lesson.id);
+      const isCompleted = isCloudCompleted || isLocalCompleted;
+      const isInProgress = cloudProg && cloudProg.status === 'in_progress';
+
+      const keyVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
+      const imageSrc = lesson.image || `/images/lessons/${lesson.id}.svg`;
+      const estMinutes = lesson.estimatedMinutes || 15;
+
+      html += `
+        <article class="lesson-card group ${isCompleted ? 'border-emerald-500/40 bg-[#0c1410]/90' : ''}" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
+          
+          <div>
+            <!-- Banner: Numer, Etap i Status -->
+            <div class="lesson-card-banner">
+              <span class="lesson-num-badge ${isCompleted ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : ''}">
+                ${isCompleted ? '✓' : lesson.id}
+              </span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-brand-gold-light truncate max-w-[170px]">
+                ${stage ? stage.roman + '. ' + stage.title_pl : ''}
+              </span>
+            </div>
+
+            <!-- Vector SVG Icon -->
+            <div class="w-12 h-12 mb-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
+              <img src="${imageSrc.startsWith('/') ? imageSrc : '/' + imageSrc}" alt="" class="w-full h-full object-contain filter drop-shadow" loading="lazy" />
+            </div>
+
+            <!-- Title -->
+            <h3 class="font-serif font-bold text-white text-lg leading-snug mb-2 group-hover:text-brand-gold transition-colors line-clamp-2">
+              ${lesson.title.pl}
+            </h3>
+
+            <!-- Introduction excerpt -->
+            <p class="text-zinc-400 text-xs line-clamp-3 leading-relaxed mb-4">
+              ${lesson.introduction.pl}
+            </p>
+          </div>
+
+          <!-- Bottom Meta & Status -->
+          <div class="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+            <span class="text-zinc-500 flex items-center gap-1.5 font-medium">
+              <span>⏱ ${estMinutes} min</span>
+              <span>•</span>
+              <span class="text-amber-300/80 font-serif">${keyVerse}</span>
+            </span>
+
+            <div>
+              ${
+                isCompleted
+                  ? '<span class="text-emerald-400 font-bold flex items-center gap-1 text-[11px]">✓ Ukończona</span>'
+                  : isInProgress
+                  ? '<span class="text-amber-400 font-bold flex items-center gap-1 text-[11px]">⏳ W trakcie</span>'
+                  : '<span class="text-brand-gold font-bold group-hover:translate-x-1 transition-transform inline-block">Rozpocznij ›</span>'
+              }
+            </div>
+          </div>
+
+        </article>
+      `;
+    });
+
+    this.dom.lessonsGrid.innerHTML = html;
+
+    // Podpięcie kliknięcia w karty
+    this.dom.lessonsGrid.querySelectorAll('.lesson-card').forEach((card) => {
+      const openFn = () => {
+        const id = parseInt(card.getAttribute('data-lesson-id'), 10);
+        this.openLesson(id);
+      };
+
+      card.addEventListener('click', openFn);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openFn();
+        }
+      });
+    });
+  }
+
+  updateHeroState() {
+    // Licznik ukończonych lekcji
+    let completedCount = 0;
+    if (this.currentUser) {
+      completedCount = Array.from(this.cloudProgress.values()).filter((p) => p.status === 'completed').length;
+    } else {
+      completedCount = this.localCompletedIds.size;
+    }
+
+    const percent = Math.min(100, Math.round((completedCount / 28) * 100));
 
     if (this.dom.heroStatsBadge) {
       if (completedCount > 0) {
-        this.dom.heroStatsBadge.textContent = `${completedCount} z 28 lekcji w toku`;
-        this.dom.heroStatsBadge.classList.remove('hidden');
+        this.dom.heroStatsBadge.textContent = `${completedCount} z 28 Lekcji Ukończonych (${percent}%) • ETAP DROGI`;
       } else {
         this.dom.heroStatsBadge.textContent = '28 Lekcji • 5 Etapów Drogi';
       }
     }
 
     if (this.dom.heroActionBtn) {
-      if (completedCount > 0) {
+      const nextId = this.getNextRecommendedLessonId();
+      const nextLesson = this.lessons.find((l) => l.id === nextId) || this.lessons[0];
+
+      if (completedCount >= 28) {
         this.dom.heroActionBtn.innerHTML = `
-          <span>Kontynuuj Naukę (Lekcja ${this.getNextRecommendedLessonId()})</span>
+          <span>🎉 Gratulacje! Ukończono Wszystkie 28 Lekcji</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        `;
+      } else if (completedCount > 0) {
+        this.dom.heroActionBtn.innerHTML = `
+          <span>Kontynuuj Naukę (Lekcja ${nextId}: ${nextLesson.title.pl})</span>
           <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         `;
       } else {
@@ -200,204 +783,134 @@ class LuminaCoursesEngine {
     }
   }
 
-  renderStagesNav() {
-    if (!this.dom.stagesNav) return;
-
-    let html = `
-      <button type="button" class="stage-tab-btn active" data-stage="all">
-        Wszystkie (28)
-      </button>
-    `;
-
-    this.stages.forEach((stage) => {
-      html += `
-        <button type="button" class="stage-tab-btn" data-stage="${stage.id}">
-          ${stage.title_pl} (${stage.lessonIds.length})
-        </button>
-      `;
-    });
-
-    this.dom.stagesNav.innerHTML = html;
-
-    const btns = this.dom.stagesNav.querySelectorAll('.stage-tab-btn');
-    btns.forEach((b) => {
-      b.addEventListener('click', (e) => {
-        btns.forEach((btn) => btn.classList.remove('active'));
-        b.classList.add('active');
-        this.activeStageFilter = b.dataset.stage;
-        this.renderLessonsGrid();
-      });
-    });
-  }
-
-  renderLessonsGrid() {
-    if (!this.dom.lessonsGrid) return;
-
-    let filtered = this.lessons;
-    if (this.activeStageFilter !== 'all') {
-      filtered = this.lessons.filter((l) => l.stageId === this.activeStageFilter);
-    }
-
-    let html = '';
-
-    filtered.forEach((lesson) => {
-      const isCompleted = this.localCompletedIds.has(lesson.id);
-      const stage = this.stages.find((s) => s.id === lesson.stageId);
-      const stageTitle = stage ? stage.title_pl : '';
-
-      html += `
-        <article class="lesson-card group" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
-          <div class="lesson-card-banner">
-            <div class="lesson-card-icon-wrap">
-              <img src="${lesson.image}" alt="" class="lesson-svg-icon" loading="lazy" width="48" height="48" />
-            </div>
-            <div class="lesson-number-badge">#${String(lesson.id).padStart(2, '0')}</div>
-            ${isCompleted ? '<div class="lesson-status-completed" title="Oznaczona lokalnie jako ukończona">✓ UKOŃCZONA</div>' : ''}
-          </div>
-
-          <div class="lesson-card-body">
-            <span class="lesson-stage-label">${stageTitle}</span>
-            <h3 class="lesson-card-title">${lesson.title.pl}</h3>
-            <p class="lesson-card-desc">${lesson.introduction.pl.slice(0, 130)}...</p>
-          </div>
-
-          <div class="lesson-card-footer">
-            <button type="button" class="btn-card-open" onclick="window.LuminaCoursesEngineInstance.openLesson(${lesson.id})">
-              <span>Otwórz Lekcję</span>
-              <svg class="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </article>
-      `;
-    });
-
-    this.dom.lessonsGrid.innerHTML = html;
-
-    // Obsługa kliknięcia całej karty
-    const cards = this.dom.lessonsGrid.querySelectorAll('.lesson-card');
-    cards.forEach((card) => {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('button')) return;
-        const id = parseInt(card.dataset.lessonId, 10);
-        this.openLesson(id);
-      });
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const id = parseInt(card.dataset.lessonId, 10);
-          this.openLesson(id);
-        }
-      });
-    });
-  }
-
-  handleInitialRouting() {
-    this.handleUrlChange();
-  }
-
-  handleUrlChange() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramLesson = urlParams.get('lekcja') || urlParams.get('lesson') || urlParams.get('id');
-
-    if (paramLesson) {
-      let lesson = null;
-      if (/^\d+$/.test(paramLesson)) {
-        lesson = this.lessons.find((l) => l.id === parseInt(paramLesson, 10));
-      } else {
-        lesson = this.lessons.find((l) => l.slug === paramLesson);
+  getNextRecommendedLessonId() {
+    for (let id = 1; id <= 28; id++) {
+      const isCloudComp = this.cloudProgress.get(id)?.status === 'completed';
+      const isLocalComp = this.localCompletedIds.has(id);
+      if (!isCloudComp && !isLocalComp) {
+        return id;
       }
-      if (lesson) {
-        this.openLesson(lesson.id, false);
-        return;
+    }
+    return 1;
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+   * FULLSCREEN LEARNING READER MODAL
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  openLesson(identifier) {
+    let lesson = null;
+
+    if (typeof identifier === 'number') {
+      lesson = this.lessons.find((l) => l.id === identifier);
+    } else if (typeof identifier === 'string') {
+      const idNum = parseInt(identifier, 10);
+      if (!isNaN(idNum)) {
+        lesson = this.lessons.find((l) => l.id === idNum);
+      }
+      if (!lesson) {
+        lesson = this.lessons.find((l) => l.slug === identifier);
       }
     }
 
-    // Sprawdzenie hash np. #01-pismo-swiete lub #lekcja-1
-    const hash = window.location.hash.replace(/^#/, '');
-    if (hash) {
-      let lesson = this.lessons.find((l) => l.slug === hash);
-      if (!lesson && hash.startsWith('lekcja-')) {
-        const id = parseInt(hash.replace('lekcja-', ''), 10);
-        lesson = this.lessons.find((l) => l.id === id);
-      }
-      if (lesson) {
-        this.openLesson(lesson.id, false);
-      }
+    if (!lesson) {
+      console.warn('[CoursesEngine] Nie znaleziono lekcji o identyfikatorze:', identifier);
+      return;
     }
-  }
 
-  openLesson(lessonId, updateHistory = true) {
-    const lesson = this.lessons.find((l) => l.id === lessonId);
-    if (!lesson) return;
-
-    this.stopTTS();
     this.currentLesson = lesson;
 
-    if (updateHistory) {
-      const newUrl = `${window.location.pathname}?lekcja=${encodeURIComponent(lesson.slug)}`;
+    // Automatyczne zarejestrowanie rozpoczęcia lekcji (in_progress) w chmurze
+    if (this.currentUser) {
+      this.recordLessonProgress(lesson.id, 'in_progress');
+    }
+
+    // Aktualizacja URL (Deep-link & Hash)
+    const newUrl = `${window.location.pathname}?lekcja=${encodeURIComponent(lesson.slug)}`;
+    if (window.location.search !== `?lekcja=${lesson.slug}`) {
       window.history.pushState({ lessonId: lesson.id }, '', newUrl);
     }
 
-    this.renderLessonToReader(lesson);
+    // Nagłówki okna czytnika
+    const stage = this.getStageForLesson(lesson);
+    if (this.dom.readerTitle) this.dom.readerTitle.textContent = lesson.title.pl;
+    if (this.dom.readerSubtitle) {
+      this.dom.readerSubtitle.textContent = `Krok ${lesson.id} z 28 • ETAP ${stage ? stage.roman : 'I'}: ${
+        stage ? stage.title_pl : ''
+      }`;
+    }
 
+    // Wyrenderowanie 14 sekcji czytnika
+    this.renderLessonContent(lesson);
+
+    // Reset paska postępu czytania i przewinięcie na górę
+    if (this.dom.readerContainer) this.dom.readerContainer.scrollTop = 0;
+    if (this.dom.readerProgressBar) this.dom.readerProgressBar.style.width = '0%';
+
+    // Pokaż modal
     if (this.dom.lessonReader) {
       this.dom.lessonReader.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
     }
-
-    if (this.dom.readerContainer) {
-      this.dom.readerContainer.scrollTop = 0;
-    }
-    this.updateReadingProgressBar();
   }
 
-  closeReader() {
+  closeLesson() {
     this.stopTTS();
-    this.currentLesson = null;
 
     if (this.dom.lessonReader) {
       this.dom.lessonReader.classList.add('hidden');
       document.body.classList.remove('overflow-hidden');
     }
 
-    const cleanUrl = window.location.pathname;
-    window.history.pushState({}, '', cleanUrl);
+    // Przywrócenie czystego URL
+    if (window.location.search || window.location.hash) {
+      window.history.pushState({}, '', window.location.pathname);
+    }
+
+    this.currentLesson = null;
     this.updateHeroState();
     this.renderLessonsGrid();
   }
 
-  updateReadingProgressBar() {
-    if (!this.dom.readerContainer || !this.dom.readerProgressBar) return;
-    const { scrollTop, scrollHeight, clientHeight } = this.dom.readerContainer;
-    const total = scrollHeight - clientHeight;
-    const percent = total > 0 ? Math.min(100, Math.round((scrollTop / total) * 100)) : 0;
-    this.dom.readerProgressBar.style.width = `${percent}%`;
+  navigateLesson(direction) {
+    if (!this.currentLesson) return;
+    const currentId = this.currentLesson.id;
+    let targetId = currentId + direction;
+
+    if (targetId < 1) targetId = 28;
+    if (targetId > 28) targetId = 1;
+
+    this.openLesson(targetId);
   }
 
-  renderLessonToReader(lesson) {
-    if (!this.dom.readerTitle || !this.dom.readerSubtitle || !this.dom.readerContent) return;
+  renderLessonContent(lesson) {
+    if (!this.dom.readerContent) return;
 
-    const stage = this.stages.find((s) => s.id === lesson.stageId);
-    const isCompleted = this.localCompletedIds.has(lesson.id);
+    const stage = this.getStageForLesson(lesson);
+
+    // Sprawdzenie statusu ukończenia i decyzji
+    const cloudProg = this.cloudProgress.get(lesson.id);
+    const isCloudCompleted = cloudProg && cloudProg.status === 'completed';
+    const isLocalCompleted = !this.currentUser && this.localCompletedIds.has(lesson.id);
+    const isCompleted = isCloudCompleted || isLocalCompleted;
     const hasDecision = this.localDecisionIds.has(lesson.id);
 
-    this.dom.readerTitle.textContent = lesson.title.pl;
-    this.dom.readerSubtitle.textContent = `Krok ${lesson.id} z 28 • ${stage ? stage.title_pl : ''}`;
+    // Załadowanie wpisów Dziennika Drogi
+    const journalData = this.cloudJournals.get(lesson.id) || {};
+    const discoveryVal = journalData.discovery || '';
+    const applicationVal = journalData.application || '';
+    const prayerVal = journalData.prayer || '';
 
-    // Formatowanie wersetów biblijnych
-    const scriptureQuotesHtml = (lesson.scripture.primaryQuotes_pl || [])
-      .map(
-        (q) => `
-        <blockquote class="reader-bible-quote">
-          <p>${q}</p>
-        </blockquote>
-      `
-      )
-      .join('');
+    // Fragmenty biblijne
+    const quotes = lesson.scripture?.primaryQuotes_pl || (lesson.scriptures ? lesson.scriptures.map(s => `„${s.text}” — ${s.ref}`) : []);
+    const scriptureQuotesHtml = quotes.map(q => `
+      <div class="reader-scripture-quote">
+        <p class="reader-scripture-text">${q.startsWith('"') || q.startsWith('„') ? q : `„${q}”`}</p>
+      </div>
+    `).join(' ');
 
-    const scriptureRefsHtml = (lesson.scripture.references || [])
-      .map((r) => `<span class="reader-ref-badge">${r}</span>`)
-      .join(' ');
+    const references = lesson.scripture?.references || lesson.scriptureReferences || [];
+    const scriptureRefsHtml = references.map(ref => `<span class="reader-sigla-tag">${ref}</span>`).join(' ');
 
     let html = `
       <div class="reader-stage-header">
@@ -480,8 +993,8 @@ class LuminaCoursesEngine {
           <div class="flex items-center gap-3">
             <span class="text-xl text-amber-400">📖</span>
             <div>
-              <h4 class="text-white font-bold text-sm">Pytania Odkrywcze w Redakcji</h4>
-              <p class="text-zinc-400 text-xs mt-0.5">Pytania analityczne do tekstu Pisma Świętego zostaną zatwierdzone w kolejnej iteracji redakcyjnej Akademii.</p>
+              <h4 class="text-white font-bold text-sm">Pytania Odkrywcze w Redakcji (Faza 4)</h4>
+              <p class="text-zinc-400 text-xs mt-0.5">Zgodnie z zasadą Zero Atrap i zatwierdzoną hierarchią źródeł, pytania analityczne do tekstu Pisma Świętego zostaną autoryzowane w Fazie 4.</p>
             </div>
           </div>
         </div>
@@ -508,8 +1021,8 @@ class LuminaCoursesEngine {
           <div class="flex items-center gap-3">
             <span class="text-xl text-amber-400">✍️</span>
             <div>
-              <h4 class="text-white font-bold text-sm">Interaktywny Quiz w Przygotowaniu</h4>
-              <p class="text-zinc-400 text-xs mt-0.5">Zgodnie z zasadą Zero Atrap nie prezentujemy niesprawdzonych pytań testowych. Zestaw autoryzowanych pytań quizowych pojawi się w Fazie 4.</p>
+              <h4 class="text-white font-bold text-sm">Interaktywny Quiz w Przygotowaniu (Faza 4)</h4>
+              <p class="text-zinc-400 text-xs mt-0.5">Nie prezentujemy niesprawdzonych pytań doktrynalnych. Quiz zostanie zweryfikowany według Pisma Świętego i dokumentu 28 Zasad Wiary.</p>
             </div>
           </div>
         </div>
@@ -538,31 +1051,59 @@ class LuminaCoursesEngine {
         </div>
       </section>
 
-      <!-- 10. MOJA ODPOWIEDŹ (DZIENNIK — Zero Atrap Preview) -->
+      <!-- 10. MÓJ DZIENNIK DROGI (Ściśle Prywatny z Autosave) -->
       <section class="reader-section">
-        <h2 class="reader-section-title">
-          <span class="reader-step-num">10</span>
-          <span>Mój Dziennik Drogi (Podgląd)</span>
-        </h2>
-        <div class="reader-journal-preview">
-          <div class="space-y-3 opacity-80 pointer-events-none">
-            <div>
-              <label class="block text-xs font-semibold text-zinc-300 mb-1">1. Co dzisiaj odkryłem w Słowie Bożym?</label>
-              <div class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-500">Miejsce na Twoją prywatną refleksję...</div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-zinc-300 mb-1">2. Co konkretnie chcę zmienić lub zastosować?</label>
-              <div class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-500">Miejsce na praktyczne postanowienie...</div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-zinc-300 mb-1">3. O co proszę Boga w modlitwie?</label>
-              <div class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-500">Twoja intencja modlitewna...</div>
-            </div>
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+          <h2 class="reader-section-title m-0">
+            <span class="reader-step-num">10</span>
+            <span>Mój Dziennik Drogi</span>
+          </h2>
+          <div id="journal-status-indicator" class="journal-status-badge">
+            ${
+              this.currentUser
+                ? '<span>🔒 Prywatny Dziennik Drogi (Tylko dla Twoich oczu)</span>'
+                : '<span>🔒 Tryb gościa (zaloguj się, aby zapisać w chmurze)</span>'
+            }
           </div>
-          <div class="mt-3 p-3 bg-zinc-900/90 border border-amber-500/20 rounded-xl text-center">
-            <p class="text-xs text-amber-300 font-semibold">🔒 Prywatny Dziennik Drogi z automatycznym zapisem w chmurze (Phase 3)</p>
-            <p class="text-[11px] text-zinc-400 mt-0.5">W Fazie 2 dane nie są wysyłane do serwera, aby nie utracić Twoich prywatnych zapisków.</p>
+        </div>
+
+        <div class="reader-journal-box">
+          <div class="journal-field">
+            <label for="journal-discovery" class="journal-label">
+              1. Co dzisiaj odkryłem w Słowie Bożym?
+            </label>
+            <textarea id="journal-discovery" class="journal-textarea" rows="3" placeholder="Zanotuj słowa lub wersety, które dotknęły Twojego serca...">${discoveryVal}</textarea>
           </div>
+
+          <div class="journal-field">
+            <label for="journal-application" class="journal-label">
+              2. Co konkretnie chcę zastosować w życiu?
+            </label>
+            <textarea id="journal-application" class="journal-textarea" rows="3" placeholder="Twoje praktyczne postanowienie na ten tydzień...">${applicationVal}</textarea>
+          </div>
+
+          <div class="journal-field">
+            <label for="journal-prayer" class="journal-label">
+              3. O co chcę się dzisiaj modlić?
+            </label>
+            <textarea id="journal-prayer" class="journal-textarea" rows="3" placeholder="Twoja osobista intencja i dziękczynienie przed Bogiem...">${prayerVal}</textarea>
+          </div>
+
+          ${
+            !this.currentUser
+              ? `
+              <div class="mt-4 p-3.5 bg-amber-500/10 border border-amber-500/25 rounded-xl flex items-center justify-between flex-wrap gap-3">
+                <div class="text-xs text-amber-200">
+                  <span class="font-bold">✨ Chcesz zachować swoje notatki na zawsze?</span>
+                  <p class="text-zinc-400 mt-0.5">Zaloguj się przez Google do LUMINA — Twoje zapiski są w 100% prywatne i dostępne na każdym urządzeniu.</p>
+                </div>
+                <button type="button" class="btn-primary-action text-xs py-2 px-4" onclick="window.ccLoginWithGoogle ? window.ccLoginWithGoogle() : null">
+                  Zaloguj przez Google
+                </button>
+              </div>
+            `
+              : ''
+          }
         </div>
       </section>
 
@@ -583,7 +1124,7 @@ class LuminaCoursesEngine {
         </div>
       </section>
 
-      <!-- 12. POROZMAWIAJ (Opieka Duchowa — Informacja) -->
+      <!-- 12. POROZMAWIAJ (Opieka Duchowa) -->
       <section class="reader-section">
         <h2 class="reader-section-title">
           <span class="reader-step-num">12</span>
@@ -600,7 +1141,7 @@ class LuminaCoursesEngine {
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">💧 Chcę przygotować się do chrztu</div>
           </div>
           <div class="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between flex-wrap gap-2 text-xs text-zinc-400">
-            <span>Dedykowany formularz z bezpośrednią asystą: <strong>Phase 3 (Spiritual Care)</strong></span>
+            <span>Dedykowany formularz asysty duchowej: <strong>Faza 4</strong></span>
             <a href="tel:+48608337477" class="text-amber-400 hover:underline">📞 Infolinia duszpasterska: +48 608 337 477</a>
           </div>
         </div>
@@ -627,11 +1168,19 @@ class LuminaCoursesEngine {
         <div class="text-center py-4">
           <h3 class="text-white font-bold text-lg mb-2">Gotowy, aby przejść do następnego kroku?</h3>
           <p class="text-zinc-400 text-xs max-w-md mx-auto mb-6">
-            Oznaczenie lekcji w tej przeglądarce odblokuje kolejny etap Twojej formacji. Trwały zapis w chmurze CC ID dostępny w Phase 3.
+            ${
+              this.currentUser
+                ? 'Ukończenie lekcji trwale zaktualizuje Twój profil w chmurze LUMINA.'
+                : 'Ukończenie lekcji zostanie zapisane w pamięci tej przeglądarki. Zaloguj się przez Google, aby zsynchronizować stan na wszystkich urządzeniach.'
+            }
           </p>
           <div class="flex items-center justify-center gap-4 flex-wrap">
-            <button type="button" id="btn-complete-lesson" class="btn-gold-complete">
-              <span>${isCompleted ? '✓ Lekcja Oznaczona jako Ukończona' : 'Ukończ Tę Lekcję'}</span>
+            <button type="button" id="btn-complete-lesson" class="btn-gold-complete ${isCompleted ? 'bg-emerald-600 text-white' : ''}">
+              <span>${
+                isCompleted
+                  ? '✓ Lekcja Ukończona' + (this.currentUser ? ' (Zapisano w Chmurze)' : '')
+                  : 'Ukończ Tę Lekcję'
+              }</span>
             </button>
             <button type="button" id="btn-next-lesson-cta" class="btn-secondary-action">
               <span>Następna Lekcja ›</span>
@@ -643,7 +1192,7 @@ class LuminaCoursesEngine {
 
     this.dom.readerContent.innerHTML = html;
 
-    // Podpięcie listenerów interaktywnych lekcji
+    // Podpięcie interakcji czytnika
     this.bindReaderInteractions(lesson);
   }
 
@@ -673,7 +1222,18 @@ class LuminaCoursesEngine {
       });
     }
 
-    // 2. Decyzja checkbox
+    // 2. Dziennik Drogi — autosave z debounce
+    const discoveryEl = document.getElementById('journal-discovery');
+    const applicationEl = document.getElementById('journal-application');
+    const prayerEl = document.getElementById('journal-prayer');
+
+    const handleInput = () => this.scheduleJournalAutosave(lesson.id);
+
+    if (discoveryEl) discoveryEl.addEventListener('input', handleInput);
+    if (applicationEl) applicationEl.addEventListener('input', handleInput);
+    if (prayerEl) prayerEl.addEventListener('input', handleInput);
+
+    // 3. Decyzja checkbox
     const decisionCb = document.getElementById('lesson-decision-checkbox');
     if (decisionCb) {
       decisionCb.addEventListener('change', (e) => {
@@ -686,7 +1246,7 @@ class LuminaCoursesEngine {
       });
     }
 
-    // 3. Share & Copy Link
+    // 4. Share & Copy Link
     const btnShare = document.getElementById('btn-share-lesson');
     const btnCopy = document.getElementById('btn-copy-link');
     const shareUrl = `${window.location.origin}/kursy?lekcja=${encodeURIComponent(lesson.slug)}`;
@@ -713,18 +1273,32 @@ class LuminaCoursesEngine {
       });
     }
 
-    // 4. Ukończ Lekcję CTA
+    // 5. Ukończ Lekcję CTA (Real Firestore Write dla zalogowanych)
     const btnComplete = document.getElementById('btn-complete-lesson');
     const btnNext = document.getElementById('btn-next-lesson-cta');
 
     if (btnComplete) {
-      btnComplete.addEventListener('click', () => {
-        this.localCompletedIds.add(lesson.id);
-        this.saveLocalGuestState();
-        btnComplete.innerHTML = '<span>✓ Lekcja Oznaczona jako Ukończona</span>';
-        btnComplete.classList.add('bg-emerald-600', 'text-white');
-        this.showToast(`Lekcja ${lesson.id} oznaczona jako ukończona w pamięci lokalnej.`);
-        this.updateHeroState();
+      btnComplete.addEventListener('click', async () => {
+        const origText = btnComplete.innerHTML;
+        btnComplete.disabled = true;
+        btnComplete.innerHTML = '<span>⏳ Zapisywanie ukończenia…</span>';
+
+        const result = await this.recordLessonProgress(lesson.id, 'completed');
+
+        btnComplete.disabled = false;
+
+        if (result.success) {
+          btnComplete.classList.add('bg-emerald-600', 'text-white');
+          btnComplete.innerHTML = `<span>✓ Lekcja Ukończona ${result.mode === 'cloud' ? '(Zapisano w Chmurze)' : ''}</span>`;
+          this.showToast(
+            `✨ Lekcja ${lesson.id} ukończona! ${
+              result.mode === 'cloud' ? 'Zapisano w chmurze LUMINA 🕊️' : 'Zapisano w pamięci lokalnej.'
+            }`
+          );
+        } else {
+          btnComplete.innerHTML = '<span>❌ Nie udało się zapisać — spróbuj ponownie</span>';
+          this.showToast('Błąd zapisu ukończenia lekcji w chmurze. Spróbuj ponownie.');
+        }
       });
     }
 
@@ -736,7 +1310,10 @@ class LuminaCoursesEngine {
     }
   }
 
-  /* ── TTS Engine (Web Speech API) ── */
+  /* ──────────────────────────────────────────────────────────────────────────
+   * TTS ENGINE (WEB SPEECH API)
+   * ────────────────────────────────────────────────────────────────────────── */
+
   speakLesson(text, statusEl, btnPlay, btnPause, btnStop) {
     if (!this.speechSynth) {
       if (statusEl) statusEl.textContent = 'Twoja przeglądarka nie obsługuje syntezy mowy.';
@@ -747,11 +1324,15 @@ class LuminaCoursesEngine {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.95; // Spokojny, dostojny rytm
+    utterance.rate = 0.95;
+
+    const voices = this.speechSynth.getVoices();
+    const polishVoice = voices.find((v) => v.lang.startsWith('pl'));
+    if (polishVoice) utterance.voice = polishVoice;
 
     utterance.onstart = () => {
       this.ttsState = 'playing';
-      if (statusEl) statusEl.textContent = 'Trwa odtwarzanie lektora...';
+      if (statusEl) statusEl.textContent = 'Odtwarzanie treści lekcji...';
       if (btnPlay) btnPlay.disabled = true;
       if (btnPause) btnPause.disabled = false;
       if (btnStop) btnStop.disabled = false;
@@ -759,39 +1340,31 @@ class LuminaCoursesEngine {
 
     utterance.onpause = () => {
       this.ttsState = 'paused';
-      if (statusEl) statusEl.textContent = 'Odtwarzanie wstrzymane (Pauza).';
-      if (btnPlay) {
-        btnPlay.disabled = false;
-        btnPlay.innerHTML = '<span>▶ Wznów</span>';
-      }
+      if (statusEl) statusEl.textContent = 'Odtwarzanie wstrzymane.';
+      if (btnPlay) btnPlay.disabled = false;
       if (btnPause) btnPause.disabled = true;
     };
 
     utterance.onresume = () => {
       this.ttsState = 'playing';
-      if (statusEl) statusEl.textContent = 'Trwa odtwarzanie lektora...';
+      if (statusEl) statusEl.textContent = 'Odtwarzanie treści lekcji...';
       if (btnPlay) btnPlay.disabled = true;
       if (btnPause) btnPause.disabled = false;
     };
 
     utterance.onend = () => {
       this.ttsState = 'idle';
-      if (statusEl) statusEl.textContent = 'Lekcja została w całości odczytana.';
-      if (btnPlay) {
-        btnPlay.disabled = false;
-        btnPlay.innerHTML = '<span>▶ Odtwarzaj</span>';
-      }
+      if (statusEl) statusEl.textContent = 'Zakończono odtwarzanie lekcji.';
+      if (btnPlay) btnPlay.disabled = false;
       if (btnPause) btnPause.disabled = true;
       if (btnStop) btnStop.disabled = true;
     };
 
     utterance.onerror = (e) => {
+      console.warn('[CoursesEngine] TTS error:', e);
       this.ttsState = 'idle';
-      if (statusEl) statusEl.textContent = 'Zatrzymano lektora.';
-      if (btnPlay) {
-        btnPlay.disabled = false;
-        btnPlay.innerHTML = '<span>▶ Odtwarzaj</span>';
-      }
+      if (statusEl) statusEl.textContent = 'Wystąpił błąd odtwarzania syntezy mowy.';
+      if (btnPlay) btnPlay.disabled = false;
       if (btnPause) btnPause.disabled = true;
       if (btnStop) btnStop.disabled = true;
     };
@@ -803,20 +1376,12 @@ class LuminaCoursesEngine {
   pauseTTS(statusEl, btnPlay, btnPause, btnStop) {
     if (this.speechSynth && this.ttsState === 'playing') {
       this.speechSynth.pause();
-      this.ttsState = 'paused';
-      if (statusEl) statusEl.textContent = 'Wstrzymano odtwarzanie.';
-      if (btnPlay) {
-        btnPlay.disabled = false;
-        btnPlay.innerHTML = '<span>▶ Wznów</span>';
-      }
-      if (btnPause) btnPause.disabled = true;
     }
   }
 
-  resumeTTS() {
+  resumeTTS(statusEl, btnPlay, btnPause, btnStop) {
     if (this.speechSynth && this.ttsState === 'paused') {
       this.speechSynth.resume();
-      this.ttsState = 'playing';
     }
   }
 
@@ -826,52 +1391,111 @@ class LuminaCoursesEngine {
     }
     this.ttsState = 'idle';
     this.currentUtterance = null;
-    if (statusEl) statusEl.textContent = 'Odtwarzanie zatrzymane.';
-    if (btnPlay) {
-      btnPlay.disabled = false;
-      btnPlay.innerHTML = '<span>▶ Odtwarzaj</span>';
-    }
+    if (statusEl) statusEl.textContent = 'Naciśnij Odtwarzaj, aby wysłuchać pełnej treści lekcji.';
+    if (btnPlay) btnPlay.disabled = false;
     if (btnPause) btnPause.disabled = true;
     if (btnStop) btnStop.disabled = true;
   }
 
-  copyToClipboard(text, message) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        this.showToast(message);
-      });
-    } else {
-      const input = document.createElement('input');
-      input.value = text;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-      this.showToast(message);
+  /* ──────────────────────────────────────────────────────────────────────────
+   * POMOCNICZE (ROUTING, SCHOWEK, TOAST, LOKALNY GUEST STORAGE)
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  handleInitialRouting() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonParam = urlParams.get('lekcja') || urlParams.get('lesson');
+
+    if (lessonParam) {
+      this.openLesson(lessonParam);
+      return;
+    }
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash && (hash.startsWith('lekcja-') || !isNaN(parseInt(hash, 10)) || this.lessons.some((l) => l.slug === hash))) {
+      this.openLesson(hash);
     }
   }
 
-  showToast(msg) {
-    let toast = document.getElementById('academy-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'academy-toast';
-      toast.className = 'academy-toast';
-      document.body.appendChild(toast);
+  copyToClipboard(text, successMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.showToast(successMsg);
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      this.showToast(successMsg);
     }
-    toast.textContent = msg;
+  }
+
+  showToast(message) {
+    const toast = this.dom.academyToast;
+    if (!toast) return;
+    toast.textContent = message;
     toast.classList.add('show');
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 3200);
+    }, 4000);
+  }
+
+  loadLocalGuestState() {
+    try {
+      const stored = localStorage.getItem('lumina_academy_local_completed');
+      if (stored) {
+        const arr = JSON.parse(stored);
+        if (Array.isArray(arr)) {
+          this.localCompletedIds = new Set(arr.map(Number));
+        }
+      }
+      const storedDecisions = localStorage.getItem('lumina_academy_local_decisions');
+      if (storedDecisions) {
+        const arr = JSON.parse(storedDecisions);
+        if (Array.isArray(arr)) {
+          this.localDecisionIds = new Set(arr.map(Number));
+        }
+      }
+    } catch (e) {
+      console.warn('[CoursesEngine] Nie udało się wczytać stanu lokalnego:', e);
+    }
+  }
+
+  saveLocalGuestState() {
+    try {
+      localStorage.setItem(
+        'lumina_academy_local_completed',
+        JSON.stringify(Array.from(this.localCompletedIds))
+      );
+      localStorage.setItem(
+        'lumina_academy_local_decisions',
+        JSON.stringify(Array.from(this.localDecisionIds))
+      );
+    } catch (e) {
+      console.warn('[CoursesEngine] Błąd zapisu stanu lokalnego:', e);
+    }
   }
 }
 
-// Inicjalizacja po załadowaniu DOM
+// Inicjalizacja instancji Course Engine po załadowaniu DOM
+let coursesEngineInstance = null;
+
 if (typeof window !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
-    window.LuminaCoursesEngineInstance = new LuminaCoursesEngine();
-  });
+  const initEngine = () => {
+    if (!coursesEngineInstance) {
+      coursesEngineInstance = new LuminaCoursesEngine();
+      window.LuminaCourses = coursesEngineInstance;
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEngine);
+  } else {
+    initEngine();
+  }
 }
 
+export default LuminaCoursesEngine;
 export { LuminaCoursesEngine };

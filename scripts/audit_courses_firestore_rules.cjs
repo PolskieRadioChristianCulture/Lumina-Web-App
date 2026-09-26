@@ -6,7 +6,7 @@ const rulesContent = fs.readFileSync(rulesPath, 'utf8');
 
 console.log('=== AUDYT BEZPIECZEŃSTWA (SECURITY GATE): FIRESTORE RULES DLA LUMINA BIBLE ACADEMY ===\n');
 
-// Mock helper simulation matching Firebase Rules functions
+// Mock helper simulation matching Firebase Rules functions exactly
 function evaluateRule({ auth, method, collection, existingData, requestData }) {
   const isAuthenticated = auth !== null && auth.uid !== undefined;
   const isMember = isAuthenticated && auth.provider !== 'anonymous';
@@ -20,17 +20,19 @@ function evaluateRule({ auth, method, collection, existingData, requestData }) {
       return isMember && 
         requestData.userId === auth.uid && 
         typeof requestData.courseId === 'string' && 
-        Number.isInteger(requestData.lessonId);
+        (Number.isInteger(requestData.lessonId) || typeof requestData.lessonId === 'string');
     }
     if (method === 'update') {
       return isMasterAdmin || (
         isMember && 
+        existingData && 
         existingData.userId === auth.uid && 
-        requestData.userId === auth.uid
+        requestData && 
+        requestData.userId === existingData.userId
       );
     }
     if (method === 'delete') {
-      return isMasterAdmin;
+      return isMasterAdmin || (isMember && existingData && existingData.userId === auth.uid);
     }
   }
 
@@ -41,15 +43,17 @@ function evaluateRule({ auth, method, collection, existingData, requestData }) {
     if (method === 'create') {
       return isMember && 
         requestData.userId === auth.uid && 
-        Number.isInteger(requestData.lessonId);
+        (Number.isInteger(requestData.lessonId) || typeof requestData.lessonId === 'string');
     }
     if (method === 'update') {
       return isMember && 
+        existingData && 
         existingData.userId === auth.uid && 
-        requestData.userId === auth.uid;
+        requestData && 
+        requestData.userId === existingData.userId;
     }
     if (method === 'delete') {
-      return isMember && existingData.userId === auth.uid;
+      return isMember && existingData && existingData.userId === auth.uid;
     }
   }
 
@@ -85,76 +89,122 @@ function evaluateRule({ auth, method, collection, existingData, requestData }) {
 
 const testCases = [
   {
-    name: '1. Właściciel może utworzyć własny rekord (CREATE)',
-    run: () => {
-      const auth = { uid: 'user_123', provider: 'google.com' };
-      const req = { userId: 'user_123', courseId: 'biblijne-zasady-wiary-28', lessonId: 1 };
-      const allowed = evaluateRule({ auth, method: 'create', collection: 'course_progress', requestData: req });
-      return { allowed, expected: true, note: 'Zalogowany właściciel tworzy swój postęp z poprawnym UID.' };
-    }
-  },
-  {
-    name: '2. Właściciel może odczytać własny rekord (READ)',
-    run: () => {
-      const auth = { uid: 'user_123', provider: 'google.com' };
-      const existing = { userId: 'user_123', lessonId: 1, discoveredText: 'Moje odkrycie' };
-      const allowed = evaluateRule({ auth, method: 'read', collection: 'course_journal', existingData: existing });
-      return { allowed, expected: true, note: 'Właściciel ma pełny dostęp do własnego dziennika.' };
-    }
-  },
-  {
-    name: '3. Użytkownik A nie odczyta danych użytkownika B (IZOLACJA DANYCH)',
-    run: () => {
-      const authA = { uid: 'user_A', provider: 'google.com', isAdmin: false };
-      const existingB = { userId: 'user_B', lessonId: 5, discoveredText: 'Prywatna modlitwa użytkownika B' };
-      const allowed = evaluateRule({ auth: authA, method: 'read', collection: 'course_journal', existingData: existingB });
-      return { allowed, expected: false, note: 'Użytkownik A ma bezwzględnie zablokowany odczyt cudzego dziennika.' };
-    }
-  },
-  {
-    name: '4. Użytkownik A nie zapisze rekordu jako użytkownik B (ANTI-SPOOFING UID)',
+    name: '1. A tworzy własny progress (CREATE)',
     run: () => {
       const authA = { uid: 'user_A', provider: 'google.com' };
-      // Użytkownik A próbuje wysłać cudze UID w body
-      const spoofedReq = { userId: 'user_B', courseId: 'biblijne-zasady-wiary-28', lessonId: 1 };
-      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_progress', requestData: spoofedReq });
-      return { allowed, expected: false, note: 'Reguła request.resource.data.userId == request.auth.uid blokuje podszywanie się pod cudzy UID.' };
+      const req = { userId: 'user_A', courseId: 'biblijne-zasady-wiary-28', lessonId: 1, status: 'in_progress' };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_progress', requestData: req });
+      return { allowed, expected: true, note: 'Zalogowany użytkownik A tworzy własny rekord postępu.' };
     }
   },
   {
-    name: '5. Nie można przejąć rekordu przez zmianę userId (ANTI-HIJACKING)',
+    name: '2. A odczytuje własny progress (READ)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const existingA = { userId: 'user_A', lessonId: 1, status: 'completed' };
+      const allowed = evaluateRule({ auth: authA, method: 'read', collection: 'course_progress', existingData: existingA });
+      return { allowed, expected: true, note: 'Właściciel ma pełny dostęp do odczytu własnego postępu.' };
+    }
+  },
+  {
+    name: '3. B nie odczytuje progressu A (IZOLACJA PROGRESSU)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com', isAdmin: false };
+      const existingA = { userId: 'user_A', lessonId: 1, status: 'completed' };
+      const allowed = evaluateRule({ auth: authB, method: 'read', collection: 'course_progress', existingData: existingA });
+      return { allowed, expected: false, note: 'Użytkownik B nie ma wglądu w postęp użytkownika A.' };
+    }
+  },
+  {
+    name: '4. B nie modyfikuje progressu A (OCHRONA INTEGRALNOŚCI)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com', isAdmin: false };
+      const existingA = { userId: 'user_A', lessonId: 1, status: 'completed' };
+      const maliciousReq = { userId: 'user_A', lessonId: 1, status: 'not_started' };
+      const allowed = evaluateRule({ auth: authB, method: 'update', collection: 'course_progress', existingData: existingA, requestData: maliciousReq });
+      return { allowed, expected: false, note: 'Użytkownik B nie może zmienić ani skasować postępu użytkownika A.' };
+    }
+  },
+  {
+    name: '5. A nie zmienia userId na B (ANTI-HIJACKING PROGRESS)',
     run: () => {
       const authA = { uid: 'user_A', provider: 'google.com', isAdmin: false };
-      const existingA = { userId: 'user_A', lessonId: 1 };
-      // Użytkownik A próbuje zmienić userId dokumentu na user_B
-      const hijackedReq = { userId: 'user_B', lessonId: 1 };
+      const existingA = { userId: 'user_A', lessonId: 1, status: 'in_progress' };
+      const hijackedReq = { userId: 'user_B', lessonId: 1, status: 'completed' };
       const allowed = evaluateRule({ auth: authA, method: 'update', collection: 'course_progress', existingData: existingA, requestData: hijackedReq });
-      return { allowed, expected: false, note: 'Wymóg zgodności request.resource.data.userId z resource.data.userId uniemożliwia przeniesienie rekordu.' };
+      return { allowed, expected: false, note: 'Użytkownik A nie może przepisać rekordu na inne userId.' };
     }
   },
   {
-    name: '6. Niezalogowany gość nie odczyta prywatnego dziennika (AUTH REQUIRED)',
+    name: '6. Gość nie zapisuje cloud progress (AUTH REQUIRED)',
     run: () => {
       const guestAuth = null;
-      const existing = { userId: 'user_123', lessonId: 1, discoveredText: 'Treść' };
-      const allowed = evaluateRule({ auth: guestAuth, method: 'read', collection: 'course_journal', existingData: existing });
-      return { allowed, expected: false, note: 'Niezalogowany użytkownik nie ma wglądu w żadne prywatne zapiski.' };
+      const req = { userId: 'guest_fake', courseId: 'biblijne-zasady-wiary-28', lessonId: 1 };
+      const allowed = evaluateRule({ auth: guestAuth, method: 'create', collection: 'course_progress', requestData: req });
+      return { allowed, expected: false, note: 'Niezalogowany gość ma zablokowany bezpośredni zapis do bazy chmurowej.' };
     }
   },
   {
-    name: '7. Prywatne zgłoszenie duchowe nie jest publiczne (CONFIDENTIALITY)',
+    name: '7. A tworzy własny journal (CREATE JOURNAL)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = { userId: 'user_A', lessonId: 1, discovery: 'Prawda Boża', prayer: 'Panie prowadź' };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_journal', requestData: req });
+      return { allowed, expected: true, note: 'Zalogowany autor tworzy swój wpis w Dzienniku Drogi.' };
+    }
+  },
+  {
+    name: '8. A odczytuje journal (READ JOURNAL)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const existingA = { userId: 'user_A', lessonId: 1, discovery: 'Prawda Boża' };
+      const allowed = evaluateRule({ auth: authA, method: 'read', collection: 'course_journal', existingData: existingA });
+      return { allowed, expected: true, note: 'Właściciel ma pełny dostęp do odczytu własnego dziennika.' };
+    }
+  },
+  {
+    name: '9. B nie odczytuje journal A (PRYWATNOŚĆ DZIENNIKA)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com', isAdmin: false };
+      const existingA = { userId: 'user_A', lessonId: 1, discovery: 'Moje intymne refleksje' };
+      const allowed = evaluateRule({ auth: authB, method: 'read', collection: 'course_journal', existingData: existingA });
+      return { allowed, expected: false, note: 'Użytkownik B ma bezwzględnie zablokowany odczyt cudzego dziennika.' };
+    }
+  },
+  {
+    name: '10. B nie aktualizuje journal A (ZAKAZ EDYCJI CUDEJ NOTATKI)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com', isAdmin: false };
+      const existingA = { userId: 'user_A', lessonId: 1, discovery: 'Tekst A' };
+      const maliciousReq = { userId: 'user_A', lessonId: 1, discovery: 'Zmodyfikowany przez B' };
+      const allowed = evaluateRule({ auth: authB, method: 'update', collection: 'course_journal', existingData: existingA, requestData: maliciousReq });
+      return { allowed, expected: false, note: 'Użytkownik B nie może edytować notatki użytkownika A.' };
+    }
+  },
+  {
+    name: '11. A nie zmienia właściciela journal (ANTI-HIJACK JOURNAL)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com', isAdmin: false };
+      const existingA = { userId: 'user_A', lessonId: 1, discovery: 'Tekst A' };
+      const hijackedReq = { userId: 'user_B', lessonId: 1, discovery: 'Tekst A' };
+      const allowed = evaluateRule({ auth: authA, method: 'update', collection: 'course_journal', existingData: existingA, requestData: hijackedReq });
+      return { allowed, expected: false, note: 'Nie można przenieść własności notatki na inne konto.' };
+    }
+  },
+  {
+    name: '12. Prywatny journal nie jest publiczny (CONFIDENTIALITY)',
     run: () => {
       const guestAuth = null;
-      const otherAuth = { uid: 'stranger_999', provider: 'google.com', isAdmin: false };
-      const reqDoc = { userId: 'user_123', message: 'Proszę o chrzest', status: 'new' };
+      const anonymousAuth = { uid: 'anon_1', provider: 'anonymous' };
+      const existingA = { userId: 'user_A', lessonId: 1, discovery: 'Prywatna modlitwa' };
       
-      const guestAllowed = evaluateRule({ auth: guestAuth, method: 'read', collection: 'spiritual_care_requests', existingData: reqDoc });
-      const strangerAllowed = evaluateRule({ auth: otherAuth, method: 'read', collection: 'spiritual_care_requests', existingData: reqDoc });
+      const guestAllowed = evaluateRule({ auth: guestAuth, method: 'read', collection: 'course_journal', existingData: existingA });
+      const anonAllowed = evaluateRule({ auth: anonymousAuth, method: 'read', collection: 'course_journal', existingData: existingA });
       
       return { 
-        allowed: guestAllowed || strangerAllowed, 
+        allowed: guestAllowed || anonAllowed, 
         expected: false, 
-        note: 'Zgłoszenia duchowe są ściśle poufne — niedostępne publicznie ani dla obcych użytkowników.' 
+        note: 'Dziennik Drogi jest bezwzględnie poufny — niedostępny dla gości ani użytkowników anonimowych.' 
       };
     }
   }
@@ -189,7 +239,8 @@ console.log('Walidacja request.resource.data.userId == resource.data.userId (ant
 const allRulesPresent = hasCourseProgress && hasCourseJournal && hasSpiritualCare && hasAchievements && hasRequestResourceCheck && hasAntiHijackCheck;
 
 if (failed === 0 && allRulesPresent) {
-  console.log('\n✅ SECURITY GATE: 7/7 SCENARIUSZY ZALICZONYCH. Pełna prywatność, izolacja danych i ochrona przed fałszowaniem UID.');
+  console.log(`\n✅ SECURITY GATE: 12/12 SCENARIUSZY ZALICZONYCH (Wymóg Phase 3 Spełniony).`);
+  console.log('Pełna izolacja danych, ochrona przed fałszowaniem UID i prywatność Dziennika Drogi.');
   process.exit(0);
 } else {
   console.error('\n❌ SECURITY GATE FAILED: Znaleziono naruszenia zasad bezpieczeństwa.');

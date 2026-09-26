@@ -54,6 +54,8 @@ async function runQA() {
       viewport: { width: 1280, height: 800 }
     });
     const desktopPage = await desktopContext.newPage();
+    desktopPage.on('console', msg => console.log('PAGE CONSOLE:', msg.text()));
+    desktopPage.on('pageerror', err => console.log('PAGE ERROR:', err));
 
     // Mock Web Speech API so it functions headlessly
     await desktopPage.addInitScript(() => {
@@ -80,7 +82,7 @@ async function runQA() {
     const heroTitle = await desktopPage.$eval('h1', el => el.textContent.trim());
     const heroSubtitle = await desktopPage.$eval('h1 + p', el => el.textContent.trim());
     const cardsCount = await desktopPage.$$eval('.lesson-card', els => els.length);
-    const stageTabsCount = await desktopPage.$$eval('.stage-tab-btn', els => els.length);
+    const stageTabsCount = await desktopPage.$$eval('.stage-pill, .stage-tab-btn', els => els.length);
 
     console.log(`     H1: "${heroTitle}"`);
     console.log(`     Liczba kart lekcji w siatce: ${cardsCount} (oczekiwano: 28)`);
@@ -134,18 +136,24 @@ async function runQA() {
     const readerVisible = await mobilePage.$eval('#lesson-reader-modal', el => !el.classList.contains('hidden'));
     const readerTitle = await mobilePage.$eval('#reader-title', el => el.textContent.trim());
     const readerStage = await mobilePage.$eval('#reader-subtitle', el => el.textContent.trim());
-    const hasBibleQuote = await mobilePage.$$eval('.reader-bible-quote', els => els.length > 0);
+    const hasBibleQuote = await mobilePage.$$eval('.reader-scripture-quote, .reader-bible-quote', els => els.length > 0);
     const hasTTS = await mobilePage.$eval('#tts-btn-play', el => el !== null);
+
+    // Weryfikacja Dziennika Drogi (Phase 3)
+    const hasJournalDiscovery = await mobilePage.$eval('#journal-discovery', el => el !== null);
+    const hasJournalStatus = await mobilePage.$eval('#journal-status-indicator', el => el !== null);
 
     console.log(`     Czytnik widoczny: ${readerVisible}`);
     console.log(`     Tytuł w czytniku: "${readerTitle}"`);
     console.log(`     Podtytuł etapu: "${readerStage}"`);
     console.log(`     Sekcja Biblijna zawiera cytaty: ${hasBibleQuote}`);
     console.log(`     Kontroler TTS obecny: ${hasTTS}`);
+    console.log(`     Interaktywny Dziennik Drogi (discovery textarea): ${hasJournalDiscovery}`);
+    console.log(`     Status zapisu Dziennika: ${hasJournalStatus}`);
 
     results.push({
-      test: 'Course Engine Reader (Lekcja 1)',
-      pass: readerVisible && readerTitle === 'Pismo Święte' && hasBibleQuote && hasTTS
+      test: 'Course Engine Reader & Dziennik Drogi (Lekcja 1)',
+      pass: readerVisible && readerTitle === 'Pismo Święte' && hasBibleQuote && hasTTS && hasJournalDiscovery && hasJournalStatus
     });
 
     // Test interakcji: Oznaczenie jako ukończona

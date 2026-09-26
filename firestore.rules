@@ -315,13 +315,13 @@ service cloud.firestore {
       allow create: if isMember() && 
         request.resource.data.userId == request.auth.uid &&
         request.resource.data.courseId is string &&
-        request.resource.data.lessonId is int;
+        (request.resource.data.lessonId is int || request.resource.data.lessonId is string);
       allow update: if isMasterAdmin() || (
         isMember() && 
         resource.data.userId == request.auth.uid && 
         request.resource.data.userId == resource.data.userId
       );
-      allow delete: if isMasterAdmin();
+      allow delete: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
     }
 
     // 2. Osiągnięcia kursowe — czytelne publicznie (dla profili i odznak), zapis ściśle dla właściciela UID
@@ -343,7 +343,7 @@ service cloud.firestore {
       allow read: if isMasterAdmin() || (isMember() && resource.data.userId == request.auth.uid);
       allow create: if isMember() && 
         request.resource.data.userId == request.auth.uid &&
-        request.resource.data.lessonId is int;
+        (request.resource.data.lessonId is int || request.resource.data.lessonId is string);
       allow update: if isMember() && 
         resource.data.userId == request.auth.uid && 
         request.resource.data.userId == resource.data.userId;
