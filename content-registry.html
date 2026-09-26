@@ -94,9 +94,14 @@
                 <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cc-gold/10 text-cc-gold border border-cc-gold/30">SCHEMA v1</span>
                 <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">FAZY 1-3 LIVE</span>
                 <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30"><i class="fa-solid fa-chart-line mr-1"></i>FAZA 4: GLOBAL OBSERVER</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30"><i class="fa-solid fa-sun mr-1"></i>FAZA 6A: FOLLOW THE SUN</span>
             </div>
 
             <div class="flex items-center gap-3">
+                <button type="button" id="btnOpenFollowTheSunDashboard" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-400 font-bold text-xs hover:bg-amber-500/25 active:scale-95 transition">
+                    <i class="fa-solid fa-sun text-[11px]"></i>
+                    <span>Follow the Sun</span>
+                </button>
                 <button type="button" id="btnOpenObserverDashboard" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-xs hover:bg-emerald-500/25 active:scale-95 transition">
                     <i class="fa-solid fa-chart-line text-[11px]"></i>
                     <span>Global Observer</span>
@@ -236,6 +241,7 @@
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAiFactory"><i class="fa-solid fa-wand-magic-sparkles mr-1 text-cc-gold"></i> AI Factory (<span id="countAiVariants">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabDistribution"><i class="fa-solid fa-satellite-dish mr-1 text-blue-400"></i> Dystrybucja Globalna</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabObserver"><i class="fa-solid fa-chart-line mr-1 text-emerald-400"></i> Global Observer & Pulse</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabFollowTheSun"><i class="fa-solid fa-sun mr-1 text-amber-400"></i> Follow the Sun (Shadow)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAssets">Zasoby / Assets (<span id="countAssets">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabPublications">Publikacje (<span id="countPubs">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAudit">Ślad Audytu (<span id="countAudit">0</span>)</button>
@@ -1053,6 +1059,124 @@
                                 <div><i class="fa-solid fa-circle-check text-emerald-400 text-[10px] mr-1"></i> <strong>Zero Sekretów:</strong> Tokeny OAuth i klucze API przechowywane wyłącznie na serwerze.</div>
                                 <div><i class="fa-solid fa-circle-check text-emerald-400 text-[10px] mr-1"></i> <strong>Delta Correction:</strong> Ujemne korekty liczników platform oznaczane jako SOURCE_CORRECTION.</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pane: Follow the Sun 24/7 (Shadow Scheduler - Faza 6A) -->
+                <div id="tabFollowTheSun" class="tab-pane hidden space-y-4">
+                    <!-- Top System Banner & Health -->
+                    <div class="p-3.5 bg-obsidian rounded-xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-400 uppercase tracking-wide flex items-center gap-2">
+                                    <span>FOLLOW THE SUN 24/7 — SHADOW SCHEDULER</span>
+                                    <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-mono font-bold">FAZA 6A: SIMULATION ONLY</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">Deterministyczne planowanie strefowe (czas lokalny odbiorcy). Dystrybucja i autopublish: ZABLOKOWANE.</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs flex-wrap">
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono font-bold">[SHADOW_HEALTHY]</span>
+                            <span class="px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/30 font-mono font-bold">[AUTOPUBLISH = OFF]</span>
+                            <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/30 font-mono font-bold">[FIREWALL ACTIVE]</span>
+                        </div>
+                    </div>
+
+                    <!-- Section 1: Global Timeline (Wspólna Oś Czasu) -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-clock text-amber-400"></i>
+                                <span>GLOBAL TIMELINE — WSPÓLNA OŚ CZASU (24H UTC & LOKALNE)</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500">Baza referencyjna: UTC</span>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <div class="min-w-[680px] space-y-2 text-xs font-mono">
+                                <!-- Scale Hours Header 00 to 23 -->
+                                <div class="grid grid-cols-12 gap-1 text-[10px] text-slate-500 text-center border-b border-obsidian-border pb-1">
+                                    <span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00</span><span>10:00</span>
+                                    <span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span>
+                                </div>
+                                <!-- Timeline Rows for UTC and Key Markets -->
+                                <div id="ftsTimelineRows" class="space-y-1.5 pt-1">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: World View — Target Market Registry (Wave 1) -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-earth-americas text-cc-gold"></i>
+                                <span>TARGET MARKET REGISTRY — OBSZARY EMISYJNE (WAVE 1)</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">Zero profilowania ludzi</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2.5" id="ftsMarketsGrid">
+                            <!-- Market Cards injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Content Card Simulation: CC-2026-000001 -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-file-shield text-blue-400"></i>
+                                <span>CONTENT CARD & SLOTS: CC-2026-000001</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">CONTENT CORE APPROVED</span>
+                        </div>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-obsidian/90 border-b border-obsidian-border text-[10px] font-bold uppercase text-slate-400">
+                                        <th class="py-2.5 px-3">Wariant / Język</th>
+                                        <th class="py-2.5 px-3">Rynek & Strefa IANA</th>
+                                        <th class="py-2.5 px-3">Okno Lokalne</th>
+                                        <th class="py-2.5 px-3">Czas UTC</th>
+                                        <th class="py-2.5 px-3">Platforma</th>
+                                        <th class="py-2.5 px-3">Prawa / Approval</th>
+                                        <th class="py-2.5 px-3">Status</th>
+                                        <th class="py-2.5 px-3">Why This Time?</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ftsContentSlotsTable" class="divide-y divide-obsidian-border">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Safety & Idempotency Audit -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Collision & Fatigue Guard</div>
+                            <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 pt-0.5">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span id="ftsCollisionStatus">0 KOLIZJI (Brak konfliktów)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">Odstęp min. 24h na kanał (Warning only)</div>
+                        </div>
+
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Idempotencja & Duplicate Guard</div>
+                            <div class="text-xs font-mono font-bold text-cc-gold pt-0.5">SHA-256 HASH DETERMINISTIC</div>
+                            <div class="text-[10px] text-slate-400">10 uruchomień = 1 identyczna propozycja</div>
+                        </div>
+
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Sabbath Safe Mode</div>
+                            <div class="text-xs font-bold text-amber-400 flex items-center gap-1.5 pt-0.5">
+                                <i class="fa-solid fa-moon"></i>
+                                <span>SUNSET_DATA_REQUIRED</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">Szabat wyznacza zachód słońca, nie stała godzina</div>
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAiFactoryControls();
     initDistributionControls();
     initObserverControls();
+    initFollowTheSunControls();
 
     try {
         const { db } = await ensureDbReady();
@@ -266,6 +267,7 @@ window.openDetailModal = async function(contentId) {
         renderPublicationsList(pubSnap);
         renderAuditList(audSnap);
         renderObserverMetrics(data, currentDetailVariants);
+        renderFollowTheSunSimulation(data, currentDetailVariants);
 
     } catch (err) {
         console.error('[REGISTRY] Błąd ładowania szczegółów:', err);
@@ -1295,5 +1297,207 @@ function renderObserverMetrics(content, variants) {
         if (el) el.textContent = val.toLocaleString('pl-PL');
     });
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// CC GLOBAL FOLLOW THE SUN 24/7 — SHADOW SCHEDULER CONTROLS (FAZA 6A)
+// Standard Architektury: MASTER PLAN CC GLOBAL 2030 (FAZA 6A)
+// Dyrektywy 51-56, 96, 97: Global Timeline, World View, Content Card,
+// "Why This Time?", Idempotencja i Dostępność.
+// ══════════════════════════════════════════════════════════════════════════
+
+function initFollowTheSunControls() {
+    // 1. Przycisk w nagłówku otwierający bezpośrednio dashboard Follow the Sun
+    document.getElementById('btnOpenFollowTheSunDashboard')?.addEventListener('click', async () => {
+        const targetId = currentDetailContent?.contentId || currentItems[0]?.contentId || 'CC-2026-000001';
+        await window.openDetailModal(targetId);
+
+        // Aktywuj zakładkę tabFollowTheSun
+        const ftsTabBtn = document.querySelector('[data-tab="tabFollowTheSun"]');
+        if (ftsTabBtn) {
+            ftsTabBtn.click();
+        }
+    });
+}
+
+function renderFollowTheSunSimulation(content, variants) {
+    if (!content) return;
+
+    // 1. Renderuj Global Timeline (Wspólna Oś Czasu)
+    const timelineContainer = document.getElementById('ftsTimelineRows');
+    if (timelineContainer) {
+        const zones = [
+            { label: 'UTC (Reference)', tz: 'UTC', offsetH: 0, tag: 'REF' },
+            { label: 'Europe/Warsaw (PL)', tz: 'Europe/Warsaw', offsetH: 2, tag: 'PL' },
+            { label: 'Europe/London (GB)', tz: 'Europe/London', offsetH: 1, tag: 'GB' },
+            { label: 'America/New_York (US_EAST)', tz: 'America/New_York', offsetH: -4, tag: 'US-E' },
+            { label: 'America/Los_Angeles (US_WEST)', tz: 'America/Los_Angeles', offsetH: -7, tag: 'US-W' },
+            { label: 'America/Sao_Paulo (BR)', tz: 'America/Sao_Paulo', offsetH: -3, tag: 'BR' },
+            { label: 'America/Mexico_City (MX)', tz: 'America/Mexico_City', offsetH: -6, tag: 'MX' }
+        ];
+
+        timelineContainer.innerHTML = zones.map(z => {
+            // Reprezentacja 24 bloków godzinowych z podświetleniem okna wieczornego 18-21
+            const hourBlocks = Array.from({ length: 24 }).map((_, h) => {
+                const localH = (h + z.offsetH + 24) % 24;
+                const isEvening = localH >= 18 && localH <= 21;
+                const isPreferred = localH === 19;
+                
+                let bgClass = 'bg-slate-900 text-slate-500';
+                if (isPreferred) bgClass = 'bg-amber-500 text-black font-extrabold shadow-sm';
+                else if (isEvening) bgClass = 'bg-amber-500/25 text-amber-300 font-bold border border-amber-500/40';
+
+                return `<span class="py-1 rounded text-center text-[10px] ${bgClass}" title="${z.label}: ${String(localH).padStart(2, '0')}:00 (UTC ${String(h).padStart(2, '0')}:00)">${String(localH).padStart(2, '0')}</span>`;
+            }).join('');
+
+            return `
+                <div class="flex items-center gap-2 py-1 border-b border-obsidian-border/50">
+                    <div class="w-44 truncate text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+                        <span class="px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 font-mono text-[9px]">${z.tag}</span>
+                        <span class="truncate">${z.label}</span>
+                    </div>
+                    <div class="grid grid-cols-24 gap-0.5 flex-1 min-w-[500px]" style="display: grid; grid-template-columns: repeat(24, minmax(0, 1fr));">
+                        ${hourBlocks}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // 2. Renderuj Target Market Registry Grid (Wave 1)
+    const marketsGrid = document.getElementById('ftsMarketsGrid');
+    if (marketsGrid) {
+        const markets = [
+            { id: 'PL', country: 'Polska', tz: 'Europe/Warsaw', locales: 'pl-PL, pl', status: 'SHADOW' },
+            { id: 'GB', country: 'Wielka Brytania', tz: 'Europe/London', locales: 'en-GB, en', status: 'SHADOW' },
+            { id: 'US_EAST', country: 'USA Wschód', tz: 'America/New_York', locales: 'en-US, es', status: 'SHADOW' },
+            { id: 'US_WEST', country: 'USA Zachód', tz: 'America/Los_Angeles', locales: 'en-US, es', status: 'SHADOW' },
+            { id: 'ES', country: 'Hiszpania', tz: 'Europe/Madrid', locales: 'es-ES, es', status: 'SHADOW' },
+            { id: 'MX', country: 'Meksyk', tz: 'America/Mexico_City', locales: 'es-MX, es', status: 'SHADOW' },
+            { id: 'BR', country: 'Brazylia', tz: 'America/Sao_Paulo', locales: 'pt-BR, pt', status: 'SHADOW' }
+        ];
+
+        marketsGrid.innerHTML = markets.map(m => `
+            <div class="p-2.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="font-mono font-bold text-cc-gold text-xs">${m.id}</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[9px] font-bold">[${m.status}]</span>
+                </div>
+                <div class="text-[11px] font-bold text-slate-200 truncate">${m.country}</div>
+                <div class="text-[10px] text-slate-500 font-mono truncate">${m.tz}</div>
+                <div class="text-[10px] text-slate-400 truncate">Języki: ${m.locales}</div>
+            </div>
+        `).join('');
+    }
+
+    // 3. Renderuj Content Slots Table dla CC-2026-000001
+    const slotsTable = document.getElementById('ftsContentSlotsTable');
+    if (slotsTable) {
+        const rows = [
+            {
+                variant: 'Polski (Główny)',
+                lang: 'pl',
+                market: 'PL (Europe/Warsaw)',
+                localWindow: '18:00–21:00 (pref. 19:00)',
+                utcTime: '17:00:00Z',
+                platform: 'WWW / PolskieRadio.cc',
+                rightsApproval: 'ALLOWED / APPROVED',
+                status: 'SIMULATED',
+                statusClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+                whyThisTime: '19:00 Europe/Warsaw\nBasis: OPERATOR_RULE\nRule: EVENING_DEVOTIONAL_WINDOW\nData optimization: NOT USED'
+            },
+            {
+                variant: 'Angielski (Oficjalny)',
+                lang: 'en',
+                market: 'GB (Europe/London)',
+                localWindow: '18:00–21:00 (pref. 19:00)',
+                utcTime: '18:00:00Z',
+                platform: 'YouTube (Pilot)',
+                rightsApproval: 'ALLOWED / APPROVED',
+                status: 'SIMULATED',
+                statusClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+                whyThisTime: '19:00 Europe/London\nBasis: OPERATOR_RULE\nRule: EVENING_DEVOTIONAL_WINDOW\nData optimization: NOT USED'
+            },
+            {
+                variant: 'Angielski (Oficjalny)',
+                lang: 'en',
+                market: 'US_EAST (America/New_York)',
+                localWindow: '18:00–21:00 (pref. 19:00)',
+                utcTime: '23:00:00Z',
+                platform: 'LUMINA Feed',
+                rightsApproval: 'ALLOWED / APPROVED',
+                status: 'SIMULATED',
+                statusClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+                whyThisTime: '19:00 America/New_York\nBasis: OPERATOR_RULE\nRule: EVENING_DEVOTIONAL_WINDOW\nData optimization: NOT USED'
+            },
+            {
+                variant: 'Angielski (Oficjalny)',
+                lang: 'en',
+                market: 'US_WEST (America/Los_Angeles)',
+                localWindow: '18:00–21:00 (pref. 19:00)',
+                utcTime: '02:00:00Z (+1d)',
+                platform: 'WWW / PolskieRadio.cc',
+                rightsApproval: 'ALLOWED / APPROVED',
+                status: 'SIMULATED',
+                statusClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+                whyThisTime: '19:00 America/Los_Angeles\nBasis: OPERATOR_RULE\nRule: EVENING_DEVOTIONAL_WINDOW\nData optimization: NOT USED'
+            },
+            {
+                variant: 'Hiszpański (Kandydat AI)',
+                lang: 'es',
+                market: 'ES / MX',
+                localWindow: 'Brak slotu',
+                utcTime: '-',
+                platform: 'Wszystkie',
+                rightsApproval: 'ALLOWED / REVIEW_REQUIRED',
+                status: 'BLOCKED_BY_APPROVAL',
+                statusClass: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+                whyThisTime: 'BLOKADA: Wariant es w statusie REVIEW_REQUIRED. Brak autoryzacji człowieka = zakaz planowania emisji.'
+            },
+            {
+                variant: 'Portugalski (Kandydat AI)',
+                lang: 'pt-br',
+                market: 'BR (America/Sao_Paulo)',
+                localWindow: 'Brak slotu',
+                utcTime: '-',
+                platform: 'Wszystkie',
+                rightsApproval: 'ALLOWED / REVIEW_REQUIRED',
+                status: 'BLOCKED_BY_APPROVAL',
+                statusClass: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+                whyThisTime: 'BLOKADA: Wariant pt-br w statusie REVIEW_REQUIRED. Brak autoryzacji człowieka = zakaz planowania emisji.'
+            }
+        ];
+
+        slotsTable.innerHTML = rows.map(r => `
+            <tr class="hover:bg-white/[0.02] transition">
+                <td class="py-2.5 px-3 whitespace-nowrap">
+                    <div class="font-bold text-slate-200">${r.variant}</div>
+                    <span class="text-[10px] font-mono text-cc-gold">[${r.lang}]</span>
+                </td>
+                <td class="py-2.5 px-3 font-mono text-slate-300 text-[11px] whitespace-nowrap">
+                    ${r.market}
+                </td>
+                <td class="py-2.5 px-3 text-slate-300 whitespace-nowrap font-mono text-[11px]">
+                    ${r.localWindow}
+                </td>
+                <td class="py-2.5 px-3 text-cc-gold font-mono font-bold text-[11px] whitespace-nowrap">
+                    ${r.utcTime}
+                </td>
+                <td class="py-2.5 px-3 text-slate-400 text-[11px] whitespace-nowrap">
+                    ${r.platform}
+                </td>
+                <td class="py-2.5 px-3 font-mono text-[10px] text-slate-400 whitespace-nowrap">
+                    ${r.rightsApproval}
+                </td>
+                <td class="py-2.5 px-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${r.statusClass}">[${r.status}]</span>
+                </td>
+                <td class="py-2.5 px-3 text-[10px] font-mono text-slate-400 max-w-xs truncate" title="${escapeHtml(r.whyThisTime)}">
+                    ${escapeHtml(r.whyThisTime.split('\n')[0])} (${escapeHtml(r.whyThisTime.split('\n')[1] || '')})
+                </td>
+            </tr>
+        `).join('');
+    }
+}
+
 
 
