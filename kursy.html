@@ -787,6 +787,38 @@
 
   <div class="ambient-glow"></div>
 
+  <!-- ── OWNER PREVIEW BADGE (PHASE 4) ── -->
+  <aside id="owner-preview-badge" class="fixed top-20 right-4 z-50 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 backdrop-blur-md shadow-lg shadow-black/50 text-xs font-semibold tracking-wide pointer-events-auto" aria-label="Status wdrożenia">
+    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+    <span class="hidden sm:inline">OWNER PREVIEW • LUMINA BIBLE ACADEMY</span>
+    <span class="sm:hidden">OWNER PREVIEW</span>
+    <span class="text-zinc-500">•</span>
+    <span class="text-amber-200 font-bold">PHASE 4 — DEVELOPMENT</span>
+  </aside>
+
+  <!-- ── PUBLIC LAUNCH GATE SCREEN (SHOWN ONLY IF PUBLIC LAUNCH IS OFF ON PRODUCTION DOMAIN) ── -->
+  <div id="public-launch-gate" class="fixed inset-0 z-50 bg-[#08080C] flex items-center justify-center p-6 text-center hidden">
+    <div class="max-w-md w-full p-8 rounded-3xl bg-zinc-900/90 border border-brand-gold/30 shadow-2xl">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-3xl">
+        🕊️
+      </div>
+      <span class="text-xs uppercase font-bold tracking-widest text-brand-gold block mb-2">Christian Culture • LUMINA</span>
+      <h2 class="font-serif font-black text-2xl text-white mb-3">LUMINA BIBLE ACADEMY</h2>
+      <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+        Platforma 28 Lekcji Biblijnych jest obecnie w trybie zamkniętej weryfikacji deweloperskiej. Oficjalne uruchomienie nastąpi wkrótce w ramach ekosystemu Christian Culture.
+      </p>
+      <div class="flex flex-col gap-3">
+        <a href="/lumina" class="btn-primary-action flex items-center justify-center gap-2">
+          <span>Przejdź do Społeczności LUMINA</span>
+          <span>→</span>
+        </a>
+        <button type="button" id="btn-owner-unlock" class="text-xs text-zinc-500 hover:text-zinc-300 transition-colors py-2">
+          Logowanie Właściciela / MasterAdmin
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── TOPBAR NAVIGATION ── -->
   <header class="sticky top-0 z-40 bg-[#08080C]/90 backdrop-blur-md border-b border-brand-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
