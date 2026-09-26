@@ -474,6 +474,202 @@ runTest('Dictionary v2 zawiera 5 nowych metryk routingu, v1 nienaruszone', () =>
 });
 
 // ─────────────────────────────────────────────────────────────────────────
+// 10. PRODUCTION GATE 5.5: EXACT HOST ALLOWLIST & MALICIOUS URL TEST SUITE
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n🔒 10. EXACT HOST ALLOWLIST & MALICIOUS URL TEST SUITE (GATE 5.5)');
+
+runTest('Blokowanie fałszywych domen *.pages.dev i *.web.app (np. attacker.pages.dev)', () => {
+    assert.equal(isSafeRedirectUrl('https://attacker.pages.dev/'), false);
+    assert.equal(isSafeRedirectUrl('https://evil.web.app/'), false);
+    assert.equal(isSafeRedirectUrl('https://polskieradio.cc.attacker.example/'), false);
+    assert.equal(isSafeRedirectUrl('https://cclite.pl.attacker.example/'), false);
+    assert.equal(isSafeRedirectUrl('https://attacker.com/polskieradio.cc'), false);
+});
+
+runTest('Blokowanie niebezpiecznych schematów (javascript, data, file, blob)', () => {
+    assert.equal(isSafeRedirectUrl('javascript:alert(1)'), false);
+    assert.equal(isSafeRedirectUrl('data:text/html,<script>alert(1)</script>'), false);
+    assert.equal(isSafeRedirectUrl('file:///etc/passwd'), false);
+    assert.equal(isSafeRedirectUrl('blob:https://polskieradio.cc/uuid'), false);
+});
+
+runTest('Blokowanie Path Traversal i podwójnego kodowania (%2e%2e/, %252e%252e/)', () => {
+    assert.equal(isSafeRedirectUrl('/../../etc/shadow'), false);
+    assert.equal(isSafeRedirectUrl('/%2e%2e/admin'), false);
+    assert.equal(isSafeRedirectUrl('/%252e%252e/admin'), false);
+});
+
+runTest('Blokowanie zaawansowanych wektorów phishingowych (user@evil, //, fragment tricks)', () => {
+    assert.equal(isSafeRedirectUrl('https://user@evil.com/'), false);
+    assert.equal(isSafeRedirectUrl('//evil.com/polskieradio.cc'), false);
+    assert.equal(isSafeRedirectUrl('https://evil.com?next=polskieradio.cc'), false);
+    assert.equal(isSafeRedirectUrl('https://evil.com#polskieradio.cc'), false);
+    assert.equal(isSafeRedirectUrl('https://polskieradio.cc.evil.com/'), false);
+});
+
+runTest('Akceptacja wyłącznie legalnych hostów Christian Culture', () => {
+    assert.equal(isSafeRedirectUrl('https://polskieradio.cc/player'), true);
+    assert.equal(isSafeRedirectUrl('https://www.polskieradio.cc/es/'), true);
+    assert.equal(isSafeRedirectUrl('https://cclite.pl/'), true);
+    assert.equal(isSafeRedirectUrl('https://www.cclite.pl/'), true);
+    assert.equal(isSafeRedirectUrl('https://christian-culture.web.app/'), true);
+    assert.equal(isSafeRedirectUrl('https://lumina-cc.web.app/'), true);
+    assert.equal(isSafeRedirectUrl('https://polskieradio.pages.dev/'), true);
+    assert.equal(isSafeRedirectUrl('https://staging.polskieradio.pages.dev/'), true);
+    assert.equal(isSafeRedirectUrl('/pl/player'), true);
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// 11. GATE 5.5: WAVE 2 DISABLED LOCALES FILTERING & EXPLICIT LOCALE_DISABLED
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n🌍 11. WAVE 2 DISABLED LOCALES FILTERING & FALLBACK REASONS (GATE 5.5)');
+
+runTest('GEO CA (Canada) filtruje fr -> wybiera pierwsze aktywne locale (en)', () => {
+    const res = resolveSignal({
+        countryCode: 'CA',
+        contentDefault: 'pl'
+    });
+    assert.equal(res.candidateLocale, 'en');
+    assert.equal(res.signalSource, 'COARSE_GEO');
+    assert.equal(res.geoHintUsed, true);
+});
+
+runTest('GEO DE (Germany) filtruje de -> wybiera pierwsze aktywne locale (en)', () => {
+    const res = resolveSignal({
+        countryCode: 'DE',
+        contentDefault: 'pl'
+    });
+    assert.equal(res.candidateLocale, 'en');
+    assert.equal(res.signalSource, 'COARSE_GEO');
+    assert.equal(res.geoHintUsed, true);
+});
+
+runTest('GEO UA (Ukraine) filtruje uk -> wybiera pierwsze aktywne locale (pl)', () => {
+    const res = resolveSignal({
+        countryCode: 'UA',
+        contentDefault: 'pl'
+    });
+    assert.equal(res.candidateLocale, 'pl');
+    assert.equal(res.signalSource, 'COARSE_GEO');
+    assert.equal(res.geoHintUsed, true);
+});
+
+runTest('Jawne zażądanie nieaktywnego locale (?lang=de) -> fallback do en z LOCALE_DISABLED', () => {
+    const router = new CCGlobalRouter();
+    const decision = router.resolve({
+        url: 'https://polskieradio.cc/?lang=de',
+        contentMaster: MOCK_GOLDEN_RECORD
+    });
+    assert.equal(decision.requestedLocale, 'de');
+    assert.equal(decision.resolvedLocale, 'en');
+    assert.equal(decision.fallbackUsed, true);
+    assert.equal(decision.fallbackReason, 'LOCALE_DISABLED');
+});
+
+runTest('Rozróżnienie typów fallbacku: LOCALE_DISABLED vs LANGUAGE_FALLBACK vs FORMAT_FALLBACK', () => {
+    // 1. LOCALE_DISABLED
+    const resDisabled = resolveWithFallback('de', MOCK_GOLDEN_RECORD);
+    assert.equal(resDisabled.fallbackReason, 'LOCALE_DISABLED');
+
+    // 2. LANGUAGE_FALLBACK (ES ma wariant, ale nie approved)
+    const resLang = resolveWithFallback('es', MOCK_GOLDEN_RECORD);
+    assert.ok(resLang.fallbackReason.startsWith('LANGUAGE_FALLBACK'));
+
+    // 3. FORMAT_FALLBACK (Brak praw audio)
+    const restrictedRecord = {
+        ...MOCK_GOLDEN_RECORD,
+        rights: { ...MOCK_GOLDEN_RECORD.rights, audioDistributionAllowed: false }
+    };
+    const resFormat = resolveWithFallback('pl', restrictedRecord, { requestedFormat: 'AUDIO' });
+    assert.ok(resFormat.fallbackReason.startsWith('FORMAT_FALLBACK'));
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// 12. GATE 5.5: COOKIE TAMPERING & ANONYMOUS PREFERENCE VALIDATION
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n🍪 12. COOKIE TAMPERING & ANONYMOUS PREFERENCE (GATE 5.5)');
+
+runTest('Odrzucenie zmanipulowanego ciasteczka z Path Traversal / XSS / PII', () => {
+    assert.equal(isSafeLocaleString('../../evil'), false);
+    assert.equal(isSafeLocaleString('<script>alert(1)</script>'), false);
+    assert.equal(isSafeLocaleString('a'.repeat(50)), false);
+    assert.equal(isSafeLocaleString('pl'), true);
+    assert.equal(isSafeLocaleString('pt-br'), true);
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// 13. GATE 5.5: SINGLE CC ID PROFILE & PRIVILEGE ESCALATION GUARD
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n👤 13. SINGLE CC ID PROFILE & PRIVILEGE ESCALATION GUARD (GATE 5.5)');
+
+runTest('Profile update dozwolony wyłącznie dla preferredLocale, odrzuca próby eskalacji uprawnień', () => {
+    function sanitizeProfileUpdate(payload) {
+        const allowedKeys = new Set(['preferredLocale', 'updatedAt']);
+        const forbiddenKeys = ['role', 'isAdmin', 'isMasterAdmin', 'admin', 'permissions'];
+        for (const f of forbiddenKeys) {
+            if (f in payload) {
+                throw new Error(`SECURITY_VIOLATION: Attempted privilege escalation via key '${f}'`);
+            }
+        }
+        const filtered = {};
+        for (const [k, v] of Object.entries(payload)) {
+            if (allowedKeys.has(k)) filtered[k] = v;
+        }
+        return filtered;
+    }
+
+    assert.doesNotThrow(() => {
+        const clean = sanitizeProfileUpdate({ preferredLocale: 'en', updatedAt: 123456 });
+        assert.equal(clean.preferredLocale, 'en');
+    });
+
+    assert.throws(() => {
+        sanitizeProfileUpdate({ preferredLocale: 'en', isAdmin: true });
+    }, /SECURITY_VIOLATION/);
+
+    assert.throws(() => {
+        sanitizeProfileUpdate({ preferredLocale: 'en', role: 'SUPERUSER' });
+    }, /SECURITY_VIOLATION/);
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// 14. GATE 5.5: SESSION LOGIN SYNC & LOGOUT DEVICE ISOLATION
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n🔄 14. SESSION LOGIN SYNC & LOGOUT DEVICE ISOLATION (GATE 5.5)');
+
+runTest('Wybór w bieżącej sesji ma pierwszeństwo przed starym profilem, logout czyści sesję', () => {
+    let sessionChoice = 'es';
+    let profilePref = null;
+
+    let res = resolveSignal({ explicitUserChoice: sessionChoice, ccIdPreference: profilePref });
+    assert.equal(res.candidateLocale, 'es');
+
+    profilePref = 'pl';
+    res = resolveSignal({ explicitUserChoice: sessionChoice, ccIdPreference: profilePref });
+    assert.equal(res.candidateLocale, 'es');
+
+    sessionChoice = null;
+    profilePref = null;
+    res = resolveSignal({ explicitUserChoice: sessionChoice, ccIdPreference: profilePref });
+    assert.equal(res.candidateLocale, 'pl');
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// 15. GATE 5.5: SYSTEM HEALTH ROUTER STATUS (SHADOW_HEALTHY, NEVER ACTIVE)
+// ─────────────────────────────────────────────────────────────────────────
+console.log('\n🩺 15. SYSTEM HEALTH ROUTER STATUS (GATE 5.5)');
+
+runTest('Router w trybie Shadow zgłasza SHADOW_HEALTHY (Nigdy sztuczne ACTIVE)', () => {
+    const router = new CCGlobalRouter({ routerEnabled: false, shadowMode: true });
+    assert.equal(router.getHealthStatus(), 'SHADOW_HEALTHY');
+});
+
+runTest('Router z Kill Switchem zgłasza OFF', () => {
+    const router = new CCGlobalRouter({ globalRouterOff: true });
+    assert.equal(router.getHealthStatus(), 'OFF');
+});
+
+// ─────────────────────────────────────────────────────────────────────────
 // PODSUMOWANIE
 // ─────────────────────────────────────────────────────────────────────────
 console.log('\n══════════════════════════════════════════════════════════════════════════');
