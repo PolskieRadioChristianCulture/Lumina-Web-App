@@ -23,6 +23,24 @@
         { "fieldPath": "originalLanguage", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "cc_translation_memory",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "sourceHash", "order": "ASCENDING" },
+        { "fieldPath": "targetLanguage", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "cc_ai_jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "contentId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

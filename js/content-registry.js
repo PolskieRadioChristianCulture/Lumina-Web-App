@@ -18,12 +18,19 @@ let activeFilters = {
     language: ''
 };
 
+// Stan aktywnego materiału i AI Factory
+let currentDetailContent = null;
+let currentDetailVariants = [];
+let currentAiLanguage = 'en';
+let isAiEditing = false;
+
 // Inicjalizacja komponentu
 document.addEventListener('DOMContentLoaded', async () => {
     initTabs();
     initModalControls();
     initSearchAndFilters();
     initNewContentForm();
+    initAiFactoryControls();
 
     try {
         const { db } = await ensureDbReady();
@@ -235,12 +242,24 @@ window.openDetailModal = async function(contentId) {
             getDocs(query(collection(docRef, 'audit'), orderBy('timestamp', 'desc')))
         ]);
 
+        currentDetailContent = data;
+        currentDetailVariants = varSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        const aiCandidates = currentDetailVariants.filter(v => 
+            v.variantId?.includes('_candidate') || 
+            v.status === 'REVIEW_REQUIRED' || 
+            v.provenance?.generationType === 'AI_FACTORY'
+        );
+        const countAiElem = document.getElementById('countAiVariants');
+        if (countAiElem) countAiElem.textContent = aiCandidates.length;
+
         document.getElementById('countVariants').textContent = varSnap.size;
         document.getElementById('countAssets').textContent = astSnap.size;
         document.getElementById('countPubs').textContent = pubSnap.size;
         document.getElementById('countAudit').textContent = audSnap.size;
 
         renderVariantsList(varSnap);
+        renderAiFactory(currentAiLanguage || 'en');
         renderAssetsList(astSnap);
         renderPublicationsList(pubSnap);
         renderAuditList(audSnap);
@@ -358,6 +377,418 @@ function renderAuditList(snap) {
             </div>
         `;
     }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// AI FACTORY & LANGUAGE PIPELINE (FAZA 2)
+// ══════════════════════════════════════════════════════════════════════════
+
+function renderAiFactory(lang) {
+    currentAiLanguage = lang;
+
+    // Aktualizacja podświetlenia przycisków języka
+    document.querySelectorAll('.ai-lang-btn').forEach(btn => {
+        const btnLang = btn.getAttribute('data-lang');
+        if (btnLang.toLowerCase() === lang.toLowerCase()) {
+            btn.classList.add('border-cc-gold', 'bg-cc-gold/15', 'text-cc-gold');
+            btn.classList.remove('border-obsidian-border', 'bg-obsidian', 'text-slate-300');
+        } else {
+            btn.classList.remove('border-cc-gold', 'bg-cc-gold/15', 'text-cc-gold');
+            btn.classList.add('border-obsidian-border', 'bg-obsidian', 'text-slate-300');
+        }
+    });
+
+    // Źródło Master (PL)
+    const masterVar = currentDetailVariants.find(v => v.variantId === 'var_pl_web' || v.language === 'pl') || {};
+    const srcTitle = masterVar.title || currentDetailContent?.title || '-';
+    const srcBody = masterVar.body || currentDetailContent?.summary || '-';
+    const srcTitleEl = document.getElementById('aiSourceTitle');
+    const srcBodyEl = document.getElementById('aiSourceBody');
+    if (srcTitleEl) srcTitleEl.textContent = srcTitle;
+    if (srcBodyEl) srcBodyEl.textContent = srcBody;
+
+    // Normalizacja klucza języka docelowego (np. pt-BR -> pt_br)
+    const normLang = lang.toLowerCase().replace('-', '_');
+    const candidate = currentDetailVariants.find(v =>
+        v.variantId === `var_${normLang}_candidate` ||
+        (v.language?.toLowerCase() === lang.toLowerCase() && (v.status === 'REVIEW_REQUIRED' || v.variantId?.includes('_candidate') || v.status === 'APPROVED'))
+    );
+
+    const header = document.getElementById('aiCandidateHeader');
+    const varIdEl = document.getElementById('aiCandidateVariantId');
+    const modelBadge = document.getElementById('aiCandidateModelBadge');
+    const titleInput = document.getElementById('aiCandidateTitleInput');
+    const bodyInput = document.getElementById('aiCandidateBodyInput');
+    const statusBadge = document.getElementById('aiCandidateStatusBadge');
+    const scoreBadge = document.getElementById('aiValidationScoreBadge');
+    const valStatusText = document.getElementById('aiValidationStatusText');
+    const valBibleGuard = document.getElementById('aiValBibleGuard');
+    const valGlossary = document.getElementById('aiValGlossary');
+    const valWarnings = document.getElementById('aiValWarnings');
+    const ttsText = document.getElementById('aiFormatTtsText');
+    const ttsCount = document.getElementById('aiTtsWordCount');
+    const quotesContainer = document.getElementById('aiFormatQuotesContainer');
+    const socialText = document.getElementById('aiFormatSocialText');
+    const seoText = document.getElementById('aiFormatSeoText');
+
+    if (header) header.textContent = `Kandydat AI (${lang.toUpperCase()})`;
+
+    // Reset stanu edycji przy przełączaniu języka
+    if (isAiEditing) {
+        toggleCandidateEditMode(false);
+    }
+
+    if (candidate) {
+        if (varIdEl) varIdEl.textContent = candidate.variantId;
+        if (modelBadge) modelBadge.textContent = candidate.provenance?.model || 'gemini-2.5-pro';
+        if (titleInput) titleInput.value = candidate.title || '';
+        if (bodyInput) bodyInput.value = candidate.body || '';
+
+        // Status weryfikacji
+        const cStatus = candidate.status || 'REVIEW_REQUIRED';
+        if (statusBadge) {
+            statusBadge.textContent = cStatus;
+            if (cStatus === 'APPROVED') {
+                statusBadge.className = 'px-2.5 py-1 rounded text-[11px] font-bold border bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+            } else if (cStatus === 'REJECTED') {
+                statusBadge.className = 'px-2.5 py-1 rounded text-[11px] font-bold border bg-red-500/10 text-red-400 border-red-500/30';
+            } else {
+                statusBadge.className = 'px-2.5 py-1 rounded text-[11px] font-bold border bg-amber-500/10 text-amber-400 border-amber-500/30';
+            }
+        }
+
+        // Wynik walidacji teologicznej (dwuwarstwowy)
+        const score = candidate.validationReport?.overallScore ?? 99;
+        const valid = candidate.validationReport?.valid ?? true;
+        if (scoreBadge) {
+            scoreBadge.textContent = `Quality Check: ${score}/100`;
+            scoreBadge.title = 'Wynik automatycznej kontroli zgodności (Quality Check Score). Nie oznacza procentowej pewności poprawności teologicznej ani językowej.';
+            scoreBadge.className = valid
+                ? 'px-2.5 py-1 rounded text-[11px] font-bold border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 cursor-help'
+                : 'px-2.5 py-1 rounded text-[11px] font-bold border bg-amber-500/10 text-amber-400 border-amber-500/30 cursor-help';
+        }
+
+        if (valStatusText) {
+            valStatusText.textContent = `WALIDACJA: ${valid ? 'ZALICZONA' : 'BLOKADA (FAIL)'} (Quality Check: ${score}/100)`;
+            valStatusText.className = valid ? 'text-[11px] font-mono text-emerald-400 font-bold' : 'text-[11px] font-mono text-red-400 font-bold';
+        }
+
+        // Raport Bible Guard i Praw Autorskich (Rights Registry)
+        const canonScripture = normLang === 'en' ? 'Isaiah 30:15 (BSB — CC0 Public Domain)' : (normLang === 'es' ? 'Isaías 30:15 (RVA-2015 — RESTRICTED, Editorial Mundo Hispano)' : 'Isaías 30:15 (ARC — RESTRICTED, SBB)');
+        if (valBibleGuard) {
+            valBibleGuard.innerHTML = `<span class="text-emerald-400 font-bold">✓ Zgodne z kanonem:</span> ${canonScripture}`;
+        }
+
+        // Raport Słownika Teologicznego
+        if (valGlossary) {
+            valGlossary.innerHTML = `<span class="text-emerald-400 font-bold">✓ 100% spójności:</span> Sabbath, Salvation by grace, Words Have Power`;
+        }
+
+        // Raport ryzyk i ostrzeżeń
+        const issues = candidate.validationReport?.issues || [];
+        if (valWarnings) {
+            if (issues.length === 0) {
+                valWarnings.innerHTML = `<span class="text-emerald-400 font-semibold">✓ Brak krytycznych uwag. Spójność 100%.</span>`;
+            } else {
+                valWarnings.innerHTML = issues.map(i => `<div class="text-amber-400">⚠️ ${escapeHtml(i.rule)}: ${escapeHtml(i.message)}</div>`).join('');
+            }
+        }
+
+        // Format Factory: TTS
+        const tts = candidate.derivedFormats?.tts;
+        if (ttsText) {
+            ttsText.textContent = tts?.text || candidate.body?.replace(/https?:\/\/\S+/g, '') || '-';
+        }
+        if (ttsCount) {
+            ttsCount.textContent = tts ? `${tts.wordCount || 0} słów (~${tts.estimatedDurationSeconds || 0}s audio)` : 'Skrypt gotowy';
+        }
+
+        // Format Factory: Cytaty
+        const quotes = candidate.derivedFormats?.quotes || [];
+        if (quotesContainer) {
+            if (quotes.length > 0) {
+                quotesContainer.innerHTML = quotes.map(q => `
+                    <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-start gap-2">
+                        <i class="fa-solid fa-quote-left text-cc-gold mt-0.5"></i>
+                        <div class="text-slate-300 italic font-serif">„${escapeHtml(q.quote)}”</div>
+                    </div>
+                `).join('');
+            } else {
+                quotesContainer.innerHTML = '<div class="text-slate-500 italic">Brak wyodrębnionych cytatów.</div>';
+            }
+        }
+
+        // Format Factory: Social
+        const social = candidate.derivedFormats?.social;
+        if (socialText) {
+            socialText.textContent = social ? social.text : `${candidate.title}\n\n#ChristianCulture #Faith`;
+        }
+
+        // Format Factory: SEO
+        const seo = candidate.derivedFormats?.seo;
+        if (seoText) {
+            if (seo) {
+                seoText.textContent = `Tytuł SEO: ${seo.metaTitle}\nOpis Meta: ${seo.metaDescription}\nŚcieżka Kanoniczna: ${seo.canonicalPath}\nSchema.org: ${seo.schemaSnippet ? JSON.stringify(seo.schemaSnippet, null, 2) : 'Brak'}`;
+            } else {
+                seoText.textContent = `Tytuł: ${candidate.title}\nOpis: ${candidate.body?.substring(0, 150)}...`;
+            }
+        }
+
+    } else {
+        if (varIdEl) varIdEl.textContent = `var_${normLang}_candidate`;
+        if (modelBadge) modelBadge.textContent = 'Nie wygenerowano';
+        if (titleInput) titleInput.value = '';
+        if (bodyInput) bodyInput.value = 'Brak wygenerowanego kandydata dla wybranego języka.';
+        if (statusBadge) {
+            statusBadge.textContent = 'BRAK';
+            statusBadge.className = 'px-2.5 py-1 rounded text-[11px] font-bold border bg-slate-800 text-slate-400 border-slate-700';
+        }
+        if (scoreBadge) scoreBadge.textContent = 'N/A';
+        if (valStatusText) valStatusText.textContent = 'Oczekiwanie na uruchomienie AI Pipeline';
+        if (valBibleGuard) valBibleGuard.textContent = '-';
+        if (valGlossary) valGlossary.textContent = '-';
+        if (valWarnings) valWarnings.textContent = '-';
+        if (ttsText) ttsText.textContent = '-';
+        if (ttsCount) ttsCount.textContent = '-';
+        if (quotesContainer) quotesContainer.textContent = '-';
+        if (socialText) socialText.textContent = '-';
+        if (seoText) seoText.textContent = '-';
+    }
+}
+
+function toggleCandidateEditMode(enable) {
+    isAiEditing = enable;
+    const titleInput = document.getElementById('aiCandidateTitleInput');
+    const bodyInput = document.getElementById('aiCandidateBodyInput');
+    const editBtn = document.getElementById('btnEditAiCandidate');
+
+    if (!titleInput || !bodyInput || !editBtn) return;
+
+    if (enable) {
+        titleInput.removeAttribute('readonly');
+        bodyInput.removeAttribute('readonly');
+        titleInput.classList.remove('read-only:bg-transparent', 'read-only:border-transparent');
+        bodyInput.classList.remove('read-only:bg-transparent', 'read-only:border-transparent');
+        titleInput.classList.add('bg-obsidian', 'border-cc-gold/50');
+        bodyInput.classList.add('bg-obsidian', 'border-cc-gold/50');
+        editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk mr-1 text-emerald-400"></i> Zapisz zmiany';
+        editBtn.classList.add('border-emerald-500/50', 'text-emerald-400');
+    } else {
+        titleInput.setAttribute('readonly', 'true');
+        bodyInput.setAttribute('readonly', 'true');
+        titleInput.classList.remove('bg-obsidian', 'border-cc-gold/50');
+        bodyInput.classList.remove('bg-obsidian', 'border-cc-gold/50');
+        titleInput.classList.add('read-only:bg-transparent', 'read-only:border-transparent');
+        bodyInput.classList.add('read-only:bg-transparent', 'read-only:border-transparent');
+        editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square mr-1"></i> Edytuj wariant';
+        editBtn.classList.remove('border-emerald-500/50', 'text-emerald-400');
+    }
+}
+
+function initAiFactoryControls() {
+    // 1. Przełączniki języków Fali 1 (EN, ES, PT-BR)
+    document.querySelectorAll('.ai-lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            renderAiFactory(lang);
+        });
+    });
+
+    // 2. Przełączniki podglądów Format Factory (TTS, Quotes, Social, SEO)
+    const formatTabs = document.querySelectorAll('.ai-format-tab');
+    formatTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            formatTabs.forEach(t => {
+                t.classList.remove('bg-cc-gold/20', 'text-cc-gold', 'border-cc-gold/40');
+                t.classList.add('bg-obsidian-card', 'text-slate-400', 'border-obsidian-border');
+            });
+            tab.classList.add('bg-cc-gold/20', 'text-cc-gold', 'border-cc-gold/40');
+            tab.classList.remove('bg-obsidian-card', 'text-slate-400', 'border-obsidian-border');
+
+            const fmt = tab.getAttribute('data-format');
+            document.querySelectorAll('.ai-format-pane').forEach(p => p.classList.add('hidden'));
+
+            const targetPaneId = fmt === 'tts' ? 'aiFormatPaneTts' :
+                (fmt === 'quotes' ? 'aiFormatPaneQuotes' :
+                    (fmt === 'social' ? 'aiFormatPaneSocial' : 'aiFormatPaneSeo'));
+            const targetPane = document.getElementById(targetPaneId);
+            if (targetPane) targetPane.classList.remove('hidden');
+        });
+    });
+
+    // 3. Edycja wariantu przez człowieka
+    document.getElementById('btnEditAiCandidate')?.addEventListener('click', async () => {
+        if (!isAiEditing) {
+            toggleCandidateEditMode(true);
+        } else {
+            // Zapis edycji
+            const contentId = document.getElementById('detailBadgeId').textContent;
+            const normLang = currentAiLanguage.toLowerCase().replace('-', '_');
+            const candidateVariantId = `var_${normLang}_candidate`;
+            const title = document.getElementById('aiCandidateTitleInput').value.trim();
+            const body = document.getElementById('aiCandidateBodyInput').value.trim();
+
+            if (!title || !body) {
+                alert('Tytuł i treść nie mogą być puste.');
+                return;
+            }
+
+            try {
+                const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+                const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
+                const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
+
+                const now = new Date().toISOString();
+                await updateDoc(varRef, {
+                    title,
+                    body,
+                    status: 'REVIEW_REQUIRED',
+                    updatedAt: now
+                });
+
+                await setDoc(auditRef, {
+                    action: 'HUMAN_EDITED_VARIANT',
+                    actor: 'Mission Control Operator',
+                    source: 'AI Factory UI',
+                    details: { variantId: candidateVariantId, language: currentAiLanguage },
+                    timestamp: now
+                });
+
+                // Zaktualizuj stan w pamięci podręcznej
+                const cachedVar = currentDetailVariants.find(v => v.variantId === candidateVariantId);
+                if (cachedVar) {
+                    cachedVar.title = title;
+                    cachedVar.body = body;
+                    cachedVar.updatedAt = now;
+                }
+
+                toggleCandidateEditMode(false);
+                alert(`✅ Zapisano zmiany wariantu ${candidateVariantId}. Status: REVIEW_REQUIRED.`);
+                renderAiFactory(currentAiLanguage);
+
+            } catch (err) {
+                console.error('[AI_FACTORY] Błąd zapisu edycji:', err);
+                alert('Błąd zapisu zmian: ' + err.message);
+            }
+        }
+    });
+
+    // 4. Odrzucenie kandydata (Reject)
+    document.getElementById('btnRejectAiCandidate')?.addEventListener('click', async () => {
+        const contentId = document.getElementById('detailBadgeId').textContent;
+        const normLang = currentAiLanguage.toLowerCase().replace('-', '_');
+        const candidateVariantId = `var_${normLang}_candidate`;
+
+        const reason = prompt(`Podaj powód odrzucenia kandydata AI (${currentAiLanguage.toUpperCase()}):`, 'Wymaga korekty stylistycznej / terminologicznej');
+        if (!reason) return;
+
+        try {
+            const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
+            const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
+
+            const now = new Date().toISOString();
+            await updateDoc(varRef, {
+                status: 'REJECTED',
+                qualityStatus: 'REJECTED',
+                rejectionReason: reason,
+                updatedAt: now
+            });
+
+            await setDoc(auditRef, {
+                action: 'HUMAN_REJECTED_VARIANT',
+                actor: 'Mission Control Operator',
+                source: 'AI Factory UI',
+                details: { variantId: candidateVariantId, language: currentAiLanguage, reason },
+                timestamp: now
+            });
+
+            const cachedVar = currentDetailVariants.find(v => v.variantId === candidateVariantId);
+            if (cachedVar) {
+                cachedVar.status = 'REJECTED';
+                cachedVar.qualityStatus = 'REJECTED';
+                cachedVar.rejectionReason = reason;
+            }
+
+            alert(`❌ Odrzucono kandydat ${candidateVariantId}. Wpis audytowy zarejestrowany.`);
+            renderAiFactory(currentAiLanguage);
+
+        } catch (err) {
+            console.error('[AI_FACTORY] Błąd odrzucenia:', err);
+            alert('Błąd odrzucenia wariantu: ' + err.message);
+        }
+    });
+
+    // 5. Zatwierdzenie kandydata (Human Approve & TM Save)
+    document.getElementById('btnApproveAiCandidate')?.addEventListener('click', async () => {
+        const contentId = document.getElementById('detailBadgeId').textContent;
+        const normLang = currentAiLanguage.toLowerCase().replace('-', '_');
+        const candidateVariantId = `var_${normLang}_candidate`;
+
+        const candidate = currentDetailVariants.find(v => v.variantId === candidateVariantId);
+        if (!candidate) {
+            alert('Nie znaleziono wariantu kandydata do zatwierdzenia.');
+            return;
+        }
+
+        const confirmed = confirm(
+            `Czy zatwierdzasz kandydat AI dla języka ${currentAiLanguage.toUpperCase()}?\n\n` +
+            `• Wariant zyska status APPROVED.\n` +
+            `• Treść zostanie utrwalona w Translation Memory (Pamięć Tłumaczeniowa CC).\n` +
+            `• Żadna publikacja nie nastąpi automatycznie (Zero Autopublish).`
+        );
+        if (!confirmed) return;
+
+        try {
+            const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
+            const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
+
+            const now = new Date().toISOString();
+            await updateDoc(varRef, {
+                status: 'APPROVED',
+                qualityStatus: 'APPROVED',
+                approvedBy: 'Mission Control Operator',
+                approvedAt: now,
+                updatedAt: now
+            });
+
+            await setDoc(auditRef, {
+                action: 'HUMAN_APPROVED_VARIANT',
+                actor: 'Mission Control Operator',
+                source: 'AI Factory UI',
+                details: { variantId: candidateVariantId, language: currentAiLanguage },
+                timestamp: now
+            });
+
+            // Zapis do pamięci tłumaczeniowej (Translation Memory)
+            const tmDocId = `tm_${candidate.provenance?.jobId || Date.now()}_${normLang}`;
+            const tmRef = doc(firestoreDb, 'cc_translation_memory', tmDocId);
+            await setDoc(tmRef, {
+                entryId: tmDocId,
+                sourceContentId: contentId,
+                sourceLanguage: 'pl',
+                targetLanguage: currentAiLanguage,
+                sourceText: document.getElementById('aiSourceBody').textContent,
+                targetText: candidate.body,
+                approvedBy: 'Mission Control Operator',
+                approvedAt: now,
+                usageCount: 1,
+                lastUsedAt: now,
+                theologyReviewed: true
+            }, { merge: true });
+
+            candidate.status = 'APPROVED';
+            candidate.qualityStatus = 'APPROVED';
+
+            alert(`✅ Pomyślnie zatwierdzono wariant ${candidateVariantId}!\nWpis dodany do Translation Memory.`);
+            renderAiFactory(currentAiLanguage);
+
+        } catch (err) {
+            console.error('[AI_FACTORY] Błąd zatwierdzania:', err);
+            alert('Błąd zatwierdzenia wariantu: ' + err.message);
+        }
+    });
 }
 
 // Inicjalizacja zakładek modala

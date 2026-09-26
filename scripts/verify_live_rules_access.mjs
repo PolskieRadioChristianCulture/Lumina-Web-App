@@ -62,6 +62,66 @@ async function main() {
     }
   }
 
+  // 3b. Attempt unauthenticated read of cc_theology_glossary
+  process.stdout.write('⏳ Testing unauthenticated read of cc_theology_glossary... ');
+  try {
+    const glossColl = collection(db, 'cc_theology_glossary');
+    await getDocs(glossColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_theology_glossary!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3c. Attempt unauthenticated read of cc_translation_memory
+  process.stdout.write('⏳ Testing unauthenticated read of cc_translation_memory... ');
+  try {
+    const tmColl = collection(db, 'cc_translation_memory');
+    await getDocs(tmColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_translation_memory!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3d. Attempt unauthenticated read of cc_bible_sources
+  process.stdout.write('⏳ Testing unauthenticated read of cc_bible_sources... ');
+  try {
+    const bsColl = collection(db, 'cc_bible_sources');
+    await getDocs(bsColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_bible_sources!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
+  // 3e. Attempt unauthenticated read of cc_ai_jobs
+  process.stdout.write('⏳ Testing unauthenticated read of cc_ai_jobs... ');
+  try {
+    const jobColl = collection(db, 'cc_ai_jobs');
+    await getDocs(jobColl);
+    console.error('❌ FAIL: Unauthenticated client was able to read cc_ai_jobs!');
+    process.exit(1);
+  } catch (err) {
+    if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+      console.log('✅ PASS (Permission Denied as expected)');
+    } else {
+      console.log('⚠️ Unexpected error:', err.code, err.message);
+    }
+  }
+
   // 4. Verify that public collections (e.g. lumina_posts) remain readable
   process.stdout.write('⏳ Testing unauthenticated read of public lumina_posts... ');
   try {

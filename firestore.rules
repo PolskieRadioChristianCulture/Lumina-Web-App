@@ -337,6 +337,23 @@ service cloud.firestore {
       allow read, write: if isMasterAdmin();
     }
 
+    // CC Language & AI Content Factory (Faza 2)
+    match /cc_theology_glossary/{termId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_translation_memory/{memoryId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_bible_sources/{sourceId} {
+      allow read, write: if isMasterAdmin();
+    }
+
+    match /cc_ai_jobs/{jobId} {
+      allow read, write: if isMasterAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if isMasterAdmin();
     }

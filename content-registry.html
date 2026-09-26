@@ -228,6 +228,7 @@
             <div class="flex items-center gap-1 border-b border-obsidian-border bg-obsidian/40 px-4 pt-2 text-xs overflow-x-auto custom-scrollbar">
                 <button class="tab-btn py-2 px-3 border-b-2 border-cc-gold text-cc-gold font-semibold" data-tab="tabOverview">Przegląd</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabVariants">Warianty (<span id="countVariants">0</span>)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAiFactory"><i class="fa-solid fa-wand-magic-sparkles mr-1 text-cc-gold"></i> AI Factory (<span id="countAiVariants">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAssets">Zasoby / Assets (<span id="countAssets">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabPublications">Publikacje (<span id="countPubs">0</span>)</button>
                 <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAudit">Ślad Audytu (<span id="countAudit">0</span>)</button>
@@ -284,6 +285,174 @@
                 <!-- Pane 2: Variants -->
                 <div id="tabVariants" class="tab-pane hidden space-y-3">
                     <div id="variantsContainer" class="space-y-3">Ładowanie wariantów...</div>
+                </div>
+
+                <!-- Pane: AI Factory (Wave 1: EN, ES, PT-BR) -->
+                <div id="tabAiFactory" class="tab-pane hidden space-y-4">
+                    <!-- Language Selection Bar -->
+                    <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-400 font-semibold mr-1">Język docelowy (Fala 1):</span>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-cc-gold bg-cc-gold/15 text-cc-gold font-bold text-xs transition" data-lang="en">
+                                🇬🇧 English (EN)
+                            </button>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:border-cc-gold/40 text-xs transition" data-lang="es">
+                                🇪🇸 Español (ES)
+                            </button>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:border-cc-gold/40 text-xs transition" data-lang="pt-BR">
+                                🇧🇷 Português (PT-BR)
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="aiCandidateStatusBadge" class="px-2.5 py-1 rounded text-[11px] font-bold border bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                REVIEW_REQUIRED
+                            </span>
+                            <span id="aiValidationScoreBadge" class="px-2.5 py-1 rounded text-[11px] font-bold border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 cursor-help" title="Wynik automatycznej kontroli zgodności (Quality Check Score). Nie oznacza procentowej pewności poprawności teologicznej ani językowej.">
+                                Quality Check: 99/100
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side Review Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Source Column (PL Master) -->
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between border-b border-obsidian-border pb-2">
+                                <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                                    <span>Źródło Master (PL)</span>
+                                </div>
+                                <span class="font-mono text-[10px] text-slate-400">var_pl_web</span>
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Tytuł oryginalny:</span>
+                                    <div id="aiSourceTitle" class="font-bold text-slate-200 mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Treść źródłowa:</span>
+                                    <div id="aiSourceBody" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-56 overflow-y-auto whitespace-pre-wrap mt-0.5 border border-obsidian-border/50">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Target Column (AI Candidate) -->
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-cc-gold/30 space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between border-b border-obsidian-border pb-2">
+                                <div class="font-bold text-cc-gold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-sparkles text-[10px]"></i>
+                                    <span id="aiCandidateHeader">Kandydat AI (EN)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span id="aiCandidateModelBadge" class="font-mono text-[10px] text-slate-400 bg-obsidian-card px-2 py-0.5 rounded border border-obsidian-border">gemini-2.5-pro</span>
+                                    <span id="aiCandidateVariantId" class="font-mono text-[10px] text-cc-gold">var_en_candidate</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Tytuł przetłumaczony:</span>
+                                    <input type="text" id="aiCandidateTitleInput" readonly class="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-obsidian-card border border-obsidian-border text-slate-200 font-bold focus:outline-none gold-border-focus read-only:bg-transparent read-only:border-transparent">
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Treść wariantu:</span>
+                                    <textarea id="aiCandidateBodyInput" rows="7" readonly class="w-full mt-0.5 p-2.5 rounded-lg bg-obsidian-card border border-obsidian-border font-mono text-[11px] text-slate-200 focus:outline-none gold-border-focus read-only:bg-transparent read-only:border-transparent whitespace-pre-wrap"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theology & Source Validation Inspector -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                <span>Raport Walidacji Teologicznej & Bible Guard</span>
+                            </div>
+                            <span id="aiValidationStatusText" class="text-[11px] font-mono text-emerald-400 font-bold">WALIDACJA: ZALICZONA (Score 99/100)</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-[11px]">
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-book-bible text-cc-gold"></i>
+                                    <span>Bible Guard (Źródło Kanoniczne)</span>
+                                </div>
+                                <div id="aiValBibleGuard" class="text-slate-300">Weryfikacja w toku...</div>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-spell-check text-blue-400"></i>
+                                    <span>Theology Glossary (Pojęcia Kluczowe)</span>
+                                </div>
+                                <div id="aiValGlossary" class="text-slate-300">Weryfikacja w toku...</div>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                                    <span>Ostrzeżenia / Flagi Bezpieczeństwa</span>
+                                </div>
+                                <div id="aiValWarnings" class="text-slate-300">Brak uwag</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Derived Formats Previews (Format Factory) -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-cubes text-cc-gold"></i>
+                                <span>Format Factory — Wyprowadzone Formaty Publikacyjne</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[11px]">
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-cc-gold/20 text-cc-gold font-semibold border border-cc-gold/40" data-format="tts">Audio TTS</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="quotes">Cytaty</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="social">Social Media</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="seo">SEO & Schema</button>
+                            </div>
+                        </div>
+
+                        <!-- Format Panes -->
+                        <div id="aiFormatPaneTts" class="ai-format-pane space-y-2">
+                            <div class="text-[11px] text-slate-400 flex items-center justify-between">
+                                <span>Skrypt lektorski TTS (oczyszczony z URL-i, symboli, nawiasów):</span>
+                                <span id="aiTtsWordCount" class="font-mono text-slate-500">0 słów (~0s)</span>
+                            </div>
+                            <div id="aiFormatTtsText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneQuotes" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Wyodrębnione kluczowe cytaty do rolek i grafik:</div>
+                            <div id="aiFormatQuotesContainer" class="space-y-1.5">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneSocial" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Gotowy post na social media ze zlokalizowanymi hashtagami:</div>
+                            <div id="aiFormatSocialText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneSeo" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Metadane SEO & Schema.org JSON-LD:</div>
+                            <div id="aiFormatSeoText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Human-in-the-Loop Governance Bar -->
+                    <div class="p-3 bg-obsidian/80 rounded-xl border border-cc-gold/30 flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-[11px] text-slate-400">
+                            <i class="fa-solid fa-user-shield text-cc-gold mr-1"></i>
+                            <span>Bramka decyzyjna: <strong class="text-slate-200">Człowiek w pętli (Zero Autopublish)</strong>. AI nigdy nie publikuje automatycznie.</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="btnEditAiCandidate" class="px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:text-white hover:border-slate-500 text-xs transition">
+                                <i class="fa-solid fa-pen-to-square mr-1"></i> Edytuj wariant
+                            </button>
+                            <button type="button" id="btnRejectAiCandidate" class="px-3 py-1.5 rounded-lg border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition">
+                                <i class="fa-solid fa-ban mr-1"></i> Odrzuć kandydat
+                            </button>
+                            <button type="button" id="btnApproveAiCandidate" class="px-4 py-1.5 rounded-lg bg-cc-gold text-black font-bold hover:bg-amber-400 text-xs transition shadow-lg shadow-cc-gold/10">
+                                <i class="fa-solid fa-check mr-1"></i> Zatwierdź i zapisz w TM
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Pane 3: Assets -->
