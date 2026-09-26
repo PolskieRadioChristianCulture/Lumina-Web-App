@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Koncepcja C: Bible Discovery — Emocjonalna Droga z Jezusem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bd-bg: #0b0d11;
+      --bd-card: #131720;
+      --bd-card-soft: #191f2c;
+      --bd-border: rgba(255, 255, 255, 0.08);
+      --bd-border-gold: rgba(212, 175, 55, 0.3);
+      --bd-text: #f3f5f8;
+      --bd-text-muted: #9aa5b8;
+      --bd-text-faint: #606c80;
+      --bd-gold: #e2ba64;
+      --bd-gold-glow: rgba(226, 186, 100, 0.15);
+      --bd-sage: #68b0ab;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-scripture: 'Crimson Pro', Georgia, serif;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+      --touch-target: 48px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bd-bg);
+      color: var(--bd-text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Emotional / Mission-driven Header */
+    .bd-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(11, 13, 17, 0.85);
+      border-bottom: 1px solid var(--bd-border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bd-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--bd-text);
+    }
+    .bd-brand-icon {
+      font-size: 20px;
+      color: var(--bd-gold);
+    }
+    .bd-brand-title {
+      font-family: var(--font-scripture);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .bd-tag-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(226, 186, 100, 0.1);
+      border: 1px solid rgba(226, 186, 100, 0.25);
+      color: var(--bd-gold);
+    }
+
+    .bd-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* 1. DISCOVERY HERO: Emotional & Warm */
+    .bd-hero {
+      margin-top: 32px;
+      text-align: center;
+      padding: 56px 24px 48px;
+      position: relative;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 50% 20%, rgba(38, 48, 68, 0.4), transparent 70%),
+                  linear-gradient(180deg, #131722 0%, #0d1017 100%);
+      border: 1px solid var(--bd-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .bd-verse-kicker {
+      font-family: var(--font-scripture);
+      font-style: italic;
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--bd-gold);
+      margin-bottom: 12px;
+    }
+    .bd-hero-title {
+      font-family: var(--font-scripture);
+      font-size: clamp(34px, 5.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .bd-hero-desc {
+      font-size: clamp(14px, 1.8vw, 16px);
+      color: var(--bd-text-muted);
+      max-width: 620px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    /* Central Discovery Pill Progress */
+    .bd-progress-deck {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(11, 13, 17, 0.7);
+      border: 1px solid var(--bd-border-gold);
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .bd-deck-stat {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--bd-gold);
+      letter-spacing: 0.05em;
+    }
+    .bd-deck-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .bd-deck-next {
+      font-size: 12px;
+      color: var(--bd-text-muted);
+    }
+
+    /* Primary CTA */
+    .bd-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #e2ba64 0%, #c49942 100%);
+      color: #0b0d11;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 16px 36px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(226, 186, 100, 0.3);
+      transition: var(--transition);
+      min-height: var(--touch-target);
+    }
+    .bd-hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(226, 186, 100, 0.45);
+    }
+
+    /* 2. PIĘĆ ROZDZIAŁÓW HISTORII BOGA Z CZŁOWIEKIEM */
+    .bd-section {
+      margin-top: 56px;
+    }
+    .bd-section-header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .bd-section-title {
+      font-family: var(--font-scripture);
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .bd-section-subtitle {
+      font-size: 13px;
+      color: var(--bd-text-muted);
+      margin-top: 4px;
+    }
+
+    .bd-chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .bd-chapter-box {
+      background: var(--bd-card);
+      border: 1px solid var(--bd-border);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .bd-chapter-box:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+    .bd-chapter-box.active {
+      background: linear-gradient(180deg, #1b2230 0%, #131722 100%);
+      border-color: var(--bd-gold);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .bd-ch-roman {
+      font-family: var(--font-scripture);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--bd-gold);
+    }
+    .bd-ch-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 8px 0 4px;
+      letter-spacing: 0.02em;
+    }
+    .bd-ch-sub {
+      font-size: 11px;
+      color: var(--bd-text-faint);
+    }
+    .bd-ch-status {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+    .bd-ch-status.done { color: var(--bd-sage); }
+    .bd-ch-status.current { color: var(--bd-gold); }
+    .bd-ch-status.upcoming { color: var(--bd-text-faint); }
+
+    /* 3. CURRENT DISCOVERY HERO CARD */
+    .bd-spotlight-card {
+      margin-top: 36px;
+      background: var(--bd-card);
+      border: 1px solid var(--bd-border-gold);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 32px;
+      align-items: center;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+    .bd-spotlight-icon {
+      width: 140px;
+      height: 140px;
+      border-radius: var(--radius-md);
+      background: #0d1017;
+      border: 1px solid var(--bd-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bd-spotlight-icon img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    .bd-spotlight-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bd-gold);
+      margin-bottom: 6px;
+    }
+    .bd-spotlight-title {
+      font-family: var(--font-scripture);
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .bd-spotlight-quote {
+      font-family: var(--font-scripture);
+      font-style: italic;
+      font-size: 15px;
+      color: #cad3e2;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .bd-spotlight-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--bd-text-faint);
+    }
+
+    /* 4. UPCOMING DISCOVERY CHAPTERS */
+    .bd-lessons-list {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bd-lesson-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--bd-card);
+      border: 1px solid var(--bd-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    .bd-lesson-row:hover {
+      background: var(--bd-card-soft);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .bd-lesson-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-scripture);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--bd-text-faint);
+    }
+    .bd-lesson-row.done .bd-lesson-num {
+      background: rgba(104, 176, 171, 0.15);
+      color: var(--bd-sage);
+    }
+    .bd-lesson-info h4 {
+      font-family: var(--font-scripture);
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .bd-lesson-info p {
+      font-size: 12px;
+      color: var(--bd-text-muted);
+    }
+
+    /* 5. READER: TEMPLE OF CONTEMPLATION */
+    .bd-reader-sacred {
+      margin-top: 64px;
+      background: #0e1118;
+      border: 1px solid var(--bd-border);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+    }
+    .bd-sacred-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 36px;
+    }
+    .bd-sacred-verse {
+      font-family: var(--font-scripture);
+      font-size: 22px;
+      font-style: italic;
+      color: var(--bd-gold);
+      line-height: 1.5;
+      margin: 16px 0 8px;
+    }
+    .bd-sacred-siglum {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--bd-text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Modern Audio Lectern */
+    .bd-audio-lectern {
+      background: var(--bd-card);
+      border: 1px solid var(--bd-border-gold);
+      border-radius: var(--radius-pill);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 580px;
+      margin: 0 auto 40px;
+      gap: 16px;
+    }
+    .bd-audio-play {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bd-gold);
+      color: #000;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .bd-audio-text {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .bd-audio-duration {
+      font-size: 12px;
+      color: var(--bd-text-muted);
+      font-family: monospace;
+    }
+
+    /* Single Question Scripture Quiz */
+    .bd-quiz-card {
+      background: var(--bd-card);
+      border: 1px solid var(--bd-border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin-top: 36px;
+    }
+    .bd-quiz-q-title {
+      font-family: var(--font-scripture);
+      font-size: 20px;
+      font-weight: 700;
+      margin: 8px 0 18px;
+    }
+    .bd-quiz-item {
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      background: #171c26;
+      border: 1px solid var(--bd-border);
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: var(--touch-target);
+      transition: var(--transition);
+    }
+    .bd-quiz-item:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .bd-quiz-item.correct {
+      border-color: var(--bd-sage);
+      background: rgba(104, 176, 171, 0.08);
+      color: #fff;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 820px) {
+      .bd-chapters-grid {
+        grid-template-columns: 1fr;
+      }
+      .bd-spotlight-card {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        text-align: center;
+      }
+      .bd-spotlight-icon {
+        margin: 0 auto;
+      }
+      .bd-spotlight-meta {
+        justify-content: center;
+      }
+      .bd-reader-sacred {
+        padding: 20px;
+      }
+      .bd-audio-lectern {
+        border-radius: var(--radius-md);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bd-header">
+    <a href="#" class="bd-brand">
+      <span class="bd-brand-icon">🕊</span>
+      <span class="bd-brand-title">LUMINA Bible Discovery</span>
+    </a>
+    <span class="bd-tag-badge">DROGA Z JEZUSEM</span>
+  </header>
+
+  <main class="bd-container">
+
+    <!-- 1. DISCOVERY HERO -->
+    <section class="bd-hero">
+      <div class="bd-verse-kicker">„I poznacie prawdę, a prawda was wyzwoli” — J 8:32</div>
+      <h1 class="bd-hero-title">28 kroków. Jedna Biblia. Droga z Jezusem.</h1>
+      <p class="bd-hero-desc">
+        To nie jest kolejny internetowy kurs. To osobista podróż przez Pismo Święte, która porządkuje wiarę, odpowiada na najgłębsze pytania i prowadzi prosto do Chrystusa.
+      </p>
+
+      <!-- Central Discovery Progress Deck -->
+      <div class="bd-progress-deck">
+        <span class="bd-deck-stat">12 / 28 KROKÓW (43%)</span>
+        <div class="bd-deck-divider"></div>
+        <span class="bd-deck-next">Kolejny krok: Lekcja 13 • Ostatek i Jego Misja</span>
+      </div>
+
+      <br>
+
+      <!-- Main Emotional CTA -->
+      <a href="#discovery-reader" class="bd-hero-cta">
+        <span>KONTYNUUJ ODKRYWANIE SŁOWA</span>
+        <span>→</span>
+      </a>
+    </section>
+
+    <!-- 2. PIĘĆ ROZDZIAŁÓW HISTORII -->
+    <section class="bd-section">
+      <div class="bd-section-header">
+        <h2 class="bd-section-title">Pięć Rozdziałów Historii Zbawienia</h2>
+        <p class="bd-section-subtitle">Każdy etap to odrębna przestrzeń spotkania z Bogiem i Jego Słowem.</p>
+      </div>
+
+      <div class="bd-chapters-grid">
+        <!-- Ch 1: Done -->
+        <div class="bd-chapter-box">
+          <div class="bd-ch-roman">I</div>
+          <div class="bd-ch-name">POZNAJ BOGA</div>
+          <div class="bd-ch-sub">Lekcje 1–7</div>
+          <div class="bd-ch-status done">✓ 7/7 Ukończono</div>
+        </div>
+
+        <!-- Ch 2: Done -->
+        <div class="bd-chapter-box">
+          <div class="bd-ch-roman">II</div>
+          <div class="bd-ch-name">ODKRYJ EWANGELIĘ</div>
+          <div class="bd-ch-sub">Lekcje 8–11</div>
+          <div class="bd-ch-status done">✓ 4/4 Ukończono</div>
+        </div>
+
+        <!-- Ch 3: Active -->
+        <div class="bd-chapter-box active">
+          <div class="bd-ch-roman">III</div>
+          <div class="bd-ch-name">KOŚCIÓŁ BOŻY</div>
+          <div class="bd-ch-sub">Lekcje 12–18</div>
+          <div class="bd-ch-status current">● 1/7 W toku</div>
+        </div>
+
+        <!-- Ch 4: Upcoming -->
+        <div class="bd-chapter-box">
+          <div class="bd-ch-roman">IV</div>
+          <div class="bd-ch-name">ŻYJ SŁOWEM</div>
+          <div class="bd-ch-sub">Lekcje 19–23</div>
+          <div class="bd-ch-status upcoming">5 spotkań</div>
+        </div>
+
+        <!-- Ch 5: Upcoming -->
+        <div class="bd-chapter-box">
+          <div class="bd-ch-roman">V</div>
+          <div class="bd-ch-name">NADZIEJA</div>
+          <div class="bd-ch-sub">Lekcje 24–28</div>
+          <div class="bd-ch-status upcoming">5 spotkań</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CURRENT DISCOVERY SPOTLIGHT -->
+    <section class="bd-section">
+      <div class="bd-spotlight-card">
+        <div class="bd-spotlight-icon">
+          <img src="/images/lessons/13.svg" alt="Lekcja 13" onerror="this.src='/images/lessons/01.svg'">
+        </div>
+        <div>
+          <div class="bd-spotlight-kicker">Bieżące Spotkanie ze Słowem • Krok 13</div>
+          <h3 class="bd-spotlight-title">Lekcja 13: Ostatek i Jego Misja</h3>
+          <p class="bd-spotlight-quote">
+            „Tu się okaże wytrwanie świętych, którzy strzegą przykazań Bożych i wiary Jezusa”.
+          </p>
+          <div class="bd-spotlight-meta">
+            <span>📖 Obj 14:12</span>
+            <span>⏱ ok. 14 minut modlitwy i studium</span>
+          </div>
+        </div>
+        <div>
+          <a href="#discovery-reader" class="bd-hero-cta">
+            <span>OTWÓRZ</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KOLEJNE LEKCJE W TYM ROZDZIALE -->
+    <section class="bd-section">
+      <div class="bd-lessons-list">
+        <div class="bd-lesson-row done">
+          <div class="bd-lesson-num">✓</div>
+          <div class="bd-lesson-info">
+            <h4>Lekcja 12: Kościół Boży</h4>
+            <p>Wspólnota odkupionych — jedna rodzina pod Bożą opieką.</p>
+          </div>
+          <span style="font-size: 11px; color: var(--bd-sage); font-weight: 700;">Ukończono</span>
+        </div>
+
+        <div class="bd-lesson-row" style="border-color: var(--bd-border-gold); background: #181d28;">
+          <div class="bd-lesson-num" style="color: var(--bd-gold);">13</div>
+          <div class="bd-lesson-info">
+            <h4 style="color: #fff;">Lekcja 13: Ostatek i Jego Misja</h4>
+            <p>Ostatnie orędzie miłości Boga dla zagubionego świata.</p>
+          </div>
+          <span style="font-size: 11px; color: var(--bd-gold); font-weight: 700;">Bieżąca</span>
+        </div>
+
+        <div class="bd-lesson-row">
+          <div class="bd-lesson-num">14</div>
+          <div class="bd-lesson-info">
+            <h4>Lekcja 14: Jedność Ciała Chrystusa</h4>
+            <p>Modlitwa arcykapłańska Jezusa: „Aby wszyscy byli jedno”.</p>
+          </div>
+          <span style="font-size: 11px; color: var(--bd-text-faint);">Do odkrycia</span>
+        </div>
+
+        <div class="bd-lesson-row">
+          <div class="bd-lesson-num">15</div>
+          <div class="bd-lesson-info">
+            <h4>Lekcja 15: Chrzest Święty</h4>
+            <p>Świadome przymierze miłości i zanurzenie w nowe życie.</p>
+          </div>
+          <span style="font-size: 11px; color: var(--bd-text-faint);">Do odkrycia</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. READER: CONTEMPLATION & SCRIPTURE FOCUS -->
+    <section class="bd-reader-sacred" id="discovery-reader">
+      <div class="bd-sacred-header">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--bd-gold); text-transform: uppercase;">
+          Krok 13 z 28 • Rozdział III: Kościół Boży
+        </div>
+        <div class="bd-sacred-verse">
+          „Będziesz miłował Pana Boga swego całym swoim sercem... a oto przykazanie nowe daję wam: abyście się wzajemnie miłowali”.
+        </div>
+        <div class="bd-sacred-siglum">Pismo Święte — Żywe Słowo</div>
+      </div>
+
+      <!-- Modern Audio Lectern -->
+      <div class="bd-audio-lectern">
+        <button class="bd-audio-play" aria-label="Słuchaj">▶</button>
+        <div class="bd-audio-text">Słuchaj Słowa: Lekcja 13 (Czysty Głos Lektora)</div>
+        <div class="bd-audio-duration">03:45 / 14:10</div>
+      </div>
+
+      <div style="max-width: 680px; margin: 0 auto; font-size: 16px; line-height: 1.85; color: #ccd6e5;">
+        <p style="margin-bottom: 24px;">
+          W dobie relatywizmu i hałasu Bóg zaprasza człowieka do powrotu do prostoty Ewangelii. Prawdziwy lud Boży nie opiera się na ludzkich dekretach, lecz na cichym, niezłomnym posłuszeństwie Temu, który oddał za nas życie.
+        </p>
+
+        <!-- Quiz as Scripture Confirmation -->
+        <div class="bd-quiz-card">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--bd-gold); text-transform: uppercase;">
+            Pytanie do Serca • Potwierdzenie Biblijne
+          </div>
+          <h4 class="bd-quiz-q-title">Czym według Objawienia 14:12 charakteryzują się ci, którzy dotrwają do końca?</h4>
+          <div class="bd-quiz-item">
+            <span>Posiadaniem wpływów i uznania w świecie</span>
+          </div>
+          <div class="bd-quiz-item correct">
+            <span>Strzeżeniem przykazań Bożych i wiarą Jezusa</span>
+            <span>✓</span>
+          </div>
+          <div class="bd-quiz-item">
+            <span>Budowaniem wielkich świątyń z kamienia</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>

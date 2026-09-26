@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LUMINA Bible Academy — Executive Design Suite (Koncepcje A / B / C)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-studio: #06080d;
+      --bg-topbar: #0d111a;
+      --border-line: rgba(255, 255, 255, 0.1);
+      --text-white: #ffffff;
+      --text-gray: #9ba6b8;
+      --accent-gold: #d4af37;
+      --accent-blue: #3182ce;
+      --accent-sage: #68b0ab;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-studio);
+      color: var(--text-white);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Switcher Bar */
+    .suite-bar {
+      background: var(--bg-topbar);
+      border-bottom: 1px solid var(--border-line);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      z-index: 100;
+    }
+    .suite-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .suite-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .suite-tag {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--accent-gold);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    /* Concept Selector Pills */
+    .suite-pills {
+      display: flex;
+      align-items: center;
+      background: #141a26;
+      border: 1px solid var(--border-line);
+      border-radius: 99px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .concept-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-gray);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .concept-btn:hover {
+      color: #fff;
+    }
+    .concept-btn.active {
+      background: #253046;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .concept-btn.active.gold { background: linear-gradient(135deg, #d4af37, #aa861c); color: #000; font-weight: 700; }
+    .concept-btn.active.blue { background: #3182ce; color: #fff; }
+    .concept-btn.active.sage { background: #68b0ab; color: #000; font-weight: 700; }
+
+    /* Viewport Switcher */
+    .viewport-pills {
+      display: flex;
+      align-items: center;
+      background: #141a26;
+      border: 1px solid var(--border-line);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .vp-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-gray);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .vp-btn.active {
+      background: #2b364e;
+      color: #fff;
+    }
+
+    /* External direct link */
+    .open-external-btn {
+      font-size: 12px;
+      color: var(--text-gray);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-line);
+    }
+    .open-external-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Stage Canvas */
+    .suite-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #040508;
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+    }
+
+    /* Frame modes */
+    .suite-iframe-wrap {
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .suite-iframe-wrap.desktop {
+      width: 100%;
+      height: 100%;
+    }
+    .suite-iframe-wrap.mobile {
+      width: 390px;
+      height: 844px;
+      border-radius: 48px;
+      box-shadow: 0 0 0 12px #1e2533, 0 30px 80px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      border: 4px solid #000;
+    }
+    .suite-iframe-wrap.side-by-side {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      height: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #090c12;
+    }
+
+    /* Comparison Bar at Bottom */
+    .suite-bottom-drawer {
+      background: var(--bg-topbar);
+      border-top: 1px solid var(--border-line);
+      padding: 10px 24px;
+      font-size: 12px;
+      color: var(--text-gray);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .suite-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .suite-meta-item strong {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Executive Switcher Bar -->
+  <header class="suite-bar">
+    <div class="suite-title-wrap">
+      <div class="suite-title">LUMINA Bible Academy</div>
+      <span class="suite-tag">Redesign Decision Gate</span>
+    </div>
+
+    <!-- Concept Tabs -->
+    <div class="suite-pills">
+      <button class="concept-btn active gold" onclick="switchConcept('a')">Koncepcja A: Cinematic</button>
+      <button class="concept-btn" onclick="switchConcept('b')">Koncepcja B: Premium App</button>
+      <button class="concept-btn" onclick="switchConcept('c')">Koncepcja C: Discovery</button>
+    </div>
+
+    <!-- Viewport Modes -->
+    <div class="viewport-pills">
+      <button class="vp-btn active" id="btn-vp-desktop" onclick="switchViewport('desktop')">
+        <span>🖥</span> Desktop (Full)
+      </button>
+      <button class="vp-btn" id="btn-vp-mobile" onclick="switchViewport('mobile')">
+        <span>📱</span> Mobile 390×844
+      </button>
+      <button class="vp-btn" id="btn-vp-split" onclick="switchViewport('side-by-side')">
+        <span>⚏</span> Porównaj A/B/C
+      </button>
+    </div>
+
+    <a id="ext-link" href="/mockups/concept-a.html" target="_blank" class="open-external-btn">
+      <span>Otwórz w nowej karcie</span>
+      <span>↗</span>
+    </a>
+  </header>
+
+  <!-- Interactive Stage Canvas -->
+  <main class="suite-stage">
+    <div class="suite-iframe-wrap desktop" id="stage-frame">
+      <iframe id="main-frame" src="/mockups/concept-a.html" title="Interactive Concept Preview"></iframe>
+    </div>
+  </main>
+
+  <!-- Bottom Drawer Meta Info -->
+  <footer class="suite-bottom-drawer">
+    <div class="suite-meta-item">
+      <span>Bieżący podgląd:</span>
+      <strong id="active-concept-name">Koncepcja A — Cinematic Journey (Streaming & Visual Odyssey)</strong>
+    </div>
+    <div class="suite-meta-item">
+      <span>Zasada:</span>
+      <span>Zero „ściany kafelków” • Prawdziwe dane 28 lekcji • Pełna responsywność</span>
+    </div>
+    <div class="suite-meta-item">
+      <span style="color: var(--accent-gold); font-weight: 700;">Phase 5: Wstrzymana do wyboru Dowódcy</span>
+    </div>
+  </footer>
+
+  <script>
+    let currentConcept = 'a';
+    let currentViewport = 'desktop';
+
+    const conceptNames = {
+      a: 'Koncepcja A — Cinematic Journey (Streaming & Visual Odyssey)',
+      b: 'Koncepcja B — LUMINA Premium App (Modern 2026 Mobile-First)',
+      c: 'Koncepcja C — Bible Discovery (Głębokie Odkrywanie Słowa z Jezusem)'
+    };
+
+    const conceptFiles = {
+      a: '/mockups/concept-a.html',
+      b: '/mockups/concept-b.html',
+      c: '/mockups/concept-c.html'
+    };
+
+    function switchConcept(concept) {
+      currentConcept = concept;
+      const frame = document.getElementById('main-frame');
+      const extLink = document.getElementById('ext-link');
+      const metaName = document.getElementById('active-concept-name');
+
+      frame.src = conceptFiles[concept];
+      extLink.href = conceptFiles[concept];
+      metaName.textContent = conceptNames[concept];
+
+      // Update button styles
+      document.querySelectorAll('.concept-btn').forEach((btn, idx) => {
+        btn.className = 'concept-btn';
+        if ((idx === 0 && concept === 'a') || (idx === 1 && concept === 'b') || (idx === 2 && concept === 'c')) {
+          btn.classList.add('active');
+          if (concept === 'a') btn.classList.add('gold');
+          if (concept === 'b') btn.classList.add('blue');
+          if (concept === 'c') btn.classList.add('sage');
+        }
+      });
+
+      if (currentViewport === 'side-by-side') {
+        switchViewport('desktop');
+      }
+    }
+
+    function switchViewport(vp) {
+      currentViewport = vp;
+      const stage = document.getElementById('stage-frame');
+      const btnDesk = document.getElementById('btn-vp-desktop');
+      const btnMob = document.getElementById('btn-vp-mobile');
+      const btnSplit = document.getElementById('btn-vp-split');
+
+      btnDesk.classList.remove('active');
+      btnMob.classList.remove('active');
+      btnSplit.classList.remove('active');
+
+      if (vp === 'desktop') {
+        btnDesk.classList.add('active');
+        stage.className = 'suite-iframe-wrap desktop';
+        stage.innerHTML = `<iframe id="main-frame" src="${conceptFiles[currentConcept]}" title="Desktop Preview"></iframe>`;
+      } else if (vp === 'mobile') {
+        btnMob.classList.add('active');
+        stage.className = 'suite-iframe-wrap mobile';
+        stage.innerHTML = `<iframe id="main-frame" src="${conceptFiles[currentConcept]}" title="Mobile Preview"></iframe>`;
+      } else if (vp === 'side-by-side') {
+        btnSplit.classList.add('active');
+        stage.className = 'suite-iframe-wrap side-by-side';
+        stage.innerHTML = `
+          <div style="display:flex; flex-direction:column; height:100%; border:1px solid var(--border-line); border-radius:12px; overflow:hidden;">
+            <div style="background:#141a26; padding:8px 14px; font-size:12px; font-weight:700; color:var(--accent-gold);">KONCEPCJA A: CINEMATIC</div>
+            <iframe src="${conceptFiles.a}"></iframe>
+          </div>
+          <div style="display:flex; flex-direction:column; height:100%; border:1px solid var(--border-line); border-radius:12px; overflow:hidden;">
+            <div style="background:#141a26; padding:8px 14px; font-size:12px; font-weight:700; color:var(--accent-blue);">KONCEPCJA B: APP 2026</div>
+            <iframe src="${conceptFiles.b}"></iframe>
+          </div>
+          <div style="display:flex; flex-direction:column; height:100%; border:1px solid var(--border-line); border-radius:12px; overflow:hidden;">
+            <div style="background:#141a26; padding:8px 14px; font-size:12px; font-weight:700; color:var(--accent-sage);">KONCEPCJA C: DISCOVERY</div>
+            <iframe src="${conceptFiles.c}"></iframe>
+          </div>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Koncepcja B: LUMINA Premium App — Modern 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #090b10;
+      --app-card: #121620;
+      --app-card-elevated: #1a202c;
+      --app-card-active: #222938;
+      --app-border: rgba(255, 255, 255, 0.08);
+      --app-border-focus: rgba(99, 179, 237, 0.4);
+      --app-text: #f7fafc;
+      --app-text-muted: #a0aec0;
+      --app-text-faint: #718096;
+      --app-brand: #3182ce;
+      --app-brand-light: #63b3ed;
+      --app-success: #38a169;
+      --app-accent: #ecc94b;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-brand: 'Space Grotesk', sans-serif;
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --touch-target: 48px;
+      --transition: all 0.22s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: var(--app-text);
+      font-family: var(--font-ui);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Floating Native-feel Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(9, 11, 16, 0.85);
+      border-bottom: 1px solid var(--app-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .app-logo-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #2b6cb0, #1a365d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+    }
+    .app-name {
+      font-family: var(--font-brand);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .app-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .app-streak-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(236, 201, 75, 0.12);
+      border: 1px solid rgba(236, 201, 75, 0.25);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--app-accent);
+    }
+    .app-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #2d3748;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Layout Wrapper */
+    .app-layout {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* SECTION 1: TWOJA DROGA (Dashboard Ring Header) */
+    .app-dashboard {
+      background: var(--app-card);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 28px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+    .app-welcome-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--app-brand-light);
+      margin-bottom: 6px;
+    }
+    .app-welcome-title {
+      font-size: clamp(22px, 3.2vw, 28px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .app-welcome-subtitle {
+      font-size: 14px;
+      color: var(--app-text-muted);
+      margin-top: 6px;
+      max-width: 520px;
+    }
+
+    /* SVG Progress Ring */
+    .app-ring-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .app-ring-svg {
+      width: 110px;
+      height: 110px;
+      transform: rotate(-90deg);
+    }
+    .app-ring-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 9;
+    }
+    .app-ring-progress {
+      fill: none;
+      stroke: url(#app-grad);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 161; /* ~43% */
+      transition: stroke-dashoffset 1s ease-out;
+    }
+    .app-ring-label {
+      position: absolute;
+      text-align: center;
+    }
+    .app-ring-pct {
+      font-size: 20px;
+      font-weight: 800;
+      font-family: var(--font-brand);
+      line-height: 1;
+    }
+    .app-ring-sub {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--app-text-muted);
+      margin-top: 2px;
+    }
+
+    /* SECTION 2: KONTYNUUJ (Up Next Prominent Action Card) */
+    .app-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .app-section-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .app-up-next-card {
+      background: linear-gradient(135deg, #182234 0%, #111824 100%);
+      border: 1px solid rgba(99, 179, 237, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 32px;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .app-up-next-card:hover {
+      border-color: var(--app-brand-light);
+      transform: translateY(-2px);
+    }
+    .app-next-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-md);
+      background: #0d1420;
+      border: 1px solid var(--app-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .app-next-icon img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+    .app-next-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--app-brand-light);
+    }
+    .app-next-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 4px 0;
+    }
+    .app-next-meta {
+      display: flex;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--app-text-muted);
+    }
+    .app-next-cta-btn {
+      background: var(--app-brand);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 26px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(49, 130, 206, 0.4);
+      min-height: var(--touch-target);
+    }
+
+    /* SECTION 3: ODKRYWAJ (Topic Pills) */
+    .app-topics-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 36px;
+      scrollbar-width: none;
+    }
+    .app-topics-scroll::-webkit-scrollbar { display: none; }
+    .app-topic-pill {
+      background: var(--app-card);
+      border: 1px solid var(--app-border);
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: var(--touch-target);
+    }
+    .app-topic-pill:hover, .app-topic-pill.active {
+      background: var(--app-card-elevated);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* SECTION 4: 5 ETAPÓW (Modular Segments) */
+    .app-stages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .app-stage-box {
+      background: var(--app-card);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .app-stage-box.active {
+      border-color: var(--app-brand-light);
+    }
+    .app-stage-summary {
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      cursor: pointer;
+    }
+    .app-stage-badge-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .app-stage-box.completed .app-stage-badge-num {
+      background: rgba(56, 161, 105, 0.15);
+      color: var(--app-success);
+    }
+    .app-stage-box.active .app-stage-badge-num {
+      background: rgba(99, 179, 237, 0.2);
+      color: var(--app-brand-light);
+    }
+    .app-stage-text h4 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .app-stage-text p {
+      font-size: 12px;
+      color: var(--app-text-muted);
+    }
+    .app-stage-right-status {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Nested Lessons in Active Stage */
+    .app-nested-lessons {
+      border-top: 1px solid var(--app-border);
+      background: rgba(14, 18, 26, 0.6);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .app-lesson-item {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+      cursor: pointer;
+      min-height: var(--touch-target);
+    }
+    .app-lesson-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .app-lesson-item.active-item {
+      background: rgba(99, 179, 237, 0.1);
+      border-left: 3px solid var(--app-brand-light);
+    }
+    .app-lesson-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .app-lesson-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--app-text-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .app-lesson-check.done {
+      background: var(--app-success);
+      border-color: var(--app-success);
+      color: #fff;
+    }
+
+    /* SECTION 5: APP READER FOCUSED EXPERIENCE */
+    .app-reader-sheet {
+      background: var(--app-card);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .app-reader-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--app-border);
+    }
+    .app-reader-stepper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--app-brand-light);
+    }
+    .app-audio-pill-player {
+      background: var(--app-card-elevated);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-pill);
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .app-audio-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--app-brand);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .app-audio-title {
+      font-size: 13px;
+      font-weight: 600;
+      flex: 1;
+    }
+    .app-audio-time {
+      font-size: 12px;
+      color: var(--app-text-muted);
+      font-family: monospace;
+    }
+
+    /* Single Question Interactive Quiz Card */
+    .app-quiz-box {
+      background: var(--app-card-elevated);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-top: 32px;
+    }
+    .app-quiz-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--app-brand-light);
+    }
+    .app-quiz-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 8px 0 16px;
+    }
+    .app-answers-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .app-ans-btn {
+      background: var(--app-card);
+      border: 1px solid var(--app-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      text-align: left;
+      color: var(--app-text);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: var(--touch-target);
+      transition: var(--transition);
+    }
+    .app-ans-btn:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .app-ans-btn.correct {
+      border-color: var(--app-success);
+      background: rgba(56, 161, 105, 0.1);
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 680px) {
+      .app-dashboard {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        text-align: center;
+      }
+      .app-ring-wrap {
+        margin: 0 auto;
+      }
+      .app-welcome-subtitle {
+        margin: 6px auto 0;
+      }
+      .app-up-next-card {
+        grid-template-columns: 1fr;
+        padding: 18px;
+        text-align: center;
+      }
+      .app-next-icon {
+        margin: 0 auto;
+      }
+      .app-next-meta {
+        justify-content: center;
+      }
+      .app-next-cta-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .app-stage-summary {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Native Header -->
+  <header class="app-header">
+    <div class="app-brand-wrap">
+      <div class="app-logo-badge">L</div>
+      <div class="app-name">LUMINA Bible Academy</div>
+    </div>
+    <div class="app-header-right">
+      <div class="app-streak-pill">
+        <span>🔥</span> 5 dni z rzędu
+      </div>
+      <div class="app-avatar"></div>
+    </div>
+  </header>
+
+  <main class="app-layout">
+
+    <!-- 1. TWOJA DROGA (Dashboard Ring Header) -->
+    <section class="app-dashboard">
+      <div>
+        <div class="app-welcome-kicker">Witaj ponownie, Daniel</div>
+        <h1 class="app-welcome-title">Twoja droga: 12 z 28 lekcji</h1>
+        <p class="app-welcome-subtitle">
+          Ukończyłeś już 43% całego programu. Jesteś w trakcie Etapu III: Kościół Boży. Następne studium to Lekcja 13.
+        </p>
+      </div>
+
+      <!-- SVG Progress Ring -->
+      <div class="app-ring-wrap">
+        <svg class="app-ring-svg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="app-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#63b3ed" />
+              <stop offset="100%" stop-color="#3182ce" />
+            </linearGradient>
+          </defs>
+          <circle class="app-ring-bg" cx="50" cy="50" r="45" />
+          <circle class="app-ring-progress" cx="50" cy="50" r="45" />
+        </svg>
+        <div class="app-ring-label">
+          <div class="app-ring-pct">43%</div>
+          <div class="app-ring-sub">12 / 28</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. KONTYNUUJ (Up Next Action Card) -->
+    <div class="app-section-header">
+      <h2 class="app-section-title">Kontynuuj</h2>
+    </div>
+
+    <section class="app-up-next-card">
+      <div class="app-next-icon">
+        <img src="/images/lessons/13.svg" alt="Lekcja 13" onerror="this.src='/images/lessons/01.svg'">
+      </div>
+      <div>
+        <div class="app-next-kicker">Krok 13 • Etap III</div>
+        <h3 class="app-next-title">Lekcja 13: Ostatek i Jego Misja</h3>
+        <div class="app-next-meta">
+          <span>⏱ 14 min</span>
+          <span>📖 Obj 12:17</span>
+          <span>✦ Moduł Quiz</span>
+        </div>
+      </div>
+      <a href="#study-sheet" class="app-next-cta-btn" style="text-decoration: none;">
+        <span>URUCHOM LEKCJĘ</span>
+        <span>→</span>
+      </a>
+    </section>
+
+    <!-- 3. ODKRYWAJ (Topic Pills) -->
+    <div class="app-section-header">
+      <h2 class="app-section-title">Odkrywaj według tematów</h2>
+    </div>
+    <div class="app-topics-scroll">
+      <div class="app-topic-pill active">
+        <span>📖</span> Wszystkie 28
+      </div>
+      <div class="app-topic-pill">
+        <span>🕊</span> Duch Święty i Proroctwa
+      </div>
+      <div class="app-topic-pill">
+        <span>⚖</span> Prawo i Szabat
+      </div>
+      <div class="app-topic-pill">
+        <span>⛪</span> Kościół i Wspólnota
+      </div>
+      <div class="app-topic-pill">
+        <span>🌅</span> Sąd i Nowa Ziemia
+      </div>
+    </div>
+
+    <!-- 4. PIĘĆ ETAPÓW (Modular Accordion Structure) -->
+    <div class="app-section-header">
+      <h2 class="app-section-title">5 Etapów Kursu</h2>
+    </div>
+
+    <section class="app-stages-list">
+      <!-- Stage 1 -->
+      <div class="app-stage-box completed">
+        <div class="app-stage-summary">
+          <div class="app-stage-badge-num">✓</div>
+          <div class="app-stage-text">
+            <h4>Etap 1: POZNAJ BOGA</h4>
+            <p>Pismo Święte, Trójca, Bóg Ojciec, Syn i Duch, Stworzenie, Natura ludzka</p>
+          </div>
+          <div class="app-stage-right-status" style="color: var(--app-success);">7/7 Ukończono</div>
+        </div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="app-stage-box completed">
+        <div class="app-stage-summary">
+          <div class="app-stage-badge-num">✓</div>
+          <div class="app-stage-text">
+            <h4>Etap 2: ODKRYJ EWANGELIĘ</h4>
+            <p>Wielki Bój, Życie i śmierć Chrystusa, Doświadczenie zbawienia, Wzrost</p>
+          </div>
+          <div class="app-stage-right-status" style="color: var(--app-success);">4/4 Ukończono</div>
+        </div>
+      </div>
+
+      <!-- Stage 3 (ACTIVE) -->
+      <div class="app-stage-box active">
+        <div class="app-stage-summary">
+          <div class="app-stage-badge-num">3</div>
+          <div class="app-stage-text">
+            <h4>Etap 3: KOŚCIÓŁ BOŻY</h4>
+            <p>Wspólnota, Misja, Jedność, Chrzest, Wieczerza, Dary i Dar Proroctwa</p>
+          </div>
+          <div class="app-stage-right-status" style="color: var(--app-brand-light);">1/7 W toku</div>
+        </div>
+
+        <!-- Nested Lessons in Active Stage -->
+        <div class="app-nested-lessons">
+          <div class="app-lesson-item">
+            <div class="app-lesson-item-left">
+              <div class="app-lesson-check done">✓</div>
+              <span>Lekcja 12: Kościół Boży</span>
+            </div>
+            <span style="font-size: 11px; color: var(--app-text-faint);">12 min</span>
+          </div>
+
+          <div class="app-lesson-item active-item">
+            <div class="app-lesson-item-left">
+              <div class="app-lesson-check" style="border-color: var(--app-brand-light); color: var(--app-brand-light);">●</div>
+              <strong style="color: #fff;">Lekcja 13: Ostatek i Jego Misja</strong>
+            </div>
+            <span style="font-size: 11px; color: var(--app-brand-light); font-weight: 700;">TERAZ</span>
+          </div>
+
+          <div class="app-lesson-item">
+            <div class="app-lesson-item-left">
+              <div class="app-lesson-check">14</div>
+              <span>Lekcja 14: Jedność Ciała Chrystusa</span>
+            </div>
+            <span style="font-size: 11px; color: var(--app-text-faint);">11 min</span>
+          </div>
+
+          <div class="app-lesson-item">
+            <div class="app-lesson-item-left">
+              <div class="app-lesson-check">15</div>
+              <span>Lekcja 15: Chrzest</span>
+            </div>
+            <span style="font-size: 11px; color: var(--app-text-faint);">14 min</span>
+          </div>
+
+          <div class="app-lesson-item">
+            <div class="app-lesson-item-left">
+              <div class="app-lesson-check">18</div>
+              <span>Lekcja 18: Dar Proroctwa</span>
+            </div>
+            <span style="font-size: 11px; color: var(--app-text-faint);">15 min</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="app-stage-box">
+        <div class="app-stage-summary">
+          <div class="app-stage-badge-num">4</div>
+          <div class="app-stage-text">
+            <h4>Etap 4: ŻYJ SŁOWEM</h4>
+            <p>Prawo Boże, Szabat, Szafarstwo, Chrześcijańskie życie, Rodzina</p>
+          </div>
+          <div class="app-stage-right-status" style="color: var(--app-text-faint);">0/5 Lekcji</div>
+        </div>
+      </div>
+
+      <!-- Stage 5 -->
+      <div class="app-stage-box">
+        <div class="app-stage-summary">
+          <div class="app-stage-badge-num">5</div>
+          <div class="app-stage-text">
+            <h4>Etap 5: BŁOGOSŁAWIONA NADZIEJA</h4>
+            <p>Świątynia, Powtórne Przyjście, Zmartwychwstanie, Tysiąclecie, Nowa Ziemia</p>
+          </div>
+          <div class="app-stage-right-status" style="color: var(--app-text-faint);">0/5 Lekcji</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. READER COMPONENT (App Style Focus Mode) -->
+    <div class="app-section-header">
+      <h2 class="app-section-title">Widok Lekcji (App Focused Mode)</h2>
+    </div>
+
+    <section class="app-reader-sheet" id="study-sheet">
+      <div class="app-reader-nav">
+        <span style="font-size: 13px; font-weight: 600; color: var(--app-text-muted); cursor: pointer;">← Zamknij</span>
+        <div class="app-reader-stepper">
+          <span>LEKCJA 13 Z 28</span>
+          <span>•</span>
+          <span>KROK 1: CZYTAJ</span>
+        </div>
+        <span style="font-size: 13px; color: var(--app-text-faint);">Aa</span>
+      </div>
+
+      <!-- Floating Mini Audio Player -->
+      <div class="app-audio-pill-player">
+        <button class="app-audio-btn" aria-label="Play Audio">▶</button>
+        <div class="app-audio-title">Lektor AI • Posłuchaj Lekcji 13</div>
+        <div class="app-audio-time">00:00 / 14:15</div>
+      </div>
+
+      <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 12px;">Ostatek i Jego Misja</h3>
+      <p style="font-size: 15px; color: var(--app-text-muted); line-height: 1.7; margin-bottom: 24px;">
+        Powszechny Kościół składa się ze wszystkich, którzy szczerze wierzą w Chrystusa. Jednak w czasach ostatecznych, w dobie powszechnego odstępstwa, powołany został ostatek, aby zachowywać przykazania Boże i wiarę Jezusa.
+      </p>
+
+      <!-- App Formative Quiz Single Card -->
+      <div class="app-quiz-box">
+        <span class="app-quiz-badge">Pytanie 1 z 2 • Sprawdź zrozumienie</span>
+        <h4 class="app-quiz-title">W oparciu o Obj 12:17, czym wyróżnia się biblijny lud ostatka?</h4>
+        <div class="app-answers-grid">
+          <button class="app-ans-btn">
+            <span>A) Tradycją ludzką i dominacją instytucjonalną</span>
+          </button>
+          <button class="app-ans-btn correct">
+            <span>B) Strzeżeniem przykazań Bożych i świadectwem Jezusa</span>
+            <span>✓</span>
+          </button>
+          <button class="app-ans-btn">
+            <span>C) Posiadaniem własnego państwa</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
