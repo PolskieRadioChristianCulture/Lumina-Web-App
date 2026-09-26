@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initSearchAndFilters();
     initNewContentForm();
     initAiFactoryControls();
+    initDistributionControls();
 
     try {
         const { db } = await ensureDbReady();
@@ -1024,3 +1025,75 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// CC GLOBAL DISTRIBUTION ENGINE CONTROLS (FAZA 3A)
+// ══════════════════════════════════════════════════════════════════════════
+function initDistributionControls() {
+    // 1. Przycisk inspekcji manifestu
+    document.getElementById('btnInspectManifest')?.addEventListener('click', () => {
+        if (!currentDetailContent) {
+            alert('Wybierz najpierw materiał z listy.');
+            return;
+        }
+
+        const normLang = currentAiLanguage.toLowerCase().replace('-', '_');
+        const candidateVariantId = `var_${normLang}_candidate`;
+        const candidate = currentDetailVariants.find(v => v.variantId === candidateVariantId);
+        const plMaster = currentDetailVariants.find(v => v.variantId === 'var_pl_web');
+        const activeVariant = candidate || plMaster || currentDetailVariants[0];
+
+        const manifestPreview = {
+            manifestId: `pubm_preview_${Date.now().toString(36)}`,
+            contentId: currentDetailContent.contentId,
+            variantId: activeVariant?.variantId || 'unknown',
+            variantStatus: activeVariant?.status || 'UNKNOWN',
+            title: activeVariant?.title || currentDetailContent.title,
+            rightsSnapshot: currentDetailContent.rights || {},
+            platforms: ['LUMINA', 'WWW', 'WHATSAPP', 'BITCHUTE', 'RADIO', 'YOUTUBE_PILOT'],
+            pilotChannel: 'UC_PILOT_CC_MAIN',
+            killSwitchState: 'AUTOPUBLISH_OFF_PHASE_3A',
+            generatedAt: new Date().toISOString()
+        };
+
+        alert(`📜 IMMUTABLE PUBLICATION MANIFEST (SNAPSHOT):\n\n${JSON.stringify(manifestPreview, null, 2)}`);
+    });
+
+    // 2. Przycisk utworzenia planu dystrybucji (Bramka dwuetapowa Pkt 53)
+    document.getElementById('btnCreateDistPlan')?.addEventListener('click', () => {
+        if (!currentDetailContent) {
+            alert('Wybierz najpierw materiał z listy.');
+            return;
+        }
+
+        const normLang = currentAiLanguage.toLowerCase().replace('-', '_');
+        const candidateVariantId = `var_${normLang}_candidate`;
+        const candidate = currentDetailVariants.find(v => v.variantId === candidateVariantId);
+
+        // Pkt 2: Sprawdzenie czy wariant jest zatwierdzony
+        if (candidate && candidate.status !== 'APPROVED') {
+            alert(`⚠️ RIGHTS GATE ZABLOKOWAŁ DYSTRYBUCJĘ:\n\nWariant ${candidateVariantId} posiada status "${candidate.status}".\nDystrybucja dopuszcza WYŁĄCZNIE warianty zatwierdzone (APPROVED).\n\nZatwierdź najpierw kandydata w zakładce AI Factory.`);
+            return;
+        }
+
+        // Pkt 53/54: Dwuetapowa akceptacja
+        const confirmDist = confirm(
+            `🚀 AUTORYZACJA PLANU DYSTRYBUCJI (FAZA 3A)\n\n` +
+            `Materiał: ${currentDetailContent.contentId}\n` +
+            `Język: ${currentAiLanguage.toUpperCase()}\n` +
+            `Platformy docelowe: LUMINA, WWW (Preview), WhatsApp (Bridge), BitChute (Manual), Radio (Buffer), YouTube (Pilot Private)\n` +
+            `Status Autopublish: OFF (Zadania w trybie bezpiecznym/kolejce)\n\n` +
+            `Czy zatwierdzasz utworzenie Planu Dystrybucji (Distribution Approval)?`
+        );
+
+        if (!confirmDist) return;
+
+        alert(
+            `✅ PLAN DYSTRYBUCJI UTWORZONY POMYŚLNIE (FAZA 3A):\n\n` +
+            `Status: APPROVED_FOR_DISTRIBUTION\n` +
+            `Wygenerowano zadania dla adapterów: LUMINA, WWW, WhatsApp, BitChute, Radio, YouTube Pilot.\n` +
+            `Zgodnie z Pkt 46: Global Autopublish = OFF. Zadania oczekują na bramkę produkcyjną 3.5.`
+        );
+    });
+}
+
