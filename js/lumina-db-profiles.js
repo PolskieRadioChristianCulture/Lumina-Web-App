@@ -354,6 +354,20 @@ export const PROFILES_DB = {
         photos: ['avatar_zbyszek_gieron.jpg', 'lumina_default_cover.jpg'],
         posts: [
             {
+                id: 'post_zg_btd',
+                author: 'Zbyszek Gieroń',
+                authorSlug: 'zbyszekgieron',
+                authorAvatar: 'avatar_zbyszek_gieron.jpg',
+                authorRole: 'Profil Misyjny 🕊️✨',
+                time: 'Dzisiaj • 📖 Biblijny Tekst Dnia',
+                title: '📖 Biblijny Tekst Dnia • Codzienna analiza wersetów',
+                text: 'Link jest zawsze aktywny prowadzi do wcześniejszych analiz i aktualnej - zgodnej z kalendarzem.\nZapraszam do codziennego rozważania Słowa Bożego! 🕊️✨\n\nhttps://claude.ai/share/bdbc52b0-b463-43a2-afd9-a6a7307f00f7',
+                externalUrl: 'https://claude.ai/share/bdbc52b0-b463-43a2-afd9-a6a7307f00f7',
+                likes: 42,
+                amen: 56,
+                image: 'tlo-biblia.png'
+            },
+            {
                 id: 'post_zg_1',
                 author: 'Zbyszek Gieroń',
                 authorSlug: 'zbyszekgieron',
