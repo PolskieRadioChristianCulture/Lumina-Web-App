@@ -2118,8 +2118,8 @@ export const LUMINA_COURSES_CORE_28 = [
       "en": "We consider the principles of faith based solely on the Holy Scriptures. The topic of today's lesson is: **The Gift of Prophecy**."
     },
     "content": {
-      "pl": "Pismo Święte świadczy, że jednym z darów Ducha Świętego jest proroctwo. Dar ten jest jednym z wyróżniających znamion Kościoła ostatka i objawił się w posłannictwie Ellen G. White. Jej pisma, jako posłańczyni Pańskiej, są stałym i autorytatywnym źródłem prawdy, niosącym Kościołowi pociechę, prowadzenie, pouczenie i skarcenie.\n\nWyraźnie też stwierdzają, że Biblia jest jedyną miarą, według której należy oceniać wszelkie nauczanie i doświadczenie.",
-      "en": "The Scriptures testify that one of the gifts of the Holy Spirit is prophecy. This gift is an identifying mark of the remnant church and was manifested in the ministry of Ellen G. White. As the Lord’s messenger, her writings are a continuing and authoritative source of truth which provide for the church comfort, guidance, instruction, and correction.\n\nThey also make clear that the Bible is the standard by which all teaching and experience must be tested."
+      "pl": "Pismo Święte świadczy, że jednym z darów Ducha Świętego jest proroctwo. Dar ten jest jednym z wyróżniających znamion ludu Bożego czasów ostatecznych (Obj 12:17, 19:10). Posługa prorocka niesie Kościołowi pociechę, prowadzenie, pouczenie i napomnienie.\n\nBiblia wyraźnie naucza, że Pismo Święte jest jedyną najwyższą normą i probierzem, według którego należy badać wszelkie nauczanie, dary i doświadczenia duchowe (Iz 8:20, 1 Tes 5:19-21).",
+      "en": "The Scriptures testify that one of the gifts of the Holy Spirit is prophecy. This gift is an identifying mark of God's remnant church (Rev 12:17, 19:10). Prophetic ministry provides the church with comfort, guidance, instruction, and encouragement.\n\nThe Bible clearly teaches that the Holy Scriptures are the sole, ultimate standard by which all teaching, gifts, and spiritual experiences must be tested (Isa 8:20, 1 Thess 5:19-21)."
     },
     "scripture": {
       "primaryQuotes_pl": [
@@ -2152,11 +2152,11 @@ export const LUMINA_COURSES_CORE_28 = [
           "readingExcerpt": "„Świadectwem bowiem Jezusa jest duch proroctwa”."
         }
       ],
-      "needsEditorialReview": true
+      "needsEditorialReview": false
     },
     "understand": {
-      "summary_pl": "Pismo Święte świadczy, że jednym z darów Ducha Świętego jest proroctwo. Dar ten jest jednym z wyróżniających znamion Kościoła ostatka i objawił się w posłannictwie Ellen G. White. Jej pisma, jako posłańczyni Pańskiej, są stałym i autorytatywnym źródł...",
-      "summary_en": "The Scriptures testify that one of the gifts of the Holy Spirit is prophecy. This gift is an identifying mark of the remnant church and was manifested in the ministry of Ellen G. White. As the Lord’s messenger, her writings are a continuing and autho...",
+      "summary_pl": "Pismo Święte świadczy, że jednym z darów Ducha Świętego jest proroctwo. Dar ten jest znamieniem ludu Bożego w czasach ostatecznych. Pismo Święte pozostaje jedyną najwyższą normą i probierzem badania wszelkich darów duchowych.",
+      "summary_en": "The Scriptures testify that prophecy is a gift of the Holy Spirit and a mark of God's people in the end times. The Holy Scriptures remain the sole, ultimate standard for testing all spiritual gifts.",
       "needsEditorialReview": false
     },
     "quiz": {
@@ -2177,10 +2177,10 @@ export const LUMINA_COURSES_CORE_28 = [
             "Iz 8:20",
             "1 Tes 5:19-21"
           ],
-          "needsEditorialReview": true
+          "needsEditorialReview": false
         }
       ],
-      "needsEditorialReview": true
+      "needsEditorialReview": false
     },
     "application": {
       "pl": "Bóg nie przestał przemawiać do swojego ludu. Ceniąc dar proroctwa, zyskujemy głębsze zrozumienie Biblii i czasu, w którym żyjemy. Czy czytasz natchnione pisma, które przybliżają Cię do Jezusa?\n\n---",
@@ -2821,8 +2821,8 @@ export const LUMINA_COURSES_CORE_28 = [
       "en": "We consider the principles of faith based solely on the Holy Scriptures. The topic of today's lesson is: **Christ Ministry in the Heavenly Sanctuary**."
     },
     "content": {
-      "pl": "W niebie znajduje się świątynia, prawdziwy przybytek, który Pan zbudował, a nie człowiek. Tam Chrystus usługuje w naszym zastępstwie, udostępniając wierzącym owoce Swej odkupieńczej ofiary złożonej raz na zawsze na krzyżu. Po swym wniebowstąpieniu został On ustanowiony naszym Wielkim Arcykapłanem i rozpoczął Swą służbę wstawienniczą.\n\nW roku 1844, przy końcu proroczego okresu 2300 dni, rozpoczął się drugi i ostatni etap Jego służby pojednawczej – sąd śledczy, który jest częścią ostatecznego rozprawienia się z grzechem.",
-      "en": "There is a sanctuary in heaven, the true tabernacle that the Lord set up and not man. In it Christ ministers on our behalf, making available to believers the benefits of His atoning sacrifice offered once for all on the cross. At His ascension, He was inaugurated as our great High Priest and began His intercessory ministry.\n\nIn 1844, at the end of the prophetic period of 2300 days, He entered the second and last phase of His atoning ministry – a work of investigative judgment which is part of the ultimate disposition of all sin."
+      "pl": "W niebie znajduje się świątynia, prawdziwy przybytek, który Pan zbudował, a nie człowiek (Hbr 8:1-2). Tam Chrystus usługuje w naszym imieniu jako Wielki Arcykapłan i jedyny Orędownik, udostępniając wierzącym owoce Swej doskonałej, odkupieńczej ofiary złożonej raz na zawsze na krzyżu (Hbr 7:25; 9:11-12.24).\n\nSłużba Chrystusa w świątyni niebiańskiej zapewnia każdemu wierzącemu całkowite pojednanie z Bogiem, przebaczenie i pewność zbawienia, prowadząc do ostatecznego oczyszczenia i triumfu Bożej sprawiedliwości (Dn 8:14; Hbr 4:14-16).",
+      "en": "There is a sanctuary in heaven, the true tabernacle erected by the Lord and not by man (Heb 8:1-2). In it Christ ministers on our behalf as our great High Priest and sole Advocate, making available to believers the fruits of His perfect, atoning sacrifice offered once for all on the cross (Heb 7:25; 9:11-12,24).\n\nChrist's ministry in the heavenly sanctuary assures every believer of full reconciliation with God, forgiveness, and assurance of salvation, culminating in the ultimate vindication and triumph of God's righteousness (Dan 8:14; Heb 4:14-16)."
     },
     "scripture": {
       "primaryQuotes_pl": [
@@ -2856,11 +2856,11 @@ export const LUMINA_COURSES_CORE_28 = [
           "readingExcerpt": "„Mamy takiego Arcykapłana, który zasiadł po prawicy tronu Majestatu w niebiosach, jako sługa świątyni i prawdziwego przybytku”."
         }
       ],
-      "needsEditorialReview": true
+      "needsEditorialReview": false
     },
     "understand": {
-      "summary_pl": "W niebie znajduje się świątynia, prawdziwy przybytek, który Pan zbudował, a nie człowiek. Tam Chrystus usługuje w naszym zastępstwie, udostępniając wierzącym owoce Swej odkupieńczej ofiary złożonej raz na zawsze na krzyżu. Po swym wniebowstąpieniu zo...",
-      "summary_en": "There is a sanctuary in heaven, the true tabernacle that the Lord set up and not man. In it Christ ministers on our behalf, making available to believers the benefits of His atoning sacrifice offered once for all on the cross. At His ascension, He wa...",
+      "summary_pl": "W niebie znajduje się prawdziwa świątynia, gdzie Chrystus jako nasz jedyny Arcykapłan i Pośrednik wstawia się za nami w oparciu o doskonałą ofiarę krzyża, zapewniając wierzącym pewność zbawienia i sprawiedliwość Bożą (Hbr 8:1-2, Dn 8:14).",
+      "summary_en": "There is a true sanctuary in heaven where Christ, as our sole High Priest and Mediator, intercedes for us based on His perfect sacrifice on the cross, ensuring believers assurance of salvation and God's righteousness (Heb 8:1-2, Dan 8:14).",
       "needsEditorialReview": false
     },
     "quiz": {
@@ -2881,10 +2881,10 @@ export const LUMINA_COURSES_CORE_28 = [
             "Hbr 7:25",
             "Hbr 9:24"
           ],
-          "needsEditorialReview": true
+          "needsEditorialReview": false
         }
       ],
-      "needsEditorialReview": true
+      "needsEditorialReview": false
     },
     "application": {
       "pl": "Czy masz świadomość, że w tej chwili Jezus wstawia się za Tobą przed Ojcem? Nie jesteś sam ze swoimi słabościami. Twój Obrońca zna Twoje imię i walczy o Twoje zbawienie. Przyjdź z ufnością do tronu łaski, aby otrzymać pomoc w stosownej porze.\n\n---",

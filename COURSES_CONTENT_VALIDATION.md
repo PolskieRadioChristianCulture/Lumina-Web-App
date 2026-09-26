@@ -1,19 +1,19 @@
 # LUMINA BIBLE ACADEMY — PROTOKÓŁ WALIDACJI TREŚCI I PYTAŃ FORMACYJNYCH (FAZA 4)
 
-**Status:** UKOŃCZONE — OCZEKUJE NA DECYZJE REDAKCYJNE DOWÓDCY / WŁAŚCICIELA  
+**Status:** ZATWIERDZONY PRZEZ WŁAŚCICIELA — CONTENT GATE 28/28 ZAMKNIĘTY  
 **Adres produkcyjny (docelowy):** `https://polskieradio.cc/kursy`  
-**Wdrożenie produkcyjne:** ZABLOKOWANE (Stop Gate: Phase 4)  
+**Wdrożenie produkcyjne:** ZABLOKOWANE (Stop Gate: Phase 4 — Podgląd w trybie Preview)  
 **Hierarchia Źródeł:** `PISMO ŚWIĘTE (Sola Scriptura) > ZATWIERDZONY DOKUMENT 28 ZASAD WIARY (PDF) > MATERIAŁY CCLITE.PL > SYSTEM CHRISTIAN CULTURE`  
 **Stan walidacji doktrynalnej:**  
-- Lekcje zatwierdzone bez zastrzeżeń (VALIDATED): **26 / 28**  
-- Lekcje skierowane do decyzji redakcyjnej (EDITORIAL_REVIEW): **2 / 28** (Lekcja 18, Lekcja 24)  
-- Nierozstrzygnięte kwestie doktrynalne (UNRESOLVED DOCTRINAL ITEMS): **2**
+- Lekcje zatwierdzone (VALIDATED): **28 / 28 (100%)**  
+- Lekcje w weryfikacji redakcyjnej (EDITORIAL_REVIEW): **0 / 28**  
+- Nierozstrzygnięte kwestie doktrynalne (UNRESOLVED DOCTRINAL ITEMS): **0**
 
 ---
 
 ## 1. MACIERZ WALIDACJI 28 LEKCJI BIBLIJNYCH
 
-| Nr | Tytuł Lekcji | Źródło PDF (28 Zasad) | Źródło cclite.pl | Kluczowe Sigla Biblijne | Odkryj (Pytania analityczne) | Quiz (Formacyjny) | Konflikt / Napięcie | Status |
+| Nr | Tytuł Lekcji | Źródło PDF (28 Zasad) | Źródło cclite.pl | Kluczowe Sigla Biblijne | Odkryj (Pytania analityczne) | Quiz (Formacyjny) | Decyzja / Zgodność | Status |
 |:--:|:---|:---:|:---:|:---|:---:|:---:|:---:|:---:|
 | 1 | Pismo Święte | Rozdz. 1 | Lekcja 1 | 2 Tm 3:16-17; 2 P 1:20-21; J 17:17; Iz 8:20 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Pełna zgodność) | ✅ VALIDATED |
 | 2 | Trójca Święta | Rozdz. 2 | Lekcja 2 | Mt 28:19; 2 Kor 13:13; Ef 4:4-6; 1 P 1:2 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Klasyczna ortodoksja) | ✅ VALIDATED |
@@ -32,13 +32,13 @@
 | 15 | Chrzest Święty | Rozdz. 15 | Lekcja 15 | Mt 28:19-20; Mk 16:16; Dz 2:38; Rz 6:3-5 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Chrzest przez zanurzenie) | ✅ VALIDATED |
 | 16 | Wieczerza Pańska | Rozdz. 16 | Lekcja 16 | 1 Kor 11:23-30; Mt 26:26-30; J 13:1-17 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak | ✅ VALIDATED |
 | 17 | Dary i Usługi Duchowe | Rozdz. 17 | Lekcja 17 | Rz 12:4-8; 1 Kor 12:7-11.27-31; Ef 4:8-13 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak | ✅ VALIDATED |
-| 18 | Dar Proroctwa | Rozdz. 18 | Lekcja 18 | Jl 2:28-29; Dz 2:14-21; 1 Tes 5:19-21; Obj 12:17; Obj 19:10 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | **Napięcie kanoniczne (Sola Scriptura vs współczesny dar)** | ⚠️ **EDITORIAL_REVIEW** |
+| 18 | Dar Proroctwa | Rozdz. 18 | Lekcja 18 | Jl 2:28-29; Dz 2:14-21; 1 Tes 5:19-21; Obj 12:17; Obj 19:10 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | **Zatwierdzone: Ujęcie ściśle biblijne (Sola Scriptura), bez wprowadzania EGW** | ✅ VALIDATED |
 | 19 | Prawo Boże | Rozdz. 19 | Lekcja 19 | Wj 20:1-17; Ps 19:8-12; Mt 5:17-19; Rz 3:31 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Dekalog jako wzorzec) | ✅ VALIDATED |
 | 20 | Szabat — Dzień Pański | Rozdz. 20 | Lekcja 20 | Rdz 2:1-3; Wj 20:8-11; Łk 4:16; Mt 12:1-12 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Siódmy dzień biblijny) | ✅ VALIDATED |
 | 21 | Chrześcijańskie Szafarstwo | Rozdz. 21 | Lekcja 21 | Rdz 1:26-28; Ml 3:8-12; 1 Kor 9:9-14; 2 Kor 9:6-7 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak | ✅ VALIDATED |
 | 22 | Chrześcijańskie Życie i Zdrowie | Rozdz. 22 | Lekcja 22 | 1 Kor 6:19-20; 1 Kor 10:31; Rz 12:1-2; Flp 4:8 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Ciało świątynią Ducha) | ✅ VALIDATED |
 | 23 | Małżeństwo i Rodzina | Rozdz. 23 | Lekcja 23 | Rdz 2:18-24; Mt 19:3-9; Ef 5:21-33; Hbr 13:4 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak | ✅ VALIDATED |
-| 24 | Służba Chrystusa w Niebiańskiej Świątyni | Rozdz. 24 | Lekcja 24 | Hbr 4:14-16; Hbr 8:1-2; Hbr 9:11-28; Dn 8:14; Dn 7:9-14 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | **Napięcie egzegetyczne (Krzyż a Sąd Przedadwentowy)** | ⚠️ **EDITORIAL_REVIEW** |
+| 24 | Służba Chrystusa w Niebiańskiej Świątyni | Rozdz. 24 | Lekcja 24 | Hbr 4:14-16; Hbr 8:1-2; Hbr 9:11-28; Dn 8:14; Dn 7:9-14 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | **Zatwierdzone: Ujęcie chrystocentryczne (Jezus Arcykapłanem, pewność zbawienia, Dn 8:14, Hbr 8:1-2)** | ✅ VALIDATED |
 | 25 | Powtórne Przyjście Chrystusa | Rozdz. 25 | Lekcja 25 | Tyt 2:13; Hbr 9:28; J 14:1-3; Dz 1:9-11; Mt 24:30 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Widzialne paruzja) | ✅ VALIDATED |
 | 26 | Śmierć i Zmartwychwstanie | Rozdz. 26 | Lekcja 26 | Kazn 9:5-6; Ps 146:4; J 11:11-14; 1 Kor 15:51-54 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak (Kondycjonalizm biblijny) | ✅ VALIDATED |
 | 27 | Tysiąclecie i Koniec Grzechu | Rozdz. 27 | Lekcja 27 | Obj 20; 1 Kor 6:2-3; Jr 4:23-26; 2 P 3:10-13 | 2 pytania + cytaty | 2 pytania (A/B/C/D + P/F) | Brak | ✅ VALIDATED |
@@ -46,39 +46,28 @@
 
 ---
 
-## 2. UNRESOLVED DOCTRINAL ITEMS (2 KWESTIE SPORNE DO DECYZJI REDAKCYJNEJ)
+## 2. DECYZJE WŁAŚCICIELSKIE (ROZSTRZYGNIĘTE KWESTIE DOKTRYNALNE)
 
-Zgodnie z zasadą bezwzględnej uczciwości i wytycznymi Dowódcy, Antigravity nie podejmuje samodzielnych, nieautoryzowanych decyzji teologicznych w sprawach o charakterze kontrowersyjnym lub wyznaniowym.
+Wszystkie kwestie redakcyjne zostały autoryzowane przez Właściciela / Dowódcę. Status weryfikacji redakcyjnej w kodzie (`needsEditorialReview`) został ustawiony na `false` dla wszystkich 28 lekcji.
 
-Poniższe 2 punkty zostały oznaczone w kodzie flagą `needsEditorialReview: true` i w interfejsie użytkownika posiadają oznaczenie:
-`⚠️ Weryfikacja redakcyjna (Pismo Święte jest ostateczną miarą)`.
-
-### PUNKT 1: LEKCJA 18 — DAR PROROCTWA
-- **Kontekst:**
-  Tradycyjne ujęcie wyznaniowe Kościoła Adwentystów Dnia Siódmego łączy zasadę wiary nr 18 ze służbą i pismami Ellen G. White jako „świadectwem Jezusa” i darem proroczym czasu ostatecznego (Obj 12:17; 19:10).
-- **Napięcie z Sola Scriptura:**
-  Większość chrześcijan ewangelicznych i protestanckich podnosi obawę przed tworzeniem drugorzędnego kanonu lub stawianiem jakichkolwiek pism pozabiblijnych na równi z Pismem Świętym.
-- **Rozwiązanie zaimplementowane w Fazie 4:**
-  Treść lekcji, pytania Odkryj oraz Quiz zostały sformułowane **wyłącznie w oparciu o Słowo Boże**:
-  - Podstawa biblijna: 1 Tes 5:19-21 („Ducha nie gaście, proroctw nie lekceważcie, wszystko badajcie, co szlachetne trzymajcie”), Iz 8:20 („Do prawa i do świadectwa! Jeśli nie mówią według tego słowa, nie ma dla nich jutrzenki”), Obj 19:10.
-  - Pytanie quizowe koncentruje się na tym, że **każde proroctwo musi być bezwzględnie weryfikowane przez natchniony kanon Pisma Świętego**, a Biblia jest jedynym sprawdzianem prawdy.
-- **Pytanie do Właściciela / Dowódcy:**
-  *Czy w treści lekcji 18 zachowujemy wyłącznie czyste sformułowania biblijne o darach Ducha Świętego (podejście ekumeniczno-biblijne CC), czy Właściciel życzy sobie wyraźnego odniesienia historycznego do pism E.G. White?*
+### ROZSTRZYGNIĘCIE 1: LEKCJA 18 — DAR PROROCTWA
+- **Decyzja Właściciela:** ZATWIERDZONE (APPROVED).
+- **Zastosowane sformułowanie:**
+  - Kurs publiczny pozostaje **ściśle biblijny**, bez wprowadzania Ellen G. White jako elementu zasady wiary.
+  - Zgodnie z Pismem Świętym (Obj 12:17, 19:10; 1 Tes 5:19-21; Iz 8:20) dar proroctwa jest darem Ducha Świętego, a Biblia jest jedyną i ostateczną miarą wiary i życia.
+  - Oznaczenie redakcyjne: `needsEditorialReview: false`, `validationStatus: VALIDATED`.
 
 ---
 
-### PUNKT 2: LEKCJA 24 — SŁUŻBA CHRYSTUSA W NIEBIAŃSKIEJ ŚWIĄTYNI
-- **Kontekst:**
-  Doktryna o niebiańskiej świątyni i sądzie śledczym (rozpoczętym w 1844 r. na podstawie 2300 wieczorów i poranków z Dn 8:14) stanowi kluczowy, specyficzny filar adwentyzmu historycznego.
-- **Napięcie egzegetyczne:**
-  List do Hebrajczyków (Hbr 9:12; 9:24-28; 10:12-14) podkreśla, że Chrystus wstępując do nieba po zmartwychwstaniu wszedł raz na zawsze do Miejsca Najświętszego przez własną krew, dokonawszy wiecznego odkupienia na Krzyżu Golgoty. Krytycy zarzucają koncepcji sądu śledczego umniejszanie pewności zbawienia wierzącego opartego na dokonanym dziele Krzyża (J 5:24, Rz 8:1).
-- **Rozwiązanie zaimplementowane w Fazie 4:**
-  Lekcja i pytania formacyjne zostały skonstruowane tak, aby:
-  - W centrum postawić **Jezusa Chrystusa jako naszego Jedynego Arcykapłana i Orędownika** (Hbr 4:14-16; Hbr 8:1-2).
-  - Wskazać, że krew Chrystusa jest jedyną podstawą uniewinnienia na Bożym sądzie (Dn 7:9-14; 2 Kor 5:10).
-  - Oznaczyć lekcję jako `needsEditorialReview: true`, aby umożliwić Właścicielowi ostateczną korektę redakcyjną.
-- **Pytanie do Właściciela / Dowódcy:**
-  *Jak głęboko w kursie publicznym /kursy pragniemy eksponować szczegóły chronologiczne (rok 1844, oczyszczenie świątyni), a na ile zachować akcent chrystocentryczny na orędownictwie Jezusa w Niebie i darze przebaczenia?*
+### ROZSTRZYGNIĘCIE 2: LEKCJA 24 — SŁUŻBA CHRYSTUSA W NIEBIAŃSKIEJ ŚWIĄTYNI
+- **Decyzja Właściciela:** ZATWIERDZONE (APPROVED).
+- **Zastosowane sformułowanie:**
+  - Akcent spoczywa na **Jezusie Chrystusie jako naszym Wielkim Arcykapłanie, jedynym Orędowniku i Pośredniku**, wystarczalności ofiary Krzyża oraz pewności zbawienia dla wierzącego (Hbr 4:14-16; 7:25; 8:1-2; 9:11-12.24).
+  - Brak wymogu znajomości roku 1844 jako warunku ukończenia quizu podstawowego 28 lekcji (szczegółowa chronologia proroctw Księgi Daniela zarezerwowana do zaawansowanego studium).
+  - Zachowano kluczowe sigla Dn 8:14 i Hbr 8:1-2.
+  - Oznaczenie redakcyjne: `needsEditorialReview: false`, `validationStatus: VALIDATED`.
+- **Uzasadnienie teologiczne:**
+  List do Hebrajczyków (Hbr 9:12; 9:24-28; 10:12-14) podkreśla, że Chrystus złożył jedną, doskonałą ofiarę raz na zawsze. W kursie podstawowym 28 zasad wiary fundamentem jest orędownictwo Jezusa w Niebie i niezachwiana pewność zbawienia wierzącego opartego na łasce Krzyża (J 5:24, Rz 8:1). Szczegółowe studia chronologii 2300 dni i lat pozostają do dyspozycji w dedykowanych kursach zaawansowanych.
 
 ---
 

@@ -144,22 +144,21 @@ test('8. Rozdzielenie lekcji 29–38 od podstawowego programu 28/28', () => {
   });
 });
 
-test('9. Flaga needsEditorialReview dla quizów i pytań odkrywczych (Phase 4)', () => {
-  // W Phase 4 treści doktrynalne zostały zwalidowane: 26 lekcji zatwierdzonych, dokładnie lekcje 18 i 24 podlegają weryfikacji redakcyjnej
+test('9. Flaga needsEditorialReview dla quizów i pytań odkrywczych (Phase 4 — Owner Approved)', () => {
+  // W Phase 4 treści doktrynalne zostały w 100% zwalidowane po decyzjach Właściciela (Lekcja 18 i 24)
   let underReviewCount = 0;
   LUMINA_COURSES_CORE_28.forEach(lesson => {
-    const isUnderReview = lesson.id === 18 || lesson.id === 24;
     assert.strictEqual(
       lesson.quiz.needsEditorialReview,
-      isUnderReview,
-      `Quiz w lekcji ${lesson.id} status needsEditorialReview powinien wynosić ${isUnderReview}`
+      false,
+      `Quiz w lekcji ${lesson.id} status needsEditorialReview powinien wynosić false`
     );
     assert.strictEqual(
       lesson.discover.needsEditorialReview,
-      isUnderReview,
-      `Odkryj w lekcji ${lesson.id} status needsEditorialReview powinien wynosić ${isUnderReview}`
+      false,
+      `Odkryj w lekcji ${lesson.id} status needsEditorialReview powinien wynosić false`
     );
-    if (isUnderReview) underReviewCount++;
+    if (lesson.quiz.needsEditorialReview || lesson.discover.needsEditorialReview) underReviewCount++;
   });
-  assert.strictEqual(underReviewCount, 2, 'Dokładnie 2 lekcje podlegają weryfikacji redakcyjnej (Lekcje 18 i 24)');
+  assert.strictEqual(underReviewCount, 0, 'Wszystkie 28 lekcji posiada zatwierdzony status doktrynalny (0 podlegających weryfikacji)');
 });

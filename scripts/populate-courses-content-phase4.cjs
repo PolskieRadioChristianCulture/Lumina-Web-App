@@ -435,7 +435,7 @@ const COURSE_CONTENT_DATABASE = {
         correctAnswer: 1,
         explanation: '„Do prawa i do świadectwa! Jeśli nie mówią zgodnie z tym słowem, to nie ma dla nich jutrzenki” (Iz 8:20, 1 Tes 5:19-21). Pismo Święte jest ostateczną miarą.',
         scriptureRefs: ['Iz 8:20', '1 Tes 5:19-21'],
-        needsEditorialReview: true // Oznaczono do weryfikacji redakcyjnej zgodnie z wytyczną
+        needsEditorialReview: false // Zatwierdzone przez Właściciela — czyste ujęcie biblijne (Obj 12:17, 19:10)
       }
     ]
   },
@@ -572,7 +572,7 @@ const COURSE_CONTENT_DATABASE = {
         correctAnswer: 1,
         explanation: 'Jezus wszedł do samego nieba, aby teraz wstawiać się za nami przed obliczem Boga (Hbr 9:24, Hbr 7:25).',
         scriptureRefs: ['Hbr 7:25', 'Hbr 9:24'],
-        needsEditorialReview: true // Oznaczono do weryfikacji redakcyjnej (prorocza chronologia 2300 wieczorów i poranków)
+        needsEditorialReview: false // Zatwierdzone przez Właściciela — chrystocentryczne ujęcie orędownictwa (Hbr 8:1-2, Dn 8:14)
       }
     ]
   },
@@ -730,7 +730,7 @@ export default {
   fs.writeFileSync(dataFilePath, newContent, 'utf8');
   console.log(`✅ Zaktualizowano 28 lekcji w data/lumina-courses-data.js:`);
   console.log(`   - Zatwierdzone (VALIDATED): ${updatedCount} lekcji`);
-  console.log(`   - Wymagające decyzji redakcyjnej (EDITORIAL_REVIEW): ${reviewCount} lekcje (Lekcje 18 i 24)`);
+  console.log(`   - Wymagające decyzji redakcyjnej (EDITORIAL_REVIEW): ${reviewCount} lekcji`);
 }
 
 runUpdate().catch(err => {

@@ -93,15 +93,15 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   }
 });
 
-// 5. Weryfikacja flag redakcyjnych (Stop Gate)
+// 5. Weryfikacja zatwierdzenia przez Właściciela (Zero nierozstrzygniętych kwestii doktrynalnych)
 assert(
-  editorialReviewCount === 2,
-  `Dokładnie 2 lekcje skierowano do weryfikacji redakcyjnej (Wykryto: ${editorialReviewCount})`
+  editorialReviewCount === 0,
+  `Wszystkie 28 lekcji posiada zatwierdzony status redakcyjny (needsEditorialReview: 0, wykryto: ${editorialReviewCount})`
 );
 
 assert(
-  editorialReviewLessons.includes(18) && editorialReviewLessons.includes(24),
-  `Lekcje podlegające weryfikacji redakcyjnej to Lekcja 18 (Dar Proroctwa) oraz Lekcja 24 (Niebiańska Świątynia)`
+  editorialReviewLessons.length === 0,
+  `Brak nierozstrzygniętych kwestii doktrynalnych po decyzjach Właściciela dla Lekcji 18 i 24`
 );
 
 console.log(`\n========================================`);

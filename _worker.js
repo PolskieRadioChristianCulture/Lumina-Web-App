@@ -50,6 +50,12 @@ export default {
       return env.ASSETS.fetch(new Request(ambientUrl, request));
     }
 
+    if (p === '/akademia') {
+      const kursyUrl = new URL(request.url);
+      kursyUrl.pathname = '/kursy';
+      return env.ASSETS.fetch(new Request(kursyUrl, request));
+    }
+
 
     // Studio API Endpoints
     if (url.pathname === '/api/bible/ubg/info') {
