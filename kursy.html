@@ -159,12 +159,36 @@
     }
 
     .cin-brand-name {
-      font-family: var(--font-display);
-      font-size: 14px;
+      font-family: var(--font-serif);
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #FFFFFF;
+      color: #f6e09e;
+      text-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+    }
+
+    .cin-btn-support {
+      background: linear-gradient(135deg, #f5c747 0%, #d89f21 100%);
+      color: #0b0e14;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      padding: 8px 18px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.28);
+      transition: var(--transition);
+      min-height: 38px;
+    }
+
+    .cin-btn-support:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(212, 175, 55, 0.45);
+      color: #000;
     }
 
     .cin-badge {
@@ -1235,27 +1259,28 @@
 
   <!-- ── CINEMATIC STICKY HEADER ── -->
   <header class="cin-header">
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-5">
       <a href="/kursy" class="cin-brand" title="LUMINA Bible Academy">
         <div class="cin-logo-mark">✦</div>
         <div>
-          <span class="cin-brand-name">LUMINA Academy</span>
+          <span class="cin-brand-name">LUMINA ACADEMY</span>
         </div>
-        <span class="cin-badge hidden sm:inline">CINEMATIC JOURNEY</span>
       </a>
-      <span class="text-zinc-600 hidden md:inline">/</span>
-      <nav class="hidden md:flex items-center gap-5 text-xs font-semibold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
-        <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 Etapów</a>
-        <a href="#katalog" class="hover:text-brand-gold transition-colors">28 Lekcji</a>
-        <a href="/lumina" class="hover:text-brand-gold transition-colors">Społeczność</a>
-        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">Biblia Online</a>
+      <span class="text-zinc-600 hidden lg:inline">/</span>
+      <nav class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
+        <a href="#hero-section" class="hover:text-brand-gold transition-colors">CINEMATIC JOURNEY</a>
+        <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
+        <a href="#katalog" class="hover:text-brand-gold transition-colors">28 LEKCJI</a>
+        <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
       </nav>
     </div>
 
     <!-- Universal CC Auth & Action -->
     <div class="flex items-center gap-3">
-      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-amber-300/80 hover:text-amber-200 border border-amber-500/20 px-3 py-1.5 rounded-full transition-colors min-h-[36px]">
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture">
         <span>Wspieraj Misję</span>
+        <span class="text-xs">♥</span>
       </a>
       <!-- CC Global Auth Connector Injection Point -->
       <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
@@ -1266,7 +1291,7 @@
   <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
 
     <!-- 1. CINEMATIC HERO SECTION (FULL WINDOW ARTWORK BACKGROUND) -->
-    <section class="cin-hero mb-12">
+    <section id="hero-section" class="cin-hero mb-12 scroll-mt-20">
       <div class="cin-hero-content">
         <div class="cin-journey-tag">
           <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>

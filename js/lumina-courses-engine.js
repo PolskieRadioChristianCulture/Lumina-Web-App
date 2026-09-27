@@ -997,7 +997,7 @@ class LuminaCoursesEngine {
 
       <!-- 3 KARTY FILAROWE (DOKŁADNIE ZE ZDJĘCIA 1: ODKRYJ, QUIZ, DZIENNIK) -->
       <div class="cin-pillars-grid">
-        <div class="cin-pillar-card">
+        <div class="cin-pillar-card cursor-pointer" data-open-tab="discover" role="button" tabindex="0" title="Otwórz Moduł Odkryj">
           <div class="cin-pillar-content">
             <div class="cin-pillar-title">Moduł Odkryj</div>
             <p class="cin-pillar-desc">Poznaj prawdę poprzez głębokie studium Słowa.</p>
@@ -1007,7 +1007,7 @@ class LuminaCoursesEngine {
           </div>
         </div>
 
-        <div class="cin-pillar-card">
+        <div class="cin-pillar-card cursor-pointer" data-open-tab="quiz" role="button" tabindex="0" title="Przejdź do Quizu">
           <div class="cin-pillar-content">
             <div class="cin-pillar-title">Quiz</div>
             <p class="cin-pillar-desc">Sprawdź zrozumienie i utrwal wiedzę.</p>
@@ -1017,10 +1017,10 @@ class LuminaCoursesEngine {
           </div>
         </div>
 
-        <div class="cin-pillar-card">
+        <div class="cin-pillar-card cursor-pointer" data-open-tab="journal" role="button" tabindex="0" title="Otwórz Dziennik Drogi">
           <div class="cin-pillar-content">
             <div class="cin-pillar-title">Dziennik</div>
-            <p class="cin-pillar-desc">Notuj myśli, modlitwy di co Bóg do Ciebie mówi.</p>
+            <p class="cin-pillar-desc">Notuj myśli, modlitwy i to co Bóg do Ciebie mówi.</p>
           </div>
           <div class="cin-pillar-thumb">
             <img src="/images/academy/card_dziennik_exact.jpg" alt="Dziennik" />
@@ -1035,6 +1035,13 @@ class LuminaCoursesEngine {
         this.openLesson(lesson.id);
       });
     }
+
+    this.dom.featureLessonContainer.querySelectorAll('.cin-pillar-card[data-open-tab]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const tab = card.getAttribute('data-open-tab');
+        this.openLesson(lesson.id, tab);
+      });
+    });
   }
 
   renderLessonsGrid() {
