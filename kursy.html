@@ -202,26 +202,39 @@
       font-weight: 700;
     }
 
-    /* ── CINEMATIC FULL WINDOW HERO ── */
+    /* ── CINEMATIC FULL WINDOW HERO (16:9 EDGE-TO-EDGE, NO BORDER) ── */
     .cin-hero {
       position: relative;
-      margin-top: 24px;
-      border-radius: var(--radius-xl);
+      width: 100%;
+      margin: 0;
+      border: none;
+      border-radius: 0;
       overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.35);
       background-color: #07090e;
       background-image: 
-        linear-gradient(90deg, #07090e 0%, rgba(7, 9, 14, 0.95) 38%, rgba(7, 9, 14, 0.72) 52%, rgba(7, 9, 14, 0.15) 68%, transparent 100%),
+        linear-gradient(90deg, #07090e 0%, rgba(7, 9, 14, 0.95) 36%, rgba(7, 9, 14, 0.70) 52%, rgba(7, 9, 14, 0.12) 68%, transparent 100%),
+        linear-gradient(180deg, transparent 75%, #07090e 100%),
         url('/images/academy_hero_main.png');
-      background-size: 140% auto;
+      background-size: cover;
       background-position: right top;
       background-repeat: no-repeat;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(212, 175, 55, 0.18);
-      padding: 56px 48px;
-      min-height: 480px;
+      box-shadow: none;
+      aspect-ratio: 16 / 9;
+      min-height: 520px;
+      max-height: 88vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding: 0;
+    }
+
+    .cin-hero-inner {
+      width: 100%;
+      max-width: 80rem; /* max-w-7xl */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
 
     .cin-hero-content {
@@ -1174,14 +1187,16 @@
     /* Responsive (Mobile 390px iPhone & Tablets) */
     @media (max-width: 860px) {
       .cin-hero {
-        padding: 36px 20px;
-        margin-top: 12px;
-        min-height: auto;
+        padding: 44px 0;
+        margin-top: 0;
+        min-height: 520px;
+        aspect-ratio: auto;
+        max-height: none;
         background-position: right top;
         background-size: cover;
         background-repeat: no-repeat;
         background-image: 
-          linear-gradient(180deg, rgba(7, 9, 14, 0.94) 0%, rgba(7, 9, 14, 0.88) 60%, rgba(7, 9, 14, 0.96) 100%),
+          linear-gradient(180deg, rgba(7, 9, 14, 0.94) 0%, rgba(7, 9, 14, 0.88) 60%, rgba(7, 9, 14, 0.98) 100%),
           url('/images/academy_hero_main.png');
       }
       .cin-stages-grid {
@@ -1287,11 +1302,9 @@
     </div>
   </header>
 
-  <!-- ── MAIN CONTENT CONTAINER ── -->
-  <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-
-    <!-- 1. CINEMATIC HERO SECTION (FULL WINDOW ARTWORK BACKGROUND) -->
-    <section id="hero-section" class="cin-hero mb-12 scroll-mt-20">
+  <!-- 1. CINEMATIC HERO SECTION (16:9 EDGE-TO-EDGE, BEZ RAMKI) -->
+  <section id="hero-section" class="cin-hero scroll-mt-20">
+    <div class="cin-hero-inner">
       <div class="cin-hero-content">
         <div class="cin-journey-tag">
           <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>
@@ -1336,7 +1349,11 @@
           * Dostęp bezpłatny. Nie wymaga natychmiastowego logowania do czytania i słuchania.
         </p>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <!-- ── MAIN CONTENT CONTAINER (DROGA 5 ETAPÓW, LEKCJE, KATALOG) ── -->
+  <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-8">
 
     <!-- 2. 5-STAGE JOURNEY ROAD -->
     <section id="stages-section" class="mb-14 scroll-mt-20">
