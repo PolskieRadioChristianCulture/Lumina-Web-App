@@ -855,6 +855,19 @@ class LuminaCoursesEngine {
     }
 
     const romanMap = { 'etap-1': 'I', 'etap-2': 'II', 'etap-3': 'III', 'etap-4': 'IV', 'etap-5': 'V', 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
+    const stageImages = {
+      'etap-1': '/images/stages/stage1.jpg',
+      'etap-2': '/images/stages/stage2.jpg',
+      'etap-3': '/images/stages/stage3.jpg',
+      'etap-4': '/images/stages/stage4.jpg',
+      'etap-5': '/images/stages/stage5.jpg',
+      1: '/images/stages/stage1.jpg',
+      2: '/images/stages/stage2.jpg',
+      3: '/images/stages/stage3.jpg',
+      4: '/images/stages/stage4.jpg',
+      5: '/images/stages/stage5.jpg'
+    };
+
     const nextId = this.getNextRecommendedLessonId();
     let html = '';
 
@@ -862,6 +875,7 @@ class LuminaCoursesEngine {
       const roman = stage.roman || romanMap[stage.id] || romanMap[stage.order] || 'I';
       const stageOrder = stage.order || (idx + 1);
       const stageOrderPadded = stageOrder < 10 ? `0${stageOrder}` : `${stageOrder}`;
+      const bgImg = stageImages[stage.id] || stageImages[stageOrder] || `/images/stages/stage${stageOrder}.jpg`;
 
       // Calculate lessons in this stage
       const stageLessons = this.lessons.filter((l) => l.stageId === stage.id || l.stage === stage.id);
@@ -902,13 +916,15 @@ class LuminaCoursesEngine {
       const rangeText = `Lekcje ${minId}–${maxId}`;
 
       html += `
-        <div class="cin-stage-card ${isActiveFilter ? 'active' : ''} ${isCompleted ? 'completed' : ''}" data-stage-filter="${stage.id}" tabindex="0" role="tab" aria-selected="${isActiveFilter}">
-          <span class="cin-stage-num">${stageOrderPadded} / 05</span>
-          <div>
+        <div class="cin-stage-card ${isActiveFilter ? 'active' : ''} ${isCompleted ? 'completed' : ''}" style="background-image: url('${bgImg}')" data-stage-filter="${stage.id}" tabindex="0" role="tab" aria-selected="${isActiveFilter}">
+          <div class="cin-stage-card-top">
+            <span class="cin-stage-num">${stageOrderPadded} / 05</span>
+          </div>
+          <div class="cin-stage-card-bottom">
             <div class="cin-stage-name">${stage.title_pl.toUpperCase()}</div>
             <div class="cin-stage-meta">${rangeText}</div>
+            ${statusHtml}
           </div>
-          ${statusHtml}
         </div>
       `;
     });
@@ -939,29 +955,72 @@ class LuminaCoursesEngine {
     const lesson = this.lessons.find((l) => l.id === nextId) || this.lessons[0];
     const stage = this.getStageForLesson(lesson);
     const keyVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
-    const imageSrc = lesson.image || `/images/lessons/${lesson.id}.svg`;
     const estMinutes = lesson.estimatedMinutes || 15;
+    const stageOrder = stage ? (stage.order || 1) : 1;
+    const stageImg = `/images/stages/stage${stageOrder}.jpg`;
+
+    // Inspirujący editorial lead (pytanie, a nie szablon)
+    let editorialLead = lesson.introduction?.pl || '';
+    if (lesson.id === 1) {
+      editorialLead = 'Czy Biblia może być pewnym fundamentem wiary? Odkryj, co Pismo mówi o swoim pochodzeniu, autorytecie i roli Słowa Bożego w życiu człowieka.';
+    }
 
     this.dom.featureLessonContainer.innerHTML = `
       <div class="cin-feature-lesson">
-        <div class="cin-feature-artwork">
-          <img src="${imageSrc.startsWith('/') ? imageSrc : '/' + imageSrc}" alt="Lekcja ${lesson.id}" onerror="this.src='/images/lessons/01.svg'" />
-        </div>
-        <div>
-          <div class="cin-feature-tag">Krok ${lesson.id} z 28 • Etap ${stage ? stage.roman : 'I'}: ${stage ? stage.title_pl : ''}</div>
+        <div class="cin-feature-left">
+          <div class="cin-feature-tag">Krok ${lesson.id} z 28 • Etap ${stage ? stage.roman : 'I'}: ${stage ? stage.title_pl.toUpperCase() : ''}</div>
           <h3 class="cin-feature-title">Lekcja ${lesson.id}: ${lesson.title.pl}</h3>
-          <p class="cin-feature-excerpt">${lesson.introduction.pl}</p>
+          <p class="cin-feature-excerpt">${editorialLead}</p>
+          
+          <div class="cin-feature-actions-row">
+            <button type="button" class="cin-btn-primary feature-lesson-open-btn min-h-[48px]" data-lesson-id="${lesson.id}">
+              <span>STUDIUJ TERAZ</span>
+              <span>→</span>
+            </button>
+            <button type="button" id="btn-spotlight-tts" class="cin-btn-tts-deck" data-lesson-id="${lesson.id}">
+              <span>▶</span>
+              <span>POSŁUCHAJ LEKCJI · ok. ${estMinutes} min</span>
+            </button>
+          </div>
+
           <div class="cin-feature-meta">
-            <span>⏱ ok. ${estMinutes} minut</span>
             <span>📖 ${keyVerse}</span>
-            <span>💡 Moduł Odkryj + Quiz + Dziennik</span>
+            <span>•</span>
+            <span>⏱ ok. ${estMinutes} minut</span>
+            <span>•</span>
+            <span>3 Filarowe Moduły: Odkryj, Sprawdź się, Dziennik</span>
           </div>
         </div>
-        <div>
-          <button type="button" class="cin-btn-primary feature-lesson-open-btn min-h-[48px]" data-lesson-id="${lesson.id}">
-            <span>STUDIUJ TERAZ</span>
-            <span>→</span>
-          </button>
+
+        <div class="cin-feature-artwork-visual">
+          <img src="${stageImg}" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg'" />
+        </div>
+      </div>
+
+      <!-- 3 SZLACHETNE KARTY FILAROWE (ODKRYJ, SPRAWDŹ SIĘ, MÓJ DZIENNIK) -->
+      <div class="cin-pillars-grid">
+        <div class="cin-pillar-card">
+          <div class="cin-pillar-header">
+            <div class="cin-pillar-icon">✦</div>
+            <div class="cin-pillar-title">ODKRYJ</div>
+          </div>
+          <p class="cin-pillar-desc">Poznaj prawdę poprzez głębokie studium Słowa. Odkryj wersety źródłowe i kontekst biblijny.</p>
+        </div>
+
+        <div class="cin-pillar-card">
+          <div class="cin-pillar-header">
+            <div class="cin-pillar-icon">🛡️</div>
+            <div class="cin-pillar-title">SPRAWDŹ SIĘ</div>
+          </div>
+          <p class="cin-pillar-desc">Sprawdź zrozumienie i utrwal wiedzę. Formacyjny quiz wzmacniający pewność wiary.</p>
+        </div>
+
+        <div class="cin-pillar-card">
+          <div class="cin-pillar-header">
+            <div class="cin-pillar-icon">✒️</div>
+            <div class="cin-pillar-title">MÓJ DZIENNIK</div>
+          </div>
+          <p class="cin-pillar-desc">Notuj myśli, modlitwy i to, co Bóg do Ciebie mówi. Prywatny zapis Twojej drogi wiary.</p>
         </div>
       </div>
     `;
@@ -970,6 +1029,23 @@ class LuminaCoursesEngine {
     if (openBtn) {
       openBtn.addEventListener('click', () => {
         this.openLesson(lesson.id);
+      });
+    }
+
+    const ttsBtn = document.getElementById('btn-spotlight-tts');
+    if (ttsBtn) {
+      ttsBtn.addEventListener('click', () => {
+        if (this.ttsState === 'playing') {
+          this.stopTTS();
+          ttsBtn.classList.remove('is-playing');
+          ttsBtn.innerHTML = `<span>▶</span> <span>POSŁUCHAJ LEKCJI · ok. ${estMinutes} min</span>`;
+        } else {
+          const scriptureText = lesson.scripture?.verses ? lesson.scripture.verses.map((v) => `${v.ref}: ${v.text}`).join('. ') : '';
+          const fullText = `${lesson.title.pl}. ${editorialLead}. ${scriptureText}. ${lesson.text?.pl || ''}`;
+          this.speakLesson(fullText);
+          ttsBtn.classList.add('is-playing');
+          ttsBtn.innerHTML = `<span>❚❚</span> <span>ZATRZYMAJ LEKTORA</span>`;
+        }
       });
     }
   }
@@ -1079,11 +1155,7 @@ class LuminaCoursesEngine {
     const percent = Math.min(100, Math.round((completedCount / 28) * 100));
 
     if (this.dom.heroStatsBadge) {
-      if (completedCount > 0) {
-        this.dom.heroStatsBadge.textContent = `${completedCount} / 28 LEKCJI (${percent}%) • ETAP DROGI`;
-      } else {
-        this.dom.heroStatsBadge.textContent = '28 Lekcji • 5 Etapów Drogi';
-      }
+      this.dom.heroStatsBadge.textContent = `${completedCount} / 28 LEKCJI (${percent}%)`;
     }
 
     if (this.dom.heroProgressBarFill) {
@@ -1092,7 +1164,6 @@ class LuminaCoursesEngine {
 
     if (this.dom.heroActionBtn) {
       const nextId = this.getNextRecommendedLessonId();
-      const nextLesson = this.lessons.find((l) => l.id === nextId) || this.lessons[0];
 
       if (completedCount >= 28) {
         this.dom.heroActionBtn.innerHTML = `
@@ -1101,12 +1172,12 @@ class LuminaCoursesEngine {
         `;
       } else if (completedCount > 0) {
         this.dom.heroActionBtn.innerHTML = `
-          <span>Kontynuuj Naukę (Krok ${nextId}: ${nextLesson.title.pl})</span>
+          <span>KONTYNUUJ — LEKCJA ${nextId}</span>
           <span class="ml-2">→</span>
         `;
       } else {
         this.dom.heroActionBtn.innerHTML = `
-          <span>Rozpocznij Bezpłatnie (Krok 1)</span>
+          <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
           <span class="ml-2">→</span>
         `;
       }

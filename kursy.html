@@ -178,44 +178,31 @@
       font-weight: 700;
     }
 
-    /* ── CINEMATIC HERO ── */
+    /* ── CINEMATIC HERO SPLIT LAYOUT ── */
     .cin-hero {
       position: relative;
       margin-top: 24px;
       border-radius: var(--radius-xl);
       overflow: hidden;
-      min-height: 500px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 48px;
       border: 1px solid var(--border-subtle);
-      background: #0d121c;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+      background: linear-gradient(135deg, #0a0d14 0%, #0e121a 50%, #080a0f 100%);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+      padding: 40px 48px;
     }
 
-    .cin-hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle at 75% 25%, rgba(35, 55, 90, 0.5), transparent 70%),
-                        linear-gradient(to top, rgba(7, 9, 14, 0.98) 15%, rgba(7, 9, 14, 0.55) 60%, rgba(7, 9, 14, 0.25) 100%),
-                        url('/lumina_hero_clean.jpg');
-      background-size: cover;
-      background-position: center 30%;
-      opacity: 0.9;
-      z-index: 1;
-      transform: scale(1.02);
-      transition: transform 6s ease-out;
-    }
-
-    .cin-hero:hover .cin-hero-bg {
-      transform: scale(1.04);
-    }
-
-    .cin-hero-content {
+    .cin-hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
       position: relative;
       z-index: 2;
-      max-width: 720px;
+    }
+
+    .cin-hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .cin-journey-tag {
@@ -227,30 +214,80 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent-warm);
-      margin-bottom: 14px;
-      background: rgba(0, 0, 0, 0.55);
+      margin-bottom: 16px;
+      background: rgba(14, 18, 26, 0.8);
       backdrop-filter: blur(8px);
       padding: 6px 14px;
       border-radius: 99px;
-      border: 1px solid rgba(212, 175, 55, 0.28);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      width: fit-content;
     }
 
     .cin-hero-title {
       font-family: var(--font-serif);
-      font-size: clamp(32px, 5vw, 52px);
-      line-height: 1.15;
+      font-size: clamp(32px, 4.5vw, 50px);
+      line-height: 1.12;
       font-weight: 700;
       margin-bottom: 12px;
       letter-spacing: -0.01em;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
+      color: #FFFFFF;
     }
 
     .cin-hero-subtitle {
-      font-size: clamp(14px, 1.8vw, 16px);
-      color: #c9d2e3;
+      font-size: clamp(14px, 1.6vw, 15px);
+      color: #9ba3b4;
       margin-bottom: 24px;
-      line-height: 1.6;
-      max-width: 620px;
+      line-height: 1.65;
+      max-width: 580px;
+    }
+
+    /* Emocjonalny obraz pielgrzymów (hero right visual) */
+    .cin-hero-visual {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      aspect-ratio: 16 / 10;
+      max-height: 380px;
+      background: #090c12;
+    }
+
+    .cin-hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 6s ease-out;
+    }
+
+    .cin-hero:hover .cin-hero-visual img {
+      transform: scale(1.04);
+    }
+
+    .cin-hero-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0.1) 0%, rgba(7, 9, 14, 0.4) 60%, rgba(7, 9, 14, 0.85) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .cin-hero-visual-caption {
+      font-size: 11px;
+      color: #e2e8f0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     /* Central Progress Indicator */
@@ -258,13 +295,13 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 28px;
-      background: rgba(14, 18, 26, 0.75);
+      margin-bottom: 24px;
+      background: rgba(14, 18, 26, 0.85);
       backdrop-filter: blur(12px);
-      padding: 16px 22px;
+      padding: 14px 20px;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-subtle);
-      max-width: 540px;
+      max-width: 520px;
     }
 
     .cin-progress-header {
@@ -276,7 +313,7 @@
 
     .cin-progress-title {
       font-weight: 600;
-      color: var(--text-main);
+      color: #c9d2e3;
     }
 
     .cin-progress-stat {
@@ -287,7 +324,7 @@
 
     .cin-bar-track {
       width: 100%;
-      height: 7px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 99px;
       overflow: hidden;
@@ -299,7 +336,7 @@
       width: 0%;
       background: linear-gradient(90deg, #d4af37, #f3e5ab);
       border-radius: 99px;
-      box-shadow: 0 0 14px rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.45);
       transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -318,14 +355,14 @@
       font-size: 13px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 15px 30px;
+      padding: 14px 28px;
       border-radius: 99px;
       border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 8px 28px rgba(212, 175, 55, 0.35);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.3);
       transition: var(--transition);
       text-decoration: none;
       min-height: var(--touch-target);
@@ -333,19 +370,19 @@
 
     .cin-btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(212, 175, 55, 0.5);
+      box-shadow: 0 10px 32px rgba(212, 175, 55, 0.45);
       color: #000;
     }
 
     .cin-btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(8px);
-      color: var(--text-main);
+      color: #e2e8f0;
       font-weight: 600;
       font-size: 13px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 15px 24px;
+      padding: 14px 22px;
       border-radius: 99px;
       border: 1px solid var(--border-subtle);
       cursor: pointer;
@@ -358,7 +395,7 @@
     }
 
     .cin-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
       border-color: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
@@ -367,64 +404,99 @@
     .cin-stages-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
 
     .cin-stage-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      position: relative;
       border-radius: var(--radius-md);
-      padding: 18px 16px;
+      overflow: hidden;
+      min-height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 140px;
-      position: relative;
+      padding: 18px 16px;
       cursor: pointer;
       transition: var(--transition);
       text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .cin-stage-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0.2) 0%, rgba(7, 9, 14, 0.65) 50%, rgba(7, 9, 14, 0.96) 100%);
+      transition: background 0.3s ease;
+      z-index: 1;
     }
 
     .cin-stage-card:hover {
-      border-color: rgba(255, 255, 255, 0.22);
-      transform: translateY(-2px);
-      background: var(--bg-surface-elevated);
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+    }
+
+    .cin-stage-card:hover::before {
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0.1) 0%, rgba(7, 9, 14, 0.55) 45%, rgba(7, 9, 14, 0.94) 100%);
     }
 
     .cin-stage-card.active {
-      background: linear-gradient(180deg, rgba(22, 27, 38, 0.95) 0%, rgba(14, 18, 26, 0.98) 100%);
-      border-color: rgba(212, 175, 55, 0.55);
-      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(212, 175, 55, 0.35);
+      border: 1.5px solid var(--accent-warm);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 24px rgba(212, 175, 55, 0.35);
     }
 
     .cin-stage-card.completed {
-      border-color: rgba(78, 205, 196, 0.3);
+      border-color: rgba(78, 205, 196, 0.45);
+    }
+
+    .cin-stage-card-top {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .cin-stage-num {
       font-family: var(--font-display);
       font-size: 11px;
-      color: var(--text-faint);
+      color: #FFFFFF;
       letter-spacing: 0.1em;
       font-weight: 700;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      padding: 3px 10px;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .cin-stage-card.active .cin-stage-num {
       color: var(--accent-warm);
+      border-color: rgba(212, 175, 55, 0.4);
+    }
+
+    .cin-stage-card-bottom {
+      position: relative;
+      z-index: 2;
     }
 
     .cin-stage-name {
       font-size: 13px;
       font-weight: 700;
-      margin-top: 6px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
       color: #FFFFFF;
+      line-height: 1.3;
+      text-transform: uppercase;
     }
 
     .cin-stage-meta {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
+      color: #9ba3b4;
+      margin-top: 3px;
     }
 
     .cin-stage-status {
@@ -432,7 +504,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding-top: 10px;
+      padding-top: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -447,20 +519,20 @@
     }
 
     .cin-stage-status.pending {
-      color: var(--text-faint);
+      color: #64748b;
     }
 
-    /* ── CURRENT HERO LESSON (FEATURE CHAPTER CARD) ── */
+    /* ── CURRENT HERO LESSON (SPOTLIGHT FEATURE CHAPTER) ── */
     .cin-feature-lesson {
-      background: linear-gradient(135deg, rgba(22, 27, 38, 0.85) 0%, rgba(14, 18, 26, 0.95) 100%);
-      border: 1px solid var(--border-focus);
+      background: linear-gradient(135deg, #0e121a 0%, #141924 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 36px 40px;
       display: grid;
-      grid-template-columns: 140px 1fr auto;
-      gap: 28px;
+      grid-template-columns: 1fr 340px;
+      gap: 36px;
       align-items: center;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
       position: relative;
       overflow: hidden;
     }
@@ -475,24 +547,9 @@
       background: var(--accent-warm);
     }
 
-    .cin-feature-artwork {
-      width: 140px;
-      height: 140px;
-      border-radius: var(--radius-md);
-      background: #10141f;
-      border: 1px solid var(--border-subtle);
+    .cin-feature-left {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 16px;
-    }
-
-    .cin-feature-artwork img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+      flex-direction: column;
     }
 
     .cin-feature-tag {
@@ -501,24 +558,62 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent-warm);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .cin-feature-title {
       font-family: var(--font-serif);
-      font-size: clamp(20px, 2.5vw, 26px);
+      font-size: clamp(24px, 3vw, 32px);
       font-weight: 700;
       color: #FFFFFF;
-      margin-bottom: 8px;
-      line-height: 1.25;
+      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .cin-feature-excerpt {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.55;
-      max-width: 620px;
-      margin-bottom: 14px;
+      font-size: 14px;
+      color: #c9d2e3;
+      line-height: 1.65;
+      max-width: 640px;
+      margin-bottom: 20px;
+    }
+
+    .cin-feature-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .cin-btn-tts-deck {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f0f3f8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 44px;
+    }
+
+    .cin-btn-tts-deck:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .cin-btn-tts-deck.is-playing {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--accent-warm);
+      color: var(--accent-warm);
     }
 
     .cin-feature-meta {
@@ -526,8 +621,84 @@
       align-items: center;
       gap: 16px;
       font-size: 12px;
-      color: var(--text-faint);
+      color: #94a3b8;
       flex-wrap: wrap;
+    }
+
+    .cin-feature-artwork-visual {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+      aspect-ratio: 16 / 10;
+      background: #090c12;
+    }
+
+    .cin-feature-artwork-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* ── 3 SZLACHETNE KARTY FILAROWE (ODKRYJ, SPRAWDŹ SIĘ, MÓJ DZIENNIK) ── */
+    .cin-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .cin-pillar-card {
+      background: #0e121a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .cin-pillar-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: #131824;
+      transform: translateY(-2px);
+    }
+
+    .cin-pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cin-pillar-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+
+    .cin-pillar-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+
+    .cin-pillar-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.55;
     }
 
     /* ── CHAPTER LIST: LESSONS AS STORY CHAPTERS ── */
@@ -1070,22 +1241,33 @@
     /* Responsive (Mobile 390px iPhone & Tablets) */
     @media (max-width: 860px) {
       .cin-hero {
-        padding: 24px 20px;
-        min-height: 440px;
+        padding: 28px 20px;
         margin-top: 12px;
+      }
+      .cin-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .cin-hero-visual {
+        max-height: 260px;
+        order: -1;
       }
       .cin-stages-grid {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 12px;
       }
       .cin-feature-lesson {
         grid-template-columns: 1fr;
-        padding: 22px 18px;
+        padding: 24px 20px;
         gap: 20px;
       }
-      .cin-feature-artwork {
-        width: 100%;
-        height: 120px;
+      .cin-feature-artwork-visual {
+        max-height: 200px;
+        order: -1;
+      }
+      .cin-pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
       .cin-audio-deck {
         flex-direction: column;
@@ -1175,52 +1357,62 @@
   <!-- ── MAIN CONTENT CONTAINER ── -->
   <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
 
-    <!-- 1. CINEMATIC HERO SECTION -->
+    <!-- 1. CINEMATIC HERO SECTION (SPLIT JOURNEY) -->
     <section class="cin-hero mb-12">
-      <div class="cin-hero-bg"></div>
-      <div class="cin-hero-content">
-        <div class="cin-journey-tag">
-          <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>
-        </div>
-
-        <h1 class="cin-hero-title">
-          <span class="block text-white">LUMINA BIBLE ACADEMY</span>
-        </h1>
-
-        <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-4">
-          28 kroków. Jedna Biblia. Droga z Jezusem.
-        </p>
-
-        <p class="cin-hero-subtitle">
-          Jedna spójna opowieść o Bożej miłości, odkupieniu człowieka i nadziei, która nie zawodzi. Odkrywaj Pismo Święte krok po kroku — czytaj, słuchaj lektora audio, badaj Słowo i wzrastaj w wierze.
-        </p>
-
-        <!-- Central Progress Indicator -->
-        <div class="cin-progress-bar-wrap" id="cin-progress-box">
-          <div class="cin-progress-header">
-            <span class="cin-progress-title">Twój postęp w drodze pielgrzyma</span>
-            <span id="hero-stats-badge" class="cin-progress-stat">0 / 28 LEKCJI (0%)</span>
+      <div class="cin-hero-grid">
+        <div class="cin-hero-left">
+          <div class="cin-journey-tag">
+            <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>
           </div>
-          <div class="cin-bar-track">
-            <div id="hero-progress-bar-fill" class="cin-bar-fill" style="width: 0%;"></div>
+
+          <h1 class="cin-hero-title">
+            <span class="block">LUMINA BIBLE ACADEMY</span>
+          </h1>
+
+          <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
+            28 kroków. Jedna Biblia. Droga z Jezusem.
+          </p>
+
+          <p class="cin-hero-subtitle">
+            Jedna spójna opowieść o Bożej miłości, odkupieniu człowieka i nadziei, która nie zawodzi. Odkrywaj Pismo Święte krok po kroku — czytaj, słuchaj lektora audio, badaj Słowo i wzrastaj w wierze.
+          </p>
+
+          <!-- Central Progress Indicator -->
+          <div class="cin-progress-bar-wrap" id="cin-progress-box">
+            <div class="cin-progress-header">
+              <span class="cin-progress-title">Twój postęp w drodze pielgrzyma</span>
+              <span id="hero-stats-badge" class="cin-progress-stat">0 / 28 LEKCJI (0%)</span>
+            </div>
+            <div class="cin-bar-track">
+              <div id="hero-progress-bar-fill" class="cin-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Hero Actions -->
+          <div class="cin-hero-actions">
+            <button type="button" id="hero-action-btn" class="cin-btn-primary min-h-[48px]">
+              <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
+              <span>→</span>
+            </button>
+            
+            <a href="#stages-section" class="cin-btn-secondary min-h-[48px]">
+              <span>Przeglądaj 5 Etapów</span>
+            </a>
+          </div>
+
+          <p class="text-xs text-zinc-500 mt-4">
+            * Dostęp bezpłatny. Nie wymaga natychmiastowego logowania do czytania i słuchania.
+          </p>
+        </div>
+
+        <div class="cin-hero-visual">
+          <img src="/images/academy_hero_journey.jpg" alt="Pielgrzymi Słowa w podróży biblijnej" loading="eager" />
+          <div class="cin-hero-visual-overlay">
+            <span class="cin-hero-visual-caption">
+              <span>✦</span> <span>Pielgrzymi Słowa • Podróż przez 28 Prawd</span>
+            </span>
           </div>
         </div>
-
-        <!-- Hero Actions -->
-        <div class="cin-hero-actions">
-          <button type="button" id="hero-action-btn" class="cin-btn-primary min-h-[48px]">
-            <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
-            <span>→</span>
-          </button>
-          
-          <a href="#stages-section" class="cin-btn-secondary min-h-[48px]">
-            <span>Przeglądaj 5 Etapów</span>
-          </a>
-        </div>
-
-        <p class="text-xs text-zinc-500 mt-4">
-          * Dostęp bezpłatny. Nie wymaga natychmiastowego logowania do czytania i słuchania.
-        </p>
       </div>
     </section>
 
