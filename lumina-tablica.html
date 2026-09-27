@@ -8484,6 +8484,23 @@
 
                 const zSeedPosts = [
                     {
+                        id: 'post_zg_btd',
+                        type: 'post',
+                        author: 'Zbyszek Gieroń',
+                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
+                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
+                        authorSlug: 'zbyszekgieron',
+                        time: 'Dzisiaj • 📖 Biblijny Tekst Dnia',
+                        title: '📖 Biblijny Tekst Dnia • Codzienna analiza wersetów',
+                        text: 'Link jest zawsze aktywny prowadzi do wcześniejszych analiz i aktualnej - zgodnej z kalendarzem.\nZapraszam do codziennego rozważania Słowa Bożego! 🕊️✨',
+                        image: 'tlo-biblia.png',
+                        externalUrl: 'https://claude.ai/share/bdbc52b0-b463-43a2-afd9-a6a7307f00f7',
+                        externalUrlLabel: 'Otwórz Analizę w Claude AI',
+                        likes: 42,
+                        amen: 56,
+                        _sortTs: Date.now()
+                    },
+                    {
                         id: 'post_zg_1',
                         type: 'post',
                         author: 'Zbyszek Gieroń',
@@ -10064,6 +10081,14 @@
                         <div class="campaign-cta-row">
                             <a href="${item.btnUrl || 'https://polskieradio.cc'}" target="_blank" class="btn-campaign-cta ${btnClass}">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> ${item.btnText || 'Zobacz Szczegóły'}
+                            </a>
+                        </div>
+                    `;
+                } else if (item.externalUrl) {
+                    ctaHtml = `
+                        <div style="margin: 14px 0 6px;">
+                            <a href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:800; font-size:0.9rem; padding:10px 18px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(245,158,11,0.35); transition:all 0.2s ease;">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(item.externalUrlLabel || 'Otwórz Analizę w Claude AI')}
                             </a>
                         </div>
                     `;

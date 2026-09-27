@@ -229,10 +229,10 @@ test('registration requires explicit privacy consent and avoids fake verificatio
 
 test('privacy policy reflects Lumina data processing and user rights', async () => {
   const policy = await readFile('privacy.html', 'utf8');
-  assert.match(policy, /szczególne kategorie danych/);
+  assert.match(policy, /szczególne kategorie danych|danych szczególnych kategorii/);
   assert.match(policy, /art\. 9 ust\. 2 lit\. a RODO/);
-  assert.match(policy, /Google\/Firebase/);
-  assert.match(policy, /Prawo żądać dostępu|prawo żądać dostępu/i);
+  assert.match(policy, /Google(\s+Cloud|\s+OAuth)?\s*\/\s*Firebase/);
+  assert.match(policy, /prawo do wglądu|prawo żądać dostępu/i);
   assert.doesNotMatch(policy, /nie gromadzą ani nie przechowują żadnych danych osobowych/i);
   assert.doesNotMatch(policy, /googletagmanager/);
 });

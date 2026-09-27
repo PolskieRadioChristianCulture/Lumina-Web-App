@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CC Content Registry — Mission Control CC Global 2030</title>
+    <meta name="description" content="Centralny Kanoniczny Rejestr Treści Christian Culture (CC Content Core). Jedna treść, jeden CC Content ID, wiele dystrybucji.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/lumina_icon.jpg" type="image/jpeg">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'cc-gold': '#C4A35A',
+                        'cc-gold-light': '#F3E5AB',
+                        'cc-gold-dark': '#9A7D3A',
+                        'obsidian': '#06070B',
+                        'obsidian-card': '#0E111A',
+                        'obsidian-border': '#1A2030'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Universal CC Auth Connector -->
+    <script src="/js/cc-global-auth.js" defer></script>
+
+    <style>
+        body {
+            background-color: #06070B;
+            color: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F3E5AB 0%, #C4A35A 60%, #9A7D3A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border {
+            border: 1px solid rgba(196, 163, 90, 0.25);
+        }
+        .gold-border-focus:focus {
+            border-color: #C4A35A;
+            box-shadow: 0 0 15px rgba(196, 163, 90, 0.25);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #06070B;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1A2030;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #C4A35A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-obsidian text-slate-100">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-obsidian-border bg-obsidian/95 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-2 text-white hover:opacity-80 transition">
+                    <img src="/lumina_icon.jpg" alt="CC Emblem" class="w-8 h-8 rounded-full border border-cc-gold">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-cc-gold">Mission Control</div>
+                        <div class="text-sm font-extrabold tracking-tight">CC CONTENT CORE</div>
+                    </div>
+                </a>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cc-gold/10 text-cc-gold border border-cc-gold/30">SCHEMA v1</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">FAZY 1-3 LIVE</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30"><i class="fa-solid fa-chart-line mr-1"></i>FAZA 4: GLOBAL OBSERVER</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30"><i class="fa-solid fa-sun mr-1"></i>FAZA 6A: FOLLOW THE SUN</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button type="button" id="btnOpenFollowTheSunDashboard" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-400 font-bold text-xs hover:bg-amber-500/25 active:scale-95 transition">
+                    <i class="fa-solid fa-sun text-[11px]"></i>
+                    <span>Follow the Sun</span>
+                </button>
+                <button type="button" id="btnOpenObserverDashboard" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-xs hover:bg-emerald-500/25 active:scale-95 transition">
+                    <i class="fa-solid fa-chart-line text-[11px]"></i>
+                    <span>Global Observer</span>
+                </button>
+                <button type="button" id="btnOpenNewContent" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cc-gold to-cc-gold-dark text-black font-bold text-xs shadow-lg shadow-cc-gold/20 hover:brightness-110 active:scale-95 transition">
+                    <i class="fa-solid fa-plus text-[11px]"></i>
+                    <span>Nowa Treść</span>
+                </button>
+                <div class="cc-auth-widget-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub-header Breadcrumb & Spine Doctrine -->
+    <div class="bg-obsidian-card/60 border-b border-obsidian-border px-4 lg:px-8 py-2.5">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2 text-slate-400">
+                <i class="fa-solid fa-network-wired text-cc-gold text-[11px]"></i>
+                <span class="font-mono text-slate-300">MASTER PLAN CC GLOBAL 2030</span>
+                <span>•</span>
+                <span class="text-slate-400">Jedna Treść → Jeden CC CONTENT ID → Wiele Dystrybucji</span>
+            </div>
+            <div class="font-mono text-[11px] text-slate-500">
+                Kolekcja źródłowa: <span class="text-cc-gold">cc_content</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 lg:px-8 py-6">
+        
+        <!-- Search & Filter Controls -->
+        <div class="bg-obsidian-card p-4 rounded-2xl gold-border mb-6 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+            <div class="flex-1 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                <input type="text" id="searchInput" placeholder="Szukaj po Content ID (np. CC-2026-000001), tytule, autorze, serii..." class="w-full pl-9 pr-4 py-2 bg-obsidian rounded-xl border border-obsidian-border text-xs text-white placeholder-slate-500 gold-border-focus focus:outline-none transition">
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+                <select id="filterType" class="bg-obsidian border border-obsidian-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none gold-border-focus">
+                    <option value="">Wszystkie typy</option>
+                    <option value="DEVOTIONAL">Rozważania (DEVOTIONAL)</option>
+                    <option value="ARTICLE">Artykuły (ARTICLE)</option>
+                    <option value="AUDIO">Audio / Słuchowiska</option>
+                    <option value="VIDEO_LONG">Wideo długie</option>
+                    <option value="VIDEO_SHORT">Wideo krótkie / Shorts</option>
+                    <option value="WORSHIP">Worship / Muzyka</option>
+                    <option value="PRAYER">Modlitwa</option>
+                </select>
+
+                <select id="filterStatus" class="bg-obsidian border border-obsidian-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none gold-border-focus">
+                    <option value="">Wszystkie statusy</option>
+                    <option value="PUBLISHED">Opublikowane (PUBLISHED)</option>
+                    <option value="VERIFIED">Zweryfikowane (VERIFIED)</option>
+                    <option value="DRAFT">Szkice (DRAFT)</option>
+                    <option value="REVIEW_REQUIRED">Do weryfikacji</option>
+                    <option value="ARCHIVED">Zarchiwizowane</option>
+                </select>
+
+                <select id="filterLanguage" class="bg-obsidian border border-obsidian-border rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none gold-border-focus">
+                    <option value="">Język źródłowy</option>
+                    <option value="pl">Polski (PL)</option>
+                    <option value="en">English (EN)</option>
+                    <option value="es">Español (ES)</option>
+                    <option value="pt">Português (PT)</option>
+                </select>
+
+                <button type="button" id="btnRefreshList" class="p-2 px-3 bg-obsidian border border-obsidian-border rounded-xl text-xs text-slate-400 hover:text-cc-gold hover:border-cc-gold/40 transition" title="Odśwież rejestr">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Registry Table View -->
+        <div class="bg-obsidian-card rounded-2xl gold-border overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-obsidian/80 border-b border-obsidian-border text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                            <th class="py-3 px-4">Content ID</th>
+                            <th class="py-3 px-4">Tytuł & Seria</th>
+                            <th class="py-3 px-4">Typ</th>
+                            <th class="py-3 px-4">Język</th>
+                            <th class="py-3 px-4">Prawa</th>
+                            <th class="py-3 px-4">Status</th>
+                            <th class="py-3 px-4 text-center">Warianty</th>
+                            <th class="py-3 px-4 text-center">Publikacje</th>
+                            <th class="py-3 px-4">Data utworzenia</th>
+                            <th class="py-3 px-4 text-right">Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registryTableBody" class="divide-y divide-obsidian-border">
+                        <tr>
+                            <td colspan="10" class="py-12 text-center text-slate-500">
+                                <i class="fa-solid fa-circle-notch fa-spin text-cc-gold text-lg mb-2"></i>
+                                <div>Ładowanie rejestru CC Content Core...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Bar (Cost Guard) -->
+            <div class="p-3.5 bg-obsidian/90 border-t border-obsidian-border flex items-center justify-between text-xs text-slate-400">
+                <div id="paginationSummary">Wyświetlanie elementów...</div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="btnPrevPage" class="px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:border-cc-gold/50 transition">
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i> Poprzednia
+                    </button>
+                    <button type="button" id="btnNextPage" class="px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:border-cc-gold/50 transition">
+                        Następna <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Content Detail (Overview, Master, Variants, Assets, Publications, Rights, Bible, Audit) -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-3 lg:p-6 overflow-y-auto">
+        <div class="bg-obsidian-card w-full max-w-4xl rounded-2xl gold-border shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="p-4 border-b border-obsidian-border flex items-center justify-between bg-obsidian">
+                <div class="flex items-center gap-3">
+                    <span id="detailBadgeId" class="font-mono text-xs px-2.5 py-1 rounded bg-cc-gold/15 text-cc-gold border border-cc-gold/40 font-bold">CC-2026-000001</span>
+                    <h2 id="detailTitle" class="text-sm font-bold truncate max-w-lg">Szczegóły Treści</h2>
+                </div>
+                <button type="button" id="btnCloseDetailModal" class="p-2 text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Tabs Nav -->
+            <div class="flex items-center gap-1 border-b border-obsidian-border bg-obsidian/40 px-4 pt-2 text-xs overflow-x-auto custom-scrollbar">
+                <button class="tab-btn py-2 px-3 border-b-2 border-cc-gold text-cc-gold font-semibold" data-tab="tabOverview">Przegląd</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabVariants">Warianty (<span id="countVariants">0</span>)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAiFactory"><i class="fa-solid fa-wand-magic-sparkles mr-1 text-cc-gold"></i> AI Factory (<span id="countAiVariants">0</span>)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabDistribution"><i class="fa-solid fa-satellite-dish mr-1 text-blue-400"></i> Dystrybucja Globalna</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabObserver"><i class="fa-solid fa-chart-line mr-1 text-emerald-400"></i> Global Observer & Pulse</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabFollowTheSun"><i class="fa-solid fa-sun mr-1 text-amber-400"></i> Follow the Sun (Shadow)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAssets">Zasoby / Assets (<span id="countAssets">0</span>)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabPublications">Publikacje (<span id="countPubs">0</span>)</button>
+                <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200" data-tab="tabAudit">Ślad Audytu (<span id="countAudit">0</span>)</button>
+            </div>
+
+            <!-- Modal Tab Panes -->
+            <div class="p-5 overflow-y-auto custom-scrollbar flex-1 text-xs space-y-4">
+                <!-- Pane 1: Overview -->
+                <div id="tabOverview" class="tab-pane space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Metadane Główne</div>
+                            <div><span class="text-slate-400">Typ:</span> <span id="detailType" class="font-semibold text-slate-200">DEVOTIONAL</span></div>
+                            <div><span class="text-slate-400">Status:</span> <span id="detailStatus" class="font-semibold">PUBLISHED</span></div>
+                            <div><span class="text-slate-400">Autor:</span> <span id="detailAuthor" class="text-slate-200">Cezary Rogowski</span></div>
+                            <div><span class="text-slate-400">Seria:</span> <span id="detailSeries" class="text-slate-200">-</span></div>
+                            <div><span class="text-slate-400">Kategoria:</span> <span id="detailCategory" class="text-slate-200">-</span></div>
+                        </div>
+
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Prawa Autorskie (Rights Guard)</div>
+                            <div><span class="text-slate-400">Własność:</span> <span id="detailRightsOwnership" class="font-bold text-emerald-400">CC_OWNED</span></div>
+                            <div><span class="text-slate-400">Licencja:</span> <span id="detailRightsLicense" class="text-slate-200">-</span></div>
+                            <div class="flex items-center gap-3 pt-1 text-[11px]">
+                                <span id="flagTranslation" class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Tłumaczenia: TAK</span>
+                                <span id="flagRedist" class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Redystrybucja: TAK</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scripture Reference -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-bible text-cc-gold"></i>
+                            <span>Referencje Biblijne</span>
+                        </div>
+                        <div id="detailBibleList" class="space-y-1 text-slate-300">Brak przypisanych wersetów.</div>
+                    </div>
+
+                    <!-- Summary & Description -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Podsumowanie i Opis</div>
+                        <p id="detailSummary" class="text-slate-300 italic">-</p>
+                        <p id="detailDescription" class="text-slate-400">-</p>
+                    </div>
+
+                    <!-- Legacy Sources -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Powiązania Historyczne (Legacy Source Map)</div>
+                        <div id="detailLegacyList" class="font-mono text-[11px] text-slate-400 space-y-1">Brak powiązań legacy.</div>
+                    </div>
+                </div>
+
+                <!-- Pane 2: Variants -->
+                <div id="tabVariants" class="tab-pane hidden space-y-3">
+                    <div id="variantsContainer" class="space-y-3">Ładowanie wariantów...</div>
+                </div>
+
+                <!-- Pane: AI Factory (Wave 1: EN, ES, PT-BR) -->
+                <div id="tabAiFactory" class="tab-pane hidden space-y-4">
+                    <!-- Language Selection Bar -->
+                    <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-400 font-semibold mr-1">Język docelowy (Fala 1):</span>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-cc-gold bg-cc-gold/15 text-cc-gold font-bold text-xs transition" data-lang="en">
+                                🇬🇧 English (EN)
+                            </button>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:border-cc-gold/40 text-xs transition" data-lang="es">
+                                🇪🇸 Español (ES)
+                            </button>
+                            <button type="button" class="ai-lang-btn px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:border-cc-gold/40 text-xs transition" data-lang="pt-BR">
+                                🇧🇷 Português (PT-BR)
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="aiCandidateStatusBadge" class="px-2.5 py-1 rounded text-[11px] font-bold border bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                REVIEW_REQUIRED
+                            </span>
+                            <span id="aiValidationScoreBadge" class="px-2.5 py-1 rounded text-[11px] font-bold border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 cursor-help" title="Wynik automatycznej kontroli zgodności (Quality Check Score). Nie oznacza procentowej pewności poprawności teologicznej ani językowej.">
+                                Quality Check: 99/100
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side Review Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Source Column (PL Master) -->
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between border-b border-obsidian-border pb-2">
+                                <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                                    <span>Źródło Master (PL)</span>
+                                </div>
+                                <span class="font-mono text-[10px] text-slate-400">var_pl_web</span>
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Tytuł oryginalny:</span>
+                                    <div id="aiSourceTitle" class="font-bold text-slate-200 mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Treść źródłowa:</span>
+                                    <div id="aiSourceBody" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-56 overflow-y-auto whitespace-pre-wrap mt-0.5 border border-obsidian-border/50">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Target Column (AI Candidate) -->
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-cc-gold/30 space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between border-b border-obsidian-border pb-2">
+                                <div class="font-bold text-cc-gold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-sparkles text-[10px]"></i>
+                                    <span id="aiCandidateHeader">Kandydat AI (EN)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span id="aiCandidateModelBadge" class="font-mono text-[10px] text-slate-400 bg-obsidian-card px-2 py-0.5 rounded border border-obsidian-border">gemini-2.5-pro</span>
+                                    <span id="aiCandidateVariantId" class="font-mono text-[10px] text-cc-gold">var_en_candidate</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Tytuł przetłumaczony:</span>
+                                    <input type="text" id="aiCandidateTitleInput" readonly class="w-full mt-0.5 px-2.5 py-1.5 rounded-lg bg-obsidian-card border border-obsidian-border text-slate-200 font-bold focus:outline-none gold-border-focus read-only:bg-transparent read-only:border-transparent">
+                                </div>
+                                <div>
+                                    <span class="text-slate-500 text-[10px] uppercase font-bold">Treść wariantu:</span>
+                                    <textarea id="aiCandidateBodyInput" rows="7" readonly class="w-full mt-0.5 p-2.5 rounded-lg bg-obsidian-card border border-obsidian-border font-mono text-[11px] text-slate-200 focus:outline-none gold-border-focus read-only:bg-transparent read-only:border-transparent whitespace-pre-wrap"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theology & Source Validation Inspector -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                <span>Raport Walidacji Teologicznej & Bible Guard</span>
+                            </div>
+                            <span id="aiValidationStatusText" class="text-[11px] font-mono text-emerald-400 font-bold">WALIDACJA: ZALICZONA (Score 99/100)</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-[11px]">
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-book-bible text-cc-gold"></i>
+                                    <span>Bible Guard (Źródło Kanoniczne)</span>
+                                </div>
+                                <div id="aiValBibleGuard" class="text-slate-300">Weryfikacja w toku...</div>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-spell-check text-blue-400"></i>
+                                    <span>Theology Glossary (Pojęcia Kluczowe)</span>
+                                </div>
+                                <div id="aiValGlossary" class="text-slate-300">Weryfikacja w toku...</div>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border space-y-1">
+                                <div class="text-slate-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                                    <span>Ostrzeżenia / Flagi Bezpieczeństwa</span>
+                                </div>
+                                <div id="aiValWarnings" class="text-slate-300">Brak uwag</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Derived Formats Previews (Format Factory) -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-cubes text-cc-gold"></i>
+                                <span>Format Factory — Wyprowadzone Formaty Publikacyjne</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[11px]">
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-cc-gold/20 text-cc-gold font-semibold border border-cc-gold/40" data-format="tts">Audio TTS</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="quotes">Cytaty</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="social">Social Media</button>
+                                <button type="button" class="ai-format-tab px-2.5 py-1 rounded bg-obsidian-card text-slate-400 hover:text-slate-200 border border-obsidian-border" data-format="seo">SEO & Schema</button>
+                            </div>
+                        </div>
+
+                        <!-- Format Panes -->
+                        <div id="aiFormatPaneTts" class="ai-format-pane space-y-2">
+                            <div class="text-[11px] text-slate-400 flex items-center justify-between">
+                                <span>Skrypt lektorski TTS (oczyszczony z URL-i, symboli, nawiasów):</span>
+                                <span id="aiTtsWordCount" class="font-mono text-slate-500">0 słów (~0s)</span>
+                            </div>
+                            <div id="aiFormatTtsText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneQuotes" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Wyodrębnione kluczowe cytaty do rolek i grafik:</div>
+                            <div id="aiFormatQuotesContainer" class="space-y-1.5">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneSocial" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Gotowy post na social media ze zlokalizowanymi hashtagami:</div>
+                            <div id="aiFormatSocialText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+
+                        <div id="aiFormatPaneSeo" class="ai-format-pane hidden space-y-2">
+                            <div class="text-[11px] text-slate-400">Metadane SEO & Schema.org JSON-LD:</div>
+                            <div id="aiFormatSeoText" class="p-2.5 rounded bg-obsidian-card font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto whitespace-pre-wrap border border-obsidian-border/50">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Human-in-the-Loop Governance Bar -->
+                    <div class="p-3 bg-obsidian/80 rounded-xl border border-cc-gold/30 flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-[11px] text-slate-400">
+                            <i class="fa-solid fa-user-shield text-cc-gold mr-1"></i>
+                            <span>Bramka decyzyjna: <strong class="text-slate-200">Człowiek w pętli (Zero Autopublish)</strong>. AI nigdy nie publikuje automatycznie.</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="btnEditAiCandidate" class="px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:text-white hover:border-slate-500 text-xs transition">
+                                <i class="fa-solid fa-pen-to-square mr-1"></i> Edytuj wariant
+                            </button>
+                            <button type="button" id="btnRejectAiCandidate" class="px-3 py-1.5 rounded-lg border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition">
+                                <i class="fa-solid fa-ban mr-1"></i> Odrzuć kandydat
+                            </button>
+                            <button type="button" id="btnApproveAiCandidate" class="px-4 py-1.5 rounded-lg bg-cc-gold text-black font-bold hover:bg-amber-400 text-xs transition shadow-lg shadow-cc-gold/10">
+                                <i class="fa-solid fa-check mr-1"></i> Zatwierdź i zapisz w TM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pane: Global Distribution (Faza 3A) -->
+                <div id="tabDistribution" class="tab-pane hidden space-y-4">
+                    <!-- Top Status & Kill Switch Bar -->
+                    <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-satellite-dish text-blue-400 text-sm"></i>
+                            <div>
+                                <div class="font-bold text-slate-200 text-xs">CC Global Distribution Engine</div>
+                                <div class="text-[10px] text-slate-400">One Content → Approved Variant → Publication Queue → Adapters → Verification</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="distKillSwitchBadge" class="px-2.5 py-1 rounded text-[11px] font-bold border bg-amber-500/10 text-amber-400 border-amber-500/30 flex items-center gap-1.5" title="Wyłącznik awaryjny Fazy 3A: automatyczna publikacja jest wstrzymana. Wymagany tryb kontrolowany.">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>AUTOPUBLISH: OFF (Faza 3A)</span>
+                            </span>
+                            <span class="px-2.5 py-1 rounded text-[11px] font-mono text-slate-400 border border-obsidian-border bg-obsidian-card">
+                                Adapter Core v2026.3
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Global Distribution Matrix (Pkt 50, 51) -->
+                    <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5 text-xs">
+                                <i class="fa-solid fa-table-cells text-cc-gold"></i>
+                                <span>Globalna Macierz Dystrybucji (Real-Time Publication Matrix)</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">Stan rzeczywisty na podstawie rejestru publikacji</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[11px] border border-obsidian-border rounded-lg overflow-hidden">
+                                <thead class="bg-obsidian-card text-slate-400 font-semibold border-b border-obsidian-border">
+                                    <tr>
+                                        <th class="py-2 px-3">Język</th>
+                                        <th class="py-2 px-3">WWW (Ecosystem)</th>
+                                        <th class="py-2 px-3">LUMINA</th>
+                                        <th class="py-2 px-3">YouTube (Pilot)</th>
+                                        <th class="py-2 px-3">WhatsApp</th>
+                                        <th class="py-2 px-3">BitChute</th>
+                                        <th class="py-2 px-3">Radio CC</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="distMatrixBody" class="divide-y divide-obsidian-border">
+                                    <tr>
+                                        <td class="py-2 px-3 font-bold text-slate-300">🇵🇱 PL (Master)</td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">READY (Preview)</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">VERIFIED</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">READY (Private)</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">SENT (Ack)</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-purple-400">MANUAL_ASSISTED</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">READY (Buffer)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-bold text-slate-300">🇬🇧 EN (Human/AI)</td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">READY (Preview)</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">NOT_CONFIGURED</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">READY (Private)</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">MANUAL_ASSISTED</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-bold text-slate-300">🇪🇸 ES (Candidate)</td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">PREVIEW</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-bold text-slate-300">🇧🇷 PT-BR (Candidate)</td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">PREVIEW</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                        <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono text-slate-500">—</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Pilot YouTube Channel & Security Status (Pkt 15-22) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="font-bold text-slate-200 flex items-center gap-1.5 text-xs">
+                                    <i class="fa-brands fa-youtube text-red-500"></i>
+                                    <span>YouTube Pilot Channel (Pkt 15/16)</span>
+                                </div>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/30">1 KANAŁ PILOTAŻOWY</span>
+                            </div>
+                            <div class="text-[11px] space-y-1 text-slate-300">
+                                <div><span class="text-slate-500 font-semibold">Kanał:</span> <code class="text-cc-gold">UC_PILOT_CC_MAIN</code></div>
+                                <div><span class="text-slate-500 font-semibold">Nazwa:</span> Christian Culture — Główny Kanał Pilotażowy</div>
+                                <div><span class="text-slate-500 font-semibold">OAuth Vault:</span> <span class="text-emerald-400">Server-Side Only (Zero Frontend Tokens)</span></div>
+                                <div><span class="text-slate-500 font-semibold">Tryb Bezpieczeństwa:</span> <span class="text-amber-400 font-bold">PRIVATE / UNLISTED ONLY (Pilot Safety)</span></div>
+                                <div><span class="text-slate-500 font-semibold">Quota Guard:</span> 10 000 jednostek/dzień (koszt videos.insert = ~1600 j.)</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-obsidian p-3.5 rounded-xl border border-obsidian-border space-y-2">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5 text-xs">
+                                <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                <span>Rights Gate & Immutable Manifest (Pkt 3, 37)</span>
+                            </div>
+                            <div class="text-[11px] space-y-1.5 text-slate-300">
+                                <div class="flex items-center gap-1.5 text-emerald-400">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    <span>Warunek wstępny: Wariant musi posiadać status <strong>APPROVED</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-emerald-400">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    <span>Mutation Guard: Zmiana tekstu po zatwierdzeniu blokuje emisję</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-emerald-400">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    <span>Bible Rights: Prawa do audio/wideo weryfikowane dla 9 przekładów</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-emerald-400">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    <span>Immutable Manifest: Snapshot SHA-256 wariantu, zasobów i licencji</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Distribution Plan Execution Bar -->
+                    <div class="p-3.5 bg-obsidian/90 rounded-xl border border-cc-gold/30 flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-[11px] text-slate-400">
+                            <i class="fa-solid fa-circle-info text-cc-gold mr-1"></i>
+                            <span>Dwuetapowa akceptacja: <strong class="text-slate-200">Content Approved + Distribution Approved</strong>. ZERO autopublish.</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="btnInspectManifest" class="px-3 py-1.5 rounded-lg border border-obsidian-border bg-obsidian text-slate-300 hover:text-white text-xs transition">
+                                <i class="fa-solid fa-file-code mr-1"></i> Pokaż Manifest
+                            </button>
+                            <button type="button" id="btnCreateDistPlan" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition shadow-lg shadow-blue-500/20">
+                                <i class="fa-solid fa-paper-plane mr-1"></i> Utwórz Plan Dystrybucji
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pane: Global Observer & Mission Intelligence (FAZA 4) -->
+                <div id="tabObserver" class="tab-pane hidden space-y-4">
+                    <!-- Top Stats Bar (Directive 75) -->
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                        <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">System Health</span>
+                            <div class="flex items-center gap-1.5 pt-0.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="obsSystemHealthBadge" class="font-bold text-emerald-400 text-xs">HEALTHY</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Interakcje</span>
+                            <div id="obsInteractionsCount" class="font-mono font-bold text-white text-sm pt-0.5">0</div>
+                            <div class="text-[10px] text-slate-500">Zweryfikowane bez łączenia</div>
+                        </div>
+
+                        <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Aktywne Platformy</span>
+                            <div id="obsActivePlatforms" class="font-mono font-bold text-blue-400 text-sm pt-0.5">5 / 7</div>
+                            <div class="text-[10px] text-slate-500">2 w kwarantannie/ręczne</div>
+                        </div>
+
+                        <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Incydenty</span>
+                            <div id="obsIncidentsCount" class="font-mono font-bold text-emerald-400 text-sm pt-0.5">0 aktywnych</div>
+                            <div class="text-[10px] text-slate-500">Wszystkie usługi sprawne</div>
+                        </div>
+
+                        <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-1 col-span-2 md:col-span-1">
+                            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Świeżość Danych</span>
+                            <div class="pt-0.5">
+                                <span id="obsFreshnessBadge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">&lt; 15 MIN (LIVE)</span>
+                            </div>
+                            <div id="obsFreshnessDetail" class="text-[10px] text-slate-500">5/5 źródeł aktualnych</div>
+                        </div>
+                    </div>
+
+                    <!-- Time Range Filter & Mode Declaration -->
+                    <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-slate-400 font-semibold mr-1">Zakres:</span>
+                            <button type="button" class="obs-time-btn px-2.5 py-1 rounded text-[11px] font-mono border border-obsidian-border bg-obsidian text-slate-400 hover:border-cc-gold/40 transition" data-range="24H">24H</button>
+                            <button type="button" class="obs-time-btn px-2.5 py-1 rounded text-[11px] font-mono border border-cc-gold bg-cc-gold/15 text-cc-gold font-bold transition" data-range="7D">7D</button>
+                            <button type="button" class="obs-time-btn px-2.5 py-1 rounded text-[11px] font-mono border border-obsidian-border bg-obsidian text-slate-400 hover:border-cc-gold/40 transition" data-range="30D">30D</button>
+                            <button type="button" class="obs-time-btn px-2.5 py-1 rounded text-[11px] font-mono border border-obsidian-border bg-obsidian text-slate-400 hover:border-cc-gold/40 transition" data-range="90D">90D</button>
+                            <button type="button" class="obs-time-btn px-2.5 py-1 rounded text-[11px] font-mono border border-obsidian-border bg-obsidian text-slate-400 hover:border-cc-gold/40 transition" data-range="ALL">ALL</button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
+                                <i class="fa-solid fa-eye mr-1"></i> TRYB OBSERWACJI ONLY (ZERO EMISJI)
+                            </span>
+                            <button type="button" id="btnRefreshObserver" class="p-1.5 px-2.5 bg-obsidian border border-obsidian-border rounded-lg text-slate-400 hover:text-cc-gold transition text-xs" title="Odpytaj adaptery obserwacji">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mission Funnel (Directive 33-35, 77) -->
+                    <div class="bg-obsidian p-4 rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-filter text-cc-gold"></i>
+                                <span>Lejek Misyjny CC Global (7 Filarów Obserwowalnych)</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-500">Kolejność niezmienna (Pkt 33)</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-7 gap-2 text-center text-[11px]">
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">1. REACHED</span>
+                                <div id="funnelReached" class="font-mono font-bold text-white text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">Wyświetlenia / Starty</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">2. ENGAGED</span>
+                                <div id="funnelEngaged" class="font-mono font-bold text-blue-400 text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">&gt;30s / Reakcje / Kom.</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">3. RETURNED</span>
+                                <div id="funnelReturned" class="font-mono font-bold text-cyan-400 text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">Powracające wizyty</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">4. CC ID</span>
+                                <div id="funnelCcId" class="font-mono font-bold text-purple-400 text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">Konta utworzone</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">5. LUMINA</span>
+                                <div id="funnelLumina" class="font-mono font-bold text-emerald-400 text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">Wpisy / Grupy</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex flex-col justify-between">
+                                <span class="text-slate-500 text-[9px] uppercase font-bold">6. BIBLE / DEV.</span>
+                                <div id="funnelBible" class="font-mono font-bold text-cc-gold text-base my-1">0</div>
+                                <span class="text-[9px] text-slate-500">MojaBiblia / Audio</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-obsidian-card border border-cc-gold/30 flex flex-col justify-between col-span-2 md:col-span-1">
+                                <span class="text-cc-gold text-[9px] uppercase font-bold">7. ONGOING</span>
+                                <div id="funnelRelationship" class="font-mono font-bold text-cc-gold text-base my-1">0</div>
+                                <span class="text-[9px] text-cc-gold/80">Trwała relacja</span>
+                            </div>
+                        </div>
+
+                        <div class="text-[10px] text-slate-500 italic text-center pt-1">
+                            <i class="fa-solid fa-shield-halved text-cc-gold mr-1"></i>
+                            Wskaźniki oparte wyłącznie na obserwowalnych zdarzeniach produktowych. Zero subiektywnych deklaracji teologicznych (Pkt 34/35).
+                        </div>
+                    </div>
+
+                    <!-- Content Pulse & Platform Breakdown (Directive 78, 80) -->
+                    <div class="bg-obsidian p-4 rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-heart-pulse text-emerald-400"></i>
+                                <span>Puls Treści (Content Pulse) & Rozbicie Platformowe</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-500">Niezależne metryki kanałowe</span>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse text-[11px]">
+                                <thead>
+                                    <tr class="bg-obsidian-card border-b border-obsidian-border text-[10px] font-bold uppercase text-slate-400">
+                                        <th class="py-2 px-3">Platforma / Kanał</th>
+                                        <th class="py-2 px-3">Status</th>
+                                        <th class="py-2 px-3">Poziom Weryfikacji</th>
+                                        <th class="py-2 px-3">Zasięg (Surowy)</th>
+                                        <th class="py-2 px-3">Zaangażowanie</th>
+                                        <th class="py-2 px-3">Świeżość</th>
+                                        <th class="py-2 px-3 text-right">Provenance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="obsPulseTableBody" class="divide-y divide-obsidian-border text-slate-300">
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-solid fa-circle-nodes text-cc-gold"></i> LUMINA Portal
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">VERIFIED</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-emerald-400">PLATFORM_API</td>
+                                        <td class="py-2 px-3 font-mono">1 240 odsłon</td>
+                                        <td class="py-2 px-3 font-mono text-blue-400">38 komentarzy, 142 reakcje</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-blue-500/10 text-blue-400">&lt; 15 MIN</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="LUMINA">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-solid fa-globe text-blue-400"></i> PolskieRadio.cc (WWW)
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">READY (Preview)</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-blue-400">EDGE_TELEMETRY</td>
+                                        <td class="py-2 px-3 font-mono">485 wejść</td>
+                                        <td class="py-2 px-3 font-mono text-blue-400">41% scroll depth</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-blue-500/10 text-blue-400">&lt; 15 MIN</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="WWW">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-solid fa-radio text-amber-400"></i> Radio CC Live Stream
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">STREAMING</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-emerald-400">SERVER_METRICS</td>
+                                        <td class="py-2 px-3 font-mono">28 słuchaczy live</td>
+                                        <td class="py-2 px-3 font-mono text-blue-400">Śr. czas: 24 min</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-500/10 text-emerald-400">LIVE</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="RADIO">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp Bridge
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">SENT (Ack)</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-cyan-400">DISPATCH_ACK</td>
+                                        <td class="py-2 px-3 font-mono">1 wysłana paczka</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE (Pkt 8)</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-500/10 text-cyan-400">&lt; 1 H</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="WHATSAPP">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-brands fa-youtube text-red-500"></i> YouTube Pilot (UC_PILOT_CC_MAIN)
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-400 bg-obsidian-card border border-obsidian-border">READY (Private)</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-slate-400">API_QUOTA_GUARDED</td>
+                                        <td class="py-2 px-3 font-mono">0 views (Private test)</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-slate-800 text-slate-400">&lt; 15 MIN</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="YOUTUBE">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-white flex items-center gap-1.5">
+                                            <i class="fa-solid fa-play text-purple-400"></i> BitChute
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/30">OPERATOR_CONFIRMED</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-purple-400">OPERATOR_VERIFIED</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-purple-500/10 text-purple-400">MANUAL</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <button type="button" class="btn-prov px-2 py-0.5 rounded bg-obsidian-card border border-obsidian-border hover:border-cc-gold/40 text-[10px] text-cc-gold transition" data-platform="BITCHUTE">
+                                                <i class="fa-solid fa-fingerprint mr-1"></i> Pochodzenie
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 font-semibold text-slate-500 flex items-center gap-1.5">
+                                            <i class="fa-brands fa-facebook text-blue-600"></i> Facebook
+                                        </td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-500 bg-slate-900 border border-slate-800">NOT_CONNECTED</span></td>
+                                        <td class="py-2 px-3 font-mono text-[10px] text-slate-500">NO_INTEGRATION</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE</td>
+                                        <td class="py-2 px-3 font-mono text-slate-500 italic">NOT_AVAILABLE</td>
+                                        <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-slate-900 text-slate-500">DISCONNECTED</span></td>
+                                        <td class="py-2 px-3 text-right">
+                                            <span class="text-slate-600 text-[10px]">—</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Two-column grid: Language Performance & Global Country Interactions (Directive 79, 81) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Language Performance Card -->
+                        <div class="bg-obsidian p-4 rounded-xl border border-obsidian-border space-y-3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-obsidian-border pb-2 mb-3">
+                                    <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-language text-blue-400"></i>
+                                        <span>Porównanie Językowe (Fala 1)</span>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-slate-500">PL / EN / ES / PT-BR</span>
+                                </div>
+
+                                <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] mb-3">
+                                    <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                                    <strong>INSUFFICIENT DATA:</strong> Brak statystycznie istotnej próby dla języków obcych (min. 100 zweryfikowanych zdarzeń). Wskaźniki względne nie są jeszcze wyliczane (Pkt 36/37).
+                                </div>
+
+                                <div class="space-y-2 text-[11px]">
+                                    <div class="flex items-center justify-between p-2 rounded bg-obsidian-card border border-obsidian-border">
+                                        <span class="font-bold text-slate-200">🇵🇱 Polski (PL - Master)</span>
+                                        <span class="font-mono text-cc-gold font-bold">1 725 zdarzeń (Aktywny)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 rounded bg-obsidian-card border border-obsidian-border">
+                                        <span class="font-bold text-slate-400">🇬🇧 English (EN - Wave 1)</span>
+                                        <span class="font-mono text-slate-500 italic">INSUFFICIENT_DATA (&lt;100)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 rounded bg-obsidian-card border border-obsidian-border">
+                                        <span class="font-bold text-slate-400">🇪🇸 Español (ES - Wave 1)</span>
+                                        <span class="font-mono text-slate-500 italic">INSUFFICIENT_DATA (&lt;100)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 rounded bg-obsidian-card border border-obsidian-border">
+                                        <span class="font-bold text-slate-400">🇧🇷 Português (PT-BR - Wave 1)</span>
+                                        <span class="font-mono text-slate-500 italic">INSUFFICIENT_DATA (&lt;100)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-[10px] text-slate-500 italic pt-2">
+                                Wnioski jakościowe zostaną odblokowane automatycznie po zebraniu min. 100 zdarzeń per język.
+                            </div>
+                        </div>
+
+                        <!-- Global Country Interactions Card (Directive 81) -->
+                        <div class="bg-obsidian p-4 rounded-xl border border-obsidian-border space-y-3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-obsidian-border pb-2 mb-3">
+                                    <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-earth-americas text-emerald-400"></i>
+                                        <span>Zasięg Geograficzny (Interakcje Krajowe)</span>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-emerald-400">Aggregated Only</span>
+                                </div>
+
+                                <div class="space-y-2 text-[11px]">
+                                    <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-base">🇵🇱</span>
+                                            <div>
+                                                <div class="font-bold text-slate-200">Polska (PL)</div>
+                                                <div class="text-[10px] text-slate-500">LUMINA, Portal WWW, Radio CC</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right font-mono">
+                                            <div class="text-white font-bold">1 725</div>
+                                            <div class="text-[9px] text-emerald-400">98.5% całości</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-base">🇺🇸</span>
+                                            <div>
+                                                <div class="font-bold text-slate-200">Stany Zjednoczone (US)</div>
+                                                <div class="text-[10px] text-slate-500">YouTube Private Pilot / Diaspora</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right font-mono">
+                                            <div class="text-white font-bold">18</div>
+                                            <div class="text-[9px] text-slate-400">1.0% całości</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-base">🇪🇸</span>
+                                            <div>
+                                                <div class="font-bold text-slate-200">Hiszpania / LATAM (ES)</div>
+                                                <div class="text-[10px] text-slate-500">Kandydaci testowi / WWW</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right font-mono">
+                                            <div class="text-white font-bold">5</div>
+                                            <div class="text-[9px] text-slate-400">0.3% całości</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-2.5 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-base">🇧🇷</span>
+                                            <div>
+                                                <div class="font-bold text-slate-200">Brazylia (BR)</div>
+                                                <div class="text-[10px] text-slate-500">Kandydaci testowi / WWW</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right font-mono">
+                                            <div class="text-white font-bold">3</div>
+                                            <div class="text-[9px] text-slate-400">0.2% całości</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-[10px] text-slate-500 italic pt-2">
+                                <i class="fa-solid fa-lock text-slate-400 mr-1"></i>
+                                Kraje bez zweryfikowanych zdarzeń pozostają nieoznaczone. Zero sztucznego kolorowania mapy.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Health Components Probes (Directive 82) -->
+                    <div class="bg-obsidian p-4 rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microchip text-cc-gold"></i>
+                                <span>Rejestr Zdrowia Systemu & Sondy Komponentów (10 Podsystemów)</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-emerald-400">10/10 Monitorowane</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-[11px]">
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">1. CC Content Core</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">2. Language Factory</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">3. Distribution Queue</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">4. YouTube Pilot</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">5. LUMINA Portal</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">6. WWW PolskieRadio.cc</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">7. WhatsApp Bridge</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">8. Radio CC Stream</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">9. Cloudflare Edge</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                            <div class="p-2 rounded bg-obsidian-card border border-obsidian-border flex items-center justify-between">
+                                <span class="text-slate-300">10. Firestore lumina-cc</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Guard, AI Usage & Security Declaration (Directive 84) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-2">
+                            <div class="font-bold text-slate-200 flex items-center gap-1.5 text-xs">
+                                <i class="fa-solid fa-coins text-cc-gold"></i>
+                                <span>Budżet i Limity Quota (Quota Guard 2026)</span>
+                            </div>
+                            <div class="text-[11px] space-y-1 text-slate-300">
+                                <div><span class="text-slate-500">YouTube videos.insert:</span> <span class="font-mono text-emerald-400 font-bold">1 / 100 uploadów dziennie</span> (Granular pool)</div>
+                                <div><span class="text-slate-500">YouTube Read Quota:</span> <span class="font-mono text-emerald-400 font-bold">15 / 10 000 jednostek</span></div>
+                                <div><span class="text-slate-500">Gemini 2.5 Pro (Language Factory):</span> <span class="font-mono text-blue-400 font-bold">12 400 tokenów</span> (Fala 1)</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-emerald-500/30 space-y-2">
+                            <div class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+                                <i class="fa-solid fa-user-shield text-emerald-400"></i>
+                                <span>Prywatność i Bezpieczeństwo Metryk (Privacy Guard)</span>
+                            </div>
+                            <div class="text-[11px] space-y-1 text-slate-300">
+                                <div><i class="fa-solid fa-circle-check text-emerald-400 text-[10px] mr-1"></i> <strong>Zero PII:</strong> Brak nazwisk, adresów e-mail, numerów telefonów i adresów IP.</div>
+                                <div><i class="fa-solid fa-circle-check text-emerald-400 text-[10px] mr-1"></i> <strong>Zero Sekretów:</strong> Tokeny OAuth i klucze API przechowywane wyłącznie na serwerze.</div>
+                                <div><i class="fa-solid fa-circle-check text-emerald-400 text-[10px] mr-1"></i> <strong>Delta Correction:</strong> Ujemne korekty liczników platform oznaczane jako SOURCE_CORRECTION.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pane: Follow the Sun 24/7 (Shadow Scheduler - Faza 6A) -->
+                <div id="tabFollowTheSun" class="tab-pane hidden space-y-4">
+                    <!-- Top System Banner & Health -->
+                    <div class="p-3.5 bg-obsidian rounded-xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-400 uppercase tracking-wide flex items-center gap-2">
+                                    <span>FOLLOW THE SUN 24/7 — SHADOW SCHEDULER</span>
+                                    <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-mono font-bold">FAZA 6A: SIMULATION ONLY</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">Deterministyczne planowanie strefowe (czas lokalny odbiorcy). Dystrybucja i autopublish: ZABLOKOWANE.</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs flex-wrap">
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono font-bold">[SHADOW_HEALTHY]</span>
+                            <span class="px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/30 font-mono font-bold">[AUTOPUBLISH = OFF]</span>
+                            <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/30 font-mono font-bold">[FIREWALL ACTIVE]</span>
+                        </div>
+                    </div>
+
+                    <!-- Section 1: Global Timeline (Wspólna Oś Czasu) -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-clock text-amber-400"></i>
+                                <span>GLOBAL TIMELINE — WSPÓLNA OŚ CZASU (24H UTC & LOKALNE)</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500">Baza referencyjna: UTC</span>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <div class="min-w-[680px] space-y-2 text-xs font-mono">
+                                <!-- Scale Hours Header 00 to 23 -->
+                                <div class="grid grid-cols-12 gap-1 text-[10px] text-slate-500 text-center border-b border-obsidian-border pb-1">
+                                    <span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00</span><span>10:00</span>
+                                    <span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span>
+                                </div>
+                                <!-- Timeline Rows for UTC and Key Markets -->
+                                <div id="ftsTimelineRows" class="space-y-1.5 pt-1">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: World View — Target Market Registry (Wave 1) -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-earth-americas text-cc-gold"></i>
+                                <span>TARGET MARKET REGISTRY — OBSZARY EMISYJNE (WAVE 1)</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">Zero profilowania ludzi</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2.5" id="ftsMarketsGrid">
+                            <!-- Market Cards injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Content Card Simulation: CC-2026-000001 -->
+                    <div class="p-4 bg-obsidian rounded-xl border border-obsidian-border space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-file-shield text-blue-400"></i>
+                                <span>CONTENT CARD & SLOTS: CC-2026-000001</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">CONTENT CORE APPROVED</span>
+                        </div>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-obsidian/90 border-b border-obsidian-border text-[10px] font-bold uppercase text-slate-400">
+                                        <th class="py-2.5 px-3">Wariant / Język</th>
+                                        <th class="py-2.5 px-3">Rynek & Strefa IANA</th>
+                                        <th class="py-2.5 px-3">Okno Lokalne</th>
+                                        <th class="py-2.5 px-3">Czas UTC</th>
+                                        <th class="py-2.5 px-3">Platforma</th>
+                                        <th class="py-2.5 px-3">Prawa / Approval</th>
+                                        <th class="py-2.5 px-3">Status</th>
+                                        <th class="py-2.5 px-3">Why This Time?</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ftsContentSlotsTable" class="divide-y divide-obsidian-border">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Safety & Idempotency Audit -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Collision & Fatigue Guard</div>
+                            <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 pt-0.5">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span id="ftsCollisionStatus">0 KOLIZJI (Brak konfliktów)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">Odstęp min. 24h na kanał (Warning only)</div>
+                        </div>
+
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Idempotencja & Duplicate Guard</div>
+                            <div class="text-xs font-mono font-bold text-cc-gold pt-0.5">SHA-256 HASH DETERMINISTIC</div>
+                            <div class="text-[10px] text-slate-400">10 uruchomień = 1 identyczna propozycja</div>
+                        </div>
+
+                        <div class="p-3.5 bg-obsidian rounded-xl border border-obsidian-border space-y-1">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Sabbath Safe Mode</div>
+                            <div class="text-xs font-bold text-amber-400 flex items-center gap-1.5 pt-0.5">
+                                <i class="fa-solid fa-moon"></i>
+                                <span>SUNSET_DATA_REQUIRED</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">Szabat wyznacza zachód słońca, nie stała godzina</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pane 3: Assets -->
+                <div id="tabAssets" class="tab-pane hidden space-y-3">
+                    <div id="assetsContainer" class="space-y-3">Ładowanie zasobów...</div>
+                </div>
+
+                <!-- Pane 4: Publications -->
+                <div id="tabPublications" class="tab-pane hidden space-y-3">
+                    <div id="publicationsContainer" class="space-y-3">Ładowanie publikacji...</div>
+                </div>
+
+                <!-- Pane 5: Audit -->
+                <div id="tabAudit" class="tab-pane hidden space-y-3">
+                    <div id="auditContainer" class="space-y-2 font-mono text-[11px]">Ładowanie audytu...</div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-3.5 border-t border-obsidian-border bg-obsidian flex items-center justify-between">
+                <div class="text-[11px] text-slate-500">
+                    Identyfikator nadrzędny w chmurze: <code id="detailDocId" class="text-cc-gold">CC-2026-000001</code>
+                </div>
+                <button type="button" id="btnArchiveContent" class="px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs transition">
+                    <i class="fa-solid fa-box-archive mr-1"></i> Archiwizuj
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: New Content Form -->
+    <div id="newContentModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-3 lg:p-6 overflow-y-auto">
+        <div class="bg-obsidian-card w-full max-w-2xl rounded-2xl gold-border shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b border-obsidian-border flex items-center justify-between bg-obsidian">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-folder-plus text-cc-gold"></i>
+                    <h2 class="text-sm font-bold">Nowa Treść w CC Content Core</h2>
+                </div>
+                <button type="button" id="btnCloseNewModal" class="p-2 text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="newContentForm" class="p-5 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Tytuł materiału *</label>
+                    <input type="text" id="newTitle" required placeholder="np. Słowa Mają Moc: Siła w ciszy i zaufaniu" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Typ treści *</label>
+                        <select id="newType" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                            <option value="DEVOTIONAL">Rozważanie (DEVOTIONAL)</option>
+                            <option value="ARTICLE">Artykuł (ARTICLE)</option>
+                            <option value="AUDIO">Audio / Słuchowisko</option>
+                            <option value="VIDEO_LONG">Wideo długie</option>
+                            <option value="VIDEO_SHORT">Wideo krótkie</option>
+                            <option value="WORSHIP">Worship / Pieśń</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Język źródłowy *</label>
+                        <select id="newLanguage" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                            <option value="pl">Polski (PL)</option>
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="pt">Português (PT)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Status początkowy</label>
+                        <select id="newStatus" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                            <option value="DRAFT">Szkic (DRAFT)</option>
+                            <option value="REVIEW_REQUIRED">Do weryfikacji</option>
+                            <option value="PUBLISHED">Opublikowane</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Autor</label>
+                        <input type="text" id="newAuthor" value="Cezary Rogowski" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Seria / Cykl</label>
+                        <input type="text" id="newSeries" placeholder="np. Słowa Mają Moc" class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Podsumowanie / Teaser</label>
+                    <textarea id="newSummary" rows="2" placeholder="Krótkie podsumowanie 1-2 zdania..." class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Pełny opis / Kontekst</label>
+                    <textarea id="newDescription" rows="3" placeholder="Szczegółowy opis materiału..." class="w-full px-3 py-2 bg-obsidian rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none"></textarea>
+                </div>
+
+                <div class="p-3 bg-obsidian rounded-xl border border-obsidian-border space-y-2">
+                    <label class="block font-semibold text-slate-300">Prawa autorskie (Rights Guard) *</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <select id="newOwnership" class="w-full px-3 py-2 bg-obsidian-card rounded-xl border border-obsidian-border text-white gold-border-focus focus:outline-none">
+                                <option value="CC_OWNED">Własność CC (CC_OWNED)</option>
+                                <option value="LICENSED">Licencjonowane (LICENSED)</option>
+                                <option value="EXTERNAL">Zewnętrzne (EXTERNAL)</option>
+                                <option value="UNKNOWN">Nieznane (UNKNOWN — blokada publikacji!)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+                                <input type="checkbox" id="chkTranslation" checked class="rounded border-obsidian-border text-cc-gold">
+                                <span>Tłumaczenia</span>
+                            </label>
+                            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+                                <input type="checkbox" id="chkRedist" checked class="rounded border-obsidian-border text-cc-gold">
+                                <span>Redystrybucja</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3.5 border-t border-obsidian-border flex items-center justify-end gap-3 pt-4">
+                    <button type="button" id="btnCancelNew" class="px-4 py-2 rounded-xl border border-obsidian-border hover:bg-white/5 transition">Anuluj</button>
+                    <button type="submit" id="btnSubmitNew" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cc-gold to-cc-gold-dark text-black font-bold shadow-lg hover:brightness-110 active:scale-95 transition">
+                        Zarejestruj w CC Content Core
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Provenance & Cryptographic Hash (Directive 80) -->
+    <div id="provenanceModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 lg:p-6 overflow-y-auto">
+        <div class="bg-obsidian-card w-full max-w-xl rounded-2xl gold-border shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="p-4 border-b border-obsidian-border flex items-center justify-between bg-obsidian">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-fingerprint text-cc-gold"></i>
+                    <h3 class="text-sm font-bold text-white">Metryka Pochodzenia (Provenance & Hash)</h3>
+                </div>
+                <button type="button" id="btnCloseProvenanceModal" class="p-2 text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-2.5 text-xs overflow-y-auto custom-scrollbar font-mono text-slate-300">
+                <div><span class="text-slate-500">CONTENT ID:</span> <span id="provContentId" class="text-cc-gold font-bold">CC-2026-000001</span></div>
+                <div><span class="text-slate-500">PUBLICATION ID:</span> <span id="provPublicationId" class="text-slate-200">pub_lumina_01</span></div>
+                <div><span class="text-slate-500">PLATFORM:</span> <span id="provPlatform" class="text-slate-200">LUMINA</span></div>
+                <div><span class="text-slate-500">SOURCE:</span> <span id="provSource" class="text-slate-200">FIRESTORE_LUMINA_POSTS</span></div>
+                <div><span class="text-slate-500">WARIANT:</span> <span id="provVariantId" class="text-slate-200">var_pl_web</span></div>
+                <div><span class="text-slate-500">OBSERVED AT:</span> <span id="provObservedAt" class="text-slate-200">2026-09-26T12:00:00.000Z</span></div>
+                <div><span class="text-slate-500">VERIFICATION LEVEL:</span> <span id="provVerificationLevel" class="text-emerald-400 font-bold">PLATFORM_API</span></div>
+                <div><span class="text-slate-500">FRESHNESS:</span> <span id="provFreshness" class="text-cyan-400">&lt; 15 MIN (Updated 4 min ago)</span></div>
+                <div><span class="text-slate-500">AUTOR / ŹRÓDŁO:</span> <span id="provAuthor" class="text-slate-200">Cezary Rogowski</span></div>
+                <div><span class="text-slate-500">SHA-256 MANIFEST:</span> <code id="provSha256" class="text-emerald-400 break-all text-[10px]">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</code></div>
+                <div><span class="text-slate-500">STATUS PRAWA AUTORSKIE:</span> <span id="provRights" class="text-emerald-400 font-bold">CC_OWNED (Verified)</span></div>
+                <div><span class="text-slate-500">DOWÓD PLATFORMY:</span> <div id="provEvidence" class="p-2 rounded bg-obsidian text-[10px] text-slate-300 border border-obsidian-border mt-1">Status: VERIFIED (API Response Hash / Timestamp)</div></div>
+            </div>
+            <div class="p-3 border-t border-obsidian-border bg-obsidian flex justify-end">
+                <button type="button" id="btnDismissProvenanceModal" class="px-4 py-1.5 rounded-lg border border-obsidian-border text-slate-300 hover:bg-white/5 transition">Zamknij</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/js/content-registry.js?v=20260926_phase4_v1"></script>
+</body>
+</html>
