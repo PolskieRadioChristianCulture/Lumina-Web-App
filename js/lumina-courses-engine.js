@@ -91,57 +91,17 @@ class LuminaCoursesEngine {
   }
 
   /**
-   * Kontrola dostępu do wersji przedpremierowej (Public Launch Gate & Owner Preview)
+   * Kontrola dostępu do platformy kursów (Public Launch: ON)
    */
   checkLaunchAccess() {
-    const isPublicLaunchEnabled = false; // PUBLIC LAUNCH: OFF (wstrzymane do autoryzacji Production Gate)
-    if (isPublicLaunchEnabled) return true;
-
-    const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
-    const search = typeof window !== 'undefined' ? window.location.search : '';
-
-    const isPreviewHost = hostname.endsWith('.pages.dev') || hostname === 'localhost' || hostname === '127.0.0.1';
-    const hasAdminQuery = search.includes('preview=1') || search.includes('admin=1') || search.includes('token=');
-
-    let hasMasterAdminStorage = false;
-    let isMasterAdminUser = false;
-
-    try {
-      if (typeof localStorage !== 'undefined') {
-        hasMasterAdminStorage = (
-          localStorage.getItem('lumina_auth_master_admin') === 'true' ||
-          localStorage.getItem('lumina_admin') === '1' ||
-          localStorage.getItem('lumina_admin_unlocked') === 'true' ||
-          sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
-          sessionStorage.getItem('lumina_admin') === '1'
-        );
-        const u = JSON.parse(localStorage.getItem('lumina_current_user') || '{}');
-        if (u && (u.isAdmin === true || u.role === 'admin' || u.email === 'nazirczarkes@gmail.com' || u.slug === 'cezaryrgowski')) {
-          isMasterAdminUser = true;
-        }
-      }
-    } catch (_) {}
-
-    if (this.currentUser) {
-      if (this.currentUser.isAdmin === true || this.currentUser.role === 'admin' || this.currentUser.email === 'nazirczarkes@gmail.com' || this.currentUser.slug === 'cezaryrgowski') {
-        isMasterAdminUser = true;
-      }
-    }
-
-    const isAuthorized = isPreviewHost || hasAdminQuery || hasMasterAdminStorage || isMasterAdminUser;
-
+    const isPublicLaunchEnabled = true; // PUBLIC LAUNCH: ON (Oficjalna publikacja produkcyjna autoryzowana przez Właściciela)
     const gateEl = typeof document !== 'undefined' ? document.getElementById('public-launch-gate') : null;
     const badgeEl = typeof document !== 'undefined' ? document.getElementById('owner-preview-badge') : null;
 
-    if (!isAuthorized) {
-      if (gateEl) gateEl.classList.remove('hidden');
-      if (badgeEl) badgeEl.classList.add('hidden');
-      return false;
-    } else {
-      if (gateEl) gateEl.classList.add('hidden');
-      if (badgeEl) badgeEl.classList.remove('hidden');
-      return true;
-    }
+    if (gateEl) gateEl.classList.add('hidden');
+    if (badgeEl) badgeEl.classList.add('hidden');
+
+    return true;
   }
 
   cacheDomElements() {
