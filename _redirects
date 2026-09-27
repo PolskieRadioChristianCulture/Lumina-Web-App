@@ -1,6 +1,7 @@
 /snadaniowa-live-worship.html /cctv24-worship 301
 /akademia /kursy 200
 /akademia/certyfikat/* /certyfikat 200
+/akademia/:slug /kursy/:slug 200
 /kursy/certyfikat/* /certyfikat 200
 /certyfikat/* /certyfikat 200
 /certyfikat /certyfikat 200

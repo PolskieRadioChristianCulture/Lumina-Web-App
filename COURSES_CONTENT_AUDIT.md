@@ -69,6 +69,6 @@ Materiały już istniejące w `biblicalSchoolLessonContent.ts`, zabezpieczające
 ### Podsumowanie Audytu Zawartości
 
 1. **Jakość teologiczna i spójność:** 28 tematów z `cclite.pl` w pełni pokrywa 28 fundamentalnych zasad biblijnych przyjętych w misji Christian Culture. Wszystkie teksty opierają się ściśle na Piśmie Świętym.
-2. **Nomenklatura ekumeniczna i misyjna:** W treściach nie występują nazwy partykularnych denominacji. Używany jest kanoniczny termin **„Kościół Boży”** (lekcja 12) oraz powszechnie akceptowane chrześcijańskie słownictwo biblijne.
+2. **Nomenklatura biblijna i misyjna:** W treściach nie występują nazwy partykularnych denominacji. Używany jest kanoniczny termin **„Kościół Boży”** (lekcja 12) oraz powszechnie akceptowane chrześcijańskie słownictwo biblijne.
 3. **Kompletność multimediów:** Istnieje 28 przygotowanych ikon wektorowych SVG (`/lessons/1.svg` ... `/lessons/28.svg`), które zostaną zintegrowane w `kursy.html` i zasobach Cloudflare Pages.
 4. **Wymagane rozszerzenia modułowe:** Każda z 28 lekcji wymaga dodania dedykowanych pytań Odkryj, interaktywnego 3-pytaniowego Quizu utrwalającego, autozapisywanego Dziennika Drogi (Prywatny) oraz przycisku zgłoszenia do opiekuna duchowego.

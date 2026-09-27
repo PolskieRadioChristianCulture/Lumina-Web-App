@@ -12,7 +12,14 @@ function createStaticServer() {
       const parsedUrl = new URL(req.url, 'http://127.0.0.1');
       let pathname = decodeURIComponent(parsedUrl.pathname);
       if (pathname === '/' || pathname === '' || pathname === '/kursy') pathname = '/kursy.html';
-      const filePath = path.join(rootDir, pathname.replace(/^\//, ''));
+      
+      let filePath = path.join(rootDir, pathname.replace(/^\//, ''));
+      if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+        filePath = path.join(filePath, 'index.html');
+      } else if (!fs.existsSync(filePath) && fs.existsSync(filePath + '.html')) {
+        filePath = filePath + '.html';
+      }
+
       fs.stat(filePath, (err, stats) => {
         if (err || !stats.isFile()) {
           res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -41,7 +48,7 @@ function createStaticServer() {
 }
 
 async function runQA() {
-  console.log('=== LUMINA BIBLE ACADEMY — PLAYWRIGHT E2E QA (Phase 2) ===\n');
+  console.log('=== LUMINA BIBLE ACADEMY — PLAYWRIGHT E2E QA (DEDICATED SUBPAGES) ===\n');
   const { server, port, baseUrl } = await createStaticServer();
   console.log(`Serwer testowy aktywny: ${baseUrl}`);
 
@@ -49,185 +56,170 @@ async function runQA() {
   const results = [];
 
   try {
-    // ── 1. DESKTOP TEST (1280x800) ──
+    // ── 1. DESKTOP TEST: KATALOG KURSU (/kursy.html) ──
     const desktopContext = await browser.newContext({
       viewport: { width: 1280, height: 800 }
     });
     const desktopPage = await desktopContext.newPage();
-    desktopPage.on('console', msg => console.log('PAGE CONSOLE:', msg.text()));
-    desktopPage.on('pageerror', err => console.log('PAGE ERROR:', err));
 
-    // Mock Web Speech API so it functions headlessly
-    await desktopPage.addInitScript(() => {
-      window.speechSynthesis = {
-        speak: (u) => { setTimeout(() => u.onstart && u.onstart(), 10); },
-        pause: () => {},
-        resume: () => {},
-        cancel: () => {}
-      };
-      window.SpeechSynthesisUtterance = function(text) {
-        this.text = text;
-        this.onstart = null;
-        this.onpause = null;
-        this.onresume = null;
-        this.onend = null;
-        this.onerror = null;
-      };
-    });
-
-    console.log('[QA] 1. Nawigacja do /kursy.html na Desktop...');
+    console.log('[QA] 1. Nawigacja do /kursy na Desktop...');
     await desktopPage.goto(`${baseUrl}/kursy.html`, { waitUntil: 'domcontentloaded' });
     await desktopPage.waitForTimeout(600);
 
     const heroTitle = await desktopPage.$eval('h1', el => el.textContent.trim());
-    const heroSubtitle = await desktopPage.$eval('h1 + p', el => el.textContent.trim());
     const cardsCount = await desktopPage.$$eval('.lesson-card', els => els.length);
-    const stageTabsCount = await desktopPage.$$eval('.stage-pill, .stage-tab-btn', els => els.length);
+    const stageFiltersCount = await desktopPage.$$eval('[data-stage-filter]', els => els.length);
 
     console.log(`     H1: "${heroTitle}"`);
     console.log(`     Liczba kart lekcji w siatce: ${cardsCount} (oczekiwano: 28)`);
-    console.log(`     Liczba zakładek etapów: ${stageTabsCount} (oczekiwano: 6: Wszystkie + 5 etapów)`);
+    console.log(`     Liczba filtrów etapów: ${stageFiltersCount} (oczekiwano: 6)`);
 
     results.push({
-      test: 'Desktop Hero & 28 Cards Grid',
-      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 28 && stageTabsCount === 6
+      test: 'Desktop Hero & 28 Cards Grid na /kursy',
+      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 28 && stageFiltersCount === 6
     });
 
-    // Zapisz screenshot desktop
-    const desktopShotPath = path.join(artifactsDir, 'lumina_kursy_desktop.png');
+    const desktopShotPath = path.join(artifactsDir, 'lumina_kursy_catalog_desktop.png');
     await desktopPage.screenshot({ path: desktopShotPath, fullPage: false });
-    console.log(`     Zapisano zrzut ekranu Desktop: ${desktopShotPath}`);
 
     // ── 2. MOBILE TEST (390x844 — iPhone 12/13/14) ──
-    console.log('\n[QA] 2. Test Mobile Viewport (390x844)...');
+    console.log('\n[QA] 2. Test Mobile Viewport na /kursy...');
     const mobileContext = await browser.newContext({
       viewport: { width: 390, height: 844 },
       isMobile: true
     });
     const mobilePage = await mobileContext.newPage();
 
-    await mobilePage.addInitScript(() => {
+    await mobilePage.goto(`${baseUrl}/kursy.html`, { waitUntil: 'domcontentloaded' });
+    await mobilePage.waitForTimeout(500);
+
+    const hasHorizontalScroll = await mobilePage.evaluate(() => {
+      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+    });
+    console.log(`     Brak poziomego scrolla na mobile: ${!hasHorizontalScroll}`);
+    results.push({ test: 'Brak poziomego scrolla na mobile 390px', pass: !hasHorizontalScroll });
+
+    // ── 3. TEST DEDYKOWANEJ PODSTRONY LEKCJI 1 (/kursy/01-pismo-swiete) ──
+    console.log('\n[QA] 3. Otwarcie dedykowanej podstrony Lekcji 1 (/kursy/01-pismo-swiete)...');
+    const lessonPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    
+    // Mock Web Speech API
+    await lessonPage.addInitScript(() => {
       window.speechSynthesis = {
         speak: (u) => { setTimeout(() => u.onstart && u.onstart(), 10); },
         pause: () => {},
         resume: () => {},
-        cancel: () => {}
+        cancel: () => {},
+        getVoices: () => [{ lang: 'pl-PL', name: 'Zofia' }]
       };
       window.SpeechSynthesisUtterance = function(text) {
         this.text = text;
       };
     });
 
-    await mobilePage.goto(`${baseUrl}/kursy.html`, { waitUntil: 'domcontentloaded' });
-    await mobilePage.waitForTimeout(500);
+    await lessonPage.goto(`${baseUrl}/kursy/01-pismo-swiete`, { waitUntil: 'domcontentloaded' });
+    await lessonPage.waitForTimeout(500);
 
-    // Sprawdź brak horizontal overflow
-    const hasHorizontalScroll = await mobilePage.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
-    });
-    console.log(`     Horizontal scroll obecny na 390px: ${hasHorizontalScroll} (oczekiwano: false)`);
-    results.push({ test: 'Brak poziomego scrolla na mobile 390px', pass: !hasHorizontalScroll });
+    const subpageTitle = await lessonPage.$eval('h1', el => el.textContent.trim());
+    const hasBackLink = await lessonPage.$eval('.cin-back-link', el => el.getAttribute('href') !== null);
+    const hasReadingProgressBar = await lessonPage.$eval('#lesson-reading-progress', el => el !== null);
+    const hasTTS = await lessonPage.$eval('#tts-btn-play', el => el !== null);
+    const hasScripture = await lessonPage.$$eval('.reader-scripture-quote', els => els.length > 0);
+    const hasQuiz = await lessonPage.$$eval('.quiz-card', els => els.length > 0);
+    const hasJournal = await lessonPage.$eval('#journal-discovery', el => el !== null);
+    const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
+    const hasNavNext = await lessonPage.$eval('.cin-nav-next', el => el.getAttribute('href') !== null);
 
-    // ── 3. TEST COURSE ENGINE: OTWARCIE LEKCJI 1 ──
-    console.log('\n[QA] 3. Otwarcie Lekcji 1 (Pismo Święte) w Course Engine...');
-    await mobilePage.click('.lesson-card[data-lesson-id="1"]');
-    await mobilePage.waitForTimeout(400);
-
-    const readerVisible = await mobilePage.$eval('#lesson-reader-modal', el => !el.classList.contains('hidden'));
-    const readerTitle = await mobilePage.$eval('#reader-title', el => el.textContent.trim());
-    const readerStage = await mobilePage.$eval('#reader-subtitle', el => el.textContent.trim());
-    const hasBibleQuote = await mobilePage.$$eval('.reader-scripture-quote, .reader-bible-quote', els => els.length > 0);
-    const hasTTS = await mobilePage.$eval('#tts-btn-play', el => el !== null);
-
-    // Weryfikacja Dziennika Drogi (Phase 3)
-    const hasJournalDiscovery = await mobilePage.$eval('#journal-discovery', el => el !== null);
-    const hasJournalStatus = await mobilePage.$eval('#journal-status-indicator', el => el !== null);
-
-    console.log(`     Czytnik widoczny: ${readerVisible}`);
-    console.log(`     Tytuł w czytniku: "${readerTitle}"`);
-    console.log(`     Podtytuł etapu: "${readerStage}"`);
-    console.log(`     Sekcja Biblijna zawiera cytaty: ${hasBibleQuote}`);
-    console.log(`     Kontroler TTS obecny: ${hasTTS}`);
-    console.log(`     Interaktywny Dziennik Drogi (discovery textarea): ${hasJournalDiscovery}`);
-    console.log(`     Status zapisu Dziennika: ${hasJournalStatus}`);
+    console.log(`     Tytuł podstrony: "${subpageTitle}"`);
+    console.log(`     Link powrotny do katalogu (← Wszystkie 28 Lekcji): ${hasBackLink}`);
+    console.log(`     Pasek postępu czytania: ${hasReadingProgressBar}`);
+    console.log(`     Kontroler lektora TTS: ${hasTTS}`);
+    console.log(`     Cytaty Pisma Świętego: ${hasScripture}`);
+    console.log(`     Interaktywny Quiz Utwierdzający: ${hasQuiz}`);
+    console.log(`     Mój Dziennik Drogi (Autosave): ${hasJournal}`);
+    console.log(`     Przycisk ukończenia lekcji: ${hasCompleteBtn}`);
+    console.log(`     Nawigacja do kolejnej lekcji: ${hasNavNext}`);
 
     results.push({
-      test: 'Course Engine Reader & Dziennik Drogi (Lekcja 1)',
-      pass: readerVisible && readerTitle === 'Pismo Święte' && hasBibleQuote && hasTTS && hasJournalDiscovery && hasJournalStatus
+      test: 'Dedykowana podstrona Lekcji 1 (14 sekcji formacyjnych)',
+      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && hasNavNext
     });
 
-    // Test interakcji: Oznaczenie jako ukończona
-    await mobilePage.click('#btn-complete-lesson');
-    await mobilePage.waitForTimeout(200);
-    const completeBtnText = await mobilePage.$eval('#btn-complete-lesson', el => el.textContent.trim());
-    console.log(`     Przycisk ukończenia po kliknięciu: "${completeBtnText}"`);
-
-    // Zapisz screenshot mobile z otwartym czytnikiem lekcji
-    const mobileShotPath = path.join(artifactsDir, 'lumina_kursy_mobile_390px.png');
-    await mobilePage.screenshot({ path: mobileShotPath, fullPage: false });
-    console.log(`     Zapisano zrzut ekranu Mobile 390px: ${mobileShotPath}`);
-
-    // Zamknięcie czytnika
-    await mobilePage.click('#reader-close-btn');
-    await mobilePage.waitForTimeout(300);
-    const isClosed = await mobilePage.$eval('#lesson-reader-modal', el => el.classList.contains('hidden'));
-    console.log(`     Czytnik zamknięty poprawnie: ${isClosed}`);
-    results.push({ test: 'Zamykanie czytnika lekcji', pass: isClosed });
-
-    // ── 4. TEST LEKCJI KONTROLNYCH: 12 (Kościół Boży), 20 (Szabat), 28 (Nowa Ziemia) ──
-    console.log('\n[QA] 4. Testy lekcji kontrolnych (12, 20, 28)...');
-    
-    // Lekcja 12: Kościół Boży
-    await mobilePage.click('.lesson-card[data-lesson-id="12"]');
-    await mobilePage.waitForTimeout(300);
-    const l12Title = await mobilePage.$eval('#reader-title', el => el.textContent.trim());
-    const l12Stage = await mobilePage.$eval('.reader-badge-gold', el => el.textContent.trim());
-    console.log(`     Lekcja 12: "${l12Title}" (Etap: ${l12Stage})`);
-    results.push({ test: 'Lekcja 12 (Kościół Boży - Etap III)', pass: l12Title === 'Kościół Boży' && l12Stage.includes('KOŚCIÓŁ BOŻY') });
-    await mobilePage.click('#reader-close-btn');
-    await mobilePage.waitForTimeout(200);
-
-    // Lekcja 20: Szabat
-    await mobilePage.click('.lesson-card[data-lesson-id="20"]');
-    await mobilePage.waitForTimeout(300);
-    const l20Title = await mobilePage.$eval('#reader-title', el => el.textContent.trim());
-    const l20Stage = await mobilePage.$eval('.reader-badge-gold', el => el.textContent.trim());
-    console.log(`     Lekcja 20: "${l20Title}" (Etap: ${l20Stage})`);
-    results.push({ test: 'Lekcja 20 (Szabat - Etap IV)', pass: l20Title === 'Szabat' && l20Stage.includes('ŻYJ SŁOWEM') });
-    await mobilePage.click('#reader-close-btn');
-    await mobilePage.waitForTimeout(200);
-
-    // Lekcja 28: Nowa Ziemia
-    await mobilePage.click('.lesson-card[data-lesson-id="28"]');
-    await mobilePage.waitForTimeout(300);
-    const l28Title = await mobilePage.$eval('#reader-title', el => el.textContent.trim());
-    const l28Stage = await mobilePage.$eval('.reader-badge-gold', el => el.textContent.trim());
-    console.log(`     Lekcja 28: "${l28Title}" (Etap: ${l28Stage})`);
-    results.push({ test: 'Lekcja 28 (Nowa Ziemia - Etap V)', pass: l28Title === 'Nowa Ziemia' && l28Stage.includes('NADZIEJA') });
-    await mobilePage.click('#reader-close-btn');
-    await mobilePage.waitForTimeout(200);
-
-    // ── 5. TEST DEEP LINK (?lekcja=20-szabat) NA ŚWIEŻEJ SESJI ──
-    console.log('\n[QA] 5. Test Deep Link na świeżej stronie (?lekcja=20-szabat)...');
-    const deepLinkPage = await desktopContext.newPage();
-    await deepLinkPage.goto(`${baseUrl}/kursy.html?lekcja=20-szabat`, { waitUntil: 'domcontentloaded' });
-    await deepLinkPage.waitForTimeout(500);
-
-    const deepReaderOpen = await deepLinkPage.$eval('#lesson-reader-modal', el => !el.classList.contains('hidden'));
-    const deepReaderTitle = await deepLinkPage.$eval('#reader-title', el => el.textContent.trim());
-    console.log(`     Czytnik otwarty z Deep Link: ${deepReaderOpen}`);
-    console.log(`     Tytuł lekcji z Deep Link: "${deepReaderTitle}"`);
+    // Test interakcji: kliknięcie Ukończ Tę Lekcję
+    await lessonPage.click('#btn-complete-lesson');
+    await lessonPage.waitForTimeout(200);
+    const completedBtnText = await lessonPage.$eval('#btn-complete-lesson', el => el.textContent.trim());
+    console.log(`     Stan przycisku po ukończeniu: "${completedBtnText}"`);
     results.push({
-      test: 'Deep Link (?lekcja=20-szabat) auto-open',
-      pass: deepReaderOpen && deepReaderTitle === 'Szabat'
+      test: 'Interakcja ukończenia lekcji (Zapis stanu)',
+      pass: completedBtnText.includes('Lekcja Ukończona')
     });
 
+    // Zrzut ekranu dedykowanej podstrony
+    const subpageShotPath = path.join(artifactsDir, 'lumina_lesson_01_subpage.png');
+    await lessonPage.screenshot({ path: subpageShotPath, fullPage: false });
+    console.log(`     Zapisano zrzut ekranu dedykowanej podstrony: ${subpageShotPath}`);
+
+    // ── 4. AUDYT WSZYSTKICH 28 DEDYKOWANYCH PODSTRON (HTTP 200 + BRAK "EKUMENICZNY") ──
+    console.log('\n[QA] 4. Audyt integralności wszystkich 28 dedykowanych podstron...');
+    const { LUMINA_COURSES_CORE_28 } = await import('../data/lumina-courses-data.js');
+
+    let all28Pass = true;
+    let ekumenicznyCount = 0;
+
+    for (const l of LUMINA_COURSES_CORE_28) {
+      const resp = await lessonPage.goto(`${baseUrl}/kursy/${l.slug}`, { waitUntil: 'domcontentloaded' });
+      if (resp.status() !== 200) {
+        console.error(`     [FAIL] Lekcja ${l.id} (${l.slug}) zwróciła HTTP ${resp.status()}`);
+        all28Pass = false;
+      }
+      const pageText = await lessonPage.content();
+      if (/ekumeniczn/i.test(pageText)) {
+        console.error(`     [FAIL] Lekcja ${l.id} zawiera słowo "ekumeniczny"!`);
+        ekumenicznyCount++;
+      }
+    }
+
+    console.log(`     Wszystkie 28 podstron zwraca HTTP 200: ${all28Pass}`);
+    console.log(`     Liczba wystąpień słowa "ekumeniczny" na wszystkich 28 stronach: ${ekumenicznyCount} (oczekiwano: 0)`);
+
+    results.push({
+      test: 'Komplet 28 dedykowanych podstron lekcji HTTP 200',
+      pass: all28Pass
+    });
+
+    results.push({
+      test: 'Zero wystąpień słowa "ekumeniczny" na podstronach',
+      pass: ekumenicznyCount === 0
+    });
+
+    // ── 5. SPRAWDZENIE STRONY CERTYFIKATU I KATALOGU NA SŁOWO "EKUMENICZNY" ──
+    console.log('\n[QA] 5. Weryfikacja katalogu i certyfikatu na brak słowa "ekumeniczny"...');
+    await desktopPage.goto(`${baseUrl}/kursy.html`, { waitUntil: 'domcontentloaded' });
+    const catalogHtml = await desktopPage.content();
+    const catalogHasEkumeniczny = /ekumeniczn/i.test(catalogHtml);
+
+    await desktopPage.goto(`${baseUrl}/certyfikat.html`, { waitUntil: 'domcontentloaded' });
+    const certHtml = await desktopPage.content();
+    const certHasEkumeniczny = /ekumeniczn/i.test(certHtml);
+
+    console.log(`     Katalog kursów wolny od "ekumeniczny": ${!catalogHasEkumeniczny}`);
+    console.log(`     Certyfikat ukończenia wolny od "ekumeniczny": ${!certHasEkumeniczny}`);
+
+    results.push({
+      test: 'Całkowite usunięcie słowa "ekumeniczny" z kursy.html i certyfikat.html',
+      pass: !catalogHasEkumeniczny && !certHasEkumeniczny
+    });
+
+  } catch (err) {
+    console.error('Błąd podczas wykonywania testów QA:', err);
+    results.push({ test: 'Brak nieoczekiwanych wyjątków', pass: false });
   } finally {
     await browser.close();
     server.close();
   }
 
-  console.log('\n=== PODSUMOWANIE MANUALNEGO / AUTOMATYCZNEGO QA PHASE 2 ===');
+  console.log('\n=== PODSUMOWANIE QA LUMINA BIBLE ACADEMY ===');
   let allPass = true;
   results.forEach(r => {
     console.log(`[${r.pass ? 'PASS' : 'FAIL'}] ${r.test}`);
@@ -235,7 +227,7 @@ async function runQA() {
   });
 
   if (allPass) {
-    console.log('\n✅ WSZYSTKIE SCENARIUSZE QA PHASE 2 ZALICZONE W 100%!');
+    console.log('\n✨ WSZYSTKIE TESTY ZAKOŃCZONE PEŁNYM SUKCESEM (100% PASS)!');
     process.exit(0);
   } else {
     console.error('\n❌ QA ZAKOŃCZONE BŁĘDEM!');

@@ -56,6 +56,13 @@ export default {
       return env.ASSETS.fetch(new Request(kursyUrl, request));
     }
 
+    if (p.startsWith('/akademia/') && !p.startsWith('/akademia/certyfikat')) {
+      const target = p.replace('/akademia/', '/kursy/');
+      const kursyUrl = new URL(request.url);
+      kursyUrl.pathname = target;
+      return env.ASSETS.fetch(new Request(kursyUrl, request));
+    }
+
 
     // Studio API Endpoints
     if (url.pathname === '/api/bible/ubg/info') {
@@ -160,6 +167,16 @@ export default {
       }
     }
 
-    return env.ASSETS.fetch(request);
+    const assetResp = await env.ASSETS.fetch(request);
+    if (assetResp.status === 404 && !url.pathname.includes('.')) {
+      const fallbackUrl = new URL(request.url);
+      fallbackUrl.pathname = url.pathname.replace(/\/$/, '') + '.html';
+      const fallbackResp = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+      if (fallbackResp.status < 400) {
+        return fallbackResp;
+      }
+    }
+
+    return assetResp;
   },
 };

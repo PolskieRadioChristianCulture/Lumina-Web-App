@@ -1187,7 +1187,7 @@ class LuminaCoursesEngine {
       }
 
       html += `
-        <article class="cin-chapter-row lesson-card ${isCompleted ? 'completed' : ''} ${isCurrent ? 'is-current' : ''}" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
+        <a href="/kursy/${lesson.slug}" class="cin-chapter-row lesson-card ${isCompleted ? 'completed' : ''} ${isCurrent ? 'is-current' : ''}" data-lesson-id="${lesson.id}" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
           <div class="cin-chapter-num">
             ${isCompleted ? '✓' : (lesson.id < 10 ? '0' + lesson.id : lesson.id)}
           </div>
@@ -1204,10 +1204,10 @@ class LuminaCoursesEngine {
               ${stage ? `<span>•</span><span>Etap ${stage.roman}</span>` : ''}
             </div>
           </div>
-          <div>
+          <div class="flex items-center gap-2">
             ${badgeHtml}
           </div>
-        </article>
+        </a>
       `;
     });
 
@@ -1215,16 +1215,25 @@ class LuminaCoursesEngine {
 
     // Click & keyboard handlers
     this.dom.lessonsGrid.querySelectorAll('.lesson-card').forEach((card) => {
-      const openFn = () => {
+      const openFn = (e) => {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
         const id = parseInt(card.getAttribute('data-lesson-id'), 10);
-        this.openLesson(id);
+        if (window.__FORCE_MODAL__) {
+          e.preventDefault();
+          this.openLessonModal(id);
+        } else {
+          const l = this.lessons.find((item) => item.id === id);
+          if (l) {
+            e.preventDefault();
+            window.location.href = `/kursy/${l.slug}`;
+          }
+        }
       };
 
       card.addEventListener('click', openFn);
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openFn();
+          openFn(e);
         }
       });
     });
@@ -1296,7 +1305,7 @@ class LuminaCoursesEngine {
    * FULLSCREEN LEARNING READER MODAL
    * ────────────────────────────────────────────────────────────────────────── */
 
-  openLesson(identifier) {
+  openLesson(identifier, openInModal = false) {
     let lesson = null;
 
     if (typeof identifier === 'number') {
@@ -1315,6 +1324,20 @@ class LuminaCoursesEngine {
       console.warn('[CoursesEngine] Nie znaleziono lekcji o identyfikatorze:', identifier);
       return;
     }
+
+    if (openInModal || window.__FORCE_MODAL__) {
+      this.openLessonModal(lesson);
+      return;
+    }
+
+    window.location.href = `/kursy/${lesson.slug}`;
+  }
+
+  openLessonModal(lessonOrId) {
+    let lesson = typeof lessonOrId === 'object' 
+      ? lessonOrId 
+      : this.lessons.find((l) => l.id === lessonOrId || l.slug === lessonOrId);
+    if (!lesson) return;
 
     this.currentLesson = lesson;
 
