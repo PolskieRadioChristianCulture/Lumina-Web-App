@@ -178,31 +178,31 @@
       font-weight: 700;
     }
 
-    /* ── CINEMATIC HERO SPLIT LAYOUT ── */
+    /* ── CINEMATIC FULL WINDOW HERO ── */
     .cin-hero {
       position: relative;
       margin-top: 24px;
       border-radius: var(--radius-xl);
       overflow: hidden;
-      border: 1px solid var(--border-subtle);
-      background: linear-gradient(135deg, #0a0d14 0%, #0e121a 50%, #080a0f 100%);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
-      padding: 40px 48px;
-    }
-
-    .cin-hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 40px;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .cin-hero-left {
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background-color: #07090e;
+      background-image: 
+        linear-gradient(90deg, #07090e 0%, rgba(7, 9, 14, 0.94) 38%, rgba(7, 9, 14, 0.7) 56%, rgba(7, 9, 14, 0.2) 78%, transparent 100%),
+        url('/images/academy_hero_main.png');
+      background-size: cover;
+      background-position: right 25%;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(212, 175, 55, 0.18);
+      padding: 56px 48px;
+      min-height: 480px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+
+    .cin-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
     }
 
     .cin-journey-tag {
@@ -215,11 +215,11 @@
       text-transform: uppercase;
       color: var(--accent-warm);
       margin-bottom: 16px;
-      background: rgba(14, 18, 26, 0.8);
+      background: rgba(14, 18, 26, 0.85);
       backdrop-filter: blur(8px);
       padding: 6px 14px;
       border-radius: 99px;
-      border: 1px solid rgba(212, 175, 55, 0.25);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       width: fit-content;
     }
 
@@ -235,59 +235,10 @@
 
     .cin-hero-subtitle {
       font-size: clamp(14px, 1.6vw, 15px);
-      color: #9ba3b4;
+      color: #cbd5e1;
       margin-bottom: 24px;
       line-height: 1.65;
       max-width: 580px;
-    }
-
-    /* Emocjonalny obraz pielgrzymów (hero right visual) */
-    .cin-hero-visual {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.32);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(212, 175, 55, 0.2);
-      aspect-ratio: 16 / 9;
-      max-height: 400px;
-      background: #090c12;
-    }
-
-    .cin-hero-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 25%;
-      transition: transform 6s ease-out;
-    }
-
-    .cin-hero:hover .cin-hero-visual img {
-      transform: scale(1.03);
-    }
-
-    .cin-hero-visual-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 70%, rgba(7, 9, 14, 0.75) 100%);
-      display: flex;
-      align-items: flex-end;
-      padding: 16px 20px;
-    }
-
-    .cin-hero-visual-caption {
-      font-size: 11px;
-      color: #e2e8f0;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      padding: 4px 12px;
-      border-radius: 99px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     /* Central Progress Indicator */
@@ -1199,16 +1150,13 @@
     /* Responsive (Mobile 390px iPhone & Tablets) */
     @media (max-width: 860px) {
       .cin-hero {
-        padding: 28px 20px;
+        padding: 36px 20px;
         margin-top: 12px;
-      }
-      .cin-hero-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      .cin-hero-visual {
-        max-height: 260px;
-        order: -1;
+        min-height: auto;
+        background-position: right 30%;
+        background-image: 
+          linear-gradient(180deg, rgba(7, 9, 14, 0.94) 0%, rgba(7, 9, 14, 0.88) 60%, rgba(7, 9, 14, 0.96) 100%),
+          url('/images/academy_hero_main.png');
       }
       .cin-stages-grid {
         grid-template-columns: 1fr;
@@ -1315,62 +1263,51 @@
   <!-- ── MAIN CONTENT CONTAINER ── -->
   <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
 
-    <!-- 1. CINEMATIC HERO SECTION (SPLIT JOURNEY) -->
+    <!-- 1. CINEMATIC HERO SECTION (FULL WINDOW ARTWORK BACKGROUND) -->
     <section class="cin-hero mb-12">
-      <div class="cin-hero-grid">
-        <div class="cin-hero-left">
-          <div class="cin-journey-tag">
-            <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>
-          </div>
-
-          <h1 class="cin-hero-title">
-            <span class="block">LUMINA BIBLE ACADEMY</span>
-          </h1>
-
-          <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
-            28 kroków. Jedna Biblia. Droga z Jezusem.
-          </p>
-
-          <p class="cin-hero-subtitle">
-            Jedna spójna opowieść o Bożej miłości, odkupieniu człowieka i nadziei, która nie zawodzi. Odkrywaj Pismo Święte krok po kroku — czytaj, słuchaj lektora audio, badaj Słowo i wzrastaj w wierze.
-          </p>
-
-          <!-- Central Progress Indicator -->
-          <div class="cin-progress-bar-wrap" id="cin-progress-box">
-            <div class="cin-progress-header">
-              <span class="cin-progress-title">Twój postęp w drodze pielgrzyma</span>
-              <span id="hero-stats-badge" class="cin-progress-stat">0 / 28 LEKCJI (0%)</span>
-            </div>
-            <div class="cin-bar-track">
-              <div id="hero-progress-bar-fill" class="cin-bar-fill" style="width: 0%;"></div>
-            </div>
-          </div>
-
-          <!-- Hero Actions -->
-          <div class="cin-hero-actions">
-            <button type="button" id="hero-action-btn" class="cin-btn-primary min-h-[48px]">
-              <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
-              <span>→</span>
-            </button>
-            
-            <a href="#stages-section" class="cin-btn-secondary min-h-[48px]">
-              <span>Przeglądaj 5 Etapów</span>
-            </a>
-          </div>
-
-          <p class="text-xs text-zinc-500 mt-4">
-            * Dostęp bezpłatny. Nie wymaga natychmiastowego logowania do czytania i słuchania.
-          </p>
+      <div class="cin-hero-content">
+        <div class="cin-journey-tag">
+          <span class="text-amber-400">●</span> <span>DROGA PIELGRZYMA • 28 KROKÓW • SOLA SCRIPTURA</span>
         </div>
 
-        <div class="cin-hero-visual">
-          <img src="/images/academy_hero_main.png" alt="LUMINA Bible Academy — Pielgrzymi Słowa" loading="eager" />
-          <div class="cin-hero-visual-overlay">
-            <span class="cin-hero-visual-caption">
-              <span>✦</span> <span>Pielgrzymi Słowa • Podróż przez 28 Prawd</span>
-            </span>
+        <h1 class="cin-hero-title">
+          <span class="block">LUMINA BIBLE ACADEMY</span>
+        </h1>
+
+        <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
+          28 kroków. Jedna Biblia. Droga z Jezusem.
+        </p>
+
+        <p class="cin-hero-subtitle">
+          Jedna spójna opowieść o Bożej miłości, odkupieniu człowieka i nadziei, która nie zawodzi. Odkrywaj Pismo Święte krok po kroku — czytaj, słuchaj lektora audio, badaj Słowo i wzrastaj w wierze.
+        </p>
+
+        <!-- Central Progress Indicator -->
+        <div class="cin-progress-bar-wrap" id="cin-progress-box">
+          <div class="cin-progress-header">
+            <span class="cin-progress-title">Twój postęp w drodze pielgrzyma — 28 Lekcji • 5 Etapów Drogi</span>
+            <span id="hero-stats-badge" class="cin-progress-stat">0 / 28 LEKCJI (0%)</span>
+          </div>
+          <div class="cin-bar-track">
+            <div id="hero-progress-bar-fill" class="cin-bar-fill" style="width: 0%;"></div>
           </div>
         </div>
+
+        <!-- Hero Actions -->
+        <div class="cin-hero-actions">
+          <button type="button" id="hero-action-btn" class="cin-btn-primary min-h-[48px]">
+            <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
+            <span>→</span>
+          </button>
+          
+          <a href="#stages-section" class="cin-btn-secondary min-h-[48px]">
+            <span>PRZEGLĄDAJ 5 ETAPÓW →</span>
+          </a>
+        </div>
+
+        <p class="text-xs text-zinc-500 mt-4">
+          * Dostęp bezpłatny. Nie wymaga natychmiastowego logowania do czytania i słuchania.
+        </p>
       </div>
     </section>
 
