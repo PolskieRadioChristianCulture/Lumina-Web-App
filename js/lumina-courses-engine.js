@@ -152,6 +152,12 @@ class LuminaCoursesEngine {
     this.dom = {
       heroActionBtn: document.getElementById('hero-action-btn'),
       heroStatsBadge: document.getElementById('hero-stats-badge'),
+      heroProgressBarFill: document.getElementById('hero-progress-bar-fill'),
+      featureLessonContainer: document.getElementById('cin-feature-lesson-container'),
+      stagesFilterAllWrap: document.getElementById('stages-filter-all-wrap'),
+      chaptersSectionTitle: document.getElementById('chapters-section-title'),
+      chaptersSectionDesc: document.getElementById('chapters-section-desc'),
+      chaptersCountBadge: document.getElementById('chapters-count-badge'),
       stagesNav: document.getElementById('stages-nav'),
       lessonsGrid: document.getElementById('lessons-grid'),
       lessonReader: document.getElementById('lesson-reader-modal'),
@@ -870,33 +876,142 @@ class LuminaCoursesEngine {
   renderStagesNav() {
     if (!this.dom.stagesNav) return;
 
-    let html = `
-      <button type="button" class="stage-pill ${this.activeStageFilter === 'all' ? 'active' : ''}" data-stage-filter="all">
-        Wszystkie (28)
-      </button>
-    `;
+    // Filter pill for "Wszystkie lekcje" in stagesFilterAllWrap
+    if (this.dom.stagesFilterAllWrap) {
+      const isAllActive = this.activeStageFilter === 'all';
+      this.dom.stagesFilterAllWrap.innerHTML = `
+        <button type="button" class="cin-chapter-badge ${isAllActive ? 'current' : 'open'} min-h-[38px] px-4 cursor-pointer transition-all" data-stage-filter="all">
+          <span>Wszystkie (28 Lekcji)</span>
+        </button>
+      `;
+      const allBtn = this.dom.stagesFilterAllWrap.querySelector('[data-stage-filter="all"]');
+      if (allBtn) {
+        allBtn.addEventListener('click', () => {
+          this.activeStageFilter = 'all';
+          this.renderStagesNav();
+          this.renderLessonsGrid();
+        });
+      }
+    }
 
     const romanMap = { 'etap-1': 'I', 'etap-2': 'II', 'etap-3': 'III', 'etap-4': 'IV', 'etap-5': 'V', 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
-    this.stages.forEach((stage) => {
+    const nextId = this.getNextRecommendedLessonId();
+    let html = '';
+
+    this.stages.forEach((stage, idx) => {
       const roman = stage.roman || romanMap[stage.id] || romanMap[stage.order] || 'I';
-      const activeClass = this.activeStageFilter === String(stage.id) ? 'active' : '';
+      const stageOrder = stage.order || (idx + 1);
+      const stageOrderPadded = stageOrder < 10 ? `0${stageOrder}` : `${stageOrder}`;
+
+      // Calculate lessons in this stage
+      const stageLessons = this.lessons.filter((l) => l.stageId === stage.id || l.stage === stage.id);
+      const totalCount = stageLessons.length;
+      let completedCount = 0;
+      let hasCurrent = false;
+
+      stageLessons.forEach((l) => {
+        const cloudProg = this.cloudProgress.get(l.id);
+        const isCloudComp = cloudProg && cloudProg.status === 'completed';
+        const isLocalComp = !this.currentUser && this.localCompletedIds.has(l.id);
+        if (isCloudComp || isLocalComp) {
+          completedCount++;
+        }
+        if (l.id === nextId) {
+          hasCurrent = true;
+        }
+      });
+
+      const isCompleted = totalCount > 0 && completedCount === totalCount;
+      const isActiveFilter = this.activeStageFilter === String(stage.id);
+
+      // Status text & class
+      let statusHtml = '';
+      if (isCompleted) {
+        statusHtml = `<div class="cin-stage-status done">✓ ${completedCount}/${totalCount} Ukończono</div>`;
+      } else if (hasCurrent) {
+        statusHtml = `<div class="cin-stage-status current">● ${completedCount}/${totalCount} • Krok ${nextId}</div>`;
+      } else if (completedCount > 0) {
+        statusHtml = `<div class="cin-stage-status current">${completedCount}/${totalCount} w toku</div>`;
+      } else {
+        statusHtml = `<div class="cin-stage-status pending">${totalCount} lekcji</div>`;
+      }
+
+      // Range text
+      const minId = stageLessons.length > 0 ? stageLessons[0].id : 1;
+      const maxId = stageLessons.length > 0 ? stageLessons[stageLessons.length - 1].id : 28;
+      const rangeText = `Lekcje ${minId}–${maxId}`;
+
       html += `
-        <button type="button" class="stage-pill ${activeClass}" data-stage-filter="${stage.id}">
-          Etap ${roman}: ${stage.title_pl}
-        </button>
+        <div class="cin-stage-card ${isActiveFilter ? 'active' : ''} ${isCompleted ? 'completed' : ''}" data-stage-filter="${stage.id}" tabindex="0" role="tab" aria-selected="${isActiveFilter}">
+          <span class="cin-stage-num">${stageOrderPadded} / 05</span>
+          <div>
+            <div class="cin-stage-name">${stage.title_pl.toUpperCase()}</div>
+            <div class="cin-stage-meta">${rangeText}</div>
+          </div>
+          ${statusHtml}
+        </div>
       `;
     });
 
     this.dom.stagesNav.innerHTML = html;
 
-    this.dom.stagesNav.querySelectorAll('[data-stage-filter]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        const filter = e.currentTarget.getAttribute('data-stage-filter');
-        this.activeStageFilter = filter;
+    this.dom.stagesNav.querySelectorAll('[data-stage-filter]').forEach((card) => {
+      const selectStage = () => {
+        const filter = card.getAttribute('data-stage-filter');
+        this.activeStageFilter = this.activeStageFilter === filter ? 'all' : filter;
         this.renderStagesNav();
         this.renderLessonsGrid();
+      };
+      card.addEventListener('click', selectStage);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectStage();
+        }
       });
     });
+  }
+
+  renderFeatureLessonCard() {
+    if (!this.dom.featureLessonContainer) return;
+
+    const nextId = this.getNextRecommendedLessonId();
+    const lesson = this.lessons.find((l) => l.id === nextId) || this.lessons[0];
+    const stage = this.getStageForLesson(lesson);
+    const keyVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
+    const imageSrc = lesson.image || `/images/lessons/${lesson.id}.svg`;
+    const estMinutes = lesson.estimatedMinutes || 15;
+
+    this.dom.featureLessonContainer.innerHTML = `
+      <div class="cin-feature-lesson">
+        <div class="cin-feature-artwork">
+          <img src="${imageSrc.startsWith('/') ? imageSrc : '/' + imageSrc}" alt="Lekcja ${lesson.id}" onerror="this.src='/images/lessons/01.svg'" />
+        </div>
+        <div>
+          <div class="cin-feature-tag">Krok ${lesson.id} z 28 • Etap ${stage ? stage.roman : 'I'}: ${stage ? stage.title_pl : ''}</div>
+          <h3 class="cin-feature-title">Lekcja ${lesson.id}: ${lesson.title.pl}</h3>
+          <p class="cin-feature-excerpt">${lesson.introduction.pl}</p>
+          <div class="cin-feature-meta">
+            <span>⏱ ok. ${estMinutes} minut</span>
+            <span>📖 ${keyVerse}</span>
+            <span>💡 Moduł Odkryj + Quiz + Dziennik</span>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="cin-btn-primary feature-lesson-open-btn min-h-[48px]" data-lesson-id="${lesson.id}">
+            <span>STUDIUJ TERAZ</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    const openBtn = this.dom.featureLessonContainer.querySelector('.feature-lesson-open-btn');
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        this.openLesson(lesson.id);
+      });
+    }
   }
 
   renderLessonsGrid() {
@@ -907,78 +1022,75 @@ class LuminaCoursesEngine {
       filtered = this.lessons.filter((l) => l.stageId === this.activeStageFilter || l.stage === this.activeStageFilter);
     }
 
+    // Update section headers
+    if (this.dom.chaptersSectionTitle) {
+      if (this.activeStageFilter === 'all') {
+        this.dom.chaptersSectionTitle.innerHTML = `<span class="text-brand-gold text-base">✦</span><span>Wszystkie 28 Lekcji</span>`;
+      } else {
+        const currentStage = this.stages.find((s) => s.id === this.activeStageFilter);
+        const roman = currentStage ? (currentStage.roman || currentStage.order || 'I') : 'I';
+        const title = currentStage ? currentStage.title_pl : 'Etap';
+        this.dom.chaptersSectionTitle.innerHTML = `<span class="text-brand-gold text-base">✦</span><span>Rozdziały w Etapie ${roman}: ${title}</span>`;
+      }
+    }
+
+    if (this.dom.chaptersCountBadge) {
+      this.dom.chaptersCountBadge.textContent = `${filtered.length} lekcji`;
+    }
+
+    const nextId = this.getNextRecommendedLessonId();
     let html = '';
 
     filtered.forEach((lesson) => {
       const stage = this.getStageForLesson(lesson);
 
-      // Ustalenie statusu ukończenia z właściwego źródła
+      // Status
       const cloudProg = this.cloudProgress.get(lesson.id);
       const isCloudCompleted = cloudProg && cloudProg.status === 'completed';
       const isLocalCompleted = !this.currentUser && this.localCompletedIds.has(lesson.id);
       const isCompleted = isCloudCompleted || isLocalCompleted;
       const isInProgress = cloudProg && cloudProg.status === 'in_progress';
+      const isCurrent = lesson.id === nextId;
 
       const keyVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
-      const imageSrc = lesson.image || `/images/lessons/${lesson.id}.svg`;
       const estMinutes = lesson.estimatedMinutes || 15;
 
+      let badgeHtml = '';
+      if (isCompleted) {
+        badgeHtml = `<span class="cin-chapter-badge done">✓ Ukończono</span>`;
+      } else if (isCurrent) {
+        badgeHtml = `<span class="cin-chapter-badge current">Bieżąca</span>`;
+      } else if (isInProgress) {
+        badgeHtml = `<span class="cin-chapter-badge current">W toku</span>`;
+      } else {
+        badgeHtml = `<span class="cin-chapter-badge open">Do odkrycia</span>`;
+      }
+
       html += `
-        <article class="lesson-card group ${isCompleted ? 'border-emerald-500/40 bg-[#0c1410]/90' : ''}" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
-          
-          <div>
-            <!-- Banner: Numer, Etap i Status -->
-            <div class="lesson-card-banner">
-              <span class="lesson-num-badge ${isCompleted ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : ''}">
-                ${isCompleted ? '✓' : lesson.id}
-              </span>
-              <span class="text-[11px] font-bold uppercase tracking-wider text-brand-gold-light truncate max-w-[170px]">
-                ${stage ? stage.roman + '. ' + stage.title_pl : ''}
-              </span>
-            </div>
-
-            <!-- Vector SVG Icon -->
-            <div class="w-12 h-12 mb-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
-              <img src="${imageSrc.startsWith('/') ? imageSrc : '/' + imageSrc}" alt="" class="w-full h-full object-contain filter drop-shadow" loading="lazy" />
-            </div>
-
-            <!-- Title -->
-            <h3 class="font-serif font-bold text-white text-lg leading-snug mb-2 group-hover:text-brand-gold transition-colors line-clamp-2">
-              ${lesson.title.pl}
-            </h3>
-
-            <!-- Introduction excerpt -->
-            <p class="text-zinc-400 text-xs line-clamp-3 leading-relaxed mb-4">
-              ${lesson.introduction.pl}
-            </p>
+        <article class="cin-chapter-row lesson-card ${isCompleted ? 'completed' : ''} ${isCurrent ? 'is-current' : ''}" data-lesson-id="${lesson.id}" tabindex="0" role="button" aria-label="Lekcja ${lesson.id}: ${lesson.title.pl}">
+          <div class="cin-chapter-num">
+            ${isCompleted ? '✓' : (lesson.id < 10 ? '0' + lesson.id : lesson.id)}
           </div>
-
-          <!-- Bottom Meta & Status -->
-          <div class="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs">
-            <span class="text-zinc-500 flex items-center gap-1.5 font-medium">
+          <div class="cin-chapter-title-wrap">
+            <h4>${lesson.title.pl}</h4>
+            <p>${lesson.introduction.pl}</p>
+            <div class="cin-chapter-meta-line">
               <span>⏱ ${estMinutes} min</span>
               <span>•</span>
               <span class="text-amber-300/80 font-serif">${keyVerse}</span>
-            </span>
-
-            <div>
-              ${
-                isCompleted
-                  ? '<span class="text-emerald-400 font-bold flex items-center gap-1 text-[11px]">✓ Ukończona</span>'
-                  : isInProgress
-                  ? '<span class="text-amber-400 font-bold flex items-center gap-1 text-[11px]">⏳ W trakcie</span>'
-                  : '<span class="text-brand-gold font-bold group-hover:translate-x-1 transition-transform inline-block">Rozpocznij ›</span>'
-              }
+              ${stage ? `<span>•</span><span>Etap ${stage.roman}</span>` : ''}
             </div>
           </div>
-
+          <div>
+            ${badgeHtml}
+          </div>
         </article>
       `;
     });
 
     this.dom.lessonsGrid.innerHTML = html;
 
-    // Podpięcie kliknięcia w karty
+    // Click & keyboard handlers
     this.dom.lessonsGrid.querySelectorAll('.lesson-card').forEach((card) => {
       const openFn = () => {
         const id = parseInt(card.getAttribute('data-lesson-id'), 10);
@@ -1008,10 +1120,14 @@ class LuminaCoursesEngine {
 
     if (this.dom.heroStatsBadge) {
       if (completedCount > 0) {
-        this.dom.heroStatsBadge.textContent = `${completedCount} z 28 Lekcji Ukończonych (${percent}%) • ETAP DROGI`;
+        this.dom.heroStatsBadge.textContent = `${completedCount} / 28 LEKCJI (${percent}%) • ETAP DROGI`;
       } else {
         this.dom.heroStatsBadge.textContent = '28 Lekcji • 5 Etapów Drogi';
       }
+    }
+
+    if (this.dom.heroProgressBarFill) {
+      this.dom.heroProgressBarFill.style.width = `${percent}%`;
     }
 
     if (this.dom.heroActionBtn) {
@@ -1021,20 +1137,22 @@ class LuminaCoursesEngine {
       if (completedCount >= 28) {
         this.dom.heroActionBtn.innerHTML = `
           <span>🎉 Gratulacje! Ukończono Wszystkie 28 Lekcji</span>
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <span class="ml-2">✓</span>
         `;
       } else if (completedCount > 0) {
         this.dom.heroActionBtn.innerHTML = `
-          <span>Kontynuuj Naukę (Lekcja ${nextId}: ${nextLesson.title.pl})</span>
-          <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          <span>Kontynuuj Naukę (Krok ${nextId}: ${nextLesson.title.pl})</span>
+          <span class="ml-2">→</span>
         `;
       } else {
         this.dom.heroActionBtn.innerHTML = `
           <span>Rozpocznij Bezpłatnie (Krok 1)</span>
-          <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          <span class="ml-2">→</span>
         `;
       }
     }
+
+    this.renderFeatureLessonCard();
   }
 
   getNextRecommendedLessonId() {
@@ -1185,25 +1303,31 @@ class LuminaCoursesEngine {
 
       <!-- 4. POSŁUCHAJ (TTS) -->
       <section class="reader-section reader-tts-box">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h3 class="text-white font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-              <span class="text-amber-400 text-lg">🔊</span>
-              <span>Posłuchaj Lekcji (Synteza Mowy)</span>
-            </h3>
-            <p id="tts-status-text" class="text-zinc-400 text-xs mt-1">Naciśnij Odtwarzaj, aby wysłuchać pełnej treści lekcji.</p>
+        <div class="cin-audio-deck">
+          <div class="cin-audio-left">
+            <button type="button" id="tts-btn-play" class="cin-audio-btn btn-tts-action" aria-label="Odtwórz lekcję na głos">
+              <span>▶</span>
+            </button>
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="tts-btn-pause" class="cin-btn-secondary btn-tts-action text-xs px-3 py-2 min-h-[44px]" disabled aria-label="Pauza lektora">
+                <span>⏸ Pauza</span>
+              </button>
+              <button type="button" id="tts-btn-stop" class="cin-btn-secondary btn-tts-action text-xs px-3 py-2 min-h-[44px]" disabled aria-label="Zatrzymaj lektora">
+                <span>⏹ Stop</span>
+              </button>
+            </div>
+            <div class="cin-audio-info">
+              <h5>POSŁUCHAJ LEKCJI</h5>
+              <p id="tts-status-text">Lektor LUMINA Audio • Kliknij Odtwarzaj, aby wysłuchać pełnej treści lekcji.</p>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <button type="button" id="tts-btn-play" class="btn-tts-action">
-              <span>▶ Odtwarzaj</span>
-            </button>
-            <button type="button" id="tts-btn-pause" class="btn-tts-action" disabled>
-              <span>⏸ Pauza</span>
-            </button>
-            <button type="button" id="tts-btn-stop" class="btn-tts-action" disabled>
-              <span>⏹ Stop</span>
-            </button>
+          <div class="cin-waveform hidden sm:flex" aria-hidden="true">
+            <div class="cin-wave-bar"></div><div class="cin-wave-bar"></div><div class="cin-wave-bar"></div>
+            <div class="cin-wave-bar"></div><div class="cin-wave-bar"></div><div class="cin-wave-bar"></div>
+            <div class="cin-wave-bar"></div><div class="cin-wave-bar"></div><div class="cin-wave-bar"></div>
+            <div class="cin-wave-bar"></div><div class="cin-wave-bar"></div><div class="cin-wave-bar"></div>
           </div>
+          <div class="cin-audio-time" id="tts-audio-time">00:00 / ${lesson.estimatedMinutes || 15}:00</div>
         </div>
       </section>
 
@@ -1315,17 +1439,17 @@ class LuminaCoursesEngine {
               ? lesson.quiz.questions
                   .map(
                     (q, qIdx) => `
-                <div class="quiz-card" id="quiz-card-${q.id}" data-qid="${q.id}" data-correct="${q.correctAnswer}">
+                <div class="quiz-card cin-quiz-card" id="quiz-card-${q.id}" data-qid="${q.id}" data-correct="${q.correctAnswer}">
                   <div class="quiz-q-header">
-                    <span class="quiz-q-badge">Pytanie ${qIdx + 1} z ${lesson.quiz.questions.length}</span>
+                    <span class="quiz-q-badge cin-quiz-step">Pytanie ${qIdx + 1} z ${lesson.quiz.questions.length} • SPRAWDŹ ZROZUMIENIE</span>
                     ${q.needsEditorialReview ? '<span class="editorial-badge m-0">Weryfikacja redakcyjna</span>' : ''}
                   </div>
-                  <p class="quiz-q-prompt">${q.question}</p>
-                  <div class="quiz-options-list" role="radiogroup" aria-label="Odpowiedzi do pytania ${qIdx + 1}">
+                  <p class="quiz-q-prompt cin-quiz-q">${q.question}</p>
+                  <div class="quiz-options-list cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania ${qIdx + 1}">
                     ${q.options
                       .map(
                         (opt, optIdx) => `
-                      <button type="button" class="quiz-option-btn" data-qid="${q.id}" data-opt-idx="${optIdx}" role="radio" aria-checked="false">
+                      <button type="button" class="quiz-option-btn cin-option-btn min-h-[48px]" data-qid="${q.id}" data-opt-idx="${optIdx}" role="radio" aria-checked="false">
                         <span>${opt}</span>
                         <span class="quiz-opt-icon text-xs opacity-60">○</span>
                       </button>
