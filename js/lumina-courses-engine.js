@@ -855,19 +855,6 @@ class LuminaCoursesEngine {
     }
 
     const romanMap = { 'etap-1': 'I', 'etap-2': 'II', 'etap-3': 'III', 'etap-4': 'IV', 'etap-5': 'V', 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
-    const stageImages = {
-      'etap-1': '/images/stages/stage1.jpg',
-      'etap-2': '/images/stages/stage2.jpg',
-      'etap-3': '/images/stages/stage3.jpg',
-      'etap-4': '/images/stages/stage4.jpg',
-      'etap-5': '/images/stages/stage5.jpg',
-      1: '/images/stages/stage1.jpg',
-      2: '/images/stages/stage2.jpg',
-      3: '/images/stages/stage3.jpg',
-      4: '/images/stages/stage4.jpg',
-      5: '/images/stages/stage5.jpg'
-    };
-
     const nextId = this.getNextRecommendedLessonId();
     let html = '';
 
@@ -875,7 +862,6 @@ class LuminaCoursesEngine {
       const roman = stage.roman || romanMap[stage.id] || romanMap[stage.order] || 'I';
       const stageOrder = stage.order || (idx + 1);
       const stageOrderPadded = stageOrder < 10 ? `0${stageOrder}` : `${stageOrder}`;
-      const bgImg = stageImages[stage.id] || stageImages[stageOrder] || `/images/stages/stage${stageOrder}.jpg`;
 
       // Calculate lessons in this stage
       const stageLessons = this.lessons.filter((l) => l.stageId === stage.id || l.stage === stage.id);
@@ -898,32 +884,45 @@ class LuminaCoursesEngine {
       const isCompleted = totalCount > 0 && completedCount === totalCount;
       const isActiveFilter = this.activeStageFilter === String(stage.id);
 
-      // Status text & class
-      let statusHtml = '';
-      if (isCompleted) {
-        statusHtml = `<div class="cin-stage-status done">✓ ${completedCount}/${totalCount} Ukończono</div>`;
-      } else if (hasCurrent) {
-        statusHtml = `<div class="cin-stage-status current">● ${completedCount}/${totalCount} • Krok ${nextId}</div>`;
-      } else if (completedCount > 0) {
-        statusHtml = `<div class="cin-stage-status current">${completedCount}/${totalCount} w toku</div>`;
-      } else {
-        statusHtml = `<div class="cin-stage-status pending">${totalCount} lekcji</div>`;
-      }
-
       // Range text
       const minId = stageLessons.length > 0 ? stageLessons[0].id : 1;
       const maxId = stageLessons.length > 0 ? stageLessons[stageLessons.length - 1].id : 28;
-      const rangeText = `Lekcje ${minId}–${maxId}`;
+      const rangeText = `Lekcje ${minId}-${maxId}`;
+
+      let footerHtml = '';
+      if (isCompleted) {
+        footerHtml = `<div>✓ UKOŃCZONO (${totalCount})</div>`;
+      } else if (stageOrder === 1 && completedCount === 0) {
+        footerHtml = `
+          <div>0 / 7 • KROK 1</div>
+          <div class="cin-stage-dots">
+            <span class="cin-stage-dot active"></span>
+            <span class="cin-stage-dot"></span>
+            <span class="cin-stage-dot"></span>
+            <span class="cin-stage-dot"></span>
+            <span class="cin-stage-dot"></span>
+            <span class="cin-stage-dot"></span>
+            <span class="cin-stage-dot"></span>
+          </div>
+        `;
+      } else if (completedCount > 0) {
+        footerHtml = `<div>${completedCount} / ${totalCount} W TOKU</div>`;
+      } else {
+        footerHtml = `<div>${totalCount} LEKCJI</div>`;
+      }
 
       html += `
-        <div class="cin-stage-card ${isActiveFilter ? 'active' : ''} ${isCompleted ? 'completed' : ''}" style="background-image: url('${bgImg}')" data-stage-filter="${stage.id}" tabindex="0" role="tab" aria-selected="${isActiveFilter}">
-          <div class="cin-stage-card-top">
-            <span class="cin-stage-num">${stageOrderPadded} / 05</span>
-          </div>
-          <div class="cin-stage-card-bottom">
+        <div class="cin-stage-card ${isActiveFilter ? 'active' : ''} ${isCompleted ? 'completed' : ''}" data-stage-filter="${stage.id}" tabindex="0" role="tab" aria-selected="${isActiveFilter}">
+          <div>
+            <span class="cin-stage-num">${stageOrderPadded}/05</span>
             <div class="cin-stage-name">${stage.title_pl.toUpperCase()}</div>
-            <div class="cin-stage-meta">${rangeText}</div>
-            ${statusHtml}
+            <div class="cin-stage-meta">(${rangeText})</div>
+          </div>
+          <div class="cin-stage-image-wrap">
+            <img src="/images/academy/stage${stageOrder}_art.jpg" alt="${stage.title_pl}" onerror="this.src='/images/stages/stage${stageOrder}.jpg'" />
+          </div>
+          <div class="cin-stage-footer">
+            ${footerHtml}
           </div>
         </div>
       `;
@@ -954,73 +953,78 @@ class LuminaCoursesEngine {
     const nextId = this.getNextRecommendedLessonId();
     const lesson = this.lessons.find((l) => l.id === nextId) || this.lessons[0];
     const stage = this.getStageForLesson(lesson);
-    const keyVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
+    const keyVerse = (lesson.scripture?.references && lesson.scripture.references.join('; ')) || 'J 17:17; Ps 119:105; Prz 30:5.6; Iz 8:20';
     const estMinutes = lesson.estimatedMinutes || 15;
-    const stageOrder = stage ? (stage.order || 1) : 1;
-    const stageImg = `/images/stages/stage${stageOrder}.jpg`;
 
-    // Inspirujący editorial lead (pytanie, a nie szablon)
-    let editorialLead = lesson.introduction?.pl || '';
-    if (lesson.id === 1) {
-      editorialLead = 'Czy Biblia może być pewnym fundamentem wiary? Odkryj, co Pismo mówi o swoim pochodzeniu, autorytecie i roli Słowa Bożego w życiu człowieka.';
-    }
+    const leadText = lesson.id === 1
+      ? 'Rozważamy zasady wiary opierając się wyłącznie na Piśmie Świętym. Tematem dzisiejszej lekcji jest: Pismo Święte.'
+      : (lesson.introduction?.pl || '');
 
     this.dom.featureLessonContainer.innerHTML = `
       <div class="cin-feature-lesson">
         <div class="cin-feature-left">
-          <div class="cin-feature-tag">Krok ${lesson.id} z 28 • Etap ${stage ? stage.roman : 'I'}: ${stage ? stage.title_pl.toUpperCase() : ''}</div>
+          <div class="cin-feature-tag">KROK ${lesson.id} Z 28 • ETAP ${stage ? stage.roman : 'I'}: ${stage ? stage.title_pl.toUpperCase() : 'POZNAJ BOGA'}</div>
           <h3 class="cin-feature-title">Lekcja ${lesson.id}: ${lesson.title.pl}</h3>
-          <p class="cin-feature-excerpt">${editorialLead}</p>
+          <p class="cin-feature-excerpt">${leadText}</p>
           
+          <div class="cin-feature-meta-bar">
+            <div class="cin-feature-meta-item">
+              <span class="cin-feature-meta-icon">⏱</span>
+              <span>ok. ${estMinutes} min.</span>
+            </div>
+            <div class="cin-feature-meta-item">
+              <span class="cin-feature-meta-icon">📖</span>
+              <span>${keyVerse}</span>
+            </div>
+            <div class="cin-feature-meta-item">
+              <span class="cin-feature-meta-icon">💡</span>
+              <span>Moduł Odkryj + Quiz + Dziennik</span>
+            </div>
+          </div>
+
           <div class="cin-feature-actions-row">
             <button type="button" class="cin-btn-primary feature-lesson-open-btn min-h-[48px]" data-lesson-id="${lesson.id}">
               <span>STUDIUJ TERAZ</span>
               <span>→</span>
             </button>
-            <button type="button" id="btn-spotlight-tts" class="cin-btn-tts-deck" data-lesson-id="${lesson.id}">
-              <span>▶</span>
-              <span>POSŁUCHAJ LEKCJI · ok. ${estMinutes} min</span>
-            </button>
-          </div>
-
-          <div class="cin-feature-meta">
-            <span>📖 ${keyVerse}</span>
-            <span>•</span>
-            <span>⏱ ok. ${estMinutes} minut</span>
-            <span>•</span>
-            <span>3 Filarowe Moduły: Odkryj, Sprawdź się, Dziennik</span>
           </div>
         </div>
 
         <div class="cin-feature-artwork-visual">
-          <img src="${stageImg}" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg'" />
+          <img src="/images/academy/spotlight_bible_rays.jpg" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg'" />
         </div>
       </div>
 
-      <!-- 3 SZLACHETNE KARTY FILAROWE (ODKRYJ, SPRAWDŹ SIĘ, MÓJ DZIENNIK) -->
+      <!-- 3 KARTY FILAROWE (DOKŁADNIE ZE ZDJĘCIA 1: ODKRYJ, QUIZ, DZIENNIK) -->
       <div class="cin-pillars-grid">
         <div class="cin-pillar-card">
-          <div class="cin-pillar-header">
-            <div class="cin-pillar-icon">✦</div>
-            <div class="cin-pillar-title">ODKRYJ</div>
+          <div class="cin-pillar-content">
+            <div class="cin-pillar-title">Moduł Odkryj</div>
+            <p class="cin-pillar-desc">Poznaj prawdę poprzez głębokie studium Słowa.</p>
           </div>
-          <p class="cin-pillar-desc">Poznaj prawdę poprzez głębokie studium Słowa. Odkryj wersety źródłowe i kontekst biblijny.</p>
+          <div class="cin-pillar-thumb">
+            <img src="/images/academy/card_odkryj_exact.jpg" alt="Moduł Odkryj" />
+          </div>
         </div>
 
         <div class="cin-pillar-card">
-          <div class="cin-pillar-header">
-            <div class="cin-pillar-icon">🛡️</div>
-            <div class="cin-pillar-title">SPRAWDŹ SIĘ</div>
+          <div class="cin-pillar-content">
+            <div class="cin-pillar-title">Quiz</div>
+            <p class="cin-pillar-desc">Sprawdź zrozumienie i utrwal wiedzę.</p>
           </div>
-          <p class="cin-pillar-desc">Sprawdź zrozumienie i utrwal wiedzę. Formacyjny quiz wzmacniający pewność wiary.</p>
+          <div class="cin-pillar-thumb">
+            <img src="/images/academy/card_quiz_exact.jpg" alt="Quiz" />
+          </div>
         </div>
 
         <div class="cin-pillar-card">
-          <div class="cin-pillar-header">
-            <div class="cin-pillar-icon">✒️</div>
-            <div class="cin-pillar-title">MÓJ DZIENNIK</div>
+          <div class="cin-pillar-content">
+            <div class="cin-pillar-title">Dziennik</div>
+            <p class="cin-pillar-desc">Notuj myśli, modlitwy di co Bóg do Ciebie mówi.</p>
           </div>
-          <p class="cin-pillar-desc">Notuj myśli, modlitwy i to, co Bóg do Ciebie mówi. Prywatny zapis Twojej drogi wiary.</p>
+          <div class="cin-pillar-thumb">
+            <img src="/images/academy/card_dziennik_exact.jpg" alt="Dziennik" />
+          </div>
         </div>
       </div>
     `;
@@ -1029,23 +1033,6 @@ class LuminaCoursesEngine {
     if (openBtn) {
       openBtn.addEventListener('click', () => {
         this.openLesson(lesson.id);
-      });
-    }
-
-    const ttsBtn = document.getElementById('btn-spotlight-tts');
-    if (ttsBtn) {
-      ttsBtn.addEventListener('click', () => {
-        if (this.ttsState === 'playing') {
-          this.stopTTS();
-          ttsBtn.classList.remove('is-playing');
-          ttsBtn.innerHTML = `<span>▶</span> <span>POSŁUCHAJ LEKCJI · ok. ${estMinutes} min</span>`;
-        } else {
-          const scriptureText = lesson.scripture?.verses ? lesson.scripture.verses.map((v) => `${v.ref}: ${v.text}`).join('. ') : '';
-          const fullText = `${lesson.title.pl}. ${editorialLead}. ${scriptureText}. ${lesson.text?.pl || ''}`;
-          this.speakLesson(fullText);
-          ttsBtn.classList.add('is-playing');
-          ttsBtn.innerHTML = `<span>❚❚</span> <span>ZATRZYMAJ LEKTORA</span>`;
-        }
       });
     }
   }
