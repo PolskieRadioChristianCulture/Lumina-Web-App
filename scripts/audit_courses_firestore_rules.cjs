@@ -117,6 +117,24 @@ function evaluateRule({ auth, method, collection, existingData, requestData }) {
     }
   }
 
+  if (collection === 'course_certificates') {
+    if (method === 'read') return true;
+    if (method === 'create') {
+      return isMember &&
+        requestData.userId === auth.uid &&
+        requestData.certificateId === requestData.docId &&
+        requestData.lessonsCompleted === 28 &&
+        requestData.stagesCompleted === 5 &&
+        typeof requestData.recipientName === 'string' &&
+        requestData.recipientName.length >= 2 &&
+        requestData.recipientName.length <= 100 &&
+        typeof requestData.completedAt === 'string';
+    }
+    if (method === 'update' || method === 'delete') {
+      return isMasterAdmin;
+    }
+  }
+
   return false;
 }
 
@@ -285,6 +303,85 @@ const testCases = [
       const allowed = evaluateRule({ auth: authB, method: 'update', collection: 'course_preferences', requestData: req });
       return { allowed, expected: false, note: 'Użytkownik B nie może modyfikować preferencji użytkownika A.' };
     }
+  },
+  {
+    name: '18. Gość odczytuje certyfikat ukończenia (PUBLIC CERTIFICATE READ)',
+    run: () => {
+      const guestAuth = null;
+      const existingCert = { userId: 'user_A', certificateId: 'LBA-2026-000001', recipientName: 'Cezary Rogowski' };
+      const allowed = evaluateRule({ auth: guestAuth, method: 'read', collection: 'course_certificates', existingData: existingCert });
+      return { allowed, expected: true, note: 'Publiczna weryfikacja certyfikatu autentyczności (dostępna bez logowania przez QR / URL).' };
+    }
+  },
+  {
+    name: '19. Członek z 28 lekcjami i 5 etapami tworzy certyfikat (CERTIFICATE CREATE VALID)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = {
+        userId: 'user_A',
+        certificateId: 'LBA-2026-000001',
+        docId: 'LBA-2026-000001',
+        lessonsCompleted: 28,
+        stagesCompleted: 5,
+        recipientName: 'Cezary Rogowski',
+        completedAt: '2026-09-27T12:00:00.000Z'
+      };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_certificates', requestData: req });
+      return { allowed, expected: true, note: 'Zalogowany absolwent z kompletem 28 lekcji i 5 etapów generuje własny certyfikat.' };
+    }
+  },
+  {
+    name: '20. Członek z niepełnym kursem (<28 lekcji) próbuje utworzyć certyfikat (INELIGIBLE CERTIFICATE REJECTED)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com' };
+      const req = {
+        userId: 'user_A',
+        certificateId: 'LBA-2026-000002',
+        docId: 'LBA-2026-000002',
+        lessonsCompleted: 27,
+        stagesCompleted: 4,
+        recipientName: 'Cezary Rogowski',
+        completedAt: '2026-09-27T12:00:00.000Z'
+      };
+      const allowed = evaluateRule({ auth: authA, method: 'create', collection: 'course_certificates', requestData: req });
+      return { allowed, expected: false, note: 'Próba utworzenia certyfikatu przed ukończeniem wszystkich 28 lekcji jest bezwzględnie zablokowana.' };
+    }
+  },
+  {
+    name: '21. Użytkownik B próbuje sfałszować certyfikat dla użytkownika A (CERTIFICATE SPOOFING REJECTED)',
+    run: () => {
+      const authB = { uid: 'user_B', provider: 'google.com' };
+      const req = {
+        userId: 'user_A',
+        certificateId: 'LBA-2026-000003',
+        docId: 'LBA-2026-000003',
+        lessonsCompleted: 28,
+        stagesCompleted: 5,
+        recipientName: 'Fałszerz',
+        completedAt: '2026-09-27T12:00:00.000Z'
+      };
+      const allowed = evaluateRule({ auth: authB, method: 'create', collection: 'course_certificates', requestData: req });
+      return { allowed, expected: false, note: 'Użytkownik nie może utworzyć certyfikatu dla innego UID niż własny.' };
+    }
+  },
+  {
+    name: '22. Użytkownik A próbuje zmodyfikować wystawiony certyfikat (CERTIFICATE IMMUTABILITY)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com', isAdmin: false };
+      const existingCert = { userId: 'user_A', certificateId: 'LBA-2026-000001', recipientName: 'Cezary Rogowski' };
+      const req = { recipientName: 'Inne Nazwisko' };
+      const allowed = evaluateRule({ auth: authA, method: 'update', collection: 'course_certificates', existingData: existingCert, requestData: req });
+      return { allowed, expected: false, note: 'Certyfikaty są niezmienne po wystawieniu (update dozwolony wyłącznie dla Master Admina).' };
+    }
+  },
+  {
+    name: '23. Użytkownik A próbuje skasować certyfikat (CERTIFICATE DELETE RESTRICTED TO ADMIN)',
+    run: () => {
+      const authA = { uid: 'user_A', provider: 'google.com', isAdmin: false };
+      const existingCert = { userId: 'user_A', certificateId: 'LBA-2026-000001', recipientName: 'Cezary Rogowski' };
+      const allowed = evaluateRule({ auth: authA, method: 'delete', collection: 'course_certificates', existingData: existingCert });
+      return { allowed, expected: false, note: 'Usuwanie certyfikatu jest zablokowane dla zwykłego użytkownika.' };
+    }
   }
 ];
 
@@ -306,6 +403,7 @@ const hasSpiritualCare = rulesContent.includes('match /spiritual_care_requests/{
 const hasAchievements = rulesContent.includes('match /course_achievements/{achievementId}');
 const hasQuizAttempts = rulesContent.includes('match /quiz_attempts/{attemptId}');
 const hasCoursePreferences = rulesContent.includes('match /course_preferences/{userId}');
+const hasCourseCertificates = rulesContent.includes('match /course_certificates/{certificateId}');
 const hasRequestResourceCheck = rulesContent.includes('request.resource.data.userId == request.auth.uid');
 const hasAntiHijackCheck = rulesContent.includes('request.resource.data.userId == resource.data.userId');
 
@@ -315,14 +413,15 @@ console.log('Reguła match /spiritual_care_requests obecna:', hasSpiritualCare);
 console.log('Reguła match /course_achievements obecna:', hasAchievements);
 console.log('Reguła match /quiz_attempts obecna:', hasQuizAttempts);
 console.log('Reguła match /course_preferences obecna:', hasCoursePreferences);
+console.log('Reguła match /course_certificates obecna:', hasCourseCertificates);
 console.log('Walidacja request.resource.data.userId (anti-spoofing):', hasRequestResourceCheck);
 console.log('Walidacja request.resource.data.userId == resource.data.userId (anti-hijack):', hasAntiHijackCheck);
 
-const allRulesPresent = hasCourseProgress && hasCourseJournal && hasSpiritualCare && hasAchievements && hasQuizAttempts && hasCoursePreferences && hasRequestResourceCheck && hasAntiHijackCheck;
+const allRulesPresent = hasCourseProgress && hasCourseJournal && hasSpiritualCare && hasAchievements && hasQuizAttempts && hasCoursePreferences && hasCourseCertificates && hasRequestResourceCheck && hasAntiHijackCheck;
 
 if (failed === 0 && allRulesPresent) {
-  console.log(`\n✅ SECURITY GATE: 17/17 SCENARIUSZY ZALICZONYCH (Wymóg Phase 4 Spełniony).`);
-  console.log('Pełna izolacja danych, ochrona przed fałszowaniem UID, prywatność Dziennika Drogi i prób quizowych.');
+  console.log(`\n✅ SECURITY GATE: 23/23 SCENARIUSZY ZALICZONYCH (Wymóg Phase 4 & Phase 5 Spełniony).`);
+  console.log('Pełna izolacja danych, ochrona przed fałszowaniem UID, prywatność Dziennika Drogi, prób quizowych i nienaruszalność certyfikatów.');
   process.exit(0);
 } else {
   console.error('\n❌ SECURITY GATE FAILED: Znaleziono naruszenia zasad bezpieczeństwa.');

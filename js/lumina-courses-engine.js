@@ -23,6 +23,7 @@ import {
   LUMINA_POST_28_CATALOG
 } from '../data/lumina-courses-data.js';
 import { luminaAchievementsEngine } from './lumina-achievements-engine.js';
+import { luminaCertificateEngine, checkEligibility, formatPolishDate } from './lumina-certificate-engine.js';
 
 class LuminaCoursesEngine {
   constructor() {
@@ -68,6 +69,9 @@ class LuminaCoursesEngine {
     // Silnik Osiągnięć i Próby Quizu (Phase 4)
     this.achievementsEngine = luminaAchievementsEngine;
     this.quizAttempts = new Map();
+    this.certificateEngine = luminaCertificateEngine;
+    this.currentCertData = null;
+    this.currentRenderedDiplomaCanvas = null;
 
     this.init();
   }
@@ -129,7 +133,23 @@ class LuminaCoursesEngine {
       readerTitle: document.getElementById('reader-title'),
       readerSubtitle: document.getElementById('reader-subtitle'),
       readerContent: document.getElementById('reader-content'),
-      academyToast: document.getElementById('academy-toast')
+      academyToast: document.getElementById('academy-toast'),
+      topbarDiplomaBtn: document.getElementById('btn-topbar-diploma'),
+      graduationCeremonyModal: document.getElementById('graduation-ceremony-modal'),
+      btnCeremonyClaim: document.getElementById('btn-ceremony-claim'),
+      btnCeremonyClose: document.getElementById('btn-ceremony-close'),
+      confirmDiplomaNameModal: document.getElementById('confirm-diploma-name-modal'),
+      diplomaRecipientInput: document.getElementById('diploma-recipient-input'),
+      btnSaveDiplomaName: document.getElementById('btn-save-diploma-name'),
+      btnCancelDiplomaName: document.getElementById('btn-cancel-diploma-name'),
+      certificateViewerModal: document.getElementById('certificate-viewer-modal'),
+      btnCloseCertificateViewer: document.getElementById('btn-close-certificate-viewer'),
+      viewerDiplomaCanvas: document.getElementById('viewer-diploma-canvas'),
+      viewerCertId: document.getElementById('viewer-cert-id'),
+      viewerCertDate: document.getElementById('viewer-cert-date'),
+      btnViewerDownloadPdf: document.getElementById('btn-viewer-download-pdf'),
+      btnViewerPrint: document.getElementById('btn-viewer-print'),
+      btnViewerShare: document.getElementById('btn-viewer-share')
     };
   }
 
@@ -167,11 +187,72 @@ class LuminaCoursesEngine {
       });
     }
 
-    // Hero Action Button
+    // Hero Action Button (Uruchamia kolejną lekcję lub odbiór dyplomu)
     if (this.dom.heroActionBtn) {
       this.dom.heroActionBtn.addEventListener('click', () => {
-        const nextId = this.getNextRecommendedLessonId();
-        this.openLesson(nextId);
+        let completedCount = 0;
+        if (this.currentUser) {
+          completedCount = Array.from(this.cloudProgress.values()).filter((p) => p.status === 'completed').length;
+        } else {
+          completedCount = this.localCompletedIds.size;
+        }
+
+        if (completedCount >= 28) {
+          this.openDiplomaFlow();
+        } else {
+          const nextId = this.getNextRecommendedLessonId();
+          this.openLesson(nextId);
+        }
+      });
+    }
+
+    // Obsługa przycisków dyplomu i ceremonii ukończenia
+    if (this.dom.topbarDiplomaBtn) {
+      this.dom.topbarDiplomaBtn.addEventListener('click', () => this.openDiplomaFlow());
+    }
+    if (this.dom.btnCeremonyClaim) {
+      this.dom.btnCeremonyClaim.addEventListener('click', () => this.openDiplomaFlow());
+    }
+    if (this.dom.btnCeremonyClose) {
+      this.dom.btnCeremonyClose.addEventListener('click', () => {
+        if (this.dom.graduationCeremonyModal) this.dom.graduationCeremonyModal.classList.add('hidden');
+      });
+    }
+    if (this.dom.btnSaveDiplomaName) {
+      this.dom.btnSaveDiplomaName.addEventListener('click', () => this.handleConfirmDiplomaName());
+    }
+    if (this.dom.btnCancelDiplomaName) {
+      this.dom.btnCancelDiplomaName.addEventListener('click', () => {
+        if (this.dom.confirmDiplomaNameModal) this.dom.confirmDiplomaNameModal.classList.add('hidden');
+      });
+    }
+    if (this.dom.btnCloseCertificateViewer) {
+      this.dom.btnCloseCertificateViewer.addEventListener('click', () => {
+        if (this.dom.certificateViewerModal) this.dom.certificateViewerModal.classList.add('hidden');
+      });
+    }
+    if (this.dom.btnViewerDownloadPdf) {
+      this.dom.btnViewerDownloadPdf.addEventListener('click', async () => {
+        if (this.currentCertData && this.currentRenderedDiplomaCanvas) {
+          await this.certificateEngine.downloadPDF(this.currentCertData, this.currentRenderedDiplomaCanvas);
+        }
+      });
+    }
+    if (this.dom.btnViewerPrint) {
+      this.dom.btnViewerPrint.addEventListener('click', () => {
+        if (this.currentRenderedDiplomaCanvas) {
+          this.certificateEngine.printCertificate(this.currentRenderedDiplomaCanvas);
+        }
+      });
+    }
+    if (this.dom.btnViewerShare) {
+      this.dom.btnViewerShare.addEventListener('click', async () => {
+        if (this.currentCertData && this.currentRenderedDiplomaCanvas) {
+          const res = await this.certificateEngine.shareCertificate(this.currentCertData, this.currentRenderedDiplomaCanvas);
+          if (res && res.method === 'clipboard') {
+            this.showToast('Link do weryfikacji dyplomu skopiowano do schowka!', 'success');
+          }
+        }
       });
     }
 
@@ -409,6 +490,9 @@ class LuminaCoursesEngine {
       if (targetStatus === 'completed') {
         this.localCompletedIds.add(lessonIdNum);
         this.saveLocalGuestState();
+        if (this.localCompletedIds.size >= 28) {
+          setTimeout(() => this.openGraduationCeremony(), 1200);
+        }
       }
       this.renderLessonsGrid();
       this.updateHeroState();
@@ -486,6 +570,12 @@ class LuminaCoursesEngine {
           }
         } catch (errAch) {
           console.warn('[CoursesEngine] Błąd ewaluacji osiągnięć:', errAch);
+        }
+
+        // Sprawdzenie czy osiągnięto pełne 28/28 lekcji (Ceremonia Graduation)
+        const totalCompleted = Array.from(this.cloudProgress.values()).filter((p) => p.status === 'completed').length;
+        if (totalCompleted >= 28) {
+          setTimeout(() => this.openGraduationCeremony(), 1200);
         }
       }
 
@@ -991,7 +1081,7 @@ class LuminaCoursesEngine {
         </div>
 
         <div class="cin-feature-artwork-visual">
-          <img src="/images/academy/spotlight_bible_rays.jpg?v=20260927_hd1" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg?v=20260927_hd1'" />
+          <img src="${lesson.image || `/images/lessons/${lesson.id}.svg`}" alt="${lesson.title.pl}" onerror="this.src='/images/academy/spotlight_bible_rays.jpg'" />
         </div>
       </div>
 
@@ -1101,6 +1191,9 @@ class LuminaCoursesEngine {
           <div class="cin-chapter-num">
             ${isCompleted ? '✓' : (lesson.id < 10 ? '0' + lesson.id : lesson.id)}
           </div>
+          <div class="cin-chapter-thumb">
+            <img src="${lesson.image || `/images/lessons/${lesson.id}.svg`}" alt="${lesson.title.pl}" loading="lazy" />
+          </div>
           <div class="cin-chapter-title-wrap">
             <h4>${lesson.title.pl}</h4>
             <p>${lesson.introduction.pl}</p>
@@ -1161,19 +1254,27 @@ class LuminaCoursesEngine {
 
       if (completedCount >= 28) {
         this.dom.heroActionBtn.innerHTML = `
-          <span>🎉 Gratulacje! Ukończono Wszystkie 28 Lekcji</span>
-          <span class="ml-2">✓</span>
-        `;
-      } else if (completedCount > 0) {
-        this.dom.heroActionBtn.innerHTML = `
-          <span>KONTYNUUJ — LEKCJA ${nextId}</span>
+          <span>🎓 ODBIERZ IMIENNY DYPLOM (100%)</span>
           <span class="ml-2">→</span>
         `;
+        if (this.dom.topbarDiplomaBtn) {
+          this.dom.topbarDiplomaBtn.classList.remove('hidden');
+        }
       } else {
-        this.dom.heroActionBtn.innerHTML = `
-          <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
-          <span class="ml-2">→</span>
-        `;
+        if (this.dom.topbarDiplomaBtn) {
+          this.dom.topbarDiplomaBtn.classList.add('hidden');
+        }
+        if (completedCount > 0) {
+          this.dom.heroActionBtn.innerHTML = `
+            <span>KONTYNUUJ — LEKCJA ${nextId}</span>
+            <span class="ml-2">→</span>
+          `;
+        } else {
+          this.dom.heroActionBtn.innerHTML = `
+            <span>ROZPOCZNIJ BEZPŁATNIE (KROK 1)</span>
+            <span class="ml-2">→</span>
+          `;
+        }
       }
     }
 
@@ -1310,6 +1411,11 @@ class LuminaCoursesEngine {
     const scriptureRefsHtml = references.map(ref => `<span class="reader-sigla-tag">${ref}</span>`).join(' ');
 
     let html = `
+      <!-- Kinowy Baner Tematyczny Lekcji (16:9) -->
+      <div class="reader-hero-artwork rounded-2xl overflow-hidden border border-brand-gold/30 mb-6 aspect-[16/9] shadow-2xl relative bg-zinc-950">
+        <img src="${lesson.image || `/images/lessons/${lesson.id}.svg`}" alt="${lesson.title.pl}" class="w-full h-full object-cover block" />
+      </div>
+
       <div class="reader-stage-header">
         <span class="reader-badge-gold">${stage ? stage.title_pl : ''}</span>
         <span class="text-zinc-400 text-xs font-semibold">Lekcja ${lesson.id} z 28</span>
@@ -2084,6 +2190,145 @@ class LuminaCoursesEngine {
       );
     } catch (e) {
       console.warn('[CoursesEngine] Błąd zapisu stanu lokalnego:', e);
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+   * DIPLOMA & GRADUATION CEREMONY ENGINE (Phase 5)
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  openGraduationCeremony() {
+    if (this.dom.graduationCeremonyModal) {
+      this.dom.graduationCeremonyModal.classList.remove('hidden');
+    }
+  }
+
+  async openDiplomaFlow() {
+    // 1. Sprawdź czy użytkownik jest zalogowany
+    if (!this.currentUser) {
+      this.showToast('Zaloguj się kontem Google / LUMINA, aby odebrać oficjalny dyplom i zapisać go w chmurze.', 'info');
+      if (window.ccLoginWithGoogle) {
+        window.ccLoginWithGoogle();
+      }
+      return;
+    }
+
+    // 2. Sprawdź czy certyfikat już istnieje w Firestore (idempotencja)
+    if (this.firebaseDb && this.firestoreSdk) {
+      try {
+        const { query, collection, where, getDocs } = this.firestoreSdk;
+        const q = query(
+          collection(this.firebaseDb, 'course_certificates'),
+          where('userId', '==', this.currentUser.uid)
+        );
+        const querySnap = await getDocs(q);
+
+        if (!querySnap.empty) {
+          const existingData = querySnap.docs[0].data();
+          await this.showCertificateViewer(existingData);
+          return;
+        }
+      } catch (err) {
+        console.warn('[CoursesEngine] Błąd weryfikacji istniejącego certyfikatu:', err);
+      }
+    }
+
+    // 3. Sprawdź uprawnienia (28 lekcji i 5 etapów)
+    const eligibility = checkEligibility(this.cloudProgress);
+    if (!eligibility.eligible) {
+      const remaining = eligibility.remainingLessons.join(', ');
+      this.showToast(`Aby odebrać dyplom, musisz ukończyć wszystkie 28 lekcji. Brakuje: ${remaining || 'niekompletne etapy'}`, 'error');
+      return;
+    }
+
+    // 4. Jeśli certyfikat jeszcze nie został wygenerowany — otwórz modal potwierdzenia imienia i nazwiska
+    this.openConfirmDiplomaNameModal();
+  }
+
+  openConfirmDiplomaNameModal() {
+    if (this.dom.graduationCeremonyModal) {
+      this.dom.graduationCeremonyModal.classList.add('hidden');
+    }
+
+    if (this.dom.confirmDiplomaNameModal) {
+      const defaultName = (this.currentProfile && (this.currentProfile.displayName || this.currentProfile.name)) ||
+                          (this.currentUser && this.currentUser.displayName) || '';
+      if (this.dom.diplomaRecipientInput) {
+        this.dom.diplomaRecipientInput.value = defaultName;
+      }
+      this.dom.confirmDiplomaNameModal.classList.remove('hidden');
+      if (this.dom.diplomaRecipientInput) {
+        setTimeout(() => this.dom.diplomaRecipientInput.focus(), 100);
+      }
+    }
+  }
+
+  async handleConfirmDiplomaName() {
+    const name = this.dom.diplomaRecipientInput ? this.dom.diplomaRecipientInput.value.trim() : '';
+    if (name.length < 2) {
+      this.showToast('Imię i nazwisko na dyplomie musi mieć co najmniej 2 znaki.', 'error');
+      return;
+    }
+
+    if (this.dom.confirmDiplomaNameModal) {
+      this.dom.confirmDiplomaNameModal.classList.add('hidden');
+    }
+
+    this.showToast('Generowanie Twojego Imiennego Dyplomu Master Reference...', 'info');
+
+    try {
+      const res = await this.certificateEngine.getOrIssueCertificate({
+        firestoreDb: this.firebaseDb,
+        firestoreSdk: this.firestoreSdk,
+        user: this.currentUser,
+        userProfile: this.currentProfile,
+        cloudProgress: this.cloudProgress,
+        customName: name
+      });
+
+      await this.showCertificateViewer(res.certificate);
+      this.showToast('Dyplom został pomyślnie wystawiony i zarejestrowany w chmurze!', 'success');
+    } catch (err) {
+      console.error('[CoursesEngine] Błąd generowania dyplomu:', err);
+      this.showToast(err.message || 'Wystąpił błąd podczas wystawiania certyfikatu.', 'error');
+    }
+  }
+
+  async showCertificateViewer(certData) {
+    if (!this.dom.certificateViewerModal) return;
+
+    if (this.dom.graduationCeremonyModal) {
+      this.dom.graduationCeremonyModal.classList.add('hidden');
+    }
+
+    if (this.dom.viewerCertId) {
+      this.dom.viewerCertId.textContent = certData.certificateId || '—';
+    }
+    if (this.dom.viewerCertDate) {
+      this.dom.viewerCertDate.textContent = certData.formattedDate || formatPolishDate(certData.completedAt || new Date());
+    }
+
+    this.dom.certificateViewerModal.classList.remove('hidden');
+
+    try {
+      const renderedCanvas = await this.certificateEngine.renderCertificateCanvas({
+        recipientName: certData.recipientName,
+        completionDate: certData.formattedDate || formatPolishDate(certData.completedAt),
+        certificateId: certData.certificateId,
+        verificationUrl: certData.verificationUrl
+      });
+
+      if (this.dom.viewerDiplomaCanvas && renderedCanvas) {
+        this.dom.viewerDiplomaCanvas.width = renderedCanvas.width;
+        this.dom.viewerDiplomaCanvas.height = renderedCanvas.height;
+        const ctx = this.dom.viewerDiplomaCanvas.getContext('2d');
+        ctx.drawImage(renderedCanvas, 0, 0);
+
+        this.currentRenderedDiplomaCanvas = renderedCanvas;
+        this.currentCertData = certData;
+      }
+    } catch (e) {
+      console.error('[CoursesEngine] Błąd renderowania podglądu dyplomu:', e);
+      this.showToast('Błąd renderowania podglądu dyplomu: ' + e.message, 'error');
     }
   }
 }

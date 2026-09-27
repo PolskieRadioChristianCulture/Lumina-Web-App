@@ -145,17 +145,24 @@
     }
 
     .cin-logo-mark {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #1e2638, #0e121a);
-      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: #000;
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      color: var(--accent-warm);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cin-logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .cin-brand-name {
@@ -656,18 +663,53 @@
 
     .cin-chapter-row {
       display: grid;
-      grid-template-columns: 56px 1fr auto;
-      gap: 20px;
+      grid-template-columns: 46px 110px 1fr auto;
+      gap: 18px;
       align-items: center;
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 16px 24px;
+      padding: 14px 20px;
       cursor: pointer;
       transition: var(--transition);
       text-decoration: none;
       color: inherit;
       min-height: 72px;
+    }
+
+    .cin-chapter-thumb {
+      width: 110px;
+      height: 62px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      background: #000;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .cin-chapter-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .cin-chapter-row:hover .cin-chapter-thumb img {
+      transform: scale(1.08);
+    }
+
+    @media (max-width: 640px) {
+      .cin-chapter-row {
+        grid-template-columns: 36px 1fr auto;
+        gap: 12px;
+        padding: 12px 14px;
+      }
+      .cin-chapter-thumb {
+        display: none;
+      }
     }
 
     .cin-chapter-row:hover {
@@ -1535,9 +1577,11 @@
   <header class="cin-header">
     <div class="flex items-center gap-5">
       <a href="/kursy" class="cin-brand" title="LUMINA Bible Academy">
-        <div class="cin-logo-mark">✦</div>
+        <div class="cin-logo-mark">
+          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo1" alt="LUMINA Bible Academy" />
+        </div>
         <div>
-          <span class="cin-brand-name">LUMINA ACADEMY</span>
+          <span class="cin-brand-name">LUMINA BIBLE ACADEMY</span>
         </div>
       </a>
       <span class="text-zinc-600 hidden lg:inline">/</span>
@@ -1552,6 +1596,11 @@
 
     <!-- Universal CC Auth & Action -->
     <div class="flex items-center gap-3">
+      <!-- Diploma Trigger Button (Visible when 28/28 completed) -->
+      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[44px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
+        <span>🎓 MÓJ DYPLOM</span>
+      </button>
+
       <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture">
         <span>Wspieraj Misję</span>
         <span class="text-xs">♥</span>
@@ -1912,6 +1961,111 @@
     </div>
   </div>
 
+  <!-- ── MODAL: CEREMONIA UKOŃCZENIA AKADEMII (28/28 LEKCJI) ── -->
+  <div id="graduation-ceremony-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="graduation-title">
+    <div class="academy-modal-card max-w-xl text-center">
+      <div class="w-24 h-24 mx-auto mb-4 rounded-3xl overflow-hidden border border-brand-gold/60 shadow-xl shadow-brand-gold/40 bg-black">
+        <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo1" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
+      </div>
+      <span class="text-brand-gold font-bold text-xs uppercase tracking-widest block mb-1">Oficjalne Ukończenie Programu</span>
+      <h3 id="graduation-title" class="font-serif font-bold text-2xl md:text-3xl text-white tracking-wide mb-3">
+        UKOŃCZYŁEŚ LUMINA BIBLE ACADEMY!
+      </h3>
+      <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+        Gratulacje! Przeszedłeś wszystkie <strong class="text-amber-400">28 Fundamentalnych Zasad Wiary Pisma Świętego</strong> i zaliczyłeś wszystkie 5 etapów drogi biblijnej. Z dumą przyznajemy Ci oficjalny Imienny Dyplom Ukończenia.
+      </p>
+      <div class="p-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl mb-6 text-left flex items-center gap-3">
+        <div class="text-2xl">📜</div>
+        <div class="text-xs text-zinc-300">
+          <span class="font-bold text-white block">Dyplom Imienny Master Reference</span>
+          Zawiera unikalny numer certyfikatu, datę ukończenia oraz kod QR weryfikacji autentyczności.
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button type="button" id="btn-ceremony-claim" class="cin-btn-primary w-full sm:w-auto px-8 py-3.5 min-h-[48px] text-sm font-bold">
+          <span>ODBIERZ MÓJ DYPLOM IMIENNY →</span>
+        </button>
+        <button type="button" id="btn-ceremony-close" class="cin-btn-secondary w-full sm:w-auto px-6 py-3.5 min-h-[48px] text-sm">
+          <span>Zamknij</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: POTWIERDZENIE DANYCH NA DYPLOMIE ── -->
+  <div id="confirm-diploma-name-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-name-title">
+    <div class="academy-modal-card max-w-md text-left">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-2xl text-amber-400 mb-4">
+        ✍️
+      </div>
+      <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-1">Personalizacja Certyfikatu</span>
+      <h3 id="confirm-name-title" class="font-serif font-bold text-xl text-white tracking-wide mb-2">
+        POTWIERDŹ DANE NA DYPLOMIE
+      </h3>
+      <p class="text-zinc-300 text-xs leading-relaxed mb-4">
+        Wpisz imię i nazwisko (lub formę personalną), która ma zostać trwale wykaligrafowana na Twoim oficjalnym dyplomie ukończenia:
+      </p>
+      <div class="mb-5">
+        <label for="diploma-recipient-input" class="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
+          Imię i Nazwisko na Certyfikacie:
+        </label>
+        <input type="text" id="diploma-recipient-input" maxlength="100" class="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded-xl text-white text-base focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400" placeholder="np. Jan Kowalski" />
+        <span class="text-[11px] text-zinc-500 block mt-1.5">Dane zostaną zapisane w chmurze i nie będzie można ich później zmienić bez kontaktu z administracją.</span>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
+        <button type="button" id="btn-cancel-diploma-name" class="cin-btn-secondary w-full sm:w-auto px-5 py-2.5 min-h-[44px] text-xs">
+          <span>Anuluj</span>
+        </button>
+        <button type="button" id="btn-save-diploma-name" class="cin-btn-primary w-full sm:w-auto px-6 py-2.5 min-h-[44px] text-xs font-bold">
+          <span>ZATWIERDŹ I GENERUJ DYPLOM →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: PRZEGLĄDARKA I POBIERANIE DYPLOMU (MASTER CANVAS) ── -->
+  <div id="certificate-viewer-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="viewer-diploma-title">
+    <div class="academy-modal-card max-w-4xl w-full p-4 sm:p-6 md:p-8">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block font-cinzel">LUMINA Bible Academy</span>
+          <h3 id="viewer-diploma-title" class="font-serif font-bold text-lg sm:text-xl text-white">Imienny Dyplom Ukończenia</h3>
+        </div>
+        <button type="button" id="btn-close-certificate-viewer" class="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Zamknij podgląd dyplomu">
+          ✕
+        </button>
+      </div>
+
+      <!-- Canvas Frame -->
+      <div class="rounded-2xl overflow-hidden border border-amber-500/30 bg-zinc-950 aspect-[2000/1414] relative mb-6 shadow-2xl">
+        <canvas id="viewer-diploma-canvas" class="w-full h-full object-contain block"></canvas>
+      </div>
+
+      <!-- Metadata strip -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-zinc-950/80 rounded-xl border border-zinc-800 text-xs text-zinc-400 mb-6">
+        <div>Numer certyfikatu: <strong id="viewer-cert-id" class="text-amber-400 font-mono">LBA-2026-000000</strong></div>
+        <div>Data ukończenia: <strong id="viewer-cert-date" class="text-zinc-200">27 września 2026</strong></div>
+        <div>Status: <span class="text-emerald-400 font-semibold">Zweryfikowany (28/28 Lekcji)</span></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-wrap items-center justify-center sm:justify-end gap-3">
+        <button type="button" id="btn-viewer-download-pdf" class="cin-btn-primary px-6 py-3 min-h-[48px] text-xs font-bold flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>Pobierz PDF (A4)</span>
+        </button>
+        <button type="button" id="btn-viewer-print" class="cin-btn-secondary px-5 py-3 min-h-[48px] text-xs font-semibold flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>Drukuj</span>
+        </button>
+        <button type="button" id="btn-viewer-share" class="cin-btn-secondary px-5 py-3 min-h-[48px] text-xs font-semibold flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+          <span>Udostępnij</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── TOAST NOTIFICATION ── -->
   <div id="academy-toast" class="academy-toast"></div>
 
@@ -1930,11 +2084,15 @@
     </div>
   </footer>
 
+  <!-- ── VENDOR LIBRARIES FOR DIPLOMA ── -->
+  <script src="/js/vendor-qrcode.min.js"></script>
+  <script src="/js/vendor-jspdf.umd.min.js"></script>
+
   <!-- ── GLOBAL CC AUTH CONNECTOR ── -->
   <script defer src="/js/cc-global-auth.js"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
-  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_hd4"></script>
+  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_diploma1"></script>
 
 </body>
 </html>

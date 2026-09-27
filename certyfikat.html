@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Weryfikacja Certyfikatu — LUMINA Bible Academy</title>
+  <meta name="description" content="Oficjalny publiczny rejestr weryfikacji autentyczności dyplomów ukończenia 28 Zasad Wiary LUMINA Bible Academy." />
+  <meta property="og:title" content="Weryfikacja Certyfikatu — LUMINA Bible Academy" />
+  <meta property="og:description" content="Potwierdzenie autentyczności imiennego dyplomu ukończenia LUMINA Bible Academy." />
+  <meta property="og:image" content="/images/academy/diploma_background_master.png" />
+  <meta name="theme-color" content="#07090e" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Vendor Libraries for QR and PDF -->
+  <script src="/js/vendor-qrcode.min.js"></script>
+  <script src="/js/vendor-jspdf.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --card-bg: #0f131c;
+      --card-border: #1f2636;
+      --brand-gold: #d4af37;
+      --brand-gold-glow: rgba(212, 175, 55, 0.25);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #f4f4f5;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-serif-title {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fce09b 0%, #d4af37 50%, #aa820a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cert-frame {
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px -10px var(--brand-gold-glow);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-zinc-800/80 bg-[#07090e]/90 backdrop-blur sticky top-0 z-40 px-4 py-3.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <a href="/kursy" class="flex items-center gap-3 text-zinc-100 hover:text-amber-400 transition-colors min-h-[44px]">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-amber-500/40 shadow-lg shadow-amber-950/50 flex items-center justify-center bg-black">
+          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo1" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <span class="block text-xs uppercase tracking-widest text-amber-500/90 font-cinzel font-semibold">Christian Culture</span>
+          <span class="block text-sm font-bold tracking-tight">LUMINA BIBLE ACADEMY</span>
+        </div>
+      </a>
+      <a href="/kursy" class="px-4 py-2 rounded-xl text-xs font-semibold bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 transition min-h-[44px] flex items-center gap-1.5">
+        <span>← Kursy i Lekcje</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8 md:py-12 flex flex-col justify-center">
+
+    <!-- Loading State -->
+    <div id="cert-loading" class="text-center py-16">
+      <div class="inline-block w-12 h-12 border-3 border-amber-500/30 border-t-amber-400 rounded-full animate-spin mb-4"></div>
+      <h2 class="text-lg font-semibold text-zinc-200">Trwa weryfikacja certyfikatu w rejestrze LUMINA...</h2>
+      <p class="text-xs text-zinc-400 mt-2">Sprawdzanie sumy kontrolnej i rejestru ukończenia 28 Zasad Wiary</p>
+    </div>
+
+    <!-- Error / Not Found State -->
+    <div id="cert-not-found" class="hidden text-center py-16 bg-[#0f131c] border border-red-500/30 rounded-3xl p-8 max-w-xl mx-auto shadow-2xl">
+      <div class="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-2xl font-bold mx-auto mb-4">
+        ✕
+      </div>
+      <h2 class="text-2xl font-cinzel font-bold text-red-400 mb-2">Certyfikat Nieodnaleziony</h2>
+      <p class="text-sm text-zinc-300 leading-relaxed mb-6">
+        W oficjalnym rejestrze LUMINA Bible Academy nie odnaleziono certyfikatu o identyfikatorze:
+        <span id="invalid-cert-id" class="font-mono text-amber-400 block font-bold mt-1"></span>
+      </p>
+      <div class="p-4 bg-zinc-900/60 rounded-xl border border-zinc-800 text-xs text-zinc-400 text-left mb-6 leading-relaxed">
+        Upewnij się, że adres URL został skopiowany poprawnie lub że kurs został pomyślnie sfinalizowany na zalogowanym koncie.
+      </div>
+      <a href="/kursy" class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-sm transition min-h-[48px]">
+        Przejdź do Akademii Biblijnej
+      </a>
+    </div>
+
+    <!-- Verified Success State -->
+    <div id="cert-verified" class="hidden">
+      <!-- Top Badge -->
+      <div class="flex items-center justify-center mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs md:text-sm font-semibold tracking-wide shadow-lg shadow-emerald-950/50">
+          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span>OFICJALNIE ZWERYFIKOWANY CERTYFIKAT AUTENTYCZNY</span>
+        </div>
+      </div>
+
+      <!-- Main Verified Certificate Details Card -->
+      <div class="bg-[#0f131c] border border-amber-500/30 rounded-3xl p-6 md:p-10 mb-8 cert-frame">
+        <div class="text-center mb-8">
+          <span class="text-xs uppercase tracking-widest text-amber-400/90 font-cinzel font-semibold block mb-2">DYPLOM UKOŃCZENIA AKADEMII</span>
+          <h1 id="cert-recipient-name" class="text-2xl md:text-4xl font-serif-title font-bold text-zinc-100 gold-gradient-text tracking-tight mb-3">
+            —
+          </h1>
+          <p class="text-sm md:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+            Z powodzeniem ukończył oficjalny, ekumeniczny program studium
+            <span class="text-amber-400 font-semibold">28 Fundamentalnych Zasad Wiary Pisma Świętego</span>
+            w LUMINA Bible Academy.
+          </p>
+        </div>
+
+        <!-- Verification Metadata Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-5 bg-zinc-950/70 rounded-2xl border border-zinc-800 mb-8 text-center sm:text-left">
+          <div class="p-3 border-b sm:border-b-0 sm:border-r border-zinc-800">
+            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">NUMER CERTYFIKATU</span>
+            <span id="cert-number-val" class="font-mono text-sm md:text-base text-amber-300 font-bold block">—</span>
+          </div>
+          <div class="p-3 border-b sm:border-b-0 lg:border-r border-zinc-800">
+            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">DATA UKOŃCZENIA</span>
+            <span id="cert-date-val" class="text-sm md:text-base text-zinc-200 font-semibold block">—</span>
+          </div>
+          <div class="p-3 border-b sm:border-b-0 sm:border-r border-zinc-800">
+            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">POSTĘP KURSU</span>
+            <span class="text-sm md:text-base text-emerald-400 font-bold block">28 / 28 Lekcji (100%)</span>
+          </div>
+          <div class="p-3">
+            <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">STATUS AKREDYTACJI</span>
+            <span class="text-sm md:text-base text-zinc-200 font-semibold block">5 / 5 Etapów Zaliczonych</span>
+          </div>
+        </div>
+
+        <!-- Diploma Canvas Container (Master Reference Render) -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs uppercase tracking-wider text-zinc-400 font-semibold flex items-center gap-2">
+              <span>Wizualizacja Oryginału Dyplomu</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">Master A4 2000×1414</span>
+            </span>
+            <span class="text-xs text-zinc-400 hidden sm:inline">Format A4 Landscape</span>
+          </div>
+          <div class="rounded-2xl overflow-hidden border border-amber-500/20 bg-zinc-950 aspect-[2000/1414] relative shadow-inner">
+            <canvas id="diploma-canvas" class="w-full h-full object-contain block"></canvas>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button type="button" id="btn-download-pdf" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-sm transition shadow-lg shadow-amber-900/30 min-h-[48px]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>Pobierz Certyfikat PDF (A4)</span>
+          </button>
+          <button type="button" id="btn-print-cert" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-sm transition min-h-[48px]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            <span>Drukuj</span>
+          </button>
+          <button type="button" id="btn-share-cert" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-sm transition min-h-[48px]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+            <span>Udostępnij</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Banner: Join Academy -->
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-zinc-900 to-amber-500/5 border border-amber-500/20 text-center flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-left">
+          <h3 class="font-bold text-zinc-200 text-base mb-1">Chcesz również ukończyć 28 Lekcji Biblijnych?</h3>
+          <p class="text-xs text-zinc-400">Dołącz do LUMINA Bible Academy i zdobądź imienny certyfikat za darmo.</p>
+        </div>
+        <a href="/kursy" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[44px] flex items-center">
+          Rozpocznij Naukę →
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-zinc-800/80 py-8 px-4 text-center text-xs text-zinc-500 bg-[#05070c]">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>LUMINA BIBLE ACADEMY • System Weryfikacji Autentyczności Certyfikatów</p>
+      <div class="flex items-center gap-6">
+        <a href="/kursy" class="hover:text-amber-400 transition">Kursy</a>
+        <a href="/privacy" class="hover:text-amber-400 transition">Polityka Prywatności</a>
+        <a href="/lumina" class="hover:text-amber-400 transition">Społeczność LUMINA</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script: Verification & Certificate Render -->
+  <script type="module">
+    import { luminaCertificateEngine } from '/js/lumina-certificate-engine.js';
+
+    // Inicjalizacja modułu Firestore
+    const LUMINA_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+      authDomain: "lumina-cc.firebaseapp.com",
+      projectId: "lumina-cc",
+      storageBucket: "lumina-cc.firebasestorage.app",
+      messagingSenderId: "413985877183",
+      appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a"
+    };
+
+    let activeCertData = null;
+    let activeCanvas = null;
+
+    function extractCertIdFromUrl() {
+      const url = new URL(window.location.href);
+      const queryId = url.searchParams.get('id') || url.searchParams.get('certId');
+      if (queryId) return queryId.trim();
+
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      // e.g. /akademia/certyfikat/:id or /certyfikat/:id or /kursy/certyfikat/:id
+      const certIdx = pathParts.findIndex(p => p.toLowerCase() === 'certyfikat');
+      if (certIdx !== -1 && pathParts[certIdx + 1]) {
+        return decodeURIComponent(pathParts[certIdx + 1]).trim();
+      }
+
+      return null;
+    }
+
+    async function initVerification() {
+      const loadingEl = document.getElementById('cert-loading');
+      const notFoundEl = document.getElementById('cert-not-found');
+      const verifiedEl = document.getElementById('cert-verified');
+      const invalidIdEl = document.getElementById('invalid-cert-id');
+
+      const certId = extractCertIdFromUrl();
+      if (!certId) {
+        loadingEl.classList.add('hidden');
+        notFoundEl.classList.remove('hidden');
+        invalidIdEl.textContent = 'Brak identyfikatora w adresie URL';
+        return;
+      }
+
+      try {
+        const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+        const { getFirestore, doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+
+        const app = getApps().length > 0 ? getApps()[0] : initializeApp(LUMINA_FIREBASE_CONFIG);
+        const db = getFirestore(app);
+
+        const certDocRef = doc(db, 'course_certificates', certId);
+        const docSnap = await getDoc(certDocRef);
+
+        if (!docSnap.exists()) {
+          loadingEl.classList.add('hidden');
+          notFoundEl.classList.remove('hidden');
+          invalidIdEl.textContent = certId;
+          return;
+        }
+
+        const data = docSnap.data();
+        activeCertData = data;
+
+        // Wypełnij dane w interfejsie
+        document.getElementById('cert-recipient-name').textContent = data.recipientName || 'Absolwent LUMINA';
+        document.getElementById('cert-number-val').textContent = data.certificateId || certId;
+        document.getElementById('cert-date-val').textContent = data.formattedDate || '27 września 2026';
+
+        // Renderuj dyplom na canvasie
+        const canvas = document.getElementById('diploma-canvas');
+        activeCanvas = await luminaCertificateEngine.renderCertificateCanvas({
+          recipientName: data.recipientName,
+          completionDate: data.formattedDate,
+          certificateId: data.certificateId,
+          verificationUrl: data.verificationUrl || window.location.href
+        });
+
+        // Skopiuj narysowany canvas do elementu DOM
+        canvas.width = activeCanvas.width;
+        canvas.height = activeCanvas.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(activeCanvas, 0, 0);
+
+        loadingEl.classList.add('hidden');
+        verifiedEl.classList.remove('hidden');
+
+        // Bindowanie akcji
+        document.getElementById('btn-download-pdf').addEventListener('click', async () => {
+          await luminaCertificateEngine.downloadPDF(activeCertData, activeCanvas);
+        });
+
+        document.getElementById('btn-print-cert').addEventListener('click', () => {
+          luminaCertificateEngine.printCertificate(activeCanvas);
+        });
+
+        document.getElementById('btn-share-cert').addEventListener('click', async () => {
+          const res = await luminaCertificateEngine.shareCertificate(activeCertData, activeCanvas);
+          if (res.method === 'clipboard') {
+            alert('Link do certyfikatu został skopiowany do schowka!');
+          }
+        });
+
+      } catch (err) {
+        console.error('Błąd weryfikacji certyfikatu:', err);
+        loadingEl.classList.add('hidden');
+        notFoundEl.classList.remove('hidden');
+        invalidIdEl.textContent = certId + ` (${err.message})`;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initVerification);
+  </script>
+</body>
+</html>

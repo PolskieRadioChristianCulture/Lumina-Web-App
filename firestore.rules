@@ -386,6 +386,23 @@ service cloud.firestore {
       allow delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
     }
 
+    // 7. Certyfikaty ukończenia akademii — publiczny odczyt (weryfikacja autentyczności przez QR),
+    // zapis wyłącznie dla zalogowanego właściciela UID z 28 lekcjami i 5 etapami, niezmienny po utworzeniu
+    match /course_certificates/{certificateId} {
+      allow read: if true;
+      allow create: if isMember() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.certificateId == certificateId &&
+        request.resource.data.lessonsCompleted == 28 &&
+        request.resource.data.stagesCompleted == 5 &&
+        request.resource.data.recipientName is string &&
+        request.resource.data.recipientName.size() >= 2 &&
+        request.resource.data.recipientName.size() <= 100 &&
+        request.resource.data.completedAt is string;
+      allow update: if isMasterAdmin();
+      allow delete: if isMasterAdmin();
+    }
+
     // CC CONTENT CORE — Kanoniczny rejestr treści Christian Culture (Master Plan CC Global 2030)
     // Ochrona Pancernej Prywatności i Informacji Wewnętrznych:
     // Rejestr kanoniczny jest dostępny WYŁĄCZNIE dla Master Admina / Operatorów Mission Control
