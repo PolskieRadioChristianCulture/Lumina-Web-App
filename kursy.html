@@ -187,10 +187,11 @@
       border: 1px solid rgba(212, 175, 55, 0.35);
       background-color: #07090e;
       background-image: 
-        linear-gradient(90deg, #07090e 0%, rgba(7, 9, 14, 0.94) 38%, rgba(7, 9, 14, 0.7) 56%, rgba(7, 9, 14, 0.2) 78%, transparent 100%),
+        linear-gradient(90deg, #07090e 0%, rgba(7, 9, 14, 0.95) 38%, rgba(7, 9, 14, 0.72) 52%, rgba(7, 9, 14, 0.15) 68%, transparent 100%),
         url('/images/academy_hero_main.png');
-      background-size: cover;
-      background-position: right 25%;
+      background-size: 140% auto;
+      background-position: right top;
+      background-repeat: no-repeat;
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(212, 175, 55, 0.18);
       padding: 56px 48px;
       min-height: 480px;
@@ -202,7 +203,7 @@
     .cin-hero-content {
       position: relative;
       z-index: 2;
-      max-width: 620px;
+      max-width: 540px;
     }
 
     .cin-journey-tag {
@@ -1153,7 +1154,9 @@
         padding: 36px 20px;
         margin-top: 12px;
         min-height: auto;
-        background-position: right 30%;
+        background-position: right top;
+        background-size: cover;
+        background-repeat: no-repeat;
         background-image: 
           linear-gradient(180deg, rgba(7, 9, 14, 0.94) 0%, rgba(7, 9, 14, 0.88) 60%, rgba(7, 9, 14, 0.96) 100%),
           url('/images/academy_hero_main.png');
