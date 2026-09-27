@@ -145,17 +145,23 @@
     }
 
     .cin-logo-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: #000;
-      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1.5px solid rgba(212, 175, 55, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
       overflow: hidden;
       flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .cin-logo-mark:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 22px rgba(212, 175, 55, 0.55);
     }
 
     .cin-logo-mark img {
@@ -165,14 +171,32 @@
       display: block;
     }
 
-    .cin-brand-name {
+    .cin-brand-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cin-brand-title {
       font-family: var(--font-serif);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #f6e09e;
-      text-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+      line-height: 1.1;
+      text-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+    }
+
+    .cin-brand-sub {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #d4af37;
+      line-height: 1;
+      margin-top: 2px;
     }
 
     .cin-btn-support {
@@ -1578,10 +1602,11 @@
     <div class="flex items-center gap-5">
       <a href="/kursy" class="cin-brand" title="LUMINA Bible Academy">
         <div class="cin-logo-mark">
-          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo1" alt="LUMINA Bible Academy" />
+          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo2" alt="LUMINA Bible Academy" />
         </div>
-        <div>
-          <span class="cin-brand-name">LUMINA BIBLE ACADEMY</span>
+        <div class="cin-brand-text">
+          <span class="cin-brand-title">LUMINA</span>
+          <span class="cin-brand-sub">BIBLE ACADEMY</span>
         </div>
       </a>
       <span class="text-zinc-600 hidden lg:inline">/</span>
@@ -1964,8 +1989,8 @@
   <!-- ── MODAL: CEREMONIA UKOŃCZENIA AKADEMII (28/28 LEKCJI) ── -->
   <div id="graduation-ceremony-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="graduation-title">
     <div class="academy-modal-card max-w-xl text-center">
-      <div class="w-24 h-24 mx-auto mb-4 rounded-3xl overflow-hidden border border-brand-gold/60 shadow-xl shadow-brand-gold/40 bg-black">
-        <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo1" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
+      <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-brand-gold/80 shadow-2xl shadow-brand-gold/40 bg-black">
+        <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo2" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
       </div>
       <span class="text-brand-gold font-bold text-xs uppercase tracking-widest block mb-1">Oficjalne Ukończenie Programu</span>
       <h3 id="graduation-title" class="font-serif font-bold text-2xl md:text-3xl text-white tracking-wide mb-3">
@@ -2092,7 +2117,7 @@
   <script defer src="/js/cc-global-auth.js"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
-  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_diploma1"></script>
+  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_fix1"></script>
 
 </body>
 </html>

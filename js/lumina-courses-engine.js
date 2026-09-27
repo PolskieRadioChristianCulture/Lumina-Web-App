@@ -2190,6 +2190,7 @@ class LuminaCoursesEngine {
       );
     } catch (e) {
       console.warn('[CoursesEngine] Błąd zapisu stanu lokalnego:', e);
+    }
   }
 
   /* ──────────────────────────────────────────────────────────────────────────
