@@ -1029,15 +1029,74 @@
       color: #a7f3d0 !important;
     }
 
+    /* Formative Quiz Feedback Box */
+    .quiz-feedback-box,
     .cin-feedback-box {
-      margin-top: 16px;
-      padding: 16px;
+      display: none;
+      margin-top: 18px;
+      padding: 18px 20px;
       border-radius: var(--radius-md);
-      background: rgba(78, 205, 196, 0.1);
-      border: 1px solid rgba(78, 205, 196, 0.3);
-      font-size: 13px;
-      line-height: 1.6;
-      color: #e0f8f5;
+      background: rgba(14, 18, 27, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .quiz-feedback-box.visible,
+    .cin-feedback-box.visible {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .quiz-feedback-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quiz-feedback-title.correct {
+      color: #34D399;
+    }
+
+    .quiz-feedback-title.wrong {
+      color: #F87171;
+    }
+
+    .quiz-feedback-text {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .quiz-feedback-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .quiz-scripture-basis {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 32px;
+    }
+
+    .quiz-retry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .editorial-badge {
@@ -1875,7 +1934,7 @@
   <script defer src="/js/cc-global-auth.js"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
-  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_hd3"></script>
+  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_hd4"></script>
 
 </body>
 </html>

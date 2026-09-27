@@ -1486,17 +1486,17 @@ class LuminaCoursesEngine {
                     <div class="quiz-feedback-title" id="quiz-feedback-title-${q.id}"></div>
                     <p class="quiz-feedback-text" id="quiz-feedback-text-${q.id}">${q.explanation}</p>
                     <div class="quiz-feedback-actions">
-                      <div class="flex items-center gap-2 flex-wrap">
+                      <div class="quiz-scripture-basis flex items-center gap-2.5 flex-wrap">
                         ${
                           q.scriptureRefs?.length
                             ? `<span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
                                ${q.scriptureRefs.map((ref) => `<span class="reader-sigla-tag">${ref}</span>`).join(' ')}
-                               <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline">Zobacz w Biblii ↗</a>`
+                               <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>`
                             : ''
                         }
                       </div>
-                      <button type="button" class="btn-secondary-action text-xs py-1.5 px-3 min-h-[36px] quiz-retry-btn" data-qid="${q.id}">
-                        ↺ Spróbuj ponownie
+                      <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" data-qid="${q.id}">
+                        <span>↺ Spróbuj ponownie</span>
                       </button>
                     </div>
                   </div>
