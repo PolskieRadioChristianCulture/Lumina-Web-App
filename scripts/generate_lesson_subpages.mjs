@@ -130,13 +130,13 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <meta property="og:url" content="https://polskieradio.cc/kursy/${lesson.slug}" />
   <meta property="og:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta property="og:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta property="og:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.svg" />
+  <meta property="og:image" content="https://polskieradio.cc${lesson.image}" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta name="twitter:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta name="twitter:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.svg" />
+  <meta name="twitter:image" content="https://polskieradio.cc${lesson.image}" />
 
   <!-- Google Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
