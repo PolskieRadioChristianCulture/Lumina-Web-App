@@ -919,7 +919,7 @@ class LuminaCoursesEngine {
             <div class="cin-stage-meta">(${rangeText})</div>
           </div>
           <div class="cin-stage-image-wrap">
-            <img src="/images/academy/stage${stageOrder}_art.jpg" alt="${stage.title_pl}" onerror="this.src='/images/stages/stage${stageOrder}.jpg'" />
+            <img src="/images/academy/stage${stageOrder}_art.jpg?v=20260927_hd1" alt="${stage.title_pl}" onerror="this.src='/images/stages/stage${stageOrder}.jpg?v=20260927_hd1'" />
           </div>
           <div class="cin-stage-footer">
             ${footerHtml}
@@ -991,7 +991,7 @@ class LuminaCoursesEngine {
         </div>
 
         <div class="cin-feature-artwork-visual">
-          <img src="/images/academy/spotlight_bible_rays.jpg" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg'" />
+          <img src="/images/academy/spotlight_bible_rays.jpg?v=20260927_hd1" alt="${lesson.title.pl}" onerror="this.src='/images/stages/stage1.jpg?v=20260927_hd1'" />
         </div>
       </div>
 
@@ -1003,7 +1003,7 @@ class LuminaCoursesEngine {
             <p class="cin-pillar-desc">Poznaj prawdę poprzez głębokie studium Słowa.</p>
           </div>
           <div class="cin-pillar-thumb">
-            <img src="/images/academy/card_odkryj_exact.jpg" alt="Moduł Odkryj" />
+            <img src="/images/academy/card_odkryj_exact.jpg?v=20260927_hd1" alt="Moduł Odkryj" />
           </div>
         </div>
 
@@ -1013,7 +1013,7 @@ class LuminaCoursesEngine {
             <p class="cin-pillar-desc">Sprawdź zrozumienie i utrwal wiedzę.</p>
           </div>
           <div class="cin-pillar-thumb">
-            <img src="/images/academy/card_quiz_exact.jpg" alt="Quiz" />
+            <img src="/images/academy/card_quiz_exact.jpg?v=20260927_hd1" alt="Quiz" />
           </div>
         </div>
 
@@ -1023,7 +1023,7 @@ class LuminaCoursesEngine {
             <p class="cin-pillar-desc">Notuj myśli, modlitwy i to co Bóg do Ciebie mówi.</p>
           </div>
           <div class="cin-pillar-thumb">
-            <img src="/images/academy/card_dziennik_exact.jpg" alt="Dziennik" />
+            <img src="/images/academy/card_dziennik_exact.jpg?v=20260927_hd1" alt="Dziennik" />
           </div>
         </div>
       </div>
