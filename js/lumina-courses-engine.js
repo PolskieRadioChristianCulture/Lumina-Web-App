@@ -1630,49 +1630,67 @@ class LuminaCoursesEngine {
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">📖 Chcę lepiej poznać Biblię</div>
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">💧 Chcę przygotować się do chrztu</div>
           </div>
-          <div class="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between flex-wrap gap-2 text-xs text-zinc-400">
-            <span>Dedykowany formularz asysty duchowej: <strong>Faza 4</strong></span>
-            <a href="tel:+48608337477" class="text-amber-400 hover:underline">📞 Infolinia duszpasterska: +48 608 337 477</a>
+          <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between flex-wrap gap-3 text-xs text-zinc-400">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Dedykowana opieka i asysta duszpasterska Christian Culture</span>
+            </span>
+            <a href="tel:+48608337477" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-amber-500/30 text-amber-400 hover:border-amber-400 hover:text-amber-300 transition-colors">
+              <span>📞</span>
+              <span>Infolinia: <strong>+48 608 337 477</strong></span>
+            </a>
           </div>
         </div>
       </section>
 
       <!-- 13. UDOSTĘPNIJ -->
       <section class="reader-section">
-        <h2 class="reader-section-title">
-          <span class="reader-step-num">13</span>
-          <span>Podziel Się Słowem</span>
-        </h2>
-        <div class="flex items-center gap-3 flex-wrap">
-          <button type="button" id="btn-share-lesson" class="btn-primary-action">
-            <span>📤 Udostępnij tę lekcję</span>
-          </button>
-          <button type="button" id="btn-copy-link" class="btn-secondary-action">
-            <span>🔗 Kopiuj bezpośredni link</span>
-          </button>
+        <div class="reader-share-deck">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="reader-step-num m-0">13</span>
+            <h2 class="reader-section-title m-0">Podziel Się Słowem</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-zinc-400 mb-5 leading-relaxed">
+            Podziel się tą lekcją z bliskimi, rodziną lub wspólnotą. Słowo Boże ma moc przemieniać serca i budować żywą wiarę.
+          </p>
+          <div class="flex items-center gap-3 flex-wrap">
+            <button type="button" id="btn-share-lesson" class="cin-share-btn cin-share-btn-primary" aria-label="Udostępnij tę lekcję">
+              <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+              <span>Udostępnij tę lekcję</span>
+            </button>
+            <button type="button" id="btn-copy-link" class="cin-share-btn cin-share-btn-secondary" aria-label="Kopiuj bezpośredni link">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span id="btn-copy-label">Kopiuj bezpośredni link</span>
+            </button>
+          </div>
         </div>
       </section>
 
       <!-- 14. UKOŃCZ LEKCJĘ -->
-      <section class="reader-section reader-finish-box">
-        <div class="text-center py-4">
-          <h3 class="text-white font-bold text-lg mb-2">Gotowy, aby przejść do następnego kroku?</h3>
-          <p class="text-zinc-400 text-xs max-w-md mx-auto mb-6">
+      <section class="reader-section">
+        <div class="reader-finish-box text-center py-6 px-4 sm:px-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <span>✦</span>
+            <span>Droga Pielgrzyma • Krok Ukończony</span>
+          </div>
+          <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy, aby przejść do następnego kroku?</h3>
+          <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
             ${
               this.currentUser
-                ? 'Ukończenie lekcji trwale zaktualizuje Twój profil w chmurze LUMINA.'
+                ? 'Ukończenie lekcji trwale zaktualizuje Twój profil w chmurze LUMINA i odblokuje kolejne etapy na osi czasu.'
                 : 'Ukończenie lekcji zostanie zapisane w pamięci tej przeglądarki. Zaloguj się przez Google, aby zsynchronizować stan na wszystkich urządzeniach.'
             }
           </p>
           <div class="flex items-center justify-center gap-4 flex-wrap">
-            <button type="button" id="btn-complete-lesson" class="btn-gold-complete ${isCompleted ? 'bg-emerald-600 text-white' : ''}">
+            <button type="button" id="btn-complete-lesson" class="btn-gold-complete ${isCompleted ? 'completed-state' : ''}">
+              <span>${isCompleted ? '✓' : '✦'}</span>
               <span>${
                 isCompleted
-                  ? '✓ Lekcja Ukończona' + (this.currentUser ? ' (Zapisano w Chmurze)' : '')
+                  ? 'Lekcja Ukończona' + (this.currentUser ? ' (Zapisano w Chmurze)' : '')
                   : 'Ukończ Tę Lekcję'
               }</span>
             </button>
-            <button type="button" id="btn-next-lesson-cta" class="btn-secondary-action">
+            <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary">
               <span>Następna Lekcja ›</span>
             </button>
           </div>
@@ -1760,6 +1778,18 @@ class LuminaCoursesEngine {
     if (btnCopy) {
       btnCopy.addEventListener('click', () => {
         this.copyToClipboard(shareUrl, 'Skopiowano link do lekcji!');
+        const copyLabel = document.getElementById('btn-copy-label');
+        if (copyLabel) {
+          const originalText = copyLabel.textContent;
+          copyLabel.textContent = '✓ Skopiowano link!';
+          btnCopy.style.borderColor = '#10B981';
+          btnCopy.style.color = '#34D399';
+          setTimeout(() => {
+            copyLabel.textContent = originalText;
+            btnCopy.style.borderColor = '';
+            btnCopy.style.color = '';
+          }, 2500);
+        }
       });
     }
 
@@ -1771,15 +1801,16 @@ class LuminaCoursesEngine {
       btnComplete.addEventListener('click', async () => {
         const origText = btnComplete.innerHTML;
         btnComplete.disabled = true;
-        btnComplete.innerHTML = '<span>⏳ Zapisywanie ukończenia…</span>';
+        btnComplete.innerHTML = '<span>⏳</span><span>Zapisywanie ukończenia…</span>';
 
         const result = await this.recordLessonProgress(lesson.id, 'completed');
 
         btnComplete.disabled = false;
 
         if (result.success) {
-          btnComplete.classList.add('bg-emerald-600', 'text-white');
-          btnComplete.innerHTML = `<span>✓ Lekcja Ukończona ${result.mode === 'cloud' ? '(Zapisano w Chmurze)' : ''}</span>`;
+          btnComplete.classList.remove('bg-emerald-600');
+          btnComplete.classList.add('completed-state');
+          btnComplete.innerHTML = `<span>✓</span><span>Lekcja Ukończona ${result.mode === 'cloud' ? '(Zapisano w Chmurze)' : ''}</span>`;
           this.showToast(
             `✨ Lekcja ${lesson.id} ukończona! ${
               result.mode === 'cloud' ? 'Zapisano w chmurze LUMINA 🕊️' : 'Zapisano w pamięci lokalnej.'
