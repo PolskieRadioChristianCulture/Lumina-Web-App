@@ -41,7 +41,7 @@ test('4. Course Engine pobiera dane ze wspólnego datasetu (brak duplikacji w HT
   // Sprawdź czy HTML nie zawiera na twardo wklejonych 28 lekcji
   const hardcodedCount = (kursyHtml.match(/Lekcja:\s*Pismo Święte/g) || []).length;
   assert.strictEqual(hardcodedCount, 0, 'HTML nie może duplikować treści lekcji na twardo — treść musi pochodzić z data/lumina-courses-data.js');
-  assert.match(engineJs, /from '\.\.\/data\/lumina-courses-data\.js'/, 'Silnik musi importować dane z data/lumina-courses-data.js');
+  assert.match(engineJs, /from '\.\.\/data\/lumina-courses-data\.js(?:\?[^']+)?'/, 'Silnik musi importować dane z data/lumina-courses-data.js');
 });
 
 test('5. Deep-link lekcji: obsługa query params (?lekcja=) oraz hash (#)', () => {

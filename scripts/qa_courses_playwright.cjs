@@ -71,12 +71,12 @@ async function runQA() {
     const stageFiltersCount = await desktopPage.$$eval('[data-stage-filter]', els => els.length);
 
     console.log(`     H1: "${heroTitle}"`);
-    console.log(`     Liczba kart lekcji w siatce: ${cardsCount} (oczekiwano: 28)`);
+    console.log(`     Liczba odkrytych lekcji: ${cardsCount} (oczekiwano: 1)`);
     console.log(`     Liczba filtrów etapów: ${stageFiltersCount} (oczekiwano: 6)`);
 
     results.push({
-      test: 'Desktop Hero & 28 Cards Grid na /kursy',
-      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 28 && stageFiltersCount === 6
+      test: 'Desktop Hero & pierwsza odkryta lekcja na /kursy',
+      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 1 && stageFiltersCount === 6
     });
 
     const desktopShotPath = path.join(artifactsDir, 'lumina_kursy_catalog_desktop.png');
@@ -128,31 +128,32 @@ async function runQA() {
     const hasQuiz = await lessonPage.$$eval('.quiz-card', els => els.length > 0);
     const hasJournal = await lessonPage.$eval('#journal-discovery', el => el !== null);
     const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
-    const hasNavNext = await lessonPage.$eval('.cin-nav-next', el => el.getAttribute('href') !== null);
+    const nextHiddenBeforeCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display === 'none');
 
     console.log(`     Tytuł podstrony: "${subpageTitle}"`);
-    console.log(`     Link powrotny do katalogu (← Wszystkie 28 Lekcji): ${hasBackLink}`);
+    console.log(`     Link powrotny do Mojej drogi: ${hasBackLink}`);
     console.log(`     Pasek postępu czytania: ${hasReadingProgressBar}`);
     console.log(`     Kontroler lektora TTS: ${hasTTS}`);
     console.log(`     Cytaty Pisma Świętego: ${hasScripture}`);
     console.log(`     Interaktywny Quiz Utwierdzający: ${hasQuiz}`);
     console.log(`     Mój Dziennik Drogi (Autosave): ${hasJournal}`);
     console.log(`     Przycisk ukończenia lekcji: ${hasCompleteBtn}`);
-    console.log(`     Nawigacja do kolejnej lekcji: ${hasNavNext}`);
+    console.log(`     Następna lekcja ukryta przed ukończeniem: ${nextHiddenBeforeCompletion}`);
 
     results.push({
       test: 'Dedykowana podstrona Lekcji 1 (14 sekcji formacyjnych)',
-      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && hasNavNext
+      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion
     });
 
     // Test interakcji: kliknięcie Ukończ Tę Lekcję
     await lessonPage.click('#btn-complete-lesson');
     await lessonPage.waitForTimeout(200);
     const completedBtnText = await lessonPage.$eval('#btn-complete-lesson', el => el.textContent.trim());
+    const nextVisibleAfterCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display !== 'none');
     console.log(`     Stan przycisku po ukończeniu: "${completedBtnText}"`);
     results.push({
       test: 'Interakcja ukończenia lekcji (Zapis stanu)',
-      pass: completedBtnText.includes('Lekcja Ukończona')
+      pass: completedBtnText.includes('Lekcja Ukończona') && nextVisibleAfterCompletion
     });
 
     // Zrzut ekranu dedykowanej podstrony

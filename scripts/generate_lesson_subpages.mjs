@@ -40,13 +40,13 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   const stage = getStageForLesson(lesson);
   const roman = stage.roman || romanNumerals[stage.order] || 'I';
 
-  const prevLesson = lesson.id > 1 
-    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id - 1) 
-    : LUMINA_COURSES_CORE_28[LUMINA_COURSES_CORE_28.length - 1];
+  const prevLesson = lesson.id > 1
+    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id - 1)
+    : null;
 
-  const nextLesson = lesson.id < 28 
-    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id + 1) 
-    : LUMINA_COURSES_CORE_28[0];
+  const nextLesson = lesson.id < 28
+    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id + 1)
+    : null;
 
   const primaryVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
   const references = lesson.scripture?.references || lesson.scriptureReferences || [];
@@ -186,9 +186,9 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <!-- ── LUXURY TOPBAR ── -->
   <header class="cin-topbar">
     <div class="flex items-center gap-4">
-      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do katalogu wszystkich lekcji">
+      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do mojej drogi">
         <span>←</span>
-        <span class="hidden sm:inline">Wszystkie 28 Lekcji</span>
+        <span class="hidden sm:inline">Moja droga</span>
         <span class="sm:hidden">Wróć</span>
       </a>
       <a href="/kursy" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
@@ -341,7 +341,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         ${quizQuestionsHtml}
         <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
           <span class="text-base text-brand-gold">💡</span>
-          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nigdy nie blokuje postępu</strong> — możesz bez przeszkód kontynuować studium, oznaczyć lekcję jako ukończoną lub przejść do kolejnych tematów.</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nie blokuje ukończenia lekcji</strong>. Po jej ukończeniu odkryjesz następny krok.</span>
         </div>
       </div>
     </section>
@@ -490,7 +490,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
             <span>✦</span>
             <span>Ukończ Tę Lekcję</span>
           </button>
-          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary">
+          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary" style="display:none">
             <span>Następna Lekcja ›</span>
           </button>
         </div>
@@ -499,19 +499,19 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
 
     <!-- ── BOTTOM NAVIGATION BETWEEN LESSONS ── -->
     <nav class="cin-lesson-nav-bar" aria-label="Nawigacja pomiędzy lekcjami">
-      <a href="/kursy/${prevLesson.slug}" class="cin-nav-prev" title="Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}">
+      ${prevLesson ? `<a href="/kursy/${prevLesson.slug}" class="cin-nav-prev" title="Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}">
         <span>←</span>
         <span>Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}</span>
-      </a>
+      </a>` : '<span></span>'}
 
       <a href="/kursy#katalog" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
-        <span>Wszystkie 28 Lekcji</span>
+        <span>Moja droga</span>
       </a>
 
-      <a href="/kursy/${nextLesson.slug}" class="cin-nav-next" title="Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}">
+      ${nextLesson ? `<a id="lesson-next-link" href="/kursy/${nextLesson.slug}" class="cin-nav-next" title="Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}" style="display:none">
         <span>Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}</span>
         <span>→</span>
-      </a>
+      </a>` : '<span></span>'}
     </nav>
 
   </main>
@@ -537,7 +537,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <script>
     window.LUMINA_CURRENT_LESSON_ID = ${lesson.id};
   </script>
-  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_fix1"></script>
+  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_seq1"></script>
 </body>
 </html>`;
 

@@ -21,7 +21,7 @@ import {
   LUMINA_STAGES,
   LUMINA_COURSES_CORE_28,
   LUMINA_POST_28_CATALOG
-} from '../data/lumina-courses-data.js';
+} from '../data/lumina-courses-data.js?v=20260927_seq1';
 import { luminaAchievementsEngine } from './lumina-achievements-engine.js';
 import { luminaCertificateEngine, checkEligibility, formatPolishDate } from './lumina-certificate-engine.js';
 
@@ -272,6 +272,11 @@ class LuminaCoursesEngine {
     window.addEventListener('popstate', () => {
       this.handleInitialRouting();
     });
+    window.addEventListener('pageshow', () => {
+      this.loadLocalGuestState();
+      this.renderLessonsGrid();
+      this.updateHeroState();
+    });
 
     // Globalne zdarzenia autoryzacji z LUMINA
     window.addEventListener('lumina-auth-state', (e) => {
@@ -280,6 +285,11 @@ class LuminaCoursesEngine {
     });
 
     window.addEventListener('storage', (e) => {
+      if (e.key === 'lumina_academy_local_completed') {
+        this.loadLocalGuestState();
+        this.renderLessonsGrid();
+        this.updateHeroState();
+      }
       if (e.key === 'lumina_current_user') {
         try {
           const user = e.newValue ? JSON.parse(e.newValue) : null;
@@ -931,7 +941,7 @@ class LuminaCoursesEngine {
       const isAllActive = this.activeStageFilter === 'all';
       this.dom.stagesFilterAllWrap.innerHTML = `
         <button type="button" class="cin-chapter-badge ${isAllActive ? 'current' : 'open'} min-h-[38px] px-4 cursor-pointer transition-all" data-stage-filter="all">
-          <span>Wszystkie (28 Lekcji)</span>
+          <span>Odkryte lekcje</span>
         </button>
       `;
       const allBtn = this.dom.stagesFilterAllWrap.querySelector('[data-stage-filter="all"]');
@@ -1137,15 +1147,16 @@ class LuminaCoursesEngine {
   renderLessonsGrid() {
     if (!this.dom || !this.dom.lessonsGrid) return;
 
-    let filtered = this.lessons;
+    const nextId = this.getNextRecommendedLessonId();
+    let filtered = this.lessons.filter((lesson) => lesson.id <= nextId);
     if (this.activeStageFilter !== 'all') {
-      filtered = this.lessons.filter((l) => l.stageId === this.activeStageFilter || l.stage === this.activeStageFilter);
+      filtered = filtered.filter((l) => l.stageId === this.activeStageFilter || l.stage === this.activeStageFilter);
     }
 
     // Update section headers
     if (this.dom.chaptersSectionTitle) {
       if (this.activeStageFilter === 'all') {
-        this.dom.chaptersSectionTitle.innerHTML = `<span class="text-brand-gold text-base">✦</span><span>Wszystkie 28 Lekcji</span>`;
+        this.dom.chaptersSectionTitle.innerHTML = `<span class="text-brand-gold text-base">✦</span><span>Odkryte lekcje</span>`;
       } else {
         const currentStage = this.stages.find((s) => s.id === this.activeStageFilter);
         const roman = currentStage ? (currentStage.roman || currentStage.order || 'I') : 'I';
@@ -1158,17 +1169,14 @@ class LuminaCoursesEngine {
       this.dom.chaptersCountBadge.textContent = `${filtered.length} lekcji`;
     }
 
-    const nextId = this.getNextRecommendedLessonId();
-    let html = '';
+    let html = filtered.length ? '' : '<p class="text-zinc-400 text-sm py-6">Ten etap odkryjesz po ukończeniu poprzednich lekcji.</p>';
 
     filtered.forEach((lesson) => {
       const stage = this.getStageForLesson(lesson);
 
       // Status
       const cloudProg = this.cloudProgress.get(lesson.id);
-      const isCloudCompleted = cloudProg && cloudProg.status === 'completed';
-      const isLocalCompleted = !this.currentUser && this.localCompletedIds.has(lesson.id);
-      const isCompleted = isCloudCompleted || isLocalCompleted;
+      const isCompleted = this.isLessonCompleted(lesson.id);
       const isInProgress = cloudProg && cloudProg.status === 'in_progress';
       const isCurrent = lesson.id === nextId;
 
@@ -1290,15 +1298,17 @@ class LuminaCoursesEngine {
     this.renderFeatureLessonCard();
   }
 
+  isLessonCompleted(id) {
+    return this.cloudProgress.get(id)?.status === 'completed' || (!this.currentUser && this.localCompletedIds.has(id));
+  }
+
   getNextRecommendedLessonId() {
     for (let id = 1; id <= 28; id++) {
-      const isCloudComp = this.cloudProgress.get(id)?.status === 'completed';
-      const isLocalComp = this.localCompletedIds.has(id);
-      if (!isCloudComp && !isLocalComp) {
+      if (!this.isLessonCompleted(id)) {
         return id;
       }
     }
-    return 1;
+    return 28;
   }
 
   /* ──────────────────────────────────────────────────────────────────────────
@@ -2181,7 +2191,8 @@ class LuminaCoursesEngine {
   loadLocalGuestState() {
     if (typeof localStorage === 'undefined') return;
     try {
-      const stored = localStorage.getItem('lumina_academy_local_completed');
+      const stored = localStorage.getItem('lumina_academy_local_completed')
+        ?? localStorage.getItem('lumina_completed_ids');
       if (stored) {
         const arr = JSON.parse(stored);
         if (Array.isArray(arr)) {

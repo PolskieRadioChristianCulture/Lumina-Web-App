@@ -68,9 +68,9 @@
   <!-- ── LUXURY TOPBAR ── -->
   <header class="cin-topbar">
     <div class="flex items-center gap-4">
-      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do katalogu wszystkich lekcji">
+      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do mojej drogi">
         <span>←</span>
-        <span class="hidden sm:inline">Wszystkie 28 Lekcji</span>
+        <span class="hidden sm:inline">Moja droga</span>
         <span class="sm:hidden">Wróć</span>
       </a>
       <a href="/kursy" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
@@ -297,7 +297,7 @@
     
         <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
           <span class="text-base text-brand-gold">💡</span>
-          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nigdy nie blokuje postępu</strong> — możesz bez przeszkód kontynuować studium, oznaczyć lekcję jako ukończoną lub przejść do kolejnych tematów.</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nie blokuje ukończenia lekcji</strong>. Po jej ukończeniu odkryjesz następny krok.</span>
         </div>
       </div>
     </section>
@@ -448,7 +448,7 @@
             <span>✦</span>
             <span>Ukończ Tę Lekcję</span>
           </button>
-          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary">
+          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary" style="display:none">
             <span>Następna Lekcja ›</span>
           </button>
         </div>
@@ -463,10 +463,10 @@
       </a>
 
       <a href="/kursy#katalog" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
-        <span>Wszystkie 28 Lekcji</span>
+        <span>Moja droga</span>
       </a>
 
-      <a href="/kursy/27-tysiaclecie-i-koniec-grzechu" class="cin-nav-next" title="Lekcja 27: Tysiąclecie i koniec grzechu">
+      <a id="lesson-next-link" href="/kursy/27-tysiaclecie-i-koniec-grzechu" class="cin-nav-next" title="Lekcja 27: Tysiąclecie i koniec grzechu" style="display:none">
         <span>Lekcja 27: Tysiąclecie i koniec grzechu</span>
         <span>→</span>
       </a>
@@ -495,6 +495,6 @@
   <script>
     window.LUMINA_CURRENT_LESSON_ID = 26;
   </script>
-  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_fix1"></script>
+  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_seq1"></script>
 </body>
 </html>
