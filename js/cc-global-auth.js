@@ -85,10 +85,24 @@
             margin-left: 2px;
         }
 
-        /* Stan Zalogowany: Profil Pill - Standard @SE26/27 Obsidian & Imperial Gold */
+        /* Kontener nadrzędny - przezroczysty, zerowy obrys (ochrona przed podwójną ramką) */
+        .user-nav-profile,
+        #userNavProfile,
+        .cc-auth-widget-container,
+        [data-cc-auth-mount] {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        /* Stan Zalogowany: WŁAŚCIWA JEDYNA Pigułka Logowania - Standard @SE26/27 Obsidian & Imperial Gold */
         .cc-auth-user-pill,
-        .user-nav-profile.cc-auth-user-pill,
-        .user-nav-profile {
+        .user-nav-profile.cc-auth-user-pill {
             display: inline-flex !important;
             align-items: center !important;
             gap: 6px !important;
@@ -111,7 +125,7 @@
         }
 
         .cc-auth-user-pill:hover,
-        .user-nav-profile:hover {
+        .user-nav-profile.cc-auth-user-pill:hover {
             border-color: rgba(212, 175, 55, 0.45) !important;
             background: linear-gradient(165deg, rgba(24, 24, 28, 0.98) 0%, rgba(14, 14, 16, 0.99) 100%) !important;
             box-shadow: 0 6px 18px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.20), inset 0 1px 1px rgba(255, 235, 170, 0.25) !important;
@@ -325,8 +339,7 @@
             }
             /* MOBILE: Zminimalizowana pigułka logowania TYLKO DO IMIENIA */
             .cc-auth-user-pill,
-            .user-nav-profile.cc-auth-user-pill,
-            .user-nav-profile {
+            .user-nav-profile.cc-auth-user-pill {
                 padding: 3px 8px 3px 4px !important;
                 gap: 5px !important;
                 max-width: 140px !important;
