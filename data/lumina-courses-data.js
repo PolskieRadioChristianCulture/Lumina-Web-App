@@ -93,7 +93,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 1,
     "slug": "01-pismo-swiete",
-    "image": "/images/lessons/1.svg",
+    "image": "/images/lessons/1.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Pismo Święte",
@@ -234,7 +234,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 2,
     "slug": "02-trojca",
-    "image": "/images/lessons/2.svg",
+    "image": "/images/lessons/2.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Trójca",
@@ -360,7 +360,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 3,
     "slug": "03-bog-ojciec",
-    "image": "/images/lessons/3.svg",
+    "image": "/images/lessons/3.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Bóg Ojciec",
@@ -477,7 +477,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 4,
     "slug": "04-bog-syn",
-    "image": "/images/lessons/4.svg",
+    "image": "/images/lessons/4.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Bóg Syn",
@@ -591,7 +591,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 5,
     "slug": "05-bog-duch-swiety",
-    "image": "/images/lessons/5.svg",
+    "image": "/images/lessons/5.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Bóg Duch Święty",
@@ -708,7 +708,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 6,
     "slug": "06-stworzenie",
-    "image": "/images/lessons/6.svg",
+    "image": "/images/lessons/6.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Stworzenie",
@@ -825,7 +825,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-1",
     "order": 7,
     "slug": "07-natura-ludzka",
-    "image": "/images/lessons/7.svg",
+    "image": "/images/lessons/7.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Natura ludzka",
@@ -942,7 +942,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-2",
     "order": 8,
     "slug": "08-wielki-boj",
-    "image": "/images/lessons/8.svg",
+    "image": "/images/lessons/8.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Wielki Bój",
@@ -1059,7 +1059,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-2",
     "order": 9,
     "slug": "09-zycie-smierc-i-zmartwychwstanie-chrystusa",
-    "image": "/images/lessons/9.svg",
+    "image": "/images/lessons/9.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Życie, śmierć i zmartwychwstanie Chrystusa",
@@ -1175,7 +1175,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-2",
     "order": 10,
     "slug": "10-doswiadczenie-zbawienia",
-    "image": "/images/lessons/10.svg",
+    "image": "/images/lessons/10.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Doświadczenie zbawienia",
@@ -1291,7 +1291,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-2",
     "order": 11,
     "slug": "11-wzrastanie-w-chrystusie",
-    "image": "/images/lessons/11.svg",
+    "image": "/images/lessons/11.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Wzrastanie w Chrystusie",
@@ -1409,7 +1409,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 12,
     "slug": "12-kosciol-bozy",
-    "image": "/images/lessons/12.svg",
+    "image": "/images/lessons/12.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Kościół Boży",
@@ -1526,7 +1526,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 13,
     "slug": "13-ostatek-i-jego-misja",
-    "image": "/images/lessons/13.svg",
+    "image": "/images/lessons/13.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Ostatek i jego misja",
@@ -1643,7 +1643,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 14,
     "slug": "14-jednosc-ciala-chrystusa",
-    "image": "/images/lessons/14.svg",
+    "image": "/images/lessons/14.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Jedność Ciała Chrystusa",
@@ -1757,7 +1757,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 15,
     "slug": "15-chrzest",
-    "image": "/images/lessons/15.svg",
+    "image": "/images/lessons/15.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Chrzest",
@@ -1874,7 +1874,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 16,
     "slug": "16-wieczerza-panska",
-    "image": "/images/lessons/16.svg",
+    "image": "/images/lessons/16.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Wieczerza Pańska",
@@ -1989,7 +1989,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 17,
     "slug": "17-dary-i-poslugi-duchowe",
-    "image": "/images/lessons/17.svg",
+    "image": "/images/lessons/17.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Dary i posługi duchowe",
@@ -2103,7 +2103,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-3",
     "order": 18,
     "slug": "18-dar-proroctwa",
-    "image": "/images/lessons/18.svg",
+    "image": "/images/lessons/18.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Dar proroctwa",
@@ -2220,7 +2220,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-4",
     "order": 19,
     "slug": "19-prawo-boze",
-    "image": "/images/lessons/19.svg",
+    "image": "/images/lessons/19.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Prawo Boże",
@@ -2336,7 +2336,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-4",
     "order": 20,
     "slug": "20-szabat",
-    "image": "/images/lessons/20.svg",
+    "image": "/images/lessons/20.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Szabat",
@@ -2454,7 +2454,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-4",
     "order": 21,
     "slug": "21-szafarstwo",
-    "image": "/images/lessons/21.svg",
+    "image": "/images/lessons/21.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Szafarstwo",
@@ -2572,7 +2572,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-4",
     "order": 22,
     "slug": "22-chrzescijanskie-zachowanie",
-    "image": "/images/lessons/22.svg",
+    "image": "/images/lessons/22.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Chrześcijańskie zachowanie",
@@ -2689,7 +2689,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-4",
     "order": 23,
     "slug": "23-malzenstwo-i-rodzina",
-    "image": "/images/lessons/23.svg",
+    "image": "/images/lessons/23.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Małżeństwo i rodzina",
@@ -2806,7 +2806,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-5",
     "order": 24,
     "slug": "24-sluzba-chrystusa-w-niebianskiej-swiatyni",
-    "image": "/images/lessons/24.svg",
+    "image": "/images/lessons/24.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Służba Chrystusa w niebiańskiej świątyni",
@@ -2924,7 +2924,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-5",
     "order": 25,
     "slug": "25-powtorne-przyjscie-chrystusa",
-    "image": "/images/lessons/25.svg",
+    "image": "/images/lessons/25.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Powtórne przyjście Chrystusa",
@@ -3042,7 +3042,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-5",
     "order": 26,
     "slug": "26-smierc-i-zmartwychwstanie",
-    "image": "/images/lessons/26.svg",
+    "image": "/images/lessons/26.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Śmierć i zmartwychwstanie",
@@ -3161,7 +3161,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-5",
     "order": 27,
     "slug": "27-tysiaclecie-i-koniec-grzechu",
-    "image": "/images/lessons/27.svg",
+    "image": "/images/lessons/27.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Tysiąclecie i koniec grzechu",
@@ -3277,7 +3277,7 @@ export const LUMINA_COURSES_CORE_28 = [
     "stageId": "etap-5",
     "order": 28,
     "slug": "28-nowa-ziemia",
-    "image": "/images/lessons/28.svg",
+    "image": "/images/lessons/28.webp",
     "version": "1.0.0",
     "title": {
       "pl": "Nowa Ziemia",

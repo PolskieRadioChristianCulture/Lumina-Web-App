@@ -130,13 +130,13 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <meta property="og:url" content="https://polskieradio.cc/kursy/${lesson.slug}" />
   <meta property="og:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta property="og:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta property="og:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.svg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.webp" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta name="twitter:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta name="twitter:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.svg" />
+  <meta name="twitter:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.webp" />
 
   <!-- Google Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -208,6 +208,10 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         <span class="opacity-60">•</span>
         <span>Lekcja ${lesson.id} / 28</span>
       </span>
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <span class="support-icon text-sm">❤️</span>
+        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+      </a>
       <a href="/kursy" class="cin-btn-secondary px-3 py-1.5 text-xs min-h-[38px] hidden lg:inline-flex items-center gap-1.5">
         <span>Katalog Kursu</span>
       </a>
@@ -219,7 +223,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
     
     <!-- Kinowy Baner Tematyczny Lekcji (16:9) -->
     <div class="reader-hero-artwork rounded-2xl overflow-hidden border border-brand-gold/30 mb-8 aspect-[16/9] shadow-2xl relative bg-zinc-950">
-      <img src="${lesson.image || `/images/lessons/${lesson.id}.svg`}" alt="${escapeHtml(lesson.title.pl)}" class="w-full h-full object-cover block" />
+      <img src="${lesson.image || `/images/lessons/${lesson.id}.webp`}" alt="${escapeHtml(lesson.title.pl)}" class="w-full h-full object-cover block" />
     </div>
 
     <div class="reader-stage-header">

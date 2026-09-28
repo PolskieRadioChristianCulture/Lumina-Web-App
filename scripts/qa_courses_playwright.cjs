@@ -34,6 +34,7 @@ function createStaticServer() {
           '.json': 'application/json; charset=utf-8',
           '.png': 'image/png',
           '.jpg': 'image/jpeg',
+          '.webp': 'image/webp',
           '.svg': 'image/svg+xml'
         };
         res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
@@ -98,6 +99,15 @@ async function runQA() {
     });
     console.log(`     Brak poziomego scrolla na mobile: ${!hasHorizontalScroll}`);
     results.push({ test: 'Brak poziomego scrolla na mobile 390px', pass: !hasHorizontalScroll });
+
+    const supportBtnTextVisible = await mobilePage.$eval('.cin-btn-support .support-text', el => window.getComputedStyle(el).display !== 'none');
+    const supportIconVisible = await mobilePage.$eval('.cin-btn-support .support-icon', el => window.getComputedStyle(el).display !== 'none');
+    console.log(`     Na mobile tekst "Wspieraj Misję" ukryty: ${!supportBtnTextVisible}`);
+    console.log(`     Na mobile ikona serca ❤️ widoczna: ${supportIconVisible}`);
+    results.push({
+      test: 'Przycisk wsparcia na mobile: tylko ikona serca ❤️ (tekst ukryty)',
+      pass: !supportBtnTextVisible && supportIconVisible
+    });
 
     // ── 3. TEST DEDYKOWANEJ PODSTRONY LEKCJI 1 (/kursy/01-pismo-swiete) ──
     console.log('\n[QA] 3. Otwarcie dedykowanej podstrony Lekcji 1 (/kursy/01-pismo-swiete)...');
