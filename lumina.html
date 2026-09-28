@@ -398,7 +398,7 @@
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/lumina-rss-suite.js" defer></script>
-    <script src="js/cc-global-auth.js?v=20260928_pill" defer></script>
+    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
     <script>if(window.executeLuminaStartRouting) window.executeLuminaStartRouting();</script>
 
     <style>
@@ -587,8 +587,11 @@
                 font-size: 0.8rem !important;
             }
             .user-nav-profile {
-                padding: 3px 8px 3px 4px !important;
-                gap: 5px !important;
+                padding: 0 !important;
+                gap: 0 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
             }
             .user-nav-name {
                 display: inline-block !important;
@@ -3095,16 +3098,15 @@
             .nav-radio-sub { display: none; }
         }
 
-        /* User Profile Pill in Navbar */
+        /* User Profile Pill in Navbar - przezroczysty wrapper bez obramowania */
         .user-nav-profile {
             display: none;
             align-items: center;
-            gap: 8px;
-            background: rgba(30, 41, 59, 0.85);
-            padding: 4px 10px 4px 5px;
-            border-radius: 30px;
-            border: 1px solid rgba(168, 85, 247, 0.35);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
         }
         .user-nav-avatar {
             width: 32px;
@@ -3573,7 +3575,7 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_mobile_clean_v1">
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260928_single_v3">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786940887015">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -4469,7 +4471,7 @@
             .guest-carousel-cta button { width: 100%; }
         }
     </style>
-    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
+    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
 </head>
 <body class="user-is-guest">
