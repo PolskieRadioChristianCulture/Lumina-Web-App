@@ -145,6 +145,8 @@ async function runQA() {
     const hasJournal = await lessonPage.$eval('#journal-discovery', el => el !== null);
     const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
     const nextHiddenBeforeCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display === 'none');
+    const academyLogoLoaded = await lessonPage.$eval('.cin-logo-mark img', el =>
+      el.complete && el.naturalWidth > 0 && el.currentSrc.includes('lumina_star_dark_header_20260928.png'));
     const desktopLessonHeader = await lessonPage.evaluate(() => {
       const header = document.querySelector('.cin-topbar');
       const auth = document.querySelector('#cc-auth-nav-container');
@@ -163,8 +165,10 @@ async function runQA() {
 
     results.push({
       test: 'Dedykowana podstrona Lekcji 1 (14 sekcji formacyjnych)',
-      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion && desktopLessonHeader
+      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion && desktopLessonHeader && academyLogoLoaded
     });
+
+    await lessonPage.screenshot({ path: path.join(artifactsDir, 'lumina_lesson_01_header_preview.png'), fullPage: false });
 
     // Test interakcji: kliknięcie Ukończ Tę Lekcję
     await lessonPage.click('#btn-complete-lesson');

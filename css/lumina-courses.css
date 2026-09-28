@@ -88,11 +88,9 @@
       height: 44px;
       border-radius: 50%;
       background: transparent;
-      border: 1.5px solid rgba(212, 175, 55, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
       overflow: hidden;
       flex-shrink: 0;
       transition: var(--transition);
@@ -100,7 +98,6 @@
 
     .cin-logo-mark:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 22px rgba(212, 175, 55, 0.55);
     }
 
     .cin-logo-mark img {
