@@ -1504,6 +1504,46 @@
 /* ══════════════════════════════════════════════════════════════════
  * DEDICATED LESSON SUBPAGE EXTENSIONS (Phase 5 / Dedicated URLs)
  * ══════════════════════════════════════════════════════════════════ */
+.cin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px clamp(16px, 3vw, 28px);
+  background: rgba(7, 9, 14, 0.94);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.cin-topbar-main,
+.cin-topbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.cin-topbar-auth {
+  justify-self: end;
+}
+@media (max-width: 767px) {
+  .cin-topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+  }
+  .cin-topbar-main { grid-column: 1; grid-row: 1; }
+  .cin-topbar-auth { grid-column: 2; grid-row: 1; }
+  .cin-topbar-meta {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+  }
+}
+@media (max-width: 360px) {
+  .cin-topbar-main .cin-brand { display: none; }
+}
 .cin-back-link {
   display: inline-flex;
   align-items: center;

@@ -176,7 +176,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <script src="/js/cc-global-auth.js" defer></script>
 
   <!-- LUMINA Courses Styling System -->
-  <link rel="stylesheet" href="/css/lumina-courses.css" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_topbar1" />
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -185,7 +185,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
 
   <!-- ── LUXURY TOPBAR ── -->
   <header class="cin-topbar">
-    <div class="flex items-center gap-4">
+    <div class="cin-topbar-main">
       <a href="/kursy#katalog" class="cin-back-link" title="Powrót do mojej drogi">
         <span>←</span>
         <span class="hidden sm:inline">Moja droga</span>
@@ -202,7 +202,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
       </a>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="cin-topbar-meta">
       <span class="cin-lesson-step-badge">
         <span>Etap ${roman}</span>
         <span class="opacity-60">•</span>
@@ -212,6 +212,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         <span>Katalog Kursu</span>
       </a>
     </div>
+    <div id="cc-auth-nav-container" class="cc-auth-widget-container cin-topbar-auth"></div>
   </header>
 
   <!-- ── LESSON BODY CONTAINER ── -->
@@ -483,7 +484,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         </div>
         <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy, aby przejść do następnego kroku?</h3>
         <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
-          Ukończenie lekcji zostanie zapisane w Twoim profilu pielgrzyma i przybliża Cię do oficjalnego Dyplomu Imiennego LUMINA Bible Academy.
+          ${nextLesson ? `Kliknij „Ukończ tę lekcję”, aby odkryć lekcję ${nextLesson.id}.` : 'Kliknij „Ukończ tę lekcję”, aby zakończyć całą drogę.'} Postęp zapisze się na Twoim koncie po zalogowaniu, a bez logowania w tej przeglądarce.
         </p>
         <div class="flex items-center justify-center gap-4 flex-wrap">
           <button type="button" id="btn-complete-lesson" class="btn-gold-complete">

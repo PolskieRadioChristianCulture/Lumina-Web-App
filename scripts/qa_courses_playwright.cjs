@@ -99,6 +99,22 @@ async function runQA() {
     console.log(`     Brak poziomego scrolla na mobile: ${!hasHorizontalScroll}`);
     results.push({ test: 'Brak poziomego scrolla na mobile 390px', pass: !hasHorizontalScroll });
 
+    await mobilePage.goto(`${baseUrl}/kursy/01-pismo-swiete`, { waitUntil: 'domcontentloaded' });
+    await mobilePage.waitForTimeout(500);
+    const mobileLessonHeader = await mobilePage.evaluate(() => {
+      const header = document.querySelector('.cin-topbar');
+      const auth = document.querySelector('#cc-auth-nav-container');
+      const main = document.querySelector('.cin-topbar-main');
+      const mainBox = main.getBoundingClientRect();
+      const authBox = auth.getBoundingClientRect();
+      return getComputedStyle(header).display === 'grid'
+        && auth?.parentElement === header
+        && mainBox.right <= authBox.left + 1
+        && authBox.right <= window.innerWidth
+        && document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+    });
+    results.push({ test: 'Nagłówek lekcji układa przyciski bez poziomego przewijania na mobile', pass: mobileLessonHeader });
+
     // ── 3. TEST DEDYKOWANEJ PODSTRONY LEKCJI 1 (/kursy/01-pismo-swiete) ──
     console.log('\n[QA] 3. Otwarcie dedykowanej podstrony Lekcji 1 (/kursy/01-pismo-swiete)...');
     const lessonPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -129,6 +145,11 @@ async function runQA() {
     const hasJournal = await lessonPage.$eval('#journal-discovery', el => el !== null);
     const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
     const nextHiddenBeforeCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display === 'none');
+    const desktopLessonHeader = await lessonPage.evaluate(() => {
+      const header = document.querySelector('.cin-topbar');
+      const auth = document.querySelector('#cc-auth-nav-container');
+      return getComputedStyle(header).display === 'grid' && auth?.parentElement === header;
+    });
 
     console.log(`     Tytuł podstrony: "${subpageTitle}"`);
     console.log(`     Link powrotny do Mojej drogi: ${hasBackLink}`);
@@ -142,7 +163,7 @@ async function runQA() {
 
     results.push({
       test: 'Dedykowana podstrona Lekcji 1 (14 sekcji formacyjnych)',
-      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion
+      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion && desktopLessonHeader
     });
 
     // Test interakcji: kliknięcie Ukończ Tę Lekcję
