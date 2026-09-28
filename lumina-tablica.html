@@ -7887,6 +7887,23 @@
             return 0; // fallback dla nieznanych dat
         }
 
+        // Only persisted publication dates can determine the top post. Relative
+        // labels and generated _sortTs values on evergreen cards change on each
+        // page load and must not outrank an actually published entry.
+        function getPublishedPostTimestamp(post) {
+            if (!post) return 0;
+            for (const raw of [post.publishedAt, post.createdAtTimestamp, post.createdAtDateStr, post.createdAt, post.timestamp]) {
+                if (!raw) continue;
+                let timestamp = 0;
+                if (typeof raw === 'number') timestamp = raw < 1e12 ? raw * 1000 : raw;
+                else if (typeof raw === 'string') timestamp = Date.parse(raw);
+                else if (typeof raw.toMillis === 'function') timestamp = raw.toMillis();
+                else if (typeof raw.seconds === 'number') timestamp = raw.seconds * 1000 + Math.floor((raw.nanoseconds || 0) / 1e6);
+                if (Number.isFinite(timestamp) && timestamp > 0) return timestamp;
+            }
+            return 0;
+        }
+
         function getUserFeedPosts() {
             const posts = [];
             const seenPostIds = new Set();
@@ -9472,17 +9489,7 @@
 
             let combined = [];
 
-            // 👑 1. NOWO OPUBLIKOWANY POST (Z Werset Dnia / Tablicy / linku ?post=) — ZAWSZE JAKO PIERWSZY POST NA SAMEJ GÓRZE!
-            const freshUserPosts = userPosts.filter(p => p._isFreshSpotlight || p._isNewlyPublished || (deepLinkPostId && (p.id === deepLinkPostId || p.id === 'post_' + deepLinkPostId)));
-            freshUserPosts.sort((a, b) => (b._sortTs || 0) - (a._sortTs || 0));
-            freshUserPosts.forEach(fp => {
-                fp._isFreshSpotlight = true;
-                if (!combined.some(it => it.id === fp.id)) {
-                    combined.push(fp);
-                }
-            });
-
-            // 2. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
+            // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
             if (window._luminaDailyReflection) {
                 if (!combined.some(it => it.id === window._luminaDailyReflection.id)) {
                     combined.push(window._luminaDailyReflection);
@@ -9538,9 +9545,6 @@
             userPosts.forEach(p => {
                 if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
-                }
-                if (p._isFreshSpotlight) {
-                    return; // Już w spotlight na samej górze!
                 }
                 if (pinnedPostIds.includes(p.id)) {
                     p._isPinnedByAdmin = true;
@@ -9702,6 +9706,18 @@
                 }
                 return true;
             });
+
+            // The newest published post leads the visible board, regardless of
+            // spotlight flags, admin pins, daypart scoring or video shuffling.
+            // Apply this after filters so a search/category never shows an
+            // unrelated post, and keep the entry only once in the feed.
+            const publishedPostIds = new Set(userPosts.map(post => post.id));
+            const latestPublishedPost = combined
+                .filter(item => publishedPostIds.has(item.id) && getPublishedPostTimestamp(item) > 0)
+                .reduce((latest, item) => !latest || getPublishedPostTimestamp(item) > getPublishedPostTimestamp(latest) ? item : latest, null);
+            if (latestPublishedPost) {
+                combined = [latestPublishedPost, ...combined.filter(item => item.id !== latestPublishedPost.id)];
+            }
 
             // Mobile-first progressive feed: render a small, useful first page
             // instead of building more than one hundred rich cards at once.
