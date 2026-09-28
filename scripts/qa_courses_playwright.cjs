@@ -67,6 +67,7 @@ async function runQA() {
     await desktopPage.waitForTimeout(600);
 
     const heroTitle = await desktopPage.$eval('h1', el => el.textContent.trim());
+    const catalogAccent = await desktopPage.$eval('#hero-section .text-amber-400', el => getComputedStyle(el).color);
     const cardsCount = await desktopPage.$$eval('.lesson-card', els => els.length);
     const stageFiltersCount = await desktopPage.$$eval('[data-stage-filter]', els => els.length);
 
@@ -76,7 +77,7 @@ async function runQA() {
 
     results.push({
       test: 'Desktop Hero & pierwsza odkryta lekcja na /kursy',
-      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 1 && stageFiltersCount === 6
+      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 1 && stageFiltersCount === 6 && catalogAccent === 'rgb(196, 163, 90)'
     });
 
     const desktopShotPath = path.join(artifactsDir, 'lumina_kursy_catalog_desktop.png');
@@ -146,7 +147,7 @@ async function runQA() {
     const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
     const nextHiddenBeforeCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display === 'none');
     const academyLogoLoaded = await lessonPage.$eval('.cin-logo-mark img', el =>
-      el.complete && el.naturalWidth > 0 && el.currentSrc.includes('lumina_star_dark_header_20260928.png'));
+      el.complete && el.naturalWidth > 0 && el.currentSrc.includes('lumina_star_champagne_20260928.png'));
     const desktopLessonHeader = await lessonPage.evaluate(() => {
       const header = document.querySelector('.cin-topbar');
       const auth = document.querySelector('#cc-auth-nav-container');
@@ -228,13 +229,14 @@ async function runQA() {
     await desktopPage.goto(`${baseUrl}/certyfikat.html`, { waitUntil: 'domcontentloaded' });
     const certHtml = await desktopPage.content();
     const certHasEkumeniczny = /ekumeniczn/i.test(certHtml);
+    const certificateAccent = await desktopPage.$eval('.text-amber-400', el => getComputedStyle(el).color);
 
     console.log(`     Katalog kursów wolny od "ekumeniczny": ${!catalogHasEkumeniczny}`);
     console.log(`     Certyfikat ukończenia wolny od "ekumeniczny": ${!certHasEkumeniczny}`);
 
     results.push({
       test: 'Całkowite usunięcie słowa "ekumeniczny" z kursy.html i certyfikat.html',
-      pass: !catalogHasEkumeniczny && !certHasEkumeniczny
+      pass: !catalogHasEkumeniczny && !certHasEkumeniczny && certificateAccent === 'rgb(196, 163, 90)'
     });
 
   } catch (err) {
