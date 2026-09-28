@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
     <script src="js/lumina-rss-suite.js" defer></script>
+    <script src="js/cc-global-auth.js?v=20260928_pill" defer></script>
 
     <!-- Tailwind CSS -->
     <!-- Static Compiled Tailwind CSS (100% Bulletproof & Immune to Cloudflare Rocket Loader) -->
@@ -269,11 +270,7 @@
             <button onclick="toggleTheme()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#8A8578] hover:text-[#E8C97A] flex items-center justify-center transition text-xs" title="Przełącz motyw">
                 <i class="fa-solid fa-moon"></i>
             </button>
-            <a href="/lumina" class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#D4A94A] to-[#E8C97A] p-[1px] shadow-sm flex-shrink-0" title="Profil LUMINA">
-                <div class="w-full h-full rounded-full bg-[#0A0A0F] flex items-center justify-center text-[#E8C97A] text-xs">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-            </a>
+            <div class="cc-auth-widget-container" data-cc-auth-mount="true"></div>
         </div>
     </header>
 

@@ -196,6 +196,7 @@
     <script type="module" src="lumina-security.js"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
+    <script src="js/cc-global-auth.js?v=20260928_pill" defer></script>
 
     <style>
         :root {
@@ -2663,15 +2664,9 @@
                 display: none !important;
             }
 
-            .btn-nav-support {
-                width: 38px !important;
-                min-width: 38px !important;
-                height: 38px !important;
-                padding: 0 !important;
-                border-radius: 50% !important;
-            }
-            .btn-nav-support .btn-nav-cta-text {
-                display: none !important;
+            .btn-nav-support,
+            .lumina-nav .btn-nav-support {
+                display: none !important; /* Dostępne w menu nawigacji oraz w widgetach zbiórek; chroni nagłówek przed ściskiem na smartfonach */
             }
         }
 
@@ -3200,6 +3195,16 @@
                 <i class="fa-solid fa-hand-holding-heart"></i>
                 <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
             </button>
+            <div class="user-nav-profile cc-auth-widget-container" id="userNavProfile" data-cc-auth-mount="true" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
+                <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown ? window.toggleCcUserDropdown(event) : handleMyProfileNavigation(event)" title="Twoje Konto LUMINA">
+                    <div class="cc-auth-avatar-wrap">
+                        <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar cc-auth-avatar-img" id="userNavAvatar">
+                        <span class="cc-auth-online-dot"></span>
+                    </div>
+                    <span class="user-nav-name cc-auth-user-name" id="userNavName"></span>
+                    <i class="fa-solid fa-chevron-down cc-auth-user-chevron"></i>
+                </div>
+            </div>
 
             <a href="lumina" class="btn-nav-back" title="Wróć do Portalu"><i class="fa-solid fa-arrow-left"></i> <span>Wróć do Portalu</span></a>
         </div>

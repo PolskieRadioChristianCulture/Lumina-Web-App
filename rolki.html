@@ -1159,6 +1159,7 @@
                 <button type="button" class="header-btn" id="globalMuteBtn" onclick="toggleGlobalMute()" title="Włącz / Wyłącz dźwięk" aria-label="Przełącz dźwięk">
                     <i class="fa-solid fa-volume-high" id="globalMuteIcon" style="color:#facc15;"></i>
                 </button>
+                <div class="cc-auth-widget-container" data-cc-auth-mount="true"></div>
             </div>
         </header>
 
@@ -1250,6 +1251,7 @@
     <!-- Data & Interactive Player Engine -->
     <script type="module" src="lumina-db.js?v=4.1.1_20260909"></script>
     <script src="js/audio-master-director.js"></script>
+    <script src="js/cc-global-auth.js?v=20260928_pill" defer></script>
     <script>
         // Fallback default shorts in case fetch is unavailable
         const FALLBACK_SHORTS = [

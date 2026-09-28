@@ -86,58 +86,80 @@
         }
 
         /* Stan Zalogowany: Profil Pill - Standard @SE26/27 Obsidian & Imperial Gold */
-        .cc-auth-user-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(9, 9, 11, 0.99) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 24px;
-            padding: 4px 12px 4px 5px;
-            color: #ffffff;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.10), inset 0 1px 1px rgba(255, 235, 170, 0.18);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            transition: all 0.25s ease;
-            user-select: none;
-            min-height: 38px;
+        .cc-auth-user-pill,
+        .user-nav-profile.cc-auth-user-pill,
+        .user-nav-profile {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(9, 9, 11, 0.99) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.25) !important;
+            border-radius: 9999px !important;
+            padding: 3px 10px 3px 4px !important;
+            color: #ffffff !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.10), inset 0 1px 1px rgba(255, 235, 170, 0.18) !important;
+            backdrop-filter: blur(28px) !important;
+            -webkit-backdrop-filter: blur(28px) !important;
+            transition: all 0.25s ease !important;
+            user-select: none !important;
+            min-height: 36px !important;
+            height: 36px !important;
+            box-sizing: border-box !important;
+            max-width: 155px !important;
+            text-decoration: none !important;
         }
 
-        .cc-auth-user-pill:hover {
-            border-color: rgba(212, 175, 55, 0.35);
-            background: linear-gradient(165deg, rgba(24, 24, 28, 0.98) 0%, rgba(14, 14, 16, 0.99) 100%);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.18), inset 0 1px 1px rgba(255, 235, 170, 0.25);
+        .cc-auth-user-pill:hover,
+        .user-nav-profile:hover {
+            border-color: rgba(212, 175, 55, 0.45) !important;
+            background: linear-gradient(165deg, rgba(24, 24, 28, 0.98) 0%, rgba(14, 14, 16, 0.99) 100%) !important;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.65), 0 0 16px rgba(212, 175, 55, 0.20), inset 0 1px 1px rgba(255, 235, 170, 0.25) !important;
         }
 
-        .cc-auth-avatar-wrap {
-            position: relative;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            flex-shrink: 0;
+        .cc-auth-avatar-wrap,
+        .user-nav-avatar-wrap {
+            position: relative !important;
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
+            border-radius: 50% !important;
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
-        .cc-auth-avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid #d4af37;
-            display: block;
+        .cc-auth-avatar-img,
+        .user-nav-avatar,
+        .cc-auth-user-pill .user-nav-avatar,
+        .user-nav-profile .user-nav-avatar {
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
+            max-width: 28px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            border: 1.5px solid #d4af37 !important;
+            display: block !important;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2) !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        .cc-auth-online-dot {
-            position: absolute;
-            bottom: -1px;
-            right: -1px;
-            width: 9px;
-            height: 9px;
-            background: #22c55e;
-            border-radius: 50%;
-            border: 1.5px solid #090d1a;
-            box-shadow: 0 0 6px #22c55e;
-            animation: ccPulseDot 2s infinite ease-in-out;
+        .cc-auth-online-dot,
+        .lumina-presence-dot {
+            position: absolute !important;
+            bottom: -1px !important;
+            right: -1px !important;
+            width: 9px !important;
+            height: 9px !important;
+            background: #22c55e !important;
+            border-radius: 50% !important;
+            border: 1.5px solid #090d1a !important;
+            box-shadow: 0 0 6px #22c55e !important;
+            animation: ccPulseDot 2s infinite ease-in-out !important;
+            z-index: 5 !important;
         }
 
         @keyframes ccPulseDot {
@@ -146,41 +168,48 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .cc-auth-user-name {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            max-width: 110px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .cc-auth-user-name,
+        .user-nav-name {
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            max-width: 80px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+            display: inline-block !important;
+            line-height: 1 !important;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
-        .cc-auth-user-chevron {
-            font-size: 0.65rem;
-            color: rgba(212, 175, 55, 0.7);
-            transition: transform 0.2s ease;
+        .cc-auth-user-chevron,
+        .user-nav-chevron {
+            font-size: 0.65rem !important;
+            color: #d4af37 !important;
+            transition: transform 0.2s ease !important;
+            display: inline-block !important;
+            margin-right: 2px !important;
         }
 
         /* Dropdown Menu - Standard @SE26/27 Obsidian & Imperial Gold (Subtelna Poświata 3D & Klasa) */
         .cc-auth-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            width: 220px;
-            background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 20px;
-            padding: 8px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.08), inset 0 1px 1px rgba(255, 235, 170, 0.18);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
+            position: absolute !important;
+            top: calc(100% + 8px) !important;
+            right: 0 !important;
+            width: 220px !important;
+            background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(8, 8, 10, 0.99) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.2) !important;
+            border-radius: 20px !important;
+            padding: 8px !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255, 235, 170, 0.18) !important;
+            backdrop-filter: blur(28px) !important;
+            -webkit-backdrop-filter: blur(28px) !important;
             display: none;
-            flex-direction: column;
-            gap: 4px;
-            z-index: 10001;
-            transform-origin: top right;
-            animation: ccDropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-direction: column !important;
+            gap: 4px !important;
+            z-index: 10001 !important;
+            transform-origin: top right !important;
+            animation: ccDropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
 
         .cc-auth-dropdown.open {
@@ -193,53 +222,61 @@
         }
 
         .cc-auth-dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            border-radius: 12px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 600;
-            transition: all 0.18s ease;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            box-sizing: border-box;
-            font-family: inherit;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 8px 12px !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            transition: all 0.18s ease !important;
+            cursor: pointer !important;
+            border: none !important;
+            background: transparent !important;
+            width: 100% !important;
+            text-align: left !important;
+            box-sizing: border-box !important;
+            font-family: inherit !important;
         }
 
         .cc-auth-dropdown-item:hover {
-            background: rgba(212, 175, 55, 0.12);
-            color: #d4af37;
-            transform: translateX(2px);
+            background: rgba(212, 175, 55, 0.12) !important;
+            color: #d4af37 !important;
+            transform: translateX(2px) !important;
         }
 
         .cc-auth-dropdown-item i {
-            width: 16px;
-            font-size: 0.88rem;
-            text-align: center;
-            color: #d4af37;
+            width: 16px !important;
+            font-size: 0.88rem !important;
+            text-align: center !important;
+            color: #d4af37 !important;
         }
 
         .cc-auth-dropdown-sep {
-            height: 1px;
-            background: rgba(212, 175, 55, 0.15);
-            margin: 4px 6px;
+            height: 1px !important;
+            background: rgba(212, 175, 55, 0.15) !important;
+            margin: 4px 6px !important;
         }
 
         .cc-auth-dropdown-item.logout {
-            color: #f87171;
+            color: #f87171 !important;
         }
         .cc-auth-dropdown-item.logout i {
-            color: #ef4444;
+            color: #ef4444 !important;
         }
         .cc-auth-dropdown-item.logout:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #fca5a5 !important;
+        }
+
+        /* Ukryj stare surowe przyciski gdy pigułka jest aktywna */
+        .btn-nav-logout,
+        .btn-nav-more,
+        .user-nav-profile .btn-nav-logout,
+        .user-nav-profile .btn-nav-more {
+            display: none !important;
         }
 
         /* Toast powitalny */
@@ -285,6 +322,54 @@
                 right: 16px;
                 bottom: 80px;
                 max-width: none;
+            }
+            /* MOBILE: Zminimalizowana pigułka logowania TYLKO DO IMIENIA */
+            .cc-auth-user-pill,
+            .user-nav-profile.cc-auth-user-pill,
+            .user-nav-profile {
+                padding: 3px 8px 3px 4px !important;
+                gap: 5px !important;
+                max-width: 140px !important;
+                min-height: 36px !important;
+                height: 36px !important;
+            }
+            .cc-auth-user-name,
+            .user-nav-name {
+                display: inline-block !important;
+                font-size: 0.78rem !important;
+                font-weight: 700 !important;
+                color: #ffffff !important;
+                max-width: 68px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
+            }
+            .cc-auth-avatar-wrap,
+            .user-nav-avatar-wrap {
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+                flex: 0 0 28px !important;
+            }
+            .cc-auth-avatar-img,
+            .user-nav-avatar {
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+                max-width: 28px !important;
+                flex: 0 0 28px !important;
+            }
+            .cc-auth-user-chevron,
+            .user-nav-chevron {
+                display: inline-block !important;
+                font-size: 0.65rem !important;
+            }
+        }
+        @media (max-width: 380px) {
+            .cc-auth-user-name,
+            .user-nav-name {
+                max-width: 55px !important;
             }
         }
         @media (min-width: 769px) {
@@ -426,9 +511,15 @@
     // 7. Przełączanie dropdowna użytkownika (z auto-zamykaniem menu skrótów)
     window.toggleCcUserDropdown = function(event) {
         if (event) event.stopPropagation();
-        const drop = document.getElementById('ccAuthDropdown');
+        const pill = event ? event.currentTarget : document.querySelector('.cc-auth-user-pill');
+        const container = pill ? pill.closest('.cc-auth-widget-container, #userNavProfile, .user-nav-profile') : null;
+        const drop = container ? container.querySelector('.cc-auth-dropdown') : document.getElementById('ccAuthDropdown');
         if (drop) {
             const willOpen = !drop.classList.contains('open');
+            // Zamknij wszystkie inne otwarte dropdowny
+            document.querySelectorAll('.cc-auth-dropdown.open').forEach(d => {
+                if (d !== drop) d.classList.remove('open');
+            });
             drop.classList.toggle('open');
             if (willOpen) {
                 // Jeśli menu skrótów było otwarte, zamknij je dla czystości interfejsu
@@ -449,27 +540,27 @@
     };
 
     document.addEventListener('click', () => {
-        const drop = document.getElementById('ccAuthDropdown');
-        if (drop && drop.classList.contains('open')) {
+        document.querySelectorAll('.cc-auth-dropdown.open').forEach(drop => {
             drop.classList.remove('open');
-        }
+        });
     });
 
     // 8. Renderowanie widgetu w zależności od stanu sesji
     function renderAuthWidgets() {
         const data = getStoredUserData();
-        const containers = document.querySelectorAll('.cc-auth-widget-container, [data-cc-auth-mount]');
+        const containers = document.querySelectorAll('.cc-auth-widget-container, [data-cc-auth-mount], #userNavProfile, .user-nav-profile, #ccAuthWidgetSlot');
 
         containers.forEach(container => {
             if (data && data.user) {
                 // ZALOGOWANY
                 const user = data.user;
                 const profile = data.profile || {};
-                const name = profile.name || user.displayName || 'Członek LUMINA';
+                const fullName = profile.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Członek LUMINA');
+                const firstName = fullName.trim().split(' ')[0] || 'Profil';
                 const isCezary = (user.email && user.email.toLowerCase().includes('czarkes')) || profile.slug === 'cezaryrgowski';
                 const isWioletta = (user.email && user.email.includes('wioletta1240')) || profile.slug === 'wiolettarogowska';
-                const isZbyszek = profile.slug === 'zbyszekgieron' || (name && (name.toLowerCase().includes('zbyszek') || name.toLowerCase().includes('zbigniew')) && name.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
-                const isZofia = profile.slug === 'zofiadudek' || (name && name.toLowerCase().includes('zofia') && name.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
+                const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
+                const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
 
                 let avatar = profile.avatar || user.photoURL || 'lumina_icon.jpg';
                 if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_cezary_official.jpg';
@@ -484,20 +575,25 @@
                 else if (isZofia) profileHref = 'lumina.zofiadudek.html';
                 else if (profile.slug) profileHref = `lumina-profile.html?u=${profile.slug}`;
 
+                container.style.display = 'inline-flex';
+                if (!container.classList.contains('cc-auth-widget-container')) {
+                    container.classList.add('cc-auth-widget-container');
+                }
+
                 container.innerHTML = `
-                    <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown(event)" title="Twoje Konto LUMINA">
+                    <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown(event)" title="Twoje Konto LUMINA (${fullName})">
                         <div class="cc-auth-avatar-wrap">
-                            <img src="${avatar}" onerror="this.src='lumina_icon.jpg'" alt="${name}" class="cc-auth-avatar-img">
+                            <img src="${avatar}" onerror="this.src='lumina_icon.jpg'" alt="${firstName}" class="cc-auth-avatar-img user-nav-avatar" id="userNavAvatar">
                             <span class="cc-auth-online-dot"></span>
                         </div>
-                        <span class="cc-auth-user-name">${name.split(' ')[0]}</span>
+                        <span class="cc-auth-user-name user-nav-name" id="userNavName">${firstName}</span>
                         <i class="fa-solid fa-chevron-down cc-auth-user-chevron"></i>
                     </div>
 
-                    <div class="cc-auth-dropdown" id="ccAuthDropdown" onclick="event.stopPropagation()">
+                    <div class="cc-auth-dropdown" onclick="event.stopPropagation()">
                         <a href="${profileHref}" class="cc-auth-dropdown-item">
                             <i class="fa-solid fa-id-card"></i>
-                            <span>Mój Profil (LUMINA)</span>
+                            <span>Mój Profil (${firstName})</span>
                         </a>
                         <a href="tablica" class="cc-auth-dropdown-item">
                             <i class="fa-solid fa-users-viewfinder"></i>
@@ -512,37 +608,68 @@
                             <span>Odkrywaj Portal</span>
                         </a>
                         <div class="cc-auth-dropdown-sep"></div>
-                        <button type="button" class="cc-auth-dropdown-item logout" onclick="window.ccLogout()">
+                        <button type="button" class="cc-auth-dropdown-item logout" onclick="if(window.handleLogout) handleLogout(); else ccLogout();">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             <span>Wyloguj się</span>
                         </button>
                     </div>
                 `;
+
+                // Ukryj CTA dla gościa jeśli istniało
+                document.querySelectorAll('#authCtaBtn, .btn-nav-auth, #heroGuestCta').forEach(el => {
+                    el.style.display = 'none';
+                });
+                if (document.body) {
+                    document.body.classList.add('user-is-authenticated');
+                    document.body.classList.remove('user-is-guest');
+                }
             } else {
                 // NIEZALOGOWANY
-                container.innerHTML = `
-                    <button type="button" class="cc-auth-google-btn" onclick="window.ccLoginWithGoogle()" title="Zaloguj się przez Google do społeczności LUMINA">
-                        ${GOOGLE_ICON_SVG}
-                        <span class="cc-auth-btn-text-full">Zaloguj z Google</span>
-                        <span class="cc-auth-btn-text-short">Zaloguj</span>
-                        <span class="cc-auth-lumina-tag">LUMINA</span>
-                    </button>
-                `;
+                if (container.id === 'userNavProfile' || container.classList.contains('user-nav-profile')) {
+                    container.style.display = 'none';
+                    container.innerHTML = '';
+                    document.querySelectorAll('#authCtaBtn, .btn-nav-auth').forEach(el => {
+                        el.style.display = 'inline-flex';
+                    });
+                    const heroGuestCta = document.getElementById('heroGuestCta');
+                    if (heroGuestCta) heroGuestCta.style.display = 'flex';
+                } else {
+                    container.style.display = 'inline-flex';
+                    container.innerHTML = `
+                        <button type="button" class="cc-auth-google-btn" onclick="window.ccLoginWithGoogle()" title="Zaloguj się przez Google do społeczności LUMINA">
+                            ${GOOGLE_ICON_SVG}
+                            <span class="cc-auth-btn-text-full">Zaloguj z Google</span>
+                            <span class="cc-auth-btn-text-short">Zaloguj</span>
+                            <span class="cc-auth-lumina-tag">LUMINA</span>
+                        </button>
+                    `;
+                }
+                if (document.body) {
+                    document.body.classList.remove('user-is-authenticated');
+                    document.body.classList.add('user-is-guest');
+                }
             }
         });
     }
 
     // 9. Automatyczne podpięcie do nagłówków na znanych podstronach misji
     function autoMountAuthWidget() {
-        if (document.querySelector('.cc-auth-widget-container')) {
+        if (document.querySelector('.cc-auth-widget-container, #userNavProfile, [data-cc-auth-mount], #ccAuthWidgetSlot')) {
             renderAuthWidgets();
             return;
         }
 
         const headerTargets = [
+            '#ccAuthWidgetSlot',
             '#quickActionsMenu',
+            '.mb-header-actions',
+            '.shorts-header .header-right-cluster',
+            '.lumina-nav-actions',
+            '.nav-right-actions',
             '.nav-right',
             '.header-right',
+            '.profile-navbar > div:last-child',
+            '.profile-navbar',
             '.main-nav',
             '#mainHeader .header-container',
             'header .header-container',
@@ -559,6 +686,8 @@
                 
                 if (sel === '#quickActionsMenu') {
                     targetEl.parentNode.insertBefore(widget, targetEl);
+                } else if (sel === '.profile-navbar > div:last-child' || sel === '.nav-right-actions' || sel === '.header-right') {
+                    targetEl.insertBefore(widget, targetEl.firstChild);
                 } else {
                     targetEl.appendChild(widget);
                 }
@@ -580,6 +709,23 @@
             renderAuthWidgets();
         }
     });
+
+    window.addEventListener('pageshow', () => {
+        renderAuthWidgets();
+    });
+
+    function hookLuminaDb() {
+        if (window.LuminaDB && typeof window.LuminaDB.onAuthChange === 'function') {
+            try {
+                window.LuminaDB.onAuthChange(() => {
+                    renderAuthWidgets();
+                });
+            } catch(e) {}
+        }
+    }
+    hookLuminaDb();
+    setTimeout(hookLuminaDb, 600);
+    setTimeout(hookLuminaDb, 1800);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', autoMountAuthWidget);
