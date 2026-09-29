@@ -14,7 +14,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import { LUMINA_COURSES_CORE_28, LUMINA_STAGES } from '../data/lumina-courses-data.js';
+import { LUMINA_COURSES_CORE_28, LUMINA_STAGES } from '../data/lumina-courses-data.js?v=20260927_seq1';
 
 class LuminaLessonPageEngine {
   constructor() {
@@ -26,6 +26,9 @@ class LuminaLessonPageEngine {
     this.currentUser = null;
     this.localCompletedIds = new Set();
     this.cloudProgress = new Map();
+    this.cloudCompleted = false;
+    this.firebaseDb = null;
+    this.firestoreSdk = null;
     this.ttsUtterance = null;
     this.ttsState = 'idle';
     this.saveTimeout = null;
@@ -61,15 +64,17 @@ class LuminaLessonPageEngine {
     this.setupGlobalAuthListener();
     this.setupKeyboardShortcuts();
     this.updateCompletionUi();
+    this.initFirebaseProgress();
   }
 
   loadLocalState() {
     try {
-      const storedCompleted = localStorage.getItem('lumina_completed_ids');
+      const storedCompleted = localStorage.getItem('lumina_academy_local_completed')
+        ?? localStorage.getItem('lumina_completed_ids');
       if (storedCompleted) {
         const arr = JSON.parse(storedCompleted);
         if (Array.isArray(arr)) {
-          this.localCompletedIds = new Set(arr);
+          this.localCompletedIds = new Set(arr.map(Number));
         }
       }
     } catch (e) {
@@ -79,9 +84,47 @@ class LuminaLessonPageEngine {
 
   saveLocalCompleted() {
     try {
-      localStorage.setItem('lumina_completed_ids', JSON.stringify(Array.from(this.localCompletedIds)));
+      const completed = JSON.stringify(Array.from(this.localCompletedIds));
+      localStorage.setItem('lumina_academy_local_completed', completed);
+      localStorage.setItem('lumina_completed_ids', completed);
     } catch (e) {
       console.warn('[LessonPage] Błąd zapisu localCompletedIds:', e);
+    }
+  }
+
+  async initFirebaseProgress() {
+    try {
+      const lumina = window.LuminaDB?.onAuthChange
+        ? window.LuminaDB
+        : await import('/lumina-db.js?v=courses_p3');
+      lumina.onAuthChange(async (user) => {
+        this.currentUser = user || null;
+        this.cloudCompleted = false;
+        await this.loadCloudCompletion();
+        this.updateCompletionUi();
+      });
+      const ready = await lumina.ensureDbReady();
+      this.firebaseDb = ready.db;
+      this.firestoreSdk = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      await this.loadCloudCompletion();
+      this.updateCompletionUi();
+    } catch (error) {
+      console.warn('[LessonPage] Nie udało się połączyć postępu z chmurą:', error);
+    }
+  }
+
+  async loadCloudCompletion() {
+    if (!this.currentUser || !this.firebaseDb || !this.firestoreSdk) return;
+    const uid = this.currentUser.uid;
+    try {
+      const { doc, getDoc } = this.firestoreSdk;
+      const ref = doc(this.firebaseDb, 'course_progress', `${uid}_lesson_${this.lesson.id}`);
+      const snapshot = await getDoc(ref);
+      if (this.currentUser?.uid === uid) {
+        this.cloudCompleted = snapshot.exists() && snapshot.data().status === 'completed';
+      }
+    } catch (error) {
+      console.warn('[LessonPage] Nie udało się odczytać ukończenia lekcji:', error);
     }
   }
 
@@ -367,13 +410,14 @@ class LuminaLessonPageEngine {
 
     if (btnComplete) {
       btnComplete.addEventListener('click', () => {
-        this.toggleLessonCompletion();
+        this.completeLesson();
       });
     }
 
     if (btnNext) {
       btnNext.addEventListener('click', () => {
-        const nextId = this.lesson.id < 28 ? this.lesson.id + 1 : 1;
+        if (!this.isLessonCompleted() || this.lesson.id >= 28) return;
+        const nextId = this.lesson.id + 1;
         const nextLesson = LUMINA_COURSES_CORE_28.find(l => l.id === nextId);
         if (nextLesson) {
           window.location.href = `/kursy/${nextLesson.slug}`;
@@ -382,31 +426,54 @@ class LuminaLessonPageEngine {
     }
   }
 
-  toggleLessonCompletion() {
-    const wasCompleted = this.localCompletedIds.has(this.lesson.id);
-    if (wasCompleted) {
-      this.localCompletedIds.delete(this.lesson.id);
-      this.showToast(`Lekcja ${this.lesson.id} oznaczona jako nieukończona.`);
-    } else {
-      this.localCompletedIds.add(this.lesson.id);
-      this.showToast(`✦ Gratulacje! Lekcja ${this.lesson.id} ukończona! (${this.localCompletedIds.size}/28)`);
-      if (this.localCompletedIds.size >= 28) {
-        setTimeout(() => {
-          alert('🎉 Chwała Bogu! Ukończyłeś wszystkie 28 Lekcji LUMINA Bible Academy!\n\nMożesz teraz odebrać swój Oficjalny Dyplom Imienny na stronie certyfikatu.');
-          window.location.href = '/certyfikat';
-        }, 800);
-      }
-    }
+  isLessonCompleted() {
+    return this.currentUser ? this.cloudCompleted : this.localCompletedIds.has(this.lesson.id);
+  }
 
-    this.saveLocalCompleted();
-    this.updateCompletionUi();
+  async completeLesson() {
+    if (this.isLessonCompleted()) return;
+    const button = document.getElementById('btn-complete-lesson');
+    if (button) button.disabled = true;
+    try {
+      if (this.currentUser) {
+        if (!this.firebaseDb || !this.firestoreSdk) {
+          this.showToast('Połączenie z kontem jeszcze się uruchamia. Spróbuj ponownie za chwilę.');
+          return;
+        }
+        const { doc, setDoc, serverTimestamp } = this.firestoreSdk;
+        const ref = doc(this.firebaseDb, 'course_progress', `${this.currentUser.uid}_lesson_${this.lesson.id}`);
+        await setDoc(ref, {
+          userId: this.currentUser.uid,
+          courseId: 'biblijne-zasady-wiary-28',
+          lessonId: this.lesson.id,
+          status: 'completed',
+          progressPercent: 100,
+          completedAt: serverTimestamp(),
+          lastActivityAt: serverTimestamp(),
+          version: 1
+        }, { merge: true });
+        this.cloudCompleted = true;
+      } else {
+        this.localCompletedIds.add(this.lesson.id);
+        this.saveLocalCompleted();
+      }
+      this.updateCompletionUi();
+      this.showToast(this.lesson.id < 28
+        ? `✦ Lekcja ${this.lesson.id} ukończona! Odkryto lekcję ${this.lesson.id + 1}.`
+        : '✦ Ukończono ostatnią lekcję!');
+    } catch (error) {
+      console.error('[LessonPage] Błąd zapisu ukończenia lekcji:', error);
+      this.showToast('Nie udało się zapisać ukończenia lekcji. Spróbuj ponownie.');
+    } finally {
+      if (button) button.disabled = false;
+    }
   }
 
   updateCompletionUi() {
     const btnComplete = document.getElementById('btn-complete-lesson');
     if (!btnComplete) return;
 
-    const isCompleted = this.localCompletedIds.has(this.lesson.id);
+    const isCompleted = this.isLessonCompleted();
     if (isCompleted) {
       btnComplete.classList.add('completed-state');
       btnComplete.innerHTML = `<span>✓</span><span>Lekcja Ukończona (Zapisano)</span>`;
@@ -414,10 +481,15 @@ class LuminaLessonPageEngine {
       btnComplete.classList.remove('completed-state');
       btnComplete.innerHTML = `<span>✦</span><span>Ukończ Tę Lekcję</span>`;
     }
+    const showNext = isCompleted && this.lesson.id < 28;
+    for (const id of ['btn-next-lesson-cta', 'lesson-next-link']) {
+      const next = document.getElementById(id);
+      if (next) next.style.display = showNext ? '' : 'none';
+    }
   }
 
   setupGlobalAuthListener() {
-    window.addEventListener('cc-auth-changed', (e) => {
+    window.addEventListener('lumina-auth-state', (e) => {
       this.currentUser = e.detail?.user || null;
       const statusBadge = document.getElementById('journal-status-indicator');
       if (statusBadge) {
@@ -434,7 +506,7 @@ class LuminaLessonPageEngine {
       if (e.key === 'ArrowLeft' && this.lesson.id > 1) {
         const prev = LUMINA_COURSES_CORE_28.find(l => l.id === this.lesson.id - 1);
         if (prev) window.location.href = `/kursy/${prev.slug}`;
-      } else if (e.key === 'ArrowRight' && this.lesson.id < 28) {
+      } else if (e.key === 'ArrowRight' && this.lesson.id < 28 && this.isLessonCompleted()) {
         const next = LUMINA_COURSES_CORE_28.find(l => l.id === this.lesson.id + 1);
         if (next) window.location.href = `/kursy/${next.slug}`;
       }

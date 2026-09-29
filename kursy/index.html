@@ -34,10 +34,20 @@
       theme: {
         extend: {
           colors: {
+            amber: {
+              100: '#F1E7D0',
+              200: '#E2CC9A',
+              300: '#D4B578',
+              400: '#C4A35A',
+              500: '#B39250',
+              600: '#A08040',
+              900: '#403526',
+              950: '#29231C'
+            },
             brand: {
-              gold: '#D4AF37',
-              'gold-light': '#F3E5AB',
-              'gold-dark': '#997D21',
+              gold: '#C4A35A',
+              'gold-light': '#E2CC9A',
+              'gold-dark': '#A08040',
               dark: '#07090E',
               surface: '#0E121A',
               elevated: '#161B26',
@@ -59,7 +69,7 @@
   <script src="/js/cc-global-auth.js" defer></script>
 
   <!-- LUMINA Courses Styling System -->
-  <link rel="stylesheet" href="/css/lumina-courses.css" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -101,7 +111,7 @@
     <div class="flex items-center gap-5">
       <a href="/kursy" class="cin-brand" title="LUMINA Bible Academy">
         <div class="cin-logo-mark">
-          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo2" alt="LUMINA Bible Academy" />
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" />
         </div>
         <div class="cin-brand-text">
           <span class="cin-brand-title">LUMINA</span>
@@ -112,7 +122,7 @@
       <nav class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
         <a href="#hero-section" class="hover:text-brand-gold transition-colors">CINEMATIC JOURNEY</a>
         <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
-        <a href="#katalog" class="hover:text-brand-gold transition-colors">28 LEKCJI</a>
+        <a href="#katalog" class="hover:text-brand-gold transition-colors">MOJA DROGA</a>
         <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
         <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
       </nav>
@@ -350,12 +360,12 @@
         <div>
           <h2 id="chapters-section-title" class="font-serif text-lg sm:text-xl font-bold text-white flex items-center gap-2">
             <span class="text-brand-gold text-base">✦</span>
-            <span>Rozdziały w tym Etapie</span>
+            <span>Odkryte lekcje</span>
           </h2>
-          <p id="chapters-section-desc" class="text-xs text-zinc-400">Wybierz lekcję, aby wejść w tryb skupionego studium (Focused Study).</p>
+          <p id="chapters-section-desc" class="text-xs text-zinc-400">Rozpocznij od lekcji 1. Każda ukończona lekcja odkrywa następny krok.</p>
         </div>
         <span id="chapters-count-badge" class="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
-          28 lekcji
+          1 lekcja
         </span>
       </div>
 
@@ -444,7 +454,7 @@
   <!-- ── MODAL: ODBLOKOWANE OSIĄGNIĘCIE (PREFERENCJE PUBLIKACJI) ── -->
   <div id="achievement-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="achievement-title">
     <div class="academy-modal-card">
-      <div id="achievement-icon" class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-yellow-400/20 border border-brand-gold/40 flex items-center justify-center text-3xl shadow-lg shadow-brand-gold/20">
+      <div id="achievement-icon" class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-amber-300/20 border border-brand-gold/40 flex items-center justify-center text-3xl shadow-lg shadow-brand-gold/20">
         🏆
       </div>
       <span class="text-brand-gold font-bold text-xs uppercase tracking-widest block mb-1">Nowe Osiągnięcie LUMINA Academy</span>
@@ -489,7 +499,7 @@
   <div id="graduation-ceremony-modal" class="academy-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="graduation-title">
     <div class="academy-modal-card max-w-xl text-center">
       <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-brand-gold/80 shadow-2xl shadow-brand-gold/40 bg-black">
-        <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo2" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
+        <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" class="w-full h-full object-contain" />
       </div>
       <span class="text-brand-gold font-bold text-xs uppercase tracking-widest block mb-1">Oficjalne Ukończenie Programu</span>
       <h3 id="graduation-title" class="font-serif font-bold text-2xl md:text-3xl text-white tracking-wide mb-3">
@@ -616,7 +626,7 @@
   <script defer src="/js/cc-global-auth.js"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
-  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_fix1"></script>
+  <script type="module" src="/js/lumina-courses-engine.js?v=20260927_seq1"></script>
 
 </body>
 </html>

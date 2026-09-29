@@ -276,11 +276,10 @@ img, video, iframe, canvas, svg {
         display: none !important;
     }
 
-    /* Hide text labels in header widgets */
+    /* Hide text labels in header widgets (user-nav-name is preserved as first-name only) */
     .nav-radio-info, 
     .sound-bars,
     .nav-radio-sub,
-    .user-nav-name,
     .btn-nav-cta-text {
         display: none !important;
     }
@@ -311,29 +310,123 @@ img, video, iframe, canvas, svg {
         color: #facc15 !important;
     }
 
-    /* Clean Avatar Only on Mobile (No duplicate logout icon) */
-    .user-nav-profile {
-        padding: 0 !important;
+    /* Kontener nadrzędny - przezroczysty, zerowy obrys (ochrona przed podwójną ramką) */
+    .user-nav-profile,
+    #userNavProfile,
+    .cc-auth-widget-container {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* Unified Mobile User Pill - Only First Name + Avatar + Dot + Chevron */
+    .cc-auth-user-pill,
+    .user-nav-profile.cc-auth-user-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        background: linear-gradient(165deg, rgba(16, 16, 18, 0.98) 0%, rgba(9, 9, 11, 0.99) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+        border-radius: 9999px !important;
+        padding: 3px 8px 3px 4px !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.10), inset 0 1px 1px rgba(255, 235, 170, 0.18) !important;
+        backdrop-filter: blur(28px) !important;
+        -webkit-backdrop-filter: blur(28px) !important;
+        transition: all 0.25s ease !important;
+        user-select: none !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        box-sizing: border-box !important;
+        max-width: 145px !important;
+    }
+
+    .cc-auth-user-pill:hover,
+    .user-nav-profile.cc-auth-user-pill:hover {
+        border-color: rgba(212, 175, 55, 0.45) !important;
+        background: linear-gradient(165deg, rgba(24, 24, 28, 0.98) 0%, rgba(14, 14, 16, 0.99) 100%) !important;
+    }
+
+    .user-nav-avatar-wrap,
+    .cc-auth-avatar-wrap {
+        position: relative !important;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 0 !important;
     }
 
-    .user-nav-avatar {
-        width: 36px !important;
-        height: 36px !important;
+    .user-nav-avatar,
+    .cc-auth-avatar-img,
+    .user-nav-profile .user-nav-avatar,
+    .cc-auth-user-pill .user-nav-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
         border-radius: 50% !important;
-        border: 2px solid #facc15 !important;
-        box-shadow: 0 0 10px rgba(250, 204, 21, 0.4) !important;
+        border: 1.5px solid #d4af37 !important;
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.2) !important;
+        object-fit: cover !important;
+        display: block !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
         cursor: pointer !important;
     }
 
-    .btn-nav-logout {
-        display: none !important; /* Eliminate duplicate logout icon on mobile */
+    .lumina-presence-dot,
+    .cc-auth-online-dot {
+        position: absolute !important;
+        bottom: -1px !important;
+        right: -1px !important;
+        width: 9px !important;
+        height: 9px !important;
+        background: #22c55e !important;
+        border-radius: 50% !important;
+        border: 1.5px solid #090d1a !important;
+        box-shadow: 0 0 6px #22c55e !important;
+        animation: ccPulseDot 2s infinite ease-in-out !important;
+        z-index: 5 !important;
+    }
+
+    .user-nav-name,
+    .cc-auth-user-name {
+        display: inline-block !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        max-width: 68px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+
+    .user-nav-chevron,
+    .cc-auth-user-chevron {
+        font-size: 0.65rem !important;
+        color: #d4af37 !important;
+        transition: transform 0.2s ease !important;
+        display: inline-block !important;
+        margin-right: 2px !important;
+    }
+
+    .btn-nav-logout,
+    .btn-nav-more,
+    .user-nav-profile .btn-nav-logout,
+    .user-nav-profile .btn-nav-more {
+        display: none !important; /* Eliminate duplicate logout & more icons on mobile */
     }
 
     body.user-is-authenticated .btn-nav-cta,

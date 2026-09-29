@@ -190,6 +190,7 @@
   <script defer src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
   <!-- LUMINA Core Database & Google Community Auth -->
   <script type="module" src="lumina-db.js?v=4.1.0_20260830"></script>
+  <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
 
   <style>
     :root {
@@ -2045,16 +2046,7 @@
         white-space: nowrap !important;
       }
       .mb-nav-link-btn {
-        height: 36px;
-        min-width: 36px;
-        width: 36px;
-        padding: 0;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
+        display: none !important; /* Dostępne w menu pigułki i drawerze, chroni pigułkę przed ściśnięciem */
       }
       .mb-report-btn.header-report {
         display: none !important; /* Dostępne przez pływający FAB na dole ekranu */
@@ -2507,6 +2499,7 @@
       <a href="lumina" class="mb-nav-link-btn" title="Portal LUMINA">
         <i class="fa-solid fa-wand-magic-sparkles" style="color:#c084fc;"></i>
       </a>
+      <div class="cc-auth-widget-container" data-cc-auth-mount="true"></div>
       <button class="mb-report-btn header-report" id="mbHeaderReportBtn" onclick="window.mbApp.openReportProblemModal()" title="Zgłoś Problem / Kontakt z misją Biblia Audio CC">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <span>Zgłoś Problem</span>

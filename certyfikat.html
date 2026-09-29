@@ -17,6 +17,26 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              100: '#F1E7D0',
+              200: '#E2CC9A',
+              300: '#D4B578',
+              400: '#C4A35A',
+              500: '#B39250',
+              600: '#A08040',
+              900: '#403526',
+              950: '#29231C'
+            }
+          }
+        }
+      }
+    };
+  </script>
 
   <!-- Vendor Libraries for QR and PDF -->
   <script src="/js/vendor-qrcode.min.js"></script>
@@ -27,8 +47,8 @@
       --bg-dark: #07090e;
       --card-bg: #0f131c;
       --card-border: #1f2636;
-      --brand-gold: #d4af37;
-      --brand-gold-glow: rgba(212, 175, 55, 0.25);
+      --brand-gold: #c4a35a;
+      --brand-gold-glow: rgba(196, 163, 90, 0.25);
     }
 
     body {
@@ -49,7 +69,7 @@
     }
 
     .gold-gradient-text {
-      background: linear-gradient(135deg, #fce09b 0%, #d4af37 50%, #aa820a 100%);
+      background: linear-gradient(135deg, #e2cc9a 0%, #c4a35a 50%, #a08040 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -66,7 +86,7 @@
     <div class="max-w-5xl mx-auto flex items-center justify-between">
       <a href="/kursy" class="flex items-center gap-3 text-zinc-100 hover:text-amber-400 transition-colors min-h-[44px]">
         <div class="w-10 h-10 rounded-full overflow-hidden border border-amber-400/70 shadow-lg shadow-amber-950/50 flex items-center justify-center bg-black flex-shrink-0">
-          <img src="/images/academy/lumina_bible_academy_star_icon.png?v=20260927_logo2" alt="LUMINA Bible Academy" class="w-full h-full object-cover" />
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" class="w-full h-full object-contain" />
         </div>
         <div>
           <span class="block text-[10px] uppercase tracking-[0.25em] text-amber-500/90 font-cinzel font-semibold">Christian Culture</span>

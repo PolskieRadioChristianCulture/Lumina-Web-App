@@ -228,6 +228,7 @@
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/lumina-rss-suite.js" defer></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
+    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
     <link rel="stylesheet" href="css/lumina-reflection-tts.css?v=20260921_1">
     <script src="js/lumina-reflection-tts.js?v=20260921_1" defer></script>
     <script src="js/lumina-speech-reader.js?v=20260921_speech_reader_v2" defer></script>
@@ -4511,7 +4512,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_mobile_clean_v1">
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260928_single_v3">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -4736,16 +4737,12 @@
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
         }
 
-        /* 4. User Profile Pill (Unified) */
+        /* 4. User Profile Pill Container (Unified Wrapper) */
         .user-nav-profile {
-            height: 38px !important;
-            min-height: 38px !important;
-            padding: 0 8px 0 2px !important;
-            border-radius: 20px !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
-            box-sizing: border-box !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
             display: inline-flex !important;
             align-items: center !important;
             gap: 6px !important;
@@ -4797,15 +4794,9 @@
                 display: none !important;
             }
 
-            .btn-nav-support {
-                width: 38px !important;
-                min-width: 38px !important;
-                height: 38px !important;
-                padding: 0 !important;
-                border-radius: 50% !important;
-            }
-            .btn-nav-support .btn-nav-cta-text {
-                display: none !important;
+            .btn-nav-support,
+            .lumina-nav .btn-nav-support {
+                display: none !important; /* Dostępne w menu nawigacji oraz w widgetach zbiórek; chroni nagłówek przed ściskiem na smartfonach */
             }
         }
     </style>
@@ -4944,8 +4935,9 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.7);
     }
 </style>
-    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
+    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
+    <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
 </head>
 <body>
 
@@ -5032,11 +5024,15 @@
             </button>
 
             <!-- 5. User Avatar Profile (when logged in) -->
-            <div class="user-nav-profile" id="userNavProfile" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
-                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" role="button" tabindex="0" aria-label="Otwórz mój profil" onclick="handleMyProfileNavigation(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMyProfileNavigation(event)}" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(250,204,21,0.85); cursor:pointer;">
-                <span class="user-nav-name" id="userNavName" style="display:none;"></span>
-                <button type="button" class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.95rem; padding:4px;"><i class="fa-solid fa-right-from-bracket"></i></button>
-                <button type="button" class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+            <div class="user-nav-profile cc-auth-widget-container" id="userNavProfile" data-cc-auth-mount="true" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
+                <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown ? window.toggleCcUserDropdown(event) : handleMyProfileNavigation(event)" title="Twoje Konto LUMINA">
+                    <div class="cc-auth-avatar-wrap">
+                        <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar cc-auth-avatar-img" id="userNavAvatar">
+                        <span class="cc-auth-online-dot"></span>
+                    </div>
+                    <span class="user-nav-name cc-auth-user-name" id="userNavName"></span>
+                    <i class="fa-solid fa-chevron-down cc-auth-user-chevron"></i>
+                </div>
             </div>
         </div>
     </nav>
@@ -7892,6 +7888,23 @@
             return 0; // fallback dla nieznanych dat
         }
 
+        // Only persisted publication dates can determine the top post. Relative
+        // labels and generated _sortTs values on evergreen cards change on each
+        // page load and must not outrank an actually published entry.
+        function getPublishedPostTimestamp(post) {
+            if (!post) return 0;
+            for (const raw of [post.publishedAt, post.createdAtTimestamp, post.createdAtDateStr, post.createdAt, post.timestamp]) {
+                if (!raw) continue;
+                let timestamp = 0;
+                if (typeof raw === 'number') timestamp = raw < 1e12 ? raw * 1000 : raw;
+                else if (typeof raw === 'string') timestamp = Date.parse(raw);
+                else if (typeof raw.toMillis === 'function') timestamp = raw.toMillis();
+                else if (typeof raw.seconds === 'number') timestamp = raw.seconds * 1000 + Math.floor((raw.nanoseconds || 0) / 1e6);
+                if (Number.isFinite(timestamp) && timestamp > 0) return timestamp;
+            }
+            return 0;
+        }
+
         function getUserFeedPosts() {
             const posts = [];
             const seenPostIds = new Set();
@@ -9275,7 +9288,7 @@
         window.buildSundayMissionAppealCardHtml = function(item) {
             const isSpotlight = (window.location.hash.includes('sundayAppeal') || (new URLSearchParams(window.location.search)).get('post') === 'post_sunday_mission_appeal');
             return `
-                <article class="post-card-1x1 post-card-sunday-appeal ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="width:100%; border:1.5px solid rgba(74, 222, 128, 0.55) !important; background:linear-gradient(180deg, #09171b 0%, #060e12 100%) !important; box-shadow:0 16px 48px rgba(0,0,0,0.85), 0 0 35px rgba(34,197,94,0.2) !important; border-radius:20px; margin-bottom:24px; position:relative;">
+                <article class="post-card-1x1 post-card-sunday-appeal ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="width:100%; background:linear-gradient(180deg, #09171b 0%, #060e12 100%) !important; border-radius:20px; margin-bottom:24px; position:relative;">
                     <!-- Top Header -->
                     <div class="post-top-header" style="border-bottom:1px solid rgba(74,222,128,0.2); padding-bottom:12px;">
                         <a href="lumina.cezaryrgowski.html" class="post-author-box" style="text-decoration:none; color:inherit;">
@@ -9477,17 +9490,7 @@
 
             let combined = [];
 
-            // 👑 1. NOWO OPUBLIKOWANY POST (Z Werset Dnia / Tablicy / linku ?post=) — ZAWSZE JAKO PIERWSZY POST NA SAMEJ GÓRZE!
-            const freshUserPosts = userPosts.filter(p => p._isFreshSpotlight || p._isNewlyPublished || (deepLinkPostId && (p.id === deepLinkPostId || p.id === 'post_' + deepLinkPostId)));
-            freshUserPosts.sort((a, b) => (b._sortTs || 0) - (a._sortTs || 0));
-            freshUserPosts.forEach(fp => {
-                fp._isFreshSpotlight = true;
-                if (!combined.some(it => it.id === fp.id)) {
-                    combined.push(fp);
-                }
-            });
-
-            // 2. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
+            // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
             if (window._luminaDailyReflection) {
                 if (!combined.some(it => it.id === window._luminaDailyReflection.id)) {
                     combined.push(window._luminaDailyReflection);
@@ -9543,9 +9546,6 @@
             userPosts.forEach(p => {
                 if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
-                }
-                if (p._isFreshSpotlight) {
-                    return; // Już w spotlight na samej górze!
                 }
                 if (pinnedPostIds.includes(p.id)) {
                     p._isPinnedByAdmin = true;
@@ -9707,6 +9707,18 @@
                 }
                 return true;
             });
+
+            // The newest published post leads the visible board, regardless of
+            // spotlight flags, admin pins, daypart scoring or video shuffling.
+            // Apply this after filters so a search/category never shows an
+            // unrelated post, and keep the entry only once in the feed.
+            const publishedPostIds = new Set(userPosts.map(post => post.id));
+            const latestPublishedPost = combined
+                .filter(item => publishedPostIds.has(item.id) && getPublishedPostTimestamp(item) > 0)
+                .reduce((latest, item) => !latest || getPublishedPostTimestamp(item) > getPublishedPostTimestamp(latest) ? item : latest, null);
+            if (latestPublishedPost) {
+                combined = [latestPublishedPost, ...combined.filter(item => item.id !== latestPublishedPost.id)];
+            }
 
             // Mobile-first progressive feed: render a small, useful first page
             // instead of building more than one hundred rich cards at once.
@@ -10159,7 +10171,7 @@
                                     (!window._luminaTargetPostId && window._luminaTargetAuthor && (item.authorSlug === window._luminaTargetAuthor || (item.author && item.author.toLowerCase().includes(window._luminaTargetAuthor))));
 
                 return `
-                    <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''} ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="${isSpotlight ? 'border: 2px solid #facc15 !important; box-shadow: 0 0 45px rgba(250, 204, 21, 0.9), 0 0 90px rgba(245, 158, 11, 0.45) !important;' : ''}">
+                    <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''} ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}">
                         ${isSpotlight ? `
                             <div class="spotlight-deep-link-badge" style="background:linear-gradient(135deg, #f59e0b, #ec4899); color:#fff; font-weight:800; font-size:0.75rem; padding:6px 14px; border-radius:12px; display:inline-flex; align-items:center; gap:6px; margin: 10px 16px 6px; box-shadow:0 4px 14px rgba(245,158,11,0.4);"><i class="fa-solid fa-arrow-turn-down" style="transform:rotate(45deg);"></i> <span>Otwarto z powiadomienia • Publikacja Autora</span></div>
                         ` : ''}

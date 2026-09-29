@@ -398,6 +398,7 @@
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/lumina-rss-suite.js" defer></script>
+    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
     <script>if(window.executeLuminaStartRouting) window.executeLuminaStartRouting();</script>
 
     <style>
@@ -586,11 +587,22 @@
                 font-size: 0.8rem !important;
             }
             .user-nav-profile {
-                padding: 2px 6px !important;
-                gap: 5px !important;
+                padding: 0 !important;
+                gap: 0 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
             }
             .user-nav-name {
-                display: none !important;
+                display: inline-block !important;
+                font-size: 0.78rem !important;
+                font-weight: 700 !important;
+                color: #ffffff !important;
+                max-width: 68px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
             }
             .btn-nav-back {
                 padding: 0 !important;
@@ -3086,16 +3098,15 @@
             .nav-radio-sub { display: none; }
         }
 
-        /* User Profile Pill in Navbar */
+        /* User Profile Pill in Navbar - przezroczysty wrapper bez obramowania */
         .user-nav-profile {
             display: none;
             align-items: center;
-            gap: 8px;
-            background: rgba(30, 41, 59, 0.85);
-            padding: 4px 10px 4px 5px;
-            border-radius: 30px;
-            border: 1px solid rgba(168, 85, 247, 0.35);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
         }
         .user-nav-avatar {
             width: 32px;
@@ -3564,7 +3575,7 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260917_mobile_clean_v1">
+    <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260928_single_v3">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786940887015">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
@@ -3786,16 +3797,12 @@
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
         }
 
-        /* 4. User Profile Pill (Unified) */
+        /* 4. User Profile Pill Container (Unified Wrapper) */
         .user-nav-profile {
-            height: 38px !important;
-            min-height: 38px !important;
-            padding: 0 8px 0 2px !important;
-            border-radius: 20px !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
-            box-sizing: border-box !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
             display: inline-flex !important;
             align-items: center !important;
             gap: 6px !important;
@@ -4464,7 +4471,7 @@
             .guest-carousel-cta button { width: 100%; }
         }
     </style>
-    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260918_1mobile_clean_v1">
+    <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
 </head>
 <body class="user-is-guest">
@@ -4600,11 +4607,15 @@
             </button>
 
             <!-- 4. User Avatar Profile (when logged in) -->
-            <div class="user-nav-profile" id="userNavProfile" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
-                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" role="button" tabindex="0" aria-label="Otwórz mój profil" onclick="handleMyProfileNavigation(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMyProfileNavigation(event)}" title="Mój Profil" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(192,132,252,0.85); cursor:pointer;">
-                <span class="user-nav-name" id="userNavName" style="display:none;"></span>
-                <button type="button" class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.95rem; padding:4px;"><i class="fa-solid fa-right-from-bracket"></i></button>
-                <button type="button" class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+            <div class="user-nav-profile cc-auth-widget-container" id="userNavProfile" data-cc-auth-mount="true" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
+                <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown ? window.toggleCcUserDropdown(event) : handleMyProfileNavigation(event)" title="Twoje Konto LUMINA">
+                    <div class="cc-auth-avatar-wrap">
+                        <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar cc-auth-avatar-img" id="userNavAvatar">
+                        <span class="cc-auth-online-dot"></span>
+                    </div>
+                    <span class="user-nav-name cc-auth-user-name" id="userNavName"></span>
+                    <i class="fa-solid fa-chevron-down cc-auth-user-chevron"></i>
+                </div>
             </div>
         </div>
     </nav>
@@ -6988,7 +6999,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             if (authBtn) authBtn.style.display = 'none';
                             const heroGuestCta = document.getElementById('heroGuestCta');
                             if (heroGuestCta) heroGuestCta.style.display = 'none';
-                            if (navName) navName.textContent = profile?.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Profil');
+                            const rawName = profile?.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Profil');
+                            if (navName) navName.textContent = rawName.trim().split(' ')[0];
                             if (navAvatar && (profile?.avatar || user.photoURL)) {
                                 navAvatar.src = profile?.avatar || user.photoURL;
                             }

@@ -11,10 +11,35 @@ const rootDir = path.join(__dirname, '..');
 const kursyHtmlPath = path.join(rootDir, 'kursy.html');
 const engineJsPath = path.join(rootDir, 'js', 'lumina-courses-engine.js');
 const redirectsPath = path.join(rootDir, '_redirects');
+const coursesCssPath = path.join(rootDir, 'css', 'lumina-courses.css');
+const lessonGeneratorPath = path.join(rootDir, 'scripts', 'generate_lesson_subpages.mjs');
+const certificatePath = path.join(rootDir, 'certyfikat.html');
 
 const kursyHtml = fs.readFileSync(kursyHtmlPath, 'utf8');
 const engineJs = fs.readFileSync(engineJsPath, 'utf8');
 const redirects = fs.readFileSync(redirectsPath, 'utf8');
+const coursesCss = fs.readFileSync(coursesCssPath, 'utf8');
+const lessonGenerator = fs.readFileSync(lessonGeneratorPath, 'utf8');
+const certificateHtml = fs.readFileSync(certificatePath, 'utf8');
+
+test('Paleta całej Akademii używa szampańskiego złota Christian Culture', () => {
+  for (const [name, source] of [
+    ['katalog', kursyHtml],
+    ['lekcje', lessonGenerator],
+    ['dyplom', certificateHtml],
+    ['style', coursesCss]
+  ]) {
+    assert.match(source, /#c4a35a/i, `${name}: brak szampańskiego złota`);
+    assert.doesNotMatch(source, /#(?:d4af37|f3e5ab|f6e09e|fcd34d|fbbf24|fce09b)\b/i,
+      `${name}: zachowano jaskrawy odcień żółci`);
+  }
+  for (const source of [kursyHtml, lessonGenerator, certificateHtml]) {
+    assert.match(source, /amber:\s*\{[\s\S]*?400:\s*'#C4A35A'/,
+      'Klasy amber muszą używać zatwierdzonej palety');
+    assert.match(source, /lumina_star_champagne_20260928\.png/,
+      'Wszystkie powierzchnie mają używać przygaszonego logo');
+  }
+});
 
 test('1. Routing /kursy oraz /akademia w Cloudflare Pages Clean URLs i _redirects', () => {
   assert.strictEqual(fs.existsSync(kursyHtmlPath), true, 'Plik kursy.html musi istnieć na dysku');
@@ -41,7 +66,7 @@ test('4. Course Engine pobiera dane ze wspólnego datasetu (brak duplikacji w HT
   // Sprawdź czy HTML nie zawiera na twardo wklejonych 28 lekcji
   const hardcodedCount = (kursyHtml.match(/Lekcja:\s*Pismo Święte/g) || []).length;
   assert.strictEqual(hardcodedCount, 0, 'HTML nie może duplikować treści lekcji na twardo — treść musi pochodzić z data/lumina-courses-data.js');
-  assert.match(engineJs, /from '\.\.\/data\/lumina-courses-data\.js'/, 'Silnik musi importować dane z data/lumina-courses-data.js');
+  assert.match(engineJs, /from '\.\.\/data\/lumina-courses-data\.js(?:\?[^']+)?'/, 'Silnik musi importować dane z data/lumina-courses-data.js');
 });
 
 test('5. Deep-link lekcji: obsługa query params (?lekcja=) oraz hash (#)', () => {

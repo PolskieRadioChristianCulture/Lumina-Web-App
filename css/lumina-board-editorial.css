@@ -1,0 +1,67 @@
+/* Tablica LUMINA: one quiet frame language for content and navigation. */
+.board-container {
+    --board-frame: rgba(226, 230, 240, 0.14);
+    --board-frame-hover: rgba(226, 230, 240, 0.25);
+    --board-accent: #c4a35a;
+    --board-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+}
+
+.board-container .board-top-switcher-wrap,
+.board-container .lumina-stories-bar,
+.board-container .quick-post-bar-container,
+.board-container .profiles-carousel-block,
+.board-container .card-916,
+.board-container .post-card-1x1,
+.board-container .broadcast-rotating-card {
+    border: 1px solid var(--board-frame) !important;
+    box-shadow: var(--board-shadow) !important;
+}
+
+.board-container .quick-post-bar-container:hover,
+.board-container .card-916:hover,
+.board-container .post-card-1x1:hover,
+.board-container .broadcast-rotating-card:hover {
+    border-color: var(--board-frame-hover) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42) !important;
+}
+
+.board-container .profile-carousel-card,
+.board-container .profile-carousel-card:hover,
+.board-container .profile-carousel-card:active,
+.board-container .profiles-carousel-nav-btn,
+.board-container .sort-tab-btn {
+    border-color: var(--board-frame);
+}
+
+.board-container .profiles-carousel-title,
+.board-container .profiles-carousel-title i,
+.board-container .profile-carousel-tag,
+.board-container .profiles-carousel-nav-btn {
+    color: #d8cfbd;
+}
+
+.board-container .profile-carousel-avatar,
+.board-container .fb-story-avatar-badge,
+.board-container .fb-story-avatar-badge.living-ring {
+    border: 2px solid rgba(226, 230, 240, 0.32);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    animation: none;
+}
+
+.board-container .sort-tab-btn.active {
+    color: var(--board-accent);
+    background: rgba(196, 163, 90, 0.12);
+    border-color: rgba(196, 163, 90, 0.34);
+    box-shadow: none;
+}
+
+.board-container .sort-smart-badge,
+.board-container .profile-carousel-btn {
+    background: #a08040;
+    color: #fff;
+}
+
+/* Status remains visible; the whole live card need not flash red. */
+.board-container .lumina-live-card-highlight .live-pulse-badge {
+    box-shadow: none !important;
+}

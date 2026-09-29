@@ -68,16 +68,17 @@ async function runQA() {
     await desktopPage.waitForTimeout(600);
 
     const heroTitle = await desktopPage.$eval('h1', el => el.textContent.trim());
+    const catalogAccent = await desktopPage.$eval('#hero-section .text-amber-400', el => getComputedStyle(el).color);
     const cardsCount = await desktopPage.$$eval('.lesson-card', els => els.length);
     const stageFiltersCount = await desktopPage.$$eval('[data-stage-filter]', els => els.length);
 
     console.log(`     H1: "${heroTitle}"`);
-    console.log(`     Liczba kart lekcji w siatce: ${cardsCount} (oczekiwano: 28)`);
+    console.log(`     Liczba odkrytych lekcji: ${cardsCount} (oczekiwano: 1)`);
     console.log(`     Liczba filtrów etapów: ${stageFiltersCount} (oczekiwano: 6)`);
 
     results.push({
-      test: 'Desktop Hero & 28 Cards Grid na /kursy',
-      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 28 && stageFiltersCount === 6
+      test: 'Desktop Hero & pierwsza odkryta lekcja na /kursy',
+      pass: heroTitle.includes('LUMINA BIBLE ACADEMY') && cardsCount === 1 && stageFiltersCount === 6 && catalogAccent === 'rgb(196, 163, 90)'
     });
 
     const desktopShotPath = path.join(artifactsDir, 'lumina_kursy_catalog_desktop.png');
@@ -100,14 +101,21 @@ async function runQA() {
     console.log(`     Brak poziomego scrolla na mobile: ${!hasHorizontalScroll}`);
     results.push({ test: 'Brak poziomego scrolla na mobile 390px', pass: !hasHorizontalScroll });
 
-    const supportBtnTextVisible = await mobilePage.$eval('.cin-btn-support .support-text', el => window.getComputedStyle(el).display !== 'none');
-    const supportIconVisible = await mobilePage.$eval('.cin-btn-support .support-icon', el => window.getComputedStyle(el).display !== 'none');
-    console.log(`     Na mobile tekst "Wspieraj Misję" ukryty: ${!supportBtnTextVisible}`);
-    console.log(`     Na mobile ikona serca ❤️ widoczna: ${supportIconVisible}`);
-    results.push({
-      test: 'Przycisk wsparcia na mobile: tylko ikona serca ❤️ (tekst ukryty)',
-      pass: !supportBtnTextVisible && supportIconVisible
+    await mobilePage.goto(`${baseUrl}/kursy/01-pismo-swiete`, { waitUntil: 'domcontentloaded' });
+    await mobilePage.waitForTimeout(500);
+    const mobileLessonHeader = await mobilePage.evaluate(() => {
+      const header = document.querySelector('.cin-topbar');
+      const auth = document.querySelector('#cc-auth-nav-container');
+      const main = document.querySelector('.cin-topbar-main');
+      const mainBox = main.getBoundingClientRect();
+      const authBox = auth.getBoundingClientRect();
+      return getComputedStyle(header).display === 'grid'
+        && auth?.parentElement === header
+        && mainBox.right <= authBox.left + 1
+        && authBox.right <= window.innerWidth
+        && document.documentElement.scrollWidth <= document.documentElement.clientWidth;
     });
+    results.push({ test: 'Nagłówek lekcji układa przyciski bez poziomego przewijania na mobile', pass: mobileLessonHeader });
 
     // ── 3. TEST DEDYKOWANEJ PODSTRONY LEKCJI 1 (/kursy/01-pismo-swiete) ──
     console.log('\n[QA] 3. Otwarcie dedykowanej podstrony Lekcji 1 (/kursy/01-pismo-swiete)...');
@@ -138,31 +146,41 @@ async function runQA() {
     const hasQuiz = await lessonPage.$$eval('.quiz-card', els => els.length > 0);
     const hasJournal = await lessonPage.$eval('#journal-discovery', el => el !== null);
     const hasCompleteBtn = await lessonPage.$eval('#btn-complete-lesson', el => el !== null);
-    const hasNavNext = await lessonPage.$eval('.cin-nav-next', el => el.getAttribute('href') !== null);
+    const nextHiddenBeforeCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display === 'none');
+    const academyLogoLoaded = await lessonPage.$eval('.cin-logo-mark img', el =>
+      el.complete && el.naturalWidth > 0 && el.currentSrc.includes('lumina_star_champagne_20260928.png'));
+    const desktopLessonHeader = await lessonPage.evaluate(() => {
+      const header = document.querySelector('.cin-topbar');
+      const auth = document.querySelector('#cc-auth-nav-container');
+      return getComputedStyle(header).display === 'grid' && auth?.parentElement === header;
+    });
 
     console.log(`     Tytuł podstrony: "${subpageTitle}"`);
-    console.log(`     Link powrotny do katalogu (← Wszystkie 28 Lekcji): ${hasBackLink}`);
+    console.log(`     Link powrotny do Mojej drogi: ${hasBackLink}`);
     console.log(`     Pasek postępu czytania: ${hasReadingProgressBar}`);
     console.log(`     Kontroler lektora TTS: ${hasTTS}`);
     console.log(`     Cytaty Pisma Świętego: ${hasScripture}`);
     console.log(`     Interaktywny Quiz Utwierdzający: ${hasQuiz}`);
     console.log(`     Mój Dziennik Drogi (Autosave): ${hasJournal}`);
     console.log(`     Przycisk ukończenia lekcji: ${hasCompleteBtn}`);
-    console.log(`     Nawigacja do kolejnej lekcji: ${hasNavNext}`);
+    console.log(`     Następna lekcja ukryta przed ukończeniem: ${nextHiddenBeforeCompletion}`);
 
     results.push({
       test: 'Dedykowana podstrona Lekcji 1 (14 sekcji formacyjnych)',
-      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && hasNavNext
+      pass: subpageTitle === 'Pismo Święte' && hasBackLink && hasReadingProgressBar && hasTTS && hasScripture && hasQuiz && hasJournal && hasCompleteBtn && nextHiddenBeforeCompletion && desktopLessonHeader && academyLogoLoaded
     });
+
+    await lessonPage.screenshot({ path: path.join(artifactsDir, 'lumina_lesson_01_header_preview.png'), fullPage: false });
 
     // Test interakcji: kliknięcie Ukończ Tę Lekcję
     await lessonPage.click('#btn-complete-lesson');
     await lessonPage.waitForTimeout(200);
     const completedBtnText = await lessonPage.$eval('#btn-complete-lesson', el => el.textContent.trim());
+    const nextVisibleAfterCompletion = await lessonPage.$eval('.cin-nav-next', el => getComputedStyle(el).display !== 'none');
     console.log(`     Stan przycisku po ukończeniu: "${completedBtnText}"`);
     results.push({
       test: 'Interakcja ukończenia lekcji (Zapis stanu)',
-      pass: completedBtnText.includes('Lekcja Ukończona')
+      pass: completedBtnText.includes('Lekcja Ukończona') && nextVisibleAfterCompletion
     });
 
     // Zrzut ekranu dedykowanej podstrony
@@ -212,13 +230,14 @@ async function runQA() {
     await desktopPage.goto(`${baseUrl}/certyfikat.html`, { waitUntil: 'domcontentloaded' });
     const certHtml = await desktopPage.content();
     const certHasEkumeniczny = /ekumeniczn/i.test(certHtml);
+    const certificateAccent = await desktopPage.$eval('.text-amber-400', el => getComputedStyle(el).color);
 
     console.log(`     Katalog kursów wolny od "ekumeniczny": ${!catalogHasEkumeniczny}`);
     console.log(`     Certyfikat ukończenia wolny od "ekumeniczny": ${!certHasEkumeniczny}`);
 
     results.push({
       test: 'Całkowite usunięcie słowa "ekumeniczny" z kursy.html i certyfikat.html',
-      pass: !catalogHasEkumeniczny && !certHasEkumeniczny
+      pass: !catalogHasEkumeniczny && !certHasEkumeniczny && certificateAccent === 'rgb(196, 163, 90)'
     });
 
   } catch (err) {

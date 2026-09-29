@@ -40,13 +40,13 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   const stage = getStageForLesson(lesson);
   const roman = stage.roman || romanNumerals[stage.order] || 'I';
 
-  const prevLesson = lesson.id > 1 
-    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id - 1) 
-    : LUMINA_COURSES_CORE_28[LUMINA_COURSES_CORE_28.length - 1];
+  const prevLesson = lesson.id > 1
+    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id - 1)
+    : null;
 
-  const nextLesson = lesson.id < 28 
-    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id + 1) 
-    : LUMINA_COURSES_CORE_28[0];
+  const nextLesson = lesson.id < 28
+    ? LUMINA_COURSES_CORE_28.find(l => l.id === lesson.id + 1)
+    : null;
 
   const primaryVerse = (lesson.scripture?.references && lesson.scripture.references[0]) || 'Pismo Święte';
   const references = lesson.scripture?.references || lesson.scriptureReferences || [];
@@ -130,13 +130,13 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <meta property="og:url" content="https://polskieradio.cc/kursy/${lesson.slug}" />
   <meta property="og:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta property="og:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta property="og:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.webp" />
+  <meta property="og:image" content="https://polskieradio.cc${lesson.image}" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Lekcja ${lesson.id}: ${escapeHtml(lesson.title.pl)} — LUMINA Bible Academy" />
   <meta name="twitter:description" content="${escapeHtml(lesson.introduction.pl)}" />
-  <meta name="twitter:image" content="https://polskieradio.cc/images/lessons/${lesson.id}.webp" />
+  <meta name="twitter:image" content="https://polskieradio.cc${lesson.image}" />
 
   <!-- Google Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -151,10 +151,20 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
       theme: {
         extend: {
           colors: {
+            amber: {
+              100: '#F1E7D0',
+              200: '#E2CC9A',
+              300: '#D4B578',
+              400: '#C4A35A',
+              500: '#B39250',
+              600: '#A08040',
+              900: '#403526',
+              950: '#29231C'
+            },
             brand: {
-              gold: '#D4AF37',
-              'gold-light': '#F3E5AB',
-              'gold-dark': '#997D21',
+              gold: '#C4A35A',
+              'gold-light': '#E2CC9A',
+              'gold-dark': '#A08040',
               dark: '#07090E',
               surface: '#0E121A',
               elevated: '#161B26',
@@ -176,7 +186,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <script src="/js/cc-global-auth.js" defer></script>
 
   <!-- LUMINA Courses Styling System -->
-  <link rel="stylesheet" href="/css/lumina-courses.css" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -185,15 +195,15 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
 
   <!-- ── LUXURY TOPBAR ── -->
   <header class="cin-topbar">
-    <div class="flex items-center gap-4">
-      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do katalogu wszystkich lekcji">
+    <div class="cin-topbar-main">
+      <a href="/kursy#katalog" class="cin-back-link" title="Powrót do mojej drogi">
         <span>←</span>
-        <span class="hidden sm:inline">Wszystkie 28 Lekcji</span>
+        <span class="hidden sm:inline">Moja droga</span>
         <span class="sm:hidden">Wróć</span>
       </a>
       <a href="/kursy" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
         <div class="cin-logo-mark">
-          <img src="/images/academy/lumina_bible_academy_star_icon.png" alt="LUMINA Bible Academy" />
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" />
         </div>
         <div class="cin-brand-text hidden md:flex">
           <span class="cin-brand-title">LUMINA</span>
@@ -202,7 +212,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
       </a>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="cin-topbar-meta">
       <span class="cin-lesson-step-badge">
         <span>Etap ${roman}</span>
         <span class="opacity-60">•</span>
@@ -216,6 +226,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         <span>Katalog Kursu</span>
       </a>
     </div>
+    <div id="cc-auth-nav-container" class="cc-auth-widget-container cin-topbar-auth"></div>
   </header>
 
   <!-- ── LESSON BODY CONTAINER ── -->
@@ -345,7 +356,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         ${quizQuestionsHtml}
         <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
           <span class="text-base text-brand-gold">💡</span>
-          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nigdy nie blokuje postępu</strong> — możesz bez przeszkód kontynuować studium, oznaczyć lekcję jako ukończoną lub przejść do kolejnych tematów.</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Wynik <strong>nie blokuje ukończenia lekcji</strong>. Po jej ukończeniu odkryjesz następny krok.</span>
         </div>
       </div>
     </section>
@@ -487,14 +498,14 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
         </div>
         <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy, aby przejść do następnego kroku?</h3>
         <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
-          Ukończenie lekcji zostanie zapisane w Twoim profilu pielgrzyma i przybliża Cię do oficjalnego Dyplomu Imiennego LUMINA Bible Academy.
+          ${nextLesson ? `Kliknij „Ukończ tę lekcję”, aby odkryć lekcję ${nextLesson.id}.` : 'Kliknij „Ukończ tę lekcję”, aby zakończyć całą drogę.'} Postęp zapisze się na Twoim koncie po zalogowaniu, a bez logowania w tej przeglądarce.
         </p>
         <div class="flex items-center justify-center gap-4 flex-wrap">
           <button type="button" id="btn-complete-lesson" class="btn-gold-complete">
             <span>✦</span>
             <span>Ukończ Tę Lekcję</span>
           </button>
-          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary">
+          <button type="button" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary" style="display:none">
             <span>Następna Lekcja ›</span>
           </button>
         </div>
@@ -503,19 +514,19 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
 
     <!-- ── BOTTOM NAVIGATION BETWEEN LESSONS ── -->
     <nav class="cin-lesson-nav-bar" aria-label="Nawigacja pomiędzy lekcjami">
-      <a href="/kursy/${prevLesson.slug}" class="cin-nav-prev" title="Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}">
+      ${prevLesson ? `<a href="/kursy/${prevLesson.slug}" class="cin-nav-prev" title="Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}">
         <span>←</span>
         <span>Lekcja ${prevLesson.id}: ${escapeHtml(prevLesson.title.pl)}</span>
-      </a>
+      </a>` : '<span></span>'}
 
       <a href="/kursy#katalog" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
-        <span>Wszystkie 28 Lekcji</span>
+        <span>Moja droga</span>
       </a>
 
-      <a href="/kursy/${nextLesson.slug}" class="cin-nav-next" title="Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}">
+      ${nextLesson ? `<a id="lesson-next-link" href="/kursy/${nextLesson.slug}" class="cin-nav-next" title="Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}" style="display:none">
         <span>Lekcja ${nextLesson.id}: ${escapeHtml(nextLesson.title.pl)}</span>
         <span>→</span>
-      </a>
+      </a>` : '<span></span>'}
     </nav>
 
   </main>
@@ -541,7 +552,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   <script>
     window.LUMINA_CURRENT_LESSON_ID = ${lesson.id};
   </script>
-  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_fix1"></script>
+  <script type="module" src="/js/lumina-lesson-page.js?v=20260927_seq1"></script>
 </body>
 </html>`;
 
