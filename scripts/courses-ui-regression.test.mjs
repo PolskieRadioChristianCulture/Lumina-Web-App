@@ -92,7 +92,7 @@ test('7. Integracja Share Engine i fallback do schowka', () => {
 });
 
 test('8. Reużycie globalnego Auth (brak drugiego niezależnego Google Sign-In)', () => {
-  assert.match(kursyHtml, /src="\/js\/cc-global-auth\.js"/, 'kursy.html musi korzystać z uniwersalnego konektora cc-global-auth.js');
+  assert.match(kursyHtml, /src="\/js\/cc-global-auth\.js(?:\?[^"]*)?"/, 'kursy.html musi korzystać z uniwersalnego konektora cc-global-auth.js');
   assert.match(kursyHtml, /id="cc-auth-nav-container"/, 'TopBar musi posiadać kontener cc-auth-nav-container');
   // Brak własnej implementacji GoogleAuthProvider lub Firebase Auth w kursy.html
   assert.doesNotMatch(kursyHtml, /signInWithPopup/, 'kursy.html nie może dublować implementacji logowania');
