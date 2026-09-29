@@ -66,7 +66,7 @@
   </script>
 
   <!-- Universal CC & LUMINA Global Auth -->
-  <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+  <script src="/js/cc-global-auth.js?v=20260928_single_v3" defer></script>
 
   <!-- LUMINA Courses Styling System -->
   <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
@@ -91,15 +91,15 @@
       cursor: pointer;
     }
     .cin-course-tab:hover {
-      color: #D4AF37;
-      border-color: rgba(212, 175, 55, 0.35);
+      color: #C4A35A;
+      border-color: rgba(196, 163, 90, 0.35);
       background: #161B26;
     }
     .cin-course-tab.active {
       color: #07090E !important;
-      background: linear-gradient(135deg, #D4AF37, #F3E5AB) !important;
-      border-color: #D4AF37 !important;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+      background: linear-gradient(135deg, #C4A35A, #E2CC9A) !important;
+      border-color: #C4A35A !important;
+      box-shadow: 0 0 20px rgba(196, 163, 90, 0.4);
     }
     .cin-tab-badge {
       font-size: 9px;
@@ -170,6 +170,7 @@
         <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
         <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors">28 KROKÓW</a>
         <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors">✝ APOKALIPSA</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('kurscodzienny')" class="hover:text-brand-gold text-amber-300 font-bold transition-colors">📖 Z BIBLIĄ ZA PAN BRAT</a>
         <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
         <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
       </nav>
@@ -202,7 +203,12 @@
         <button type="button" id="tab-btn-apokalipsa" onclick="switchCourseTab('apokalipsa')" class="cin-course-tab" role="tab" aria-selected="false">
           <span class="text-sm">✝</span>
           <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-          <span class="cin-tab-badge">NOWOŚĆ • 26 LEKCJI</span>
+          <span class="cin-tab-badge">26 LEKCJI</span>
+        </button>
+        <button type="button" id="tab-btn-kurscodzienny" onclick="switchCourseTab('kurscodzienny')" class="cin-course-tab" role="tab" aria-selected="false">
+          <span class="text-sm">📖</span>
+          <span>Z BIBLIĄ ZA PAN BRAT</span>
+          <span class="cin-tab-badge">KURS CODZIENNY • START 1 PAŹDZIERNIKA</span>
         </button>
       </div>
       <div class="hidden lg:flex items-center gap-2 text-xs text-zinc-500 font-mono">
@@ -1059,6 +1065,186 @@
     </main>
   </div>
 
+  <!-- ═════════════════════════════════════════════════════════════════
+       WIDOK KURSU 3: Z BIBLIĄ ZA PAN BRAT — KURS CODZIENNY (66 MIESIĘCY)
+  ═════════════════════════════════════════════════════════════════ -->
+  <div id="course-view-kurscodzienny" class="hidden">
+    
+    <!-- HERO Z BIBLIĄ ZA PAN BRAT -->
+    <section class="cin-hero scroll-mt-20">
+      <div class="cin-hero-inner">
+        <div class="cin-hero-content">
+          <div class="cin-journey-tag">
+            <span class="text-amber-400">●</span> <span>KURS CODZIENNY • 66 MIESIĘCY • 66 KSIĄG • CODZIENNIE NOWA LEKCJA</span>
+          </div>
+
+          <h1 class="cin-hero-title">
+            <span class="block text-brand-gold">Z BIBLIĄ ZA PAN BRAT</span>
+            <span class="block text-white text-2xl sm:text-4xl mt-1">KURS CODZIENNY</span>
+          </h1>
+
+          <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
+            Codzienna podróż przez 66 ksiąg Pisma Świętego. Poznaj Boga od pierwszych słów do wieczności.
+          </p>
+
+          <p class="cin-hero-subtitle">
+            Dziś rozpoczynamy niezwykłą podróż. Przed nami <strong>66 miesięcy i 66 ksiąg Biblii</strong>. Każdego miesiąca zatrzymamy się przy jednej księdze, a każdego dnia otworzymy Słowo Boga, aby nie tylko dowiedzieć się czegoś o Nim, ale coraz lepiej Go poznawać.
+          </p>
+
+          <div class="p-4 rounded-2xl bg-zinc-950/80 border border-brand-gold/30 max-w-xl mx-auto lg:mx-0 my-4 text-left">
+            <div class="text-[11px] font-bold uppercase tracking-widest text-amber-400 mb-1">Miesiąc 1 • Start: 1 Października 2026:</div>
+            <div class="text-xs sm:text-sm text-zinc-300 font-medium">
+              Księga Rodzaju (Genesis) — 31 Dni Studium Słowa Bożego
+            </div>
+          </div>
+
+          <!-- Hero Actions -->
+          <div class="cin-hero-actions">
+            <a href="/akademia/kurscodzienny/dzien-01" class="cin-btn-primary min-h-[48px]">
+              <span>ROZPOCZNIJ DZIEŃ 1 (1 PAŹDZIERNIKA)</span>
+              <span>→</span>
+            </a>
+            <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
+              <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN LISTING FOR Z BIBLIĄ ZA PAN BRAT -->
+    <main class="z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-8 pb-20">
+      
+      <!-- INTRO CARD -->
+      <section class="mb-12 p-6 sm:p-8 rounded-3xl bg-[#0E121A] border border-brand-gold/25 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-4xl shrink-0">
+            📖
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h2 class="font-serif font-bold text-white text-xl sm:text-2xl mb-2">Pierwszym Bohaterem Biblii jest BÓG</h2>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-3">
+              Biblia nie rozpoczyna się od człowieka, nie od grzechu, nie od Izraela, ani nawet nie od samego stworzenia. Pierwszym bohaterem Pisma Świętego jest <strong class="text-white">BÓG</strong>: <em>„Na początku Bóg stworzył niebo i ziemię”</em> (Rdz 1:1). Każda codzienna lekcja zawiera pełne studium biblijne, zbadanie tła, chrystocentryczną puentę (Jezus w centrum), interaktywny quiz, osobistą decyzję oraz modlitwę.
+            </p>
+            <div class="flex items-center gap-4 justify-center md:justify-start text-xs font-semibold text-amber-300 flex-wrap">
+              <span>✓ 66 Ksiąg • 66 Miesięcy</span>
+              <span>✓ Codziennie nowa lekcja (o 06:00)</span>
+              <span>✓ Lektor Audio TTS</span>
+              <span>✓ Zadanie i checklist wdrożenia</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DNI MIESIĄCA 1: KSIĘGA RODZAJU -->
+      <section id="katalog-kurscodzienny" class="scroll-mt-24">
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+          <div>
+            <h2 class="font-serif text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
+              <span class="text-brand-gold">✦</span>
+              <span>Miesiąc 1: Księga Rodzaju — Dni Studium</span>
+            </h2>
+            <p class="text-xs text-zinc-400">Codziennie nowa lekcja z Pisma Świętego. Zacznij od Dnia 1 już teraz.</p>
+          </div>
+          <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
+            Dzień 1 Dostępny (Start 1 Października 2026)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          
+          <!-- KARTA DZIEŃ 1 -->
+          <a href="/akademia/kurscodzienny/dzien-01" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 01 • 1 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              NA POCZĄTKU BÓG — Stwórca wszystkiego
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Zanim pojawił się człowiek, jego problemy i grzech, był Bóg. Jesteśmy Jego stworzeniem, nosimy Jego obraz, a nasze życie ma sens, ponieważ pochodzi od Niego.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 1:1–31</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 2 -->
+          <div class="block p-5 rounded-2xl bg-[#0E121A]/80 border border-white/10 opacity-90 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-zinc-400 tracking-widest">DZIEŃ 02 • 2 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-bold border border-amber-500/30">JUTRO</span>
+            </div>
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug">
+              STWORZENI DO RELACJI Z BOGIEM
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Dlaczego Bóg pobłogosławił i uświęcił siódmy dzień jeszcze przed pojawieniem się Izraela? Czego Rdz 2 uczy o odpoczynku, pracy, małżeństwie i bliskości ze Stwórcą?
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-zinc-500 text-[10px]"></i>
+                <span>Księga Rodzaju 2:1–25</span>
+              </span>
+              <span class="font-bold text-zinc-500">
+                <span>Dzień 2 wkrótce</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- KARTA DZIEŃ 3 -->
+          <div class="block p-5 rounded-2xl bg-[#0E121A]/50 border border-white/5 opacity-70 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-zinc-500 tracking-widest">DZIEŃ 03 • 3 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 text-[10px]">SOBOTA</span>
+            </div>
+            <h3 class="font-serif font-bold text-zinc-300 text-base sm:text-lg mb-1 leading-snug">
+              GRZECH I PIERWSZA OBIETNICA
+            </h3>
+            <p class="text-xs text-zinc-500 line-clamp-2 mb-4 leading-relaxed">
+              Jak zwiedzenie wkroczyło na ziemię i jak Bóg natychmiast ogłosił Ewangelię o Potomku Niewiasty (Protoewangelia, Rdz 3:15).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-600 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-zinc-600 text-[10px]"></i>
+                <span>Księga Rodzaju 3:1–24</span>
+              </span>
+              <span class="text-zinc-600 font-semibold">
+                Miesiąc 1
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 66 MIESIĘCY MINI BANNER -->
+      <section class="mt-14 p-6 sm:p-8 rounded-3xl bg-zinc-950 border border-brand-line text-center">
+        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white mb-2">
+          Globalny Program 66 Ksiąg Pisma Świętego
+        </h3>
+        <p class="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto mb-6">
+          Zaczynamy od Księgi Rodzaju, a każdego 1. dnia kolejnego miesiąca przechodzimy do następnej księgi Biblii.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 text-xs">
+          <span class="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold">Miesiąc 1: Księga Rodzaju</span>
+          <span class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">Miesiąc 2: Księga Wyjścia</span>
+          <span class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">Miesiąc 3: Księga Kapłańska</span>
+          <span class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">Miesiące 4–66...</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
 <!-- ── FULLSCREEN FOCUSED STUDY READER MODAL ── -->
   <div id="lesson-reader-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden" role="dialog" aria-modal="true" aria-labelledby="reader-title">
     
@@ -1306,7 +1492,7 @@
   <script src="/js/vendor-jspdf.umd.min.js"></script>
 
   <!-- ── GLOBAL CC AUTH CONNECTOR ── -->
-  <script defer src="js/cc-global-auth.js?v=20260928_single_v3"></script>
+  <script defer src="/js/cc-global-auth.js?v=20260928_single_v3"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
   <script type="module" src="/js/lumina-courses-engine.js?v=20260927_seq1"></script>
@@ -1316,25 +1502,42 @@
     function switchCourseTab(courseId) {
       const tab28 = document.getElementById('tab-btn-28krokow');
       const tabApok = document.getElementById('tab-btn-apokalipsa');
+      const tabCodzienny = document.getElementById('tab-btn-kurscodzienny');
       const view28_hero = document.getElementById('hero-section');
       const view28_main = document.querySelector('main.flex-grow.z-10');
       const viewApok = document.getElementById('course-view-apokalipsa');
+      const viewCodzienny = document.getElementById('course-view-kurscodzienny');
 
-      if (courseId === 'apokalipsa') {
+      if (courseId === 'kurscodzienny' || courseId === 'z-biblia-za-pan-brat' || courseId === 'codzienny') {
+        if (tab28) { tab28.classList.remove('active'); tab28.setAttribute('aria-selected', 'false'); }
+        if (tabApok) { tabApok.classList.remove('active'); tabApok.setAttribute('aria-selected', 'false'); }
+        if (tabCodzienny) { tabCodzienny.classList.add('active'); tabCodzienny.setAttribute('aria-selected', 'true'); }
+        if (view28_hero) view28_hero.classList.add('hidden');
+        if (view28_main) view28_main.classList.add('hidden');
+        if (viewApok) viewApok.classList.add('hidden');
+        if (viewCodzienny) viewCodzienny.classList.remove('hidden');
+        if (history.replaceState) {
+          history.replaceState(null, null, '#kurscodzienny');
+        }
+      } else if (courseId === 'apokalipsa') {
         if (tab28) { tab28.classList.remove('active'); tab28.setAttribute('aria-selected', 'false'); }
         if (tabApok) { tabApok.classList.add('active'); tabApok.setAttribute('aria-selected', 'true'); }
+        if (tabCodzienny) { tabCodzienny.classList.remove('active'); tabCodzienny.setAttribute('aria-selected', 'false'); }
         if (view28_hero) view28_hero.classList.add('hidden');
         if (view28_main) view28_main.classList.add('hidden');
         if (viewApok) viewApok.classList.remove('hidden');
+        if (viewCodzienny) viewCodzienny.classList.add('hidden');
         if (history.replaceState) {
           history.replaceState(null, null, '#apokalipsa');
         }
       } else {
         if (tabApok) { tabApok.classList.remove('active'); tabApok.setAttribute('aria-selected', 'false'); }
+        if (tabCodzienny) { tabCodzienny.classList.remove('active'); tabCodzienny.setAttribute('aria-selected', 'false'); }
         if (tab28) { tab28.classList.add('active'); tab28.setAttribute('aria-selected', 'true'); }
         if (view28_hero) view28_hero.classList.remove('hidden');
         if (view28_main) view28_main.classList.remove('hidden');
         if (viewApok) viewApok.classList.add('hidden');
+        if (viewCodzienny) viewCodzienny.classList.add('hidden');
         if (history.replaceState) {
           history.replaceState(null, null, '#droga');
         }
@@ -1345,7 +1548,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.toLowerCase();
       const params = new URLSearchParams(window.location.search);
-      if (hash === '#apokalipsa' || params.get('kurs') === 'apokalipsa' || window.location.pathname.includes('apokalipsa')) {
+      const courseParam = (params.get('kurs') || '').toLowerCase();
+      if (hash === '#kurscodzienny' || hash === '#codzienny' || courseParam === 'kurscodzienny' || courseParam === 'codzienny' || window.location.pathname.includes('kurscodzienny')) {
+        switchCourseTab('kurscodzienny');
+      } else if (hash === '#apokalipsa' || courseParam === 'apokalipsa' || window.location.pathname.includes('apokalipsa')) {
         switchCourseTab('apokalipsa');
       }
     });
