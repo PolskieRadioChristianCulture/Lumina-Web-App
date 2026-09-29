@@ -1,10 +1,8 @@
+# === AKADEMIA BIBLIJNA LUMINA ===
+# Hub Akademii (tabs: 28 krokow + Apokalipsa)
+# Cloudflare Pages serwuje akademia.html automatycznie pod /akademia
+# Lekcje Apokalipsy - Cloudflare Pages serwuje automatycznie z folderu akademia/apokalipsa/
 /snadaniowa-live-worship.html /cctv24-worship 301
-/akademia /akademia/index.html 200
-/akademia/ /akademia/index.html 200
-/kursy /kursy/index.html 200
-/kursy/ /kursy/index.html 200
-/snadaniowa-live-worship.html /cctv24-worship 301
-/akademia /akademia 200
 /akademia/certyfikat/* /certyfikat 200
 /kursy/certyfikat/* /certyfikat 200
 /certyfikat/* /certyfikat 200
