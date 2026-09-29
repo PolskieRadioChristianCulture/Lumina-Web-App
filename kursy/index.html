@@ -66,10 +66,56 @@
   </script>
 
   <!-- Universal CC & LUMINA Global Auth -->
-  <script src="/js/cc-global-auth.js" defer></script>
+  <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
 
   <!-- LUMINA Courses Styling System -->
   <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+
+  <style>
+    .cin-course-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #a1a1aa;
+      background: #0E121A;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      min-height: 42px;
+      cursor: pointer;
+    }
+    .cin-course-tab:hover {
+      color: #D4AF37;
+      border-color: rgba(212, 175, 55, 0.35);
+      background: #161B26;
+    }
+    .cin-course-tab.active {
+      color: #07090E !important;
+      background: linear-gradient(135deg, #D4AF37, #F3E5AB) !important;
+      border-color: #D4AF37 !important;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+    .cin-tab-badge {
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, 0.25);
+      color: inherit;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .cin-course-tab.active .cin-tab-badge {
+      background: rgba(7, 9, 14, 0.2);
+      color: #07090E;
+    }
+  </style>
+
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -122,7 +168,8 @@
       <nav class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
         <a href="#hero-section" class="hover:text-brand-gold transition-colors">CINEMATIC JOURNEY</a>
         <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
-        <a href="#katalog" class="hover:text-brand-gold transition-colors">MOJA DROGA</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors">28 KROKÓW</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors">✝ APOKALIPSA</a>
         <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
         <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
       </nav>
@@ -143,6 +190,28 @@
       <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
     </div>
   </header>
+
+  <!-- ── ACADEMY COURSE SELECTOR TABS BAR ── -->
+  <div class="sticky top-16 z-30 bg-[#07090E]/95 backdrop-blur-md border-b border-brand-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5" role="tablist" aria-label="Wybierz program studium">
+        <button type="button" id="tab-btn-28krokow" onclick="switchCourseTab('28krokow')" class="cin-course-tab active" role="tab" aria-selected="true">
+          <span class="text-sm">📖</span>
+          <span>28 KROKÓW (DROGA PIELGRZYMA)</span>
+        </button>
+        <button type="button" id="tab-btn-apokalipsa" onclick="switchCourseTab('apokalipsa')" class="cin-course-tab" role="tab" aria-selected="false">
+          <span class="text-sm">✝</span>
+          <span>APOKALIPSA – KSIĘGA NADZIEI</span>
+          <span class="cin-tab-badge">NOWOŚĆ • 26 LEKCJI</span>
+        </button>
+      </div>
+      <div class="hidden lg:flex items-center gap-2 text-xs text-zinc-500 font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>LUMINA BIBLE ACADEMY</span>
+      </div>
+    </div>
+  </div>
+
 
   <!-- 1. CINEMATIC HERO SECTION (16:9 EDGE-TO-EDGE, BEZ RAMKI) -->
   <section id="hero-section" class="cin-hero scroll-mt-20">
@@ -376,7 +445,621 @@
 
   </main>
 
-  <!-- ── FULLSCREEN FOCUSED STUDY READER MODAL ── -->
+  
+  <!-- ═════════════════════════════════════════════════════════════════
+       WIDOK KURSU 2: APOKALIPSA – KSIĘGA NADZIEI (26 LEKCJI)
+  ═════════════════════════════════════════════════════════════════ -->
+  <div id="course-view-apokalipsa" class="hidden">
+    
+    <!-- HERO APOKALIPSA -->
+    <section class="cin-hero scroll-mt-20">
+      <div class="cin-hero-inner">
+        <div class="cin-hero-content">
+          <div class="cin-journey-tag">
+            <span class="text-amber-400">●</span> <span>STUDIO DOBREGO SŁOWA • 26 LEKCJI • SOLA SCRIPTURA</span>
+          </div>
+
+          <h1 class="cin-hero-title">
+            <span class="block text-brand-gold">APOKALIPSA</span>
+            <span class="block text-white text-2xl sm:text-4xl mt-1">KSIĘGA NADZIEI</span>
+          </h1>
+
+          <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
+            Odkryj Jezusa, Ewangelię i proroctwa czasów ostatecznych.
+          </p>
+
+          <p class="cin-hero-subtitle">
+            Apokalipsa nie została dana po to, aby przestraszyć człowieka przyszłością, lecz aby <strong>objawić Jezusa Chrystusa</strong>, Jego zwycięstwo i przygotować ludzi na Jego powrót. Kurs oparty na wykładach pastora Wincentego Siei (Studio Dobrego Słowa).
+          </p>
+
+          <div class="p-4 rounded-2xl bg-zinc-950/80 border border-brand-gold/30 max-w-xl mx-auto lg:mx-0 my-4 text-left">
+            <div class="text-[11px] font-bold uppercase tracking-widest text-amber-400 mb-1">Oś teologiczna kursu:</div>
+            <div class="text-xs sm:text-sm text-zinc-300 font-medium">
+              Biblia → Chrystus → Ewangelia → Proroctwo → Historia → Osobista decyzja
+            </div>
+          </div>
+
+          <!-- Hero Actions -->
+          <div class="cin-hero-actions">
+            <a href="/akademia/apokalipsa/lekcja-01" class="cin-btn-primary min-h-[48px]">
+              <span>ROZPOCZNIJ OD LEKCJI 1</span>
+              <span>→</span>
+            </a>
+            <a href="#katalog-apokalipsa" class="cin-btn-secondary min-h-[48px]">
+              <span>PRZEGLĄDAJ 26 LEKCJI ↓</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN LISTING FOR APOKALIPSA -->
+    <main class="z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-8 pb-20">
+      
+      <!-- INTRO CARD -->
+      <section class="mb-12 p-6 sm:p-8 rounded-3xl bg-[#0E121A] border border-brand-gold/25 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-4xl shrink-0">
+            🕊️
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h2 class="font-serif font-bold text-white text-xl sm:text-2xl mb-2">Czy Apokalipsa jest księgą strachu?</h2>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-3">
+              Bestie, plagi, tajemnicze liczby... Dla wielu ludzi to powód do lęku. Jednak pierwsze słowa tej księgi brzmią: <strong class="text-white">„Objawienie Jezusa Chrystusa…”</strong> (Ap 1:1). Każda z 26 lekcji zawiera pełne studium biblijne, zbadanie tła historycznego, chrystocentryczną puentę, interaktywny quiz oraz modlitwę.
+            </p>
+            <div class="flex items-center gap-4 justify-center md:justify-start text-xs font-semibold text-amber-300">
+              <span>✓ 26 dedykowanych podstron</span>
+              <span>✓ 15 sekcji w każdej lekcji</span>
+              <span>✓ Wykłady wideo YouTube</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 26 LESSONS GRID -->
+      <section id="katalog-apokalipsa" class="scroll-mt-24">
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+          <div>
+            <h2 class="font-serif text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
+              <span class="text-brand-gold">✦</span>
+              <span>26 Lekcji Kursu — Jedna Podstrona na Lekcję</span>
+            </h2>
+            <p class="text-xs text-zinc-400">Wybierz dowolną lekcję, aby otworzyć jej pełną treść ze studium, wideo i quizem.</p>
+          </div>
+          <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
+            26 Lekcji Dostępnych
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          
+    <a href="/akademia/apokalipsa/lekcja-01" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 01 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>34:37</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        OBJAWIENIE JEZUSA CHRYSTUSA — Księga, która odsłania, a nie ukrywa
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 1:1–8</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-02" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 02 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:58</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        JEZUS POŚRÓD SWOJEGO KOŚCIOŁA — Uwielbiony Zbawiciel i Siedem Świeczników
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 1:9–20</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-03" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 03 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>41:41</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        EFEZ I SMYRNA — Miłość, która wytrwa w ogniu
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 2:1–11</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-04" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 04 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>52:23</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        PERGAMON I TIATYRA — Kiedy kompromis wchodzi do Kościoła
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 2:12–29</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-05" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 05 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>39:12</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        SARDES I FILADELFIA — Obudź się i przejdź przez otwarte drzwi
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 3:1–13</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-06" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 06 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>39:49</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        LAODYCEA — Jezus puka do drzwi
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 3:14–22</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-07" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 07 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>38:40</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        TRON BOGA — Kto naprawdę rządzi wszechświatem?
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 4:1–11</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-08" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 08 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:08</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        BARANEK GODZIEN OTWORZYĆ KSIĘGĘ — Triumf przez Ofiarę
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 5:1–14</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-09" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 09 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>42:09</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        CZTEREJ JEŹDŹCY — Chrystus i historia Kościoła
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 6:1–8</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-10" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 10 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>43:51</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        GŁOS SPOD OŁTARZA — Czy Bóg pamięta o prześladowanych?
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 6:9–11</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-11" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 11 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:27</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        SZÓSTA PIECZĘĆ — Czy jesteś gotowy na spotkanie z Jezusem?
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 6:12–17</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-12" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 12 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:04</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        144 000 — Zapieczętowani przez Boga
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 7:1–17</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-13" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 13 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:00</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        SIEDEM TRĄB (CZĘŚĆ I) — Ogień, krew i piołun
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 8:1–13</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 14 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:35</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        SIEDEM TRĄB (CZĘŚĆ II) — Od „biada” do Królestwa Chrystusa
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 9:1–21; 11:15</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-15" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 15 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>51:49</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        DWAJ ŚWIADKOWIE — Słowa Bożego nie można zabić
+      </h3>
+      
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 11:3–14</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-16" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 16 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>42:26</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        ANIOŁ Z OTWARTĄ KSIĄŻECZKĄ
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 10 — Słodkie poselstwo, gorzkie rozczarowanie i ponowne powołanie</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 10:1–11 (oraz</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-17" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 17 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>48:00</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        ZMIERZ ŚWIĄTYNIĘ
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 11:1–2 — Sąd, dziedziniec i standard Bożego charakteru</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 11:1–2 (oraz </span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-18" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 18 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:24</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        NIEWIASTA, SMOK I MESJASZ
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 12:1–9 — Wielki bój od Edenu przez Golgotę aż do czasów ostatecznych</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 12:1–9 (oraz </span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-19" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 19 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>54:30</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        ZWYCIĘŻYLI PRZEZ KREW BARANKA
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 12:10–17 — Broń świętych, ucieczka na pustynię i cechy ludu ostatka</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 12:10–17 (ora</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-20" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 20 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>48:22</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        BESTIA Z MORZA
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 13:1–10 — Powstanie mocarstwa, bluźnierczy autorytet i śmiertelna rana</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 13:1–10 (oraz</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-21" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 21 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>1:01:48</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        BESTIA Z MORZA – PROROCTWO SPOTYKA HISTORIĘ
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 13:1–10 (część II) — Historyczne wypełnienie, zmiana Prawa i powrót do dominacji</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 13:1–10 (oraz</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-22" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 22 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:22</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        BESTIA Z ZIEMI
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 13:11–15 — Baranie rogi, głos smoka i stworzenie obrazu bestii</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 13:11–15 (ora</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-23" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 23 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:12</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        CZY ODDAŚZ POKŁON? – DANIEL 3 KLUCZEM DO APOKALIPSY 13
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Równina Dura a kryzys czasów końca — Posłuszeństwo Bogu w obliczu ognistego pieca</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Daniel 3:1–30 oraz Apoka</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-24" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 24 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>31:18</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        CZOŁO I RĘKA
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 13:16–17 — Czego naprawdę dotyczy wybór w Apokalipsie 13?</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 13:16–17 (ora</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-25" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 25 / 26</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>52:02</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        666 – LICZBA BESTII I FAŁSZYWY AUTORYTET
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 13:17–18 — Mądrość, człowiek w miejsce Boga i ostateczne zdemaskowanie</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 13:17–18 (ora</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-26" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 26 / 26</span>
+        <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">PREMIERA</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        PIERWSZY ANIOŁ – WIECZNA EWANGELIA DLA ŚWIATA
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 14:6–7 — Godzina sądu, wezwanie do uwielbienia Stwórcy i globalna misja</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Apokalipsa 14:6–7 (oraz </span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+<!-- ── FULLSCREEN FOCUSED STUDY READER MODAL ── -->
   <div id="lesson-reader-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden" role="dialog" aria-modal="true" aria-labelledby="reader-title">
     
     <div class="reader-window w-full h-full max-w-5xl md:h-[94vh] md:rounded-3xl flex flex-col overflow-hidden relative">
@@ -623,10 +1306,50 @@
   <script src="/js/vendor-jspdf.umd.min.js"></script>
 
   <!-- ── GLOBAL CC AUTH CONNECTOR ── -->
-  <script defer src="/js/cc-global-auth.js"></script>
+  <script defer src="js/cc-global-auth.js?v=20260928_single_v3"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
   <script type="module" src="/js/lumina-courses-engine.js?v=20260927_seq1"></script>
+
+
+  <script>
+    function switchCourseTab(courseId) {
+      const tab28 = document.getElementById('tab-btn-28krokow');
+      const tabApok = document.getElementById('tab-btn-apokalipsa');
+      const view28_hero = document.getElementById('hero-section');
+      const view28_main = document.querySelector('main.flex-grow.z-10');
+      const viewApok = document.getElementById('course-view-apokalipsa');
+
+      if (courseId === 'apokalipsa') {
+        if (tab28) { tab28.classList.remove('active'); tab28.setAttribute('aria-selected', 'false'); }
+        if (tabApok) { tabApok.classList.add('active'); tabApok.setAttribute('aria-selected', 'true'); }
+        if (view28_hero) view28_hero.classList.add('hidden');
+        if (view28_main) view28_main.classList.add('hidden');
+        if (viewApok) viewApok.classList.remove('hidden');
+        if (history.replaceState) {
+          history.replaceState(null, null, '#apokalipsa');
+        }
+      } else {
+        if (tabApok) { tabApok.classList.remove('active'); tabApok.setAttribute('aria-selected', 'false'); }
+        if (tab28) { tab28.classList.add('active'); tab28.setAttribute('aria-selected', 'true'); }
+        if (view28_hero) view28_hero.classList.remove('hidden');
+        if (view28_main) view28_main.classList.remove('hidden');
+        if (viewApok) viewApok.classList.add('hidden');
+        if (history.replaceState) {
+          history.replaceState(null, null, '#droga');
+        }
+      }
+    }
+
+    // Automatyczne przełączanie po hashu w URL lub parametrze
+    document.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      if (hash === '#apokalipsa' || params.get('kurs') === 'apokalipsa' || window.location.pathname.includes('apokalipsa')) {
+        switchCourseTab('apokalipsa');
+      }
+    });
+  </script>
 
 </body>
 </html>
