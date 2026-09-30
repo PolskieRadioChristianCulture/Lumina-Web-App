@@ -456,12 +456,12 @@
                 }
             }
 
-            if (!user && profile && (profile.uid || profile.id || profile.slug)) {
+            if (!user && profile) {
                 user = {
-                    uid: profile.uid || profile.id || profile.slug,
+                    uid: profile.uid || profile.slug || profile.id || 'lumina_member',
                     email: profile.email || '',
-                    displayName: profile.name || profile.displayName || '',
-                    photoURL: profile.avatar || ''
+                    displayName: profile.name || profile.displayName || 'Członek LUMINA',
+                    photoURL: profile.avatar || '/lumina_icon.jpg'
                 };
             }
 
@@ -623,8 +623,17 @@
                 const fullName = profile.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Członek LUMINA');
                 const firstName = fullName.trim().split(' ')[0] || 'Profil';
                 const userEmail = (user.email || '').toLowerCase();
-                const userDispName = (user.displayName || profile.name || '').toLowerCase();
-                const isCezary = userEmail.includes('czarkes') || userEmail.includes('studiodees7') || userEmail.includes('osobowoscplus') || userEmail.includes('yourimaginationstudio') || userDispName.includes('cezary') || profile.slug === 'cezaryrgowski';
+                const userDispName = (user.displayName || profile.name || fullName || '').toLowerCase();
+                const isCezary = userEmail.includes('czarkes') ||
+                                 userEmail.includes('nazir') ||
+                                 userEmail.includes('studiodees7') ||
+                                 userEmail.includes('osobowoscplus') ||
+                                 userEmail.includes('yourimaginationstudio') ||
+                                 userDispName.includes('cezary') ||
+                                 user.uid === 'cezaryrgowski' || user.id === 'cezaryrgowski' ||
+                                 profile.slug === 'cezaryrgowski' ||
+                                 localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
+                                 localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski';
                 const isWioletta = userEmail.includes('wioletta') || userDispName.includes('wioletta') || profile.slug === 'wiolettarogowska';
                 const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
                 const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
