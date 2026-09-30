@@ -600,7 +600,7 @@
 
         function updatePanels() {
             var start = document.querySelector('.hero-section');
-            var end   = document.getElementById('aktualnosci-sierpien');
+            var end   = document.getElementById('aktualnosci-wrzesien') || document.getElementById('aktualnosci-sierpien');
             if (!start || !end) return;
 
             var scrollY   = window.scrollY || window.pageYOffset;
@@ -1889,7 +1889,7 @@
                 <a href="kalendarz2027" class="drawer-link" style="color: #fbbf24; font-weight: 700;"><i class="fa-solid fa-calendar-days"></i> Kreator Kalendarza 2027</a>
                 <a href="bank-tresci.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-download"></i> Bank Treści</a>
                 <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
-                <a href="#aktualnosci-sierpien" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
+                <a href="#aktualnosci-wrzesien" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
                 <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
                 <!-- Promocja Pisma Świętego (Biblia UBG) -->
                 <div class="drawer-bible-promo">
@@ -2284,14 +2284,15 @@
             </div>
 
             <!-- Artykuł - Misja Trwa -->
-            <div id="aktualnosci-sierpien" style="margin-top: 40px; scroll-margin-top: 100px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-gold-low); background: rgba(0,0,0,0.5); padding: 30px; position: relative;">
+            <div id="aktualnosci-wrzesien" style="margin-top: 40px; scroll-margin-top: 100px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-gold-low); background: rgba(0,0,0,0.5); padding: 30px; position: relative;">
+                <span id="aktualnosci-sierpien" style="position: absolute; top: -100px; left: 0;"></span>
                 <span id="aktualnosci-lipiec" style="position: absolute; top: -100px; left: 0;"></span>
                 <span id="aktualnosci" style="position: absolute; top: -100px; left: 0;"></span>
                 <span id="raport" style="position: absolute; top: -100px; left: 0;"></span>
                 <span id="sprawozdanie" style="position: absolute; top: -100px; left: 0;"></span>
                 <span id="sprawozdanie-misyjne" style="position: absolute; top: -100px; left: 0;"></span>
                 <button 
-                    onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za sierpień 2026!',url:'https://polskieradio.cc/#aktualnosci-sierpien'}).catch(console.error)}else{navigator.clipboard.writeText('https://polskieradio.cc/#aktualnosci-sierpien');alert('Skopiowano link do schowka!');}"
+                    onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za wrzesień 2026!',url:'https://polskieradio.cc/#aktualnosci-wrzesien'}).catch(console.error)}else{navigator.clipboard.writeText('https://polskieradio.cc/#aktualnosci-wrzesien');alert('Skopiowano link do schowka!');}"
                     style="position: absolute; top: 20px; right: 20px; padding: 10px; background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold-low); color: var(--gold-primary); border-radius: 50%; cursor: pointer; transition: 0.3s; z-index: 10;"
                     title="Udostępnij raport"
                     onmouseover="this.style.background='var(--gold-primary)'; this.style.color='#000';"
@@ -2302,7 +2303,7 @@
                 
                 <h3 style="color: var(--gold-primary); font-family: 'Cinzel', serif; font-size: 1.5rem; margin-bottom: 24px; text-align: center; line-height: 1.3; padding-right: 40px;">
                     🚀 Misja Trwa!<br />
-                    <span style="color: #e4e4e7; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Aktualności: Zasięg globalny — sierpień 2026</span>
+                    <span style="color: #e4e4e7; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Aktualności: Zasięg globalny — wrzesień 2026</span>
                 </h3>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: stretch;">
@@ -2312,53 +2313,65 @@
                             Droga Społeczności, Drodzy Patronowie i Słuchacze!
                         </p>
                         <p style="margin-bottom: 16px;">
-                            Sierpień 2026 przyniósł wspaniałe owoce i nowy rekord zaangażowania w misję Christian Culture! Dzięki Waszym modlitwom, wsparciu i wierności Dobra Nowina każdego dnia dociera do tysięcy serc w najdalszych zakątkach globu. Każde uruchomienie radia, każda wysłuchana audycja i każda minuta spędzona ze Słowem Bożym to realny owoc budowania Królestwa Bożego.
+                            Dziękujemy za Wasze modlitwy, wsparcie i wierność misji Christian Culture! Dzięki Waszej obecności możemy kontynuować głoszenie Dobrej Nowiny i udostępniać radio oraz Biblię Audio odbiorcom w wielu krajach.
                         </p>
                         <p style="margin-bottom: 16px;">
-                            Z radością i wdzięcznością Bogu przedstawiamy oficjalne sprawozdanie misyjne za sierpień 2026.
+                            Z radością i wdzięcznością Bogu przedstawiamy podsumowanie dostarczonych danych wrześniowych.
                         </p>
+
+                        <div style="background: rgba(212, 169, 74, 0.08); border-left: 3px solid var(--gold-primary); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 0.88rem; color: #e4e4e7; line-height: 1.6;">
+                            <strong style="color: var(--gold-primary);">⚠️ Uwaga dotycząca okresu:</strong> Raport dzienny obejmuje <strong>1–29 września 2026</strong>. W dostarczonym CSV brakuje danych za 30 września, dlatego poniższe wyniki nie stanowią potwierdzonego bilansu pełnego miesiąca.
+                        </div>
                         
                         <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">📊 Globalny Zasięg w Liczbach</h4>
-                        <ul style="list-style: none; padding: 0; margin-bottom: 24px;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączna liczba uruchomień:</strong> 3 664 audycje</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączny czas słuchania:</strong> 1 171 godzin 24 minuty <span style="font-size:0.8rem; color: var(--gold-primary); font-weight:700;">★ nowy rekord!</span></span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Unikalni odbiorcy:</strong> 1 087 osób (w 48 krajach świata)</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Średni czas sesji:</strong> 19 minut 11 sekund <span style="font-size:0.8rem; color: var(--gold-primary); font-weight:700;">(+21,7% względem lipca!)</span></span></li>
-                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Transfer danych:</strong> 66,3 GB ewangelizacyjnego przekazu</span></li>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 16px;">
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Sesje raportowane:</strong> 4 458</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Łączny czas słuchania:</strong> 1 414,72 godziny, czyli około <strong>1 414 godzin 43 minut</strong></span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Transfer danych:</strong> 79,99 GB</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-check" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Obecność geograficzna:</strong> raport regionalny wymienia <strong>39 nazwanych krajów</strong> oraz kategorię „Inne kraje”</span></li>
                         </ul>
+                        <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 24px; font-style: italic; line-height: 1.5;">
+                            * Liczba unikalnych osób pozostaje nieustalona. Adresy IP nie są tożsame z osobami, a sumowanie wartości z raportów nie daje potwierdzonej liczby unikalnych odbiorców.
+                        </p>
 
-                        <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">🌍 Główne Bastiony (Top 5 Krajów)</h4>
-                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                        <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">🌍 Top 5 Krajów Według Liczby Sesji</h4>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 8px;">
                             <ol style="margin: 0; padding-left: 20px; color: #d4d4d8;">
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇵🇱 Polska</strong> — 3 018 sesji (83,1%), 731 słuchaczy, 881,7 h</li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇩🇪 Niemcy</strong> — 299 sesji (8,2%), 159 słuchaczy, 159,5 h</li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇺🇸 Stany Zjednoczone</strong> — 76 sesji (2,1%), 60 słuchaczy, 36,4 h</li>
-                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇳🇱 Holandia</strong> — 35 sesji (1,0%), 19 słuchaczy, 69,8 h</li>
-                                <li><strong style="color: #fff;">🇺🇦 Ukraina</strong> — 31 sesji (0,85%), 16 słuchaczy, 6,4 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇵🇱 Polska</strong> — 3 439 sesji (78,28%), 777 unikalnych IP, 821,65 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇩🇪 Niemcy</strong> — 371 sesji (8,45%), 151 unikalnych IP, 311,48 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇺🇸 Stany Zjednoczone</strong> — 250 sesji (5,69%), 130 unikalnych IP, 12,56 h</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #fff;">🇳🇱 Holandia</strong> — 114 sesji (2,60%), 36 unikalnych IP, 216,17 h</li>
+                                <li><strong style="color: #fff;">🇬🇧 Wielka Brytania</strong> — 63 sesje (1,43%), 32 unikalne IP, 14,08 h</li>
                             </ol>
                         </div>
+                        <p style="font-size: 0.8rem; color: #a1a1aa; margin-bottom: 24px; font-style: italic;">
+                            * Wartości IP pochodzą z wierszy poszczególnych krajów. Podstawą udziałów procentowych jest 4 393 sesje w raporcie regionalnym.
+                        </p>
 
                         <h4 style="color: #fff; font-size: 1.1rem; margin: 24px 0 12px 0; font-weight: 600;">📱 Urządzenia Odbiorców</h4>
-                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 16px; margin-bottom: 8px;">
                             <ul style="list-style: none; padding: 0; margin: 0; color: #d4d4d8; font-size: 0.9rem;">
-                                <li style="margin-bottom: 6px;">🤖 <strong>Android:</strong> 55,5% (2 071 sesji, śr. 20 min 41 sek)</li>
-                                <li style="margin-bottom: 6px;">💻 <strong>Komputery (Desktop):</strong> 39,3% (1 468 sesji, śr. 18 min 29 sek)</li>
-                                <li style="margin-bottom: 6px;">🍏 <strong>iPhone & Inne:</strong> 4,9% (184 sesje)</li>
-                                <li>📺 <strong>Smart TV:</strong> 0,3% (rekordowy średni czas: 30 min 47 sek!)</li>
+                                <li style="margin-bottom: 6px;">🤖 <strong>Android:</strong> 47,73% — 2 200 sesji, średnio około 26 min 37 s</li>
+                                <li style="margin-bottom: 6px;">💻 <strong>Komputery (Desktop):</strong> 39,97% — 1 842 sesje, średnio 9 min 48 s</li>
+                                <li style="margin-bottom: 6px;">🎧 <strong>Inne urządzenia:</strong> 7,79% — 359 sesji, średnio około 11 min 16 s</li>
+                                <li style="margin-bottom: 6px;">🍏 <strong>iPhone:</strong> 4,01% — 185 sesji, średnio około 32 min 05 s</li>
+                                <li>📺 <strong>Smart TV:</strong> 0,50% — 23 sesje, średnio około 28 min 47 s</li>
                             </ul>
                         </div>
+                        <p style="font-size: 0.8rem; color: #a1a1aa; margin-bottom: 24px; font-style: italic;">
+                            * Podstawą tych udziałów jest 4 609 sesji w raporcie urządzeń. Raporty dzienny, regionalny i urządzeń podają różne liczby sesji; przyczyna rozbieżności pozostaje niewyjaśniona.
+                        </p>
 
                         <p style="margin-bottom: 8px;">📈 <strong style="color:#fff;">Co cieszy najbardziej?</strong></p>
                         <ul style="list-style: none; padding: 0; margin-bottom: 24px;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Nowy rekord czasu słuchania:</strong> Aż <strong>1 171 godzin</strong> ewangelizacji w sierpniu.</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Skok zaangażowania:</strong> Średni czas sesji wzrósł aż do <strong>19 minut 11 sekund</strong> (+21,7% względem lipca).</span></li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Rozwój Biblii Audio CC:</strong> Stacja Biblia Audio zgromadziła blisko <strong>200 godzin</strong> słuchania (16,9% całości).</span></li>
-                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Globalna obecność:</strong> Słuchacze łączyli się z nami z aż <strong>48 krajów świata</strong> (m.in. Dania, Indie, Afganistan, RPA, Norwegia, Wielka Brytania, Austria, Francja, Australia, Kenia, Madagaskar).</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Czas poświęcony słuchaniu:</strong> Ponad <strong>1 414 godzin</strong> w dostępnych danych dziennych.</span></li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Biblia Audio Christian Culture:</strong> <strong>148,11 godziny</strong> słuchania według szczegółów strumieni.</span></li>
+                            <li style="display: flex; align-items: flex-start; gap: 8px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--gold-primary); margin-top: 5px;"></i> <span><strong>Obecność ponad granicami:</strong> Odbiór przekazu odnotowany w wielu krajach.</span></li>
                         </ul>
                         
                         <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
                             <p style="color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; font-size: 0.9rem;">❤️ Twoje wsparcie naprawdę ma znaczenie!</p>
-                            <p style="margin-bottom: 24px; font-size: 0.85rem; color: #a1a1aa;">Każda przekazana złotówka pomaga nieść Ewangelię do kolejnych domów i serc na całym świecie.</p>
+                            <p style="margin-bottom: 24px; font-size: 0.85rem; color: #a1a1aa;">Każda przekazana złotówka pomaga kontynuować misję i nieść Ewangelię do kolejnych domów i serc. Dziękujemy za modlitwę, wsparcie i wierność!</p>
                             <a href="https://patronite.pl/osobowoscplus" target="_blank" style="display: inline-block; background: #D4AF37; color: #000; font-weight: 800; text-decoration: none; padding: 12px 24px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; transition: 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
                                 👉 Wesprzyj Misję na Patronite
                             </a>
@@ -3837,11 +3850,11 @@
             function checkAndScrollToHash() {
                 var hash = window.location.hash;
                 if (!hash) return;
-                var aliases = ['#aktualnosci-sierpien', '#aktualnosci-lipiec', '#aktualnosci', '#raport', '#sprawozdanie', '#sprawozdanie-misyjne'];
+                var aliases = ['#aktualnosci-wrzesien', '#aktualnosci-sierpien', '#aktualnosci-lipiec', '#aktualnosci', '#raport', '#sprawozdanie', '#sprawozdanie-misyjne'];
                 var isNewsHash = aliases.indexOf(hash.toLowerCase()) !== -1 || hash.toLowerCase().indexOf('aktualnosci') !== -1 || hash.toLowerCase().indexOf('raport') !== -1;
                 
                 if (isNewsHash) {
-                    var el = document.getElementById('aktualnosci-sierpien') || document.querySelector(hash);
+                    var el = document.getElementById('aktualnosci-wrzesien') || document.getElementById('aktualnosci-sierpien') || document.querySelector(hash);
                     if (el) {
                         var headerOffset = 80;
                         var elementPosition = el.getBoundingClientRect().top;
