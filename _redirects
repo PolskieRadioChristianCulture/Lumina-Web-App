@@ -4,14 +4,15 @@
 # Lekcje Apokalipsy - Cloudflare Pages serwuje automatycznie z folderu akademia/apokalipsa/
 /snadaniowa-live-worship.html /cctv24-worship 301
 # === KURS CODZIENNY: Z BIBLIĄ ZA PAN BRAT ===
+# CF Pages serwuje akademia/kurscodzienny.html automatycznie pod /akademia/kurscodzienny
 /akademia/kurscodzienny/dzien-1 /akademia/kurscodzienny/dzien-01.html 200
 /akademia/kurscodzienny/dzien-01 /akademia/kurscodzienny/dzien-01.html 200
 /kursy/kurscodzienny/dzien-1 /akademia/kurscodzienny/dzien-01.html 200
 /kursy/kurscodzienny/dzien-01 /akademia/kurscodzienny/dzien-01.html 200
-/kursy/kurscodzienny /akademia/kurscodzienny/index.html 200
-/kursy/kurscodzienny/ /akademia/kurscodzienny/index.html 200
-/kurscodzienny /akademia/kurscodzienny/index.html 200
-/kurscodzienny/ /akademia/kurscodzienny/index.html 200
+/kursy/kurscodzienny /akademia/kurscodzienny.html 200
+/kursy/kurscodzienny/ /akademia/kurscodzienny.html 200
+/kurscodzienny /akademia/kurscodzienny.html 200
+/kurscodzienny/ /akademia/kurscodzienny.html 200
 # === CERTYFIKATY ===
 /akademia/certyfikat/* /certyfikat 200
 /kursy/certyfikat/* /certyfikat 200
