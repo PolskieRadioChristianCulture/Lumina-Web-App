@@ -25,11 +25,12 @@ function md2html(text) {
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\n\n/g, '</p><p class="mt-3">')
     .replace(/\n/g, '<br>');
 }
 
 /* ═════════════════════════════════════════════════════════════════
-   1. GENEROWANIE POJEDYNCZEJ PODSTRONY LEKCJI
+   1. GENEROWANIE POJEDYNCZEJ PODSTRONY LEKCJI (PREMIUM CINEMATIC)
 ═════════════════════════════════════════════════════════════════ */
 function generateLessonHtml(lesson) {
   const id = lesson.id;
@@ -41,40 +42,64 @@ function generateLessonHtml(lesson) {
   const shortTitle = lesson.tytul.replace(/^LEKCJA \d+:\s*/i, '');
   const canonical = `https://polskieradio.cc/akademia/apokalipsa/lekcja-${num}`;
 
+  // QUIZ INTERAKTYWNY (Zgodny z lumina-courses.css)
   let quizHtml = '';
   if (lesson.quiz && lesson.quiz.length) {
     lesson.quiz.forEach((q, qi) => {
       const qid = `q${id}_${qi}`;
+      const totalQ = lesson.quiz.length;
       const opts = q.opcje.map((opt, oi) => {
-        const litera = String.fromCharCode(65 + oi);
-        return `<button class="quiz-option w-full text-left" onclick="answerQuiz('${qid}',${oi},${q.poprawna},'${escapeHtml(q.wyjasnienie).replace(/'/g, "\\'")}')">
-          <span class="font-bold text-zinc-500 mr-2">[${litera}]</span>${escapeHtml(opt)}
-        </button>`;
+        return `
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="${qid}" data-opt-idx="${oi}" role="radio" aria-checked="false" onclick="handleQuizAnswer('${qid}', ${oi}, ${q.poprawna})">
+            <span>${escapeHtml(opt)}</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>`;
       }).join('\n');
+
       quizHtml += `
-        <div class="mb-8" id="${qid}-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie ${qi+1}:</span> ${escapeHtml(q.pytanie)}</p>
-          <div class="flex flex-col gap-2" id="${qid}-opts">${opts}</div>
-          <div id="${qid}-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+        <div class="cin-quiz-card" id="quiz-card-${qid}" data-qid="${qid}" data-correct="${q.poprawna}">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie ${qi + 1} z ${totalQ} • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">${escapeHtml(q.pytanie)}</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania ${qi + 1}">
+            ${opts}
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-${qid}">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-${qid}"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-${qid}">${escapeHtml(q.wyjasnienie)}</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">${escapeHtml(lesson.zakresBiblijny || 'Pismo Święte')}</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('${qid}')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>`;
     });
   }
 
+  // STUDIUM KROK PO KROKU
   let studyHtml = '';
   if (lesson.studiumKrokPoKroku && lesson.studiumKrokPoKroku.length) {
     lesson.studiumKrokPoKroku.forEach((p, pi) => {
-      const krokNazwa = p.tytul ? p.tytul : `Krok ${pi+1}`;
+      const krokNazwa = p.tytul ? p.tytul : `Krok ${pi + 1}`;
       studyHtml += `
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">${pi + 1}</span>
             <span>${escapeHtml(krokNazwa)}</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">${md2html(escapeHtml(p.tresc))}</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">${md2html(escapeHtml(p.tresc))}</div>
         </div>`;
     });
   }
 
+  // SPRAWDŹ W BIBLII
   let verseHtml = '';
   if (lesson.sprawdzWBiblii && lesson.sprawdzWBiblii.length) {
     lesson.sprawdzWBiblii.forEach(w => {
@@ -82,20 +107,30 @@ function generateLessonHtml(lesson) {
       const parts = str.split('—');
       const ref = parts[0].trim();
       const desc = parts.slice(1).join('—').trim();
-      verseHtml += `<li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 ${escapeHtml(ref)}</span>
-        ${desc ? `<span class="text-zinc-400 text-sm">— ${escapeHtml(desc)}</span>` : ''}
-      </li>`;
+      verseHtml += `
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">${escapeHtml(ref)}</span>
+            ${desc ? `<span class="text-zinc-400 text-xs sm:text-sm">— ${escapeHtml(desc)}</span>` : ''}
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>`;
     });
   }
 
+  // PYTANIA DO STUDIUM
   let pytHtml = '';
   if (lesson.pytaniaDoStudium && lesson.pytaniaDoStudium.length) {
     lesson.pytaniaDoStudium.forEach((p, pi) => {
-      pytHtml += `<li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${pi+1}</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">${escapeHtml(p)}</span>
-      </li>`;
+      pytHtml += `
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${pi + 1}</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">${escapeHtml(p)}</span>
+        </li>`;
     });
   }
 
@@ -107,18 +142,21 @@ function generateLessonHtml(lesson) {
   <title>Lekcja ${id}: ${escapeHtml(shortTitle)} | Apokalipsa – Księga Nadziei | LUMINA Bible Academy</title>
   <meta name="description" content="${escapeHtml(lesson.celLekcji || '').substring(0, 160)}" />
   <link rel="canonical" href="${canonical}" />
+
+  <!-- Open Graph / Social -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content="${canonical}" />
   <meta property="og:title" content="Lekcja ${id}: ${escapeHtml(shortTitle)} | Apokalipsa – Księga Nadziei" />
   <meta property="og:description" content="${escapeHtml(lesson.celLekcji || '').substring(0, 160)}" />
-  <meta property="og:image" content="https://polskieradio.cc/LUMINA/images/courses/apokalipsa/banner-promo.jpg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/courses/apokalipsa/banner-promo.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  
+
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -126,11 +164,8 @@ function generateLessonHtml(lesson) {
       theme: {
         extend: {
           colors: {
-            brand: {
-              gold: '#D4AF37', 'gold-light': '#F3E5AB', 'gold-dark': '#997D21',
-              dark: '#07090E', surface: '#0E121A', elevated: '#161B26',
-              line: 'rgba(255,255,255,0.08)'
-            }
+            amber: { 100: '#F1E7D0', 200: '#E2CC9A', 300: '#D4B578', 400: '#C4A35A', 500: '#B39250', 600: '#A08040', 900: '#403526', 950: '#29231C' },
+            brand: { gold: '#C4A35A', 'gold-light': '#E2CC9A', 'gold-dark': '#A08040', dark: '#07090E', surface: '#0E121A', elevated: '#161B26', line: 'rgba(255, 255, 255, 0.08)' }
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -142,303 +177,557 @@ function generateLessonHtml(lesson) {
       }
     };
   </script>
+
+  <!-- Universal CC & LUMINA Global Auth -->
+  <script src="/js/cc-global-auth.js" defer></script>
+
+  <!-- LUMINA Courses Master Stylesheet -->
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+
   <style>
-    body { background: #07090E; color: #e4e4e7; }
-    .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212,175,55,0.15); position: sticky; top: 0; z-index: 50; }
-    .reader-section { background: #0E121A; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px sm:padding: 32px; margin-bottom: 24px; }
-    .reader-section h3 { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D4AF37; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
-    .quiz-option:hover { border-color: rgba(212,175,55,0.4); background: #161B26; }
-    .quiz-option.correct { border-color: #4ade80; background: rgba(34,197,94,0.1); color: #4ade80; }
-    .quiz-option.wrong { border-color: #f87171; background: rgba(248,113,113,0.1); color: #f87171; }
-    .floating-prog { position: fixed; bottom: 20px; right: 20px; background: rgba(7,9,14,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.3); border-radius: 50px; padding: 8px 18px; display: flex; align-items: center; gap: 10px; z-index: 40; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+    /* Dedykowane szlify dla kursu Apokalipsa */
+    .reader-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 36px);
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .reader-section-title {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-serif);
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      line-height: 1.35;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .reader-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      color: var(--accent-warm);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-display);
+      margin-right: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(196, 163, 90, 0.15);
+    }
   </style>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y4EFTVBPE3');</script>
-  <script src="/js/cc-global-auth.js" defer></script>
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
-  <!-- TOP HEADER -->
-  <header class="ak-header">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="flex items-center gap-2.5 min-h-[44px]" title="Powrót do Akademii">
-          <span class="text-amber-400 text-lg">←</span>
-          <div class="flex items-center gap-2">
-            <span class="font-display text-sm font-bold text-brand-gold tracking-widest">LUMINA</span>
-            <span class="text-xs font-semibold text-zinc-400">BIBLE ACADEMY</span>
-          </div>
-        </a>
-        <span class="text-zinc-700 hidden sm:inline">/</span>
-        <a href="/akademia#apokalipsa" class="hidden sm:inline text-xs font-semibold text-amber-200/80 hover:text-amber-300">
-          Apokalipsa – Księga Nadziei
-        </a>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 min-h-[44px]">
-          <span>❤️</span>
-          <span class="hidden sm:inline">Wspieraj</span>
-        </a>
-        <div id="cc-auth-nav-container"></div>
-      </div>
+  <div id="lesson-reading-progress" class="reading-progress-fixed" style="width: 0%"></div>
+  <div class="ambient-glow"></div>
+
+  <!-- ── LUXURY TOPBAR (KONGREGACYJNY STANDARD LUMINA) ── -->
+  <header class="cin-topbar">
+    <div class="cin-topbar-main">
+      <a href="/akademia#apokalipsa" class="cin-back-link" title="Powrót do kursu Apokalipsy">
+        <span>←</span>
+        <span class="hidden sm:inline">Księga Nadziei</span>
+        <span class="sm:hidden">Wróć</span>
+      </a>
+      <a href="/akademia" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
+        <div class="cin-logo-mark">
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" />
+        </div>
+        <div class="cin-brand-text hidden md:flex">
+          <span class="cin-brand-title">LUMINA</span>
+          <span class="cin-brand-sub">BIBLE ACADEMY</span>
+        </div>
+      </a>
     </div>
+
+    <div class="cin-topbar-meta">
+      <span class="cin-lesson-step-badge">
+        <span>Lekcja ${id} / 26</span>
+      </span>
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <span class="support-icon text-sm">❤️</span>
+        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+      </a>
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary px-3 py-1.5 text-xs min-h-[38px] hidden lg:inline-flex items-center gap-1.5">
+        <span>Katalog Kursu</span>
+      </a>
+    </div>
+
+    <div id="cc-auth-nav-container" class="cc-auth-widget-container cin-topbar-auth"></div>
   </header>
 
-  <!-- BREADCRUMB STRIP -->
-  <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Ścieżka nawigacji">
-    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
+  <!-- ── BREADCRUMB BAR ── -->
+  <nav class="bg-[#07090e]/80 border-b border-white/5 py-2.5 px-4 backdrop-blur-sm" aria-label="Ścieżka nawigacji">
+    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-400 flex-wrap gap-2">
       <div class="flex items-center gap-2">
-        <a href="/akademia" class="hover:text-amber-300">Akademia</a>
-        <span>›</span>
-        <a href="/akademia#apokalipsa" class="hover:text-amber-300">Apokalipsa</a>
-        <span>›</span>
+        <a href="/akademia" class="hover:text-amber-300 transition-colors">Akademia</a>
+        <span class="text-zinc-600">›</span>
+        <a href="/akademia#apokalipsa" class="hover:text-amber-300 transition-colors">Apokalipsa – Księga Nadziei</a>
+        <span class="text-zinc-600">›</span>
         <span class="text-amber-400 font-bold">Lekcja ${id} z 26</span>
       </div>
       <div class="flex items-center gap-2">
-        ${prevNum ? `<a href="/akademia/apokalipsa/lekcja-${prevNum}" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white min-h-[32px] flex items-center">← Poprzednia</a>` : ''}
-        ${nextNum ? `<a href="/akademia/apokalipsa/lekcja-${nextNum}" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Następna →</a>` : ''}
+        ${prevNum ? `<a href="/akademia/apokalipsa/lekcja-${prevNum}" class="cin-nav-prev text-xs py-1.5 px-3 min-h-[34px]">← Lekcja ${parseInt(prevNum)}</a>` : ''}
+        ${nextNum ? `<a href="/akademia/apokalipsa/lekcja-${nextNum}" class="cin-nav-next text-xs py-1.5 px-3 min-h-[34px] text-amber-400 font-bold">Lekcja ${parseInt(nextNum)} →</a>` : ''}
       </div>
     </div>
   </nav>
 
-  <!-- HERO LEKCJI -->
-  <section class="relative overflow-hidden py-10 px-4 border-b border-brand-line" style="background: radial-gradient(ellipse at top, rgba(212,175,55,0.08) 0%, rgba(7,9,14,0) 70%);">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
-        <span>LEKCJA ${num} / 26</span>
-        <span>•</span>
-        <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-      </div>
-      <h1 class="font-serif text-2xl sm:text-4xl font-bold text-white mb-3 leading-tight">${escapeHtml(shortTitle)}</h1>
-      ${lesson.podtytul ? `<p class="font-serif italic text-base sm:text-lg text-zinc-400 mb-6">${escapeHtml(lesson.podtytul)}</p>` : ''}
+  <!-- ── LESSON BODY CONTAINER ── -->
+  <main class="cin-subpage-container flex-grow">
 
-      <!-- META BAR -->
-      <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400 mb-6 p-3 bg-zinc-900/60 rounded-xl border border-zinc-800">
-        <div><strong class="text-white">Zakres:</strong> ${escapeHtml(lesson.zakresBiblijny || '')}</div>
-        ${lesson.duration && !isPremiere ? `<div><strong class="text-white">Wideo:</strong> ${escapeHtml(lesson.duration)}</div>` : ''}
-        <div><strong class="text-white">Struktura:</strong> 15 sekcji kanonicznych</div>
-        <div id="status-badge-${id}" class="hidden px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">✓ UKOŃCZONA</div>
-      </div>
+    <!-- HEADER LEKCJI -->
+    <div class="reader-stage-header mb-4">
+      <span class="reader-badge-gold">APOKALIPSA – KSIĘGA NADZIEI</span>
+      <span class="text-zinc-400 text-xs font-semibold">Lekcja ${id} z 26 • Studio Dobrego Słowa</span>
+    </div>
 
-      <!-- VIDEO PLAYER -->
-      ${videoId && !isPremiere ? `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-8 bg-black" style="padding-bottom:56.25%">
-        <iframe class="absolute inset-0 w-full h-full"
-          src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
-          title="${escapeHtml(lesson.tytul)}"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen loading="lazy"></iframe>
-      </div>` : isPremiere ? `
-      <div class="w-full rounded-2xl border border-amber-500/30 bg-amber-500/5 p-8 text-center mb-8">
-        <div class="text-4xl mb-2">🎬</div>
-        <div class="font-display font-bold text-amber-300 text-sm tracking-widest mb-1">PREMIERA WKRÓTCE</div>
-        <p class="text-zinc-400 text-sm">Wykład wideo będzie miał premierę wkrótce. Całość materiału do studium biblijnego jest dostępna poniżej.</p>
-      </div>` : ''}
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-3 leading-tight">
+      ${escapeHtml(shortTitle)}
+    </h1>
+    ${lesson.podtytul ? `<p class="text-amber-200/90 font-serif italic text-base sm:text-lg mb-6 leading-relaxed">${escapeHtml(lesson.podtytul)}</p>` : ''}
 
-      <!-- AKCJE -->
-      <div class="flex flex-wrap gap-3">
-        <button onclick="toggleDone(${id})" id="btn-done-${id}" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 shadow-lg shadow-amber-900/30">
-          <i class="fa-solid fa-check"></i>
-          <span id="btn-done-txt-${id}">Oznacz jako ukończoną</span>
-        </button>
-        <a href="#studium" class="px-5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 hover:border-amber-400">
-          <span>Przejdź do Studium ↓</span>
-        </a>
+    <!-- META BAR -->
+    <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-zinc-400 mb-8 p-3.5 bg-[#0e121a] rounded-2xl border border-white/5 shadow-md">
+      <div><span class="text-zinc-500">Zakres biblijny:</span> <strong class="text-amber-300 font-mono">${escapeHtml(lesson.zakresBiblijny || '')}</strong></div>
+      ${lesson.duration && !isPremiere ? `<div><span class="text-zinc-500">Wideo:</span> <strong class="text-white">${escapeHtml(lesson.duration)}</strong></div>` : ''}
+      <div><span class="text-zinc-500">Struktura:</span> <strong class="text-white">15 sekcji kanonicznych</strong></div>
+      <div id="lesson-status-pill" class="hidden ml-auto px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-check text-xs"></i> <span>Ukończona</span>
       </div>
     </div>
-  </section>
 
-  <!-- TREŚĆ GŁÓWNA (15 SEKCJI) -->
-  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8" id="studium">
+    <!-- KINOWY ODTWARZACZ WIDEO (16:9) -->
+    ${videoId && !isPremiere ? `
+    <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-10 bg-black aspect-video">
+      <iframe class="w-full h-full"
+        src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
+        title="${escapeHtml(lesson.tytul)}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen loading="lazy"></iframe>
+    </div>` : isPremiere ? `
+    <div class="w-full rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-zinc-900/60 to-black p-8 text-center mb-10 shadow-2xl">
+      <div class="text-4xl mb-3">🎬</div>
+      <div class="font-display font-bold text-amber-300 text-sm tracking-widest uppercase mb-1">PREMIERA WYKŁADU WKRÓTCE</div>
+      <p class="text-zinc-300 text-sm max-w-lg mx-auto leading-relaxed">Materiał wideo będzie miał swoją uroczystą premierę już niebawem. Całość studium biblijnego, wersetów, quizu i modlitwy jest w pełni dostępna poniżej.</p>
+    </div>` : ''}
+
+    <!-- ══════════════════════════════════════════════════════════════
+         15 KANONICZNYCH SEKCJI STUDIUM
+    ══════════════════════════════════════════════════════════════ -->
 
     <!-- 1. Tytuł i zakres biblijny -->
-    <div class="reader-section">
-      <h3><span>1.</span> Tytuł i zakres biblijny</h3>
-      <p class="font-serif text-lg text-amber-200"><strong>${escapeHtml(shortTitle)}</strong> — ${escapeHtml(lesson.zakresBiblijny || '')}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">1</span>
+        <span>Tytuł i zakres biblijny</span>
+      </h2>
+      <div class="reader-prose">
+        <p class="font-serif text-lg sm:text-xl text-white font-bold leading-relaxed mb-2">${escapeHtml(shortTitle)}</p>
+        <p class="text-amber-300 text-sm font-mono flex items-center gap-2">
+          <span>📖 Zakres biblijny:</span>
+          <strong>${escapeHtml(lesson.zakresBiblijny || '')}</strong>
+        </p>
+      </div>
+    </section>
 
     <!-- 2. Tekst główny -->
-    <div class="reader-section">
-      <h3><span>2.</span> Tekst główny</h3>
-      <blockquote class="border-l-4 border-amber-500 pl-4 py-2 my-2 bg-amber-500/5 rounded-r-xl font-serif text-zinc-200 text-base sm:text-lg leading-relaxed">
-        ${md2html(escapeHtml(lesson.tekstGlowny || ''))}
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">2</span>
+        <span>Tekst główny</span>
+      </h2>
+      <div class="p-6 sm:p-8 rounded-2xl bg-[#0b0e15] border-l-4 border-amber-400 border-y border-r border-amber-500/20 shadow-xl my-2">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-book-bible"></i>
+          <span>Słowo Boże (Pismo Święte)</span>
+        </div>
+        <blockquote class="font-bible text-lg sm:text-xl text-amber-100/95 leading-relaxed italic">
+          „${md2html(escapeHtml(lesson.tekstGlowny || ''))}”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 3. Tekst pamięciowy -->
-    <div class="reader-section" style="border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.03);">
-      <h3><span>3.</span> Tekst pamięciowy</h3>
-      <blockquote class="border-l-4 border-amber-400 pl-4 py-2 font-serif text-amber-300 text-base sm:text-lg italic">
-        ${md2html(escapeHtml(lesson.tekstPamieciowy || ''))}
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">3</span>
+        <span>Tekst pamięciowy</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/12 via-amber-500/5 to-transparent border border-amber-500/35 relative overflow-hidden shadow-lg">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-bookmark text-amber-400"></i> Werset do zapamiętania
+          </span>
+        </div>
+        <blockquote class="font-bible text-base sm:text-lg text-amber-200 font-medium italic leading-relaxed">
+          „${md2html(escapeHtml(lesson.tekstPamieciowy || ''))}”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 4. Cel lekcji -->
-    <div class="reader-section">
-      <h3><span>4.</span> Cel lekcji</h3>
-      <p class="text-zinc-200 leading-relaxed">${md2html(escapeHtml(lesson.celLekcji || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">4</span>
+        <span>Cel lekcji</span>
+      </h2>
+      <div class="p-5 rounded-xl bg-[#0b0f19] border border-white/5 text-zinc-200 text-sm sm:text-base leading-relaxed">
+        <div class="flex items-start gap-3">
+          <span class="text-amber-400 text-lg mt-0.5">🎯</span>
+          <div>${md2html(escapeHtml(lesson.celLekcji || ''))}</div>
+        </div>
+      </div>
+    </section>
 
     <!-- 5. Wprowadzenie -->
-    <div class="reader-section">
-      <h3><span>5.</span> Wprowadzenie</h3>
-      <p class="text-zinc-300 leading-relaxed text-base">${md2html(escapeHtml(lesson.wprowadzenie || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">5</span>
+        <span>Wprowadzenie</span>
+      </h2>
+      <div class="reader-prose text-zinc-300 text-base sm:text-lg leading-relaxed space-y-4">
+        ${md2html(escapeHtml(lesson.wprowadzenie || ''))}
+      </div>
+    </section>
 
     <!-- 6. Studium biblijne krok po kroku -->
-    <div class="reader-section">
-      <h3><span>6.</span> Studium biblijne krok po kroku</h3>
-      ${studyHtml}
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">6</span>
+        <span>Studium biblijne krok po kroku</span>
+      </h2>
+      <div class="space-y-4">
+        ${studyHtml}
+      </div>
+    </section>
 
     <!-- 7. Daniel i Apokalipsa -->
-    <div class="reader-section">
-      <h3><span>7.</span> Daniel i Apokalipsa</h3>
-      <p class="text-zinc-300 leading-relaxed">${md2html(escapeHtml(lesson.danielIApokalipsa || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">7</span>
+        <span>Daniel i Apokalipsa</span>
+      </h2>
+      <div class="p-6 sm:p-7 rounded-2xl bg-[#090d16] border border-blue-500/25 relative overflow-hidden shadow-lg">
+        <div class="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-scroll"></i>
+          <span>Klucz proroczy: Daniel & Apokalipsa</span>
+        </div>
+        <div class="text-zinc-200 text-sm sm:text-base leading-relaxed space-y-3">
+          ${md2html(escapeHtml(lesson.danielIApokalipsa || ''))}
+        </div>
+      </div>
+    </section>
 
     <!-- 8. Perspektywa historyczna -->
-    <div class="reader-section" style="border-left: 4px solid #71717a;">
-      <h3 class="!text-zinc-400"><span>8.</span> Perspektywa historyczna</h3>
-      <p class="text-zinc-400 text-sm sm:text-base leading-relaxed italic">${md2html(escapeHtml(lesson.perspektywaHistoryczna || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">8</span>
+        <span>Perspektywa historyczna</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-[#0f121a] border-l-4 border-zinc-500 border-y border-r border-zinc-800 shadow-md">
+        <div class="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
+          <i class="fa-solid fa-landmark"></i>
+          <span>Tło historyczne i kontekst epoki</span>
+        </div>
+        <div class="text-zinc-300 text-sm sm:text-base leading-relaxed italic space-y-3">
+          ${md2html(escapeHtml(lesson.perspektywaHistoryczna || ''))}
+        </div>
+      </div>
+    </section>
 
-    <!-- 9. JEZUS W CENTRUM -->
-    <div class="reader-section" style="border: 2px solid rgba(212,175,55,0.4); background: rgba(212,175,55,0.05);">
-      <h3 class="!text-amber-300 text-sm font-bold"><span>9.</span> ✝ JEZUS W CENTRUM</h3>
-      <p class="font-serif text-amber-100 text-base sm:text-lg leading-relaxed">${md2html(escapeHtml(lesson.jezusWCentrum || ''))}</p>
-    </div>
+    <!-- 9. JEZUS W CENTRUM (KORONA LEKCJI) -->
+    <section class="reader-section">
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1c160c] via-[#120f09] to-[#07090e] border-2 border-amber-500/50 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 text-9xl text-amber-500/5 select-none pointer-events-none font-serif">✝</div>
+        <div class="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 animate-pulse"></span>
+          <span class="font-display">✝ SERCE CAŁEGO PROROCTWA</span>
+        </div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-4">JEZUS W CENTRUM</h2>
+        <div class="font-bible text-base sm:text-lg text-amber-100/95 leading-relaxed space-y-3">
+          ${md2html(escapeHtml(lesson.jezusWCentrum || ''))}
+        </div>
+      </div>
+    </section>
 
     <!-- 10. SPRAWDŹ W BIBLII -->
-    <div class="reader-section">
-      <h3><span>10.</span> SPRAWDŹ W BIBLII</h3>
-      <ul class="space-y-1.5">${verseHtml}</ul>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">10</span>
+        <span>Sprawdź w Biblii</span>
+      </h2>
+      <ul class="space-y-2.5">
+        ${verseHtml}
+      </ul>
+    </section>
 
     <!-- 11. Zastosowanie osobiste -->
-    <div class="reader-section">
-      <h3><span>11.</span> Zastosowanie osobiste</h3>
-      <p class="font-serif italic text-zinc-300 leading-relaxed text-base">${md2html(escapeHtml(lesson.zastosowanieOsobiste || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">11</span>
+        <span>Zastosowanie osobiste</span>
+      </h2>
+      <div class="reader-application-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-heart"></i>
+          <span>Dla mojego serca i życia</span>
+        </div>
+        <div class="font-serif italic text-zinc-200 text-base sm:text-lg leading-relaxed space-y-3">
+          ${md2html(escapeHtml(lesson.zastosowanieOsobiste || ''))}
+        </div>
+      </div>
+    </section>
 
     <!-- 12. Pytania do studium -->
-    <div class="reader-section">
-      <h3><span>12.</span> Pytania do studium</h3>
-      <ol class="space-y-2">${pytHtml}</ol>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">12</span>
+        <span>Pytania do studium</span>
+      </h2>
+      <ol class="space-y-3">
+        ${pytHtml}
+      </ol>
+    </section>
 
     <!-- 13. Quiz z odpowiedziami -->
-    <div class="reader-section">
-      <h3><span>13.</span> Quiz z odpowiedziami</h3>
-      ${quizHtml || '<p class="text-zinc-500 text-sm">Quiz w przygotowaniu.</p>'}
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">13</span>
+        <span>Quiz z odpowiedziami</span>
+      </h2>
+      <div class="quiz-container">
+        ${quizHtml || '<p class="text-zinc-500 text-sm">Pytania quizowe w opracowaniu.</p>'}
+        <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
+          <span class="text-base text-brand-gold">💡</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Błędna odpowiedź nie blokuje przejścia — sprawdź uzasadnienie i spróbuj ponownie.</span>
+        </div>
+      </div>
+    </section>
 
     <!-- 14. TWOJA DECYZJA -->
-    <div class="reader-section" style="border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.04);">
-      <h3 class="!text-emerald-400"><span>14.</span> TWOJA DECYZJA</h3>
-      <p class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed">${md2html(escapeHtml(lesson.twojaDecyzja || ''))}</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">14</span>
+        <span>Twoja decyzja</span>
+      </h2>
+      <div class="reader-decision-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-check-circle"></i>
+          <span>Osobisty wybór wiary</span>
+        </div>
+        <div class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed space-y-3">
+          ${md2html(escapeHtml(lesson.twojaDecyzja || ''))}
+        </div>
+      </div>
+    </section>
 
     <!-- 15. Modlitwa -->
-    <div class="reader-section" style="border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.04);">
-      <h3 class="!text-purple-300"><span>15.</span> 🙏 Modlitwa</h3>
-      <p class="font-serif italic text-purple-100 text-base sm:text-lg leading-relaxed">${md2html(escapeHtml(lesson.modlitwa || ''))}</p>
-    </div>
-
-    <!-- DOLNA NAWIGACJA -->
-    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-brand-line">
-      <button onclick="toggleDone(${id})" id="btn-done2-${id}" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[48px] flex items-center gap-2">
-        <i class="fa-solid fa-check-double"></i>
-        <span>Ukończyłem/am tę lekcję</span>
-      </button>
-      <div class="flex items-center gap-2">
-        ${prevNum ? `<a href="/akademia/apokalipsa/lekcja-${prevNum}" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">← Lekcja ${parseInt(prevNum)}</a>` : ''}
-        <a href="/akademia#apokalipsa" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">Wszystkie lekcje</a>
-        ${nextNum ? `<a href="/akademia/apokalipsa/lekcja-${nextNum}" class="px-5 py-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-wider hover:bg-amber-500/30 min-h-[48px] flex items-center">Lekcja ${parseInt(nextNum)} →</a>` : '<a href="/akademia#apokalipsa" class="px-5 py-3 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider min-h-[48px] flex items-center">🎉 Gratulacje! Cały kurs</a>'}
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">15</span>
+        <span>Modlitwa</span>
+      </h2>
+      <div class="reader-prayer-card">
+        <span class="text-2xl text-amber-400 mb-2 block">🕊️</span>
+        <div class="font-serif italic text-amber-100/90 text-base sm:text-lg leading-relaxed space-y-3">
+          ${md2html(escapeHtml(lesson.modlitwa || ''))}
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ── UKOŃCZENIE I NASTĘPNY KROK ── -->
+    <section class="reader-section">
+      <div class="reader-finish-box text-center py-8 px-4 sm:px-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+          <span>✦</span>
+          <span>Apokalipsa – Księga Nadziei • Lekcja ${id} z 26</span>
+        </div>
+        <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy na kolejny krok?</h3>
+        <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
+          Oznacz lekcję jako ukończoną, aby zapisać swój postęp w przeglądarce i przejdź do następnego rozdziału.
+        </p>
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <button type="button" id="btn-complete-lesson" onclick="toggleLessonDone(${id})" class="btn-gold-complete min-h-[48px]">
+            <span>✦</span>
+            <span id="btn-complete-txt">Ukończ Tę Lekcję</span>
+          </button>
+          ${nextNum ? `
+          <a href="/akademia/apokalipsa/lekcja-${nextNum}" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary min-h-[48px] text-amber-400 font-bold">
+            <span>Następna Lekcja (Lekcja ${parseInt(nextNum)}) ›</span>
+          </a>` : ''}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DOLNA NAWIGACJA ── -->
+    <nav class="cin-lesson-nav-bar" aria-label="Nawigacja pomiędzy lekcjami">
+      ${prevNum ? `
+      <a href="/akademia/apokalipsa/lekcja-${prevNum}" class="cin-nav-prev" title="Lekcja ${parseInt(prevNum)}">
+        <span>←</span>
+        <span>Lekcja ${parseInt(prevNum)}</span>
+      </a>` : '<span></span>'}
+
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
+        <span>Wszystkie 26 Lekcji</span>
+      </a>
+
+      ${nextNum ? `
+      <a href="/akademia/apokalipsa/lekcja-${nextNum}" class="cin-nav-next text-amber-400 font-bold" title="Lekcja ${parseInt(nextNum)}">
+        <span>Lekcja ${parseInt(nextNum)}</span>
+        <span>→</span>
+      </a>` : `
+      <a href="/akademia#apokalipsa" class="cin-nav-next text-emerald-400 font-bold">
+        <span>🎉 Kurs Ukończony!</span>
+      </a>`}
+    </nav>
 
   </main>
 
-  <!-- STOPKA -->
-  <footer class="bg-[#05070c] border-t border-brand-line py-10 px-4 mt-16 text-center text-xs text-zinc-500">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>LUMINA Bible Academy • Apokalipsa: Księga Nadziei</div>
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="hover:text-amber-400">Akademia</a>
-        <a href="/kursy" class="hover:text-amber-400">28 Kroków</a>
-        <a href="/mojabiblia" class="hover:text-amber-400">Biblia Online</a>
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="text-amber-400 hover:underline">Patronite</a>
+  <!-- ── FOOTER ── -->
+  <footer class="bg-[#05070c] border-t border-brand-line py-12 px-4 z-10 text-xs text-zinc-500 mt-16">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <p class="font-serif font-bold text-zinc-400 text-sm mb-1">LUMINA BIBLE ACADEMY • APOKALIPSA: KSIĘGA NADZIEI</p>
+        <p>Wykłady: Pr. Wincenty Sieja (Studio Dobrego Słowa) • Ekosystem Christian Culture</p>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/akademia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Akademia</a>
+        <a href="/kursy" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">28 Kroków</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Biblia Online</a>
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="text-amber-400 font-bold hover:underline min-h-[44px] flex items-center">Patronite</a>
       </div>
     </div>
   </footer>
 
-  <!-- FLOATING PROGRESS -->
-  <div class="floating-prog">
-    <span class="text-xs text-zinc-400">Twój postęp:</span>
-    <span class="font-bold text-amber-400 text-sm" id="float-prog-txt">0 / 26</span>
-  </div>
+  <div id="academy-toast" class="academy-toast"></div>
 
+  <!-- ── CLIENT SCRIPT ── -->
   <script>
     const LESSON_ID = ${id};
 
-    function getDone() {
+    // 1. Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      const bar = document.getElementById('lesson-reading-progress');
+      if (bar) bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+    }, { passive: true });
+
+    // 2. Local Storage Progress
+    function getCompletedLessons() {
       try { return JSON.parse(localStorage.getItem('apok_done') || '[]'); } catch(e) { return []; }
     }
 
-    function toggleDone(lid) {
-      let done = getDone();
-      if (done.includes(lid)) {
+    function toggleLessonDone(lid) {
+      let done = getCompletedLessons();
+      const isDone = done.includes(lid);
+      if (isDone) {
         done = done.filter(x => x !== lid);
+        showToast('Lekcja oznaczona jako nieukończona.');
       } else {
         done.push(lid);
+        showToast('🎉 Gratulacje! Lekcja została oznaczona jako ukończona.');
       }
       localStorage.setItem('apok_done', JSON.stringify(done));
-      updateStatusUI();
+      updateLessonStatusUI();
     }
 
-    function updateStatusUI() {
-      const done = getDone();
+    function updateLessonStatusUI() {
+      const done = getCompletedLessons();
       const isDone = done.includes(LESSON_ID);
 
-      const floatTxt = document.getElementById('float-prog-txt');
-      if (floatTxt) floatTxt.textContent = done.length + ' / 26';
-
-      const b1 = document.getElementById('btn-done-' + LESSON_ID);
-      const b2 = document.getElementById('btn-done2-' + LESSON_ID);
-      const txt1 = document.getElementById('btn-done-txt-' + LESSON_ID);
-      const badge = document.getElementById('status-badge-' + LESSON_ID);
+      const btn = document.getElementById('btn-complete-lesson');
+      const txt = document.getElementById('btn-complete-txt');
+      const pill = document.getElementById('lesson-status-pill');
 
       if (isDone) {
-        if (txt1) txt1.textContent = '✓ Ukończona (kliknij, by cofnąć)';
-        if (b1) { b1.classList.remove('from-amber-500', 'to-amber-600'); b1.classList.add('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.remove('hidden');
+        if (btn) btn.classList.add('completed-state');
+        if (txt) txt.textContent = '✓ Lekcja Ukończona (kliknij, by cofnąć)';
+        if (pill) pill.classList.remove('hidden');
       } else {
-        if (txt1) txt1.textContent = 'Oznacz jako ukończoną';
-        if (b1) { b1.classList.add('from-amber-500', 'to-amber-600'); b1.classList.remove('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.add('hidden');
+        if (btn) btn.classList.remove('completed-state');
+        if (txt) txt.textContent = 'Ukończ Tę Lekcję';
+        if (pill) pill.classList.add('hidden');
       }
     }
 
-    function answerQuiz(qid, chosen, correct, explanation) {
-      const opts = document.getElementById(qid + '-opts');
-      const res = document.getElementById(qid + '-result');
-      if (!opts || !res || res.classList.contains('answered')) return;
-      res.classList.add('answered');
+    // 3. Quiz Handlers
+    function handleQuizAnswer(qid, chosenIdx, correctIdx) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card || card.classList.contains('answered')) return;
+      card.classList.add('answered');
 
-      opts.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach((btn, idx) => {
         btn.disabled = true;
-        if (idx === correct) btn.classList.add('correct');
-        else if (idx === chosen) btn.classList.add('wrong');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (idx === correctIdx) {
+          btn.classList.add('selected-correct');
+          if (icon) icon.textContent = '✓';
+        } else if (idx === chosenIdx) {
+          btn.classList.add('selected-wrong');
+          if (icon) icon.textContent = '✕';
+        }
       });
 
-      res.innerHTML = (chosen === correct ? '✅ <strong>Prawidłowa odpowiedź!</strong> ' : '❌ <strong>Nieprawidłowa odpowiedź.</strong> ') + explanation;
-      res.classList.remove('hidden');
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      const feedbackTitle = document.getElementById('quiz-feedback-title-' + qid);
+      if (feedbackBox && feedbackTitle) {
+        feedbackBox.classList.add('visible');
+        if (chosenIdx === correctIdx) {
+          feedbackTitle.className = 'quiz-feedback-title correct';
+          feedbackTitle.innerHTML = '<span>✅ Doskonale! Prawidłowa odpowiedź.</span>';
+        } else {
+          feedbackTitle.className = 'quiz-feedback-title wrong';
+          feedbackTitle.innerHTML = '<span>❌ Nieprawidłowa odpowiedź. Zobacz wyjaśnienie:</span>';
+        }
+      }
     }
 
-    updateStatusUI();
+    function resetQuizQuestion(qid) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card) return;
+      card.classList.remove('answered');
+
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (icon) icon.textContent = '○';
+      });
+
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      if (feedbackBox) feedbackBox.classList.remove('visible');
+    }
+
+    // 4. Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('academy-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLessonStatusUI();
+    });
   </script>
 </body>
 </html>`;
@@ -447,7 +736,7 @@ function generateLessonHtml(lesson) {
 /* ═════════════════════════════════════════════════════════════════
    2. GENEROWANIE WSZYSTKICH 26 PODSTRON W KAŻDYM FORMACIE
 ═════════════════════════════════════════════════════════════════ */
-console.log('Rozpoczynam zapis podstron lekcji...');
+console.log('Rozpoczynam zapis ulepszonych podstron lekcji...');
 
 LESSONS.forEach(l => {
   const html = generateLessonHtml(l);
@@ -487,310 +776,4 @@ LESSONS.forEach(l => {
   fs.writeFileSync(k4, html, 'utf8');
 });
 
-console.log('✅ Zapisano 26 lekcji w katalogach akademia/apokalipsa oraz kursy/apokalipsa we wszystkich permutacjach (.html i folder/index.html).');
-
-/* ═════════════════════════════════════════════════════════════════
-   3. BUDOWA KART LEKCJI DLA WIDOKU APOKALIPSY W AKADEMIA
-═════════════════════════════════════════════════════════════════ */
-let apokCardsHtml = '';
-LESSONS.forEach(l => {
-  const num = zeroPad(l.id);
-  const videoId = l.videoId || '';
-  const isPremiere = videoId.startsWith('PREMIERA');
-  const shortTitle = l.tytul.replace(/^LEKCJA \d+:\s*/i, '');
-
-  apokCardsHtml += `
-    <a href="/akademia/apokalipsa/lekcja-${num}" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
-      <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA ${num} / 26</span>
-        ${isPremiere ? '<span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">PREMIERA</span>' : `<span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>${l.duration}</span>`}
-      </div>
-      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
-        ${escapeHtml(shortTitle)}
-      </h3>
-      ${l.podtytul ? `<p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">${escapeHtml(l.podtytul)}</p>` : ''}
-      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
-        <span class="text-zinc-500 flex items-center gap-1.5">
-          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
-          <span>${escapeHtml(l.zakresBiblijny || '').substring(0, 24)}</span>
-        </span>
-        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-          <span>Studiuj</span>
-          <span>→</span>
-        </span>
-      </div>
-    </a>`;
-});
-
-/* ═════════════════════════════════════════════════════════════════
-   4. GENEROWANIE GŁÓWNEJ STRONY AKADEMII Z ZAKŁADKAMI
-═════════════════════════════════════════════════════════════════ */
-// Wczytujemy bazowy szablon z kursy.html, aby zachować cały działający silnik 28 Kroków (TTS, modal, quiz, dyplom itp.)
-const baseKursyHtml = fs.readFileSync(path.join(ROOT, 'kursy.html'), 'utf8');
-
-// Budujemy blok paska zakładek i widoku Apokalipsy
-const courseTabsBar = `
-  <!-- ── ACADEMY COURSE SELECTOR TABS BAR ── -->
-  <div class="sticky top-16 z-30 bg-[#07090E]/95 backdrop-blur-md border-b border-brand-line">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5" role="tablist" aria-label="Wybierz program studium">
-        <button type="button" id="tab-btn-28krokow" onclick="switchCourseTab('28krokow')" class="cin-course-tab active" role="tab" aria-selected="true">
-          <span class="text-sm">📖</span>
-          <span>28 KROKÓW (DROGA PIELGRZYMA)</span>
-        </button>
-        <button type="button" id="tab-btn-apokalipsa" onclick="switchCourseTab('apokalipsa')" class="cin-course-tab" role="tab" aria-selected="false">
-          <span class="text-sm">✝</span>
-          <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-          <span class="cin-tab-badge">NOWOŚĆ • 26 LEKCJI</span>
-        </button>
-      </div>
-      <div class="hidden lg:flex items-center gap-2 text-xs text-zinc-500 font-mono">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>LUMINA BIBLE ACADEMY</span>
-      </div>
-    </div>
-  </div>
-`;
-
-const courseTabsCss = `
-  <style>
-    .cin-course-tab {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #a1a1aa;
-      background: #0E121A;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      min-height: 42px;
-      cursor: pointer;
-    }
-    .cin-course-tab:hover {
-      color: #D4AF37;
-      border-color: rgba(212, 175, 55, 0.35);
-      background: #161B26;
-    }
-    .cin-course-tab.active {
-      color: #07090E !important;
-      background: linear-gradient(135deg, #D4AF37, #F3E5AB) !important;
-      border-color: #D4AF37 !important;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-    }
-    .cin-tab-badge {
-      font-size: 9px;
-      padding: 2px 7px;
-      border-radius: 9999px;
-      background: rgba(0, 0, 0, 0.25);
-      color: inherit;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-    .cin-course-tab.active .cin-tab-badge {
-      background: rgba(7, 9, 14, 0.2);
-      color: #07090E;
-    }
-  </style>
-`;
-
-const apokalipsaViewHtml = `
-  <!-- ═════════════════════════════════════════════════════════════════
-       WIDOK KURSU 2: APOKALIPSA – KSIĘGA NADZIEI (26 LEKCJI)
-  ═════════════════════════════════════════════════════════════════ -->
-  <div id="course-view-apokalipsa" class="hidden">
-    
-    <!-- HERO APOKALIPSA -->
-    <section class="cin-hero scroll-mt-20">
-      <div class="cin-hero-inner">
-        <div class="cin-hero-content">
-          <div class="cin-journey-tag">
-            <span class="text-amber-400">●</span> <span>STUDIO DOBREGO SŁOWA • 26 LEKCJI • SOLA SCRIPTURA</span>
-          </div>
-
-          <h1 class="cin-hero-title">
-            <span class="block text-brand-gold">APOKALIPSA</span>
-            <span class="block text-white text-2xl sm:text-4xl mt-1">KSIĘGA NADZIEI</span>
-          </h1>
-
-          <p class="font-serif text-xl sm:text-2xl text-amber-200/95 font-normal tracking-wide mb-3">
-            Odkryj Jezusa, Ewangelię i proroctwa czasów ostatecznych.
-          </p>
-
-          <p class="cin-hero-subtitle">
-            Apokalipsa nie została dana po to, aby przestraszyć człowieka przyszłością, lecz aby <strong>objawić Jezusa Chrystusa</strong>, Jego zwycięstwo i przygotować ludzi na Jego powrót. Kurs oparty na wykładach pastora Wincentego Siei (Studio Dobrego Słowa).
-          </p>
-
-          <div class="p-4 rounded-2xl bg-zinc-950/80 border border-brand-gold/30 max-w-xl mx-auto lg:mx-0 my-4 text-left">
-            <div class="text-[11px] font-bold uppercase tracking-widest text-amber-400 mb-1">Oś teologiczna kursu:</div>
-            <div class="text-xs sm:text-sm text-zinc-300 font-medium">
-              Biblia → Chrystus → Ewangelia → Proroctwo → Historia → Osobista decyzja
-            </div>
-          </div>
-
-          <!-- Hero Actions -->
-          <div class="cin-hero-actions">
-            <a href="/akademia/apokalipsa/lekcja-01" class="cin-btn-primary min-h-[48px]">
-              <span>ROZPOCZNIJ OD LEKCJI 1</span>
-              <span>→</span>
-            </a>
-            <a href="#katalog-apokalipsa" class="cin-btn-secondary min-h-[48px]">
-              <span>PRZEGLĄDAJ 26 LEKCJI ↓</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MAIN LISTING FOR APOKALIPSA -->
-    <main class="z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-8 pb-20">
-      
-      <!-- INTRO CARD -->
-      <section class="mb-12 p-6 sm:p-8 rounded-3xl bg-[#0E121A] border border-brand-gold/25 relative overflow-hidden">
-        <div class="flex flex-col md:flex-row items-center gap-6">
-          <div class="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-4xl shrink-0">
-            🕊️
-          </div>
-          <div class="flex-1 text-center md:text-left">
-            <h2 class="font-serif font-bold text-white text-xl sm:text-2xl mb-2">Czy Apokalipsa jest księgą strachu?</h2>
-            <p class="text-zinc-400 text-sm leading-relaxed mb-3">
-              Bestie, plagi, tajemnicze liczby... Dla wielu ludzi to powód do lęku. Jednak pierwsze słowa tej księgi brzmią: <strong class="text-white">„Objawienie Jezusa Chrystusa…”</strong> (Ap 1:1). Każda z 26 lekcji zawiera pełne studium biblijne, zbadanie tła historycznego, chrystocentryczną puentę, interaktywny quiz oraz modlitwę.
-            </p>
-            <div class="flex items-center gap-4 justify-center md:justify-start text-xs font-semibold text-amber-300">
-              <span>✓ 26 dedykowanych podstron</span>
-              <span>✓ 15 sekcji w każdej lekcji</span>
-              <span>✓ Wykłady wideo YouTube</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 26 LESSONS GRID -->
-      <section id="katalog-apokalipsa" class="scroll-mt-24">
-        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
-          <div>
-            <h2 class="font-serif text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
-              <span class="text-brand-gold">✦</span>
-              <span>26 Lekcji Kursu — Jedna Podstrona na Lekcję</span>
-            </h2>
-            <p class="text-xs text-zinc-400">Wybierz dowolną lekcję, aby otworzyć jej pełną treść ze studium, wideo i quizem.</p>
-          </div>
-          <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
-            26 Lekcji Dostępnych
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          ${apokCardsHtml}
-        </div>
-      </section>
-
-    </main>
-  </div>
-`;
-
-const courseSwitcherJs = `
-  <script>
-    function switchCourseTab(courseId) {
-      const tab28 = document.getElementById('tab-btn-28krokow');
-      const tabApok = document.getElementById('tab-btn-apokalipsa');
-      const view28_hero = document.getElementById('hero-section');
-      const view28_main = document.querySelector('main.flex-grow.z-10');
-      const viewApok = document.getElementById('course-view-apokalipsa');
-
-      if (courseId === 'apokalipsa') {
-        if (tab28) { tab28.classList.remove('active'); tab28.setAttribute('aria-selected', 'false'); }
-        if (tabApok) { tabApok.classList.add('active'); tabApok.setAttribute('aria-selected', 'true'); }
-        if (view28_hero) view28_hero.classList.add('hidden');
-        if (view28_main) view28_main.classList.add('hidden');
-        if (viewApok) viewApok.classList.remove('hidden');
-        if (history.replaceState) {
-          history.replaceState(null, null, '#apokalipsa');
-        }
-      } else {
-        if (tabApok) { tabApok.classList.remove('active'); tabApok.setAttribute('aria-selected', 'false'); }
-        if (tab28) { tab28.classList.add('active'); tab28.setAttribute('aria-selected', 'true'); }
-        if (view28_hero) view28_hero.classList.remove('hidden');
-        if (view28_main) view28_main.classList.remove('hidden');
-        if (viewApok) viewApok.classList.add('hidden');
-        if (history.replaceState) {
-          history.replaceState(null, null, '#droga');
-        }
-      }
-    }
-
-    // Automatyczne przełączanie po hashu w URL lub parametrze
-    document.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.toLowerCase();
-      const params = new URLSearchParams(window.location.search);
-      if (hash === '#apokalipsa' || params.get('kurs') === 'apokalipsa' || window.location.pathname.includes('apokalipsa')) {
-        switchCourseTab('apokalipsa');
-      }
-    });
-  </script>
-`;
-
-// Wstrzykujemy CSS do <head>
-let updatedHtml = baseKursyHtml.replace('</head>', `${courseTabsCss}\n</head>`);
-
-// Wstrzykujemy pasek zakładek tuż pod </header>
-updatedHtml = updatedHtml.replace('</header>', `</header>\n${courseTabsBar}`);
-
-// Wstrzykujemy widok Apokalipsy tuż przed modalem studyjnym
-updatedHtml = updatedHtml.replace('<!-- ── FULLSCREEN FOCUSED STUDY READER MODAL ── -->', `${apokalipsaViewHtml}\n<!-- ── FULLSCREEN FOCUSED STUDY READER MODAL ── -->`);
-
-// Wstrzykujemy skrypt przełączania przed </body>
-updatedHtml = updatedHtml.replace('</body>', `${courseSwitcherJs}\n</body>`);
-
-// W nawigacji górnej dodajemy link do Apokalipsy
-updatedHtml = updatedHtml.replace(
-  '<a href="#katalog" class="hover:text-brand-gold transition-colors">MOJA DROGA</a>',
-  '<a href="javascript:void(0)" onclick="switchCourseTab(\'28krokow\')" class="hover:text-brand-gold transition-colors">28 KROKÓW</a>\n        <a href="javascript:void(0)" onclick="switchCourseTab(\'apokalipsa\')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors">✝ APOKALIPSA</a>'
-);
-
-// Zapisujemy we wszystkich 4 kluczowych lokalizacjach
-fs.writeFileSync(path.join(ROOT, 'akademia.html'), updatedHtml, 'utf8');
-fs.writeFileSync(path.join(ROOT, 'akademia', 'index.html'), updatedHtml, 'utf8');
-fs.writeFileSync(path.join(ROOT, 'kursy.html'), updatedHtml, 'utf8');
-fs.writeFileSync(path.join(ROOT, 'kursy', 'index.html'), updatedHtml, 'utf8');
-
-console.log('✅ Zaktualizowano z zakładkami:');
-console.log('   - akademia.html');
-console.log('   - akademia/index.html');
-console.log('   - kursy.html');
-console.log('   - kursy/index.html');
-
-/* ═════════════════════════════════════════════════════════════════
-   5. AKTUALIZACJA _REDIRECTS DLA CLOUDFLARE PAGES
-═════════════════════════════════════════════════════════════════ */
-const redirectsPath = path.join(ROOT, '_redirects');
-let redContent = fs.readFileSync(redirectsPath, 'utf8');
-
-// Usuwamy ewentualne wadliwe reguły :num
-redContent = redContent.replace(/^\/akademia\/apokalipsa\/lekcja-:num.*$/gm, '');
-redContent = redContent.replace(/^\/akademia\s+\/kursy.*$/gm, '');
-
-// Upewniamy się, że na samej górze są czyste reguły
-const topRules = [
-  '/snadaniowa-live-worship.html /cctv24-worship 301',
-  '/akademia /akademia/index.html 200',
-  '/akademia/ /akademia/index.html 200',
-  '/kursy /kursy/index.html 200',
-  '/kursy/ /kursy/index.html 200'
-].join('\n');
-
-if (!redContent.includes('/akademia /akademia/index.html 200')) {
-  redContent = topRules + '\n' + redContent;
-}
-
-// Oczyszczamy puste linie na początku
-redContent = redContent.replace(/^\s*[\r\n]/gm, '\n').trim() + '\n';
-fs.writeFileSync(redirectsPath, redContent, 'utf8');
-console.log('✅ Zaktualizowano _redirects');
-
-console.log('🚀 SYSTEM APOKALIPSA SKOMPILOWANY I GOTOWY DO PUBLIKACJI!');
+console.log('✅ Zapisano 26 ulepszonych lekcji w katalogach akademia/apokalipsa oraz kursy/apokalipsa.');

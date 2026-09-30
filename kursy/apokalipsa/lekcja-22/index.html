@@ -6,18 +6,21 @@
   <title>Lekcja 22: BESTIA Z ZIEMI | Apokalipsa – Księga Nadziei | LUMINA Bible Academy</title>
   <meta name="description" content="Zrozumienie tożsamości drugiej bestii z Apokalipsy 13 (zwanej później fałszywym prorokiem), genezy jej powstania z ziemi, pozornej łagodności baranich rogów, je" />
   <link rel="canonical" href="https://polskieradio.cc/akademia/apokalipsa/lekcja-22" />
+
+  <!-- Open Graph / Social -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://polskieradio.cc/akademia/apokalipsa/lekcja-22" />
   <meta property="og:title" content="Lekcja 22: BESTIA Z ZIEMI | Apokalipsa – Księga Nadziei" />
   <meta property="og:description" content="Zrozumienie tożsamości drugiej bestii z Apokalipsy 13 (zwanej później fałszywym prorokiem), genezy jej powstania z ziemi, pozornej łagodności baranich rogów, je" />
-  <meta property="og:image" content="https://polskieradio.cc/LUMINA/images/courses/apokalipsa/banner-promo.jpg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/courses/apokalipsa/banner-promo.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  
+
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,11 +28,8 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              gold: '#D4AF37', 'gold-light': '#F3E5AB', 'gold-dark': '#997D21',
-              dark: '#07090E', surface: '#0E121A', elevated: '#161B26',
-              line: 'rgba(255,255,255,0.08)'
-            }
+            amber: { 100: '#F1E7D0', 200: '#E2CC9A', 300: '#D4B578', 400: '#C4A35A', 500: '#B39250', 600: '#A08040', 900: '#403526', 950: '#29231C' },
+            brand: { gold: '#C4A35A', 'gold-light': '#E2CC9A', 'gold-dark': '#A08040', dark: '#07090E', surface: '#0E121A', elevated: '#161B26', line: 'rgba(255, 255, 255, 0.08)' }
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -41,408 +41,774 @@
       }
     };
   </script>
+
+  <!-- Universal CC & LUMINA Global Auth -->
+  <script src="/js/cc-global-auth.js" defer></script>
+
+  <!-- LUMINA Courses Master Stylesheet -->
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+
   <style>
-    body { background: #07090E; color: #e4e4e7; }
-    .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212,175,55,0.15); position: sticky; top: 0; z-index: 50; }
-    .reader-section { background: #0E121A; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px sm:padding: 32px; margin-bottom: 24px; }
-    .reader-section h3 { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D4AF37; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
-    .quiz-option:hover { border-color: rgba(212,175,55,0.4); background: #161B26; }
-    .quiz-option.correct { border-color: #4ade80; background: rgba(34,197,94,0.1); color: #4ade80; }
-    .quiz-option.wrong { border-color: #f87171; background: rgba(248,113,113,0.1); color: #f87171; }
-    .floating-prog { position: fixed; bottom: 20px; right: 20px; background: rgba(7,9,14,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.3); border-radius: 50px; padding: 8px 18px; display: flex; align-items: center; gap: 10px; z-index: 40; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+    /* Dedykowane szlify dla kursu Apokalipsa */
+    .reader-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 36px);
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .reader-section-title {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-serif);
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      line-height: 1.35;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .reader-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      color: var(--accent-warm);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-display);
+      margin-right: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(196, 163, 90, 0.15);
+    }
   </style>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y4EFTVBPE3');</script>
-  <script src="/js/cc-global-auth.js" defer></script>
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
-  <!-- TOP HEADER -->
-  <header class="ak-header">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="flex items-center gap-2.5 min-h-[44px]" title="Powrót do Akademii">
-          <span class="text-amber-400 text-lg">←</span>
-          <div class="flex items-center gap-2">
-            <span class="font-display text-sm font-bold text-brand-gold tracking-widest">LUMINA</span>
-            <span class="text-xs font-semibold text-zinc-400">BIBLE ACADEMY</span>
-          </div>
-        </a>
-        <span class="text-zinc-700 hidden sm:inline">/</span>
-        <a href="/akademia#apokalipsa" class="hidden sm:inline text-xs font-semibold text-amber-200/80 hover:text-amber-300">
-          Apokalipsa – Księga Nadziei
-        </a>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 min-h-[44px]">
-          <span>❤️</span>
-          <span class="hidden sm:inline">Wspieraj</span>
-        </a>
-        <div id="cc-auth-nav-container"></div>
-      </div>
+  <div id="lesson-reading-progress" class="reading-progress-fixed" style="width: 0%"></div>
+  <div class="ambient-glow"></div>
+
+  <!-- ── LUXURY TOPBAR (KONGREGACYJNY STANDARD LUMINA) ── -->
+  <header class="cin-topbar">
+    <div class="cin-topbar-main">
+      <a href="/akademia#apokalipsa" class="cin-back-link" title="Powrót do kursu Apokalipsy">
+        <span>←</span>
+        <span class="hidden sm:inline">Księga Nadziei</span>
+        <span class="sm:hidden">Wróć</span>
+      </a>
+      <a href="/akademia" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
+        <div class="cin-logo-mark">
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" />
+        </div>
+        <div class="cin-brand-text hidden md:flex">
+          <span class="cin-brand-title">LUMINA</span>
+          <span class="cin-brand-sub">BIBLE ACADEMY</span>
+        </div>
+      </a>
     </div>
+
+    <div class="cin-topbar-meta">
+      <span class="cin-lesson-step-badge">
+        <span>Lekcja 22 / 26</span>
+      </span>
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <span class="support-icon text-sm">❤️</span>
+        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+      </a>
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary px-3 py-1.5 text-xs min-h-[38px] hidden lg:inline-flex items-center gap-1.5">
+        <span>Katalog Kursu</span>
+      </a>
+    </div>
+
+    <div id="cc-auth-nav-container" class="cc-auth-widget-container cin-topbar-auth"></div>
   </header>
 
-  <!-- BREADCRUMB STRIP -->
-  <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Ścieżka nawigacji">
-    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
+  <!-- ── BREADCRUMB BAR ── -->
+  <nav class="bg-[#07090e]/80 border-b border-white/5 py-2.5 px-4 backdrop-blur-sm" aria-label="Ścieżka nawigacji">
+    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-400 flex-wrap gap-2">
       <div class="flex items-center gap-2">
-        <a href="/akademia" class="hover:text-amber-300">Akademia</a>
-        <span>›</span>
-        <a href="/akademia#apokalipsa" class="hover:text-amber-300">Apokalipsa</a>
-        <span>›</span>
+        <a href="/akademia" class="hover:text-amber-300 transition-colors">Akademia</a>
+        <span class="text-zinc-600">›</span>
+        <a href="/akademia#apokalipsa" class="hover:text-amber-300 transition-colors">Apokalipsa – Księga Nadziei</a>
+        <span class="text-zinc-600">›</span>
         <span class="text-amber-400 font-bold">Lekcja 22 z 26</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="/akademia/apokalipsa/lekcja-21" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white min-h-[32px] flex items-center">← Poprzednia</a>
-        <a href="/akademia/apokalipsa/lekcja-23" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Następna →</a>
+        <a href="/akademia/apokalipsa/lekcja-21" class="cin-nav-prev text-xs py-1.5 px-3 min-h-[34px]">← Lekcja 21</a>
+        <a href="/akademia/apokalipsa/lekcja-23" class="cin-nav-next text-xs py-1.5 px-3 min-h-[34px] text-amber-400 font-bold">Lekcja 23 →</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO LEKCJI -->
-  <section class="relative overflow-hidden py-10 px-4 border-b border-brand-line" style="background: radial-gradient(ellipse at top, rgba(212,175,55,0.08) 0%, rgba(7,9,14,0) 70%);">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
-        <span>LEKCJA 22 / 26</span>
-        <span>•</span>
-        <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-      </div>
-      <h1 class="font-serif text-2xl sm:text-4xl font-bold text-white mb-3 leading-tight">BESTIA Z ZIEMI</h1>
-      <p class="font-serif italic text-base sm:text-lg text-zinc-400 mb-6">Apokalipsa 13:11–15 — Baranie rogi, głos smoka i stworzenie obrazu bestii</p>
+  <!-- ── LESSON BODY CONTAINER ── -->
+  <main class="cin-subpage-container flex-grow">
 
-      <!-- META BAR -->
-      <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400 mb-6 p-3 bg-zinc-900/60 rounded-xl border border-zinc-800">
-        <div><strong class="text-white">Zakres:</strong> Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</div>
-        <div><strong class="text-white">Wideo:</strong> 50:22</div>
-        <div><strong class="text-white">Struktura:</strong> 15 sekcji kanonicznych</div>
-        <div id="status-badge-22" class="hidden px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">✓ UKOŃCZONA</div>
-      </div>
+    <!-- HEADER LEKCJI -->
+    <div class="reader-stage-header mb-4">
+      <span class="reader-badge-gold">APOKALIPSA – KSIĘGA NADZIEI</span>
+      <span class="text-zinc-400 text-xs font-semibold">Lekcja 22 z 26 • Studio Dobrego Słowa</span>
+    </div>
 
-      <!-- VIDEO PLAYER -->
-      
-      <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-8 bg-black" style="padding-bottom:56.25%">
-        <iframe class="absolute inset-0 w-full h-full"
-          src="https://www.youtube.com/embed/3-czDmZBfI4?rel=0&modestbranding=1"
-          title="LEKCJA 22: BESTIA Z ZIEMI"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen loading="lazy"></iframe>
-      </div>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-3 leading-tight">
+      BESTIA Z ZIEMI
+    </h1>
+    <p class="text-amber-200/90 font-serif italic text-base sm:text-lg mb-6 leading-relaxed">Apokalipsa 13:11–15 — Baranie rogi, głos smoka i stworzenie obrazu bestii</p>
 
-      <!-- AKCJE -->
-      <div class="flex flex-wrap gap-3">
-        <button onclick="toggleDone(22)" id="btn-done-22" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 shadow-lg shadow-amber-900/30">
-          <i class="fa-solid fa-check"></i>
-          <span id="btn-done-txt-22">Oznacz jako ukończoną</span>
-        </button>
-        <a href="#studium" class="px-5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 hover:border-amber-400">
-          <span>Przejdź do Studium ↓</span>
-        </a>
+    <!-- META BAR -->
+    <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-zinc-400 mb-8 p-3.5 bg-[#0e121a] rounded-2xl border border-white/5 shadow-md">
+      <div><span class="text-zinc-500">Zakres biblijny:</span> <strong class="text-amber-300 font-mono">Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</strong></div>
+      <div><span class="text-zinc-500">Wideo:</span> <strong class="text-white">50:22</strong></div>
+      <div><span class="text-zinc-500">Struktura:</span> <strong class="text-white">15 sekcji kanonicznych</strong></div>
+      <div id="lesson-status-pill" class="hidden ml-auto px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-check text-xs"></i> <span>Ukończona</span>
       </div>
     </div>
-  </section>
 
-  <!-- TREŚĆ GŁÓWNA (15 SEKCJI) -->
-  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8" id="studium">
+    <!-- KINOWY ODTWARZACZ WIDEO (16:9) -->
+    
+    <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-10 bg-black aspect-video">
+      <iframe class="w-full h-full"
+        src="https://www.youtube.com/embed/3-czDmZBfI4?rel=0&modestbranding=1"
+        title="LEKCJA 22: BESTIA Z ZIEMI"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         15 KANONICZNYCH SEKCJI STUDIUM
+    ══════════════════════════════════════════════════════════════ -->
 
     <!-- 1. Tytuł i zakres biblijny -->
-    <div class="reader-section">
-      <h3><span>1.</span> Tytuł i zakres biblijny</h3>
-      <p class="font-serif text-lg text-amber-200"><strong>BESTIA Z ZIEMI</strong> — Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">1</span>
+        <span>Tytuł i zakres biblijny</span>
+      </h2>
+      <div class="reader-prose">
+        <p class="font-serif text-lg sm:text-xl text-white font-bold leading-relaxed mb-2">BESTIA Z ZIEMI</p>
+        <p class="text-amber-300 text-sm font-mono flex items-center gap-2">
+          <span>📖 Zakres biblijny:</span>
+          <strong>Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</strong>
+        </p>
+      </div>
+    </section>
 
     <!-- 2. Tekst główny -->
-    <div class="reader-section">
-      <h3><span>2.</span> Tekst główny</h3>
-      <blockquote class="border-l-4 border-amber-500 pl-4 py-2 my-2 bg-amber-500/5 rounded-r-xl font-serif text-zinc-200 text-base sm:text-lg leading-relaxed">
-        „I ujrzałem inną bestię wychodzącą z ziemi; a miała dwa rogi podobne do baranich, lecz mówiła jak smok. I wykonuje całą władzę pierwszej bestii przed jej obliczem, i sprawia, że ziemia i jej mieszkańcy oddają pokłon pierwszej bestii, której śmiertelna rana została uleczona.” (Ap 13:11–12, UBG)
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">2</span>
+        <span>Tekst główny</span>
+      </h2>
+      <div class="p-6 sm:p-8 rounded-2xl bg-[#0b0e15] border-l-4 border-amber-400 border-y border-r border-amber-500/20 shadow-xl my-2">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-book-bible"></i>
+          <span>Słowo Boże (Pismo Święte)</span>
+        </div>
+        <blockquote class="font-bible text-lg sm:text-xl text-amber-100/95 leading-relaxed italic">
+          „„I ujrzałem inną bestię wychodzącą z ziemi; a miała dwa rogi podobne do baranich, lecz mówiła jak smok. I wykonuje całą władzę pierwszej bestii przed jej obliczem, i sprawia, że ziemia i jej mieszkańcy oddają pokłon pierwszej bestii, której śmiertelna rana została uleczona.” (Ap 13:11–12, UBG)”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 3. Tekst pamięciowy -->
-    <div class="reader-section" style="border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.03);">
-      <h3><span>3.</span> Tekst pamięciowy</h3>
-      <blockquote class="border-l-4 border-amber-400 pl-4 py-2 font-serif text-amber-300 text-base sm:text-lg italic">
-        „I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi. I zwodzi mieszkańców ziemi przez cuda, które dano jej czynić...” (Ap 13:13–14, UBG)
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">3</span>
+        <span>Tekst pamięciowy</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/12 via-amber-500/5 to-transparent border border-amber-500/35 relative overflow-hidden shadow-lg">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-bookmark text-amber-400"></i> Werset do zapamiętania
+          </span>
+        </div>
+        <blockquote class="font-bible text-base sm:text-lg text-amber-200 font-medium italic leading-relaxed">
+          „„I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi. I zwodzi mieszkańców ziemi przez cuda, które dano jej czynić...” (Ap 13:13–14, UBG)”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 4. Cel lekcji -->
-    <div class="reader-section">
-      <h3><span>4.</span> Cel lekcji</h3>
-      <p class="text-zinc-200 leading-relaxed">Zrozumienie tożsamości drugiej bestii z Apokalipsy 13 (zwanej później fałszywym prorokiem), genezy jej powstania z ziemi, pozornej łagodności baranich rogów, jej ostatecznej metamorfozy w głos smoka oraz mechanizmu powołania 'obrazu bestii'.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">4</span>
+        <span>Cel lekcji</span>
+      </h2>
+      <div class="p-5 rounded-xl bg-[#0b0f19] border border-white/5 text-zinc-200 text-sm sm:text-base leading-relaxed">
+        <div class="flex items-start gap-3">
+          <span class="text-amber-400 text-lg mt-0.5">🎯</span>
+          <div>Zrozumienie tożsamości drugiej bestii z Apokalipsy 13 (zwanej później fałszywym prorokiem), genezy jej powstania z ziemi, pozornej łagodności baranich rogów, jej ostatecznej metamorfozy w głos smoka oraz mechanizmu powołania 'obrazu bestii'.</div>
+        </div>
+      </div>
+    </section>
 
     <!-- 5. Wprowadzenie -->
-    <div class="reader-section">
-      <h3><span>5.</span> Wprowadzenie</h3>
-      <p class="text-zinc-300 leading-relaxed text-base">Gdy pierwsza bestia szła w niewolę w 1798 roku, apostoł Jan zobaczył na horyzoncie proroczym kolejnego gracza globalnej sceny: bestię wychodzącą z ziemi. Z początku nie budzi ona grozy — nie ma diademów, koron ani drapieżnych pazurów. Ma zaledwie dwa rogi podobne do baranich, kojarzące się z łagodnością, pokojem i Chrystusem. Jednak pozory mylą. Ta bestia z czasem przemawia 'jak smok', zmuszając mieszkańców globu do uległości wobec pierwszej bestii. Jak powstała ta potęga i czym jest jej śmiercionośny sojusz?</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">5</span>
+        <span>Wprowadzenie</span>
+      </h2>
+      <div class="reader-prose text-zinc-300 text-base sm:text-lg leading-relaxed space-y-4">
+        Gdy pierwsza bestia szła w niewolę w 1798 roku, apostoł Jan zobaczył na horyzoncie proroczym kolejnego gracza globalnej sceny: bestię wychodzącą z ziemi. Z początku nie budzi ona grozy — nie ma diademów, koron ani drapieżnych pazurów. Ma zaledwie dwa rogi podobne do baranich, kojarzące się z łagodnością, pokojem i Chrystusem. Jednak pozory mylą. Ta bestia z czasem przemawia 'jak smok', zmuszając mieszkańców globu do uległości wobec pierwszej bestii. Jak powstała ta potęga i czym jest jej śmiercionośny sojusz?
+      </div>
+    </section>
 
     <!-- 6. Studium biblijne krok po kroku -->
-    <div class="reader-section">
-      <h3><span>6.</span> Studium biblijne krok po kroku</h3>
-      
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">6</span>
+        <span>Studium biblijne krok po kroku</span>
+      </h2>
+      <div class="space-y-4">
+        
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">1</span>
             <span>A. Wyjście z ziemi (Ap 13:11)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Podczas gdy pierwsza bestia wyłoniła się z morza (ludnych narodów Europy targanych wojnami), druga bestia wschodzi z <strong>ziemi</strong>. Ziemia w symbolice Apokalipsy oznacza obszar bezludny lub słabo zaludniony, gdzie lud Boży znalazł schronienie (Ap 12:16). Potęga ta rozwija się w sposób cichy, pokojowy, wyrastając jak roślina z gleby, bez konieczności burzenia innych imperiów.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Podczas gdy pierwsza bestia wyłoniła się z morza (ludnych narodów Europy targanych wojnami), druga bestia wschodzi z <strong>ziemi</strong>. Ziemia w symbolice Apokalipsy oznacza obszar bezludny lub słabo zaludniony, gdzie lud Boży znalazł schronienie (Ap 12:16). Potęga ta rozwija się w sposób cichy, pokojowy, wyrastając jak roślina z gleby, bez konieczności burzenia innych imperiów.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">2</span>
             <span>B. Czas powstania i dwa baranie rogi (Ap 13:11)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Bestia ta pojawia się w proroczym widzeniu dokładnie wtedy, gdy pierwsza bestia otrzymuje śmiertelną ranę (schyłek XVIII wieku). Dwa rogi jak u baranka symbolizują młodość, niewinność, a brak koron oznacza ustrój republikański (brak monarchii). Rogi te reprezentują dwa fundamentalne filary: <strong>wolność obywatelską (demokrację republikańską)</strong> oraz <strong>wolność religijną (protestantyzm)</strong>.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Bestia ta pojawia się w proroczym widzeniu dokładnie wtedy, gdy pierwsza bestia otrzymuje śmiertelną ranę (schyłek XVIII wieku). Dwa rogi jak u baranka symbolizują młodość, niewinność, a brak koron oznacza ustrój republikański (brak monarchii). Rogi te reprezentują dwa fundamentalne filary: <strong>wolność obywatelską (demokrację republikańską)</strong> oraz <strong>wolność religijną (protestantyzm)</strong>.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">3</span>
             <span>C. Mówi jak smok (Ap 13:11)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Tragiczna transformacja: mocarstwo zaczynające z ideałami wolności sumienia zaczyna 'mówić jak smok'. W języku proroctwa mowa narodu to jego <strong>prawodawstwo i dekrety sądownicze</strong>. Gdy wolnościowy dotąd kraj zacznie stanowić prawa wymuszające sumienie, baranek przemawia głosem szatana.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Tragiczna transformacja: mocarstwo zaczynające z ideałami wolności sumienia zaczyna 'mówić jak smok'. W języku proroctwa mowa narodu to jego <strong>prawodawstwo i dekrety sądownicze</strong>. Gdy wolnościowy dotąd kraj zacznie stanowić prawa wymuszające sumienie, baranek przemawia głosem szatana.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">4</span>
             <span>D. Fałszywe cuda i ogień z nieba (Ap 13:13–14)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Druga bestia posługuje się nadprzyrodzonymi znakami i cudami, sprowadzając nawet ogień z nieba na oczach ludzi. W Biblii ogień z nieba zstępował jako znak Bożej aprobaty (ofiara Eliasza na Karmelu, Dzień Pięćdziesiątnicy). Szatan podrobi zesłanie Ducha Świętego poprzez fałszywe przebudzenia, spirytyzm i zwiedzenia charyzmatyczne, przekonując masy, że Bóg firmuje ten ruch.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Druga bestia posługuje się nadprzyrodzonymi znakami i cudami, sprowadzając nawet ogień z nieba na oczach ludzi. W Biblii ogień z nieba zstępował jako znak Bożej aprobaty (ofiara Eliasza na Karmelu, Dzień Pięćdziesiątnicy). Szatan podrobi zesłanie Ducha Świętego poprzez fałszywe przebudzenia, spirytyzm i zwiedzenia charyzmatyczne, przekonując masy, że Bóg firmuje ten ruch.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">5</span>
             <span>E. Uczynienie 'obrazu bestii' i terror ekonomiczny (Ap 13:14–15)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Druga bestia nakazuje mieszkańcom ziemi sporządzić 'obraz pierwszej bestii'. Obrazem bestii jest odtworzenie średniowiecznego sojuszu ołtarza z tronem: kościoły używają władzy państwowej do egzekwowania dogmatów religijnych. Ci, którzy odmówią pokłonu obrazowi, zostaną skazani na śmierć lub wykluczenie ze społeczeństwa.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Druga bestia nakazuje mieszkańcom ziemi sporządzić 'obraz pierwszej bestii'. Obrazem bestii jest odtworzenie średniowiecznego sojuszu ołtarza z tronem: kościoły używają władzy państwowej do egzekwowania dogmatów religijnych. Ci, którzy odmówią pokłonu obrazowi, zostaną skazani na śmierć lub wykluczenie ze społeczeństwa.</div>
         </div>
-    </div>
+      </div>
+    </section>
 
     <!-- 7. Daniel i Apokalipsa -->
-    <div class="reader-section">
-      <h3><span>7.</span> Daniel i Apokalipsa</h3>
-      <p class="text-zinc-300 leading-relaxed">W Danielu 3 król Nabuchodonozor wystawił na równinie Dura złoty obraz i nakazał wszystkim narodom paść na twarz pod groźbą pieca ognistego. Apokalipsa 13:14–15 ukazuje globalną powtórkę z równiny Dura: władza polityczna tworzy religijny obraz i pod groźbą kary śmierci zmusza wszystkich do jednomyślności. Wierność trzech młodzieńców hebrajskich jest wzorcem dla ludu Bożego dni ostatecznych.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">7</span>
+        <span>Daniel i Apokalipsa</span>
+      </h2>
+      <div class="p-6 sm:p-7 rounded-2xl bg-[#090d16] border border-blue-500/25 relative overflow-hidden shadow-lg">
+        <div class="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-scroll"></i>
+          <span>Klucz proroczy: Daniel & Apokalipsa</span>
+        </div>
+        <div class="text-zinc-200 text-sm sm:text-base leading-relaxed space-y-3">
+          W Danielu 3 król Nabuchodonozor wystawił na równinie Dura złoty obraz i nakazał wszystkim narodom paść na twarz pod groźbą pieca ognistego. Apokalipsa 13:14–15 ukazuje globalną powtórkę z równiny Dura: władza polityczna tworzy religijny obraz i pod groźbą kary śmierci zmusza wszystkich do jednomyślności. Wierność trzech młodzieńców hebrajskich jest wzorcem dla ludu Bożego dni ostatecznych.
+        </div>
+      </div>
+    </section>
 
     <!-- 8. Perspektywa historyczna -->
-    <div class="reader-section" style="border-left: 4px solid #71717a;">
-      <h3 class="!text-zinc-400"><span>8.</span> Perspektywa historyczna</h3>
-      <p class="text-zinc-400 text-sm sm:text-base leading-relaxed italic">Wszystkie kryteria biblijne dotyczące bestii z ziemi jednoznacznie wskazują na Stany Zjednoczone Ameryki Północnej. USA narodziły się pod koniec XVIII w. (Deklaracja Niepodległości 1776, Konstytucja 1787) na bezludnym kontynencie Nowego Świata. Zapewniły rozdział kościoła od państwa (dwa rogi baranie). Jednak proroctwo ostrzega, że w czasach końca apostatyczny protestantyzm w USA połączy się z papiestwem i spirytyzmem, tworząc 'obraz bestii' i narzucając prawa religijne całemu światu.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">8</span>
+        <span>Perspektywa historyczna</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-[#0f121a] border-l-4 border-zinc-500 border-y border-r border-zinc-800 shadow-md">
+        <div class="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
+          <i class="fa-solid fa-landmark"></i>
+          <span>Tło historyczne i kontekst epoki</span>
+        </div>
+        <div class="text-zinc-300 text-sm sm:text-base leading-relaxed italic space-y-3">
+          Wszystkie kryteria biblijne dotyczące bestii z ziemi jednoznacznie wskazują na Stany Zjednoczone Ameryki Północnej. USA narodziły się pod koniec XVIII w. (Deklaracja Niepodległości 1776, Konstytucja 1787) na bezludnym kontynencie Nowego Świata. Zapewniły rozdział kościoła od państwa (dwa rogi baranie). Jednak proroctwo ostrzega, że w czasach końca apostatyczny protestantyzm w USA połączy się z papiestwem i spirytyzmem, tworząc 'obraz bestii' i narzucając prawa religijne całemu światu.
+        </div>
+      </div>
+    </section>
 
-    <!-- 9. JEZUS W CENTRUM -->
-    <div class="reader-section" style="border: 2px solid rgba(212,175,55,0.4); background: rgba(212,175,55,0.05);">
-      <h3 class="!text-amber-300 text-sm font-bold"><span>9.</span> ✝ JEZUS W CENTRUM</h3>
-      <p class="font-serif text-amber-100 text-base sm:text-lg leading-relaxed">Jezus jest Prawdziwym Barankiem Bożym. Szatan w bestii z ziemi posługuje się podróbką rogów Baranka, aby zwodzić. Lecz Jezus nigdy nie narzucał wiary siłą legislacyjną ani aparatem państwowym. On stoi u drzwi i kołacze, szanując wolną wolę każdego człowieka. Prawdziwe cuda Ducha Świętego zawsze prowadzą do pokuty, uświęcenia i posłuszeństwa Słowu Bożemu, a nie do religijnego przymusu.</p>
-    </div>
+    <!-- 9. JEZUS W CENTRUM (KORONA LEKCJI) -->
+    <section class="reader-section">
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1c160c] via-[#120f09] to-[#07090e] border-2 border-amber-500/50 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 text-9xl text-amber-500/5 select-none pointer-events-none font-serif">✝</div>
+        <div class="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 animate-pulse"></span>
+          <span class="font-display">✝ SERCE CAŁEGO PROROCTWA</span>
+        </div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-4">JEZUS W CENTRUM</h2>
+        <div class="font-bible text-base sm:text-lg text-amber-100/95 leading-relaxed space-y-3">
+          Jezus jest Prawdziwym Barankiem Bożym. Szatan w bestii z ziemi posługuje się podróbką rogów Baranka, aby zwodzić. Lecz Jezus nigdy nie narzucał wiary siłą legislacyjną ani aparatem państwowym. On stoi u drzwi i kołacze, szanując wolną wolę każdego człowieka. Prawdziwe cuda Ducha Świętego zawsze prowadzą do pokuty, uświęcenia i posłuszeństwa Słowu Bożemu, a nie do religijnego przymusu.
+        </div>
+      </div>
+    </section>
 
     <!-- 10. SPRAWDŹ W BIBLII -->
-    <div class="reader-section">
-      <h3><span>10.</span> SPRAWDŹ W BIBLII</h3>
-      <ul class="space-y-1.5"><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 2 Kor 11:14</span>
-        <span class="text-zinc-400 text-sm">— Sam szatan przybiera postać anioła światłości.</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 Mt 7:15</span>
-        <span class="text-zinc-400 text-sm">— „Strzeżcie się fałszywych proroków, którzy przychodzą do was w owczej skórze, a wewnątrz są wilkami drapieżnymi”.</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 1 Krl 18:38</span>
-        <span class="text-zinc-400 text-sm">— Prawdziwy ogień z nieba na górze Karmel jako znak Jahwe.</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 Ap 19:20</span>
-        <span class="text-zinc-400 text-sm">— Los fałszywego proroka, który czynił cuda przed bestią.</span>
-      </li></ul>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">10</span>
+        <span>Sprawdź w Biblii</span>
+      </h2>
+      <ul class="space-y-2.5">
+        
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">2 Kor 11:14</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Sam szatan przybiera postać anioła światłości.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">Mt 7:15</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— „Strzeżcie się fałszywych proroków, którzy przychodzą do was w owczej skórze, a wewnątrz są wilkami drapieżnymi”.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">1 Krl 18:38</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Prawdziwy ogień z nieba na górze Karmel jako znak Jahwe.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">Ap 19:20</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Los fałszywego proroka, który czynił cuda przed bestią.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <!-- 11. Zastosowanie osobiste -->
-    <div class="reader-section">
-      <h3><span>11.</span> Zastosowanie osobiste</h3>
-      <p class="font-serif italic text-zinc-300 leading-relaxed text-base">Żyjemy w epoce, w której granice między wiarą a polityką zacierają się na naszych oczach. Nie daj się zwieść ruchom religijnym, które zamiast zwiastować krzyż Chrystusa, próbują zdobywać władzę polityczną i narzucać moralność ustawami państwowymi. Twoim jedynym kryterium prawdy musi być Słowo Boże, a nie spektakularne znaki i cuda.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">11</span>
+        <span>Zastosowanie osobiste</span>
+      </h2>
+      <div class="reader-application-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-heart"></i>
+          <span>Dla mojego serca i życia</span>
+        </div>
+        <div class="font-serif italic text-zinc-200 text-base sm:text-lg leading-relaxed space-y-3">
+          Żyjemy w epoce, w której granice między wiarą a polityką zacierają się na naszych oczach. Nie daj się zwieść ruchom religijnym, które zamiast zwiastować krzyż Chrystusa, próbują zdobywać władzę polityczną i narzucać moralność ustawami państwowymi. Twoim jedynym kryterium prawdy musi być Słowo Boże, a nie spektakularne znaki i cuda.
+        </div>
+      </div>
+    </section>
 
     <!-- 12. Pytania do studium -->
-    <div class="reader-section">
-      <h3><span>12.</span> Pytania do studium</h3>
-      <ol class="space-y-2"><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Dlaczego druga bestia wychodzi z ziemi, a nie ze wzburzonego morza?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Co oznaczają dwa rogi podobne do baranich i dlaczego nie mają koron?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">W jaki sposób naród może 'mówić jak smok' w świetle proroctwa?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Czym jest biblijny 'obraz bestii' i jak dochodzi do jego powstania?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Dlaczego cuda i rzekomy 'ogień z nieba' będą najgroźniejszym narzędziem zwiedzenia czasów końca?</span>
-      </li></ol>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">12</span>
+        <span>Pytania do studium</span>
+      </h2>
+      <ol class="space-y-3">
+        
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Dlaczego druga bestia wychodzi z ziemi, a nie ze wzburzonego morza?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Co oznaczają dwa rogi podobne do baranich i dlaczego nie mają koron?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">W jaki sposób naród może 'mówić jak smok' w świetle proroctwa?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Czym jest biblijny 'obraz bestii' i jak dochodzi do jego powstania?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Dlaczego cuda i rzekomy 'ogień z nieba' będą najgroźniejszym narzędziem zwiedzenia czasów końca?</span>
+        </li>
+      </ol>
+    </section>
 
     <!-- 13. Quiz z odpowiedziami -->
-    <div class="reader-section">
-      <h3><span>13.</span> Quiz z odpowiedziami</h3>
-      
-        <div class="mb-8" id="q22_0-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 1:</span> Jak wyglądała druga bestia wychodząca z ziemi w Apokalipsie 13:11?</p>
-          <div class="flex flex-col gap-2" id="q22_0-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q22_0',0,1,'Ap 13:11: \'miała dwa rogi podobne do baranich, lecz mówiła jak smok\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>Miała dziesięć rogów z koronami i łapy lwa
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_0',1,1,'Ap 13:11: \'miała dwa rogi podobne do baranich, lecz mówiła jak smok\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>Miała dwa rogi podobne do baranich, lecz mówiła jak smok
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_0',2,1,'Ap 13:11: \'miała dwa rogi podobne do baranich, lecz mówiła jak smok\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Była skrzydlatym wężem ziejącym ogniem
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_0',3,1,'Ap 13:11: \'miała dwa rogi podobne do baranich, lecz mówiła jak smok\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Miała postać żelaznego kolosa
-        </button></div>
-          <div id="q22_0-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">13</span>
+        <span>Quiz z odpowiedziami</span>
+      </h2>
+      <div class="quiz-container">
+        
+        <div class="cin-quiz-card" id="quiz-card-q22_0" data-qid="q22_0" data-correct="1">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 1 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Jak wyglądała druga bestia wychodząca z ziemi w Apokalipsie 13:11?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 1">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_0" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_0', 0, 1)">
+            <span>Miała dziesięć rogów z koronami i łapy lwa</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_0" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_0', 1, 1)">
+            <span>Miała dwa rogi podobne do baranich, lecz mówiła jak smok</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_0" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_0', 2, 1)">
+            <span>Była skrzydlatym wężem ziejącym ogniem</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_0" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_0', 3, 1)">
+            <span>Miała postać żelaznego kolosa</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q22_0">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q22_0"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q22_0">Ap 13:11: 'miała dwa rogi podobne do baranich, lecz mówiła jak smok'.</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q22_0')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="mb-8" id="q22_1-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 2:</span> Co w symbolice proroctwa oznacza wyłonienie się bestii z 'ziemi'?</p>
-          <div class="flex flex-col gap-2" id="q22_1-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q22_1',0,1,'Ziemia (w przeciwieństwie do wzburzonego morza narodów) oznacza teren odosobniony, słabo zaludniony, jak Nowy Świat w Ameryce Północnej.')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>Narodziny z krateru wulkanu
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_1',1,1,'Ziemia (w przeciwieństwie do wzburzonego morza narodów) oznacza teren odosobniony, słabo zaludniony, jak Nowy Świat w Ameryce Północnej.')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>Powstanie na obszarze bezludnym lub rzadko zaludnionym, w pokoju, bez wojen
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_1',2,1,'Ziemia (w przeciwieństwie do wzburzonego morza narodów) oznacza teren odosobniony, słabo zaludniony, jak Nowy Świat w Ameryce Północnej.')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Pojawienie się z grobowca faraonów
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_1',3,1,'Ziemia (w przeciwieństwie do wzburzonego morza narodów) oznacza teren odosobniony, słabo zaludniony, jak Nowy Świat w Ameryce Północnej.')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Upadek meteorytu
-        </button></div>
-          <div id="q22_1-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+        <div class="cin-quiz-card" id="quiz-card-q22_1" data-qid="q22_1" data-correct="1">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 2 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Co w symbolice proroctwa oznacza wyłonienie się bestii z 'ziemi'?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 2">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_1" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_1', 0, 1)">
+            <span>Narodziny z krateru wulkanu</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_1" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_1', 1, 1)">
+            <span>Powstanie na obszarze bezludnym lub rzadko zaludnionym, w pokoju, bez wojen</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_1" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_1', 2, 1)">
+            <span>Pojawienie się z grobowca faraonów</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_1" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_1', 3, 1)">
+            <span>Upadek meteorytu</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q22_1">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q22_1"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q22_1">Ziemia (w przeciwieństwie do wzburzonego morza narodów) oznacza teren odosobniony, słabo zaludniony, jak Nowy Świat w Ameryce Północnej.</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q22_1')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="mb-8" id="q22_2-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 3:</span> Jakie spektakularne zjawisko czyni druga bestia, by zwieść ludzi według Ap 13:13?</p>
-          <div class="flex flex-col gap-2" id="q22_2-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q22_2',0,1,'Ap 13:13: \'I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>Rozstępuje wody oceanu
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_2',1,1,'Ap 13:13: \'I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>Sprawia, że ogień zstępuje z nieba na ziemię na oczach ludzi
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_2',2,1,'Ap 13:13: \'I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Zatrzymuje bieg słońca
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q22_2',3,1,'Ap 13:13: \'I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Zamienia wodę w wino
-        </button></div>
-          <div id="q22_2-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+        <div class="cin-quiz-card" id="quiz-card-q22_2" data-qid="q22_2" data-correct="1">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 3 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Jakie spektakularne zjawisko czyni druga bestia, by zwieść ludzi według Ap 13:13?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 3">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_2" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_2', 0, 1)">
+            <span>Rozstępuje wody oceanu</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_2" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_2', 1, 1)">
+            <span>Sprawia, że ogień zstępuje z nieba na ziemię na oczach ludzi</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_2" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_2', 2, 1)">
+            <span>Zatrzymuje bieg słońca</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q22_2" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q22_2', 3, 1)">
+            <span>Zamienia wodę w wino</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q22_2">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q22_2"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q22_2">Ap 13:13: 'I czyni wielkie cuda, tak że nawet sprawia, iż ogień z nieba zstępuje na ziemię na oczach ludzi'.</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 13:11–15 (oraz paralele: Apokalipsa 16:13; 19:20; 2 Koryntian 11:14).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q22_2')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-    </div>
+        <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
+          <span class="text-base text-brand-gold">💡</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Błędna odpowiedź nie blokuje przejścia — sprawdź uzasadnienie i spróbuj ponownie.</span>
+        </div>
+      </div>
+    </section>
 
     <!-- 14. TWOJA DECYZJA -->
-    <div class="reader-section" style="border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.04);">
-      <h3 class="!text-emerald-400"><span>14.</span> TWOJA DECYZJA</h3>
-      <p class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed">Odmawiam podążania za religijnymi imitacjami i fałszywymi znakami. Wybieram czystą Ewangelię Chrystusa opartą na Piśmie Świętym, nie ulegając pokusie łączenia wiary z politycznym przymusem.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">14</span>
+        <span>Twoja decyzja</span>
+      </h2>
+      <div class="reader-decision-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-check-circle"></i>
+          <span>Osobisty wybór wiary</span>
+        </div>
+        <div class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed space-y-3">
+          Odmawiam podążania za religijnymi imitacjami i fałszywymi znakami. Wybieram czystą Ewangelię Chrystusa opartą na Piśmie Świętym, nie ulegając pokusie łączenia wiary z politycznym przymusem.
+        </div>
+      </div>
+    </section>
 
     <!-- 15. Modlitwa -->
-    <div class="reader-section" style="border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.04);">
-      <h3 class="!text-purple-300"><span>15.</span> 🙏 Modlitwa</h3>
-      <p class="font-serif italic text-purple-100 text-base sm:text-lg leading-relaxed">Panie Boże Wszechmogący, zachowaj mój umysł w trzeźwości i czujności! Chroń mnie przed fałszywymi cudami i wilkami w owczej skórze. Spraw, bym cenił wolność sumienia darowaną przez Ciebie i nigdy nie stał się częścią systemu, który zmusza innych do uległości. Niech Twój Duch Prawdy prowadzi mnie każdego dnia. Amen.</p>
-    </div>
-
-    <!-- DOLNA NAWIGACJA -->
-    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-brand-line">
-      <button onclick="toggleDone(22)" id="btn-done2-22" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[48px] flex items-center gap-2">
-        <i class="fa-solid fa-check-double"></i>
-        <span>Ukończyłem/am tę lekcję</span>
-      </button>
-      <div class="flex items-center gap-2">
-        <a href="/akademia/apokalipsa/lekcja-21" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">← Lekcja 21</a>
-        <a href="/akademia#apokalipsa" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">Wszystkie lekcje</a>
-        <a href="/akademia/apokalipsa/lekcja-23" class="px-5 py-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-wider hover:bg-amber-500/30 min-h-[48px] flex items-center">Lekcja 23 →</a>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">15</span>
+        <span>Modlitwa</span>
+      </h2>
+      <div class="reader-prayer-card">
+        <span class="text-2xl text-amber-400 mb-2 block">🕊️</span>
+        <div class="font-serif italic text-amber-100/90 text-base sm:text-lg leading-relaxed space-y-3">
+          Panie Boże Wszechmogący, zachowaj mój umysł w trzeźwości i czujności! Chroń mnie przed fałszywymi cudami i wilkami w owczej skórze. Spraw, bym cenił wolność sumienia darowaną przez Ciebie i nigdy nie stał się częścią systemu, który zmusza innych do uległości. Niech Twój Duch Prawdy prowadzi mnie każdego dnia. Amen.
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ── UKOŃCZENIE I NASTĘPNY KROK ── -->
+    <section class="reader-section">
+      <div class="reader-finish-box text-center py-8 px-4 sm:px-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+          <span>✦</span>
+          <span>Apokalipsa – Księga Nadziei • Lekcja 22 z 26</span>
+        </div>
+        <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy na kolejny krok?</h3>
+        <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
+          Oznacz lekcję jako ukończoną, aby zapisać swój postęp w przeglądarce i przejdź do następnego rozdziału.
+        </p>
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <button type="button" id="btn-complete-lesson" onclick="toggleLessonDone(22)" class="btn-gold-complete min-h-[48px]">
+            <span>✦</span>
+            <span id="btn-complete-txt">Ukończ Tę Lekcję</span>
+          </button>
+          
+          <a href="/akademia/apokalipsa/lekcja-23" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary min-h-[48px] text-amber-400 font-bold">
+            <span>Następna Lekcja (Lekcja 23) ›</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DOLNA NAWIGACJA ── -->
+    <nav class="cin-lesson-nav-bar" aria-label="Nawigacja pomiędzy lekcjami">
+      
+      <a href="/akademia/apokalipsa/lekcja-21" class="cin-nav-prev" title="Lekcja 21">
+        <span>←</span>
+        <span>Lekcja 21</span>
+      </a>
+
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
+        <span>Wszystkie 26 Lekcji</span>
+      </a>
+
+      
+      <a href="/akademia/apokalipsa/lekcja-23" class="cin-nav-next text-amber-400 font-bold" title="Lekcja 23">
+        <span>Lekcja 23</span>
+        <span>→</span>
+      </a>
+    </nav>
 
   </main>
 
-  <!-- STOPKA -->
-  <footer class="bg-[#05070c] border-t border-brand-line py-10 px-4 mt-16 text-center text-xs text-zinc-500">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>LUMINA Bible Academy • Apokalipsa: Księga Nadziei</div>
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="hover:text-amber-400">Akademia</a>
-        <a href="/kursy" class="hover:text-amber-400">28 Kroków</a>
-        <a href="/mojabiblia" class="hover:text-amber-400">Biblia Online</a>
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="text-amber-400 hover:underline">Patronite</a>
+  <!-- ── FOOTER ── -->
+  <footer class="bg-[#05070c] border-t border-brand-line py-12 px-4 z-10 text-xs text-zinc-500 mt-16">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <p class="font-serif font-bold text-zinc-400 text-sm mb-1">LUMINA BIBLE ACADEMY • APOKALIPSA: KSIĘGA NADZIEI</p>
+        <p>Wykłady: Pr. Wincenty Sieja (Studio Dobrego Słowa) • Ekosystem Christian Culture</p>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/akademia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Akademia</a>
+        <a href="/kursy" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">28 Kroków</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Biblia Online</a>
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="text-amber-400 font-bold hover:underline min-h-[44px] flex items-center">Patronite</a>
       </div>
     </div>
   </footer>
 
-  <!-- FLOATING PROGRESS -->
-  <div class="floating-prog">
-    <span class="text-xs text-zinc-400">Twój postęp:</span>
-    <span class="font-bold text-amber-400 text-sm" id="float-prog-txt">0 / 26</span>
-  </div>
+  <div id="academy-toast" class="academy-toast"></div>
 
+  <!-- ── CLIENT SCRIPT ── -->
   <script>
     const LESSON_ID = 22;
 
-    function getDone() {
+    // 1. Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      const bar = document.getElementById('lesson-reading-progress');
+      if (bar) bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+    }, { passive: true });
+
+    // 2. Local Storage Progress
+    function getCompletedLessons() {
       try { return JSON.parse(localStorage.getItem('apok_done') || '[]'); } catch(e) { return []; }
     }
 
-    function toggleDone(lid) {
-      let done = getDone();
-      if (done.includes(lid)) {
+    function toggleLessonDone(lid) {
+      let done = getCompletedLessons();
+      const isDone = done.includes(lid);
+      if (isDone) {
         done = done.filter(x => x !== lid);
+        showToast('Lekcja oznaczona jako nieukończona.');
       } else {
         done.push(lid);
+        showToast('🎉 Gratulacje! Lekcja została oznaczona jako ukończona.');
       }
       localStorage.setItem('apok_done', JSON.stringify(done));
-      updateStatusUI();
+      updateLessonStatusUI();
     }
 
-    function updateStatusUI() {
-      const done = getDone();
+    function updateLessonStatusUI() {
+      const done = getCompletedLessons();
       const isDone = done.includes(LESSON_ID);
 
-      const floatTxt = document.getElementById('float-prog-txt');
-      if (floatTxt) floatTxt.textContent = done.length + ' / 26';
-
-      const b1 = document.getElementById('btn-done-' + LESSON_ID);
-      const b2 = document.getElementById('btn-done2-' + LESSON_ID);
-      const txt1 = document.getElementById('btn-done-txt-' + LESSON_ID);
-      const badge = document.getElementById('status-badge-' + LESSON_ID);
+      const btn = document.getElementById('btn-complete-lesson');
+      const txt = document.getElementById('btn-complete-txt');
+      const pill = document.getElementById('lesson-status-pill');
 
       if (isDone) {
-        if (txt1) txt1.textContent = '✓ Ukończona (kliknij, by cofnąć)';
-        if (b1) { b1.classList.remove('from-amber-500', 'to-amber-600'); b1.classList.add('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.remove('hidden');
+        if (btn) btn.classList.add('completed-state');
+        if (txt) txt.textContent = '✓ Lekcja Ukończona (kliknij, by cofnąć)';
+        if (pill) pill.classList.remove('hidden');
       } else {
-        if (txt1) txt1.textContent = 'Oznacz jako ukończoną';
-        if (b1) { b1.classList.add('from-amber-500', 'to-amber-600'); b1.classList.remove('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.add('hidden');
+        if (btn) btn.classList.remove('completed-state');
+        if (txt) txt.textContent = 'Ukończ Tę Lekcję';
+        if (pill) pill.classList.add('hidden');
       }
     }
 
-    function answerQuiz(qid, chosen, correct, explanation) {
-      const opts = document.getElementById(qid + '-opts');
-      const res = document.getElementById(qid + '-result');
-      if (!opts || !res || res.classList.contains('answered')) return;
-      res.classList.add('answered');
+    // 3. Quiz Handlers
+    function handleQuizAnswer(qid, chosenIdx, correctIdx) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card || card.classList.contains('answered')) return;
+      card.classList.add('answered');
 
-      opts.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach((btn, idx) => {
         btn.disabled = true;
-        if (idx === correct) btn.classList.add('correct');
-        else if (idx === chosen) btn.classList.add('wrong');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (idx === correctIdx) {
+          btn.classList.add('selected-correct');
+          if (icon) icon.textContent = '✓';
+        } else if (idx === chosenIdx) {
+          btn.classList.add('selected-wrong');
+          if (icon) icon.textContent = '✕';
+        }
       });
 
-      res.innerHTML = (chosen === correct ? '✅ <strong>Prawidłowa odpowiedź!</strong> ' : '❌ <strong>Nieprawidłowa odpowiedź.</strong> ') + explanation;
-      res.classList.remove('hidden');
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      const feedbackTitle = document.getElementById('quiz-feedback-title-' + qid);
+      if (feedbackBox && feedbackTitle) {
+        feedbackBox.classList.add('visible');
+        if (chosenIdx === correctIdx) {
+          feedbackTitle.className = 'quiz-feedback-title correct';
+          feedbackTitle.innerHTML = '<span>✅ Doskonale! Prawidłowa odpowiedź.</span>';
+        } else {
+          feedbackTitle.className = 'quiz-feedback-title wrong';
+          feedbackTitle.innerHTML = '<span>❌ Nieprawidłowa odpowiedź. Zobacz wyjaśnienie:</span>';
+        }
+      }
     }
 
-    updateStatusUI();
+    function resetQuizQuestion(qid) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card) return;
+      card.classList.remove('answered');
+
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (icon) icon.textContent = '○';
+      });
+
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      if (feedbackBox) feedbackBox.classList.remove('visible');
+    }
+
+    // 4. Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('academy-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLessonStatusUI();
+    });
   </script>
 </body>
 </html>

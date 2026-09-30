@@ -6,18 +6,21 @@
   <title>Lekcja 17: ZMIERZ ŚWIĄTYNIĘ | Apokalipsa – Księga Nadziei | LUMINA Bible Academy</title>
   <meta name="description" content="Zrozumienie biblijnego znaczenia mierzenia jako aktu sądu śledczego i osądzania według wzorca Bożego Prawa, zidentyfikowanie prawdziwej Świątyni w niebie oraz d" />
   <link rel="canonical" href="https://polskieradio.cc/akademia/apokalipsa/lekcja-17" />
+
+  <!-- Open Graph / Social -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://polskieradio.cc/akademia/apokalipsa/lekcja-17" />
   <meta property="og:title" content="Lekcja 17: ZMIERZ ŚWIĄTYNIĘ | Apokalipsa – Księga Nadziei" />
   <meta property="og:description" content="Zrozumienie biblijnego znaczenia mierzenia jako aktu sądu śledczego i osądzania według wzorca Bożego Prawa, zidentyfikowanie prawdziwej Świątyni w niebie oraz d" />
-  <meta property="og:image" content="https://polskieradio.cc/LUMINA/images/courses/apokalipsa/banner-promo.jpg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/courses/apokalipsa/banner-promo.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  
+
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,11 +28,8 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              gold: '#D4AF37', 'gold-light': '#F3E5AB', 'gold-dark': '#997D21',
-              dark: '#07090E', surface: '#0E121A', elevated: '#161B26',
-              line: 'rgba(255,255,255,0.08)'
-            }
+            amber: { 100: '#F1E7D0', 200: '#E2CC9A', 300: '#D4B578', 400: '#C4A35A', 500: '#B39250', 600: '#A08040', 900: '#403526', 950: '#29231C' },
+            brand: { gold: '#C4A35A', 'gold-light': '#E2CC9A', 'gold-dark': '#A08040', dark: '#07090E', surface: '#0E121A', elevated: '#161B26', line: 'rgba(255, 255, 255, 0.08)' }
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -41,408 +41,774 @@
       }
     };
   </script>
+
+  <!-- Universal CC & LUMINA Global Auth -->
+  <script src="/js/cc-global-auth.js" defer></script>
+
+  <!-- LUMINA Courses Master Stylesheet -->
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+
   <style>
-    body { background: #07090E; color: #e4e4e7; }
-    .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212,175,55,0.15); position: sticky; top: 0; z-index: 50; }
-    .reader-section { background: #0E121A; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px sm:padding: 32px; margin-bottom: 24px; }
-    .reader-section h3 { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #D4AF37; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
-    .quiz-option:hover { border-color: rgba(212,175,55,0.4); background: #161B26; }
-    .quiz-option.correct { border-color: #4ade80; background: rgba(34,197,94,0.1); color: #4ade80; }
-    .quiz-option.wrong { border-color: #f87171; background: rgba(248,113,113,0.1); color: #f87171; }
-    .floating-prog { position: fixed; bottom: 20px; right: 20px; background: rgba(7,9,14,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.3); border-radius: 50px; padding: 8px 18px; display: flex; align-items: center; gap: 10px; z-index: 40; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+    /* Dedykowane szlify dla kursu Apokalipsa */
+    .reader-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 36px);
+      margin-bottom: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .reader-section-title {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-serif);
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      line-height: 1.35;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .reader-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      color: var(--accent-warm);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-display);
+      margin-right: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(196, 163, 90, 0.15);
+    }
   </style>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y4EFTVBPE3');</script>
-  <script src="/js/cc-global-auth.js" defer></script>
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
-  <!-- TOP HEADER -->
-  <header class="ak-header">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="flex items-center gap-2.5 min-h-[44px]" title="Powrót do Akademii">
-          <span class="text-amber-400 text-lg">←</span>
-          <div class="flex items-center gap-2">
-            <span class="font-display text-sm font-bold text-brand-gold tracking-widest">LUMINA</span>
-            <span class="text-xs font-semibold text-zinc-400">BIBLE ACADEMY</span>
-          </div>
-        </a>
-        <span class="text-zinc-700 hidden sm:inline">/</span>
-        <a href="/akademia#apokalipsa" class="hidden sm:inline text-xs font-semibold text-amber-200/80 hover:text-amber-300">
-          Apokalipsa – Księga Nadziei
-        </a>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 min-h-[44px]">
-          <span>❤️</span>
-          <span class="hidden sm:inline">Wspieraj</span>
-        </a>
-        <div id="cc-auth-nav-container"></div>
-      </div>
+  <div id="lesson-reading-progress" class="reading-progress-fixed" style="width: 0%"></div>
+  <div class="ambient-glow"></div>
+
+  <!-- ── LUXURY TOPBAR (KONGREGACYJNY STANDARD LUMINA) ── -->
+  <header class="cin-topbar">
+    <div class="cin-topbar-main">
+      <a href="/akademia#apokalipsa" class="cin-back-link" title="Powrót do kursu Apokalipsy">
+        <span>←</span>
+        <span class="hidden sm:inline">Księga Nadziei</span>
+        <span class="sm:hidden">Wróć</span>
+      </a>
+      <a href="/akademia" class="cin-brand" aria-label="LUMINA Bible Academy Strona Główna">
+        <div class="cin-logo-mark">
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="LUMINA Bible Academy" />
+        </div>
+        <div class="cin-brand-text hidden md:flex">
+          <span class="cin-brand-title">LUMINA</span>
+          <span class="cin-brand-sub">BIBLE ACADEMY</span>
+        </div>
+      </a>
     </div>
+
+    <div class="cin-topbar-meta">
+      <span class="cin-lesson-step-badge">
+        <span>Lekcja 17 / 26</span>
+      </span>
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <span class="support-icon text-sm">❤️</span>
+        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+      </a>
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary px-3 py-1.5 text-xs min-h-[38px] hidden lg:inline-flex items-center gap-1.5">
+        <span>Katalog Kursu</span>
+      </a>
+    </div>
+
+    <div id="cc-auth-nav-container" class="cc-auth-widget-container cin-topbar-auth"></div>
   </header>
 
-  <!-- BREADCRUMB STRIP -->
-  <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Ścieżka nawigacji">
-    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
+  <!-- ── BREADCRUMB BAR ── -->
+  <nav class="bg-[#07090e]/80 border-b border-white/5 py-2.5 px-4 backdrop-blur-sm" aria-label="Ścieżka nawigacji">
+    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-400 flex-wrap gap-2">
       <div class="flex items-center gap-2">
-        <a href="/akademia" class="hover:text-amber-300">Akademia</a>
-        <span>›</span>
-        <a href="/akademia#apokalipsa" class="hover:text-amber-300">Apokalipsa</a>
-        <span>›</span>
+        <a href="/akademia" class="hover:text-amber-300 transition-colors">Akademia</a>
+        <span class="text-zinc-600">›</span>
+        <a href="/akademia#apokalipsa" class="hover:text-amber-300 transition-colors">Apokalipsa – Księga Nadziei</a>
+        <span class="text-zinc-600">›</span>
         <span class="text-amber-400 font-bold">Lekcja 17 z 26</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="/akademia/apokalipsa/lekcja-16" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white min-h-[32px] flex items-center">← Poprzednia</a>
-        <a href="/akademia/apokalipsa/lekcja-18" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Następna →</a>
+        <a href="/akademia/apokalipsa/lekcja-16" class="cin-nav-prev text-xs py-1.5 px-3 min-h-[34px]">← Lekcja 16</a>
+        <a href="/akademia/apokalipsa/lekcja-18" class="cin-nav-next text-xs py-1.5 px-3 min-h-[34px] text-amber-400 font-bold">Lekcja 18 →</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO LEKCJI -->
-  <section class="relative overflow-hidden py-10 px-4 border-b border-brand-line" style="background: radial-gradient(ellipse at top, rgba(212,175,55,0.08) 0%, rgba(7,9,14,0) 70%);">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
-        <span>LEKCJA 17 / 26</span>
-        <span>•</span>
-        <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-      </div>
-      <h1 class="font-serif text-2xl sm:text-4xl font-bold text-white mb-3 leading-tight">ZMIERZ ŚWIĄTYNIĘ</h1>
-      <p class="font-serif italic text-base sm:text-lg text-zinc-400 mb-6">Apokalipsa 11:1–2 — Sąd, dziedziniec i standard Bożego charakteru</p>
+  <!-- ── LESSON BODY CONTAINER ── -->
+  <main class="cin-subpage-container flex-grow">
 
-      <!-- META BAR -->
-      <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400 mb-6 p-3 bg-zinc-900/60 rounded-xl border border-zinc-800">
-        <div><strong class="text-white">Zakres:</strong> Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</div>
-        <div><strong class="text-white">Wideo:</strong> 48:00</div>
-        <div><strong class="text-white">Struktura:</strong> 15 sekcji kanonicznych</div>
-        <div id="status-badge-17" class="hidden px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">✓ UKOŃCZONA</div>
-      </div>
+    <!-- HEADER LEKCJI -->
+    <div class="reader-stage-header mb-4">
+      <span class="reader-badge-gold">APOKALIPSA – KSIĘGA NADZIEI</span>
+      <span class="text-zinc-400 text-xs font-semibold">Lekcja 17 z 26 • Studio Dobrego Słowa</span>
+    </div>
 
-      <!-- VIDEO PLAYER -->
-      
-      <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-8 bg-black" style="padding-bottom:56.25%">
-        <iframe class="absolute inset-0 w-full h-full"
-          src="https://www.youtube.com/embed/7idKgBkmFEU?rel=0&modestbranding=1"
-          title="LEKCJA 17: ZMIERZ ŚWIĄTYNIĘ"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen loading="lazy"></iframe>
-      </div>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-3 leading-tight">
+      ZMIERZ ŚWIĄTYNIĘ
+    </h1>
+    <p class="text-amber-200/90 font-serif italic text-base sm:text-lg mb-6 leading-relaxed">Apokalipsa 11:1–2 — Sąd, dziedziniec i standard Bożego charakteru</p>
 
-      <!-- AKCJE -->
-      <div class="flex flex-wrap gap-3">
-        <button onclick="toggleDone(17)" id="btn-done-17" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 shadow-lg shadow-amber-900/30">
-          <i class="fa-solid fa-check"></i>
-          <span id="btn-done-txt-17">Oznacz jako ukończoną</span>
-        </button>
-        <a href="#studium" class="px-5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 font-bold text-xs uppercase tracking-wider min-h-[44px] flex items-center gap-2 hover:border-amber-400">
-          <span>Przejdź do Studium ↓</span>
-        </a>
+    <!-- META BAR -->
+    <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-zinc-400 mb-8 p-3.5 bg-[#0e121a] rounded-2xl border border-white/5 shadow-md">
+      <div><span class="text-zinc-500">Zakres biblijny:</span> <strong class="text-amber-300 font-mono">Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</strong></div>
+      <div><span class="text-zinc-500">Wideo:</span> <strong class="text-white">48:00</strong></div>
+      <div><span class="text-zinc-500">Struktura:</span> <strong class="text-white">15 sekcji kanonicznych</strong></div>
+      <div id="lesson-status-pill" class="hidden ml-auto px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-check text-xs"></i> <span>Ukończona</span>
       </div>
     </div>
-  </section>
 
-  <!-- TREŚĆ GŁÓWNA (15 SEKCJI) -->
-  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8" id="studium">
+    <!-- KINOWY ODTWARZACZ WIDEO (16:9) -->
+    
+    <div class="relative w-full rounded-2xl overflow-hidden border border-brand-gold/30 shadow-2xl mb-10 bg-black aspect-video">
+      <iframe class="w-full h-full"
+        src="https://www.youtube.com/embed/7idKgBkmFEU?rel=0&modestbranding=1"
+        title="LEKCJA 17: ZMIERZ ŚWIĄTYNIĘ"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         15 KANONICZNYCH SEKCJI STUDIUM
+    ══════════════════════════════════════════════════════════════ -->
 
     <!-- 1. Tytuł i zakres biblijny -->
-    <div class="reader-section">
-      <h3><span>1.</span> Tytuł i zakres biblijny</h3>
-      <p class="font-serif text-lg text-amber-200"><strong>ZMIERZ ŚWIĄTYNIĘ</strong> — Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">1</span>
+        <span>Tytuł i zakres biblijny</span>
+      </h2>
+      <div class="reader-prose">
+        <p class="font-serif text-lg sm:text-xl text-white font-bold leading-relaxed mb-2">ZMIERZ ŚWIĄTYNIĘ</p>
+        <p class="text-amber-300 text-sm font-mono flex items-center gap-2">
+          <span>📖 Zakres biblijny:</span>
+          <strong>Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</strong>
+        </p>
+      </div>
+    </section>
 
     <!-- 2. Tekst główny -->
-    <div class="reader-section">
-      <h3><span>2.</span> Tekst główny</h3>
-      <blockquote class="border-l-4 border-amber-500 pl-4 py-2 my-2 bg-amber-500/5 rounded-r-xl font-serif text-zinc-200 text-base sm:text-lg leading-relaxed">
-        „I dano mi trzcinę podobną do laski, i anioł stanął, mówiąc: Wstań i zmierz świątynię Bożą i ołtarz, i tych, którzy w niej oddają pokłon. Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom; i będą deptać święte miasto przez czterdzieści dwa miesiące.” (Ap 11:1–2, UBG)
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">2</span>
+        <span>Tekst główny</span>
+      </h2>
+      <div class="p-6 sm:p-8 rounded-2xl bg-[#0b0e15] border-l-4 border-amber-400 border-y border-r border-amber-500/20 shadow-xl my-2">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-book-bible"></i>
+          <span>Słowo Boże (Pismo Święte)</span>
+        </div>
+        <blockquote class="font-bible text-lg sm:text-xl text-amber-100/95 leading-relaxed italic">
+          „„I dano mi trzcinę podobną do laski, i anioł stanął, mówiąc: Wstań i zmierz świątynię Bożą i ołtarz, i tych, którzy w niej oddają pokłon. Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom; i będą deptać święte miasto przez czterdzieści dwa miesiące.” (Ap 11:1–2, UBG)”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 3. Tekst pamięciowy -->
-    <div class="reader-section" style="border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.03);">
-      <h3><span>3.</span> Tekst pamięciowy</h3>
-      <blockquote class="border-l-4 border-amber-400 pl-4 py-2 font-serif text-amber-300 text-base sm:text-lg italic">
-        „Bój się Boga i przestrzegaj Jego przykazań, bo to jest cały obowiązek człowieka. Bóg bowiem wniesie na sąd każde dzieło, każdą rzecz ukrytą — czy dobrą, czy złą.” (Kazn 12:13–14, UBG)
-      </blockquote>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">3</span>
+        <span>Tekst pamięciowy</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/12 via-amber-500/5 to-transparent border border-amber-500/35 relative overflow-hidden shadow-lg">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-bookmark text-amber-400"></i> Werset do zapamiętania
+          </span>
+        </div>
+        <blockquote class="font-bible text-base sm:text-lg text-amber-200 font-medium italic leading-relaxed">
+          „„Bój się Boga i przestrzegaj Jego przykazań, bo to jest cały obowiązek człowieka. Bóg bowiem wniesie na sąd każde dzieło, każdą rzecz ukrytą — czy dobrą, czy złą.” (Kazn 12:13–14, UBG)”
+        </blockquote>
+      </div>
+    </section>
 
     <!-- 4. Cel lekcji -->
-    <div class="reader-section">
-      <h3><span>4.</span> Cel lekcji</h3>
-      <p class="text-zinc-200 leading-relaxed">Zrozumienie biblijnego znaczenia mierzenia jako aktu sądu śledczego i osądzania według wzorca Bożego Prawa, zidentyfikowanie prawdziwej Świątyni w niebie oraz duchowej tożsamości czcicieli oddających cześć Bogu w prawdzie.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">4</span>
+        <span>Cel lekcji</span>
+      </h2>
+      <div class="p-5 rounded-xl bg-[#0b0f19] border border-white/5 text-zinc-200 text-sm sm:text-base leading-relaxed">
+        <div class="flex items-start gap-3">
+          <span class="text-amber-400 text-lg mt-0.5">🎯</span>
+          <div>Zrozumienie biblijnego znaczenia mierzenia jako aktu sądu śledczego i osądzania według wzorca Bożego Prawa, zidentyfikowanie prawdziwej Świątyni w niebie oraz duchowej tożsamości czcicieli oddających cześć Bogu w prawdzie.</div>
+        </div>
+      </div>
+    </section>
 
     <!-- 5. Wprowadzenie -->
-    <div class="reader-section">
-      <h3><span>5.</span> Wprowadzenie</h3>
-      <p class="text-zinc-300 leading-relaxed text-base">W momencie, gdy Jan otrzymał polecenie: „Wstań i zmierz świątynię Bożą”, świątynia jerozolimska wzniesiona przez Heroda leżała w gruzach od kilkudziesięciu lat (zburzona przez Rzymian w 70 r. po Chr.). Jan doskonale wiedział, że Bóg nie mieszka w budowlach ręką uczynionych. O jakiej świątyni mówi Apokalipsa? Co oznacza czynność mierzenia świątyni, ołtarza i samych czcicieli? To wezwanie do zbadania duchowego fundamentu naszego życia przed obliczem Boga.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">5</span>
+        <span>Wprowadzenie</span>
+      </h2>
+      <div class="reader-prose text-zinc-300 text-base sm:text-lg leading-relaxed space-y-4">
+        W momencie, gdy Jan otrzymał polecenie: „Wstań i zmierz świątynię Bożą”, świątynia jerozolimska wzniesiona przez Heroda leżała w gruzach od kilkudziesięciu lat (zburzona przez Rzymian w 70 r. po Chr.). Jan doskonale wiedział, że Bóg nie mieszka w budowlach ręką uczynionych. O jakiej świątyni mówi Apokalipsa? Co oznacza czynność mierzenia świątyni, ołtarza i samych czcicieli? To wezwanie do zbadania duchowego fundamentu naszego życia przed obliczem Boga.
+      </div>
+    </section>
 
     <!-- 6. Studium biblijne krok po kroku -->
-    <div class="reader-section">
-      <h3><span>6.</span> Studium biblijne krok po kroku</h3>
-      
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">6</span>
+        <span>Studium biblijne krok po kroku</span>
+      </h2>
+      <div class="space-y-4">
+        
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">1</span>
             <span>A. Trzcina pomiarowa podobna do laski pasterskiej i berła (Ap 11:1)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Jan otrzymuje trzcinę (<em>kalamos</em>), która przypomina laskę (<em>rhabdos</em>). Laska w Biblii symbolizuje autorytet, pasterstwo, ale i berło władzy królewskiej oraz sądowej. Narzędziem Bożego pomiaru jest Jego niezmienne Słowo i Prawo — Dekalog zachowany w Arce Przymierza w Świątyni Niebiańskiej (Ap 11:19; Jk 2:12).</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Jan otrzymuje trzcinę (<em>kalamos</em>), która przypomina laskę (<em>rhabdos</em>). Laska w Biblii symbolizuje autorytet, pasterstwo, ale i berło władzy królewskiej oraz sądowej. Narzędziem Bożego pomiaru jest Jego niezmienne Słowo i Prawo — Dekalog zachowany w Arce Przymierza w Świątyni Niebiańskiej (Ap 11:19; Jk 2:12).</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">2</span>
             <span>B. Trzy elementy poddane pomiarowi (Ap 11:1)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Mierzone są trzy rzeczy: 1) Świątynia Boża (<em>naos</em> — wewnętrzne sanktuarium, Miejsce Święte i Najświętsze); 2) Ołtarz (miejsce ofiary i wstawiennictwa — ołtarz kadzenia); 3) Czciciele oddający tam pokłon. Mierzenie ludzi oznacza Boży sąd: zbadanie motywów, wiary, wierności i charakteru tych, którzy mienią się ludem Bożym (1 P 4:17).</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Mierzone są trzy rzeczy: 1) Świątynia Boża (<em>naos</em> — wewnętrzne sanktuarium, Miejsce Święte i Najświętsze); 2) Ołtarz (miejsce ofiary i wstawiennictwa — ołtarz kadzenia); 3) Czciciele oddający tam pokłon. Mierzenie ludzi oznacza Boży sąd: zbadanie motywów, wiary, wierności i charakteru tych, którzy mienią się ludem Bożym (1 P 4:17).</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">3</span>
             <span>C. Dziedziniec zewnętrzny pozostawiony poganom (Ap 11:2)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Dziedziniec zewnętrzny nie podlega mierzeniu w tym akcie. Było to miejsce otwarte dla wszystkich, symbolizujące Ziemię, gdzie złożono ofiarę z Chrystusa, ale także przestrzeń formalnej, powierzchownej religijności. Pozostawienie go poganom oznacza, że Bóg nie mierzy pozorów, lecz prawdziwe odrodzone serca.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Dziedziniec zewnętrzny nie podlega mierzeniu w tym akcie. Było to miejsce otwarte dla wszystkich, symbolizujące Ziemię, gdzie złożono ofiarę z Chrystusa, ale także przestrzeń formalnej, powierzchownej religijności. Pozostawienie go poganom oznacza, że Bóg nie mierzy pozorów, lecz prawdziwe odrodzone serca.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">4</span>
             <span>D. 42 miesiące deptania świętego miasta (Ap 11:2)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Okres 42 miesięcy (czyli 1260 proroczych dni/lat) to czas dominacji odstępczego systemu religijno-politycznego opisanego u Daniela 7 i w Apokalipsie 12 i 13. Przez ten czas prawda o niebiańskiej świątyni i jej służbie była tłumiona i zniekształcana przez ludzkie dogmaty i pośrednictwo ziemskich kapłanów.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Okres 42 miesięcy (czyli 1260 proroczych dni/lat) to czas dominacji odstępczego systemu religijno-politycznego opisanego u Daniela 7 i w Apokalipsie 12 i 13. Przez ten czas prawda o niebiańskiej świątyni i jej służbie była tłumiona i zniekształcana przez ludzkie dogmaty i pośrednictwo ziemskich kapłanów.</div>
         </div>
-        <div class="mb-6">
-          <h4 class="font-serif font-bold text-zinc-100 text-base mb-2 flex items-center gap-2">
-            <span class="text-amber-400">✦</span>
+        <div class="mb-8 p-6 sm:p-7 rounded-2xl bg-[#0c1018] border border-white/10 hover:border-amber-500/30 transition-all shadow-md">
+          <h3 class="font-serif font-bold text-white text-lg sm:text-xl mb-3 flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono flex items-center justify-center shrink-0">5</span>
             <span>E. Sąd zaczyna się od domu Bożego (1 P 4:17)</span>
-          </h4>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">Mierzenie czcicieli odpowiada Dniu Pojednania (<em>Jom Kippur</em>), kiedy to arcykapłan wchodził do Miejsca Najświętszego, aby oczyścić świątynię, a cały lud poddawał się duchowemu rachunkowi sumienia. Sąd przedpowrotowy bada życie tych, którzy zapisani są w Księdze Życia.</p>
+          </h3>
+          <div class="text-zinc-200 text-sm sm:text-base leading-relaxed pl-1 sm:pl-9">Mierzenie czcicieli odpowiada Dniu Pojednania (<em>Jom Kippur</em>), kiedy to arcykapłan wchodził do Miejsca Najświętszego, aby oczyścić świątynię, a cały lud poddawał się duchowemu rachunkowi sumienia. Sąd przedpowrotowy bada życie tych, którzy zapisani są w Księdze Życia.</div>
         </div>
-    </div>
+      </div>
+    </section>
 
     <!-- 7. Daniel i Apokalipsa -->
-    <div class="reader-section">
-      <h3><span>7.</span> Daniel i Apokalipsa</h3>
-      <p class="text-zinc-300 leading-relaxed">Księga Daniela 8:14 głosi: „Aż do dwóch tysięcy trzystu wieczorów i poranków; potem świątynia będzie oczyszczona”. Mierzenie świątyni w Ap 11:1–2 to dokładnie ta sama rzeczywistość: niebiański Dzień Pojednania, rozpoczęty po upływie 2300 proroczych lat w 1844 roku. W Danielu mały róg rzucił prawdę o świątyni na ziemię (Dn 8:11–12), a Apokalipsa 11 przywraca spojrzenie na Chrystusa posługującego w niebiańskim Sanktuarium.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">7</span>
+        <span>Daniel i Apokalipsa</span>
+      </h2>
+      <div class="p-6 sm:p-7 rounded-2xl bg-[#090d16] border border-blue-500/25 relative overflow-hidden shadow-lg">
+        <div class="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-scroll"></i>
+          <span>Klucz proroczy: Daniel & Apokalipsa</span>
+        </div>
+        <div class="text-zinc-200 text-sm sm:text-base leading-relaxed space-y-3">
+          Księga Daniela 8:14 głosi: „Aż do dwóch tysięcy trzystu wieczorów i poranków; potem świątynia będzie oczyszczona”. Mierzenie świątyni w Ap 11:1–2 to dokładnie ta sama rzeczywistość: niebiański Dzień Pojednania, rozpoczęty po upływie 2300 proroczych lat w 1844 roku. W Danielu mały róg rzucił prawdę o świątyni na ziemię (Dn 8:11–12), a Apokalipsa 11 przywraca spojrzenie na Chrystusa posługującego w niebiańskim Sanktuarium.
+        </div>
+      </div>
+    </section>
 
     <!-- 8. Perspektywa historyczna -->
-    <div class="reader-section" style="border-left: 4px solid #71717a;">
-      <h3 class="!text-zinc-400"><span>8.</span> Perspektywa historyczna</h3>
-      <p class="text-zinc-400 text-sm sm:text-base leading-relaxed italic">Okres 42 miesięcy (1260 lat) w historii Kościoła przypada na lata 538–1798 n.e. W tym czasie instytucjonalny kościół w Rzymie deptał prawdę Ewangelii, wprowadzając ziemskie ołtarze, msze, odpusty i ludzkich pośredników, przesłaniając jedyne arcykapłańskie wstawiennictwo Jezusa w niebie. Gdy w 1798 r. dobiegł końca czas supremacji małego rogu, nadszedł czas proroczego „mierzenia” — powrotu do czystej prawdy biblijnej i odkrycia niebiańskiego Sanktuarium.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">8</span>
+        <span>Perspektywa historyczna</span>
+      </h2>
+      <div class="p-6 rounded-2xl bg-[#0f121a] border-l-4 border-zinc-500 border-y border-r border-zinc-800 shadow-md">
+        <div class="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
+          <i class="fa-solid fa-landmark"></i>
+          <span>Tło historyczne i kontekst epoki</span>
+        </div>
+        <div class="text-zinc-300 text-sm sm:text-base leading-relaxed italic space-y-3">
+          Okres 42 miesięcy (1260 lat) w historii Kościoła przypada na lata 538–1798 n.e. W tym czasie instytucjonalny kościół w Rzymie deptał prawdę Ewangelii, wprowadzając ziemskie ołtarze, msze, odpusty i ludzkich pośredników, przesłaniając jedyne arcykapłańskie wstawiennictwo Jezusa w niebie. Gdy w 1798 r. dobiegł końca czas supremacji małego rogu, nadszedł czas proroczego „mierzenia” — powrotu do czystej prawdy biblijnej i odkrycia niebiańskiego Sanktuarium.
+        </div>
+      </div>
+    </section>
 
-    <!-- 9. JEZUS W CENTRUM -->
-    <div class="reader-section" style="border: 2px solid rgba(212,175,55,0.4); background: rgba(212,175,55,0.05);">
-      <h3 class="!text-amber-300 text-sm font-bold"><span>9.</span> ✝ JEZUS W CENTRUM</h3>
-      <p class="font-serif text-amber-100 text-base sm:text-lg leading-relaxed">Jezus jest naszym jedynym i doskonałym Arcykapłanem w Świątyni Niebiańskiej (Hbr 8:1–2). W procesie sądu i mierzenia On nie występuje przeciwko nam, lecz jako nasz Obrońca, Orędownik i Rękojmia zbawienia. Kto chroni się pod Jego krwią przy ołtarzu łaski, ten w mierzeniu Bożym osiąga pełną miarę Chrystusowej sprawiedliwości.</p>
-    </div>
+    <!-- 9. JEZUS W CENTRUM (KORONA LEKCJI) -->
+    <section class="reader-section">
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1c160c] via-[#120f09] to-[#07090e] border-2 border-amber-500/50 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 text-9xl text-amber-500/5 select-none pointer-events-none font-serif">✝</div>
+        <div class="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-lg shadow-amber-400/80 animate-pulse"></span>
+          <span class="font-display">✝ SERCE CAŁEGO PROROCTWA</span>
+        </div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-4">JEZUS W CENTRUM</h2>
+        <div class="font-bible text-base sm:text-lg text-amber-100/95 leading-relaxed space-y-3">
+          Jezus jest naszym jedynym i doskonałym Arcykapłanem w Świątyni Niebiańskiej (Hbr 8:1–2). W procesie sądu i mierzenia On nie występuje przeciwko nam, lecz jako nasz Obrońca, Orędownik i Rękojmia zbawienia. Kto chroni się pod Jego krwią przy ołtarzu łaski, ten w mierzeniu Bożym osiąga pełną miarę Chrystusowej sprawiedliwości.
+        </div>
+      </div>
+    </section>
 
     <!-- 10. SPRAWDŹ W BIBLII -->
-    <div class="reader-section">
-      <h3><span>10.</span> SPRAWDŹ W BIBLII</h3>
-      <ul class="space-y-1.5"><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 Hbr 8:1–2</span>
-        <span class="text-zinc-400 text-sm">— Prawdziwa świątynia, którą zbudował Pan, a nie człowiek.</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 1 Kor 3:16–17</span>
-        <span class="text-zinc-400 text-sm">— Czyż nie wiecie, że jesteście świątynią Boga i że Duch Boży w was mieszka?</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 1 P 4:17</span>
-        <span class="text-zinc-400 text-sm">— Czas bowiem, aby sąd rozpoczął się od domu Bożego.</span>
-      </li><li class="py-1.5 flex items-start gap-2">
-        <span class="text-amber-400 font-bold shrink-0">📖 Jk 2:10–12</span>
-        <span class="text-zinc-400 text-sm">— Zakon wolności jako kryterium przyszłego sądu.</span>
-      </li></ul>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">10</span>
+        <span>Sprawdź w Biblii</span>
+      </h2>
+      <ul class="space-y-2.5">
+        
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">Hbr 8:1–2</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Prawdziwa świątynia, którą zbudował Pan, a nie człowiek.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">1 Kor 3:16–17</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Czyż nie wiecie, że jesteście świątynią Boga i że Duch Boży w was mieszka?</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">1 P 4:17</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Czas bowiem, aby sąd rozpoczął się od domu Bożego.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+        <li class="p-3.5 rounded-xl bg-[#0b0e15] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-amber-500/30 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-amber-400 text-sm">📖</span>
+            <span class="font-bold text-amber-200 font-mono text-sm">Jk 2:10–12</span>
+            <span class="text-zinc-400 text-xs sm:text-sm">— Zakon wolności jako kryterium przyszłego sądu.</span>
+          </div>
+          <a href="/mojabiblia" target="_blank" rel="noopener" class="text-xs text-brand-gold hover:underline font-semibold shrink-0 flex items-center gap-1 self-end sm:self-auto">
+            <span>Otwórz w MojaBiblia</span>
+            <span>↗</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <!-- 11. Zastosowanie osobiste -->
-    <div class="reader-section">
-      <h3><span>11.</span> Zastosowanie osobiste</h3>
-      <p class="font-serif italic text-zinc-300 leading-relaxed text-base">Gdyby anioł przyłożył dziś Bożą laskę pomiarową do twojego życia, co by w nim znalazł? Czy oddajesz Bogu cześć sercem w Jego wewnętrznym sanktuarium, czy może poprzestajesz na 'zewnętrznym dziedzińcu' religijnej rutyny i pozorów? Pozwól Jezusowi oczyścić twoje serce i uczynić je nienaganną świątynią Ducha Świętego.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">11</span>
+        <span>Zastosowanie osobiste</span>
+      </h2>
+      <div class="reader-application-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-heart"></i>
+          <span>Dla mojego serca i życia</span>
+        </div>
+        <div class="font-serif italic text-zinc-200 text-base sm:text-lg leading-relaxed space-y-3">
+          Gdyby anioł przyłożył dziś Bożą laskę pomiarową do twojego życia, co by w nim znalazł? Czy oddajesz Bogu cześć sercem w Jego wewnętrznym sanktuarium, czy może poprzestajesz na 'zewnętrznym dziedzińcu' religijnej rutyny i pozorów? Pozwól Jezusowi oczyścić twoje serce i uczynić je nienaganną świątynią Ducha Świętego.
+        </div>
+      </div>
+    </section>
 
     <!-- 12. Pytania do studium -->
-    <div class="reader-section">
-      <h3><span>12.</span> Pytania do studium</h3>
-      <ol class="space-y-2"><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Dlaczego Jan nie mógł mierzyć ziemskiej świątyni w Jerozolimie?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Co symbolizuje trzcina pomiarowa podobna do laski w biblijnym języku?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Kim są 'ci, którzy w niej oddają pokłon' i co oznacza ich zmierzenie?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Czym różni się wewnętrzne sanktuarium (naos) od dziedzińca zewnętrznego?</span>
-      </li><li class="mb-3 flex items-start gap-3">
-        <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
-        <span class="text-zinc-300 text-sm sm:text-base leading-relaxed">Jak proroctwo o 42 miesiącach łączy się z okresem 1260 lat z księgi Daniela?</span>
-      </li></ol>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">12</span>
+        <span>Pytania do studium</span>
+      </h2>
+      <ol class="space-y-3">
+        
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Dlaczego Jan nie mógł mierzyć ziemskiej świątyni w Jerozolimie?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Co symbolizuje trzcina pomiarowa podobna do laski w biblijnym języku?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Kim są 'ci, którzy w niej oddają pokłon' i co oznacza ich zmierzenie?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Czym różni się wewnętrzne sanktuarium (naos) od dziedzińca zewnętrznego?</span>
+        </li>
+        <li class="p-4 rounded-xl bg-[#0b0f19] border border-white/5 flex items-start gap-3.5">
+          <span class="w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+          <span class="text-zinc-200 text-sm sm:text-base leading-relaxed">Jak proroctwo o 42 miesiącach łączy się z okresem 1260 lat z księgi Daniela?</span>
+        </li>
+      </ol>
+    </section>
 
     <!-- 13. Quiz z odpowiedziami -->
-    <div class="reader-section">
-      <h3><span>13.</span> Quiz z odpowiedziami</h3>
-      
-        <div class="mb-8" id="q17_0-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 1:</span> Co nakazano Janowi zrobić z zewnętrznym dziedzińcem świątyni w Ap 11:2?</p>
-          <div class="flex flex-col gap-2" id="q17_0-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q17_0',0,1,'Ap 11:2: \'Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>Zmierzyć go podwójną laską
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_0',1,1,'Ap 11:2: \'Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>Pominąć go i nie mierzyć, bo został dany poganom
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_0',2,1,'Ap 11:2: \'Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Zburzyć go kamień po kamieniu
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_0',3,1,'Ap 11:2: \'Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom\'.')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Poświęcić krwią baranka
-        </button></div>
-          <div id="q17_0-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">13</span>
+        <span>Quiz z odpowiedziami</span>
+      </h2>
+      <div class="quiz-container">
+        
+        <div class="cin-quiz-card" id="quiz-card-q17_0" data-qid="q17_0" data-correct="1">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 1 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Co nakazano Janowi zrobić z zewnętrznym dziedzińcem świątyni w Ap 11:2?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 1">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_0" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_0', 0, 1)">
+            <span>Zmierzyć go podwójną laską</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_0" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_0', 1, 1)">
+            <span>Pominąć go i nie mierzyć, bo został dany poganom</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_0" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_0', 2, 1)">
+            <span>Zburzyć go kamień po kamieniu</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_0" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_0', 3, 1)">
+            <span>Poświęcić krwią baranka</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q17_0">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q17_0"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q17_0">Ap 11:2: 'Lecz dziedziniec zewnętrzny świątyni pomiń i nie mierz go, gdyż został dany poganom'.</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q17_0')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="mb-8" id="q17_1-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 2:</span> Przez jaki okres poganie mieli deptać święte miasto według Ap 11:2?</p>
-          <div class="flex flex-col gap-2" id="q17_1-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q17_1',0,2,'W tekście Ap 11:2 mowa jest o 42 miesiącach, co w kalendarzu biblijnym odpowiada 1260 dniom/latom.')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>70 tygodni
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_1',1,2,'W tekście Ap 11:2 mowa jest o 42 miesiącach, co w kalendarzu biblijnym odpowiada 1260 dniom/latom.')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>1000 lat
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_1',2,2,'W tekście Ap 11:2 mowa jest o 42 miesiącach, co w kalendarzu biblijnym odpowiada 1260 dniom/latom.')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Czterdzieści dwa miesiące (1260 dni)
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_1',3,2,'W tekście Ap 11:2 mowa jest o 42 miesiącach, co w kalendarzu biblijnym odpowiada 1260 dniom/latom.')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Trzy dni i pół dnia
-        </button></div>
-          <div id="q17_1-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+        <div class="cin-quiz-card" id="quiz-card-q17_1" data-qid="q17_1" data-correct="2">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 2 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Przez jaki okres poganie mieli deptać święte miasto według Ap 11:2?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 2">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_1" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_1', 0, 2)">
+            <span>70 tygodni</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_1" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_1', 1, 2)">
+            <span>1000 lat</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_1" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_1', 2, 2)">
+            <span>Czterdzieści dwa miesiące (1260 dni)</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_1" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_1', 3, 2)">
+            <span>Trzy dni i pół dnia</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q17_1">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q17_1"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q17_1">W tekście Ap 11:2 mowa jest o 42 miesiącach, co w kalendarzu biblijnym odpowiada 1260 dniom/latom.</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q17_1')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="mb-8" id="q17_2-wrap">
-          <p class="font-semibold text-zinc-200 mb-3 text-sm"><span class="text-brand-gold font-bold">Pytanie 3:</span> Co w biblijnej symbolice oznacza akt 'mierzenia ludzi' oddających pokłon?</p>
-          <div class="flex flex-col gap-2" id="q17_2-opts"><button class="quiz-option w-full text-left" onclick="answerQuiz('q17_2',0,1,'Mierzenie w proroctwie to ocena według standardu Bożego Prawa — sąd rozpoczynający się od domu Bożego (1 P 4:17).')">
-          <span class="font-bold text-zinc-500 mr-2">[A]</span>Sprawdzanie ich wzrostu fizycznego
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_2',1,1,'Mierzenie w proroctwie to ocena według standardu Bożego Prawa — sąd rozpoczynający się od domu Bożego (1 P 4:17).')">
-          <span class="font-bold text-zinc-500 mr-2">[B]</span>Sąd Boży badający wierność i autentyczność ich wiary
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_2',2,1,'Mierzenie w proroctwie to ocena według standardu Bożego Prawa — sąd rozpoczynający się od domu Bożego (1 P 4:17).')">
-          <span class="font-bold text-zinc-500 mr-2">[C]</span>Pobieranie podatku świątynnego
-        </button>
-<button class="quiz-option w-full text-left" onclick="answerQuiz('q17_2',3,1,'Mierzenie w proroctwie to ocena według standardu Bożego Prawa — sąd rozpoczynający się od domu Bożego (1 P 4:17).')">
-          <span class="font-bold text-zinc-500 mr-2">[D]</span>Oddzielenie Żydów od Greków
-        </button></div>
-          <div id="q17_2-result" class="hidden mt-3 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-zinc-300 leading-relaxed"></div>
+        <div class="cin-quiz-card" id="quiz-card-q17_2" data-qid="q17_2" data-correct="1">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="cin-quiz-step">Pytanie 3 z 3 • SPRAWDŹ ZROZUMIENIE</span>
+          </div>
+          <p class="cin-quiz-q">Co w biblijnej symbolice oznacza akt 'mierzenia ludzi' oddających pokłon?</p>
+          <div class="cin-quiz-options" role="radiogroup" aria-label="Odpowiedzi do pytania 3">
+            
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_2" data-opt-idx="0" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_2', 0, 1)">
+            <span>Sprawdzanie ich wzrostu fizycznego</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_2" data-opt-idx="1" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_2', 1, 1)">
+            <span>Sąd Boży badający wierność i autentyczność ich wiary</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_2" data-opt-idx="2" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_2', 2, 1)">
+            <span>Pobieranie podatku świątynnego</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+
+          <button type="button" class="cin-option-btn quiz-option-btn min-h-[48px]" data-qid="q17_2" data-opt-idx="3" role="radio" aria-checked="false" onclick="handleQuizAnswer('q17_2', 3, 1)">
+            <span>Oddzielenie Żydów od Greków</span>
+            <span class="quiz-opt-icon text-xs opacity-60 font-mono">○</span>
+          </button>
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-q17_2">
+            <div class="quiz-feedback-title" id="quiz-feedback-title-q17_2"></div>
+            <p class="quiz-feedback-text" id="quiz-feedback-text-q17_2">Mierzenie w proroctwie to ocena według standardu Bożego Prawa — sąd rozpoczynający się od domu Bożego (1 P 4:17).</p>
+            <div class="quiz-feedback-actions">
+              <div class="quiz-scripture-basis">
+                <span class="text-xs text-zinc-400 font-semibold">Podstawa biblijna:</span>
+                <span class="reader-sigla-tag">Apokalipsa 11:1–2 (oraz kontekst: Ezechiel 40–43; Zachariasz 2:1–5; Daniel 8:14; List do Hebrajczyków 8–9).</span>
+                <a href="/mojabiblia" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold hover:underline font-semibold ml-1 inline-flex items-center gap-1">Zobacz w Biblii ↗</a>
+              </div>
+              <button type="button" class="btn-secondary-action quiz-retry-btn text-xs py-2 px-3.5 min-h-[38px]" onclick="resetQuizQuestion('q17_2')">
+                <span>↺ Spróbuj ponownie</span>
+              </button>
+            </div>
+          </div>
         </div>
-    </div>
+        <div class="p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-xl text-xs text-zinc-400 flex items-center gap-2.5 mt-4">
+          <span class="text-base text-brand-gold">💡</span>
+          <span>Quiz ma charakter formacyjny i edukacyjny. Błędna odpowiedź nie blokuje przejścia — sprawdź uzasadnienie i spróbuj ponownie.</span>
+        </div>
+      </div>
+    </section>
 
     <!-- 14. TWOJA DECYZJA -->
-    <div class="reader-section" style="border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.04);">
-      <h3 class="!text-emerald-400"><span>14.</span> TWOJA DECYZJA</h3>
-      <p class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed">Odrzucam powierzchowną religijność zewnętrznego dziedzińca. Proszę Jezusa, mojego Arcykapłana, aby zmierzył moje serce swoją sprawiedliwością, usunął z niego wszelki grzech i uzdolnił mnie do oddawania Bogu czci w duchu i w prawdzie.</p>
-    </div>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">14</span>
+        <span>Twoja decyzja</span>
+      </h2>
+      <div class="reader-decision-card">
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">
+          <i class="fa-solid fa-check-circle"></i>
+          <span>Osobisty wybór wiary</span>
+        </div>
+        <div class="font-serif text-emerald-100 text-base sm:text-lg leading-relaxed space-y-3">
+          Odrzucam powierzchowną religijność zewnętrznego dziedzińca. Proszę Jezusa, mojego Arcykapłana, aby zmierzył moje serce swoją sprawiedliwością, usunął z niego wszelki grzech i uzdolnił mnie do oddawania Bogu czci w duchu i w prawdzie.
+        </div>
+      </div>
+    </section>
 
     <!-- 15. Modlitwa -->
-    <div class="reader-section" style="border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.04);">
-      <h3 class="!text-purple-300"><span>15.</span> 🙏 Modlitwa</h3>
-      <p class="font-serif italic text-purple-100 text-base sm:text-lg leading-relaxed">Wszechmogący Boże, Święty i Sprawiedliwy! Otwieram przed Tobą najskrytsze zakamarki mojego serca. Zmierz mnie Panie miarą Twojej łaski, zbadaj moje motywacje i oczyść krwią Baranka. Spraw, bym nie zadowalał się pozorami pobożności, lecz trwał w zażyłej społeczności z Jezusem w niebiańskim Sanktuarium. Amen.</p>
-    </div>
-
-    <!-- DOLNA NAWIGACJA -->
-    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-brand-line">
-      <button onclick="toggleDone(17)" id="btn-done2-17" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider min-h-[48px] flex items-center gap-2">
-        <i class="fa-solid fa-check-double"></i>
-        <span>Ukończyłem/am tę lekcję</span>
-      </button>
-      <div class="flex items-center gap-2">
-        <a href="/akademia/apokalipsa/lekcja-16" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">← Lekcja 16</a>
-        <a href="/akademia#apokalipsa" class="px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider hover:border-amber-400 min-h-[48px] flex items-center">Wszystkie lekcje</a>
-        <a href="/akademia/apokalipsa/lekcja-18" class="px-5 py-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-wider hover:bg-amber-500/30 min-h-[48px] flex items-center">Lekcja 18 →</a>
+    <section class="reader-section">
+      <h2 class="reader-section-title">
+        <span class="reader-step-num">15</span>
+        <span>Modlitwa</span>
+      </h2>
+      <div class="reader-prayer-card">
+        <span class="text-2xl text-amber-400 mb-2 block">🕊️</span>
+        <div class="font-serif italic text-amber-100/90 text-base sm:text-lg leading-relaxed space-y-3">
+          Wszechmogący Boże, Święty i Sprawiedliwy! Otwieram przed Tobą najskrytsze zakamarki mojego serca. Zmierz mnie Panie miarą Twojej łaski, zbadaj moje motywacje i oczyść krwią Baranka. Spraw, bym nie zadowalał się pozorami pobożności, lecz trwał w zażyłej społeczności z Jezusem w niebiańskim Sanktuarium. Amen.
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ── UKOŃCZENIE I NASTĘPNY KROK ── -->
+    <section class="reader-section">
+      <div class="reader-finish-box text-center py-8 px-4 sm:px-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+          <span>✦</span>
+          <span>Apokalipsa – Księga Nadziei • Lekcja 17 z 26</span>
+        </div>
+        <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy na kolejny krok?</h3>
+        <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
+          Oznacz lekcję jako ukończoną, aby zapisać swój postęp w przeglądarce i przejdź do następnego rozdziału.
+        </p>
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <button type="button" id="btn-complete-lesson" onclick="toggleLessonDone(17)" class="btn-gold-complete min-h-[48px]">
+            <span>✦</span>
+            <span id="btn-complete-txt">Ukończ Tę Lekcję</span>
+          </button>
+          
+          <a href="/akademia/apokalipsa/lekcja-18" id="btn-next-lesson-cta" class="cin-share-btn cin-share-btn-secondary min-h-[48px] text-amber-400 font-bold">
+            <span>Następna Lekcja (Lekcja 18) ›</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DOLNA NAWIGACJA ── -->
+    <nav class="cin-lesson-nav-bar" aria-label="Nawigacja pomiędzy lekcjami">
+      
+      <a href="/akademia/apokalipsa/lekcja-16" class="cin-nav-prev" title="Lekcja 16">
+        <span>←</span>
+        <span>Lekcja 16</span>
+      </a>
+
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
+        <span>Wszystkie 26 Lekcji</span>
+      </a>
+
+      
+      <a href="/akademia/apokalipsa/lekcja-18" class="cin-nav-next text-amber-400 font-bold" title="Lekcja 18">
+        <span>Lekcja 18</span>
+        <span>→</span>
+      </a>
+    </nav>
 
   </main>
 
-  <!-- STOPKA -->
-  <footer class="bg-[#05070c] border-t border-brand-line py-10 px-4 mt-16 text-center text-xs text-zinc-500">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>LUMINA Bible Academy • Apokalipsa: Księga Nadziei</div>
-      <div class="flex items-center gap-4">
-        <a href="/akademia" class="hover:text-amber-400">Akademia</a>
-        <a href="/kursy" class="hover:text-amber-400">28 Kroków</a>
-        <a href="/mojabiblia" class="hover:text-amber-400">Biblia Online</a>
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="text-amber-400 hover:underline">Patronite</a>
+  <!-- ── FOOTER ── -->
+  <footer class="bg-[#05070c] border-t border-brand-line py-12 px-4 z-10 text-xs text-zinc-500 mt-16">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <p class="font-serif font-bold text-zinc-400 text-sm mb-1">LUMINA BIBLE ACADEMY • APOKALIPSA: KSIĘGA NADZIEI</p>
+        <p>Wykłady: Pr. Wincenty Sieja (Studio Dobrego Słowa) • Ekosystem Christian Culture</p>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/akademia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Akademia</a>
+        <a href="/kursy" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">28 Kroków</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors min-h-[44px] flex items-center">Biblia Online</a>
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="text-amber-400 font-bold hover:underline min-h-[44px] flex items-center">Patronite</a>
       </div>
     </div>
   </footer>
 
-  <!-- FLOATING PROGRESS -->
-  <div class="floating-prog">
-    <span class="text-xs text-zinc-400">Twój postęp:</span>
-    <span class="font-bold text-amber-400 text-sm" id="float-prog-txt">0 / 26</span>
-  </div>
+  <div id="academy-toast" class="academy-toast"></div>
 
+  <!-- ── CLIENT SCRIPT ── -->
   <script>
     const LESSON_ID = 17;
 
-    function getDone() {
+    // 1. Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      const bar = document.getElementById('lesson-reading-progress');
+      if (bar) bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+    }, { passive: true });
+
+    // 2. Local Storage Progress
+    function getCompletedLessons() {
       try { return JSON.parse(localStorage.getItem('apok_done') || '[]'); } catch(e) { return []; }
     }
 
-    function toggleDone(lid) {
-      let done = getDone();
-      if (done.includes(lid)) {
+    function toggleLessonDone(lid) {
+      let done = getCompletedLessons();
+      const isDone = done.includes(lid);
+      if (isDone) {
         done = done.filter(x => x !== lid);
+        showToast('Lekcja oznaczona jako nieukończona.');
       } else {
         done.push(lid);
+        showToast('🎉 Gratulacje! Lekcja została oznaczona jako ukończona.');
       }
       localStorage.setItem('apok_done', JSON.stringify(done));
-      updateStatusUI();
+      updateLessonStatusUI();
     }
 
-    function updateStatusUI() {
-      const done = getDone();
+    function updateLessonStatusUI() {
+      const done = getCompletedLessons();
       const isDone = done.includes(LESSON_ID);
 
-      const floatTxt = document.getElementById('float-prog-txt');
-      if (floatTxt) floatTxt.textContent = done.length + ' / 26';
-
-      const b1 = document.getElementById('btn-done-' + LESSON_ID);
-      const b2 = document.getElementById('btn-done2-' + LESSON_ID);
-      const txt1 = document.getElementById('btn-done-txt-' + LESSON_ID);
-      const badge = document.getElementById('status-badge-' + LESSON_ID);
+      const btn = document.getElementById('btn-complete-lesson');
+      const txt = document.getElementById('btn-complete-txt');
+      const pill = document.getElementById('lesson-status-pill');
 
       if (isDone) {
-        if (txt1) txt1.textContent = '✓ Ukończona (kliknij, by cofnąć)';
-        if (b1) { b1.classList.remove('from-amber-500', 'to-amber-600'); b1.classList.add('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.remove('hidden');
+        if (btn) btn.classList.add('completed-state');
+        if (txt) txt.textContent = '✓ Lekcja Ukończona (kliknij, by cofnąć)';
+        if (pill) pill.classList.remove('hidden');
       } else {
-        if (txt1) txt1.textContent = 'Oznacz jako ukończoną';
-        if (b1) { b1.classList.add('from-amber-500', 'to-amber-600'); b1.classList.remove('bg-emerald-600', 'text-white'); }
-        if (badge) badge.classList.add('hidden');
+        if (btn) btn.classList.remove('completed-state');
+        if (txt) txt.textContent = 'Ukończ Tę Lekcję';
+        if (pill) pill.classList.add('hidden');
       }
     }
 
-    function answerQuiz(qid, chosen, correct, explanation) {
-      const opts = document.getElementById(qid + '-opts');
-      const res = document.getElementById(qid + '-result');
-      if (!opts || !res || res.classList.contains('answered')) return;
-      res.classList.add('answered');
+    // 3. Quiz Handlers
+    function handleQuizAnswer(qid, chosenIdx, correctIdx) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card || card.classList.contains('answered')) return;
+      card.classList.add('answered');
 
-      opts.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach((btn, idx) => {
         btn.disabled = true;
-        if (idx === correct) btn.classList.add('correct');
-        else if (idx === chosen) btn.classList.add('wrong');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (idx === correctIdx) {
+          btn.classList.add('selected-correct');
+          if (icon) icon.textContent = '✓';
+        } else if (idx === chosenIdx) {
+          btn.classList.add('selected-wrong');
+          if (icon) icon.textContent = '✕';
+        }
       });
 
-      res.innerHTML = (chosen === correct ? '✅ <strong>Prawidłowa odpowiedź!</strong> ' : '❌ <strong>Nieprawidłowa odpowiedź.</strong> ') + explanation;
-      res.classList.remove('hidden');
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      const feedbackTitle = document.getElementById('quiz-feedback-title-' + qid);
+      if (feedbackBox && feedbackTitle) {
+        feedbackBox.classList.add('visible');
+        if (chosenIdx === correctIdx) {
+          feedbackTitle.className = 'quiz-feedback-title correct';
+          feedbackTitle.innerHTML = '<span>✅ Doskonale! Prawidłowa odpowiedź.</span>';
+        } else {
+          feedbackTitle.className = 'quiz-feedback-title wrong';
+          feedbackTitle.innerHTML = '<span>❌ Nieprawidłowa odpowiedź. Zobacz wyjaśnienie:</span>';
+        }
+      }
     }
 
-    updateStatusUI();
+    function resetQuizQuestion(qid) {
+      const card = document.getElementById('quiz-card-' + qid);
+      if (!card) return;
+      card.classList.remove('answered');
+
+      const buttons = card.querySelectorAll('.quiz-option-btn');
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+        const icon = btn.querySelector('.quiz-opt-icon');
+        if (icon) icon.textContent = '○';
+      });
+
+      const feedbackBox = document.getElementById('quiz-feedback-' + qid);
+      if (feedbackBox) feedbackBox.classList.remove('visible');
+    }
+
+    // 4. Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('academy-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLessonStatusUI();
+    });
   </script>
 </body>
 </html>
