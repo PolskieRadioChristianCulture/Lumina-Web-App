@@ -95,3 +95,6 @@
 
 /lumina-icon*
   Cache-Control: public, max-age=0, must-revalidate
+
+/js/cc-global-auth*
+  Cache-Control: no-cache, no-store, must-revalidate

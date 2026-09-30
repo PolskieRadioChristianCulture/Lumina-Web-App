@@ -183,7 +183,7 @@ LUMINA_COURSES_CORE_28.forEach((lesson) => {
   </script>
 
   <!-- Universal CC & LUMINA Global Auth -->
-  <script src="/js/cc-global-auth.js" defer></script>
+  <script src="/js/cc-global-auth.js?v=20260930_auth6" defer></script>
 
   <!-- LUMINA Courses Styling System -->
   <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
