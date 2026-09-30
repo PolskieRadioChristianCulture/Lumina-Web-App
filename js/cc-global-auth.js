@@ -409,22 +409,53 @@
     // 3. Sprawdzenie bieżącej sesji użytkownika
     function getStoredUserData() {
         try {
-            // 1. Sprawdź lumina_current_user i lumina_current_user_profile / lumina_my_profile
             const userStr = localStorage.getItem('lumina_current_user');
             const profStr = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile');
             let user = userStr ? JSON.parse(userStr) : null;
             let profile = profStr ? JSON.parse(profStr) : null;
-<<<<<<< HEAD
 
-            // 2. Jeśli mamy profil, ale brak obiektu user
-            if (!user && profile) {
-                user = {
-                    uid: profile.uid || profile.slug || profile.id || 'lumina_member',
-                    displayName: profile.name || profile.displayName || 'Członek LUMINA',
-                    email: profile.email || '',
-                    photoURL: profile.avatar || '/lumina_icon.jpg'
-                };
-=======
+            // Sprawdzenie zapisanego sluga lub profilu bezpośredniego
+            if (!user || !profile) {
+                const curSlug = localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_user_slug');
+                if (curSlug) {
+                    const slugProfStr = localStorage.getItem('lumina_profile_' + curSlug);
+                    if (slugProfStr && !profile) {
+                        try { profile = JSON.parse(slugProfStr); } catch(e) {}
+                    }
+                    if (curSlug === 'cezaryrgowski') {
+                        if (!profile) {
+                            profile = {
+                                uid: 'cezaryrgowski',
+                                slug: 'cezaryrgowski',
+                                name: 'Cezary Rogowski',
+                                displayName: 'Cezary Rogowski',
+                                avatar: '/avatar_cezary_official.jpg',
+                                email: 'nazirczarkes@gmail.com'
+                            };
+                        }
+                    } else if (curSlug === 'wiolettarogowska') {
+                        if (!profile) {
+                            profile = {
+                                uid: 'wiolettarogowska',
+                                slug: 'wiolettarogowska',
+                                name: 'Wioletta Rogowska',
+                                displayName: 'Wioletta Rogowska',
+                                avatar: '/avatar_wioletta_official.jpg',
+                                email: 'wioletta1240@gmail.com'
+                            };
+                        }
+                    }
+                }
+            }
+
+            // Sprawdzenie bezpośredniego profilu Cezarego jeśli istnieje w storage
+            if (!profile) {
+                const cezaryStr = localStorage.getItem('lumina_profile_cezaryrgowski');
+                if (cezaryStr) {
+                    try { profile = JSON.parse(cezaryStr); } catch(e) {}
+                }
+            }
+
             if (!user && profile && (profile.uid || profile.id || profile.slug)) {
                 user = {
                     uid: profile.uid || profile.id || profile.slug,
@@ -433,84 +464,11 @@
                     photoURL: profile.avatar || ''
                 };
             }
-            if (user && (user.uid || user.email)) {
-                return { user, profile: profile || {} };
->>>>>>> origin/main
-            }
 
-            // 3. Sprawdź czy to sesja Cezarego / Administratora
-            const isCezarySession = localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
-                                    localStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                                    localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski';
-            if (isCezarySession) {
-                if (!profile) {
-                    try {
-                        profile = JSON.parse(localStorage.getItem('lumina_profile_cezaryrgowski') || 'null');
-                    } catch(e) {}
-                }
-                if (!profile) {
-                    profile = {
-                        name: 'Cezary Rogowski',
-                        displayName: 'Cezary Rogowski',
-                        slug: 'cezaryrgowski',
-                        email: 'nazirczarkes@gmail.com',
-                        avatar: '/avatar_cezary_official.jpg'
-                    };
-                }
-                if (!user) {
-                    user = {
-                        uid: 'cezaryrgowski',
-                        displayName: 'Cezary Rogowski',
-                        email: 'nazirczarkes@gmail.com',
-                        photoURL: '/avatar_cezary_official.jpg'
-                    };
-                }
-            }
-
-            // 4. Sprawdź alternatywne klucze sesji (np. cc_user, user)
-            if (!user) {
-                try {
-                    const altStr = localStorage.getItem('cc_user') || localStorage.getItem('user');
-                    if (altStr) {
-                        const parsed = JSON.parse(altStr);
-                        if (parsed && (parsed.uid || parsed.name || parsed.displayName || parsed.email)) {
-                            user = parsed;
-                            if (!profile) profile = parsed;
-                        }
-                    }
-                } catch(e) {}
-            }
-
-            // 5. Sprawdź Firebase Auth z localStorage
-            if (!user) {
-                try {
-                    for (let i = 0; i < localStorage.length; i++) {
-                        const k = localStorage.key(i);
-                        if (k && k.startsWith('firebase:authUser:')) {
-                            const fbVal = localStorage.getItem(k);
-                            if (fbVal) {
-                                const fbParsed = JSON.parse(fbVal);
-                                if (fbParsed && (fbParsed.uid || fbParsed.email)) {
-                                    user = {
-                                        uid: fbParsed.uid,
-                                        displayName: fbParsed.displayName || 'Członek LUMINA',
-                                        email: fbParsed.email || '',
-                                        photoURL: fbParsed.photoURL || '/lumina_icon.jpg'
-                                    };
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                } catch(e) {}
-            }
-
-            if (user && (user.uid || user.id || user.displayName || user.name || user.email)) {
+            if (user && (user.uid || user.email || user.displayName)) {
                 return { user, profile: profile || {} };
             }
-        } catch(e) {
-            console.warn('[CCAuth] Błąd getStoredUserData:', e);
-        }
+        } catch(e) {}
         return null;
     }
 
@@ -664,29 +622,18 @@
                 const profile = data.profile || {};
                 const fullName = profile.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Członek LUMINA');
                 const firstName = fullName.trim().split(' ')[0] || 'Profil';
-<<<<<<< HEAD
-                const isCezary = (user.email && user.email.toLowerCase().includes('czarkes')) ||
-                                 (user.email && user.email.toLowerCase().includes('nazir')) ||
-                                 user.uid === 'cezaryrgowski' || user.id === 'cezaryrgowski' ||
-                                 profile.slug === 'cezaryrgowski' ||
-                                 (fullName && fullName.toLowerCase().includes('cezary')) ||
-                                 localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
-                                 localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski';
-                const isWioletta = (user.email && user.email.includes('wioletta1240')) || profile.slug === 'wiolettarogowska' || (fullName && fullName.toLowerCase().includes('wioletta'));
-=======
                 const userEmail = (user.email || '').toLowerCase();
                 const userDispName = (user.displayName || profile.name || '').toLowerCase();
                 const isCezary = userEmail.includes('czarkes') || userEmail.includes('studiodees7') || userEmail.includes('osobowoscplus') || userEmail.includes('yourimaginationstudio') || userDispName.includes('cezary') || profile.slug === 'cezaryrgowski';
                 const isWioletta = userEmail.includes('wioletta') || userDispName.includes('wioletta') || profile.slug === 'wiolettarogowska';
->>>>>>> origin/main
                 const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
                 const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
 
                 let avatar = profile.avatar || user.photoURL || '/lumina_icon.jpg';
-                if (isCezary) avatar = '/avatar_cezary_official.jpg';
-                else if (isWioletta) avatar = '/avatar_wioletta_official.jpg';
-                else if (isZbyszek) avatar = '/avatar_zbyszek_gieron.jpg';
-                else if (isZofia) avatar = '/avatar_zofia_dudek.jpg';
+                if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_cezary_official.jpg';
+                else if (isWioletta && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_wioletta_official.jpg';
+                else if (isZbyszek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zbyszek_gieron.jpg';
+                else if (isZofia && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zofia_dudek.jpg';
 
                 if (avatar && !avatar.startsWith('/') && !avatar.startsWith('http') && !avatar.startsWith('data:')) {
                     avatar = '/' + avatar;
