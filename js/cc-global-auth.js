@@ -414,6 +414,7 @@
             const profStr = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile');
             let user = userStr ? JSON.parse(userStr) : null;
             let profile = profStr ? JSON.parse(profStr) : null;
+<<<<<<< HEAD
 
             // 2. Jeśli mamy profil, ale brak obiektu user
             if (!user && profile) {
@@ -423,6 +424,18 @@
                     email: profile.email || '',
                     photoURL: profile.avatar || '/lumina_icon.jpg'
                 };
+=======
+            if (!user && profile && (profile.uid || profile.id || profile.slug)) {
+                user = {
+                    uid: profile.uid || profile.id || profile.slug,
+                    email: profile.email || '',
+                    displayName: profile.name || profile.displayName || '',
+                    photoURL: profile.avatar || ''
+                };
+            }
+            if (user && (user.uid || user.email)) {
+                return { user, profile: profile || {} };
+>>>>>>> origin/main
             }
 
             // 3. Sprawdź czy to sesja Cezarego / Administratora
@@ -651,6 +664,7 @@
                 const profile = data.profile || {};
                 const fullName = profile.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Członek LUMINA');
                 const firstName = fullName.trim().split(' ')[0] || 'Profil';
+<<<<<<< HEAD
                 const isCezary = (user.email && user.email.toLowerCase().includes('czarkes')) ||
                                  (user.email && user.email.toLowerCase().includes('nazir')) ||
                                  user.uid === 'cezaryrgowski' || user.id === 'cezaryrgowski' ||
@@ -659,6 +673,12 @@
                                  localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
                                  localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski';
                 const isWioletta = (user.email && user.email.includes('wioletta1240')) || profile.slug === 'wiolettarogowska' || (fullName && fullName.toLowerCase().includes('wioletta'));
+=======
+                const userEmail = (user.email || '').toLowerCase();
+                const userDispName = (user.displayName || profile.name || '').toLowerCase();
+                const isCezary = userEmail.includes('czarkes') || userEmail.includes('studiodees7') || userEmail.includes('osobowoscplus') || userEmail.includes('yourimaginationstudio') || userDispName.includes('cezary') || profile.slug === 'cezaryrgowski';
+                const isWioletta = userEmail.includes('wioletta') || userDispName.includes('wioletta') || profile.slug === 'wiolettarogowska';
+>>>>>>> origin/main
                 const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
                 const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
 
