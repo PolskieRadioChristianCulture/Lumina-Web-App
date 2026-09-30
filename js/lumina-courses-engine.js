@@ -1757,11 +1757,11 @@ class LuminaCoursesEngine {
       <section class="reader-section">
         <h2 class="reader-section-title">
           <span class="reader-step-num">12</span>
-          <span>Porozmawiaj z Opiekunem Duchowym</span>
+          <span>Porozmawiaj z duchownym</span>
         </h2>
         <div class="reader-care-box">
           <p class="text-zinc-300 text-sm leading-relaxed mb-4">
-            Masz pytania do tej lekcji, potrzebujesz modlitwy lub chcesz porozmawiać o przygotowaniu do chrztu?
+            Możesz na ten temat porozmawiać z duchownym — masz pytania do tej lekcji, potrzebujesz modlitwy lub chcesz porozmawiać o przygotowaniu do chrztu?
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">💬 Mam pytanie do tej lekcji</div>
@@ -1769,15 +1769,21 @@ class LuminaCoursesEngine {
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">📖 Chcę lepiej poznać Biblię</div>
             <div class="p-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg text-zinc-300">💧 Chcę przygotować się do chrztu</div>
           </div>
-          <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between flex-wrap gap-3 text-xs text-zinc-400">
-            <span class="flex items-center gap-2">
+          <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between flex-wrap gap-4 text-xs text-zinc-400">
+            <div class="flex items-center gap-3">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Dedykowana opieka i asysta duszpasterska Christian Culture</span>
-            </span>
-            <a href="tel:+48608337477" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-amber-500/30 text-amber-400 hover:border-amber-400 hover:text-amber-300 transition-colors">
-              <span>📞</span>
-              <span>Infolinia: <strong>+48 608 337 477</strong></span>
-            </a>
+              <span>Duchowny: <strong class="text-white font-semibold">Mariusz</strong> • <span class="text-amber-300 font-mono font-semibold">+48 608 337 477</span></span>
+            </div>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              <a href="tel:+48608337477" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider hover:from-amber-400 hover:to-amber-500 min-h-[44px] transition shadow-md">
+                <i class="fa-solid fa-phone"></i>
+                <span>Zadzwoń</span>
+              </a>
+              <a href="sms:+48608337477" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 hover:text-white hover:border-amber-400 font-bold text-xs uppercase tracking-wider min-h-[44px] transition">
+                <i class="fa-solid fa-comment-sms"></i>
+                <span>Wyślij SMS</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
