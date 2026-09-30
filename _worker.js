@@ -56,7 +56,7 @@ export default {
       return env.ASSETS.fetch(new Request(kursyUrl, request));
     }
 
-    if (p.startsWith('/akademia/') && !p.startsWith('/akademia/certyfikat')) {
+    if (p.startsWith('/akademia/lekcja-')) {
       const target = p.replace('/akademia/', '/kursy/');
       const kursyUrl = new URL(request.url);
       kursyUrl.pathname = target;
