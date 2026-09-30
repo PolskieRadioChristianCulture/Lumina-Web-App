@@ -51,12 +51,15 @@ export default {
     }
 
     if (p === '/akademia') {
-      const kursyUrl = new URL(request.url);
-      kursyUrl.pathname = '/kursy';
-      return env.ASSETS.fetch(new Request(kursyUrl, request));
+      const akademiaUrl = new URL(request.url);
+      akademiaUrl.pathname = '/akademia';
+      return env.ASSETS.fetch(new Request(akademiaUrl, request));
     }
 
     if (p.startsWith('/akademia/') && !p.startsWith('/akademia/certyfikat')) {
+      if (p.startsWith('/akademia/apokalipsa') || p.startsWith('/akademia/kurscodzienny')) {
+        return env.ASSETS.fetch(request);
+      }
       const target = p.replace('/akademia/', '/kursy/');
       const kursyUrl = new URL(request.url);
       kursyUrl.pathname = target;
