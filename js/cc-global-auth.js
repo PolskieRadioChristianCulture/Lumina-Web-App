@@ -575,18 +575,26 @@
                 const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
                 const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
 
-                let avatar = profile.avatar || user.photoURL || 'lumina_icon.jpg';
-                if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_cezary_official.jpg';
-                else if (isWioletta && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_wioletta_official.jpg';
-                else if (isZbyszek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_zbyszek_gieron.jpg';
-                else if (isZofia && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_zofia_dudek.jpg';
+                let avatar = profile.avatar || user.photoURL || '/lumina_icon.jpg';
+                if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_cezary_official.jpg';
+                else if (isWioletta && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_wioletta_official.jpg';
+                else if (isZbyszek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zbyszek_gieron.jpg';
+                else if (isZofia && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zofia_dudek.jpg';
 
-                let profileHref = 'lumina-profile.html';
-                if (isCezary) profileHref = 'lumina.cezaryrgowski.html';
-                else if (isWioletta) profileHref = 'lumina.wiolettarogowska.html';
-                else if (isZbyszek) profileHref = 'lumina.zbyszekgieron.html';
-                else if (isZofia) profileHref = 'lumina.zofiadudek.html';
-                else if (profile.slug) profileHref = `lumina-profile.html?u=${profile.slug}`;
+                if (avatar && !avatar.startsWith('/') && !avatar.startsWith('http') && !avatar.startsWith('data:')) {
+                    avatar = '/' + avatar;
+                }
+
+                let profileHref = '/lumina-profile.html';
+                if (isCezary) profileHref = '/lumina.cezaryrgowski.html';
+                else if (isWioletta) profileHref = '/lumina.wiolettarogowska.html';
+                else if (isZbyszek) profileHref = '/lumina.zbyszekgieron.html';
+                else if (isZofia) profileHref = '/lumina.zofiadudek.html';
+                else if (profile.slug) profileHref = `/lumina-profile.html?u=${profile.slug}`;
+
+                if (profileHref && !profileHref.startsWith('/') && !profileHref.startsWith('http')) {
+                    profileHref = '/' + profileHref;
+                }
 
                 container.style.display = 'inline-flex';
                 if (!container.classList.contains('cc-auth-widget-container')) {
@@ -596,7 +604,7 @@
                 container.innerHTML = `
                     <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown(event)" title="Twoje Konto LUMINA (${fullName})">
                         <div class="cc-auth-avatar-wrap">
-                            <img src="${avatar}" onerror="this.src='lumina_icon.jpg'" alt="${firstName}" class="cc-auth-avatar-img user-nav-avatar" id="userNavAvatar">
+                            <img src="${avatar}" onerror="this.onerror=null; this.src='/lumina_icon.jpg'" alt="${firstName}" class="cc-auth-avatar-img user-nav-avatar" id="userNavAvatar">
                             <span class="cc-auth-online-dot"></span>
                         </div>
                         <span class="cc-auth-user-name user-nav-name" id="userNavName">${firstName}</span>
@@ -608,15 +616,15 @@
                             <i class="fa-solid fa-id-card"></i>
                             <span>Mój Profil (${firstName})</span>
                         </a>
-                        <a href="tablica" class="cc-auth-dropdown-item">
+                        <a href="/tablica" class="cc-auth-dropdown-item">
                             <i class="fa-solid fa-users-viewfinder"></i>
                             <span>Tablica Społeczności</span>
                         </a>
-                        <a href="tablica?chat=open" class="cc-auth-dropdown-item">
+                        <a href="/tablica?chat=open" class="cc-auth-dropdown-item">
                             <i class="fa-solid fa-comments"></i>
                             <span>Wiadomości & Czat</span>
                         </a>
-                        <a href="lumina" class="cc-auth-dropdown-item">
+                        <a href="/lumina" class="cc-auth-dropdown-item">
                             <i class="fa-solid fa-heart"></i>
                             <span>Odkrywaj Portal</span>
                         </a>

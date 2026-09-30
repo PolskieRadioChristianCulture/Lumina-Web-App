@@ -62,9 +62,8 @@
   <style>
     body { background: #07090E; color: #e4e4e7; }
     .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
-    .hero-banner {
-      background: linear-gradient(180deg, rgba(7,9,14,0.3) 0%, rgba(7,9,14,0.95) 90%), url('/images/academy/z_biblia_za_pan_brat_hero.jpg') center/cover no-repeat;
-      min-height: 480px;
+    .hero-section {
+      background: radial-gradient(ellipse at top, rgba(196,163,90,0.12) 0%, rgba(7,9,14,1) 75%);
     }
     .cin-btn-primary {
       display: inline-flex;
@@ -110,7 +109,7 @@
   </style>
 
   <!-- Universal CC Global Auth -->
-  <script src="/js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+  <script src="/js/cc-global-auth.js?v=20260930_v4" defer></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
 
@@ -147,17 +146,26 @@
   </header>
 
   <!-- ── HERO SECTION ── -->
-  <section class="hero-banner relative flex items-center justify-center text-center px-4 py-16 sm:py-24 border-b border-brand-line">
-    <div class="max-w-4xl mx-auto z-10">
+  <section class="hero-section relative flex flex-col items-center justify-center text-center px-4 pt-10 pb-16 border-b border-brand-line">
+    <div class="max-w-4xl mx-auto z-10 w-full">
+
+      <!-- OFICJALNY PLAKAT KURSU (CZYSTA PREZENTACJA BEZ NAKŁADANIA TEKSTU) -->
+      <div class="relative w-full max-w-3xl mx-auto rounded-3xl overflow-hidden border border-brand-gold/30 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_rgba(196,163,90,0.2)] mb-8">
+        <img 
+          src="/images/academy/z_biblia_za_pan_brat_hero.jpg" 
+          alt="LUMINA Bible Academy — Z Biblią za Pan Brat (Kurs Codzienny)" 
+          class="w-full h-auto object-cover block"
+          loading="eager"
+        />
+      </div>
+
+      <h1 class="sr-only">Z BIBLIĄ ZA PAN BRAT — Kurs Codzienny • 66 Ksiąg Pisma Świętego</h1>
+
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4">
         <span>✦</span> <span>KURS CODZIENNY • 66 MIESIĘCY • 66 KSIĄG</span> <span>✦</span>
       </div>
 
-      <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-wider mb-3 drop-shadow-lg">
-        Z BIBLIĄ ZA PAN BRAT
-      </h1>
-
-      <p class="font-serif text-lg sm:text-2xl text-amber-200/95 font-medium mb-4 max-w-2xl mx-auto italic">
+      <p class="font-serif text-lg sm:text-2xl text-amber-200/95 font-medium mb-3 max-w-2xl mx-auto italic">
         Codzienna podróż przez 66 ksiąg Pisma Świętego. Poznaj Boga od pierwszych słów do wieczności.
       </p>
 
