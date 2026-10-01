@@ -691,6 +691,22 @@
                             <i class="fa-solid fa-heart"></i>
                             <span>Odkrywaj Portal</span>
                         </a>
+                        <a href="/biznes" class="cc-auth-dropdown-item">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span>Biznes Hub CC</span>
+                        </a>
+                        <a href="/kultura" class="cc-auth-dropdown-item">
+                            <i class="fa-solid fa-landmark"></i>
+                            <span>Centrum Kultury</span>
+                        </a>
+                        <a href="/akademia" class="cc-auth-dropdown-item">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>Akademia Biblijna</span>
+                        </a>
+                        <a href="/vod" class="cc-auth-dropdown-item">
+                            <i class="fa-solid fa-film"></i>
+                            <span>Kino VOD</span>
+                        </a>
                         <div class="cc-auth-dropdown-sep"></div>
                         <button type="button" class="cc-auth-dropdown-item logout" onclick="if(window.handleLogout) handleLogout(); else ccLogout();">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>

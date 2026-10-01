@@ -57,6 +57,14 @@
       ],
       "rewrites": [
         {
+          "source": "/biznes",
+          "destination": "/biznes.html"
+        },
+        {
+          "source": "/kultura",
+          "destination": "/kultura.html"
+        },
+        {
           "source": "/rolki",
           "destination": "/lumina-shorts.html"
         },
