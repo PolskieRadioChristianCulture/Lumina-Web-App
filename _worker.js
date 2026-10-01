@@ -44,6 +44,12 @@ export default {
     }
 
     const p = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (p === '/aktualnosci' || p === '/aktualnosci.html' || p === '/ccn' || p === '/ccn-news' || p === '/raport' || p === '/sprawozdanie') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/news';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     if (p === '/ambientsleep' || p === '/ambient-sleep') {
       const ambientUrl = new URL(request.url);
       ambientUrl.pathname = '/ambientsleep';

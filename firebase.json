@@ -53,9 +53,23 @@
           "source": "/snadaniowa-live-worship.html",
           "destination": "/cctv24-worship.html",
           "type": 301
+        },
+        {
+          "source": "/aktualnosci",
+          "destination": "/news",
+          "type": 301
+        },
+        {
+          "source": "/aktualnosci/**",
+          "destination": "/news",
+          "type": 301
         }
       ],
       "rewrites": [
+        {
+          "source": "/news",
+          "destination": "/news.html"
+        },
         {
           "source": "/biznes",
           "destination": "/biznes.html"
@@ -513,24 +527,8 @@
           "destination": "/program.html"
         },
         {
-          "source": "/aktualnosci",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/raport",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/sprawozdanie",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/aktualnosci-sierpien",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/aktualnosci-lipiec",
-          "destination": "/aktualnosci.html"
+          "source": "/news",
+          "destination": "/news.html"
         }
       ],
       "headers": [
@@ -701,7 +699,23 @@
         "maxVersionsToKeep": 3
       },
       "cleanUrls": true,
+      "redirects": [
+        {
+          "source": "/aktualnosci",
+          "destination": "/news",
+          "type": 301
+        },
+        {
+          "source": "/aktualnosci/**",
+          "destination": "/news",
+          "type": 301
+        }
+      ],
       "rewrites": [
+        {
+          "source": "/news",
+          "destination": "/news.html"
+        },
         {
           "source": "/rolki",
           "destination": "/lumina-shorts.html"
@@ -1119,24 +1133,8 @@
           "destination": "/program.html"
         },
         {
-          "source": "/aktualnosci",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/raport",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/sprawozdanie",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/aktualnosci-sierpien",
-          "destination": "/aktualnosci.html"
-        },
-        {
-          "source": "/aktualnosci-lipiec",
-          "destination": "/aktualnosci.html"
+          "source": "/news",
+          "destination": "/news.html"
         }
       ],
       "headers": [
