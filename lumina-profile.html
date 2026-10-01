@@ -268,7 +268,7 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
+    <script type="module" src="lumina-db.js?v=20261001_direct_message_persistence_v2"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -8301,16 +8301,27 @@
             input.value = '';
 
             if (window.LuminaDB) {
-                await window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                const result = await window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myUser?.displayName || 'Użytkownik LUMINA',
                     text: txt,
                     receiverId: slug
                 });
+                if (!result) {
+                    input.value = txt;
+                    showToast('Nie udało się zapisać wiadomości. Spróbuj ponownie.');
+                } else if (result?.status === 'request_sent') {
+                    showToast('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                } else if (result?.status === 'request_pending') {
+                    showToast('Ta prośba o rozmowę czeka już na odpowiedź.');
+                }
+            } else {
+                input.value = txt;
+                showToast('Nie udało się połączyć z czatem. Spróbuj ponownie.');
             }
         }
 
-        function sendCoffeeInvitation() {
+        async function sendCoffeeInvitation() {
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
             const myUser = window.LuminaDB?.getCurrentUser();
@@ -8318,14 +8329,33 @@
             const chatId = [fromId, slug].sort().join('_');
 
             if (window.LuminaDB) {
-                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                const result = await window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myUser?.displayName || 'Użytkownik LUMINA',
                     text: `Cześć ${cur.name}! Chciałbym zaprosić Cię na chrześcijańską kawę i miłą rozmowę o wierze i życiu ☕✨`,
                     type: 'coffee_invite',
                     receiverId: slug
                 });
+                if (!result) {
+                    showToast('Nie udało się wysłać zaproszenia. Spróbuj ponownie.');
+                    return;
+                }
+                if (result?.status === 'request_sent') {
+                    showToast('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                    return;
+                }
+                if (result?.status === 'request_pending') {
+                    showToast('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    return;
+                }
+                if (typeof result !== 'string') {
+                    showToast('Nie można wysłać wiadomości w tej rozmowie.');
+                    return;
+                }
                 window.LuminaDB.recordProfileLike(slug, { name: cur.name, avatar: cur.avatar }, 'like');
+            } else {
+                showToast('Nie udało się połączyć z czatem. Spróbuj ponownie.');
+                return;
             }
 
             closeModal('coffeeModal');
@@ -9837,11 +9867,19 @@
                         text: text
                     });
                     if (!result) {
+                        if (input) input.value = text;
                         showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
                     }
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    if (result?.status === 'request_closed') {
+                        if (input) input.value = text;
+                        showToast?.('Ta rozmowa jest zamknięta. Wyślij nową prośbę o rozmowę.', 'error');
+                    }
                 }
+            } catch (error) {
+                if (input) input.value = text;
+                showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
             } finally {
                 if (input) {
                     input.disabled = false;

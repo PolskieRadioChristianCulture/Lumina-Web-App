@@ -186,7 +186,7 @@
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'wiolettarogowska';</script>
-    <script type="module" src="lumina-db.js?v=4.1.7"></script>
+    <script type="module" src="lumina-db.js?v=20261001_direct_message_persistence_v2"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
 
     <script src="js/lumina-community-posts.js"></script>
@@ -7282,9 +7282,20 @@
                         receiverUid: activeChatSession.targetUid || null,
                         text: text
                     });
+                    if (!result) {
+                        if (input) input.value = text;
+                        showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
+                    }
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    if (result?.status === 'request_closed') {
+                        if (input) input.value = text;
+                        showToast?.('Ta rozmowa jest zamknięta. Wyślij nową prośbę o rozmowę.', 'error');
+                    }
                 }
+            } catch (error) {
+                if (input) input.value = text;
+                showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
             } finally {
                 if (input) {
                     input.disabled = false;
