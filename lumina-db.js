@@ -5,6 +5,7 @@ window.LuminaDB = window.LuminaDB || {};
 // ══════════════════════════════════════════════════════════════════════════
 
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { createPendingDirectMessage, withFirestoreWriteState, reconcilePersistedDirectMessage, removePendingDirectMessage, persistThenDispatch } from './js/lumina-direct-message-state.js';
 import { 
     getAuth, 
     signInWithPopup, 
@@ -74,7 +75,8 @@ async function triggerLuminaPush(kind, documentId) {
         const response = await fetch(`${baseUrl}/v1/push/${encodeURIComponent(kind)}/${encodeURIComponent(documentId)}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${idToken}` },
-            signal: controller?.signal
+            signal: controller?.signal,
+            keepalive: true
         });
         if (!response.ok) {
             console.warn(`[LUMINA Push] Worker odrzucił ${kind}: ${response.status}`);
@@ -2987,10 +2989,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('participants', 'array-contains', authUid),
             limit(150)
         );
-        unsub1 = onSnapshot(directQ, (snap) => {
+        unsub1 = onSnapshot(directQ, { includeMetadataChanges: true }, (snap) => {
             topLevelMessages = [];
             snap.forEach(d => {
-                const message = { id: d.id, ...d.data() };
+                const message = withFirestoreWriteState({ id: d.id, ...d.data() }, d.metadata?.hasPendingWrites);
                 if (message.chatId === normalizedChatId) topLevelMessages.push(message);
             });
             emitMergedMessages();
@@ -3017,7 +3019,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('users', 'array-contains', authUid),
             limit(150)
         );
-        unsub3 = onSnapshot(legacyQ, (snap) => {
+        unsub3 = onSnapshot(legacyQ, { includeMetadataChanges: true }, (snap) => {
             legacyMessages = [];
             snap.forEach(d => {
                 const message = { id: d.id, ...d.data() };
@@ -3034,9 +3036,9 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('participants', 'array-contains', authUid),
             limit(150)
         );
-        unsub2 = onSnapshot(nestedQ, (snap) => {
+        unsub2 = onSnapshot(nestedQ, { includeMetadataChanges: true }, (snap) => {
             nestedMessages = [];
-            snap.forEach(d => nestedMessages.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => nestedMessages.push(withFirestoreWriteState({ id: d.id, ...d.data() }, d.metadata?.hasPendingWrites)));
             emitMergedMessages();
         }, () => {});
     } catch(e) {}
@@ -3284,23 +3286,44 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    // 1. Save locally and trigger active UI listener immediately
+    // Show a local pending bubble, but treat Firestore as the success boundary.
     const localKey = `lumina_chat_${normalizedChatId}`;
+    const localMessageId = `local_${clientMessageId}`;
+    const publishCachedMessages = (messages) => {
+        try { localStorage.setItem(localKey, JSON.stringify(messages)); } catch(e) {}
+        const listener = activeDirectChatListeners.get(normalizedChatId);
+        if (listener) listener(messages);
+    };
     try {
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
-        localStorage.setItem(localKey, JSON.stringify(cached));
-        
-        const listener = activeDirectChatListeners.get(normalizedChatId);
-        if (listener) listener(cached);
+        cached.push(createPendingDirectMessage(fullMsg, localMessageId));
+        publishCachedMessages(cached);
     } catch(e) {}
 
-    if (!db || !normalizedChatId) return 'local_' + Date.now();
+    const removeOptimisticMessage = () => {
+        try {
+            const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+            publishCachedMessages(removePendingDirectMessage(cached, { clientMessageId, localId: localMessageId }));
+        } catch(e) {}
+    };
+    if (!db || !normalizedChatId) {
+        removeOptimisticMessage();
+        return null;
+    }
 
     try {
-        // Write to top-level collection (Primary)
-        const msgRef = await addDoc(collection(db, 'lumina_direct_messages'), fullMsg);
-        await triggerLuminaPush('direct', msgRef.id);
+        const msgRef = await persistThenDispatch(
+            () => addDoc(collection(db, 'lumina_direct_messages'), fullMsg),
+            (messageRef) => {
+                const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+                publishCachedMessages(reconcilePersistedDirectMessage(cached, {
+                    clientMessageId,
+                    localId: localMessageId,
+                    messageId: messageRef.id
+                }));
+            },
+            (messageId) => triggerLuminaPush('direct', messageId)
+        );
 
         // Also write to subcollection (Backup)
         addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
@@ -3359,6 +3382,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         return msgRef.id;
     } catch(e) {
         console.warn('Lumina send direct message notice:', e.message);
+        removeOptimisticMessage();
         return null;
     }
 }

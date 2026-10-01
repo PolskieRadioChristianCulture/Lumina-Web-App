@@ -213,7 +213,7 @@
     <!-- Lumina Community Core Posts Data -->
     <script src="js/lumina-community-posts.js?v=20260919_tags_mentions"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
+    <script type="module" src="lumina-db.js?v=20261001_direct_message_persistence_v2"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
@@ -13694,9 +13694,20 @@
                         receiverUid: activeChatSession.targetUid || null,
                         text: text
                     });
+                    if (!result) {
+                        if (input) input.value = text;
+                        showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
+                    }
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    if (result?.status === 'request_closed') {
+                        if (input) input.value = text;
+                        showToast?.('Ta rozmowa jest zamknięta. Wyślij nową prośbę o rozmowę.', 'error');
+                    }
                 }
+            } catch (error) {
+                if (input) input.value = text;
+                showToast?.('Nie udało się zapisać wiadomości. Spróbuj ponownie.', 'error');
             } finally {
                 if (input) {
                     input.disabled = false;
@@ -15094,7 +15105,7 @@
             if (modal) modal.classList.remove('open');
         };
 
-        window.handleQuickActionPoke = function() {
+        window.handleQuickActionPoke = async function() {
             const slug = _activeQuickActionSlug;
             const p = _activeQuickActionProfile || {};
             const name = p.name || slug;
@@ -15105,16 +15116,34 @@
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
 
             if (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') {
-                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                const result = await window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
                     text: `✨ Pomachałem/am do Ciebie! Cześć ${name}, błogosławionego i pięknego dnia w Panu! ✨✨`,
                     type: 'poke',
                     receiverId: slug
                 });
+                if (!result) {
+                    showToast?.('Nie udało się wysłać powitania. Spróbuj ponownie.', 'error');
+                    return;
+                }
+                if (result?.status === 'request_sent') {
+                    showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                    return;
+                }
+                if (result?.status === 'request_pending') {
+                    showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    return;
+                }
+                if (typeof result !== 'string') {
+                    showToast?.('Nie można wysłać wiadomości w tej rozmowie.', 'error');
+                    return;
+                }
                 window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'poke');
+            } else {
+                showToast?.('Czat jest niedostępny. Spróbuj ponownie.', 'error');
+                return;
             }
-
             window.closeProfileQuickActions();
             if (typeof showToast === 'function') {
                 showToast(`✨ Zaczepiono ${name}! Wysłano miłe chrześcijańskie powitanie ✨`);
@@ -15159,7 +15188,7 @@
             }
         };
 
-        window.handleQuickActionCoffee = function() {
+        window.handleQuickActionCoffee = async function() {
             const slug = _activeQuickActionSlug;
             const p = _activeQuickActionProfile || {};
             const name = p.name || slug;
@@ -15170,16 +15199,34 @@
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
 
             if (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') {
-                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                const result = await window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
                     text: `☕ Cześć ${name}! Chciałbym/chciałabym zaprosić Cię na wirtualną Chrześcijańską Kawę i budującą rozmowę o Bogu i życiu! ✨❤️`,
                     type: 'coffee_invite',
                     receiverId: slug
                 });
+                if (!result) {
+                    showToast?.('Nie udało się wysłać zaproszenia. Spróbuj ponownie.', 'error');
+                    return;
+                }
+                if (result?.status === 'request_sent') {
+                    showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
+                    return;
+                }
+                if (result?.status === 'request_pending') {
+                    showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    return;
+                }
+                if (typeof result !== 'string') {
+                    showToast?.('Nie można wysłać wiadomości w tej rozmowie.', 'error');
+                    return;
+                }
                 window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'coffee');
+            } else {
+                showToast?.('Czat jest niedostępny. Spróbuj ponownie.', 'error');
+                return;
             }
-
             window.closeProfileQuickActions();
             if (typeof showToast === 'function') {
                 showToast(`☕ Wysłano zaproszenie na Chrześcijańską Kawę do ${name}! ✨`);
