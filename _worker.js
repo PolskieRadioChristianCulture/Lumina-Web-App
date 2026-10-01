@@ -56,17 +56,6 @@ export default {
       return env.ASSETS.fetch(new Request(akademiaUrl, request));
     }
 
-    if (p === '/biznes') {
-      const biznesUrl = new URL(request.url);
-      biznesUrl.pathname = '/biznes.html';
-      return env.ASSETS.fetch(new Request(biznesUrl, request));
-    }
-
-    if (p === '/kultura') {
-      const kulturaUrl = new URL(request.url);
-      kulturaUrl.pathname = '/kultura.html';
-      return env.ASSETS.fetch(new Request(kulturaUrl, request));
-    }
 
     if (p.startsWith('/akademia/') && !p.startsWith('/akademia/certyfikat')) {
       if (p.startsWith('/akademia/apokalipsa') || p.startsWith('/akademia/kurscodzienny')) {
