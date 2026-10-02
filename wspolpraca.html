@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CCN Współpraca">
+    
+    <title>Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture</title>
+    <meta name="description" content="Razem możemy dotrzeć dalej. Otwarty ekosystem chrześcijańskich mediów, technologii i treści. Dołącz jako zbór, twórca, medium, wolontariusz lub partner technologiczny." />
+    <link rel="canonical" href="https://polskieradio.cc/wspolpraca" />
+    <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture" />
+    <meta property="og:description" content="Jeden sieje, drugi podlewa, a Bóg daje wzrost (1 Kor 3:6). Dołącz do otwartego partnerstwa chrześcijańskiego." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://polskieradio.cc/wspolpraca" />
+    <meta property="og:image" content="https://polskieradio.cc/ccn-logo-square.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="/js/cc-global-auth.js" defer></script>
+    <script type="module" crossorigin src="/assets/wspolpraca-index-BAQGbEQF.js"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
+    <div id="root">
+      <div id="wspolpraca-startup" role="status" style="max-width:34rem;margin:4rem auto;padding:1.5rem;font:16px/1.6 system-ui;color:#18181b;background:#fff;border-radius:1rem;border:1px solid #e4e4e7">
+        <h1 style="color:#bb142e;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:bold">CCN Współpraca Misyjna</h1>
+        <p id="wspolpraca-startup-message">Ładowanie centralnego huba partnerstwa misyjnego…</p>
+        <p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;background:#bb142e;color:#fff;border:none;cursor:pointer;font-weight:600">Odśwież stronę</button> <a href="https://polskieradio.cc" style="margin-left:12px;color:#52525b">Przejdź do radia</a></p>
+        <noscript>Włącz JavaScript w przeglądarce, aby wyświetlić hub współpracy.</noscript>
+      </div>
+    </div>
+    <script>
+      window.handleCredentialResponse = (response) => {
+        const event = new CustomEvent('google-credential-response', { detail: { response } });
+        window.dispatchEvent(event);
+      };
+      setTimeout(function () {
+        var message = document.getElementById('wspolpraca-startup-message');
+        if (message) message.textContent = 'Nie udało się załadować panelu. Odśwież stronę. W razie pytań napisz: polskiercctv@gmail.com.';
+      }, 15000);
+    </script>
+  </body>
+</html>
