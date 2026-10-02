@@ -1,10 +1,10 @@
 {
   "gcm_sender_id": "103953800507",
-  "id": "/lumina-app",
-  "name": "LUMINA – Chrześcijańska Społeczność & Randki",
-  "short_name": "LUMINA",
-  "description": "Chrześcijański portal randkowy i społecznościowy. Odkryj wartościowe relacje oparte na wierze, miłości i czystości wartości chrześcijańskich.",
-  "start_url": "/lumina?source=pwa",
+  "id": "/",
+  "name": "Christian Culture",
+  "short_name": "Christian Culture",
+  "description": "Radio, Telewizja TV24, Wiadomości CCN News, Muzyka, Modlitwa i Społeczność Christian Culture.",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "display_override": [
@@ -13,131 +13,97 @@
     "minimal-ui"
   ],
   "orientation": "portrait",
-  "background_color": "#090d1a",
-  "theme_color": "#090d1a",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
   "lang": "pl-PL",
   "dir": "ltr",
   "categories": [
-    "social",
+    "news",
+    "music",
     "lifestyle",
-    "dating",
-    "news"
+    "social"
   ],
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "lumina-badge-v2.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "monochrome"
-    },
-    {
-      "src": "lumina-badge-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "monochrome"
-    },
-    {
-      "src": "lumina-notif-icon-v2.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "lumina-icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "lumina-icon-192.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "lumina-notif-icon-512.png",
+      "src": "logo-cc.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "lumina-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "lumina-icon-512.png",
+      "src": "logo-cc.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "lumina-apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "app-christian-culture.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }
   ],
   "shortcuts": [
     {
-      "name": "Tablica Społeczności",
-      "short_name": "Tablica",
-      "description": "Najnowsze wpisy, modlitwy i aktywność społeczności LUMINA",
+      "name": "Radio PolskieRadio.cc",
+      "short_name": "Radio",
+      "description": "Strumień radiowy 24/7 ze Słowem Bożym i muzyką",
+      "url": "/?source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "CCN News",
+      "short_name": "Wiadomości",
+      "description": "Niezależny portal informacyjny Christian Culture",
+      "url": "/news?source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Telewizja CC TV24",
+      "short_name": "TV24",
+      "description": "Transmisja telewizyjna Christian Culture TV",
+      "url": "/cctv24?source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Społeczność LUMINA",
+      "short_name": "Społeczność",
+      "description": "Wpisy, modlitwy i tablica społeczności",
       "url": "/tablica?source=pwa_shortcut",
       "icons": [
         {
-          "src": "lumina-icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Odkrywaj i Randki",
-      "short_name": "Randki",
-      "description": "Poznaj profile chrześcijan o wspólnych wartościach",
-      "url": "/lumina?source=pwa_shortcut",
-      "icons": [
-        {
-          "src": "lumina-icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Mój Profil",
-      "short_name": "Profil",
-      "description": "Edycja i podgląd profilu użytkownika",
-      "url": "/profil?source=pwa_shortcut",
-      "icons": [
-        {
-          "src": "lumina-icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Modlitwy Live",
-      "short_name": "Modlitwa",
-      "description": "Wstawiennictwo i wspólnota modlitewna",
-      "url": "/zapolske?source=pwa_shortcut",
-      "icons": [
-        {
-          "src": "lumina-icon-192.png",
+          "src": "icon.png",
           "sizes": "192x192"
         }
       ]
     }
-  ],
-  "share_target": {
-    "action": "/tablica",
-    "method": "GET",
-    "enctype": "application/x-www-form-urlencoded",
-    "params": {
-      "title": "share_title",
-      "text": "share_text",
-      "url": "share_url"
-    }
-  }
+  ]
 }

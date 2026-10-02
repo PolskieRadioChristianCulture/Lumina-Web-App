@@ -108,16 +108,8 @@
                     );
 
                     if (isNewVer || !reinstalled) {
-                        console.log('[LUMINA PWA] Wymuszenie reinstalacji/aktualizacji na wszystkich urządzeniach (v4.1.4)');
                         localStorage.setItem('lumina_reinstalled_v415', 'true');
-                        localStorage.removeItem('lumina_reinstalled_v414'); // Usun stary klucz
-                        localStorage.removeItem(DISMISS_INSTALL_KEY);
-                        sessionStorage.removeItem(DISMISS_INSTALL_KEY);
-
-                        const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
-                        if (isMobile && !isRunningStandalone()) {
-                            showInstallBanner();
-                        }
+                        localStorage.removeItem('lumina_reinstalled_v414');
                     }
                 }
             } catch(fetchErr) {}
@@ -605,14 +597,8 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredInstallPrompt = e;
-            showInstallBanner();
+            // Zachowaj deferredInstallPrompt do ręcznego wywołania (np. przez przycisk w menu), bez nachalnego auto-popupu
         });
-
-        // Wymuszenie reinstalacji na urządzeniach mobilnych (jeśli nie w trybie standalone PWA)
-        const isMobileDevice = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
-        if (isMobileDevice && !isRunningStandalone() && sessionStorage.getItem(DISMISS_INSTALL_KEY) !== 'true') {
-            setTimeout(showInstallBanner, 25000);
-        }
 
         window.addEventListener('appinstalled', () => {
             console.log('[LUMINA PWA] Aplikacja zainstalowana pomyślnie!');

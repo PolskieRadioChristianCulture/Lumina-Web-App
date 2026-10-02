@@ -61,7 +61,7 @@ function localScriptSources(html) {
   while ((match = sourcePattern.exec(html)) !== null) {
     const source = match[1].trim();
     if (/^(?:https?:)?\/\//i.test(source) || /^(?:data|blob):/i.test(source)) continue;
-    const normalized = source.split(/[?#]/, 1)[0].replace(/^\.\//, '');
+    const normalized = source.split(/[?#]/, 1)[0].replace(/^(\.\/|\/)+/, '');
     if (normalized) sources.push(normalized);
   }
   return sources;
