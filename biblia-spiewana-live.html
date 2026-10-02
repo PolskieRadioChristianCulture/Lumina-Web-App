@@ -1867,38 +1867,45 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             100% { opacity: 1; }
         }
 
-        /* --- QR CODE WIDGETS --- */
+        /* --- QR CODE WIDGETS (WHITE CCN NEWS THEME) --- */
         .biblia-qr-widget {
             position: absolute;
-            bottom: 110px; /* Sits cleanly above the 85px footer */
+            bottom: 104px; /* Sits cleanly above the 89px CCN News master ticker */
             z-index: 100;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 16px;
-            padding: 15px;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            border-radius: 14px;
+            padding: 12px 14px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            width: 170px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.85), 0 0 15px rgba(255, 255, 255, 0.08);
+            width: 156px;
+            transition: all 0.3s ease;
         }
         .biblia-qr-widget-title {
-            color: #D4AF37;
-            font-size: 0.85rem;
+            color: #ffffff;
+            font-size: 0.82rem;
             font-weight: 800;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-family: 'Cinzel', serif;
+            font-family: 'Inter', 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .biblia-qr-widget img {
             border-radius: 8px;
             margin-bottom: 0;
-            width: 130px;
-            height: 130px;
-            border: 2px solid #D4AF37;
+            width: 128px;
+            height: 128px;
+            border: 2px solid #ffffff;
+            background: #000000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
     
         
@@ -2005,18 +2012,16 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
         </div><!-- /.emission-grid -->
 
-        <!-- QR 1: Pobierz Aplikację — lewy dolny róg -->
-        <div class="biblia-qr-widget" style="left: 60px;">
-            <div class="biblia-qr-widget-title">📱 Pobierz Aplikację</div>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja Biblia Audio">
-            
+        <!-- QR 1: Pobierz Aplikację — lewy dolny róg (Biały motyw CCN) -->
+        <div class="biblia-qr-widget" style="left: 45px; bottom: 104px;">
+            <div class="biblia-qr-widget-title"><i class="fa-solid fa-mobile-screen"></i> POBIERZ APLIKACJĘ</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc&color=ffffff&bgcolor=000000" alt="QR Aplikacja Dobrze, że jesteś">
         </div>
 
-        <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
-        <div class="biblia-qr-widget" style="right: 60px;">
-            <div class="biblia-qr-widget-title">📖 Zamów Biblię</div>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia papierowa">
-            
+        <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg (Biały motyw CCN) -->
+        <div class="biblia-qr-widget" style="right: 45px; bottom: 104px;">
+            <div class="biblia-qr-widget-title"><i class="fa-solid fa-book-bible"></i> ZAMÓW BIBLIĘ</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc/biblia-do-pobrania.html&color=ffffff&bgcolor=000000" alt="QR Biblia papierowa">
         </div>
 
         <!-- Cinematic Audio Spectrum (nad footer) -->
