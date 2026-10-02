@@ -51,16 +51,16 @@ export default {
       decodedP = p;
     }
 
-    if (decodedP === '/ogłoszenia' || decodedP === '/ogloszenia' || decodedP === '/tablica-ogloszen') {
-      const ogloszeniaUrl = new URL(request.url);
-      ogloszeniaUrl.pathname = '/ogloszenia.html';
-      return env.ASSETS.fetch(new Request(ogloszeniaUrl, request));
+    if (decodedP === '/ogłoszenia' || decodedP === '/tablica-ogloszen') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/ogloszenia';
+      return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    if (decodedP === '/ziu' || decodedP === '/zdrowie' || decodedP === '/zdrowie-i-uroda') {
-      const ziuUrl = new URL(request.url);
-      ziuUrl.pathname = '/ziu.html';
-      return env.ASSETS.fetch(new Request(ziuUrl, request));
+    if (decodedP === '/zdrowie' || decodedP === '/zdrowie-i-uroda') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/ziu';
+      return Response.redirect(redirectUrl.toString(), 301);
     }
 
     if (p === '/aktualnosci' || p === '/aktualnosci.html' || p === '/ccn' || p === '/ccn-news' || p === '/raport' || p === '/sprawozdanie') {
