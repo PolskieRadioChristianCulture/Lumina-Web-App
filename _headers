@@ -96,3 +96,6 @@
 
 /js/cc-global-auth*
   Cache-Control: no-cache, no-store, must-revalidate
+
+/components/*
+  Cache-Control: no-cache, no-store, must-revalidate

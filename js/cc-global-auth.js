@@ -833,4 +833,21 @@
         autoMountAuthWidget();
     }
 
+    // 11. Automatyczne załadowanie modułu wsparcia misji (CC Support Footer)
+    function loadSupportFooter() {
+        if (window._ccSupportFooterLoaded || document.querySelector('script[src*="cc-support-footer"]')) return;
+        const p = (window.location.pathname || '').toLowerCase();
+        if (p.includes('-live') || p.includes('stream-scene') || p.includes('cctv24-worship') || p.includes('pilot') || p.includes('smart-tv')) return;
+        window._ccSupportFooterLoaded = true;
+        const s = document.createElement('script');
+        s.src = '/components/cc-support-footer.js?v=20261002_v1';
+        s.defer = true;
+        document.head.appendChild(s);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadSupportFooter);
+    } else {
+        loadSupportFooter();
+    }
+
 })();
