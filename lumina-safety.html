@@ -128,6 +128,8 @@
         }
     </style>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_master">
+    <script src="/js/lumina-theme-manager.js?v=20261002_master"></script>
 </head>
 <body class="safety-body">
 
@@ -266,5 +268,10 @@ if (localStorage.getItem('lumina_cookie_consent')) {
 }
 </script>
   <script src="/components/cc-support-footer.js" defer></script>
+    <!-- ══════════ PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ══════════ -->
+    <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw (Jasny / Ciemny)">
+        <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
+        <span id="luminaThemeLabel">Motyw: Ciemny (Obsidian)</span>
+    </button>
 </body>
 </html>

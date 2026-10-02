@@ -884,10 +884,12 @@
         }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_master">
     <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260925_standard_v1">
     <script src="js/lumina-mission-blik.js"></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
     <script src="js/lumina-profile-standard.js?v=20260925_v1" defer></script>
+    <script src="/js/lumina-theme-manager.js?v=20261002_master"></script>
 </head>
 <body class="lumina-profile-standard">
 
@@ -1523,5 +1525,10 @@
     <script src="lumina-bottom-nav.js?v=20260907_google_auth_v1" defer></script>
     <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
     <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer></script>
+    <!-- ══════════ PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ══════════ -->
+    <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw (Jasny / Ciemny)">
+        <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
+        <span id="luminaThemeLabel">Motyw: Ciemny (Obsidian)</span>
+    </button>
 </body>
 </html>
