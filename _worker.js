@@ -57,10 +57,22 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (decodedP === '/ogloszenia') {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/ogloszenia/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     if (decodedP === '/zdrowie' || decodedP === '/zdrowie-i-uroda') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/ziu';
       return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/ziu') {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/ziu/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
     if (p === '/aktualnosci' || p === '/aktualnosci.html' || p === '/ccn' || p === '/ccn-news' || p === '/raport' || p === '/sprawozdanie') {
@@ -205,6 +217,13 @@ export default {
 
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
+      const dirUrl = new URL(request.url);
+      dirUrl.pathname = url.pathname.replace(/\/$/, '') + '/';
+      const dirResp = await env.ASSETS.fetch(new Request(dirUrl, request));
+      if (dirResp.status < 400) {
+        return dirResp;
+      }
+
       const fallbackUrl = new URL(request.url);
       fallbackUrl.pathname = url.pathname.replace(/\/$/, '') + '.html';
       const fallbackResp = await env.ASSETS.fetch(new Request(fallbackUrl, request));
