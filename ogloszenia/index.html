@@ -16,7 +16,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="CCN Biznes">
+    <meta name="apple-mobile-web-app-title" content="CCN Ogłoszenia">
     
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -29,16 +29,16 @@
       });
     </script>
     
-    <title>CCN Biznes – Chrześcijański Węzeł Gospodarczy & Katalog Usług | Christian Culture</title>
-    <meta name="description" content="Katalog rzetelnych chrześcijańskich firm i usług, etyka w biznesie oraz przedsiębiorczość oparta na wartościach biblijnych." />
-    <link rel="canonical" href="https://polskieradio.cc/biznes" />
+    <title>CCN Ogłoszenia – Tablica Społeczności Chrześcijańskiej | Christian Culture</title>
+    <meta name="description" content="Otwarte ogłoszenia wzajemnego wsparcia, darów serca, pracy, mieszkań, motoryzacji i wolontariatu dla społeczności Christian Culture. Publikuj za darmo." />
+    <link rel="canonical" href="https://polskieradio.cc/ogloszenia" />
     <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
     
     <!-- Open Graph -->
-    <meta property="og:title" content="CCN Biznes – Chrześcijański Węzeł Gospodarczy | Christian Culture" />
-    <meta property="og:description" content="Katalog rzetelnych chrześcijańskich firm i usług opartych na wartościach biblijnych." />
+    <meta property="og:title" content="CCN Ogłoszenia – Tablica Społeczności Chrześcijańskiej | Christian Culture" />
+    <meta property="og:description" content="Oddam za darmo, pomogę bo mogę, poszukuję wsparcia, praca, nieruchomości, samochody, żywność. Bezpłatne ogłoszenia chrześcijańskie." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://polskieradio.cc/biznes" />
+    <meta property="og:url" content="https://polskieradio.cc/ogloszenia" />
     <meta property="og:image" content="https://polskieradio.cc/ccn-logo-square.png" />
 
     <!-- Fonts -->
@@ -48,25 +48,25 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script type="module" crossorigin src="/assets/biznes-index-TfxtKZ8u.js"></script>
+    <script type="module" crossorigin src="/assets/ogloszenia-index-B8r6G1Hj.js"></script>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
     <div id="root">
-      <div id="biznes-startup" role="status" style="max-width:34rem;margin:4rem auto;padding:1.5rem;font:16px/1.6 system-ui;color:#18181b;background:#fff;border-radius:1rem;border:1px solid #e4e4e7">
-        <h1 style="color:#bb142e;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:bold">CCN Biznes</h1>
-        <p id="biznes-startup-message">Ładowanie katalogu usług i gospodarki…</p>
+      <div id="ogloszenia-startup" role="status" style="max-width:34rem;margin:4rem auto;padding:1.5rem;font:16px/1.6 system-ui;color:#18181b;background:#fff;border-radius:1rem;border:1px solid #e4e4e7">
+        <h1 style="color:#bb142e;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:bold">CCN Ogłoszenia</h1>
+        <p id="ogloszenia-startup-message">Ładowanie tablicy ogłoszeń społeczności chrześcijańskiej…</p>
         <p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;background:#bb142e;color:#fff;border:none;cursor:pointer;font-weight:600">Odśwież stronę</button> <a href="https://polskieradio.cc" style="margin-left:12px;color:#52525b">Przejdź do radia</a></p>
-        <noscript>Włącz JavaScript w przeglądarce, aby wyświetlić portal biznesowy.</noscript>
+        <noscript>Włącz JavaScript w przeglądarce, aby wyświetlić tablicę ogłoszeń.</noscript>
       </div>
     </div>
     <script>
-      window.handleCredentialResponse = (response, isManagementCenter = false) => {
-        const event = new CustomEvent('google-credential-response', { detail: { response, isManagementCenter } });
+      window.handleCredentialResponse = (response) => {
+        const event = new CustomEvent('google-credential-response', { detail: { response } });
         window.dispatchEvent(event);
       };
       setTimeout(function () {
-        var message = document.getElementById('biznes-startup-message');
-        if (message) message.textContent = 'Nie udało się załadować panelu. Odśwież stronę. W razie pytań napisz: polskiercctv@gmail.com.';
+        var message = document.getElementById('ogloszenia-startup-message');
+        if (message) message.textContent = 'Nie udało się załadować tablicy ogłoszeń. Odśwież stronę. W razie pytań napisz: polskiercctv@gmail.com.';
       }, 15000);
     </script>
   </body>

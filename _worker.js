@@ -44,6 +44,25 @@ export default {
     }
 
     const p = url.pathname.toLowerCase().replace(/\/$/, '');
+    let decodedP = p;
+    try {
+      decodedP = decodeURIComponent(url.pathname).toLowerCase().replace(/\/$/, '');
+    } catch {
+      decodedP = p;
+    }
+
+    if (decodedP === '/ogłoszenia' || decodedP === '/ogloszenia' || decodedP === '/tablica-ogloszen') {
+      const ogloszeniaUrl = new URL(request.url);
+      ogloszeniaUrl.pathname = '/ogloszenia.html';
+      return env.ASSETS.fetch(new Request(ogloszeniaUrl, request));
+    }
+
+    if (decodedP === '/ziu' || decodedP === '/zdrowie' || decodedP === '/zdrowie-i-uroda') {
+      const ziuUrl = new URL(request.url);
+      ziuUrl.pathname = '/ziu.html';
+      return env.ASSETS.fetch(new Request(ziuUrl, request));
+    }
+
     if (p === '/aktualnosci' || p === '/aktualnosci.html' || p === '/ccn' || p === '/ccn-news' || p === '/raport' || p === '/sprawozdanie') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/news';
