@@ -32,16 +32,112 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" crossorigin src="/assets/news-index-Bu-8V-vf.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/news-index-DIO9oim6.css">
+    <style>
+      /* FLOATING BACK TO TOP BUTTON (jak na stronie głównej polskieradio.cc) */
+      .back-to-top {
+          position: fixed;
+          right: 1.5rem;
+          bottom: 2rem;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(15, 15, 15, 0.85);
+          border: 1.5px solid #D4A94A;
+          color: #D4A94A;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.95rem;
+          cursor: pointer;
+          z-index: 998;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(15px);
+          transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      background 0.2s ease,
+                      color 0.2s ease,
+                      box-shadow 0.2s ease;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 169, 74, 0.15);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          outline: none;
+          user-select: none;
+          -webkit-tap-highlight-color: transparent;
+      }
+
+      .back-to-top.visible {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+      }
+
+      .back-to-top:hover {
+          background: #D4A94A;
+          color: #050505;
+          box-shadow: 0 8px 25px rgba(212, 169, 74, 0.4);
+          transform: translateY(-3px);
+      }
+
+      .back-to-top:active {
+          transform: translateY(0) scale(0.95);
+      }
+
+      @media (max-width: 767px) {
+          .back-to-top {
+              right: 1.25rem;
+              bottom: max(1.25rem, env(safe-area-inset-bottom, 20px));
+              width: 44px;
+              height: 44px;
+              font-size: 1.05rem;
+          }
+      }
+    </style>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
     <div id="root"><div id="news-startup" role="status" style="max-width:34rem;margin:4rem auto;padding:1.5rem;font:16px/1.6 system-ui;color:#18181b;background:#fff"><h1 style="color:#bb142e">CCN News</h1><p id="news-startup-message">Ładowanie wiadomości…</p><p><button onclick="location.reload()" style="padding:12px 18px;cursor:pointer">Odśwież stronę</button> <a href="https://polskieradio.cc">Przejdź do radia</a></p><noscript>Włącz JavaScript w przeglądarce, aby wyświetlić portal.</noscript></div></div>
+
+    <!-- BACK TO TOP BUTTON (jak na stronie głównej polskieradio.cc) -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry" title="Przewiń do góry">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
     <script>
       setTimeout(function () {
         var message = document.getElementById('news-startup-message');
         if (message) message.textContent = 'Nie udało się uruchomić wiadomości. Odśwież stronę. Jeśli problem się powtarza, napisz: polskiercctv@gmail.com.';
       }, 15000);
+
+      // FLOATING BACK TO TOP BUTTON LOGIC
+      (function() {
+        var backToTopBtn = document.getElementById('backToTopBtn');
+        if (!backToTopBtn) return;
+
+        function updateScroll() {
+          if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+          } else {
+            backToTopBtn.classList.remove('visible');
+          }
+        }
+
+        window.addEventListener('scroll', updateScroll, { passive: true });
+
+        backToTopBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        // Sprawdź początkową pozycję po załadowaniu
+        updateScroll();
+      })();
     </script>
   </body>
 </html>
