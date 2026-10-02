@@ -73,7 +73,14 @@ export default {
 
     if (p.startsWith('/akademia/') && !p.startsWith('/akademia/certyfikat')) {
       if (p.startsWith('/akademia/apokalipsa') || p.startsWith('/akademia/kurscodzienny')) {
-        return env.ASSETS.fetch(request);
+        const resp = await env.ASSETS.fetch(request);
+        if (resp.status === 404 && !url.pathname.includes('.')) {
+          const fallbackUrl = new URL(request.url);
+          fallbackUrl.pathname = url.pathname.replace(/\/$/, '') + '.html';
+          const fallbackResp = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+          if (fallbackResp.status < 400) return fallbackResp;
+        }
+        return resp;
       }
       const target = p.replace('/akademia/', '/kursy/');
       const kursyUrl = new URL(request.url);
