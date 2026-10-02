@@ -75,6 +75,24 @@ export default {
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
+    if (decodedP === '/kuchnia') {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/kuchnia/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
+    if (decodedP === '/dieta' || decodedP === '/diety') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/kuchnia';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/sport' || decodedP === '/aktywnosc' || decodedP === '/aktywność' || decodedP === '/ruch') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/ziu';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     if (p === '/aktualnosci' || p === '/aktualnosci.html' || p === '/ccn' || p === '/ccn-news' || p === '/raport' || p === '/sprawozdanie') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/news';
