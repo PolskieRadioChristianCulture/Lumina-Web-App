@@ -227,12 +227,18 @@
 
     <!-- Integracja silnika Firebase Auth LUMINA -->
     <script type="module">
-        import { loginWithGoogle, ensureDbReady, getCurrentUser, getCurrentProfile } from './lumina-db.js?v=login_1788094000';
+        import { loginWithGoogle, ensureDbReady, getCurrentUser, getCurrentProfile, onAuthChange } from './lumina-db.js?v=login_1788094000';
 
         const btn = document.getElementById('btnGoogleLogin');
         const textEl = document.getElementById('btnGoogleText');
         const iconSvg = document.getElementById('googleIconSvg');
         const statusEl = document.getElementById('statusMsg');
+
+        window.addEventListener('lumina-auth-state', (e) => {
+            if (e.detail && e.detail.user) {
+                window.location.replace(getRedirectTarget());
+            }
+        });
 
         // Pobierz cel przekierowania z URL (np. ?redirect=tablica lub ?redirect=profil)
         function getRedirectTarget() {
@@ -260,6 +266,13 @@
                 if (auth && auth.currentUser) {
                     window.location.replace(getRedirectTarget());
                     return;
+                }
+                if (typeof onAuthChange === 'function') {
+                    onAuthChange((user) => {
+                        if (user && user.uid) {
+                            window.location.replace(getRedirectTarget());
+                        }
+                    });
                 }
             } catch(e) {}
 

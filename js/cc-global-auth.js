@@ -487,9 +487,11 @@
         try {
             if (!window.loginWithGoogle && !window.LuminaDB?.loginWithGoogle) {
                 try {
-                    const luminaModule = await import('/lumina-db.js?v=' + Date.now());
-                    if (luminaModule && luminaModule.loginWithGoogle) {
-                        window.loginWithGoogle = luminaModule.loginWithGoogle;
+                    const luminaModule = await import('/lumina-db.js?v=cc_auth_v12');
+                    if (luminaModule) {
+                        if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
+                        if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;
+                        if (luminaModule.ensureDbReady) await luminaModule.ensureDbReady();
                     }
                 } catch(modErr) {
                     console.warn('LuminaDB dynamic import attempt:', modErr);
@@ -823,14 +825,33 @@
             } catch(e) {}
         }
     }
-    hookLuminaDb();
-    setTimeout(hookLuminaDb, 600);
-    setTimeout(hookLuminaDb, 1800);
+    async function initBackgroundAuthSync() {
+        try {
+            const luminaModule = await import('/lumina-db.js?v=cc_auth_v12');
+            if (luminaModule) {
+                if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
+                if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;
+                if (luminaModule.ensureDbReady) {
+                    const { auth } = await luminaModule.ensureDbReady();
+                    if (auth && auth.currentUser) {
+                        if (luminaModule.syncUserAuthProfile) {
+                            await luminaModule.syncUserAuthProfile(auth.currentUser);
+                        }
+                        renderAuthWidgets();
+                    }
+                }
+            }
+        } catch(e) {}
+    }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', autoMountAuthWidget);
+        document.addEventListener('DOMContentLoaded', () => {
+            autoMountAuthWidget();
+            setTimeout(initBackgroundAuthSync, 300);
+        });
     } else {
         autoMountAuthWidget();
+        setTimeout(initBackgroundAuthSync, 300);
     }
 
     // 11. Automatyczne załadowanie modułu wsparcia misji (CC Support Footer)

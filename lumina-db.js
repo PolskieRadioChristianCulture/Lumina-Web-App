@@ -443,22 +443,12 @@ if (auth) {
     try {
         getRedirectResult(auth).then(async (result) => {
             if (result && result.user) {
-                const user = result.user;
-                console.log('Lumina Google Redirect Auth Success:', user.displayName);
-                let existingProfile = null;
-                try {
-                    const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
-                    if (docSnap.exists()) existingProfile = docSnap.data();
-                } catch(e) {}
-                if (existingProfile) {
-                    currentProfileState = existingProfile;
-                    currentUserState = user;
-                    localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
-                    if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
-                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
-                    sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
-                    if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
-                    window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user, profile: existingProfile } }));
+                console.log('Lumina Google Redirect Auth Success:', result.user.displayName);
+                await syncUserAuthProfile(result.user, db);
+                const redirectTarget = sessionStorage.getItem('cc_auth_redirect_target');
+                if (redirectTarget && redirectTarget !== window.location.href) {
+                    sessionStorage.removeItem('cc_auth_redirect_target');
+                    window.location.replace(redirectTarget);
                 }
             }
         }).catch(err => console.warn('getRedirectResult notice:', err.message));
@@ -753,6 +743,125 @@ export function ensureDbReady() {
 }
 
 
+export async function syncUserAuthProfile(user, activeDb = db) {
+    if (!user) return null;
+    let existingProfile = null;
+    const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
+    
+    try {
+        const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
+        if (docSnap.exists()) {
+            existingProfile = docSnap.data();
+            if (isRadioCC && existingProfile.slug === 'cezaryrgowski') {
+                existingProfile.slug = 'radiocc';
+                existingProfile.name = 'Christian Culture';
+                existingProfile.job = 'Misja & Radio Christian Culture';
+                existingProfile.isMissionAccount = true;
+                existingProfile.status = 'Oficjalne Konto';
+                existingProfile.church = 'Christian Culture';
+                existingProfile.verse = '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”';
+                existingProfile.verseRef = '— Ewangelia wg św. Marka 16, 15';
+                existingProfile.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
+                try {
+                    await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                } catch(e) {}
+            }
+        }
+    } catch(e) {}
+
+    if (!existingProfile) {
+        const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+        const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
+        
+        let cleanSlug;
+        if (isRadioCC) cleanSlug = 'radiocc';
+        else if (isCezary) cleanSlug = 'cezaryrgowski';
+        else if (isWioletta) cleanSlug = 'wiolettarogowska';
+        else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
+        
+        const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
+        const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
+        const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
+        const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
+        const isProfileDone = hasRealFace && (isCezary || isWioletta);
+        
+        existingProfile = {
+            uid: user.uid,
+            slug: cleanSlug,
+            name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
+            email: user.email || '',
+            age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
+            city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
+            gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
+            lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
+            denom: 'Rzymskokatolickie',
+            church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
+            job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
+            status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
+            isMissionAccount: isRadioCC || isMission || false,
+            hasRealPhoto: hasRealFace,
+            profileCompleted: isProfileDone,
+            needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
+            verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
+            verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
+            bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
+            avatar: userAvatar,
+            cover: 'lumina_default_cover.jpg',
+            coverPosY: '50%',
+            visibility: 'public',
+            pin: '7777',
+            matchScore: '100%',
+            tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+            photos: [userAvatar],
+            posts: [
+                {
+                    id: 'post_' + Date.now(),
+                    author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
+                    authorSlug: cleanSlug,
+                    authorAvatar: userAvatar,
+                    time: 'Przed chwilą • ✨ Witaj w LUMINA',
+                    text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                    likes: 2,
+                    amen: 1,
+                    image: userAvatar
+                }
+            ],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        };
+        
+        if (activeDb) {
+            try {
+                await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+            } catch(e) {}
+        }
+    }
+
+    currentProfileState = existingProfile;
+    currentUserState = user;
+
+    try {
+        const uData = {
+            uid: user.uid,
+            email: user.email || '',
+            displayName: user.displayName || '',
+            photoURL: user.photoURL || '',
+            phoneNumber: user.phoneNumber || ''
+        };
+        localStorage.setItem('lumina_current_user', JSON.stringify(uData));
+        localStorage.setItem('lumina_user_session', 'active');
+        localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
+        if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
+        localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
+        localStorage.setItem('lumina_my_profile', JSON.stringify(existingProfile));
+        sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
+        if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
+    } catch(e) {}
+
+    window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user, profile: existingProfile } }));
+    return { user, profile: existingProfile, isNewUser: !existingProfile };
+}
+
 export async function loginWithGoogle() {
     try {
         let activeAuth = auth;
@@ -767,14 +876,9 @@ export async function loginWithGoogle() {
         }
 
         let result = null;
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
-        
         try {
-            if (isMobile) {
-                console.log('[LuminaDB] Urządzenie mobilne wykryte — uruchamiam bezpieczny signInWithRedirect');
-                await signInWithRedirect(activeAuth, googleProvider);
-                return { isRedirecting: true };
-            }
+            // Na smartfonach i komputerach używamy signInWithPopup jako domyślnej, najbezpieczniejszej metody
+            // zapobiegającej gubieniu sesji i utracie stanu strony
             result = await signInWithPopup(activeAuth, googleProvider);
         } catch(popupErr) {
             console.warn('Google Auth popup notice:', popupErr.code, popupErr.message);
@@ -782,10 +886,11 @@ export async function loginWithGoogle() {
             if (popupErr.code === 'auth/popup-closed-by-user') {
                 return null;
             }
-            // Gdy popup został zablokowany przez blokadę przeglądarki — automatyczny fallback do Redirect
+            // Gdy popup został zablokowany przez blokadę wyskakujących okienek przeglądarki — fallback do Redirect
             if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request' || popupErr.code === 'auth/internal-error') {
                 console.log('[LuminaDB] Popup zablokowany — fallback do signInWithRedirect');
                 try {
+                    sessionStorage.setItem('cc_auth_redirect_target', window.location.href);
                     await signInWithRedirect(activeAuth, googleProvider);
                     return { isRedirecting: true };
                 } catch(redErr) {
@@ -799,121 +904,8 @@ export async function loginWithGoogle() {
         if (!result || !result.user) {
             return null;
         }
-        const user = result.user;
-        let existingProfile = null;
-        const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
-        
-        try {
-            const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
-            if (docSnap.exists()) {
-                existingProfile = docSnap.data();
-                if (isRadioCC && existingProfile.slug === 'cezaryrgowski') {
-                    existingProfile.slug = 'radiocc';
-                    existingProfile.name = 'Christian Culture';
-                    existingProfile.job = 'Misja & Radio Christian Culture';
-                    existingProfile.isMissionAccount = true;
-                    existingProfile.status = 'Oficjalne Konto';
-                    existingProfile.church = 'Christian Culture';
-                    existingProfile.verse = '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”';
-                    existingProfile.verseRef = '— Ewangelia wg św. Marka 16, 15';
-                    existingProfile.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
-                    try {
-                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                    } catch(e) {}
-                }
-            }
-        } catch(e) {}
 
-        if (!existingProfile) {
-            const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-            const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
-            
-            let cleanSlug;
-            if (isRadioCC) cleanSlug = 'radiocc';
-            else if (isCezary) cleanSlug = 'cezaryrgowski';
-            else if (isWioletta) cleanSlug = 'wiolettarogowska';
-            else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
-            
-            const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
-            const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
-            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
-            const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
-            const isProfileDone = hasRealFace && (isCezary || isWioletta);
-            
-            existingProfile = {
-                uid: user.uid,
-                slug: cleanSlug,
-                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
-                email: user.email || '',
-                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
-                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
-                gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
-                lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
-                denom: 'Rzymskokatolickie',
-                church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
-                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
-                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
-                isMissionAccount: isRadioCC || isMission || false,
-                hasRealPhoto: hasRealFace,
-                profileCompleted: isProfileDone,
-                needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
-                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
-                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
-                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
-                avatar: userAvatar,
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                visibility: 'public',
-                pin: '7777',
-                matchScore: '100%',
-                tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
-                photos: [userAvatar],
-                posts: [
-                    {
-                        id: 'post_' + Date.now(),
-                        author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
-                        authorSlug: cleanSlug,
-                        authorAvatar: userAvatar,
-                        time: 'Przed chwilą • ✨ Witaj w LUMINA',
-                        text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
-                        likes: 2,
-                        amen: 1,
-                        image: userAvatar
-                    }
-                ],
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
-            };
-            
-            if (activeDb) {
-                try {
-                    await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                } catch(e) {}
-            }
-        }
-
-        currentProfileState = existingProfile;
-        currentUserState = user;
-
-        try {
-            const uData = {
-                uid: user.uid,
-                email: user.email || '',
-                displayName: user.displayName || '',
-                photoURL: user.photoURL || '',
-                phoneNumber: user.phoneNumber || ''
-            };
-            localStorage.setItem('lumina_current_user', JSON.stringify(uData));
-            localStorage.setItem('lumina_user_session', 'active');
-            localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
-            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
-            localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
-            localStorage.setItem('lumina_my_profile', JSON.stringify(existingProfile));
-            sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
-            if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
-        } catch(e) {}
-
-        return { user, profile: existingProfile, isNewUser: !existingProfile };
+        return await syncUserAuthProfile(result.user, activeDb);
     } catch(err) {
         console.error('Lumina Google Auth error:', err);
         throw err;
@@ -1047,6 +1039,7 @@ export async function logoutUser() {
 // Global window exposure for Christian Culture unified Google Auth ecosystem
 window.logoutUser = logoutUser;
 window.loginWithGoogle = loginWithGoogle;
+window.syncUserAuthProfile = syncUserAuthProfile;
 window.loginWithEmail = loginWithEmail;
 window.registerWithEmail = registerWithEmail;
 window.getCurrentUser = getCurrentUser;
@@ -1056,6 +1049,7 @@ window.onAuthChange = onAuthChange;
 
 window.LuminaDB = window.LuminaDB || {};
 window.LuminaDB.loginWithGoogle = loginWithGoogle;
+window.LuminaDB.syncUserAuthProfile = syncUserAuthProfile;
 window.LuminaDB.logoutUser = logoutUser;
 window.LuminaDB.loginWithEmail = loginWithEmail;
 window.LuminaDB.registerWithEmail = registerWithEmail;
