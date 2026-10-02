@@ -33,8 +33,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module" crossorigin src="/assets/news-index-BI-htGO9.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/news-index-DP3k1DAN.css">
+    <script type="module" crossorigin src="/assets/news-index-BHRM9XnJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/news-index-Dk2JZAHe.css">
     <style>
       /* FLOATING BACK TO TOP BUTTON (jak na stronie głównej polskieradio.cc) */
       .back-to-top {
@@ -96,6 +96,21 @@
               font-size: 1.05rem;
           }
       }
+
+      /* Hide ugly browser scrollbar globally while preserving smooth scrolling */
+      .no-scrollbar::-webkit-scrollbar,
+      nav::-webkit-scrollbar,
+      [class*="overflow-x-auto"]::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+      .no-scrollbar,
+      nav,
+      [class*="overflow-x-auto"] {
+        -ms-overflow-style: none !important;
+        scrollbar-width: none !important;
+      }
     </style>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
@@ -139,5 +154,6 @@
         updateScroll();
       })();
     </script>
-  </body>
+    <script src="/components/cc-support-footer.js" defer></script>
+</body>
 </html>
