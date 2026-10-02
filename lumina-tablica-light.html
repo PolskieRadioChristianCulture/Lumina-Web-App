@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-lumina-theme="light">
 <head>
     <!-- RSS Auto-Discovery (Apple Podcasts, Spotify, Feed Readers) -->
     <link rel="alternate" type="application/rss+xml" title="Polskie Radio Christian Culture • Podcast RSS" href="https://polskieradio.cc/podcast.xml">
@@ -4940,18 +4940,8 @@
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_light_v1">
-    <script>
-    (function() {
-        try {
-            var p = new URLSearchParams(window.location.search);
-            if (p.get('theme') === 'light' || localStorage.getItem('lumina_theme') === 'light') {
-                document.documentElement.setAttribute('data-lumina-theme', 'light');
-            }
-        } catch(e) {}
-    })();
-    </script>
 </head>
-<body>
+<body class="theme-lumina-light">
 
     <!-- Audio Player for Radio CC -->
 
@@ -15921,5 +15911,26 @@ window.initFeedCarousels = function(container) {
     }
 })();
 </script>
+    <!-- Pływający Przełącznik Motywu do Testowania i Prezentacji (LUMINA Light Edition) -->
+    <button type="button" class="lumina-theme-switch-pill" id="themeSwitchBtn" onclick="toggleLuminaPreviewTheme()" title="Przełącz motyw Tablicy (Jasny / Ciemny)">
+        <i class="fa-solid fa-sun theme-icon" id="themeIcon"></i>
+        <span id="themeLabel">Motyw: Jasny (Pure White)</span>
+    </button>
+    <script>
+    function toggleLuminaPreviewTheme() {
+        const isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
+        const nextTheme = isLight ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-lumina-theme', nextTheme);
+        if (nextTheme === 'light') {
+            document.body.classList.add('theme-lumina-light');
+            document.getElementById('themeIcon').className = 'fa-solid fa-sun theme-icon';
+            document.getElementById('themeLabel').textContent = 'Motyw: Jasny (Pure White)';
+        } else {
+            document.body.classList.remove('theme-lumina-light');
+            document.getElementById('themeIcon').className = 'fa-solid fa-moon theme-icon';
+            document.getElementById('themeLabel').textContent = 'Motyw: Ciemny (Obsidian)';
+        }
+    }
+    </script>
 </body>
 </html>

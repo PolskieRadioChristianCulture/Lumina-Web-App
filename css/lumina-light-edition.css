@@ -1,0 +1,604 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ * LUMINA LIGHT & PURE EDITION — LUXURY EDITORIAL REDESIGN
+ * Subtelna elegancja: białe tło, brak widocznych ramek, miękka głębia
+ * Inspiracja: Threads / Substack / Notion / Apple News / Christian Culture
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    --lumina-l-bg: #f8fafc;
+    --lumina-l-bg-alt: #f1f5f9;
+    --lumina-l-card: #ffffff;
+    --lumina-l-card-subtle: #f8fafc;
+    --lumina-l-text-title: #0f172a;
+    --lumina-l-text-body: #334155;
+    --lumina-l-text-muted: #64748b;
+    --lumina-l-text-light: #94a3b8;
+    
+    --lumina-l-gold: #b38e3e;
+    --lumina-l-gold-light: #C4A35A;
+    --lumina-l-gold-soft: #fcf9f2;
+    --lumina-l-gold-border: rgba(196, 163, 90, 0.2);
+    
+    --lumina-l-border: rgba(15, 23, 42, 0.05);
+    --lumina-l-border-subtle: rgba(15, 23, 42, 0.03);
+    
+    --lumina-l-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+    --lumina-l-shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+    --lumina-l-shadow-card-hover: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+    --lumina-l-shadow-float: 0 16px 40px -6px rgba(15, 23, 42, 0.12), 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* ── Zmienne CC w trybie jasnym ── */
+body.theme-lumina-light,
+.theme-lumina-light body,
+html[data-lumina-theme="light"],
+html[data-lumina-theme="light"] body {
+    --bg-base: #f8fafc !important;
+    --bg-card: #ffffff !important;
+    --bg-card-hover: #f1f5f9 !important;
+    --border-glass: rgba(15, 23, 42, 0.05) !important;
+    --border-glass-glow: rgba(196, 163, 90, 0.18) !important;
+    --text-primary: #0f172a !important;
+    --text-secondary: #475569 !important;
+    --text-muted: #64748b !important;
+    --accent-gold: #b38e3e !important;
+    --cc-parchment: #0f172a !important;
+    --cc-mist: #64748b !important;
+    --cc-bg-void: #f8fafc !important;
+    --cc-void-card: #ffffff !important;
+
+    background: #f8fafc !important;
+    background-image: 
+        radial-gradient(ellipse at 15% 0%, rgba(196, 163, 90, 0.05) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 15%, rgba(226, 204, 154, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 60%, rgba(241, 245, 249, 0.8) 0%, transparent 70%) !important;
+    background-attachment: fixed !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+/* ── Główny Pasek Nawigacyjny (Clean Glass Navbar) ── */
+html[data-lumina-theme="light"] .lumina-nav,
+body.theme-lumina-light .lumina-nav {
+    background: rgba(255, 255, 255, 0.90) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 2px 14px rgba(15, 23, 42, 0.03) !important;
+}
+
+html[data-lumina-theme="light"] .lumina-brand span,
+body.theme-lumina-light .lumina-brand span {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .nav-action-btn,
+body.theme-lumina-light .nav-action-btn {
+    background: rgba(15, 23, 42, 0.03) !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: var(--lumina-l-shadow-sm) !important;
+}
+
+html[data-lumina-theme="light"] .nav-action-btn:hover,
+body.theme-lumina-light .nav-action-btn:hover {
+    background: rgba(196, 163, 90, 0.1) !important;
+    border-color: rgba(196, 163, 90, 0.3) !important;
+    color: var(--lumina-l-gold) !important;
+}
+
+/* ── Przełącznik Dokowany (TABLICA | NA ŻYWO | ROLKI) — Styl Apple iOS ── */
+html[data-lumina-theme="light"] .board-top-switcher-wrap,
+body.theme-lumina-light .board-top-switcher-wrap {
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] .board-switcher-btn,
+body.theme-lumina-light .board-switcher-btn {
+    color: var(--lumina-l-text-muted) !important;
+}
+
+html[data-lumina-theme="light"] .board-switcher-btn.active,
+body.theme-lumina-light .board-switcher-btn.active {
+    background: #ffffff !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+    border-radius: 12px !important;
+}
+
+html[data-lumina-theme="light"] .board-switcher-btn.active i,
+body.theme-lumina-light .board-switcher-btn.active i {
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .board-switcher-divider,
+body.theme-lumina-light .board-switcher-divider {
+    color: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* ── MOBILE TOP AUTH BAR (ZAŁÓŻ KONTO | LOGOWANIE) ── */
+html[data-lumina-theme="light"] .lumina-mobile-auth-bar,
+body.theme-lumina-light .lumina-mobile-auth-bar {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-btn,
+body.theme-lumina-light .mobile-auth-btn {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-btn-login,
+body.theme-lumina-light .mobile-auth-btn-login {
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-divider,
+body.theme-lumina-light .mobile-auth-divider {
+    color: rgba(15, 23, 42, 0.15) !important;
+}
+
+/* ── STORIES BAR (ROLKI WIARY I RELACJE) ── */
+html[data-lumina-theme="light"] .lumina-stories-bar,
+body.theme-lumina-light .lumina-stories-bar {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html[data-lumina-theme="light"] .stories-bar-wrap,
+body.theme-lumina-light .stories-bar-wrap {
+    background: transparent !important;
+    border: none !important;
+}
+
+html[data-lumina-theme="light"] .fb-story-create,
+body.theme-lumina-light .fb-story-create {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+}
+
+html[data-lumina-theme="light"] .fb-story-create-bottom,
+body.theme-lumina-light .fb-story-create-bottom {
+    background: #ffffff !important;
+}
+
+html[data-lumina-theme="light"] .fb-story-create-label,
+body.theme-lumina-light .fb-story-create-label {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .fb-stories-scroll-btn,
+body.theme-lumina-light .fb-stories-scroll-btn {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+}
+
+html[data-lumina-theme="light"] .story-create-card,
+body.theme-lumina-light .story-create-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+}
+
+html[data-lumina-theme="light"] .story-create-card:hover,
+body.theme-lumina-light .story-create-card:hover {
+    border-color: rgba(196, 163, 90, 0.3) !important;
+    box-shadow: var(--lumina-l-shadow-card-hover) !important;
+}
+
+html[data-lumina-theme="light"] .story-create-text,
+body.theme-lumina-light .story-create-text {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .story-card,
+body.theme-lumina-light .story-card {
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+}
+
+/* ── PASEK SZYBKIEJ PUBLIKACJI ("CO DOBREGO U CIEBIE?") ── */
+html[data-lumina-theme="light"] .quick-post-bar-container,
+body.theme-lumina-light .quick-post-bar-container {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-bar-container:hover,
+body.theme-lumina-light .quick-post-bar-container:hover {
+    box-shadow: var(--lumina-l-shadow-card-hover) !important;
+    border-color: rgba(196, 163, 90, 0.25) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-trigger-input,
+body.theme-lumina-light .quick-post-trigger-input {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-trigger-input:hover,
+body.theme-lumina-light .quick-post-trigger-input:hover {
+    background: #f1f5f9 !important;
+    border-color: rgba(196, 163, 90, 0.3) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-placeholder-text,
+body.theme-lumina-light .quick-post-placeholder-text {
+    color: var(--lumina-l-text-muted) !important;
+    font-weight: 500 !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-input-icon,
+body.theme-lumina-light .quick-post-input-icon {
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-action-btn,
+body.theme-lumina-light .quick-post-action-btn {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-action-btn:hover,
+body.theme-lumina-light .quick-post-action-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--lumina-l-text-title) !important;
+    border-color: rgba(15, 23, 42, 0.09) !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-action-btn.primary-action,
+body.theme-lumina-light .quick-post-action-btn.primary-action {
+    background: linear-gradient(135deg, rgba(196, 163, 90, 0.14), rgba(196, 163, 90, 0.06)) !important;
+    border-color: rgba(196, 163, 90, 0.3) !important;
+    color: #8a651a !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .quick-post-action-btn.primary-action:hover,
+body.theme-lumina-light .quick-post-action-btn.primary-action:hover {
+    background: linear-gradient(135deg, rgba(196, 163, 90, 0.22), rgba(196, 163, 90, 0.12)) !important;
+    border-color: var(--lumina-l-gold) !important;
+}
+
+/* ── KARUZELA "POZNAJMY SIĘ BLIŻEJ" ── */
+html[data-lumina-theme="light"] .profiles-carousel-block,
+body.theme-lumina-light .profiles-carousel-block {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+}
+
+html[data-lumina-theme="light"] .profiles-carousel-title,
+body.theme-lumina-light .profiles-carousel-title {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .profiles-carousel-title i,
+body.theme-lumina-light .profiles-carousel-title i {
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .profile-carousel-card,
+body.theme-lumina-light .profile-carousel-card {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .profile-carousel-card:hover,
+body.theme-lumina-light .profile-carousel-card:hover {
+    background: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07) !important;
+    border-color: rgba(196, 163, 90, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .profile-carousel-name,
+body.theme-lumina-light .profile-carousel-name {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .profile-carousel-tag,
+body.theme-lumina-light .profile-carousel-tag {
+    color: var(--lumina-l-text-muted) !important;
+}
+
+html[data-lumina-theme="light"] .profile-carousel-btn,
+body.theme-lumina-light .profile-carousel-btn {
+    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(179, 142, 62, 0.25) !important;
+}
+
+html[data-lumina-theme="light"] .profiles-carousel-nav-btn,
+body.theme-lumina-light .profiles-carousel-nav-btn {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: var(--lumina-l-shadow-sm) !important;
+}
+
+/* ── PASEK SORTOWANIA (SMART SORT BAR) ── */
+html[data-lumina-theme="light"] .smart-sort-bar,
+body.theme-lumina-light .smart-sort-bar {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03) !important;
+}
+
+html[data-lumina-theme="light"] .smart-sort-bar button,
+body.theme-lumina-light .smart-sort-bar button {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    color: var(--lumina-l-text-muted) !important;
+}
+
+html[data-lumina-theme="light"] .smart-sort-bar button:hover,
+body.theme-lumina-light .smart-sort-bar button:hover {
+    background: #f1f5f9 !important;
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .smart-sort-bar button.active,
+body.theme-lumina-light .smart-sort-bar button.active {
+    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 8px rgba(179, 142, 62, 0.28) !important;
+}
+
+/* ── KARTY WPISÓW NA FEEDZIE (POST-CARD-1X1) — Borderless Editorial ── */
+html[data-lumina-theme="light"] .post-card-1x1,
+body.theme-lumina-light .post-card-1x1 {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    margin-bottom: 22px !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+}
+
+html[data-lumina-theme="light"] .post-card-1x1:hover,
+body.theme-lumina-light .post-card-1x1:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--lumina-l-shadow-card-hover) !important;
+    border-color: rgba(196, 163, 90, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .post-author-name,
+body.theme-lumina-light .post-author-name {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .post-author-role,
+body.theme-lumina-light .post-author-role {
+    color: var(--lumina-l-text-muted) !important;
+}
+
+html[data-lumina-theme="light"] .post-headline,
+body.theme-lumina-light .post-headline {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .post-desc-text,
+body.theme-lumina-light .post-desc-text {
+    color: var(--lumina-l-text-body) !important;
+    line-height: 1.68 !important;
+}
+
+html[data-lumina-theme="light"] .post-actions-bar,
+body.theme-lumina-light .post-actions-bar {
+    border-top: 1px solid rgba(15, 23, 42, 0.04) !important;
+    background: #ffffff !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn,
+body.theme-lumina-light .post-action-btn {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn:hover,
+body.theme-lumina-light .post-action-btn:hover {
+    background: #f1f5f9 !important;
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.action-like:hover,
+body.theme-lumina-light .post-action-btn.action-like.liked {
+    background: rgba(244, 63, 94, 0.08) !important;
+    color: #e11d48 !important;
+    border-color: rgba(244, 63, 94, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.action-amen:hover,
+body.theme-lumina-light .post-action-btn.action-amen.amened {
+    background: rgba(196, 163, 90, 0.12) !important;
+    color: #8a651a !important;
+    border-color: rgba(196, 163, 90, 0.25) !important;
+}
+
+/* ── BOCZNE KOLUMNY 9:16 (PATRONAT, TOTALNY ATAK, VOD, SKLEP) ── */
+html[data-lumina-theme="light"] .card-916,
+body.theme-lumina-light .card-916 {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    box-shadow: var(--lumina-l-shadow-card) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html[data-lumina-theme="light"] .card-916:hover,
+body.theme-lumina-light .card-916:hover {
+    box-shadow: var(--lumina-l-shadow-card-hover) !important;
+    border-color: rgba(196, 163, 90, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .totalny-atak-card-916,
+body.theme-lumina-light .totalny-atak-card-916 {
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-lumina-theme="light"] .patron-card-916 h3,
+body.theme-lumina-light .patron-card-916 h3,
+html[data-lumina-theme="light"] .totalny-atak-card-916 h3,
+body.theme-lumina-light .totalny-atak-card-916 h3 {
+    color: var(--lumina-l-text-title) !important;
+}
+
+/* ── KARTA TRANSMISJI LIVE / HERO ── */
+html[data-lumina-theme="light"] .live-header-box,
+body.theme-lumina-light .live-header-box {
+    color: var(--lumina-l-text-title) !important;
+}
+
+/* ── COOKIE BANNER W WERSJI JASNEJ ── */
+html[data-lumina-theme="light"] .lumina-cookie-banner,
+html[data-lumina-theme="light"] #cookieBanner,
+body.theme-lumina-light .lumina-cookie-banner,
+body.theme-lumina-light #cookieBanner {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12) !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+html[data-lumina-theme="light"] #cookieBanner p,
+body.theme-lumina-light #cookieBanner p {
+    color: var(--lumina-l-text-body) !important;
+}
+
+/* ── DOLNY PASEK MOBILNY (MOBILE TAB BAR) ── */
+html[data-lumina-theme="light"] .mobile-tab-bar,
+body.theme-lumina-light .mobile-tab-bar {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-tab-btn,
+body.theme-lumina-light .mobile-tab-btn {
+    color: var(--lumina-l-text-muted) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-tab-btn.active,
+body.theme-lumina-light .mobile-tab-btn.active {
+    color: var(--lumina-l-gold) !important;
+}
+
+/* ── PRZEŁĄCZNIK PŁYWAJĄCY PODGLĄDU MOTYWU ── */
+.lumina-theme-switch-pill {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 99999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-family: 'Manrope', -apple-system, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+body.theme-lumina-light .lumina-theme-switch-pill,
+html[data-lumina-theme="light"] .lumina-theme-switch-pill {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+body:not(.theme-lumina-light) .lumina-theme-switch-pill {
+    background: rgba(18, 18, 26, 0.85);
+    border: 1px solid rgba(212, 169, 74, 0.3);
+    color: #EDE6D6;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* ── ULTRA REFINEMENT: KONTRASTOWA TYPOGRAFIA I COOKIE BANNER ── */
+html[data-lumina-theme="light"] #lumina-cookie-banner,
+body.theme-lumina-light #lumina-cookie-banner,
+html[data-lumina-theme="light"] .lumina-cookie-banner,
+body.theme-lumina-light .lumina-cookie-banner {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12) !important;
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] #lumina-cookie-banner div,
+body.theme-lumina-light #lumina-cookie-banner div,
+html[data-lumina-theme="light"] #lumina-cookie-banner p,
+body.theme-lumina-light #lumina-cookie-banner p {
+    color: var(--lumina-l-text-body) !important;
+}
+
+/* Wszelkie jasnoszare teksty pomocnicze wewnątrz kart w jasnym motywie stają się czytelnym antracytem */
+html[data-lumina-theme="light"] .post-card-1x1 div[style*="color:#cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 div[style*="color: #cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color: #cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#94a3b8"],
+html[data-lumina-theme="light"] .post-card-1x1 .live-subtitle,
+body.theme-lumina-light .post-card-1x1 div[style*="color:#cbd5e1"],
+body.theme-lumina-light .post-card-1x1 div[style*="color: #cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color:#cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color: #cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color:#94a3b8"],
+body.theme-lumina-light .post-card-1x1 .live-subtitle {
+    color: #334155 !important;
+}
+
+/* ── ULTRA CONTRAST TYPOGRAPHY OVERRIDES ── */
+html[data-lumina-theme="light"] .post-card-1x1 h1,
+html[data-lumina-theme="light"] .post-card-1x1 h2,
+html[data-lumina-theme="light"] .post-card-1x1 h3,
+html[data-lumina-theme="light"] .post-card-1x1 h4,
+html[data-lumina-theme="light"] .post-content-pro h3,
+body.theme-lumina-light .post-card-1x1 h1,
+body.theme-lumina-light .post-card-1x1 h2,
+body.theme-lumina-light .post-card-1x1 h3,
+body.theme-lumina-light .post-card-1x1 h4,
+body.theme-lumina-light .post-content-pro h3 {
+    color: #0f172a !important;
+}
+
+html[data-lumina-theme="light"] .post-card-1x1 p,
+html[data-lumina-theme="light"] .post-content-pro p,
+body.theme-lumina-light .post-card-1x1 p,
+body.theme-lumina-light .post-content-pro p {
+    color: #334155 !important;
+}
