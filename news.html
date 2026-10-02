@@ -97,17 +97,32 @@
           }
       }
 
-      /* Hide ugly browser scrollbar globally while preserving smooth scrolling */
-      .no-scrollbar::-webkit-scrollbar,
-      nav::-webkit-scrollbar,
-      [class*="overflow-x-auto"]::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
+            /* Estetyczny scrollbar spójny z systemem CC */
+      html {
+        scroll-behavior: smooth;
+        overflow-y: scroll !important;
       }
-      .no-scrollbar,
-      nav,
-      [class*="overflow-x-auto"] {
+      body {
+        overflow-y: visible !important;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f4;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c1c1c8;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #bb142e;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none !important;
+      }
+      .no-scrollbar {
         -ms-overflow-style: none !important;
         scrollbar-width: none !important;
       }
