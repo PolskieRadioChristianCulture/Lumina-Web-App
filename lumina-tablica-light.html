@@ -15911,26 +15911,44 @@ window.initFeedCarousels = function(container) {
     }
 })();
 </script>
-    <!-- Pływający Przełącznik Motywu do Testowania i Prezentacji (LUMINA Light Edition) -->
-    <button type="button" class="lumina-theme-switch-pill" id="themeSwitchBtn" onclick="toggleLuminaPreviewTheme()" title="Przełącz motyw Tablicy (Jasny / Ciemny)">
-        <i class="fa-solid fa-sun theme-icon" id="themeIcon"></i>
-        <span id="themeLabel">Motyw: Jasny (Pure White)</span>
+    <!-- ══════════ PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ══════════ -->
+    <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw Tablicy (Jasny / Ciemny)">
+        <i class="fa-solid fa-sun theme-icon" id="luminaThemeIcon"></i>
+        <span id="luminaThemeLabel">Motyw: Jasny (Pure White)</span>
     </button>
     <script>
-    function toggleLuminaPreviewTheme() {
-        const isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
-        const nextTheme = isLight ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-lumina-theme', nextTheme);
-        if (nextTheme === 'light') {
+    function toggleLuminaTheme() {
+        var isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
+        var nextTheme = isLight ? 'dark' : 'light';
+        applyLuminaTheme(nextTheme, true);
+    }
+    function applyLuminaTheme(theme, savePreference) {
+        var icon = document.getElementById('luminaThemeIcon');
+        var label = document.getElementById('luminaThemeLabel');
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-lumina-theme', 'light');
             document.body.classList.add('theme-lumina-light');
-            document.getElementById('themeIcon').className = 'fa-solid fa-sun theme-icon';
-            document.getElementById('themeLabel').textContent = 'Motyw: Jasny (Pure White)';
+            if (icon) icon.className = 'fa-solid fa-sun theme-icon';
+            if (label) label.textContent = 'Motyw: Jasny (Pure White)';
+            if (savePreference) localStorage.setItem('lumina_theme', 'light');
         } else {
+            document.documentElement.setAttribute('data-lumina-theme', 'dark');
             document.body.classList.remove('theme-lumina-light');
-            document.getElementById('themeIcon').className = 'fa-solid fa-moon theme-icon';
-            document.getElementById('themeLabel').textContent = 'Motyw: Ciemny (Obsidian)';
+            if (icon) icon.className = 'fa-solid fa-moon theme-icon';
+            if (label) label.textContent = 'Motyw: Ciemny (Obsidian)';
+            if (savePreference) localStorage.setItem('lumina_theme', 'dark');
         }
     }
+    (function initLuminaThemeState() {
+        var saved = localStorage.getItem('lumina_theme');
+        var param = new URLSearchParams(window.location.search).get('theme');
+        var isDark = param === 'dark' || (!param && saved === 'dark');
+        if (isDark) {
+            applyLuminaTheme('dark', false);
+        } else {
+            applyLuminaTheme('light', false);
+        }
+    })();
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════════
- * LUMINA LIGHT & PURE EDITION — LUXURY EDITORIAL REDESIGN
+ * LUMINA LIGHT & PURE EDITION — LUXURY EDITORIAL REDESIGN (MASTER)
  * Subtelna elegancja: białe tło, brak widocznych ramek, miękka głębia
  * Inspiracja: Threads / Substack / Notion / Apple News / Christian Culture
  * ══════════════════════════════════════════════════════════════════════════ */
@@ -28,7 +28,7 @@
     --lumina-l-shadow-float: 0 16px 40px -6px rgba(15, 23, 42, 0.12), 0 4px 16px -2px rgba(15, 23, 42, 0.04);
 }
 
-/* ── Zmienne CC w trybie jasnym ── */
+/* ── Zmienne Globalne w trybie jasnym ── */
 body.theme-lumina-light,
 .theme-lumina-light body,
 html[data-lumina-theme="light"],
@@ -56,23 +56,25 @@ html[data-lumina-theme="light"] body {
     color: var(--lumina-l-text-body) !important;
 }
 
-/* ── Główny Pasek Nawigacyjny (Clean Glass Navbar) ── */
+/* ── 1. GŁÓWNY PASEK NAWIGACYJNY (NAVBAR) & DRAWER ── */
 html[data-lumina-theme="light"] .lumina-nav,
 body.theme-lumina-light .lumina-nav {
-    background: rgba(255, 255, 255, 0.90) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
     backdrop-filter: blur(24px) !important;
     -webkit-backdrop-filter: blur(24px) !important;
     border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
     box-shadow: 0 2px 14px rgba(15, 23, 42, 0.03) !important;
 }
 
-html[data-lumina-theme="light"] .lumina-brand span,
-body.theme-lumina-light .lumina-brand span {
+html[data-lumina-theme="light"] .nav-logo-text span,
+body.theme-lumina-light .nav-logo-text span {
     color: var(--lumina-l-text-title) !important;
 }
 
 html[data-lumina-theme="light"] .nav-action-btn,
-body.theme-lumina-light .nav-action-btn {
+html[data-lumina-theme="light"] .nav-menu-btn,
+body.theme-lumina-light .nav-action-btn,
+body.theme-lumina-light .nav-menu-btn {
     background: rgba(15, 23, 42, 0.03) !important;
     border: 1px solid rgba(15, 23, 42, 0.05) !important;
     color: var(--lumina-l-text-title) !important;
@@ -80,13 +82,82 @@ body.theme-lumina-light .nav-action-btn {
 }
 
 html[data-lumina-theme="light"] .nav-action-btn:hover,
-body.theme-lumina-light .nav-action-btn:hover {
+html[data-lumina-theme="light"] .nav-menu-btn:hover,
+body.theme-lumina-light .nav-action-btn:hover,
+body.theme-lumina-light .nav-menu-btn:hover {
     background: rgba(196, 163, 90, 0.1) !important;
     border-color: rgba(196, 163, 90, 0.3) !important;
     color: var(--lumina-l-gold) !important;
 }
 
-/* ── Przełącznik Dokowany (TABLICA | NA ŻYWO | ROLKI) — Styl Apple iOS ── */
+/* Panel Nawigacji Drawer (Menu) */
+html[data-lumina-theme="light"] .top-nav-drawer,
+body.theme-lumina-light .top-nav-drawer {
+    background: rgba(255, 255, 255, 0.97) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+}
+
+html[data-lumina-theme="light"] .drawer-nav-item,
+body.theme-lumina-light .drawer-nav-item {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .drawer-nav-item:hover,
+body.theme-lumina-light .drawer-nav-item:hover {
+    background: #f1f5f9 !important;
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .drawer-lang-selector,
+body.theme-lumina-light .drawer-lang-selector {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Pigułka Zalogowanego Użytkownika w Navbarze */
+html[data-lumina-theme="light"] .cc-auth-user-pill,
+body.theme-lumina-light .cc-auth-user-pill {
+    background: #ffffff !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-lumina-theme="light"] .cc-auth-user-name,
+body.theme-lumina-light .cc-auth-user-name {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 700 !important;
+}
+
+/* ── 2. MOBILNY PASEK LOGOWANIA (ZAŁÓŻ KONTO | LOGOWANIE) ── */
+html[data-lumina-theme="light"] .lumina-mobile-auth-bar,
+body.theme-lumina-light .lumina-mobile-auth-bar {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-btn,
+body.theme-lumina-light .mobile-auth-btn {
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-btn-login,
+body.theme-lumina-light .mobile-auth-btn-login {
+    color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-auth-divider,
+body.theme-lumina-light .mobile-auth-divider {
+    color: rgba(15, 23, 42, 0.15) !important;
+}
+
+/* ── 3. PRZEŁĄCZNIK WIDOKU (TABLICA | NA ŻYWO | ROLKI) ── */
 html[data-lumina-theme="light"] .board-top-switcher-wrap,
 body.theme-lumina-light .board-top-switcher-wrap {
     background: rgba(255, 255, 255, 0.92) !important;
@@ -118,32 +189,7 @@ body.theme-lumina-light .board-switcher-divider {
     color: rgba(15, 23, 42, 0.12) !important;
 }
 
-/* ── MOBILE TOP AUTH BAR (ZAŁÓŻ KONTO | LOGOWANIE) ── */
-html[data-lumina-theme="light"] .lumina-mobile-auth-bar,
-body.theme-lumina-light .lumina-mobile-auth-bar {
-    background: rgba(255, 255, 255, 0.96) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
-}
-
-html[data-lumina-theme="light"] .mobile-auth-btn,
-body.theme-lumina-light .mobile-auth-btn {
-    color: var(--lumina-l-text-title) !important;
-}
-
-html[data-lumina-theme="light"] .mobile-auth-btn-login,
-body.theme-lumina-light .mobile-auth-btn-login {
-    color: var(--lumina-l-gold) !important;
-}
-
-html[data-lumina-theme="light"] .mobile-auth-divider,
-body.theme-lumina-light .mobile-auth-divider {
-    color: rgba(15, 23, 42, 0.15) !important;
-}
-
-/* ── STORIES BAR (ROLKI WIARY I RELACJE) ── */
+/* ── 4. STORIES BAR (RELACJE WIARY I ROLKI) ── */
 html[data-lumina-theme="light"] .lumina-stories-bar,
 body.theme-lumina-light .lumina-stories-bar {
     background: #ffffff !important;
@@ -210,7 +256,7 @@ body.theme-lumina-light .story-card {
     box-shadow: var(--lumina-l-shadow-card) !important;
 }
 
-/* ── PASEK SZYBKIEJ PUBLIKACJI ("CO DOBREGO U CIEBIE?") ── */
+/* ── 5. PASEK SZYBKIEJ PUBLIKACJI ("CO DOBREGO U CIEBIE?") ── */
 html[data-lumina-theme="light"] .quick-post-bar-container,
 body.theme-lumina-light .quick-post-bar-container {
     background: #ffffff !important;
@@ -277,7 +323,7 @@ body.theme-lumina-light .quick-post-action-btn.primary-action:hover {
     border-color: var(--lumina-l-gold) !important;
 }
 
-/* ── KARUZELA "POZNAJMY SIĘ BLIŻEJ" ── */
+/* ── 6. KARUZELA "POZNAJMY SIĘ BLIŻEJ" ── */
 html[data-lumina-theme="light"] .profiles-carousel-block,
 body.theme-lumina-light .profiles-carousel-block {
     background: #ffffff !important;
@@ -334,7 +380,7 @@ body.theme-lumina-light .profiles-carousel-nav-btn {
     box-shadow: var(--lumina-l-shadow-sm) !important;
 }
 
-/* ── PASEK SORTOWANIA (SMART SORT BAR) ── */
+/* ── 7. PASEK SORTOWANIA (SMART SORT BAR) ── */
 html[data-lumina-theme="light"] .smart-sort-bar,
 body.theme-lumina-light .smart-sort-bar {
     background: #ffffff !important;
@@ -363,16 +409,17 @@ body.theme-lumina-light .smart-sort-bar button.active {
     box-shadow: 0 2px 8px rgba(179, 142, 62, 0.28) !important;
 }
 
-/* ── KARTY WPISÓW NA FEEDZIE (POST-CARD-1X1) — Borderless Editorial ── */
+/* ── 8. KARTY WPISÓW NA FEEDZIE (POST-CARD-1X1) — BORDERLESS EDITORIAL ── */
 html[data-lumina-theme="light"] .post-card-1x1,
 body.theme-lumina-light .post-card-1x1 {
     background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
     border-radius: 20px !important;
     box-shadow: var(--lumina-l-shadow-card) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     margin-bottom: 22px !important;
+    color: var(--lumina-l-text-body) !important;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
 }
 
@@ -401,21 +448,53 @@ body.theme-lumina-light .post-headline {
 }
 
 html[data-lumina-theme="light"] .post-desc-text,
-body.theme-lumina-light .post-desc-text {
+body.theme-lumina-light .post-desc-text,
+html[data-lumina-theme="light"] .post-card-1x1 p,
+body.theme-lumina-light .post-card-1x1 p {
     color: var(--lumina-l-text-body) !important;
     line-height: 1.68 !important;
 }
 
+/* Wszelkie nagłówki wewnątrz kart wpisów */
+html[data-lumina-theme="light"] .post-card-1x1 h1,
+html[data-lumina-theme="light"] .post-card-1x1 h2,
+html[data-lumina-theme="light"] .post-card-1x1 h3,
+html[data-lumina-theme="light"] .post-card-1x1 h4,
+html[data-lumina-theme="light"] .post-content-pro h3,
+body.theme-lumina-light .post-card-1x1 h1,
+body.theme-lumina-light .post-card-1x1 h2,
+body.theme-lumina-light .post-card-1x1 h3,
+body.theme-lumina-light .post-card-1x1 h4,
+body.theme-lumina-light .post-content-pro h3 {
+    color: #0f172a !important;
+}
+
+/* Podtytuły i opisy pomocnicze */
+html[data-lumina-theme="light"] .post-card-1x1 div[style*="color:#cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 div[style*="color: #cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color: #cbd5e1"],
+html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#94a3b8"],
+html[data-lumina-theme="light"] .post-card-1x1 .live-subtitle,
+body.theme-lumina-light .post-card-1x1 div[style*="color:#cbd5e1"],
+body.theme-lumina-light .post-card-1x1 div[style*="color: #cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color:#cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color: #cbd5e1"],
+body.theme-lumina-light .post-card-1x1 span[style*="color:#94a3b8"],
+body.theme-lumina-light .post-card-1x1 .live-subtitle {
+    color: #334155 !important;
+}
+
 html[data-lumina-theme="light"] .post-actions-bar,
 body.theme-lumina-light .post-actions-bar {
-    border-top: 1px solid rgba(15, 23, 42, 0.04) !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.05) !important;
     background: #ffffff !important;
 }
 
 html[data-lumina-theme="light"] .post-action-btn,
 body.theme-lumina-light .post-action-btn {
     background: #f8fafc !important;
-    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid rgba(15, 23, 42, 0.05) !important;
     color: var(--lumina-l-text-body) !important;
 }
 
@@ -439,11 +518,81 @@ body.theme-lumina-light .post-action-btn.action-amen.amened {
     border-color: rgba(196, 163, 90, 0.25) !important;
 }
 
-/* ── BOCZNE KOLUMNY 9:16 (PATRONAT, TOTALNY ATAK, VOD, SKLEP) ── */
+/* ── 9. MODUŁ KOMENTARZY POD POSTAMI ── */
+html[data-lumina-theme="light"] .post-comments-box,
+html[data-lumina-theme="light"] .comments-section,
+body.theme-lumina-light .post-comments-box,
+body.theme-lumina-light .comments-section {
+    background: #f8fafc !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] .comment-bubble,
+html[data-lumina-theme="light"] .comment-item-v2,
+body.theme-lumina-light .comment-bubble,
+body.theme-lumina-light .comment-item-v2 {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+html[data-lumina-theme="light"] .comment-author,
+html[data-lumina-theme="light"] .comment-user-name,
+body.theme-lumina-light .comment-author,
+body.theme-lumina-light .comment-user-name {
+    color: var(--lumina-l-text-title) !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .comment-input,
+html[data-lumina-theme="light"] .comment-textarea-v2,
+body.theme-lumina-light .comment-input,
+body.theme-lumina-light .comment-textarea-v2 {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    color: var(--lumina-l-text-title) !important;
+}
+
+html[data-lumina-theme="light"] .comment-input:focus,
+html[data-lumina-theme="light"] .comment-textarea-v2:focus,
+body.theme-lumina-light .comment-input:focus,
+body.theme-lumina-light .comment-textarea-v2:focus {
+    border-color: var(--lumina-l-gold) !important;
+}
+
+html[data-lumina-theme="light"] .comment-submit-btn,
+html[data-lumina-theme="light"] .comment-submit-btn-v2,
+body.theme-lumina-light .comment-submit-btn,
+body.theme-lumina-light .comment-submit-btn-v2 {
+    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(179, 142, 62, 0.3) !important;
+}
+
+/* ── 10. KARTA TRANSMISJI LIVE / HERO ── */
+html[data-lumina-theme="light"] .live-header-box,
+body.theme-lumina-light .live-header-box {
+    color: var(--lumina-l-text-title) !important;
+}
+
+/* Przyciski pod odtwarzaczem live */
+html[data-lumina-theme="light"] .post-content-pro + div button,
+html[data-lumina-theme="light"] .post-content-pro + div a,
+html[data-lumina-theme="light"] .btn-action-live,
+body.theme-lumina-light .btn-action-live {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    color: var(--lumina-l-text-title) !important;
+    box-shadow: var(--lumina-l-shadow-sm) !important;
+}
+
+/* ── 11. BOCZNE KOLUMNY 9:16 (PATRONAT, TOTALNY ATAK, VOD, SKLEP, PLAYER) ── */
 html[data-lumina-theme="light"] .card-916,
 body.theme-lumina-light .card-916 {
     background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
     box-shadow: var(--lumina-l-shadow-card) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -453,6 +602,19 @@ html[data-lumina-theme="light"] .card-916:hover,
 body.theme-lumina-light .card-916:hover {
     box-shadow: var(--lumina-l-shadow-card-hover) !important;
     border-color: rgba(196, 163, 90, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .card-916-header,
+body.theme-lumina-light .card-916-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] .card-916-header span,
+html[data-lumina-theme="light"] .card-916-header a,
+body.theme-lumina-light .card-916-header span,
+body.theme-lumina-light .card-916-header a {
+    color: var(--lumina-l-text-title) !important;
 }
 
 html[data-lumina-theme="light"] .totalny-atak-card-916,
@@ -468,85 +630,46 @@ body.theme-lumina-light .totalny-atak-card-916 h3 {
     color: var(--lumina-l-text-title) !important;
 }
 
-/* ── KARTA TRANSMISJI LIVE / HERO ── */
-html[data-lumina-theme="light"] .live-header-box,
-body.theme-lumina-light .live-header-box {
+/* ── 12. MODALE SYSTEMOWE (QUICK POST COMPOSER, SUPPORT, ITP.) ── */
+html[data-lumina-theme="light"] .modal-card,
+body.theme-lumina-light .modal-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.04) !important;
+    color: var(--lumina-l-text-body) !important;
+}
+
+html[data-lumina-theme="light"] .modal-card h2,
+html[data-lumina-theme="light"] .modal-card h3,
+body.theme-lumina-light .modal-card h2,
+body.theme-lumina-light .modal-card h3 {
     color: var(--lumina-l-text-title) !important;
 }
 
-/* ── COOKIE BANNER W WERSJI JASNEJ ── */
-html[data-lumina-theme="light"] .lumina-cookie-banner,
-html[data-lumina-theme="light"] #cookieBanner,
-body.theme-lumina-light .lumina-cookie-banner,
-body.theme-lumina-light #cookieBanner {
-    background: rgba(255, 255, 255, 0.94) !important;
-    backdrop-filter: blur(20px) !important;
+html[data-lumina-theme="light"] .modal-close-btn,
+body.theme-lumina-light .modal-close-btn {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
     border: 1px solid rgba(15, 23, 42, 0.06) !important;
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12) !important;
-    color: var(--lumina-l-text-body) !important;
 }
 
-html[data-lumina-theme="light"] #cookieBanner p,
-body.theme-lumina-light #cookieBanner p {
-    color: var(--lumina-l-text-body) !important;
+html[data-lumina-theme="light"] .modal-card input,
+html[data-lumina-theme="light"] .modal-card textarea,
+html[data-lumina-theme="light"] .modal-card select,
+body.theme-lumina-light .modal-card input,
+body.theme-lumina-light .modal-card textarea,
+body.theme-lumina-light .modal-card select {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    color: var(--lumina-l-text-title) !important;
 }
 
-/* ── DOLNY PASEK MOBILNY (MOBILE TAB BAR) ── */
-html[data-lumina-theme="light"] .mobile-tab-bar,
-body.theme-lumina-light .mobile-tab-bar {
-    background: rgba(255, 255, 255, 0.88) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
-    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05) !important;
+html[data-lumina-theme="light"] .modal-card label,
+body.theme-lumina-light .modal-card label {
+    color: #475569 !important;
 }
 
-html[data-lumina-theme="light"] .mobile-tab-btn,
-body.theme-lumina-light .mobile-tab-btn {
-    color: var(--lumina-l-text-muted) !important;
-}
-
-html[data-lumina-theme="light"] .mobile-tab-btn.active,
-body.theme-lumina-light .mobile-tab-btn.active {
-    color: var(--lumina-l-gold) !important;
-}
-
-/* ── PRZEŁĄCZNIK PŁYWAJĄCY PODGLĄDU MOTYWU ── */
-.lumina-theme-switch-pill {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    z-index: 99999;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    font-family: 'Manrope', -apple-system, sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
-body.theme-lumina-light .lumina-theme-switch-pill,
-html[data-lumina-theme="light"] .lumina-theme-switch-pill {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    color: #0f172a;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
-}
-
-body:not(.theme-lumina-light) .lumina-theme-switch-pill {
-    background: rgba(18, 18, 26, 0.85);
-    border: 1px solid rgba(212, 169, 74, 0.3);
-    color: #EDE6D6;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-/* ── ULTRA REFINEMENT: KONTRASTOWA TYPOGRAFIA I COOKIE BANNER ── */
+/* ── 13. COOKIE BANNER W WERSJI JASNEJ ── */
 html[data-lumina-theme="light"] #lumina-cookie-banner,
 body.theme-lumina-light #lumina-cookie-banner,
 html[data-lumina-theme="light"] .lumina-cookie-banner,
@@ -566,39 +689,90 @@ body.theme-lumina-light #lumina-cookie-banner p {
     color: var(--lumina-l-text-body) !important;
 }
 
-/* Wszelkie jasnoszare teksty pomocnicze wewnątrz kart w jasnym motywie stają się czytelnym antracytem */
-html[data-lumina-theme="light"] .post-card-1x1 div[style*="color:#cbd5e1"],
-html[data-lumina-theme="light"] .post-card-1x1 div[style*="color: #cbd5e1"],
-html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#cbd5e1"],
-html[data-lumina-theme="light"] .post-card-1x1 span[style*="color: #cbd5e1"],
-html[data-lumina-theme="light"] .post-card-1x1 span[style*="color:#94a3b8"],
-html[data-lumina-theme="light"] .post-card-1x1 .live-subtitle,
-body.theme-lumina-light .post-card-1x1 div[style*="color:#cbd5e1"],
-body.theme-lumina-light .post-card-1x1 div[style*="color: #cbd5e1"],
-body.theme-lumina-light .post-card-1x1 span[style*="color:#cbd5e1"],
-body.theme-lumina-light .post-card-1x1 span[style*="color: #cbd5e1"],
-body.theme-lumina-light .post-card-1x1 span[style*="color:#94a3b8"],
-body.theme-lumina-light .post-card-1x1 .live-subtitle {
-    color: #334155 !important;
+/* ── 14. DOLNY PASEK MOBILNY (MOBILE TAB BAR) ── */
+html[data-lumina-theme="light"] .mobile-tab-bar,
+body.theme-lumina-light .mobile-tab-bar {
+    background: rgba(255, 255, 255, 0.90) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.04) !important;
 }
 
-/* ── ULTRA CONTRAST TYPOGRAPHY OVERRIDES ── */
-html[data-lumina-theme="light"] .post-card-1x1 h1,
-html[data-lumina-theme="light"] .post-card-1x1 h2,
-html[data-lumina-theme="light"] .post-card-1x1 h3,
-html[data-lumina-theme="light"] .post-card-1x1 h4,
-html[data-lumina-theme="light"] .post-content-pro h3,
-body.theme-lumina-light .post-card-1x1 h1,
-body.theme-lumina-light .post-card-1x1 h2,
-body.theme-lumina-light .post-card-1x1 h3,
-body.theme-lumina-light .post-card-1x1 h4,
-body.theme-lumina-light .post-content-pro h3 {
-    color: #0f172a !important;
+html[data-lumina-theme="light"] .mobile-tab-btn,
+body.theme-lumina-light .mobile-tab-btn {
+    color: var(--lumina-l-text-muted) !important;
 }
 
-html[data-lumina-theme="light"] .post-card-1x1 p,
-html[data-lumina-theme="light"] .post-content-pro p,
-body.theme-lumina-light .post-card-1x1 p,
-body.theme-lumina-light .post-content-pro p {
-    color: #334155 !important;
+html[data-lumina-theme="light"] .mobile-tab-btn.active,
+body.theme-lumina-light .mobile-tab-btn.active {
+    color: var(--lumina-l-gold) !important;
+}
+
+/* ── 15. PŁYWAJĄCY PRZEŁĄCZNIK TRYBU (MASTER SWITCH PILL) ── */
+.lumina-theme-switch-pill {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 99999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.lumina-theme-switch-pill:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.lumina-theme-switch-pill:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* Przełącznik w trybie jasnym */
+body.theme-lumina-light .lumina-theme-switch-pill,
+html[data-lumina-theme="light"] .lumina-theme-switch-pill {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10), 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+body.theme-lumina-light .lumina-theme-switch-pill i,
+html[data-lumina-theme="light"] .lumina-theme-switch-pill i {
+    color: #f59e0b;
+}
+
+/* Przełącznik w trybie ciemnym */
+body:not(.theme-lumina-light) .lumina-theme-switch-pill,
+html[data-lumina-theme="dark"] .lumina-theme-switch-pill {
+    background: rgba(18, 18, 26, 0.88);
+    border: 1.5px solid rgba(212, 169, 74, 0.35);
+    color: #EDE6D6;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(212, 169, 74, 0.15);
+}
+
+body:not(.theme-lumina-light) .lumina-theme-switch-pill i,
+html[data-lumina-theme="dark"] .lumina-theme-switch-pill i {
+    color: #d4a94a;
+}
+
+/* Ergonomia mobilna: podniesienie nad mobile-tab-bar (min. 44x44px touch) */
+@media (max-width: 768px) {
+    .lumina-theme-switch-pill {
+        bottom: 78px;
+        left: 14px;
+        padding: 9px 14px;
+        font-size: 0.76rem;
+    }
 }
