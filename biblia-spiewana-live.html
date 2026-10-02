@@ -827,6 +827,15 @@
         }
 
         /* --- FOOTER DYNAMIC TICKER --- */
+        body.inside-iframe footer,
+        html.inside-iframe footer,
+        body.no-ticker footer,
+        html.no-ticker footer,
+        body.inside-iframe .ticker-popup-tab,
+        html.inside-iframe .ticker-popup-tab {
+            display: none !important;
+        }
+
         footer {
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -3466,6 +3475,10 @@ function getWeatherPreset(city) {
             if (isParamMuted) {
                 audio.muted = true;
                 audio.volume = 0;
+            }
+            if (window.self !== window.top || window.location.search.includes('in_mcr=1') || window.location.search.includes('noticker')) {
+                document.documentElement.classList.add('inside-iframe', 'no-ticker');
+                if (document.body) document.body.classList.add('inside-iframe', 'no-ticker');
             }
 
             var DEFAULT_PLAYLIST = [

@@ -61,6 +61,8 @@
             --gold-light: #ffffff;
             --gold-dark: #AA7C11;
             --bg-dark: #05070c;
+            --ticker-height: 140px;
+            --ccn-red: #c4122f;
         }
 
         body, html {
@@ -75,7 +77,7 @@
 
         .channel-frame {
             width: 100%;
-            height: calc(100% - 88px);
+            height: calc(100% - var(--ticker-height));
             border: none;
             position: absolute;
             top: 0;
@@ -237,284 +239,256 @@
             box-shadow: 0 0 15px var(--gold-primary);
         }
 
-        /* --- BOTTOM TICKER: PORTAL LUMINA (CHRISTIAN CULTURE) --- */
-        .lumina-master-ticker {
+        /* --- NEW CCN NEWS MASTER BROADCAST TICKER (OBS LOWER THIRD) --- */
+        .ccn-master-ticker {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 88px;
+            height: var(--ticker-height);
             z-index: 99999;
-            background: #040711;
-            border-top: 3px solid var(--gold-primary);
-            box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.98), 0 0 30px rgba(212, 175, 55, 0.35);
+            background: #000000;
+            border-top: 4px solid var(--ccn-red);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.95), 0 0 20px rgba(196, 18, 47, 0.35);
             display: flex;
-            align-items: center;
+            align-items: stretch;
             overflow: hidden;
             user-select: none;
             box-sizing: border-box;
         }
 
-        .lumina-ticker-brand {
+        /* 1. LEFT BRAND LOGO BOX (Projekt bez nazwy (32).png) */
+        .ccn-ticker-brand {
             height: 100%;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 0 24px 0 26px;
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.28) 0%, rgba(10, 15, 30, 0.98) 85%, rgba(10, 15, 30, 0) 100%);
-            border-right: 2px solid rgba(212, 175, 55, 0.5);
-            flex-shrink: 0;
-            z-index: 10;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lumina-ticker-brand:hover {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.4) 0%, rgba(14, 22, 42, 0.98) 85%, rgba(14, 22, 42, 0) 100%);
-        }
-
-        .lumina-brand-icon-box {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #101626 0%, #1c2438 100%);
-            border: 2px solid rgba(212, 175, 55, 0.9);
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            padding: 0 18px;
             flex-shrink: 0;
-            overflow: hidden;
+            z-index: 10;
+            border-right: 3px solid var(--ccn-red);
+            box-shadow: 6px 0 20px rgba(0, 0, 0, 0.7);
         }
 
-        .lumina-brand-icon-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .lumina-brand-texts {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-
-        .lumina-brand-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.55rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffd700;
+        .ccn-ticker-brand img {
+            height: 82%;
+            width: auto;
+            max-width: 360px;
+            object-fit: contain;
             display: block;
-            text-shadow: 0 2px 14px rgba(212, 175, 55, 0.7);
         }
 
-        .lumina-brand-tag {
-            font-size: 0.85rem;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #38bdf8;
+        /* 2. LIVE STATUS BADGE */
+        .ccn-live-badge {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-top: 3px;
+            gap: 10px;
+            background: linear-gradient(180deg, #b91c1c 0%, #881313 100%);
+            color: #ffffff;
+            padding: 0 24px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 9;
         }
 
-        .lumina-brand-tag .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: #38bdf8;
+        .ccn-live-dot {
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #38bdf8;
-            animation: luminaDotPulse 1.5s infinite;
+            box-shadow: 0 0 10px #ffffff;
+            animation: ccnPulse 1.4s infinite alternate ease-in-out;
         }
 
-        @keyframes luminaDotPulse {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #38bdf8; }
-            100% { transform: scale(0.9); opacity: 0.7; }
+        @keyframes ccnPulse {
+            0% { transform: scale(0.85); opacity: 0.6; }
+            100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #ffffff; }
         }
 
-        .lumina-ticker-track-wrap {
+        /* 3. TICKER TRACK WRAPPER */
+        .ccn-ticker-track-wrap {
             flex: 1;
             height: 100%;
             overflow: hidden;
             position: relative;
             display: flex;
             align-items: center;
+            background: #000000;
             mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
             -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
         }
 
-        .lumina-ticker-content {
+        .ccn-ticker-content {
             display: flex;
             align-items: center;
             white-space: nowrap;
-            animation: luminaTickerScroll 180s linear infinite;
-            font-size: 1.65rem;
-            font-weight: 800;
-            letter-spacing: 0.4px;
+            animation: ccnTickerScroll 160s linear infinite;
+            font-size: 1.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
         }
 
-        .lumina-ticker-content:hover {
+        .ccn-ticker-content:hover {
             animation-play-state: paused;
         }
 
-        @keyframes luminaTickerScroll {
+        @keyframes ccnTickerScroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        .lumina-ticker-item {
+        .ccn-ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 14px;
-            padding: 0 40px;
+            gap: 16px;
+            padding: 0 45px;
         }
 
-        .lumina-ticker-item strong {
-            color: #ffd700;
-            font-weight: 900;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-        }
-
-        .lumina-ticker-item .badge-news {
-            background: rgba(56, 189, 248, 0.25);
-            border: 2px solid #38bdf8;
+        .ccn-ticker-item strong {
             color: #ffffff;
-            font-size: 1.05rem;
             font-weight: 900;
-            padding: 5px 15px;
-            border-radius: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
         }
 
-        .lumina-ticker-item .badge-gold {
-            background: rgba(212, 175, 55, 0.25);
-            border: 2px solid #ffd700;
+        .ccn-ticker-item .gold-text {
+            color: #FFD700;
+            font-weight: 800;
+        }
+
+        .ccn-ticker-item .separator {
+            color: var(--ccn-red);
+            font-size: 1.8rem;
+            padding: 0 10px;
+            opacity: 0.85;
+        }
+
+        /* Category Badges inside Marquee */
+        .ccn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        .ccn-badge-now {
+            background: #b91c1c;
             color: #ffffff;
-            font-size: 1.05rem;
-            font-weight: 900;
-            padding: 5px 15px;
-            border-radius: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+            border: 1px solid #ef4444;
         }
 
-        .lumina-ticker-item .badge-pink {
-            background: rgba(236, 72, 153, 0.25);
-            border: 2px solid #f472b6;
+        .ccn-badge-next {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #475569;
+        }
+
+        .ccn-badge-bible {
+            background: linear-gradient(135deg, #15803d, #166534);
             color: #ffffff;
-            font-size: 1.05rem;
-            font-weight: 900;
-            padding: 5px 15px;
-            border-radius: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
+            border: 1px solid #22c55e;
         }
 
-        .lumina-ticker-item .separator {
-            color: #ffd700;
-            font-size: 1.35rem;
-            margin: 0 10px;
+        .ccn-badge-sms {
+            background: linear-gradient(135deg, #b45309, #78350f);
+            color: #fef08a;
+            border: 1px solid #f59e0b;
         }
 
-        .lumina-ticker-cta {
+        .ccn-badge-lumina {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            border: 1px solid #38bdf8;
+        }
+
+        .ccn-badge-support {
+            background: linear-gradient(135deg, #be185d, #9d174d);
+            color: #fdf2f8;
+            border: 1px solid #f472b6;
+        }
+
+        .ccn-badge-app {
+            background: linear-gradient(135deg, #6366f1, #4338ca);
+            color: #ffffff;
+            border: 1px solid #818cf8;
+        }
+
+        .ccn-badge-contact {
+            background: #334155;
+            color: #e2e8f0;
+            border: 1px solid #64748b;
+        }
+
+        /* 4. RIGHT CLOCK & DATE BOX */
+        .ccn-clock-box {
             height: 100%;
+            background: #05070e;
+            border-left: 2px solid rgba(255, 255, 255, 0.12);
+            padding: 0 32px;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 0 24px 0 20px;
-            background: linear-gradient(270deg, rgba(212, 175, 55, 0.28) 0%, rgba(10, 15, 30, 0.98) 85%, rgba(10, 15, 30, 0) 100%);
-            border-left: 2px solid rgba(212, 175, 55, 0.5);
             flex-shrink: 0;
             z-index: 10;
+            box-shadow: -6px 0 20px rgba(0, 0, 0, 0.7);
         }
 
-        .lumina-cta-btn {
-            background: linear-gradient(135deg, #ffd700, #ffffff, #d4af37);
-            color: #000;
+        .ccn-clock-time {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.1rem;
             font-weight: 900;
-            font-size: 1.02rem;
-            letter-spacing: 1px;
-            padding: 14px 26px;
-            border-radius: 30px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.65);
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-            white-space: nowrap;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
         }
 
-        .lumina-cta-btn:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 0 35px rgba(212, 175, 55, 0.95);
-            color: #000;
+        .ccn-clock-date {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #FFD700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 1400px) {
+            :root { --ticker-height: 110px; }
+            .ccn-ticker-content { font-size: 1.45rem; }
+            .ccn-clock-time { font-size: 1.6rem; }
+            .ccn-clock-date { font-size: 0.75rem; }
+            .ccn-badge { font-size: 0.95rem; padding: 4px 12px; }
         }
 
         @media (max-width: 900px) {
-            .lumina-master-ticker {
-                height: 82px;
-            }
-            .channel-frame {
-                height: calc(100% - 82px) !important;
-            }
-            .lumina-ticker-content {
-                font-size: 1.45rem; /* Senior-friendly large text on mobile */
-            }
-            .lumina-ticker-cta {
-                display: none;
-            }
-            .lumina-ticker-brand {
-                padding: 0 12px;
-                gap: 8px;
-            }
-            .lumina-brand-icon-box {
-                width: 44px;
-                height: 44px;
-            }
-            .lumina-brand-title {
-                font-size: 1.25rem;
-            }
-            .lumina-brand-tag {
-                display: none;
-            }
-            .lumina-ticker-item {
-                padding: 0 25px;
-                gap: 10px;
-            }
-            .lumina-ticker-item .badge-news,
-            .lumina-ticker-item .badge-gold,
-            .lumina-ticker-item .badge-pink {
-                font-size: 0.95rem;
-                padding: 4px 10px;
-            }
+            :root { --ticker-height: 85px; }
+            .ccn-ticker-brand img { max-width: 180px; }
+            .ccn-live-badge { padding: 0 14px; font-size: 0.9rem; }
+            .ccn-ticker-content { font-size: 1.15rem; }
+            .ccn-clock-box { padding: 0 16px; }
+            .ccn-clock-time { font-size: 1.25rem; }
+            .ccn-clock-date { font-size: 0.65rem; }
         }
 
         /* Embedded / No-Ticker Mode (np. na Tablicy LUMINA) */
-        body.embedded-mode .lumina-master-ticker,
-        body.no-ticker .lumina-master-ticker,
-        html.no-ticker .lumina-master-ticker,
-        html.embedded-mode .lumina-master-ticker {
+        body.embedded-mode .ccn-master-ticker,
+        body.no-ticker .ccn-master-ticker,
+        html.no-ticker .ccn-master-ticker,
+        html.embedded-mode .ccn-master-ticker {
             display: none !important;
         }
 
@@ -575,103 +549,112 @@
         <span>KLIKNIJ W DOWOLNYM MIEJSCU, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI NA ŻYWO</span>
     </div>
 
-    <!-- ── PORTAL LUMINA MASTER BOTTOM TICKER (CHRISTIAN CULTURE) ── -->
-    <div class="lumina-master-ticker">
-        <!-- BRAND BADGE -->
-        <a href="/lumina" target="_blank" class="lumina-ticker-brand" title="Odwiedź Portal LUMINA">
-            <div class="lumina-brand-icon-box">
-                <img src="lumina-icon-192.png" alt="LUMINA Icon">
-            </div>
-            <div class="lumina-brand-texts">
-                <div class="lumina-brand-title">LUMINA</div>
-                <div class="lumina-brand-tag"><span class="pulse-dot"></span> PORTAL CC • AKTUALNOŚCI</div>
-            </div>
+    <!-- ── NEW CCN NEWS MASTER BROADCAST TICKER (OBS LOWER THIRD) ── -->
+    <div class="ccn-master-ticker">
+        <!-- 1. BRAND LOGO (Projekt bez nazwy (32).png) -->
+        <a href="/lumina" target="_blank" class="ccn-ticker-brand" title="CCN News Christian Culture">
+            <img src="ccn_news_logo.png" alt="CCN News Christian Culture">
         </a>
 
-        <!-- TICKER TRACK WRAPPER -->
-        <div class="lumina-ticker-track-wrap">
-            <div class="lumina-ticker-content">
+        <!-- 2. LIVE STATUS BADGE -->
+        <div class="ccn-live-badge">
+            <span class="ccn-live-dot"></span>
+            <span class="ccn-live-text">NA ŻYWO</span>
+        </div>
+
+        <!-- 3. TICKER TRACK WRAPPER -->
+        <div class="ccn-ticker-track-wrap">
+            <div class="ccn-ticker-content" id="ccnTickerContent">
                 <!-- SET 1 -->
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</span>
-                    <span><strong>PORTAL LUMINA:</strong> Pierwsza polska chrześcijańska platforma relacji i wartości — bezpieczna, wolna od hejtu i komercji • Wejdź na <strong>polskieradio.cc/lumina</strong></span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-now"><i class="fa-solid fa-tower-broadcast"></i> TERAZ W EMISJI</span>
+                    <span><strong class="dynamic-current-program gold-text">BIBLIA ŚPIEWANA & WORSHIP 24/7</strong> — Całodobowa transmisja Słowa Bożego i pieśni chwały</span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-news"><i class="fa-solid fa-newspaper"></i> TABLICA SPOŁECZNOŚCI</span>
-                    <span>Codzienne rozważania Słowa Bożego, autentyczne świadectwa nawróceń, intencje modlitewne i budujące wpisy wierzących z całego kraju.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-bible"><i class="fa-solid fa-book-bible"></i> DARMOWA BIBLIA PDF</span>
+                    <span>Pobierz bezpłatny egzemplarz Pisma Świętego (UBG / Wujek) na <strong class="gold-text">polskieradio.cc/biblia-do-pobrania</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-pink"><i class="fa-solid fa-heart"></i> LUMINA CONNECT</span>
-                    <span>Nowy wymiar chrześcijańskich relacji opartych na fundamencie Chrystusa — poznaj przyjaciół i małżonka o tych samych wartościach.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-sms"><i class="fa-solid fa-box-archive"></i> BIBLIA W DRUKU</span>
+                    <span>Zamów bezpłatną drukowaną Biblię — wyślij SMS: <strong class="gold-text">BIBLIA</strong> pod numer <strong class="gold-text">507 821 789</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-shield-halved"></i> 100% BEZPIECZEŃSTWA</span>
-                    <span>Weryfikacja autentyczności profili przez sztuczną inteligencję (Vision AI) oraz numer SMS • Zero fałszywych kont, zero botów.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-lumina"><i class="fa-solid fa-globe"></i> PORTAL LUMINA</span>
+                    <span>Pierwsza polska chrześcijańska platforma relacji i wartości — wolna od hejtu i komercji • Wejdź na <strong class="gold-text">polskieradio.cc/lumina</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-news"><i class="fa-solid fa-mobile-screen"></i> APLIKACJA PWA</span>
-                    <span>Zainstaluj Portal LUMINA na smartfonie Android & iOS jednym kliknięciem bez sklepu aplikacji — korzystaj jak z natywnej aplikacji!</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-support"><i class="fa-solid fa-heart"></i> WSPARCIE MISJI</span>
+                    <span>Zostań patronem: <strong class="gold-text">patronite.pl/osobowoscplus</strong> • BLIK: <strong class="gold-text">537 134 043</strong> • Nr konta: <strong class="gold-text">48 2910 0006 0000 0000 0527 2629</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-tower-broadcast"></i> MULTIMEDIA & RADIO</span>
-                    <span>Słuchaj Radia Christian Culture, Biblii Śpiewanej i oglądaj transmisje na żywo bezpośrednio na portalu LUMINA.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-app"><i class="fa-solid fa-mobile-screen"></i> APLIKACJE CC</span>
+                    <span>Pobierz aplikację mobilną <strong class="gold-text">„Dobrze, że jesteś”</strong> (Google Play) oraz PWA na <strong class="gold-text">cclite.pl</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-pink"><i class="fa-solid fa-users"></i> SPOŁECZNOŚĆ CC</span>
-                    <span>Dołącz do tysięcy członków społeczności Christian Culture • Utwórz bezpłatny profil na <strong>polskieradio.cc/lumina</strong></span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-contact"><i class="fa-solid fa-envelope"></i> KONTAKT</span>
+                    <span>Napisz do redakcji: <strong class="gold-text">polskiercctv@gmail.com</strong> | <strong class="gold-text">radiochristianculture@gmail.com</strong></span>
+                    <span class="separator">✦</span>
+                </div>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-next"><i class="fa-solid fa-forward-step"></i> W RAMÓWCE</span>
+                    <span><strong>Codzienne Uwielbienie • Apokalipsa Dzień po Dniu • Zjednoczeni za Polskę • Studium Biblijne</strong></span>
                     <span class="separator">✦</span>
                 </div>
 
                 <!-- SET 2 (SEAMLESS LOOP DUPLICATION) -->
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</span>
-                    <span><strong>PORTAL LUMINA:</strong> Pierwsza polska chrześcijańska platforma relacji i wartości — bezpieczna, wolna od hejtu i komercji • Wejdź na <strong>polskieradio.cc/lumina</strong></span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-now"><i class="fa-solid fa-tower-broadcast"></i> TERAZ W EMISJI</span>
+                    <span><strong class="dynamic-current-program gold-text">BIBLIA ŚPIEWANA & WORSHIP 24/7</strong> — Całodobowa transmisja Słowa Bożego i pieśni chwały</span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-news"><i class="fa-solid fa-newspaper"></i> TABLICA SPOŁECZNOŚCI</span>
-                    <span>Codzienne rozważania Słowa Bożego, autentyczne świadectwa nawróceń, intencje modlitewne i budujące wpisy wierzących z całego kraju.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-bible"><i class="fa-solid fa-book-bible"></i> DARMOWA BIBLIA PDF</span>
+                    <span>Pobierz bezpłatny egzemplarz Pisma Świętego (UBG / Wujek) na <strong class="gold-text">polskieradio.cc/biblia-do-pobrania</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-pink"><i class="fa-solid fa-heart"></i> LUMINA CONNECT</span>
-                    <span>Nowy wymiar chrześcijańskich relacji opartych na fundamencie Chrystusa — poznaj przyjaciół i małżonka o tych samych wartościach.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-sms"><i class="fa-solid fa-box-archive"></i> BIBLIA W DRUKU</span>
+                    <span>Zamów bezpłatną drukowaną Biblię — wyślij SMS: <strong class="gold-text">BIBLIA</strong> pod numer <strong class="gold-text">507 821 789</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-shield-halved"></i> 100% BEZPIECZEŃSTWA</span>
-                    <span>Weryfikacja autentyczności profili przez sztuczną inteligencję (Vision AI) oraz numer SMS • Zero fałszywych kont, zero botów.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-lumina"><i class="fa-solid fa-globe"></i> PORTAL LUMINA</span>
+                    <span>Pierwsza polska chrześcijańska platforma relacji i wartości — wolna od hejtu i komercji • Wejdź na <strong class="gold-text">polskieradio.cc/lumina</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-news"><i class="fa-solid fa-mobile-screen"></i> APLIKACJA PWA</span>
-                    <span>Zainstaluj Portal LUMINA na smartfonie Android & iOS jednym kliknięciem bez sklepu aplikacji — korzystaj jak z natywnej aplikacji!</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-support"><i class="fa-solid fa-heart"></i> WSPARCIE MISJI</span>
+                    <span>Zostań patronem: <strong class="gold-text">patronite.pl/osobowoscplus</strong> • BLIK: <strong class="gold-text">537 134 043</strong> • Nr konta: <strong class="gold-text">48 2910 0006 0000 0000 0527 2629</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-gold"><i class="fa-solid fa-tower-broadcast"></i> MULTIMEDIA & RADIO</span>
-                    <span>Słuchaj Radia Christian Culture, Biblii Śpiewanej i oglądaj transmisje na żywo bezpośrednio na portalu LUMINA.</span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-app"><i class="fa-solid fa-mobile-screen"></i> APLIKACJE CC</span>
+                    <span>Pobierz aplikację mobilną <strong class="gold-text">„Dobrze, że jesteś”</strong> (Google Play) oraz PWA na <strong class="gold-text">cclite.pl</strong></span>
                     <span class="separator">✦</span>
                 </div>
-                <div class="lumina-ticker-item">
-                    <span class="badge-pink"><i class="fa-solid fa-users"></i> SPOŁECZNOŚĆ CC</span>
-                    <span>Dołącz do tysięcy członków społeczności Christian Culture • Utwórz bezpłatny profil na <strong>polskieradio.cc/lumina</strong></span>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-contact"><i class="fa-solid fa-envelope"></i> KONTAKT</span>
+                    <span>Napisz do redakcji: <strong class="gold-text">polskiercctv@gmail.com</strong> | <strong class="gold-text">radiochristianculture@gmail.com</strong></span>
+                    <span class="separator">✦</span>
+                </div>
+                <div class="ccn-ticker-item">
+                    <span class="ccn-badge ccn-badge-next"><i class="fa-solid fa-forward-step"></i> W RAMÓWCE</span>
+                    <span><strong>Codzienne Uwielbienie • Apokalipsa Dzień po Dniu • Zjednoczeni za Polskę • Studium Biblijne</strong></span>
                     <span class="separator">✦</span>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT CTA BUTTON -->
-        <div class="lumina-ticker-cta">
-            <a href="/lumina" target="_blank" class="lumina-cta-btn" title="Odwiedź Portal LUMINA">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> DOŁĄCZ DO LUMINA
-            </a>
+        <!-- 4. RIGHT CLOCK & DATE BOX -->
+        <div class="ccn-clock-box">
+            <div class="ccn-clock-time" id="ccnClockTime">--:--:--</div>
+            <div class="ccn-clock-date" id="ccnClockDate">-- ---</div>
         </div>
     </div>
 
@@ -921,6 +904,9 @@
                 desc: "Emisja na żywo w Christian Culture TV"
             };
 
+            // Update ticker titles
+            updateProgramTitles(meta.title);
+
             const activeFrame = getActiveFrame();
             const inactiveFrame = getInactiveFrame();
 
@@ -928,7 +914,7 @@
                 // First load -> direct smooth load on Active Frame
                 const sepChar = newChannel.includes("?") ? "&" : "?";
                 const audioQuery = isMutedDefault ? "muted=1&autoplay=1" : "autoplay=1";
-                activeFrame.src = newChannel + sepChar + audioQuery + "&t=" + Date.now();
+                activeFrame.src = newChannel + sepChar + audioQuery + "&in_mcr=1&noticker=1&t=" + Date.now();
                 fade.style.display = "block";
                 fade.style.opacity = "1";
                 setTimeout(() => {
@@ -973,7 +959,7 @@
                 // 3) Preload incoming channel IMMEDIATELY (at T=500ms) MUTED so it buffers fully without audio bleed!
                 setTimeout(() => {
                     const sep = newChannel.includes('?') ? '&' : '?';
-                    inactiveFrame.src = newChannel + sep + "muted=1&autoplay=1&t=" + Date.now();
+                    inactiveFrame.src = newChannel + sep + "muted=1&autoplay=1&in_mcr=1&noticker=1&t=" + Date.now();
                 }, 500);
 
                 // 4) Determine video duration (default 8s fallback)
@@ -1025,6 +1011,67 @@
 
                 }, switchLeadTime);
             }
+        }
+
+        // ── CCN CLOCK & CALENDAR ──
+        function updateCcnClock() {
+            const timeEl = document.getElementById('ccnClockTime');
+            const dateEl = document.getElementById('ccnClockDate');
+            if (!timeEl || !dateEl) return;
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            timeEl.textContent = `${hh}:${mm}:${ss}`;
+
+            const months = ['STY', 'LUT', 'MAR', 'KWI', 'MAJ', 'CZE', 'LIP', 'SIE', 'WRZ', 'PAŹ', 'LIS', 'GRU'];
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            dateEl.textContent = `${day} ${month}`;
+        }
+        updateCcnClock();
+        setInterval(updateCcnClock, 1000);
+
+        // ── SUPPRESS SUB-CHANNEL TICKERS (ENSURE ONLY 1 CCN NEWS LOWER THIRD) ──
+        function suppressSubframeTicker(frame) {
+            if (!frame) return;
+            try {
+                const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+                if (doc) {
+                    if (doc.documentElement) doc.documentElement.classList.add('inside-iframe', 'no-ticker');
+                    if (doc.body) doc.body.classList.add('inside-iframe', 'no-ticker');
+                    
+                    if (!doc.getElementById('ccn-master-ticker-suppressor')) {
+                        const style = doc.createElement('style');
+                        style.id = 'ccn-master-ticker-suppressor';
+                        style.textContent = `
+                            footer, .footer, .footer-ticker, .ticker-popup-tab,
+                            .bottom-ticker-bar, .tv24-ticker-system, .worship-live-ticker,
+                            .lumina-master-ticker, .ticker-wrap, .radio-ticker-wrap {
+                                display: none !important;
+                                opacity: 0 !important;
+                                pointer-events: none !important;
+                                visibility: hidden !important;
+                                height: 0 !important;
+                            }
+                            body, html {
+                                padding-bottom: 0 !important;
+                                margin-bottom: 0 !important;
+                            }
+                        `;
+                        (doc.head || doc.documentElement).appendChild(style);
+                    }
+                }
+            } catch(e) {
+                // Cross-origin fallback (postMessage or query params handled)
+            }
+        }
+
+        function updateProgramTitles(titleText) {
+            if (!titleText) return;
+            document.querySelectorAll('.dynamic-current-program').forEach(el => {
+                el.textContent = titleText;
+            });
         }
 
         // Auto-hide unmute banner after 4 seconds so it doesn't cover the top bar
@@ -1112,10 +1159,11 @@
             });
         }
 
-        // When frames load, enforce muting if isMutedDefault is true
+        // When frames load, enforce muting & suppress duplicate sub-channel tickers
         [frameA, frameB].forEach(f => {
             if (f) {
                 f.addEventListener('load', () => {
+                    suppressSubframeTicker(f);
                     if (isMutedDefault) {
                         muteSubframe();
                     }
