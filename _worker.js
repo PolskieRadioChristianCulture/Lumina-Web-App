@@ -1,4 +1,8 @@
+import { handleGateway } from './lib/cc-ai-gateway/index.js';
+import { handleMissionControl } from './lib/cc-ai-gateway/mission-control.js';
+
 const BLOCKED_PREFIXES = [
+  '/lib/cc-ai-gateway/', '/tests/cc-ai-gateway/',
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
   '/scripts/agent-matrix/.matrix_sessions/',
@@ -31,6 +35,10 @@ function isBlocked(pathname) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === '/api/ai/control/status') return handleMissionControl(request, env);
+    if (url.pathname === '/api/ai' || url.pathname.startsWith('/api/ai/')) {
+      return handleGateway(request, env);
+    }
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {
         status: 404,
