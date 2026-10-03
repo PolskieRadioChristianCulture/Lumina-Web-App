@@ -13791,6 +13791,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     let heroRevealTimer = null;
     function resetHeroTimer() {
         clearTimeout(heroRevealTimer);
+        const isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || 
+                        document.body.classList.contains('theme-lumina-light') || 
+                        localStorage.getItem('lumina_theme') === 'light';
+        if (isLight) return; // W trybie jasnym nagłówek i wizytówka hero nie znikają
         heroRevealTimer = setTimeout(() => {
             const hero = document.getElementById('heroHeader');
             if (hero && !hero.matches(':focus-within')) hero.classList.add('faces-revealed');

@@ -817,6 +817,16 @@ body.theme-lumina-light .hero-section {
     background: transparent !important;
 }
 
+/* W trybie jasnym element hero-content (logo, tytuł, opis i przyciski) pozostaje ZAWSZE widoczny i stabilny */
+html[data-lumina-theme="light"] .hero-section.faces-revealed:not(:focus-within) .hero-content,
+body.theme-lumina-light .hero-section.faces-revealed:not(:focus-within) .hero-content,
+html[data-lumina-theme="light"] .hero-content,
+body.theme-lumina-light .hero-content {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+}
+
 html[data-lumina-theme="light"] .hero-intro-wrapper img[alt*="Logo"],
 html[data-lumina-theme="light"] .hero-intro-wrapper img[alt*="LUMINA"],
 body.theme-lumina-light .hero-intro-wrapper img[alt*="Logo"],
