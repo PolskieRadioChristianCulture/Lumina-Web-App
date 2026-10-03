@@ -430,6 +430,11 @@ export default defineConfig(() => {
 /prawo/ /prawo/index.html 200
 /seks /seks/index.html 200
 /seks/ /seks/index.html 200
+/biblioteka /biblioteka/index.html 200
+/biblioteka/ /biblioteka/index.html 200
+/ksiazki /biblioteka 301
+/audiobooki /biblioteka 301
+/ebooki /biblioteka 301
 /kosmologia /nauka 301
 /archeologia /historia 301
 /dna /biologia 301
@@ -437,7 +442,7 @@ export default defineConfig(() => {
 /malzenstwo/ /seks 301
 `;
 
-  if (!redirectsContent.includes('/nauka /nauka/index.html 200')) {
+  if (!redirectsContent.includes('/biblioteka /biblioteka/index.html 200')) {
     redirectsContent = redirectsContent.trim() + '\n' + newRedirects;
     fs.writeFileSync(redirectsPath, redirectsContent, 'utf8');
     console.log('✓ Added redirect rules to _redirects');
@@ -453,7 +458,8 @@ export default defineConfig(() => {
     'https://polskieradio.cc/historia',
     'https://polskieradio.cc/biologia',
     'https://polskieradio.cc/prawo',
-    'https://polskieradio.cc/seks'
+    'https://polskieradio.cc/seks',
+    'https://polskieradio.cc/biblioteka'
   ];
 
   let sitemapAdditions = '';
