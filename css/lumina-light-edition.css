@@ -1145,13 +1145,40 @@ body.theme-lumina-light .carousel-btn:hover {
 }
 
 /* ── 20. PROFILE SPOŁECZNOŚCI (LUMINA-PROFILE & PROFILES HEAD CARD) ── */
+html[data-lumina-theme="light"] body.lumina-profile-page,
+html[data-lumina-theme="light"] body.lumina-profile-standard,
+body.theme-lumina-light.lumina-profile-page,
+body.theme-lumina-light.lumina-profile-standard {
+    background: #FAF8F5 !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .profile-container,
+html[data-lumina-theme="light"] .profile-main-wrap,
+html[data-lumina-theme="light"] .profile-body-grid,
+html[data-lumina-theme="light"] .timeline-area,
+html[data-lumina-theme="light"] .profile-content,
+body.theme-lumina-light .profile-container,
+body.theme-lumina-light .profile-main-wrap,
+body.theme-lumina-light .profile-body-grid,
+body.theme-lumina-light .timeline-area,
+body.theme-lumina-light .profile-content {
+    background: transparent !important;
+    color: #1C1917 !important;
+}
+
+/* Nagłówek Wizytówki Profilowej */
 html[data-lumina-theme="light"] .profile-head-card,
 html[data-lumina-theme="light"] .lumina-profile-head-card,
+html[data-lumina-theme="light"] .profile-header-card,
 body.theme-lumina-light .profile-head-card,
-body.theme-lumina-light .lumina-profile-head-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06) !important;
+body.theme-lumina-light .lumina-profile-head-card,
+body.theme-lumina-light .profile-header-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px -4px rgba(28, 25, 23, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    color: #1C1917 !important;
 }
 
 html[data-lumina-theme="light"] .avatar-wrap,
@@ -1162,245 +1189,1140 @@ body.theme-lumina-light .avatar-wrap,
 body.theme-lumina-light .head-avatar-wrapper,
 body.theme-lumina-light .profile-avatar-wrap,
 body.theme-lumina-light .lumina-profile-avatar-wrap {
-    background: #ffffff !important;
-    border: 4px solid #ffffff !important;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.05), 0 0 16px rgba(196, 163, 90, 0.25) !important;
+    background: #FFFFFF !important;
+    border: 4px solid #FFFFFF !important;
+    box-shadow: 0 10px 30px rgba(28, 25, 23, 0.12), 0 0 0 1px rgba(196, 163, 90, 0.25), 0 0 16px rgba(196, 163, 90, 0.18) !important;
 }
 
 html[data-lumina-theme="light"] .head-user-name,
 html[data-lumina-theme="light"] .hero-name,
+html[data-lumina-theme="light"] .profile-name,
+html[data-lumina-theme="light"] .profile-user-name,
 body.theme-lumina-light .head-user-name,
-body.theme-lumina-light .hero-name {
-    color: #0f172a !important;
+body.theme-lumina-light .hero-name,
+body.theme-lumina-light .profile-name,
+body.theme-lumina-light .profile-user-name {
+    color: #1C1917 !important;
     text-shadow: none !important;
+    font-weight: 800 !important;
 }
 
 html[data-lumina-theme="light"] .head-user-location,
 html[data-lumina-theme="light"] .head-user-bio,
 html[data-lumina-theme="light"] .hero-role,
 html[data-lumina-theme="light"] .hero-location,
+html[data-lumina-theme="light"] .profile-tagline,
+html[data-lumina-theme="light"] .head-user-meta,
 body.theme-lumina-light .head-user-location,
 body.theme-lumina-light .head-user-bio,
 body.theme-lumina-light .hero-role,
-body.theme-lumina-light .hero-location {
-    color: #475569 !important;
+body.theme-lumina-light .hero-location,
+body.theme-lumina-light .profile-tagline,
+body.theme-lumina-light .head-user-meta {
+    color: #44403C !important;
 }
 
-html[data-lumina-theme="light"] .tag-chip,
-html[data-lumina-theme="light"] .faith-badge-pill,
-body.theme-lumina-light .tag-chip,
-body.theme-lumina-light .faith-badge-pill {
-    background: #f8fafc !important;
-    border: 1px solid rgba(15, 23, 42, 0.06) !important;
-    color: #334155 !important;
+/* Badże i Odznaki w Nagłówku */
+html[data-lumina-theme="light"] .verified-badge,
+body.theme-lumina-light .verified-badge {
+    color: #0284C7 !important;
 }
 
+html[data-lumina-theme="light"] .profile-badge-public,
+html[data-lumina-theme="light"] .badge-public,
+html[data-lumina-theme="light"] span:has(> .fa-globe),
+body.theme-lumina-light .profile-badge-public,
+body.theme-lumina-light .badge-public {
+    background: #ECFDF5 !important;
+    border: 1px solid #A7F3D0 !important;
+    color: #047857 !important;
+}
+
+/* Przyciski Akcji w Nagłówku Profilu */
 html[data-lumina-theme="light"] .head-actions,
 html[data-lumina-theme="light"] .hero-actions,
 body.theme-lumina-light .head-actions,
 body.theme-lumina-light .hero-actions {
-    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+    border-top: 1px solid rgba(196, 163, 90, 0.16) !important;
+    padding-top: 14px !important;
 }
 
-html[data-lumina-theme="light"] .btn-action-primary,
-body.theme-lumina-light .btn-action-primary {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
-    color: #ffffff !important;
+html[data-lumina-theme="light"] .head-actions > button,
+html[data-lumina-theme="light"] .head-actions > a,
+html[data-lumina-theme="light"] .hero-actions > button,
+html[data-lumina-theme="light"] .hero-actions > a,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > button,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > a,
+html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > button,
+html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > a,
+body.theme-lumina-light .head-actions > button,
+body.theme-lumina-light .head-actions > a,
+body.theme-lumina-light .hero-actions > button,
+body.theme-lumina-light .hero-actions > a,
+body.theme-lumina-light.lumina-profile-standard .head-actions > button,
+body.theme-lumina-light.lumina-profile-standard .head-actions > a,
+body.theme-lumina-light.lumina-profile-standard .hero-actions > button,
+body.theme-lumina-light.lumina-profile-standard .hero-actions > a {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    color: #1C1917 !important;
+    box-shadow: 0 2px 6px rgba(28, 25, 23, 0.04) !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html[data-lumina-theme="light"] .head-actions .btn-text,
+html[data-lumina-theme="light"] .head-actions #followBtnText,
+html[data-lumina-theme="light"] .head-actions #followCountBadge,
+html[data-lumina-theme="light"] .head-actions #heartBtnText,
+html[data-lumina-theme="light"] .head-actions #heartCountBadge,
+html[data-lumina-theme="light"] .head-actions .btn-divider,
+html[data-lumina-theme="light"] .head-actions > button span,
+html[data-lumina-theme="light"] .head-actions > a span,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions .btn-text,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions #followBtnText,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions #followCountBadge,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions #heartBtnText,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions #heartCountBadge,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions .btn-divider,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > button span,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > a span,
+body.theme-lumina-light .head-actions .btn-text,
+body.theme-lumina-light .head-actions #followBtnText,
+body.theme-lumina-light .head-actions #followCountBadge,
+body.theme-lumina-light .head-actions #heartBtnText,
+body.theme-lumina-light .head-actions #heartCountBadge,
+body.theme-lumina-light .head-actions .btn-divider,
+body.theme-lumina-light .head-actions > button span,
+body.theme-lumina-light .head-actions > a span,
+body.theme-lumina-light.lumina-profile-standard .head-actions .btn-text,
+body.theme-lumina-light.lumina-profile-standard .head-actions #followBtnText,
+body.theme-lumina-light.lumina-profile-standard .head-actions #followCountBadge,
+body.theme-lumina-light.lumina-profile-standard .head-actions #heartBtnText,
+body.theme-lumina-light.lumina-profile-standard .head-actions #heartCountBadge,
+body.theme-lumina-light.lumina-profile-standard .head-actions .btn-divider,
+body.theme-lumina-light.lumina-profile-standard .head-actions > button span,
+body.theme-lumina-light.lumina-profile-standard .head-actions > a span {
+    color: #1C1917 !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .head-actions > button:hover,
+html[data-lumina-theme="light"] .head-actions > a:hover,
+html[data-lumina-theme="light"] .hero-actions > button:hover,
+html[data-lumina-theme="light"] .hero-actions > a:hover,
+body.theme-lumina-light .head-actions > button:hover,
+body.theme-lumina-light .head-actions > a:hover,
+body.theme-lumina-light .hero-actions > button:hover,
+body.theme-lumina-light .hero-actions > a:hover {
+    background: #FAF6EE !important;
+    border-color: #B88E3E !important;
+    color: #92400E !important;
+    box-shadow: 0 4px 12px rgba(184, 142, 62, 0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-lumina-theme="light"] .head-actions > button i,
+html[data-lumina-theme="light"] .head-actions > a i,
+html[data-lumina-theme="light"] .hero-actions > button i,
+html[data-lumina-theme="light"] .hero-actions > a i,
+body.theme-lumina-light .head-actions > button i,
+body.theme-lumina-light .head-actions > a i,
+body.theme-lumina-light .hero-actions > button i,
+body.theme-lumina-light .hero-actions > a i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .btn-action-heart:hover,
+html[data-lumina-theme="light"] .btn-action-heart.active,
+body.theme-lumina-light .btn-action-heart:hover,
+body.theme-lumina-light .btn-action-heart.active {
+    background: #E11D48 !important;
+    border-color: #E11D48 !important;
+    color: #FFFFFF !important;
+}
+html[data-lumina-theme="light"] .btn-action-heart:hover i,
+html[data-lumina-theme="light"] .btn-action-heart.active i,
+body.theme-lumina-light .btn-action-heart:hover i,
+body.theme-lumina-light .btn-action-heart.active i {
+    color: #FFFFFF !important;
+}
+
+/* Baner Bezpieczeństwa / Administratora na Górze */
+html[data-lumina-theme="light"] .profile-security-bar,
+html[data-lumina-theme="light"] #profileSecurityBar,
+body.theme-lumina-light .profile-security-bar,
+body.theme-lumina-light #profileSecurityBar {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    border-radius: 16px !important;
+    color: #1C1917 !important;
+    box-shadow: 0 8px 24px rgba(28, 25, 23, 0.08) !important;
+}
+
+html[data-lumina-theme="light"] .security-status-left,
+html[data-lumina-theme="light"] .security-status-left span,
+body.theme-lumina-light .security-status-left,
+body.theme-lumina-light .security-status-left span {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .security-status-left i,
+body.theme-lumina-light .security-status-left i {
+    color: #0284C7 !important;
+}
+
+html[data-lumina-theme="light"] .btn-admin-auth,
+html[data-lumina-theme="light"] .security-bar-btn,
+body.theme-lumina-light .btn-admin-auth,
+body.theme-lumina-light .security-bar-btn {
+    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    color: #FFFFFF !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(179, 142, 62, 0.25) !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(184, 142, 62, 0.3) !important;
 }
 
-html[data-lumina-theme="light"] .btn-action-secondary,
-html[data-lumina-theme="light"] .btn-action-follow,
-html[data-lumina-theme="light"] .btn-action-icon-circle,
-body.theme-lumina-light .btn-action-secondary,
-body.theme-lumina-light .btn-action-follow,
-body.theme-lumina-light .btn-action-icon-circle {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    color: #0f172a !important;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
-}
-
-html[data-lumina-theme="light"] .btn-action-icon-circle:hover,
-body.theme-lumina-light .btn-action-icon-circle:hover {
-    background: #f8fafc !important;
-    color: #c4a35a !important;
-}
-
-/* ── 21. ZAKŁADKI PROFILU (PROFILE NAV TABS) ── */
+/* ── 21. ZAKŁADKI PROFILU (PROFILE NAV TABS - WARM IVORY & CHAMPAGNE GOLD) ── */
 html[data-lumina-theme="light"] .profile-nav-tabs,
 body.theme-lumina-light .profile-nav-tabs {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 16px -2px rgba(28, 25, 23, 0.05) !important;
+    padding: 6px 14px !important;
+    gap: 8px !important;
+    margin-top: 18px !important;
 }
 
 html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn,
 body.theme-lumina-light .profile-nav-tabs .tab-btn {
-    color: #64748b !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: #57534E !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    padding: 10px 18px !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: none !important;
+}
+
+html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn i,
+body.theme-lumina-light .profile-nav-tabs .tab-btn i {
+    color: #78716C !important;
+    transition: color 0.2s ease !important;
 }
 
 html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn:hover,
 body.theme-lumina-light .profile-nav-tabs .tab-btn:hover {
-    color: #0f172a !important;
-    background: #f8fafc !important;
+    background: #F5F2EB !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn:hover i,
+body.theme-lumina-light .profile-nav-tabs .tab-btn:hover i {
+    color: #B88E3E !important;
 }
 
 html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn.active,
 body.theme-lumina-light .profile-nav-tabs .tab-btn.active {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
-    color: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(179, 142, 62, 0.28) !important;
+    background: #FAF6EE !important;
+    color: #92400E !important;
+    border: 1.5px solid #C4A35A !important;
+    box-shadow: 0 2px 8px rgba(184, 142, 62, 0.12) !important;
+    font-weight: 800 !important;
+    position: relative !important;
 }
 
-/* ── 22. KARTY BOCZNE PROFILU (SIDEBAR CARDS) ── */
+html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn.active i,
+body.theme-lumina-light .profile-nav-tabs .tab-btn.active i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn.active::after,
+html[data-lumina-theme="light"] .profile-nav-tabs .tab-btn::after,
+body.theme-lumina-light .profile-nav-tabs .tab-btn.active::after,
+body.theme-lumina-light .profile-nav-tabs .tab-btn::after {
+    display: none !important;
+}
+
+/* ── 22. KARTY BOCZNE PROFILU (SIDEBAR CARDS, WIZYTÓWKA & ZNAJOMI) ── */
 html[data-lumina-theme="light"] .sidebar-card,
 html[data-lumina-theme="light"] .profile-sidebar-card,
+html[data-lumina-theme="light"] .followed-friends-card,
 body.theme-lumina-light .sidebar-card,
-body.theme-lumina-light .profile-sidebar-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+body.theme-lumina-light .profile-sidebar-card,
+body.theme-lumina-light .followed-friends-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
     border-radius: 20px !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 8px 24px -4px rgba(28, 25, 23, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    color: #1C1917 !important;
+    padding: 22px !important;
+    margin-bottom: 24px !important;
 }
 
 html[data-lumina-theme="light"] .card-title,
 html[data-lumina-theme="light"] .profile-section-title,
 body.theme-lumina-light .card-title,
 body.theme-lumina-light .profile-section-title {
-    color: #0f172a !important;
+    color: #1C1917 !important;
+    border-bottom: 1px solid rgba(196, 163, 90, 0.15) !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 14px !important;
+    font-weight: 800 !important;
 }
 
+html[data-lumina-theme="light"] .card-title i,
+body.theme-lumina-light .card-title i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .card-edit-btn,
+body.theme-lumina-light .card-edit-btn {
+    background: #F5F2EB !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #57534E !important;
+    border-radius: 8px !important;
+    padding: 4px 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-lumina-theme="light"] .card-edit-btn:hover,
+body.theme-lumina-light .card-edit-btn:hover {
+    background: #EDE6D6 !important;
+    color: #1C1917 !important;
+}
+
+/* Wiersze Informacyjne Wizytówki */
+html[data-lumina-theme="light"] .info-list,
+html[data-lumina-theme="light"] .info-row,
+body.theme-lumina-light .info-list,
+body.theme-lumina-light .info-row {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .info-label,
+html[data-lumina-theme="light"] .detail-label,
+body.theme-lumina-light .info-label,
+body.theme-lumina-light .detail-label {
+    color: #57534E !important;
+    font-weight: 600 !important;
+    font-size: 0.78rem !important;
+    display: block !important;
+}
+
+html[data-lumina-theme="light"] .info-val,
+html[data-lumina-theme="light"] .detail-val,
+html[data-lumina-theme="light"] .info-row div,
+html[data-lumina-theme="light"] .info-row span,
+body.theme-lumina-light .info-val,
+body.theme-lumina-light .detail-val,
+body.theme-lumina-light .info-row div,
+body.theme-lumina-light .info-row span {
+    color: #1C1917 !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] #userJobEl,
+body.theme-lumina-light #userJobEl {
+    color: #92400E !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] #userChurchEl,
+body.theme-lumina-light #userChurchEl {
+    color: #1C1917 !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] #userStatusEl,
+body.theme-lumina-light #userStatusEl {
+    color: #1C1917 !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] #userStatusEl a,
+body.theme-lumina-light #userStatusEl a {
+    color: #9D174D !important;
+    font-weight: 800 !important;
+    text-decoration: underline !important;
+}
+
+html[data-lumina-theme="light"] #userGoalEl,
+body.theme-lumina-light #userGoalEl {
+    color: #1C1917 !important;
+    font-weight: 600 !important;
+    line-height: 1.55 !important;
+}
+
+/* Ikony Wizytówki w Trybie Jasnym */
+html[data-lumina-theme="light"] .info-row i,
+body.theme-lumina-light .info-row i {
+    font-size: 1rem !important;
+    margin-top: 2px !important;
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .info-row i.fa-briefcase,
+body.theme-lumina-light .info-row i.fa-briefcase {
+    color: #B88E3E !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-church,
+body.theme-lumina-light .info-row i.fa-church {
+    color: #0284C7 !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-ring,
+body.theme-lumina-light .info-row i.fa-ring {
+    color: #BE123C !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-bullseye,
+body.theme-lumina-light .info-row i.fa-bullseye {
+    color: #059669 !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-heart,
+body.theme-lumina-light .info-row i.fa-heart {
+    color: #E11D48 !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-music,
+body.theme-lumina-light .info-row i.fa-music {
+    color: #7C3AED !important;
+}
+html[data-lumina-theme="light"] .info-row i.fa-hands-holding-child,
+body.theme-lumina-light .info-row i.fa-hands-holding-child {
+    color: #0D9488 !important;
+}
+
+/* Werset Życiowy w Wizytówce */
 html[data-lumina-theme="light"] .verse-box,
 body.theme-lumina-light .verse-box {
-    background: #fcf9f2 !important;
-    border: 1px solid rgba(196, 163, 90, 0.25) !important;
-    color: #8a651a !important;
+    background: #FDFBF7 !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    border-radius: 14px !important;
+    box-shadow: inset 0 1px 3px rgba(184, 142, 62, 0.06) !important;
+    padding: 16px !important;
+    margin-top: 10px !important;
 }
 
-html[data-lumina-theme="light"] .detail-label,
-body.theme-lumina-light .detail-label {
-    color: #64748b !important;
+html[data-lumina-theme="light"] .verse-text,
+html[data-lumina-theme="light"] #userVerseText,
+body.theme-lumina-light .verse-text,
+body.theme-lumina-light #userVerseText {
+    color: #78350F !important;
+    font-style: italic !important;
+    font-weight: 600 !important;
+    line-height: 1.6 !important;
 }
 
-html[data-lumina-theme="light"] .detail-val,
-body.theme-lumina-light .detail-val {
-    color: #0f172a !important;
+html[data-lumina-theme="light"] .verse-ref,
+html[data-lumina-theme="light"] #userVerseRef,
+body.theme-lumina-light .verse-ref,
+body.theme-lumina-light #userVerseRef {
+    color: #B88E3E !important;
+    font-weight: 800 !important;
+    text-align: right !important;
 }
 
-html[data-lumina-theme="light"] .faith-prompt-card,
-body.theme-lumina-light .faith-prompt-card {
-    background: #f8fafc !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
-    color: #334155 !important;
+/* Tagi / Zainteresowania */
+html[data-lumina-theme="light"] .tag-cloud,
+body.theme-lumina-light .tag-cloud {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
 }
 
-/* ── 23. WPISY I MODUŁY FORMACYJNE ROZWAŻAŃ NA PROFILACH ── */
-html[data-lumina-theme="light"] .reflection-post-card,
-body.theme-lumina-light .reflection-post-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+html[data-lumina-theme="light"] .tag-chip,
+body.theme-lumina-light .tag-chip {
+    background: #F5F2EB !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #292524 !important;
+    font-weight: 600 !important;
     border-radius: 20px !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+    padding: 6px 14px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.2s ease !important;
 }
 
+html[data-lumina-theme="light"] .tag-chip i,
+body.theme-lumina-light .tag-chip i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .tag-chip:hover,
+body.theme-lumina-light .tag-chip:hover {
+    background: #EDE6D6 !important;
+    border-color: #D6D3D1 !important;
+    color: #1C1917 !important;
+}
+
+/* Miniatura Zdjęć w Panelu Bocznym */
+html[data-lumina-theme="light"] .photo-grid-mini,
+body.theme-lumina-light .photo-grid-mini {
+    display: grid !important;
+    gap: 10px !important;
+}
+
+html[data-lumina-theme="light"] .photo-thumb,
+body.theme-lumina-light .photo-thumb {
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+html[data-lumina-theme="light"] .photo-thumb:hover,
+body.theme-lumina-light .photo-thumb:hover {
+    transform: scale(1.03) !important;
+    box-shadow: 0 8px 20px rgba(184, 142, 62, 0.18) !important;
+}
+
+/* Karta Znajomych (Wizytówka Friends) */
+html[data-lumina-theme="light"] .friends-counter,
+body.theme-lumina-light .friends-counter {
+    background: #F5F2EB !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #57534E !important;
+    border-radius: 14px !important;
+    padding: 4px 10px !important;
+}
+
+html[data-lumina-theme="light"] .friends-search-input,
+html[data-lumina-theme="light"] #friendsSearchInput,
+html[data-lumina-theme="light"] input[placeholder*="Szukaj osoby"],
+body.theme-lumina-light .friends-search-input,
+body.theme-lumina-light #friendsSearchInput,
+body.theme-lumina-light input[placeholder*="Szukaj osoby"] {
+    background: #FFFFFF !important;
+    border: 1.5px solid #D6D3D1 !important;
+    color: #1C1917 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .friends-search-input::placeholder,
+body.theme-lumina-light .friends-search-input::placeholder {
+    color: #78716C !important;
+}
+
+html[data-lumina-theme="light"] .friends-tab-btn,
+body.theme-lumina-light .friends-tab-btn {
+    background: #F5F2EB !important;
+    color: #57534E !important;
+    border: 1px solid #E7E5E4 !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] .friends-tab-btn.active,
+body.theme-lumina-light .friends-tab-btn.active {
+    background: #FAF6EE !important;
+    color: #92400E !important;
+    border-color: rgba(184, 142, 62, 0.4) !important;
+    font-weight: 700 !important;
+}
+
+/* Zakładki O Mnie, Wiara, Galeria */
+html[data-lumina-theme="light"] #userBioFull,
+body.theme-lumina-light #userBioFull {
+    color: #292524 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.7 !important;
+}
+
+/* ── 23. WPISY I TRANSMISJA LIVE NA PROFILACH (TIMELINE & BROADCAST) ── */
+html[data-lumina-theme="light"] .post-card,
+html[data-lumina-theme="light"] .reflection-post-card,
+body.theme-lumina-light .post-card,
+body.theme-lumina-light .reflection-post-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 24px -4px rgba(28, 25, 23, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    color: #1C1917 !important;
+    margin-bottom: 22px !important;
+    padding: 22px !important;
+}
+
+html[data-lumina-theme="light"] .post-header,
+body.theme-lumina-light .post-header {
+    border-bottom: 1px solid rgba(196, 163, 90, 0.12) !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 14px !important;
+}
+
+html[data-lumina-theme="light"] .post-author,
+body.theme-lumina-light .post-author {
+    color: #1C1917 !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .post-time,
+body.theme-lumina-light .post-time {
+    color: #78716C !important;
+    font-weight: 500 !important;
+}
+
+html[data-lumina-theme="light"] .post-title,
+body.theme-lumina-light .post-title {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+    text-shadow: none !important;
+    line-height: 1.4 !important;
+}
+
+html[data-lumina-theme="light"] .post-content,
+html[data-lumina-theme="light"] .post-content p,
+html[data-lumina-theme="light"] .post-content div,
+body.theme-lumina-light .post-content,
+body.theme-lumina-light .post-content p,
+body.theme-lumina-light .post-content div {
+    color: #292524 !important;
+    line-height: 1.65 !important;
+}
+
+/* Moduły Wersetu, Zadania i Modlitwy w Rozważaniach */
 html[data-lumina-theme="light"] .reflection-scripture-box,
 body.theme-lumina-light .reflection-scripture-box {
-    background: #fcf9f2 !important;
-    border-color: #c4a35a !important;
-    color: #0f172a !important;
+    background: #FFFBEB !important;
+    border: 1px solid #FCD34D !important;
+    border-left: 4px solid #B88E3E !important;
+    border-radius: 12px !important;
+    color: #78350F !important;
+    padding: 14px 18px !important;
+    margin: 14px 0 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-scripture-box .scripture-label,
+body.theme-lumina-light .reflection-scripture-box .scripture-label {
+    color: #92400E !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-scripture-box .scripture-quote,
+body.theme-lumina-light .reflection-scripture-box .scripture-quote {
+    color: #78350F !important;
+    font-style: italic !important;
+    font-weight: 600 !important;
 }
 
 html[data-lumina-theme="light"] .reflection-task-box,
 body.theme-lumina-light .reflection-task-box {
-    background: #f0f9ff !important;
-    border-color: #bae6fd !important;
-    color: #0369a1 !important;
+    background: #F0FDF4 !important;
+    border: 1px solid #BBF7D0 !important;
+    border-left: 4px solid #16A34A !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    margin: 14px 0 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-task-box .task-label,
+body.theme-lumina-light .reflection-task-box .task-label {
+    color: #15803D !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-task-box p,
+body.theme-lumina-light .reflection-task-box p {
+    color: #166534 !important;
 }
 
 html[data-lumina-theme="light"] .reflection-prayer-box,
 body.theme-lumina-light .reflection-prayer-box {
-    background: #faf5ff !important;
-    border-color: #e9d5ff !important;
-    color: #581c87 !important;
+    background: #FAF5FF !important;
+    border: 1px solid #E9D5FF !important;
+    border-left: 4px solid #9333EA !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    margin: 14px 0 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-prayer-box .prayer-label,
+body.theme-lumina-light .reflection-prayer-box .prayer-label {
+    color: #7E22CE !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-prayer-box p,
+body.theme-lumina-light .reflection-prayer-box p {
+    color: #6B21A8 !important;
+    font-style: italic !important;
+}
+
+html[data-lumina-theme="light"] .reflection-links-container,
+body.theme-lumina-light .reflection-links-container {
+    background: #FDFBF7 !important;
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    border-radius: 14px !important;
+    color: #292524 !important;
+    padding: 14px 16px !important;
+    margin-top: 14px !important;
 }
 
 html[data-lumina-theme="light"] .reflection-smart-link,
 body.theme-lumina-light .reflection-smart-link {
-    background: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #1C1917 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Stopka Wpisu & Przyciski Reakcji */
+html[data-lumina-theme="light"] .post-footer,
+body.theme-lumina-light .post-footer {
+    border-top: 1px solid rgba(196, 163, 90, 0.15) !important;
+    padding-top: 12px !important;
+    display: flex !important;
+    gap: 10px !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn,
+body.theme-lumina-light .post-action-btn {
+    background: #F5F2EB !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #44403C !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    padding: 8px 14px !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn:hover,
+body.theme-lumina-light .post-action-btn:hover {
+    background: #EDE6D6 !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn i,
+body.theme-lumina-light .post-action-btn i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.active,
+html[data-lumina-theme="light"] .post-action-btn.liked,
+body.theme-lumina-light .post-action-btn.active,
+body.theme-lumina-light .post-action-btn.liked {
+    background: #FFF1F2 !important;
+    border-color: #FECDD3 !important;
+    color: #BE123C !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.active i,
+html[data-lumina-theme="light"] .post-action-btn.liked i,
+body.theme-lumina-light .post-action-btn.active i,
+body.theme-lumina-light .post-action-btn.liked i {
+    color: #BE123C !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.amen.active,
+body.theme-lumina-light .post-action-btn.amen.active {
+    background: #FFFBEB !important;
+    border-color: #FDE68A !important;
+    color: #B45309 !important;
+}
+
+html[data-lumina-theme="light"] .post-action-btn.amen.active i,
+body.theme-lumina-light .post-action-btn.amen.active i {
+    color: #B45309 !important;
+}
+
+/* Transmisja Na Żywo (Karta LIVE Cezarego) */
+html[data-lumina-theme="light"] .mission-live-broadcast-card,
+body.theme-lumina-light .mission-live-broadcast-card {
+    background: #FFFFFF !important;
+    border: 1.5px solid rgba(220, 38, 38, 0.45) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 32px rgba(220, 38, 38, 0.1), 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .post-author,
+body.theme-lumina-light .mission-live-broadcast-card .post-author {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .mission-live-pill,
+body.theme-lumina-light .mission-live-broadcast-card .mission-live-pill {
+    background: #FEF2F2 !important;
+    border: 1px solid #FECACA !important;
+    color: #DC2626 !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .pulse-dot,
+body.theme-lumina-light .mission-live-broadcast-card .pulse-dot {
+    background: #DC2626 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .post-time,
+body.theme-lumina-light .mission-live-broadcast-card .post-time {
+    color: #B91C1C !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .live-viewer-chip,
+body.theme-lumina-light .mission-live-broadcast-card .live-viewer-chip {
+    background: #FEF2F2 !important;
+    border: 1px solid #FECACA !important;
+    color: #DC2626 !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .live-viewer-chip i,
+body.theme-lumina-light .mission-live-broadcast-card .live-viewer-chip i {
+    color: #DC2626 !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .post-content > div:first-child,
+body.theme-lumina-light .mission-live-broadcast-card .post-content > div:first-child {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+    font-size: 1.15rem !important;
+    text-shadow: none !important;
+}
+
+html[data-lumina-theme="light"] .mission-live-broadcast-card .post-content > div:nth-child(2),
+html[data-lumina-theme="light"] .mission-live-broadcast-card .post-content p,
+body.theme-lumina-light .mission-live-broadcast-card .post-content > div:nth-child(2),
+body.theme-lumina-light .mission-live-broadcast-card .post-content p {
+    color: #334155 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+}
+
+/* Pusty Stan Tablicy (Empty State) */
+html[data-lumina-theme="light"] #feedEmptyState,
+html[data-lumina-theme="light"] .empty-feed-card,
+html[data-lumina-theme="light"] #profileStream > div,
+html[data-lumina-theme="light"] #postsFeedStream > div,
+html[data-lumina-theme="light"] .timeline-area div[style*="var(--navy-surface)"],
+html[data-lumina-theme="light"] div[style*="var(--navy-surface)"],
+body.theme-lumina-light #feedEmptyState,
+body.theme-lumina-light .empty-feed-card,
+body.theme-lumina-light #profileStream > div,
+body.theme-lumina-light #postsFeedStream > div,
+body.theme-lumina-light .timeline-area div[style*="var(--navy-surface)"],
+body.theme-lumina-light div[style*="var(--navy-surface)"] {
+    background: #FFFFFF !important;
+    border: 1.5px dashed rgba(196, 163, 90, 0.4) !important;
+    border-radius: 20px !important;
+    color: #57534E !important;
+    box-shadow: 0 6px 20px rgba(28, 25, 23, 0.04) !important;
+    padding: 32px 20px !important;
+    text-align: center !important;
+    font-weight: 600 !important;
 }
 
 /* ── 24. HUD DOWÓDCY NA PROFILU CEZAREGO ROGOWSKIEGO ── */
 html[data-lumina-theme="light"] .hud-card,
 html[data-lumina-theme="light"] .gender-ratio-card,
+html[data-lumina-theme="light"] .activity-chart-wrap,
 body.theme-lumina-light .hud-card,
-body.theme-lumina-light .gender-ratio-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
+body.theme-lumina-light .gender-ratio-card,
+body.theme-lumina-light .activity-chart-wrap {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
     border-radius: 20px !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 8px 24px -4px rgba(28, 25, 23, 0.06) !important;
+    color: #1C1917 !important;
 }
 
 html[data-lumina-theme="light"] .hud-header h3,
-body.theme-lumina-light .hud-header h3 {
-    color: #0f172a !important;
+html[data-lumina-theme="light"] .hud-title,
+body.theme-lumina-light .hud-header h3,
+body.theme-lumina-light .hud-title {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .hud-title i,
+body.theme-lumina-light .hud-title i {
+    color: #B88E3E !important;
 }
 
 html[data-lumina-theme="light"] .hud-stat-box,
 body.theme-lumina-light .hud-stat-box {
-    background: #f8fafc !important;
-    border: 1px solid rgba(15, 23, 42, 0.04) !important;
+    background: #FAF8F5 !important;
+    border: 1px solid #E7E5E4 !important;
+    border-radius: 14px !important;
 }
 
+html[data-lumina-theme="light"] .hud-stat-box .hud-stat-num,
 html[data-lumina-theme="light"] .hud-stat-box .stat-value,
+body.theme-lumina-light .hud-stat-box .hud-stat-num,
 body.theme-lumina-light .hud-stat-box .stat-value {
-    color: #0f172a !important;
+    color: #1C1917 !important;
+    font-weight: 800 !important;
 }
 
+html[data-lumina-theme="light"] .hud-stat-box .hud-stat-label,
 html[data-lumina-theme="light"] .hud-stat-box .stat-label,
+body.theme-lumina-light .hud-stat-box .hud-stat-label,
 body.theme-lumina-light .hud-stat-box .stat-label {
-    color: #64748b !important;
+    color: #57534E !important;
+    font-weight: 600 !important;
 }
 
-/* ── 25. MESSENGER MODAL (ROZMOWY CZAT LUMINA) ── */
+html[data-lumina-theme="light"] #hudOnlineRealtime,
+body.theme-lumina-light #hudOnlineRealtime {
+    color: #15803D !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .gender-female,
+body.theme-lumina-light .gender-female {
+    color: #BE123C !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .gender-male,
+body.theme-lumina-light .gender-male {
+    color: #0369A1 !important;
+    font-weight: 700 !important;
+}
+
+/* ── 25. WSZYSTKIE MODALE PROFILOWE (PROFILE MODALS & MESSENGER) ── */
+html[data-lumina-theme="light"] .modal-overlay,
+html[data-lumina-theme="light"] .lumina-modal-overlay,
+html[data-lumina-theme="light"] div[id*="Modal"].modal-overlay,
+body.theme-lumina-light .modal-overlay,
+body.theme-lumina-light .lumina-modal-overlay,
+body.theme-lumina-light div[id*="Modal"].modal-overlay {
+    background: rgba(28, 25, 23, 0.65) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+html[data-lumina-theme="light"] .modal-card,
+html[data-lumina-theme="light"] .modal-box,
+html[data-lumina-theme="light"] .modal-content,
+html[data-lumina-theme="light"] .lumina-modal-content,
 html[data-lumina-theme="light"] .lumina-messenger-modal-card,
-body.theme-lumina-light .lumina-messenger-modal-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.16) !important;
+html[data-lumina-theme="light"] div[id*="Modal"] > div,
+body.theme-lumina-light .modal-card,
+body.theme-lumina-light .modal-box,
+body.theme-lumina-light .modal-content,
+body.theme-lumina-light .lumina-modal-content,
+body.theme-lumina-light .lumina-messenger-modal-card,
+body.theme-lumina-light div[id*="Modal"] > div {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 24px 60px -10px rgba(28, 25, 23, 0.25) !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .modal-card h2,
+html[data-lumina-theme="light"] .modal-card h3,
+html[data-lumina-theme="light"] div[id*="Modal"] h2,
+html[data-lumina-theme="light"] div[id*="Modal"] h3,
+body.theme-lumina-light .modal-card h2,
+body.theme-lumina-light .modal-card h3,
+body.theme-lumina-light div[id*="Modal"] h2,
+body.theme-lumina-light div[id*="Modal"] h3 {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .modal-card p,
+html[data-lumina-theme="light"] div[id*="Modal"] p,
+body.theme-lumina-light .modal-card p,
+body.theme-lumina-light div[id*="Modal"] p {
+    color: #57534E !important;
+}
+
+html[data-lumina-theme="light"] .modal-card .close-btn,
+html[data-lumina-theme="light"] div[id*="Modal"] .close-btn,
+body.theme-lumina-light .modal-card .close-btn,
+body.theme-lumina-light div[id*="Modal"] .close-btn {
+    background: #F5F2EB !important;
+    border: 1px solid #E7E5E4 !important;
+    color: #57534E !important;
+    border-radius: 50% !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-lumina-theme="light"] .modal-card .close-btn:hover,
+html[data-lumina-theme="light"] div[id*="Modal"] .close-btn:hover,
+body.theme-lumina-light .modal-card .close-btn:hover,
+body.theme-lumina-light div[id*="Modal"] .close-btn:hover {
+    background: #EDE6D6 !important;
+    color: #1C1917 !important;
+}
+
+/* Formularze i Pola w Modalach */
+html[data-lumina-theme="light"] div[id*="Modal"] input,
+html[data-lumina-theme="light"] div[id*="Modal"] select,
+html[data-lumina-theme="light"] div[id*="Modal"] textarea,
+html[data-lumina-theme="light"] .modal-card input,
+html[data-lumina-theme="light"] .modal-card select,
+html[data-lumina-theme="light"] .modal-card textarea,
+body.theme-lumina-light div[id*="Modal"] input,
+body.theme-lumina-light div[id*="Modal"] select,
+body.theme-lumina-light div[id*="Modal"] textarea,
+body.theme-lumina-light .modal-card input,
+body.theme-lumina-light .modal-card select,
+body.theme-lumina-light .modal-card textarea {
+    background: #FAF8F5 !important;
+    border: 1.5px solid #D6D3D1 !important;
+    color: #1C1917 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+}
+
+html[data-lumina-theme="light"] div[id*="Modal"] input:focus,
+html[data-lumina-theme="light"] div[id*="Modal"] select:focus,
+html[data-lumina-theme="light"] div[id*="Modal"] textarea:focus,
+html[data-lumina-theme="light"] .modal-card input:focus,
+html[data-lumina-theme="light"] .modal-card select:focus,
+html[data-lumina-theme="light"] .modal-card textarea:focus,
+body.theme-lumina-light div[id*="Modal"] input:focus,
+body.theme-lumina-light div[id*="Modal"] select:focus,
+body.theme-lumina-light div[id*="Modal"] textarea:focus,
+body.theme-lumina-light .modal-card input:focus,
+body.theme-lumina-light .modal-card select:focus,
+body.theme-lumina-light .modal-card textarea:focus {
+    border-color: #B88E3E !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 3px rgba(184, 142, 62, 0.15) !important;
+    outline: none !important;
+}
+
+html[data-lumina-theme="light"] div[id*="Modal"] label,
+html[data-lumina-theme="light"] .modal-card label,
+body.theme-lumina-light div[id*="Modal"] label,
+body.theme-lumina-light .modal-card label {
+    color: #44403C !important;
+    font-weight: 700 !important;
+}
+
+/* Przyciski w Modalach */
+html[data-lumina-theme="light"] div[id*="Modal"] button[type="submit"],
+html[data-lumina-theme="light"] .btn-save,
+html[data-lumina-theme="light"] .btn-confirm,
+body.theme-lumina-light div[id*="Modal"] button[type="submit"],
+body.theme-lumina-light .btn-save,
+body.theme-lumina-light .btn-confirm {
+    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(184, 142, 62, 0.25) !important;
+}
+
+/* Terminal Czat Agenta AI w messageModal & Admin Suite */
+html[data-lumina-theme="light"] #agentChatTerminal,
+html[data-lumina-theme="light"] #commanderAiChatMessagesBox,
+html[data-lumina-theme="light"] .chat-terminal-box,
+body.theme-lumina-light #agentChatTerminal,
+body.theme-lumina-light #commanderAiChatMessagesBox,
+body.theme-lumina-light .chat-terminal-box {
+    background: #FAF8F5 !important;
+    border: 1px solid #E7E5E4 !important;
+    border-radius: 16px !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] #commanderAiChatMessagesBox div,
+body.theme-lumina-light #commanderAiChatMessagesBox div {
+    color: #44403C !important;
+}
+
+html[data-lumina-theme="light"] #commanderAiInputText,
+body.theme-lumina-light #commanderAiInputText {
+    background: #FFFFFF !important;
+    border: 1.5px solid #D6D3D1 !important;
+    color: #1C1917 !important;
+}
+
+/* Przyciski Wgrywania Mediów w Modalu Edycji Profilu */
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="avatarFileInput"],
+body.theme-lumina-light div[id*="Modal"] button[onclick*="avatarFileInput"] {
+    background: #EFF6FF !important;
+    border: 1.5px solid #93C5FD !important;
+    color: #1E40AF !important;
+}
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="avatarFileInput"] i,
+body.theme-lumina-light div[id*="Modal"] button[onclick*="avatarFileInput"] i {
+    color: #2563EB !important;
+}
+
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="coverFileInput"],
+body.theme-lumina-light div[id*="Modal"] button[onclick*="coverFileInput"] {
+    background: #FAF5FF !important;
+    border: 1.5px solid #D8B4FE !important;
+    color: #6B21A8 !important;
+}
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="coverFileInput"] i,
+body.theme-lumina-light div[id*="Modal"] button[onclick*="coverFileInput"] i {
+    color: #9333EA !important;
+}
+
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="galleryFileInput"],
+body.theme-lumina-light div[id*="Modal"] button[onclick*="galleryFileInput"] {
+    background: #F0FDF4 !important;
+    border: 1.5px solid #86EFAC !important;
+    color: #166534 !important;
+}
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="galleryFileInput"] i,
+body.theme-lumina-light div[id*="Modal"] button[onclick*="galleryFileInput"] i {
+    color: #16A34A !important;
+}
+
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="videoFileInput"],
+body.theme-lumina-light div[id*="Modal"] button[onclick*="videoFileInput"] {
+    background: #FFF1F2 !important;
+    border: 1.5px solid #FECDD3 !important;
+    color: #9F1239 !important;
+}
+html[data-lumina-theme="light"] div[id*="Modal"] button[onclick*="videoFileInput"] i,
+body.theme-lumina-light div[id*="Modal"] button[onclick*="videoFileInput"] i {
+    color: #E11D48 !important;
+}
+
+html[data-lumina-theme="light"] #adminAgentNoteModal .modal-card,
+body.theme-lumina-light #adminAgentNoteModal .modal-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    color: #1C1917 !important;
 }
 
 html[data-lumina-theme="light"] .chat-header-bar,
 body.theme-lumina-light .chat-header-bar {
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
-    color: #0f172a !important;
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(196, 163, 90, 0.18) !important;
+    color: #1C1917 !important;
 }
 
 html[data-lumina-theme="light"] .messenger-inbox-column,
 body.theme-lumina-light .messenger-inbox-column {
-    background: #f8fafc !important;
-    border-right: 1px solid rgba(15, 23, 42, 0.05) !important;
+    background: #FAF8F5 !important;
+    border-right: 1px solid rgba(196, 163, 90, 0.15) !important;
 }
 
 html[data-lumina-theme="light"] .chat-conversation-area,
 body.theme-lumina-light .chat-conversation-area {
-    background: #ffffff !important;
+    background: #FFFFFF !important;
 }
 
 html[data-lumina-theme="light"] .chat-bubble.bubble-me,
 body.theme-lumina-light .chat-bubble.bubble-me {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #B88E3E, #946E24) !important;
+    color: #FFFFFF !important;
 }
 
 html[data-lumina-theme="light"] .chat-bubble.bubble-other,
 body.theme-lumina-light .chat-bubble.bubble-other {
-    background: #f1f5f9 !important;
-    color: #0f172a !important;
+    background: #F5F2EB !important;
+    color: #1C1917 !important;
+    border: 1px solid #E7E5E4 !important;
 }
 
 /* ── 26. STRONA BEZPIECZEŃSTWA (LUMINA-SAFETY) ── */
@@ -1801,7 +2723,7 @@ body.theme-lumina-light .footer-social a:hover {
 }
 
 
-/* ── 29. PROFILE HEAD ACTIONS AND BROADCAST CARDS CONTRAST ── */
+/* ── 29. PROFILE HEAD ACTIONS AND BROADCAST CARDS CONTRAST (HARMONIZED) ── */
 html[data-lumina-theme="light"] .head-actions > button,
 html[data-lumina-theme="light"] .head-actions > a,
 html[data-lumina-theme="light"] .hero-actions > button,
@@ -1810,10 +2732,12 @@ body.theme-lumina-light .head-actions > button,
 body.theme-lumina-light .head-actions > a,
 body.theme-lumina-light .hero-actions > button,
 body.theme-lumina-light .hero-actions > a {
-    color: #0f172a !important;
-    border: 1px solid rgba(15, 23, 42, 0.1) !important;
-    background: #ffffff !important;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
+    color: #1C1917 !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 2px 6px rgba(28, 25, 23, 0.04) !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
 }
 
 html[data-lumina-theme="light"] .head-actions > button i,
@@ -1824,7 +2748,7 @@ body.theme-lumina-light .head-actions > button i,
 body.theme-lumina-light .head-actions > a i,
 body.theme-lumina-light .hero-actions > button i,
 body.theme-lumina-light .hero-actions > a i {
-    color: #c4a35a !important;
+    color: #B88E3E !important;
 }
 
 html[data-lumina-theme="light"] .head-actions > button span,
@@ -1835,96 +2759,33 @@ body.theme-lumina-light .head-actions > button span,
 body.theme-lumina-light .head-actions > a span,
 body.theme-lumina-light .hero-actions > button span,
 body.theme-lumina-light .hero-actions > a span {
-    color: #0f172a !important;
+    color: #1C1917 !important;
+    font-weight: 700 !important;
 }
 
-html[data-lumina-theme="light"] .mission-live-broadcast-card,
-body.theme-lumina-light .mission-live-broadcast-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.06) !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
-    color: #0f172a !important;
-}
-
-html[data-lumina-theme="light"] .mission-live-broadcast-card h3,
-body.theme-lumina-light .mission-live-broadcast-card h3 {
-    color: #0f172a !important;
-}
-
-
-/* ── 30. PRECISE CONTRAST FOR PROFILE HEAD ACTIONS (ALL EDITIONS) ── */
-html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > button,
-html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > a,
-html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > button,
-html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > a,
-body.theme-lumina-light.lumina-profile-standard .head-actions > button,
-body.theme-lumina-light.lumina-profile-standard .head-actions > a,
-body.theme-lumina-light.lumina-profile-standard .hero-actions > button,
-body.theme-lumina-light.lumina-profile-standard .hero-actions > a {
-    color: #0f172a !important;
-}
-
-html[data-lumina-theme="light"] .btn-action-primary,
-html[data-lumina-theme="light"] .btn-action-patronite,
-html[data-lumina-theme="light"] .btn-action-blik,
-html[data-lumina-theme="light"] .btn-action-follow,
-html[data-lumina-theme="light"] .btn-action-heart,
-body.theme-lumina-light .btn-action-primary,
-body.theme-lumina-light .btn-action-patronite,
-body.theme-lumina-light .btn-action-blik,
-body.theme-lumina-light .btn-action-follow,
-body.theme-lumina-light .btn-action-heart {
-    color: #ffffff !important;
-}
-
-html[data-lumina-theme="light"] .btn-action-primary *,
-html[data-lumina-theme="light"] .btn-action-patronite *,
-html[data-lumina-theme="light"] .btn-action-blik *,
-html[data-lumina-theme="light"] .btn-action-follow *,
-html[data-lumina-theme="light"] .btn-action-heart *,
-body.theme-lumina-light .btn-action-primary *,
-body.theme-lumina-light .btn-action-patronite *,
-body.theme-lumina-light .btn-action-blik *,
-body.theme-lumina-light .btn-action-follow *,
-body.theme-lumina-light .btn-action-heart * {
-    color: #ffffff !important;
-}
-
-html[data-lumina-theme="light"] .btn-action-secondary,
-html[data-lumina-theme="light"] .btn-action-gear,
-html[data-lumina-theme="light"] .btn-action-share,
-html[data-lumina-theme="light"] .btn-action-more,
-body.theme-lumina-light .btn-action-secondary,
-body.theme-lumina-light .btn-action-gear,
-body.theme-lumina-light .btn-action-share,
-body.theme-lumina-light .btn-action-more {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.1) !important;
-    color: #0f172a !important;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
-}
-
-html[data-lumina-theme="light"] .btn-action-secondary *,
-html[data-lumina-theme="light"] .btn-action-gear *,
-html[data-lumina-theme="light"] .btn-action-share *,
-html[data-lumina-theme="light"] .btn-action-more *,
-body.theme-lumina-light .btn-action-secondary *,
-body.theme-lumina-light .btn-action-gear *,
-body.theme-lumina-light .btn-action-share *,
-body.theme-lumina-light .btn-action-more * {
-    color: #0f172a !important;
+html[data-lumina-theme="light"] .btn-action-primary:hover,
+html[data-lumina-theme="light"] .btn-action-patronite:hover,
+html[data-lumina-theme="light"] .btn-action-blik:hover,
+html[data-lumina-theme="light"] .btn-action-follow:hover,
+body.theme-lumina-light .btn-action-primary:hover,
+body.theme-lumina-light .btn-action-patronite:hover,
+body.theme-lumina-light .btn-action-blik:hover,
+body.theme-lumina-light .btn-action-follow:hover {
+    background: #FAF6EE !important;
+    border-color: #B88E3E !important;
+    color: #92400E !important;
 }
 
 html[data-lumina-theme="light"] .btn-action-logout,
 body.theme-lumina-light .btn-action-logout {
     background: rgba(239, 68, 68, 0.08) !important;
     border: 1px solid rgba(239, 68, 68, 0.25) !important;
-    color: #dc2626 !important;
+    color: #DC2626 !important;
 }
 
 html[data-lumina-theme="light"] .btn-action-logout *,
 body.theme-lumina-light .btn-action-logout * {
-    color: #dc2626 !important;
+    color: #DC2626 !important;
 }
 
 /* ── 31. MODUŁ WSPARCIA MISYJNEGO (CC-SUPPORT-FOOTER) W TRYBIE JASNYM ── */

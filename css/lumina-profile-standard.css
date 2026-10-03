@@ -193,9 +193,16 @@ body.lumina-profile-standard .hero-actions > a {
     flex: 0 0 auto !important;
     padding: 0 16px !important;
     border-radius: 999px !important;
-    color: #fff !important;
+    color: #fff;
     font-size: 0.82rem !important;
     white-space: nowrap !important;
+}
+
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > button,
+html[data-lumina-theme="light"] body.lumina-profile-standard .head-actions > a,
+html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > button,
+html[data-lumina-theme="light"] body.lumina-profile-standard .hero-actions > a {
+    color: #1C1917 !important;
 }
 
 body.lumina-profile-standard .head-actions > button i,

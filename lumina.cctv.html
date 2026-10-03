@@ -1,6 +1,21 @@
 ﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- LUMINA THEME FOIT GUARD (Default Light Edition) -->
+    <script>
+    (function() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            var saved = localStorage.getItem('lumina_theme');
+            if (p.get('theme') === 'dark' || (!p.get('theme') && saved === 'dark')) {
+                document.documentElement.setAttribute('data-lumina-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-lumina-theme', 'light');
+            }
+        } catch(e) {}
+    })();
+    </script>
+
 <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
   window.dataLayer = window.dataLayer || [];
