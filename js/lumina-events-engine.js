@@ -475,7 +475,7 @@
             };
             btn.title = 'Kalendarz Wydarzeń Misyjnych & Zapisy';
             btn.innerHTML = `
-                <div class="lumina-menu-btn-icon" style="background: linear-gradient(135deg, rgba(250,204,21,0.25), rgba(234,179,8,0.25)); border: 1px solid rgba(250,204,21,0.5); color: #facc15;">
+                <div class="lumina-menu-btn-icon events-icon-bg">
                     <i class="fa-regular fa-calendar-check"></i>
                 </div>
                 <div class="lumina-menu-btn-content">

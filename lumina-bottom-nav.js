@@ -312,17 +312,19 @@
         /* ── POPUP MENU III TRZECH LINII (Centrum Mediów, TV & Profilu) ── */
         .lumina-bottom-menu-popup {
             position: fixed !important;
-            bottom: 94px !important;
+            bottom: calc(82px + env(safe-area-inset-bottom, 10px)) !important;
             left: 50% !important;
             transform: translateX(-50%) translateY(12px) scale(0.95) !important;
-            width: 360px !important;
-            max-width: 94vw !important;
+            width: 380px !important;
+            max-width: 95vw !important;
+            max-height: calc(100dvh - 96px) !important;
             z-index: 10001 !important;
             opacity: 0 !important;
             pointer-events: none !important;
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             display: none;
             flex-direction: column !important;
+            box-sizing: border-box !important;
         }
 
         .lumina-bottom-menu-popup.open {
@@ -338,18 +340,40 @@
             -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
             border: 1.5px solid rgba(250, 204, 21, 0.45) !important;
             border-radius: 26px !important;
-            padding: 16px 14px !important;
+            padding: 14px 14px 12px 14px !important;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 25px rgba(250, 204, 21, 0.25) !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 8px !important;
+            max-height: calc(100dvh - 96px) !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior: contain !important;
+            box-sizing: border-box !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(250, 204, 21, 0.35) transparent !important;
+        }
+
+        .lumina-bottom-menu-card::-webkit-scrollbar {
+            width: 5px !important;
+        }
+        .lumina-bottom-menu-card::-webkit-scrollbar-thumb {
+            background: rgba(250, 204, 21, 0.35) !important;
+            border-radius: 6px !important;
         }
 
         .lumina-bottom-menu-header {
+            position: sticky !important;
+            top: -14px !important;
+            z-index: 12 !important;
+            background: rgba(11, 19, 41, 0.98) !important;
+            margin: -14px -14px 4px -14px !important;
+            padding: 14px 14px 10px 14px !important;
+            border-top-left-radius: 24px !important;
+            border-top-right-radius: 24px !important;
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
-            padding: 2px 8px 8px 8px !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
             font-size: 0.82rem !important;
             font-weight: 800 !important;
@@ -357,17 +381,18 @@
             font-family: 'Outfit', sans-serif !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
+            flex-shrink: 0 !important;
         }
 
         .lumina-bottom-menu-close {
             background: rgba(255, 255, 255, 0.08) !important;
             border: none !important;
             color: #cbd5e1 !important;
-            width: 26px !important;
-            height: 26px !important;
+            width: 28px !important;
+            height: 28px !important;
             border-radius: 50% !important;
             cursor: pointer !important;
-            font-size: 1.1rem !important;
+            font-size: 1.15rem !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -438,6 +463,18 @@
             color: #facc15 !important;
         }
 
+        .rolki-icon-bg {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(245, 158, 11, 0.28)) !important;
+            border: 1px solid rgba(236, 72, 153, 0.55) !important;
+            color: #facc15 !important;
+        }
+
+        .events-icon-bg {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(234, 179, 8, 0.25)) !important;
+            border: 1px solid rgba(250, 204, 21, 0.5) !important;
+            color: #facc15 !important;
+        }
+
         .profile-icon-bg {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(56, 189, 248, 0.25)) !important;
             border: 1px solid rgba(168, 85, 247, 0.5) !important;
@@ -476,10 +513,52 @@
             text-overflow: ellipsis !important;
         }
 
+        .lumina-bottom-menu-footer {
+            margin-top: 10px !important;
+            padding-top: 10px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            font-size: 0.75rem !important;
+            flex-shrink: 0 !important;
+        }
+        .lumina-menu-footer-security {
+            color: #94a3b8 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            font-weight: 600 !important;
+        }
+        .lumina-menu-footer-security i {
+            color: #facc15 !important;
+        }
+        .lumina-menu-footer-badge {
+            font-weight: 800 !important;
+            color: #facc15 !important;
+            background: rgba(245, 158, 11, 0.18) !important;
+            border: 1px solid rgba(245, 158, 11, 0.4) !important;
+            padding: 3px 12px !important;
+            border-radius: 12px !important;
+            font-family: 'Outfit', sans-serif !important;
+            letter-spacing: 0.4px !important;
+        }
+
         @media (max-width: 900px) {
             .lumina-bottom-menu-popup {
-                bottom: calc(76px + env(safe-area-inset-bottom, 10px)) !important;
-                width: 94vw !important;
+                bottom: calc(68px + env(safe-area-inset-bottom, 10px)) !important;
+                width: 95vw !important;
+                max-width: 390px !important;
+                max-height: calc(100dvh - calc(76px + env(safe-area-inset-bottom, 12px))) !important;
+            }
+            .lumina-bottom-menu-card {
+                max-height: calc(100dvh - calc(76px + env(safe-area-inset-bottom, 12px))) !important;
+                padding: 12px 12px 10px 12px !important;
+            }
+            .lumina-bottom-menu-header {
+                top: -12px !important;
+                margin: -12px -12px 4px -12px !important;
+                padding: 12px 12px 8px 12px !important;
             }
         }
 
@@ -1021,7 +1100,7 @@
 
                     <!-- 4. Rolki Wiary (LUMINA Shorts 9:16) -->
                     <a href="rolki" class="lumina-menu-btn" onclick="if(window.toggleCcBottomNavMenu) window.toggleCcBottomNavMenu(event);" title="Rolki Wiary • LUMINA Shorts 9:16">
-                        <div class="lumina-menu-btn-icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.3),rgba(245,158,11,0.3)); color:#facc15;">
+                        <div class="lumina-menu-btn-icon rolki-icon-bg">
                             <i class="fa-solid fa-clapperboard"></i>
                         </div>
                         <div class="lumina-menu-btn-content">
@@ -1067,11 +1146,11 @@
                     </button>
                 </div>
                 <!-- Dolny pasek statusu z wersją i tarczą -->
-                <div style="margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:space-between; font-size:0.75rem;">
-                    <span style="color:#94a3b8; display:inline-flex; align-items:center; gap:6px; font-weight:600;">
-                        <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> LUMINA • Bezpieczeństwo
+                <div class="lumina-bottom-menu-footer">
+                    <span class="lumina-menu-footer-security">
+                        <i class="fa-solid fa-shield-halved"></i> LUMINA • Bezpieczeństwo
                     </span>
-                    <span style="font-weight:800; color:#facc15; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); padding:3px 12px; border-radius:12px; font-family:'Outfit',sans-serif; letter-spacing:0.4px;">
+                    <span class="lumina-menu-footer-badge">
                         Wydanie v4.1.1
                     </span>
                 </div>
