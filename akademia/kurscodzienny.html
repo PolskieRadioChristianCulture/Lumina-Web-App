@@ -253,7 +253,7 @@
 
         <div class="flex items-center gap-2">
           <span class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-300">
-            Dni 1–2 z 31 Dostępne
+            Dni 1–3 z 31 Dostępne
           </span>
         </div>
       </div>
@@ -337,30 +337,41 @@
           </div>
         </article>
 
-        <!-- DZIEŃ 3 — ZAPOWIEDŹ -->
-        <article class="p-6 rounded-3xl bg-[#0E121A]/80 border border-white/10 opacity-90 flex flex-col">
+        <!-- DZIEŃ 3 — AKTYWNA LEKCJA -->
+        <article class="p-6 rounded-3xl bg-gradient-to-b from-[#161B26] to-[#0E121A] border-2 border-brand-gold/50 shadow-2xl relative flex flex-col transform hover:-translate-y-1 transition duration-200 group">
           <div class="flex items-center justify-between gap-2 mb-3">
-            <span class="text-xs font-bold text-zinc-400 font-display tracking-widest uppercase">DZIEŃ 3 • 3 PAŹDZIERNIKA 2026</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-bold border border-amber-500/30">JUTRO</span>
+            <span class="text-xs font-bold text-amber-300 font-display tracking-widest uppercase">DZIEŃ 3 • 3 PAŹDZIERNIKA 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
           </div>
 
-          <h3 class="font-serif font-bold text-xl text-white mb-2">
+          <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+          <div class="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-brand-gold/30 shadow-lg group-hover:border-brand-gold/60 transition-colors">
+            <img src="/images/academy/daily/kc_day_03_fall.jpg" alt="Dzień 3: GDZIE JESTEŚ? Upadek człowieka i pierwsza obietnica Ewangelii — Rdz 3:1–24" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+          </div>
+
+          <h3 class="font-serif font-bold text-xl text-white mb-2 group-hover:text-amber-300 transition-colors">
             GDZIE JESTEŚ?
           </h3>
           <p class="text-xs font-semibold text-amber-200/80 mb-3 font-display">
             Upadek człowieka i pierwsza obietnica Ewangelii — Rdz 3:1–24
           </p>
-          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+          <p class="text-xs text-zinc-300 leading-relaxed mb-4">
             Jak działa pokusa, czym naprawdę jest grzech, dlaczego człowiek zaczął ukrywać się przed Bogiem i kto jako pierwszy rozpoczął poszukiwanie zgubionego grzesznika.
           </p>
 
-          <div class="p-3 rounded-xl bg-zinc-950/40 border border-zinc-800 text-xs font-bible text-zinc-400 mb-5 italic">
+          <div class="p-3 rounded-xl bg-black/40 border border-zinc-800 text-xs font-bible text-amber-100 mb-5 italic">
             „Ono zrani ci głowę, a ty zranisz mu piętę.” (Rdz 3:15)
           </div>
 
-          <div class="mt-auto pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-500">
-            <span>Publikacja o 06:00</span>
-            <span class="font-bold text-zinc-400">Dzień 3 wkrótce</span>
+          <div class="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+            <span class="text-[11px] text-zinc-400">
+              <i class="fa-solid fa-headphones mr-1 text-amber-400"></i> Lektor TTS • Quiz
+            </span>
+            <a href="/akademia/kurscodzienny/dzien-03" class="cin-btn-primary !px-4 !py-2 !text-xs">
+              <span>CZYTAJ LEKCJĘ 3</span>
+              <span>→</span>
+            </a>
           </div>
         </article>
 
