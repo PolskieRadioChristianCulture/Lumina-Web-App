@@ -322,17 +322,31 @@ function generateProductionHtml(title, desc, canonicalPath) {
   </head>
   <body class="bg-[#f8f9fa] text-gray-900">
     <div id="root"></div>
+
+    <!-- BACK TO TOP BUTTON FALLBACK (jak na /news i stronie głównej) -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry" title="Przewiń do góry">
+      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
     <script>
       (function() {
-        var btn = document.getElementById('backToTopBtn');
-        if (!btn) return;
-        window.addEventListener('scroll', function() {
-          if (window.scrollY > 300) {
-            btn.classList.add('visible');
+        var backToTopBtn = document.getElementById('backToTopBtn');
+        if (!backToTopBtn) return;
+
+        function updateScroll() {
+          if (window.scrollY > 200) {
+            backToTopBtn.classList.add('visible');
           } else {
-            btn.classList.remove('visible');
+            backToTopBtn.classList.remove('visible');
           }
-        }, { passive: true });
+        }
+
+        window.addEventListener('scroll', updateScroll, { passive: true });
+        backToTopBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        updateScroll();
       })();
     </script>
     <script src="/components/cc-support-footer.js" defer></script>
