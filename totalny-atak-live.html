@@ -492,7 +492,7 @@
             const playerIframe = document.getElementById("yt-player");
             const autoplayParam = autoplay ? '1' : '0';
             if (playerIframe) {
-                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${pl.id}&index=${targetIndex}&autoplay=${autoplayParam}&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
+                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${pl.id}&index=${targetIndex}&autoplay=${autoplayParam}&enablejsapi=1&controls=1&rel=0&modestbranding=1&cc_load_policy=0&iv_load_policy=3${muteParam}`;
             }
             if (player && typeof player.loadPlaylist === 'function') {
                 try {
@@ -504,6 +504,7 @@
                     });
                 } catch(e) {}
             }
+            disableCaptions();
             // Update series label in header
             const titleLabel = document.getElementById('series-title-label');
             if (titleLabel) titleLabel.textContent = `${pl.label.toUpperCase()} • CZĘŚĆ ${episodeNum}`;
@@ -553,12 +554,45 @@
 
         let player = null;
 
+        function disableCaptions() {
+            try {
+                if (player) {
+                    if (typeof player.unloadModule === 'function') {
+                        player.unloadModule("captions");
+                        player.unloadModule("cc");
+                    }
+                    if (typeof player.setOption === 'function') {
+                        player.setOption('captions', 'track', {});
+                        player.setOption('cc', 'track', {});
+                        player.setOption('captions', 'reload', false);
+                    }
+                }
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
+                }
+            } catch(e) {}
+        }
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
+                playerVars: {
+                    cc_load_policy: 0,
+                    iv_load_policy: 3
+                },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+                disableCaptions();
+            }
         }
 
         function enableAudio() {
@@ -614,6 +648,7 @@
         }, 15000);
 
         function onPlayerReady(event) {
+            disableCaptions();
             const pl = PLAYLISTS[currentPlaylist] || PLAYLISTS[1];
             const targetIndex = getTargetEpisodeIndex(pl.count || 38);
             try {

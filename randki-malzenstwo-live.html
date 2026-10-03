@@ -884,6 +884,7 @@
                     rel: 0,
                     modestbranding: 1,
                     mute: isPreloadMuted ? 1 : 0,
+                    cc_load_policy: 0,
                     iv_load_policy: 3,
                     origin: pageOrigin
                 },
@@ -894,8 +895,31 @@
             });
         }
 
+        function disableCaptions() {
+            try {
+                if (player) {
+                    if (typeof player.unloadModule === 'function') {
+                        player.unloadModule("captions");
+                        player.unloadModule("cc");
+                    }
+                    if (typeof player.setOption === 'function') {
+                        player.setOption('captions', 'track', {});
+                        player.setOption('cc', 'track', {});
+                        player.setOption('captions', 'reload', false);
+                    }
+                }
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
+                }
+            } catch(e) {}
+        }
+
         function onPlayerReady(event) {
             updateEpisodeUI();
+            disableCaptions();
             event.target.playVideo();
             if (!isPreloadMuted) {
                 handleUserUnmute();
@@ -903,6 +927,9 @@
         }
 
         function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+                disableCaptions();
+            }
             if (event.data === YT.PlayerState.ENDED) {
                 console.log('Randki & Małżeństwo: Zakończono odcinek. Informuję MCR i przechodzę do następnego.');
                 // 1) Powiadomienie Master Control Room (polskieradio.cc/master)
@@ -925,6 +952,7 @@
 
             if (player && typeof player.loadVideoById === 'function') {
                 player.loadVideoById(currentEpisode.id);
+                disableCaptions();
                 player.playVideo();
                 handleUserUnmute();
             }

@@ -92,13 +92,13 @@
                 
                 <div id="notif-dropdown" class="notif-dropdown" onclick="event.stopPropagation()">
                     <div class="notif-header">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-bell" style="color:#c084fc; font-size:0.95rem;"></i>
-                            <h4 style="margin:0; font-size:14px; font-weight:800; color:#fff; font-family:'Outfit',sans-serif;">Powiadomienia</h4>
+                        <div class="notif-header-title-wrap">
+                            <i class="fa-solid fa-bell notif-header-icon"></i>
+                            <h4 class="notif-header-title">Powiadomienia</h4>
                         </div>
-                        <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
-                            <div id="notif-header-actions" style="display:none; align-items:center; gap:10px;">
-                                <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-action-btn" title="Oznacz wszystko jako przeczytane">Odczytaj</button>
+                        <div class="notif-header-right">
+                            <div id="notif-header-actions" class="notif-header-actions" style="display:none;">
+                                <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-action-btn notif-read-btn" title="Oznacz wszystko jako przeczytane">Odczytaj</button>
                                 <button type="button" onclick="window.LuminaNotifications.clearAll()" class="notif-action-btn notif-clear-btn" title="Wyczyść listę powiadomień">Wyczyść</button>
                             </div>
                             <button type="button" class="notif-close-btn" onclick="window.LuminaNotifications.closeDropdown()" title="Zamknij powiadomienia" aria-label="Zamknij">
@@ -218,6 +218,33 @@
                     align-items: center !important;
                     border-bottom: 1px solid rgba(255,255,255,0.08) !important;
                     background: rgba(255,255,255,0.03) !important;
+                }
+                .notif-header-title-wrap {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+                }
+                .notif-header-icon {
+                    color: #c084fc !important;
+                    font-size: 0.95rem !important;
+                }
+                .notif-header-title {
+                    margin: 0 !important;
+                    font-size: 14px !important;
+                    font-weight: 800 !important;
+                    color: #fff !important;
+                    font-family: 'Outfit', sans-serif !important;
+                }
+                .notif-header-right {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 10px !important;
+                    margin-left: auto !important;
+                }
+                .notif-header-actions {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 10px !important;
                 }
                 .notif-action-btn { 
                     background: none !important; 
@@ -346,6 +373,14 @@
                     color: #fff !important; 
                     font-size: 13px !important; 
                     font-weight: 700 !important;
+                    line-height: 1.35 !important;
+                }
+                .notif-item-body {
+                    margin-top: 2px !important;
+                    font-size: 12px !important;
+                    color: #cbd5e1 !important;
+                    line-height: 1.35 !important;
+                    word-break: break-word !important;
                 }
                 .notif-time { 
                     font-size: 10.5px !important; 
@@ -814,11 +849,11 @@
 
             list.innerHTML = this.notifications.map(n => `
                 <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl || '#'}')">
-                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-avatar" alt="" onerror="this.src='lumina_icon.jpg'" style="width:40px;height:40px;min-width:40px;max-width:40px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;">
-                    <div class="notif-content" style="flex:1;min-width:0;overflow:hidden;">
-                        <div style="font-weight:700;color:#fff;font-size:13px;line-height:1.3;">${escapeHtml(n.title)}</div>
-                        <div style="margin-top:2px;font-size:12px;color:#cbd5e1;line-height:1.35;word-break:break-word;">${escapeHtml(n.body)}</div>
-                        <div class="notif-time" style="font-size:10.5px;color:#94a3b8;margin-top:4px;">${n.time || 'Przed chwilą'}</div>
+                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-avatar" alt="" onerror="this.src='lumina_icon.jpg'">
+                    <div class="notif-content">
+                        <div class="notif-item-title">${escapeHtml(n.title)}</div>
+                        <div class="notif-item-body">${escapeHtml(n.body)}</div>
+                        <div class="notif-time">${n.time || 'Przed chwilą'}</div>
                     </div>
                 </div>
             `).join('');

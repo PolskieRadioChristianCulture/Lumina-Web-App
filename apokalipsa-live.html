@@ -954,10 +954,33 @@ const APOKALIPSA_EPISODES = [
         // ── 4. YouTube Iframe Player ──
         const isPreloadMuted = window.location.search.includes('muted=1');
         let player = null;
+
+        function disableCaptions() {
+            try {
+                if (player) {
+                    if (typeof player.unloadModule === 'function') {
+                        player.unloadModule("captions");
+                        player.unloadModule("cc");
+                    }
+                    if (typeof player.setOption === 'function') {
+                        player.setOption('captions', 'track', {});
+                        player.setOption('cc', 'track', {});
+                        player.setOption('captions', 'reload', false);
+                    }
+                }
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
+                }
+            } catch(e) {}
+        }
+
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
             const muteParam = isPreloadMuted ? '&mute=1' : '';
-            playerIframe.src = `https://www.youtube.com/embed/${currentEpisode.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1${muteParam}`;
+            playerIframe.src = `https://www.youtube.com/embed/${currentEpisode.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&cc_load_policy=0&iv_load_policy=3${muteParam}`;
         }
 
         window.addEventListener('message', (e) => {
@@ -985,6 +1008,10 @@ const APOKALIPSA_EPISODES = [
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
+                playerVars: {
+                    cc_load_policy: 0,
+                    iv_load_policy: 3
+                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -1045,17 +1072,19 @@ const APOKALIPSA_EPISODES = [
         }
 
         function onPlayerReady(event) {
-
-
             if (isPreloadMuted) {
                 try { event.target.mute(); } catch(e) {}
             }
+            disableCaptions();
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
 
             if (!isPreloadMuted) {
                 [200, 500, 1000, 2000, 3000, 5000].forEach(ms => {
-                    setTimeout(enableAudio, ms);
+                    setTimeout(() => {
+                        enableAudio();
+                        disableCaptions();
+                    }, ms);
                 });
             }
 
@@ -1134,7 +1163,10 @@ const APOKALIPSA_EPISODES = [
 
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
+                disableCaptions();
                 updateVideoTitle();
+            } else if (event.data === YT.PlayerState.BUFFERING) {
+                disableCaptions();
             } else if (event.data === YT.PlayerState.ENDED) {
                 finishEpisode();
             }

@@ -392,6 +392,28 @@
         }
 
         // ── Init Player with YouTube API & jump to exact episode ──
+        function disableCaptions() {
+            try {
+                if (player) {
+                    if (typeof player.unloadModule === 'function') {
+                        player.unloadModule("captions");
+                        player.unloadModule("cc");
+                    }
+                    if (typeof player.setOption === 'function') {
+                        player.setOption('captions', 'track', {});
+                        player.setOption('cc', 'track', {});
+                        player.setOption('captions', 'reload', false);
+                    }
+                }
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
+                }
+            } catch(e) {}
+        }
+
         function onYouTubeIframeAPIReady() {
             const dayOfYear = getDayOfYear();
             const episodeIndex = ((dayOfYear - 1) % 24) + 1; // 24-lesson Bible Course cycle
@@ -417,6 +439,8 @@
                     listType: 'playlist',
                     list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
                     index: targetZeroBasedIndex,
+                    cc_load_policy: 0,
+                    iv_load_policy: 3,
                     origin: pageOrigin
                 },
                 events: {
@@ -430,6 +454,8 @@
             const dayOfYear = getDayOfYear();
             const episodeIndex = ((dayOfYear - 1) % 24) + 1;
             const targetZeroBasedIndex = episodeIndex - 1;
+
+            disableCaptions();
 
             // Load playlist starting directly at today's zero-based episode index
             try {
@@ -455,7 +481,10 @@
                 if (overlay) overlay.style.display = "none";
 
                 [500, 1200, 2000, 3000, 5000].forEach(ms => {
-                    setTimeout(enableAudio, ms);
+                    setTimeout(() => {
+                        enableAudio();
+                        disableCaptions();
+                    }, ms);
                 });
             }
 

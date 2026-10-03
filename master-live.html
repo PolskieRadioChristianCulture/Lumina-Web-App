@@ -1128,6 +1128,9 @@
                             f.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                             f.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
                             f.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
                         } catch(err) {}
                     }
                 });
