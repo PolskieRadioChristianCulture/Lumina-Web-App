@@ -4354,10 +4354,26 @@
         .hero-content {
             transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
-        .hero-section.faces-revealed .hero-content {
-            opacity: 0 !important;
-            pointer-events: none !important;
-            transform: translateY(-8px) !important;
+        .lumina-skip-link {
+            position: fixed;
+            top: 8px;
+            left: 12px;
+            z-index: 100010;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: #0b1120;
+            color: #fff;
+            transform: translateY(-150%);
+        }
+        .lumina-skip-link:focus { transform: translateY(0); }
+        :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+            outline: 3px solid #c4b5fd;
+            outline-offset: 4px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-content, .btn-hero-join-prominent, .btn-hero-login-subtle {
+                transition: none !important;
+            }
         }
     </style>
     <style id="luminaGuestConversionMode">
@@ -4474,10 +4490,11 @@
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_master">
-    <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
+    <link id="luminaMiniPlayerCSS" rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <script src="/js/lumina-theme-manager.js?v=20261002_master"></script>
 </head>
 <body class="user-is-guest">
+    <a class="lumina-skip-link" href="#odkrywaj">Przejdź do społeczności</a>
 <script>
     (function() {
         try {
@@ -4626,7 +4643,7 @@
     <!-- ══════════ HERO SECTION ══════════ -->
     <header class="hero-section" id="heroHeader">
         <div class="hero-bg" id="heroBg">
-            <img src="lumina_hero_bg.jpg?v=20260822" alt="LUMINA Tło" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_bg_official.jpg';">
+            <img src="assets/lumina-hero-20261003.webp" width="1300" height="500" alt="" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_hero_bg.jpg?v=20260822';">
         </div>
         <div class="hero-overlay" id="heroOverlay"></div>
             <div class="hero-content" id="heroContent">
@@ -4658,7 +4675,7 @@
     </header>
 
     <!-- ══════════ CARDS ══════════ -->
-    <section class="cards-section" id="odkrywaj">
+    <section class="cards-section" id="odkrywaj" tabindex="-1" aria-label="Odkrywaj społeczność LUMINA">
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)" aria-label="Poprzednie profile"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
@@ -12549,7 +12566,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="js/lumina-discovery-filters.js?v=20260912_values_filter_v3"></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.2.0_20260918_v5" defer></script>
-    <script src="js/lumina-mini-player.js?v=20260918_v5" defer></script>
+    <script id="luminaMiniPlayerScript" src="js/lumina-mini-player.js?v=20260918_v5" defer></script>
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
@@ -12636,9 +12653,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             </div>
             
             <div style="width:100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
-                <script type="module" src="https://donorbox.org/widgets.js" async></script>
-                <dbox-widget campaign="christian-culture-radio" type="donation_form" interval="1 M" amount="50" enable-auto-scroll="true"></dbox-widget>
+                <div id="luminaSupportWidget" style="width:100%;"></div>
+                <template id="luminaSupportWidgetTemplate">
+                    <dbox-widget campaign="christian-culture-radio" type="donation_form" interval="1 M" amount="50" enable-auto-scroll="true"></dbox-widget>
+                </template>
             </div>
+            <p id="luminaSupportLoadStatus" role="status" aria-live="polite" hidden></p>
         </div>
     </div>
     
@@ -13380,6 +13400,33 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const modal = document.getElementById('supportLuminaModal');
             if(modal) {
                 modal.classList.add('open');
+                const container = document.getElementById('luminaSupportWidget');
+                const template = document.getElementById('luminaSupportWidgetTemplate');
+                if (container && template && !container.firstElementChild) {
+                    container.appendChild(template.content.cloneNode(true));
+                }
+                if (!document.getElementById('luminaDonorboxScript')) {
+                    const status = document.getElementById('luminaSupportLoadStatus');
+                    if (status) {
+                        status.hidden = false;
+                        status.textContent = 'Ładowanie formularza wsparcia…';
+                    }
+                    const script = document.createElement('script');
+                    script.id = 'luminaDonorboxScript';
+                    script.type = 'module';
+                    script.src = 'https://donorbox.org/widgets.js';
+                    script.onload = function() {
+                        if (status) status.hidden = true;
+                    };
+                    script.onerror = function() {
+                        script.remove();
+                        if (status) {
+                            status.hidden = false;
+                            status.textContent = 'Nie udało się załadować formularza. Zamknij to okno i spróbuj ponownie.';
+                        }
+                    };
+                    document.head.appendChild(script);
+                }
             }
         };
         window.closeSupportModal = function() {
@@ -13718,29 +13765,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
 
     <script>
-    /* LUMINA HERO REVEAL & NAVBAR SEARCH ENGINE */
-    let heroRevealTimer = null;
-
-    function hideHeroIntroToRevealFaces() {
-        const hero = document.getElementById('heroHeader');
-        if (hero) {
-            hero.classList.add('faces-revealed');
-        }
-    }
-
+    /* LUMINA STABLE HERO & NAVBAR SEARCH ENGINE */
     function restoreHeroIntro() {
         const hero = document.getElementById('heroHeader');
         if (hero) {
             hero.classList.remove('faces-revealed');
         }
-        resetHeroTimer();
-    }
-
-    function resetHeroTimer() {
-        if (heroRevealTimer) clearTimeout(heroRevealTimer);
-        heroRevealTimer = setTimeout(() => {
-            hideHeroIntroToRevealFaces();
-        }, 3500); // Po 3.5 sekundy odsłaniamy twarze na tapecie
     }
 
     window.toggleMobileNavbarSearch = function() {
@@ -13792,7 +13822,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             heroHeader.addEventListener('mousemove', restoreHeroIntro);
             heroHeader.addEventListener('click', restoreHeroIntro);
         }
-        resetHeroTimer();
+        restoreHeroIntro();
     });
     </script>
     

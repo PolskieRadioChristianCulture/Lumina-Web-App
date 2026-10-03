@@ -1587,14 +1587,14 @@
     // AUTO-INIEKCJA MINI-PLAYERA AUDIO DLA CAŁEGO PORTALU LUMINA
     // ══════════════════════════════════════════════════════════════════════════
     try {
-        if (!document.getElementById('luminaMiniPlayerCSS')) {
+        if (!document.querySelector('link[href*="lumina-mini-player.css"]')) {
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
             lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v5';
             document.head.appendChild(lmpCss);
         }
-        if (!window.LuminaMiniPlayer && !document.getElementById('luminaMiniPlayerScript')) {
+        if (!window.LuminaMiniPlayer && !document.querySelector('script[src*="lumina-mini-player.js"]')) {
             const lmpScript = document.createElement('script');
             lmpScript.id = 'luminaMiniPlayerScript';
             lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v5';
