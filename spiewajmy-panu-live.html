@@ -423,7 +423,7 @@
             },
             osobowoscplus: {
                 id: "PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW",
-                tracks: 100,
+                tracks: 58,
                 brandName: "Osobowość PLUS & CC • Hity & Pieśni Chwały",
                 tagLabel: "HITY CHRZEŚCIJAŃSKIE & OSOBOWOŚĆ PLUS",
                 defaultTitle: "Dobrze, że jesteś — Hity Osobowość PLUS & CC"
@@ -554,8 +554,69 @@
             } catch(e) {}
         }
 
+        // ── Filtr Bezpieczeństwa Emisji: Pomijanie audycji "Cuda Każdego Dnia" (brak praw do powtórek) ──
+        function isExcludedCkdVideo(data) {
+            if (!data) return false;
+            const t = ((data.title || '') + ' ' + (data.video_id || '')).toLowerCase();
+            return (
+                t.includes('cuda każdego dnia') ||
+                t.includes('cuda kazdego dnia') ||
+                t.includes('ckd') ||
+                t.includes('cuda każdego') ||
+                t.includes('cuda kazdego') ||
+                t.includes('bóg wyszedł ci naprzeciw') ||
+                (t.includes('odcinek') && t.includes('cuda'))
+            );
+        }
+
+        let isSkippingExcludedTrack = false;
+        function checkAndSkipExcludedVideo() {
+            try {
+                if (!player || isSkippingExcludedTrack) return false;
+
+                // 1. Sprawdzenie indeksu playlisty dla Osobowość PLUS (utwory autorskie CC to pozycje 0..57)
+                if (selectedKey === 'osobowoscplus' && typeof player.getPlaylistIndex === 'function') {
+                    const currentIndex = player.getPlaylistIndex();
+                    if (currentIndex >= 58) {
+                        isSkippingExcludedTrack = true;
+                        console.warn("MCR SENTRY: Osiągnięto indeks poza autorskimi utworami (#" + (currentIndex + 1) + "). Zapętlanie do początku (#1)...");
+                        if (typeof player.playVideoAt === 'function') {
+                            player.playVideoAt(0);
+                        } else if (typeof player.nextVideo === 'function') {
+                            player.nextVideo();
+                        }
+                        setTimeout(() => { isSkippingExcludedTrack = false; }, 2000);
+                        return true;
+                    }
+                }
+
+                // 2. Sprawdzenie tytułu wideo (dla dowolnej playlisty / kanału)
+                if (typeof player.getVideoData === 'function') {
+                    const vData = player.getVideoData();
+                    if (isExcludedCkdVideo(vData)) {
+                        isSkippingExcludedTrack = true;
+                        console.warn("MCR SENTRY: Wykryto audycję Cuda Każdego Dnia (brak praw do powtórek):", vData.title, "-> Natychmiastowe pominięcie!");
+                        if (selectedKey === 'osobowoscplus' && typeof player.playVideoAt === 'function') {
+                            player.playVideoAt(0);
+                        } else if (typeof player.nextVideo === 'function') {
+                            player.nextVideo();
+                        }
+                        setTimeout(() => { isSkippingExcludedTrack = false; }, 2000);
+                        return true;
+                    }
+                }
+            } catch(e) {
+                console.error("Błąd podczas sprawdzania filtra CKD:", e);
+            }
+            return false;
+        }
+
         function updateTrackMetadata() {
             try {
+                if (checkAndSkipExcludedVideo()) {
+                    return;
+                }
+
                 let displayTitle = activeConfig.defaultTitle || "CODZIENNE UWIELBIENIE • UTWORY CHWAŁY";
 
                 if (player && typeof player.getVideoData === 'function') {
@@ -617,8 +678,15 @@
                     player.setLoop(true);
                 }
                 if (player && typeof player.setShuffle === 'function') {
-                    player.setShuffle(true);
-                    console.log("Codzienne Uwielbienie (538 utworów): Shuffle i rotacja dzienna aktywne! Startowy utwór: #" + (initialTrackIndex + 1));
+                    if (selectedKey === 'osobowoscplus') {
+                        // Dla playlisty Osobowość PLUS od indeksu 58 są powtórki CKD (brak praw emisyjnych)
+                        // Uruchamiamy tryb sekwencyjny autorskiej puli 58 pieśni chwały
+                        player.setShuffle(false);
+                        console.log("Osobowość PLUS & CC (58 autorskich utworów): Tryb sekwencyjny aktywny (ochrona praw autorskich - wykluczenie CKD). Start: #" + (initialTrackIndex + 1));
+                    } else {
+                        player.setShuffle(true);
+                        console.log("Codzienne Uwielbienie (538 utworów): Shuffle i rotacja dzienna aktywne! Startowy utwór: #" + (initialTrackIndex + 1));
+                    }
                 }
             } catch(e) {}
 
@@ -682,12 +750,23 @@
         }
 
         function onPlayerStateChange(event) {
+            if (checkAndSkipExcludedVideo()) {
+                return;
+            }
+
             if (event.data === YT.PlayerState.PLAYING) {
                 updateTrackMetadata();
             } else if (event.data === YT.PlayerState.ENDED) {
                 console.log("Track finished. Advancing automatically to next video in playlist...");
                 try {
-                    if (player && typeof player.nextVideo === 'function') {
+                    if (selectedKey === 'osobowoscplus' && typeof player.getPlaylistIndex === 'function' && player.getPlaylistIndex() >= 57) {
+                        console.log("Osobowość PLUS: Koniec autorskiej puli utworów chwały (#58). Zapętlanie do utworu #1...");
+                        if (typeof player.playVideoAt === 'function') {
+                            player.playVideoAt(0);
+                        } else if (typeof player.nextVideo === 'function') {
+                            player.nextVideo();
+                        }
+                    } else if (player && typeof player.nextVideo === 'function') {
                         player.nextVideo();
                     }
                 } catch(e) {
@@ -709,12 +788,21 @@
         // 24/7 Watchdog: Heartbeat to guarantee continuous live broadcast without halts
         setInterval(() => {
             try {
+                if (checkAndSkipExcludedVideo()) {
+                    return;
+                }
+
                 if (player && typeof player.getPlayerState === 'function') {
                     const st = player.getPlayerState();
                     // If video has ended and hasn't transitioned, force next video
                     if (st === YT.PlayerState.ENDED) {
                         console.log("Watchdog: Detected ENDED state. Forcing next video...");
-                        if (typeof player.nextVideo === 'function') player.nextVideo();
+                        if (selectedKey === 'osobowoscplus' && typeof player.getPlaylistIndex === 'function' && player.getPlaylistIndex() >= 57) {
+                            if (typeof player.playVideoAt === 'function') player.playVideoAt(0);
+                            else if (typeof player.nextVideo === 'function') player.nextVideo();
+                        } else if (typeof player.nextVideo === 'function') {
+                            player.nextVideo();
+                        }
                         setTimeout(() => { try { player.playVideo(); } catch(e){} }, 1000);
                     } else if (st === YT.PlayerState.PAUSED) {
                         // Unintended pause during live broadcast -> resume
@@ -723,7 +811,7 @@
                     }
                 }
             } catch(e) {}
-        }, 5000);
+        }, 4000);
 
         function resizeViewport() {
             const container = document.getElementById("app-container");
