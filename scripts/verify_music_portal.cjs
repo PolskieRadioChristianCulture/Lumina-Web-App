@@ -95,17 +95,33 @@ server.listen(PORT, async () => {
     console.log('✓ Captured verified_music_artysci.png');
   }
 
-  // 3. Test Navigation to /music/top
-  console.log('3. Testing navigation to /music/top...');
-  await page.click('a[href="/music/top"]');
-  await page.waitForTimeout(800);
+  // 3. Test Navigation to /music/przeboje (TOP 100)
+  console.log('3. Testing navigation to /music/przeboje (TOP 100)...');
+  await page.click('a[href="/music/przeboje"]');
+  await page.waitForTimeout(1000);
   const currentUrl = page.url();
   console.log('Navigated to URL:', currentUrl);
+
+  const top100CardsCount = await page.$$eval('#top100-przeboje .line-clamp-2', titles => titles.length);
+  console.log(`TOP 100 tracks displayed: ${top100CardsCount}`);
+
+  // Test Vote button interaction
+  const firstVoteBtn = await page.$('#top100-przeboje button[title*="głos"]');
+  if (firstVoteBtn) {
+    const initialText = await firstVoteBtn.textContent();
+    console.log('Initial vote button text:', initialText.trim());
+    await firstVoteBtn.click();
+    await page.waitForTimeout(300);
+    const updatedText = await firstVoteBtn.textContent();
+    console.log('Updated vote button text after click:', updatedText.trim());
+  }
+
+  // Screenshot TOP 100
   await page.screenshot({
-    path: 'C:/Users/czark/.gemini/antigravity/brain/6171dbb4-faed-472d-ab3b-0ab4afdc2e53/verified_music_top_seven.png',
-    clip: { x: 0, y: 0, width: 1440, height: 800 }
+    path: 'C:/Users/czark/.gemini/antigravity/brain/6171dbb4-faed-472d-ab3b-0ab4afdc2e53/verified_music_top100_przeboje.png',
+    clip: { x: 0, y: 0, width: 1440, height: 950 }
   });
-  console.log('✓ Captured verified_music_top_seven.png');
+  console.log('✓ Captured verified_music_top100_przeboje.png');
 
   // 4. Test Navigation to /music/radio
   console.log('4. Testing navigation to /music/radio...');
@@ -117,11 +133,11 @@ server.listen(PORT, async () => {
   });
   console.log('✓ Captured verified_music_radio.png');
 
-  // 5. Test Video Modal
+  // 5. Test Video Modal from Top 100 or Releases
   console.log('5. Testing Video Modal trigger on a release...');
-  await page.click('a[href="/music"]');
+  await page.click('a[href="/music/przeboje"]');
   await page.waitForTimeout(600);
-  const playBtn = await page.$('button[aria-label*="Odtwórz"]');
+  const playBtn = await page.$('#top100-przeboje button[title="Odtwórz wideo i audio"]');
   if (playBtn) {
     await playBtn.click();
     await page.waitForTimeout(1000);

@@ -320,7 +320,7 @@ function generateProductionHtml(title, desc, canonicalPath) {
     <script type="module" crossorigin src="${jsAsset}"></script>
     <link rel="stylesheet" crossorigin href="${cssAsset}">
   </head>
-  <body class="bg-[#07090d] text-white">
+  <body class="bg-[#f8f9fa] text-gray-900">
     <div id="root"></div>
     <script>
       (function() {
@@ -343,7 +343,8 @@ function generateProductionHtml(title, desc, canonicalPath) {
 
 // 2. Generate HTML files for all paths
 const SUBPATHS = [
-  { sub: '', path: '/music', title: 'CHRISTIAN CULTURE MUSIC – Muzyka • Premiery • Artyści • Playlisty • Radio • Video', desc: 'Oficjalne centrum muzyczne Christian Culture: całodobowe Polskie Radio CC, światowe chrześcijańskie hity uwielbienia, 41 oficjalnych kanałów YouTube i lista Top Seven.' },
+  { sub: '', path: '/music', title: 'CHRISTIAN CULTURE MUSIC – Muzyka • Przeboje TOP 100 • Premiery • Artyści • Playlisty • Radio • Video', desc: 'Oficjalne centrum muzyczne Christian Culture: całodobowe Polskie Radio CC, oficjalna Lista Przebojów TOP 100, światowe hity uwielbienia i 41 kanałów YouTube.' },
+  { sub: 'przeboje', path: '/music/przeboje', title: 'Lista Przebojów TOP 100 Christian Culture | Polskie Radio CC', desc: 'Oficjalna Lista Przebojów TOP 100 Christian Culture: 100 największych utworów i filmów z kanałów Osobowość +, CC TV, Polskie Radio CC i CC Women. Głosuj sercem, słuchaj i polecaj!' },
   { sub: 'premiery', path: '/music/premiery', title: 'Muzyczne Premiery & Światowe Hity Chrześcijańskie | Christian Culture Music', desc: 'Najnowsze single, nagrania uwielbienia i produkcje fonograficzne w jakości studyjnej 4K.' },
   { sub: 'artysci', path: '/music/artysci', title: 'Artyści & 41 Oficjalnych Kanałów YouTube | Christian Culture Music', desc: 'Kompletny katalog 41 oficjalnych stacji, pasm i kanałów autorskich Christian Culture na YouTube.' },
   { sub: 'playlisty', path: '/music/playlisty', title: 'Kolekcje & Playlisty Muzyczne | Christian Culture Music', desc: 'Oficjalne playlisty uwielbienia: 538 utworów CCTV24, 58 autorskich pieśni Osobowość PLUS oraz światowe hity.' },
