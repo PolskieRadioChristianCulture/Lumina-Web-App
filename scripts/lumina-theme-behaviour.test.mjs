@@ -39,11 +39,11 @@ test('theme preference synchronizes both html and body across tabs',()=>{
 
 const html=await readFile(new URL('../lumina.html',import.meta.url),'utf8');
 const heroCode=html.slice(html.indexOf('let heroRevealTimer'),html.indexOf('window.toggleMobileNavbarSearch'));
-test('hero reveals faces after 3500ms and restores controls on interaction',()=>{
+test('dark hero reveals faces after 3500ms and restores controls on interaction',()=>{
   let pending, delay, focused=false;
   const classes=new Set();
   const hero={classList:{add:k=>classes.add(k),remove:k=>classes.delete(k)},matches:()=>focused};
-  const context={document:{getElementById:()=>hero},setTimeout:(fn,ms)=>{pending=fn;delay=ms;return 1},clearTimeout(){}};
+  const context={document:{getElementById:()=>hero,documentElement:{getAttribute:()=> 'dark'},body:{classList:{contains:()=>false}}},localStorage:{getItem:()=> 'dark'},setTimeout:(fn,ms)=>{pending=fn;delay=ms;return 1},clearTimeout(){}};
   vm.runInNewContext(heroCode,context);
   context.restoreHeroIntro();
   assert.equal(delay,3500);
@@ -52,5 +52,16 @@ test('hero reveals faces after 3500ms and restores controls on interaction',()=>
   context.restoreHeroIntro();
   assert.equal(classes.has('faces-revealed'),false);
   focused=true;pending();
+  assert.equal(classes.has('faces-revealed'),false);
+});
+
+test('light hero keeps the introduction visible instead of scheduling face reveal',()=>{
+  const classes=new Set(['faces-revealed']);
+  let timers=0;
+  const hero={classList:{remove:k=>classes.delete(k)}};
+  const context={document:{getElementById:()=>hero,documentElement:{getAttribute:()=> 'light'},body:{classList:{contains:()=>true}}},localStorage:{getItem:()=> 'light'},setTimeout:()=>{timers++;},clearTimeout(){}};
+  vm.runInNewContext(heroCode,context);
+  context.restoreHeroIntro();
+  assert.equal(timers,0);
   assert.equal(classes.has('faces-revealed'),false);
 });

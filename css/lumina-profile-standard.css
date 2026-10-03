@@ -1,5 +1,5 @@
 /*
- * LUMINA PROFILE STANDARD v1.0
+ * LUMINA PROFILE STANDARD v1.1
  * One unified, responsive layout contract for EVERY profile in LUMINA (existing, dynamic, and new).
  * Reference Profile: /mariusz
  *
@@ -24,6 +24,116 @@ html body.lumina-profile-standard {
     --navy-card: #0b1838;
     --navy-border: rgba(255, 255, 255, 0.1);
     overflow-x: clip !important;
+}
+
+/* Light surfaces must not inherit the pale labels intended for dark cards.
+ * Keep this contract specific enough to win over the shared layout rules. */
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard,
+body.lumina-profile-standard.theme-lumina-light {
+    --profile-text: #292524;
+    --profile-muted: #57534e;
+    --profile-gold-text: #765414;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(.info-val, .info-row > div, #userBioFull),
+body.lumina-profile-standard.theme-lumina-light :is(.info-val, .info-row > div, #userBioFull) {
+    color: var(--profile-text) !important;
+    overflow-wrap: anywhere;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(#userMatchEl, #userMatchEl i, .verse-ref),
+body.lumina-profile-standard.theme-lumina-light :is(#userMatchEl, #userMatchEl i, .verse-ref) {
+    color: var(--profile-gold-text) !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard #userStatusEl a,
+body.lumina-profile-standard.theme-lumina-light #userStatusEl a {
+    color: #9d174d !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .sidebar-card > div > :is(span, a),
+body.lumina-profile-standard.theme-lumina-light .sidebar-card > div > :is(span, a) {
+    color: var(--profile-text) !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .sidebar-card .btn-action-secondary,
+body.lumina-profile-standard.theme-lumina-light .sidebar-card .btn-action-secondary {
+    color: var(--profile-text) !important;
+    background: #f5f2eb !important;
+    border-color: #b5a48b !important;
+    min-height: 44px !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(.stat-tag-chip, .badge-visibility-pub, .badge-visibility-priv),
+body.lumina-profile-standard.theme-lumina-light :is(.stat-tag-chip, .badge-visibility-pub, .badge-visibility-priv) {
+    background: #f5f2eb !important;
+    color: #44403c !important;
+    border-color: #b5a48b !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(.stat-tag-chip, .badge-visibility-pub, .badge-visibility-priv) *,
+body.lumina-profile-standard.theme-lumina-light :is(.stat-tag-chip, .badge-visibility-pub, .badge-visibility-priv) * {
+    color: inherit !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .followed-friends-card :is(div, span, p, strong, a),
+body.lumina-profile-standard.theme-lumina-light .followed-friends-card :is(div, span, p, strong, a) {
+    color: var(--profile-text) !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .followed-friends-card :is(input, button, .followed-friends-badge, .btn-discover-all-friends),
+body.lumina-profile-standard.theme-lumina-light .followed-friends-card :is(input, button, .followed-friends-badge, .btn-discover-all-friends) {
+    background: #f5f2eb !important;
+    color: var(--profile-text) !important;
+    border: 1px solid #a8987e !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .followed-friends-card input::placeholder,
+body.lumina-profile-standard.theme-lumina-light .followed-friends-card input::placeholder {
+    color: var(--profile-muted) !important;
+    opacity: 1;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .mission-live-broadcast-card :is(.post-content > div, .post-author),
+body.lumina-profile-standard.theme-lumina-light .mission-live-broadcast-card :is(.post-content > div, .post-author) {
+    color: var(--profile-text) !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .mission-live-broadcast-card :is(.post-time, .mission-live-pill, .live-viewer-chip),
+body.lumina-profile-standard.theme-lumina-light .mission-live-broadcast-card :is(.post-time, .mission-live-pill, .live-viewer-chip) {
+    color: #991b1b !important;
+}
+
+/* 44px controls, visible keyboard focus and a readable selected tab. */
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(.head-actions, .hero-actions) > :is(button, a),
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .profile-nav-tabs .tab-btn,
+body.lumina-profile-standard.theme-lumina-light :is(.head-actions, .hero-actions) > :is(button, a),
+body.lumina-profile-standard.theme-lumina-light .profile-nav-tabs .tab-btn {
+    min-height: 44px !important;
+    height: auto !important;
+    max-height: none !important;
+    min-width: 44px !important;
+    color: var(--profile-muted) !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .profile-nav-tabs .tab-btn.active,
+body.lumina-profile-standard.theme-lumina-light .profile-nav-tabs .tab-btn.active {
+    background: #765414 !important;
+    color: #ffffff !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .profile-nav-tabs .tab-btn :is(i, .tab-text),
+body.lumina-profile-standard.theme-lumina-light .profile-nav-tabs .tab-btn :is(i, .tab-text) {
+    color: inherit !important;
+}
+
+:is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(button, a, input, textarea, select):focus-visible,
+body.lumina-profile-standard.theme-lumina-light :is(button, a, input, textarea, select):focus-visible {
+    outline: 3px solid #765414 !important;
+    outline-offset: 3px;
+    scroll-margin-block: 90px 160px;
 }
 
 body.lumina-profile-standard .profile-container {
