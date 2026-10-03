@@ -509,7 +509,27 @@
     }
   }
 
-  // 9. Uruchomienie po załadowaniu drzewa DOM
+  // 9. Globalny pancerz klikalności logo CCN News (zarówno białe jak i czarne) -> ZAWSZE /news
+  try {
+    document.addEventListener('click', function (e) {
+      const target = e.target && e.target.closest 
+        ? e.target.closest('img[src*="ccn-logo"], img[src*="ccn_news"], .ccn-ticker-brand, [data-ccn-logo]')
+        : null;
+      if (target) {
+        // Kliknięto w logotyp CCN News
+        const a = target.closest('a');
+        if (!a || a.getAttribute('href') !== '/news') {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = '/news';
+        }
+      }
+    }, true); // useCapture = true, przechwytuje zdarzenie przed jakimkolwiek buttonem/stopPropagation
+  } catch (err) {
+    console.warn('CCN Logo click handler warning:', err);
+  }
+
+  // 10. Uruchomienie po załadowaniu drzewa DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', autoMountSupportFooter);
   } else {
