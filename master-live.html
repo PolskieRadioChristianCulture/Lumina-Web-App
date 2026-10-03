@@ -803,31 +803,31 @@
                 blockKey = "12_biblia_spiewana_poludnie";
                 channel = "biblia-spiewana-live.html";
             }
-            // 8) 13:00 - 15:00: Pasmo Popołudniowe: Biblia Śpiewana & Uwielbienie (zastępuje wycofane TV Epafraz)
+            // 8) 13:00 - 15:00: Pasmo Popołudniowe: Dobrze, że jesteś — Hity Osobowość PLUS & Christian Culture
             else if (hour >= 13 && hour < 15) {
-                blockKey = "13_15_biblia_spiewana";
-                channel = "biblia-spiewana-live.html";
+                blockKey = "13_15_osobowoscplus";
+                channel = "spiewajmy-panu-live.html?playlist=PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW&brand=osobowoscplus";
             }
             // 9) 15:00 - 15:06: Apokalipsa Dzień po Dniu Popołudnie
             else if (hour === 15 && min < 6) {
                 blockKey = "15_apokalipsa";
                 channel = earlyFinishedSlots["15_apokalipsa"] ? "biblia-spiewana-live.html" : "apokalipsa-live.html";
             }
-            // 10) 15:06 - 16:00: Biblia Śpiewana (Wydanie Popołudniowe)
+            // 10) 15:06 - 16:00: Osobowość PLUS & CC — Utwory Chwały i Przebudzenia
             else if (hour === 15 && min >= 6) {
-                blockKey = "15_06_biblia_spiewana";
-                channel = "biblia-spiewana-live.html";
+                blockKey = "15_06_osobowoscplus";
+                channel = "spiewajmy-panu-live.html?playlist=PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW&brand=osobowoscplus";
             }
-            // 11) 16:00 - 18:00: Śpiewajmy Panu — Codzienne Uwielbienie
+            // 11) 16:00 - 18:00: Śpiewajmy Panu — Codzienne Uwielbienie CCTV24 (538 Utworów Chwały)
             else if (hour >= 16 && hour < 18) {
                 blockKey = "16_18_spiewajmy_panu";
-                channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "spiewajmy-panu-live.html";
+                channel = "spiewajmy-panu-live.html?playlist=PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW&brand=cctv";
             }
             // 12) 18:00 - 20:00: Pasmo Wieczorne
             else if (hour >= 18 && hour < 20) {
                 blockKey = "18_20_evening_" + dayOfWeek;
                 if (dayOfWeek === 0) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
-                else if (dayOfWeek === 6) channel = "biblia-spiewana-live.html"; // Bezpieczne pasmo muzyczne CC (filmy wyłącznie w strefie VOD)
+                else if (dayOfWeek === 6) channel = "spiewajmy-panu-live.html?mix=1"; // Sobotni Wieczór Chwały — Muzyczny Mikser CC (O+ & CCTV24 & Radio CC)
                 else channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
             }
             // 13) 20:00 - 20:52: Studium Telewizyjne Pisma Świętego Wieczór
@@ -900,10 +900,21 @@
             currentUrl = newChannel;
 
             const cleanChannelKey = newChannel.split('?')[0];
-            const meta = programMeta[cleanChannelKey] || {
+            let meta = programMeta[cleanChannelKey] || {
                 title: "PROGRAM CHRISTIAN CULTURE",
                 desc: "Emisja na żywo w Christian Culture TV"
             };
+            if (newChannel.includes('osobowoscplus') || newChannel.includes('PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW')) {
+                meta = {
+                    title: "OSOBOWOŚĆ PLUS & CC — HITY I PIEŚNI CHWAŁY",
+                    desc: "Najlepsze autorskie utwory i pieśni budzenia z kanału Osobowość PLUS oraz Christian Culture"
+                };
+            } else if (newChannel.includes('mix=1')) {
+                meta = {
+                    title: "SOBOTNI WIECZÓR CHWAŁY — MUZYCZNY MIKSER CC",
+                    desc: "Rotacyjny miks utworów chwały i uwielbienia z kanałów Osobowość PLUS, CCTV24 i Radia CC"
+                };
+            }
 
             // Update ticker titles
             updateProgramTitles(meta.title);

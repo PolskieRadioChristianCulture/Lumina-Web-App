@@ -327,10 +327,7 @@
         }
     </style>
     <script>
-        if (window.location.search.includes('safe_monetization=1')) {
-            console.log("[SPIEWAJMY PANU] 🛡️ Tryb bezpiecznej monetaryzacji: przekierowanie na autorską Biblię Śpiewaną CC...");
-            window.location.replace('biblia-spiewana-live.html' + window.location.search);
-        }
+        // Kanały i playlisty są w 100% autorskie i bezpieczne (potwierdzone przez Dowódcę)
         if (window.self !== window.top || window.location.search.includes('in_mcr=1')) {
             document.documentElement.classList.add('inside-iframe');
             document.addEventListener('DOMContentLoaded', () => {
@@ -415,9 +412,57 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 2. Codzienne Uwielbienie Playlist Config (538 Utworów) ──
-        const PLAYLIST_ID = "PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW";
-        const TOTAL_PLAYLIST_TRACKS = 538;
+        // ── 2. Konfiguracja Playlist i Kanałów CC & O+ (Multikanałowy Mikser Emisyjny) ──
+        const CC_MUSIC_PLAYLISTS = {
+            cctv: {
+                id: "PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW",
+                tracks: 538,
+                brandName: "Christian Culture TV • Codzienne Uwielbienie",
+                tagLabel: "CODZIENNY BLOK UWIELBIENIA CCTV24",
+                defaultTitle: "Codzienne Uwielbienie — Utwory Chwały CCTV24"
+            },
+            osobowoscplus: {
+                id: "PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW",
+                tracks: 100,
+                brandName: "Osobowość PLUS & CC • Hity & Pieśni Chwały",
+                tagLabel: "HITY CHRZEŚCIJAŃSKIE & OSOBOWOŚĆ PLUS",
+                defaultTitle: "Dobrze, że jesteś — Hity Osobowość PLUS & CC"
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let selectedKey = urlParams.get('brand') || urlParams.get('source') || '';
+        let customPlaylistId = urlParams.get('playlist');
+        let isMixMode = urlParams.get('mix') === '1';
+
+        if (isMixMode) {
+            const curHour = new Date().getHours();
+            selectedKey = (curHour % 2 === 0) ? 'osobowoscplus' : 'cctv';
+        } else if (!selectedKey) {
+            if (customPlaylistId === "PLQBdxcl9HBc8jNIM45udIp2N6ucvK75rW") {
+                selectedKey = 'osobowoscplus';
+            } else {
+                selectedKey = 'cctv';
+            }
+        }
+
+        const activeConfig = CC_MUSIC_PLAYLISTS[selectedKey] || CC_MUSIC_PLAYLISTS.cctv;
+        const PLAYLIST_ID = customPlaylistId || activeConfig.id;
+        const TOTAL_PLAYLIST_TRACKS = activeConfig.tracks;
+
+        function updateChannelBranding() {
+            const chanNameEl = document.querySelector('.channel-name');
+            if (chanNameEl) chanNameEl.textContent = activeConfig.brandName;
+            const epTagEl = document.getElementById('episode-tag-label');
+            if (epTagEl) epTagEl.textContent = activeConfig.tagLabel;
+            const epTitleEl = document.getElementById('episode-title-label');
+            if (epTitleEl) epTitleEl.textContent = activeConfig.defaultTitle;
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateChannelBranding);
+        } else {
+            updateChannelBranding();
+        }
 
         function getDayOfYear() {
             const now = new Date();
@@ -428,7 +473,6 @@
         }
 
         function calculateDailyStartingTrackIndex() {
-            const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('ep')) {
                 const parsed = parseInt(urlParams.get('ep'));
                 if (!isNaN(parsed) && parsed > 0) return (parsed - 1) % TOTAL_PLAYLIST_TRACKS;
@@ -442,8 +486,9 @@
             const dayOfYear = getDayOfYear();
             const dayOfMonth = now.getDate();
             const month = now.getMonth() + 1;
-            // Algorytm rozpraszający 538 utworów — każdy dzień roku rozpoczyna emisję z innego pasma utworów
-            const dailySeedIndex = ((dayOfYear * 79) + (dayOfMonth * 17) + (month * 43)) % TOTAL_PLAYLIST_TRACKS;
+            const hour = now.getHours();
+            // Algorytm rozpraszający utwory — dynamiczny seed zależny od dnia i godziny dla urozmaicenia
+            const dailySeedIndex = ((dayOfYear * 79) + (dayOfMonth * 17) + (month * 43) + (hour * 7)) % TOTAL_PLAYLIST_TRACKS;
             return dailySeedIndex;
         }
 
@@ -511,7 +556,7 @@
 
         function updateTrackMetadata() {
             try {
-                let displayTitle = "CODZIENNE UWIELBIENIE • UTWORY CHWAŁY";
+                let displayTitle = activeConfig.defaultTitle || "CODZIENNE UWIELBIENIE • UTWORY CHWAŁY";
 
                 if (player && typeof player.getVideoData === 'function') {
                     const data = player.getVideoData();
