@@ -3842,3 +3842,332 @@ html[data-lumina-theme="light"] .active-filters-summary-bar button:hover {
     border-color: #F87171 !important;
     color: #DC2626 !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LUMINA DEVOTIONAL BANNER & READER MODAL — LIGHT THEME (WARM IVORY & GOLD)
+   ══════════════════════════════════════════════════════════════════════════ */
+/* 1. Belka Rozważania na Stronie Głównej (#todayDevotionalBanner) */
+html[data-lumina-theme="light"] .devotional-glass-card,
+body.theme-lumina-light .devotional-glass-card,
+html[data-theme="light"] .devotional-glass-card,
+body.lumina-light-theme .devotional-glass-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.38) !important;
+    box-shadow: 0 8px 30px rgba(184, 142, 62, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+html[data-lumina-theme="light"] .devotional-icon-box,
+body.theme-lumina-light .devotional-icon-box,
+html[data-theme="light"] .devotional-icon-box,
+body.lumina-light-theme .devotional-icon-box {
+    background: linear-gradient(135deg, #9333ea 0%, #db2777 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 4px 14px rgba(147, 51, 234, 0.30) !important;
+}
+html[data-lumina-theme="light"] .devotional-icon-box i,
+body.theme-lumina-light .devotional-icon-box i,
+html[data-theme="light"] .devotional-icon-box i,
+body.lumina-light-theme .devotional-icon-box i {
+    color: #ffffff !important;
+}
+
+html[data-lumina-theme="light"] .devotional-tag,
+body.theme-lumina-light .devotional-tag,
+html[data-theme="light"] .devotional-tag,
+body.lumina-light-theme .devotional-tag {
+    background: rgba(147, 51, 234, 0.10) !important;
+    border: 1px solid rgba(147, 51, 234, 0.28) !important;
+    color: #7e22ce !important;
+    font-weight: 800 !important;
+}
+html[data-lumina-theme="light"] .devotional-tag i,
+body.theme-lumina-light .devotional-tag i,
+html[data-theme="light"] .devotional-tag i,
+body.lumina-light-theme .devotional-tag i {
+    color: #9333ea !important;
+}
+
+html[data-lumina-theme="light"] .devotional-date,
+body.theme-lumina-light .devotional-date,
+html[data-theme="light"] .devotional-date,
+body.lumina-light-theme .devotional-date {
+    color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] .devotional-title,
+body.theme-lumina-light .devotional-title,
+html[data-theme="light"] .devotional-title,
+body.lumina-light-theme .devotional-title {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .btn-devotional-read,
+body.theme-lumina-light .btn-devotional-read,
+html[data-theme="light"] .btn-devotional-read,
+body.lumina-light-theme .btn-devotional-read {
+    background: linear-gradient(135deg, #9333ea 0%, #db2777 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 4px 14px rgba(219, 39, 119, 0.32) !important;
+}
+html[data-lumina-theme="light"] .btn-devotional-read:hover,
+body.theme-lumina-light .btn-devotional-read:hover,
+html[data-theme="light"] .btn-devotional-read:hover,
+body.lumina-light-theme .btn-devotional-read:hover {
+    box-shadow: 0 6px 18px rgba(219, 39, 119, 0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-lumina-theme="light"] .btn-devotional-feed,
+body.theme-lumina-light .btn-devotional-feed,
+html[data-theme="light"] .btn-devotional-feed,
+body.lumina-light-theme .btn-devotional-feed {
+    background: rgba(2, 132, 199, 0.08) !important;
+    border: 1px solid rgba(2, 132, 199, 0.28) !important;
+    color: #0284c7 !important;
+    font-weight: 800 !important;
+}
+html[data-lumina-theme="light"] .btn-devotional-feed:hover,
+body.theme-lumina-light .btn-devotional-feed:hover,
+html[data-theme="light"] .btn-devotional-feed:hover,
+body.lumina-light-theme .btn-devotional-feed:hover {
+    background: rgba(2, 132, 199, 0.16) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+    color: #0369a1 !important;
+}
+
+/* 2. Okno Rozważania (#devotionalModal) */
+html[data-lumina-theme="light"] #devotionalModal,
+body.theme-lumina-light #devotionalModal,
+html[data-theme="light"] #devotionalModal,
+body.lumina-light-theme #devotionalModal {
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .modal-card,
+body.theme-lumina-light #devotionalModal .modal-card,
+html[data-theme="light"] #devotionalModal .modal-card,
+body.lumina-light-theme #devotionalModal .modal-card {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.35) !important;
+    box-shadow: 0 24px 64px rgba(28, 25, 23, 0.16), 0 0 32px rgba(184, 142, 62, 0.14) !important;
+    color: #1e293b !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .modal-close-btn,
+body.theme-lumina-light #devotionalModal .modal-close-btn,
+html[data-theme="light"] #devotionalModal .modal-close-btn,
+body.lumina-light-theme #devotionalModal .modal-close-btn {
+    background: rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    color: #64748b !important;
+}
+html[data-lumina-theme="light"] #devotionalModal .modal-close-btn:hover,
+body.theme-lumina-light #devotionalModal .modal-close-btn:hover,
+html[data-theme="light"] #devotionalModal .modal-close-btn:hover,
+body.lumina-light-theme #devotionalModal .modal-close-btn:hover {
+    background: rgba(225, 29, 72, 0.10) !important;
+    border-color: rgba(225, 29, 72, 0.25) !important;
+    color: #e11d48 !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .devotional-modal-tag,
+body.theme-lumina-light #devotionalModal .devotional-modal-tag,
+html[data-theme="light"] #devotionalModal .devotional-modal-tag,
+body.lumina-light-theme #devotionalModal .devotional-modal-tag {
+    background: rgba(147, 51, 234, 0.10) !important;
+    border: 1px solid rgba(147, 51, 234, 0.28) !important;
+    color: #7e22ce !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .devotional-modal-source,
+body.theme-lumina-light #devotionalModal .devotional-modal-source,
+html[data-theme="light"] #devotionalModal .devotional-modal-source,
+body.lumina-light-theme #devotionalModal .devotional-modal-source {
+    color: #64748b !important;
+}
+
+html[data-lumina-theme="light"] #modalDevotionTitle,
+body.theme-lumina-light #modalDevotionTitle,
+html[data-theme="light"] #modalDevotionTitle,
+body.lumina-light-theme #modalDevotionTitle {
+    color: #0f172a !important;
+}
+
+html[data-lumina-theme="light"] #modalDevotionVerseBox,
+body.theme-lumina-light #modalDevotionVerseBox,
+html[data-theme="light"] #modalDevotionVerseBox,
+body.lumina-light-theme #modalDevotionVerseBox {
+    background: rgba(245, 243, 255, 0.95) !important;
+    border-left: 3.5px solid #9333ea !important;
+    box-shadow: 0 2px 10px rgba(147, 51, 234, 0.05) !important;
+}
+html[data-lumina-theme="light"] #modalDevotionVerseText,
+body.theme-lumina-light #modalDevotionVerseText,
+html[data-theme="light"] #modalDevotionVerseText,
+body.lumina-light-theme #modalDevotionVerseText {
+    color: #581c87 !important;
+}
+
+html[data-lumina-theme="light"] #modalDevotionBody,
+body.theme-lumina-light #modalDevotionBody,
+html[data-theme="light"] #modalDevotionBody,
+body.lumina-light-theme #modalDevotionBody {
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] #modalDevotionBody p,
+body.theme-lumina-light #modalDevotionBody p,
+html[data-theme="light"] #modalDevotionBody p,
+body.lumina-light-theme #modalDevotionBody p {
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] #modalDevotionBody strong,
+body.theme-lumina-light #modalDevotionBody strong,
+html[data-theme="light"] #modalDevotionBody strong,
+body.lumina-light-theme #modalDevotionBody strong {
+    color: #0f172a !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .devotional-modal-footer,
+body.theme-lumina-light #devotionalModal .devotional-modal-footer,
+html[data-theme="light"] #devotionalModal .devotional-modal-footer,
+body.lumina-light-theme #devotionalModal .devotional-modal-footer {
+    border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+html[data-lumina-theme="light"] #devotionalModal .btn-devotional-modal-board,
+body.theme-lumina-light #devotionalModal .btn-devotional-modal-board,
+html[data-theme="light"] #devotionalModal .btn-devotional-modal-board,
+body.lumina-light-theme #devotionalModal .btn-devotional-modal-board {
+    background: rgba(2, 132, 199, 0.08) !important;
+    border: 1px solid rgba(2, 132, 199, 0.28) !important;
+    color: #0284c7 !important;
+    font-weight: 800 !important;
+}
+html[data-lumina-theme="light"] #devotionalModal .btn-devotional-modal-board:hover,
+body.theme-lumina-light #devotionalModal .btn-devotional-modal-board:hover,
+html[data-theme="light"] #devotionalModal .btn-devotional-modal-board:hover,
+body.lumina-light-theme #devotionalModal .btn-devotional-modal-board:hover {
+    background: rgba(2, 132, 199, 0.16) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+    color: #0369a1 !important;
+}
+
+/* 3. Bloki Strukturalne Rozważania (Pismo, Zadanie, Modlitwa, Smart-Linki) */
+html[data-lumina-theme="light"] .reflection-scripture-box,
+body.theme-lumina-light .reflection-scripture-box,
+html[data-theme="light"] .reflection-scripture-box,
+body.lumina-light-theme .reflection-scripture-box {
+    background: rgba(254, 243, 199, 0.65) !important;
+    border-left: 4px solid #d97706 !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.08) !important;
+}
+html[data-lumina-theme="light"] .reflection-scripture-box .scripture-label,
+body.theme-lumina-light .reflection-scripture-box .scripture-label,
+html[data-theme="light"] .reflection-scripture-box .scripture-label,
+body.lumina-light-theme .reflection-scripture-box .scripture-label {
+    color: #b45309 !important;
+}
+html[data-lumina-theme="light"] .reflection-scripture-box .scripture-quote,
+body.theme-lumina-light .reflection-scripture-box .scripture-quote,
+html[data-theme="light"] .reflection-scripture-box .scripture-quote,
+body.lumina-light-theme .reflection-scripture-box .scripture-quote {
+    color: #78350f !important;
+}
+
+html[data-lumina-theme="light"] .reflection-task-box,
+body.theme-lumina-light .reflection-task-box,
+html[data-theme="light"] .reflection-task-box,
+body.lumina-light-theme .reflection-task-box {
+    background: rgba(240, 249, 255, 0.85) !important;
+    border: 1px solid rgba(2, 132, 199, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.06) !important;
+}
+html[data-lumina-theme="light"] .reflection-task-box .task-label,
+body.theme-lumina-light .reflection-task-box .task-label,
+html[data-theme="light"] .reflection-task-box .task-label,
+body.lumina-light-theme .reflection-task-box .task-label {
+    color: #0284c7 !important;
+}
+html[data-lumina-theme="light"] .reflection-task-box p,
+body.theme-lumina-light .reflection-task-box p,
+html[data-theme="light"] .reflection-task-box p,
+body.lumina-light-theme .reflection-task-box p {
+    color: #1e293b !important;
+}
+
+html[data-lumina-theme="light"] .reflection-prayer-box,
+body.theme-lumina-light .reflection-prayer-box,
+html[data-theme="light"] .reflection-prayer-box,
+body.lumina-light-theme .reflection-prayer-box {
+    background: rgba(250, 245, 255, 0.85) !important;
+    border-left: 4px solid #9333ea !important;
+    box-shadow: 0 4px 14px rgba(147, 51, 234, 0.06) !important;
+}
+html[data-lumina-theme="light"] .reflection-prayer-box .prayer-label,
+body.theme-lumina-light .reflection-prayer-box .prayer-label,
+html[data-theme="light"] .reflection-prayer-box .prayer-label,
+body.lumina-light-theme .reflection-prayer-box .prayer-label {
+    color: #7e22ce !important;
+}
+html[data-lumina-theme="light"] .reflection-prayer-box p,
+body.theme-lumina-light .reflection-prayer-box p,
+html[data-theme="light"] .reflection-prayer-box p,
+body.lumina-light-theme .reflection-prayer-box p {
+    color: #4a044e !important;
+}
+
+html[data-lumina-theme="light"] .reflection-links-container,
+body.theme-lumina-light .reflection-links-container,
+html[data-theme="light"] .reflection-links-container,
+body.lumina-light-theme .reflection-links-container {
+    border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+html[data-lumina-theme="light"] .reflection-links-container div,
+body.theme-lumina-light .reflection-links-container div,
+html[data-theme="light"] .reflection-links-container div,
+body.lumina-light-theme .reflection-links-container div {
+    color: #b45309 !important;
+}
+
+html[data-lumina-theme="light"] .reflection-smart-link,
+body.theme-lumina-light .reflection-smart-link {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.whatsapp-link,
+body.theme-lumina-light .reflection-smart-link.whatsapp-link {
+    background: rgba(34, 197, 94, 0.10) !important;
+    border: 1.5px solid rgba(34, 197, 94, 0.45) !important;
+    color: #15803d !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.radio-link,
+body.theme-lumina-light .reflection-smart-link.radio-link {
+    background: rgba(2, 132, 199, 0.10) !important;
+    border: 1.5px solid rgba(2, 132, 199, 0.40) !important;
+    color: #0284c7 !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.tv-link,
+body.theme-lumina-light .reflection-smart-link.tv-link {
+    background: rgba(219, 39, 119, 0.10) !important;
+    border: 1.5px solid rgba(219, 39, 119, 0.40) !important;
+    color: #be185d !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.apps-link,
+body.theme-lumina-light .reflection-smart-link.apps-link {
+    background: rgba(217, 119, 6, 0.10) !important;
+    border: 1.5px solid rgba(217, 119, 6, 0.40) !important;
+    color: #b45309 !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.support-link,
+body.theme-lumina-light .reflection-smart-link.support-link {
+    background: rgba(225, 29, 72, 0.10) !important;
+    border: 1.5px solid rgba(225, 29, 72, 0.40) !important;
+    color: #be123c !important;
+}
+
