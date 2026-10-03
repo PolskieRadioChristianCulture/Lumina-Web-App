@@ -736,10 +736,95 @@
             color: #946E24 !important;
         }
 
+        /* ── PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (MIĘDZY PRZYCISKIEM CZATU A PRZEWIJANIEM STRONY) ── */
+        .lumina-theme-switch-pill {
+            position: fixed !important;
+            bottom: 86px !important;
+            right: 10px !important;
+            left: auto !important;
+            z-index: 99998 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 50px !important;
+            height: 50px !important;
+            min-width: 50px !important;
+            min-height: 50px !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            user-select: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            outline: none !important;
+            box-sizing: border-box !important;
+            background: rgba(18, 18, 26, 0.92) !important;
+            border: 1.5px solid rgba(212, 169, 74, 0.45) !important;
+            color: #d4a94a !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(212, 169, 74, 0.15) !important;
+        }
+
+        .lumina-theme-switch-pill span,
+        .lumina-theme-switch-pill #luminaThemeLabel {
+            display: none !important;
+        }
+
+        .lumina-theme-switch-pill .theme-icon,
+        .lumina-theme-switch-pill i {
+            font-size: 1.25rem !important;
+            line-height: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease !important;
+            color: #d4a94a !important;
+        }
+
+        .lumina-theme-switch-pill:hover {
+            transform: translateY(-2px) scale(1.08) !important;
+        }
+
+        .lumina-theme-switch-pill:hover .theme-icon,
+        .lumina-theme-switch-pill:hover i {
+            transform: rotate(18deg) scale(1.1) !important;
+        }
+
+        .lumina-theme-switch-pill:active {
+            transform: translateY(0) scale(0.94) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-theme-switch-pill,
+        body.theme-lumina-light .lumina-theme-switch-pill {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1.5px solid rgba(184, 142, 62, 0.45) !important;
+            color: #B88E3E !important;
+            box-shadow: 0 6px 20px rgba(184, 142, 62, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-theme-switch-pill i,
+        body.theme-lumina-light .lumina-theme-switch-pill i {
+            color: #B88E3E !important;
+        }
+
+        @media (max-width: 768px) {
+            .lumina-theme-switch-pill {
+                bottom: calc(142px + env(safe-area-inset-bottom, 8px)) !important;
+                right: 10px !important;
+                left: auto !important;
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 48px !important;
+                min-height: 48px !important;
+                padding: 0 !important;
+            }
+        }
+
         /* ── FLOATING CHAT BUBBLE BUTTON (DYMEK CZATU NAD SCROLL-TOP) ── */
         .lumina-floating-chat-btn {
             position: fixed !important;
-            bottom: 86px !important;
+            bottom: 148px !important;
             right: 10px !important;
             width: 50px !important;
             height: 50px !important;
@@ -801,7 +886,7 @@
 
         @media (max-width: 768px) {
             .lumina-floating-chat-btn {
-                bottom: calc(142px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above scroll-top */
+                bottom: calc(202px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above theme switcher */
                 right: 10px !important;
                 width: 48px !important;
                 height: 48px !important;

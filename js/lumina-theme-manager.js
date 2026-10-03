@@ -14,7 +14,7 @@
             var stored = localStorage.getItem('lumina_theme');
             if (stored === 'light' || stored === 'dark') return stored;
         } catch(e) {}
-        return null;
+        return 'light'; // Domyślnie Tryb Jasny (Warm Ivory & Champagne Gold Luxury)
     }
 
     function applyLuminaTheme(theme, savePreference) {
@@ -92,7 +92,7 @@
         btn.id = 'luminaThemeSwitchBtn';
         btn.setAttribute('title', 'Przełącz motyw (Jasny / Ciemny)');
         btn.setAttribute('aria-label', 'Przełącz motyw');
-        btn.innerHTML = '<i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>';
+        btn.innerHTML = '<i class="fa-solid fa-sun theme-icon" id="luminaThemeIcon"></i>';
         
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -111,21 +111,17 @@
     window.toggleLuminaTheme = toggleLuminaTheme;
 
     // Immediate execution on load to prevent FOIT
-    var initialTheme = getPreferredTheme();
-    if (initialTheme === 'light') {
-        document.documentElement.setAttribute('data-lumina-theme', 'light');
-    } else if (initialTheme === 'dark') {
+    var initialTheme = getPreferredTheme() || 'light';
+    if (initialTheme === 'dark') {
         document.documentElement.setAttribute('data-lumina-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-lumina-theme', 'light');
     }
 
     // DOM Ready handler
     function onDOMLoaded() {
-        var pref = getPreferredTheme();
-        if (pref === 'light') {
-            applyLuminaTheme('light', false);
-        } else if (pref === 'dark') {
-            applyLuminaTheme('dark', false);
-        }
+        var pref = getPreferredTheme() || 'light';
+        applyLuminaTheme(pref, false);
         ensureSwitcherMounted();
     }
 

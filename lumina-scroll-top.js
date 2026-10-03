@@ -69,6 +69,26 @@
         transform: translateY(-2px) !important;
       }
 
+      /* Styl w trybie jasnym (Warm Ivory & Champagne Gold Luxury) */
+      html[data-lumina-theme="light"] .lumina-scroll-top,
+      body.theme-lumina-light .lumina-scroll-top {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1.5px solid rgba(184, 142, 62, 0.45) !important;
+        color: #B88E3E !important;
+        box-shadow: 0 6px 20px rgba(184, 142, 62, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+      }
+
+      html[data-lumina-theme="light"] .lumina-scroll-top .lumina-arrow-icon,
+      body.theme-lumina-light .lumina-scroll-top .lumina-arrow-icon {
+        color: #B88E3E !important;
+      }
+
+      html[data-lumina-theme="light"] .lumina-scroll-top:hover,
+      body.theme-lumina-light .lumina-scroll-top:hover {
+        background: #FFFFFF !important;
+        box-shadow: 0 10px 26px rgba(184, 142, 62, 0.28) !important;
+      }
+
       /* Uniesienie i ujednolicenie przycisku na smartfonach (48px, równe odstępy 12px) */
       @media (max-width: 768px) {
         #luminaScrollTop.lumina-scroll-top,
