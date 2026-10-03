@@ -3949,6 +3949,10 @@
                         const slug = f.slug?.stringValue || id;
                         const uid = f.uid?.stringValue || id;
                         const name = f.name?.stringValue || f.displayName?.stringValue || slug;
+                        const email = f.email?.stringValue || '';
+                        if (name.toLowerCase().includes('testow') || slug.toLowerCase().includes('test') || email.toLowerCase().includes('test') || id === 'WSj7kszVzCS5WslGmojmxLhoul33') {
+                            return; // Ignoruj profile testowe
+                        }
                         const age = f.age?.integerValue ? parseInt(f.age.integerValue) : (f.age?.stringValue ? parseInt(f.age.stringValue) : '');
                         const city = f.city?.stringValue || 'Polska';
                         const bio = f.bio?.stringValue || f.aboutMe?.stringValue || 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
@@ -4354,6 +4358,11 @@
         .hero-content {
             transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
+        .hero-section.faces-revealed:not(:focus-within) .hero-content {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-8px) !important;
+        }
         .lumina-skip-link {
             position: fixed;
             top: 8px;
@@ -4489,9 +4498,9 @@
         }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
-    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_master">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_light_repair_v1">
     <link id="luminaMiniPlayerCSS" rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
-    <script src="/js/lumina-theme-manager.js?v=20261002_master"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261003_light_repair_v1"></script>
 </head>
 <body class="user-is-guest">
     <a class="lumina-skip-link" href="#odkrywaj">Przejdź do społeczności</a>
@@ -13765,12 +13774,21 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
 
     <script>
-    /* LUMINA STABLE HERO & NAVBAR SEARCH ENGINE */
+    /* LUMINA HERO REVEAL & NAVBAR SEARCH ENGINE — owner-approved face reveal */
+    let heroRevealTimer = null;
+    function resetHeroTimer() {
+        clearTimeout(heroRevealTimer);
+        heroRevealTimer = setTimeout(() => {
+            const hero = document.getElementById('heroHeader');
+            if (hero && !hero.matches(':focus-within')) hero.classList.add('faces-revealed');
+        }, 3500);
+    }
     function restoreHeroIntro() {
         const hero = document.getElementById('heroHeader');
         if (hero) {
             hero.classList.remove('faces-revealed');
         }
+        resetHeroTimer();
     }
 
     window.toggleMobileNavbarSearch = function() {
@@ -13821,6 +13839,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             heroHeader.addEventListener('touchstart', restoreHeroIntro, { passive: true });
             heroHeader.addEventListener('mousemove', restoreHeroIntro);
             heroHeader.addEventListener('click', restoreHeroIntro);
+            heroHeader.addEventListener('focusin', restoreHeroIntro);
+            heroHeader.addEventListener('focusout', resetHeroTimer);
         }
         restoreHeroIntro();
     });

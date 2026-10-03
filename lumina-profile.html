@@ -3114,7 +3114,7 @@
     }
 </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
-    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261002_master">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_light_repair_v1">
     <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20260923_round_avatar_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <script src="js/lumina-mission-blik.js"></script>
@@ -3123,7 +3123,7 @@
     <link rel="stylesheet" href="css/lumina-reflection-tts.css?v=20260921_1">
     <script src="js/lumina-reflection-tts.js?v=20260921_1" defer></script>
     <script src="js/lumina-speech-reader.js?v=20260921_speech_reader_v2" defer></script>
-    <script src="/js/lumina-theme-manager.js?v=20261002_master"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261003_light_repair_v1"></script>
 </head>
 <body class="lumina-profile-standard">
 
@@ -5463,6 +5463,12 @@
                     isMissionAccount: false,
                     photos: ['avatar_pawel_murawski.jpg']
                 };
+            }
+
+            // Blokada profilu testowego Jan Testowy
+            if (slug === 'u_integ_9913' || slug === 'WSj7kszVzCS5WslGmojmxLhoul33' || (slug && slug.toLowerCase().includes('testow'))) {
+                window.location.replace('lumina.html');
+                return null;
             }
 
             // Twarde zabezpieczenie profilu Tijani Hammed (Warszawa, 28 lat)
@@ -8261,7 +8267,7 @@
 
                 html += `
                     <div style="display:flex; justify-content:${align}; margin-bottom:4px;" id="msg_${msg.id || ''}" data-message-id="${msg.id || ''}">
-                        <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                        <div class="${isMe ? 'lumina-bubble-mine' : 'lumina-bubble-theirs'}" style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
                             <div>${escapeHtml(msg.text)}</div>
                             <div style="font-size:0.65rem; color:rgba(255,255,255,0.6); text-align:right; margin-top:4px;">${time}</div>
                         </div>

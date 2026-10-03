@@ -14,7 +14,7 @@
     --lumina-l-text-muted: #64748b;
     --lumina-l-text-light: #94a3b8;
     
-    --lumina-l-gold: #b38e3e;
+    --lumina-l-gold: #806120;
     --lumina-l-gold-light: #C4A35A;
     --lumina-l-gold-soft: #fcf9f2;
     --lumina-l-gold-border: rgba(196, 163, 90, 0.2);
@@ -41,7 +41,7 @@ html[data-lumina-theme="light"] body {
     --text-primary: #0f172a !important;
     --text-secondary: #475569 !important;
     --text-muted: #64748b !important;
-    --accent-gold: #b38e3e !important;
+    --accent-gold: #806120 !important;
     --cc-parchment: #0f172a !important;
     --cc-mist: #64748b !important;
     --cc-bg-void: #f8fafc !important;
@@ -1408,4 +1408,249 @@ body.theme-lumina-light .btn-action-logout {
 html[data-lumina-theme="light"] .btn-action-logout *,
 body.theme-lumina-light .btn-action-logout * {
     color: #dc2626 !important;
+}
+
+/* Shared light contract: real chat renderers and dynamically mounted notifications.
+   Keep layout, visibility, authorization and delivery behaviour in their owners. */
+html[data-lumina-theme="light"] {
+    color-scheme: light;
+    --lumina-l-accent: #6d28d9;
+    --lumina-l-accent-soft: #f3edff;
+    --lumina-l-border-strong: #cbd5e1;
+    --lmp-bg: rgba(255,255,255,.96);
+    --lmp-border: #d9c8f7;
+    --lmp-border-playing: #6d28d9;
+    --lmp-gold: #806120;
+    --lmp-shadow: 0 8px 28px rgba(45,25,73,.12);
+    --lmp-shadow-playing: 0 8px 28px rgba(109,40,217,.16);
+}
+html[data-lumina-theme="light"] :is(.lumina-bottom-nav, .lumina-scroll-top, .nav-radio-btn) {
+    background: rgba(255,255,255,.96) !important;
+    border-color: #d8dce8 !important; color: #6d28d9 !important;
+    box-shadow: 0 8px 28px rgba(45,25,73,.1) !important;
+}
+html[data-lumina-theme="light"] .lumina-nav-tab { color: #526079 !important; }
+html[data-lumina-theme="light"] :is(.lumina-nav-tab.active, .lumina-nav-tab:hover,
+    .lumina-nav-tab.active i, .lumina-nav-tab:hover i) {
+    color: #6d28d9 !important; text-shadow: none !important;
+}
+html[data-lumina-theme="light"] .lumina-nav-tab:hover { background: #f3edff !important; }
+html[data-lumina-theme="light"] .lmp-title { color: #172033; }
+html[data-lumina-theme="light"] .lmp-subtitle { color: #526079; }
+html[data-lumina-theme="light"] :is(.lmp-btn-stations, .lmp-btn-minimize) {
+    background: #f3edff; border-color: #d9c8f7; color: #6d28d9;
+}
+html[data-lumina-theme="light"] .lmp-live-badge {
+    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
+}
+html[data-lumina-theme="light"] .btn-nav-support {
+    background: #f3edff !important; color: #6d28d9 !important;
+    border-color: #d9c8f7 !important; box-shadow: none !important;
+}
+html[data-lumina-theme="light"] .lumina-login-page .status-msg { color: #526079; }
+html[data-lumina-theme="light"] .lumina-login-page .status-msg.error { color: #b91c1c; }
+html[data-lumina-theme="light"] .lumina-login-page .status-msg.success { color: #166534; }
+html[data-lumina-theme="light"] :is(.lumina-messenger-modal-card, .notif-dropdown) {
+    font-family: 'Outfit', system-ui, sans-serif;
+}
+html[data-lumina-theme="light"] .lumina-login-page .container {
+    background: #fff; border-color: #ded6ec;
+    box-shadow: 0 24px 64px rgba(45,25,73,.12);
+}
+html[data-lumina-theme="light"] .lumina-login-page .portal-title {
+    background: none; -webkit-text-fill-color: #172033; color: #172033;
+}
+html[data-lumina-theme="light"] .lumina-login-page :is(.portal-tagline, .footer-note) {
+    color: #526079;
+}
+html[data-lumina-theme="light"] .lumina-login-page .footer-note a { color: #6d28d9; }
+html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) select option {
+    background: #fff !important; color: #172033 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-message-request-card, #dmConversationsList > div) {
+    background: #f8f6fc !important; border-color: #d8cde9 !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] #dmConversationsList :is(span:not(.dm-avatar-badge), div)[style*="color"] {
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-message-request-content strong, .lumina-message-requests-title) {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] .lumina-message-request-actions .decline {
+    background: #f1f5f9; color: #334155; border-color: #cbd5e1;
+}
+html[data-lumina-theme="light"] .lumina-message-request-actions .block {
+    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
+}
+html[data-lumina-theme="light"] .dm-avatar-badge {
+    background: #be123c !important; border-color: #fff !important;
+    box-shadow: none !important; animation: none !important;
+}
+html[data-lumina-theme="light"] .hero-overlay {
+    background: linear-gradient(180deg, rgba(248,250,252,.4), rgba(248,250,252,.7) 65%, #f8fafc) !important;
+}
+html[data-lumina-theme="light"] .hero-bg img { opacity: .22 !important; }
+html[data-lumina-theme="light"] .hero-section.faces-revealed:not(:focus-within) .hero-bg img {
+    opacity: 1 !important;
+}
+html[data-lumina-theme="light"] .hero-section.faces-revealed:not(:focus-within) .hero-overlay {
+    background: linear-gradient(180deg, transparent 55%, #f8fafc) !important;
+}
+html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display:none"],
+html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display: none"] {
+    display: none !important;
+}
+html[data-lumina-theme="light"] .btn-hero-join-prominent {
+    background: linear-gradient(120deg, #7e22ce, #6d28d9) !important;
+    box-shadow: 0 8px 24px rgba(109,40,217,.2) !important;
+}
+html[data-lumina-theme="light"] .btn-hero-join-prominent i { color: #fff !important; }
+html[data-lumina-theme="light"] .nav-logo-text { text-shadow: none !important; }
+
+html[data-lumina-theme="light"] :is(.notif-dropdown, #luminaCookieConsentBanner,
+    #luminaPushToastPrompt, .lumina-push-soft-card, .cc-nav-modal > div,
+    #luminaFloatingRadioBar) {
+    background: #fff !important;
+    color: #334155 !important;
+    border-color: #d8dce8 !important;
+    box-shadow: 0 16px 48px rgba(30,24,56,.12) !important;
+}
+html[data-lumina-theme="light"] :is(.notif-header, .notif-push-bar) {
+    background: #f8f6ff !important;
+    border-color: #e5dfef !important;
+    color: #475569 !important;
+}
+html[data-lumina-theme="light"] :is(.notif-header h4, .notif-content strong,
+    .notif-item-title, .push-soft-title, #luminaPushToastPrompt h4,
+    .cc-nav-modal h3, .cc-nav-modal h4) { color: #172033 !important; }
+html[data-lumina-theme="light"] :is(.notif-content, .notif-item-content,
+    .push-soft-desc, #luminaPushToastPrompt p, #luminaCookieConsentBanner > div,
+    .cc-nav-modal p, .network-item-link, .network-item-link div) { color: #475569 !important; }
+html[data-lumina-theme="light"] :is(.notif-time, .notif-empty) { color: #526079 !important; }
+html[data-lumina-theme="light"] .notif-item { border-color: #e7eaf0 !important; }
+html[data-lumina-theme="light"] .notif-item.unread {
+    background: #f3edff !important;
+    border-left-color: #6d28d9 !important;
+}
+html[data-lumina-theme="light"] .notif-item:hover { background: #ebe3fa !important; }
+html[data-lumina-theme="light"] :is(.notif-bell-btn, .notif-close-btn, .notif-action-btn) {
+    background: #f3edff !important;
+    color: #6d28d9 !important;
+    border-color: #d9c8f7 !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.notif-bell-btn i, .notif-header i) {
+    color: #6d28d9 !important; filter: none !important;
+}
+html[data-lumina-theme="light"] .notif-bell-btn:hover { background: #e9ddfa !important; }
+html[data-lumina-theme="light"] .notif-badge {
+    background: #be123c !important; border-color: #fff !important;
+    box-shadow: none !important; animation: none !important;
+}
+html[data-lumina-theme="light"] .notif-close-btn {
+    width: 36px !important; height: 36px !important; flex-shrink: 0 !important;
+}
+html[data-lumina-theme="light"] .notif-dropdown {
+    max-height: calc(100dvh - 96px) !important;
+}
+html[data-lumina-theme="light"] .notif-list { min-height: 0; overscroll-behavior: contain; }
+
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-bar,
+    .chat-input-bar, .messenger-quick-emojis-bar, .chat-quick-bar) {
+    background: #fff !important; border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] :is(#publicChatMessagesBox, #activeChatMessagesBox, #profileChatMessagesBox,
+    .messenger-chat-column, .chat-conversation-area) {
+    background: #f7f5fb !important;
+    background-image: radial-gradient(circle at 95% 0, #ede7fa 0, transparent 45%) !important;
+    color: #334155 !important;
+    scrollbar-color: #c4b5dd #f7f5fb;
+}
+html[data-lumina-theme="light"] .messenger-inbox-column {
+    background: #fff !important; border-color: #e2e8f0 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(h3, h4, #activeChatName) {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.messenger-placeholder-state p,
+    .lumina-typing-indicator) { color: #526079 !important; }
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(input, textarea) {
+    background: #fff !important; border-color: #cbd5e1 !important;
+    color: #172033 !important; box-shadow: none !important;
+    min-width: 0;
+}
+html[data-lumina-theme="light"] :is(input, textarea)::placeholder {
+    color: #526079 !important; opacity: 1 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.lumina-send-btn-premium,
+    #tabBtnPublicChat[style*="linear-gradient"], #tabBtnPrivateChat[style*="linear-gradient"],
+    .dm-filter-chip[style*="linear-gradient"]) {
+    background: linear-gradient(120deg, #7e22ce, #6d28d9) !important;
+    color: #fff !important; box-shadow: 0 4px 12px rgba(109,40,217,.16) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#tabBtnPublicChat,
+    #tabBtnPrivateChat, .dm-filter-chip):not([style*="linear-gradient"]) {
+    background: #f1edf7 !important; color: #526079 !important;
+    border-color: #d8dce8 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-profile-btn,
+    .messenger-back-btn, .messenger-emoji-btn, .chat-quick-bar button,
+    button#btnChatFullscreen, #activeChatForm > button[type="button"]) {
+    background: #f3edff !important; color: #6d28d9 !important;
+    border-color: #d9c8f7 !important; box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-me, .lumina-bubble-mine),
+html[data-lumina-theme="light"] .chat-bubble.bubble-me {
+    background: linear-gradient(135deg, #7e22ce, #6d28d9) !important;
+    color: #fff !important; border-color: transparent !important;
+    box-shadow: 0 4px 12px rgba(109,40,217,.14) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs),
+html[data-lumina-theme="light"] .chat-bubble.bubble-other {
+    background: #fff !important; color: #172033 !important;
+    border: 1px solid #e3ddec !important;
+    box-shadow: 0 2px 8px rgba(30,24,56,.04) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs) [style*="color"] {
+    color: #526079 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-bubble-mine [style*="color"] {
+    color: #fff !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-me .fb-msg-meta {
+    color: #f1eaff !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-them .fb-msg-meta {
+    color: #526079 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-check-read {
+    color: #fff !important; text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#publicChatMessagesBox, #activeChatMessagesBox) > div > span {
+    background: #ede7f5 !important; color: #526079 !important;
+    border-color: #ded7e9 !important;
+}
+html[data-lumina-theme="light"] .modal-card :is(h4, p) { color: #334155 !important; }
+html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) :is(input, textarea, select):focus-visible,
+html[data-lumina-theme="light"] :is(button, a):focus-visible {
+    outline: 3px solid #6d28d9 !important; outline-offset: 3px !important;
+}
+html[data-lumina-theme="light"] #lumina-cookie-banner button[onclick="rejectCookies()"] {
+    color: #334155 !important; background: #f1f5f9 !important; border-color: #cbd5e1 !important;
+}
+@media (max-width: 500px) {
+    html[data-lumina-theme="light"] .notif-header { gap: 8px !important; padding: 12px !important; }
+    html[data-lumina-theme="light"] .notif-action-btn { min-height: 36px; }
+    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .chat-input-bar {
+        padding-inline: 10px !important; gap: 6px !important;
+    }
+    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-send-btn-premium {
+        padding-inline: 12px !important;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    html[data-lumina-theme="light"] :is(.notif-dropdown.active, .lumina-msg-row,
+        .messenger-placeholder-icon) { animation: none !important; }
 }

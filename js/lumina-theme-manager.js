@@ -77,7 +77,6 @@
         btn.type = 'button';
         btn.className = 'lumina-theme-switch-pill';
         btn.id = 'luminaThemeSwitchBtn';
-        btn.setAttribute('onclick', 'toggleLuminaTheme()');
         btn.setAttribute('title', 'Przełącz motyw (Jasny / Ciemny)');
         btn.innerHTML = '<i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i><span id="luminaThemeLabel">Motyw: Ciemny (Obsidian)</span>';
         
