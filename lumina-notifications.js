@@ -410,24 +410,10 @@
                     50% { opacity: 0.7; transform: scale(1.1); } 
                 }
             
-                /* ═════════ SMART SWAP (MOBILE) ═════════ */
+                /* ═════════ MOBILE NOTIFICATION CENTER ═════════ */
                 @media (max-width: 640px) {
-                    /* If there are NO unread notifications */
-                    body[data-unread-count="0"] #lumina-notification-center {
-                        display: none !important;
-                    }
-                    body[data-unread-count="0"] #radioWidget,
-                    body[data-unread-count="0"] .nav-radio-btn {
+                    #lumina-notification-center {
                         display: inline-flex !important;
-                    }
-
-                    /* If there ARE unread notifications */
-                    body:not([data-unread-count="0"]):not([data-unread-count=""]) #lumina-notification-center {
-                        display: inline-flex !important;
-                    }
-                    body:not([data-unread-count="0"]):not([data-unread-count=""]) #radioWidget,
-                    body:not([data-unread-count="0"]):not([data-unread-count=""]) .nav-radio-btn {
-                        display: none !important;
                     }
                 }
 
@@ -553,24 +539,22 @@
 
             </style>`;
 
-            // Wstrzyknięcie dzwonka wyłącznie w navbarze obok Radia CC lub w akcjach nagłówka
-            const radioWidget = document.getElementById('radioWidget') || 
-                                document.querySelector('.nav-radio-btn') || 
-                                document.querySelector('.nav-radio-pill') || 
-                                document.querySelector('.radio-widget');
+            // Wstrzyknięcie dzwonka w navbarze (obok Menu w .lumina-nav-actions lub w akcjach nagłówka)
+            const topMenuBtn = document.getElementById('topNavMenuBtn') || 
+                               document.querySelector('.nav-menu-wrapper');
+            const navActions = document.querySelector('.lumina-nav-actions') ||
+                               document.querySelector('.header-right') || 
+                               document.querySelector('.nav-actions') ||
+                               document.querySelector('.header-actions');
             
-            if (radioWidget && radioWidget.parentElement) {
-                radioWidget.insertAdjacentHTML('afterend', html);
+            if (topMenuBtn && topMenuBtn.parentElement) {
+                const targetWrapper = topMenuBtn.closest('.nav-menu-wrapper') || topMenuBtn;
+                targetWrapper.insertAdjacentHTML('beforebegin', html);
+            } else if (navActions) {
+                navActions.insertAdjacentHTML('afterbegin', html);
             } else {
-                const rightContainer = document.querySelector('.header-right') || 
-                                       document.querySelector('.nav-actions') ||
-                                       document.querySelector('.header-actions');
-                if (rightContainer) {
-                    rightContainer.insertAdjacentHTML('afterbegin', html);
-                } else {
-                    // Na stronach profili bez dedykowanego slotu w navbarze NIE wstrzykujemy dzwonka do body!
-                    return;
-                }
+                // Na stronach bez dedykowanego slotu w navbarze NIE wstrzykujemy dzwonka do body!
+                return;
             }
 
             // Zamknięcie dropdownu po kliknięciu poza niego
