@@ -4498,9 +4498,9 @@
         }
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
-    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_icon_v3">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_wallpaper_v4">
     <link id="luminaMiniPlayerCSS" rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
-    <script src="/js/lumina-theme-manager.js?v=20261003_icon_v3"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261003_wallpaper_v4"></script>
 </head>
 <body class="user-is-guest">
     <a class="lumina-skip-link" href="#odkrywaj">Przejdź do społeczności</a>
@@ -4652,7 +4652,20 @@
     <!-- ══════════ HERO SECTION ══════════ -->
     <header class="hero-section" id="heroHeader">
         <div class="hero-bg" id="heroBg">
-            <img src="assets/lumina-hero-20261003.webp" width="1300" height="500" alt="" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_hero_bg.jpg?v=20260822';">
+            <img id="heroBgImg" src="assets/lumina-hero-20261003.webp" width="1300" height="500" alt="LUMINA Hero Wallpaper" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_hero_bg.jpg?v=20260822';">
+            <script>
+            (function() {
+                try {
+                    var t = document.documentElement.getAttribute('data-lumina-theme') || 
+                            localStorage.getItem('lumina_theme') || 
+                            (new URLSearchParams(window.location.search).get('theme'));
+                    if (t === 'light') {
+                        var el = document.getElementById('heroBgImg');
+                        if (el) el.src = 'assets/lumina-hero-light-20261003.webp';
+                    }
+                } catch(e) {}
+            })();
+            </script>
         </div>
         <div class="hero-overlay" id="heroOverlay"></div>
             <div class="hero-content" id="heroContent">

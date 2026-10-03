@@ -1456,16 +1456,55 @@ body.theme-lumina-light .hero-bg {
     height: calc(100% + 470px) !important;
 }
 
-/* Kategoryczny zakaz ciemnych gradientów i widmowych twarzy w tle w trybie jasnym */
-html[data-lumina-theme="light"] .hero-bg::after,
-body.theme-lumina-light .hero-bg::after {
-    display: none !important;
-    background: none !important;
-}
-
+/* Dedykowana, słoneczna tapeta hero w trybie jasnym (Warm Ivory & Champagne Glow) */
 html[data-lumina-theme="light"] .hero-bg img,
 body.theme-lumina-light .hero-bg img {
-    display: none !important;
+    display: block !important;
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.88;
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 45%,
+        rgba(0,0,0,0.85) 60%,
+        rgba(0,0,0,0.4) 75%,
+        rgba(0,0,0,0.1) 90%,
+        transparent 100%
+    ) !important;
+    mask-image: linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 45%,
+        rgba(0,0,0,0.85) 60%,
+        rgba(0,0,0,0.4) 75%,
+        rgba(0,0,0,0.1) 90%,
+        transparent 100%
+    ) !important;
+}
+
+/* Szlachetne świetliste wtopienie w odcieniach szampana i alabastru */
+html[data-lumina-theme="light"] .hero-bg::after,
+body.theme-lumina-light .hero-bg::after {
+    display: block !important;
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+        radial-gradient(ellipse 90% 60% at 50% 20%, transparent 40%, rgba(250, 249, 246, 0.4) 75%, #FAF9F6 98%),
+        linear-gradient(
+            to bottom,
+            rgba(250, 249, 246, 0.15) 0%,
+            transparent 15%,
+            transparent 45%,
+            rgba(250, 249, 246, 0.35) 60%,
+            rgba(250, 249, 246, 0.75) 75%,
+            rgba(250, 249, 246, 0.95) 88%,
+            #FAF9F6 98%
+        ) !important;
 }
 
 html[data-lumina-theme="light"] .hero-overlay,

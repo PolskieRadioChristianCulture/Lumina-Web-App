@@ -33,6 +33,16 @@
             } catch(e) {}
         }
 
+        try {
+            var heroImg = document.getElementById('heroBgImg') || document.querySelector('.hero-bg img');
+            if (heroImg) {
+                var targetSrc = isLight ? 'assets/lumina-hero-light-20261003.webp' : 'assets/lumina-hero-20261003.webp';
+                if (!heroImg.src.endsWith(targetSrc)) {
+                    heroImg.src = targetSrc;
+                }
+            }
+        } catch(e) {}
+
         updateSwitcherUI(isLight);
 
         try {
