@@ -5,27 +5,27 @@
  * ══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-    --lumina-l-bg: #f8fafc;
-    --lumina-l-bg-alt: #f1f5f9;
-    --lumina-l-card: #ffffff;
-    --lumina-l-card-subtle: #f8fafc;
-    --lumina-l-text-title: #0f172a;
-    --lumina-l-text-body: #334155;
-    --lumina-l-text-muted: #64748b;
-    --lumina-l-text-light: #94a3b8;
+    --lumina-l-bg: #FAF9F6;
+    --lumina-l-bg-alt: #F5F2EB;
+    --lumina-l-card: #FFFFFF;
+    --lumina-l-card-subtle: #FAF8F5;
+    --lumina-l-text-title: #1C1917;
+    --lumina-l-text-body: #3B3632;
+    --lumina-l-text-muted: #78716C;
+    --lumina-l-text-light: #A8A29E;
     
-    --lumina-l-gold: #806120;
+    --lumina-l-gold: #B88E3E;
     --lumina-l-gold-light: #C4A35A;
-    --lumina-l-gold-soft: #fcf9f2;
-    --lumina-l-gold-border: rgba(196, 163, 90, 0.2);
+    --lumina-l-gold-soft: #FDFBF7;
+    --lumina-l-gold-border: rgba(184, 142, 62, 0.25);
     
-    --lumina-l-border: rgba(15, 23, 42, 0.05);
-    --lumina-l-border-subtle: rgba(15, 23, 42, 0.03);
+    --lumina-l-border: rgba(28, 25, 23, 0.08);
+    --lumina-l-border-subtle: rgba(28, 25, 23, 0.04);
     
-    --lumina-l-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
-    --lumina-l-shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-    --lumina-l-shadow-card-hover: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-    --lumina-l-shadow-float: 0 16px 40px -6px rgba(15, 23, 42, 0.12), 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+    --lumina-l-shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.04), 0 1px 2px rgba(28, 25, 23, 0.02);
+    --lumina-l-shadow-card: 0 6px 24px -2px rgba(28, 25, 23, 0.06), 0 2px 6px -1px rgba(28, 25, 23, 0.02);
+    --lumina-l-shadow-card-hover: 0 14px 36px -4px rgba(196, 163, 90, 0.16), 0 4px 12px -2px rgba(28, 25, 23, 0.03);
+    --lumina-l-shadow-float: 0 20px 48px -6px rgba(28, 25, 23, 0.12), 0 6px 18px -2px rgba(196, 163, 90, 0.10);
 }
 
 /* ── Zmienne Globalne w trybie jasnym ── */
@@ -33,25 +33,25 @@ body.theme-lumina-light,
 .theme-lumina-light body,
 html[data-lumina-theme="light"],
 html[data-lumina-theme="light"] body {
-    --bg-base: #f8fafc !important;
-    --bg-card: #ffffff !important;
-    --bg-card-hover: #f1f5f9 !important;
-    --border-glass: rgba(15, 23, 42, 0.05) !important;
-    --border-glass-glow: rgba(196, 163, 90, 0.18) !important;
-    --text-primary: #0f172a !important;
-    --text-secondary: #475569 !important;
-    --text-muted: #64748b !important;
-    --accent-gold: #806120 !important;
-    --cc-parchment: #0f172a !important;
-    --cc-mist: #64748b !important;
-    --cc-bg-void: #f8fafc !important;
-    --cc-void-card: #ffffff !important;
+    --bg-base: #FAF9F6 !important;
+    --bg-card: #FFFFFF !important;
+    --bg-card-hover: #F5F2EB !important;
+    --border-glass: rgba(28, 25, 23, 0.08) !important;
+    --border-glass-glow: rgba(196, 163, 90, 0.25) !important;
+    --text-primary: #1C1917 !important;
+    --text-secondary: #44403C !important;
+    --text-muted: #78716C !important;
+    --accent-gold: #B88E3E !important;
+    --cc-parchment: #1C1917 !important;
+    --cc-mist: #78716C !important;
+    --cc-bg-void: #FAF9F6 !important;
+    --cc-void-card: #FFFFFF !important;
 
-    background: #f8fafc !important;
+    background: #FAF9F6 !important;
     background-image: 
-        radial-gradient(ellipse at 15% 0%, rgba(196, 163, 90, 0.05) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 15%, rgba(226, 204, 154, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 60%, rgba(241, 245, 249, 0.8) 0%, transparent 70%) !important;
+        radial-gradient(ellipse at 15% 0%, rgba(196, 163, 90, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 15%, rgba(226, 204, 154, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 60%, rgba(245, 242, 235, 0.7) 0%, transparent 70%) !important;
     background-attachment: fixed !important;
     color: var(--lumina-l-text-body) !important;
 }
@@ -790,100 +790,199 @@ body.theme-lumina-light .hero-section {
     background: transparent !important;
 }
 
+html[data-lumina-theme="light"] .hero-intro-wrapper img[alt*="Logo"],
+html[data-lumina-theme="light"] .hero-intro-wrapper img[alt*="LUMINA"],
+body.theme-lumina-light .hero-intro-wrapper img[alt*="Logo"],
+body.theme-lumina-light .hero-intro-wrapper img[alt*="LUMINA"] {
+    border: 2px solid #C4A35A !important;
+    box-shadow: 0 4px 18px rgba(196, 163, 90, 0.35) !important;
+}
+
 html[data-lumina-theme="light"] .hero-title,
 body.theme-lumina-light .hero-title {
-    color: #0f172a !important;
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px !important;
     text-shadow: none !important;
 }
 
 html[data-lumina-theme="light"] .hero-title-accent,
 body.theme-lumina-light .hero-title-accent {
-    color: var(--lumina-l-gold, #b38e3e) !important;
+    color: #B88E3E !important;
 }
 
 html[data-lumina-theme="light"] .hero-subtitle,
 body.theme-lumina-light .hero-subtitle {
-    color: #475569 !important;
+    color: #57534E !important;
+    font-weight: 500 !important;
     text-shadow: none !important;
 }
 
 html[data-lumina-theme="light"] .hero-pill-badge,
 body.theme-lumina-light .hero-pill-badge {
     background: rgba(196, 163, 90, 0.12) !important;
-    border: 1px solid rgba(196, 163, 90, 0.28) !important;
-    color: #8a651a !important;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    color: #8A651A !important;
+    box-shadow: 0 2px 10px rgba(196, 163, 90, 0.08) !important;
+}
+
+html[data-lumina-theme="light"] .hero-pill-badge i,
+body.theme-lumina-light .hero-pill-badge i {
+    color: #B88E3E !important;
 }
 
 html[data-lumina-theme="light"] .btn-hero-join-prominent,
-body.theme-lumina-light .btn-hero-join-prominent {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 16px rgba(179, 142, 62, 0.3) !important;
+html[data-lumina-theme="light"] #heroGuestCta .btn-hero-join-prominent,
+body.theme-lumina-light .btn-hero-join-prominent,
+body.theme-lumina-light #heroGuestCta .btn-hero-join-prominent {
+    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(163, 126, 44, 0.35), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
     border: none !important;
 }
 
+html[data-lumina-theme="light"] .btn-hero-join-prominent:hover,
+html[data-lumina-theme="light"] #heroGuestCta .btn-hero-join-prominent:hover,
+body.theme-lumina-light .btn-hero-join-prominent:hover,
+body.theme-lumina-light #heroGuestCta .btn-hero-join-prominent:hover {
+    background: linear-gradient(135deg, #D4B36A 0%, #B38E3C 100%) !important;
+    box-shadow: 0 8px 25px rgba(163, 126, 44, 0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-lumina-theme="light"] .btn-hero-join-prominent i,
+body.theme-lumina-light .btn-hero-join-prominent i {
+    color: #FFF8E7 !important;
+}
+
 html[data-lumina-theme="light"] .btn-hero-login-subtle,
-body.theme-lumina-light .btn-hero-login-subtle {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.1) !important;
-    color: #0f172a !important;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+html[data-lumina-theme="light"] #heroGuestCta .btn-hero-login-subtle,
+body.theme-lumina-light .btn-hero-login-subtle,
+body.theme-lumina-light #heroGuestCta .btn-hero-login-subtle {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    color: #1C1917 !important;
+    box-shadow: 0 2px 10px rgba(28, 25, 23, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .btn-hero-login-subtle:hover,
+html[data-lumina-theme="light"] #heroGuestCta .btn-hero-login-subtle:hover,
+body.theme-lumina-light .btn-hero-login-subtle:hover,
+body.theme-lumina-light #heroGuestCta .btn-hero-login-subtle:hover {
+    background: #FAF8F5 !important;
+    border-color: #C4A35A !important;
+    color: #8A651A !important;
+}
+
+html[data-lumina-theme="light"] .btn-hero-login-subtle i,
+body.theme-lumina-light .btn-hero-login-subtle i {
+    color: #B88E3E !important;
 }
 
 /* ── 17. WYSZUKIWARKA OMNISEARCH I AUTOCOMPLETE ── */
 html[data-lumina-theme="light"] .search-input-wrapper,
-body.theme-lumina-light .search-input-wrapper {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+html[data-lumina-theme="light"] .nav-search-bar-wrap .search-input-wrapper,
+body.theme-lumina-light .search-input-wrapper,
+body.theme-lumina-light .nav-search-bar-wrap .search-input-wrapper {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    box-shadow: 0 4px 16px rgba(28, 25, 23, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] .search-input-wrapper:hover,
+html[data-lumina-theme="light"] .nav-search-bar-wrap .search-input-wrapper:hover,
+body.theme-lumina-light .search-input-wrapper:hover,
+body.theme-lumina-light .nav-search-bar-wrap .search-input-wrapper:hover {
+    border-color: #C4A35A !important;
+    background: #FAF8F5 !important;
+}
+
+html[data-lumina-theme="light"] .search-input-wrapper:focus-within,
+html[data-lumina-theme="light"] .nav-search-bar-wrap .search-input-wrapper:focus-within,
+body.theme-lumina-light .search-input-wrapper:focus-within,
+body.theme-lumina-light .nav-search-bar-wrap .search-input-wrapper:focus-within {
+    background: #FFFFFF !important;
+    border-color: #B88E3E !important;
+    box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.18), 0 4px 18px rgba(28, 25, 23, 0.08) !important;
 }
 
 html[data-lumina-theme="light"] .omni-search-input,
-body.theme-lumina-light .omni-search-input {
-    color: #0f172a !important;
+html[data-lumina-theme="light"] .nav-search-bar-wrap .omni-search-input,
+body.theme-lumina-light .omni-search-input,
+body.theme-lumina-light .nav-search-bar-wrap .omni-search-input {
+    color: #1C1917 !important;
 }
 
 html[data-lumina-theme="light"] .omni-search-input::placeholder,
-body.theme-lumina-light .omni-search-input::placeholder {
-    color: #94a3b8 !important;
+html[data-lumina-theme="light"] .nav-search-bar-wrap .omni-search-input::placeholder,
+body.theme-lumina-light .omni-search-input::placeholder,
+body.theme-lumina-light .nav-search-bar-wrap .omni-search-input::placeholder {
+    color: #78716C !important;
 }
 
 html[data-lumina-theme="light"] .search-icon,
-body.theme-lumina-light .search-icon {
-    color: #c4a35a !important;
+html[data-lumina-theme="light"] .nav-search-bar-wrap .search-icon,
+body.theme-lumina-light .search-icon,
+body.theme-lumina-light .nav-search-bar-wrap .search-icon {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .btn-omni-action,
+html[data-lumina-theme="light"] .nav-search-bar-wrap .btn-omni-action,
+body.theme-lumina-light .btn-omni-action,
+body.theme-lumina-light .nav-search-bar-wrap .btn-omni-action {
+    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(163, 126, 44, 0.3) !important;
+    border: none !important;
+}
+
+html[data-lumina-theme="light"] .btn-omni-action:hover,
+html[data-lumina-theme="light"] .nav-search-bar-wrap .btn-omni-action:hover,
+body.theme-lumina-light .btn-omni-action:hover,
+body.theme-lumina-light .nav-search-bar-wrap .btn-omni-action:hover {
+    background: linear-gradient(135deg, #D4B36A 0%, #B38E3C 100%) !important;
+    box-shadow: 0 4px 14px rgba(163, 126, 44, 0.45) !important;
+}
+
+html[data-lumina-theme="light"] .mobile-nav-search-btn,
+body.theme-lumina-light .mobile-nav-search-btn {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    color: #B88E3E !important;
+    box-shadow: 0 2px 8px rgba(28, 25, 23, 0.04) !important;
 }
 
 html[data-lumina-theme="light"] .search-shortcut-badge,
 body.theme-lumina-light .search-shortcut-badge {
-    background: #f1f5f9 !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    color: #64748b !important;
+    background: #F5F2EB !important;
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    color: #78716C !important;
 }
 
 html[data-lumina-theme="light"] .omni-dropdown,
 html[data-lumina-theme="light"] .search-dropdown-menu,
 body.theme-lumina-light .omni-dropdown,
 body.theme-lumina-light .search-dropdown-menu {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12) !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    box-shadow: 0 20px 50px rgba(28, 25, 23, 0.12) !important;
 }
 
 html[data-lumina-theme="light"] .omni-item,
 html[data-lumina-theme="light"] .search-result-item,
 body.theme-lumina-light .omni-item,
 body.theme-lumina-light .search-result-item {
-    color: #0f172a !important;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.04) !important;
+    color: #1C1917 !important;
+    border-bottom: 1px solid rgba(28, 25, 23, 0.04) !important;
 }
 
 html[data-lumina-theme="light"] .omni-item:hover,
 html[data-lumina-theme="light"] .search-result-item:hover,
 body.theme-lumina-light .omni-item:hover,
 body.theme-lumina-light .search-result-item:hover {
-    background: #f8fafc !important;
-    color: #b38e3e !important;
+    background: #FAF8F5 !important;
+    color: #B88E3E !important;
 }
 
 /* ── 18. CHIPY FILTRÓW ODKRYWAJ (DISCOVERY FILTERS) ── */
@@ -910,32 +1009,112 @@ body.theme-lumina-light .filter-chip.active {
     box-shadow: 0 3px 10px rgba(179, 142, 62, 0.3) !important;
 }
 
-/* ── 19. KARTY KARUZELI GŁÓWNEJ (PROFILE-CARD) ── */
+/* ── 19. KARTY KARUZELI GŁÓWNEJ (PROFILE-CARD) & ODZNAKI ── */
 html[data-lumina-theme="light"] .profile-card,
 body.theme-lumina-light .profile-card {
-    background: #ffffff !important;
-    box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.05) !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -4px rgba(28, 25, 23, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    overflow: hidden !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+html[data-lumina-theme="light"] .profile-card:hover,
+body.theme-lumina-light .profile-card:hover {
+    box-shadow: 0 18px 40px -6px rgba(196, 163, 90, 0.22), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(196, 163, 90, 0.5) !important;
+    transform: translateY(-4px) !important;
 }
 
 html[data-lumina-theme="light"] .profile-card.active-center-card,
 body.theme-lumina-light .profile-card.active-center-card {
-    background: #ffffff !important;
-    box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.14), 0 0 0 1.5px rgba(196, 163, 90, 0.4) !important;
+    background: #FFFFFF !important;
+    border: 2px solid #C4A35A !important;
+    box-shadow: 0 20px 48px -6px rgba(196, 163, 90, 0.3), 0 4px 14px rgba(0, 0, 0, 0.05) !important;
 }
 
+/* Odznaka Dopasowania (Match Badge) — Ciepłe złoto Champagne zamiast neonowego różu */
+html[data-lumina-theme="light"] .card-match,
+body.theme-lumina-light .card-match {
+    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 2px 10px rgba(148, 110, 36, 0.3) !important;
+    font-weight: 800 !important;
+}
+
+/* Odznaka NOWY / SPOŁECZNOŚĆ — Stonowany prestiż i czystość */
+html[data-lumina-theme="light"] .card-new-badge,
+body.theme-lumina-light .card-new-badge {
+    background: rgba(255, 255, 255, 0.96) !important;
+    color: #8A651A !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    box-shadow: 0 2px 8px rgba(28, 25, 23, 0.06) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+html[data-lumina-theme="light"] .card-new-badge i,
+body.theme-lumina-light .card-new-badge i {
+    color: #C4A35A !important;
+}
+
+/* Przycisk Obserwuj na karcie w karuzeli */
+html[data-lumina-theme="light"] .btn-carousel-follow-pulse,
+body.theme-lumina-light .btn-carousel-follow-pulse {
+    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 4px 14px rgba(163, 126, 44, 0.35) !important;
+}
+
+html[data-lumina-theme="light"] .btn-carousel-follow-pulse.is-following,
+body.theme-lumina-light .btn-carousel-follow-pulse.is-following {
+    background: #FFFFFF !important;
+    color: #059669 !important;
+    border-color: rgba(5, 150, 105, 0.4) !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15) !important;
+}
+
+/* Serduszko Polubienia na karcie */
+html[data-lumina-theme="light"] .card-heart,
+body.theme-lumina-light .card-heart {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #E11D48 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-lumina-theme="light"] .card-heart:hover,
+body.theme-lumina-light .card-heart:hover {
+    background: #E11D48 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4) !important;
+}
+
+html[data-lumina-theme="light"] .card-heart.liked,
+body.theme-lumina-light .card-heart.liked {
+    background: #E11D48 !important;
+    color: #FFFFFF !important;
+    border-color: #E11D48 !important;
+}
+
+/* Strzałki nawigacji karuzeli */
 html[data-lumina-theme="light"] .carousel-btn,
 body.theme-lumina-light .carousel-btn {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    color: #0f172a !important;
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1) !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    color: #1C1917 !important;
+    box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08) !important;
 }
 
 html[data-lumina-theme="light"] .carousel-btn:hover,
 body.theme-lumina-light .carousel-btn:hover {
-    background: #f8fafc !important;
-    color: #c4a35a !important;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15) !important;
+    background: #FAF8F5 !important;
+    color: #B88E3E !important;
+    border-color: #C4A35A !important;
+    box-shadow: 0 6px 20px rgba(196, 163, 90, 0.22) !important;
 }
 
 /* ── 20. PROFILE SPOŁECZNOŚCI (LUMINA-PROFILE & PROFILES HEAD CARD) ── */
@@ -1236,51 +1415,323 @@ body.theme-lumina-light .lumina-mini-player .track-artist {
 }
 
 
-/* ── 28. PORTAL HOME HERO BACKGROUND & GUEST CTA ENHANCEMENT ── */
+/* ── 28. PORTAL HOME HERO BACKGROUND & CAROUSEL BACKDROP (LUXURY GOLD & IVORY) ── */
+html[data-lumina-theme="light"] .hero-section,
+body.theme-lumina-light .hero-section {
+    background: transparent !important;
+}
+
 html[data-lumina-theme="light"] .hero-bg,
 body.theme-lumina-light .hero-bg {
-    background: #f8fafc !important;
+    background: #FAF9F6 !important;
     background-image: 
-        radial-gradient(ellipse at 50% 0%, rgba(196, 163, 90, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 85% 20%, rgba(226, 204, 154, 0.08) 0%, transparent 50%),
-        linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%) !important;
+        radial-gradient(ellipse 90% 50% at 50% 0%, rgba(196, 163, 90, 0.16) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 40% at 85% 15%, rgba(226, 204, 154, 0.12) 0%, transparent 60%),
+        linear-gradient(to bottom, #FFFFFF 0%, #FAF8F5 35%, #F5F2EB 70%, #FAF9F6 100%) !important;
+    height: calc(100% + 470px) !important;
+}
+
+/* Kategoryczny zakaz ciemnych gradientów i widmowych twarzy w tle w trybie jasnym */
+html[data-lumina-theme="light"] .hero-bg::after,
+body.theme-lumina-light .hero-bg::after {
+    display: none !important;
+    background: none !important;
 }
 
 html[data-lumina-theme="light"] .hero-bg img,
 body.theme-lumina-light .hero-bg img {
-    opacity: 0.06 !important;
-    mix-blend-mode: multiply !important;
+    display: none !important;
 }
 
+html[data-lumina-theme="light"] .hero-overlay,
+body.theme-lumina-light .hero-overlay {
+    display: none !important;
+}
+
+html[data-lumina-theme="light"] .cards-section,
+body.theme-lumina-light .cards-section {
+    background: transparent !important;
+}
+
+/* Guest CTA pod karuzelą ("Załóż bezpłatny profil") */
 html[data-lumina-theme="light"] .guest-carousel-cta,
 body.theme-lumina-light .guest-carousel-cta {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.06) !important;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
-    color: #0f172a !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(196, 163, 90, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+    color: #1C1917 !important;
 }
 
+html[data-lumina-theme="light"] .guest-carousel-cta .guest-cta-title,
+body.theme-lumina-light .guest-carousel-cta .guest-cta-title {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+    font-size: 1.05rem !important;
+    letter-spacing: -0.2px !important;
+}
+
+html[data-lumina-theme="light"] .guest-carousel-cta .guest-cta-line2,
+body.theme-lumina-light .guest-carousel-cta .guest-cta-line2 {
+    color: #57534E !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+html[data-lumina-theme="light"] .guest-carousel-cta span,
+html[data-lumina-theme="light"] .guest-carousel-cta strong,
 html[data-lumina-theme="light"] .guest-carousel-cta h2,
 html[data-lumina-theme="light"] .guest-carousel-cta h3,
 html[data-lumina-theme="light"] .guest-carousel-cta p,
 html[data-lumina-theme="light"] .guest-carousel-cta div,
+body.theme-lumina-light .guest-carousel-cta span,
+body.theme-lumina-light .guest-carousel-cta strong,
 body.theme-lumina-light .guest-carousel-cta h2,
 body.theme-lumina-light .guest-carousel-cta h3,
 body.theme-lumina-light .guest-carousel-cta p,
 body.theme-lumina-light .guest-carousel-cta div {
-    color: #0f172a !important;
+    color: #1C1917 !important;
 }
 
+html[data-lumina-theme="light"] .guest-carousel-cta button,
+html[data-lumina-theme="light"] .guest-carousel-cta a.btn,
+body.theme-lumina-light .guest-carousel-cta button,
+body.theme-lumina-light .guest-carousel-cta a.btn {
+    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 16px rgba(163, 126, 44, 0.3) !important;
+    border: none !important;
+}
+
+/* Karty świadectw, cytatów i wersetów biblijnych */
 html[data-lumina-theme="light"] .testimonial-card,
 html[data-lumina-theme="light"] .quote-card,
 html[data-lumina-theme="light"] .bible-verse-bar,
 body.theme-lumina-light .testimonial-card,
 body.theme-lumina-light .quote-card,
 body.theme-lumina-light .bible-verse-bar {
-    background: #ffffff !important;
-    border: 1px solid rgba(15, 23, 42, 0.05) !important;
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
-    color: #334155 !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 20px rgba(28, 25, 23, 0.05) !important;
+    color: #3B3632 !important;
+}
+
+html[data-lumina-theme="light"] .testimonial-card h3,
+html[data-lumina-theme="light"] .quote-card h3,
+body.theme-lumina-light .testimonial-card h3,
+body.theme-lumina-light .quote-card h3 {
+    color: #1C1917 !important;
+}
+
+/* Pasek wersetów biblijnych (Scripture Strip) */
+html[data-lumina-theme="light"] .scripture-strip,
+body.theme-lumina-light .scripture-strip {
+    background: transparent !important;
+}
+
+html[data-lumina-theme="light"] .scripture-card,
+body.theme-lumina-light .scripture-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 18px rgba(28, 25, 23, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .scripture-text,
+body.theme-lumina-light .scripture-text {
+    color: #292524 !important;
+    font-style: italic !important;
+}
+
+html[data-lumina-theme="light"] .scripture-sig,
+body.theme-lumina-light .scripture-sig {
+    color: #8A651A !important;
+    font-weight: 700 !important;
+}
+
+/* ── SEKCJA: DLACZEGO LUMINA (WHY LUMINA 3D) ── */
+html[data-lumina-theme="light"] .why-section,
+body.theme-lumina-light .why-section {
+    background: transparent !important;
+}
+
+html[data-lumina-theme="light"] .why-title-line,
+body.theme-lumina-light .why-title-line {
+    color: #1C1917 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .why-title-line::before,
+html[data-lumina-theme="light"] .why-title-line::after,
+body.theme-lumina-light .why-title-line::before,
+body.theme-lumina-light .why-title-line::after {
+    background: linear-gradient(90deg, transparent, #C4A35A) !important;
+}
+
+html[data-lumina-theme="light"] .why-item,
+body.theme-lumina-light .why-item {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-top: 2px solid #C4A35A !important;
+    border-radius: 22px !important;
+    box-shadow: 0 8px 24px rgba(28, 25, 23, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-lumina-theme="light"] .why-item:hover,
+body.theme-lumina-light .why-item:hover {
+    background: #FAF8F5 !important;
+    border-color: #C4A35A !important;
+    box-shadow: 0 16px 36px rgba(196, 163, 90, 0.2), inset 0 1px 0 #FFFFFF !important;
+}
+
+html[data-lumina-theme="light"] .why-icon-wrap,
+body.theme-lumina-light .why-icon-wrap {
+    color: #8A651A !important;
+    background: radial-gradient(circle, rgba(196, 163, 90, 0.18) 0%, rgba(196, 163, 90, 0.04) 70%, transparent 100%) !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.35) !important;
+    box-shadow: 0 4px 16px rgba(196, 163, 90, 0.15) !important;
+}
+
+html[data-lumina-theme="light"] .why-label,
+body.theme-lumina-light .why-label {
+    color: #1C1917 !important;
+    text-shadow: none !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .why-item:hover .why-label,
+body.theme-lumina-light .why-item:hover .why-label {
+    color: #8A651A !important;
+    text-shadow: none !important;
+}
+
+/* ── SEKCJA: WIDGET PODGLĄDU TABLICY ── */
+html[data-lumina-theme="light"] .tablica-preview-widget,
+body.theme-lumina-light .tablica-preview-widget {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.25) !important;
+    border-top: 2px solid #C4A35A !important;
+    border-radius: 22px !important;
+    box-shadow: 0 10px 30px rgba(28, 25, 23, 0.06) !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .tablica-preview-widget:hover,
+body.theme-lumina-light .tablica-preview-widget:hover {
+    border-color: #C4A35A !important;
+    box-shadow: 0 18px 42px rgba(196, 163, 90, 0.2) !important;
+}
+
+html[data-lumina-theme="light"] .tablica-preview-widget h3,
+html[data-lumina-theme="light"] .tablica-preview-widget .widget-title,
+html[data-lumina-theme="light"] .tablica-preview-widget p,
+html[data-lumina-theme="light"] .tablica-preview-widget div,
+body.theme-lumina-light .tablica-preview-widget h3,
+body.theme-lumina-light .tablica-preview-widget .widget-title,
+body.theme-lumina-light .tablica-preview-widget p,
+body.theme-lumina-light .tablica-preview-widget div {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .tablica-cta-btn,
+body.theme-lumina-light .tablica-cta-btn {
+    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+}
+
+/* ── SEKCJA: BAZA WIEDZY & POMOC (Q&A ACCORDION) ── */
+html[data-lumina-theme="light"] .qna-section,
+body.theme-lumina-light .qna-section {
+    background: transparent !important;
+}
+
+html[data-lumina-theme="light"] .qna-title,
+body.theme-lumina-light .qna-title {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .qna-title i,
+body.theme-lumina-light .qna-title i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .qna-subtitle,
+body.theme-lumina-light .qna-subtitle {
+    color: #57534E !important;
+}
+
+html[data-lumina-theme="light"] .qna-item,
+body.theme-lumina-light .qna-item {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 10px rgba(28, 25, 23, 0.04) !important;
+    margin-bottom: 10px !important;
+}
+
+html[data-lumina-theme="light"] .qna-summary,
+body.theme-lumina-light .qna-summary {
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .qna-q-title,
+body.theme-lumina-light .qna-q-title {
+    color: #1C1917 !important;
+    font-weight: 700 !important;
+}
+
+html[data-lumina-theme="light"] .qna-badge-q,
+body.theme-lumina-light .qna-badge-q {
+    background: rgba(196, 163, 90, 0.15) !important;
+    color: #8A651A !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+}
+
+html[data-lumina-theme="light"] .qna-chevron i,
+body.theme-lumina-light .qna-chevron i {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .qna-answer,
+body.theme-lumina-light .qna-answer {
+    color: #44403C !important;
+    border-top: 1px solid rgba(196, 163, 90, 0.15) !important;
+}
+
+/* ── STOPKA (FOOTER) ── */
+html[data-lumina-theme="light"] footer,
+html[data-lumina-theme="light"] .site-footer,
+html[data-lumina-theme="light"] .lumina-footer,
+body.theme-lumina-light footer,
+body.theme-lumina-light .site-footer,
+body.theme-lumina-light .lumina-footer {
+    background: #FAF8F5 !important;
+    border-top: 1px solid rgba(196, 163, 90, 0.22) !important;
+    color: #78716C !important;
+}
+
+html[data-lumina-theme="light"] .footer-links-row a,
+body.theme-lumina-light .footer-links-row a {
+    color: #78716C !important;
+}
+
+html[data-lumina-theme="light"] .footer-links-row a:hover,
+body.theme-lumina-light .footer-links-row a:hover {
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .footer-social a,
+body.theme-lumina-light .footer-social a {
+    color: #78716C !important;
+}
+
+html[data-lumina-theme="light"] .footer-social a:hover,
+body.theme-lumina-light .footer-social a:hover {
+    color: #B88E3E !important;
 }
 
 
@@ -1410,247 +1861,105 @@ body.theme-lumina-light .btn-action-logout * {
     color: #dc2626 !important;
 }
 
-/* Shared light contract: real chat renderers and dynamically mounted notifications.
-   Keep layout, visibility, authorization and delivery behaviour in their owners. */
-html[data-lumina-theme="light"] {
-    color-scheme: light;
-    --lumina-l-accent: #6d28d9;
-    --lumina-l-accent-soft: #f3edff;
-    --lumina-l-border-strong: #cbd5e1;
-    --lmp-bg: rgba(255,255,255,.96);
-    --lmp-border: #d9c8f7;
-    --lmp-border-playing: #6d28d9;
-    --lmp-gold: #806120;
-    --lmp-shadow: 0 8px 28px rgba(45,25,73,.12);
-    --lmp-shadow-playing: 0 8px 28px rgba(109,40,217,.16);
+/* ── 31. MODUŁ WSPARCIA MISYJNEGO (CC-SUPPORT-FOOTER) W TRYBIE JASNYM ── */
+html[data-lumina-theme="light"] .cc-support-footer,
+body.theme-lumina-light .cc-support-footer {
+    background: #FAF8F5 !important;
+    background-image: 
+        radial-gradient(circle at 20% 0%, rgba(196, 163, 90, 0.12), transparent 38%),
+        linear-gradient(180deg, #FAF8F5 0%, #F5F2EB 100%) !important;
+    border-top: 1px solid rgba(196, 163, 90, 0.25) !important;
+    color: #3B3632 !important;
 }
-html[data-lumina-theme="light"] :is(.lumina-bottom-nav, .lumina-scroll-top, .nav-radio-btn) {
-    background: rgba(255,255,255,.96) !important;
-    border-color: #d8dce8 !important; color: #6d28d9 !important;
-    box-shadow: 0 8px 28px rgba(45,25,73,.1) !important;
-}
-html[data-lumina-theme="light"] .lumina-nav-tab { color: #526079 !important; }
-html[data-lumina-theme="light"] :is(.lumina-nav-tab.active, .lumina-nav-tab:hover,
-    .lumina-nav-tab.active i, .lumina-nav-tab:hover i) {
-    color: #6d28d9 !important; text-shadow: none !important;
-}
-html[data-lumina-theme="light"] .lumina-nav-tab:hover { background: #f3edff !important; }
-html[data-lumina-theme="light"] .lmp-title { color: #172033; }
-html[data-lumina-theme="light"] .lmp-subtitle { color: #526079; }
-html[data-lumina-theme="light"] :is(.lmp-btn-stations, .lmp-btn-minimize) {
-    background: #f3edff; border-color: #d9c8f7; color: #6d28d9;
-}
-html[data-lumina-theme="light"] .lmp-live-badge {
-    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
-}
-html[data-lumina-theme="light"] .btn-nav-support {
-    background: #f3edff !important; color: #6d28d9 !important;
-    border-color: #d9c8f7 !important; box-shadow: none !important;
-}
-html[data-lumina-theme="light"] .lumina-login-page .status-msg { color: #526079; }
-html[data-lumina-theme="light"] .lumina-login-page .status-msg.error { color: #b91c1c; }
-html[data-lumina-theme="light"] .lumina-login-page .status-msg.success { color: #166534; }
-html[data-lumina-theme="light"] :is(.lumina-messenger-modal-card, .notif-dropdown) {
-    font-family: 'Outfit', system-ui, sans-serif;
-}
-html[data-lumina-theme="light"] .lumina-login-page .container {
-    background: #fff; border-color: #ded6ec;
-    box-shadow: 0 24px 64px rgba(45,25,73,.12);
-}
-html[data-lumina-theme="light"] .lumina-login-page .portal-title {
-    background: none; -webkit-text-fill-color: #172033; color: #172033;
-}
-html[data-lumina-theme="light"] .lumina-login-page :is(.portal-tagline, .footer-note) {
-    color: #526079;
-}
-html[data-lumina-theme="light"] .lumina-login-page .footer-note a { color: #6d28d9; }
-html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) select option {
-    background: #fff !important; color: #172033 !important;
-}
-html[data-lumina-theme="light"] :is(.lumina-message-request-card, #dmConversationsList > div) {
-    background: #f8f6fc !important; border-color: #d8cde9 !important;
-    box-shadow: none !important;
-}
-html[data-lumina-theme="light"] #dmConversationsList :is(span:not(.dm-avatar-badge), div)[style*="color"] {
-    color: #334155 !important;
-}
-html[data-lumina-theme="light"] :is(.lumina-message-request-content strong, .lumina-message-requests-title) {
-    color: #172033 !important;
-}
-html[data-lumina-theme="light"] .lumina-message-request-actions .decline {
-    background: #f1f5f9; color: #334155; border-color: #cbd5e1;
-}
-html[data-lumina-theme="light"] .lumina-message-request-actions .block {
-    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
-}
-html[data-lumina-theme="light"] .dm-avatar-badge {
-    background: #be123c !important; border-color: #fff !important;
-    box-shadow: none !important; animation: none !important;
-}
-html[data-lumina-theme="light"] .hero-overlay {
-    background: linear-gradient(180deg, rgba(248,250,252,.4), rgba(248,250,252,.7) 65%, #f8fafc) !important;
-}
-html[data-lumina-theme="light"] .hero-bg img { opacity: .22 !important; }
-html[data-lumina-theme="light"] .hero-section.faces-revealed:not(:focus-within) .hero-bg img {
-    opacity: 1 !important;
-}
-html[data-lumina-theme="light"] .hero-section.faces-revealed:not(:focus-within) .hero-overlay {
-    background: linear-gradient(180deg, transparent 55%, #f8fafc) !important;
-}
-html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display:none"],
-html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display: none"] {
-    display: none !important;
-}
-html[data-lumina-theme="light"] .btn-hero-join-prominent {
-    background: linear-gradient(120deg, #7e22ce, #6d28d9) !important;
-    box-shadow: 0 8px 24px rgba(109,40,217,.2) !important;
-}
-html[data-lumina-theme="light"] .btn-hero-join-prominent i { color: #fff !important; }
-html[data-lumina-theme="light"] .nav-logo-text { text-shadow: none !important; }
 
-html[data-lumina-theme="light"] :is(.notif-dropdown, #luminaCookieConsentBanner,
-    #luminaPushToastPrompt, .lumina-push-soft-card, .cc-nav-modal > div,
-    #luminaFloatingRadioBar) {
-    background: #fff !important;
-    color: #334155 !important;
-    border-color: #d8dce8 !important;
-    box-shadow: 0 16px 48px rgba(30,24,56,.12) !important;
+html[data-lumina-theme="light"] .cc-support-footer__eyebrow,
+body.theme-lumina-light .cc-support-footer__eyebrow {
+    color: #8A651A !important;
 }
-html[data-lumina-theme="light"] :is(.notif-header, .notif-push-bar) {
-    background: #f8f6ff !important;
-    border-color: #e5dfef !important;
-    color: #475569 !important;
-}
-html[data-lumina-theme="light"] :is(.notif-header h4, .notif-content strong,
-    .notif-item-title, .push-soft-title, #luminaPushToastPrompt h4,
-    .cc-nav-modal h3, .cc-nav-modal h4) { color: #172033 !important; }
-html[data-lumina-theme="light"] :is(.notif-content, .notif-item-content,
-    .push-soft-desc, #luminaPushToastPrompt p, #luminaCookieConsentBanner > div,
-    .cc-nav-modal p, .network-item-link, .network-item-link div) { color: #475569 !important; }
-html[data-lumina-theme="light"] :is(.notif-time, .notif-empty) { color: #526079 !important; }
-html[data-lumina-theme="light"] .notif-item { border-color: #e7eaf0 !important; }
-html[data-lumina-theme="light"] .notif-item.unread {
-    background: #f3edff !important;
-    border-left-color: #6d28d9 !important;
-}
-html[data-lumina-theme="light"] .notif-item:hover { background: #ebe3fa !important; }
-html[data-lumina-theme="light"] :is(.notif-bell-btn, .notif-close-btn, .notif-action-btn) {
-    background: #f3edff !important;
-    color: #6d28d9 !important;
-    border-color: #d9c8f7 !important;
-    box-shadow: none !important;
-}
-html[data-lumina-theme="light"] :is(.notif-bell-btn i, .notif-header i) {
-    color: #6d28d9 !important; filter: none !important;
-}
-html[data-lumina-theme="light"] .notif-bell-btn:hover { background: #e9ddfa !important; }
-html[data-lumina-theme="light"] .notif-badge {
-    background: #be123c !important; border-color: #fff !important;
-    box-shadow: none !important; animation: none !important;
-}
-html[data-lumina-theme="light"] .notif-close-btn {
-    width: 36px !important; height: 36px !important; flex-shrink: 0 !important;
-}
-html[data-lumina-theme="light"] .notif-dropdown {
-    max-height: calc(100dvh - 96px) !important;
-}
-html[data-lumina-theme="light"] .notif-list { min-height: 0; overscroll-behavior: contain; }
 
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-bar,
-    .chat-input-bar, .messenger-quick-emojis-bar, .chat-quick-bar) {
-    background: #fff !important; border-color: #e2e8f0 !important;
-    color: #334155 !important;
+html[data-lumina-theme="light"] .cc-support-footer h3,
+body.theme-lumina-light .cc-support-footer h3 {
+    background: linear-gradient(90deg, #B88E3E, #946E24) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
 }
-html[data-lumina-theme="light"] :is(#publicChatMessagesBox, #activeChatMessagesBox, #profileChatMessagesBox,
-    .messenger-chat-column, .chat-conversation-area) {
-    background: #f7f5fb !important;
-    background-image: radial-gradient(circle at 95% 0, #ede7fa 0, transparent 45%) !important;
-    color: #334155 !important;
-    scrollbar-color: #c4b5dd #f7f5fb;
+
+html[data-lumina-theme="light"] .cc-support-footer__subtitle,
+body.theme-lumina-light .cc-support-footer__subtitle {
+    color: #78716C !important;
 }
-html[data-lumina-theme="light"] .messenger-inbox-column {
-    background: #fff !important; border-color: #e2e8f0 !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__text,
+body.theme-lumina-light .cc-support-footer__text {
+    color: #44403C !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(h3, h4, #activeChatName) {
-    color: #172033 !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__account,
+body.theme-lumina-light .cc-support-footer__account {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.28) !important;
+    box-shadow: 0 10px 30px rgba(28, 25, 23, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.messenger-placeholder-state p,
-    .lumina-typing-indicator) { color: #526079 !important; }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(input, textarea) {
-    background: #fff !important; border-color: #cbd5e1 !important;
-    color: #172033 !important; box-shadow: none !important;
-    min-width: 0;
+
+html[data-lumina-theme="light"] .cc-support-footer__row,
+body.theme-lumina-light .cc-support-footer__row {
+    border-bottom: 1px solid rgba(196, 163, 90, 0.15) !important;
 }
-html[data-lumina-theme="light"] :is(input, textarea)::placeholder {
-    color: #526079 !important; opacity: 1 !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__row span,
+body.theme-lumina-light .cc-support-footer__row span {
+    color: #78716C !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.lumina-send-btn-premium,
-    #tabBtnPublicChat[style*="linear-gradient"], #tabBtnPrivateChat[style*="linear-gradient"],
-    .dm-filter-chip[style*="linear-gradient"]) {
-    background: linear-gradient(120deg, #7e22ce, #6d28d9) !important;
-    color: #fff !important; box-shadow: 0 4px 12px rgba(109,40,217,.16) !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__row strong,
+html[data-lumina-theme="light"] #ccSupportAccount,
+body.theme-lumina-light .cc-support-footer__row strong,
+body.theme-lumina-light #ccSupportAccount {
+    color: #1C1917 !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#tabBtnPublicChat,
-    #tabBtnPrivateChat, .dm-filter-chip):not([style*="linear-gradient"]) {
-    background: #f1edf7 !important; color: #526079 !important;
-    border-color: #d8dce8 !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__copy-btn,
+body.theme-lumina-light .cc-support-footer__copy-btn {
+    background: rgba(196, 163, 90, 0.14) !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    color: #8A651A !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-profile-btn,
-    .messenger-back-btn, .messenger-emoji-btn, .chat-quick-bar button,
-    button#btnChatFullscreen, #activeChatForm > button[type="button"]) {
-    background: #f3edff !important; color: #6d28d9 !important;
-    border-color: #d9c8f7 !important; box-shadow: none !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__copy-btn:hover,
+body.theme-lumina-light .cc-support-footer__copy-btn:hover {
+    background: #B88E3E !important;
+    color: #FFFFFF !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-me, .lumina-bubble-mine),
-html[data-lumina-theme="light"] .chat-bubble.bubble-me {
-    background: linear-gradient(135deg, #7e22ce, #6d28d9) !important;
-    color: #fff !important; border-color: transparent !important;
-    box-shadow: 0 4px 12px rgba(109,40,217,.14) !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__details,
+body.theme-lumina-light .cc-support-footer__details {
+    border: 1px solid rgba(196, 163, 90, 0.22) !important;
+    background: #FFFFFF !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs),
-html[data-lumina-theme="light"] .chat-bubble.bubble-other {
-    background: #fff !important; color: #172033 !important;
-    border: 1px solid #e3ddec !important;
-    box-shadow: 0 2px 8px rgba(30,24,56,.04) !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__details summary,
+body.theme-lumina-light .cc-support-footer__details summary {
+    color: #8A651A !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs) [style*="color"] {
-    color: #526079 !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__details-content,
+body.theme-lumina-light .cc-support-footer__details-content {
+    background: #FAF8F5 !important;
+    border-top: 1px solid rgba(196, 163, 90, 0.15) !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-bubble-mine [style*="color"] {
-    color: #fff !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__details-content span,
+body.theme-lumina-light .cc-support-footer__details-content span {
+    color: #78716C !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-me .fb-msg-meta {
-    color: #f1eaff !important;
+
+html[data-lumina-theme="light"] .cc-support-footer__details-content strong,
+body.theme-lumina-light .cc-support-footer__details-content strong {
+    color: #1C1917 !important;
 }
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-them .fb-msg-meta {
-    color: #526079 !important;
-}
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-check-read {
-    color: #fff !important; text-shadow: none !important;
-}
-html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#publicChatMessagesBox, #activeChatMessagesBox) > div > span {
-    background: #ede7f5 !important; color: #526079 !important;
-    border-color: #ded7e9 !important;
-}
-html[data-lumina-theme="light"] .modal-card :is(h4, p) { color: #334155 !important; }
-html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) :is(input, textarea, select):focus-visible,
-html[data-lumina-theme="light"] :is(button, a):focus-visible {
-    outline: 3px solid #6d28d9 !important; outline-offset: 3px !important;
-}
-html[data-lumina-theme="light"] #lumina-cookie-banner button[onclick="rejectCookies()"] {
-    color: #334155 !important; background: #f1f5f9 !important; border-color: #cbd5e1 !important;
-}
-@media (max-width: 500px) {
-    html[data-lumina-theme="light"] .notif-header { gap: 8px !important; padding: 12px !important; }
-    html[data-lumina-theme="light"] .notif-action-btn { min-height: 36px; }
-    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .chat-input-bar {
-        padding-inline: 10px !important; gap: 6px !important;
-    }
-    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-send-btn-premium {
-        padding-inline: 12px !important;
-    }
-}
-@media (prefers-reduced-motion: reduce) {
-    html[data-lumina-theme="light"] :is(.notif-dropdown.active, .lumina-msg-row,
-        .messenger-placeholder-icon) { animation: none !important; }
+
+html[data-lumina-theme="light"] .cc-support-footer__note,
+body.theme-lumina-light .cc-support-footer__note {
+    color: #78716C !important;
 }
