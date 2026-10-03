@@ -63,7 +63,7 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    const THEMATIC_PORTALS = ['biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news'];
+    const THEMATIC_PORTALS = ['biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka'];
     const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
     if (portalMatch) {
       const targetUrl = new URL(request.url);

@@ -1044,6 +1044,47 @@ const PORTALS = [
       'Granice Władzy: Rzymian 13 a Dzieje Apostolskie 5:29 – państwo nie ma prawa nakazywać tego, czego zakazuje Bóg'
     ],
     articles: [
+      {
+        id: 'art-pensylwania-grand-jury-prawo-i-moralnosc',
+        title: 'Raport z Pensylwanii: Ponad 300 księży i 1000 ofiar. Anatomia systemowego tuszowania w świetle Prawa Bożego i cywilnego',
+        slug: 'raport-pensylwania-ponad-300-ksiezy-systemowe-tuszowanie-prawo-boze',
+        excerpt: '1356 stron raportu Wielkiej Ławy Przysięgłych i analiza tajnych archiwów diecezjalnych. Dlaczego Boże prawo wyklucza immunitet instytucjonalny i nakazuje bezwzględną ochronę dzieci oraz pełną odpowiedzialność karną sprawców i ich mocodawców.',
+        category: 'prawo',
+        categoryLabel: 'PRAWO BOŻE A PRAWO KARNE',
+        publishedAt: '2026-10-03T12:00:00Z',
+        dateFormatted: '3 października 2026',
+        imageUrl: 'https://i.ytimg.com/vi/T0NjiajqqRY/hqdefault.jpg',
+        imageCaption: 'Śledztwo prokuratury w Pensylwanii: Tuszowanie zbrodni w świetle prawa karnego i moralności biblijnej.',
+        readTimeMinutes: 7,
+        isHero: false,
+        isPopular: true,
+        popularRank: 2,
+        youtubeVideoId: 'T0NjiajqqRY',
+        videoUrl: 'https://youtu.be/T0NjiajqqRY',
+        tags: ['Pensylwania', 'Grand Jury', 'Prawo Boże', 'Sprawiedliwość', 'Ochrona Dzieci', 'Wideo', 'Cezary Rogowski'],
+        author: {
+          id: 'cezary-rogowski',
+          name: 'Cezary Rogowski',
+          role: 'Założyciel Christian Culture',
+          avatarUrl: '/avatar_cezary_official.jpg'
+        },
+        scriptureReference: {
+          verse: 'Ewangelia wg św. Mateusza 18:6',
+          text: 'Lecz kto by zgorszył jednego z tych maluczkich, którzy we mnie wierzą, lepiej by mu było, aby zawieszono kamień młyński u szyi jego i utopiono go w głębokości morskiej.',
+          strongCode: 'G4624 (skandalizo - zwieść, wyrządzić krzywdę)'
+        },
+        sourceCitation: {
+          sourceName: 'The Guardian / Pennsylvania Attorney General Grand Jury Report',
+          sourceUrl: 'https://www.theguardian.com/us-news/2018/aug/14/more-than-300-pennsylvania-priests-committed-sexual-abuse-over-decades',
+          quotationDate: 'Raport Wielkiej Ławy Przysięgłych',
+          originalTitle: 'More than 300 Pennsylvania priests abused 1,000 children over decades, report says'
+        },
+        content: [
+          'Opublikowany przez Sąd Najwyższy Pensylwanii i prokuraturę generalną 1356-stronicowy raport Wielkiej Ławy Przysięgłych (Grand Jury) stanowi wstrząsający dokument zbrodni oraz ich instytucjonalnego tuszowania w sześciu diecezjach rzymskokatolickich w okresie siedmiu dekad.',
+          'Ustalenia prokuratury opierają się na wnikliwym zbadaniu ponad pół miliona stron tajnych dokumentów diecezjalnych. Wynika z nich bezspornie, że biskupi posiadali pełną wiedzę o dewiacjach i gwałtach na dzieciach, jednak zamiast zgłaszać sprawy na policję, przenosili sprawców do nowych parafii, opłacali milczenie ofiar i prowadzili tajne kartoteki.',
+          'W świetle biblijnego prawa nie istnieje żaden immunitet religijny chroniący sprawców przemocy. Jezus Chrystus w Ewangelii wg św. Mateusza (18:6) wypowiedział jedno z najsurowszych ostrzeżeń w całym Piśmie Świętym przeciwko tym, którzy krzywdzą dzieci. Prawo Boże żąda prawdy i jawności (Ef 5:11-13: „Nie miejcie społeczności z bezowocnymi uczynkami ciemności, ale je raczej karćcie”). Prawdziwe chrześcijaństwo jednoznacznie potępia fałszywą korporacyjną solidarność i domaga się sprawiedliwości dla skrzywdzonych.'
+        ]
+      },
 
       {
         id: 'art-z-biblia-za-pan-brat-dzien-03',
