@@ -2217,3 +2217,290 @@ html[data-lumina-theme="light"] .lumina-menu-footer-badge {
     border: 1px solid rgba(184, 142, 62, 0.35) !important;
     color: #946E24 !important;
 }
+
+/* Shared light contract: real chat renderers and dynamically mounted notifications.
+   Keep layout, visibility, authorization and delivery behaviour in their owners. */
+html[data-lumina-theme="light"] {
+    color-scheme: light;
+    --lumina-l-accent: #806120;
+    --lumina-l-accent-soft: #f8f2e5;
+    --lumina-l-border-strong: #cbd5e1;
+    --lmp-bg: rgba(255,255,255,.96);
+    --lmp-border: #dfd1b1;
+    --lmp-border-playing: #806120;
+    --lmp-gold: #806120;
+    --lmp-shadow: 0 8px 28px rgba(45,25,73,.12);
+    --lmp-shadow-playing: 0 8px 28px rgba(109,40,217,.16);
+}
+html[data-lumina-theme="light"] :is(.lumina-bottom-nav, .lumina-scroll-top, .nav-radio-btn) {
+    background: rgba(255,255,255,.96) !important;
+    border-color: #d8dce8 !important; color: #806120 !important;
+    box-shadow: 0 8px 28px rgba(45,25,73,.1) !important;
+}
+html[data-lumina-theme="light"] .lumina-nav-tab { color: #526079 !important; }
+html[data-lumina-theme="light"] :is(.lumina-nav-tab.active, .lumina-nav-tab:hover,
+    .lumina-nav-tab.active i, .lumina-nav-tab:hover i) {
+    color: #806120 !important; text-shadow: none !important;
+}
+html[data-lumina-theme="light"] .lumina-nav-tab:hover { background: #f8f2e5 !important; }
+html[data-lumina-theme="light"] .lmp-title { color: #172033; }
+html[data-lumina-theme="light"] .lmp-subtitle { color: #526079; }
+html[data-lumina-theme="light"] :is(.lmp-btn-stations, .lmp-btn-minimize) {
+    background: #f8f2e5; border-color: #dfd1b1; color: #806120;
+}
+html[data-lumina-theme="light"] .lmp-live-badge {
+    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
+}
+html[data-lumina-theme="light"] .btn-nav-support {
+    background: #f8f2e5 !important; color: #806120 !important;
+    border-color: #dfd1b1 !important; box-shadow: none !important;
+}
+html[data-lumina-theme="light"] .lumina-login-page .status-msg { color: #526079; }
+html[data-lumina-theme="light"] .lumina-login-page .status-msg.error { color: #b91c1c; }
+html[data-lumina-theme="light"] .lumina-login-page .status-msg.success { color: #166534; }
+html[data-lumina-theme="light"] :is(.lumina-messenger-modal-card, .notif-dropdown) {
+    font-family: 'Outfit', system-ui, sans-serif;
+}
+html[data-lumina-theme="light"] .lumina-login-page .container {
+    background: #fff; border-color: #ded6ec;
+    box-shadow: 0 24px 64px rgba(45,25,73,.12);
+}
+html[data-lumina-theme="light"] .lumina-login-page .portal-title {
+    background: none; -webkit-text-fill-color: #172033; color: #172033;
+}
+html[data-lumina-theme="light"] .lumina-login-page :is(.portal-tagline, .footer-note) {
+    color: #526079;
+}
+html[data-lumina-theme="light"] .lumina-login-page .footer-note a { color: #806120; }
+html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) select option {
+    background: #fff !important; color: #172033 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-message-request-card, #dmConversationsList > div) {
+    background: #faf8f2 !important; border-color: #dfd1b1 !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] #dmConversationsList :is(span:not(.dm-avatar-badge), div)[style*="color"] {
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-message-request-content strong, .lumina-message-requests-title) {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] .lumina-message-request-actions .decline {
+    background: #f1f5f9; color: #334155; border-color: #cbd5e1;
+}
+html[data-lumina-theme="light"] .lumina-message-request-actions .block {
+    background: #fff1f2; color: #9f1239; border-color: #fecdd3;
+}
+html[data-lumina-theme="light"] .dm-avatar-badge {
+    background: #be123c !important; border-color: #fff !important;
+    box-shadow: none !important; animation: none !important;
+}
+html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display:none"],
+html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*="display: none"] {
+    display: none !important;
+}
+html[data-lumina-theme="light"] .nav-logo-text { text-shadow: none !important; }
+
+html[data-lumina-theme="light"] :is(.notif-dropdown, #luminaCookieConsentBanner,
+    #luminaPushToastPrompt, .lumina-push-soft-card, .cc-nav-modal > div,
+    #luminaFloatingRadioBar) {
+    background: #fff !important;
+    color: #334155 !important;
+    border-color: #d8dce8 !important;
+    box-shadow: 0 16px 48px rgba(30,24,56,.12) !important;
+}
+html[data-lumina-theme="light"] :is(.notif-header, .notif-push-bar) {
+    background: #faf8f2 !important;
+    border-color: #e5dfef !important;
+    color: #475569 !important;
+}
+html[data-lumina-theme="light"] :is(.notif-header h4, .notif-content strong,
+    .notif-item-title, .push-soft-title, #luminaPushToastPrompt h4,
+    .cc-nav-modal h3, .cc-nav-modal h4) { color: #172033 !important; }
+html[data-lumina-theme="light"] :is(.notif-content, .notif-item-content,
+    .push-soft-desc, #luminaPushToastPrompt p, #luminaCookieConsentBanner > div,
+    .cc-nav-modal p, .network-item-link, .network-item-link div) { color: #475569 !important; }
+html[data-lumina-theme="light"] :is(.notif-time, .notif-empty) { color: #526079 !important; }
+html[data-lumina-theme="light"] .notif-item { border-color: #e7eaf0 !important; }
+html[data-lumina-theme="light"] .notif-item.unread {
+    background: #f8f2e5 !important;
+    border-left-color: #806120 !important;
+}
+html[data-lumina-theme="light"] .notif-item:hover { background: #ebe3fa !important; }
+html[data-lumina-theme="light"] :is(.notif-bell-btn, .notif-close-btn, .notif-action-btn) {
+    background: #f8f2e5 !important;
+    color: #806120 !important;
+    border-color: #dfd1b1 !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.notif-bell-btn i, .notif-header i) {
+    color: #806120 !important; filter: none !important;
+}
+html[data-lumina-theme="light"] .notif-bell-btn:hover { background: #e9ddfa !important; }
+html[data-lumina-theme="light"] .notif-badge {
+    background: #be123c !important; border-color: #fff !important;
+    box-shadow: none !important; animation: none !important;
+}
+html[data-lumina-theme="light"] .notif-close-btn {
+    width: 36px !important; height: 36px !important; flex-shrink: 0 !important;
+}
+html[data-lumina-theme="light"] .notif-dropdown {
+    max-height: calc(100dvh - 96px) !important;
+}
+html[data-lumina-theme="light"] .notif-list { min-height: 0; overscroll-behavior: contain; }
+
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-bar,
+    .chat-input-bar, .messenger-quick-emojis-bar, .chat-quick-bar) {
+    background: #fff !important; border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] :is(#publicChatMessagesBox, #activeChatMessagesBox, #profileChatMessagesBox,
+    .messenger-chat-column, .chat-conversation-area) {
+    background: #faf8f2 !important;
+    background-image: radial-gradient(circle at 95% 0, #f3eddf 0, transparent 45%) !important;
+    color: #334155 !important;
+    scrollbar-color: #c4b5dd #faf8f2;
+}
+html[data-lumina-theme="light"] .messenger-inbox-column {
+    background: #fff !important; border-color: #e2e8f0 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(h3, h4, #activeChatName) {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.messenger-placeholder-state p,
+    .lumina-typing-indicator) { color: #526079 !important; }
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(input, textarea) {
+    background: #fff !important; border-color: #cbd5e1 !important;
+    color: #172033 !important; box-shadow: none !important;
+    min-width: 0;
+}
+html[data-lumina-theme="light"] :is(input, textarea)::placeholder {
+    color: #526079 !important; opacity: 1 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.lumina-send-btn-premium,
+    #tabBtnPublicChat[style*="linear-gradient"], #tabBtnPrivateChat[style*="linear-gradient"],
+    .dm-filter-chip[style*="linear-gradient"]) {
+    background: linear-gradient(120deg, #6b501c, #806120) !important;
+    color: #fff !important; box-shadow: 0 4px 12px rgba(109,40,217,.16) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#tabBtnPublicChat,
+    #tabBtnPrivateChat, .dm-filter-chip):not([style*="linear-gradient"]) {
+    background: #f1edf7 !important; color: #526079 !important;
+    border-color: #d8dce8 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-profile-btn,
+    .messenger-back-btn, .messenger-emoji-btn, .chat-quick-bar button,
+    button#btnChatFullscreen, #activeChatForm > button[type="button"]) {
+    background: #f8f2e5 !important; color: #806120 !important;
+    border-color: #dfd1b1 !important; box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-me, .lumina-bubble-mine),
+html[data-lumina-theme="light"] .chat-bubble.bubble-me {
+    background: linear-gradient(135deg, #6b501c, #806120) !important;
+    color: #fff !important; border-color: transparent !important;
+    box-shadow: 0 4px 12px rgba(109,40,217,.14) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs),
+html[data-lumina-theme="light"] .chat-bubble.bubble-other {
+    background: #fff !important; color: #172033 !important;
+    border: 1px solid #e3ddec !important;
+    box-shadow: 0 2px 8px rgba(30,24,56,.04) !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.fb-msg-bubble-them, .lumina-bubble-theirs) [style*="color"] {
+    color: #526079 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-bubble-mine [style*="color"] {
+    color: #fff !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-me .fb-msg-meta {
+    color: #f1eaff !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-msg-bubble-them .fb-msg-meta {
+    color: #526079 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .fb-check-read {
+    color: #fff !important; text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(#publicChatMessagesBox, #activeChatMessagesBox) > div > span {
+    background: #f3eddf !important; color: #526079 !important;
+    border-color: #dfd1b1 !important;
+}
+html[data-lumina-theme="light"] .modal-card :is(h4, p) { color: #334155 !important; }
+html[data-lumina-theme="light"] :is(.modal-card, .cc-nav-modal) :is(input, textarea, select):focus-visible,
+html[data-lumina-theme="light"] :is(button, a):focus-visible {
+    outline: 3px solid #806120 !important; outline-offset: 3px !important;
+}
+html[data-lumina-theme="light"] #lumina-cookie-banner button[onclick="rejectCookies()"] {
+    color: #334155 !important; background: #f1f5f9 !important; border-color: #cbd5e1 !important;
+}
+@media (max-width: 500px) {
+    html[data-lumina-theme="light"] .notif-header { gap: 8px !important; padding: 12px !important; }
+    html[data-lumina-theme="light"] .notif-action-btn { min-height: 36px; }
+    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .chat-input-bar {
+        padding-inline: 10px !important; gap: 6px !important;
+    }
+    html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-send-btn-premium {
+        padding-inline: 12px !important;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    html[data-lumina-theme="light"] :is(.notif-dropdown.active, .lumina-msg-row,
+        .messenger-placeholder-icon) { animation: none !important; }
+}
+
+/* Shared board overlays use inline dark-theme text colors. */
+html[data-lumina-theme="light"] :is(.comments-section-v2, .comment-input-composer-v2,
+    .comment-bubble-v2, .comment-dropdown-menu, .comment-preview-card) {
+    background: #faf8f2 !important; color: #172033 !important;
+    border-color: #dfd1b1 !important; box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.comment-author-name, .comment-text-content,
+    .comment-preview-title, .comment-dropdown-item) { color: #172033 !important; }
+html[data-lumina-theme="light"] :is(.comment-time-v2, .comment-edited-tag,
+    .comment-action-link, .comment-more-btn, .comment-preview-desc,
+    .comment-preview-domain) { color: #526079 !important; }
+html[data-lumina-theme="light"] :is(.comment-faith-chip, .comment-badge-pill,
+    .comment-preview-badge, .comment-replying-to-badge) {
+    background: #f3eddf !important; color: #806120 !important; border-color: #dfd1b1 !important;
+}
+html[data-lumina-theme="light"] .comment-textarea-v2 {
+    background: #fff !important; color: #172033 !important; border-color: #cbd5e1 !important;
+}
+html[data-lumina-theme="light"] .comment-textarea-v2:focus-visible {
+    outline: 2px solid #806120 !important; outline-offset: 2px;
+}
+html[data-lumina-theme="light"] :is(.comment-submit-btn-v2, .comment-preview-btn) {
+    background: #806120 !important; color: #fff !important;
+}
+html[data-lumina-theme="light"] .comment-action-link.active-like { color: #be123c !important; }
+html[data-lumina-theme="light"] .comment-action-link.active-amen { color: #806120 !important; }
+html[data-lumina-theme="light"] .notif-content > div:first-child {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] .notif-content > div:nth-child(2) {
+    color: #526079 !important;
+}
+html[data-lumina-theme="light"] .btn-nav-support :is(span, i) {
+    color: #806120 !important;
+}
+html[data-lumina-theme="light"] #quickPostModal :is(div, span, label, small)[style*="color"] {
+    color: #334155 !important;
+}
+html[data-lumina-theme="light"] #quickPostModal :is(#qpModalAuthorName, #qpModalMainTitle) {
+    color: #172033 !important;
+}
+html[data-lumina-theme="light"] #quickPostModal button:not(#qpSubmitBtn):not(.modal-close-btn) {
+    background: #f8f2e5 !important; color: #806120 !important;
+    border-color: #dfd1b1 !important;
+}
+html[data-lumina-theme="light"] #qpSubmitBtn {
+    background: linear-gradient(120deg, #6b501c, #806120) !important;
+    color: #fff !important;
+}
+/* Present one prompt at a time, and keep fixed chrome out of the editor. */
+body:has(#luminaCookieConsentBanner) #luminaPushToastPrompt,
+body:has(#lumina-cookie-banner[style*="display: flex"]) #luminaPushToastPrompt,
+body:has(#quickPostModal.open) :is(#luminaMiniPlayerContainer, #luminaBottomNav,
+    #lumina-cookie-banner, #luminaCookieConsentBanner, #luminaPushToastPrompt) {
+    display: none !important;
+}
