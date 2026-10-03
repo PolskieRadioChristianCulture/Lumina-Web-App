@@ -57,9 +57,17 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    if (decodedP === '/ogloszenia') {
+    if (decodedP === '/ksiazki' || decodedP === '/audiobooki' || decodedP === '/ebooki') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/biblioteka';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    const THEMATIC_PORTALS = ['biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news'];
+    const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
+    if (portalMatch) {
       const targetUrl = new URL(request.url);
-      targetUrl.pathname = '/ogloszenia/';
+      targetUrl.pathname = `/${portalMatch}/`;
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
@@ -67,18 +75,6 @@ export default {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/ziu';
       return Response.redirect(redirectUrl.toString(), 301);
-    }
-
-    if (decodedP === '/ziu') {
-      const targetUrl = new URL(request.url);
-      targetUrl.pathname = '/ziu/';
-      return env.ASSETS.fetch(new Request(targetUrl, request));
-    }
-
-    if (decodedP === '/kuchnia') {
-      const targetUrl = new URL(request.url);
-      targetUrl.pathname = '/kuchnia/';
-      return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
     if (decodedP === '/dieta' || decodedP === '/diety') {
