@@ -3162,7 +3162,10 @@ html[data-lumina-theme="light"] #directMessagesModal #tabBtnCommanderChat[style*
 }
 html[data-lumina-theme="light"] .nav-logo-text { text-shadow: none !important; }
 
-html[data-lumina-theme="light"] :is(.notif-dropdown, #luminaCookieConsentBanner,
+/* ══════════════════════════════════════════════════════════════════
+   SEKCJA NOTYFIKACJI LUMINA (TRYB JASNY - WARM IVORY & GOLD LUXURY)
+   ══════════════════════════════════════════════════════════════════ */
+html[data-lumina-theme="light"] :is(#luminaCookieConsentBanner,
     #luminaPushToastPrompt, .lumina-push-soft-card, .cc-nav-modal > div,
     #luminaFloatingRadioBar) {
     background: #fff !important;
@@ -3170,45 +3173,254 @@ html[data-lumina-theme="light"] :is(.notif-dropdown, #luminaCookieConsentBanner,
     border-color: #d8dce8 !important;
     box-shadow: 0 16px 48px rgba(30,24,56,.12) !important;
 }
-html[data-lumina-theme="light"] :is(.notif-header, .notif-push-bar) {
-    background: #faf8f2 !important;
-    border-color: #e5dfef !important;
-    color: #475569 !important;
-}
-html[data-lumina-theme="light"] :is(.notif-header h4, .notif-content strong,
-    .notif-item-title, .push-soft-title, #luminaPushToastPrompt h4,
-    .cc-nav-modal h3, .cc-nav-modal h4) { color: #172033 !important; }
-html[data-lumina-theme="light"] :is(.notif-content, .notif-item-content,
-    .push-soft-desc, #luminaPushToastPrompt p, #luminaCookieConsentBanner > div,
-    .cc-nav-modal p, .network-item-link, .network-item-link div) { color: #475569 !important; }
-html[data-lumina-theme="light"] :is(.notif-time, .notif-empty) { color: #526079 !important; }
-html[data-lumina-theme="light"] .notif-item { border-color: #e7eaf0 !important; }
-html[data-lumina-theme="light"] .notif-item.unread {
-    background: #f8f2e5 !important;
-    border-left-color: #806120 !important;
-}
-html[data-lumina-theme="light"] .notif-item:hover { background: #ebe3fa !important; }
-html[data-lumina-theme="light"] :is(.notif-bell-btn, .notif-close-btn, .notif-action-btn) {
-    background: #f8f2e5 !important;
-    color: #806120 !important;
-    border-color: #dfd1b1 !important;
-    box-shadow: none !important;
-}
-html[data-lumina-theme="light"] :is(.notif-bell-btn i, .notif-header i) {
-    color: #806120 !important; filter: none !important;
-}
-html[data-lumina-theme="light"] .notif-bell-btn:hover { background: #e9ddfa !important; }
-html[data-lumina-theme="light"] .notif-badge {
-    background: #be123c !important; border-color: #fff !important;
-    box-shadow: none !important; animation: none !important;
-}
-html[data-lumina-theme="light"] .notif-close-btn {
-    width: 36px !important; height: 36px !important; flex-shrink: 0 !important;
-}
+
+/* Okno Powiadomień (Dropdown) */
 html[data-lumina-theme="light"] .notif-dropdown {
+    background: #FFFFFF !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.45) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 50px rgba(30, 24, 56, 0.14), 0 4px 16px rgba(184, 142, 62, 0.12) !important;
     max-height: calc(100dvh - 96px) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    color: #1C1917 !important;
 }
-html[data-lumina-theme="light"] .notif-list { min-height: 0; overscroll-behavior: contain; }
+
+/* Nagłówek okna powiadomień */
+html[data-lumina-theme="light"] .notif-header {
+    background: linear-gradient(180deg, #FAF8F5 0%, #F5F1E9 100%) !important;
+    border-bottom: 1px solid rgba(196, 163, 90, 0.28) !important;
+    padding: 12px 16px !important;
+}
+
+html[data-lumina-theme="light"] :is(.notif-header-title, .notif-header h4) {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+}
+
+html[data-lumina-theme="light"] :is(.notif-header-icon, .notif-header i.fa-bell) {
+    color: #B88E3E !important;
+    font-size: 0.95rem !important;
+    filter: drop-shadow(0 1px 2px rgba(184, 142, 62, 0.25)) !important;
+}
+
+/* Przyciski Odczytaj / Wyczyść w nagłówku */
+html[data-lumina-theme="light"] .notif-action-btn {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.35) !important;
+    color: #78350F !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .notif-action-btn:hover {
+    background: #FDFBF7 !important;
+    border-color: #B88E3E !important;
+    color: #B88E3E !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-lumina-theme="light"] .notif-clear-btn {
+    color: #64748B !important;
+}
+
+html[data-lumina-theme="light"] .notif-clear-btn:hover {
+    color: #DC2626 !important;
+    border-color: rgba(220, 38, 38, 0.35) !important;
+    background: #FEF2F2 !important;
+}
+
+/* Przycisk zamknięcia (krzyżyk) */
+html[data-lumina-theme="light"] .notif-close-btn {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    color: #64748B !important;
+    font-size: 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-lumina-theme="light"] .notif-close-btn:hover {
+    background: #FEF2F2 !important;
+    border-color: #F87171 !important;
+    color: #DC2626 !important;
+    transform: scale(1.08) !important;
+}
+
+/* Pasek zgody Push w dropdownie */
+html[data-lumina-theme="light"] .notif-push-bar {
+    background: #FFFBEB !important;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.25) !important;
+    color: #92400E !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] .notif-push-enable-btn {
+    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(184, 142, 62, 0.3) !important;
+}
+
+/* Lista powiadomień */
+html[data-lumina-theme="light"] .notif-list {
+    min-height: 0 !important;
+    overscroll-behavior: contain !important;
+    background: #FFFFFF !important;
+}
+
+/* Pojedynczy element powiadomienia */
+html[data-lumina-theme="light"] .notif-item {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid #F1ECE1 !important;
+    border-left: 3px solid transparent !important;
+    transition: background 0.15s ease, border-color 0.15s ease !important;
+}
+
+html[data-lumina-theme="light"] .notif-item:hover {
+    background: #FDFBF7 !important;
+}
+
+/* Nieprzeczytane powiadomienie */
+html[data-lumina-theme="light"] .notif-item.unread {
+    background: #FBF8F1 !important;
+    border-left: 3px solid #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .notif-item.unread:hover {
+    background: #F7F2E7 !important;
+}
+
+/* Awatar powiadomienia */
+html[data-lumina-theme="light"] :is(.notif-avatar, .notif-item img, .notif-item-icon) {
+    border: 1.5px solid rgba(196, 163, 90, 0.5) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Treść powiadomienia */
+html[data-lumina-theme="light"] :is(.notif-item-title, .notif-content strong) {
+    color: #1C1917 !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+}
+
+html[data-lumina-theme="light"] :is(.notif-item-body, .notif-content, .notif-item-content) {
+    color: #44403C !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+}
+
+html[data-lumina-theme="light"] .notif-time {
+    color: #8C7E72 !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+}
+
+/* Pusty stan powiadomień */
+html[data-lumina-theme="light"] .notif-empty {
+    color: #78716C !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+html[data-lumina-theme="light"] .notif-empty i {
+    color: #C4A35A !important;
+}
+
+/* Dzwonek powiadomień w navbarze (Górna belka) */
+html[data-lumina-theme="light"] .notif-bell-btn {
+    background: #FFFFFF !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.45) !important;
+    color: #8B6814 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(184, 142, 62, 0.12) !important;
+}
+
+html[data-lumina-theme="light"] .notif-bell-btn i {
+    color: #8B6814 !important;
+    filter: none !important;
+}
+
+html[data-lumina-theme="light"] .notif-bell-btn:hover {
+    background: #FDFBF7 !important;
+    border-color: #B88E3E !important;
+    color: #B88E3E !important;
+    transform: scale(1.06) !important;
+    box-shadow: 0 4px 14px rgba(184, 142, 62, 0.25) !important;
+}
+
+html[data-lumina-theme="light"] .notif-bell-btn:hover i {
+    color: #B88E3E !important;
+}
+
+/* Odznaka z liczbą nieprzeczytanych (Badge) */
+html[data-lumina-theme="light"] .notif-badge {
+    background: #DC2626 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #FFFFFF !important;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4) !important;
+    font-weight: 800 !important;
+}
+
+/* Dyskretne zaproszenie Push Soft Prompt */
+html[data-lumina-theme="light"] .lumina-push-soft-card {
+    background: #FFFFFF !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.5) !important;
+    box-shadow: 0 16px 40px rgba(30, 24, 56, 0.12), 0 2px 10px rgba(184, 142, 62, 0.15) !important;
+    color: #1C1917 !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-icon {
+    background: linear-gradient(135deg, #FAF8F5, #F5F1E9) !important;
+    border: 1.5px solid rgba(196, 163, 90, 0.4) !important;
+    color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-title {
+    color: #1C1917 !important;
+    font-weight: 800 !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-desc {
+    color: #44403C !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-btn-enable {
+    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    border: 1px solid rgba(184, 142, 62, 0.8) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 14px rgba(184, 142, 62, 0.3) !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-btn-close {
+    background: #F5F2EB !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    color: #64748B !important;
+}
+
+html[data-lumina-theme="light"] .push-soft-btn-close:hover {
+    background: #FEF2F2 !important;
+    border-color: #F87171 !important;
+    color: #DC2626 !important;
+}
 
 html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) :is(.chat-header-bar,
     .chat-input-bar, .messenger-quick-emojis-bar, .chat-quick-bar) {
@@ -3335,11 +3547,11 @@ html[data-lumina-theme="light"] :is(.comment-submit-btn-v2, .comment-preview-btn
 }
 html[data-lumina-theme="light"] .comment-action-link.active-like { color: #be123c !important; }
 html[data-lumina-theme="light"] .comment-action-link.active-amen { color: #806120 !important; }
-html[data-lumina-theme="light"] .notif-content > div:first-child {
-    color: #172033 !important;
+html[data-lumina-theme="light"] :is(.notif-content > div:first-child, .notif-item-title) {
+    color: #1C1917 !important;
 }
-html[data-lumina-theme="light"] .notif-content > div:nth-child(2) {
-    color: #526079 !important;
+html[data-lumina-theme="light"] :is(.notif-content > div:nth-child(2), .notif-item-body) {
+    color: #44403C !important;
 }
 html[data-lumina-theme="light"] .btn-nav-support :is(span, i) {
     color: #806120 !important;
