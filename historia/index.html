@@ -33,8 +33,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module" crossorigin src="/assets/historia-index-Ds7qVD7W.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/historia-index-aPMknDxx.css">
+    <script type="module" crossorigin src="/assets/historia-index-Boxttxv3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/historia-index-BUf11gqe.css">
     
     <style>
       /* FLOATING BACK TO TOP BUTTON */
@@ -86,6 +86,22 @@
       ::-webkit-scrollbar-thumb:hover { background: #d97706; }
       .no-scrollbar::-webkit-scrollbar { display: none !important; }
       .no-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+      /* PŁYNNY TICKER BROADCAST MARQUEE */
+      @keyframes ccnBroadcastTicker {
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-50%, 0, 0); }
+      }
+      .ccn-ticker-track {
+        display: inline-flex !important;
+        white-space: nowrap !important;
+        width: max-content !important;
+        will-change: transform;
+        animation: ccnBroadcastTicker 40s linear infinite !important;
+      }
+      .ccn-ticker-track:hover {
+        animation-play-state: paused !important;
+      }
     </style>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">

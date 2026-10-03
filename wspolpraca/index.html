@@ -50,11 +50,28 @@
         -ms-overflow-style: none !important;
         scrollbar-width: none !important;
       }
+    
+      /* PŁYNNY TICKER BROADCAST MARQUEE */
+      @keyframes ccnBroadcastTicker {
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-50%, 0, 0); }
+      }
+      .ccn-ticker-track {
+        display: inline-flex !important;
+        white-space: nowrap !important;
+        width: max-content !important;
+        will-change: transform;
+        animation: ccnBroadcastTicker 40s linear infinite !important;
+      }
+      .ccn-ticker-track:hover {
+        animation-play-state: paused !important;
+      }
+
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="/js/cc-global-auth.js" defer></script>
-    <script type="module" crossorigin src="/assets/wspolpraca-index-CvHCF3gE.js"></script>
+    <script type="module" crossorigin src="/assets/wspolpraca-index-CW_JntEh.js"></script>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
     <div id="root">
