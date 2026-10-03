@@ -63,6 +63,42 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (decodedP === '/wychowanie' || decodedP === '/dzieci') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/edukacja';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/emocje') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/psychologia';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/pieniadze') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/finanse';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/technologia' || decodedP === '/ai') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/technologie';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/misja' || decodedP === '/swiadectwa') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/misje';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (decodedP === '/obrona-wiary') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/apologetyka';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     const THEMATIC_PORTALS = ['biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka'];
     const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
     if (portalMatch) {
