@@ -98,8 +98,25 @@ export default {
       redirectUrl.pathname = '/apologetyka';
       return Response.redirect(redirectUrl.toString(), 301);
     }
+    if (decodedP === '/muzyka') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/music';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
 
-    const THEMATIC_PORTALS = ['biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka'];
+    if (decodedP.startsWith('/music/')) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = `${decodedP}/`;
+      const res = await env.ASSETS.fetch(new Request(targetUrl, request));
+      if (res.status === 404) {
+        const fallbackUrl = new URL(request.url);
+        fallbackUrl.pathname = '/music/';
+        return env.ASSETS.fetch(new Request(fallbackUrl, request));
+      }
+      return res;
+    }
+
+    const THEMATIC_PORTALS = ['music', 'biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka'];
     const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
     if (portalMatch) {
       const targetUrl = new URL(request.url);
