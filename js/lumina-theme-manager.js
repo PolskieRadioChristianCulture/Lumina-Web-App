@@ -51,17 +51,20 @@
         if (!btn) return;
         var icon = document.getElementById('luminaThemeIcon') || btn.querySelector('.theme-icon');
         var label = document.getElementById('luminaThemeLabel') || btn.querySelector('span');
+        if (label) {
+            label.style.display = 'none';
+        }
 
         if (isLight) {
             btn.classList.add('is-light');
             if (icon) icon.className = 'fa-solid fa-sun theme-icon';
-            if (label) label.textContent = 'Motyw: Jasny (Pure White)';
-            btn.setAttribute('title', 'Przełącz na motyw Ciemny');
+            btn.setAttribute('title', 'Przełącz na motyw ciemny');
+            btn.setAttribute('aria-label', 'Przełącz na motyw ciemny');
         } else {
             btn.classList.remove('is-light');
             if (icon) icon.className = 'fa-solid fa-moon theme-icon';
-            if (label) label.textContent = 'Motyw: Ciemny (Obsidian)';
-            btn.setAttribute('title', 'Przełącz na motyw Jasny');
+            btn.setAttribute('title', 'Przełącz na motyw jasny');
+            btn.setAttribute('aria-label', 'Przełącz na motyw jasny');
         }
     }
 
@@ -78,7 +81,8 @@
         btn.className = 'lumina-theme-switch-pill';
         btn.id = 'luminaThemeSwitchBtn';
         btn.setAttribute('title', 'Przełącz motyw (Jasny / Ciemny)');
-        btn.innerHTML = '<i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i><span id="luminaThemeLabel">Motyw: Ciemny (Obsidian)</span>';
+        btn.setAttribute('aria-label', 'Przełącz motyw');
+        btn.innerHTML = '<i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>';
         
         btn.addEventListener('click', function(e) {
             e.preventDefault();

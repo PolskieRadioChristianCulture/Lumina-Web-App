@@ -709,7 +709,7 @@ body.theme-lumina-light .mobile-tab-btn.active {
     color: var(--lumina-l-gold) !important;
 }
 
-/* ── 15. PŁYWAJĄCY PRZEŁĄCZNIK TRYBU (MASTER SWITCH PILL) ── */
+/* ── 15. PŁYWAJĄCY PRZEŁĄCZNIK TRYBU (IKONA SŁOŃCE / KSIĘŻYC) ── */
 .lumina-theme-switch-pill {
     position: fixed;
     bottom: 24px;
@@ -717,48 +717,70 @@ body.theme-lumina-light .mobile-tab-btn.active {
     z-index: 99999;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: 999px;
-    font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
     cursor: pointer;
     transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.lumina-theme-switch-pill span,
+.lumina-theme-switch-pill #luminaThemeLabel {
+    display: none !important;
+}
+
+.lumina-theme-switch-pill .theme-icon,
+.lumina-theme-switch-pill i {
+    font-size: 1.22rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease;
 }
 
 .lumina-theme-switch-pill:hover {
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-2px) scale(1.08);
+}
+
+.lumina-theme-switch-pill:hover .theme-icon,
+.lumina-theme-switch-pill:hover i {
+    transform: rotate(18deg) scale(1.1);
 }
 
 .lumina-theme-switch-pill:active {
-    transform: translateY(0) scale(0.97);
+    transform: translateY(0) scale(0.94);
 }
 
-/* Przełącznik w trybie jasnym */
+/* Przełącznik w trybie jasnym (Ikona Słońca) */
 body.theme-lumina-light .lumina-theme-switch-pill,
 html[data-lumina-theme="light"] .lumina-theme-switch-pill {
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    color: #0f172a;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10), 0 2px 6px rgba(15, 23, 42, 0.04);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid rgba(184, 142, 62, 0.38);
+    color: #B88E3E;
+    box-shadow: 0 6px 20px rgba(184, 142, 62, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 body.theme-lumina-light .lumina-theme-switch-pill i,
 html[data-lumina-theme="light"] .lumina-theme-switch-pill i {
-    color: #f59e0b;
+    color: #B88E3E;
 }
 
-/* Przełącznik w trybie ciemnym */
+/* Przełącznik w trybie ciemnym (Ikona Księżyca) */
 body:not(.theme-lumina-light) .lumina-theme-switch-pill,
 html[data-lumina-theme="dark"] .lumina-theme-switch-pill {
     background: rgba(18, 18, 26, 0.88);
     border: 1.5px solid rgba(212, 169, 74, 0.35);
-    color: #EDE6D6;
+    color: #d4a94a;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(212, 169, 74, 0.15);
 }
 
@@ -772,8 +794,11 @@ html[data-lumina-theme="dark"] .lumina-theme-switch-pill i {
     .lumina-theme-switch-pill {
         bottom: 78px;
         left: 14px;
-        padding: 9px 14px;
-        font-size: 0.76rem;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
     }
 }
 

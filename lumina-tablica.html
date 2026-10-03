@@ -4939,7 +4939,7 @@
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20260918_v5">
     <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
-    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_luxury_v2">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261003_icon_v3">
     <script>
     (function() {
         try {
@@ -4950,7 +4950,7 @@
         } catch(e) {}
     })();
     </script>
-    <script src="/js/lumina-theme-manager.js?v=20261003_light_repair_v1"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261003_icon_v3"></script>
 </head>
 <body>
 
@@ -9144,13 +9144,13 @@
                     if (userPrefersSound) {
                         if (iconMuted) iconMuted.style.display = 'none';
                         if (iconUnmuted) iconUnmuted.style.display = 'inline-block';
-                        if (label) label.textContent = 'Dźwięk: Wł.';
+                        if (label) label.style.display = "none";
                         b.classList.add('sound-active');
                         b.setAttribute('title', 'Dźwięk włączony (dotknij, by wyciszyć)');
                     } else {
                         if (iconMuted) iconMuted.style.display = 'inline-block';
                         if (iconUnmuted) iconUnmuted.style.display = 'none';
-                        if (label) label.textContent = 'Dźwięk';
+                        if (label) label.style.display = "none";
                         b.classList.remove('sound-active');
                         b.setAttribute('title', 'Dotknij, by włączyć dźwięk');
                     }
@@ -9234,7 +9234,7 @@
             if (isCurrentlyOpen) {
                 if (fullText) fullText.style.display = 'none';
                 if (teaser) teaser.style.display = 'block';
-                if (label) label.textContent = 'Czytaj całe rozważanie 📖';
+                if (label) label.style.display = "none";
                 if (icon) {
                     icon.classList.remove('fa-chevron-up');
                     icon.classList.add('fa-chevron-down');
@@ -9243,7 +9243,7 @@
             } else {
                 if (fullText) fullText.style.display = 'block';
                 if (teaser) teaser.style.display = 'none';
-                if (label) label.textContent = 'Zwiń rozważanie';
+                if (label) label.style.display = "none";
                 if (icon) {
                     icon.classList.remove('fa-chevron-down');
                     icon.classList.add('fa-chevron-up');
@@ -15925,7 +15925,6 @@ window.initFeedCarousels = function(container) {
     <!-- ══════════ PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ══════════ -->
     <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw Tablicy (Jasny / Ciemny)">
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
-        <span id="luminaThemeLabel">Motyw: Ciemny (Obsidian)</span>
     </button>
     <script>
     function toggleLuminaTheme() {
@@ -15940,13 +15939,13 @@ window.initFeedCarousels = function(container) {
             document.documentElement.setAttribute('data-lumina-theme', 'light');
             document.body.classList.add('theme-lumina-light');
             if (icon) icon.className = 'fa-solid fa-sun theme-icon';
-            if (label) label.textContent = 'Motyw: Jasny (Pure White)';
+            if (label) label.style.display = "none";
             if (savePreference) localStorage.setItem('lumina_theme', 'light');
         } else {
             document.documentElement.setAttribute('data-lumina-theme', 'dark');
             document.body.classList.remove('theme-lumina-light');
             if (icon) icon.className = 'fa-solid fa-moon theme-icon';
-            if (label) label.textContent = 'Motyw: Ciemny (Obsidian)';
+            if (label) label.style.display = "none";
             if (savePreference) localStorage.setItem('lumina_theme', 'dark');
         }
     }
