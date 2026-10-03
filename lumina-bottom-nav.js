@@ -1929,7 +1929,7 @@
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
-            lmpCss.href = '/css/lumina-mini-player.css?v=20260918_v5';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20261003_chat_clear_v6';
             document.head.appendChild(lmpCss);
         }
         if (!window.LuminaMiniPlayer && !document.querySelector('script[src*="lumina-mini-player.js"]')) {

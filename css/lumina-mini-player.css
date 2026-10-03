@@ -18,6 +18,13 @@
     --lmp-zindex: 100005;
 }
 
+/* Keep the conversation composer clear without stopping background audio. */
+body:has(#directMessagesModal.open) :is(#luminaMiniPlayerContainer, #luminaFloatingRadioBar),
+body:has(#messageModal.open) :is(#luminaMiniPlayerContainer, #luminaFloatingRadioBar) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
 /* ── KONTENER GŁÓWNY MINI-PLAYERA ── */
 #luminaMiniPlayerContainer {
     position: fixed;
@@ -284,9 +291,9 @@
     height: 50px !important;
     padding: 0;
     border-radius: 50% !important;
-    left: auto !important;
-    right: 10px !important;
-    bottom: 148px !important;
+    left: 10px !important;
+    right: auto !important;
+    bottom: 96px !important;
     transform: none !important;
     border: 2px solid var(--lmp-gold) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 18px rgba(250, 204, 21, 0.4) !important;
@@ -475,9 +482,9 @@
     }
 
     #luminaMiniPlayerContainer.minimized {
-        bottom: calc(202px + env(safe-area-inset-bottom, 8px)) !important;
-        right: 10px !important;
-        left: auto !important;
+        bottom: calc(68px + env(safe-area-inset-bottom, 8px)) !important;
+        right: auto !important;
+        left: 10px !important;
         width: 48px !important;
         height: 48px !important;
     }
