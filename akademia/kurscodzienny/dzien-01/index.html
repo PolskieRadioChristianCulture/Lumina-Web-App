@@ -14,10 +14,10 @@
   <meta property="og:description" content="Księga Rodzaju — Miesiąc 1, Dzień 1. Zanim powstał świat, zanim pojawił się grzech — był Bóg." />
   <meta property="og:image" content="https://polskieradio.cc/images/academy/daily/kc_day_01_creation.jpg" />
 
-  <!-- Fonts: Cinzel, Playfair Display, Plus Jakarta Sans, Lora -->
+  <!-- Fonts: Cinzel, Playfair Display, Plus Jakarta Sans, Lora, Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Tailwind CSS -->
@@ -51,8 +51,9 @@
           fontFamily: {
             serif: ['"Playfair Display"', 'Georgia', 'serif'],
             display: ['Cinzel', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            bible: ['Lora', 'serif']
+            sans: ['Inter', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            bible: ['Lora', 'Georgia', 'serif'],
+            reader: ['var(--kc-font-body)', 'Lora', 'Georgia', 'serif']
           }
         }
       }
@@ -60,12 +61,94 @@
   </script>
 
   <style>
-    body { background: #07090E; color: #e4e4e7; }
+    body { background: #07090E; color: #f1f5f9; }
     .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
     .kc-card { background: #0E121A; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
     @media (min-width: 640px) { .kc-card { padding: 32px; } }
     .kc-card h2, .kc-card h3 { font-family: 'Cinzel', serif; letter-spacing: 0.06em; color: #E2CC9A; }
-    .kc-verse-box { background: rgba(196,163,90,0.08); border-left: 4px solid #C4A35A; border-radius: 0 16px 16px 0; padding: 18px 22px; font-family: 'Lora', serif; }
+
+    /* Master Reader Typography - Maksymalny komfort i płynność długiego czytania */
+    :root {
+      --kc-font-body: 'Lora', Georgia, 'Times New Roman', serif;
+      --kc-font-size: 1.05rem; /* ~16.8px - idealna wielkość książkowa */
+      --kc-line-height: 1.82;   /* optymalny oddech między wierszami */
+      --kc-letter-spacing: 0.012em; /* delikatne rozluźnienie czytelnicze */
+      --kc-text-color: #f1f5f9; /* Slate 100 - wysoki kontrast, miękki dla wzroku */
+    }
+
+    html[data-kc-font="sans"] {
+      --kc-font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --kc-font-size: 1.00rem; /* 16px */
+      --kc-line-height: 1.78;
+      --kc-letter-spacing: 0.015em;
+    }
+
+    /* Akapity i listy w kartach lekcji */
+    .kc-card p,
+    .kc-card li {
+      font-family: var(--kc-font-body) !important;
+      font-size: var(--kc-font-size) !important;
+      line-height: var(--kc-line-height) !important;
+      letter-spacing: var(--kc-letter-spacing) !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .kc-card p:not([class*="text-amber-"]):not([class*="text-brand-"]):not([class*="text-rose-"]):not([class*="text-emerald-"]):not([class*="text-white"]),
+    .kc-card li:not([class*="text-amber-"]):not([class*="text-brand-"]):not([class*="text-rose-"]):not([class*="text-emerald-"]):not([class*="text-white"]) {
+      color: var(--kc-text-color) !important;
+    }
+
+    .kc-card p {
+      margin-bottom: 1.15rem;
+    }
+    .kc-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .kc-card strong, .kc-card b {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .kc-card em, .kc-card i {
+      color: #E2CC9A;
+      font-style: italic;
+    }
+
+    .kc-verse-box, blockquote {
+      background: rgba(196,163,90,0.08);
+      border-left: 4px solid #C4A35A;
+      border-radius: 0 16px 16px 0;
+      padding: 20px 24px;
+      font-family: 'Lora', Georgia, serif !important;
+      font-size: 1.08rem !important;
+      line-height: 1.82 !important;
+      letter-spacing: 0.012em !important;
+      color: #f1e7d0 !important;
+      margin: 1.3rem 0;
+    }
+
+    .kc-reader-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(22, 27, 38, 0.85);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+    .kc-reader-pill:hover {
+      border-color: rgba(196,163,90,0.6);
+      color: #fef08a;
+      background: rgba(30, 37, 51, 0.95);
+    }
     .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
     .quiz-option:hover { border-color: rgba(196,163,90,0.4); background: #161B26; }
     .quiz-option.correct { border-color: #4ade80 !important; background: rgba(34,197,94,0.12) !important; color: #4ade80 !important; }
@@ -96,7 +179,19 @@
         </a>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Reader Typography Toggle Hook -->
+        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)">
+          <i class="fa-solid fa-font text-amber-400 text-xs"></i>
+          <span id="reader-font-label" class="hidden sm:inline font-semibold">Krój: Lora</span>
+        </button>
+
+        <!-- Font Zoom Controls (A- / A+) -->
+        <div class="hidden md:flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 p-0.5 text-xs text-zinc-400">
+          <button type="button" onclick="adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 transition" title="Mniejszy tekst">A-</button>
+          <button type="button" onclick="adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 font-bold transition" title="Większy tekst">A+</button>
+        </div>
+
         <!-- Audio TTS Hook -->
         <button type="button" id="btn-audio-tts" onclick="toggleAudioLesson()" class="px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition min-h-[44px] flex items-center gap-2" title="Słuchaj lekcji z lektorem">
           <i class="fa-solid fa-volume-high text-xs" id="tts-icon"></i>
@@ -125,9 +220,12 @@
         <span class="text-amber-400 font-bold">Dzień 1</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1">Spis Dni</a>
+        <button type="button" onclick="toggleReaderFont()" class="text-zinc-300 hover:text-amber-300 px-2 py-1 min-h-[32px] flex items-center gap-1 sm:hidden text-[11px] rounded bg-zinc-900 border border-zinc-800" title="Przełącz krój pisma">
+          <i class="fa-solid fa-font text-amber-400 text-[10px]"></i>
+          <span class="kc-font-mobile-label">Lora</span>
+        </button>
+        <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">Spis Dni</a>
         <span class="text-zinc-700">|</span>
-        <span class="text-zinc-600 font-medium">Poprzedni</span>
         <a href="/akademia/kurscodzienny/dzien-02" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 2 →</a>
       </div>
     </div>
@@ -1022,6 +1120,72 @@
         if (text) text.textContent = 'Słuchaj Audio';
         if (btn) btn.classList.remove('ring-2', 'ring-amber-400');
       }
+    }
+
+    // ── Master Reader Typography Controller ──
+    let currentReaderZoom = 0;
+
+    function initReaderSettings() {
+      const savedFont = localStorage.getItem('kc_reader_font') || 'serif';
+      const savedZoom = parseInt(localStorage.getItem('kc_reader_zoom') || '0', 10);
+      applyReaderFont(savedFont, false);
+      applyReaderZoom(savedZoom);
+    }
+
+    function toggleReaderFont() {
+      const current = document.documentElement.getAttribute('data-kc-font') === 'sans' ? 'sans' : 'serif';
+      const next = current === 'serif' ? 'sans' : 'serif';
+      localStorage.setItem('kc_reader_font', next);
+      applyReaderFont(next, true);
+    }
+
+    function applyReaderFont(font, updateZoom = true) {
+      if (font === 'sans') {
+        document.documentElement.setAttribute('data-kc-font', 'sans');
+      } else {
+        document.documentElement.removeAttribute('data-kc-font');
+      }
+
+      const desktopLabel = document.getElementById('reader-font-label');
+      if (desktopLabel) {
+        desktopLabel.textContent = font === 'sans' ? 'Krój: Inter' : 'Krój: Lora';
+      }
+
+      const mobileLabels = document.querySelectorAll('.kc-font-mobile-label');
+      mobileLabels.forEach(el => {
+        el.textContent = font === 'sans' ? 'Inter' : 'Lora';
+      });
+
+      const btn = document.getElementById('btn-reader-font');
+      if (btn) {
+        btn.title = font === 'sans' 
+          ? 'Aktywna: Inter (Ekranowa bezszeryfowa). Kliknij, aby zmienić na Lora (Książkowa szeryfowa)' 
+          : 'Aktywna: Lora (Książkowa szeryfowa). Kliknij, aby zmienić na Inter (Ekranowa bezszeryfowa)';
+      }
+
+      if (updateZoom) {
+        applyReaderZoom(currentReaderZoom);
+      }
+    }
+
+    function adjustFontSize(delta) {
+      currentReaderZoom = Math.max(-2, Math.min(3, currentReaderZoom + delta));
+      localStorage.setItem('kc_reader_zoom', currentReaderZoom);
+      applyReaderZoom(currentReaderZoom);
+    }
+
+    function applyReaderZoom(zoom) {
+      currentReaderZoom = zoom;
+      const isSans = document.documentElement.getAttribute('data-kc-font') === 'sans';
+      const baseRem = isSans ? (1.00 + (zoom * 0.07)) : (1.05 + (zoom * 0.07));
+      document.documentElement.style.setProperty('--kc-font-size', baseRem.toFixed(3) + 'rem');
+    }
+
+    // Automatyczna inicjalizacja przy załadowaniu DOM
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initReaderSettings);
+    } else {
+      initReaderSettings();
     }
   </script>
 </body>
