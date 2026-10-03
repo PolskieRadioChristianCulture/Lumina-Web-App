@@ -554,6 +554,16 @@
         .side-promo-inner:hover .side-cta {
             filter: brightness(1.1);
         }
+        /* CCN Drawer Accordion */
+        details.drawer-ccn-hub summary::-webkit-details-marker { display: none; }
+        details.drawer-ccn-hub summary::marker { display: none; }
+        details.drawer-ccn-hub[open] .ccn-arrow { transform: rotate(180deg); }
+        .ccn-sublink { transition: all 0.2s ease; text-decoration: none; }
+        .ccn-sublink:hover {
+            background: rgba(212, 169, 74, 0.2) !important;
+            border-color: rgba(212, 169, 74, 0.6) !important;
+            transform: translateX(3px);
+        }
         /* Ukryj na mniejszych ekranach (wymagają miejsca po bokach) */
         @media (max-width: 1360px) { .side-promo { display: none !important; } }
     </style>
