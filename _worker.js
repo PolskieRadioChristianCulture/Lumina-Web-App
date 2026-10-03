@@ -81,9 +81,9 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    if (decodedP === '/technologia' || decodedP === '/ai') {
+    if (decodedP === '/technologia' || decodedP === '/ai' || decodedP === '/sztucznainteligencja' || decodedP === '/sztuczna-inteligencja' || decodedP === '/synthetic-intelligence' || decodedP === '/superintelligence') {
       const redirectUrl = new URL(request.url);
-      redirectUrl.pathname = '/technologie';
+      redirectUrl.pathname = '/si';
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
@@ -116,7 +116,7 @@ export default {
       return res;
     }
 
-    const THEMATIC_PORTALS = ['music', 'biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka'];
+    const THEMATIC_PORTALS = ['music', 'biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka', 'si'];
     const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
     if (portalMatch) {
       const targetUrl = new URL(request.url);
