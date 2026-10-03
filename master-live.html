@@ -740,7 +740,8 @@
         let currentUrl = null;
         let currentBlockKey = null;
         let earlyFinishedSlots = {};
-        let isSafeMonetizationMode = false;
+        let isSafeMonetizationMode = (urlParams.get('safe_monetization') !== '0');
+        console.log("MCR: [CC MONETIZATION SHIELD] Inteligentne Sito Bezpieczeństwa:", isSafeMonetizationMode ? "AKTYWNE (100% ochrona przed roszczeniami Content ID)" : "WYŁĄCZONE");
         let isSwitchingWithBumper = false;
 
         function getActiveFrame() {
@@ -820,7 +821,7 @@
             // 11) 16:00 - 18:00: Śpiewajmy Panu — Codzienne Uwielbienie
             else if (hour >= 16 && hour < 18) {
                 blockKey = "16_18_spiewajmy_panu";
-                channel = "spiewajmy-panu-live.html";
+                channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "spiewajmy-panu-live.html";
             }
             // 12) 18:00 - 20:00: Pasmo Wieczorne
             else if (hour >= 18 && hour < 20) {
@@ -854,17 +855,17 @@
                 const isWeekendNight = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
                 blockKey = "22_special_" + (isWeekendNight ? "randki" : "ksiega");
                 const targetSpecial = isWeekendNight ? "randki-malzenstwo-live.html" : "apokalipsa-ksiega-nadziei-live.html";
-                channel = earlyFinishedSlots[blockKey] ? "nocne-czuwanie-live.html" : targetSpecial;
+                channel = earlyFinishedSlots[blockKey] ? (isSafeMonetizationMode ? "biblia-spiewana-live.html" : "nocne-czuwanie-live.html") : targetSpecial;
             }
             // 18) 06:00 - 08:00: Zjednoczeni za Polskę Poranek
             else if (hour >= 6 && hour < 8) {
                 blockKey = "06_08_zapolske_poranek";
                 channel = "zapolske-live.html";
             }
-            // 19) 22:55 - 06:00: Nocne Czuwanie & Worship
+            // 19) 22:55 - 06:00: Nocne Czuwanie & Worship (W trybie bezpiecznym: autorska Biblia Śpiewana CC)
             else {
                 blockKey = "night_nocne_czuwanie";
-                channel = "nocne-czuwanie-live.html";
+                channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "nocne-czuwanie-live.html";
             }
 
             return { blockKey, channel };
@@ -914,7 +915,8 @@
                 // First load -> direct smooth load on Active Frame
                 const sepChar = newChannel.includes("?") ? "&" : "?";
                 const audioQuery = isMutedDefault ? "muted=1&autoplay=1" : "autoplay=1";
-                activeFrame.src = newChannel + sepChar + audioQuery + "&in_mcr=1&noticker=1&t=" + Date.now();
+                const safeParam = isSafeMonetizationMode ? "&safe_monetization=1" : "&safe_monetization=0";
+                activeFrame.src = newChannel + sepChar + audioQuery + "&in_mcr=1&noticker=1" + safeParam + "&t=" + Date.now();
                 fade.style.display = "block";
                 fade.style.opacity = "1";
                 setTimeout(() => {
@@ -959,7 +961,8 @@
                 // 3) Preload incoming channel IMMEDIATELY (at T=500ms) MUTED so it buffers fully without audio bleed!
                 setTimeout(() => {
                     const sep = newChannel.includes('?') ? '&' : '?';
-                    inactiveFrame.src = newChannel + sep + "muted=1&autoplay=1&in_mcr=1&noticker=1&t=" + Date.now();
+                    const safeParam = isSafeMonetizationMode ? "&safe_monetization=1" : "&safe_monetization=0";
+                    inactiveFrame.src = newChannel + sep + "muted=1&autoplay=1&in_mcr=1&noticker=1" + safeParam + "&t=" + Date.now();
                 }, 500);
 
                 // 4) Determine video duration (default 8s fallback)

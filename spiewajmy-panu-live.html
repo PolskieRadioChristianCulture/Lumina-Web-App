@@ -327,6 +327,10 @@
         }
     </style>
     <script>
+        if (window.location.search.includes('safe_monetization=1')) {
+            console.log("[SPIEWAJMY PANU] 🛡️ Tryb bezpiecznej monetaryzacji: przekierowanie na autorską Biblię Śpiewaną CC...");
+            window.location.replace('biblia-spiewana-live.html' + window.location.search);
+        }
         if (window.self !== window.top || window.location.search.includes('in_mcr=1')) {
             document.documentElement.classList.add('inside-iframe');
             document.addEventListener('DOMContentLoaded', () => {

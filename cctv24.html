@@ -3582,6 +3582,59 @@ function getWeatherPreset(city) {
         }
     </script>
 
+    <!-- CC MONETIZATION SHIELD: Audio Sentry for cctv24.html -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const audioEl = document.getElementById("stream-audio");
+            if (!audioEl) return;
+            const urlParams = new URLSearchParams(window.location.search);
+            const isSafeMonetization = urlParams.get('safe_monetization') === '1' || urlParams.get('in_mcr') === '1' || (window.self !== window.top);
+
+            const CC_SAFE_PLAYLIST = [
+                "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3",
+                "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%202.mp3",
+                "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%203.mp3",
+                "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%204.mp3",
+                "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%205.mp3"
+            ];
+            let currentSafeIdx = Math.floor(Math.random() * CC_SAFE_PLAYLIST.length);
+            const originalSrc = audioEl.src;
+
+            const BLACKLIST = ["declan flynn", "late arrival", "audio network", "epidemic sound", "epidemic", "universal", "sony", "warner", "bmg", "orchard", "believe", "adrev", "cdbaby", "distrokid"];
+
+            const mountId = "vz96pvl3pnktv";
+            try {
+                const sse = new EventSource(`https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`);
+                sse.onmessage = (e) => {
+                    try {
+                        const data = JSON.parse(e.data);
+                        if (data && data.streamTitle) {
+                            const t = data.streamTitle.toLowerCase();
+                            const isUnsafe = BLACKLIST.some(b => t.includes(b)) || (isSafeMonetization && t.includes(" - ") && !t.includes("christian culture"));
+                            if (isUnsafe) {
+                                console.warn("[CC MONETIZATION SHIELD] ⚠️ Wykryto zastrzeżony utwór w CCTV24:", data.streamTitle);
+                                if (!audioEl.src.includes("Salomona")) {
+                                    audioEl.src = CC_SAFE_PLAYLIST[currentSafeIdx];
+                                    audioEl.play().catch(() => {});
+                                }
+                            } else if (audioEl.src.includes("Salomona")) {
+                                audioEl.src = originalSrc;
+                                audioEl.play().catch(() => {});
+                            }
+                        }
+                    } catch(err) {}
+                };
+            } catch(e) {}
+
+            audioEl.addEventListener('ended', () => {
+                if (audioEl.src.includes("Salomona")) {
+                    currentSafeIdx = (currentSafeIdx + 1) % CC_SAFE_PLAYLIST.length;
+                    audioEl.src = CC_SAFE_PLAYLIST[currentSafeIdx];
+                    audioEl.play().catch(() => {});
+                }
+            });
+        });
+    </script>
     <audio id="stream-audio" src="https://stream.zeno.fm/vz96pvl3pnktv"></audio>
     <script src="live-window-manager.js"></script>
 </body>

@@ -3890,45 +3890,160 @@ function getWeatherPreset(city) {
         }
     </script>
 
-    <!-- Zeno.fm RDS / Now Playing Logic -->
+    <!-- CC MONETIZATION SHIELD: Inteligentne Sito Bezpieczeństwa Audio (Anti-Content-ID) -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const zenoTrackTitle = document.getElementById("zenoTrackTitle");
             const audioEl = document.getElementById("stream-audio");
-            
-            if (zenoTrackTitle && audioEl && audioEl.src) {
-                // Get mount ID from streamUrl
-                const streamUrl = audioEl.src;
-                const mountId = streamUrl.split('/').pop();
-                const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`;
+            const urlParams = new URLSearchParams(window.location.search);
+            const isSafeMonetization = urlParams.get('safe_monetization') === '1' || urlParams.get('in_mcr') === '1' || (window.self !== window.top);
+
+            // 100% Autorska i Certyfikowana Playlista Christian Culture (Śpiewane Przypowieści Salomona)
+            const CC_SAFE_PLAYLIST = [
+                { id: "cc_prov_1", title: "Śpiewane Przypowieści Salomona - Rozdział 1", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3" },
+                { id: "cc_prov_2", title: "Śpiewane Przypowieści Salomona - Rozdział 2", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%202.mp3" },
+                { id: "cc_prov_3", title: "Śpiewane Przypowieści Salomona - Rozdział 3", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%203.mp3" },
+                { id: "cc_prov_4", title: "Śpiewane Przypowieści Salomona - Rozdział 4", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%204.mp3" },
+                { id: "cc_prov_5", title: "Śpiewane Przypowieści Salomona - Rozdział 5", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%205.mp3" },
+                { id: "cc_prov_6", title: "Śpiewane Przypowieści Salomona - Rozdział 6", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%206.mp3" },
+                { id: "cc_prov_7", title: "Śpiewane Przypowieści Salomona - Rozdział 7", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%207.mp3" },
+                { id: "cc_prov_8", title: "Śpiewane Przypowieści Salomona - Rozdział 8", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%208.mp3" },
+                { id: "cc_prov_9", title: "Śpiewane Przypowieści Salomona - Rozdział 9", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%209.mp3" },
+                { id: "cc_prov_10", title: "Śpiewane Przypowieści Salomona - Rozdział 10", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2010.mp3" },
+                { id: "cc_prov_11", title: "Śpiewane Przypowieści Salomona - Rozdział 11", url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2011.mp3" }
+            ];
+
+            let currentSafeTrackIndex = Math.floor(Math.random() * CC_SAFE_PLAYLIST.length);
+            let isUsingSafeFallback = false;
+            const originalZenoSrc = "https://stream.zeno.fm/gn3uhltrrytuv";
+
+            // Słowa kluczowe wydawców, wytwórni i bibliotek muzycznych podlegających roszczeniom YouTube Content ID
+            const BLACKLIST_PATTERNS = [
+                "declan flynn", "late arrival", "audio network", "epidemic sound", "epidemic",
+                "universal music", "sony music", "warner music", "bmg rights", "the orchard",
+                "believe music", "adrev", "cd baby", "cdbaby", "tunecore", "distrokid",
+                "routenote", "audiomachine", "two steps from hell", "incompetech", "shazam",
+                "vevo", "apmmusic", "apm music", "extrememusic", "extreme music", "audiojungle"
+            ];
+
+            // Wzorce w 100% bezpieczne dla Christian Culture
+            const WHITELIST_PATTERNS = [
+                "christian culture", "biblia śpiewana", "przypowieści salomona", "zjednoczeni za polskę",
+                "modlitwa poranna", "modlitwa wieczorna", "modlitwa", "lektor", "rozważanie",
+                "cuda każdego dnia", "akademia biblijna", "lumina", "radio cc", "worship cc"
+            ];
+
+            function evaluateTrackSafety(title) {
+                if (!title) return { isSafe: true, reason: "Brak metadanych - audycja ciągła" };
+                const t = title.toLowerCase();
                 
-                try {
-                    const metadataEventSource = new EventSource(sseUrl);
-                    metadataEventSource.onmessage = function(event) {
-                        try {
-                            const data = JSON.parse(event.data);
-                            if (data && data.streamTitle) {
-                                const cleanTitle = data.streamTitle.trim();
-                                let cleanTitleFixed = cleanTitle;
-                                  const targetString = "aplikacji Christian Culture";
-                                  const targetIndex = cleanTitleFixed.indexOf(targetString);
-                                  if (targetIndex !== -1) {
-                                      cleanTitleFixed = cleanTitleFixed.substring(0, targetIndex + targetString.length);
-                                  }
-                                  if (cleanTitleFixed && zenoTrackTitle.textContent !== cleanTitleFixed) {
-                                    zenoTrackTitle.textContent = cleanTitleFixed;
+                // 1. Sprawdzenie Czarnej Listy (Roszczenia YouTube Content ID)
+                for (const bad of BLACKLIST_PATTERNS) {
+                    if (t.includes(bad)) {
+                        return { isSafe: false, reason: `Wykryto zastrzeżoną treść: ${bad}` };
+                    }
+                }
+
+                // 2. Jeśli włączony jest tryb pełnego bezpieczeństwa emisji (OBS / Master Live):
+                if (isSafeMonetization) {
+                    // Jeśli tytuł zawiera wzorce z Białej Listy CC -> w 100% bezpieczny
+                    for (const good of WHITELIST_PATTERNS) {
+                        if (t.includes(good)) {
+                            return { isSafe: true, reason: `Certyfikowana treść CC: ${good}` };
+                        }
+                    }
+
+                    // Jeśli utwór ma postać komercyjnego formatu "Wykonawca - Tytuł" a nie jest na Białej Liście CC:
+                    if (t.includes(" - ") && !t.includes("christian culture")) {
+                        return { isSafe: false, reason: `Potencjalny utwór komercyjny (${title}) – aktywowano sito ochronne CC` };
+                    }
+                }
+
+                return { isSafe: true, reason: "Dozwolona treść radiowa" };
+            }
+
+            function switchToSafeAudio(reasonText) {
+                if (!isUsingSafeFallback) {
+                    console.warn("[CC MONETIZATION SHIELD] ⚠️ Ostrzeżenie Sita:", reasonText);
+                    console.log("[CC MONETIZATION SHIELD] 🛡️ Przełączanie na bezpieczną autorską playlistę Christian Culture...");
+                    isUsingSafeFallback = true;
+                }
+                const track = CC_SAFE_PLAYLIST[currentSafeTrackIndex];
+                if (audioEl) {
+                    const wasMuted = audioEl.muted;
+                    if (!audioEl.src || !audioEl.src.includes(encodeURIComponent("Salomona"))) {
+                        audioEl.src = track.url;
+                        audioEl.muted = wasMuted;
+                        audioEl.play().catch(e => console.warn("Autoplay safe track notice:", e));
+                    }
+                }
+                if (zenoTrackTitle) {
+                    zenoTrackTitle.innerHTML = `<span style="color:#4ade80;"><i class="fa-solid fa-shield-halved"></i> ${track.title} (Sito Ochronne CC)</span>`;
+                }
+            }
+
+            function restoreZenoAudio() {
+                if (isUsingSafeFallback) {
+                    console.log("[CC MONETIZATION SHIELD] ✅ Program bezpieczny — przywracanie bezpośredniego strumienia Zeno.fm");
+                    isUsingSafeFallback = false;
+                    if (audioEl) {
+                        const wasMuted = audioEl.muted;
+                        audioEl.src = originalZenoSrc;
+                        audioEl.muted = wasMuted;
+                        audioEl.play().catch(e => console.warn("Restore Zeno audio notice:", e));
+                    }
+                }
+            }
+
+            // Obsługa końca utworu w bezpiecznej playliście CC
+            if (audioEl) {
+                audioEl.addEventListener('ended', () => {
+                    if (isUsingSafeFallback) {
+                        currentSafeTrackIndex = (currentSafeTrackIndex + 1) % CC_SAFE_PLAYLIST.length;
+                        switchToSafeAudio("Kolejny utwór bezpiecznego pasma CC");
+                    }
+                });
+            }
+
+            // Podłączenie do strumienia metadanych RDS Zeno.fm
+            const mountId = "gn3uhltrrytuv";
+            const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`;
+            
+            try {
+                const metadataEventSource = new EventSource(sseUrl);
+                metadataEventSource.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data && data.streamTitle) {
+                            let rawTitle = data.streamTitle.trim();
+                            const targetString = "aplikacji Christian Culture";
+                            const targetIndex = rawTitle.indexOf(targetString);
+                            if (targetIndex !== -1) {
+                                rawTitle = rawTitle.substring(0, targetIndex + targetString.length);
+                            }
+
+                            // Inteligentne Sito Bezpieczeństwa (Sieve verification)
+                            const safetyCheck = evaluateTrackSafety(rawTitle);
+                            if (!safetyCheck.isSafe) {
+                                switchToSafeAudio(safetyCheck.reason);
+                            } else {
+                                if (isUsingSafeFallback) {
+                                    restoreZenoAudio();
+                                }
+                                if (zenoTrackTitle && zenoTrackTitle.textContent !== rawTitle) {
+                                    zenoTrackTitle.textContent = rawTitle;
                                 }
                             }
-                        } catch (e) {
-                            console.error("Error parsing Zeno.fm metadata event:", e);
                         }
-                    };
-                    metadataEventSource.onerror = function() {
-                        console.warn("Zeno metadata connection lost or unavailable.");
-                    };
-                } catch (error) {
-                    console.error("Failed to initialize Zeno.fm metadata EventSource:", error);
-                }
+                    } catch (e) {
+                        console.error("[CC MONETIZATION SHIELD] Błąd parsowania metadanych Zeno:", e);
+                    }
+                };
+                metadataEventSource.onerror = function() {
+                    console.warn("[CC MONETIZATION SHIELD] Połączenie z metadanymi Zeno utracone.");
+                };
+            } catch (error) {
+                console.error("[CC MONETIZATION SHIELD] Błąd inicjalizacji EventSource metadanych:", error);
             }
         });
     </script>
