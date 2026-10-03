@@ -375,13 +375,16 @@
             justify-content: space-between !important;
             align-items: center !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-            font-size: 0.82rem !important;
+            flex-shrink: 0 !important;
+        }
+
+        .lumina-bottom-menu-title {
+            font-size: 0.95rem !important;
             font-weight: 800 !important;
             color: #facc15 !important;
             font-family: 'Outfit', sans-serif !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
-            flex-shrink: 0 !important;
         }
 
         .lumina-bottom-menu-close {
@@ -560,6 +563,177 @@
                 margin: -12px -12px 4px -12px !important;
                 padding: 12px 12px 8px 12px !important;
             }
+        }
+
+        /* ── LIGHT MODE STYLING DLA LUMINA BOTTOM NAV & POPUP ── */
+        html[data-lumina-theme="light"] .lumina-bottom-nav,
+        body.theme-lumina-light .lumina-bottom-nav {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(28px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+            border: 1.5px solid rgba(196, 163, 90, 0.35) !important;
+            box-shadow: 0 12px 35px rgba(28, 25, 23, 0.12), 0 0 20px rgba(184, 142, 62, 0.15) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-nav-tab,
+        body.theme-lumina-light .lumina-nav-tab {
+            color: #78716C !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-nav-tab.active,
+        body.theme-lumina-light .lumina-nav-tab.active {
+            color: #946E24 !important;
+            background: rgba(184, 142, 62, 0.12) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-nav-tab:hover,
+        body.theme-lumina-light .lumina-nav-tab:hover {
+            color: #B88E3E !important;
+            background: rgba(184, 142, 62, 0.08) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-card,
+        body.theme-lumina-light .lumina-bottom-menu-card {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(32px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+            border: 1.5px solid rgba(196, 163, 90, 0.45) !important;
+            box-shadow: 0 24px 60px rgba(28, 25, 23, 0.18), 0 0 24px rgba(184, 142, 62, 0.16) !important;
+            scrollbar-color: rgba(184, 142, 62, 0.35) transparent !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-card::-webkit-scrollbar-thumb,
+        body.theme-lumina-light .lumina-bottom-menu-card::-webkit-scrollbar-thumb {
+            background: rgba(184, 142, 62, 0.35) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-header,
+        body.theme-lumina-light .lumina-bottom-menu-header {
+            background: #FFFFFF !important;
+            border-bottom: 1px solid rgba(196, 163, 90, 0.22) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-header span,
+        body.theme-lumina-light .lumina-bottom-menu-header span,
+        html[data-lumina-theme="light"] .lumina-bottom-menu-title,
+        body.theme-lumina-light .lumina-bottom-menu-title {
+            color: #946E24 !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-close,
+        body.theme-lumina-light .lumina-bottom-menu-close {
+            background: rgba(28, 25, 23, 0.06) !important;
+            color: #57534E !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-close:hover,
+        body.theme-lumina-light .lumina-bottom-menu-close:hover {
+            background: rgba(239, 68, 68, 0.12) !important;
+            color: #E11D48 !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-btn,
+        body.theme-lumina-light .lumina-menu-btn {
+            background: #FAF8F5 !important;
+            border: 1px solid rgba(196, 163, 90, 0.24) !important;
+            color: #1C1917 !important;
+            box-shadow: 0 2px 6px rgba(28, 25, 23, 0.03) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-btn:hover,
+        body.theme-lumina-light .lumina-menu-btn:hover {
+            background: #FFFFFF !important;
+            border-color: #B88E3E !important;
+            box-shadow: 0 4px 14px rgba(184, 142, 62, 0.2) !important;
+            transform: translateX(3px) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-btn-title,
+        body.theme-lumina-light .lumina-menu-btn-title {
+            color: #1C1917 !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-btn-sub,
+        body.theme-lumina-light .lumina-menu-btn-sub {
+            color: #57534E !important;
+        }
+
+        html[data-lumina-theme="light"] .radio-icon-bg,
+        body.theme-lumina-light .radio-icon-bg {
+            background: rgba(245, 158, 11, 0.14) !important;
+            border: 1px solid rgba(245, 158, 11, 0.35) !important;
+            color: #D97706 !important;
+        }
+
+        html[data-lumina-theme="light"] .tv-icon-bg,
+        body.theme-lumina-light .tv-icon-bg {
+            background: rgba(239, 68, 68, 0.14) !important;
+            border: 1px solid rgba(239, 68, 68, 0.35) !important;
+            color: #DC2626 !important;
+        }
+
+        html[data-lumina-theme="light"] .vod-icon-bg,
+        body.theme-lumina-light .vod-icon-bg {
+            background: rgba(245, 158, 11, 0.14) !important;
+            border: 1px solid rgba(245, 158, 11, 0.35) !important;
+            color: #D97706 !important;
+        }
+
+        html[data-lumina-theme="light"] .rolki-icon-bg,
+        body.theme-lumina-light .rolki-icon-bg {
+            background: rgba(236, 72, 153, 0.14) !important;
+            border: 1px solid rgba(236, 72, 153, 0.35) !important;
+            color: #DB2777 !important;
+        }
+
+        html[data-lumina-theme="light"] .events-icon-bg,
+        body.theme-lumina-light .events-icon-bg {
+            background: rgba(234, 179, 8, 0.14) !important;
+            border: 1px solid rgba(234, 179, 8, 0.35) !important;
+            color: #B45309 !important;
+        }
+
+        html[data-lumina-theme="light"] .profile-icon-bg,
+        body.theme-lumina-light .profile-icon-bg {
+            background: rgba(168, 85, 247, 0.14) !important;
+            border: 1px solid rgba(168, 85, 247, 0.35) !important;
+            color: #9333EA !important;
+        }
+
+        html[data-lumina-theme="light"] .qna-icon-bg,
+        body.theme-lumina-light .qna-icon-bg {
+            background: rgba(250, 204, 21, 0.14) !important;
+            border: 1px solid rgba(250, 204, 21, 0.35) !important;
+            color: #B45309 !important;
+        }
+
+        html[data-lumina-theme="light"] .admin-icon-bg,
+        body.theme-lumina-light .admin-icon-bg {
+            background: rgba(16, 185, 129, 0.14) !important;
+            border: 1px solid rgba(16, 185, 129, 0.35) !important;
+            color: #059669 !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-bottom-menu-footer,
+        body.theme-lumina-light .lumina-bottom-menu-footer {
+            border-top: 1px solid rgba(196, 163, 90, 0.22) !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-footer-security,
+        body.theme-lumina-light .lumina-menu-footer-security {
+            color: #57534E !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-footer-security i,
+        body.theme-lumina-light .lumina-menu-footer-security i {
+            color: #B88E3E !important;
+        }
+
+        html[data-lumina-theme="light"] .lumina-menu-footer-badge,
+        body.theme-lumina-light .lumina-menu-footer-badge {
+            background: rgba(184, 142, 62, 0.12) !important;
+            border: 1px solid rgba(184, 142, 62, 0.35) !important;
+            color: #946E24 !important;
         }
 
         /* ── FLOATING CHAT BUBBLE BUTTON (DYMEK CZATU NAD SCROLL-TOP) ── */
@@ -1061,7 +1235,7 @@
         <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup">
             <div class="lumina-bottom-menu-card">
                 <div class="lumina-bottom-menu-header">
-                    <span style="font-family:'Outfit',sans-serif; font-weight:800; color:#facc15; font-size:1.05rem; letter-spacing:0.5px;">CENTRUM MEDIÓW & OPCJI</span>
+                    <span class="lumina-bottom-menu-title">Centrum Mediów & Opcji</span>
                     <button type="button" onclick="window.toggleCcBottomNavMenu(event)" class="lumina-bottom-menu-close" title="Zamknij">&times;</button>
                 </div>
                 <div class="lumina-bottom-menu-grid">
