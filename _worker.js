@@ -81,6 +81,12 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    
+    if (decodedP === '/ai-antychryst' || decodedP === '/ai-kontra-antychryst' || decodedP === '/si-antychryst') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/si/ai-antychryst';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
     if (decodedP === '/technologia' || decodedP === '/ai' || decodedP === '/sztucznainteligencja' || decodedP === '/sztuczna-inteligencja' || decodedP === '/synthetic-intelligence' || decodedP === '/superintelligence') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/si';
