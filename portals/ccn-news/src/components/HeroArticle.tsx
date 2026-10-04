@@ -28,22 +28,58 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
       )}
 
 
-      {/* Top action: Bookmark */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleBookmark(article);
-        }}
-        className={`absolute top-4 right-4 z-10 p-2.5 rounded-full backdrop-blur-md transition cursor-pointer ${
-          isBookmarked
-            ? 'bg-[#bb142e] text-white shadow-md'
-            : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
-        }`}
-        title={isBookmarked ? 'Usuń z zakładek' : 'Zapisz na później'}
-        aria-label="Zapisz artykuł"
-      >
-        <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-      </button>
+      {/* Top actions: Share to X, Lumina & Bookmark */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            const url = typeof window !== 'undefined'
+              ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
+              : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
+            const text = `${article.title}\n\nCzytaj w CCN News:`;
+            window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer,width=600,height=450');
+          }}
+          className="p-2.5 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md transition cursor-pointer shadow-md"
+          title="Udostępnij na platformie X"
+          aria-label="Udostępnij na platformie X"
+        >
+          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            const url = typeof window !== 'undefined'
+              ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
+              : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
+            const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+            window.open(luminaUrl, '_blank', 'noopener,noreferrer');
+          }}
+          className="w-9 h-9 rounded-full bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center font-black text-xs hover:scale-105 transition cursor-pointer shadow-md border border-amber-400/40"
+          title="Udostępnij na Tablicy Społeczności LUMINA"
+          aria-label="Udostępnij na Tablicy LUMINA"
+        >
+          L
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleBookmark(article);
+          }}
+          className={`p-2.5 rounded-full backdrop-blur-md transition cursor-pointer ${
+            isBookmarked
+              ? 'bg-[#bb142e] text-white shadow-md'
+              : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
+          }`}
+          title={isBookmarked ? 'Usuń z zakładek' : 'Zapisz na później'}
+          aria-label="Zapisz artykuł"
+        >
+          <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+        </button>
+      </div>
 
       {/* Content bottom left */}
       <div className="relative p-5 sm:p-8 text-white z-10">

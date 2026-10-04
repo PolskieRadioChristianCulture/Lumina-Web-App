@@ -1,8 +1,8 @@
 import { PortalPatron } from './PortalPatron';
 import React, { useState, useEffect } from 'react';
 import { Article } from '../types';
-import {
-  X, Bookmark, Share2, Check, Clock, Calendar, Type,
+import { 
+  X, Bookmark, Share2, Check, Clock, Calendar, Type, 
   BookOpen, Sparkles, ExternalLink, Radio, FileText, UserCheck
 } from 'lucide-react';
 
@@ -46,10 +46,52 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
 
   if (!article) return null;
 
-  const handleCopyLink = () => {
-    navigator.clipboard?.writeText(window.location.href);
+  const getShareUrl = () => {
+    if (typeof window !== 'undefined') {
+      const origin = window.location.origin;
+      const path = window.location.pathname;
+      return `${origin}${path}?art=${article.id || article.slug}`;
+    }
+    return `https://polskieradio.cc/news?art=${article.id || article.slug}`;
+  };
+
+  const handleCopyLink = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = getShareUrl();
+    navigator.clipboard?.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleShareX = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = getShareUrl();
+    const text = `${article.title}\n\nCzytaj w CCN News | Christian Culture:`;
+    const xUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    window.open(xUrl, '_blank', 'noopener,noreferrer,width=600,height=450');
+  };
+
+  const handleShareLumina = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = getShareUrl();
+    if (typeof (window as any).ccShareToLumina === 'function') {
+      (window as any).ccShareToLumina({
+        url,
+        title: article.title,
+        excerpt: article.excerpt,
+        imageUrl: article.imageUrl,
+        category: article.categoryLabel
+      });
+    } else {
+      const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+      window.open(luminaUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleShareFacebook = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = getShareUrl();
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer,width=600,height=500');
   };
 
   const getFontSizeClass = () => {
@@ -119,7 +161,30 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-[#bb142e]' : ''}`} />
             </button>
 
-            {/* Share button */}
+            {/* Share to X button */}
+            <button
+              onClick={handleShareX}
+              className="p-2 bg-black hover:bg-zinc-800 text-white rounded-lg transition cursor-pointer flex items-center justify-center border border-zinc-700 shadow-xs"
+              title="Udostępnij na platformie X"
+              aria-label="Udostępnij na platformie X"
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </button>
+
+            {/* Share to Lumina button */}
+            <button
+              onClick={handleShareLumina}
+              className="px-2.5 py-1.5 bg-gradient-to-r from-[#bb142e] to-[#800d1e] hover:from-[#d11735] hover:to-[#9a1024] text-white rounded-lg transition cursor-pointer flex items-center gap-1.5 text-xs font-bold border border-amber-400/30 shadow-xs"
+              title="Udostępnij na Tablicy Społeczności LUMINA"
+              aria-label="Udostępnij na Tablicy Społeczności LUMINA"
+            >
+              <span className="w-4 h-4 rounded-full bg-amber-400 text-black font-black text-[10px] flex items-center justify-center">L</span>
+              <span className="hidden sm:inline text-[11px]">Tablica</span>
+            </button>
+
+            {/* Copy Link button */}
             <button
               onClick={handleCopyLink}
               className="p-2 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition cursor-pointer flex items-center gap-1 text-xs"
@@ -133,7 +198,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               ) : (
                 <>
                   <Share2 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Udostępnij</span>
+                  <span className="hidden sm:inline">Kopiuj</span>
                 </>
               )}
             </button>
@@ -205,6 +270,58 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-gray-400" />
                 <span>{article.readTimeMinutes} min czytania</span>
+              </div>
+            </div>
+
+            {/* Social Share Bar Top */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5 p-3 bg-zinc-50 border border-zinc-200/90 rounded-xl">
+              <div className="flex items-center gap-2 text-xs font-bold text-gray-700">
+                <Share2 className="w-3.5 h-3.5 text-[#bb142e]" />
+                <span>Udostępnij tę publikację:</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Przycisk X (Twitter) */}
+                <button
+                  onClick={handleShareX}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black hover:bg-zinc-800 text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-xs min-h-[36px]"
+                  title="Udostępnij na platformie X"
+                  aria-label="Udostępnij na platformie X"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  <span>Udostępnij na X</span>
+                </button>
+                {/* Przycisk LUMINA */}
+                <button
+                  onClick={handleShareLumina}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#bb142e] to-[#800d1e] hover:from-[#d11735] hover:to-[#9a1024] text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-xs border border-amber-400/30 min-h-[36px]"
+                  title="Udostępnij na Tablicy Społeczności LUMINA"
+                  aria-label="Udostępnij na Tablicy LUMINA"
+                >
+                  <span className="w-4 h-4 rounded-full bg-amber-400 text-black font-black text-[10px] flex items-center justify-center">L</span>
+                  <span>Tablica LUMINA</span>
+                </button>
+                {/* Przycisk Facebook */}
+                <button
+                  onClick={handleShareFacebook}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-xs min-h-[36px]"
+                  title="Udostępnij na Facebooku"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  <span className="hidden sm:inline">Facebook</span>
+                </button>
+                {/* Kopiuj link */}
+                <button
+                  onClick={handleCopyLink}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold transition cursor-pointer min-h-[36px]"
+                  title="Kopiuj link do artykułu"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+                  <span>{copied ? 'Skopiowano!' : 'Kopiuj'}</span>
+                </button>
               </div>
             </div>
           </div>
@@ -301,8 +418,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               }
               const isInterviewSpeaker = article.isInterview === true && paragraph.startsWith('CCN News:');
               return (
-                <p
-                  key={index}
+                <p 
+                  key={index} 
                   className={`leading-relaxed ${isInterviewSpeaker ? 'font-medium bg-zinc-50 p-3 rounded-lg border-l-2 border-[#bb142e]' : ''}`}
                 >
                   {paragraph}
@@ -447,6 +564,50 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   #{tag}
                 </span>
               ))}
+            </div>
+          </div>
+
+          {/* Social Share Callout Bottom */}
+          <div className="bg-gradient-to-r from-zinc-900 via-zinc-950 to-black text-white p-4 sm:p-5 rounded-xl border border-zinc-800 my-6 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 block mb-1">
+                GŁOŚ PRAWDĘ • PODAJ DALEJ
+              </span>
+              <h4 className="font-bold text-sm sm:text-base text-white">
+                Podziel się tą publikacją w mediach społecznościowych!
+              </h4>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={handleShareX}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs font-bold transition cursor-pointer shadow-sm min-h-[40px]"
+                title="Udostępnij na platformie X"
+                aria-label="Udostępnij na platformie X"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                <span>Udostępnij na X</span>
+              </button>
+              <button
+                onClick={handleShareLumina}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-[#bb142e] to-[#800d1e] hover:from-[#d11735] hover:to-[#9a1024] text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-sm border border-amber-400/30 min-h-[40px]"
+                title="Udostępnij na Tablicy Społeczności LUMINA"
+                aria-label="Udostępnij na Tablicy LUMINA"
+              >
+                <span className="w-4 h-4 rounded-full bg-amber-400 text-black font-black text-[10px] flex items-center justify-center">L</span>
+                <span>Tablica LUMINA</span>
+              </button>
+              <button
+                onClick={handleShareFacebook}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-sm min-h-[40px]"
+                title="Udostępnij na Facebooku"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span className="hidden sm:inline">Facebook</span>
+              </button>
             </div>
           </div>
 

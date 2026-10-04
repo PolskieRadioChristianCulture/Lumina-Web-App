@@ -105,7 +105,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       </div>
 
       {/* Action Footer */}
-      <div className="px-4 pb-4 pt-1 flex items-center justify-between">
+      <div className="px-4 pb-4 pt-1 flex items-center justify-between gap-2 border-t border-gray-50 mt-1">
         <button
           onClick={() => onReadArticle(article)}
           className="inline-flex items-center gap-1 text-xs text-[#bb142e] hover:text-[#981025] font-bold transition cursor-pointer group-hover:translate-x-0.5"
@@ -114,11 +114,43 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           <span>→</span>
         </button>
 
-        {article.scriptureReference && (
-          <span className="text-[10px] text-gray-400 italic truncate max-w-[130px]">
-            {article.scriptureReference.verse}
-          </span>
-        )}
+        <div className="flex items-center gap-1.5">
+          {/* Przycisk X (Twitter) */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const url = typeof window !== 'undefined'
+                ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
+                : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
+              const text = `${article.title}\n\nCzytaj w CCN News:`;
+              window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer,width=600,height=450');
+            }}
+            className="p-1.5 rounded-md bg-gray-100 hover:bg-black hover:text-white text-gray-700 transition cursor-pointer flex items-center justify-center shadow-2xs"
+            title="Udostępnij na platformie X"
+            aria-label="Udostępnij na platformie X"
+          >
+            <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </button>
+
+          {/* Przycisk L (LUMINA) */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const url = typeof window !== 'undefined'
+                ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
+                : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
+              const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+              window.open(luminaUrl, '_blank', 'noopener,noreferrer');
+            }}
+            className="w-6 h-6 rounded-md bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center text-[10px] font-black hover:scale-105 transition cursor-pointer shadow-2xs border border-amber-400/40"
+            title="Udostępnij na Tablicy Społeczności LUMINA"
+            aria-label="Udostępnij na Tablicy LUMINA"
+          >
+            L
+          </button>
+        </div>
       </div>
     </article>
   );
