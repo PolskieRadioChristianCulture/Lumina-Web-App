@@ -2574,9 +2574,15 @@
 
   <!-- ══════════ GŁÓWNA ZAWARTOŚĆ ══════════ -->
   <main class="mb-main-container">
-    <div class="mb-chapter-hero">
+    <div class="mb-chapter-hero" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
       <h2 id="mbChapterTitle">Ewangelia wg św. Jana – Rozdział 1</h2>
       <p id="mbChapterSubtitle">Prolog o Wcieleniu Odwiecznego Słowa (Logosu) • Greka Nowotestamentowa</p>
+      <div style="margin-top:6px;">
+        <button type="button" class="lumina-share-btn-l" onclick="window.mbShareChapterToLumina()" title="Opublikuj ten rozdział na Tablicy Społeczności LUMINA" style="min-height:44px;">
+          <span class="lumina-badge-l-icon">L</span>
+          <span>Udostępnij Rozdział na Tablicy</span>
+        </button>
+      </div>
     </div>
 
     <!-- Slot banera integracji (np. powrót do Wersetu Dnia) -->
@@ -2656,7 +2662,8 @@
     </div>
   </footer>
 
-  <!-- Silnik MojaBiblia -->
+  <!-- Silnik Lumina Share & MojaBiblia -->
+  <script defer src="js/lumina-share.js"></script>
   <script defer src="mojabiblia-engine.js?v=2.1.0_20260924"></script>
 </body>
 </html>

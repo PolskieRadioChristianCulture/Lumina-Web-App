@@ -463,6 +463,10 @@
                     </div>
 
                     <div class="lumina-share-grid" style="margin-bottom:14px;">
+                        <button type="button" class="lumina-share-btn btn-lumina-board" onclick="window.executeShareTo('lumina')" title="Opublikuj na Tablicy Społeczności LUMINA">
+                            <span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:5px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:900; font-family:'Cinzel',serif; font-size:14px; line-height:1; box-shadow:0 0 8px rgba(250,204,21,0.6);">L</span>
+                            <span style="color:#fde047; font-weight:900;">Tablica</span>
+                        </button>
                         <button type="button" class="lumina-share-btn btn-repost-quick" onclick="window.openLuminaRepostComposer()" title="Udostępnij na swoim profilu LUMINA">
                             <i class="fa-solid fa-repeat" style="color:#f59e0b;"></i>
                             <span style="color:#fef08a; font-weight:800;">U siebie</span>
@@ -1008,6 +1012,24 @@
         }
 
         switch (platform) {
+            case 'lumina':
+                if (typeof window.shareToLumina === 'function') {
+                    window.shareToLumina({
+                        title: title,
+                        text: text,
+                        url: url,
+                        imageUrl: (currentSharePayload.post && currentSharePayload.post.image) || currentSharePayload.image || '',
+                        videoUrl: (currentSharePayload.post && (currentSharePayload.post.videoUrl || currentSharePayload.post.youtubeUrl)) || currentSharePayload.videoUrl || ''
+                    });
+                } else {
+                    const sp = new URLSearchParams();
+                    if (title) sp.set('share_title', title);
+                    if (text) sp.set('share_text', text);
+                    if (url) sp.set('share_url', url);
+                    window.location.href = 'lumina-tablica.html?' + sp.toString();
+                }
+                closeShareModal();
+                break;
             case 'whatsapp':
                 window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
                 break;

@@ -917,12 +917,15 @@
 
             <!-- Przyciski dolne -->
             <div class="pt-3 border-t border-white/5 flex items-center gap-2">
-                <button onclick="addToPlaylist()" class="flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white flex items-center justify-center gap-2 transition active:scale-95">
+                <button onclick="addToPlaylist()" class="flex-1 min-h-[44px] py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white flex items-center justify-center gap-2 transition active:scale-95">
                     <i class="fa-solid fa-plus text-amber-400"></i>
                     <span>Zapisz w bibliotece</span>
                 </button>
-                <button onclick="openMoreOptions()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Udostępnij">
+                <button onclick="openMoreOptions()" class="w-11 h-11 min-h-[44px] min-w-[44px] rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Udostępnij">
                     <i class="fa-solid fa-share-nodes"></i>
+                </button>
+                <button onclick="sharePlayerToLumina()" class="w-11 h-11 min-h-[44px] min-w-[44px] rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-black font-black font-serif text-sm flex items-center justify-center shadow-lg shadow-amber-500/30 transition active:scale-95" title="Opublikuj na Tablicy Społeczności LUMINA">
+                    L
                 </button>
             </div>
         </aside>
@@ -1890,6 +1893,30 @@
             alert("Skopiowano bezpośredni link do odtwarzacza PolskieRadio.cc do schowka! ✨");
         }
 
+        function sharePlayerToLumina() {
+            const currentTitle = document.getElementById('current-title') ? document.getElementById('current-title').textContent.trim() : 'Radio Biblia Audio';
+            const currentArtist = document.getElementById('current-artist') ? document.getElementById('current-artist').textContent.trim() : 'Christian Culture';
+            const currentCover = document.getElementById('current-cover') ? document.getElementById('current-cover').src : '';
+            const text = `Słucham właśnie stacji: 🎙️ ${currentTitle} (${currentArtist})\n\nDołącz do audycji i słuchaj Pisma Świętego 24/7 w odtwarzaczu PolskieRadio.cc:`;
+            const url = window.location.origin + '/player';
+
+            if (typeof window.shareToLumina === 'function') {
+                window.shareToLumina({
+                    title: `🎙️ Odtwarzacz CC: ${currentTitle}`,
+                    text: text,
+                    url: url,
+                    imageUrl: currentCover || ''
+                });
+            } else {
+                const sp = new URLSearchParams();
+                sp.set('share_title', `🎙️ Odtwarzacz CC: ${currentTitle}`);
+                sp.set('share_text', text);
+                sp.set('share_url', url);
+                if (currentCover) sp.set('share_img', currentCover);
+                window.location.href = 'lumina-tablica.html?' + sp.toString();
+            }
+        }
+
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
         }
@@ -1928,5 +1955,6 @@
             onVolumeChange(80);
         });
     </script>
+    <script defer src="js/lumina-share.js"></script>
 </body>
 </html>

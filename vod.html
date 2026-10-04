@@ -1401,12 +1401,16 @@
                     <div><strong>Reżyseria:</strong> <span id="detailDirector" style="color:#fff;">—</span></div>
                     <div><strong>Obsada:</strong> <span id="detailCast" style="color:#fff;">—</span></div>
                 </div>
-                <div style="display:flex; gap:12px; margin-top:8px;">
-                    <button type="button" class="btn-hero-play" id="btnDetailPlay" style="flex:1; justify-content:center;">
+                <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+                    <button type="button" class="btn-hero-play" id="btnDetailPlay" style="flex:1; justify-content:center; min-height:44px;">
                         <i class="fa-solid fa-play"></i> Odtwórz seans
                     </button>
-                    <button type="button" class="btn-hero-info" onclick="shareCurrentDetailMovie()">
+                    <button type="button" class="btn-hero-info" onclick="shareCurrentDetailMovie()" style="min-height:44px;">
                         <i class="fa-solid fa-share-nodes"></i> Poleć
+                    </button>
+                    <button type="button" class="lumina-share-btn-l" onclick="shareMovieToLumina(detailMovie ? detailMovie.id : null)" title="Opublikuj film na Tablicy Społeczności LUMINA">
+                        <span class="lumina-badge-l-icon">L</span>
+                        <span>Tablica LUMINA</span>
                     </button>
                 </div>
             </div>
@@ -2092,6 +2096,9 @@
                             <button type="button" class="btn-card-icon" onclick="shareMovieDirect('${m.id}')" title="Udostępnij">
                                 <i class="fa-solid fa-share-nodes"></i>
                             </button>
+                            <button type="button" class="btn-card-icon" onclick="shareMovieToLumina('${m.id}')" title="Opublikuj na Tablicy LUMINA" style="width:44px; height:44px; min-width:44px; min-height:44px; color:#facc15; font-weight:900; font-family:'Cinzel',serif; font-size:14px;">
+                                L
+                            </button>
                         </div>
                     </div>
                 </article>
@@ -2519,6 +2526,29 @@
             if (detailMovie) shareMovieDirect(detailMovie.id);
         };
 
+        window.shareMovieToLumina = function(movieId) {
+            const m = window.VodDB.getMovieById(movieId);
+            if (!m) return;
+            const url = window.location.origin + '/vod?film=' + m.id;
+            const text = `Polecam wartościowy seans w kinie Christian Culture:\n\n🎬 „${m.title}” (${m.year || 2026})\n${m.desc || ''}\n\nOglądaj bezpłatnie na kanale VOD CC:`;
+            if (typeof window.shareToLumina === 'function') {
+                window.shareToLumina({
+                    title: `🎬 Kino VOD: ${m.title}`,
+                    text: text,
+                    url: url,
+                    imageUrl: m.cover || m.backdrop || '',
+                    videoUrl: m.videoUrl || m.youtubeUrl || ''
+                });
+            } else {
+                const sp = new URLSearchParams();
+                sp.set('share_title', `🎬 Kino VOD: ${m.title}`);
+                sp.set('share_text', text);
+                sp.set('share_url', url);
+                if (m.cover) sp.set('share_img', m.cover);
+                window.location.href = 'lumina-tablica.html?' + sp.toString();
+            }
+        };
+
         // 9. Sprawdzenie parametru w URL (?film=ID)
         function checkUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -2531,6 +2561,7 @@
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
     <script src="js/cc-global-auth.js?v=20260907_auth1" defer></script>
+    <script src="js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
 </body>
 </html>

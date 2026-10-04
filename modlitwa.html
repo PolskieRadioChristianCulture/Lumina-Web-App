@@ -563,6 +563,10 @@
                     <button onclick="shareDomModlitwy()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fa-solid fa-share-nodes"></i> Udostępnij
                     </button>
+                    <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="🙏 Dom Modlitwy — Christian Culture" data-text="Dołącz do wspólnej modlitwy: o zbawienie Narodu Żydowskiego, przeciw antysemityzmowi, o pokój w Jerozolimie i za osobiste intencje. 🕊️" data-url="https://polskieradio.cc/modlitwa.html" title="Opublikuj na Tablicy Społeczności LUMINA">
+                        <span class="lumina-badge-l-icon">L</span>
+                        <span>Tablica LUMINA</span>
+                    </button>
                     
                     <button onclick="document.querySelector('#prayerForm').scrollIntoView({behavior: 'smooth'})" style="background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.5); color: #d4af37; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(212, 175, 55, 0.25)'" onmouseout="this.style.background='rgba(212, 175, 55, 0.15)'">
                         <i class="fa-solid fa-pen-nib"></i> Prześlij intencję modlitewną
@@ -706,6 +710,12 @@
                             <i class="fa-solid fa-share-nodes"></i> Udostępnij Wydarzenie
                         </button>
                         
+                        <!-- LUMINA board button -->
+                        <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="🇵🇱 Zjednoczeni za Polskę — Narodowe Wydarzenie Modlitewne" data-text="Dołącz do narodowej modlitwy za Polskę i prześlij swoją intencję modlitewną. 🙏🕊️" data-url="https://polskieradio.cc/modlitwa.html" style="width:100%; justify-content:center;" title="Opublikuj wydarzenie na Tablicy Społeczności LUMINA">
+                            <span class="lumina-badge-l-icon">L</span>
+                            <span>Opublikuj na Tablicy LUMINA</span>
+                        </button>
+
                         <!-- Copy link button -->
                         <button onclick="copyEventLink()" class="btn-submit" style="background: rgba(255,255,255,0.08); color: #fff; font-weight: 700; text-transform: uppercase; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.15); padding: 12px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;" onmouseover="this.style.background='rgba(255,255,255,0.15)';" onmouseout="this.style.background='rgba(255,255,255,0.08)';">
                             <i class="fa-solid fa-link"></i> Kopiuj link do wydarzenia
@@ -928,6 +938,7 @@
     <script src="lumina-pwa-installer.js?v=4.0.0"></script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
     <script src="js/cc-global-auth.js?v=20260907_auth1" defer></script>
+    <script src="js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
 </body>
 </html>

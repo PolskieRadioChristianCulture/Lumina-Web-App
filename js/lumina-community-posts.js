@@ -50,6 +50,38 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            "id": "post_art_ai_si_antychryst_cezary_rogowski",
+            "type": "post",
+            "category": "si",
+            "isArticle": true,
+            "author": "Cezary Rogowski",
+            "authorSlug": "cezaryrgowski",
+            "authorAvatar": "avatar_cezary_official.jpg",
+            "authorRole": "Założyciel Christian Culture ✨ • Redakcja Teologiczna",
+            "authorBadge": "👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI",
+            "badgeHtml": "<span class=\"badge-type-tag\" style=\"background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);\" title=\"👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI\"><i class=\"fa-solid fa-microchip\"></i> <span class=\"badge-type-tag-text\">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>",
+            "time": "Dzisiaj • 👑 Główna Publikacja Założyciela",
+            "title": "AI, SI a biblijny Antychryst: Dlaczego sztuczna inteligencja nie może być Antychrystem",
+            "text": "Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem?\n\nWraz z rozwojem sztucznej inteligencji coraz częściej pojawiają się próby łączenia AI z biblijnym Antychrystem, „obrazem bestii” czy systemem kontroli z Apokalipsy 13. Z perspektywy rzetelnej analizy Pisma Świętego i proroctw Księgi Daniela takie utożsamienie jest jednak metodologicznie błędne.\n\nBiblia nie przedstawia Antychrysta jako technologii, lecz jako historyczny system religijno-polityczny o określonej sukcesji (1260 lat, mały róg, roszczenia do Bożego Prawa i kultu). Sztuczna inteligencja jest narzędziem, a nie biblijnym podmiotem proroczym.\n\nZapraszam do lektury pełnej, 20-rozdziałowej analizy egzegetycznej z tabelami porównawczymi na portalu CCN Nowe Technologie & SI:\n🔗 https://polskieradio.cc/si/ai-antychryst",
+            "desc": "Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem. Rzetelna analiza Cezarego Rogowskiego.",
+            "image": "/images/si/ai-vs-antychryst.webp",
+            "imageUrl": "/images/si/ai-vs-antychryst.webp",
+            "actionText": "Czytaj Cały Artykuł (14 min) ➔",
+            "actionUrl": "https://polskieradio.cc/si/ai-antychryst",
+            "externalUrl": "https://polskieradio.cc/si/ai-antychryst",
+            "externalUrlLabel": "Czytaj Cały Artykuł (14 min) ➔",
+            "sourceUrl": "https://polskieradio.cc/si/ai-antychryst",
+            "sourceSlug": "ai-antychryst",
+            "likes": 428,
+            "amen": 396,
+            "createdAtTimestamp": 1791080000000,
+            "_sortTs": 1791080000000,
+            "_isNewlyPublished": true,
+            "_isFreshSpotlight": true,
+            "_isTopSpotlight": true
+        },
+
+        {
             "id": "post_ccmen_kurs_malzenski_feed",
             "type": "post",
             "author": "CC Men",

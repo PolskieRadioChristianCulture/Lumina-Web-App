@@ -611,7 +611,7 @@
               </div>
               <div class="mb-verse-actions">
                 <button class="mb-action-btn" onclick="window.mbApp.copyVerse('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Kopiuj werset"><i class="fa-regular fa-copy"></i></button>
-                <button class="mb-action-btn" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Udostępnij w LUMINA"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="mb-action-btn mb-action-lumina" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Opublikuj werset na Tablicy LUMINA" style="width:44px; height:44px; min-width:44px; min-height:44px; color:#facc15; font-weight:900; font-family:'Cinzel',serif; font-size:14px;">L</button>
                 <button class="mb-action-btn ${isBookmarked ? 'active' : ''}" onclick="window.mbApp.toggleBookmark('${data.bookId}', ${data.chapter}, ${v.verse})" title="Zapisz w sercu"><i class="fa-solid fa-bookmark"></i></button>
                 <button class="mb-action-btn" onclick="window.mbApp.openReportProblemModal('${refStr}')" title="Zgłoś uwagę lub pytanie do wersetu ${refStr} na czat Biblia Audio"><i class="fa-regular fa-flag"></i></button>
               </div>
@@ -667,7 +667,7 @@
               <span class="mb-parallel-verse-title">${refStr}</span>
               <div class="mb-verse-actions">
                 <button class="mb-action-btn" onclick="window.mbApp.copyVerse('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Kopiuj werset"><i class="fa-regular fa-copy"></i></button>
-                <button class="mb-action-btn" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Udostępnij w LUMINA"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="mb-action-btn mb-action-lumina" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Opublikuj werset na Tablicy LUMINA" style="width:44px; height:44px; min-width:44px; min-height:44px; color:#facc15; font-weight:900; font-family:'Cinzel',serif; font-size:14px;">L</button>
                 <button class="mb-action-btn" onclick="window.mbApp.openReportProblemModal('${refStr}')" title="Zgłoś uwagę lub pytanie do wersetu ${refStr} na czat Biblia Audio"><i class="fa-regular fa-flag"></i></button>
               </div>
             </div>
@@ -1094,13 +1094,26 @@
     }
 
     shareToLumina(refStr, text) {
-      const postText = `📖 Słowo Boże na dziś:\n\n„${text}”\n— ${refStr}\n\n#MojaBiblia #SlowoBoze #ChristianCulture`;
-      try {
-        localStorage.setItem('lumina_pending_post_draft', postText);
-      } catch (e) {}
-
-      // Przekierowanie do Tablicy LUMINA
-      window.location.href = `lumina-tablica.html?share_ref=${encodeURIComponent(refStr)}`;
+      const title = `📖 Słowo Boże: ${refStr}`;
+      const postText = `„${text}”\n\n— ${refStr}\n\n#MojaBiblia #SlowoBoze #PismoSwiete #ChristianCulture`;
+      const url = `https://polskieradio.cc/mojabiblia.html?ref=${encodeURIComponent(refStr)}`;
+      
+      if (typeof window.shareToLumina === 'function') {
+        window.shareToLumina({
+          title: title,
+          text: postText,
+          url: url
+        });
+      } else {
+        try {
+          localStorage.setItem('lumina_pending_post_draft', postText);
+        } catch (e) {}
+        const sp = new URLSearchParams();
+        sp.set('share_title', title);
+        sp.set('share_text', postText);
+        sp.set('share_url', url);
+        window.location.href = `lumina-tablica.html?${sp.toString()}`;
+      }
     }
 
     toggleBookmark(bookId, ch, v) {
@@ -1730,3 +1743,22 @@
     window.mbApp = new MojaBibliaApp();
   });
 })();
+
+
+// ── LUMINA "L": udostępnienie całego rozdziału na Tablicy (z planem awaryjnym bez lumina-share.js) ──
+window.mbShareChapterToLumina = function () {
+  const titleEl = document.getElementById('mbChapterTitle');
+  const subEl = document.getElementById('mbChapterSubtitle');
+  const title = '📖 ' + (titleEl ? titleEl.innerText.trim() : 'Pismo Święte');
+  const text = (subEl ? subEl.innerText.trim() : '') + '\n\nOtwórz interlinearny tekst i badaj Słowo Boże z kodami Stronga:';
+  const url = window.location.href;
+  if (typeof window.shareToLumina === 'function') {
+    window.shareToLumina({ title: title, text: text, url: url });
+    return;
+  }
+  const sp = new URLSearchParams();
+  sp.set('share_title', title);
+  sp.set('share_text', text);
+  sp.set('share_url', url);
+  window.location.href = 'lumina-tablica.html?' + sp.toString();
+};

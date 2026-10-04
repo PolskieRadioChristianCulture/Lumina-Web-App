@@ -86,23 +86,6 @@
       ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
       .no-scrollbar::-webkit-scrollbar { display: none !important; }
       .no-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
-    
-      /* PŁYNNY TICKER BROADCAST MARQUEE */
-      @keyframes ccnBroadcastTicker {
-        0% { transform: translate3d(0, 0, 0); }
-        100% { transform: translate3d(-50%, 0, 0); }
-      }
-      .ccn-ticker-track {
-        display: inline-flex !important;
-        white-space: nowrap !important;
-        width: max-content !important;
-        will-change: transform;
-        animation: ccnBroadcastTicker 40s linear infinite !important;
-      }
-      .ccn-ticker-track:hover {
-        animation-play-state: paused !important;
-      }
-
     </style>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">

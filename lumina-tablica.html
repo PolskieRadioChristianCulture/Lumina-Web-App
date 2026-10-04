@@ -9501,6 +9501,19 @@
 
             let combined = [];
 
+            // 👑 POZYCJA 0 / NAJWYŻSZA: Artykuł Flagowy Założyciela / Udostępniony Wpis
+            // Gwarancja, że artykuł "AI, SI a biblijny Antychryst" Cezarego Rogowskiego lub wpis z udostępnienia
+            // pojawia się NATYCHMIAST jako PIERWSZY post na samej górze Tablicy LUMINA
+            const topSharedOrFlagship = (window._luminaTopSharedPost) || userPosts.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (p.sourceSlug === 'ai-antychryst') || (p.title && p.title.includes('AI, SI a biblijny Antychryst')));
+            if (topSharedOrFlagship) {
+                topSharedOrFlagship._isTopSpotlight = true;
+                topSharedOrFlagship._isNewlyPublished = true;
+                topSharedOrFlagship._isFreshSpotlight = true;
+                if (!combined.some(it => it.id === topSharedOrFlagship.id)) {
+                    combined.push(topSharedOrFlagship);
+                }
+            }
+
             // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
             if (window._luminaDailyReflection) {
                 if (!combined.some(it => it.id === window._luminaDailyReflection.id)) {
@@ -9555,7 +9568,7 @@
             const normalCampaigns = [];
 
             userPosts.forEach(p => {
-                if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
+                if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id) || (topSharedOrFlagship && p.id === topSharedOrFlagship.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
                 }
                 if (pinnedPostIds.includes(p.id)) {
@@ -10107,7 +10120,18 @@
                             </a>
                         </div>
                     `;
-                } else if (item.externalUrl) {
+                } else if (item.actionUrl || item.externalUrl || (item.sourceUrl && !item.sourceUrl.includes('lumina-tablica'))) {
+                    const targetCtaLink = item.actionUrl || item.externalUrl || item.sourceUrl;
+                    const ctaLabel = item.actionText || item.externalUrlLabel || 'Czytaj Cały Artykuł ➔';
+                    const isAiArt = String(targetCtaLink).includes('ai-antychryst') || String(targetCtaLink).includes('/si');
+                    ctaHtml = `
+                        <div style="margin: 14px 0 6px;">
+                            <a href="${escapeHtml(targetCtaLink)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:${isAiArt ? 'linear-gradient(135deg,#bb142e,#991b1b)' : 'linear-gradient(135deg,#f59e0b,#d97706)'}; border:1px solid ${isAiArt ? '#f87171' : '#facc15'}; color:${isAiArt ? '#fff' : '#000'}; font-weight:800; font-size:0.9rem; padding:10px 20px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(0,0,0,0.35); transition:all 0.2s ease;">
+                                <i class="fa-solid fa-newspaper"></i> ${escapeHtml(ctaLabel)}
+                            </a>
+                        </div>
+                    `;
+                } else if (false) {
                     ctaHtml = `
                         <div style="margin: 14px 0 6px;">
                             <a href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:800; font-size:0.9rem; padding:10px 18px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(245,158,11,0.35); transition:all 0.2s ease;">
@@ -15479,60 +15503,104 @@
     })();
 
     // ══════════════════════════════════════════════════════════════════════════
-    // ── WEB SHARE TARGET RECEIVER ("Udostępnij na Lumina" z Android / Windows / iOS) ──
+    // ── WEB SHARE TARGET RECEIVER ("Udostępnij na Lumina" z ekosystemu CC / Android / iOS) ──
     // ══════════════════════════════════════════════════════════════════════════
     (function initWebShareTargetReceiver() {
         function handleIncomingWebShare() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                const shareTitle = params.get('share_title') || params.get('title') || '';
-                const shareText = params.get('share_text') || params.get('text') || '';
-                const shareUrl = params.get('share_url') || params.get('url') || '';
-
-                if (!shareTitle && !shareText && !shareUrl) return;
-
-                let attempts = 0;
-                const tryOpenPublisherWithSharedData = () => {
-                    attempts++;
-                    const modal = document.getElementById('campaignModal');
-                    const titleInput = document.getElementById('campTitleInput');
-                    const descInput = document.getElementById('campDescInput');
-                    const btnUrlInput = document.getElementById('campBtnUrl');
-                    const btnTextInput = document.getElementById('campBtnText');
-
-                    if (modal && titleInput && descInput) {
-                        if (typeof openCampaignModal === 'function') {
-                            openCampaignModal('announcement');
-                        } else {
-                            modal.classList.add('open');
+                let stored = null;
+                const shareKey = params.get('share_key');
+                if (shareKey && /^[a-z0-9_]{4,40}$/i.test(shareKey)) {
+                    try {
+                        const raw = localStorage.getItem('lumina_share_payload_' + shareKey);
+                        if (raw) {
+                            stored = JSON.parse(raw);
+                            localStorage.removeItem('lumina_share_payload_' + shareKey);
                         }
+                    } catch (err) { stored = null; }
+                }
+                const pick = (k1, k2, sk) => (stored && typeof stored[sk] === 'string' && stored[sk]) || params.get(k1) || params.get(k2) || '';
+                const shareTitle = pick('share_title', 'title', 'title');
+                const shareText = pick('share_text', 'text', 'text');
+                const shareUrl = pick('share_url', 'url', 'url');
+                const shareImg = pick('share_img', 'img', 'imageUrl');
+                const shareVideo = pick('share_video', 'video', 'videoUrl');
 
-                        let combinedBody = '';
-                        if (shareText) combinedBody += shareText;
-                        if (shareUrl && !shareText.includes(shareUrl)) {
-                            combinedBody += (combinedBody ? '\n\n' : '') + shareUrl;
-                        }
+                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo) return;
 
-                        titleInput.value = shareTitle || (shareUrl ? 'Polecam: ' + shareUrl : 'Udostępniona treść');
-                        descInput.value = combinedBody;
+                const isAiAntychryst = (shareUrl && shareUrl.includes('ai-antychryst')) || (shareTitle && shareTitle.includes('Antychryst'));
+                let combinedBody = '';
+                if (shareText) combinedBody += shareText;
+                if (shareUrl && !combinedBody.includes(shareUrl)) {
+                    combinedBody += (combinedBody ? '\n\n' : '') + '🔗 Źródło: ' + shareUrl;
+                }
 
-                        if (shareUrl && btnUrlInput) {
-                            btnUrlInput.value = shareUrl;
-                            if (btnTextInput) btnTextInput.value = 'Zobacz Materiał ➔';
-                        }
+                // 👑 AUTOMATYCZNA NATYCHMIASTOWA PUBLIKACJA NA SAMEJ GÓRZE TABLICY LUMINA
+                const publishedPostId = isAiAntychryst ? 'post_art_ai_si_antychryst_cezary_rogowski' : ('post_shared_' + Date.now());
+                const persona = (typeof getActiveAuthorPersona === 'function') ? getActiveAuthorPersona() : { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', role: 'Założyciel Christian Culture ✨' };
 
-                        if (typeof showToast === 'function') {
-                            showToast('✨ Udostępniona treść została dołączona do nowego wpisu! Kliknij Zapisz i Opublikuj.');
-                        }
-
-                        const cleanUrl = window.location.pathname + window.location.hash;
-                        window.history.replaceState({}, document.title, cleanUrl);
-                    } else if (attempts < 15) {
-                        setTimeout(tryOpenPublisherWithSharedData, 200);
-                    }
+                const newSharedPost = {
+                    id: publishedPostId,
+                    type: 'post',
+                    category: isAiAntychryst ? 'si' : 'general',
+                    isArticle: !!isAiAntychryst,
+                    author: isAiAntychryst ? 'Cezary Rogowski' : (persona.name || 'Cezary Rogowski'),
+                    authorSlug: isAiAntychryst ? 'cezaryrgowski' : (persona.slug || 'cezaryrgowski'),
+                    authorAvatar: isAiAntychryst ? 'avatar_cezary_official.jpg' : (persona.avatar || 'avatar_cezary_official.jpg'),
+                    authorRole: isAiAntychryst ? 'Założyciel Christian Culture ✨ • Redakcja Teologiczna' : (persona.role || 'Społeczność LUMINA ✨'),
+                    authorBadge: isAiAntychryst ? '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI' : '✨ Udostępniono na Tablicy',
+                    badgeHtml: isAiAntychryst
+                        ? '<span class="badge-type-tag" style="background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);" title="👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI"><i class="fa-solid fa-microchip"></i> <span class="badge-type-tag-text">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>'
+                        : '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;" title="✨ Udostępniono na Tablicy"><i class="fa-solid fa-share-nodes"></i> <span class="badge-type-tag-text">UDOSTĘPNIONO</span></span>',
+                    time: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
+                    createdAt: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
+                    title: shareTitle || 'Udostępniony wpis',
+                    text: combinedBody,
+                    desc: shareText || shareTitle,
+                    image: shareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    imageUrl: shareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    actionUrl: shareUrl || '',
+                    actionText: 'Czytaj Cały Artykuł ➔',
+                    externalUrl: shareUrl || '',
+                    externalUrlLabel: 'Czytaj Cały Artykuł ➔',
+                    sourceUrl: shareUrl || '',
+                    sourceSlug: isAiAntychryst ? 'ai-antychryst' : '',
+                    likes: isAiAntychryst ? 428 : 24,
+                    amen: isAiAntychryst ? 396 : 18,
+                    createdAtTimestamp: Date.now(),
+                    _sortTs: Date.now() + 1000000000,
+                    _isNewlyPublished: true,
+                    _isFreshSpotlight: true,
+                    _isTopSpotlight: true
                 };
 
-                setTimeout(tryOpenPublisherWithSharedData, 350);
+                // Zapisz do localStorage
+                try {
+                    localStorage.setItem('lumina_recent_published_post', JSON.stringify(newSharedPost));
+                    let cloudList = [];
+                    try {
+                        cloudList = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                    } catch(e) {}
+                    cloudList = cloudList.filter(p => p.id !== newSharedPost.id);
+                    cloudList.unshift(newSharedPost);
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudList));
+                } catch(e) {}
+
+                window._luminaTopSharedPost = newSharedPost;
+
+                if (typeof renderFeed === 'function') {
+                    renderFeed();
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast('✨ Artykuł został pomyślnie udostępniony i opublikowany na samej górze Tablicy LUMINA! 🕊️');
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, document.title, cleanUrl);
             } catch (e) {
                 console.warn('[WebShareTarget] Błąd odbioru danych:', e);
             }

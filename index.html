@@ -2021,6 +2021,10 @@
                     <button onclick="window.shareDzjContent()" style="background: var(--gold-primary); color: #000; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit; font-size: 0.85rem; letter-spacing: 0.05em; transition: var(--transition-smooth);">
                         <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
                     </button>
+                    <button type="button" class="lumina-share-btn-l" onclick="if(window.shareToLumina){window.shareToLumina({title: window.currentDzjTitle || 'Dobrze, że jesteś — rozważanie dnia', text: window.currentDzjText || '', url: window.location.origin + '/?dzj=true'});}" title="Opublikuj całe rozważanie na Tablicy Społeczności LUMINA">
+                        <span class="lumina-badge-l-icon">L</span>
+                        <span>TABLICA LUMINA</span>
+                    </button>
                     <a id="btnTvVersion" href="cctv24-pl.html" target="_blank" style="background: rgba(226, 184, 89, 0.1); color: var(--gold-primary); border: 2px solid var(--gold-primary); padding: 12px 28px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; font-size: 0.85rem; letter-spacing: 0.05em; text-decoration: none; transition: var(--transition-smooth);">
                         <i class="fa-solid fa-tv"></i> ZOBACZ WERSJĘ TV
                     </a>
@@ -3172,6 +3176,10 @@
                         <button id="btnShareDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #C5A059; color: black; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border: none; box-shadow: 0 0 20px rgba(197,160,89,0.3); transition: all 0.3s;">
                             <i class="fa-solid fa-share-nodes"></i> Udostępnij
                         </button>
+                        <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="📜 Dekalog — Dziesięć Przykazań Bożych" data-text="Poznaj Dziesięć Przykazań — Boże Prawo miłości (Wyjścia 20:1–17). 🕊️" data-url="https://polskieradio.cc/#dekalog" title="Opublikuj na Tablicy Społeczności LUMINA">
+                            <span class="lumina-badge-l-icon">L</span>
+                            <span>Tablica LUMINA</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -3808,6 +3816,7 @@
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
     <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+    <script src="js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
     <script src="js/lumina-rss-suite.js" defer></script>
 </body>
