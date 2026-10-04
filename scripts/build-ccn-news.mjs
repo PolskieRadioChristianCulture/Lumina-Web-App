@@ -13,4 +13,5 @@ for (const file of await readdir(path.join(source, 'dist/assets'))) {
 const html = (await readFile(path.join(source, 'dist/index.html'), 'utf8')).replace(/\r\n/g, '\n').replace(/[\t ]+$/gm, '');
 await writeFile(path.join(root, 'news.html'), html);
 await writeFile(path.join(root, 'news/index.html'), html);
+await copyFile(path.join(source, 'public/data/ccn-public-feed.json'), path.join(root, 'data/ccn-public-feed.json'));
 console.log('CCN News: canonical source built; both public entrypoints updated.');

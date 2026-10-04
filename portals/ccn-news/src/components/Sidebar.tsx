@@ -178,7 +178,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span>Czytaj artykuł</span>
           </button>
           <a
-            href="/akademia/kurscodzienny/dzien-03"
+            href={dailyDevotional.relatedCourse?.url || '/akademia/kurscodzienny'}
             className="bg-[#D4A94A] hover:bg-[#b89038] text-black text-xs font-bold py-2.5 px-2 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer shadow-xs active:translate-y-0.5 text-center"
           >
             <GraduationCap className="w-3.5 h-3.5 shrink-0" />

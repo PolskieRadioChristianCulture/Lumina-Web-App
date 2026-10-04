@@ -1,4 +1,8 @@
+import { useHeadlineRotation } from './lib/useHeadlineRotation';
+import { readBookmarks } from './lib/bookmarks';
 import React, { useState, useEffect, useRef } from 'react';
+import { EcosystemNews } from './components/EcosystemNews';
+import { PortalPatron } from './components/PortalPatron';
 import { Header } from './components/Header';
 import { BreakingTicker } from './components/BreakingTicker';
 import { HeroArticle } from './components/HeroArticle';
@@ -69,7 +73,7 @@ export default function App() {
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('ccn_bookmarks');
-      return saved ? JSON.parse(saved) : [];
+      return readBookmarks(saved);
     } catch {
       return [];
     }
@@ -169,7 +173,9 @@ export default function App() {
   };
 
   const isHome = currentCategory === 'home';
-  const heroArticle = articles.find((a) => a.isHero) || articles[0];
+  const heroCandidates = [...articles.filter(a => a.isHero), ...articles.filter(a => !a.isHero && (a.category === 'kraj' || a.category === 'swiat'))];
+  const heroRotation = useHeadlineRotation(heroCandidates.length);
+  const heroArticle = heroCandidates[heroRotation.index] || articles[0];
 
   // Filtered Articles based on Category
   const displayedArticles = isHome
@@ -222,11 +228,7 @@ export default function App() {
       />
 
       {/* 2. Breaking News Live Ticker */}
-      <BreakingTicker
-        onSelectHeadline={() => {
-          setSelectedArticle(heroArticle);
-        }}
-      />
+      <BreakingTicker items={heroCandidates.map(article => article.title)} onSelectHeadline={title => handleSelectArticle(heroCandidates.find(article => article.title === title) || null)} />
 
       {/* 3. Main Content Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 w-full">
@@ -281,14 +283,11 @@ export default function App() {
             {/* LEFT CONTENT (lg:col-span-2) */}
             <div className="lg:col-span-2 space-y-10">
               {/* HERO ARTICLE (Rendered on Home) */}
-              {isHome && (
-                <HeroArticle
+              {isHome && (<section aria-label="Główne tematy dnia" {...heroRotation.handlers}><HeroArticle
                   article={heroArticle}
                   onReadArticle={(art) => handleSelectArticle(art)}
                   isBookmarked={bookmarkedIds.includes(heroArticle.id)}
-                  onToggleBookmark={toggleBookmark}
-                />
-              )}
+                  onToggleBookmark={toggleBookmark} />{heroCandidates.length > 1 && <div className="flex justify-center items-center gap-4 py-3 text-sm"><button aria-label="Poprzedni temat dnia" onClick={heroRotation.previous}>←</button><span>{heroRotation.index + 1}/{heroCandidates.length}</span><button aria-label="Następny temat dnia" onClick={heroRotation.next}>→</button><button onClick={heroRotation.toggle}>{heroRotation.paused ? "Wznów tematy" : "Wstrzymaj tematy"}</button></div>}</section>)}
 
               {/* DEDICATED CATEGORY SECTIONS */}
               {currentCategory === 'kursy' && <CoursesBannerSection />}
@@ -364,6 +363,7 @@ export default function App() {
                 )}
               </section>
 
+              {isHome && <PortalPatron />}
               {/* On Homepage: Display the Rich Christian Wikipedia / Biblical Lexicon Section */}
               {isHome && <LexiconSection />}
 
@@ -395,7 +395,9 @@ export default function App() {
         )}
 
         {/* Full-width Carousel of All Ecosystem Subpages */}
+        {isHome && <EcosystemNews />}
         {isHome && <EcosystemCarouselSection />}
+        <section aria-labelledby="koncept-patron-title" className="mt-8 border-t border-zinc-200 pt-6 pb-4 text-center"><h2 id="koncept-patron-title" className="text-sm font-bold tracking-widest text-gray-900 mb-3">OFICJALNY PATRON</h2><a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer sponsored" aria-label="Koncept Studio — oficjalny patron" className="block w-full max-w-[728px] mx-auto rounded-lg overflow-hidden border border-zinc-200"><img src="/ccn-koncept-patron.jpg" alt="Koncept Studio Mebli — baner oficjalnego patrona" width="728" height="180" loading="lazy" className="block w-full h-auto object-contain" /></a></section>
       </main>
 
       {/* 4. Footer */}

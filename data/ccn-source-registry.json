@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "sourceAccess": "public-read-only",
+    "rawQueue": "private-directory-outside-repository",
+    "publisher": "blocked-until-an-existing-authorized-backend-is-approved",
+    "newRolesDatabasesOrPaidServices": "not-authorized",
+    "estimatedIncrementalCost": "0 for the local pilot; production backend and operating costs are unassessed"
+  },
+  "sources": [
+    {
+      "id": "academy-daily",
+      "channel": "Akademia / Kurs Codzienny",
+      "status": "pilot",
+      "publicUrl": "https://polskieradio.cc/data/kurscodzienny/m01_rodzaju.json",
+      "adapter": "lessons",
+      "access": "public-read-only",
+      "owner": "Christian Culture / Akademia; accountable editor not confirmed by this adapter",
+      "rightsStatus": "requires-review",
+      "authorStatus": "requires-editorial-verification",
+      "blocker": null
+    },
+    {
+      "id": "cc-media",
+      "channel": "Media / Muzyka CC",
+      "status": "pilot",
+      "publicUrl": "https://polskieradio.cc/js/lumina-yt-synced-feed.json",
+      "adapter": "media",
+      "access": "public-read-only",
+      "owner": "Christian Culture; accountable editor and per-item ownership not confirmed",
+      "rightsStatus": "requires-review",
+      "authorStatus": "requires-editorial-verification",
+      "blocker": null
+    },
+    {
+      "id": "announcements",
+      "channel": "/ogloszenia",
+      "status": "blocked",
+      "publicUrl": "https://polskieradio.cc/ogloszenia",
+      "adapter": null,
+      "access": "no-import",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "The observed cc_community_announcements data is stored in localStorage; this does not establish real submissions, consent, server persistence, or rights."
+    },
+    {
+      "id": "business",
+      "channel": "/biznes",
+      "status": "proposed",
+      "publicUrl": "https://polskieradio.cc/biznes",
+      "adapter": null,
+      "access": "public-read-only-not-established",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "A public route and coordinator names do not establish a content API, accountable human authorship, or reuse rights."
+    },
+    {
+      "id": "culture",
+      "channel": "/kultura",
+      "status": "proposed",
+      "publicUrl": "https://polskieradio.cc/kultura",
+      "adapter": null,
+      "access": "public-read-only-not-established",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "A public route and coordinator names do not establish a content API, accountable human authorship, or reuse rights."
+    },
+    {
+      "id": "ziu",
+      "channel": "/ziu",
+      "status": "blocked",
+      "publicUrl": "https://polskieradio.cc/ziu",
+      "adapter": null,
+      "access": "no-import",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "Health claims lack visible research sources and real medical review; named authorship is unconfirmed."
+    },
+    {
+      "id": "kitchen",
+      "channel": "/kuchnia",
+      "status": "proposed",
+      "publicUrl": "https://polskieradio.cc/kuchnia",
+      "adapter": null,
+      "access": "public-route-confirmed-data-feed-not-established",
+      "owner": "Christian Culture; accountable human authors not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "The public route is confirmed, but no source store/API, author verification, image rights, or reviewed biblical context is established. Health claims require the ZIU review standard."
+    },
+    {
+      "id": "radio",
+      "channel": "Radio / audycje",
+      "status": "proposed",
+      "publicUrl": null,
+      "adapter": null,
+      "access": "not-established",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "No specific public feed/API, accountable owner, or per-item reuse permission is established."
+    },
+    {
+      "id": "vod",
+      "channel": "VOD",
+      "status": "proposed",
+      "publicUrl": null,
+      "adapter": null,
+      "access": "not-established",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "No specific public feed/API, accountable owner, or per-item reuse permission is established."
+    },
+    {
+      "id": "broadcast-live",
+      "channel": "CCTV / live",
+      "status": "blocked",
+      "publicUrl": null,
+      "adapter": null,
+      "access": "no-import",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "No source contract or permissions established; production broadcast files are frozen and out of scope."
+    },
+    {
+      "id": "lumina-community",
+      "channel": "LUMINA / treści społeczności",
+      "status": "blocked",
+      "publicUrl": null,
+      "adapter": null,
+      "access": "no-import",
+      "owner": "not confirmed",
+      "rightsStatus": "unknown",
+      "authorStatus": "unverified",
+      "blocker": "Private or user-generated content requires an explicit public-source contract, consent, ownership, and authorization; no suitable feed is established."
+    }
+  ]
+}

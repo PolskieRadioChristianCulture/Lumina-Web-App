@@ -28,7 +28,7 @@ const NAV_ITEMS: { id: Category; label: string; badge?: string }[] = [
   { id: 'kraj', label: 'Kraj' },
   { id: 'swiat', label: 'Świat' },
   { id: 'wywiady', label: 'Wywiady' },
-  { id: 'leksykon', label: 'Leksykon Wiary', badge: 'Encyklopedia' },
+  { id: 'leksykon', label: 'Leksykon Wiary' },
   { id: 'kursy', label: 'Kursy CC' },
   { id: 'muzyka', label: 'Muzyka' },
   { id: 'about', label: 'O nas' },
@@ -171,12 +171,12 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Main Brand & Nav Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between py-3 sm:py-4">
+        <div className="news-brand-row flex flex-wrap items-center justify-between gap-3 py-3 sm:py-4">
           {/* Logo */}
-          <a href="/news" className="group cursor-pointer focus:outline-none text-left block" aria-label="CCN News – Christian Culture Strona Główna" title="Przejdź do strony głównej CCN News"><CcnLogo layout="horizontal" disableLink={true} /></a>
+          <a href="/news" className="news-brand-button group cursor-pointer focus:outline-none text-left block" aria-label="CCN News – Christian Culture Strona Główna" title="Przejdź do strony głównej CCN News"><CcnLogo layout="horizontal" className="news-header-logo" disableLink={true} /></a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium text-gray-700">
+          <nav className="hidden 2xl:flex order-3 w-full flex-wrap items-center gap-5 xl:gap-7 text-sm font-medium text-gray-700">
             {NAV_ITEMS.map((item) => {
               const isActive = currentCategory === item.id;
               return (
@@ -201,7 +201,7 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Action buttons (Radio Live, Search, Bookmarks, CC Auth) */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="news-header-actions flex items-center justify-center gap-2 sm:gap-3">
             {/* Live Radio Stream Button */}
             <button
               onClick={onToggleRadio}
@@ -330,7 +330,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-800 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
+              className="2xl:hidden p-2 text-gray-800 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
               aria-label={mobileMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
             >
               {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
@@ -340,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 py-3 space-y-1 animate-in slide-in-from-top-2 duration-150">
+          <div className="2xl:hidden border-t border-gray-200 py-3 space-y-1 animate-in slide-in-from-top-2 duration-150">
             {NAV_ITEMS.map((item) => {
               const isActive = currentCategory === item.id;
               return (

@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "timezone": "Europe/Warsaw",
+  "dailyStart": "06:00",
+  "publicationRequiresOwnerReleaseApproval": true,
+  "portals": [
+    {
+      "id": "news",
+      "name": "CCN News",
+      "publicUrl": "https://polskieradio.cc/news",
+      "deepReviewDay": "daily",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "consumer-no-self-import",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "news",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/news",
+        "title": "CCN News – Chrześcijański Portal Informacyjny | Christian Culture",
+        "script": "/assets/news-index-C4bNWhrd.js",
+        "checkedAt": "2026-10-03T19:26:46.839Z"
+      }
+    },
+    {
+      "id": "nauka",
+      "name": "CCN Nauka",
+      "publicUrl": "https://polskieradio.cc/nauka",
+      "deepReviewDay": "monday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "nauka",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/nauka",
+        "title": "CCN Nauka – Kosmologia, Fizyka, Socjologia a Biblia | Christian Culture",
+        "script": "/assets/nauka-index-D3_wmLFU.js",
+        "checkedAt": "2026-10-03T19:26:46.823Z"
+      }
+    },
+    {
+      "id": "historia",
+      "name": "CCN Historia",
+      "publicUrl": "https://polskieradio.cc/historia",
+      "deepReviewDay": "tuesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "historia",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/historia",
+        "title": "CCN Historia – Rzetelność Historyczna i Archeologia Biblijna | Christian Culture",
+        "script": "/assets/historia-index-BAz_zJEg.js",
+        "checkedAt": "2026-10-03T19:26:46.816Z"
+      }
+    },
+    {
+      "id": "biologia",
+      "name": "CCN Biologia",
+      "publicUrl": "https://polskieradio.cc/biologia",
+      "deepReviewDay": "monday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "biologia",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/biologia",
+        "title": "CCN Biologia – Biologia a Biblia, Kod DNA i Cud Życia | Christian Culture",
+        "script": "/assets/biologia-index-D0UyeMXp.js",
+        "checkedAt": "2026-10-03T19:26:46.828Z"
+      }
+    },
+    {
+      "id": "prawo",
+      "name": "CCN Prawo",
+      "publicUrl": "https://polskieradio.cc/prawo",
+      "deepReviewDay": "wednesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "prawo",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/prawo",
+        "title": "CCN Prawo – Prawo a Biblia, Dekalog i Źródła Sprawiedliwości | Christian Culture",
+        "script": "/assets/prawo-index-7nproAXo.js",
+        "checkedAt": "2026-10-03T19:26:46.814Z"
+      }
+    },
+    {
+      "id": "seks",
+      "name": "CCN Małżeństwo",
+      "publicUrl": "https://polskieradio.cc/seks",
+      "deepReviewDay": "friday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "seks",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/seks",
+        "title": "CCN Małżeństwo – Boży Zamysł dla Małżeństwa, Narzeczeństwo i Czystość | Christian Culture",
+        "script": "/assets/seks-index-BvfpaQt9.js",
+        "checkedAt": "2026-10-03T19:26:46.816Z"
+      }
+    },
+    {
+      "id": "kultura",
+      "name": "CCN Kultura",
+      "publicUrl": "https://polskieradio.cc/kultura",
+      "deepReviewDay": "friday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "kultura",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/kultura",
+        "title": "CCN Kultura – Centrum Kultury Chrześcijańskiej & Dashboard Uświęcenia | Christian Culture",
+        "script": "/assets/kultura-index-DwgnQFLG.js",
+        "checkedAt": "2026-10-03T19:26:46.818Z"
+      }
+    },
+    {
+      "id": "biznes",
+      "name": "CCN Biznes",
+      "publicUrl": "https://polskieradio.cc/biznes",
+      "deepReviewDay": "wednesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "biznes",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/biznes",
+        "title": "CCN Biznes – Chrześcijański Węzeł Gospodarczy & Katalog Usług | Christian Culture",
+        "script": "/assets/biznes-index-Dx2xszRG.js",
+        "checkedAt": "2026-10-03T19:26:46.828Z"
+      }
+    },
+    {
+      "id": "kuchnia",
+      "name": "CCN Kuchnia",
+      "publicUrl": "https://polskieradio.cc/kuchnia",
+      "deepReviewDay": "thursday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "kuchnia",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/kuchnia",
+        "title": "CCN Kuchnia – Chrześcijański Stół & Kuchnia Biblijna | Christian Culture",
+        "script": "/assets/kuchnia-index-BpsW4_PM.js",
+        "checkedAt": "2026-10-03T19:26:46.819Z"
+      }
+    },
+    {
+      "id": "ziu",
+      "name": "CCN ZIU",
+      "publicUrl": "https://polskieradio.cc/ziu",
+      "deepReviewDay": "thursday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": true,
+      "httpObservation": {
+        "route": "ziu",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/ziu",
+        "title": "CCN ZIU – Zdrowie i Uroda w Świetle Biblii | Christian Culture",
+        "script": "/assets/ziu-index-CmlBMW6-.js",
+        "checkedAt": "2026-10-03T19:26:46.827Z"
+      }
+    },
+    {
+      "id": "ogloszenia",
+      "name": "CCN Ogłoszenia",
+      "publicUrl": "https://polskieradio.cc/ogloszenia",
+      "deepReviewDay": "sunday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "ogloszenia",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/ogloszenia",
+        "title": "CCN Ogłoszenia – Tablica Społeczności Chrześcijańskiej | Christian Culture",
+        "script": "/assets/ogloszenia-index-EJb1F_sD.js",
+        "checkedAt": "2026-10-03T19:26:46.823Z"
+      }
+    },
+    {
+      "id": "wspolpraca",
+      "name": "CCN Współpraca",
+      "publicUrl": "https://polskieradio.cc/wspolpraca",
+      "deepReviewDay": "saturday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "wspolpraca",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/wspolpraca",
+        "title": "Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture",
+        "script": "/assets/wspolpraca-index-CW_JntEh.js",
+        "checkedAt": "2026-10-03T19:26:46.822Z"
+      }
+    },
+    {
+      "id": "network",
+      "name": "CC Network",
+      "publicUrl": "https://polskieradio.cc/network",
+      "deepReviewDay": "sunday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "network",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/network",
+        "title": "CC NETWORK | Christian Culture — 40+ Kanałów • Jedna Misja",
+        "checkedAt": "2026-10-03T19:26:46.825Z"
+      }
+    },
+    {
+      "id": "biblioteka",
+      "name": "CCN Biblioteka",
+      "publicUrl": "https://polskieradio.cc/biblioteka",
+      "deepReviewDay": "tuesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "biblioteka",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/biblioteka",
+        "title": "CCN Biblioteka – Książki, Audiobooki, E-booki Chrześcijańskie | Christian Culture",
+        "script": "/assets/biblioteka-index-Bbn5FNG6.js",
+        "checkedAt": "2026-10-03T19:26:46.818Z"
+      }
+    },
+    {
+      "id": "edukacja",
+      "name": "CCN Edukacja",
+      "publicUrl": "https://polskieradio.cc/edukacja",
+      "deepReviewDay": "friday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "edukacja",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/edukacja",
+        "title": "CCN Edukacja – Wychowanie, Dzieci i Młodzież w Wierze | Christian Culture",
+        "script": "/assets/edukacja-index-BF9CQLSL.js",
+        "checkedAt": "2026-10-03T19:26:46.862Z"
+      }
+    },
+    {
+      "id": "psychologia",
+      "name": "CCN Psychologia",
+      "publicUrl": "https://polskieradio.cc/psychologia",
+      "deepReviewDay": "thursday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": true,
+      "httpObservation": {
+        "route": "psychologia",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/psychologia",
+        "title": "CCN Psychologia – Emocje, Zdrowie Psychiczne i Biblia | Christian Culture",
+        "script": "/assets/psychologia-index-D7DUDXiX.js",
+        "checkedAt": "2026-10-03T19:26:46.877Z"
+      }
+    },
+    {
+      "id": "finanse",
+      "name": "CCN Finanse",
+      "publicUrl": "https://polskieradio.cc/finanse",
+      "deepReviewDay": "wednesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "finanse",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/finanse",
+        "title": "CCN Finanse – Biblijne Zarządzanie, Wolność Finansowa i Budżet | Christian Culture",
+        "script": "/assets/finanse-index-D6S9ZILS.js",
+        "checkedAt": "2026-10-03T19:26:46.851Z"
+      }
+    },
+    {
+      "id": "technologie",
+      "name": "CCN Technologie",
+      "publicUrl": "https://polskieradio.cc/technologie",
+      "deepReviewDay": "monday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "technologie",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/technologie",
+        "title": "CCN Technologie – AI, Cyfrowy Świat, Transhumanizm i Etyka | Christian Culture",
+        "script": "/assets/technologie-index-BR5s5gH7.js",
+        "checkedAt": "2026-10-03T19:26:46.871Z"
+      }
+    },
+    {
+      "id": "misje",
+      "name": "CCN Misje",
+      "publicUrl": "https://polskieradio.cc/misje",
+      "deepReviewDay": "saturday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "misje",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/misje",
+        "title": "CCN Misje – Kościół Prześladowany, Ewangelizacja i Świadectwa | Christian Culture",
+        "script": "/assets/misje-index--xDDvfDI.js",
+        "checkedAt": "2026-10-03T19:26:46.889Z"
+      }
+    },
+    {
+      "id": "apologetyka",
+      "name": "CCN Apologetyka",
+      "publicUrl": "https://polskieradio.cc/apologetyka",
+      "deepReviewDay": "tuesday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "needs-verified-data-contract",
+      "medicalReviewRequired": false,
+      "httpObservation": {
+        "route": "apologetyka",
+        "status": 200,
+        "finalUrl": "https://polskieradio.cc/apologetyka",
+        "title": "CCN Apologetyka – Obrona Wiary, Sekty, Światopoglądy i Prawda | Christian Culture",
+        "script": "/assets/apologetyka-index-BrIeUGsi.js",
+        "checkedAt": "2026-10-03T19:26:46.863Z"
+      }
+    },
+    {
+      "id": "music",
+      "name": "CCN Muzyka",
+      "publicUrl": "https://polskieradio.cc/music",
+      "deepReviewDay": "friday",
+      "dailyAvailabilityAndQueueReview": true,
+      "contentAdapter": "editorial-submission-v1",
+      "medicalReviewRequired": false
+    }
+  ]
+}

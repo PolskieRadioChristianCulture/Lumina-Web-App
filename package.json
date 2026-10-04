@@ -30,7 +30,9 @@
     "matrix": "node scripts/agent-matrix/launch_grid.js",
     "matrix:local": "node scripts/agent-matrix/launch_grid.js --local",
     "studio": "node scripts/agent-matrix/launch_studio.js",
-    "build:ccn-music": "node scripts/build-ccn-music.mjs"
+    "build:ccn-music": "node scripts/build-ccn-music.mjs",
+    "test:ccn-ecosystem": "node --test scripts/ccn-ecosystem-import.test.mjs scripts/ccn-static-release.test.mjs scripts/ccn-editorial-panel.test.mjs && node scripts/test-ccn-feed.mjs",
+    "editorial:ccn": "node scripts/ccn-editorial-panel.mjs C:/CC-Private/CCN-Editorial"
   },
   "dependencies": {
     "express": "^4.19.2",
