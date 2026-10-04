@@ -335,6 +335,7 @@ export default function App() {
                 {sortedArticles.length > visibleCount && (
                   <div className="mt-8 flex justify-center">
                     <button
+                      id="ccn-load-more-articles-btn"
                       onClick={() => setVisibleCount((prev) => prev + 4)}
                       className="group inline-flex items-center justify-center gap-2 px-8 py-3 bg-white hover:bg-gray-50 text-gray-900 font-bold text-xs tracking-wider uppercase border border-gray-300 hover:border-[#bb142e] hover:text-[#bb142e] rounded-xl shadow-xs transition duration-200 cursor-pointer min-h-[44px] min-w-[200px]"
                       aria-label="Pokaż więcej artykułów"
