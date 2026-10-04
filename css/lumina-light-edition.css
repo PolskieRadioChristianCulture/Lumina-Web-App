@@ -12,7 +12,7 @@
     --lumina-l-text-title: #1C1917;
     --lumina-l-text-body: #3B3632;
     --lumina-l-text-muted: #78716C;
-    --lumina-l-text-light: #A8A29E;
+    --lumina-l-text-light: #655F58;
     
     --lumina-l-gold: #B88E3E;
     --lumina-l-gold-light: #C4A35A;
@@ -367,7 +367,7 @@ body.theme-lumina-light .profile-carousel-tag {
 
 html[data-lumina-theme="light"] .profile-carousel-btn,
 body.theme-lumina-light .profile-carousel-btn {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #ffffff !important;
     box-shadow: 0 2px 6px rgba(179, 142, 62, 0.25) !important;
 }
@@ -403,7 +403,7 @@ body.theme-lumina-light .smart-sort-bar button:hover {
 
 html[data-lumina-theme="light"] .smart-sort-bar button.active,
 body.theme-lumina-light .smart-sort-bar button.active {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #ffffff !important;
     border-color: transparent !important;
     box-shadow: 0 2px 8px rgba(179, 142, 62, 0.28) !important;
@@ -565,7 +565,7 @@ html[data-lumina-theme="light"] .comment-submit-btn,
 html[data-lumina-theme="light"] .comment-submit-btn-v2,
 body.theme-lumina-light .comment-submit-btn,
 body.theme-lumina-light .comment-submit-btn-v2 {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #ffffff !important;
     border: none !important;
     box-shadow: 0 2px 8px rgba(179, 142, 62, 0.3) !important;
@@ -872,7 +872,7 @@ html[data-lumina-theme="light"] .btn-hero-join-prominent,
 html[data-lumina-theme="light"] #heroGuestCta .btn-hero-join-prominent,
 body.theme-lumina-light .btn-hero-join-prominent,
 body.theme-lumina-light #heroGuestCta .btn-hero-join-prominent {
-    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     box-shadow: 0 6px 20px rgba(163, 126, 44, 0.35), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
     border: none !important;
@@ -882,7 +882,7 @@ html[data-lumina-theme="light"] .btn-hero-join-prominent:hover,
 html[data-lumina-theme="light"] #heroGuestCta .btn-hero-join-prominent:hover,
 body.theme-lumina-light .btn-hero-join-prominent:hover,
 body.theme-lumina-light #heroGuestCta .btn-hero-join-prominent:hover {
-    background: linear-gradient(135deg, #D4B36A 0%, #B38E3C 100%) !important;
+    background: linear-gradient(135deg, #654b18 0%, #594215 100%) !important;
     box-shadow: 0 8px 25px rgba(163, 126, 44, 0.45) !important;
     transform: translateY(-1px) !important;
 }
@@ -968,7 +968,7 @@ html[data-lumina-theme="light"] .btn-omni-action,
 html[data-lumina-theme="light"] .nav-search-bar-wrap .btn-omni-action,
 body.theme-lumina-light .btn-omni-action,
 body.theme-lumina-light .nav-search-bar-wrap .btn-omni-action {
-    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     box-shadow: 0 2px 8px rgba(163, 126, 44, 0.3) !important;
     border: none !important;
@@ -978,7 +978,7 @@ html[data-lumina-theme="light"] .btn-omni-action:hover,
 html[data-lumina-theme="light"] .nav-search-bar-wrap .btn-omni-action:hover,
 body.theme-lumina-light .btn-omni-action:hover,
 body.theme-lumina-light .nav-search-bar-wrap .btn-omni-action:hover {
-    background: linear-gradient(135deg, #D4B36A 0%, #B38E3C 100%) !important;
+    background: linear-gradient(135deg, #654b18 0%, #594215 100%) !important;
     box-shadow: 0 4px 14px rgba(163, 126, 44, 0.45) !important;
 }
 
@@ -1040,7 +1040,7 @@ body.theme-lumina-light .filter-chip:hover {
 
 html[data-lumina-theme="light"] .filter-chip.active,
 body.theme-lumina-light .filter-chip.active {
-    background: linear-gradient(135deg, #c4a35a, #b38e3e) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #ffffff !important;
     border-color: transparent !important;
     box-shadow: 0 3px 10px rgba(179, 142, 62, 0.3) !important;
@@ -1074,7 +1074,7 @@ body.theme-lumina-light .profile-card.active-center-card {
 /* Odznaka Dopasowania (Match Badge) — Ciepłe złoto Champagne zamiast neonowego różu */
 html[data-lumina-theme="light"] .card-match,
 body.theme-lumina-light .card-match {
-    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     border: 1px solid rgba(255, 255, 255, 0.6) !important;
     box-shadow: 0 2px 10px rgba(148, 110, 36, 0.3) !important;
@@ -1100,7 +1100,7 @@ body.theme-lumina-light .card-new-badge i {
 /* Przycisk Obserwuj na karcie w karuzeli */
 html[data-lumina-theme="light"] .btn-carousel-follow-pulse,
 body.theme-lumina-light .btn-carousel-follow-pulse {
-    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
     box-shadow: 0 4px 14px rgba(163, 126, 44, 0.35) !important;
@@ -1387,7 +1387,7 @@ html[data-lumina-theme="light"] .btn-admin-auth,
 html[data-lumina-theme="light"] .security-bar-btn,
 body.theme-lumina-light .btn-admin-auth,
 body.theme-lumina-light .security-bar-btn {
-    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     border: none !important;
     border-radius: 10px !important;
@@ -2219,7 +2219,7 @@ html[data-lumina-theme="light"] .btn-confirm,
 body.theme-lumina-light div[id*="Modal"] button[type="submit"],
 body.theme-lumina-light .btn-save,
 body.theme-lumina-light .btn-confirm {
-    background: linear-gradient(135deg, #B88E3E 0%, #946E24 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     border: none !important;
     font-weight: 700 !important;
@@ -2324,7 +2324,7 @@ body.theme-lumina-light .chat-conversation-area {
 
 html[data-lumina-theme="light"] .chat-bubble.bubble-me,
 body.theme-lumina-light .chat-bubble.bubble-me {
-    background: linear-gradient(135deg, #B88E3E, #946E24) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #FFFFFF !important;
 }
 
@@ -2495,7 +2495,7 @@ html[data-lumina-theme="light"] .guest-carousel-cta button,
 html[data-lumina-theme="light"] .guest-carousel-cta a.btn,
 body.theme-lumina-light .guest-carousel-cta button,
 body.theme-lumina-light .guest-carousel-cta a.btn {
-    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     font-weight: 800 !important;
     box-shadow: 0 4px 16px rgba(163, 126, 44, 0.3) !important;
@@ -2636,7 +2636,7 @@ body.theme-lumina-light .tablica-preview-widget div {
 
 html[data-lumina-theme="light"] .tablica-cta-btn,
 body.theme-lumina-light .tablica-cta-btn {
-    background: linear-gradient(135deg, #C4A35A 0%, #A37E2C 100%) !important;
+    background: linear-gradient(135deg, #806120 0%, #654b18 100%) !important;
     color: #FFFFFF !important;
     border: none !important;
 }
@@ -3284,7 +3284,7 @@ html[data-lumina-theme="light"] .notif-push-bar {
 }
 
 html[data-lumina-theme="light"] .notif-push-enable-btn {
-    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #FFFFFF !important;
     border: none !important;
     box-shadow: 0 2px 6px rgba(184, 142, 62, 0.3) !important;
@@ -3414,7 +3414,7 @@ html[data-lumina-theme="light"] .push-soft-desc {
 }
 
 html[data-lumina-theme="light"] .push-soft-btn-enable {
-    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     border: 1px solid rgba(184, 142, 62, 0.8) !important;
     color: #FFFFFF !important;
     box-shadow: 0 4px 14px rgba(184, 142, 62, 0.3) !important;
@@ -3647,7 +3647,7 @@ html[data-lumina-theme="light"] #luminaAdvancedFiltersModal #advFiltersTitle {
 }
 
 html[data-lumina-theme="light"] #luminaAdvancedFiltersModal .adv-filters-card > div:first-child span {
-    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     color: #FFFFFF !important;
     box-shadow: 0 4px 14px rgba(184, 142, 62, 0.35) !important;
 }
@@ -3709,7 +3709,7 @@ html[data-lumina-theme="light"] #luminaAdvancedFiltersModal .filter-radio-pill:h
 }
 
 html[data-lumina-theme="light"] #luminaAdvancedFiltersModal .filter-radio-pill.active {
-    background: linear-gradient(135deg, #B88E3E, #D4AF37) !important;
+    background: linear-gradient(135deg, #806120, #654b18) !important;
     border-color: transparent !important;
     color: #FFFFFF !important;
     box-shadow: 0 4px 14px rgba(184, 142, 62, 0.38) !important;
@@ -4171,3 +4171,105 @@ body.theme-lumina-light .reflection-smart-link.support-link {
     color: #be123c !important;
 }
 
+
+/* Shared light palette. Every surface token must change together: components
+   still using the CC tokens must not inherit dark surfaces with light-mode ink.
+   Media/photo overlays keep their existing white-on-dark presentation. */
+html[data-lumina-theme="light"],
+html[data-lumina-theme="light"] body,
+body.theme-lumina-light {
+    --bg-surface: #F5F2EB !important;
+    --cc-bg-surface: #F5F2EB !important;
+    --cc-void: #FAF9F6 !important;
+    --cc-void-2: #F5F2EB !important;
+    --cc-void-trans: rgba(255, 255, 255, 0.96) !important;
+    --cc-gold: #806120 !important;
+    --cc-gold-hover: #654B18 !important;
+    --cc-gold-light: #806120 !important;
+    --cc-gold-dark: #654B18 !important;
+    --cc-gold-soft: #806120 !important;
+    --accent-gold-soft: #806120 !important;
+    --accent-gold-hover: #654B18 !important;
+    --accent-gold-dark: #654B18 !important;
+    --accent-cyan: #806120 !important;
+    --accent-green: #166534 !important;
+    --accent-red: #B42318 !important;
+    --lumina-l-gold: #806120;
+    --lumina-l-text-muted: #655F58;
+    --lumina-l-text-light: #655F58;
+    --lumina-l-action: #806120;
+    --lumina-l-action-hover: #654B18;
+}
+
+/* Dynamically mounted sharing, legal and reminder panels use the same palette
+   as the page, irrespective of when their owner's style element is mounted. */
+html[data-lumina-theme="light"] :is(.lumina-share-card, .lumina-legal-modal, .lumina-push-toast) {
+    background: #FFFFFF !important;
+    color: #3B3632 !important;
+    border-color: #DFD1B1 !important;
+    box-shadow: var(--lumina-l-shadow-float) !important;
+    text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-overlay, .lumina-legal-overlay) {
+    background: rgba(28, 25, 23, 0.48) !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-title, .lumina-share-repost-title,
+    .lumina-legal-body h3, .lumina-push-title) {
+    color: #1C1917 !important;
+    text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-preview-box, .lumina-share-repost-banner,
+    .lumina-share-btn, .lumina-share-link-input, .lumina-push-dismiss, .lumina-legal-tab-btn) {
+    background: #FAF8F5 !important;
+    color: #3B3632 !important;
+    border-color: #DFD1B1 !important;
+    text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-btn, .lumina-share-repost-banner,
+    .lumina-legal-tab-btn):hover {
+    background: #F5F2EB !important;
+    color: #654B18 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-repost-sub, .lumina-push-desc,
+    .lumina-legal-body p, .lumina-legal-body li) { color: #655F58 !important; }
+html[data-lumina-theme="light"] :is(.lumina-share-header, .lumina-legal-header,
+    .lumina-legal-tabs, .lumina-legal-footer) { border-color: #DFD1B1 !important; }
+html[data-lumina-theme="light"] .lumina-legal-tab-btn.active {
+    background: #F8F2E5 !important; color: #654B18 !important;
+    border-color: #806120 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-repost-badge, .lumina-share-repost-icon) {
+    background: #F8F2E5 !important; color: #806120 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-copy-btn, .lumina-push-accept,
+    .lumina-legal-close-btn, #luminaFloatingChatBtn) {
+    background: linear-gradient(135deg, #806120, #654B18) !important;
+    color: #FFFFFF !important; border-color: #654B18 !important;
+    text-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-share-card, .lumina-legal-modal) button[style*="color"] {
+    color: #655F58 !important;
+}
+html[data-lumina-theme="light"] :is(.lumina-legal-body a, .lumina-push-top i,
+    .lumina-share-title-wrap i, .lumina-share-repost-arrow) { color: #806120 !important; }
+
+/* Native controls and scrollbar must not retain the dark theme's purple track. */
+html[data-lumina-theme="light"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), textarea, select) {
+    color-scheme: light;
+    background-color: #FFFFFF !important;
+    color: #1C1917 !important;
+    border-color: #B8ADA0 !important;
+}
+html[data-lumina-theme="light"] :is(input, textarea)::placeholder { color: #655F58 !important; }
+html[data-lumina-theme="light"] :is(button, a, input, textarea, select):focus-visible {
+    outline: 2px solid #806120 !important; outline-offset: 3px;
+}
+html[data-lumina-theme="light"], html[data-lumina-theme="light"] * {
+    scrollbar-color: #9C8762 #F5F2EB;
+}
+html[data-lumina-theme="light"] ::-webkit-scrollbar-track,
+html[data-lumina-theme="light"] ::-webkit-scrollbar-corner { background: #F5F2EB !important; }
+html[data-lumina-theme="light"] ::-webkit-scrollbar-thumb {
+    background: #9C8762 !important; border-color: #F5F2EB !important;
+}
+html[data-lumina-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #806120 !important; }
