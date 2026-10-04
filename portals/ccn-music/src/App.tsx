@@ -63,6 +63,3 @@ export default function App() {
     {!selected && radioState !== 'Zatrzymane' && <div className="radio-dock"><Radio size={19} /><span><strong>{radioStations[station].name}</strong><small role="status">{radioState}</small></span><button className="icon-button" aria-label="Zatrzymaj radio" onClick={() => { playRequest.current++; audio.current?.pause(); setRadioState('Zatrzymane'); }}><X size={20} /></button></div>}
   </div>;
 }
-
-
-

@@ -1,10 +1,10 @@
-export type Category = 
-  | 'home' 
-  | 'premiery' 
-  | 'artysci' 
-  | 'playlisty' 
-  | 'radio' 
-  | 'video' 
+export type Category =
+  | 'home'
+  | 'premiery'
+  | 'artysci'
+  | 'playlisty'
+  | 'radio'
+  | 'video'
   | 'top'
   | 'przeboje';
 
