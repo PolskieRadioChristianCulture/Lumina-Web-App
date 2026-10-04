@@ -1,5 +1,8 @@
 # 🤖 MULTI-AGENT INSTRUCTIONS (AGENTS.md) — CHRISTIAN CULTURE & LUMINA
 
+## Zakaz regresji całego ekosystemu CC
+Stosuj `CC_NO_REGRESSION_POLICY.md` (polecenie właściciela, 2026-10-03). Każda powracająca usterka wymaga kontroli regresji; nieudany wymagany test blokuje publikację. Dla CCN News używaj kanonicznego `portals/ccn-news` i `npm run build:ccn-news`. Przed publikacją uruchom `npm run test:cc-regression` oraz pozostałe wymagane kontrole. Nie przywracaj starszych bundle ani generatorów kosztem zaakceptowanego wyglądu lub działania.
+
 ## ✝️ ZASADA NAJWYŻSZA: BÓG I CZŁOWIEK
 Portal LUMINA i cały ekosystem Christian Culture są tworzone i prowadzone, aby **służyć Bogu i człowiekowi — zawsze i bezwzględnie**. Misja trzyma się Bożego Prawa, z Dekalogiem (Wj 20,1–17) jako nadrzędnym moralnym punktem odniesienia opisanym w Art. 0 `LUMINA_CONSTITUTION.md`.
 

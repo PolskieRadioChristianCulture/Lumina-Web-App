@@ -1,0 +1,125 @@
+import React from 'react';
+import { Article } from '../types';
+import { Bookmark, Sparkles, FileText, UserCheck, BookOpen, Play } from 'lucide-react';
+
+interface ArticleCardProps {
+  article: Article;
+  onReadArticle: (article: Article) => void;
+  isBookmarked: boolean;
+  onToggleBookmark: (article: Article) => void;
+}
+
+export const ArticleCard: React.FC<ArticleCardProps> = ({
+  article,
+  onReadArticle,
+  isBookmarked,
+  onToggleBookmark,
+}) => {
+  return (
+    <article className="bg-white rounded-xl overflow-hidden shadow-xs hover:shadow-md transition duration-200 border border-gray-100 flex flex-col justify-between group">
+      <div>
+        {/* Thumbnail with overlay & bookmark button */}
+        <div className="relative overflow-hidden bg-gray-900 cursor-pointer" onClick={() => onReadArticle(article)}>
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-48 object-cover group-hover:scale-103 transition duration-500"
+            loading="lazy"
+          />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleBookmark(article);
+            }}
+            className={`absolute top-2.5 right-2.5 p-1.5 rounded-md backdrop-blur-md transition cursor-pointer ${
+              isBookmarked
+                ? 'bg-[#bb142e] text-white shadow-xs'
+                : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
+            }`}
+            title={isBookmarked ? 'Usuń z zakładek' : 'Zapisz na później'}
+            aria-label="Zapisz artykuł"
+          >
+            <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
+          </button>
+
+          {/* Central play button overlay for video articles */}
+          {article.youtubeVideoId && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-11 h-11 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-red-600 transition-all">
+                <Play className="w-5 h-5 fill-white ml-0.5" />
+              </div>
+            </div>
+          )}
+
+          {/* Badges on image */}
+          <div className="absolute bottom-2 left-2 flex items-center gap-1.5 flex-wrap">
+            {article.youtubeVideoId && (
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-600 text-white flex items-center gap-1 shadow-xs">
+                <Play className="w-2.5 h-2.5 fill-white" />
+                Wideo
+              </span>
+            )}
+            {article.isInterview && (
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500 text-black flex items-center gap-1 shadow-xs">
+                <UserCheck className="w-3 h-3" />
+                Wywiad
+              </span>
+            )}
+            {article.biblicalCommentary && (
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#010101]/90 text-white border border-[#bb142e]/50 flex items-center gap-1 shadow-xs">
+                <Sparkles className="w-3 h-3 text-[#f9282b]" />
+                Komentarz Biblijny
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Text Body */}
+        <div className="p-4">
+          <div className="flex items-center justify-between text-xs text-gray-500 mb-1.5">
+            <time>{article.dateFormatted}</time>
+            <span className="text-[11px] font-bold text-[#bb142e] tracking-wider uppercase">
+              {article.categoryLabel}
+            </span>
+          </div>
+
+          <h3
+            onClick={() => onReadArticle(article)}
+            className="font-bold font-serif text-base mt-1 mb-2 leading-snug text-gray-900 hover:text-[#bb142e] transition cursor-pointer"
+          >
+            {article.title}
+          </h3>
+
+          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+            {article.excerpt}
+          </p>
+
+          {/* Press Citation source preview */}
+          {article.sourceCitation && (
+            <div className="mt-2.5 pt-2 border-t border-gray-100 flex items-center gap-1 text-[11px] text-amber-800 font-medium">
+              <FileText className="w-3 h-3 text-amber-600 shrink-0" />
+              <span className="truncate">Źródło: {article.sourceCitation.sourceName.split('/')[0]}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Action Footer */}
+      <div className="px-4 pb-4 pt-1 flex items-center justify-between">
+        <button
+          onClick={() => onReadArticle(article)}
+          className="inline-flex items-center gap-1 text-xs text-[#bb142e] hover:text-[#981025] font-bold transition cursor-pointer group-hover:translate-x-0.5"
+        >
+          <span>Czytaj artykuł</span>
+          <span>→</span>
+        </button>
+
+        {article.scriptureReference && (
+          <span className="text-[10px] text-gray-400 italic truncate max-w-[130px]">
+            {article.scriptureReference.verse}
+          </span>
+        )}
+      </div>
+    </article>
+  );
+};

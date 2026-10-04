@@ -1,0 +1,21 @@
+name: CC - no regression gate
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  accepted-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify published CCN and LUMINA contracts
+        run: npm run test:cc-regression
+      - name: Verify mobile contracts and Guardian
+        run: |
+          node --test scripts/mobile-premium-regression.test.mjs
+          node scripts/straznik-kodu-check.js

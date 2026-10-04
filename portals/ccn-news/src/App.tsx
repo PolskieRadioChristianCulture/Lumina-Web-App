@@ -1,0 +1,378 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Header } from './components/Header';
+import { BreakingTicker } from './components/BreakingTicker';
+import { HeroArticle } from './components/HeroArticle';
+import { ArticleCard } from './components/ArticleCard';
+import { Sidebar } from './components/Sidebar';
+import { EcosystemCarouselSection } from './components/EcosystemCarouselSection';
+import { LexiconSection } from './components/LexiconSection';
+import { CoursesBannerSection } from './components/CoursesBannerSection';
+import { MusicMediaSection } from './components/MusicMediaSection';
+import { ArticleModal } from './components/ArticleModal';
+import { SearchModal } from './components/SearchModal';
+import { BookmarksDrawer } from './components/BookmarksDrawer';
+import { RadioPlayerModal } from './components/RadioPlayerModal';
+import { AboutModal } from './components/AboutModal';
+import { Footer } from './components/Footer';
+import { INITIAL_ARTICLES } from './data/articles';
+import { Article, Category } from './types';
+import { Filter, Sparkles, BookOpen, GraduationCap, Music2, ArrowLeft } from 'lucide-react';
+
+export default function App() {
+  const [articles] = useState<Article[]>(INITIAL_ARTICLES);
+  const [currentCategory, setCurrentCategory] = useState<Category>('home');
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+
+  // Modals & Drawers
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isRadioModalOpen, setIsRadioModalOpen] = useState(false);
+
+  // Bookmarks in localStorage
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('ccn_bookmarks');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Audio Radio Stream
+  const [isRadioPlaying, setIsRadioPlaying] = useState(false);
+  const [radioVolume, setRadioVolume] = useState(0.85);
+  const [isRadioMuted, setIsRadioMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize Audio Stream
+  useEffect(() => {
+    const audio = new Audio('https://stream.zeno.fm/imo45hqnshyuv');
+    audio.preload = 'none';
+    audio.volume = radioVolume;
+    audioRef.current = audio;
+
+    const handlePlay = () => setIsRadioPlaying(true);
+    const handlePause = () => setIsRadioPlaying(false);
+    const handleError = () => {
+      if (audio.src === 'https://stream.zeno.fm/imo45hqnshyuv') {
+        audio.src = 'https://stream.zeno.fm/hls/vz96pvl3pnktv';
+      }
+    };
+
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('error', handleError);
+
+    return () => {
+      audio.pause();
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('error', handleError);
+    };
+  }, []);
+
+  // Save Bookmarks to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('ccn_bookmarks', JSON.stringify(bookmarkedIds));
+    } catch (e) {
+      console.warn('LocalStorage not available', e);
+    }
+  }, [bookmarkedIds]);
+
+  const toggleBookmark = (article: Article) => {
+    setBookmarkedIds((prev) =>
+      prev.includes(article.id) ? prev.filter((id) => id !== article.id) : [...prev, article.id]
+    );
+  };
+
+  const handleClearBookmarks = () => {
+    setBookmarkedIds([]);
+  };
+
+  const toggleRadioPlayback = () => {
+    if (!audioRef.current) return;
+    if (isRadioPlaying) {
+      audioRef.current.pause();
+      setIsRadioPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsRadioPlaying(true))
+        .catch(() => {
+          setIsRadioPlaying(false);
+        });
+    }
+  };
+
+  const handleVolumeChange = (vol: number) => {
+    setRadioVolume(vol);
+    if (audioRef.current) {
+      audioRef.current.volume = isRadioMuted ? 0 : vol;
+    }
+    if (vol > 0 && isRadioMuted) {
+      setIsRadioMuted(false);
+    }
+  };
+
+  const handleToggleMute = () => {
+    if (!audioRef.current) return;
+    const newMuted = !isRadioMuted;
+    setIsRadioMuted(newMuted);
+    audioRef.current.volume = newMuted ? 0 : radioVolume;
+  };
+
+  const handleCategorySelect = (cat: Category) => {
+    if (cat === 'about') {
+      setIsAboutOpen(true);
+    } else {
+      setCurrentCategory(cat);
+    }
+  };
+
+  const isHome = currentCategory === 'home';
+  const heroArticle = articles.find((a) => a.isHero) || articles[0];
+
+  // Filtered Articles based on Category
+  const displayedArticles = isHome
+    ? articles.filter((a) => a.id !== heroArticle.id)
+    : currentCategory === 'leksykon'
+    ? [] // handled by dedicated LexiconSection view
+    : articles.filter((a) => a.category === currentCategory);
+
+  // Popular Articles (ranked)
+  const popularArticles = articles
+    .filter((a) => a.isPopular)
+    .sort((a, b) => (a.popularRank || 99) - (b.popularRank || 99));
+
+  // Daily Devotional (Z Biblią za Pan Brat - Cezary Rogowski)
+  const dailyDevotional =
+    articles.find((a) => a.id.startsWith('art-z-biblia-za-pan-brat')) ||
+    articles.find((a) => a.id === 'art-cuda-kazdego-dnia-andrzej-thiel') ||
+    articles[articles.length - 1];
+
+  // Bookmarked Articles Objects
+  const bookmarkedArticlesList = articles.filter((a) => bookmarkedIds.includes(a.id));
+
+  // Related articles for modal
+  const relatedArticles = selectedArticle
+    ? articles
+        .filter((a) => a.id !== selectedArticle.id && a.category === selectedArticle.category)
+        .slice(0, 3)
+    : [];
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
+      {/* 1. Header with Sticky Navigation & Universal CC Auth */}
+      <Header
+        currentCategory={currentCategory}
+        onSelectCategory={handleCategorySelect}
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenRadio={() => setIsRadioModalOpen(true)}
+        onOpenBookmarks={() => setIsBookmarksOpen(true)}
+        bookmarksCount={bookmarkedIds.length}
+        isRadioPlaying={isRadioPlaying}
+        onToggleRadio={toggleRadioPlayback}
+      />
+
+      {/* 2. Breaking News Live Ticker */}
+      <BreakingTicker
+        onSelectHeadline={() => {
+          setSelectedArticle(heroArticle);
+        }}
+      />
+
+      {/* 3. Main Content Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 w-full">
+        {/* Category Header (if not home) */}
+        {!isHome && (
+          <div className="mb-8 pb-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold text-[#bb142e] uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                <span>CCN NEWS</span>
+                <span>/</span>
+                <span>REDAKCJA BIBLIJNA</span>
+              </div>
+              <h1 className="font-serif-headline text-3xl sm:text-4xl font-extrabold text-gray-900 capitalize">
+                {currentCategory === 'kraj'
+                  ? 'Kraj: Wiadomości i Wolność Sumienia w Polsce'
+                  : currentCategory === 'swiat'
+                  ? 'Świat: Geopolityka i Kościół Prześladowany'
+                  : currentCategory === 'wywiady'
+                  ? 'Wywiady Redakcyjne & Teologiczne'
+                  : currentCategory === 'leksykon'
+                  ? 'Leksykon Biblijny & Chrześcijańska Encyklopedia'
+                  : currentCategory === 'kursy'
+                  ? 'Akademia Biblijna CC: Kursy i Wykłady'
+                  : currentCategory === 'muzyka'
+                  ? 'Media & Muzyka Christian Culture'
+                  : currentCategory === 'wiara'
+                  ? 'Wiara, Biblia i Duchowość'
+                  : currentCategory === 'opinia'
+                  ? 'Opinie, Publicystyka i Felietony'
+                  : currentCategory}
+              </h1>
+            </div>
+            <button
+              onClick={() => setCurrentCategory('home')}
+              className="text-xs font-semibold text-gray-700 hover:text-[#bb142e] bg-white border border-gray-200 px-3.5 py-2 rounded-xl transition self-start cursor-pointer shadow-xs flex items-center gap-1.5"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Powrót na stronę główną</span>
+            </button>
+          </div>
+        )}
+
+        {/* If user clicked specifically on "Leksykon" in menu */}
+        {currentCategory === 'leksykon' ? (
+          <LexiconSection />
+        ) : (
+          /* Standard 2-Column Grid (Left Main + Right Sidebar) */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            {/* LEFT CONTENT (lg:col-span-2) */}
+            <div className="lg:col-span-2 space-y-10">
+              {/* HERO ARTICLE (Rendered on Home) */}
+              {isHome && (
+                <HeroArticle
+                  article={heroArticle}
+                  onReadArticle={(art) => setSelectedArticle(art)}
+                  isBookmarked={bookmarkedIds.includes(heroArticle.id)}
+                  onToggleBookmark={toggleBookmark}
+                />
+              )}
+
+              {/* DEDICATED CATEGORY SECTIONS */}
+              {currentCategory === 'kursy' && <CoursesBannerSection />}
+              {currentCategory === 'muzyka' && (
+                <MusicMediaSection
+                  isRadioPlaying={isRadioPlaying}
+                  onToggleRadio={toggleRadioPlayback}
+                />
+              )}
+
+              {/* ARTICLES SECTION */}
+              <section>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold flex items-center gap-2 text-gray-900 font-serif">
+                    <span className="w-1.5 h-6 bg-[#bb142e] rounded"></span>
+                    <span>
+                      {isHome
+                        ? 'Wiadomości z Kraju i ze Świata'
+                        : `Artykuły: ${currentCategory.toUpperCase()}`}
+                    </span>
+                  </h2>
+
+                  {isHome && (
+                    <span className="text-xs text-gray-500 font-medium hidden sm:inline">
+                      Rzetelne fakty w świetle Słowa Bożego
+                    </span>
+                  )}
+                </div>
+
+                {/* Grid of Article Cards */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {displayedArticles.map((article) => (
+                    <ArticleCard
+                      key={article.id}
+                      article={article}
+                      onReadArticle={(art) => setSelectedArticle(art)}
+                      isBookmarked={bookmarkedIds.includes(article.id)}
+                      onToggleBookmark={toggleBookmark}
+                    />
+                  ))}
+                </div>
+
+                {/* Empty State */}
+                {displayedArticles.length === 0 && currentCategory !== 'kursy' && currentCategory !== 'muzyka' && (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+                    <Filter className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-600 font-medium">Brak artykułów w tej kategorii.</p>
+                    <button
+                      onClick={() => setCurrentCategory('home')}
+                      className="mt-4 px-4 py-2 bg-[#bb142e] text-white rounded-lg text-xs font-semibold cursor-pointer"
+                    >
+                      Powrót do strony głównej
+                    </button>
+                  </div>
+                )}
+              </section>
+
+              {/* On Homepage: Display the Rich Christian Wikipedia / Biblical Lexicon Section */}
+              {isHome && <LexiconSection />}
+
+              {/* On Homepage: Display Akademia Biblijna Courses Banner */}
+              {isHome && <CoursesBannerSection />}
+
+              {/* On Homepage: Display Music & Media Section */}
+              {isHome && (
+                <MusicMediaSection
+                  isRadioPlaying={isRadioPlaying}
+                  onToggleRadio={toggleRadioPlayback}
+                />
+              )}
+            </div>
+
+            {/* RIGHT SIDEBAR (lg:col-span-1) */}
+            <Sidebar
+              popularArticles={popularArticles}
+              dailyDevotional={dailyDevotional}
+              onReadArticle={(art) => setSelectedArticle(art)}
+              isRadioPlaying={isRadioPlaying}
+              onToggleRadio={toggleRadioPlayback}
+              onNavigateToLexicon={() => {
+                setCurrentCategory('leksykon');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
+        )}
+
+        {/* Full-width Carousel of All Ecosystem Subpages */}
+        {isHome && <EcosystemCarouselSection />}
+      </main>
+
+      {/* 4. Footer */}
+      <Footer onSelectCategory={handleCategorySelect} />
+
+      {/* Modals & Overlays */}
+      <ArticleModal
+        article={selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+        isBookmarked={selectedArticle ? bookmarkedIds.includes(selectedArticle.id) : false}
+        onToggleBookmark={toggleBookmark}
+        onSelectRelatedArticle={(art) => setSelectedArticle(art)}
+        relatedArticles={relatedArticles}
+      />
+
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        articles={articles}
+        onSelectArticle={(art) => setSelectedArticle(art)}
+      />
+
+      <BookmarksDrawer
+        isOpen={isBookmarksOpen}
+        onClose={() => setIsBookmarksOpen(false)}
+        bookmarkedArticles={bookmarkedArticlesList}
+        onSelectArticle={(art) => setSelectedArticle(art)}
+        onRemoveBookmark={(id) => setBookmarkedIds((prev) => prev.filter((i) => i !== id))}
+        onClearAll={handleClearBookmarks}
+      />
+
+      <RadioPlayerModal
+        isOpen={isRadioModalOpen}
+        onClose={() => setIsRadioModalOpen(false)}
+        isPlaying={isRadioPlaying}
+        onTogglePlay={toggleRadioPlayback}
+        volume={radioVolume}
+        onVolumeChange={handleVolumeChange}
+        isMuted={isRadioMuted}
+        onToggleMute={handleToggleMute}
+      />
+
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+    </div>
+  );
+}

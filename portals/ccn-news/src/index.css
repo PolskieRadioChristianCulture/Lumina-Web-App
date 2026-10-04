@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --ccn-black: #010101;
+    --ccn-red: #bb142e;
+    --ccn-red-hover: #981025;
+    --ccn-bright-red: #f9282b;
+    --ccn-dark: #0a0a0a;
+    --ccn-dark-card: #141414;
+    --ccn-border: #262626;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .font-serif-headline {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(to right, rgba(1,1,1,0.92) 0%, rgba(1,1,1,0.65) 60%, rgba(1,1,1,0.2) 100%);
+}
+
+.hero-gradient-vertical {
+  background: linear-gradient(to top, rgba(1,1,1,0.98) 0%, rgba(1,1,1,0.7) 50%, rgba(1,1,1,0.1) 100%);
+}
+
+/* Pancerny standard wyświetlania grafik ekosystemu Christian Culture */
+.ccn-article-media {
+  object-fit: contain !important;
+  max-height: 520px;
+  width: 100%;
+}
+
+/* Keep the ecosystem bar scrollable without widening the document. */
+.news-ecosystem-strip, .news-ecosystem-row, .news-ecosystem-links { min-width: 0; max-width: 100%; }
+.news-ecosystem-links { flex: 1 1 0%; }
+.news-header-logo img { height: auto; width: 210px; max-width: 100%; }
+.news-ecosystem-nav { min-width: 0; max-width: 100%; flex: 1 1 0%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #71717a #010101; }
+.news-ecosystem-nav a { flex-shrink: 0; white-space: nowrap; min-height: 32px; display: inline-flex; align-items: center; }
+.news-ecosystem-nav:focus-visible { outline: 2px solid #f9282b; outline-offset: 2px; }
+@media (max-width: 639px) {
+ .news-header-logo img { width: 180px; }
+ .news-brand-row { justify-content: center; }
+ .news-brand-button { display: flex; justify-content: center; width: 100%; }
+ .news-header-actions { justify-content: center; }
+ .news-header-actions .cc-auth-widget-container { max-width: 100%; min-width: 0; }
+ .news-header-actions .cc-auth-widget-container button { max-width: 100%; }
+ .news-footer { margin-top: 2.5rem; text-align: center; }
+ .news-footer > div { padding-top: 2rem; padding-bottom: 2rem; }
+ .news-footer-grid { gap: 1.5rem; }
+ .news-footer-grid > div { min-width: 0; }
+ .news-footer-grid > div:first-child > div:first-child { display: flex; justify-content: center; }
+ .news-footer-grid .flex { justify-content: center; }
+ .news-footer-grid button, .news-footer-grid a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+ .news-footer-grid ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1rem; }
+ .news-footer-grid li { margin: 0; }
+ .news-footer-grid a[href^="mailto:"] { overflow-wrap: anywhere; min-width: 0; }
+ .news-footer-bottom { text-align: center; line-height: 1.7; margin-top: 1.5rem; }
+ .news-footer-bottom > div { flex-wrap: wrap; justify-content: center; align-items: center; }
+ .news-footer-bottom button { min-height: 44px; }
+}
+
+
+/* PŁYNNY TICKER BROADCAST MARQUEE */
+@keyframes ccnBroadcastTicker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.ccn-ticker-track {
+  display: inline-flex !important;
+  white-space: nowrap !important;
+  width: max-content !important;
+  will-change: transform;
+  animation: ccnBroadcastTicker 40s linear infinite !important;
+}
+
+.ccn-ticker-track:hover {
+  animation-play-state: paused !important;
+}

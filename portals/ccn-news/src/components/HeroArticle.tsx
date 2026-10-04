@@ -1,0 +1,75 @@
+import React from 'react';
+import { Article } from '../types';
+import { ArrowRight, Bookmark } from 'lucide-react';
+
+interface HeroArticleProps {
+  article: Article;
+  onReadArticle: (article: Article) => void;
+  isBookmarked: boolean;
+  onToggleBookmark: (article: Article) => void;
+}
+
+export const HeroArticle: React.FC<HeroArticleProps> = ({
+  article,
+  onReadArticle,
+  isBookmarked,
+  onToggleBookmark,
+}) => {
+  return (
+    <article className="relative rounded-xl overflow-hidden shadow-lg group bg-black transition duration-300">
+      {/* Background Image */}
+      <img
+        src={article.imageUrl}
+        alt={`${article.title} — ilustracja redakcyjna CCN`}
+        className="w-full h-48 sm:h-64 object-cover object-center motion-safe:transition duration-700 ease-out"
+      />
+      {article.imageCaption && (
+        <p className="bg-zinc-900 px-4 py-2 text-[11px] leading-relaxed text-zinc-300">{article.imageCaption}</p>
+      )}
+
+
+      {/* Top action: Bookmark */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleBookmark(article);
+        }}
+        className={`absolute top-4 right-4 z-10 p-2.5 rounded-full backdrop-blur-md transition cursor-pointer ${
+          isBookmarked
+            ? 'bg-[#bb142e] text-white shadow-md'
+            : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
+        }`}
+        title={isBookmarked ? 'Usuń z zakładek' : 'Zapisz na później'}
+        aria-label="Zapisz artykuł"
+      >
+        <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+      </button>
+
+      {/* Content bottom left */}
+      <div className="relative p-5 sm:p-8 text-white z-10">
+        <span className="inline-block bg-[#bb142e] text-white text-[11px] font-extrabold px-3 py-1 rounded mb-3 tracking-wider uppercase shadow-xs">
+          {article.categoryLabel}
+        </span>
+
+        <h1
+          onClick={() => onReadArticle(article)}
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mb-3 cursor-pointer hover:text-red-100 transition"
+        >
+          {article.title}
+        </h1>
+
+        <p className="text-gray-200 text-sm sm:text-base mb-5 line-clamp-2 sm:line-clamp-3 leading-relaxed">
+          {article.excerpt}
+        </p>
+
+        <button
+          onClick={() => onReadArticle(article)}
+          className="inline-flex items-center gap-2 bg-[#bb142e] hover:bg-[#981025] text-white text-sm font-bold px-5 py-2.5 rounded transition cursor-pointer shadow-md active:translate-y-0.5"
+        >
+          <span>Czytaj więcej</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+    </article>
+  );
+};
