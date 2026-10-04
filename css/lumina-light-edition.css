@@ -4385,3 +4385,14 @@ html[data-lumina-theme="light"] .post-card-sunday-appeal .appeal-support-copy a 
     color: #806120 !important;
     text-decoration: underline;
 }
+
+/* Feed chrome must remain readable around photo and video media. */
+html[data-lumina-theme="light"] .post-card-1x1 > .post-top-header,
+html[data-lumina-theme="light"] .post-card-1x1 > .post-footer-pro {
+    background: #FFFFFF !important;
+    border-color: #E8E1D5 !important;
+    color: #3B3632 !important;
+}
+html[data-lumina-theme="light"] .post-card-1x1 .post-top-header :is(.post-author-role, .post-date, .post-time, .post-meta) {
+    color: #655F58 !important;
+}

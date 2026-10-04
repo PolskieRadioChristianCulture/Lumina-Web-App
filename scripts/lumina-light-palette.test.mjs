@@ -70,7 +70,7 @@ test('all tracked light entrypoints request the current CSS version', async () =
     const html = await readFile(new URL(name, root), 'utf8');
     if (!html.includes('lumina-light-edition.css')) continue;
     assert.ok(!html.includes('lumina-light-edition.css?v=20261003_board_contrast_v7'), name);
-    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v11/, name);
+    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v12/, name);
     checked++;
   }
   assert.ok(checked >= 20);
@@ -85,4 +85,12 @@ test('Sunday appeal can adopt the light feed surface in both board renderers', a
     assert.ok(html.includes('class="appeal-support-copy"') && html.includes('class="appeal-transfer-copy"'), name);
   }
   assert.ok(css.includes('.post-card-sunday-appeal :is(.appeal-support-copy, .appeal-transfer-copy)'));
+});
+
+test('feed author headers and transmission footers use readable light surfaces', () => {
+  for (const selector of ['.post-card-1x1 > .post-top-header','.post-card-1x1 > .post-footer-pro']) {
+    const pos = css.lastIndexOf(selector);
+    assert.ok(pos >= 0, selector);
+    assert.match(css.slice(pos, css.indexOf('}',pos)+1), /background: #FFFFFF !important/);
+  }
 });
