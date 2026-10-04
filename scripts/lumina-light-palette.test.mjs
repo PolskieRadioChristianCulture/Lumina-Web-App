@@ -70,7 +70,7 @@ test('all tracked light entrypoints request the current CSS version', async () =
     const html = await readFile(new URL(name, root), 'utf8');
     if (!html.includes('lumina-light-edition.css')) continue;
     assert.ok(!html.includes('lumina-light-edition.css?v=20261003_board_contrast_v7'), name);
-    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v9/, name);
+    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v10/, name);
     checked++;
   }
   assert.ok(checked >= 20);
