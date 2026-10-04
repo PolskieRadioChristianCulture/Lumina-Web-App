@@ -143,8 +143,10 @@
     const params = new URLSearchParams();
     if (title) params.set('share_title', title);
     if (text) params.set('share_text', text);
-    if (url) params.set('share_url', url);
-    if (imageUrl) params.set('share_img', imageUrl);
+    if (imageUrl) {
+      params.set('share_image', imageUrl);
+      params.set('share_img', imageUrl);
+    }
     if (videoUrl) params.set('share_video', videoUrl);
 
     let query = params.toString();

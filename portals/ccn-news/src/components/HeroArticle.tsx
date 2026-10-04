@@ -54,7 +54,7 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
             const url = typeof window !== 'undefined'
               ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
               : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
-            const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+            const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}&share_img=${encodeURIComponent(article.imageUrl || '')}`;
             window.open(luminaUrl, '_blank', 'noopener,noreferrer');
           }}
           className="w-9 h-9 rounded-full bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center font-black text-xs hover:scale-105 transition cursor-pointer shadow-md border border-amber-400/40"

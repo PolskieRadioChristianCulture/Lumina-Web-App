@@ -15571,10 +15571,24 @@
                 const shareTitle = pick('share_title', 'title', 'title');
                 const shareText = pick('share_text', 'text', 'text');
                 const shareUrl = pick('share_url', 'url', 'url');
-                const shareImg = pick('share_img', 'img', 'imageUrl');
+                const shareImg = params.get('share_image') || (stored && (stored.share_image || stored.imageUrl || stored.image || stored.share_img)) || pick('share_img', 'img', 'imageUrl');
                 const shareVideo = pick('share_video', 'video', 'videoUrl');
 
                 if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo) return;
+
+                if (shareImg) {
+                    try {
+                        if (typeof attachedCampaignImgDataUrl !== 'undefined') {
+                            attachedCampaignImgDataUrl = shareImg;
+                        }
+                        const previewEl = document.getElementById('campImgPreviewEl');
+                        const previewCont = document.getElementById('campImgPreviewContainer');
+                        if (previewEl && previewCont) {
+                            previewEl.src = shareImg;
+                            previewCont.style.display = 'block';
+                        }
+                    } catch(e) {}
+                }
 
                 const isAiAntychryst = (shareUrl && shareUrl.includes('ai-antychryst')) || (shareTitle && shareTitle.includes('Antychryst'));
                 let combinedBody = '';

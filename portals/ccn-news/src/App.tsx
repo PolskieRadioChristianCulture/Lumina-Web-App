@@ -16,12 +16,48 @@ import { AboutModal } from './components/AboutModal';
 import { Footer } from './components/Footer';
 import { INITIAL_ARTICLES } from './data/articles';
 import { Article, Category } from './types';
-import { Filter, Sparkles, BookOpen, GraduationCap, Music2, ArrowLeft } from 'lucide-react';
+import { Filter, Sparkles, BookOpen, GraduationCap, Music2, ArrowLeft, ChevronDown } from 'lucide-react';
 
 export default function App() {
   const [articles] = useState<Article[]>(INITIAL_ARTICLES);
   const [currentCategory, setCurrentCategory] = useState<Category>('home');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(4);
+
+  const handleSelectArticle = (art: Article | null) => {
+    setSelectedArticle(art);
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        if (art) {
+          url.searchParams.set('art', art.id || art.slug);
+        } else {
+          url.searchParams.delete('art');
+        }
+        window.history.replaceState({}, '', url.toString());
+      } catch (e) {
+        console.warn('Could not update history state', e);
+      }
+    }
+  };
+
+  // Read ?art= parameter on mount and on popstate
+  useEffect(() => {
+    const checkUrlArticle = () => {
+      if (typeof window === 'undefined') return;
+      const params = new URLSearchParams(window.location.search);
+      const artParam = params.get('art');
+      if (artParam) {
+        const found = articles.find((a) => a.id === artParam || a.slug === artParam);
+        if (found) {
+          setSelectedArticle(found);
+        }
+      }
+    };
+    checkUrlArticle();
+    window.addEventListener('popstate', checkUrlArticle);
+    return () => window.removeEventListener('popstate', checkUrlArticle);
+  }, [articles]);
 
   // Modals & Drawers
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -128,6 +164,7 @@ export default function App() {
       setIsAboutOpen(true);
     } else {
       setCurrentCategory(cat);
+      setVisibleCount(4);
     }
   };
 
@@ -140,6 +177,14 @@ export default function App() {
     : currentCategory === 'leksykon'
     ? [] // handled by dedicated LexiconSection view
     : articles.filter((a) => a.category === currentCategory);
+
+  // Posortowane chronologicznie od najnowszych
+  const sortedArticles = [...displayedArticles].sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+
+  // Wyświetlane pierwsze N artykułów (domyślnie 4, rozwijane przyciskiem WIĘCEJ)
+  const visibleArticles = sortedArticles.slice(0, visibleCount);
 
   // Popular Articles (ranked)
   const popularArticles = articles
@@ -215,7 +260,10 @@ export default function App() {
               </h1>
             </div>
             <button
-              onClick={() => setCurrentCategory('home')}
+              onClick={() => {
+                setCurrentCategory('home');
+                setVisibleCount(4);
+              }}
               className="text-xs font-semibold text-gray-700 hover:text-[#bb142e] bg-white border border-gray-200 px-3.5 py-2 rounded-xl transition self-start cursor-pointer shadow-xs flex items-center gap-1.5"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -236,7 +284,7 @@ export default function App() {
               {isHome && (
                 <HeroArticle
                   article={heroArticle}
-                  onReadArticle={(art) => setSelectedArticle(art)}
+                  onReadArticle={(art) => handleSelectArticle(art)}
                   isBookmarked={bookmarkedIds.includes(heroArticle.id)}
                   onToggleBookmark={toggleBookmark}
                 />
@@ -272,16 +320,30 @@ export default function App() {
 
                 {/* Grid of Article Cards */}
                 <div className="grid sm:grid-cols-2 gap-6">
-                  {displayedArticles.map((article) => (
+                  {visibleArticles.map((article) => (
                     <ArticleCard
                       key={article.id}
                       article={article}
-                      onReadArticle={(art) => setSelectedArticle(art)}
+                      onReadArticle={(art) => handleSelectArticle(art)}
                       isBookmarked={bookmarkedIds.includes(article.id)}
                       onToggleBookmark={toggleBookmark}
                     />
                   ))}
                 </div>
+
+                {/* Przycisk WIĘCEJ jeśli są kolejne artykuły w tej kolumnie */}
+                {sortedArticles.length > visibleCount && (
+                  <div className="mt-8 flex justify-center">
+                    <button
+                      onClick={() => setVisibleCount((prev) => prev + 4)}
+                      className="group inline-flex items-center justify-center gap-2 px-8 py-3 bg-white hover:bg-gray-50 text-gray-900 font-bold text-xs tracking-wider uppercase border border-gray-300 hover:border-[#bb142e] hover:text-[#bb142e] rounded-xl shadow-xs transition duration-200 cursor-pointer min-h-[44px] min-w-[200px]"
+                      aria-label="Pokaż więcej artykułów"
+                    >
+                      <span>WIĘCEJ</span>
+                      <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-[#bb142e] transition-transform group-hover:translate-y-0.5" />
+                    </button>
+                  </div>
+                )}
 
                 {/* Empty State */}
                 {displayedArticles.length === 0 && currentCategory !== 'kursy' && currentCategory !== 'muzyka' && (
@@ -289,8 +351,11 @@ export default function App() {
                     <Filter className="w-10 h-10 text-gray-300 mx-auto mb-3" />
                     <p className="text-gray-600 font-medium">Brak artykułów w tej kategorii.</p>
                     <button
-                      onClick={() => setCurrentCategory('home')}
-                      className="mt-4 px-4 py-2 bg-[#bb142e] text-white rounded-lg text-xs font-semibold cursor-pointer"
+                      onClick={() => {
+                        setCurrentCategory('home');
+                        setVisibleCount(4);
+                      }}
+                      className="mt-4 px-4 py-2 bg-[#bb142e] text-white rounded-lg text-xs font-semibold cursor-pointer min-h-[44px]"
                     >
                       Powrót do strony głównej
                     </button>
@@ -317,7 +382,7 @@ export default function App() {
             <Sidebar
               popularArticles={popularArticles}
               dailyDevotional={dailyDevotional}
-              onReadArticle={(art) => setSelectedArticle(art)}
+              onReadArticle={(art) => handleSelectArticle(art)}
               isRadioPlaying={isRadioPlaying}
               onToggleRadio={toggleRadioPlayback}
               onNavigateToLexicon={() => {
@@ -338,10 +403,10 @@ export default function App() {
       {/* Modals & Overlays */}
       <ArticleModal
         article={selectedArticle}
-        onClose={() => setSelectedArticle(null)}
+        onClose={() => handleSelectArticle(null)}
         isBookmarked={selectedArticle ? bookmarkedIds.includes(selectedArticle.id) : false}
         onToggleBookmark={toggleBookmark}
-        onSelectRelatedArticle={(art) => setSelectedArticle(art)}
+        onSelectRelatedArticle={(art) => handleSelectArticle(art)}
         relatedArticles={relatedArticles}
       />
 
@@ -349,14 +414,14 @@ export default function App() {
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         articles={articles}
-        onSelectArticle={(art) => setSelectedArticle(art)}
+        onSelectArticle={(art) => handleSelectArticle(art)}
       />
 
       <BookmarksDrawer
         isOpen={isBookmarksOpen}
         onClose={() => setIsBookmarksOpen(false)}
         bookmarkedArticles={bookmarkedArticlesList}
-        onSelectArticle={(art) => setSelectedArticle(art)}
+        onSelectArticle={(art) => handleSelectArticle(art)}
         onRemoveBookmark={(id) => setBookmarkedIds((prev) => prev.filter((i) => i !== id))}
         onClearAll={handleClearBookmarks}
       />

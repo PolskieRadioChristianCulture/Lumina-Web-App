@@ -141,7 +141,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               const url = typeof window !== 'undefined'
                 ? `${window.location.origin}${window.location.pathname}?art=${article.id || article.slug}`
                 : `https://polskieradio.cc/news?art=${article.id || article.slug}`;
-              const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+              const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}&share_img=${encodeURIComponent(article.imageUrl || '')}`;
               window.open(luminaUrl, '_blank', 'noopener,noreferrer');
             }}
             className="w-6 h-6 rounded-md bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center text-[10px] font-black hover:scale-105 transition cursor-pointer shadow-2xs border border-amber-400/40"

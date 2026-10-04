@@ -83,7 +83,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
         category: article.categoryLabel
       });
     } else {
-      const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}`;
+      const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}&share_img=${encodeURIComponent(article.imageUrl || '')}`;
       window.open(luminaUrl, '_blank', 'noopener,noreferrer');
     }
   };
@@ -580,7 +580,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={handleShareX}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs font-bold transition cursor-pointer shadow-sm min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs font-bold transition cursor-pointer shadow-sm min-h-[44px]"
                 title="Udostępnij na platformie X"
                 aria-label="Udostępnij na platformie X"
               >
@@ -591,7 +591,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               </button>
               <button
                 onClick={handleShareLumina}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-[#bb142e] to-[#800d1e] hover:from-[#d11735] hover:to-[#9a1024] text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-sm border border-amber-400/30 min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-[#bb142e] to-[#800d1e] hover:from-[#d11735] hover:to-[#9a1024] text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-sm border border-amber-400/30 min-h-[44px]"
                 title="Udostępnij na Tablicy Społeczności LUMINA"
                 aria-label="Udostępnij na Tablicy LUMINA"
               >
@@ -600,7 +600,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               </button>
               <button
                 onClick={handleShareFacebook}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-sm min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-sm min-h-[44px]"
                 title="Udostępnij na Facebooku"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
