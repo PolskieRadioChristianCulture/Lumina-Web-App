@@ -41,7 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
-  'Z Biblią za Pan Brat: Dzień 3 — Gdzie jesteś? Anatomia upadku i pierwsza Ewangelia Edenu (Rdz 3:1–24)',
+  'Z Biblią za Pan Brat: Dzień 4 — Dwa serca, dwie drogi: Kain i Abel (Rdz 4:1–26)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
   'Polska: rząd ogłosił przyjęcie projektu budżetu na 2027 rok',
@@ -50,6 +50,50 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-04',
+    title: 'Dwa serca, dwie drogi — anatomia religijności bez serca i ostrzeżenie przed grzechem',
+    slug: 'dwa-serca-dwie-drogi-kain-i-abel-rdz-4',
+    excerpt: 'W ramach globalnego programu „Z Biblią za Pan Brat” analizujemy czwarty rozdział Księgi Rodzaju — historię Kaina i Abla, mechanizmy eskalacji gniewu oraz Boże ostrzeżenie o grzechu czyhającym u drzwi.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-04',
+    dateFormatted: '4 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_04_cain_abel.jpg',
+    imageCaption: 'Księga Rodzaju 4: Dwa ołtarze, dwie ofiary i Boże wezwanie do panowania nad grzechem.',
+    readTimeMinutes: 5,
+    isHero: false,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 4', 'Kain i Abel', 'Cezary Rogowski', 'Wiara'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 4:7',
+      text: 'A jeśli nie będziesz dobrze czynił, grzech leży u drzwi i czyha na ciebie, ale ty masz nad nim panować.',
+      strongCode: 'H2403',
+    },
+    lexiconTerms: [
+      {
+        term: 'Czatownik u drzwi (Rdz 4:7)',
+        strongCode: 'H7257',
+        definition: 'Personifikacja grzechu jako drapieżnika przykucniętego u progu serca, nad którym człowiek ma panować z Bożą pomocą.',
+      },
+    ],
+    relatedCourse: {
+      title: 'Z Biblią za Pan Brat: Miesiąc 1 – Księga Rodzaju',
+      lesson: 'Dzień 4: Dwa serca, dwie drogi (Rdz 4:1–26)',
+      url: '/akademia/kurscodzienny/dzien-04',
+      badge: 'KURS CODZIENNY',
+    },
+    content: [
+      'W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje czwarty rozdział Księgi Rodzaju. Opisana w nim historia Kaina i Abla stanowi kluczowe studium na temat autentycznej wiary versus martwej religijności, mechanizmów eskalacji gniewu oraz Bożej suwerenności w relacji z człowiekiem.',
+      '1. Religijność z Zewnątrz a Stan Serca. Tekst przedstawia dwóch braci – Kaina (rolnika) i Abla (pasterza) – którzy przystępują do aktu kultu, składając Bogu dary (Rdz 4:3–4). Fakt, że Kain przynosi ofiarę, dowodzi, że nie jest on ateistą, lecz uczestnikiem praktyk religijnych. Kluczowy zwrot następuje jednak w wersecie czwartym i piątym: „PAN wejrzał na Abla i jego ofiarę; ale na Kaina i jego ofiarę nie wejrzał” (Rdz 4:4–5). Teologia biblijna, wsparta komentarzem Nowego Testamentu (Hbr 11:4), wskazuje, że rozstrzygającym czynnikiem nie była sama materia daru, lecz wiara i wewnętrzna postawa serca ofiarodawcy. Bóg nie ogranicza się do badania zewnętrznych form kultu; Jego spojrzenie dociera do intencji człowieka (1 Sm 16:7). Prawdziwa wiara zawsze rodzi się ze skruszonego i posłusznego serca, podczas gdy religijność pozbawiona żywej relacji z Bogiem pozostaje bezowocna.',
+      '2. Anatomia Gniewu i Metafora Grzechu U Drzwi. W obliczu odrzucenia daru Kain nie poddaje się autorefleksji, lecz ulega głębokiej frustracji i gniewowi („Kain rozgniewał się bardzo i spochmurniała jego twarz” — Rdz 4:5). W tym krytycznym momencie Stwórca osobiście interweniuje, kierując do niego słowa, które weszły do kanonu klasycznej etyki biblijnej: „A jeśli nie będziesz dobrze czynił, grzech leży u drzwi i czyha na ciebie, ale ty masz nad nim panować” (Rdz 4:7). Eksperci lingwistyczni i teologiczni zwracają uwagę na uderzającą metaforę: grzech zostaje tu personifikowany jako drapieżne zwierzę (czyhający czatownik), które przykucnęło u progu ludzkiego serca, gotowe w każdej chwili do skoku. Tekst obala mit, że grzech jest czymś całkowicie zewnętrznym – jest on potężną siłą wewnętrzną, nad którą człowiek, wsparty łaską i przestrogą Boga, musi sprawować duchową kontrolę.',
+      '3. Eskalacja Przemocy i Pytanie o Odpowiedzialność. Lekceważąc Boże ostrzeżenie, Kain pozwala, by spirala emocji (rozczarowanie → gniew → zazdrość → nienawiść) doprowadziła do pierwszego w historii ludzkości morderstwa – zabójstwa własnego brata na polu (Rdz 4:8). Kolejnym kluczowym punktem narracyjnym jest ponowna konfrontacja ze strony Boga, który zadaje retoryczne pytanie: „Gdzie jest Abel, twój brat?” (Rdz 4:9). Odpowiedź Kaina – „Nie wiem. Czy ja jestem stróżem mego brata?” – obnaża fundamentalny skutek grzechu: całkowite zerwanie solidarności międzyludzkiej i znieczulenie sumienia. Zamiast solidarności pojawia się egoizm i wyparcie winy.',
+      '4. Krew Abla a Krew Chrystusa. Bóg wymierza sprawiedliwość, skazując Kaina na tułaczkę, lecz zarazem okazuje miłosierdzie, zabezpieczając jego życie specjalnym znakiem ochronnym przed samosądem (Rdz 4:15). Tekst zamyka się motywem rozwoju cywilizacji technicznej obok eskalacji grzechu (pieśń Lameka o zemście), ale kończy się fundamentalną nadzieją: narodzinami Seta i odrodzeniem duchowym („Wtedy zaczęto wzywać imienia PANA” — Rdz 4:26). W perspektywie Nowego Przymierza krew zamordowanego Abla, wołająca z ziemi o sprawiedliwość i pomstę (Rdz 4:10), zostaje teologicznie skontrastowana z krwią Jezusa Chrystusa, która — jak poucza List do Hebrajczyków (Hbr 12:24) — „mówi lepiej niż krew Abla”, przynosząc grzesznikom dar przebaczenia, usprawiedliwienia i ostatecznego ratunku.',
+      'Podsumowanie Redakcyjne CCN: Rozdział czwarty Księgi Rodzaju stanowi ponure, a zarazem niezwykle trzeźwiące przypomnienie, że zewnętrzna pobożność nie zastąpi przemiany serca. Bóg nie ignoruje destrukcyjnych emocji, lecz wzywa człowieka do czujności i panowania nad grzechem, zanim ten wyda tragiczne owoce. Wszystkie materiały formacyjne i publicystyczne w ekosystemie Christian Culture są całkowicie bezpłatne. Dołącz do naszej bazy subskrybentów i śledź codzienne analizy w ramach projektu „Z Biblią za Pan Brat”. Pełny tekst lekcji Kursu Codziennego z pytaniami i quizem: polskieradio.cc/akademia/kurscodzienny/dzien-04.',
+    ],
+  },
   {
     id: 'art-z-biblia-za-pan-brat-dzien-03',
     title: 'Gdzie jesteś? Anatomia upadku i pierwsza Ewangelia Edenu',
