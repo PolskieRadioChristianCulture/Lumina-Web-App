@@ -47,4 +47,3 @@ test('previous staged release fails after withdrawal or changes; public bylines 
   queue.items[0].state='withdrawn';
   assert.throws(()=>verifyStagedRelease(queue,review,feed,now));
 });
-
