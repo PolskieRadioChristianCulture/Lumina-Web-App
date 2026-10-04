@@ -102,6 +102,15 @@
       w Polsce i na świecie.
     </p>
 
+    <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(196, 163, 90, 0.18); font-size: 11px; line-height: 1.5; color: #94a3b8; text-align: center;">
+      <p style="margin: 0 0 6px 0;">
+        <strong style="color: #cbd5e1;">Nota Prawna & Misja:</strong> Christian Culture (polskieradio.cc) to niezależna, prywatna chrześcijańska inicjatywa misyjna i ewangelizacyjna, finansowana z dobrowolnych darowizn i prowadzona w duchu chrześcijańskiego wolontariatu.
+      </p>
+      <p style="margin: 0;">
+        Projekt nie jest powiązany ani stowarzyszony z publicznym nadawcą <em>Polskie Radio S.A.</em> (polskieradio.pl). | <a href="/privacy" style="color: #C4A35A; text-decoration: underline;">Polityka Prywatności</a>
+      </p>
+    </div>
+
   </div>
 </section>
   `.trim();

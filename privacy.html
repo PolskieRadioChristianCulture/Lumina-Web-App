@@ -160,11 +160,19 @@
         </p>
       </div>
 
-      <h2>1. Administrator i Kontakt</h2>
+      <h2>1. Status Prawny, Administrator i Kontakt</h2>
       <p>
-        Administratorem danych osobowych w ramach ekosystemu jest <strong>Polskie Radio Christian Culture</strong>.
+        Administratorem danych osobowych oraz operatorem ekosystemu jest <strong>Christian Culture / Polskie Radio Christian Culture</strong> — niezależna, prywatna chrześcijańska służba ewangelizacyjna i inicjatywa misyjna o charakterze niekomercyjnym, realizowana przez osoby fizyczne i wolontariuszy skupionych wokół misji głoszenia Słowa Bożego.
+      </p>
+      <div style="padding: 14px 18px; border-radius: 12px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); margin: 16px 0;">
+        <strong style="color: #fca5a5;">Oświadczenie o Niezależności:</strong><br>
+        <span style="font-size: 0.90rem; color: #cbd5e1;">
+          Serwis <strong>polskieradio.cc</strong> jest całkowicie niezależnym projektem medialno-misyjnym i <strong>nie jest w żaden sposób powiązany, stowarzyszony ani zależny od publicznego nadawcy Polskie Radio S.A. (polskieradio.pl)</strong> ani żadnej innej państwowej jednostki radiofonii i telewizji. Zbieżność słów „Polskie Radio” w nazwie projektu odnosi się wyłącznie do języka i polskojęzycznego zasięgu ewangelizacji.
+        </span>
+      </div>
+      <p>
         W sprawach ochrony prywatności, eksportu danych, cofnięcia zgód lub trwałego usunięcia profilu CC ID skontaktuj się z nami:<br>
-        E-mail: <a href="mailto:radiochristianculture@gmail.com">radiochristianculture@gmail.com</a> | Wsparcie techniczne: <a href="mailto:polskiercctv@gmail.com">polskiercctv@gmail.com</a>, tel. <a href="tel:+48783478280">+48 783 478 280</a>.
+        E-mail: <a href="mailto:radiochristianculture@gmail.com">radiochristianculture@gmail.com</a> | Kontakt techniczny: <a href="mailto:polskiercctv@gmail.com">polskiercctv@gmail.com</a>, tel. <a href="tel:+48783478280">+48 783 478 280</a>.
       </p>
 
       <h2>2. Architektura Danych Ekosystemu Christian Culture</h2>
@@ -187,7 +195,7 @@
         <li><strong>Użytkownik Anonimowy (Bez logowania):</strong> Nie zbieramy danych identyfikacyjnych. W pamięci Twojej przeglądarki (Local Storage) mogą być lokalnie zapisywane wybrane stacje radiowe, robocze kalkulacje czy preferencje odtwarzacza. Te dane nigdy nie opuszczają Twojego urządzenia bez Twojej woli.</li>
         <li><strong>Konto CC ID (Logowanie przez Google / LUMINA):</strong> Przetwarzamy adres e-mail, identyfikator <code>uid</code>, imię/nazwę profilu oraz adres awatara przekazany przez dostawcę tożsamości Google.</li>
         <li><strong>Dane Domenowe HOLOS Life OS:</strong> W przypadku zalogowanego szafarza w chmurze Firebase/Firestore powiązane z Twoim <code>uid</code> mogą być przechowywane: oceny wierności w 5 sektorach (Wiara, Relacje, Zdrowie, Finanse, Rozwój), wygenerowane harmonogramy dnia, osobiste intencje modlitewne i notatki. Wprowadzone przez użytkownika klucze API (np. własny klucz Google Gemini API dla funkcji na życzenie BYOK) są przechowywane <em>wyłącznie lokalnie w pamięci przeglądarki użytkownika</em> i nigdy nie są wysyłane na serwery Christian Culture.</li>
-        <li><strong>Dane Domenowe Społeczności LUMINA:</strong> Opcjonalne informacje o profilu (miasto, wyznanie, opis, cel relacji, opublikowane posty i wiadomości).</li>
+        <li><strong>Dane Domenowe Społeczności LUMINA:</strong> Opcjonalne informacje o profilu (miasto, wyznanie, opis, opublikowane posty i wiadomości). <strong>Serwis kategorycznie nie pobiera, nie skanuje ani nie przetwarza danych biometrycznych (w tym geometrii twarzy czy skanów dokumentów tożsamości).</strong> Weryfikacja tożsamości opiera się wyłącznie na standardowych protokołach OAuth dostawców tożsamości (Google).</li>
       </ul>
 
       <h2>4. Podstawy Prawne Przetwarzania (RODO)</h2>
