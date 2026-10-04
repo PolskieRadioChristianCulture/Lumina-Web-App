@@ -580,9 +580,18 @@
               <span class="text-xs text-zinc-700">Dotrzyj z prawdą biblijną do znajomych</span>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <!-- LUMINA L -->
-              <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="AI, SI a biblijny Antychryst – Cezary Rogowski" data-text="Dlaczego sztuczna inteligencja w świetle proroctw Daniela i Apokalipsy nie może być Antychrystem." data-url="https://polskieradio.cc/si/ai-antychryst" data-image="https://polskieradio.cc/images/si/ai-vs-antychryst.jpg" title="Udostępnij na Tablicy LUMINA" aria-label="Udostępnij na Tablicy LUMINA">
-                <span class="lumina-badge-l-icon">L</span><span class="lumina-share-label">LUMINA</span>
+              <!-- LUMINA L (IKONA L BEZ NAPISU) -->
+              <button type="button" 
+                      onclick="window.shareToLumina ? window.shareToLumina({title:'AI, SI a biblijny Antychryst – Cezary Rogowski',text:'Dlaczego sztuczna inteligencja w świetle proroctw Daniela i Apokalipsy nie może być Antychrystem.',url:'https://polskieradio.cc/si/ai-antychryst',imageUrl:'https://polskieradio.cc/images/si/ai-vs-antychryst.jpg'}) : window.open('/lumina-tablica.html?share_title=' + encodeURIComponent('AI, SI a biblijny Antychryst – Cezary Rogowski') + '&share_url=' + encodeURIComponent('https://polskieradio.cc/si/ai-antychryst'), '_blank')"
+                      data-lumina-share="true" 
+                      data-title="AI, SI a biblijny Antychryst – Cezary Rogowski" 
+                      data-text="Dlaczego sztuczna inteligencja w świetle proroctw Daniela i Apokalipsy nie może być Antychrystem." 
+                      data-url="https://polskieradio.cc/si/ai-antychryst" 
+                      data-image="https://polskieradio.cc/images/si/ai-vs-antychryst.jpg" 
+                      title="Udostępnij na Tablicy Społeczności LUMINA" 
+                      aria-label="Udostępnij na Tablicy Społeczności LUMINA"
+                      class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#0d1738] via-[#090d1a] to-[#0d1738] border border-[#facc15]/80 hover:border-[#facc15] shadow-xs hover:shadow-[0_0_16px_rgba(250,204,21,0.35)] transition transform hover:-translate-y-0.5 cursor-pointer lumina-share-btn-l">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br from-[#facc15] to-[#d97706] text-[#07090e] font-serif font-black text-xs leading-none shadow-[0_0_8px_rgba(250,204,21,0.6)]">L</span>
               </button>
 
               <!-- Facebook -->
