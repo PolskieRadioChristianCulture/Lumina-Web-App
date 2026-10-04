@@ -20,7 +20,7 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  
+
   // Domy?lnie blokujemy cookies do momentu uzyskania zgody
   gtag('consent', 'default', {
     'ad_storage': 'denied',
@@ -55,10 +55,10 @@
     <meta name="twitter:title" content="Magdalena, 43 ? Profil Spo?eczno?ci | LUMINA">
     <meta name="twitter:description" content="Profil Magdaleny w chrze?cija?skiej spo?eczno?ci LUMINA. Pozna?, Polska.">
     <meta name="twitter:image" content="https://polskieradio.cc/avatar_magdalena.png">
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title id="pageTitle">Magdalena, 43 ? Profil Spo?eczno?ci | LUMINA</title>
-    
+
     <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
     <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
@@ -75,7 +75,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <!-- Lumina Realtime Firestore Engine -->
     <link rel="stylesheet" href="/lumina-responsive-reset.css?v=20260928_single_v3">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
@@ -1096,7 +1096,7 @@
 
     <!-- PROFILE CONTAINER -->
     <main class="profile-container">
-        
+
         <!-- Security & Owner Access Bar -->
         <div class="profile-security-bar" id="profileSecurityBar">
             <div class="security-status-left">
@@ -1171,7 +1171,7 @@
                         <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa</button>
                         <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zosta? Patronem</span></a>
                     <button type="button" class="btn-action-secondary btn-action-blik" onclick="copyMissionBlikNumber()" title="Wsparcie misyjne BLIK: 537 137 043" style="background:linear-gradient(135deg, #7c3aed, #6d28d9); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; cursor:pointer; box-shadow:0 4px 14px rgba(124,58,237,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-mobile-screen-button" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Misyjny BLIK</span></button>
-                        
+
                         <button type="button" class="btn-action-secondary" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px;">
                             <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
                             <span id="followBtnText">Obserwuj</span>
@@ -1203,7 +1203,7 @@
 
             <!-- Profile Body 2-Column Grid -->
             <div class="profile-body-grid">
-                
+
                 <!-- Left Sidebar -->
                 <aside>
                     <!-- About Card -->
@@ -1244,7 +1244,7 @@
                         </div>
                     </div>
 
-                    
+
                 <!-- ========== OBSERWOWANI ZNAJOMI (POD WIZYT?WK?) ========== -->
                 <div class="sidebar-card followed-friends-card" id="luminaFollowedFriendsSlot"></div>
 
@@ -1350,7 +1350,7 @@
     </main>
 
     <!-- SECURITY PIN MODAL -->
-    
+
 
 
 <div class="modal-overlay" id="securityPinModal">
@@ -1377,7 +1377,7 @@
             <button class="modal-close-btn" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
             <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#f472b6;"></i> Edytuj Sw?j Profil</h3>
             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane s? natychmiast widoczne w LUMINA.</p>
-            
+
             <form id="editProfileForm" onsubmit="saveProfileEdits(event)">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
                     <div>
@@ -1834,8 +1834,8 @@
         </script>
     <!-- Christian Culture & LUMINA Universal Auth Pill -->
     <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
-    <!-- ========== P£YWAJ¥CY PRZE£¥CZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ========== -->
-    <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Prze³¹cz motyw (Jasny / Ciemny)" aria-label="Prze³¹cz motyw">
+    <!-- ========== PÅYWAJÄ„CY PRZEÅÄ„CZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ========== -->
+    <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="PrzeÅ‚Ä…cz motyw (Jasny / Ciemny)" aria-label="PrzeÅ‚Ä…cz motyw">
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
 </body>

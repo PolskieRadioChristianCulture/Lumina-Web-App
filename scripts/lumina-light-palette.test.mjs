@@ -5,6 +5,23 @@ import {readFile, readdir} from 'node:fs/promises';
 const root = new URL('../', import.meta.url);
 const css = await readFile(new URL('css/lumina-light-edition.css', root), 'utf8');
 const contract = css.slice(css.indexOf('/* Shared light palette.'));
+test('light entrypoints preserve UTF-8 and readable Polish labels', async () => {
+  for (const name of await readdir(root)) {
+    if (!/^lumina.*\.html$/.test(name) || name.includes('review')) continue;
+    const bytes = await readFile(new URL(name, root));
+    if (!bytes.includes(Buffer.from('lumina-light-edition.css'))) continue;
+    const text = new TextDecoder('utf-8', {fatal:true}).decode(bytes);
+    assert.ok(!text.includes('\uFFFD'), `${name}: damaged text`);
+  }
+});
+
+test('homepage uses a single independence notice owned by the shared footer', async () => {
+  const home = await readFile(new URL('index.html', root), 'utf8');
+  const footer = await readFile(new URL('components/cc-support-footer.js', root), 'utf8');
+  assert.equal((home.match(/components\/cc-support-footer\.js/g) || []).length, 1);
+  assert.ok(!home.includes('Nota Niezależności'));
+  assert.equal((footer.match(/Nota Prawna & Misja:/g) || []).length, 1);
+});
 function luminance(hex) {
   const channels = hex.replace('#', '').match(/../g).map(x => parseInt(x, 16) / 255)
     .map(x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4);
