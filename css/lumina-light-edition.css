@@ -4371,3 +4371,17 @@ body.theme-lumina-light p[style*="color:#e2e8f0"],
 body.theme-lumina-light p[style*="color: #e2e8f0"] {
     color: #1C1917 !important;
 }
+/* The Sunday appeal shares the light feed surface; payment buttons keep their accents. */
+html[data-lumina-theme="light"] .post-card-sunday-appeal :is(.appeal-support-copy, .appeal-transfer-copy) {
+    background: #F5F2EC !important;
+    border-color: #DDD5C8 !important;
+}
+html[data-lumina-theme="light"] .post-card-sunday-appeal :is(.appeal-support-copy, .appeal-transfer-copy),
+html[data-lumina-theme="light"] .post-card-sunday-appeal :is(.appeal-support-copy, .appeal-transfer-copy) :is(div, ul, li, b),
+html[data-lumina-theme="light"] .post-card-sunday-appeal .post-details-box > p b {
+    color: #3B3632 !important;
+}
+html[data-lumina-theme="light"] .post-card-sunday-appeal .appeal-support-copy a {
+    color: #806120 !important;
+    text-decoration: underline;
+}

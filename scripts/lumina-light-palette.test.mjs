@@ -70,8 +70,19 @@ test('all tracked light entrypoints request the current CSS version', async () =
     const html = await readFile(new URL(name, root), 'utf8');
     if (!html.includes('lumina-light-edition.css')) continue;
     assert.ok(!html.includes('lumina-light-edition.css?v=20261003_board_contrast_v7'), name);
-    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v10/, name);
+    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v11/, name);
     checked++;
   }
   assert.ok(checked >= 20);
+});
+
+test('Sunday appeal can adopt the light feed surface in both board renderers', async () => {
+  for (const name of ['lumina-tablica.html','lumina-tablica-light.html']) {
+    const html = await readFile(new URL(name, root), 'utf8');
+    const article = html.match(/<article class="post-card-1x1 post-card-sunday-appeal[^>]+>/)?.[0];
+    assert.ok(article, name);
+    assert.ok(!article.includes('!important'), name + ': inline priority defeats theme');
+    assert.ok(html.includes('class="appeal-support-copy"') && html.includes('class="appeal-transfer-copy"'), name);
+  }
+  assert.ok(css.includes('.post-card-sunday-appeal :is(.appeal-support-copy, .appeal-transfer-copy)'));
 });

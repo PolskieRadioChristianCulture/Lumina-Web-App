@@ -4939,7 +4939,7 @@
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20261003_player_above_chat_v7">
     <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
-    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v10">
+    <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v11">
     <script src="/js/lumina-theme-manager.js?v=20261003_default_light_v5"></script>
 </head>
 <body class="theme-lumina-light">
@@ -9286,7 +9286,7 @@
         window.buildSundayMissionAppealCardHtml = function(item) {
             const isSpotlight = (window.location.hash.includes('sundayAppeal') || (new URLSearchParams(window.location.search)).get('post') === 'post_sunday_mission_appeal');
             return `
-                <article class="post-card-1x1 post-card-sunday-appeal ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="width:100%; background:linear-gradient(180deg, #09171b 0%, #060e12 100%) !important; border-radius:20px; margin-bottom:24px; position:relative;">
+                <article class="post-card-1x1 post-card-sunday-appeal ${isSpotlight ? 'post-card-spotlight' : ''}" id="${item.id}" style="width:100%; background:linear-gradient(180deg, #09171b 0%, #060e12 100%); border-radius:20px; margin-bottom:24px; position:relative;">
                     <!-- Top Header -->
                     <div class="post-top-header" style="border-bottom:1px solid rgba(74,222,128,0.2); padding-bottom:12px;">
                         <a href="lumina.cezaryrgowski.html" class="post-author-box" style="text-decoration:none; color:inherit;">
@@ -9327,7 +9327,7 @@
                                 <b>Razem budujemy Christian Culture 🌿🤍</b><br>
                                 Dzisiejsza niedziela to czas wdzięczności za wspólnotę, którą tworzymy. Nasza misja uświęcenia i budowy cyfrowego ekosystemu Christian Culture rozwija się dzięki Bożej łasce oraz Twojemu zaangażowaniu. 🙏
                             </p>
-                            <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(74,222,128,0.25); border-radius:14px; padding:12px 16px; margin-bottom:16px;">
+                            <div class="appeal-support-copy" style="background:rgba(255,255,255,0.04); border:1px solid rgba(74,222,128,0.25); border-radius:14px; padding:12px 16px; margin-bottom:16px;">
                                 <div style="font-size:0.92rem; font-weight:800; color:#86efac; margin-bottom:6px;">
                                     Zostań Partnerem Misyjnym! Możesz wesprzeć nasze działania:
                                 </div>
@@ -9367,7 +9367,7 @@
                         </div>
 
                         <!-- Ramka danych bankowych -->
-                        <div style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px 14px; font-size:0.78rem; color:#94a3b8; display:flex; flex-direction:column; gap:4px; text-align:center;">
+                        <div class="appeal-transfer-copy" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px 14px; font-size:0.78rem; color:#94a3b8; display:flex; flex-direction:column; gap:4px; text-align:center;">
                             <div>Nr konta: <b style="color:#fff; font-family:monospace; font-size:0.84rem;">48 2910 0006 0000 0000 0527 2629</b></div>
                             <div>Tytuł przelewu: <b style="color:#facc15;">„Dar misyjny”</b></div>
                         </div>
