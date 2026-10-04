@@ -4273,3 +4273,101 @@ html[data-lumina-theme="light"] ::-webkit-scrollbar-thumb {
     background: #9C8762 !important; border-color: #F5F2EB !important;
 }
 html[data-lumina-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #806120 !important; }
+
+/* ══════════════════════════════════════════════════════════════════
+   FIX v9 — Usterka 4: Commander Chat Tab
+   ══════════════════════════════════════════════════════════════════ */
+html[data-lumina-theme="light"] #messengerCommanderView {
+    background: #FAF8F5 !important;
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] #messengerCommanderView > div:first-child {
+    background: linear-gradient(135deg, rgba(184,142,62,0.12), rgba(196,163,90,0.08)) !important;
+    border-bottom-color: rgba(196,163,90,0.3) !important;
+}
+html[data-lumina-theme="light"] #commanderChatMessagesBox {
+    background: #F5F2EB !important;
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] #commanderChatMessagesBox span[style*="color: #fff"],
+html[data-lumina-theme="light"] #commanderChatMessagesBox span[style*="color:#fff"],
+html[data-lumina-theme="light"] #commanderChatMessagesBox span[style*="color: white"] {
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] #commanderChatMessagesBox [style*="color: #fde047"],
+html[data-lumina-theme="light"] #commanderChatMessagesBox [style*="color:#fde047"] {
+    color: #78350F !important;
+}
+html[data-lumina-theme="light"] #messengerCommanderView > div[style*="rgba(255,255,255,0.02)"] {
+    background: rgba(184,142,62,0.06) !important;
+    border-top-color: rgba(196,163,90,0.2) !important;
+}
+html[data-lumina-theme="light"] #messengerCommanderView > div[style*="rgba(255,255,255,0.02)"] button {
+    color: #78350F !important;
+    border-color: rgba(184,142,62,0.3) !important;
+}
+html[data-lumina-theme="light"] #commanderChatForm {
+    background: #FAF8F5 !important;
+    border-top-color: rgba(196,163,90,0.25) !important;
+}
+html[data-lumina-theme="light"] #commanderChatInput {
+    background: #FFFFFF !important;
+    border-color: rgba(196,163,90,0.5) !important;
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] #commanderChatInput::placeholder {
+    color: #78716C !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FIX v9 — Usterka 1: Feed Posts / Wall Cards (bez sufiksu 1x1)
+   ══════════════════════════════════════════════════════════════════ */
+html[data-lumina-theme="light"] .feed-card,
+html[data-lumina-theme="light"] .feed-post-card,
+html[data-lumina-theme="light"] .post-card,
+html[data-lumina-theme="light"] article.feed-post-card,
+body.theme-lumina-light .feed-card,
+body.theme-lumina-light .feed-post-card,
+body.theme-lumina-light .post-card,
+body.theme-lumina-light article.feed-post-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 16px rgba(15, 23, 42, 0.06) !important;
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] .feed-card p,
+html[data-lumina-theme="light"] .feed-post-card p,
+html[data-lumina-theme="light"] .post-card p,
+body.theme-lumina-light .feed-card p,
+body.theme-lumina-light .feed-post-card p,
+body.theme-lumina-light .post-card p {
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] .feed-card [style*="color:#e2e8f0"],
+html[data-lumina-theme="light"] .feed-card [style*="color: #e2e8f0"],
+html[data-lumina-theme="light"] .feed-post-card [style*="color:#e2e8f0"],
+html[data-lumina-theme="light"] .feed-post-card [style*="color: #e2e8f0"],
+html[data-lumina-theme="light"] .post-card [style*="color:#e2e8f0"],
+html[data-lumina-theme="light"] .post-card [style*="color: #e2e8f0"],
+body.theme-lumina-light .feed-card [style*="color:#e2e8f0"],
+body.theme-lumina-light .feed-post-card [style*="color:#e2e8f0"],
+body.theme-lumina-light .post-card [style*="color:#e2e8f0"] {
+    color: #1C1917 !important;
+}
+html[data-lumina-theme="light"] .feed-card [style*="color:#94a3b8"],
+html[data-lumina-theme="light"] .feed-card [style*="color: #94a3b8"],
+html[data-lumina-theme="light"] .feed-post-card [style*="color:#94a3b8"],
+html[data-lumina-theme="light"] .post-card [style*="color:#94a3b8"],
+body.theme-lumina-light .feed-card [style*="color:#94a3b8"],
+body.theme-lumina-light .feed-post-card [style*="color:#94a3b8"],
+body.theme-lumina-light .post-card [style*="color:#94a3b8"] {
+    color: #44403C !important;
+}
+/* Akapity z hardkodowanym ciemnym kolorem z formatLuminaDevotionalContent */
+html[data-lumina-theme="light"] p[style*="color:#e2e8f0"],
+html[data-lumina-theme="light"] p[style*="color: #e2e8f0"],
+body.theme-lumina-light p[style*="color:#e2e8f0"],
+body.theme-lumina-light p[style*="color: #e2e8f0"] {
+    color: #1C1917 !important;
+}

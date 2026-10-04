@@ -6274,6 +6274,10 @@ export function formatLuminaDevotionalContent(rawText) {
     if (!rawText) return '';
     let text = rawText;
 
+    // 0. Markdown bold i italic
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
     // 1. WhatsApp invite -> zamień na elegancki zielony przycisk
     text = text.replace(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match) => {
         const urlMatch = match.match(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+/i);
@@ -6345,7 +6349,7 @@ export function formatLuminaDevotionalContent(rawText) {
             if (trimmed.startsWith('Baza i wzrost:') || trimmed.includes('PODAJ DALEJ') || trimmed.includes('reflection-smart-link')) {
                 return `<div class="reflection-links-container"><div style="font-size:0.82rem; font-weight:800; color:#f59e0b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px;"><i class="fa-solid fa-network-wired"></i> Społeczność & Kanały LUMINA</div>${trimmed.replace(/\n/g, '<br>')}</div>`;
             }
-            return `<p style="margin:0 0 14px; line-height:1.75; color:#e2e8f0; font-size:0.94rem;">${trimmed.replace(/\n/g, '<br>')}</p>`;
+            return `<p style="margin:0 0 14px; line-height:1.75; color:inherit; font-size:0.94rem;">${trimmed.replace(/\n/g, '<br>')}</p>`;
         })
         .join('');
 }
