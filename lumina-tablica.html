@@ -211,7 +211,7 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Community Core Posts Data -->
-    <script src="js/lumina-community-posts.js?v=20260919_tags_mentions"></script>
+    <script src="js/lumina-community-posts.js?v=20261004_ai_antychryst_v2"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
     <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
@@ -9504,7 +9504,54 @@
             // 👑 POZYCJA 0 / NAJWYŻSZA: Artykuł Flagowy Założyciela / Udostępniony Wpis
             // Gwarancja, że artykuł "AI, SI a biblijny Antychryst" Cezarego Rogowskiego lub wpis z udostępnienia
             // pojawia się NATYCHMIAST jako PIERWSZY post na samej górze Tablicy LUMINA
-            const topSharedOrFlagship = (window._luminaTopSharedPost) || userPosts.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (p.sourceSlug === 'ai-antychryst') || (p.title && p.title.includes('AI, SI a biblijny Antychryst')));
+            let topSharedOrFlagship = (window._luminaTopSharedPost) || userPosts.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (p.sourceSlug === 'ai-antychryst') || (p.title && p.title.includes('AI, SI a biblijny Antychryst')));
+            if (!topSharedOrFlagship && typeof window.LUMINA_CORE_POSTS_DATA !== 'undefined' && Array.isArray(window.LUMINA_CORE_POSTS_DATA)) {
+                topSharedOrFlagship = window.LUMINA_CORE_POSTS_DATA.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski');
+            }
+            if (!topSharedOrFlagship) {
+                try {
+                    const raw = localStorage.getItem('lumina_recent_published_post');
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (parsed && (parsed.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (parsed.sourceSlug === 'ai-antychryst') || (parsed.title && parsed.title.includes('Antychryst')))) {
+                            topSharedOrFlagship = parsed;
+                        }
+                    }
+                } catch(e) {}
+            }
+            if (!topSharedOrFlagship) {
+                topSharedOrFlagship = {
+                    id: 'post_art_ai_si_antychryst_cezary_rogowski',
+                    type: 'post',
+                    category: 'si',
+                    isArticle: true,
+                    author: 'Cezary Rogowski',
+                    authorSlug: 'cezaryrgowski',
+                    authorAvatar: 'avatar_cezary_official.jpg',
+                    authorRole: 'Założyciel Christian Culture ✨ • Redakcja Teologiczna',
+                    authorBadge: '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI',
+                    badgeHtml: '<span class="badge-type-tag" style="background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);" title="👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI"><i class="fa-solid fa-microchip"></i> <span class="badge-type-tag-text">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>',
+                    time: 'Dzisiaj • 👑 Główna Publikacja Założyciela',
+                    title: 'AI, SI a biblijny Antychryst: Dlaczego sztuczna inteligencja nie może być Antychrystem',
+                    text: 'Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem?\n\nWraz z rozwojem sztucznej inteligencji coraz częściej pojawiają się próby łączenia AI z biblijnym Antychrystem, „obrazem bestii” czy systemem kontroli z Apokalipsy 13. Z perspektywy rzetelnej analizy Pisma Świętego i proroctw Księgi Daniela takie utożsamienie jest jednak metodologicznie błędne.\n\nBiblia nie przedstawia Antychrysta jako technologii, lecz jako historyczny system religijno-polityczny o określonej sukcesji (1260 lat, mały róg, roszczenia do Bożego Prawa i kultu). Sztuczna inteligencja jest narzędziem, a nie biblijnym podmiotem proroczym.\n\nZapraszam do lektury pełnej, 20-rozdziałowej analizy egzegetycznej z tabelami porównawczymi na portalu CCN Nowe Technologie & SI:\n🔗 https://polskieradio.cc/si/ai-antychryst',
+                    desc: 'Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem. Rzetelna analiza Cezarego Rogowskiego.',
+                    image: '/images/si/ai-vs-antychryst.webp',
+                    imageUrl: '/images/si/ai-vs-antychryst.webp',
+                    actionText: 'Czytaj Cały Artykuł (14 min) ➔',
+                    actionUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    externalUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    externalUrlLabel: 'Czytaj Cały Artykuł (14 min) ➔',
+                    sourceUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    sourceSlug: 'ai-antychryst',
+                    likes: 428,
+                    amen: 396,
+                    createdAtTimestamp: Date.now(),
+                    _sortTs: Date.now() + 1000000000,
+                    _isNewlyPublished: true,
+                    _isFreshSpotlight: true,
+                    _isTopSpotlight: true
+                };
+            }
             if (topSharedOrFlagship) {
                 topSharedOrFlagship._isTopSpotlight = true;
                 topSharedOrFlagship._isNewlyPublished = true;
