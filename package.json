@@ -29,7 +29,8 @@
     "test": "npm run test:all",
     "matrix": "node scripts/agent-matrix/launch_grid.js",
     "matrix:local": "node scripts/agent-matrix/launch_grid.js --local",
-    "studio": "node scripts/agent-matrix/launch_studio.js"
+    "studio": "node scripts/agent-matrix/launch_studio.js",
+    "build:ccn-music": "node scripts/build-ccn-music.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",
