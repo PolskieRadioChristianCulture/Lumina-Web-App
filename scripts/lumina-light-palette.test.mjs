@@ -70,7 +70,7 @@ test('all tracked light entrypoints request the current CSS version', async () =
     const html = await readFile(new URL(name, root), 'utf8');
     if (!html.includes('lumina-light-edition.css')) continue;
     assert.ok(!html.includes('lumina-light-edition.css?v=20261003_board_contrast_v7'), name);
-    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v12/, name);
+    assert.match(html, /lumina-light-edition\.css\?v=20261004_palette_v13/, name);
     checked++;
   }
   assert.ok(checked >= 20);
@@ -93,4 +93,15 @@ test('feed author headers and transmission footers use readable light surfaces',
     assert.ok(pos >= 0, selector);
     assert.match(css.slice(pos, css.indexOf('}',pos)+1), /background: #FFFFFF !important/);
   }
+});
+
+test('hydrated link and store previews own a complete readable light palette', () => {
+  for(const [selector,color] of [['.rich-og-card','#FFFFFF'],['.rich-og-body','#FFFFFF'],['.rich-og-title','#1C1917'],['.rich-og-desc','#3B3632'],['.rich-og-host','#655F58']]) {
+    const pos=css.lastIndexOf('html[data-lumina-theme="light"] '+selector);
+    assert.ok(pos>=0,selector);
+    assert.ok(css.slice(pos,css.indexOf('}',pos)+1).includes(color),selector);
+  }
+  for(const bg of ['#075985','#806120']) assert.ok(contrast('#FFFFFF',bg)>=4.5,bg);
+  assert.ok(contrast('#655F58','#FFFFFF')>=4.5);
+  assert.ok(css.includes('.rich-og-cta:focus-visible'));
 });

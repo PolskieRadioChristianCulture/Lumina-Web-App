@@ -4396,3 +4396,42 @@ html[data-lumina-theme="light"] .post-card-1x1 > .post-footer-pro {
 html[data-lumina-theme="light"] .post-card-1x1 .post-top-header :is(.post-author-role, .post-date, .post-time, .post-meta) {
     color: #655F58 !important;
 }
+
+/* Link previews are content surfaces, including hydrated and store cards. */
+html[data-lumina-theme="light"] .rich-og-card {
+    background: #FFFFFF !important;
+    border-color: #DDD5C8 !important;
+    box-shadow: 0 6px 20px rgba(59,54,50,.08) !important;
+    color: #3B3632 !important;
+}
+html[data-lumina-theme="light"] .rich-og-body,
+html[data-lumina-theme="light"] .rich-og-top-bar {
+    background: #FFFFFF !important;
+    color: #3B3632 !important;
+}
+html[data-lumina-theme="light"] .rich-og-title { color: #1C1917 !important; }
+html[data-lumina-theme="light"] .rich-og-desc { color: #3B3632 !important; }
+html[data-lumina-theme="light"] .rich-og-host { color: #655F58 !important; }
+html[data-lumina-theme="light"] .rich-og-action-row { border-color: #DDD5C8 !important; }
+html[data-lumina-theme="light"] .rich-og-floating-badge.static {
+    background: #F5F2EC !important;
+    color: #655F58 !important;
+    border-color: #DDD5C8 !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] .rich-og-cta,
+html[data-lumina-theme="light"] .rich-og-cta :is(span,i) {
+    background: #075985 !important;
+    color: #FFFFFF !important;
+    border-color: #075985 !important;
+}
+html[data-lumina-theme="light"] .rich-og-cta.store-cta,
+html[data-lumina-theme="light"] .rich-og-cta.store-cta :is(span,i) {
+    background: #806120 !important;
+    border-color: #806120 !important;
+}
+html[data-lumina-theme="light"] .rich-og-cta:hover { filter: brightness(.9); }
+html[data-lumina-theme="light"] .rich-og-cta:focus-visible {
+    outline: 3px solid #806120 !important;
+    outline-offset: 3px;
+}
