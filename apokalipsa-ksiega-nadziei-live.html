@@ -294,6 +294,144 @@
     
         
     
+        /* --- EPISODE SELECTOR MODAL --- */
+        #episodesModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .episodes-modal-card {
+            background: rgba(15, 18, 28, 0.96);
+            border: 2px solid var(--gold-primary);
+            border-radius: 24px;
+            max-width: 920px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.9);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close-btn:hover { color: #fff; }
+
+        .episodes-grid {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .episodes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .episode-picker-item {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .episode-picker-item:hover, .episode-picker-item.active {
+            background: rgba(212,175,55,0.18);
+            border-color: var(--gold-primary);
+            transform: translateX(4px);
+        }
+
+        .ep-num-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(212,175,55,0.2);
+            color: var(--gold-primary);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            border: 1px solid var(--gold-primary);
+        }
+
+        .episode-picker-item.active .ep-num-badge {
+            background: var(--gold-primary);
+            color: #000;
+        }
+
+        .ep-info-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .ep-info-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ep-info-sub {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         /* HIDE OPERATOR PANEL FOR PUBLIC VIEWERS */
         .operator-panel, .toggle-panel-trigger, .live-outer-controls, #live-outer-controls {
             display: none !important;
@@ -345,12 +483,16 @@
             </div>
 
             <div class="header-right-badge" style="display: flex; align-items: center; gap: 12px;">
+                <button id="episodePickerBtn" onclick="openEpisodesModal()" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Wybierz odcinek">
+                    <i class="fa-solid fa-list-ol" style="font-size: 0.9rem;"></i>
+                    <span id="episodePickerLabel">LEKCJA 1 / 25</span>
+                </button>
                 <button onclick="openChromecastModal('apokalipsa-ksiega-nadziei-live.html')" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Prześlij na TV (Chromecast / AirPlay)">
                     <img src="chromecast.png" alt="Chromecast" style="height: 18px; width: auto;">
                     <span>PRZEŚLIJ NA TV</span>
                 </button>
                 <div class="live-dot"></div>
-                <span>EMISJA SPECJALNA • CC TV</span>
+                <span>24/7 LIVE • CC TV</span>
             </div>
         </div>
 
@@ -382,6 +524,35 @@
         let player = null;
         let initialJumpDone = false;
 
+        // ── 25 Lessons of Apokalipsa: Księga Nadziei (lesson 26 = upcoming, no video yet) ──
+        const LESSONS_25 = [
+            { ep: 1,  id: '-d4bMk7wseU', title: 'Objawienie Jezusa Chrystusa — Księga, która odsłania' },
+            { ep: 2,  id: 'OhHcJoc-Cf0', title: 'Jezus pośród swojego Kościoła — Siedem Świeczników' },
+            { ep: 3,  id: 'YhEH-MyPGWE', title: 'Listy do Siedmiu Kościołów — Poselstwo na Dziś' },
+            { ep: 4,  id: '8wtK9oTZCd8', title: 'Tron Boży i Baranek — Centrum Wszechświata' },
+            { ep: 5,  id: 'mtZkw3vrqq4', title: 'Siedem Pieczęci — Przegląd Historii Świata' },
+            { ep: 6,  id: '1YLgnm-q4w4', title: 'Sto Czterdzieści Cztery Tysiące — Kim Są?' },
+            { ep: 7,  id: '6HInNVNK7qE', title: 'Wielki Tłum — Zbawieni Przez Krew Baranka' },
+            { ep: 8,  id: '5lKiIYGELOo', title: 'Siedem Trąb — Ostrzeżenia dla Świata' },
+            { ep: 9,  id: 'sP4KOpQc5Y8', title: 'Mała Książeczka — Słodko-Gorzka Ewangelia' },
+            { ep: 10, id: 'nCLU_guoStw', title: 'Dwóch Świadków — Słowo Boże i Duch Święty' },
+            { ep: 11, id: 'xPy-qmpt48g', title: 'Niewiasta i Smok — Wielki Konflikt Wieków' },
+            { ep: 12, id: '3fd2UCOQ-hA', title: 'Bestia z Morza — Potęga Religijna w Proroctwie' },
+            { ep: 13, id: 'UPITGh2oioc', title: 'Bestia z Ziemi — Fałszywy Prorok Ostatnich Dni' },
+            { ep: 14, id: 'THX1Ukgu67s', title: 'Znamię Bestii — Znak Lojalności w Czasach Końca' },
+            { ep: 15, id: 'lCSGO5bz1bE', title: 'Trzy Poselstwa Anielskie — Globalna Misja Kościoła' },
+            { ep: 16, id: 'RSAU-o3c3Xs', title: 'Babilon — System Fałszywej Religii' },
+            { ep: 17, id: '7idKgBkmFEU', title: 'Siedem Plag — Sąd Boży nad Babilonem' },
+            { ep: 18, id: 'D-sjkIkXeWk', title: 'Upadek Babilonu — Wyjdź z Niego, Ludu Mój!' },
+            { ep: 19, id: 'hHug_C6XDPU', title: 'Powrót Jezusa — Majestatyczne Przyjście Króla' },
+            { ep: 20, id: 'DPcH9KA3y9o', title: 'Tysiąc Lat — Milenium i Sąd Ostateczny' },
+            { ep: 21, id: 'EZni4JPyR30', title: 'Nowe Jeruzalem — Niebo na Ziemi' },
+            { ep: 22, id: '3-czDmZBfI4', title: 'Nowe Stworzenie — Wieczność z Bogiem' },
+            { ep: 23, id: 'ljQkyXw7zUA', title: 'Sabat w Apokalipsie — Znak Stwórcy' },
+            { ep: 24, id: 'XrkR6XdmXTM', title: 'Modlitwa i Stan Umarłych — Biblijna Nadzieja' },
+            { ep: 25, id: 'qocOjx5xfBs', title: 'Bądź Gotowy — Żyć w Blasku Chwały Bożej' }
+        ];
+
         // ── Helper: Calculate Day of Year (1-365) ──
         function getDayOfYear() {
             const now = new Date();
@@ -391,7 +562,67 @@
             return Math.floor(diff / oneDay);
         }
 
-        // ── Init Player with YouTube API & jump to exact episode ──
+        // ── Update Episode UI (tag, title, picker label, modal grid) ──
+        function updateEpisodeUI(index) {
+            if (index === null || index === undefined || index < 0) return;
+            const lesson = LESSONS_25[index];
+            if (!lesson) return;
+
+            const tagEl = document.getElementById('episodeTag');
+            if (tagEl) tagEl.textContent = 'KURS BIBLIJNY • LEKCJA ' + lesson.ep + ' z 25 — 24/7';
+
+            const titleEl = document.querySelector('.episode-title');
+            if (titleEl) titleEl.textContent = lesson.title;
+
+            const labelEl = document.getElementById('episodePickerLabel');
+            if (labelEl) labelEl.textContent = 'LEKCJA ' + lesson.ep + ' / 25';
+
+            renderEpisodesModalGrid(index);
+        }
+
+        // ── Episodes Modal ──
+        function renderEpisodesModalGrid(activeIndex) {
+            const grid = document.getElementById('episodesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            LESSONS_25.forEach((lesson, idx) => {
+                const isActive = idx === activeIndex;
+                const item = document.createElement('div');
+                item.className = 'episode-picker-item' + (isActive ? ' active' : '');
+                item.onclick = () => { jumpToEpisode(idx); closeEpisodesModal(); };
+                item.innerHTML =
+                    '<div class="ep-num-badge">' + lesson.ep + '</div>' +
+                    '<div class="ep-info-wrap">' +
+                        '<div class="ep-info-title">' + lesson.title + '</div>' +
+                        '<div class="ep-info-sub">Lekcja ' + lesson.ep + ' z 25' + (isActive ? ' • TERAZ' : '') + '</div>' +
+                    '</div>';
+                grid.appendChild(item);
+            });
+        }
+
+        function openEpisodesModal() {
+            const modal = document.getElementById('episodesModal');
+            if (modal) modal.style.display = 'flex';
+            const currentIdx = (player && typeof player.getPlaylistIndex === 'function') ? player.getPlaylistIndex() : 0;
+            renderEpisodesModalGrid(currentIdx >= 0 ? currentIdx : 0);
+            showOverlays();
+            if (autoFadeTimer) clearTimeout(autoFadeTimer);
+        }
+
+        function closeEpisodesModal() {
+            const modal = document.getElementById('episodesModal');
+            if (modal) modal.style.display = 'none';
+            resetAutoFadeTimer();
+        }
+
+        function jumpToEpisode(idx) {
+            if (!player || typeof player.playVideoAt !== 'function') return;
+            player.playVideoAt(idx);
+            updateEpisodeUI(idx);
+            disableCaptions();
+        }
+
+        // ── Helper: disable captions ──
         function disableCaptions() {
             try {
                 if (player) {
@@ -414,15 +645,12 @@
             } catch(e) {}
         }
 
+        // ── Init Player with YouTube API — start from rotation slot ──
         function onYouTubeIframeAPIReady() {
             const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 24) + 1; // 24-lesson Bible Course cycle
-            const targetZeroBasedIndex = episodeIndex - 1;
+            const startIndex = (dayOfYear - 1) % 25; // rotate start across 25 lessons
 
-            const tagEl = document.getElementById("episodeTag");
-            if (tagEl) {
-                tagEl.textContent = "KURS BIBLIJNY • ODCINEK " + episodeIndex + " (DZIEŃ " + dayOfYear + ")";
-            }
+            updateEpisodeUI(startIndex);
 
             const pageOrigin = (window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'https://polskieradio.cc';
             player = new YT.Player('yt-player', {
@@ -438,7 +666,7 @@
                     mute: 1,
                     listType: 'playlist',
                     list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
-                    index: targetZeroBasedIndex,
+                    index: startIndex,
                     cc_load_policy: 0,
                     iv_load_policy: 3,
                     origin: pageOrigin
@@ -452,17 +680,16 @@
 
         function onPlayerReady(event) {
             const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 24) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1;
+            const startIndex = (dayOfYear - 1) % 25;
 
             disableCaptions();
 
-            // Load playlist starting directly at today's zero-based episode index
+            // Load playlist starting from today's rotation slot — 24/7 loop
             try {
                 event.target.loadPlaylist({
                     list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
                     listType: 'playlist',
-                    index: targetZeroBasedIndex,
+                    index: startIndex,
                     startSeconds: 0
                 });
                 event.target.playVideo();
@@ -549,38 +776,26 @@
         window.addEventListener('click', resetAutoFadeTimer);
 
         function onPlayerStateChange(event) {
-            const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 24) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1;
-
-            // Verify and correct playlist index on first play
-            if (!initialJumpDone && (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING)) {
-                initialJumpDone = true;
+            // 24/7 LOOP: After each episode ends, advance to next in playlist (wraps around automatically)
+            if (event.data === YT.PlayerState.ENDED) {
                 if (player && typeof player.getPlaylistIndex === 'function') {
-                    const currentIndex = player.getPlaylistIndex();
-                    if (currentIndex !== targetZeroBasedIndex) {
-                        console.log("Correcting playlist index from", currentIndex, "to", targetZeroBasedIndex);
-                        player.playVideoAt(targetZeroBasedIndex);
-                    }
+                    const currentIdx = player.getPlaylistIndex();
+                    const nextIdx = (currentIdx + 1) % 25;
+                    console.log("Episode ended. Advancing from " + currentIdx + " to " + nextIdx + " (24/7 loop)");
+                    player.playVideoAt(nextIdx);
+                    updateEpisodeUI(nextIdx);
                 }
+                disableCaptions();
             }
 
-            // Single episode completion -> stop video and notify MCR parent to switch back immediately
-            if (event.data === YT.PlayerState.ENDED) {
-                console.log("Single lesson ended. Stopping video & notifying parent.");
-                try {
-                    if (player && typeof player.stopVideo === 'function') {
-                        player.stopVideo();
-                    }
-                } catch(e) {}
-
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ type: 'APOKALIPSA_KSIEGA_NADZIEI_FINISHED' }, '*');
-                    window.parent.postMessage({ type: 'KSIEGA_NADZIEI_FINISHED' }, '*');
-                    window.parent.postMessage({ type: 'PROGRAM_FINISHED' }, '*');
-                    window.parent.postMessage('KSIEGA_NADZIEI_FINISHED', '*');
-                } else {
-                    window.location.href = "master";
+            if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+                disableCaptions();
+                if (!initialJumpDone) {
+                    initialJumpDone = true;
+                }
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const idx = player.getPlaylistIndex();
+                    if (idx >= 0) updateEpisodeUI(idx);
                 }
             }
         }
@@ -759,8 +974,30 @@
         }
     </script>
 
+    <!-- EPISODES PICKER MODAL (24/7 BIBLE COURSE) -->
+    <div id="episodesModal" onclick="if(event.target===this)closeEpisodesModal()">
+        <div class="episodes-modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-book-bible" style="color: var(--gold-primary);"></i>
+                    <span>APOKALIPSA: KSIĘGA NADZIEI — WYBÓR LEKCJI</span>
+                </div>
+                <button class="modal-close-btn" onclick="closeEpisodesModal()" aria-label="Zamknij">&times;</button>
+            </div>
+            <div class="episodes-grid" id="episodesGrid">
+                <!-- Generowane dynamicznie przez renderEpisodesModalGrid -->
+            </div>
+        </div>
+    </div>
 
-            
+    <script>
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeEpisodesModal();
+                closeChromecastModal();
+            }
+        });
+    </script>
 </body>
 </html>
 
