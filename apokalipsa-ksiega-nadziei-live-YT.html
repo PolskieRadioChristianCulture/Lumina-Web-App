@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>APOKALIPSA: KSIĘGA NADZIEI — Czysta Emisja 24/7 (OBS Clean Feed) | Studio Dees</title>
+    <meta name="description" content="Czysta retransmisja wideo 24/7 bez nakładek dla kanału Studio Dees. Cykl Apokalipsa: Księga Nadziei.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.45);
+            --bg-dark: #07090e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: #fff;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* ── 100% CLEAN FULLSCREEN VIDEO CONTAINER ── */
+        .clean-stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .clean-stage iframe,
+        .clean-stage #yt-player {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            display: block;
+        }
+
+        /* ── OBS BROADCAST CUE / STANDBY OVERLAY ── */
+        .cue-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background: radial-gradient(ellipse at center, rgba(17, 24, 39, 0.96) 0%, rgba(5, 7, 12, 0.98) 100%);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .cue-overlay.fading {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .cue-card {
+            background: rgba(15, 20, 32, 0.85);
+            border: 2px solid var(--gold-primary);
+            border-radius: 28px;
+            max-width: 680px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--gold-glow);
+            text-align: center;
+            position: relative;
+        }
+
+        .cue-header-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid var(--gold-primary);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .cue-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .cue-subtitle {
+            font-size: 0.98rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .cue-channel-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .cue-channel-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cue-channel-info i {
+            color: #ff0000;
+            font-size: 1.6rem;
+        }
+
+        .cue-channel-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .cue-channel-handle {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .cue-badge-ready {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #34d399;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cue-selector-group {
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+        .cue-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cue-select {
+            width: 100%;
+            background: rgba(8, 12, 22, 0.9);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .cue-select:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .cue-select option {
+            background: #0f1420;
+            color: #fff;
+            padding: 10px;
+        }
+
+        /* ── BIG START EMISJI BUTTON ── */
+        .cue-start-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 18px 30px;
+            color: #000;
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.45);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cue-start-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.65);
+        }
+
+        .cue-start-btn:active {
+            transform: translateY(0) scale(0.99);
+        }
+
+        .cue-start-btn i {
+            font-size: 1.35rem;
+        }
+
+        /* ── HINTS & OBS TIPS ── */
+        .cue-hints {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .hint-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .hint-item i {
+            color: var(--gold-primary);
+            width: 16px;
+            text-align: center;
+        }
+
+        .hint-item strong {
+            color: #fff;
+        }
+
+        /* ── DISCRETE OPERATOR CONTROLS (ESC to trigger) ── */
+        .operator-mini-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 14, 24, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 8px 16px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .operator-mini-bar button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .operator-mini-bar button:hover {
+            background: var(--gold-primary);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 100% CLEAN STAGE FOR OBS CAPTURE (NO OVERLAYS DURING LIVE) -->
+    <div class="clean-stage">
+        <div id="yt-player"></div>
+    </div>
+
+    <!-- DISCRETE OPERATOR RE-OPEN BAR (ACCESSIBLE VIA ESC) -->
+    <div id="operatorBar" class="operator-mini-bar">
+        <span id="currentStatusLabel">EMISJA NA ŻYWO (24/7)</span>
+        <button onclick="showCueOverlay()">PAUZA / USTAWIENIA</button>
+        <button onclick="jumpNextLesson()">NASTĘPNA LEKCJA ⏭</button>
+    </div>
+
+    <!-- OBS CUE / STANDBY SCREEN -->
+    <div id="cueOverlay" class="cue-overlay">
+        <div class="cue-card">
+            
+            <div class="cue-header-pill">
+                <div class="live-dot"></div>
+                <span>EKRAN NADAWCZY OBS • CLEAN FEED</span>
+            </div>
+
+            <h1 class="cue-title">APOKALIPSA: KSIĘGA NADZIEI</h1>
+            <p class="cue-subtitle">
+                Czysta transmisja wideo 24/7 (bez żadnych nakładek, belek ani zegara).<br>
+                Sygnał przygotowany do bezpośredniej retransmisji na żywo w <strong>OBS Studio</strong>.
+            </p>
+
+            <div class="cue-channel-box">
+                <div class="cue-channel-info">
+                    <i class="fa-brands fa-youtube"></i>
+                    <div>
+                        <div class="cue-channel-name">Studio Dees</div>
+                        <div class="cue-channel-handle">@studiodees • YouTube Live</div>
+                    </div>
+                </div>
+                <div class="cue-badge-ready">
+                    <i class="fa-solid fa-circle-check"></i> SYGNAŁ GOTOWY
+                </div>
+            </div>
+
+            <div class="cue-selector-group">
+                <label for="lessonSelector" class="cue-label">
+                    <i class="fa-solid fa-list-ol"></i> Wybierz lekcję początkową:
+                </label>
+                <select id="lessonSelector" class="cue-select">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+
+            <button id="startBroadcastBtn" class="cue-start-btn" onclick="startCleanBroadcast()">
+                <i class="fa-solid fa-play"></i>
+                <span>ROZPOCZNIJ EMISJĘ (START)</span>
+            </button>
+
+            <div class="cue-hints">
+                <div class="hint-item">
+                    <i class="fa-solid fa-video"></i>
+                    <span><strong>OBS Studio:</strong> Dodaj jako <strong>Browser Source</strong> (1920×1080) lub przechwyć okno.</span>
+                </div>
+                <div class="hint-item">
+                    <i class="fa-solid fa-volume-high"></i>
+                    <span><strong>Dźwięk:</strong> Włączy się automatycznie na <strong>100%</strong> po kliknięciu <strong>START</strong>.</span>
+                </div>
+                <div class="hint-item">
+                    <i class="fa-solid fa-infinity"></i>
+                    <span><strong>Pętla 24/7:</strong> Odcinki 1 → 25 odtwarzają się kolejno w nieskończonej pętli bez przerw.</span>
+                </div>
+                <div class="hint-item">
+                    <i class="fa-regular fa-keyboard"></i>
+                    <span><strong>Klawisz skrótu:</strong> Kliknij START lub naciśnij <strong>SPACJĘ</strong> / <strong>ENTER</strong> na klawiaturze.</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player = null;
+        let isPlayerReady = false;
+        let isBroadcasting = false;
+        let pendingStartIndex = null;
+
+        const PLAYLIST_ID = 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR';
+
+        // ── Complete 25 Lessons Database ──
+        const LESSONS_25 = [
+            { ep: 1,  id: '-d4bMk7wseU', title: 'Objawienie Jezusa Chrystusa — Księga, która odsłania' },
+            { ep: 2,  id: 'OhHcJoc-Cf0', title: 'Jezus pośród swojego Kościoła — Siedem Świeczników' },
+            { ep: 3,  id: 'YhEH-MyPGWE', title: 'Listy do Siedmiu Kościołów — Poselstwo na Dziś' },
+            { ep: 4,  id: '8wtK9oTZCd8', title: 'Tron Boży i Baranek — Centrum Wszechświata' },
+            { ep: 5,  id: 'mtZkw3vrqq4', title: 'Siedem Pieczęci — Przegląd Historii Świata' },
+            { ep: 6,  id: '1YLgnm-q4w4', title: 'Sto Czterdzieści Cztery Tysiące — Kim Są?' },
+            { ep: 7,  id: '6HInNVNK7qE', title: 'Wielki Tłum — Zbawieni Przez Krew Baranka' },
+            { ep: 8,  id: '5lKiIYGELOo', title: 'Siedem Trąb — Ostrzeżenia dla Świata' },
+            { ep: 9,  id: 'sP4KOpQc5Y8', title: 'Mała Książeczka — Słodko-Gorzka Ewangelia' },
+            { ep: 10, id: 'nCLU_guoStw', title: 'Dwóch Świadków — Słowo Boże i Duch Święty' },
+            { ep: 11, id: 'xPy-qmpt48g', title: 'Niewiasta i Smok — Wielki Konflikt Wieków' },
+            { ep: 12, id: '3fd2UCOQ-hA', title: 'Bestia z Morza — Potęga Religijna w Proroctwie' },
+            { ep: 13, id: 'UPITGh2oioc', title: 'Bestia z Ziemi — Fałszywy Prorok Ostatnich Dni' },
+            { ep: 14, id: 'THX1Ukgu67s', title: 'Znamię Bestii — Znak Lojalności w Czasach Końca' },
+            { ep: 15, id: 'lCSGO5bz1bE', title: 'Trzy Poselstwa Anielskie — Globalna Misja Kościoła' },
+            { ep: 16, id: 'RSAU-o3c3Xs', title: 'Babilon — System Fałszywej Religii' },
+            { ep: 17, id: '7idKgBkmFEU', title: 'Siedem Plag — Sąd Boży nad Babilonem' },
+            { ep: 18, id: 'D-sjkIkXeWk', title: 'Upadek Babilonu — Wyjdź z Niego, Ludu Mój!' },
+            { ep: 19, id: 'hHug_C6XDPU', title: 'Powrót Jezusa — Majestatyczne Przyjście Króla' },
+            { ep: 20, id: 'DPcH9KA3y9o', title: 'Tysiąc Lat — Milenium i Sąd Ostateczny' },
+            { ep: 21, id: 'EZni4JPyR30', title: 'Nowe Jeruzalem — Niebo na Ziemi' },
+            { ep: 22, id: '3-czDmZBfI4', title: 'Nowe Stworzenie — Wieczność z Bogiem' },
+            { ep: 23, id: 'ljQkyXw7zUA', title: 'Sabat w Apokalipsie — Znak Stwórcy' },
+            { ep: 24, id: 'XrkR6XdmXTM', title: 'Modlitwa i Stan Umarłych — Biblijna Nadzieja' },
+            { ep: 25, id: 'qocOjx5xfBs', title: 'Bądź Gotowy — Żyć w Blasku Chwały Bożej' }
+        ];
+
+        // ── Populate Lesson Selector ──
+        function populateSelector() {
+            const select = document.getElementById('lessonSelector');
+            if (!select) return;
+            select.innerHTML = '';
+
+            LESSONS_25.forEach((lesson, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = `Lekcja ${lesson.ep}: ${lesson.title}`;
+                select.appendChild(opt);
+            });
+
+            // Default to day-of-year rotation or Lesson 1
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const defaultIndex = (dayOfYear - 1) % 25;
+            select.value = defaultIndex;
+        }
+
+        // ── Disable YouTube Captions ──
+        function disableCaptions() {
+            try {
+                if (player) {
+                    if (typeof player.unloadModule === 'function') {
+                        player.unloadModule("captions");
+                        player.unloadModule("cc");
+                    }
+                    if (typeof player.setOption === 'function') {
+                        player.setOption('captions', 'track', {});
+                        player.setOption('cc', 'track', {});
+                        player.setOption('captions', 'reload', false);
+                    }
+                }
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["captions"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unloadModule","args":["cc"]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["captions","track",{}]}', '*');
+                }
+            } catch(e) {}
+        }
+
+        // ── Initialize YouTube Player in Standby ──
+        function onYouTubeIframeAPIReady() {
+            const pageOrigin = (window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'https://polskieradio.cc';
+            
+            player = new YT.Player('yt-player', {
+                height: '100%',
+                width: '100%',
+                host: 'https://www.youtube.com',
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    rel: 0,
+                    modestbranding: 1,
+                    enablejsapi: 1,
+                    mute: 0,
+                    listType: 'playlist',
+                    list: PLAYLIST_ID,
+                    index: 0,
+                    cc_load_policy: 0,
+                    iv_load_policy: 3,
+                    fs: 0,
+                    origin: pageOrigin
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            isPlayerReady = true;
+            disableCaptions();
+            console.log("OBS Clean Feed: Player YouTube zainicjalizowany w trybie Standby (Czeka na START).");
+
+            if (pendingStartIndex !== null) {
+                const idx = pendingStartIndex;
+                pendingStartIndex = null;
+                executeStart(idx);
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            // Infinite 24/7 loop: advance to next lesson upon completion
+            if (event.data === YT.PlayerState.ENDED) {
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const currentIdx = player.getPlaylistIndex();
+                    const nextIdx = (currentIdx + 1) % 25;
+                    console.log(`OBS Clean Feed: Zakończono lekcję ${currentIdx + 1}. Automatyczne przejście do lekcji ${nextIdx + 1} (24/7 Loop).`);
+                    player.playVideoAt(nextIdx);
+                    updateStatusLabel(nextIdx);
+                }
+                disableCaptions();
+            }
+
+            if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+                disableCaptions();
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const idx = player.getPlaylistIndex();
+                    if (idx >= 0) updateStatusLabel(idx);
+                }
+            }
+        }
+
+        // ── START CLEAN BROADCAST (Triggered by Commander clicking START) ──
+        function startCleanBroadcast() {
+            const selector = document.getElementById('lessonSelector');
+            const targetIndex = selector ? parseInt(selector.value, 10) : 0;
+
+            // Fade out overlay
+            const overlay = document.getElementById('cueOverlay');
+            if (overlay) {
+                overlay.classList.add('fading');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 500);
+            }
+
+            isBroadcasting = true;
+
+            if (isPlayerReady && player) {
+                executeStart(targetIndex);
+            } else {
+                pendingStartIndex = targetIndex;
+            }
+        }
+
+        function executeStart(index) {
+            console.log(`OBS Clean Feed: Start emisji na kanale Studio Dees od lekcji: ${index + 1}`);
+            
+            try {
+                if (player && typeof player.loadPlaylist === 'function') {
+                    player.loadPlaylist({
+                        list: PLAYLIST_ID,
+                        listType: 'playlist',
+                        index: index,
+                        startSeconds: 0
+                    });
+                }
+            } catch(e) {
+                console.log("loadPlaylist error:", e);
+            }
+
+            // Multi-pass unmute at 100% volume
+            [0, 200, 500, 1000, 2000].forEach(delay => {
+                setTimeout(() => {
+                    unmuteAudioFully();
+                    disableCaptions();
+                }, delay);
+            });
+
+            updateStatusLabel(index);
+        }
+
+        function unmuteAudioFully() {
+            try {
+                if (player) {
+                    if (typeof player.unMute === 'function') player.unMute();
+                    if (typeof player.setVolume === 'function') player.setVolume(100);
+                    if (typeof player.playVideo === 'function') player.playVideo();
+                }
+            } catch(e) {}
+
+            try {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch(e) {}
+        }
+
+        function updateStatusLabel(idx) {
+            const label = document.getElementById('currentStatusLabel');
+            if (label && LESSONS_25[idx]) {
+                label.textContent = `EMISJA 24/7 • LEKCJA ${LESSONS_25[idx].ep} / 25`;
+            }
+        }
+
+        function showCueOverlay() {
+            const overlay = document.getElementById('cueOverlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                overlay.classList.remove('fading');
+            }
+            const bar = document.getElementById('operatorBar');
+            if (bar) bar.style.display = 'none';
+        }
+
+        function jumpNextLesson() {
+            if (!player || typeof player.getPlaylistIndex !== 'function') return;
+            const currentIdx = player.getPlaylistIndex();
+            const nextIdx = (currentIdx + 1) % 25;
+            player.playVideoAt(nextIdx);
+            disableCaptions();
+            updateStatusLabel(nextIdx);
+        }
+
+        // ── Keyboard shortcuts ──
+        window.addEventListener('keydown', (e) => {
+            // Space or Enter on Standby Screen -> Trigger START
+            if (!isBroadcasting && (e.code === 'Space' || e.code === 'Enter')) {
+                e.preventDefault();
+                startCleanBroadcast();
+                return;
+            }
+
+            // Escape key -> toggle discrete operator bar
+            if (e.key === 'Escape') {
+                const bar = document.getElementById('operatorBar');
+                if (bar) {
+                    bar.style.display = (bar.style.display === 'flex') ? 'none' : 'flex';
+                }
+            }
+        });
+
+        // Initialize selector on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSelector();
+        });
+    </script>
+</body>
+</html>
