@@ -289,8 +289,47 @@
 
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
-    <link rel="stylesheet" href="style.css?v=41">
+    <link rel="stylesheet" href="style.css?v=42">
     <style>
+        /* Mobile Full-Screen Side Drawer Navigation (<= 768px) */
+        @media (max-width: 768px) {
+            .side-drawer {
+                left: -100% !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 100% !important;
+                height: 100dvh !important;
+                border-right: none !important;
+                padding: 1.5rem 1.25rem 3rem 1.25rem !important;
+                box-shadow: none !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+            .side-drawer.active {
+                left: 0 !important;
+            }
+            .drawer-close {
+                top: 1rem !important;
+                right: 1rem !important;
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 1.5rem !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                border: 1px solid rgba(212, 169, 74, 0.3) !important;
+                border-radius: 50% !important;
+                cursor: pointer !important;
+            }
+            .drawer-brand {
+                margin-top: 0.5rem !important;
+                margin-bottom: 1.5rem !important;
+                font-size: 1.25rem !important;
+            }
+        }
+
         /* Aggressive Google Translate Banner and Offsets Hider */
         .goog-te-banner-frame,
         .goog-te-banner-frame.skiptranslate,
