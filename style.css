@@ -394,6 +394,18 @@ button {
     left: 0;
 }
 
+@media (max-width: 480px) {
+    .side-drawer {
+        left: -100vw;
+        width: 100vw;
+        border-right: none;
+        padding: 2rem 1.5rem;
+    }
+    .side-drawer.active {
+        left: 0;
+    }
+}
+
 .drawer-close {
     position: absolute;
     top: 1.5rem;
