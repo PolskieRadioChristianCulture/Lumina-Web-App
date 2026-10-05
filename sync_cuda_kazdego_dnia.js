@@ -10,25 +10,22 @@
  *   2. na tablicy społeczności LUMINA (kolekcja lumina_posts),
  *   3. na profilu Andrzeja Thiela (ta sama kolekcja, filtrowana po authorSlug —
  *      patrz dynamiczny silnik w lumina.andrzejthiel.html).
- *
- * UWAGA: Ten plik jest CommonJS (require/module.exports) aby mógł być wywoływany
- * przez cron_agent.js przez: exec('node "sync_cuda_kazdego_dnia.js"')
  */
 
-'use strict';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const fs = require('fs');
-const path = require('path');
-
-// sharp jest opcjonalny — jeśli brak, grafiki zapisywane są bez konwersji
 let sharp = null;
 try {
-  sharp = require('sharp');
+  const sharpModule = await import('sharp');
+  sharp = sharpModule.default || sharpModule;
 } catch (e) {
   // sharp is optional; direct image buffer write will be used as fallback
 }
 
-// __dirname jest natywnie dostępny w CommonJS
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Wczytanie konfiguracji Firebase
 let firebaseConfig = {};
@@ -109,7 +106,7 @@ function parseArchiveIndex(html) {
     if (!dateMatch) continue;
 
     const [, dd, mm, yyyy] = dateMatch;
-
+    
     // Wyciągnij tytuł z h4 lub atrybutu alt lub zawartości
     const titleMatch = inner.match(/<h4[^>]*>([\s\S]*?)<\/h4>/i);
     let title = '';
@@ -354,18 +351,14 @@ async function syncEcosystem(base, cudaDbPath) {
     }
   }
 
-  // ═══ Synchronizacja do aplikacji Android „Dobrze, że jesteś" (cuda-398c0) ═══
+  // ═══ Synchronizacja do aplikacji Android „Dobrze, że jesteś” (cuda-398c0) ═══
   try {
     const wektorDir = 'C:\\Users\\czark\\Christian_Culture_Projekty\\Wektor1_VideoFactory';
     const cudaKeyPath = path.join(wektorDir, 'cudaServiceAccountKey.json');
     if (fs.existsSync(cudaKeyPath)) {
-      let admin = null;
-      try {
-        admin = require(path.join(wektorDir, 'node_modules', 'firebase-admin'));
-      } catch (e) {
-        console.warn('[Sync Cuda] Brak firebase-admin w Wektor1 node_modules:', e.message);
-      }
-      if (admin) {
+      const adminMod = await import('C:/Users/czark/Christian_Culture_Projekty/Wektor1_VideoFactory/node_modules/firebase-admin/lib/index.js').catch(() => null);
+      if (adminMod && adminMod.default) {
+        const admin = adminMod.default;
         const cudaKey = JSON.parse(fs.readFileSync(cudaKeyPath, 'utf8'));
         const appName = 'ckd_sync_app_' + Date.now();
         const cudaApp = admin.initializeApp({ credential: admin.credential.cert(cudaKey) }, appName);
@@ -397,7 +390,7 @@ async function syncEcosystem(base, cudaDbPath) {
   }
 }
 
-async function syncCudaDaily() {
+export async function syncCudaDaily() {
   try {
     const archiveHtml = await fetchHtml(ARCHIVE_URL);
     const indexEntries = parseArchiveIndex(archiveHtml); // najnowsze pierwsze
@@ -472,10 +465,7 @@ async function syncCudaDaily() {
   }
 }
 
-module.exports = { syncCudaDaily };
-
-// Uruchomienie bezpośrednie: node sync_cuda_kazdego_dnia.js
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   syncCudaDaily().then((res) => {
     process.exitCode = res && res.success ? 0 : 1;
   });
