@@ -1,4 +1,4 @@
-import { Article, Author } from '../types';
+﻿import { Article, Author } from '../types';
 
 export const AUTHORS: Record<string, Author> = {
   cezary: {
@@ -41,7 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
-  'Z Biblią za Pan Brat: Dzień 5 — Chodzić z Bogiem, gdy świat od niego odchodzi (Rdz 5:1–6:8)',
+  'Z Biblią za Pan Brat: Dzień 6 — Arka: Sąd i ratunek — Bóg, który pamięta (Rdz 6:9–8:22)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
   'Polska: rząd ogłosił przyjęcie projektu budżetu na 2027 rok',
@@ -50,6 +50,47 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-06',
+    title: 'ARKA, POTOP I WIERNOŚĆ BOGA — ANATOMIA BOŻEGO SĄDU I RATUNKU',
+    slug: 'arka-potop-wiernosc-boga-anatomia-bozego-sadu-i-ratunku',
+    excerpt: 'Historia potopu i arki analizuje powagę grzechu, konieczność posłuszeństwa wiary oraz niezawodną wierność Stwórcy, który w środku sądu pamięta o człowieku.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-06',
+    dateFormatted: '6 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_06_ark_flood_noah.jpg',
+    imageCaption: 'Księga Rodzaju 6–8: Arka Noego — jedyna droga ocalenia pośród Bożego sądu.',
+    readTimeMinutes: 6,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 6', 'Rdz 8', 'Noe', 'Arka', 'Potop', 'Cezary Rogowski', 'Wiara'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 8:1',
+      text: 'I Bóg pamiętał o Noem...',
+      strongCode: 'H2142',
+    },
+    lexiconTerms: [
+      {
+        term: 'Pamiętał (Rdz 8:1)',
+        strongCode: 'H2142',
+        definition: 'Hebr. zakar — nie zwykłe wspomnienie, lecz aktywne, wierne zwrócenie się ku komuś z zamiarem działania.',
+      },
+    ],
+    relatedCourse: {
+      title: 'Z Biblią za Pan Brat: Miesiąc 1 – Księga Rodzaju',
+      lesson: 'Dzień 6: Arka — Sąd i ratunek (Rdz 6:9–8:22)',
+      url: '/akademia/kurscodzienny/dzien-06',
+      badge: 'KURS CODZIENNY',
+    },
+    content: [
+      'Szósty dzień kursu „Z Biblią za Pan Brat" przynosi jedną z najbardziej znanych i najważniejszych narracji Biblii — potop i ocalenie Noego w arce (Rdz 6:9–8:22).',
+      'W centrum opowiadania nie stoi wielkość wiary Noego, lecz wierność Boga. Kiedy wody zalewały ziemię i wydawało się, że wszystko ucichło, tekst notuje najpotężniejsze słowa: „I Bóg pamiętał o Noem" (Rdz 8:1). Ta historia uczy, że Bóg nie zostawia swoich dzieci.',
+      'Tak jak arka była jedynym miejscem ocalenia przed potopem, tak Jezus Chrystus jest jedynym ratunkiem przed sądem: „I nie ma w nikim innym zbawienia" (Dz 4:12). Pełna lekcja Dnia 6 z quizem i ćwiczeniami wdrożeniowymi dostępna jest w Akademii: polskieradio.cc/akademia/kurscodzienny/dzien-06.',
+    ],
+  },
   {
     id: 'art-z-biblia-za-pan-brat-dzien-05',
     title: 'Chodzić z Bogiem pośród świata zepsutego — od Adama do Noego',
@@ -64,7 +105,7 @@ export const INITIAL_ARTICLES: Article[] = [
     readTimeMinutes: 5,
     isHero: false,
     isPopular: true,
-    popularRank: 1,
+    popularRank: 2,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 5', 'Rdz 6', 'Henoch', 'Noe', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
