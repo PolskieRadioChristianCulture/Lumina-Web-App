@@ -41,7 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
-  'Z Biblią za Pan Brat: Dzień 4 — Dwa serca, dwie drogi: Kain i Abel (Rdz 4:1–26)',
+  'Z Biblią za Pan Brat: Dzień 5 — Chodzić z Bogiem, gdy świat od niego odchodzi (Rdz 5:1–6:8)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
   'Polska: rząd ogłosił przyjęcie projektu budżetu na 2027 rok',
@@ -50,6 +50,50 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-05',
+    title: 'Chodzić z Bogiem pośród świata zepsutego — od Adama do Noego',
+    slug: 'chodzic-z-bogiem-posrod-swiata-zepsutego-rdz-5-6',
+    excerpt: 'W ramach globalnego programu „Z Biblią za Pan Brat” analizujemy piąty i szósty rozdział Księgi Rodzaju — genealogię życia, tajemnicę zabrania Henocha oraz Boży wyrok i łaskę okazaną Noemu.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-05',
+    dateFormatted: '5 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_05_henoch_noe.jpg',
+    imageCaption: 'Księga Rodzaju 5–6: Świadectwo Henocha i Noego pośród narastającego odstępstwa.',
+    readTimeMinutes: 5,
+    isHero: false,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 5', 'Rdz 6', 'Henoch', 'Noe', 'Cezary Rogowski', 'Wiara'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 6:8',
+      text: 'Ale Noe znalazł łaskę w oczach PANA.',
+      strongCode: 'H2580',
+    },
+    lexiconTerms: [
+      {
+        term: 'Chodzić z Bogiem (Rdz 5:24)',
+        strongCode: 'H1980',
+        definition: 'Hebr. halak — stałe, wierne, codzienne trwanie w bliskości z Bogiem wbrew duchowi epoki.',
+      },
+    ],
+    relatedCourse: {
+      title: 'Z Biblią za Pan Brat: Miesiąc 1 – Księga Rodzaju',
+      lesson: 'Dzień 5: Chodzić z Bogiem (Rdz 5:1–6:8)',
+      url: '/akademia/kurscodzienny/dzien-05',
+      badge: 'KURS CODZIENNY',
+    },
+    content: [
+      'Piąty dzień naszej 66-miesięcznej podróży z programem „Z Biblią za Pan Brat” prowadzi nas przez genealogię Adama (Rdz 5) i dramatyczne wejście w Rdz 6:1–8. Na pozór rozdział 5 to tylko surowa lista imion, dat i potomków, jednak pod tą powierzchnią kryje się fundamentalna prawda o ludzkiej kondycji i Bożej wierności.',
+      '1. Refren Śmierci a Obietnica Życia. Przez całą genealogię Adama słyszymy przerażający, nieubłagany refren: „…i umarł”. Ostrzeżenie wypowiedziane w Edenie o owocach buntu stało się bolesną codziennością pokoleń. Nawet Matuzalem, który żył aż 969 lat, w końcu uległ prawu śmierci. Grzech przyniósł śmiertelność, której człowiek nie był w stanie samodzielnie przełamać.',
+      '2. Henoch — Przełamanie Prawa Śmierci. A jednak pośród tego mrocznego rytmu pojawia się olśniewający wyjątek: Henoch. Tekst biblijny nie notuje o nim „i umarł”, lecz podaje: „Henoch chodził z Bogiem, a potem już go nie było, gdyż Bóg go zabrał” (Rdz 5:24). Hebrajskie słowo halak oznacza tu relację zażyłą, ciągłą i niezmienną. W zdeprawowanym świecie Henoch nie uległ konformizmowi, lecz żył w komunii ze Stwórcą. Jego nagłe przeniesienie do chwały było zwiastunem, że śmierć nie ma ostatniego słowa.',
+      '3. Zepsucie Ziemi i Łaska dla Noego. Kontrast pogłębia się gwałtownie na początku rozdziału 6: zepsucie moralne ludzkości osiąga apogeum, a „każdy zamysł myśli ich serca był ustawicznie zły” (Rdz 6:5). W tym najciemniejszym punkcie prehistorii pada jednak zdanie ratunku: „Ale Noe znalazł łaskę w oczach PANA” (Rdz 6:8). Boża sprawiedliwość domaga się osądzenia zła, lecz Boża łaska (hebr. chen) tworzy drogę ocalenia dla tych, którzy Mu zaufali.',
+      '4. Perspektywa Chrystusa — Zmartwychwstanie i Zbawienie. Zarówno Henoch, jak i Noe zapowiadają dzieło Jezusa Chrystusa. Henoch wskazuje na ostateczne zwycięstwo nad grobem i obietnicę pochwycenia wierzących (J 11:25, 1 Tes 4:17). Noe i arka to z kolei obraz Chrystusa — jedynego bezpiecznego schronienia przed gniewem nadchodzącego sądu. Dziś także żyjemy w niespokojnym świecie, ale wezwanie pozostaje aktualne: chodzić z Bogiem każdego dnia i trwać w Jego łasce.',
+      'Podsumowanie Redakcyjne CCN: Historia ta uczy nas, że nie potrzebujemy idealnego świata ani bezgrzesznego otoczenia, aby wiernie trwać przy Bogu. Wszystkie materiały formacyjne programu „Z Biblią za Pan Brat” są w pełni otwarte i bezpłatne. Pełny tekst lekcji Dnia 5, quiz i ćwiczenia wdrożeniowe dostępne są w Akademii: polskieradio.cc/akademia/kurscodzienny/dzien-05.',
+    ],
+  },
   {
     id: 'art-z-biblia-za-pan-brat-dzien-04',
     title: 'Dwa serca, dwie drogi — anatomia religijności bez serca i ostrzeżenie przed grzechem',
@@ -64,7 +108,7 @@ export const INITIAL_ARTICLES: Article[] = [
     readTimeMinutes: 5,
     isHero: false,
     isPopular: true,
-    popularRank: 1,
+    popularRank: 2,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 4', 'Kain i Abel', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
