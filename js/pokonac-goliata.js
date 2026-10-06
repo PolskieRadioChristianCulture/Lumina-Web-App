@@ -13,7 +13,7 @@ const BOOK_CONFIG = {
   downloads: {
     pdf: "/assets/pokonac-goliata.pdf",
     epub: "/assets/pokonac-goliata.epub",
-    bundle: "/assets/pokonac-goliata-pakiet.zip"
+    bundle: null /* pakiet ZIP — opublikować po korekcie tekstu */
   }
 };
 
@@ -862,8 +862,13 @@ function stopSyntheticSound() {
 function initDownloads() {
   $$('[data-download]').forEach(btn => {
     btn.addEventListener('click', async () => {
+      if (btn.disabled || btn.getAttribute('aria-disabled') === 'true') return;
       const type = btn.dataset.download;
       const url = BOOK_CONFIG.downloads[type];
+      if (!url) {
+        showToast('Ten plik jest jeszcze w przygotowaniu.');
+        return;
+      }
 
       showToast(`Pobieranie formatu ${type.toUpperCase()}…`);
 
@@ -879,48 +884,13 @@ function initDownloads() {
           return;
         }
       } catch (err) {
-        // Fallback below
+        console.warn('[Pokonać Goliata] Download check failed:', err);
       }
 
-      // Instant digital sample download if main binary is in distribution pipeline
-      generateAndDownloadSample(type);
+      // Brak pliku na serwerze: mówimy to wprost, zamiast podsuwać plik zastępczy.
+      showToast('Ten plik jest chwilowo niedostępny. Spróbuj ponownie później.');
     });
   });
-}
-
-function generateAndDownloadSample(type) {
-  const content = `=====================================================
-POKONAĆ GOLIATA — JAK ZWYCIĘŻAĆ WŁASNE SŁABOŚCI
-Autor: Cezary Rogowski | Christian Culture
-Wydanie 2026 | PolskieRadio.cc
-=====================================================
-
-Dziękujemy za pobranie materiałów książki „Pokonać Goliata”.
-Pełna treść oraz audiobook są dostępne pod adresem:
-https://polskieradio.cc/pokonac-goliata
-
-SPIS TREŚCI:
-1. Małe początki (Rdz 4 / 1 Sm 17)
-2. Patrzeć inaczej (Perspektywa Nieba vs ludzki lęk)
-3. Broń, którą masz (Zdejmij cudzą zbroję)
-4. Krok wiary (Od paraliżu do Doliny Przełomu)
-5. Prawdziwa siła (Moc w Imieniu Pana Zastępów)
-6. Dolina zmiany (Uzdrowienie ran i wolność od oskarżenia)
-7. Zwycięstwo (Jeden celny kamień Prawdy)
-8. Nowe życie (Chodzenie w wolności i dziedzictwo wiary)
-
-„Nie musisz być silniejszy od Goliata. Musisz być bliżej Tego, który daje zwycięstwo.”
-— Cezary Rogowski
-`;
-
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `Pokonac_Goliata_Podglad_${type.toUpperCase()}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  showToast(`Pobrano oficjalny fragment i spis treści (${type.toUpperCase()}).`);
 }
 
 /* ==========================================================================

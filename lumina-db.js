@@ -743,9 +743,100 @@ export function ensureDbReady() {
 }
 
 
+// ── LUMINA Official Community Welcome Engine ──────────────────────────────
+// Publikuje oficjalne, imienne powitanie nowego użytkownika na tablicy LUMINA
+// w imieniu społeczności LUMINA oraz serwisu Christian Culture z życzeniami Bożego błogosławieństwa.
+// Zabezpieczone unikalną flagą w localStorage per user.uid, by nie powielać wpisu przy ponownych logowaniach.
+export async function postWelcomeMessageForNewUser(user, profile, activeDb = db) {
+    if (!user || !profile) return;
+    const uid = user.uid || profile.uid;
+    if (!uid) return;
+
+    // Zabezpieczenie przed wielokrotnym publikowaniem powitania dla tego samego konta
+    const welcomeFlagKey = 'lumina_welcome_posted_' + uid;
+    try {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem(welcomeFlagKey)) {
+            return;
+        }
+    } catch(e) {}
+
+    // Pomijaj konta administratorskie/misyjne przy automatycznym witaniu
+    if (profile.isMissionAccount || profile.slug === 'radiocc' || profile.slug === 'cezaryrgowski' || profile.slug === 'wiolettarogowska') {
+        try { if (typeof localStorage !== 'undefined') localStorage.setItem(welcomeFlagKey, '1'); } catch(e) {}
+        return;
+    }
+
+    const userName = profile.name || user.displayName || 'Przyjacielu';
+    const recipientSlug = profile.slug || uid;
+    const recipientAvatar = profile.avatar || user.photoURL || 'lumina_icon.jpg';
+
+    const welcomeText =
+        `🕊️ Witaj w naszej społeczności, ${userName}!\n\n` +
+        `W imieniu całej społeczności LUMINA oraz serwisu Christian Culture oficjalnie i z całego serca witamy Cię w gronie braci i sióstr w wierze! Cieszymy się, że jesteś z nami.\n\n` +
+        `Niech Pan Bóg obficie błogosławi Twoją drogę wiary, napełnia Cię Swoim pokojem, mądrością i miłością oraz prowadzi Cię każdego dnia. Modlimy się, aby to miejsce było dla Ciebie przestrzenią budujących relacji, duchowego wzrostu, wzajemnego wsparcia i nieustannej chwały Bożej.\n\n` +
+        `Niech Boża łaska i pokój Chrystusa będą zawsze z Tobą!\n\n` +
+        `Szczęść Boże! 🙏✨`;
+
+    const welcomePostPayload = {
+        id: 'welcome_' + uid + '_' + Date.now(),
+        type: 'post',
+        category: 'community',
+        title: `🕊️ Oficjalne Powitanie: Witaj, ${userName}!`,
+        text: welcomeText,
+        image: null,
+        videoUrl: null,
+        youtubeUrl: null,
+        isShort: false,
+        is916: false,
+        isPinned: false,
+        isOfficialWelcome: true,
+        recipientUid: uid,
+        recipientName: userName,
+        recipientSlug: recipientSlug,
+        recipientAvatar: recipientAvatar,
+        author: 'Społeczność LUMINA & Christian Culture',
+        authorSlug: 'radiocc',
+        authorUid: 'OFFICIAL_LUMINA_COMMUNITY',
+        authorAvatar: 'lumina_logo_portal.jpg',
+        authorRole: 'Oficjalne Powitanie • Christian Culture',
+        likes: 7,
+        amen: 5,
+        time: 'Przed chwilą • 🕊️ Witamy Nowego Użytkownika',
+        createdAtTimestamp: Date.now(),
+        createdAtDateStr: new Date().toISOString()
+    };
+
+    try {
+        const targetDb = activeDb || db;
+        if (targetDb) {
+            await addDoc(collection(targetDb, 'lumina_posts'), {
+                ...welcomePostPayload,
+                createdAtTimestamp: serverTimestamp(),
+                createdAtDateStr: new Date().toISOString()
+            });
+        }
+    } catch(err) {
+        console.warn('[LUMINA] Błąd zapisu oficjalnego powitania w Firestore:', err?.message || err);
+    }
+
+    try {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(welcomeFlagKey, '1');
+            // Zapisz kopię lokalną w postach tablicy, aby od razu pojawiła się w bieżącej sesji
+            try {
+                const localPosts = JSON.parse(localStorage.getItem('lumina_community_posts_cache') || '[]');
+                localPosts.unshift(welcomePostPayload);
+                localStorage.setItem('lumina_community_posts_cache', JSON.stringify(localPosts.slice(0, 50)));
+            } catch(e) {}
+        }
+    } catch(e) {}
+}
+// ───────────────────────────────────────────────────────────────────────────
+
 export async function syncUserAuthProfile(user, activeDb = db) {
     if (!user) return null;
     let existingProfile = null;
+    let isBrandNewUser = false;
     const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
     
     try {
@@ -770,6 +861,7 @@ export async function syncUserAuthProfile(user, activeDb = db) {
     } catch(e) {}
 
     if (!existingProfile) {
+        isBrandNewUser = true;
         const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
         const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
         
@@ -858,8 +950,18 @@ export async function syncUserAuthProfile(user, activeDb = db) {
         if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
     } catch(e) {}
 
-    window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user, profile: existingProfile } }));
-    return { user, profile: existingProfile, isNewUser: !existingProfile };
+    window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user, profile: existingProfile, isNewUser: isBrandNewUser } }));
+    
+    // Jeśli to nowo zarejestrowany użytkownik — opublikuj oficjalne, imienne powitanie na tablicy LUMINA
+    if (isBrandNewUser) {
+        try {
+            postWelcomeMessageForNewUser(user, existingProfile, activeDb);
+        } catch(welcomeErr) {
+            console.warn('[LUMINA] Błąd powitania nowego użytkownika:', welcomeErr);
+        }
+    }
+
+    return { user, profile: existingProfile, isNewUser: isBrandNewUser };
 }
 
 export async function loginWithGoogle() {
@@ -973,7 +1075,14 @@ export async function registerWithEmail(email, password, basicData) {
             if (userSlug) sessionStorage.setItem('lumina_auth_owner_' + userSlug, 'true');
         } catch(e) {}
 
-        return { user, profile: initialProfile };
+        // Oficjalne powitanie nowego użytkownika na tablicy LUMINA
+        try {
+            postWelcomeMessageForNewUser(user, initialProfile, db);
+        } catch(welcomeErr) {
+            console.warn('[LUMINA] Błąd powitania nowego użytkownika (email register):', welcomeErr);
+        }
+
+        return { user, profile: initialProfile, isNewUser: true };
     } catch(err) {
         console.error('Lumina Email Register error:', err);
         throw err;
@@ -1047,9 +1156,12 @@ window.getCurrentProfile = getCurrentProfile;
 window.ensureDbReady = ensureDbReady;
 window.onAuthChange = onAuthChange;
 
+window.postWelcomeMessageForNewUser = postWelcomeMessageForNewUser;
+
 window.LuminaDB = window.LuminaDB || {};
 window.LuminaDB.loginWithGoogle = loginWithGoogle;
 window.LuminaDB.syncUserAuthProfile = syncUserAuthProfile;
+window.LuminaDB.postWelcomeMessageForNewUser = postWelcomeMessageForNewUser;
 window.LuminaDB.logoutUser = logoutUser;
 window.LuminaDB.loginWithEmail = loginWithEmail;
 window.LuminaDB.registerWithEmail = registerWithEmail;
@@ -6520,6 +6632,7 @@ window.LuminaDB = Object.assign(window.LuminaDB || {}, {
     loginWithGoogle,
     registerWithEmail,
     registerUser,
+    postWelcomeMessageForNewUser,
     loginWithEmail,
     loginUser,
     getProfileFromCloud,

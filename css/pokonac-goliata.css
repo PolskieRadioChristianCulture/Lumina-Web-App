@@ -2032,6 +2032,10 @@ button {
   .product-grid {
     grid-template-columns: 1fr;
   }
+  /* Jedna kolumna: karta ma wysokość treści, bez pustych pól pod przyciskami */
+  .feature-card {
+    min-height: 0;
+  }
   .feature-card:nth-child(5) {
     grid-column: auto;
   }
@@ -2098,5 +2102,56 @@ button {
   }
   .amounts {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ==========================================================================
+   POPRAWKI 2026-10-06
+   ========================================================================== */
+/* Pakiet ZIP — jeszcze nieopublikowany */
+.download-btn.is-soon {
+  grid-template-columns: 44px 1fr auto;
+  cursor: default;
+  opacity: 0.72;
+}
+.download-btn.is-soon:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--line);
+}
+.download-soon-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a6a1f;
+  background: rgba(212, 175, 55, 0.16);
+  white-space: nowrap;
+}
+
+/* Nagłówek na telefonie: przycisk logowania mieści się w ekranie */
+.site-header .brand,
+.site-header .header-actions {
+  min-width: 0;
+}
+@media (max-width: 480px) {
+  .site-header .header-actions {
+    gap: 8px;
+  }
+  .site-header .header-actions .cc-auth-google-btn .cc-auth-lumina-tag {
+    display: none;
+  }
+  .site-header .header-actions .cc-auth-google-btn {
+    padding: 6px 12px 6px 10px;
+  }
+}
+@media (max-width: 360px) {
+  .site-header .header-actions .cc-auth-google-btn span.cc-auth-btn-text-short {
+    display: none;
+  }
+  .site-header .header-actions .cc-auth-google-btn {
+    padding: 6px 10px;
   }
 }
