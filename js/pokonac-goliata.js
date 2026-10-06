@@ -1116,107 +1116,33 @@ function initDownloads() {
 /* ==========================================================================
    7. ROTATOR CYTATÓW Z KSIĄŻKI & UDOSTĘPNIANIE (CARD 4)
    ========================================================================== */
+// Wyłącznie dosłowne cytaty z MASTER 2026 (sprawdzone z tekstem książki). Nie dopisywać parafraz.
 const BOOK_QUOTES = [
-  {
-    text: "Największe zwycięstwa zaczynają się wtedy, gdy przestajesz patrzeć na swoje ograniczenia, a zaczynasz widzieć, kto idzie z tobą.",
-    source: "Rozdział 2: Wiara i zaufanie"
-  },
-  {
-    text: "Nie musisz być silniejszy od Goliata. Musisz być bliżej Tego, który daje zwycięstwo.",
-    source: "Wprowadzenie"
-  },
-  {
-    text: "Dawid nie zwyciężył dlatego, że był większy od przeciwnika. Zwyciężył, ponieważ wiedział, komu ufa.",
-    source: "Wprowadzenie"
-  },
-  {
-    text: "Każdy ma swojego Goliata. Chodzi o to, by przestać wierzyć, że problemy muszą mieć ostatnie słowo.",
-    source: "Wprowadzenie"
-  },
-  {
-    text: "Wierzyć – to znaczy nawet nie pytać, jak długo jeszcze mamy iść po ciemku.",
-    source: "Krok 2: Wiara i zaufanie (cyt. ks. J. Twardowski)"
-  },
-  {
-    text: "Daj Bogu szansę. Trzeba założyć, że Bóg uczyni to, co obiecał – a On obiecał pomóc we wszystkim, co jest dobre.",
-    source: "Krok 2: Wiara i zaufanie"
-  },
-  {
-    text: "Skoro w mocy Bożej mogłeś przeżyć jako wolny człowiek jeden dzień, to możesz i tydzień, i rok, i całą wieczność.",
-    source: "Krok 2: Wiara i zaufanie"
-  },
-  {
-    text: "Wczoraj przeminęło, jutro nie istnieje. Jest tylko dziś – ty, twój Bóg i wolność tu i teraz.",
-    source: "Krok 2: Wiara i zaufanie"
-  },
-  {
-    text: "Człowiek, który przesuwa góry, zaczyna od małych kamyczków.",
-    source: "Krok 2: Wiara i zaufanie"
-  },
-  {
-    text: "Mogę wszystko w Tym, który mnie wzmacnia – w Jezusie Chrystusie!",
-    source: "Krok 2: Wiara i zaufanie (Flp 4,13)"
-  },
-  {
-    text: "Prawdziwa miłość to wolność. A miłość bez Boga w sercu jest tylko złudzeniem.",
-    source: "Krok 7: Miłość i Boża troska"
-  },
-  {
-    text: "Kto raz spotka się osobiście z Jezusem, już nigdy nie będzie tym samym człowiekiem.",
-    source: "Krok 1: Świadomość"
-  },
-  {
-    text: "Spotkanie z Bożą miłością i sprawiedliwością w osobie Chrystusa odmienia człowieka na zawsze.",
-    source: "Krok 1: Świadomość"
-  },
-  {
-    text: "Nie odkładaj na później właściwej decyzji. Za Jezusem warto iść już dziś – świat przemija, a wieczność trwa.",
-    source: "Krok 1: Świadomość"
-  },
-  {
-    text: "Gorącą, żarliwą modlitwą i żywą wiarą osiąga się największe zwycięstwa.",
-    source: "Krok 2: Wiara i zaufanie"
-  },
-  {
-    text: "Zacznij od siebie – zainwestuj mądrze swój czas, energię i zdolności w Królestwo Boże i wieczność.",
-    source: "Krok 1: Świadomość"
-  },
-  {
-    text: "Twoja szczerość jest twoim największym sprzymierzeńcem na drodze do wolności.",
-    source: "Krok 5: Wytrwałość i determinacja"
-  },
-  {
-    text: "Bóg nie szuka ludzi o nadludzkich siłach, lecz serc gotowych do szczerej pokuty i zaufania.",
-    source: "Krok 1: Świadomość"
-  },
-  {
-    text: "Każdy problem może zostać pokonany, gdy powrócimy do Bożej normy i Jego łaski.",
-    source: "Wprowadzenie"
-  },
-  {
-    text: "Nie musisz już tkwić w niewoli dawnych upadków – w Chrystusie jesteś nowym stworzeniem.",
-    source: "Krok 1: Świadomość (2 Kor 5,17)"
-  },
-  {
-    text: "Modlitwa to nie formalność, lecz żywy oddech duszy i bezpośredni kontakt ze Zbawicielem.",
-    source: "Krok 3: Modlitwa"
-  },
-  {
-    text: "Słowo Boże ma moc przemieniać myśli, leczyć zranienia i wyznaczać pewny kierunek w chaosie.",
-    source: "Krok 4: Słowo Boże"
-  },
-  {
-    text: "Prawdziwy sukces to nie brak trudności, lecz umiejętność przechodzenia przez nie z Chrystusem.",
-    source: "Krok 5: Wytrwałość"
-  },
-  {
-    text: "Nie bój się wielkości przeciwnika – ten, który walczy po twojej stronie, jest Nieskończony.",
-    source: "Dodatek: Świadectwa"
-  },
-  {
-    text: "Pójdę za Tobą, Panie, wszędzie dokądkolwiek pójdziesz – bo Ty jesteś moim Zwycięstwem.",
-    source: "Krok 1: Świadomość"
-  }
+  { text: "Największe zwycięstwa zaczynają się wtedy, gdy przestajesz patrzeć na swoje ograniczenia, a zaczynasz widzieć, kto idzie z tobą.", author: "Cezary Rogowski", source: "Pokonać Goliata" },
+  { text: "Dawid stanął przed Goliatem bez przewagi, którą świat uznałby za wystarczającą. Nie zwyciężył dlatego, że był większy od przeciwnika. Zwyciężył, ponieważ wiedział, komu ufa.", author: "Cezary Rogowski", source: "Wprowadzenie" },
+  { text: "Nie chodzi o to, by udawać, że problemy są małe. Chodzi o to, by przestać wierzyć, że muszą mieć ostatnie słowo.", author: "Cezary Rogowski", source: "Wprowadzenie" },
+  { text: "Wierzyć – to znaczy nawet nie pytać, jak długo jeszcze mamy iść po ciemku.", author: "Jan Twardowski", source: "cytat w rozdziale Krok 2: Wiara i zaufanie" },
+  { text: "Dać Bogu szansę, to znaczy dać Mu kredyt zaufania. Trzeba nam założyć, że Bóg uczyni to, co obiecał.", author: "Cezary Rogowski", source: "Krok 2: Wiara i zaufanie" },
+  { text: "Skoro w mocy Bożej mogłeś przeżyć jako wolny człowiek jeden dzień, to możesz i tydzień i rok i dziesięć lat i całą wieczność.", author: "Cezary Rogowski", source: "Krok 2: Wiara i zaufanie" },
+  { text: "Jutro nie istnieje, wczoraj przeminęło. Jest tylko dziś. Jesteś ty, Twój Bóg i wolność tu i teraz.", author: "Cezary Rogowski", source: "Krok 2: Wiara i zaufanie" },
+  { text: "Człowiek, który przesuwa góry, zaczyna od małych kamyczków.", author: "przysłowie chińskie", source: "cytat w rozdziale Krok 2: Wiara i zaufanie" },
+  { text: "Podejmij wyzwanie raz jeszcze!", author: "Cezary Rogowski", source: "Krok 2: Wiara i zaufanie" },
+  { text: "Mogę wszystko w tym, który mnie wzmacnia, w Jezusie Chrystusie!", author: "Cezary Rogowski", source: "Krok 2: Wiara i zaufanie" },
+  { text: "Kto raz spotka się osobiście z Jezusem, już nigdy nie będzie tym samym człowiekiem.", author: "Cezary Rogowski", source: "Krok 1: Świadomość" },
+  { text: "Dlatego nigdy nie odkładaj na później właściwej decyzji. Za Jezusem warto iść już dziś.", author: "Cezary Rogowski", source: "Krok 1: Świadomość" },
+  { text: "Gorącą, żarliwą modlitwą i żywą wiarą osiąga się wielkie zwycięstwa.", author: "E.G. White", source: "cytat w rozdziale Krok 2: Wiara i zaufanie" },
+  { text: "Zadbaj więc o siebie, upewnij się, że inwestujesz mądrze swój czas, energię i zdolności. Zainwestuj w wieczność.", author: "Cezary Rogowski", source: "Krok 1: Świadomość" },
+  { text: "Twoja szczerość jest twoim sprzymierzeńcem!", author: "Cezary Rogowski", source: "Krok 5: Wytrwałość" },
+  { text: "Bóg jest zainteresowany dialogiem z każdym, kto się do Niego zwraca w modlitwie.", author: "Cezary Rogowski", source: "Krok 3: Modlitwa" },
+  { text: "Nie czytaj Biblii jak gazety, studiuj ją jak osobisty list do ciebie od najlepszego Przyjaciela.", author: "Cezary Rogowski", source: "Krok 4: Słowo Boże" },
+  { text: "Wystarczy, że sięgniesz przez wiarę i wyciągniesz swe ręce po to zwycięstwo.", author: "Cezary Rogowski", source: "Krok 5: Wytrwałość" },
+  { text: "W tej wolności możesz trwać jako zwycięzca.", author: "Cezary Rogowski", source: "Krok 5: Wytrwałość" },
+  { text: "Bóg jest zawsze gotowy do tego, by objawić ci swoją wszechmoc.", author: "Cezary Rogowski", source: "Krok 6: Zapobieganie" },
+  { text: "Prawdziwa miłość to wolność. A miłość bez Boga w sercu jest złudzeniem.", author: "Cezary Rogowski", source: "Krok 7: Miłość i troska" },
+  { text: "Uczmy się bezinteresownej miłości, tylko tak przeżyte życie ma sens.", author: "Cezary Rogowski", source: "Krok 7: Miłość i troska" },
+  { text: "Każdy przeżyty w obecności Bożej dzień, to nagroda pełna miłości, pokoju i wszelkiego innego błogosławieństwa.", author: "Cezary Rogowski", source: "Krok 8: Nagroda" },
+  { text: "Tak oto dokonuje się twoje osobiste zwycięstwo nad każdym „goliatem”.", author: "Cezary Rogowski", source: "Krok 8: Nagroda" },
+  { text: "On pragnie obdarzyć nas wolnością i wszelkim zwycięstwem.", author: "Cezary Rogowski", source: "Dodatek: Świadectwa" }
 ];
 
 let currentQuoteIdx = 0;
@@ -1225,7 +1151,7 @@ let isQuoteHovered = false;
 
 function getShareQuoteText() {
   const q = BOOK_QUOTES[currentQuoteIdx] || BOOK_QUOTES[0];
-  return `„${q.text}” — Cezary Rogowski (${q.source})`;
+  return `„${q.text}” — ${q.author} (${q.source})`;
 }
 
 function displayQuote(idx, animated = true) {
@@ -1244,13 +1170,13 @@ function displayQuote(idx, animated = true) {
 
   const updateContent = () => {
     quoteEl.textContent = `„${quote.text}”`;
-    if (sourceEl) sourceEl.textContent = `Cezary Rogowski • ${quote.source}`;
+    if (sourceEl) sourceEl.textContent = `${quote.author} • ${quote.source}`;
     if (counterEl) counterEl.textContent = `Cytat ${idx + 1} z ${BOOK_QUOTES.length}`;
     if (previewTextEl) {
       const short = quote.text.length > 44 ? quote.text.slice(0, 44).trim() + '…' : quote.text;
       previewTextEl.textContent = `„${short}”`;
     }
-    if (previewSourceEl) previewSourceEl.textContent = `Cezary Rogowski • ${quote.source}`;
+    if (previewSourceEl) previewSourceEl.textContent = `${quote.author} • ${quote.source}`;
     quoteEl.classList.remove('fade-out');
   };
 
