@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_layout_v4" />
+  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_tts_v5" />
 </head>
 <body>
 
@@ -168,14 +168,16 @@
           <aside aria-label="Spis treści w czytniku">
             <b>Pokonać Goliata</b>
             <small>Spis treści</small>
-            <button class="active" data-chapter="0">1. Małe początki</button>
-            <button data-chapter="1">2. Patrzeć inaczej</button>
-            <button data-chapter="2">3. Broń, którą masz</button>
-            <button data-chapter="3">4. Krok wiary</button>
-            <button data-chapter="4">5. Prawdziwa siła</button>
-            <button data-chapter="5">6. Dolina zmiany</button>
-            <button data-chapter="6">7. Zwycięstwo</button>
-            <button data-chapter="7">8. Nowe życie</button>
+            <button class="active" data-chapter="0">Wprowadzenie</button>
+            <button data-chapter="1">Krok 1: Świadomość</button>
+            <button data-chapter="2">Krok 2: Wiara i zaufanie</button>
+            <button data-chapter="3">Krok 3: Modlitwa</button>
+            <button data-chapter="4">Krok 4: Słowo Boże</button>
+            <button data-chapter="5">Krok 5: Wytrwałość</button>
+            <button data-chapter="6">Krok 6: Zapobieganie</button>
+            <button data-chapter="7">Krok 7: Miłość i troska</button>
+            <button data-chapter="8">Krok 8: Nagroda</button>
+            <button data-chapter="9">Dodatek: Świadectwa</button>
           </aside>
 
           <div class="reader-page">
@@ -202,13 +204,13 @@
         </button>
       </article>
 
-      <!-- Card 2: Słuchaj audio -->
+      <!-- Card 2: Czytnik / Generator Mocy TTS -->
       <article class="glass-card feature-card" id="sluchaj">
         <div class="card-heading">
           <span class="step">2</span>
           <div>
-            <h2>Słuchaj audio</h2>
-            <p>Profesjonalny audiobook</p>
+            <h2>Generator Mocy TTS</h2>
+            <p>Cyfrowy lektor i syntezator głosu na żywo</p>
           </div>
         </div>
 
@@ -217,20 +219,34 @@
             <img src="/assets/pokonac-goliata-thumb.webp" alt="Okładka Pokonać Goliata" width="52" height="66" />
             <div>
               <b>Pokonać Goliata</b>
-              <small>Cezary Rogowski</small>
+              <small id="ttsVoiceStatus">Generator Mocy • Lektor AI</small>
             </div>
             <button class="heart-btn" aria-label="Dodaj audiobook do ulubionych" title="Dodaj do ulubionych">♡</button>
           </div>
 
           <h3 id="audioChapterNum">Rozdział 1</h3>
-          <p class="audio-ch-title" id="audioChapterTitle">Małe początki</p>
+          <p class="audio-ch-title" id="audioChapterTitle">Krok 1: Świadomość</p>
 
           <!-- Waveform Visualizer -->
-          <div class="waveform-container" id="waveformVisualizer" title="Wizualizacja fali dźwiękowej" aria-hidden="true"></div>
+          <div class="waveform-container" id="waveformVisualizer" title="Wizualizacja fali głosu lektora" aria-hidden="true"></div>
 
           <div class="audio-time">
             <span id="currentTime">00:00</span>
-            <span id="duration">24:08</span>
+            <span id="duration">12:00</span>
+          </div>
+
+          <!-- TTS Controls: Voice Speed & Generator Settings -->
+          <div class="tts-settings-row">
+            <div class="tts-speed-selector" aria-label="Prędkość lektora">
+              <span class="tts-label">Tempo:</span>
+              <button type="button" class="tts-speed-btn" data-rate="0.85">0.85×</button>
+              <button type="button" class="tts-speed-btn active" data-rate="1.0">1.0×</button>
+              <button type="button" class="tts-speed-btn" data-rate="1.2">1.2×</button>
+            </div>
+            <div class="tts-indicator">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              <span id="ttsStatusText">Gotowy do czytania</span>
+            </div>
           </div>
 
           <div class="audio-controls">
@@ -245,7 +261,7 @@
                 <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/>
               </svg>
             </button>
-            <button type="button" class="play-btn" id="playToggle" aria-label="Odtwórz / Wstrzymaj audiobook">
+            <button type="button" class="play-btn" id="playToggle" aria-label="Uruchom Generator Mocy TTS / Wstrzymaj czytanie" title="Czytaj na głos">
               <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"/>
               </svg>
@@ -266,13 +282,13 @@
           <div class="audio-chapter-row">
             <button type="button" id="audioChPrev" aria-label="Poprzedni rozdział">‹</button>
             <div>
-              <small>Słuchasz teraz</small>
-              <b id="audioFooterChapterTitle">Rozdział 1: Małe początki</b>
+              <small>Generator czyta teraz</small>
+              <b id="audioFooterChapterTitle">Rozdział 1: Krok 1: Świadomość</b>
             </div>
             <button type="button" id="audioChNext" aria-label="Następny rozdział">›</button>
           </div>
 
-          <p class="setup-note">Odtwarzacz online z animowanym masteringiem i nawigacją rozdziałów.</p>
+          <p class="setup-note">Generator Mocy czyta oryginalne rozdziały książki syntezą mowy TTS z dynamiczną falą głosu.</p>
         </div>
       </article>
 
@@ -282,7 +298,7 @@
           <span class="step">3</span>
           <div>
             <h2>Pobierz</h2>
-            <p>Pobierz w ulubionym formacie</p>
+            <p>Oryginalne wydanie 2026</p>
           </div>
         </div>
 
@@ -290,8 +306,8 @@
           <button type="button" class="download-btn" data-download="pdf" aria-label="Pobierz PDF">
             <span class="file-icon red">PDF</span>
             <span>
-              <b>PDF</b>
-              <small>Do czytania na każdym urządzeniu</small>
+              <b>PDF Premium</b>
+              <small>Nowe Wydanie 2026 (5.5 MB) • Na każdy ekran</small>
             </span>
             <span class="download-arrow" aria-hidden="true">⇩</span>
           </button>
@@ -299,26 +315,17 @@
           <button type="button" class="download-btn" data-download="epub" aria-label="Pobierz EPUB">
             <span class="file-icon green">EPUB</span>
             <span>
-              <b>EPUB</b>
-              <small>Do czytników e-booków</small>
+              <b>EPUB E-Book</b>
+              <small>Czytniki Kindle, PocketBook, telefony (27 MB)</small>
             </span>
             <span class="download-arrow" aria-hidden="true">⇩</span>
           </button>
 
-          <button type="button" class="download-btn" data-download="mp3" aria-label="Pobierz MP3">
-            <span class="file-icon blue">MP3</span>
-            <span>
-              <b>MP3</b>
-              <small>Pełny audiobook</small>
-            </span>
-            <span class="download-arrow" aria-hidden="true">⇩</span>
-          </button>
-
-          <button type="button" class="download-btn bundle" data-download="bundle" aria-label="Pobierz cały pakiet książki">
+          <button type="button" class="download-btn bundle" data-download="bundle" aria-label="Pobierz kompletny pakiet książki">
             <span class="bundle-icon" aria-hidden="true">☁</span>
             <span>
-              <b>Cały pakiet</b>
-              <small>PDF + EPUB + MP3 (z dodatkami)</small>
+              <b>Kompletny pakiet cyfrowy</b>
+              <small>PDF Premium + EPUB E-Book (ZIP 32 MB)</small>
             </span>
             <span class="download-arrow" aria-hidden="true">⇩</span>
           </button>
@@ -464,15 +471,17 @@
       <!-- Sidebar -->
       <aside class="reader-modal-nav" aria-label="Nawigacja po rozdziałach">
         <b>Pokonać Goliata</b>
-        <small>Spis rozdziałów</small>
-        <button class="active" data-modal-chapter="0">1. Małe początki</button>
-        <button data-modal-chapter="1">2. Patrzeć inaczej</button>
-        <button data-modal-chapter="2">3. Broń, którą masz</button>
-        <button data-modal-chapter="3">4. Krok wiary</button>
-        <button data-modal-chapter="4">5. Prawdziwa siła</button>
-        <button data-modal-chapter="5">6. Dolina zmiany</button>
-        <button data-modal-chapter="6">7. Zwycięstwo</button>
-        <button data-modal-chapter="7">8. Nowe życie</button>
+        <small>Spis kroków i rozdziałów</small>
+        <button class="active" data-modal-chapter="0">Wprowadzenie</button>
+        <button data-modal-chapter="1">Krok 1: Świadomość</button>
+        <button data-modal-chapter="2">Krok 2: Wiara i zaufanie</button>
+        <button data-modal-chapter="3">Krok 3: Modlitwa</button>
+        <button data-modal-chapter="4">Krok 4: Słowo Boże</button>
+        <button data-modal-chapter="5">Krok 5: Wytrwałość</button>
+        <button data-modal-chapter="6">Krok 6: Zapobieganie</button>
+        <button data-modal-chapter="7">Krok 7: Miłość i troska</button>
+        <button data-modal-chapter="8">Krok 8: Nagroda</button>
+        <button data-modal-chapter="9">Dodatek: Świadectwa</button>
       </aside>
 
       <!-- Reading Area -->
@@ -538,7 +547,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="/js/pokonac-goliata.js?v=20261006_details_v3" defer></script>
+  <script src="/js/pokonac-goliata.js?v=20261006_tts_v5" defer></script>
   <script src="/js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
 </body>
