@@ -451,13 +451,13 @@ function toggleAudioPlayback() {
   isPlaying = !isPlaying;
 
   if (isPlaying) {
-    if (playToggle) playToggle.textContent = '❚❚';
+    if (playToggle) playToggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
     if (waveform) waveform.classList.add('playing');
     startAudioClock();
     startSyntheticSound();
     showToast(`Odtwarzanie: ${CHAPTERS[audioTrackIdx].title}`);
   } else {
-    if (playToggle) playToggle.textContent = '▶';
+    if (playToggle) playToggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     if (waveform) waveform.classList.remove('playing');
     stopAudioClock();
     stopSyntheticSound();
