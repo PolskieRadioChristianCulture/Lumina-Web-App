@@ -205,8 +205,12 @@ function generateProductionHtml(portal, jsUrl, cssUrl) {
 }
 
 try {
-  // Loop through 5 portals
-  for (const portal of PORTALS) {
+  const targetPortalId = process.argv[2];
+  const portalsToBuild = targetPortalId ? PORTALS.filter(p => p.id === targetPortalId) : PORTALS;
+  console.log(`Portals to build: ${portalsToBuild.map(p => p.id).join(', ')}`);
+
+  // Loop through portals
+  for (const portal of portalsToBuild) {
     console.log(`\n>>> BUILDING PORTAL: ${portal.id.toUpperCase()} <<<`);
 
     // A. Update articles.ts

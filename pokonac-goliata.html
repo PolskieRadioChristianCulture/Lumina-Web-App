@@ -31,7 +31,7 @@
   <!-- FontAwesome for CC Auth Widget & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_tts_v5" />
+  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_tts_v6" />
 </head>
 <body>
 
@@ -508,7 +508,18 @@
             <button type="button" class="theme-dark" title="Ciemny motyw">Ciemny</button>
           </div>
 
-          <div style="font-size:12px;color:var(--muted);font-weight:600;" id="readerProgressInfo">Rozdział 1 z 8</div>
+          <!-- Reader Modal TTS Controls -->
+          <div class="modal-tts-controls" aria-label="Generator Mocy TTS w czytniku">
+            <button type="button" id="modalPlayToggle" class="modal-tts-play-btn" title="Uruchom Generator Mocy TTS / Wstrzymaj czytanie" aria-label="Czytaj rozdział na głos">
+              <svg class="modal-play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <span id="modalPlayText">Słuchaj (TTS)</span>
+            </button>
+            <span class="modal-tts-status" id="modalTtsStatus">Gotowy</span>
+          </div>
+
+          <div style="font-size:12px;color:var(--muted);font-weight:600;" id="readerProgressInfo">Rozdział 1 z 10</div>
 
           <div class="reader-font-controls">
             <button type="button" id="modalFontMinus" title="Zmniejsz czcionkę">A⁻</button>
@@ -562,7 +573,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="/js/pokonac-goliata.js?v=20261006_tts_v5" defer></script>
+  <script src="/js/pokonac-goliata.js?v=20261006_tts_v6" defer></script>
   <script src="/js/cc-global-auth.js?v=20261006_auth_v1" defer></script>
   <script src="/js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>

@@ -1563,8 +1563,8 @@ button {
 .modal-close {
   position: absolute;
   right: 18px;
-  top: 16px;
-  z-index: 10;
+  top: 14px;
+  z-index: 20;
   border: 1px solid var(--line);
   background: #ffffff;
   width: 44px;
@@ -1648,9 +1648,89 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 28px;
+  padding: 12px 84px 12px 24px;
   border-bottom: 1px solid var(--line);
   background: #ffffff;
+  gap: 12px;
+}
+
+/* Modal TTS Controls */
+.modal-tts-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-tts-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--gold-btn);
+  color: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  min-height: 44px;
+  box-shadow: 0 4px 12px rgba(169, 111, 18, 0.25);
+  transition: all 0.2s ease;
+}
+
+.modal-tts-play-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(169, 111, 18, 0.35);
+}
+
+.modal-tts-play-btn.playing {
+  background: #1a1917;
+  color: #f7d686;
+  border: 1px solid var(--gold3);
+}
+
+.modal-tts-status {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Clickable paragraphs and active reading highlight */
+.tts-paragraph-target {
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  padding-left: 8px;
+  border-radius: 4px;
+  transition: background 0.25s ease, border-color 0.25s ease, padding 0.25s ease;
+}
+
+.tts-paragraph-target:hover {
+  background: rgba(212, 163, 62, 0.08);
+}
+
+.tts-reading-highlight {
+  background: rgba(212, 163, 62, 0.22) !important;
+  border-left: 4px solid var(--gold3) !important;
+  padding-left: 14px !important;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(185, 133, 36, 0.15);
+}
+
+.reader-modal-page.theme-dark .tts-reading-highlight {
+  background: rgba(247, 214, 134, 0.18) !important;
+  border-left: 4px solid #f7d686 !important;
+  box-shadow: 0 4px 16px rgba(247, 214, 134, 0.12);
+}
+
+.reader-modal-page.theme-sepia .tts-reading-highlight {
+  background: rgba(185, 133, 36, 0.22) !important;
+  border-left: 4px solid #b98524 !important;
 }
 
 .reader-theme-switcher {
@@ -1970,6 +2050,11 @@ button {
   .reader-modal-nav {
     display: none;
   }
+  .reader-modal-toolbar {
+    padding: 10px 76px 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
   .reader-modal-page {
     padding: 30px 20px;
   }
@@ -1981,6 +2066,15 @@ button {
 }
 
 @media (max-width: 480px) {
+  .reader-modal-toolbar {
+    padding: 8px 68px 8px 10px;
+  }
+  .modal-tts-status {
+    display: none;
+  }
+  .reader-modal-toolbar #readerProgressInfo {
+    display: none;
+  }
   .brand-copy small {
     display: none;
   }

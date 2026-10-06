@@ -283,6 +283,12 @@ function initFullReaderModal() {
     });
   });
 
+  // Modal in-reader TTS button
+  const modalPlayToggle = $('#modalPlayToggle');
+  if (modalPlayToggle) {
+    modalPlayToggle.addEventListener('click', toggleTtsPlayback);
+  }
+
   // Theme switchers
   $$('.reader-theme-switcher button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -307,15 +313,16 @@ function initFullReaderModal() {
 
   // Bookmark button
   $('#bookmarkChapterBtn')?.addEventListener('click', () => {
-    localStorage.setItem('pokonac_goliata_ch', currentChapterIdx);
-    showToast(`Zapisano zakładkę: Rozdział ${CHAPTERS[currentChapterIdx].num} — ${CHAPTERS[currentChapterIdx].title}`);
+    saveListeningProgress();
+    showToast(`Zapisano zakładkę: Rozdział ${CHAPTERS[currentChapterIdx].num} — ${CHAPTERS[currentChapterIdx].title} (akapit ${currentReadingParagraphIdx + 1})`);
   });
 }
 
 function openReaderModal(idx = 0) {
   const modal = $('#readerModal');
   if (!modal) return;
-  renderModalChapter(idx);
+  const targetIdx = isSpeaking ? audioTrackIdx : (typeof idx === 'number' ? idx : currentChapterIdx);
+  renderModalChapter(targetIdx);
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
@@ -330,9 +337,11 @@ function closeReaderModal() {
 }
 
 function renderModalChapter(idx) {
+  if (idx < 0 || idx >= CHAPTERS.length) return;
   currentChapterIdx = idx;
   const ch = CHAPTERS[idx];
   setMiniReaderChapter(idx);
+  updateAudioCardDisplay(idx);
 
   $$('.reader-modal-nav button').forEach((b, i) => {
     b.classList.toggle('active', i === idx);
@@ -343,33 +352,132 @@ function renderModalChapter(idx) {
   const body = $('#readerBody');
   const progress = $('#readerProgressInfo');
 
-  if (tag) tag.textContent = `Rozdział ${ch.num} • ${ch.subtitle}`;
+  if (tag) tag.textContent = `${ch.num === 'Wstęp' ? 'Wstęp' : 'Rozdział ' + ch.num} • ${ch.subtitle}`;
   if (title) title.textContent = ch.title;
-  if (body) body.innerHTML = ch.content;
   if (progress) progress.textContent = `Rozdział ${idx + 1} z ${CHAPTERS.length}`;
 
+  if (body) {
+    body.innerHTML = ch.content;
+    const readableElements = body.querySelectorAll('p, blockquote');
+    readableElements.forEach((el, pIdx) => {
+      el.setAttribute('data-para-idx', String(pIdx));
+      el.classList.add('tts-paragraph-target');
+      el.setAttribute('title', 'Kliknij, aby lektor czytał od tego miejsca');
+      el.addEventListener('click', () => {
+        jumpToParagraph(pIdx);
+      });
+    });
+  }
+
+  // Highlight paragraph in modal if this chapter is active
+  if (audioTrackIdx === idx) {
+    highlightActiveParagraph(currentReadingParagraphIdx, false);
+  }
+
   const page = $('.reader-modal-page');
-  if (page) page.scrollTop = 0;
+  if (page && !isSpeaking) page.scrollTop = 0;
 }
 
-function restoreSavedProgress() {
-  const saved = localStorage.getItem('pokonac_goliata_ch');
-  if (saved !== null) {
-    const idx = parseInt(saved, 10);
-    if (!isNaN(idx) && idx >= 0 && idx < CHAPTERS.length) {
-      setMiniReaderChapter(idx);
+function jumpToParagraph(pIdx) {
+  currentReadingParagraphIdx = pIdx;
+  saveListeningProgress();
+  if (!isSpeaking) {
+    startTtsForCurrentChapter();
+  } else {
+    speakCurrentParagraph();
+  }
+}
+
+function highlightActiveParagraph(pIdx, shouldScroll = true) {
+  const body = $('#readerBody');
+  if (!body) return;
+  const allParas = body.querySelectorAll('.tts-paragraph-target');
+  allParas.forEach((el) => {
+    el.classList.remove('tts-reading-highlight');
+  });
+
+  const target = body.querySelector(`[data-para-idx="${pIdx}"]`);
+  if (target) {
+    target.classList.add('tts-reading-highlight');
+    if (shouldScroll) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 }
 
-/* ==========================================================================
-   5. AUDIOBOOK PLAYER ENGINE
-   ========================================================================== */
-let isPlaying = false;
-let audioTrackIdx = 0;
+function getChapterParagraphs(idx) {
+  const ch = CHAPTERS[idx];
+  if (!ch) return [];
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = ch.content;
+  const elements = tempDiv.querySelectorAll('p, blockquote');
+  const texts = [];
+  elements.forEach(el => {
+    const txt = el.textContent.trim();
+    if (txt.length > 0) texts.push(txt);
+  });
+  if (texts.length === 0 && ch.rawText) {
+    return ch.rawText.split('\n\n').map(s => s.trim()).filter(Boolean);
+  }
+  return texts;
+}
+
+function saveListeningProgress() {
+  try {
+    const data = {
+      chapterIdx: audioTrackIdx,
+      paragraphIdx: currentReadingParagraphIdx,
+      seconds: currentSeconds,
+      timestamp: Date.now()
+    };
+    localStorage.setItem('pokonac_goliata_tts_progress', JSON.stringify(data));
+    localStorage.setItem('pokonac_goliata_ch', String(audioTrackIdx));
+  } catch (e) {
+    console.warn('Error saving TTS progress:', e);
+  }
+}
+
+function restoreSavedProgress() {
+  try {
+    const saved = localStorage.getItem('pokonac_goliata_tts_progress');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (typeof data.chapterIdx === 'number' && data.chapterIdx >= 0 && data.chapterIdx < CHAPTERS.length) {
+        currentChapterIdx = data.chapterIdx;
+        audioTrackIdx = data.chapterIdx;
+      }
+      if (typeof data.paragraphIdx === 'number' && data.paragraphIdx >= 0) {
+        currentReadingParagraphIdx = data.paragraphIdx;
+      }
+      if (typeof data.seconds === 'number' && data.seconds >= 0) {
+        currentSeconds = data.seconds;
+      }
+    } else {
+      const legacySaved = localStorage.getItem('pokonac_goliata_ch');
+      if (legacySaved !== null) {
+        const idx = parseInt(legacySaved, 10);
+        if (!isNaN(idx) && idx >= 0 && idx < CHAPTERS.length) {
+          currentChapterIdx = idx;
+          audioTrackIdx = idx;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Error restoring TTS progress:', e);
+  }
+
+  setMiniReaderChapter(currentChapterIdx);
+  updateAudioCardDisplay(audioTrackIdx);
+  updateAudioTimer();
+  updateTtsUiPlaying(false);
+}
+
 /* ==========================================================================
    5. CZYTNIK / GENERATOR MOCY TTS (SPEECH SYNTHESIS ENGINE)
    ========================================================================== */
+let isPlaying = false;
+let audioTrackIdx = 0;
+let currentReadingParagraphIdx = 0;
 let isSpeaking = false;
 let speechRate = 1.0;
 let currentUtterance = null;
@@ -377,6 +485,63 @@ let ttsVoice = null;
 let ttsClockInterval = null;
 let currentSeconds = 0;
 let totalSeconds = 12 * 60; // 12:00 default
+
+function updateAudioCardDisplay(idx) {
+  if (idx < 0 || idx >= CHAPTERS.length) return;
+  const ch = CHAPTERS[idx];
+  audioTrackIdx = idx;
+
+  const chTag = $('#audioChapterNum');
+  const chTitle = $('#audioChapterTitle');
+  const footerTitle = $('#audioFooterChapterTitle');
+  const durationEl = $('#duration');
+
+  if (chTag) chTag.textContent = ch.num === 'Wstęp' ? 'Wstęp' : `Rozdział ${ch.num}`;
+  if (chTitle) chTitle.textContent = ch.title;
+  if (footerTitle) footerTitle.textContent = `${ch.num === 'Wstęp' ? '' : 'Rozdział ' + ch.num + ': '}${ch.title}`;
+  if (durationEl) durationEl.textContent = ch.duration;
+
+  const parts = ch.duration.split(':');
+  totalSeconds = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+}
+
+function updateTtsUiPlaying(playing) {
+  const playToggle = $('#playToggle');
+  const waveform = $('#waveformVisualizer');
+  const statusText = $('#ttsStatusText');
+  const pulseDot = $('.pulse-dot');
+  const modalPlayToggle = $('#modalPlayToggle');
+  const modalTtsStatus = $('#modalTtsStatus');
+
+  const pauseSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  const playSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  const modalPauseSvg = '<svg class="modal-play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  const modalPlaySvg = '<svg class="modal-play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+
+  if (playing) {
+    if (playToggle) playToggle.innerHTML = pauseSvg;
+    if (waveform) waveform.classList.add('playing');
+    if (pulseDot) pulseDot.classList.add('speaking');
+    if (statusText) statusText.textContent = `Generator czyta (akapit ${currentReadingParagraphIdx + 1})...`;
+
+    if (modalPlayToggle) {
+      modalPlayToggle.innerHTML = `${modalPauseSvg}<span id="modalPlayText">Wstrzymaj (TTS)</span>`;
+      modalPlayToggle.classList.add('playing');
+    }
+    if (modalTtsStatus) modalTtsStatus.textContent = `Czyta akapit ${currentReadingParagraphIdx + 1}...`;
+  } else {
+    if (playToggle) playToggle.innerHTML = playSvg;
+    if (waveform) waveform.classList.remove('playing');
+    if (pulseDot) pulseDot.classList.remove('speaking');
+    if (statusText) statusText.textContent = currentReadingParagraphIdx > 0 ? `Wstrzymano (akapit ${currentReadingParagraphIdx + 1})` : 'Gotowy do czytania';
+
+    if (modalPlayToggle) {
+      modalPlayToggle.innerHTML = `${modalPlaySvg}<span id="modalPlayText">Słuchaj (TTS)</span>`;
+      modalPlayToggle.classList.remove('playing');
+    }
+    if (modalTtsStatus) modalTtsStatus.textContent = currentReadingParagraphIdx > 0 ? `Wstrzymano (od ${currentReadingParagraphIdx + 1})` : 'Gotowy';
+  }
+}
 
 function initAudioPlayer() {
   const playToggle = $('#playToggle');
@@ -398,9 +563,7 @@ function initAudioPlayer() {
       btn.classList.add('active');
       speechRate = parseFloat(btn.dataset.rate || '1.0');
       if (isSpeaking) {
-        // Restart speech at new rate
-        stopTts();
-        startTtsForCurrentChapter();
+        speakCurrentParagraph();
       }
     });
   });
@@ -417,16 +580,25 @@ function initAudioPlayer() {
   if (skipBack) {
     skipBack.addEventListener('click', () => {
       currentSeconds = Math.max(0, currentSeconds - 15);
+      if (currentReadingParagraphIdx > 0) {
+        currentReadingParagraphIdx = Math.max(0, currentReadingParagraphIdx - 1);
+        if (isSpeaking) speakCurrentParagraph();
+      }
       updateAudioTimer();
-      showToast('Cofnięto o 15 s');
+      showToast('Cofnięto czytanie');
     });
   }
 
   if (skipFwd) {
     skipFwd.addEventListener('click', () => {
       currentSeconds = Math.min(totalSeconds, currentSeconds + 15);
+      const paragraphs = getChapterParagraphs(audioTrackIdx);
+      if (currentReadingParagraphIdx < paragraphs.length - 1) {
+        currentReadingParagraphIdx++;
+        if (isSpeaking) speakCurrentParagraph();
+      }
       updateAudioTimer();
-      showToast('Przewinięto o 15 s');
+      showToast('Przewinięto czytanie');
     });
   }
 
@@ -441,13 +613,7 @@ function initAudioPlayer() {
     });
   }
 
-  // Set initial chapter duration
-  if (CHAPTERS[audioTrackIdx]) {
-    const parts = CHAPTERS[audioTrackIdx].duration.split(':');
-    totalSeconds = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-    const durationEl = $('#duration');
-    if (durationEl) durationEl.textContent = CHAPTERS[audioTrackIdx].duration;
-  }
+  updateAudioCardDisplay(audioTrackIdx);
 }
 
 function initTtsVoices() {
@@ -459,7 +625,6 @@ function initTtsVoices() {
 
   function pickVoice() {
     const voices = window.speechSynthesis.getVoices();
-    // Prefer Polish voices (pl-PL)
     const plVoice = voices.find(v => v.lang.startsWith('pl') || v.lang.includes('PL'));
     if (plVoice) {
       ttsVoice = plVoice;
@@ -503,71 +668,92 @@ function toggleTtsPlayback() {
   }
 }
 
-function startTtsForCurrentChapter() {
-  const playToggle = $('#playToggle');
-  const waveform = $('#waveformVisualizer');
-  const statusText = $('#ttsStatusText');
-  const pulseDot = $('.pulse-dot');
-  const ch = CHAPTERS[audioTrackIdx];
+function speakCurrentParagraph() {
+  if (!isSpeaking) return;
 
+  const paragraphs = getChapterParagraphs(audioTrackIdx);
+  if (paragraphs.length === 0) return;
+
+  if (currentReadingParagraphIdx >= paragraphs.length) {
+    // Finished chapter! Advance to next chapter
+    currentReadingParagraphIdx = 0;
+    currentSeconds = 0;
+    saveListeningProgress();
+    changeTtsChapter(audioTrackIdx + 1);
+    return;
+  }
+
+  highlightActiveParagraph(currentReadingParagraphIdx, true);
+  saveListeningProgress();
+
+  // Estimate progress time
+  const estSeconds = Math.floor((currentReadingParagraphIdx / Math.max(1, paragraphs.length)) * totalSeconds);
+  currentSeconds = estSeconds;
+  updateAudioTimer();
+
+  updateTtsUiPlaying(true);
+
+  if (!('speechSynthesis' in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const textToSpeak = paragraphs[currentReadingParagraphIdx];
+  const utterance = new SpeechSynthesisUtterance(textToSpeak);
+  currentUtterance = utterance;
+  utterance.lang = 'pl-PL';
+  utterance.rate = speechRate;
+  if (ttsVoice) utterance.voice = ttsVoice;
+
+  utterance.onend = () => {
+    if (!isSpeaking) return;
+    currentReadingParagraphIdx++;
+    saveListeningProgress();
+    speakCurrentParagraph();
+  };
+
+  utterance.onerror = (e) => {
+    if (e.error === 'interrupted' || e.error === 'canceled') return;
+    console.warn('TTS utterance event:', e);
+    if (isSpeaking) {
+      currentReadingParagraphIdx++;
+      saveListeningProgress();
+      speakCurrentParagraph();
+    }
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function startTtsForCurrentChapter() {
   isSpeaking = true;
   isPlaying = true;
 
-  if (playToggle) playToggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-  if (waveform) waveform.classList.add('playing');
-  if (pulseDot) pulseDot.classList.add('speaking');
-  if (statusText) statusText.textContent = 'Generator czyta...';
-
+  updateTtsUiPlaying(true);
   startTtsClock();
-  startSyntheticSound(); // Harmonic background chime
+  startSyntheticSound();
 
-  // Web Speech API
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel(); // Stop any pending utterance
+  speakCurrentParagraph();
 
-    const textToRead = `${ch.title}. ${ch.subtitle}. ${ch.rawText || ch.excerpt}`;
-    currentUtterance = new SpeechSynthesisUtterance(textToRead);
-    currentUtterance.lang = 'pl-PL';
-    currentUtterance.rate = speechRate;
-    if (ttsVoice) currentUtterance.voice = ttsVoice;
-
-    currentUtterance.onend = () => {
-      // Auto advance to next chapter if finished
-      if (isSpeaking) {
-        changeTtsChapter(audioTrackIdx + 1);
-      }
-    };
-
-    currentUtterance.onerror = (e) => {
-      console.warn('TTS utterance event:', e);
-    };
-
-    window.speechSynthesis.speak(currentUtterance);
-  }
-
-  showToast(`Generator Mocy: ${ch.title}`);
+  const ch = CHAPTERS[audioTrackIdx];
+  showToast(`Generator Mocy: ${ch.title} (akapit ${currentReadingParagraphIdx + 1})`);
 }
 
 function stopTts() {
-  const playToggle = $('#playToggle');
-  const waveform = $('#waveformVisualizer');
-  const statusText = $('#ttsStatusText');
-  const pulseDot = $('.pulse-dot');
-
   isSpeaking = false;
   isPlaying = false;
 
-  if (playToggle) playToggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-  if (waveform) waveform.classList.remove('playing');
-  if (pulseDot) pulseDot.classList.remove('speaking');
-  if (statusText) statusText.textContent = 'Gotowy do czytania';
-
+  updateTtsUiPlaying(false);
   stopTtsClock();
   stopSyntheticSound();
 
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
+
+  saveListeningProgress();
+  showToast(`Wstrzymano czytanie (akapit ${currentReadingParagraphIdx + 1}). Pozycja zapamiętana.`);
 }
 
 function startTtsClock() {
@@ -601,27 +787,27 @@ function changeTtsChapter(newIdx) {
   if (newIdx < 0) newIdx = CHAPTERS.length - 1;
   if (newIdx >= CHAPTERS.length) newIdx = 0;
   audioTrackIdx = newIdx;
-  const ch = CHAPTERS[newIdx];
-
-  const chTag = $('#audioChapterNum');
-  const chTitle = $('#audioChapterTitle');
-  const footerTitle = $('#audioFooterChapterTitle');
-  const durationEl = $('#duration');
-
-  if (chTag) chTag.textContent = ch.num === 'Wstęp' ? 'Wstęp' : `Rozdział ${ch.num}`;
-  if (chTitle) chTitle.textContent = ch.title;
-  if (footerTitle) footerTitle.textContent = `${ch.num === 'Wstęp' ? '' : 'Rozdział ' + ch.num + ': '}${ch.title}`;
-  if (durationEl) durationEl.textContent = ch.duration;
-
-  // Parse duration
-  const parts = ch.duration.split(':');
-  totalSeconds = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+  currentChapterIdx = newIdx;
+  currentReadingParagraphIdx = 0; // new chapter starts at beginning
   currentSeconds = 0;
+  saveListeningProgress();
+
+  updateAudioCardDisplay(newIdx);
+  setMiniReaderChapter(newIdx);
+
+  const modal = $('#readerModal');
+  if (modal && modal.classList.contains('open')) {
+    renderModalChapter(newIdx);
+  }
+
   updateAudioTimer();
 
   if (isSpeaking) {
-    stopTts();
-    startTtsForCurrentChapter();
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    updateTtsUiPlaying(true);
+    speakCurrentParagraph();
+  } else {
+    updateTtsUiPlaying(false);
   }
 }
 
@@ -936,7 +1122,7 @@ function initSearch() {
       item.addEventListener('click', () => {
         searchModal.classList.remove('open');
         document.body.style.overflow = '';
-        openReaderModal(ch.num - 1);
+        openReaderModal(CHAPTERS.indexOf(ch));
       });
       resultsContainer.appendChild(item);
     });

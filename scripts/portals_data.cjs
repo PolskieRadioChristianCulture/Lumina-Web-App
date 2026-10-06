@@ -1736,12 +1736,48 @@ const PORTALS = [
       { id: 'about', label: 'O Bibliotece' }
     ],
     tickerItems: [
+      'NOWOŚĆ 2026: „Pokonać Goliata” Cezarego Rogowskiego — bezpłatny e-book EPUB/PDF + Generator Mocy TTS dostępny teraz na polskieradio.cc/pokonac-goliata',
       'Biblioteka Cyfrowa CC: Ponad 100 bezpłatnych e-booków i komentarzy biblijnych dostępnych do pobrania',
       'Audiobooki & Słuchowiska: Nowe profesjonalne nagrania Pisma Świętego i arcydzieł literatury chrześcijańskiej',
       'Klasyka Reformacji: Dzieła Johna Bunyana, C.H. Spurgeona i C.S. Lewisa w wiernych przekładach',
       'Czytelnictwo z Wartościami: Buduj mądrość serca na fundamencie natchnionego Słowa Bożego'
     ],
     articles: [
+      {
+        id: 'art-pokonac-goliata-recenzja-2026',
+        title: '„Pokonać Goliata — Jak zwyciężać własne słabości” Cezarego Rogowskiego: Recenzja i Platforma Cyfrowa 2026',
+        slug: 'pokonac-goliata-cezary-rogowski-recenzja-ebook-generator-mocy',
+        excerpt: 'Nowe Wydanie 2026 chrześcijańskiego bestsellera Cezarego Rogowskiego. Osiem praktycznych kroków do wolności od nałogów, lęków i grzechu — teraz z interaktywnym czytnikiem, Generatorem Mocy TTS, e-bookiem EPUB i PDF do bezpłatnego pobrania na polskieradio.cc/pokonac-goliata.',
+        category: 'leksykon',
+        categoryLabel: 'KATALOG & RECENZJE · KSIĄŻKI CC',
+        publishedAt: '2026-10-06T12:00:00Z',
+        dateFormatted: '6 października 2026',
+        imageUrl: 'https://polskieradio.cc/assets/pokonac-goliata-book-3d.webp',
+        imageCaption: 'Pokonać Goliata — Nowe Wydanie 2026. Autor: Cezary Rogowski, Założyciel Christian Culture.',
+        readTimeMinutes: 8,
+        isHero: true,
+        isPopular: true,
+        popularRank: 1,
+        tags: ['Pokonać Goliata', 'Cezary Rogowski', 'E-book', 'EPUB', 'PDF', 'Generator Mocy TTS', 'Recenzja', 'Wydanie 2026'],
+        externalUrl: 'https://polskieradio.cc/pokonac-goliata',
+        author: {
+          id: 'cezary-rogowski',
+          name: 'Cezary Rogowski',
+          role: 'Założyciel Christian Culture',
+          avatarUrl: '/avatar_cezary_official.jpg'
+        },
+        scriptureReference: {
+          verse: '1 Księga Samuela 17:45',
+          text: 'Ty idziesz na mnie z mieczem, z oszczepem i z włócznią, a ja idę na ciebie w imieniu Pana Zastępów, Boga wojsk izraelskich, którym urągałeś!',
+          strongCode: 'H3068 (JHWH Sabaot — Pan Zastępów)'
+        },
+        content: [
+          '„Pokonać Goliata — Jak zwyciężać własne słabości” to osobiste świadectwo i praktyczny przewodnik Cezarego Rogowskiego, Założyciela ekosystemu Christian Culture. Nowe Wydanie 2026 zostało poszerzone o materiały cyfrowe, interaktywny czytnik e-book i Generator Mocy TTS — unikatowe narzędzie czytające każdy rozdział na głos przy użyciu polskiego lektora AI.',
+          'Książka oparta jest na biblijnej historii Dawida i Goliata (1 Sm 17) i prowadzi czytelnika przez osiem praktycznych kroków: od Świadomości i Wiary, przez Modlitwę i Słowo Boże, aż po Wytrwałość, Zapobieganie, Miłość Bożą i ostateczną Nagrodę wolności. Każdy krok jest oparty na osobistym doświadczeniu autora oraz konkretnych fragmentach Pisma Świętego z kodami Stronga.',
+          'Recenzja redakcji CCN Biblioteka: Cezary Rogowski pisze z niezwykłą odwagą szczerości — nie ukrywa własnych „goliatów” (nałóg palenia, depresja, zniewolenie grzechem), ale pokazuje dokładnie, jak w mocy Jezusa Chrystusa zostały pokonane. To nie akademicki traktat teologiczny, lecz żywe świadectwo, które trafia prosto w serce człowieka zmagającego się z tym, z czym po ludzku nie może sobie poradzić.',
+          'Platforma „Pokonać Goliata” (polskieradio.cc/pokonac-goliata) oferuje bezpłatny czytnik e-book z 10 rozdziałami w pełnym tekście, Generator Mocy TTS z polskim lektorem AI czytającym każdy krok, pobieranie PDF Premium (5.5 MB) i EPUB E-Book (8.9 MB) oraz opcję wsparcia misji przez Revolut. Każdy, kto szuka drogi z niewoli do wolności — znajdzie tu konkretne narzędzia i żywe Słowo Boże.'
+        ]
+      },
       {
         id: 'art-wedrowka-pielgrzyma',
         title: '„Wędrówka Pielgrzyma” Johna Bunyana: Kompletne Słuchowisko Audio i E-book PDF',
@@ -1754,9 +1790,9 @@ const PORTALS = [
         imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
         imageCaption: 'Alegoria drogi wiary – od ciężaru grzechu u stóp Krzyża po bramy Miasta Niebiańskiego.',
         readTimeMinutes: 12,
-        isHero: true,
+        isHero: false,
         isPopular: true,
-        popularRank: 1,
+        popularRank: 2,
         tags: ['Wędrówka Pielgrzyma', 'John Bunyan', 'Audiobook', 'E-book', 'Klasyka Wiary', 'Cezary Rogowski'],
         author: {
           id: 'cezary-rogowski',
