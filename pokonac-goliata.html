@@ -15,14 +15,44 @@
   <meta property="og:title" content="Pokonać Goliata — Jak zwyciężać własne słabości | Cezary Rogowski" />
   <meta property="og:description" content="Czytaj e-book, słuchaj audiobooka, pobieraj materiały i pokonaj własne słabości w oparciu o Boże zasady." />
   <meta property="og:url" content="https://polskieradio.cc/pokonac-goliata" />
-  <meta property="og:image" content="https://polskieradio.cc/assets/pokonac-goliata-hero-bg.webp" />
+  <meta property="og:image" content="https://polskieradio.cc/assets/pokonac-goliata-og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Okładka książki „Pokonać Goliata” Cezarego Rogowskiego" />
+  <meta property="og:locale" content="pl_PL" />
+  <meta property="book:author" content="Cezary Rogowski" />
   <meta property="og:site_name" content="Christian Culture & PolskieRadio.cc" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pokonać Goliata — Jak zwyciężać własne słabości | Cezary Rogowski" />
   <meta name="twitter:description" content="Czytaj e-book, słuchaj audiobooka, pobieraj materiały i pokonaj własne słabości w oparciu o Boże zasady." />
-  <meta name="twitter:image" content="https://polskieradio.cc/assets/pokonac-goliata-hero-bg.webp" />
+  <meta name="twitter:image" content="https://polskieradio.cc/assets/pokonac-goliata-og.jpg" />
+  <meta name="twitter:image:alt" content="Okładka książki „Pokonać Goliata” Cezarego Rogowskiego" />
+
+  <!-- Dane strukturalne (Google: książka) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Pokonać Goliata — Jak zwyciężać własne słabości",
+    "alternateName": "Pokonać Goliata",
+    "author": { "@type": "Person", "name": "Cezary Rogowski", "url": "https://polskieradio.cc/cezaryrogowski" },
+    "publisher": { "@type": "Organization", "name": "Christian Culture", "url": "https://polskieradio.cc" },
+    "inLanguage": "pl",
+    "bookEdition": "Nowe wydanie 2026",
+    "numberOfPages": 139,
+    "url": "https://polskieradio.cc/pokonac-goliata",
+    "image": "https://polskieradio.cc/assets/pokonac-goliata-og.jpg",
+    "description": "Praktyczny przewodnik w 8 krokach: jak z wiarą, modlitwą i wytrwałością zwyciężać nałogi, lęk i własne słabości. Prawdziwe historie i biblijne zasady.",
+    "genre": ["Literatura chrześcijańska", "Rozwój duchowy"],
+    "isAccessibleForFree": true,
+    "workExample": [
+      { "@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "application/pdf", "url": "https://polskieradio.cc/assets/Pokonac_Goliata_Nowe_Wydanie_2026_PREMIUM.pdf" },
+      { "@type": "Book", "bookFormat": "https://schema.org/EBook", "encodingFormat": "application/epub+zip", "url": "https://polskieradio.cc/assets/pokonac-goliata.epub" }
+    ]
+  }
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,9 +61,11 @@
   <!-- FontAwesome for CC Auth Widget & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_tts_v7" />
+  <link rel="preload" as="image" type="image/webp" href="/assets/pokonac-goliata-book-3d-400.webp" imagesrcset="/assets/pokonac-goliata-book-3d-400.webp 400w, /assets/pokonac-goliata-book-3d-780.webp 780w" imagesizes="(max-width: 1024px) 320px, 390px" fetchpriority="high" />
+  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_quotes_v10" />
 </head>
 <body>
+  <a class="skip-link" href="#czytaj">Przejdź do treści</a>
 
   <!-- Top Ambient Glows -->
   <div style="position:fixed;width:480px;height:480px;background:#dcebf0;left:-140px;top:80px;filter:blur(90px);opacity:0.5;border-radius:50%;pointer-events:none;z-index:-1;"></div>
@@ -48,7 +80,7 @@
       </span>
     </a>
 
-    <nav class="main-nav" aria-label="Główna nawigacja">
+    <nav class="main-nav" id="mainNav" aria-label="Główna nawigacja">
       <a class="active" href="#top">Strona główna</a>
       <a href="#o-ksiazce">O książce</a>
       <a href="#czytaj">Czytaj</a>
@@ -60,7 +92,10 @@
     </nav>
 
     <div class="header-actions">
-      <button class="icon-btn" aria-label="Szukaj w książce" title="Szukaj w książce" data-action="search">⌕</button>
+      <button type="button" class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Otwórz menu" aria-controls="mainNav" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="mm-line mm-1" d="M4 7h16"/><path class="mm-line mm-2" d="M4 12h16"/><path class="mm-line mm-3" d="M4 17h16"/></svg>
+      </button>
+      <button type="button" class="icon-btn" aria-label="Szukaj w książce" title="Szukaj w książce" data-action="search">⌕</button>
       <!-- CC Global Auth Connector Injection Point -->
       <div id="cc-auth-nav-container" class="cc-auth-widget-container" data-cc-auth-mount>
         <button type="button" class="cc-auth-google-btn" onclick="window.ccLoginWithGoogle('/pokonac-goliata')" title="Zaloguj się przez Google do społeczności LUMINA">
@@ -89,8 +124,8 @@
         <div class="hero-book-wrap" data-tilt>
           <div class="book-glow" aria-hidden="true"></div>
           <picture>
-            <source srcset="/assets/pokonac-goliata-book-3d.webp" type="image/webp">
-            <img class="book-cover" src="/assets/pokonac-goliata-book-3d.png" alt="Pokonać Goliata — fotorealistyczna okładka książki Cezarego Rogowskiego" width="390" height="488" />
+            <source srcset="/assets/pokonac-goliata-book-3d-400.webp 400w, /assets/pokonac-goliata-book-3d-780.webp 780w" sizes="(max-width: 1024px) 320px, 390px" type="image/webp">
+            <img class="book-cover" src="/assets/pokonac-goliata-book-3d.png" alt="Okładka książki „Pokonać Goliata” Cezarego Rogowskiego" width="390" height="488" fetchpriority="high" decoding="async" />
           </picture>
         </div>
 
@@ -99,8 +134,8 @@
           <div class="eyebrow"><span class="gold-line"></span> NOWE WYDANIE 2026 <span class="gold-line"></span></div>
           <h1 id="hero-title" class="hero-title-graphic" aria-label="Pokonać Goliata">
             <picture>
-              <source srcset="/assets/pokonac-goliata-title.webp" type="image/webp">
-              <img class="title-img" src="/assets/pokonac-goliata-title.png" alt="Pokonać Goliata — oryginalny tytuł książki" width="560" height="316" fetchpriority="high" />
+              <source srcset="/assets/pokonac-goliata-title-640.webp 640w, /assets/pokonac-goliata-title-1120.webp 1120w" sizes="(max-width: 480px) 310px, (max-width: 1024px) 440px, 560px" type="image/webp">
+              <img class="title-img" src="/assets/pokonac-goliata-title.png" alt="Pokonać Goliata" width="560" height="316" decoding="async" />
             </picture>
           </h1>
           <p class="hero-subtitle">JAK ZWYCIĘŻAĆ WŁASNE SŁABOŚCI</p>
@@ -130,7 +165,7 @@
 
           <div class="hero-secondary">
             <button class="white-btn" data-scroll="#pobierz" aria-label="Przejdź do pobierania">⇩ Pobierz</button>
-            <button class="white-btn" data-scroll="#fragmenty" aria-label="Przejdź do fragmentów">⌯ Udostępnij</button>
+            <button class="white-btn" data-scroll="#fragmenty" aria-label="Przejdź do udostępniania">⌯ Udostępnij</button>
             <button class="white-btn" data-scroll="#wesprzyj" aria-label="Wesprzyj autora">♡ Wesprzyj autora</button>
           </div>
 
@@ -196,18 +231,18 @@
           </aside>
 
           <div class="reader-page">
-            <small id="miniReaderChapterTag">Rozdział 1</small>
-            <h3 id="miniReaderTitle">Małe początki</h3>
+            <small id="miniReaderChapterTag">Wstęp</small>
+            <h3 id="miniReaderTitle">Wprowadzenie</h3>
             <div class="reader-illustration" aria-hidden="true"></div>
             <p id="miniReaderText">
-              <mark>Czasem Bóg rozpoczyna największe historie od najmniejszych kroków. To, co wydaje się nieznaczące w ludzkich oczach, w Jego rękach staje się początkiem wielkiego zwycięstwa.</mark>
+              <mark>Każdy ma swojego Goliata. Czasem jest nim nałóg, czasem lęk, gniew, poczucie winy, rozbita relacja albo sposób życia, z którym od dawna nie potrafimy sobie poradzić.</mark>
             </p>
             <div class="progress-row">
-              <span id="miniReaderProgress">42 / 320</span>
+              <span id="miniReaderProgress">Rozdział 1 z 10</span>
               <div style="display:flex;gap:6px;align-items:center;">
-                <button type="button" id="miniFontMinus" style="border:0;background:transparent;cursor:pointer;font-weight:700;padding:2px 4px;" title="Zmniejsz czcionkę">A⁻</button>
-                <button type="button" id="miniFontPlus" style="border:0;background:transparent;cursor:pointer;font-weight:700;padding:2px 4px;" title="Zwiększ czcionkę">A⁺</button>
-                <button type="button" data-open-reader style="border:0;background:transparent;cursor:pointer;font-size:12px;padding:2px 4px;" title="Pełny ekran">⛶</button>
+                <button type="button" id="miniFontMinus" class="mini-tool-btn" title="Zmniejsz czcionkę" aria-label="Zmniejsz czcionkę">A⁻</button>
+                <button type="button" id="miniFontPlus" class="mini-tool-btn" title="Zwiększ czcionkę" aria-label="Zwiększ czcionkę">A⁺</button>
+                <button type="button" data-open-reader class="mini-tool-btn" title="Otwórz czytnik na pełnym ekranie" aria-label="Otwórz czytnik na pełnym ekranie">⛶</button>
               </div>
             </div>
           </div>
@@ -234,29 +269,29 @@
             <img src="/assets/pokonac-goliata-thumb.webp" alt="Okładka Pokonać Goliata" width="52" height="66" />
             <div>
               <b>Pokonać Goliata</b>
-              <small id="ttsVoiceStatus">Generator Mocy • Lektor AI</small>
+              <small id="ttsVoiceStatus">Lektor syntezy mowy</small>
             </div>
-            <button class="heart-btn" aria-label="Dodaj audiobook do ulubionych" title="Dodaj do ulubionych">♡</button>
+            <button type="button" class="heart-btn" aria-pressed="false" aria-label="Zapamiętaj na tym urządzeniu" title="Zapamiętaj na tym urządzeniu">♡</button>
           </div>
 
-          <h3 id="audioChapterNum">Rozdział 1</h3>
-          <p class="audio-ch-title" id="audioChapterTitle">Krok 1: Świadomość</p>
+          <h3 id="audioChapterNum">Wstęp</h3>
+          <p class="audio-ch-title" id="audioChapterTitle">Wprowadzenie</p>
 
           <!-- Waveform Visualizer -->
           <div class="waveform-container" id="waveformVisualizer" title="Wizualizacja fali głosu lektora" aria-hidden="true"></div>
 
           <div class="audio-time">
             <span id="currentTime">00:00</span>
-            <span id="duration">12:00</span>
+            <span id="duration" title="Szacowany czas czytania">--:--</span>
           </div>
 
           <!-- TTS Controls: Voice Speed & Generator Settings -->
           <div class="tts-settings-row">
             <div class="tts-speed-selector" aria-label="Prędkość lektora">
               <span class="tts-label">Tempo:</span>
-              <button type="button" class="tts-speed-btn" data-rate="0.85">0.85×</button>
-              <button type="button" class="tts-speed-btn active" data-rate="1.0">1.0×</button>
-              <button type="button" class="tts-speed-btn" data-rate="1.2">1.2×</button>
+              <button type="button" class="tts-speed-btn" data-rate="0.85" aria-pressed="false">0.85×</button>
+              <button type="button" class="tts-speed-btn active" data-rate="1.0" aria-pressed="true">1.0×</button>
+              <button type="button" class="tts-speed-btn" data-rate="1.2" aria-pressed="false">1.2×</button>
             </div>
             <div class="tts-indicator">
               <span class="pulse-dot" aria-hidden="true"></span>
@@ -265,10 +300,9 @@
           </div>
 
           <div class="audio-controls">
-            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="-15" aria-label="Cofnij o 15 sekund" title="Cofnij o 15 sekund">
+            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="-15" aria-label="Poprzedni akapit" title="Poprzedni akapit">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13 3.5V0.5L8.5 5 13 9.5V6.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5S6.5 16.59 6.5 13H4c0 4.97 4.03 9 9 9s9-4.03 9-9-4.03-9-9-9z"/>
-                <text x="13" y="17" font-size="6.5" font-family="'Montserrat',Arial,sans-serif" font-weight="900" text-anchor="middle" fill="currentColor">15</text>
               </svg>
             </button>
             <button type="button" class="audio-ctrl-btn" data-prev aria-label="Poprzedni rozdział" title="Poprzedni rozdział">
@@ -286,10 +320,9 @@
                 <path d="M6 18l8.5-6L6 6v12zm8.5-12v12h2V6h-2z"/>
               </svg>
             </button>
-            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="15" aria-label="Przewiń do przodu o 15 sekund" title="Przewiń o 15 sekund">
+            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="15" aria-label="Następny akapit" title="Następny akapit">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13 3.5V0.5L17.5 5 13 9.5V6.5c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5H22c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9z"/>
-                <text x="13" y="17" font-size="6.5" font-family="'Montserrat',Arial,sans-serif" font-weight="900" text-anchor="middle" fill="currentColor">15</text>
               </svg>
             </button>
           </div>
@@ -298,12 +331,12 @@
             <button type="button" id="audioChPrev" aria-label="Poprzedni rozdział">‹</button>
             <div>
               <small>Generator czyta teraz</small>
-              <b id="audioFooterChapterTitle">Rozdział 1: Krok 1: Świadomość</b>
+              <b id="audioFooterChapterTitle">Wprowadzenie</b>
             </div>
             <button type="button" id="audioChNext" aria-label="Następny rozdział">›</button>
           </div>
 
-          <p class="setup-note">Generator Mocy czyta oryginalne rozdziały książki syntezą mowy TTS z dynamiczną falą głosu.</p>
+          <p class="setup-note">Generator Mocy czyta rozdziały książki głosem syntezy mowy dostępnym w Twojej przeglądarce. Czas jest szacunkowy.</p>
         </div>
       </article>
 
@@ -358,7 +391,19 @@
         </div>
 
         <div class="share-panel app-surface">
+          <div class="share-quote-header">
+            <div class="share-quote-badge">
+              <span class="quote-badge-dot" aria-hidden="true"></span>
+              <span id="quoteRotatorCounter">Cytat 1 z 25</span>
+            </div>
+            <div class="quote-nav-controls" aria-label="Sterowanie rotacją cytatów">
+              <button type="button" id="quotePrevBtn" class="quote-nav-btn" aria-label="Poprzedni cytat z książki" title="Poprzedni cytat">‹</button>
+              <button type="button" id="quoteNextBtn" class="quote-nav-btn" aria-label="Następny cytat z książki" title="Następny cytat">›</button>
+            </div>
+          </div>
+
           <blockquote id="shareQuote">„Największe zwycięstwa zaczynają się wtedy, gdy przestajesz patrzeć na swoje ograniczenia, a zaczynasz widzieć, kto idzie z tobą.”</blockquote>
+          <div class="share-quote-source" id="shareQuoteSource">Cezary Rogowski • Rozdział 2: Wiara i zaufanie</div>
           
           <div class="selection-actions">
             <button type="button" data-copy aria-label="Kopiuj cytat do schowka">⧉ Kopiuj</button>
@@ -370,8 +415,8 @@
             <img src="/assets/pokonac-goliata-thumb.webp" alt="Okładka Pokonać Goliata" width="50" height="60" />
             <div>
               <b>Pokonać Goliata</b>
-              <small>Cezary Rogowski</small>
-              <p>„Największe zwycięstwa zaczynają się wtedy, gdy…”</p>
+              <small id="sharePreviewSource">Cezary Rogowski</small>
+              <p id="sharePreviewQuoteText">„Największe zwycięstwa zaczynają się wtedy, gdy…”</p>
             </div>
           </div>
 
@@ -522,16 +567,21 @@
           <div style="font-size:12px;color:var(--muted);font-weight:600;" id="readerProgressInfo">Rozdział 1 z 10</div>
 
           <div class="reader-font-controls">
-            <button type="button" id="modalFontMinus" title="Zmniejsz czcionkę">A⁻</button>
-            <button type="button" id="modalFontPlus" title="Zwiększ czcionkę">A⁺</button>
-            <button type="button" id="bookmarkChapterBtn" title="Zapisz zakładkę">🔖</button>
+            <button type="button" id="modalFontMinus" title="Zmniejsz czcionkę" aria-label="Zmniejsz czcionkę">A⁻</button>
+            <button type="button" id="modalFontPlus" title="Zwiększ czcionkę" aria-label="Zwiększ czcionkę">A⁺</button>
+            <button type="button" id="bookmarkChapterBtn" title="Zapisz zakładkę" aria-label="Zapisz zakładkę">🔖</button>
           </div>
         </div>
 
         <article class="reader-modal-page">
-          <small id="readerChapterTag">Rozdział 1</small>
-          <h2 id="readerTitle">Małe początki</h2>
+          <small id="readerChapterTag">Wstęp</small>
+          <h2 id="readerTitle">Wprowadzenie</h2>
           <div id="readerBody"></div>
+
+          <nav class="reader-chapter-nav" aria-label="Przełączanie rozdziałów">
+            <button type="button" class="white-btn" id="readerPrevChapter"><span aria-hidden="true">‹</span> <span id="readerPrevLabel">Poprzedni rozdział</span></button>
+            <button type="button" class="gold-btn small" id="readerNextChapter"><span id="readerNextLabel">Następny rozdział</span> <span aria-hidden="true">›</span></button>
+          </nav>
 
           <div class="reader-actions">
             <button type="button" class="gold-btn small" data-share-lumina>
@@ -557,7 +607,7 @@
 
       <div class="search-input-wrap">
         <span style="font-size:20px;color:var(--gold3);">⌕</span>
-        <input type="text" id="searchInput" placeholder="Wpisz słowo kluczowe (np. wiara, strach, broń, dolina)…" autocomplete="off" />
+        <input type="search" id="searchInput" aria-label="Szukaj w treści książki" placeholder="Wpisz słowo (np. wiara, modlitwa, lęk)…" autocomplete="off" />
       </div>
 
       <div class="search-results" id="searchResults"></div>
@@ -573,7 +623,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="/js/pokonac-goliata.js?v=20261006_tts_v7" defer></script>
+  <script src="/js/pokonac-goliata.js?v=20261006_quotes_v10" defer></script>
   <script src="/js/cc-global-auth.js?v=20261006_auth_v1" defer></script>
   <script src="/js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>

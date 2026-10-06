@@ -713,7 +713,7 @@ button {
 .reader-illustration {
   height: 72px;
   border-radius: 10px;
-  background: url('/assets/pokonac-goliata-hero-bg.webp') no-repeat center 30% / cover;
+  background: url('/assets/pokonac-goliata-hero-bg-960.webp') no-repeat center 30% / cover;
   margin-bottom: 10px;
   position: relative;
 }
@@ -1150,24 +1150,99 @@ button {
   color: var(--gold3);
 }
 
-/* Card 4: Share panel */
+/* Card 4: Share panel & Quote Rotator */
 .share-panel {
   padding: 12px;
   display: flex;
   flex-direction: column;
 }
 
+.share-quote-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.share-quote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gold3);
+  background: rgba(169, 111, 18, 0.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 170, 75, 0.3);
+}
+
+.quote-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(169, 111, 18, 0.6);
+  animation: quotePulse 2s infinite ease-in-out;
+}
+
+@keyframes quotePulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.quote-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quote-nav-btn {
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  border-radius: 50%;
+  color: #2b2721;
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.quote-nav-btn:hover {
+  background: var(--gold-btn);
+  color: #ffffff;
+  border-color: var(--gold);
+  transform: scale(1.05);
+}
+
 .share-panel blockquote {
   margin: 0;
-  padding: 14px;
+  padding: 16px;
   background: linear-gradient(90deg, #fff8d6, #fae9a8);
   font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 14.5px;
+  line-height: 1.5;
   color: #2b2721;
   border-radius: 12px;
   position: relative;
   border: 1px solid rgba(215, 170, 75, 0.4);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.share-panel blockquote.fade-out {
+  opacity: 0;
+  transform: translateY(4px);
 }
 
 .share-panel blockquote:before,
@@ -1182,6 +1257,16 @@ button {
 
 .share-panel blockquote:before { left: -4px; top: -4px; }
 .share-panel blockquote:after { right: -4px; bottom: -4px; }
+
+.share-quote-source {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+  font-style: italic;
+  padding-right: 4px;
+}
 
 .selection-actions {
   display: flex;
@@ -2071,7 +2156,7 @@ button {
 
 @media (max-width: 480px) {
   .reader-modal-toolbar {
-    padding: 8px 68px 8px 10px;
+    padding: 10px 76px 10px 14px;
   }
   .modal-tts-status {
     display: none;
@@ -2153,5 +2238,161 @@ button {
   }
   .site-header .header-actions .cc-auth-google-btn {
     padding: 6px 10px;
+  }
+}
+
+/* Skip link (dostępność klawiatury) */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #171716;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* Widoczny fokus dla klawiatury */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* Sekcje nie chowają się pod przyklejonym nagłówkiem */
+main [id],
+#autor {
+  scroll-margin-top: 96px;
+}
+
+/* Przycisk menu — widoczny tylko na tablecie i telefonie */
+.mobile-menu-btn {
+  display: none;
+}
+.mobile-menu-btn .mm-line {
+  transition: transform 0.25s ease, opacity 0.2s ease;
+  transform-origin: 12px 12px;
+}
+.site-header.nav-open .mobile-menu-btn .mm-1 {
+  transform: translateY(5px) rotate(45deg);
+}
+.site-header.nav-open .mobile-menu-btn .mm-2 {
+  opacity: 0;
+}
+.site-header.nav-open .mobile-menu-btn .mm-3 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+@media (max-width: 1024px) {
+  .site-header.nav-open .main-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow-hover);
+    font-size: 16px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .site-header.nav-open .main-nav a {
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+  .site-header.nav-open .main-nav a:after {
+    display: none;
+  }
+  .site-header.nav-open .main-nav a:hover,
+  .site-header.nav-open .main-nav a.active {
+    background: rgba(212, 175, 55, 0.12);
+  }
+}
+
+/* Narzędzia mini-czytnika: cel dotyku min. 44 px */
+.mini-tool-btn {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  color: inherit;
+  border-radius: 10px;
+}
+.mini-tool-btn:hover {
+  background: rgba(212, 175, 55, 0.12);
+}
+
+/* Czytnik: przełączanie rozdziałów */
+.reader-chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+}
+.reader-chapter-nav button {
+  flex: 1 1 0;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  line-height: 1.25;
+}
+.reader-chapter-nav button[disabled] {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+@media (max-width: 480px) {
+  .reader-chapter-nav {
+    flex-direction: column-reverse;
+  }
+}
+
+
+/* Lektor niedostępny */
+.play-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Ograniczony ruch: bez animacji i efektu 3D */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Lżejsze tło hero na telefonach */
+@media (max-width: 768px) {
+  .hero-bg-canvas {
+    background-image: url('/assets/pokonac-goliata-hero-bg-960.webp');
   }
 }
