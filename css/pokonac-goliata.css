@@ -381,6 +381,18 @@ button {
   border-radius: 2px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .hero-copy h1 {
   margin: 10px 0 0;
   display: flex;
@@ -388,6 +400,21 @@ button {
   gap: 16px;
   flex-wrap: wrap;
   line-height: 0.88;
+}
+
+.hero-copy h1.hero-title-graphic {
+  margin: 8px 0 4px;
+  display: block;
+  line-height: 1;
+}
+
+.hero-copy h1.hero-title-graphic picture,
+.hero-copy h1.hero-title-graphic .title-img {
+  display: block;
+  width: 100%;
+  max-width: 550px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(18, 16, 12, 0.12));
 }
 
 .hero-copy h1 .title-black {
@@ -1776,6 +1803,14 @@ button {
   .eyebrow, .keywords, .hero-copy h1 {
     justify-content: center;
   }
+  .hero-copy h1.hero-title-graphic {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-copy h1.hero-title-graphic .title-img {
+    max-width: min(440px, 86vw);
+    margin: 0 auto;
+  }
   .hero-lead {
     margin-left: auto;
     margin-right: auto;
@@ -1834,6 +1869,9 @@ button {
   .hero-copy h1 .title-black,
   .hero-copy h1 .title-gold {
     font-size: 42px;
+  }
+  .hero-copy h1.hero-title-graphic .title-img {
+    max-width: min(310px, 86vw);
   }
   .hero-subtitle {
     font-size: 13px;
