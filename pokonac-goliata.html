@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_details_v3" />
+  <link rel="stylesheet" href="/css/pokonac-goliata.css?v=20261006_layout_v4" />
 </head>
 <body>
 
@@ -234,33 +234,31 @@
           </div>
 
           <div class="audio-controls">
-            <button type="button" class="audio-ctrl-btn" data-skip="-15" aria-label="Cofnij o 15 sekund" title="Cofnij o 15 sekund">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                <path d="M3 3v5h5"/>
-                <text x="12" y="15.5" font-size="7" font-family="'Montserrat', sans-serif" font-weight="800" text-anchor="middle" fill="currentColor" stroke="none">15</text>
+            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="-15" aria-label="Cofnij o 15 sekund" title="Cofnij o 15 sekund">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 3.5V0.5L8.5 5 13 9.5V6.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5S6.5 16.59 6.5 13H4c0 4.97 4.03 9 9 9s9-4.03 9-9-4.03-9-9-9z"/>
+                <text x="13" y="17" font-size="6.5" font-family="'Montserrat',Arial,sans-serif" font-weight="900" text-anchor="middle" fill="currentColor">15</text>
               </svg>
             </button>
             <button type="button" class="audio-ctrl-btn" data-prev aria-label="Poprzedni rozdział" title="Poprzedni rozdział">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/>
               </svg>
             </button>
             <button type="button" class="play-btn" id="playToggle" aria-label="Odtwórz / Wstrzymaj audiobook">
-              <svg class="play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"/>
               </svg>
             </button>
             <button type="button" class="audio-ctrl-btn" data-next aria-label="Następny rozdział" title="Następny rozdział">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 18l8.5-6L6 6v12zm8.5-12v12h2V6h-2z"/>
               </svg>
             </button>
-            <button type="button" class="audio-ctrl-btn" data-skip="15" aria-label="Przewiń do przodu o 15 sekund" title="Przewiń o 15 sekund">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                <path d="M21 3v5h-5"/>
-                <text x="12" y="15.5" font-size="7" font-family="'Montserrat', sans-serif" font-weight="800" text-anchor="middle" fill="currentColor" stroke="none">15</text>
+            <button type="button" class="audio-ctrl-btn skip-btn" data-skip="15" aria-label="Przewiń do przodu o 15 sekund" title="Przewiń o 15 sekund">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 3.5V0.5L17.5 5 13 9.5V6.5c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5H22c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9z"/>
+                <text x="13" y="17" font-size="6.5" font-family="'Montserrat',Arial,sans-serif" font-weight="900" text-anchor="middle" fill="currentColor">15</text>
               </svg>
             </button>
           </div>

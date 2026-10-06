@@ -880,8 +880,9 @@ button {
 
 .audio-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 8px;
   margin: 14px 0 10px;
   padding: 0 4px;
 }
@@ -891,6 +892,8 @@ button {
   border: 0;
   background: transparent;
   cursor: pointer;
+  width: 44px;
+  height: 44px;
   min-width: 44px;
   min-height: 44px;
   display: grid;
@@ -898,6 +901,7 @@ button {
   color: #3b3730;
   transition: all 0.2s ease;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .audio-controls button:hover,
@@ -908,16 +912,17 @@ button {
 }
 
 .audio-controls .play-btn {
-  width: 56px;
-  height: 56px;
-  min-width: 56px;
-  min-height: 56px;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
   border-radius: 50%;
   background: var(--gold-btn);
   color: #ffffff;
   box-shadow: 0 10px 24px rgba(169, 111, 18, 0.35);
   display: grid;
   place-items: center;
+  flex-shrink: 0;
 }
 
 .audio-controls .play-btn:hover {
