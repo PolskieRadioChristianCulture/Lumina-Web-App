@@ -51,6 +51,12 @@ export default {
       decodedP = p;
     }
 
+    if (decodedP === '/pokonaćgoliata' || decodedP === '/pokonacgoliata' || decodedP === '/pokonac-goliata') {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/pokonac-goliata/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     if (decodedP === '/ogłoszenia' || decodedP === '/tablica-ogloszen') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/ogloszenia';
