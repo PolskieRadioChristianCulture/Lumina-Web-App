@@ -51,10 +51,10 @@ export default {
       decodedP = p;
     }
 
-    if (decodedP === '/pokonaćgoliata' || decodedP === '/pokonacgoliata' || decodedP === '/pokonac-goliata') {
-      const targetUrl = new URL(request.url);
-      targetUrl.pathname = '/pokonac-goliata/';
-      return env.ASSETS.fetch(new Request(targetUrl, request));
+    if (decodedP === '/pokonaćgoliata' || decodedP === '/pokonacgoliata') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/pokonac-goliata';
+      return Response.redirect(redirectUrl.toString(), 301);
     }
 
     if (decodedP === '/ogłoszenia' || decodedP === '/tablica-ogloszen') {
