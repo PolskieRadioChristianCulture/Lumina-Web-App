@@ -35,3 +35,6 @@ firebase_functions/node_modules/
 _downloads_backup/
 _audio_backup/
 .wrangler/
+
+# Publiczny pakiet książki Pokonać Goliata (wyjątek od *.zip)
+!assets/pokonac-goliata-pakiet.zip
