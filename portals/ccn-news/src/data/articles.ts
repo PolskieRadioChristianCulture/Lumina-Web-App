@@ -41,7 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
-  'Z Biblią za Pan Brat: Dzień 6 — Arka: Sąd i ratunek — Bóg, który pamięta (Rdz 6:9–8:22)',
+  'Z Biblią za Pan Brat: Dzień 7 — Tęcza: Bóg zawiera przymierze — Nowy początek (Rdz 9:1–29)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
   'Polska: rząd ogłosił przyjęcie projektu budżetu na 2027 rok',
@@ -51,6 +51,48 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    id: 'art-z-biblia-za-pan-brat-dzien-07',
+    title: 'TĘCZA I PRZYMIERZE — NOWY POCZĄTEK I NIEZMIENNA POTRZEBA PRZEMIANY SERCA',
+    slug: 'tecza-i-przymierze-nowy-poczatek-i-niezmienna-potrzeba-przemiany-serca',
+    excerpt: 'Dziewiąty rozdział Księgi Rodzaju domyka narrację o potopie, ustanawiając przymierze za pomocą tęczy, a zarazem obnaża niezmienną potrzebę odkupienia i nowego serca w Chrystusie.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-07',
+    dateFormatted: '7 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_07_rainbow_covenant.jpg',
+    imageCaption: 'Księga Rodzaju 9: Bóg zawiera przymierze z całą ziemią i kładzie swój łuk na obłoku.',
+    readTimeMinutes: 6,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 9', 'Tęcza', 'Przymierze', 'Noe', 'Cezary Rogowski', 'Wiara'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 9:13',
+      text: 'Kładę mój łuk na obłoku i będzie znakiem przymierza między Mną a ziemią.',
+      strongCode: 'H7198',
+    },
+    lexiconTerms: [
+      {
+        term: 'Łuk / Tęcza (Rdz 9:13)',
+        strongCode: 'H7198',
+        definition: 'Hebr. keszet — łuk przymierza, odwrócona broń wojenna ku niebu oznaczająca powstrzymany gniew i pokój Boży.',
+      },
+    ],
+    relatedCourse: {
+      title: 'Z Biblią za Pan Brat: Miesiąc 1 – Księga Rodzaju',
+      lesson: 'Dzień 7: Tęcza — Bóg zawiera przymierze (Rdz 9:1–29)',
+      url: '/akademia/kurscodzienny/dzien-07',
+      badge: 'KURS CODZIENNY',
+    },
+    content: [
+      'Siódmy dzień studium programu „Z Biblią za Pan Brat” analizuje dziewiąty rozdział Księgi Rodzaju. Tekst ten domyka narrację o potopie, ustanawiając powszechne przymierze ze stworzeniem za pomocą znaku tęczy, a zarazem obnaża fundamentalną prawdę o niezmienności ludzkiej kondycji po kataklizmie.',
+      '1. Nowy Porządek Stworzenia i Świętość Życia. Oczyszczona po potopie ziemia staje się areną nowego startu. Bóg odnawia pierwotny mandat cywilizacyjny, lecz przypomina o bezwzględnej wartości każdego człowieka: „Kto przeleje krew człowieka, przez człowieka zostanie przelana jego krew, bo na obraz Boga uczynił człowieka” (Rdz 9:6).',
+      '2. Powszechne Przymierze i Teologia Tęczy. Po raz pierwszy w Biblii formalnie pojawia się kategoria przymierza z całą ziemią. Widzialnym znakiem staje się łuk na obłoku (keszet). Trwałość obietnicy opiera się na jednostronnym zobowiązaniu Boga: to Stwórca patrzy na łuk, by pamiętać o Swojej wierności.',
+      '3. Upadek Noego i Potrzeba Nowego Serca. Choć świat zyskał nowy start, historia upadku Noego w winnicy obnaża fakt, że potop zmył zło z powierzchni ziemi, ale nie usunął grzechu z ludzkiego wnętrza. Człowiek potrzebuje Nowego Przymierza we krwi Jezusa Chrystusa (Łk 22:20) i nowego serca.',
+      'Pełna lekcja Dnia 7 z quizem, pytaniami osobistymi i dziennikiem studium dostępna jest w Akademii: polskieradio.cc/akademia/kurscodzienny/dzien-07.',
+    ],
+  },  {
     id: 'art-z-biblia-za-pan-brat-dzien-06',
     title: 'ARKA, POTOP I WIERNOŚĆ BOGA — ANATOMIA BOŻEGO SĄDU I RATUNKU',
     slug: 'arka-potop-wiernosc-boga-anatomia-bozego-sadu-i-ratunku',
@@ -62,9 +104,9 @@ export const INITIAL_ARTICLES: Article[] = [
     imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_06_ark_flood_noah.jpg',
     imageCaption: 'Księga Rodzaju 6–8: Arka Noego — jedyna droga ocalenia pośród Bożego sądu.',
     readTimeMinutes: 6,
-    isHero: true,
+    isHero: false,
     isPopular: true,
-    popularRank: 1,
+    popularRank: 2,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 6', 'Rdz 8', 'Noe', 'Arka', 'Potop', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
@@ -105,7 +147,7 @@ export const INITIAL_ARTICLES: Article[] = [
     readTimeMinutes: 5,
     isHero: false,
     isPopular: true,
-    popularRank: 2,
+    popularRank: 3,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 5', 'Rdz 6', 'Henoch', 'Noe', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
