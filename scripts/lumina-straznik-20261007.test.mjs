@@ -15,6 +15,7 @@ test('nagłówek gościa ma niezależne od JS wejście do tablicy i logowania', 
   assert.match(guestNav, /href="\/tablica"/);
   assert.match(guestNav, /id="authCtaBtn" href="\/lumina-login"/);
   assert.match(guestNav, /aria-label="Zaloguj się do LUMINA"/);
+  assert.equal((guestNav.match(/min-height:44px/g) || []).length, 2);
   assert.equal((html.match(/id="authCtaBtn"/g) || []).length, 1);
 });
 
