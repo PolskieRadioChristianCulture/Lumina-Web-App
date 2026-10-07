@@ -12,6 +12,28 @@
     <priority>1.0</priority>
   </url>
 
+  <!-- Książki Cezarego Rogowskiego -->
+  <url>
+    <loc>https://polskieradio.cc/kod</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://polskieradio.cc/assets/kod-zrodlowy-og.jpg</image:loc>
+      <image:title>Kod Źródłowy — Cezary Rogowski</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://polskieradio.cc/pokonac-goliata</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://polskieradio.cc/assets/pokonac-goliata-og.jpg</image:loc>
+      <image:title>Pokonać Goliata — Cezary Rogowski</image:title>
+    </image:image>
+  </url>
+
   <!-- 2. VOD Christian Culture - Dobre Kino 24/7 (Filmy Chrześcijańskie) -->
   <url>
     <loc>https://polskieradio.cc/vod</loc>
@@ -326,6 +348,7 @@
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
   </url>
+  <url>
     <loc>https://polskieradio.cc/biblioteka</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
