@@ -7,6 +7,17 @@ import { readFile, readdir } from 'node:fs/promises';
 const read = (f) => readFile(f, 'utf8');
 const htmlFiles = async () => (await readdir('.')).filter((f) => /^lumina.*\.html$/.test(f) && !f.includes('backup'));
 
+test('nagłówek gościa ma niezależne od JS wejście do tablicy i logowania', async () => {
+  const html = await read('lumina.html');
+  const start = html.indexOf('id="luminaGuestNav"');
+  assert.ok(start > 0, 'Brak publicznej nawigacji w nagłówku');
+  const guestNav = html.slice(start, html.indexOf('</div>', start));
+  assert.match(guestNav, /href="\/tablica"/);
+  assert.match(guestNav, /id="authCtaBtn" href="\/lumina-login"/);
+  assert.match(guestNav, /aria-label="Zaloguj się do LUMINA"/);
+  assert.equal((html.match(/id="authCtaBtn"/g) || []).length, 1);
+});
+
 test('jedna instancja modułów lumina-db/lumina-core (różne ?v= = kilka kopii w przeglądarce)', async () => {
   const files = [...await htmlFiles(), 'lumina-core.js', 'lumina-tablica.js', 'lumina-security.js', 'js/cc-global-auth.js'];
   const versions = new Set();

@@ -4895,6 +4895,17 @@
         </div><!-- /.nav-brand-group -->
 
         <div class="lumina-nav-actions" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <!-- Public navigation must remain usable before auth restores or when signed out. -->
+            <div class="lumina-guest-only" id="luminaGuestNav" style="align-items:center; gap:8px;">
+                <a class="nav-menu-btn" href="/tablica" aria-label="Otwórz Tablicę LUMINA" title="Tablica LUMINA">
+                    <i class="fa-solid fa-table-cells" aria-hidden="true"></i>
+                    <span class="nav-btn-text">Tablica</span>
+                </a>
+                <a class="nav-menu-btn" id="authCtaBtn" href="/lumina-login" aria-label="Zaloguj się do LUMINA" title="Zaloguj się do LUMINA">
+                    <i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>
+                    <span class="nav-btn-text">Zaloguj</span>
+                </a>
+            </div>
             <!-- Menu Nawigacji LUMINA (Wysuwany Drawer) -->
             <div class="nav-menu-wrapper" style="position:relative; display:inline-flex; align-items:center; flex-shrink:0;">
                 <button type="button" 
