@@ -2,6 +2,7 @@ const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
   '/scripts/agent-matrix/.matrix_sessions/',
+  '/tresci-18plus/',
 ];
 
 const BLOCKED_FILES = new Set([
@@ -101,6 +102,87 @@ async function serveLiveNews(ctx) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// TREŚCI 18+ (książka „Prawda Bez Filtra”) — tylko dla zalogowanych, po
+// oświadczeniu o pełnoletności. Pliki leżą w /tresci-18plus/ (publicznie
+// zablokowane w isBlocked) i są wydawane wyłącznie przez /api/tresci-18/<id>
+// po weryfikacji tokenu Firebase (projekt lumina-cc) po stronie serwera.
+// ═══════════════════════════════════════════════════════════════════════════
+const ADULT_FIREBASE_PROJECT = 'lumina-cc';
+const ADULT_JWKS_URL = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
+const ADULT_CONTENT = { 'prawda-bez-filtra-fragment': '/tresci-18plus/prawda-bez-filtra-fragment.json' };
+let adultJwksCache = { keys: null, until: 0 };
+
+function adultB64urlToBytes(s) {
+  s = s.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  const bin = atob(s);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function adultGetJwks(fetchImpl) {
+  const now = Date.now();
+  if (adultJwksCache.keys && adultJwksCache.until > now) return adultJwksCache.keys;
+  const resp = await fetchImpl(ADULT_JWKS_URL);
+  if (!resp.ok) throw new Error('jwks');
+  const data = await resp.json();
+  const m = /max-age=(\d+)/.exec(resp.headers.get('cache-control') || '');
+  adultJwksCache = { keys: data.keys || [], until: now + (m ? Math.min(+m[1], 21600) : 3600) * 1000 };
+  return adultJwksCache.keys;
+}
+
+async function verifyFirebaseIdToken(token, fetchImpl = fetch, nowSec = Math.floor(Date.now() / 1000)) {
+  const parts = String(token || '').split('.');
+  if (parts.length !== 3) return null;
+  let header, payload;
+  try {
+    header = JSON.parse(new TextDecoder().decode(adultB64urlToBytes(parts[0])));
+    payload = JSON.parse(new TextDecoder().decode(adultB64urlToBytes(parts[1])));
+  } catch { return null; }
+  if (header.alg !== 'RS256' || !header.kid) return null;
+  if (payload.aud !== ADULT_FIREBASE_PROJECT) return null;
+  if (payload.iss !== `https://securetoken.google.com/${ADULT_FIREBASE_PROJECT}`) return null;
+  if (!payload.sub || typeof payload.sub !== 'string') return null;
+  if (!(payload.exp > nowSec) || !(payload.iat <= nowSec + 300)) return null;
+  const keys = await adultGetJwks(fetchImpl);
+  const jwk = keys.find((k) => k.kid === header.kid);
+  if (!jwk) return null;
+  const key = await crypto.subtle.importKey('jwk', { kty: jwk.kty, n: jwk.n, e: jwk.e, alg: 'RS256', ext: true },
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);
+  const ok = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', key, adultB64urlToBytes(parts[2]),
+    new TextEncoder().encode(parts[0] + '.' + parts[1]));
+  return ok ? payload : null;
+}
+
+async function handleAdultContent(request, env, url, fetchImpl = fetch) {
+  const json = (obj, status) => new Response(JSON.stringify(obj), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'private, no-store',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      'Vary': 'Authorization',
+    },
+  });
+  const id = url.pathname.slice('/api/tresci-18/'.length).replace(/\/$/, '');
+  const file = ADULT_CONTENT[id];
+  if (!file) return json({ ok: false, error: 'not_found' }, 404);
+  if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405);
+  if (request.headers.get('X-Age-Confirmed') !== '18+') return json({ ok: false, error: 'age_not_confirmed' }, 403);
+  const auth = request.headers.get('Authorization') || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  let user = null;
+  try { user = await verifyFirebaseIdToken(token, fetchImpl); } catch { user = null; }
+  if (!user) return json({ ok: false, error: 'login_required' }, 401);
+  const assetUrl = new URL(file, url.origin);
+  const res = await env.ASSETS.fetch(new Request(assetUrl.toString()));
+  if (!res.ok) return json({ ok: false, error: 'unavailable' }, 503);
+  const data = await res.json();
+  return json({ ok: true, ...data }, 200);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -114,6 +196,10 @@ export default {
           'X-Robots-Tag': 'noindex, nofollow, noarchive',
         },
       });
+    }
+
+    if (url.pathname.startsWith('/api/tresci-18/')) {
+      return handleAdultContent(request, env, url);
     }
 
     // AI Gateway recovery is code/test-only. No provider calls, bindings,
