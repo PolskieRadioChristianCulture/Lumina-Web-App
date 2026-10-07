@@ -28,8 +28,81 @@ function isBlocked(pathname) {
   return BLOCKED_EXTENSIONS.some((extension) => path.endsWith(extension));
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// KANAŁY CC — PRAWDZIWE WIADOMOŚCI NA PASKU (Strażnik Standardów, 2026-10-07)
+// Wcześniej /news.json był plikiem zapisanym ręcznie 19 sierpnia 2026 i od tamtej pory
+// kanały pokazywały jako „najnowsze” wiadomości sprzed 7 tygodni. Teraz serwer pobiera
+// nagłówki z kanału RSS na bieżąco (pamięć podręczna 10 min). Gdy źródło nie odpowiada:
+// ostatnie pobrane nagłówki (max 6 h), a potem pusta lista — nigdy stare wiadomości.
+// ═══════════════════════════════════════════════════════════════════════════
+const NEWS_RSS_URL = 'https://wiadomosci.wp.pl/rss.xml';
+const NEWS_CACHE_KEY = 'https://polskieradio.cc/__cc_cache/news-headlines-v1';
+const NEWS_FRESH_SECONDS = 600;
+const NEWS_STALE_SECONDS = 6 * 3600;
+const NEWS_MAX_AGE_HOURS = 48;
+
+function decodeEntities(text) {
+  return String(text)
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+}
+
+function cleanHeadline(text) {
+  return decodeEntities(text).replace(/<[^>]*>/g, '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function parseRssHeadlines(xml) {
+  const out = [];
+  const now = Date.now();
+  for (const m of String(xml).matchAll(/<item>([\s\S]*?)<\/item>/g)) {
+    const item = m[1];
+    const title = (item.match(/<title>([\s\S]*?)<\/title>/) || [])[1];
+    if (!title) continue;
+    const pub = Date.parse((item.match(/<pubDate>([\s\S]*?)<\/pubDate>/) || [])[1] || '');
+    if (!Number.isNaN(pub) && now - pub > NEWS_MAX_AGE_HOURS * 3600 * 1000) continue;
+    const headline = cleanHeadline(title);
+    if (headline && headline.length <= 220) out.push(headline);
+    if (out.length >= 10) break;
+  }
+  return out;
+}
+
+async function serveLiveNews(ctx) {
+  const cache = caches.default;
+  const key = new Request(NEWS_CACHE_KEY);
+  const cached = await cache.match(key);
+  const cachedAt = cached ? Number(cached.headers.get('X-CC-Fetched-At') || 0) : 0;
+  const age = cachedAt ? (Date.now() - cachedAt) / 1000 : Infinity;
+  const respond = (body, fetchedAt, state) => new Response(body, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'public, max-age=120',
+      'Access-Control-Allow-Origin': '*',
+      'X-CC-Fetched-At': String(fetchedAt || 0),
+      'X-CC-News-State': state,
+    },
+  });
+  if (cached && age < NEWS_FRESH_SECONDS) return respond(await cached.text(), cachedAt, 'fresh');
+  try {
+    const rss = await fetch(NEWS_RSS_URL, { headers: { 'User-Agent': 'ChristianCulture-Ticker/1.0 (+https://polskieradio.cc)' }, cf: { cacheTtl: 300 } });
+    if (!rss.ok) throw new Error('RSS ' + rss.status);
+    const headlines = parseRssHeadlines(await rss.text());
+    if (!headlines.length) throw new Error('RSS bez nagłówków');
+    const body = JSON.stringify(headlines);
+    const fetchedAt = Date.now();
+    const store = new Response(body, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': `public, max-age=${NEWS_STALE_SECONDS}`, 'X-CC-Fetched-At': String(fetchedAt) } });
+    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(cache.put(key, store)); else await cache.put(key, store);
+    return respond(body, fetchedAt, 'live');
+  } catch (err) {
+    if (cached && age < NEWS_STALE_SECONDS) return respond(await cached.text(), cachedAt, 'stale');
+    return respond('[]', 0, 'unavailable');
+  }
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {
@@ -300,6 +373,10 @@ export default {
           }
         );
       }
+    }
+
+    if (url.pathname === '/news.json' || url.pathname === '/api/live/news') {
+      return serveLiveNews(ctx);
     }
 
     const assetResp = await env.ASSETS.fetch(request);

@@ -79,3 +79,12 @@ test('kreator profilu wymaga prawdziwego zdjęcia i jest podpięty', async () =>
     assert.match(await read(f), /js\/lumina-onboarding\.js\?v=/, f);
   }
 });
+
+test('gość nie jest pokazywany jako zalogowany Założyciel (nagłówek z kopii profilu w pamięci)', async () => {
+  const a = await read('js/cc-global-auth.js');
+  const fn = a.slice(a.indexOf('function getStoredUserData()'), a.indexOf('// 4. Uniwersalne Logowanie Google'));
+  assert.doesNotMatch(fn, /lumina_profile_cezaryrgowski/);
+  assert.doesNotMatch(fn, /nazirczarkes@gmail\.com/);
+  assert.match(fn, /lumina_user_session'\) !== 'active'/);
+});
+
