@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'Bezpłatne e-booki i audiobooki: „Kod Źródłowy” oraz „Pokonać Goliata” Cezarego Rogowskiego już dostępne w ekosystemie CC',
   'Z Biblią za Pan Brat: Dzień 8 — Wieża Babel: Kiedy człowiek chce uczynić sobie imię (Rdz 10:1–11:32)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
@@ -50,6 +51,31 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-ksiazki-cezary-rogowski-kod-pokonac-goliata',
+    title: '„KOD ŹRÓDŁOWY” ORAZ „POKONAĆ GOLIATA” — BEZPŁATNE E-BOOKI I AUDIOBOOKI CEZAREGO ROGOWSKIEGO',
+    slug: 'kod-zrodlowy-oraz-pokonac-goliata-bezplatne-ksiazki-cezary-rogowski',
+    excerpt: 'W ramach misji Christian Culture, Cezary Rogowski udostępnia bezpłatnie dwie autorskie pozycje książkowe: powieść „Kod Źródłowy” oraz podręcznik duchowego zwycięstwa „Pokonać Goliata”. Obie pozycje oferują czytnik webowy, lektora audio oraz pliki EPUB i PDF.',
+    category: 'wywiady',
+    categoryLabel: 'LITERATURA & MISJA · AUTORSKIE KSIĄŻKI CC',
+    publishedAt: '2026-10-07',
+    dateFormatted: '7 października 2026',
+    imageUrl: 'https://polskieradio.cc/assets/kod-zrodlowy-og.jpg',
+    imageCaption: 'Autorskie książki Cezarego Rogowskiego: „Kod Źródłowy” oraz „Pokonać Goliata” (Nowe Wydanie 2026).',
+    readTimeMinutes: 5,
+    isHero: false,
+    isPopular: true,
+    popularRank: 3,
+    tags: ['Kod Źródłowy', 'Pokonać Goliata', 'Cezary Rogowski', 'E-book', 'Audiobook', 'Literatura', 'Wolność', 'Świadectwo'],
+    author: AUTHORS.cezary,
+    content: [
+      'W ekosystemie Christian Culture misja głoszenia nadziei i prawdy Ewangelii realizowana jest bez komercyjnych barier. Z inicjatywy Założyciela stacji i portalu LUMINA, Cezarego Rogowskiego, dwie wyjątkowe publikacje autorskie trafiły do bezpłatnego użytku wszystkich czytelników: powieść „Kod Źródłowy” (polskieradio.cc/kod) oraz praktyczny poradnik formacyjny „Pokonać Goliata” (polskieradio.cc/pokonac-goliata).',
+      '1. „Kod Źródłowy” — Powieść o Prawdzie i Nowym Początku. 86-stronicowa, dynamiczna opowieść o walce o własną tożsamość, wyjściu z pułapek współczesności oraz odkryciu, że tylko łaska Jezusa Chrystusa potrafi trwale przeprogramować serce człowieka. Książka dostępna jest w wersji interaktywnego czytnika, jako audiobook online z polskim lektorem oraz do pobrania w formatach EPUB i PDF.',
+      '2. „Pokonać Goliata” — 8 Kroków do Wolności od Słabości (Wydanie 2026). 111-stronicowe studium oparte na biblijnej walce Dawida z filistyńskim olbrzymem (1 Sm 17). Rogowski przedstawia osiem konkretnych etapów drogi ze zniewolenia i nałogów do uświęconej wolności w Chrystusie. Platforma zawiera Generator Mocy TTS, wersję audio i kompletny plik e-booka.',
+      '3. Misja 100% Bezpłatnego Słowa. Każdy odbiorca może korzystać z książek na smartfonach, czytnikach Kindle/PocketBook oraz komputerach. Bez konieczności rejestracji, bez reklam i bez mikropłatności — w myśl zasady: „Darmo otrzymaliście, darmo dawajcie” (Mt 10:8). Zapraszamy do lektury na stronach: polskieradio.cc/kod oraz polskieradio.cc/pokonac-goliata.',
+    ],
+  },
+
   {
     id: 'art-z-biblia-za-pan-brat-dzien-08',
     title: 'WIEŻA BABEL — ANATOMIA LUDZKIEJ PYCHY I POCZĄTEK HISTORII ABRAHAMA',
