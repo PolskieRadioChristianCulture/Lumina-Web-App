@@ -1194,7 +1194,7 @@ function startQuoteRotation() {
     if (!isQuoteHovered) {
       displayQuote(currentQuoteIdx + 1, true);
     }
-  }, 6500);
+  }, 9750);
 }
 
 function stopQuoteRotation() {
