@@ -36,7 +36,8 @@ import {
     orderBy, 
     limit, 
     serverTimestamp,
-    increment
+    increment,
+    writeBatch
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
 import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
@@ -95,6 +96,84 @@ const LUMINA_VAPID_KEY = "BD_YXGFbonkuMphLzVdYqADfcPX4TMnN4PowO2eu673JnZQR3RJRMM
 let app = null;
 let db = null;
 let auth = null;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 🛡️ STRAŻNIK TOŻSAMOŚCI LUMINA (2026-10-07, Claude — Strażnik Standardów)
+// Konta oficjalne rozpoznajemy WYŁĄCZNIE po dokładnym, zweryfikowanym e-mailu.
+// Imię z Google ("Cezary", "Wioletta", "Andrzej"…) NIGDY nie nadaje cudzej
+// tożsamości, zdjęcia, wieku, miasta ani uprawnień. To była przyczyna tego,
+// że prawdziwi ludzie o tych imionach dostawali twarz i dane innych osób.
+// ═══════════════════════════════════════════════════════════════════════════
+export const LUMINA_OFFICIAL_ACCOUNTS = Object.freeze({
+    cezary: ['nazirczarkes@gmail.com', 'studiodees7@gmail.com', 'czarekrogowski3@gmail.com', 'osobowoscplus@gmail.com', 'yourimaginationstudio@gmail.com'],
+    radiocc: ['radiochristianculture@gmail.com'],
+    wiolettaLocalPart: 'wioletta1240'
+});
+export const LUMINA_MASTER_ADMIN_EMAILS = Object.freeze([
+    'nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
+    'polskieradiocc@gmail.com', 'studiodees7@gmail.com'
+]);
+export const LUMINA_RESERVED_PROFILE_SLUGS = Object.freeze([
+    'cezaryrgowski', 'wiolettarogowska', 'radiocc', 'andrzejthiel', 'christianculture', 'lumina'
+]);
+const LUMINA_OFFICIAL_AVATARS = Object.freeze({
+    'avatar_cezary_official.jpg': 'cezaryrgowski',
+    'avatar_wioletta_official.jpg': 'wiolettarogowska',
+    'avatar_wioletta_official.webp': 'wiolettarogowska',
+    'avatar_andrzej_thiel.jpg': 'andrzejthiel'
+});
+
+export function detectLuminaOfficialIdentity(user) {
+    if (!user || !user.email) return null;
+    if (user.emailVerified === false) return null;
+    const email = String(user.email).trim().toLowerCase();
+    if (LUMINA_OFFICIAL_ACCOUNTS.radiocc.includes(email)) return 'radiocc';
+    if (LUMINA_OFFICIAL_ACCOUNTS.cezary.includes(email)) return 'cezary';
+    if (email.split('@')[0] === LUMINA_OFFICIAL_ACCOUNTS.wiolettaLocalPart) return 'wioletta';
+    return null;
+}
+
+export function isLuminaMasterAdmin(user = currentUserState) {
+    if (!user || !user.email || user.emailVerified === false) return false;
+    return LUMINA_MASTER_ADMIN_EMAILS.includes(String(user.email).trim().toLowerCase());
+}
+
+const OFFICIAL_ID_TO_SLUG = { cezary: 'cezaryrgowski', wioletta: 'wiolettarogowska', radiocc: 'radiocc' };
+
+/** Czy ZALOGOWANY (Firebase Auth) użytkownik może edytować dany profil. Bez PIN-ów i flag w localStorage. */
+export function canEditLuminaProfile(slugOrUid, profileData = null, user = currentUserState) {
+    if (!user || user.isAnonymous) return false;
+    if (isLuminaMasterAdmin(user)) return true;
+    const key = String(slugOrUid || '').trim().toLowerCase();
+    if (!key) return false;
+    if (key === String(user.uid).toLowerCase()) return true;
+    if (profileData && profileData.uid && profileData.uid === user.uid) return true;
+    const official = detectLuminaOfficialIdentity(user);
+    if (official && OFFICIAL_ID_TO_SLUG[official] === key) return true;
+    if (currentProfileState && currentProfileState.uid === user.uid && String(currentProfileState.slug || '').toLowerCase() === key) return true;
+    return false;
+}
+
+/**
+ * Czy URL to prawdziwe zdjęcie człowieka (a nie logo, ikona, litera Google, grafika stockowa).
+ * Oficjalne zdjęcia (np. Cezarego) są prawdziwe WYŁĄCZNIE na profilu ich właściciela.
+ */
+export function isLuminaRealPersonPhoto(url, ownerSlug = '') {
+    if (!url || typeof url !== 'string') return false;
+    const clean = url.trim();
+    const lower = clean.toLowerCase();
+    if (!lower || lower === 'null' || lower === 'undefined') return false;
+    if (lower.startsWith('data:image/svg')) return false;
+    if (lower.startsWith('data:image/')) return clean.length > 3000; // realne zdjęcie, nie piksel
+    if (lower.includes('googleusercontent.com/a/')) return false; // litera Google na kolorowym tle
+    const file = lower.split('?')[0].split('/').pop();
+    if (LUMINA_OFFICIAL_AVATARS[file]) return LUMINA_OFFICIAL_AVATARS[file] === String(ownerSlug || '').toLowerCase();
+    if (/^(lumina[_-]|logo|icon|favicon|reklama|tlo_|ccn_|avatar_new\d|default|placeholder|studiodobregoslowa_avatar)/.test(file)) return false;
+    if (lower.startsWith('http')) return true;
+    if (lower.startsWith('indexeddb:')) return false; // zdjęcie tylko w tej przeglądarce — inni go nie zobaczą
+    return /^avatar_[a-z0-9_]+\.(jpe?g|png|webp)$/.test(file); // zdjęcia wgrane przez administrację
+}
+
 let analytics = null;
 let messaging = null;
 const googleProvider = new GoogleAuthProvider();
@@ -191,25 +270,8 @@ export async function requestNotificationPermission(userUid) {
                         return null;
                     }
 
-                    if (userUid) {
-                        try {
-                            await setDoc(doc(db, 'lumina_profiles', userUid), {
-                                fcmToken: token,
-                                notificationsEnabled: true,
-                                updatedAt: serverTimestamp()
-                            }, { merge: true });
-                        } catch(e) {}
-                    }
-                    const curSlug = localStorage.getItem('lumina_current_user_slug');
-                    if (curSlug && curSlug !== userUid) {
-                        try {
-                            await setDoc(doc(db, 'lumina_profiles', curSlug), {
-                                fcmToken: token,
-                                notificationsEnabled: true,
-                                updatedAt: serverTimestamp()
-                            }, { merge: true });
-                        } catch(e) {}
-                    }
+                    // 🛡️ STRAŻNIK: token FCM jest zapisany wyłącznie w LuminaDeviceTokens (prywatna kolekcja).
+                    // Wcześniej trafiał też do publicznego profilu (w tym cudzego — pod slugiem z localStorage).
                 }
                 return token;
             }
@@ -503,7 +565,7 @@ if (auth) {
             // Load user profile from Firestore
             try {
                 const userDoc = await getDoc(doc(db, 'lumina_profiles', user.uid));
-                const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture'))) || (user.displayName && user.displayName.toLowerCase() === 'christian culture');
+                const _luminaOfficialId = detectLuminaOfficialIdentity(user); const isRadioCC = _luminaOfficialId === 'radiocc';
                 
                 if (userDoc.exists()) {
                     currentProfileState = { uid: user.uid, ...userDoc.data() };
@@ -525,8 +587,28 @@ if (auth) {
                         } catch(e) {}
                     }
                     
+                    // 🛡️ STRAŻNIK: samonaprawa profilu, któremu wcześniej błędnie nadano cudzą tożsamość
+                    // (np. osoba o imieniu Cezary/Wioletta dostała slug, nazwisko i zdjęcie konta oficjalnego).
+                    if (!_luminaOfficialId && LUMINA_RESERVED_PROFILE_SLUGS.includes(String(currentProfileState.slug || '').toLowerCase())) {
+                        const ownName = (user.displayName || '').trim();
+                        const healed = {
+                            slug: 'u_' + (ownName || 'user').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase(),
+                            name: ownName || 'Użytkownik LUMINA',
+                            updatedAt: serverTimestamp()
+                        };
+                        if (!isLuminaRealPersonPhoto(currentProfileState.avatar, healed.slug)) {
+                            healed.avatar = 'lumina_icon.jpg';
+                            healed.avatarVideo = null;
+                            healed.hasRealPhoto = false;
+                            healed.profileCompleted = false;
+                            healed.needsProfileCompletion = true;
+                        }
+                        Object.assign(currentProfileState, healed);
+                        try { await setDoc(doc(db, 'lumina_profiles', user.uid), healed, { merge: true }); } catch(e) {}
+                    }
+
                     // Auto-fix / enforce Cezary Rogowski official avatar
-                    const isCezaryUser = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.toLowerCase() === 'osobowoscplus@gmail.com' || user.email.toLowerCase() === 'yourimaginationstudio@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary')) || currentProfileState.slug === 'cezaryrgowski';
+                    const isCezaryUser = _luminaOfficialId === 'cezary';
                     if (isCezaryUser && !isRadioCC) {
                         currentProfileState.slug = 'cezaryrgowski';
                         currentProfileState.name = 'Cezary Rogowski';
@@ -543,7 +625,7 @@ if (auth) {
                     }
 
                     // Auto-fix / enforce Wioletta Rogowska official avatar
-                    const isWiolettaUser = (user.email && user.email.toLowerCase().includes('wioletta1240')) || (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || currentProfileState.slug === 'wiolettarogowska';
+                    const isWiolettaUser = _luminaOfficialId === 'wioletta';
                     if (isWiolettaUser) {
                         currentProfileState.slug = 'wiolettarogowska';
                         currentProfileState.name = 'Wioletta Rogowska';
@@ -576,8 +658,8 @@ if (auth) {
                     } catch(e) {}
                 } else {
                     // Check if Cezary Rogowski / Christian Culture / Wioletta by email/name
-                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.toLowerCase() === 'osobowoscplus@gmail.com' || user.email.toLowerCase() === 'yourimaginationstudio@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-                    const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
+                    const isCezary = detectLuminaOfficialIdentity(user) === 'cezary';
+                    const isWioletta = detectLuminaOfficialIdentity(user) === 'wioletta';
                     
                     let cleanSlug;
                     if (isRadioCC) cleanSlug = 'radiocc';
@@ -594,39 +676,25 @@ if (auth) {
                         uid: user.uid,
                         slug: cleanSlug,
                         name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
-                        email: user.email || '',
+                        // 🛡️ e-mail NIE trafia do publicznego profilu (RODO) — jest w Firebase Auth
                         avatar: userAvatar,
                         age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : null)),
                         hasRealPhoto: hasRealFace,
                         profileCompleted: isProfileDone,
                         needsProfileCompletion: !isProfileDone,
-                        city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
-                        status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
-                        job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Członek Społeczności LUMINA ✨')),
+                        city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : ''),
+                        status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : '')),
+                        job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : '')),
                         isMissionAccount: isRadioCC || false,
-                        church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
-                        denom: 'Rzymskokatolickie',
+                        church: isRadioCC ? 'Christian Culture' : '',
+                        denom: !(isCezary || isWioletta || isRadioCC) ? '' : 'Rzymskokatolickie',
                         verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
                         verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
                         bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.'),
-                        tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
-                        photos: [userAvatar],
-                        posts: [
-                            {
-                                id: 'post_' + Date.now(),
-                                author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA')),
-                                authorSlug: cleanSlug,
-                                authorAvatar: userAvatar,
-                                time: 'Przed chwilą • ✨ Witaj w LUMINA',
-                                text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
-                                likes: 2,
-                                amen: 1,
-                                image: userAvatar
-                            }
-                        ],
+                        tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : [],
+                        photos: (typeof isLuminaRealPersonPhoto === 'function' && isLuminaRealPersonPhoto(userAvatar, cleanSlug)) ? [userAvatar] : [],
+                        posts: [],
                         visibility: 'public',
-                        pin: '7777',
-                        matchScore: '100%',
                         createdAt: serverTimestamp(),
                         updatedAt: serverTimestamp()
                     };
@@ -635,7 +703,7 @@ if (auth) {
                     if (db) {
                         try {
                             await setDoc(doc(db, 'lumina_profiles', user.uid), currentProfileState, { merge: true });
-                            if (cleanSlug && cleanSlug !== user.uid) {
+                            if (cleanSlug && cleanSlug !== user.uid && !LUMINA_RESERVED_PROFILE_SLUGS.includes(cleanSlug)) {
                                 await setDoc(doc(db, 'lumina_profiles', cleanSlug), currentProfileState, { merge: true });
                             }
                             console.log(`Lumina: Automatycznie utworzono nowy profil Firestore dla użytkownika Google [${cleanSlug}] ☁️✨`);
@@ -837,7 +905,7 @@ export async function syncUserAuthProfile(user, activeDb = db) {
     if (!user) return null;
     let existingProfile = null;
     let isBrandNewUser = false;
-    const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
+    const isRadioCC = detectLuminaOfficialIdentity(user) === 'radiocc';
     
     try {
         const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
@@ -862,8 +930,8 @@ export async function syncUserAuthProfile(user, activeDb = db) {
 
     if (!existingProfile) {
         isBrandNewUser = true;
-        const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-        const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
+        const isCezary = detectLuminaOfficialIdentity(user) === 'cezary';
+        const isWioletta = detectLuminaOfficialIdentity(user) === 'wioletta';
         
         let cleanSlug;
         if (isRadioCC) cleanSlug = 'radiocc';
@@ -881,15 +949,15 @@ export async function syncUserAuthProfile(user, activeDb = db) {
             uid: user.uid,
             slug: cleanSlug,
             name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
-            email: user.email || '',
+            // 🛡️ e-mail NIE trafia do publicznego profilu (RODO) — jest w Firebase Auth
             age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
-            city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
-            gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
-            lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
-            denom: 'Rzymskokatolickie',
-            church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
+            city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : ''),
+            gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : ''),
+            lookingFor: isWioletta ? 'mezczyzna' : (isCezary ? 'kobieta' : ''),
+            denom: !(isCezary || isWioletta || isRadioCC) ? '' : 'Rzymskokatolickie',
+            church: isRadioCC ? 'Christian Culture' : '',
             job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
-            status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
+            status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : '')),
             isMissionAccount: isRadioCC || isMission || false,
             hasRealPhoto: hasRealFace,
             profileCompleted: isProfileDone,
@@ -901,23 +969,9 @@ export async function syncUserAuthProfile(user, activeDb = db) {
             cover: 'lumina_default_cover.jpg',
             coverPosY: '50%',
             visibility: 'public',
-            pin: '7777',
-            matchScore: '100%',
-            tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
-            photos: [userAvatar],
-            posts: [
-                {
-                    id: 'post_' + Date.now(),
-                    author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
-                    authorSlug: cleanSlug,
-                    authorAvatar: userAvatar,
-                    time: 'Przed chwilą • ✨ Witaj w LUMINA',
-                    text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
-                    likes: 2,
-                    amen: 1,
-                    image: userAvatar
-                }
-            ],
+            tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : [],
+            photos: (typeof isLuminaRealPersonPhoto === 'function' && isLuminaRealPersonPhoto(userAvatar, cleanSlug)) ? [userAvatar] : [],
+            posts: [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
         };
@@ -1375,8 +1429,9 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
                     // Żelazna ochrona tożsamości Dowódcy — zakaz zdjęcia Dowódcy na profilach obcych
                     const pSlugLower = (profileData.slug || '').toLowerCase();
                     const pNameLower = (profileData.name || '').toLowerCase();
-                    const isCmd = pSlugLower.includes('cezary') || pNameLower.includes('cezary');
-                    const isWife = pSlugLower.includes('wioletta') || pNameLower.includes('wioletta');
+                    void pNameLower;
+                    const isCmd = pSlugLower === 'cezaryrgowski';
+                    const isWife = pSlugLower === 'wiolettarogowska';
                     if (!isCmd && !isWife) {
                         if (profileData.avatar && (profileData.avatar.includes('avatar_new1') || profileData.avatar.includes('avatar_cezary') || profileData.avatar.includes('cezary_rgowski') || profileData.avatar.includes('cezary_rogowski'))) {
                             profileData.avatar = 'lumina_icon.jpg';
@@ -1544,35 +1599,24 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
     const cleanSlug = (slugOrUid || '').toLowerCase();
     const cleanName = (profileData.name || '').toLowerCase();
 
-    // Domyślne dane osobowe wyłącznie gdy brak danych
+    // 🛡️ STRAŻNIK: dane domyślne WYŁĄCZNIE dla dokładnych slugów kont oficjalnych.
+    // Wcześniej każdy użytkownik o imieniu „Cezary”, „Wioletta”, „Andrzej” dostawał cudze imię, wiek, miasto i zdjęcie.
+    const OFFICIAL_DEFAULTS = {
+        cezaryrgowski: { name: 'Cezary Rogowski', age: 51, city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_cezary_official.jpg' },
+        wiolettarogowska: { name: 'Wioletta Rogowska', age: 50, city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg' },
+        andrzejthiel: { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', city: 'Sieradz, Polska' },
+        andrzejhamera: { name: 'Andrzej Hamera', age: 52, city: 'Lublin, Polska', avatar: 'avatar_andrzej_hamera.jpg' },
+        u_yciezywymbogiem_4231: { name: 'Paweł Murawski', age: 49, city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg' }
+    };
+    const officialDefaults = OFFICIAL_DEFAULTS[cleanSlug] || null;
+    void cleanName;
     if (!profileData.name || profileData.name.trim() === '') {
-        if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.name = 'Cezary Rogowski';
-        else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.name = 'Wioletta Rogowska';
-        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.name = 'Andrzej Hamera';
-        else if (cleanSlug.includes('thiel') || cleanName.includes('thiel') || cleanSlug === 'andrzej' || cleanName === 'andrzej' || ((cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) && !cleanSlug.includes('hamera') && !cleanName.includes('hamera'))) profileData.name = 'Andrzej Thiel';
-        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.name = 'Paweł Murawski';
+        if (officialDefaults && officialDefaults.name) profileData.name = officialDefaults.name;
     }
-    if (!profileData.age) {
-        if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.age = 51;
-        else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.age = 50;
-        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.age = 52;
-        else if (cleanSlug.includes('thiel') || cleanName.includes('thiel') || ((cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) && !cleanSlug.includes('hamera') && !cleanName.includes('hamera'))) profileData.age = 70;
-        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.age = 49;
-    }
-    if (!profileData.city || profileData.city.trim() === '') {
-        if (cleanSlug.includes('cezary') || cleanSlug.includes('wioletta')) profileData.city = 'Ostrowiec Świętokrzyski, Polska';
-        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.city = 'Lublin, Polska';
-        else if (cleanSlug.includes('thiel') || (cleanSlug.includes('andrzej') && !cleanSlug.includes('hamera'))) profileData.city = 'Sieradz, Polska';
-        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.city = 'Żywiec, Polska';
-    }
-
+    if (!profileData.age && officialDefaults && officialDefaults.age) profileData.age = officialDefaults.age;
+    if ((!profileData.city || profileData.city.trim() === '') && officialDefaults && officialDefaults.city) profileData.city = officialDefaults.city;
     if (!profileData.avatar || profileData.avatar === 'null' || profileData.avatar === 'undefined' || profileData.avatar.trim() === '') {
-        if (cleanSlug.includes('cezary')) profileData.avatar = 'avatar_cezary_official.jpg';
-        else if (cleanSlug.includes('wioletta')) profileData.avatar = 'avatar_wioletta_official.jpg';
-        else if (cleanSlug.includes('hamera') || cleanName.includes('hamera')) profileData.avatar = 'avatar_andrzej_hamera.jpg';
-        else if (cleanSlug.includes('thiel') || (cleanSlug.includes('andrzej') && !cleanSlug.includes('hamera'))) profileData.avatar = 'avatar_andrzej_thiel.jpg';
-        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.avatar = 'avatar_pawel_murawski.jpg';
-        else profileData.avatar = 'lumina_icon.jpg';
+        profileData.avatar = (officialDefaults && officialDefaults.avatar) || 'lumina_icon.jpg';
     }
     if (!profileData.cover || profileData.cover === 'null' || profileData.cover === 'undefined' || profileData.cover.trim() === '') {
         profileData.cover = 'lumina_default_cover.jpg';
@@ -1825,8 +1869,10 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
             snap.forEach(d => {
                 const data = d.data();
                 const p = { uid: d.id, ...data };
-                const nameLower = (p.name || '').toLowerCase();
-                const slugLower = (p.slug || d.id || '').toLowerCase();
+                // 🛡️ STRAŻNIK: korekty kont oficjalnych wyłącznie po DOKŁADNYM slugu — nigdy po imieniu.
+                const _rawSlugLower = (p.slug || d.id || '').toLowerCase();
+                const nameLower = '';
+                const slugLower = (LUMINA_RESERVED_PROFILE_SLUGS.includes(_rawSlugLower) || ['andrzejhamera', 'u_yciezywymbogiem_4231'].includes(_rawSlugLower)) ? _rawSlugLower : '';
 
                 // Żelazne wymuszenie i samonaprawa danych Cezarego (51 lat, Ostrowiec Św.)
                 if (slugLower.includes('cezary') || nameLower.includes('cezary')) {
@@ -2140,9 +2186,9 @@ export async function publishUniversalPost(postData) {
 
     // 2. Save to Author's Local Profile Posts
     try {
-        const isCezary = slug.includes('cezary') || authorName.toLowerCase().includes('cezary');
-        const isWioletta = slug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
-        const isZbyszek = slug.includes('zbyszek') || authorName.toLowerCase().includes('zbyszek') || slug.includes('gieron');
+        const isCezary = slug === 'cezaryrgowski';
+        const isWioletta = slug === 'wiolettarogowska';
+        const isZbyszek = slug === 'zbyszekgieron';
         const storageKeys = [
             `lumina_profile_${slug}`,
             isCezary ? 'lumina_profile_cezaryrgowski' : null,
@@ -2956,21 +3002,21 @@ export function normalizeChatUserId(idOrSlug) {
     const str = String(idOrSlug).trim().toLowerCase();
     
     // 1. Cezary Rogowski mappings (emails, UIDs, slugs, usernames):
-    const isCezary = (str === 'cezaryrgowski' || str === 'cezary' || str.includes('cezary') || 
-        str.includes('nazirczarkes') || str.includes('studiodees7') || str.includes('czarkes') ||
+    const isCezary = (str === 'cezaryrgowski' || str === 'cezary' ||
+        str === 'nazirczarkes@gmail.com' || str === 'studiodees7@gmail.com' || str === 'nazirczarkes' ||
         str === '1zhaexihqzgz8nzebr0dyc7wlg93' || str === 'sectuwwrsv8pnkhsrxgyivjbajn1' || 
         str === 'u5seqt54fcnocfcxjirckowjhqc2' || str === 'u_cezary_official' || str === 'u_cezary');
     if (isCezary) return 'cezaryrgowski';
     
     // 2. Christian Culture / Radio CC mappings:
-    const isCC = (str === 'radiocc' || str === 'christianculture' || str.includes('radiochristianculture') || 
-        str.includes('christian culture') || str === 'lgibw6jrf0wbeln6zpqu2pfrlcx1');
+    const isCC = (str === 'radiocc' || str === 'christianculture' || str === 'radiochristianculture@gmail.com' ||
+        str === 'christian culture' || str === 'lgibw6jrf0wbeln6zpqu2pfrlcx1');
     if (isCC) return 'radiocc';
     
     // 3. Wioletta Rogowska mappings:
-    const isWioletta = (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || 
-        str === 'lr7e9ism6vaablvmcrjan5lvn0j2' || str === 'j4aqs5wspawssjtj04jlqchpieg1' || 
-        str.includes('wioletta1240'));
+    const isWioletta = (str === 'wiolettarogowska' || str === 'wioletta' ||
+        str === 'lr7e9ism6vaablvmcrjan5lvn0j2' || str === 'j4aqs5wspawssjtj04jlqchpieg1' ||
+        str.split('@')[0] === 'wioletta1240');
     if (isWioletta) return 'wiolettarogowska';
     
     // 4. Andrzej Thiel:
@@ -3087,6 +3133,36 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
     // Dwa historyczne magazyny są obserwowane jako jedno źródło prawdy. Bez
     // scalenia UI przełączało się między nimi i wyświetlało duplikaty.
+    // 🛡️ STRAŻNIK (czat): wcześniej pobieraliśmy 150 DOWOLNYCH wiadomości użytkownika ze WSZYSTKICH rozmów
+    // (bez sortowania), a dopiero potem filtrowaliśmy po rozmowie. U aktywnych osób nowe wiadomości
+    // z otwartej rozmowy mogły w ogóle nie trafić do tych 150 → „wiadomość nie dochodzi”.
+    // Teraz: zapytanie zawężone do tej jednej rozmowy (wymaga indeksu participants+chatId — w firestore.indexes.json).
+    // Gdy indeksu jeszcze nie ma, automatycznie wracamy do starego zapytania.
+    let _scopedDmFallbackStarted = false;
+    const startLegacyDirectListener = () => {
+        if (_scopedDmFallbackStarted) return;
+        _scopedDmFallbackStarted = true;
+        try { unsub1(); } catch(e) {}
+        startUnscopedDirectListener();
+    };
+    try {
+        const scopedQ = query(
+            collection(db, 'lumina_direct_messages'),
+            where('participants', 'array-contains', authUid),
+            where('chatId', '==', normalizedChatId),
+            limit(400)
+        );
+        unsub1 = onSnapshot(scopedQ, (snap) => {
+            topLevelMessages = [];
+            snap.forEach(d => topLevelMessages.push({ id: d.id, ...d.data() }));
+            emitMergedMessages();
+        }, (err) => {
+            console.warn('Lumina Direct Messages (rozmowa) — powrót do zapytania ogólnego:', err && err.code);
+            startLegacyDirectListener();
+        });
+    } catch(e) { startLegacyDirectListener(); }
+
+    function startUnscopedDirectListener() {
     try {
         const directQ = query(
             collection(db, 'lumina_direct_messages'),
@@ -3115,6 +3191,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             }).catch((refreshError) => console.warn('Lumina Direct Messages refresh notice:', refreshError));
         });
     } catch(e) {}
+    }
 
     // Historical documents may have only `users`, not `participants`.
     try {
@@ -7562,13 +7639,13 @@ export const LuminaCommentsEngine = {
         let badge = curProfile?.badge || curProfile?.job || 'Społeczność LUMINA';
 
         // Auto-detect Cezary Rogowski if admin
-        const isAdmin = curProfile?.isAdmin || (curUser?.email && (curUser.email.includes('nazirczarkes') || curUser.email.includes('czarkes')));
-        if (isAdmin || slug === 'cezaryrgowski') {
+        const isAdmin = detectLuminaOfficialIdentity(curUser) === 'cezary';
+        if (isAdmin) {
             name = 'Cezary Rogowski';
             slug = 'cezaryrgowski';
             avatar = 'avatar_cezary_official.jpg';
             badge = '👑 Założyciel CC';
-        } else if (slug === 'wiolettarogowska' || name.toLowerCase().includes('wioletta')) {
+        } else if (detectLuminaOfficialIdentity(curUser) === 'wioletta') {
             name = 'Wioletta Rogowska';
             slug = 'wiolettarogowska';
             avatar = 'avatar_wioletta_official.jpg';
@@ -7583,13 +7660,14 @@ export const LuminaCommentsEngine = {
         if (!c) return c;
         const authorName = (c.author || '').toLowerCase();
         const authorSlug = (c.authorSlug || '').toLowerCase();
-        const isCezary = (authorSlug === 'cezaryrgowski' || authorName.includes('cezary'));
-        const isJola = (authorSlug === 'jolawojcik' || authorName.includes('jola'));
-        const isZofia = (authorSlug === 'zofiadudek' || authorName.includes('zofia'));
-        const isZbyszek = (authorSlug === 'zbyszekgieron' || authorName.includes('zbyszek') || authorName.includes('gieroń') || authorName.includes('gieron'));
-        const isAndrzejThiel = (authorSlug === 'andrzejthiel' || authorName.includes('thiel'));
-        const isAndrzejHamera = (authorSlug === 'andrzejhamera' || authorName.includes('hamera'));
-        const isWioletta = (authorSlug === 'wiolettarogowska' || authorName.includes('wioletta'));
+        // 🛡️ STRAŻNIK: zdjęcie autora wyłącznie po dokładnym slugu (imię nie przesądza o tożsamości)
+        const isCezary = (authorSlug === 'cezaryrgowski');
+        const isJola = (authorSlug === 'jolawojcik');
+        const isZofia = (authorSlug === 'zofiadudek');
+        const isZbyszek = (authorSlug === 'zbyszekgieron');
+        const isAndrzejThiel = (authorSlug === 'andrzejthiel');
+        const isAndrzejHamera = (authorSlug === 'andrzejhamera');
+        const isWioletta = (authorSlug === 'wiolettarogowska');
 
         if (isJola) {
             c.authorAvatar = 'avatar_jolawojcik.jpg';
@@ -7961,7 +8039,7 @@ export const LuminaCommentsEngine = {
             role.includes('profil misyjny') || role.includes('redakcja') || role.includes('oficjalny')) {
             return true;
         }
-        if (name.includes('cezary') || name.includes('wioletta') || name.includes('andrzej thiel') || name.includes('studio dobrego')) {
+        if (['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'studiodobregoslowa'].includes(String(slug || '').toLowerCase())) {
             return true;
         }
 
@@ -8617,3 +8695,195 @@ if (typeof window !== 'undefined') {
         };
     }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 🌟 PROFIL GOTOWY NA SPOŁECZNOŚĆ (2026-10-07, Strażnik Standardów)
+// Jedno źródło prawdy: kiedy profil jest „kompletny” i może pojawić się na karuzeli.
+// ═══════════════════════════════════════════════════════════════════════════
+const LUMINA_PLACEHOLDER_NAMES = ['użytkownik lumina', 'uzytkownik lumina', 'gość lumina', 'user', 'lumina'];
+
+export function getLuminaProfileCompletion(profile) {
+    const p = profile || {};
+    const slug = String(p.slug || p.uid || '').toLowerCase();
+    const name = String(p.name || '').trim();
+    const missing = [];
+    if (name.length < 3 || LUMINA_PLACEHOLDER_NAMES.includes(name.toLowerCase())) missing.push('name');
+    if (!String(p.city || '').trim()) missing.push('city');
+    if (!isLuminaRealPersonPhoto(p.avatar, slug)) missing.push('photo');
+    return { complete: missing.length === 0, missing };
+}
+
+export function isLuminaCommunityReadyProfile(p) {
+    if (!p) return false;
+    if (p.isBlocked || p.isMissionAccount || p.visibility === 'private') return false;
+    const slug = String(p.slug || p.uid || '').toLowerCase();
+    if (!slug) return false;
+    return getLuminaProfileCompletion(p).complete;
+}
+
+let _carouselProfilesCache = null;
+let _carouselProfilesPromise = null;
+/**
+ * Prawdziwi członkowie społeczności z prawdziwym zdjęciem — do karuzeli „Poznajmy się bliżej”.
+ * Jednorazowy odczyt (bez nasłuchu na całą kolekcję), wynik stały w obrębie wizyty, by karuzela nie „skakała”.
+ */
+export function getCommunityCarouselProfiles(max = 14) {
+    if (_carouselProfilesCache) return Promise.resolve(_carouselProfilesCache.slice(0, max));
+    if (_carouselProfilesPromise) return _carouselProfilesPromise.then(list => list.slice(0, max));
+    _carouselProfilesPromise = (async () => {
+        if (!db) { try { await ensureDbReady(); } catch(e) {} }
+        if (!db) return [];
+        const seen = new Set();
+        const out = [];
+        const take = (snap) => {
+            snap.forEach(d => {
+                const p = { id: d.id, ...d.data() };
+                const slug = String(p.slug || d.id || '').toLowerCase();
+                if (!slug || seen.has(slug)) return;
+                if (!isLuminaCommunityReadyProfile(p)) return;
+                seen.add(slug);
+                out.push({
+                    slug,
+                    uid: p.uid || d.id,
+                    name: String(p.name || '').trim(),
+                    city: String(p.city || '').split(',')[0].trim(),
+                    avatar: p.avatar,
+                    verified: LUMINA_RESERVED_PROFILE_SLUGS.includes(slug)
+                });
+            });
+        };
+        try {
+            take(await getDocs(query(collection(db, 'lumina_profiles'), where('hasRealPhoto', '==', true), limit(24))));
+        } catch(e) {
+            console.warn('[LUMINA] Karuzela społeczności — odczyt nieudany:', e && e.message);
+        }
+        // Stała, ale losowa kolejność na czas wizyty (bez przetasowań przy każdym odświeżeniu tablicy)
+        let seed = 0;
+        try {
+            seed = Number(sessionStorage.getItem('lumina_carousel_seed')) || Math.floor(Math.random() * 1e9);
+            sessionStorage.setItem('lumina_carousel_seed', String(seed));
+        } catch(e) { seed = 12345; }
+        const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+        for (let i = out.length - 1; i > 0; i--) { const k = Math.floor(rnd() * (i + 1)); [out[i], out[k]] = [out[k], out[i]]; }
+        _carouselProfilesCache = out;
+        return out;
+    })();
+    return _carouselProfilesPromise.then(list => list.slice(0, max));
+}
+
+/**
+ * Zapis uzupełnionego profilu przez WŁAŚCICIELA (kreator po pierwszym logowaniu).
+ * Zapisuje wyłącznie do własnego dokumentu lumina_profiles/{uid}.
+ */
+export async function completeOwnLuminaProfile(fields) {
+    const user = currentUserState;
+    if (!user || user.isAnonymous) throw new Error('Zaloguj się, aby uzupełnić profil.');
+    if (!db) await ensureDbReady();
+    const slug = String((currentProfileState && currentProfileState.slug) || ('u_' + user.uid.substring(0, 8))).toLowerCase();
+    const clean = {};
+    const str = (v, max) => String(v == null ? '' : v).replace(/[<>]/g, '').trim().slice(0, max);
+    if (fields.name !== undefined) clean.name = str(fields.name, 60);
+    if (fields.city !== undefined) clean.city = str(fields.city, 80);
+    if (fields.bio !== undefined) clean.bio = str(fields.bio, 400);
+    if (fields.denom !== undefined) clean.denom = str(fields.denom, 60);
+    if (fields.gender !== undefined) clean.gender = ['kobieta', 'mezczyzna', ''].includes(fields.gender) ? fields.gender : '';
+    if (fields.age !== undefined) {
+        const a = parseInt(fields.age, 10);
+        clean.age = (a >= 16 && a <= 110) ? a : null;
+    }
+    if (fields.avatar !== undefined) {
+        if (!isLuminaRealPersonPhoto(fields.avatar, slug)) throw new Error('To nie wygląda na prawdziwe zdjęcie profilowe.');
+        if (String(fields.avatar).length > 700000) throw new Error('Zdjęcie jest za duże — spróbuj innego.');
+        clean.avatar = fields.avatar;
+        clean.photos = [fields.avatar];
+        clean.hasRealPhoto = true;
+        clean.avatarUpdatedAt = serverTimestamp();
+    }
+    const merged = Object.assign({}, currentProfileState || {}, clean);
+    const state = getLuminaProfileCompletion(merged);
+    clean.profileCompleted = state.complete;
+    clean.needsProfileCompletion = !state.complete;
+    clean.uid = user.uid;
+    if (!currentProfileState || !currentProfileState.slug) clean.slug = slug;
+    clean.updatedAt = serverTimestamp();
+    await setDoc(doc(db, 'lumina_profiles', user.uid), clean, { merge: true });
+    currentProfileState = Object.assign(currentProfileState || {}, clean, { updatedAt: new Date().toISOString(), avatarUpdatedAt: new Date().toISOString() });
+    try {
+        const safe = JSON.stringify(currentProfileState);
+        localStorage.setItem('lumina_current_user_profile', safe);
+        localStorage.setItem('lumina_my_profile', safe);
+        if (currentProfileState.slug) localStorage.setItem('lumina_profile_' + currentProfileState.slug, safe);
+    } catch(e) {}
+    _carouselProfilesCache = null; _carouselProfilesPromise = null;
+    try { window.dispatchEvent(new CustomEvent('lumina:profile-completed', { detail: { complete: state.complete } })); } catch(e) {}
+    return { complete: state.complete, missing: state.missing };
+}
+
+window.LuminaDB = Object.assign(window.LuminaDB || {}, {
+    detectLuminaOfficialIdentity,
+    isLuminaMasterAdmin,
+    canEditLuminaProfile,
+    isLuminaRealPersonPhoto,
+    getLuminaProfileCompletion,
+    isLuminaCommunityReadyProfile,
+    getCommunityCarouselProfiles,
+    completeOwnLuminaProfile
+});
+window.LuminaGuard = Object.freeze({
+    canEditProfile: (slug, data) => canEditLuminaProfile(slug, data),
+    isMasterAdmin: () => isLuminaMasterAdmin(),
+    isRealPhoto: (url, slug) => isLuminaRealPersonPhoto(url, slug)
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ❤️🙏 PRAWDZIWE REAKCJE NA TABLICY (2026-10-07, Strażnik Standardów)
+// Wcześniej „Polub” i „Amen” zmieniały tylko liczbę na ekranie (i pokazywały komunikat
+// „Twoje AMEN zostało dodane”), ale nic nie trafiało do bazy — po odświeżeniu znikało.
+// Teraz: jedna reakcja na osobę (dokument lumina_post_reactions/{post}_{uid}_{typ})
+// + licznik we wpisie, zapisane razem (atomowo). Reguły Firestore pilnują ±1.
+// ═══════════════════════════════════════════════════════════════════════════
+const LUMINA_REACTION_TYPES = ['likes', 'amen'];
+let _myReactionsCache = null;
+
+export async function getMyLuminaPostReactions() {
+    const user = currentUserState;
+    if (!user || user.isAnonymous) return new Set();
+    if (_myReactionsCache) return _myReactionsCache;
+    if (!db) { try { await ensureDbReady(); } catch(e) {} }
+    const set = new Set();
+    try {
+        const snap = await getDocs(query(collection(db, 'lumina_post_reactions'), where('uid', '==', user.uid), limit(500)));
+        snap.forEach(d => { const r = d.data(); if (r && r.postId && r.type) set.add(r.postId + '|' + r.type); });
+    } catch(e) {
+        console.warn('[LUMINA] Odczyt reakcji nieudany:', e && e.code);
+    }
+    _myReactionsCache = set;
+    return set;
+}
+
+/** Zwraca { active, delta } albo rzuca błąd z komunikatem po polsku. */
+export async function toggleLuminaPostReaction(postId, type) {
+    const user = currentUserState;
+    if (!user || user.isAnonymous) { const e = new Error('Zaloguj się, aby reagować na wpisy.'); e.code = 'auth'; throw e; }
+    if (!LUMINA_REACTION_TYPES.includes(type)) throw new Error('Nieznany typ reakcji.');
+    if (!postId || /[\/]/.test(postId)) throw new Error('Nieprawidłowy wpis.');
+    if (!db) await ensureDbReady();
+    const mine = await getMyLuminaPostReactions();
+    const key = postId + '|' + type;
+    const active = mine.has(key);
+    const reactionRef = doc(db, 'lumina_post_reactions', postId + '_' + user.uid + '_' + type);
+    const postRef = doc(db, 'lumina_posts', postId);
+    const batch = writeBatch(db);
+    if (active) {
+        batch.delete(reactionRef);
+        batch.update(postRef, { [type]: increment(-1) });
+    } else {
+        batch.set(reactionRef, { postId, uid: user.uid, type, createdAt: serverTimestamp() });
+        batch.update(postRef, { [type]: increment(1) });
+    }
+    await batch.commit();
+    if (active) mine.delete(key); else mine.add(key);
+    return { active: !active, delta: active ? -1 : 1 };
+}
+
+window.LuminaDB = Object.assign(window.LuminaDB || {}, { getMyLuminaPostReactions, toggleLuminaPostReaction });

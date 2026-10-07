@@ -6,7 +6,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js?v=4.1.7';
+import * as LuminaDB from './lumina-db.js?v=20261007_straznik1';
 
 class LuminaSecurityEngine {
     constructor() {

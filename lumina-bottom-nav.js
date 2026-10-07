@@ -1126,7 +1126,7 @@
         try { curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
         const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' 
             || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
-            || (curUser && (curUser.isAdmin || curUser.role === 'master_admin' || (curUser.email && curUser.email.includes('nazirczarkes')) || (curUser.displayName && curUser.displayName.includes('Cezary'))));
+            || ((window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function') && window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser && window.LuminaDB.getCurrentUser()) === 'cezary');
         const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
         
         if (isAdmin) {
@@ -1734,7 +1734,7 @@
         try { curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
         const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' 
             || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
-            || (curUser && (curUser.isAdmin || curUser.role === 'master_admin' || (curUser.email && curUser.email.includes('nazirczarkes')) || (curUser.displayName && curUser.displayName.includes('Cezary'))));
+            || ((window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function') && window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser && window.LuminaDB.getCurrentUser()) === 'cezary');
         let curProf = null;
         try {
             curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');

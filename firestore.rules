@@ -39,6 +39,71 @@ service cloud.firestore {
       );
     }
 
+    // P0 (Strażnik): slugi zastrzeżone dla kont oficjalnych — tylko Master Admin może je nadać.
+    function isReservedSlug(slug) {
+      return slug in ['cezaryrgowski', 'wiolettarogowska', 'radiocc', 'andrzejthiel', 'christianculture', 'lumina'];
+    }
+
+    // P0 (Strażnik): pola uprzywilejowane — zwykły użytkownik nie może ich PODNIEŚĆ.
+    // Wartości false / brak pola są dozwolone (formularze rejestracji zapisują np. isVerified: false).
+    function elevatedRoles() {
+      return ['admin', 'founder', 'moderator', 'owner', 'superadmin'];
+    }
+
+    function flagElevated(newData, oldData, k) {
+      return newData.get(k, false) == true && oldData.get(k, false) != true;
+    }
+
+    function profileCreateIsSafe(data) {
+      return !flagElevated(data, {}, 'isAdmin') &&
+        !flagElevated(data, {}, 'isFounder') &&
+        !flagElevated(data, {}, 'admin') &&
+        !flagElevated(data, {}, 'isVerified') &&
+        !flagElevated(data, {}, 'verified') &&
+        !flagElevated(data, {}, 'isOfficial') &&
+        !(data.get('role', 'user') in elevatedRoles()) &&
+        !isReservedSlug(data.get('slug', ''));
+    }
+
+    function profileUpdateIsSafe() {
+      let n = request.resource.data;
+      let o = resource.data;
+      return !flagElevated(n, o, 'isAdmin') &&
+        !flagElevated(n, o, 'isFounder') &&
+        !flagElevated(n, o, 'admin') &&
+        !flagElevated(n, o, 'isVerified') &&
+        !flagElevated(n, o, 'verified') &&
+        !flagElevated(n, o, 'isOfficial') &&
+        (n.get('role', 'user') == o.get('role', 'user') || !(n.get('role', 'user') in elevatedRoles())) &&
+        (n.get('slug', '') == o.get('slug', '') || !isReservedSlug(n.get('slug', '')));
+    }
+
+    // ❤️🙏 Reakcje na wpisy: licznik może zmienić się wyłącznie o ±1 RAZEM z utworzeniem/usunięciem
+    // własnego dokumentu reakcji (lumina_post_reactions/{postId}_{uid}_{typ}) w tej samej transakcji.
+    function reactionPath(postId, t) {
+      return /databases/$(database)/documents/lumina_post_reactions/$(postId + '_' + request.auth.uid + '_' + t);
+    }
+
+    function isValidReactionUpdate(postId) {
+      let keys = request.resource.data.diff(resource.data).affectedKeys();
+      return isMember() && (
+        (keys.hasOnly(['likes']) && reactionCounterMoved(postId, 'likes')) ||
+        (keys.hasOnly(['amen']) && reactionCounterMoved(postId, 'amen'))
+      );
+    }
+
+    function reactionCounterMoved(postId, t) {
+      let before = resource.data.get(t, 0);
+      let after = request.resource.data.get(t, 0);
+      return (after == before + 1 && !exists(reactionPath(postId, t)) && existsAfter(reactionPath(postId, t))) ||
+             (after == before - 1 && exists(reactionPath(postId, t)) && !existsAfter(reactionPath(postId, t)));
+    }
+
+    function postIdentityIsSafe(data) {
+      return !isReservedSlug(data.get('authorSlug', '')) &&
+        data.get('author', '') != 'Cezary Rogowski';
+    }
+
     function directMessageAllowed(data) {
       return data.senderAuthUid != data.receiverAuthUid &&
         data.participants.size() == 2 &&
@@ -51,16 +116,24 @@ service cloud.firestore {
     match /lumina_profiles/{profileId} {
       // Public profile cards must contain only intentionally public fields.
       allow read: if true;
-      allow create: if isMasterAdmin() || ownsProfile(request.resource.data) || profileId == 'cezaryrgowski' || (request.resource.data.slug == 'cezaryrgowski');
+      // P0: usunięto furtki `profileId == 'cezaryrgowski'` / `slug == 'cezaryrgowski'`,
+      // które pozwalały KAŻDEMU (nawet niezalogowanemu) utworzyć lub nadpisać profil Założyciela.
+      allow create: if isMasterAdmin() || (
+        ownsProfile(request.resource.data) &&
+        (profileId == request.auth.uid || profileId == request.resource.data.get('slug', '')) &&
+        profileCreateIsSafe(request.resource.data)
+      );
       allow update: if isMasterAdmin() || (
         ownsProfile(resource.data) &&
-        request.resource.data.uid == resource.data.uid
-      ) || profileId == 'cezaryrgowski' || (resource.data.slug == 'cezaryrgowski');
+        request.resource.data.uid == resource.data.uid &&
+        profileUpdateIsSafe()
+      );
       allow delete: if isMasterAdmin() || ownsProfile(resource.data);
     }
 
     match /users/{userId} {
-      allow read: if true;
+      // P0: dane prywatne konta — odczyt tylko właściciel i administracja (wcześniej: publiczny).
+      allow read: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
       allow create, update: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
       allow delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
     }
@@ -73,51 +146,39 @@ service cloud.firestore {
 
     match /lumina_posts/{postId} {
       allow read: if true;
-      // Oficjalne wpisy i rozważania Cezarego Rogowskiego, automatyczny serwer sync CKD (Andrzej Thiel) oraz zweryfikowani użytkownicy
-      allow create: if isMasterAdmin() ||
-        (
-          (request.resource.data.authorSlug == 'cezaryrgowski' || request.resource.data.author == 'Cezary Rogowski') &&
-          request.resource.data.text is string &&
-          request.resource.data.text.size() <= 10000
-        ) ||
-        (
-          request.resource.data.isDevotion == true &&
-          request.resource.data.authorSlug == 'andrzejthiel' &&
-          request.resource.data.category == 'ckd' &&
-          request.resource.data.text is string
-        ) ||
-        (
-          isMember() &&
-          request.resource.data.authorUid == request.auth.uid &&
-          request.resource.data.text is string &&
-          request.resource.data.text.size() <= 5000
-        );
-      allow update: if isMasterAdmin() ||
-        (
-          resource.data.authorSlug == 'cezaryrgowski' ||
-          resource.data.author == 'Cezary Rogowski'
-        ) ||
-        (
-          resource.data.isDevotion == true &&
-          resource.data.authorSlug == 'andrzejthiel' &&
-          resource.data.category == 'ckd'
-        ) || (
-          isMember() &&
-          resource.data.authorUid == request.auth.uid &&
-          request.resource.data.authorUid == resource.data.authorUid
-        );
-      allow delete: if isMasterAdmin() ||
-        (
-          resource.data.authorSlug == 'cezaryrgowski' ||
-          resource.data.author == 'Cezary Rogowski'
-        ) ||
-        (
-          resource.data.isDevotion == true &&
-          resource.data.authorSlug == 'andrzejthiel' &&
-          resource.data.category == 'ckd'
-        ) || (
-          isMember() && resource.data.authorUid == request.auth.uid
-        );
+      // P0: wpisy oficjalne (Cezary Rogowski) — wyłącznie zweryfikowany Master Admin.
+      // Rozważania CKD (andrzejthiel) publikuje Cloud Function przez Admin SDK, która omija reguły,
+      // więc furtka bez logowania nie jest potrzebna. Wcześniej KAŻDY mógł tworzyć, edytować
+      // i usuwać wpisy jako Cezary oraz publikować fałszywe CKD wywołujące push do wszystkich.
+      allow create: if isMasterAdmin() || (
+        isMember() &&
+        request.resource.data.authorUid == request.auth.uid &&
+        postIdentityIsSafe(request.resource.data) &&
+        request.resource.data.text is string &&
+        request.resource.data.text.size() <= 5000
+      );
+      allow update: if isMasterAdmin() || isValidReactionUpdate(postId) || (
+        isMember() &&
+        resource.data.authorUid == request.auth.uid &&
+        request.resource.data.authorUid == resource.data.authorUid &&
+        postIdentityIsSafe(request.resource.data)
+      );
+      allow delete: if isMasterAdmin() || (
+        isMember() && resource.data.authorUid == request.auth.uid
+      );
+    }
+
+    match /lumina_post_reactions/{reactionId} {
+      // Kto zareagował — widzi tylko on sam (prywatność); liczniki są we wpisie.
+      allow read: if isMasterAdmin() || (isMember() && resource.data.uid == request.auth.uid);
+      allow create: if isMember() &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.type in ['likes', 'amen'] &&
+        request.resource.data.postId is string &&
+        reactionId == request.resource.data.postId + '_' + request.auth.uid + '_' + request.resource.data.type &&
+        exists(/databases/$(database)/documents/lumina_posts/$(request.resource.data.postId));
+      allow update: if false;
+      allow delete: if isMasterAdmin() || (isMember() && resource.data.uid == request.auth.uid);
     }
 
     match /lumina_campaigns/{campaignId} {
@@ -193,7 +254,11 @@ service cloud.firestore {
         request.resource.data.participants is list &&
         request.auth.uid in request.resource.data.participants
       );
-      allow update: if isMasterAdmin() || isMessageParticipant(resource.data);
+      // P0: uczestnik nie może dopisywać nowych osób do cudzej rozmowy.
+      allow update: if isMasterAdmin() || (
+        isMessageParticipant(resource.data) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['participants', 'users'])
+      );
       allow delete: if isMasterAdmin();
 
       match /messages/{messageId} {
@@ -490,7 +555,6 @@ service cloud.firestore {
 
     match /cc_observer_jobs/{jobId} {
       allow read, write: if isMasterAdmin();
-    }
     }
 
     match /{document=**} {

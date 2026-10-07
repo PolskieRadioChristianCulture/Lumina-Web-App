@@ -113,17 +113,18 @@
             const sId = (senderId || '').toLowerCase().trim();
             const sName = (senderName || '').toLowerCase().trim();
 
-            if (sId.includes('cezary') || sName.includes('cezary') || sName.includes('dowódca') || sName.includes('nazir') || (isMe && (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized()))) {
+            // 🛡️ STRAŻNIK: zdjęcie w czacie wyłącznie po DOKŁADNYM identyfikatorze konta.
+            // Wcześniej każdy „Cezary”, „Andrzej” czy „Wioletta” pisał w czacie z twarzą innej osoby.
+            const OFFICIAL_CHAT_AVATARS = {
+                cezaryrgowski: 'avatar_cezary_official.jpg',
+                wiolettarogowska: 'avatar_wioletta_official.jpg',
+                andrzejhamera: 'avatar_andrzej_hamera.jpg',
+                andrzejthiel: 'avatar_andrzej_thiel.jpg'
+            };
+            if (OFFICIAL_CHAT_AVATARS[sId]) return OFFICIAL_CHAT_AVATARS[sId];
+            if (isMe && window.LuminaGuard && window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function'
+                && window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser()) === 'cezary') {
                 return 'avatar_cezary_official.jpg';
-            }
-            if (sId.includes('wioletta') || sName.includes('wioletta')) {
-                return 'avatar_wioletta_official.jpg';
-            }
-            if (sId.includes('hamera') || sName.includes('hamera')) {
-                return 'avatar_andrzej_hamera.jpg';
-            }
-            if (sId.includes('thiel') || sName.includes('thiel') || ((sId.includes('andrzej') || sName.includes('andrzej')) && !sId.includes('hamera') && !sName.includes('hamera'))) {
-                return 'avatar_andrzej_thiel.jpg';
             }
             if (sId === 'radiocc' || sName.includes('joshua') || sName.includes('agent ai')) {
                 return 'lumina_icon.jpg';
@@ -213,14 +214,14 @@
     <!-- Lumina Community Core Posts Data -->
     <script src="js/lumina-community-posts.js?v=20261004_ai_antychryst_v2"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
-    <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
+    <script type="module" src="lumina-db.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-comments-engine.js?v=20261007_straznik1"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-security.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-tablica.js?v=4.1.1_20260909"></script>
+    <script type="module" src="lumina-core.js?v=20261007_straznik1"></script>
+    <script type="module" src="lumina-security.js?v=20261007_straznik1"></script>
+    <script type="module" src="lumina-tablica.js?v=20261007_straznik1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.2_20260918_SMART_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
@@ -228,7 +229,7 @@
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/lumina-rss-suite.js" defer></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
-    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+    <script src="js/cc-global-auth.js?v=20261007_straznik1" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
     <link rel="stylesheet" href="css/lumina-reflection-tts.css?v=20260921_1">
     <script src="js/lumina-reflection-tts.js?v=20260921_1" defer></script>
@@ -4940,7 +4941,8 @@
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20261003_player_above_chat_v7">
     <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v13">
-    <script src="/js/lumina-theme-manager.js?v=20261003_default_light_v5"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-stable-render.js?v=20261007_straznik1"></script>
 </head>
 <body class="theme-lumina-light">
 
@@ -10377,6 +10379,7 @@
             if (window.LuminaComments) {
                 window.LuminaComments.initAllPostCommentCounters();
             }
+            if (typeof window.luminaApplyMyReactions === 'function') window.luminaApplyMyReactions(container);
             // ── POST-RENDER HOOK: re-apply Wspieraj Projekt buttons ──
             if (window.LuminaSupportProject?.decoratePosts) {
                 window.LuminaSupportProject.decoratePosts(document);
@@ -10470,24 +10473,60 @@
             input.setSelectionRange(newPos, newPos);
         };
 
-        function toggleFeedLike(btn) {
-            btn.classList.toggle('liked');
-            const countEl = btn.querySelector('.count');
-            if (countEl) {
-                let cnt = parseInt(countEl.textContent, 10) || 0;
-                countEl.textContent = btn.classList.contains('liked') ? cnt + 1 : cnt - 1;
+        // 🛡️ STRAŻNIK: reakcje zapisywane naprawdę (wcześniej zmieniała się tylko liczba na ekranie).
+        function luminaReactOnPost(btn, type, activeClass, countSel) {
+            const article = btn.closest('article[id]');
+            const postId = article ? article.id : '';
+            const L = window.LuminaDB;
+            const countEl = btn.querySelector(countSel);
+            const apply = (on) => {
+                btn.classList.toggle(activeClass, on);
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                if (countEl) {
+                    const cnt = parseInt(countEl.textContent, 10) || 0;
+                    countEl.textContent = Math.max(0, cnt + (on ? 1 : -1));
+                }
+            };
+            const isCloudPost = !!postId && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.some(p => p && p.id === postId);
+            if (!isCloudPost || !L || typeof L.toggleLuminaPostReaction !== 'function') {
+                // Wpisy redakcyjne (spoza bazy) — reakcja widoczna tylko na tym urządzeniu
+                apply(!btn.classList.contains(activeClass));
+                return;
             }
+            if (btn.dataset.busy === '1') return;
+            btn.dataset.busy = '1';
+            const wasOn = btn.classList.contains(activeClass);
+            apply(!wasOn);
+            L.toggleLuminaPostReaction(postId, type).then((r) => {
+                if (type === 'amen' && r && r.active) showToast('Twoje AMEN zostało zapisane 🙏');
+            }).catch((err) => {
+                apply(wasOn);
+                if (err && err.code === 'auth') {
+                    showToast('Zaloguj się, aby reagować na wpisy. 🔐');
+                    if (typeof window.openLoginToFollowModal === 'function') window.openLoginToFollowModal();
+                } else {
+                    showToast('Nie udało się zapisać reakcji. Sprawdź połączenie i spróbuj ponownie.');
+                }
+            }).finally(() => { delete btn.dataset.busy; });
         }
 
-        function toggleFeedAmen(btn) {
-            btn.classList.toggle('amen-active');
-            const countEl = btn.querySelector('.amen-count');
-            if (countEl) {
-                let cnt = parseInt(countEl.textContent, 10) || 0;
-                countEl.textContent = btn.classList.contains('amen-active') ? cnt + 1 : cnt - 1;
-            }
-            showToast('Twoje AMEN zostało dodane! ✨✨');
-        }
+        function toggleFeedLike(btn) { luminaReactOnPost(btn, 'likes', 'liked', '.count'); }
+        function toggleFeedAmen(btn) { luminaReactOnPost(btn, 'amen', 'amen-active', '.amen-count'); }
+
+        // Po każdym renderze: zaznacz reakcje zalogowanej osoby (z bazy, nie z pamięci ekranu)
+        window.luminaApplyMyReactions = function(container) {
+            const L = window.LuminaDB;
+            if (!container || !L || typeof L.getMyLuminaPostReactions !== 'function') return;
+            L.getMyLuminaPostReactions().then((mine) => {
+                if (!mine || !mine.size) return;
+                container.querySelectorAll('article[id]').forEach((a) => {
+                    const like = a.querySelector('.action-like');
+                    const amen = a.querySelector('.action-amen');
+                    if (like && mine.has(a.id + '|likes')) { like.classList.add('liked'); like.setAttribute('aria-pressed', 'true'); }
+                    if (amen && mine.has(a.id + '|amen')) { amen.classList.add('amen-active'); amen.setAttribute('aria-pressed', 'true'); }
+                });
+            }).catch(() => {});
+        };
 
         // 🕊️ WSTAWIENNICTWO CZASU RZECZYWISTEGO: „Modlę się za Ciebie TERAZ” (JOMA-D015)
         function triggerPostPrayer(postId, author, btn) {
@@ -11519,10 +11558,13 @@
                 || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
                 || (user && (user.isAdmin || user.role === 'master_admin'));
 
-            const isCezary = isAdmin || slug === 'cezaryrgowski' || slug === 'cezary' || slug === 'admin_cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
-            const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
-            const isZbyszek = slug === 'zbyszekgieron' || slug === 'zbyszek' || name.toLowerCase().includes('zbyszek');
-            const isZofia = slug === 'zofiadudek' || slug === 'zofia' || name.toLowerCase().includes('zofia dudek');
+            // 🛡️ STRAŻNIK: „mój profil” = profil zalogowanego konta (imię nie przesądza o tożsamości)
+
+            const _myOfficialId = ((window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function') ? window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser && window.LuminaDB.getCurrentUser()) : null);
+            const isCezary = _myOfficialId === 'cezary';
+            const isWioletta = _myOfficialId === 'wioletta';
+            const isZbyszek = slug === 'zbyszekgieron';
+            const isZofia = slug === 'zofiadudek';
 
             if (isCezary) {
                 window.location.href = 'lumina.cezaryrgowski.html';
@@ -11906,7 +11948,9 @@
                 `;
             });
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -12371,7 +12415,9 @@
                         `;
                     });
 
-                    box.innerHTML = html;
+                    // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+                    if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
                     if (!window._commanderChatInitialScrollDone || wasNearBottom) {
                         scrollChatToBottom(box, window._commanderChatInitialScrollDone ? true : false);
                         window._commanderChatInitialScrollDone = true;
@@ -13639,7 +13685,9 @@
             const prevDistFromBottom = prevScrollHeight - prevScrollTop - box.clientHeight;
             const wasNearBottom = (prevDistFromBottom < 160 || prevScrollHeight <= box.clientHeight);
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -14690,11 +14738,11 @@
     <script src="lumina-story-card-generator.js?v=20260918_v1" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
-    <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
+    <script src="js/lumina-messenger-composer.js?v=20261007_straznik1" defer></script>
     <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=4.2.4_20261003_player_above_chat_v5" defer></script>
+    <script src="lumina-bottom-nav.js?v=20261007_straznik1" defer></script>
     <script src="js/lumina-mini-player.js?v=20260918_v5" defer></script>
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>

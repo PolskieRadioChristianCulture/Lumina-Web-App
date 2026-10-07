@@ -79,6 +79,13 @@
     }
 
     function ensureSwitcherMounted() {
+        // Strony pełnoekranowe (np. Rolki) nie potrzebują przełącznika motywu — zasłaniał tam przyciski.
+        var rootEl = document.documentElement;
+        if (rootEl && typeof rootEl.hasAttribute === 'function' && rootEl.hasAttribute('data-no-theme-switch')) {
+            var stray = document.getElementById('luminaThemeSwitchBtn');
+            if (stray && typeof stray.remove === 'function') stray.remove();
+            return;
+        }
         if (document.getElementById('luminaThemeSwitchBtn')) {
             var currentIsLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || 
                                  (document.body && document.body.classList.contains('theme-lumina-light'));

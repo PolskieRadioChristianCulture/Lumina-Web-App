@@ -85,8 +85,8 @@
             const p = window.LuminaDB.getCurrentProfile();
             if (p && p.name) {
                 if (!p.slug) p.slug = p.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
-                const isCez = p.slug === 'cezaryrgowski' || (p.name && p.name.toLowerCase().includes('cezary'));
-                const isWio = p.slug === 'wiolettarogowska' || (p.name && p.name.toLowerCase().includes('wioletta'));
+                const isCez = p.slug === 'cezaryrgowski';
+                const isWio = p.slug === 'wiolettarogowska';
                 if (isCez && (!p.avatar || p.avatar.includes('lumina_icon.jpg') || p.avatar.includes('googleusercontent.com/a/'))) {
                     p.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
                 } else if (isWio && (!p.avatar || p.avatar.includes('lumina_icon.jpg') || p.avatar.includes('googleusercontent.com/a/'))) {
@@ -100,8 +100,8 @@
             if (u && (u.displayName || u.email || u.name)) {
                 const name = u.displayName || u.name || (u.email ? u.email.split('@')[0] : 'Użytkownik LUMINA');
                 const slug = u.slug || (u.email ? u.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '') : name.toLowerCase().replace(/[^a-z0-9_-]/g, ''));
-                const isCez = slug === 'cezaryrgowski' || name.toLowerCase().includes('cezary') || (u.email && (u.email.includes('nazirczarkes') || u.email.includes('osobowoscplus') || u.email.includes('yourimaginationstudio') || u.email.includes('czarkes')));
-                const isWio = slug === 'wiolettarogowska' || name.toLowerCase().includes('wioletta') || (u.email && u.email.includes('wioletta1240'));
+                const isCez = slug === 'cezaryrgowski' || (u.email && ['nazirczarkes@gmail.com','studiodees7@gmail.com','czarekrogowski3@gmail.com','osobowoscplus@gmail.com','yourimaginationstudio@gmail.com'].includes(String(u.email).toLowerCase()));
+                const isWio = slug === 'wiolettarogowska' || (u.email && String(u.email).toLowerCase().split('@')[0] === 'wioletta1240');
                 let avatar = u.photoURL || u.avatar || 'lumina_icon.jpg';
                 if (isCez && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
                     avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
@@ -125,8 +125,8 @@
                 const parsed = JSON.parse(myProf);
                 if (parsed && parsed.name) {
                     if (!parsed.slug) parsed.slug = parsed.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
-                    const isCez = parsed.slug === 'cezaryrgowski' || (parsed.name && parsed.name.toLowerCase().includes('cezary'));
-                    const isWio = parsed.slug === 'wiolettarogowska' || (parsed.name && parsed.name.toLowerCase().includes('wioletta'));
+                    const isCez = parsed.slug === 'cezaryrgowski';
+                    const isWio = parsed.slug === 'wiolettarogowska';
                     if (isCez && (!parsed.avatar || parsed.avatar.includes('lumina_icon.jpg') || parsed.avatar.includes('googleusercontent.com/a/'))) {
                         parsed.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
                     } else if (isWio && (!parsed.avatar || parsed.avatar.includes('lumina_icon.jpg') || parsed.avatar.includes('googleusercontent.com/a/'))) {
@@ -145,8 +145,8 @@
                     const params = new URLSearchParams(window.location.search);
                     d.slug = params.get('u') || d.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
                 }
-                const isCez = d.slug === 'cezaryrgowski' || (d.name && d.name.toLowerCase().includes('cezary'));
-                const isWio = d.slug === 'wiolettarogowska' || (d.name && d.name.toLowerCase().includes('wioletta'));
+                const isCez = d.slug === 'cezaryrgowski';
+                const isWio = d.slug === 'wiolettarogowska';
                 if (isCez && (!d.avatar || d.avatar.includes('lumina_icon.jpg') || d.avatar.includes('googleusercontent.com/a/'))) {
                     d.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
                 } else if (isWio && (!d.avatar || d.avatar.includes('lumina_icon.jpg') || d.avatar.includes('googleusercontent.com/a/'))) {
@@ -160,8 +160,8 @@
         const savedSlug = localStorage.getItem('lumina_current_user_slug');
         const savedName = localStorage.getItem('lumina_current_user_name');
         if (savedSlug && savedName) {
-            const isCez = savedSlug === 'cezaryrgowski' || savedName.toLowerCase().includes('cezary');
-            const isWio = savedSlug === 'wiolettarogowska' || savedName.toLowerCase().includes('wioletta');
+            const isCez = savedSlug === 'cezaryrgowski';
+            const isWio = savedSlug === 'wiolettarogowska';
             let avatar = localStorage.getItem('lumina_current_user_avatar') || 'lumina_icon.jpg';
             if (isCez && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
                 avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
@@ -314,8 +314,8 @@
         if (user) {
             if (nm) nm.textContent = user.name || 'Użytkownik LUMINA';
             if (av) {
-                const isCez = (user.name && user.name.toLowerCase().includes('cezary')) || user.slug === 'cezaryrgowski';
-                const isWio = (user.name && user.name.toLowerCase().includes('wioletta')) || user.slug === 'wiolettarogowska';
+                const isCez = user.slug === 'cezaryrgowski';
+                const isWio = user.slug === 'wiolettarogowska';
                 let targetAv = user.avatar;
                 if (isCez && (!targetAv || targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/'))) {
                     targetAv = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
@@ -512,8 +512,8 @@
         const authorName = activeUser.name || 'Użytkownik LUMINA';
         const authorSlug = activeUser.slug || (activeUser.name ? activeUser.name.toLowerCase().replace(/[^a-z0-9_-]/g, '') : 'user');
 
-        const isCezary = authorSlug.includes('cezary') || authorName.toLowerCase().includes('cezary');
-        const isWioletta = authorSlug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
+        const isCezary = authorSlug === 'cezaryrgowski';
+        const isWioletta = authorSlug === 'wiolettarogowska';
 
         const resolvedSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : authorSlug);
         const resolvedAvatar = activeUser.avatar || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));

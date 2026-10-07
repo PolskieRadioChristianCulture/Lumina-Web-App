@@ -227,13 +227,14 @@
         let badge = curProfile?.badge || curProfile?.job || 'Społeczność LUMINA';
 
         // Auto-detect Cezary Rogowski if admin
-        const isAdmin = curProfile?.isAdmin || (curUser?.email && (curUser.email.includes('nazirczarkes') || curUser.email.includes('czarkes')));
-        if (isAdmin || slug === 'cezaryrgowski') {
+        // 🛡️ STRAŻNIK: tożsamość Założyciela wyłącznie po dokładnym e-mailu zalogowanego konta
+        const isAdmin = !!(curUser?.email && ['nazirczarkes@gmail.com','studiodees7@gmail.com','czarekrogowski3@gmail.com','osobowoscplus@gmail.com','yourimaginationstudio@gmail.com'].includes(String(curUser.email).toLowerCase()) && curUser.emailVerified !== false);
+        if (isAdmin) {
             name = 'Cezary Rogowski';
             slug = 'cezaryrgowski';
             avatar = 'avatar_cezary_official.jpg';
             badge = '👑 Założyciel CC';
-        } else if (slug === 'wiolettarogowska' || name.toLowerCase().includes('wioletta')) {
+        } else if (curUser?.email && String(curUser.email).toLowerCase().split('@')[0] === 'wioletta1240') {
             name = 'Wioletta Rogowska';
             slug = 'wiolettarogowska';
             avatar = 'avatar_wioletta_official.jpg';
@@ -253,13 +254,13 @@
         if (!c) return c;
         const authorName = (c.author || '').toLowerCase();
         const authorSlug = (c.authorSlug || '').toLowerCase();
-        const isCezary = (authorSlug === 'cezaryrgowski' || authorName.includes('cezary'));
-        const isJola = (authorSlug === 'jolawojcik' || authorName.includes('jola'));
-        const isZofia = (authorSlug === 'zofiadudek' || authorName.includes('zofia'));
-        const isZbyszek = (authorSlug === 'zbyszekgieron' || authorName.includes('zbyszek') || authorName.includes('gieroń') || authorName.includes('gieron'));
-        const isAndrzejThiel = (authorSlug === 'andrzejthiel' || authorName.includes('thiel'));
-        const isAndrzejHamera = (authorSlug === 'andrzejhamera' || authorName.includes('hamera'));
-        const isWioletta = (authorSlug === 'wiolettarogowska' || authorName.includes('wioletta'));
+        const isCezary = (authorSlug === 'cezaryrgowski');
+        const isJola = (authorSlug === 'jolawojcik');
+        const isZofia = (authorSlug === 'zofiadudek');
+        const isZbyszek = (authorSlug === 'zbyszekgieron');
+        const isAndrzejThiel = (authorSlug === 'andrzejthiel');
+        const isAndrzejHamera = (authorSlug === 'andrzejhamera');
+        const isWioletta = (authorSlug === 'wiolettarogowska');
 
         if (isJola) {
             c.authorAvatar = 'avatar_jolawojcik.jpg';
@@ -631,7 +632,7 @@
             role.includes('profil misyjny') || role.includes('redakcja') || role.includes('oficjalny')) {
             return true;
         }
-        if (name.includes('cezary') || name.includes('wioletta') || name.includes('andrzej thiel') || name.includes('studio dobrego')) {
+        if (['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'studiodobregoslowa'].includes(String(slug || '').toLowerCase())) {
             return true;
         }
 

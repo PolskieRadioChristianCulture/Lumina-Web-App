@@ -487,7 +487,7 @@
         try {
             if (!window.loginWithGoogle && !window.LuminaDB?.loginWithGoogle) {
                 try {
-                    const luminaModule = await import('/lumina-db.js?v=cc_auth_v12');
+                    const luminaModule = await import('/lumina-db.js?v=20261007_straznik1');
                     if (luminaModule) {
                         if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
                         if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;
@@ -626,17 +626,10 @@
                 const firstName = fullName.trim().split(' ')[0] || 'Profil';
                 const userEmail = (user.email || '').toLowerCase();
                 const userDispName = (user.displayName || profile.name || fullName || '').toLowerCase();
-                const isCezary = userEmail.includes('czarkes') ||
-                                 userEmail.includes('nazir') ||
-                                 userEmail.includes('studiodees7') ||
-                                 userEmail.includes('osobowoscplus') ||
-                                 userEmail.includes('yourimaginationstudio') ||
-                                 userDispName.includes('cezary') ||
-                                 user.uid === 'cezaryrgowski' || user.id === 'cezaryrgowski' ||
-                                 profile.slug === 'cezaryrgowski' ||
-                                 localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
-                                 localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski';
-                const isWioletta = userEmail.includes('wioletta') || userDispName.includes('wioletta') || profile.slug === 'wiolettarogowska';
+                // 🛡️ STRAŻNIK: konto oficjalne wyłącznie po dokładnym e-mailu (nie po imieniu ani fladze w przeglądarce)
+                void userDispName;
+                const isCezary = ['nazirczarkes@gmail.com','studiodees7@gmail.com','czarekrogowski3@gmail.com','osobowoscplus@gmail.com','yourimaginationstudio@gmail.com'].includes(userEmail);
+                const isWioletta = userEmail.split('@')[0] === 'wioletta1240';
                 const isZbyszek = profile.slug === 'zbyszekgieron' || (fullName && (fullName.toLowerCase().includes('zbyszek') || fullName.toLowerCase().includes('zbigniew')) && fullName.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
                 const isZofia = profile.slug === 'zofiadudek' || (fullName && fullName.toLowerCase().includes('zofia') && fullName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
 
@@ -827,7 +820,7 @@
     }
     async function initBackgroundAuthSync() {
         try {
-            const luminaModule = await import('/lumina-db.js?v=cc_auth_v12');
+            const luminaModule = await import('/lumina-db.js?v=20261007_straznik1');
             if (luminaModule) {
                 if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
                 if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;

@@ -215,18 +215,18 @@
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'cezaryrgowski';</script>
-    <script type="module" src="lumina-db.js?v=4.1.7"></script>
-    <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
+    <script type="module" src="lumina-db.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-comments-engine.js?v=20261007_straznik1"></script>
 
     <script src="lumina-radio.js?v=1"></script>
     <script type="module" src="lumina-chat-typing.js?v=1"></script>
-    <script type="module" src="lumina-core.js"></script>
-    <script type="module" src="lumina-security.js"></script>
+    <script type="module" src="lumina-core.js?v=20261007_straznik1"></script>
+    <script type="module" src="lumina-security.js?v=20261007_straznik1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
-    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+    <script src="js/cc-global-auth.js?v=20261007_straznik1" defer></script>
 
     <style>
         :root {
@@ -3647,7 +3647,8 @@
     <link rel="stylesheet" href="css/lumina-reflection-tts.css?v=20260921_1">
     <script src="js/lumina-reflection-tts.js?v=20260921_1" defer></script>
     <script src="js/lumina-speech-reader.js?v=20260921_speech_reader_v2" defer></script>
-    <script src="/js/lumina-theme-manager.js?v=20261003_default_light_v5"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-stable-render.js?v=20261007_straznik1"></script>
 </head>
 <body class="lumina-profile-standard owner-mode-active">
 
@@ -6738,11 +6739,11 @@
             if (sessionStorage.getItem('lumina_private_access_cezaryrgowski') === 'true') return true;
 
             const params = new URLSearchParams(window.location.search);
-            if (params.get('access') === 'granted' || params.get('access') === 'private') {
+            if (false) { // 🛡️ STRAŻNIK: usunięto obejście ?access=granted
                 sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
                 return true;
             }
-            if (params.get('pin') === (data.pin || '7777') || params.get('code') === (data.pin || '7777')) {
+            if (params.get('pin') === (data.pin || '\u0000no-default-pin') || params.get('code') === (data.pin || '\u0000no-default-pin')) {
                 sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
                 return true;
             }
@@ -6833,7 +6834,7 @@
             e.preventDefault();
             const entered = document.getElementById('privateAccessCodeInput').value.trim();
             const data = getProfileData();
-            if (entered === (data.pin || '7777') || entered === '7777') {
+            if (entered === (data.pin || '\u0000no-default-pin')) {
                 sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
                 closeModal('privatePinPromptModal');
                 applyVisibilityState(data);
@@ -6854,7 +6855,8 @@
                               (sessionStorage.getItem('lumina_admin') === '1') ||
                               (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized());
 
-            isOwnerMode = !!ownerAccess;
+            // 🛡️ STRAŻNIK: tryb właściciela wyłącznie dla zalogowanego, zweryfikowanego konta (flagi w przeglądarce można podrobić)
+            isOwnerMode = (void ownerAccess, true) && (window.LuminaGuard && window.LuminaGuard.canEditProfile('cezaryrgowski', null));
             if (isOwnerMode) {
                 try {
                     sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
@@ -6931,6 +6933,11 @@
         }
 
                 function requestOwnerAccess(callback) {
+            // 🛡️ STRAŻNIK: wcześniej KAŻDY odwiedzający dostawał tu tryb właściciela profilu Założyciela.
+            if (!(window.LuminaGuard && window.LuminaGuard.canEditProfile('cezaryrgowski', null))) {
+                if (typeof showToast === 'function') showToast('Panel właściciela jest dostępny tylko po zalogowaniu na konto Cezarego Rogowskiego. 🔒');
+                return false;
+            }
             isOwnerMode = true;
             document.body.classList.add('owner-mode-active');
             if (typeof callback === 'function') callback();
@@ -6949,7 +6956,8 @@
             const data = getProfileData();
             const correctPin = data.pin || '7777';
 
-            if (entered === correctPin || entered === '7777') {
+            void correctPin; void entered;
+            if ((window.LuminaGuard && window.LuminaGuard.canEditProfile('cezaryrgowski', null))) {
                 sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
                 localStorage.setItem(AUTH_SESSION_KEY, 'true');
                 isOwnerMode = true;
@@ -9225,7 +9233,9 @@
                 `;
             });
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -9687,7 +9697,9 @@
                         `;
                     });
 
-                    box.innerHTML = html;
+                    // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+                    if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
                 if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
             }
@@ -10335,7 +10347,9 @@
             const prevDistFromBottom = prevScrollHeight - prevScrollTop - box.clientHeight;
             const wasNearBottom = (prevDistFromBottom < 160 || prevScrollHeight <= box.clientHeight);
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -10606,7 +10620,7 @@
 
     </script>
     <script src="lumina-scroll-top.js?v=20261003_light_v2" defer></script>
-    <script src="lumina-bottom-nav.js?v=4.2.4_20261003_player_above_chat_v5" defer></script>
+    <script src="lumina-bottom-nav.js?v=20261007_straznik1" defer></script>
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
@@ -11128,7 +11142,7 @@
     </div>
 </div>
 
-    <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
+    <script src="js/lumina-messenger-composer.js?v=20261007_straznik1" defer></script>
     <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-admin-media-replacer.js?v=20260917_autohide_final_v10"></script>
     <script src="js/lumina-followed-friends.js?v=20260918_green_dot_clean" defer>
@@ -11137,5 +11151,9 @@
     <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw (Jasny / Ciemny)">
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
+<script>
+/* 🛡️ Strażnik Standardów 2026-10-07: po zalogowaniu ponownie ustal tryb właściciela na podstawie konta */
+(function(){function hook(t){var L=window.LuminaDB;if(L&&typeof L.onAuthChange==='function'){L.onAuthChange(function(){try{if(typeof checkOwnerAuthSession==='function')checkOwnerAuthSession();}catch(e){}});}else if(t<80){setTimeout(function(){hook(t+1);},250);}}hook(0);})();
+</script>
 </body>
 </html>

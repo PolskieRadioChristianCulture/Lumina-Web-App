@@ -28,6 +28,8 @@
     </script>
 
     <script src="js/lumina-identity-guard.js?v=20260924_tijani_real_avatar" defer></script>
+    <!-- 🛡️ Strażnik Standardów 2026-10-07: kreator profilu -->
+    <script src="js/lumina-onboarding.js?v=20261007_straznik1" defer></script>
     <script>
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
@@ -124,17 +126,18 @@
             const sId = (senderId || '').toLowerCase().trim();
             const sName = (senderName || '').toLowerCase().trim();
 
-            if (sId.includes('cezary') || sName.includes('cezary') || sName.includes('dowódca') || sName.includes('nazir') || (isMe && (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized()))) {
+            // 🛡️ STRAŻNIK: zdjęcie w czacie wyłącznie po DOKŁADNYM identyfikatorze konta.
+            // Wcześniej każdy „Cezary”, „Andrzej” czy „Wioletta” pisał w czacie z twarzą innej osoby.
+            const OFFICIAL_CHAT_AVATARS = {
+                cezaryrgowski: 'avatar_cezary_official.jpg',
+                wiolettarogowska: 'avatar_wioletta_official.jpg',
+                andrzejhamera: 'avatar_andrzej_hamera.jpg',
+                andrzejthiel: 'avatar_andrzej_thiel.jpg'
+            };
+            if (OFFICIAL_CHAT_AVATARS[sId]) return OFFICIAL_CHAT_AVATARS[sId];
+            if (isMe && window.LuminaGuard && window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function'
+                && window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser()) === 'cezary') {
                 return 'avatar_cezary_official.jpg';
-            }
-            if (sId.includes('wioletta') || sName.includes('wioletta')) {
-                return 'avatar_wioletta_official.jpg';
-            }
-            if (sId.includes('hamera') || sName.includes('hamera')) {
-                return 'avatar_andrzej_hamera.jpg';
-            }
-            if (sId.includes('thiel') || sName.includes('thiel') || ((sId.includes('andrzej') || sName.includes('andrzej')) && !sId.includes('hamera') && !sName.includes('hamera'))) {
-                return 'avatar_andrzej_thiel.jpg';
             }
             if (sId === 'radiocc' || sName.includes('joshua') || sName.includes('agent ai')) {
                 return 'lumina_icon.jpg';
@@ -283,19 +286,19 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20260920_post_persistence_v1"></script>
-    <script src="js/lumina-comments-engine.js?v=20260919_v26"></script>
+    <script type="module" src="lumina-db.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-comments-engine.js?v=20261007_straznik1"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-core.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-security.js?v=4.1.1_20260909"></script>
+    <script type="module" src="lumina-core.js?v=20261007_straznik1"></script>
+    <script type="module" src="lumina-security.js?v=20261007_straznik1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
-    <script src="js/cc-global-auth.js?v=20260928_single_v3" defer></script>
+    <script src="js/cc-global-auth.js?v=20261007_straznik1" defer></script>
 
     <style>
         :root {
@@ -3138,7 +3141,8 @@
     <link rel="stylesheet" href="css/lumina-reflection-tts.css?v=20260921_1">
     <script src="js/lumina-reflection-tts.js?v=20260921_1" defer></script>
     <script src="js/lumina-speech-reader.js?v=20260921_speech_reader_v2" defer></script>
-    <script src="/js/lumina-theme-manager.js?v=20261003_default_light_v5"></script>
+    <script src="/js/lumina-theme-manager.js?v=20261007_straznik1"></script>
+    <script src="js/lumina-stable-render.js?v=20261007_straznik1"></script>
 </head>
 <body class="lumina-profile-standard">
 
@@ -5657,11 +5661,11 @@
             if (sessionStorage.getItem('lumina_private_access_' + slug) === 'true') return true;
             
             const params = new URLSearchParams(window.location.search);
-            if (params.get('access') === 'granted' || params.get('access') === 'private') {
+            if (false) { // 🛡️ STRAŻNIK: usunięto obejście ?access=granted
                 sessionStorage.setItem('lumina_private_access_' + slug, 'true');
                 return true;
             }
-            if (params.get('pin') === (data.pin || '7777') || params.get('code') === (data.pin || '7777')) {
+            if (params.get('pin') === (data.pin || '\u0000no-default-pin') || params.get('code') === (data.pin || '\u0000no-default-pin')) {
                 sessionStorage.setItem('lumina_private_access_' + slug, 'true');
                 return true;
             }
@@ -5768,7 +5772,7 @@
             const entered = document.getElementById('privateAccessCodeInput').value.trim();
             const data = getProfileData();
             const slug = getRequestedUserSlug();
-            if (entered === (data.pin || '7777') || entered === '7777') {
+            if (entered === (data.pin || '\u0000no-default-pin')) {
                 sessionStorage.setItem('lumina_private_access_' + slug, 'true');
                 closeModal('privatePinPromptModal');
                 applyVisibilityState(data);
@@ -5787,7 +5791,8 @@
             const targetUid = curProf?.uid || null;
 
             // 1. Sprawdzenie czy użytkownik to Główny Administrator (WYŁĄCZNIE po autoryzacji PIN-em w bieżącej sesji!)
-            let isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+            // 🛡️ STRAŻNIK: uprawnienia wyłącznie z zalogowanego konta (Firebase Auth), nie z flag w przeglądarce
+            let isMaster = !!(window.LuminaGuard && window.LuminaGuard.isMasterAdmin());
             try {
                 localStorage.removeItem('lumina_auth_master_admin');
             } catch(e) {}
@@ -5804,7 +5809,7 @@
                 if (curUser && (curUser.email === 'bozenowezycie@gmail.com' || curUser.uid === 'NHjYeuO4nxM8fIfEJPHmi9rTQV12') && (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski')) {
                     isSelf = true;
                 }
-                if (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true' || localStorage.getItem('lumina_auth_owner_' + slug) === 'true') {
+                if ((window.LuminaGuard && window.LuminaGuard.canEditProfile(slug, curProf))) {
                     isSelf = true;
                 }
             } catch(e) {}
@@ -5971,12 +5976,13 @@
             if (!u) {
                 try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
             }
-            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true') {
+            void u;
+            if ((window.LuminaGuard && window.LuminaGuard.canEditProfile(getRequestedUserSlug(), getProfileData()))) {
                 isOwnerMode = true;
                 if (typeof callback === 'function') callback();
                 return true;
             }
-            openSecurityModal(callback);
+            showToast('Możesz edytować wyłącznie swój profil. Zaloguj się na swoje konto. 🔒');
             return false;
         }
 
@@ -5991,9 +5997,9 @@
             const entered = document.getElementById('ownerPinInput').value.trim();
             const data = getProfileData();
             const slug = getRequestedUserSlug();
-            const correctPin = data.pin || '7777';
-
-            if (entered === correctPin || entered === '7777') {
+            void entered;
+            // 🛡️ STRAŻNIK: koniec z kodem „7777” otwierającym każdy profil — decyduje zalogowane konto
+            if ((window.LuminaGuard && window.LuminaGuard.canEditProfile(slug, data))) {
                 sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
                 isOwnerMode = true;
                 closeModal('securityPinModal');
@@ -8081,7 +8087,11 @@
 
         function openEditProfileModal(section) {
             const slug = getRequestedUserSlug();
-            // Automatically unlock owner mode when user clicks edit
+            // 🛡️ STRAŻNIK: edycja tylko dla właściciela profilu (zalogowane konto)
+            if (!(window.LuminaGuard && window.LuminaGuard.canEditProfile(slug, getProfileData()))) {
+                showToast('Możesz edytować wyłącznie swój profil. 🔒');
+                return;
+            }
             isOwnerMode = true;
             sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
             updateSecurityBarUI();
@@ -8285,7 +8295,9 @@
                 `;
             });
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -8669,7 +8681,9 @@
                 `;
             });
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -9147,7 +9161,9 @@
                         `;
                     });
 
-                    box.innerHTML = html;
+                    // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+                    if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
                     if (!window._commanderChatInitialScrollDone || wasNearBottom) {
                         scrollChatToBottom(box, window._commanderChatInitialScrollDone ? true : false);
                         window._commanderChatInitialScrollDone = true;
@@ -9801,7 +9817,9 @@
             const prevDistFromBottom = prevScrollHeight - prevScrollTop - box.clientHeight;
             const wasNearBottom = (prevDistFromBottom < 160 || prevScrollHeight <= box.clientHeight);
 
-            box.innerHTML = html;
+            // 🛡️ STRAŻNIK: podmieniamy tylko nowe/zmienione wiadomości (bez migania avatarów)
+
+            if (typeof window.luminaApplyStableHtml === 'function') { window.luminaApplyStableHtml(box, html); } else { box.innerHTML = html; }
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -10092,11 +10110,11 @@
     <script src="lumina-story-card-generator.js?v=20260918_v1" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
-    <script src="js/lumina-messenger-composer.js?v=20260915_fullscreen_v2" defer></script>
+    <script src="js/lumina-messenger-composer.js?v=20261007_straznik1" defer></script>
     <script src="js/lumina-message-requests.js?v=20260913_fix_v3" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=4.2.4_20261003_player_above_chat_v5" defer></script>
+    <script src="lumina-bottom-nav.js?v=20261007_straznik1" defer></script>
     <script src="lumina-notifications.js?v=4.1.6" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.1_20260909"></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->

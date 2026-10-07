@@ -36,7 +36,8 @@ export function isLuminaAdmin() {
         return false;
     }
 
-    return (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture'));
+    // 🛡️ STRAŻNIK (2026-10-07): administrator wyłącznie po dokładnym adresie, nie po fragmencie e-maila
+    return ['nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com', 'polskieradiocc@gmail.com', 'studiodees7@gmail.com'].includes(email);
 }
 
 export function openEditProfileModal(profileData) {

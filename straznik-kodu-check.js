@@ -28,9 +28,9 @@ const __dirname = path.dirname(__filename);
 
 const ROOT = process.cwd();
 const HTML_FILES = fs.readdirSync(ROOT)
-  .filter(f => f.endsWith('.html') && !f.startsWith('.'));
+  .filter(f => f.endsWith('.html') && !f.startsWith('.') && !f.toLowerCase().includes('backup'));
 const JS_FILES = fs.readdirSync(ROOT)
-  .filter(f => f.endsWith('.js') && !f.startsWith('.'));
+  .filter(f => f.endsWith('.js') && !f.startsWith('.') && !f.toLowerCase().includes('backup'));
 const CSS_FILES = [
   ...fs.readdirSync(ROOT).filter(f => f.endsWith('.css')),
   ...(fs.existsSync(path.join(ROOT, 'css'))
@@ -379,6 +379,28 @@ function checkAggressiveDomPolling() {
 // własny awatar użytkownika, gdy nie wczyta się z sieci, podstawiał zdjęcie
 // Cezarego zamiast neutralnej ikony.)
 // ══════════════════════════════════════════════════════════════════════════
+// ─── K. Tożsamość zgadywana z imienia / fragmentu e-maila (2026-10-07) ───────────────────
+// Realny błąd: każdy użytkownik o imieniu „Cezary”, „Wioletta”, „Andrzej” dostawał w czacie,
+// komentarzach i na profilu cudzą twarz, nazwisko, wiek i miasto; e-mail zawierający „czarkes”
+// dawał tożsamość Założyciela. Konta oficjalne rozpoznajemy WYŁĄCZNIE po dokładnym slugu
+// lub dokładnym, zweryfikowanym e-mailu (lumina-db.js: detectLuminaOfficialIdentity).
+function checkNameBasedIdentity() {
+  checksRun++;
+  const files = [...HTML_FILES, ...JS_FILES, ...(fs.existsSync(path.join(ROOT, 'js')) ? fs.readdirSync(path.join(ROOT, 'js')).filter(f => f.endsWith('.js')).map(f => path.join('js', f)) : [])];
+  const pattern = /\b(sName|authorName|userDispName|displayName(?:\.toLowerCase\(\))?|email(?:\.toLowerCase\(\))?)\.includes\(\s*['"](cezary|wioletta|thiel|hamera|nazir|dowódca|czarkes|christianculture|bibliaaudio)['"]\s*\)/gi;
+  for (const f of files) {
+    const content = readFile(f);
+    if (!content) continue;
+    let m;
+    while ((m = pattern.exec(content)) !== null) {
+      const lineNum = content.slice(0, m.index).split('\n').length;
+      report('K-NAME-BASED-IDENTITY', f,
+        `Linia ${lineNum}: tożsamość ustalana z fragmentu imienia/e-maila („${m[0]}”). ` +
+        `Każda osoba o tym imieniu dostanie cudzą twarz/dane/uprawnienia. Użyj dokładnego slugu albo LuminaDB.detectLuminaOfficialIdentity(user).`);
+    }
+  }
+}
+
 function checkOnErrorIdentitySubstitution() {
   checksRun++;
   for (const f of HTML_FILES) {
@@ -432,6 +454,7 @@ checkUnescapedUserContent();
 checkCrossFileFunctionDrift();
 checkAggressiveDomPolling();
 checkOnErrorIdentitySubstitution();
+checkNameBasedIdentity();
 checkInlineScriptSyntax();
 
 // ══════════════════════════════════════════════════════════════════════════

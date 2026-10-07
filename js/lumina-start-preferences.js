@@ -36,13 +36,16 @@
                 || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
                 || (user && (user.isAdmin || user.role === 'master_admin'));
 
-            if (isAdmin || slug === 'cezaryrgowski' || slug === 'cezary' || slug === 'admin_cezary' || email.includes('christianculture') || email.includes('czarkes') || email === 'nazirczarkes@gmail.com' || name.includes('cezary')) {
+            // 🛡️ STRAŻNIK (2026-10-07): „mój profil” z zalogowanego konta, nie z imienia
+            void isAdmin; void email; void name;
+            const _oid = (window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function') ? window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser && window.LuminaDB.getCurrentUser()) : null;
+            if (_oid === 'cezary') {
                 target = 'lumina.cezaryrgowski.html';
-            } else if (slug === 'wiolettarogowska' || slug === 'wioletta' || name.includes('wioletta')) {
+            } else if (_oid === 'wioletta') {
                 target = 'lumina.wiolettarogowska.html';
-            } else if (slug === 'zbyszekgieron' || slug === 'zbyszek' || name.includes('zbyszek')) {
+            } else if (slug === 'zbyszekgieron') {
                 target = 'lumina.zbyszekgieron.html';
-            } else if (slug === 'zofiadudek' || slug === 'zofia' || name.includes('zofia')) {
+            } else if (slug === 'zofiadudek') {
                 target = 'lumina.zofiadudek.html';
             } else if (slug) {
                 target = 'lumina-profile.html?u=' + encodeURIComponent(slug);
