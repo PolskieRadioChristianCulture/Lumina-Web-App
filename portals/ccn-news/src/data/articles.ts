@@ -41,7 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
-  'Z Biblią za Pan Brat: Dzień 7 — Tęcza: Bóg zawiera przymierze — Nowy początek (Rdz 9:1–29)',
+  'Z Biblią za Pan Brat: Dzień 8 — Wieża Babel: Kiedy człowiek chce uczynić sobie imię (Rdz 10:1–11:32)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
   'Ukraina: ONZ apeluje o ochronę cywilów po kolejnych atakach',
   'Polska: rząd ogłosił przyjęcie projektu budżetu na 2027 rok',
@@ -51,6 +51,54 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    id: 'art-z-biblia-za-pan-brat-dzien-08',
+    title: 'WIEŻA BABEL — ANATOMIA LUDZKIEJ PYCHY I POCZĄTEK HISTORII ABRAHAMA',
+    slug: 'wieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama',
+    excerpt: 'Jedenasty rozdział Księgi Rodzaju analizuje budowę wieży Babel oraz przejście ku powołaniu Abrahama. Tekst stanowi uniwersalne ostrzeżenie przed budowaniem jedności i bezpieczeństwa w opozycji do Boga.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-08',
+    dateFormatted: '8 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg',
+    imageCaption: 'Księga Rodzaju 11: Ziggurat w Szinearze — wieża Babel i pomieszanie języków zbuntowanej ludzkości.',
+    readTimeMinutes: 6,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 10', 'Rdz 11', 'Wieża Babel', 'Abraham', 'Cezary Rogowski', 'Wiara'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 11:4',
+      text: 'Chodźcie, zbudujmy sobie miasto i wieżę (…) i uczyńmy sobie imię…',
+      strongCode: 'H8034',
+    },
+    lexiconTerms: [
+      {
+        term: 'Imię (Rdz 11:4)',
+        strongCode: 'H8034',
+        definition: 'Hebr. szem — sława, reputacja, tożsamość, wieczna pamięć budowana własnym wysiłkiem bez Boga.',
+      },
+      {
+        term: 'Babel (Rdz 11:9)',
+        strongCode: 'H894',
+        definition: 'Hebr. balal — pomieszać; w języku akadyjskim bab-ilu oznaczało „bramę boga”, lecz w biblijnej prawdzie stało się symbolem zamieszania i rozproszenia.',
+      },
+    ],
+    relatedCourse: {
+      title: 'Z Biblią za Pan Brat: Miesiąc 1 – Księga Rodzaju',
+      lesson: 'Dzień 8: Babel — Kiedy człowiek chce uczynić sobie imię (Rdz 10:1–11:32)',
+      url: '/akademia/kurscodzienny/dzien-08',
+      badge: 'KURS CODZIENNY',
+    },
+    content: [
+      'Ósmy dzień programu „Z Biblią za Pan Brat” analizuje przełomowy moment w historii ludzkości opisany w jedenastym rozdziale Księgi Rodzaju — budowę wieży Babel oraz genealogiczne przejście ku powołaniu Abrahama. Tekst ten stanowi uniwersalne ostrzeżenie przed budowaniem jedności i bezpieczeństwa w opozycji do woli Stwórcy.',
+      '1. Genealogia Narodów a Plan Globalny (Rdz 10). Tabela narodów ukazuje rozproszenie rodów i języków po potopie, przygotowując grunt pod przyszłe błogosławieństwo, które przez linię Abrahama ma objąć „wszystkie rodziny ziemi” (Rdz 12:3).',
+      '2. Anatomia Babel: Słynne „Uczyńmy sobie imię”. Na równinie Szinear ludzkość podejmuje zorganizowany wysiłek technologiczny pod hasłem: „uczyńmy sobie imię, abyśmy się nie rozproszyli” (Rdz 11:4). Babel to ucieleśnienie autonomii i pychy — próba zagwarantowania sobie tożsamości bez odniesienia do Stwórcy.',
+      '3. Boża Interwencja i Perspektywa Chrystusa. Bóg „zstępuje”, by zobaczyć dzieło ludzi, miesza języki i rozprasza narody. W Nowym Testamencie podział ten zostaje przezwyciężony w dniu Pięćdziesiątnicy (Dz 2), a w Apokalipsie (Ap 7:9) odkupieni ze wszystkich języków stają przed Barankiem.',
+      '4. Przejście do Abrahama. Babel krzyczy: „uczyńmy sobie imię”, podczas gdy Bóg mówi do Abrama: „uczynię wielkim twoje imię” (Rdz 12:2). Prawdziwa wielkość nie jest trofeum zdobywanym w buncie, lecz darem Bożej łaski.',
+      'Pełna lekcja Dnia 8 z quizem, pytaniami osobistymi i dziennikiem studium dostępna jest w Akademii: polskieradio.cc/akademia/kurscodzienny/dzien-08.',
+    ],
+  },  {
     id: 'art-z-biblia-za-pan-brat-dzien-07',
     title: 'TĘCZA I PRZYMIERZE — NOWY POCZĄTEK I NIEZMIENNA POTRZEBA PRZEMIANY SERCA',
     slug: 'tecza-i-przymierze-nowy-poczatek-i-niezmienna-potrzeba-przemiany-serca',
@@ -62,9 +110,9 @@ export const INITIAL_ARTICLES: Article[] = [
     imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_07_rainbow_covenant.jpg',
     imageCaption: 'Księga Rodzaju 9: Bóg zawiera przymierze z całą ziemią i kładzie swój łuk na obłoku.',
     readTimeMinutes: 6,
-    isHero: true,
+    isHero: false,
     isPopular: true,
-    popularRank: 1,
+    popularRank: 2,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 9', 'Tęcza', 'Przymierze', 'Noe', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
@@ -106,7 +154,7 @@ export const INITIAL_ARTICLES: Article[] = [
     readTimeMinutes: 6,
     isHero: false,
     isPopular: true,
-    popularRank: 2,
+    popularRank: 3,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 6', 'Rdz 8', 'Noe', 'Arka', 'Potop', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
