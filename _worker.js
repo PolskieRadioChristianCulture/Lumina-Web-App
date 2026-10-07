@@ -110,7 +110,13 @@ async function serveLiveNews(ctx) {
 // ═══════════════════════════════════════════════════════════════════════════
 const ADULT_FIREBASE_PROJECT = 'lumina-cc';
 const ADULT_JWKS_URL = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
-const ADULT_CONTENT = { 'prawda-bez-filtra-fragment': '/tresci-18plus/prawda-bez-filtra-fragment.json' };
+const ADULT_CONTENT = {
+  'prawda-bez-filtra-fragment': '/tresci-18plus/prawda-bez-filtra-fragment.json',
+  'prawda-bez-filtra-ksiazka': '/tresci-18plus/prawda-bez-filtra-ksiazka.json',
+  'prawda-bez-filtra-pdf': { path: '/tresci-18plus/prawda-bez-filtra.pdf', type: 'application/pdf', name: 'Prawda_Bez_Filtra.pdf' },
+  'prawda-bez-filtra-epub': { path: '/tresci-18plus/prawda-bez-filtra.epub', type: 'application/epub+zip', name: 'Prawda_Bez_Filtra.epub' },
+  'prawda-bez-filtra-pakiet': { path: '/tresci-18plus/prawda-bez-filtra-pakiet.zip', type: 'application/zip', name: 'Prawda_Bez_Filtra_pakiet.zip' },
+};
 let adultJwksCache = { keys: null, until: 0 };
 
 function adultB64urlToBytes(s) {
@@ -167,8 +173,9 @@ async function handleAdultContent(request, env, url, fetchImpl = fetch) {
     },
   });
   const id = url.pathname.slice('/api/tresci-18/'.length).replace(/\/$/, '');
-  const file = ADULT_CONTENT[id];
-  if (!file) return json({ ok: false, error: 'not_found' }, 404);
+  const entry = ADULT_CONTENT[id];
+  if (!entry) return json({ ok: false, error: 'not_found' }, 404);
+  const file = typeof entry === 'string' ? entry : entry.path;
   if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405);
   if (request.headers.get('X-Age-Confirmed') !== '18+') return json({ ok: false, error: 'age_not_confirmed' }, 403);
   const auth = request.headers.get('Authorization') || '';
@@ -179,6 +186,18 @@ async function handleAdultContent(request, env, url, fetchImpl = fetch) {
   const assetUrl = new URL(file, url.origin);
   const res = await env.ASSETS.fetch(new Request(assetUrl.toString()));
   if (!res.ok) return json({ ok: false, error: 'unavailable' }, 503);
+  if (typeof entry !== 'string') {
+    return new Response(res.body, {
+      status: 200,
+      headers: {
+        'Content-Type': entry.type,
+        'Content-Disposition': `attachment; filename="${entry.name}"`,
+        'Cache-Control': 'private, no-store',
+        'X-Robots-Tag': 'noindex, nofollow, noarchive',
+        'Vary': 'Authorization',
+      },
+    });
+  }
   const data = await res.json();
   return json({ ok: true, ...data }, 200);
 }
