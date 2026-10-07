@@ -7693,74 +7693,9 @@ export const LuminaCommentsEngine = {
         return c;
     },
 
-    // Generowanie naturalnego dialogu profili misyjnych (tylko raz per post)
-    generateNaturalMissionDialogue(postId, postContext = {}) {
-        const authorSlug = (postContext.authorSlug || '').toLowerCase();
-        let pool = this._trustedMissionProfiles.filter(p => p.slug !== authorSlug);
-        if (pool.length === 0) pool = this._trustedMissionProfiles;
-
-        // Określ typ postu
-        const lowerId = String(postId).toLowerCase();
-        const textLower = String(postContext.text || postContext.title || '').toLowerCase();
-
-        let category = 'general';
-        if (lowerId.startsWith('ref_') || textLower.includes('rozważanie') || textLower.includes('słowa mają moc') || textLower.includes('biblia') || textLower.includes('werset')) {
-            category = 'devotional';
-        } else if (textLower.includes('modlitw') || textLower.includes('intencj') || textLower.includes('błogosławi') || textLower.includes('uzdrowienie') || textLower.includes('chory')) {
-            category = 'prayer';
-        } else if (textLower.includes('live') || textLower.includes('transmisja') || textLower.includes('radio') || textLower.includes('worship') || textLower.includes('utwór')) {
-            category = 'media';
-        }
-
-        const templates = this._dialogueTemplates[category] || this._dialogueTemplates.general;
-
-        // Losuj 1 do 3 naturalnych komentarzy w oparciu o hash postId
-        let hash = 0;
-        for (let i = 0; i < postId.length; i++) {
-            hash = (hash << 5) - hash + postId.charCodeAt(i);
-            hash |= 0;
-        }
-        const absHash = Math.abs(hash);
-        const count = (absHash % 3) + 1; // 1, 2 lub 3 komentarze
-
-        const generated = [];
-        const now = Date.now();
-        const usedProfiles = new Set();
-
-        for (let i = 0; i < count; i++) {
-            const profileIdx = (absHash + i * 3) % pool.length;
-            const profile = pool[profileIdx];
-            if (usedProfiles.has(profile.slug)) continue;
-            usedProfiles.add(profile.slug);
-
-            const tmplIdx = (absHash + i * 7) % templates.length;
-            const text = templates[tmplIdx];
-
-            // Czas w przeszłości (np. 15m, 45m, 2h temu)
-            const timeOffsetMinutes = 15 + ((absHash + i * 29) % 180);
-            const commentTime = now - (timeOffsetMinutes * 60 * 1000);
-
-            generated.push(this._sanitizeComment({
-                id: `comm_${postId}_mission_${i}`,
-                postId: postId,
-                author: profile.name,
-                authorSlug: profile.slug,
-                authorAvatar: profile.avatar,
-                authorBadge: profile.badge,
-                text: text,
-                timestamp: commentTime,
-                likes: ((absHash + i * 5) % 4) + 1,
-                amen: ((absHash + i * 7) % 6) + 2,
-                likedByMe: false,
-                amenByMe: false,
-                pinned: (i === 0 && (absHash % 4 === 0)), // Czasem pierwszy jest przypięty
-                hidden: false,
-                edited: false,
-                isMissionAuto: true
-            }));
-        }
-
-        return generated;
+    // Never impersonate community members or manufacture engagement.
+    generateNaturalMissionDialogue() {
+        return [];
     },
 
     getComments(postId, postContext = {}) {
@@ -7771,27 +7706,16 @@ export const LuminaCommentsEngine = {
             try {
                 const parsed = JSON.parse(stored);
                 if (Array.isArray(parsed)) {
-                    let dirty = false;
-                    const sanitized = parsed.map(c => {
-                        const prevAvatar = c.authorAvatar;
-                        const safe = this._sanitizeComment(c);
-                        if (safe.authorAvatar !== prevAvatar) dirty = true;
-                        return safe;
-                    });
-                    if (dirty) {
-                        try { localStorage.setItem(key, JSON.stringify(sanitized)); } catch(e) {}
-                    }
+                    // Hide only positively identified synthetic entries. Keep the
+                    // stored archive unchanged so real user comments are preserved.
+                    const genuine = parsed.filter(c => c && c.isMissionAuto !== true &&
+                        !String(c.id || '').startsWith('comm_' + postId + '_mission_'));
+                    const sanitized = genuine.map(c => this._sanitizeComment(c));
                     return this._sortComments(sanitized);
                 }
             } catch(e) {}
         }
-
-        // Pierwsza inicjalizacja dla postu -> wygeneruj dialog misyjny
-        const autoComments = this.generateNaturalMissionDialogue(postId, postContext);
-        try {
-            localStorage.setItem(key, JSON.stringify(autoComments));
-        } catch(e) {}
-        return this._sortComments(autoComments);
+        return [];
     },
 
     _sortComments(list) {

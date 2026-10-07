@@ -55,7 +55,8 @@ service cloud.firestore {
     }
 
     function profileCreateIsSafe(data) {
-      return !flagElevated(data, {}, 'isAdmin') &&
+      return !data.keys().hasAny(['email', 'fcmToken', 'fcmTokens']) &&
+        !flagElevated(data, {}, 'isAdmin') &&
         !flagElevated(data, {}, 'isFounder') &&
         !flagElevated(data, {}, 'admin') &&
         !flagElevated(data, {}, 'isVerified') &&
@@ -68,7 +69,10 @@ service cloud.firestore {
     function profileUpdateIsSafe() {
       let n = request.resource.data;
       let o = resource.data;
-      return !flagElevated(n, o, 'isAdmin') &&
+      return privateProfileFieldUnchanged(n, o, 'email') &&
+        privateProfileFieldUnchanged(n, o, 'fcmToken') &&
+        privateProfileFieldUnchanged(n, o, 'fcmTokens') &&
+        !flagElevated(n, o, 'isAdmin') &&
         !flagElevated(n, o, 'isFounder') &&
         !flagElevated(n, o, 'admin') &&
         !flagElevated(n, o, 'isVerified') &&
@@ -84,6 +88,22 @@ service cloud.firestore {
       return /databases/$(database)/documents/lumina_post_reactions/$(postId + '_' + request.auth.uid + '_' + t);
     }
 
+    // Legacy private fields may remain unchanged or be removed, never added.
+    function privateProfileFieldUnchanged(n, o, field) {
+      return !(field in n) || (field in o && n[field] == o[field]);
+    }
+
+    function validPostText(data) {
+      return data.text is string && data.text.size() <= 5000;
+    }
+
+    function pairedReactionCounter(data, delta) {
+      let path = /databases/$(database)/documents/lumina_posts/$(data.postId);
+      let before = get(path).data.get(data.type, 0);
+      let after = getAfter(path).data.get(data.type, 0);
+      return before is int && after is int && after >= 0 && after == before + delta;
+    }
+
     function isValidReactionUpdate(postId) {
       let keys = request.resource.data.diff(resource.data).affectedKeys();
       return isMember() && (
@@ -95,8 +115,10 @@ service cloud.firestore {
     function reactionCounterMoved(postId, t) {
       let before = resource.data.get(t, 0);
       let after = request.resource.data.get(t, 0);
-      return (after == before + 1 && !exists(reactionPath(postId, t)) && existsAfter(reactionPath(postId, t))) ||
-             (after == before - 1 && exists(reactionPath(postId, t)) && !existsAfter(reactionPath(postId, t)));
+      return before is int && after is int && after >= 0 && (
+        (after == before + 1 && !exists(reactionPath(postId, t)) && existsAfter(reactionPath(postId, t))) ||
+        (after == before - 1 && exists(reactionPath(postId, t)) && !existsAfter(reactionPath(postId, t)))
+      );
     }
 
     function postIdentityIsSafe(data) {
@@ -154,14 +176,17 @@ service cloud.firestore {
         isMember() &&
         request.resource.data.authorUid == request.auth.uid &&
         postIdentityIsSafe(request.resource.data) &&
-        request.resource.data.text is string &&
-        request.resource.data.text.size() <= 5000
+        validPostText(request.resource.data) &&
+        request.resource.data.get('likes', 0) == 0 &&
+        request.resource.data.get('amen', 0) == 0
       );
       allow update: if isMasterAdmin() || isValidReactionUpdate(postId) || (
         isMember() &&
         resource.data.authorUid == request.auth.uid &&
         request.resource.data.authorUid == resource.data.authorUid &&
-        postIdentityIsSafe(request.resource.data)
+        postIdentityIsSafe(request.resource.data) &&
+        validPostText(request.resource.data) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['likes', 'amen'])
       );
       allow delete: if isMasterAdmin() || (
         isMember() && resource.data.authorUid == request.auth.uid
@@ -176,9 +201,12 @@ service cloud.firestore {
         request.resource.data.type in ['likes', 'amen'] &&
         request.resource.data.postId is string &&
         reactionId == request.resource.data.postId + '_' + request.auth.uid + '_' + request.resource.data.type &&
-        exists(/databases/$(database)/documents/lumina_posts/$(request.resource.data.postId));
+        request.resource.data.keys().hasOnly(['uid', 'postId', 'type', 'createdAt']) &&
+        exists(/databases/$(database)/documents/lumina_posts/$(request.resource.data.postId)) &&
+        pairedReactionCounter(request.resource.data, 1);
       allow update: if false;
-      allow delete: if isMasterAdmin() || (isMember() && resource.data.uid == request.auth.uid);
+      allow delete: if isMasterAdmin() || (isMember() && resource.data.uid == request.auth.uid &&
+        pairedReactionCounter(resource.data, -1));
     }
 
     match /lumina_campaigns/{campaignId} {

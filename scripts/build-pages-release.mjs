@@ -7,8 +7,8 @@ const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
 const BLOCKED_DIRECTORIES = new Set([
   '.agents', '.firebase', '.gemini', '.github', '.vscode', '.wrangler',
-  'cloudflare', 'docs', 'firebase_functions', 'functions', 'node_modules',
-  'scratch', 'scripts', 'src', 'test', 'tests', 'windows_tools',
+  'cloudflare', 'cloudflare-worker', 'docs', 'firebase_functions', 'functions', 'node_modules',
+  'lib', 'scratch', 'scripts', 'src', 'test', 'tests', 'windows_tools',
 ]);
 const BLOCKED_FILES = new Set([
   '.env', '.env.example', '.firebaserc', '.gitignore', 'agents.md', 'claude.md',

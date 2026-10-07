@@ -487,7 +487,7 @@
         try {
             if (!window.loginWithGoogle && !window.LuminaDB?.loginWithGoogle) {
                 try {
-                    const luminaModule = await import('/lumina-db.js?v=20261007_straznik1');
+                    const luminaModule = await import('/lumina-db.js?v=20261007_guardian2');
                     if (luminaModule) {
                         if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
                         if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;
@@ -820,7 +820,7 @@
     }
     async function initBackgroundAuthSync() {
         try {
-            const luminaModule = await import('/lumina-db.js?v=20261007_straznik1');
+            const luminaModule = await import('/lumina-db.js?v=20261007_guardian2');
             if (luminaModule) {
                 if (luminaModule.loginWithGoogle) window.loginWithGoogle = luminaModule.loginWithGoogle;
                 if (luminaModule.syncUserAuthProfile) window.syncUserAuthProfile = luminaModule.syncUserAuthProfile;

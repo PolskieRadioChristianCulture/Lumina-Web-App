@@ -1,6 +1,6 @@
 const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
-  '/cloudflare/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
+  '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
   '/scripts/agent-matrix/.matrix_sessions/',
 ];
 
@@ -40,6 +40,14 @@ export default {
           'X-Content-Type-Options': 'nosniff',
           'X-Robots-Tag': 'noindex, nofollow, noarchive',
         },
+      });
+    }
+
+    // AI Gateway recovery is code/test-only. No provider calls, bindings,
+    // credentials or costs may be activated through the public portal.
+    if (url.pathname === '/api/ai' || url.pathname.startsWith('/api/ai/')) {
+      return Response.json({ success: false, error: { code: 'GATEWAY_DISABLED' } }, {
+        status: 503, headers: { 'Cache-Control': 'no-store' }
       });
     }
 

@@ -161,19 +161,17 @@ async function queryTokens(field, receiverId, accessToken, env) {
     .filter(Boolean);
 }
 
-async function getRecipientTokens(receiverId, accessToken, env) {
-  // Każda wysyłka nie powinna rozpoczynać się od trzech zapytań indeksowych.
-  // Token jest synchronizowany także z profilem, więc ten pojedynczy odczyt
-  // zapewnia zwykłą ścieżkę dostarczenia i chroni limit Firestore.
+export async function getRecipientTokens(receiverAuthUid, receiverId, accessToken, env) {
+  // The authenticated recipient UID is authoritative. Never route by an
+  // unchecked slug or prefer a stale public token over current private devices.
+  const active = await queryTokens('uid', receiverAuthUid, accessToken, env);
+  if (active.length) return [...new Set(active)].slice(0, MAX_TOKENS_PER_RECIPIENT);
+  // Read-only legacy fallback, only after proving profile ownership. No data
+  // migration or deletion is performed here.
+  if (typeof receiverId !== 'string' || !receiverId || receiverId.includes('/')) return [];
   const profile = await getFirestoreDocument(`lumina_profiles/${encodeURIComponent(receiverId)}`, accessToken, env);
-  if (profile?.fcmToken) return [profile.fcmToken];
-
-  // Starsze konta mogą nie mieć jeszcze tokenu w profilu. Wtedy zachowujemy
-  // zgodność z rejestrem wielu urządzeń jako ścieżkę zapasową.
-  const fields = ['uid', 'slug', 'userSlug'];
-  const tokenLists = await Promise.all(fields.map((field) => queryTokens(field, receiverId, accessToken, env)));
-  const tokens = new Set(tokenLists.flat());
-  return [...tokens].slice(0, MAX_TOKENS_PER_RECIPIENT);
+  if (profile?.uid !== receiverAuthUid) return [];
+  return typeof profile.fcmToken === 'string' && profile.fcmToken ? [profile.fcmToken] : [];
 }
 
 function notificationFor(kind, documentId, record) {
@@ -257,7 +255,10 @@ async function handlePush(request, env, kind, documentId) {
     return { status: 403, body: { error: 'Nieprawidłowa rozmowa.' } };
   }
   if (kind === 'request' && record.status !== 'pending') return { status: 409, body: { error: 'Prośba nie jest aktywna.' } };
-  const tokens = await getRecipientTokens(record.receiverId, accessToken, env);
+  if (typeof record.receiverAuthUid !== 'string' || !record.receiverAuthUid) {
+    return { status: 403, body: { error: 'Brak tożsamości odbiorcy.' } };
+  }
+  const tokens = await getRecipientTokens(record.receiverAuthUid, record.receiverId, accessToken, env);
   if (tokens.length === 0) return { status: 200, body: { delivered: 0, reason: 'no_active_device' } };
   const notification = notificationFor(kind, documentId, record);
   const results = await Promise.all(tokens.map((token) => sendFcm(token, notification, accessToken, env)));

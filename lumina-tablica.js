@@ -6,8 +6,8 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js?v=20261007_straznik1';
-import * as LuminaCore from './lumina-core.js?v=20261007_straznik1';
+import * as LuminaDB from './lumina-db.js?v=20261007_guardian2';
+import * as LuminaCore from './lumina-core.js?v=20261007_guardian2';
 
 class LuminaTablicaEngine {
     constructor() {

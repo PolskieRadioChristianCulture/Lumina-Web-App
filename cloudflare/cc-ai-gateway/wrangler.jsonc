@@ -1,0 +1,18 @@
+{
+  "name": "cc-ai-zero-cost-coordinator",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-30",
+  "workers_dev": false,
+  "observability": { "enabled": true, "traces": { "enabled": true } },
+  "durable_objects": { "bindings": [
+    { "name": "CC_AI_SESSIONS", "class_name": "CcAiSession" },
+    { "name": "CC_AI_QUOTAS", "class_name": "CcAiQuota" }
+  ] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["CcAiSession", "CcAiQuota"] }],
+  "vars": {
+    "CC_AI_ENABLED": "false", "CC_AI_GATEWAY_ENABLED": "false", "CC_MODEL_ROUTER_ENABLED": "false",
+    "CC_PAID_AI_ENABLED": "false", "CC_GOOGLE_FREE_AI_ENABLED": "false", "CC_GROQ_FREE_AI_ENABLED": "false",
+    "CC_CF_WORKERS_AI_ENABLED": "false", "CC_LOCAL_AI_ENABLED": "false",
+    "CC_AUTONOMOUS_PUBLISHING_ENABLED": "false", "CC_AI_REGISTRY_JSON": "{\"version\":1,\"revision\":\"disabled-v1\",\"providers\":[],\"models\":[]}"
+  }
+}
