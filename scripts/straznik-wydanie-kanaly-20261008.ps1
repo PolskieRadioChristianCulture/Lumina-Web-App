@@ -64,10 +64,21 @@ $rc = G push origin main;      if ($rc -ne 0) { Stop "git push origin nie powió
 $rc = G push lumina-repo main; if ($rc -ne 0) { Stop "git push lumina-repo nie powiódł się" }
 Ok "commit $sha w origin i lumina-repo"
 
-Krok "4/5 Publikacja na Cloudflare Pages (polskieradio.cc)"
-node scripts/build-pages-release.mjs;  if ($LASTEXITCODE -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-npx.cmd wrangler pages deploy .pages-release --project-name polskieradio --branch main --commit-dirty=true
-if ($LASTEXITCODE -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
+Krok "4/5 Publikacja na Cloudflare Pages (polskieradio.cc) — dokładnie z zatwierdzonego commita $sha"
+# Budowa w osobnej, czystej kopii roboczej: niedokończone zmiany innych agentów nie trafiają na antenę.
+$Tmp = Join-Path $env:TEMP 'cc-release-kanaly'
+git worktree remove --force $Tmp 2>$null | Out-Null
+if (Test-Path $Tmp) { Remove-Item -Recurse -Force $Tmp }
+git worktree prune 2>$null | Out-Null
+$rc = G worktree add --detach $Tmp HEAD
+if ($rc -ne 0) { Stop "nie udało się przygotować czystej kopii do wydania" }
+Push-Location $Tmp
+$o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
+Pop-Location
+if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Kanaly nadawcze Straznik 2026-10-08" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+git worktree remove --force $Tmp 2>$null | Out-Null
+if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"
 
 Krok "5/5 Wpis w JOMA_HANDOFFS.md"
