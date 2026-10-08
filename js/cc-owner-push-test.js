@@ -39,7 +39,7 @@
         signal:controller.signal, credentials:'omit', cache:'no-store', redirect:'error', referrerPolicy:'no-referrer'
       });
       // Only fixed messages are rendered; never provider bodies, tokens or user IDs.
-      if (!response.ok) throw Error(response.status === 503 ? 'disabled' : 'rejected');
+      if (!response.ok) throw Error('http_' + response.status);
       return await response.json();
     } finally { clearTimeout(timer); }
   }
@@ -50,8 +50,10 @@
     if (action === 'send') attempted = true; // A timeout must never cause an automatic second send.
     refresh();
     status.textContent = action === 'send' ? 'Zlecanie jednej próby… Nie ponawiaj jej.' : 'Sprawdzanie konta bez wysyłki…';
+    let stage = 'ładowanie modułu';
     try {
       const sdk = await import('/lumina-db.js?v=20261008_foreground1');
+      stage = 'gotowość logowania';
       const {auth} = await sdk.ensureDbReady();
       if (!auth) throw Error('login');
       await auth.authStateReady();
@@ -60,7 +62,9 @@
       if (action === 'send' && user.uid !== readyUid) throw Error('account_changed');
       if (action === 'check') {
         readyUid = null; readyUntil = 0;
+        stage = 'potwierdzenie serwera';
         const data = await request('preflight', auth, user);
+        stage = 'weryfikacja odpowiedzi';
         if (auth.currentUser?.uid !== user.uid) throw Error('account_changed');
         if (data.accountRead !== true || !Number.isInteger(data.registeredDeviceCount) ||
             data.registeredDeviceCount < 1 || data.registeredDeviceCount > 10 ||
@@ -68,6 +72,7 @@
         readyUid = user.uid; readyUntil = Date.now() + 60000;
         status.textContent = 'Konto potwierdzone. Wysyłki do studentów wyłączone. Gotowość ważna przez minutę; zaznacz zgodę. Nie wysłano powiadomienia.';
       } else {
+        stage = 'zlecenie testu';
         const data = await request('owner-test', auth, user);
         if (data.testConsumed !== true || !Number.isInteger(data.acceptedByFcm) || data.acceptedByFcm < 0 ||
             !Number.isInteger(data.registeredDeviceCount) || data.registeredDeviceCount < 1 ||
@@ -79,8 +84,11 @@
       status.textContent = attempted
         ? 'Nie potwierdzono wyniku próby. Mogła już zostać wykonana. Nie ponawiaj — sprawdź telefon i zgłoś wynik.'
         : error.message === 'login' ? 'Zaloguj się na swoje konto LUMINA. Nic nie wysłano.'
-        : error.message === 'disabled' ? 'Okno testu na serwerze jest wyłączone. Nic nie wysłano.'
-        : 'Nie potwierdzono gotowości konta. Nic nie wysłano; nie zmieniaj uprawnień.';
+        : error.message === 'http_503' ? 'Okno testu na serwerze jest wyłączone. Nic nie wysłano.'
+        : error.message === 'http_401' ? 'Serwer nie potwierdził logowania (401). Nic nie wysłano.'
+        : error.message === 'http_403' ? 'Serwer nie dopuścił tego konta lub źródła do testu (403). Nic nie wysłano; nie zmieniaj uprawnień.'
+        : error.message === 'http_502' ? 'Serwer nie potwierdził dostępu do danych testu (502). Nic nie wysłano.'
+        : 'Nie potwierdzono gotowości konta. Etap: ' + stage + '. Nic nie wysłano; nie zmieniaj uprawnień.';
     } finally { busy = false; refresh(); }
   }
   check.addEventListener('click', () => run('check'));

@@ -59,6 +59,12 @@ test('unconfirmed account, zero devices or active student dispatch block test',a
 test('disabled server reports fixed message without leaking response',async()=>{
   const f=mount({statusCode:503});await click(f,'check');assert.match(f.status(),/wyłączone/);assert.equal(f.calls.length,1);f.w.close();
 });
+test('fixed diagnostic distinguishes denied account, server failure and invalid response',async()=>{
+  for(const [statusCode,expected] of [[401,/logowania \(401\)/],[403,/konta lub źródła.*403/],[502,/danych testu \(502\)/]]){
+    const f=mount({statusCode});await click(f,'check');assert.match(f.status(),expected);
+    assert.equal(f.calls.length,1);assert.doesNotMatch(f.status(),/synthetic-token|synthetic-owner/);f.w.close();
+  }
+});
 test('account change after readiness blocks send before backend',async()=>{
   const f=mount();await click(f,'check');consent(f);f.auth.currentUser={...f.user,uid:'synthetic-other'};
   await click(f,'send');assert.equal(f.calls.length,1);assert.match(f.status(),/Nie ponawiaj/);f.w.close();
@@ -74,7 +80,7 @@ test('network failure locks further requests; never auto retries',async()=>{
 });
 test('both canonical desktop surfaces include the same versioned sender; SDK version is current',()=>{
   for(const file of ['lumina.html','lumina-tablica.html'])
-    assert.equal(readFileSync(file,'utf8').split('/js/cc-owner-push-test.js?v=20261008_sender1').length-1,1);
+    assert.equal(readFileSync(file,'utf8').split('/js/cc-owner-push-test.js?v=20261008_sender2').length-1,1);
   assert.match(source,/import\('\/lumina-db.js\?v=20261008_foreground1'\)/);
   assert.doesNotMatch(source,/requestPermission|localStorage|sessionStorage|console\.|setInterval/);
 });
