@@ -2103,11 +2103,54 @@ html[data-lumina-theme="light"] .cin-progress-title {
     display: none !important;
   }
 
-  #btn-topbar-diploma::after {
-    content: '🎓';
-    font-size: 14px;
-    display: inline-block;
+/* 12. Topbar Icon-First Standard (Desktop & Mobile Clean Action Bar) */
+.ak-header #reader-font-label,
+.ak-header #tts-btn-text,
+.ak-header .theme-toggle-label,
+.ak-header #ccTopSubLink span,
+.ak-header a[href*="patronite"] span:not(:first-child),
+.cin-header .cin-btn-support .support-text,
+.cin-topbar .cin-btn-support .support-text {
+  display: none !important;
+}
+
+.ak-header .kc-reader-pill,
+.ak-header #btn-audio-tts,
+.ak-header #btn-theme-toggle,
+.ak-header #ccTopSubLink,
+.ak-header a[href*="patronite"],
+.cin-header .cin-btn-support,
+.cin-topbar .cin-btn-support,
+.cin-header .cin-btn-theme,
+.cin-topbar .cin-btn-theme {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  display: inline-flex !important;
+  border-radius: 9999px !important;
+  box-sizing: border-box !important;
+}
+
+.ak-header .rounded-full.border-zinc-800 {
+  height: 38px !important;
+  padding: 2px 4px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+@media (min-width: 769px) {
+  .ak-header .ak-header-course-title {
+    max-width: none !important;
+    white-space: nowrap !important;
+    text-overflow: clip !important;
+    display: inline-block !important;
   }
 }
+
 
 

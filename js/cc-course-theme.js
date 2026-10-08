@@ -88,7 +88,7 @@
       var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.id = 'ccLuminaCoursesCss';
-      link.href = '/css/lumina-courses.css?v=20261008_theme1';
+      link.href = '/css/lumina-courses.css?v=20261008_theme2';
       document.head.appendChild(link);
     }
   }
@@ -107,7 +107,7 @@
     btn.className = 'kc-reader-pill cin-btn-theme';
     btn.title = 'Przełącz motyw (Jasny / Ciemny)';
     btn.setAttribute('aria-label', 'Przełącz motyw');
-    btn.innerHTML = '<i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i><span class="hidden md:inline font-semibold theme-toggle-label theme-text">Jasny</span>';
+    btn.innerHTML = '<i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>';
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       toggleCourseTheme();
