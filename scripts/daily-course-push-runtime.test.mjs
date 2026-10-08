@@ -13,7 +13,7 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       if(new URL(request.url).pathname==='/test-tick') {await worker.scheduled({},env);return Response.json({ok:true});}
       return worker.fetch(request,env);
     }};`,resolveDir:process.cwd()},bundle:true,write:false,format:'esm',platform:'browser'});
-  const documents=new Map();let revision=0, sends=0, outbound=0, latest=8, account='active';
+  const documents=new Map();let revision=0, sends=0, outbound=0, latest=8, account='active', failStage='';
   const fields=data=>Object.fromEntries(Object.entries(data).map(([k,v])=>[k,typeof v==='boolean'?{booleanValue:v}:typeof v==='number'?{integerValue:String(v)}:{stringValue:v}]));
   const project='projects/synthetic/databases/(default)/documents/';
   const response=data=>RuntimeResponse.json(data);
@@ -22,6 +22,13 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem})},
     outboundService:async request=>{
       outbound++;const url=new URL(request.url);
+      if ((failStage==='service_account_authorization' && url.hostname==='oauth2.googleapis.com') ||
+          (failStage==='account_lookup' && url.hostname==='identitytoolkit.googleapis.com' && url.pathname.includes('/projects/')) ||
+          (failStage==='device_registry' && url.hostname==='firestore.googleapis.com') ||
+          (failStage==='lesson_manifest' && url.hostname==='polskieradio.cc'))
+        return new RuntimeResponse('synthetic-private-provider-detail',{status:403});
+      if(failStage==='authentication' && url.hostname==='identitytoolkit.googleapis.com')
+        return new RuntimeResponse('synthetic-private-auth-detail',{status:200});
       if(url.hostname==='oauth2.googleapis.com') {
         const assertion=new URLSearchParams(await request.text()).get('assertion');
         const scope=JSON.parse(Buffer.from(assertion.split('.')[1],'base64url').toString()).scope;
@@ -70,6 +77,17 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
     assert.equal(preflight.status,200);
     assert.deepEqual(await preflight.json(),{accountRead:true,registeredDeviceCount:1,lessonNumber:8,automaticDispatchEnabled:true});
     assert.equal(sends,0);assert.equal(documents.size,0,'Preflight must not write');
+    for(const stage of ['authentication','service_account_authorization','account_lookup','device_registry','lesson_manifest']) {
+      failStage=stage;
+      const failed=await mf.dispatchFetch('https://runtime.invalid/v1/course/preflight',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'}});
+      assert.equal(failed.status,502);assert.equal(failed.headers.get('cache-control'),'no-store');
+      const diagnostic=await failed.json();
+      assert.deepEqual(Object.keys(diagnostic).sort(),stage==='authentication'?['error']:['error','stage']);
+      assert.equal(diagnostic.stage,stage==='authentication'?undefined:stage);
+      assert.equal(JSON.stringify(diagnostic).includes('synthetic'),false,'No provider details, identifiers or token values');
+      assert.equal(sends,0);assert.equal(documents.size,0,'Failure diagnostics must not write or send');
+    }
+    failStage='';
     assert.equal((await command('subscribe')).status,200);
     assert.equal(documents.get('cc_daily_course_subscriptions/student').fields.lastLessonNumber.integerValue,'8');
     latest=9;const before=outbound;assert.equal((await tick()).status,200);

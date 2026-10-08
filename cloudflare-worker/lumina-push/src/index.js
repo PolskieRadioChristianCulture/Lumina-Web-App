@@ -309,18 +309,27 @@ export default {
           if(chunk.value.byteLength) {await reader.cancel();return json({error:'Test nie przyjmuje danych odbiorcy.'},400,headers);}
         }
       }
+      let pilotAuthenticated=false;
+      let stage='authentication';
       try {
         const uid=await verifyFirebaseUser(request,env,true);
         if (!uid) return json({error:'Wymagane logowanie do konta.'},401,headers);
         if (uid!==env.COURSE_PUSH_PILOT_UID) return json({error:'To konto nie uczestniczy w teście.'},403,headers);
+        pilotAuthenticated=true;
+        stage='service_account_authorization';
         const token=await getGoogleAccessToken(env,true);
         const deps=courseDeps(env,token);
+        stage='account_lookup';
         if (await deps.accountState(uid)!=='active') return json({error:'Konto testowe nie jest aktywne.'},409,headers);
+        stage='device_registry';
         const devices=await deps.tokens(uid);
+        stage='lesson_manifest';
         const lesson=await deps.latest();
         return json({accountRead:true,registeredDeviceCount:devices.length,lessonNumber:lesson?.number || null,automaticDispatchEnabled:env.COURSE_PUSH_ENABLED==='true'},200,headers);
       } catch (_) {
-        return json({error:'Nie potwierdzono dostępu serwera do konta testowego. Nie zmieniono danych ani uprawnień.'},502,headers);
+        // Only fixed stage labels, and only after authenticating the pilot.
+        // Never expose provider responses, exception text, identifiers or tokens.
+        return json({error:'Nie potwierdzono dostępu serwera do konta testowego. Nie zmieniono danych ani uprawnień.',...(pilotAuthenticated?{stage}:{})},502,headers);
       }
     }
     if (new URL(request.url).pathname === '/v1/course/subscription') {
