@@ -24,7 +24,7 @@ test('każda istniejąca lekcja, alias i katalog ładuje jeden wspólny panel', 
     }
   }
   scan('akademia/kurscodzienny'); scan('kursy/kurscodzienny');
-  for (const path of ['akademia.html','akademia/index.html','akademia/kurscodzienny.html','kursy/kurscodzienny.html']) {
+  for (const path of ['akademia.html','akademia/index.html','kursy.html','kursy/index.html','akademia/kurscodzienny.html','kursy/kurscodzienny.html']) {
     assert.equal((readFileSync(path, 'utf8').match(/cc-daily-course-share\.js/g) || []).length, 1);
   }
   assert.ok(count >= 24);

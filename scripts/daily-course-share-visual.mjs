@@ -11,7 +11,9 @@ try {
   await context.route('https://polskieradio.cc/**', async route => {
     const u = new URL(route.request().url());
     if (u.pathname.includes('auth') || u.pathname.includes('firebase')) return route.abort();
-    const base = path.resolve(root, '.' + decodeURIComponent(u.pathname));
+    // Pages _redirects rewrites public /akademia to /kursy.
+    const pathname = u.pathname === '/akademia' ? '/kursy' : u.pathname;
+    const base = path.resolve(root, '.' + decodeURIComponent(pathname));
     if (!base.startsWith(root + path.sep)) return route.abort();
     let file = base;
     try { if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html'); }
