@@ -2102,6 +2102,7 @@ html[data-lumina-theme="light"] .cin-progress-title {
   #btn-topbar-diploma span {
     display: none !important;
   }
+}
 
 /* 12. Topbar Icon-First Standard (Desktop & Mobile Clean Action Bar) */
 .ak-header #reader-font-label,
@@ -2110,7 +2111,12 @@ html[data-lumina-theme="light"] .cin-progress-title {
 .ak-header #ccTopSubLink span,
 .ak-header a[href*="patronite"] span:not(:first-child),
 .cin-header .cin-btn-support .support-text,
-.cin-topbar .cin-btn-support .support-text {
+.cin-topbar .cin-btn-support .support-text,
+.cin-header .theme-toggle-label,
+.cin-topbar .theme-toggle-label,
+.cin-header .cin-btn-theme span:not(.theme-toggle-icon),
+.cin-topbar .cin-btn-theme span:not(.theme-toggle-icon),
+#btn-theme-toggle span:not(.theme-toggle-icon) {
   display: none !important;
 }
 
@@ -2122,7 +2128,9 @@ html[data-lumina-theme="light"] .cin-progress-title {
 .cin-header .cin-btn-support,
 .cin-topbar .cin-btn-support,
 .cin-header .cin-btn-theme,
-.cin-topbar .cin-btn-theme {
+.cin-topbar .cin-btn-theme,
+.cin-btn-icon-catalog,
+#btn-theme-toggle {
   width: 38px !important;
   height: 38px !important;
   min-width: 38px !important;
@@ -2133,6 +2141,14 @@ html[data-lumina-theme="light"] .cin-progress-title {
   display: inline-flex !important;
   border-radius: 9999px !important;
   box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+.cin-header .cin-btn-support .support-icon,
+.cin-topbar .cin-btn-support .support-icon {
+  margin: 0 !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
 }
 
 .ak-header .rounded-full.border-zinc-800 {

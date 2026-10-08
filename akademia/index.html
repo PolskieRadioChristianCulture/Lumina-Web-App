@@ -70,7 +70,7 @@
   <script src="/components/cc-support-footer.js" defer></script>
 
   <!-- LUMINA Courses Styling System -->
-  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v3" />
 
   <style>
     .cin-course-tab {
@@ -117,6 +117,7 @@
     }
   </style>
 
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -166,30 +167,34 @@
         </div>
       </a>
       <span class="text-zinc-600 hidden lg:inline">/</span>
-      <nav class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
-        <a href="#hero-section" class="hover:text-brand-gold transition-colors">CINEMATIC JOURNEY</a>
-        <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors">28 KROKÓW</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors">✝ APOKALIPSA</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('kurscodzienny')" class="hover:text-brand-gold text-amber-300 font-bold transition-colors">📖 Z BIBLIĄ ZA PAN BRAT</a>
-        <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
-        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
-        <a href="/biznes" class="hover:text-brand-gold transition-colors">BIZNES</a>
-        <a href="/kultura" class="hover:text-brand-gold transition-colors">KULTURA</a>
+      <nav class="hidden md:flex items-center gap-4 lg:gap-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 overflow-hidden" aria-label="Nawigacja kursów">
+        <a href="#hero-section" class="hover:text-brand-gold transition-colors whitespace-nowrap">CINEMATIC JOURNEY</a>
+        <a href="#stages-section" class="hover:text-brand-gold transition-colors whitespace-nowrap">5 ETAPÓW</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors whitespace-nowrap">28 KROKÓW</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors whitespace-nowrap">✝ APOKALIPSA</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('kurscodzienny')" class="hover:text-brand-gold text-amber-300 font-bold transition-colors whitespace-nowrap">📖 Z BIBLIĄ ZA PAN BRAT</a>
+        <a href="/lumina" class="hover:text-brand-gold transition-colors whitespace-nowrap">SPOŁECZNOŚĆ</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors whitespace-nowrap">BIBLIA ONLINE</a>
       </nav>
     </div>
 
-    <!-- Universal CC Auth & Action -->
-    <div class="flex items-center gap-3">
-      <!-- Diploma Trigger Button (Visible when 28/28 completed) -->
-      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[44px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
+    <!-- Universal CC Auth & Action (Icon-First Standard) -->
+    <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
         <span>🎓 MÓJ DYPLOM</span>
       </button>
 
+      <!-- Przełącznik motywu (Jasny / Ciemny) - Czysta okrągła ikona 38x38px -->
+      <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+        <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
+      </button>
+
+      <!-- Wsparcie Patronite - Czysta okrągła ikona 38x38px -->
       <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
         <span class="support-icon text-sm">❤️</span>
-        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+        <span class="support-text sr-only">Wspieraj Misję</span>
       </a>
+
       <!-- CC Global Auth Connector Injection Point -->
       <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
     </div>
@@ -458,7 +463,8 @@
   <!-- ═════════════════════════════════════════════════════════════════
        WIDOK KURSU 2: APOKALIPSA – KSIĘGA NADZIEI (26 LEKCJI)
   ═════════════════════════════════════════════════════════════════ -->
-  <div id="course-view-apokalipsa" class="hidden">
+  <span id="apokalipsa" class="block -mt-20 pt-20" style="position:relative;top:-80px;"></span>
+  <div id="course-view-apokalipsa" data-anchor="apokalipsa" class="hidden">
     
     <!-- HERO APOKALIPSA -->
     <section class="cin-hero scroll-mt-20">
@@ -1774,6 +1780,6 @@
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
 
-  <script src="/js/cc-daily-course-share.js?v=20261008_sub_v5" defer></script>
+  <script src="/js/cc-daily-course-share.js?v=20261008_desktop_icons_v3" defer></script>
 </body>
 </html>

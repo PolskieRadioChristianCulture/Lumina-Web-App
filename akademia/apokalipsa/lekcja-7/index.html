@@ -46,7 +46,7 @@
   <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
 
   <!-- LUMINA Courses Master Stylesheet -->
-  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v3" />
 
   <style>
     /* Dedykowane szlify dla kursu Apokalipsa */
@@ -92,6 +92,7 @@
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y4EFTVBPE3');</script>
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -120,13 +121,16 @@
     <div class="cin-topbar-meta">
       <span class="cin-lesson-step-badge">
         <span>Lekcja 7 / 26</span>
-      </span>
+      <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+        <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
+      </button>
       <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
         <span class="support-icon text-sm">❤️</span>
-        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+        <span class="support-text sr-only">Wspieraj Misję</span>
       </a>
-      <a href="/akademia#apokalipsa" class="cin-btn-secondary px-3 py-1.5 text-xs min-h-[38px] hidden lg:inline-flex items-center gap-1.5">
-        <span>Katalog Kursu</span>
+      <a href="/akademia#apokalipsa" class="cin-btn-secondary cin-btn-icon-catalog" title="Katalog Kursu Apokalipsa" aria-label="Katalog Kursu">
+        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        <span class="sr-only">Katalog Kursu</span>
       </a>
     </div>
 
@@ -838,5 +842,10 @@
       updateLessonStatusUI();
     });
   </script>
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+  <script src="/js/cc-daily-course-share.js?v=20261008_desktop_icons_v3" defer></script>
 </body>
 </html>
