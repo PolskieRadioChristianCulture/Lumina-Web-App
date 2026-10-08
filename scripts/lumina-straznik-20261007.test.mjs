@@ -119,3 +119,10 @@ test('pasek wiadomości: świeże nagłówki z serwera, nie plik sprzed tygodni'
   assert.equal((await read('news.json')).trim(), '[]');
 });
 
+test('Za Polską: inicjalizacja kanału nie przerywa się na brakującej liście dni, RDS nie jest nadpisywany', async () => {
+  const z = await read('zapolske-live.html');
+  assert.match(z, /if \(daySelect\) daySelect\.innerHTML = "";/);
+  assert.match(z, /if \(daySelect\) daySelect\.value = currentDayIndex;/);
+  const i = z.indexOf('fetch("rozwazania_baza.json');
+  assert.doesNotMatch(z.slice(i, i + 6000), /data\.tickerMessage/);
+});

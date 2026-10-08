@@ -3041,7 +3041,7 @@ function getWeatherPreset(city) {
 
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
-                safeStorage.setItem("dzj_stream_day", daySelect.value);
+                if (daySelect) safeStorage.setItem("dzj_stream_day", daySelect.value);
                 safeStorage.setItem("dzj_stream_saved_date", (()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})());
                 safeStorage.setItem("dzj_stream_image", bgImageSelect.value);
                 safeStorage.setItem("dzj_stream_video", bgVideoSelect.value);
@@ -3725,8 +3725,10 @@ function getWeatherPreset(city) {
                     if (reflectionsData.length === 0) return;
 
                     // Populate select list
-                    daySelect.innerHTML = "";
-                    reflectionsData.forEach((ref, idx) => {
+                    // 🛡️ STRAŻNIK (2026-10-08): ten kanał nie ma listy dni — bez tej osłony cała inicjalizacja
+                    // (tło, pogoda, pasek wiadomości, QR) przerywała się błędem i nigdy nie startowała.
+                    if (daySelect) daySelect.innerHTML = "";
+                    if (daySelect) reflectionsData.forEach((ref, idx) => {
                         const dayLabel = ref.id.replace("ref_day", "Dzień ").replace("ref_", "");
                         const dateLabel = ref.date ? ` (${ref.date})` : "";
                         const opt = document.createElement("option");
@@ -3750,22 +3752,14 @@ function getWeatherPreset(city) {
                         currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
                     }
                     
-                    daySelect.value = currentDayIndex;
+                    if (daySelect) daySelect.value = currentDayIndex;
 
                     renderReflection(reflectionsData[currentDayIndex]);
                     initBackground();
                     initCtaRotation();
                     initTickerFlipper();
                     
-                    if (data.tickerMessage && data.tickerMessage.trim()) {
-                        window.mcSpecialRdsMessage = `<span style="background: #FF0033; color: #FFFFFF; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(255,0,51,0.6);"><i class="fa-solid fa-bullhorn"></i> WIADOMOŚĆ SPECJALNA RDS</span> <span style="color: #FFD700; font-weight: 800; margin-right: 25px;">${data.tickerMessage}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
-                    } else {
-                        window.mcSpecialRdsMessage = "";
-                    }
-                    if (typeof window.loadNewsMarquee === "function") {
-                        window.loadNewsMarquee();
-                    }
-
+                    // Komunikat RDS ustawia wyłącznie js/cc-live-mission-feed.js (Mission Control) — tu go nie nadpisujemy.
                     fetchRealWeather();
                     setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
                     loadNewsMarquee();
@@ -3774,8 +3768,13 @@ function getWeatherPreset(city) {
                 })
                 .catch(err => {
                     console.error("Error loading reflections:", err);
-                    document.querySelector(".slide-title").textContent = "Błąd Bazy Danych";
-                    document.querySelector(".slide-text").textContent = "Nie udało się wczytać pliku rozważań. Upewnij się, że plik rozwazania_baza.json istnieje.";
+                    const __t = document.querySelector(".slide-title"), __x = document.querySelector(".slide-text");
+                    if (__t) __t.textContent = "Błąd Bazy Danych";
+                    if (__x) __x.textContent = "Nie udało się wczytać pliku rozważań. Upewnij się, że plik rozwazania_baza.json istnieje.";
+                    // Pogoda, pasek i QR startują także wtedy, gdy rozważania się nie wczytały.
+                    try { fetchRealWeather(); setInterval(fetchRealWeather, 900000); } catch (e) {}
+                    try { loadNewsMarquee(); setInterval(loadNewsMarquee, 600000); } catch (e) {}
+                    try { runQrSidecarLoop(); } catch (e) {}
                 });
         });
     </script>
