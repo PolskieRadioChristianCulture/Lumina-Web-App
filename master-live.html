@@ -871,8 +871,30 @@
             return { blockKey, channel };
         }
 
+        // 🛡️ STRAŻNIK EMISJI (2026-10-08)
+        let ccSlotsDay = new Date().toDateString();
+        let ccSwitchStartedAt = 0;
+        window.ccBroadcastLog = window.ccBroadcastLog || [];
+        function ccNote(msg) {
+            window.ccBroadcastLog.push(new Date().toISOString() + ' ' + msg);
+            if (window.ccBroadcastLog.length > 50) window.ccBroadcastLog.shift();
+            console.warn('[MCR Strażnik] ' + msg);
+        }
+
         function checkSchedule() {
-            if (isSwitchingWithBumper) return;
+            // Nowy dzień = nowa ramówka. Wcześniej znacznik „blok skończył się wcześniej” zostawał na
+            // zawsze i np. poranne Studium było pomijane każdego kolejnego dnia aż do przeładowania.
+            const ccToday = new Date().toDateString();
+            if (ccToday !== ccSlotsDay) { ccSlotsDay = ccToday; earlyFinishedSlots = {}; }
+            if (isSwitchingWithBumper) {
+                // Przejście z przebitką trwa ok. 8 s; jeśli „wisi” dłużej niż 30 s — odblokowujemy ramówkę.
+                if (ccSwitchStartedAt && Date.now() - ccSwitchStartedAt > 30000) {
+                    ccNote('przejście zawisło — odblokowuję ramówkę');
+                    isSwitchingWithBumper = false;
+                    bumperOverlay.classList.remove('show');
+                    bumperOverlay.style.opacity = '1';
+                } else return;
+            }
 
             const now = new Date();
             const { blockKey, channel } = getScheduleState(now);
@@ -937,6 +959,7 @@
             } else {
                 // Subsequent program switches -> Launch Video Bumper + Dual-Iframe Preload!
                 isSwitchingWithBumper = true;
+                ccSwitchStartedAt = Date.now();
                 bumperTitle.textContent = meta.title;
                 bumperDesc.textContent = meta.desc;
                 
@@ -1240,6 +1263,28 @@
 
         // Start checking schedule every 10 seconds
         setInterval(checkSchedule, 10000);
+
+        // 🛡️ Strażnik obrazu: jeśli aktywny kanał nie wczytał się (np. chwilowy brak sieci = pusta
+        // strona błędu), po 30 s ładujemy go ponownie — zamiast nadawać pusty ekran do następnego bloku.
+        let ccBadTicks = 0;
+        setInterval(() => {
+            if (isSwitchingWithBumper || !currentUrl) return;
+            const f = getActiveFrame();
+            let bad = false;
+            try {
+                const d = f.contentDocument;
+                bad = !d || !d.body || d.location.href === 'about:blank' || d.body.childElementCount === 0;
+            } catch (e) { bad = true; }
+            ccBadTicks = bad ? ccBadTicks + 1 : 0;
+            if (ccBadTicks >= 3) {
+                ccBadTicks = 0;
+                ccNote('kanał nie odpowiada — ponowne wczytanie: ' + currentUrl);
+                const sep = currentUrl.includes('?') ? '&' : '?';
+                const audioQuery = isMutedDefault ? 'muted=1&autoplay=1' : 'autoplay=1';
+                const safeParam = isSafeMonetizationMode ? '&safe_monetization=1' : '&safe_monetization=0';
+                f.src = currentUrl + sep + audioQuery + '&in_mcr=1&noticker=1' + safeParam + '&t=' + Date.now();
+            }
+        }, 10000);
         
         // Initial load
         window.addEventListener("DOMContentLoaded", () => {

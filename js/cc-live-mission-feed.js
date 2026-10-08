@@ -32,6 +32,15 @@ function rdsHtml(message) {
     return `<span style="background: #FF0033; color: #FFFFFF; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(255,0,51,0.6);"><i class="fa-solid fa-bullhorn"></i> WIADOMOŚĆ SPECJALNA RDS</span> <span style="color: #FFD700; font-weight: 800; margin-right: 25px;">${message}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
 }
 
+// Pasek kanału bywa budowany równolegle (pierwsze wczytanie wiadomości trwa chwilę i potrafi
+// nadpisać świeży komunikat). Dlatego odświeżamy go od razu i jeszcze dwa razy po chwili.
+function refreshMarquee() {
+    const run = () => { if (typeof window.loadNewsMarquee === 'function') window.loadNewsMarquee(); };
+    run();
+    setTimeout(run, 4000);
+    setTimeout(run, 15000);
+}
+
 export function startMissionFeed() {
     if (window.__ccMissionFeedStarted) return;
     window.__ccMissionFeedStarted = true;
@@ -46,7 +55,7 @@ export function startMissionFeed() {
         const next = msg ? rdsHtml(msg) : '';
         if (next !== window.mcSpecialRdsMessage) {
             window.mcSpecialRdsMessage = next;
-            if (typeof window.loadNewsMarquee === 'function') window.loadNewsMarquee();
+            refreshMarquee();
         }
         try { window.dispatchEvent(new CustomEvent('cc:mission-config', { detail: data })); } catch (e) {}
     }, (err) => console.warn('[CC] Mission Control — brak połączenia:', err && err.code));

@@ -1955,6 +1955,54 @@
             }
         });
 
+        // ── 8b. 🛡️ STRAŻNIK EMISJI (2026-10-08) ──
+        // OBS: start bez klikania (źródło przeglądarki w OBS nie ma kto kliknąć „Rozpocznij”).
+        const ccAutostart = (!!window.obsstudio || urlParams.get('autostart') === '1' || urlParams.has('obs')) && urlParams.get('autostart') !== '0';
+        if (ccAutostart && !isParamMuted) {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+            initAudioEngine();
+            unmuteAudio();
+        }
+        window.ccBroadcastLog = window.ccBroadcastLog || [];
+        function ccNote(msg) {
+            window.ccBroadcastLog.push(new Date().toISOString() + ' ' + msg);
+            if (window.ccBroadcastLog.length > 50) window.ccBroadcastLog.shift();
+        }
+        // Strażnik dźwięku i obrazu co 5 s: wstrzymany silnik audio wznawiamy, brakujące nagrania
+        // (deszcz, kominek, ocean, las) pobieramy ponownie co minutę, zatrzymane tło wideo wznawiamy.
+        setInterval(() => {
+            if (audioCtx && isAudioInitialized && audioCtx.state !== 'running' && audioCtx.state !== 'closed') {
+                ccNote('audio: wznawiam silnik (' + audioCtx.state + ')');
+                audioCtx.resume().catch(() => {});
+            }
+            if (audioCtx && isAudioInitialized) {
+                ['rain', 'fire', 'ocean', 'forest'].forEach((key) => {
+                    const ch = audioChannels[key];
+                    if (!ch || ch.node || ch.loading || !ch.gain) return;
+                    if (!ch.lastTry) { ch.lastTry = Date.now(); return; }
+                    if (Date.now() - ch.lastTry < 60000) return;
+                    ch.loading = true; ch.lastTry = Date.now();
+                    ccNote('audio: ponawiam pobranie ' + ch.src);
+                    loadSampleBuffer(audioCtx, ch.src).then((buf) => {
+                        ch.loading = false;
+                        if (!buf || ch.node) return;
+                        ch.buffer = buf;
+                        const srcNode = audioCtx.createBufferSource();
+                        srcNode.buffer = buf; srcNode.loop = true;
+                        srcNode.connect(ch.gain); srcNode.start();
+                        ch.node = srcNode;
+                    });
+                });
+            }
+            const v = document.getElementById('bgVideo');
+            if (v && v.style.display !== 'none' && v.paused && v.readyState >= 2) v.play().catch(() => {});
+        }, 5000);
+        (function () {
+            const v = document.getElementById('bgVideo');
+            if (v) v.addEventListener('error', () => { v.style.display = 'none'; ccNote('wideo tła niedostępne — zostają zdjęcia'); }, true);
+        })();
+
         // ── 9. Bedtime Zen Auto-Fade (Wygaszanie interfejsu po 20s bezruchu) ──
         let fadeTimer = null;
         function resetZenTimer() {

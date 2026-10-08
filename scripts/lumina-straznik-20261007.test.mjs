@@ -132,3 +132,26 @@ test('kanały: komunikat Mission Control trafia na pasek od razu (loadNewsMarque
     assert.match(await read(f), /window\.loadNewsMarquee = loadNewsMarquee/, f);
   }
 });
+
+test('Ambient Sleep: start bez klikania w OBS i strażnik dźwięku', async () => {
+  const a = await read('ambient-sleep-live.html');
+  assert.match(a, /window\.obsstudio/);
+  assert.match(a, /audioCtx\.resume\(\)\.catch/);
+  assert.match(a, /ponawiam pobranie/);
+});
+
+test('DZJ pionowy: ponowne łączenie strumienia, aktualna ramówka, bez letnich haseł', async () => {
+  const d = await read('dzj-vertical-live.html');
+  assert.match(d, /brak danych > 20 s/);
+  assert.doesNotMatch(d, /Boże Wakacje/);
+  assert.doesNotMatch(d, /SMS dla Subskrybentów/);
+  assert.doesNotMatch(d, /toISOString\(\)\.split\("T"\)/);
+  assert.match(d, /cc-live-mission-feed\.js/);
+});
+
+test('Master: ramówka odświeża się co dzień, zawieszone przejście i pusty kanał są naprawiane', async () => {
+  const m = await read('master-live.html');
+  assert.match(m, /earlyFinishedSlots = \{\}; \}/);
+  assert.match(m, /przejście zawisło/);
+  assert.match(m, /kanał nie odpowiada/);
+});

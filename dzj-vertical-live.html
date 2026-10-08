@@ -560,7 +560,7 @@
 
         <!-- CYCLE BADGE -->
         <div class="cycle-badge" id="cycleBadge">
-            ✝️ Misja Boże Wakacje
+            ✝️ Dobrze, że jesteś
         </div>
 
         <!-- REFLECTION CARD -->
@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ── CYCLE BADGE (updates by day of week) ──
     const dayOfWeek = new Date().getDay();
     const themes = ["Niedziela z Bogiem","Poranny Impuls","Dobry Wtorek","Środa Słowa","Czwartek Misji","Piątek Chwały","Sobotni Spokój"];
-    document.getElementById("cycleBadge").innerHTML = `✝️ Misja Boże Wakacje &nbsp;·&nbsp; ${themes[dayOfWeek]}`;
+    document.getElementById("cycleBadge").innerHTML = `✝️ Dobrze, że jesteś &nbsp;·&nbsp; ${themes[dayOfWeek]}`;
 
     // ── SCHEDULE ──
     const schedulePrograms = {
@@ -680,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ],
         evening: [
             { time: "18:00", label: "Wieczorne Rozważanie" },
-            { time: "20:00", label: "SMS dla Subskrybentów" },
+            { time: "20:00", label: "Modlitwa Wieczorna" },
             { time: "22:00", label: "Słowo na Noc" }
         ],
         night: [
@@ -699,8 +699,18 @@ document.addEventListener("DOMContentLoaded", () => {
         else prog = schedulePrograms.night;
 
         const container = document.getElementById("scheduleRows");
+        // 🛡️ STRAŻNIK: wyróżniamy program, który trwa TERAZ (wcześniej zawsze pierwszy wiersz)
+        const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+        const toMin = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+        let activeIdx = 0;
+        // Noc przechodzi przez północ: po 22:00 liczą się tylko pozycje wieczorne, przed 6:00 — poranne godziny nocy.
+        prog.forEach((p, i) => {
+            const m = toMin(p.time);
+            const sameSide = hour >= 22 ? m >= 12 * 60 : (hour < 6 ? m < 12 * 60 : true);
+            if (sameSide && m <= nowMin) activeIdx = i;
+        });
         container.innerHTML = prog.map((p, i) => {
-            const isActive = i === 0;
+            const isActive = i === activeIdx;
             return `<div class="schedule-row${isActive ? " active" : ""}">
                 <span class="schedule-time">${p.time}</span>
                 <span class="schedule-program">${p.label}</span>
@@ -708,7 +718,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join("");
     }
     buildSchedule();
-    setInterval(buildSchedule, 300000);
+    setInterval(buildSchedule, 60000);
 
     // ── WEATHER ──
     const cityCoords = {
@@ -745,17 +755,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function fetchWeather() {
-        for (const [city, c] of Object.entries(cityCoords)) {
-            try {
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,is_day,weather_code`);
-                const d = await res.json();
-                if (d && d.current) {
-                    const temp = Math.round(d.current.temperature_2m);
-                    const icon = weatherIcon(d.current.weather_code, d.current.is_day);
-                    realWeatherData[city] = `${icon} ${temp}°C`;
-                }
-            } catch(e) { console.warn("Weather error:", city, e); }
-        }
+        // 🛡️ STRAŻNIK: jedno zapytanie dla wszystkich miast (Open-Meteo), tylko prawdziwe dane
+        try {
+            const entries = Object.entries(cityCoords);
+            const lat = entries.map(([, c]) => c.lat).join(",");
+            const lon = entries.map(([, c]) => c.lon).join(",");
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code&timezone=Europe%2FWarsaw`);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            let data = await res.json();
+            if (!Array.isArray(data)) data = [data];
+            data.forEach((d, i) => {
+                const city = entries[i] && entries[i][0];
+                if (!city || !d || !d.current) return;
+                realWeatherData[city] = `${weatherIcon(d.current.weather_code, d.current.is_day)} ${Math.round(d.current.temperature_2m)}°C`;
+            });
+        } catch (e) { console.warn("Weather error:", e && e.message); }
         renderWeather();
     }
     fetchWeather();
@@ -766,19 +780,21 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await fetch("news.json?t=" + Date.now());
             const headlines = await res.json();
-            if (headlines && headlines.length) {
-                const joined = headlines.map(h => `<span class="ticker-bullet">◆</span>${h}`).join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+            const rds = window.mcSpecialRdsMessage || "";
+            if ((headlines && headlines.length) || rds) {
+                const joined = rds + (headlines || []).map(h => `<span class="ticker-bullet">◆</span>${h}`).join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
                 const html = `<span class="ticker-text">${joined}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
                 document.getElementById("tickerText1").innerHTML = joined;
                 document.getElementById("tickerText2").innerHTML = joined;
             }
         } catch(e) { console.warn("Ticker error:", e); }
     }
+    window.loadNewsMarquee = loadTicker; // komunikaty Mission Control (js/cc-live-mission-feed.js)
     loadTicker();
     setInterval(loadTicker, 600000); // every 10 min
 
     // ── REFLECTION (from rozwazania_baza.json) ──
-    const todayStr = new Date().toISOString().split("T")[0];
+    const todayStr = (() => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); })();
     if (localStorage.getItem("dzj_v916_date") !== todayStr) {
         localStorage.removeItem("dzj_v916_day");
         localStorage.setItem("dzj_v916_date", todayStr);
@@ -818,9 +834,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(e => {
             console.warn("Reflection load error:", e);
-            document.getElementById("reflectionTitle").textContent = "Boże Wakacje";
-            document.getElementById("reflectionTeaser").textContent =
-                "Czas letni jako przestrzeń dla Boga – modlitwy, misji i osobistego uświęcenia.";
+            document.getElementById("reflectionTitle").textContent = "Słowo na Dziś";
+            document.getElementById("reflectionTeaser").textContent = "Dobrze, że jesteś — Radio Christian Culture nadaje 24/7.";
         });
 
     // ── AUDIO ──
@@ -832,6 +847,27 @@ document.addEventListener("DOMContentLoaded", () => {
         setInterval(() => {
             if (audio.paused) audio.play().catch(() => {});
         }, 10000);
+
+        // 🛡️ STRAŻNIK EMISJI (2026-10-08): strumień, który „gra”, ale nie dostaje danych (zerwane
+        // połączenie), albo zgłosi błąd — łączymy ponownie, zamiast nadawać ciszę.
+        const STREAM_URL = audio.getAttribute("src");
+        let lastT = -1, lastProgress = Date.now(), reconnecting = false;
+        window.ccBroadcastLog = window.ccBroadcastLog || [];
+        function reconnect(reason) {
+            if (reconnecting) return;
+            reconnecting = true;
+            window.ccBroadcastLog.push(new Date().toISOString() + " audio: " + reason);
+            if (window.ccBroadcastLog.length > 50) window.ccBroadcastLog.shift();
+            audio.src = STREAM_URL + (STREAM_URL.includes("?") ? "&" : "?") + "r=" + Date.now();
+            audio.load();
+            audio.play().catch(() => {}).finally(() => { lastProgress = Date.now(); reconnecting = false; });
+        }
+        audio.addEventListener("timeupdate", () => { if (audio.currentTime !== lastT) { lastT = audio.currentTime; lastProgress = Date.now(); } });
+        audio.addEventListener("error", () => setTimeout(() => reconnect("błąd strumienia"), 3000));
+        audio.addEventListener("ended", () => setTimeout(() => reconnect("strumień zakończony"), 1000));
+        setInterval(() => {
+            if (!audio.paused && Date.now() - lastProgress > 20000) reconnect("brak danych > 20 s");
+        }, 5000);
     }
 
     // ── GREETING OVERLAY (activated via URL param ?greet=TEXT) ──
@@ -847,5 +883,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
     <script src="live-window-manager.js"></script>
+    <script type="module" src="js/cc-live-mission-feed.js?v=20261008_kanaly3&autostart=1"></script>
 </body>
 </html>

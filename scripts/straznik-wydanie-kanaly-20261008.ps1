@@ -28,6 +28,7 @@ $Files = @(
     'zapolske-live.html', 'cctv24.html', 'cctv24-pl.html', 'cctv24-global.html',
     'cctv24-worship-live.html', 'biblia-spiewana-live.html',
     'cctv24-worship.html', 'cctv24-worship.backup-20261008.html',
+    'ambient-sleep-live.html', 'dzj-vertical-live.html', 'master-live.html',
     'news.json', '_worker.js', '.cc-frozen-approvals.json', 'scripts\joma_guard_sentinel.cjs',
     'scripts\lumina-straznik-20261007.test.mjs',
     'CLAUDE.md',
