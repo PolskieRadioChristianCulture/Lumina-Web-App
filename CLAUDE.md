@@ -30,7 +30,7 @@ Gdy Dowódca wpisze w czacie hasło z `@`:
 - **`@Akademia` / `@KC`** — Kurs Codzienny i Z Biblią Za Pan Brat (`akademia/kurscodzienny`).
 - **`@MojaBiblia` / `@mb`** — Interlinearna Biblia (`mojabiblia.html`).
 - **`@news` / `@CCN`** — Portale CCN News (`/news`, `/nauka`, `/historia` itd.). Zakaz fikcyjnych ekspertów.
-- **`@live`** — Transmisja na żywo (`stream-scene.html`). Kategoryczny zakaz edycji `cctv24-worship.html`!
+- **`@live`** — Transmisja na żywo (`stream-scene.html`). `cctv24-worship.html` zmieniamy wyłącznie za zgodą Dowódcy (2026-10-08: zgoda na standard nadawczy — prawdziwe dane; kopia: `cctv24-worship.backup-20261008.html`). Nie cofać poprawek Strażnika z 07–08.10 (pogoda, Mission Control, intencje, pasek wiadomości).
 - **`@vod`** — Kino VOD (`vod.html`).
 
 ---

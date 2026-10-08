@@ -2216,7 +2216,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             })();
 
             // Configuration & State
-            const todayDateStr = new Date().toISOString().split('T')[0];
+            const todayDateStr = (()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
             if (safeStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
                 safeStorage.removeItem("dzj_stream_day");
                 safeStorage.setItem("dzj_stream_saved_date", todayDateStr);
@@ -2318,7 +2318,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     }
                     
                     // Reload matched index (either updated manual day or today's matching date)
-                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todayStr = (()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
                     const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
                     let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
                     if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
@@ -2461,90 +2461,38 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             }
 
             async function fetchRealWeather() {
-                for (const [city, coords] of Object.entries(cityCoords)) {
-                    try {
-                        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,is_day,weather_code`);
-                        const data = await res.json();
-                        if (data && data.current) {
-                            const temp = Math.round(data.current.temperature_2m);
-                            const icon = getWeatherIcon(data.current.weather_code, data.current.is_day);
-                            const desc = getWeatherDesc(data.current.weather_code);
-                            realWeatherData[city] = `${icon} ${temp}°C / ${desc}`;
-                        }
-                    } catch (err) {
-                        console.error(`Error fetching weather for ${city}:`, err);
-                    }
+                // 🛡️ STRAŻNIK (2026-10-07): prawdziwa pogoda dla wszystkich miast jednym zapytaniem (Open-Meteo).
+                // Wcześniej, zanim dane dotarły (lub gdy się nie udało), antena pokazywała zmyślone „letnie” wartości.
+                try {
+                    const entries = Object.entries(cityCoords);
+                    const lat = entries.map(([, c]) => c.lat).join(',');
+                    const lon = entries.map(([, c]) => c.lon).join(',');
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code&timezone=Europe%2FWarsaw`);
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    let data = await res.json();
+                    if (!Array.isArray(data)) data = [data];
+                    data.forEach((d, i) => {
+                        const city = entries[i] && entries[i][0];
+                        if (!city || !d || !d.current) return;
+                        const temp = Math.round(d.current.temperature_2m);
+                        realWeatherData[city] = `${getWeatherIcon(d.current.weather_code, d.current.is_day)} ${temp}°C / ${getWeatherDesc(d.current.weather_code)}`;
+                    });
+                    window.ccWeatherUpdatedAt = Date.now();
+                } catch (err) {
+                    console.warn('[CC] Pogoda chwilowo niedostępna — pokazujemy ostatnie prawdziwe dane lub ukrywamy okno:', err && err.message);
                 }
                 updateWeatherDisplay();
             }
 
             function getDynamicWeatherForCity(city) {
-                if (realWeatherData && realWeatherData[city]) {
-                    return realWeatherData[city];
-                }
-                if (typeof getWeatherPreset === "function") {
-                    return getWeatherPreset(city);
-                }
-                return "☀️ 24°C / Słonecznie";
+                // Tylko prawdziwe dane. Brak danych = brak pogody na ekranie (nigdy wartości zmyślone).
+                return (realWeatherData && realWeatherData[city]) || null;
             }
 
 function getWeatherPreset(city) {
-                const hour = new Date().getHours();
-                if (hour >= 5 && hour < 18) {
-                    const dayPresets = {
-                        "WARSZAWA": "🌤️ 26°C / Ciepło, przelotne burze",
-                        "KRAKÓW": "☀️ 27°C / Słonecznie i upalnie",
-                        "OSTROWIEC ŚW.": "🌤️ 25°C / Lekkie chmury",
-                        "GDAŃSK": "☀️ 23°C / Słonecznie, morska bryza",
-                        "STALOWA WOLA": "☀️ 26°C / Ciepło",
-                        "WROCŁAW": "☀️ 28°C / Słonecznie",
-                        "POZNAŃ": "⛈️ 25°C / Możliwe burze",
-                        "ŁÓDŹ": "🌤️ 25°C / Przelotne opady",
-                        "SZCZECIN": "☀️ 24°C / Pogodnie",
-                        "BYDGOSZCZ": "☀️ 25°C / Słonecznie",
-                        "LUBLIN": "🌤️ 26°C / Lekkie zachmurzenie",
-                        "BIAŁYSTOK": "🌤️ 24°C / Chłodniej",
-                        "KATOWICE": "☀️ 26°C / Słonecznie",
-                        "RZESZÓW": "☀️ 27°C / Słonecznie"
-                    };
-                    return dayPresets[city] || "☀️ 25°C / Słonecznie";
-                } else if (hour >= 18 && hour < 22) {
-                    const eveningPresets = {
-                        "WARSZAWA": "🌇 22°C / Ciepły Wieczór",
-                        "KRAKÓW": "🌇 23°C / Ciepły Zmierzch",
-                        "OSTROWIEC ŚW.": "☁️ 21°C / Rześki Wieczór",
-                        "GDAŃSK": "🌊 20°C / Rześki Wiatr",
-                        "STALOWA WOLA": "🌇 22°C / Spokojny Wieczór",
-                        "WROCŁAW": "🌇 24°C / Ciepły Zmierzch",
-                        "POZNAŃ": "☁️ 21°C / Pochmurnie",
-                        "ŁÓDŹ": "🌇 22°C / Spokojny Wieczór",
-                        "SZCZECIN": "🌇 20°C / Chłodny Wieczór",
-                        "BYDGOSZCZ": "🌇 21°C / Pogodnie",
-                        "LUBLIN": "🌇 22°C / Ciepły Zmierzch",
-                        "BIAŁYSTOK": "☁️ 20°C / Pochmurno",
-                        "KATOWICE": "🌇 22°C / Pogodny Wieczór",
-                        "RZESZÓW": "🌇 23°C / Pogodny Wieczór"
-                    };
-                    return eveningPresets[city] || "🌇 22°C / Spokojny Wieczór";
-                } else {
-                    const nightPresets = {
-                        "WARSZAWA": "🌙 18°C / Gwieździsta Noc",
-                        "KRAKÓW": "🌙 19°C / Czyste Niebo",
-                        "OSTROWIEC ŚW.": "🌙 17°C / Chłodna Noc",
-                        "GDAŃSK": "🌙 16°C / Nadmorska Noc",
-                        "STALOWA WOLA": "🌙 17°C / Spokojna Noc",
-                        "WROCŁAW": "🌙 19°C / Ciepła Noc",
-                        "POZNAŃ": "🌙 18°C / Możliwe opady",
-                        "ŁÓDŹ": "🌙 17°C / Spokojna Noc",
-                        "SZCZECIN": "🌙 16°C / Chłodna Noc",
-                        "BYDGOSZCZ": "🌙 17°C / Pogodna Noc",
-                        "LUBLIN": "🌙 18°C / Gwieździsta Noc",
-                        "BIAŁYSTOK": "🌙 15°C / Chłodna Noc",
-                        "KATOWICE": "🌙 18°C / Czyste Niebo",
-                        "RZESZÓW": "🌙 18°C / Ciepła Noc"
-                    };
-                    return nightPresets[city] || "🌙 15°C / Spokojna Noc";
-                }
+                // 🛡️ STRAŻNIK: usunięto zmyślone „presety” pogody (np. 26°C w październiku).
+                void city;
+                return null;
             }
 
             // Load and build news marquee text dynamically from news.json
@@ -2552,7 +2500,7 @@ function getWeatherPreset(city) {
                 const marqueeTextEl = document.getElementById("marqueeText");
                 if (!marqueeTextEl) return;
                 
-                const defaultMissionText = `
+                const defaultMissionText = `${window.mcSpecialRdsMessage || ''}
                      <span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">🇵🇱 BIBLIA ŚPIEWANA CC LIVE 🙏🔥</span> 
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -2610,11 +2558,23 @@ function getWeatherPreset(city) {
             let cityIdx = 0;
 
             function updateWeatherDisplay() {
+                // 🛡️ STRAŻNIK: pokazujemy wyłącznie miasta z prawdziwymi danymi; bez danych okno pogody jest ukryte
+                {
+                    const __box = document.getElementById("weatherBox") || document.querySelector(".weather-box");
+                    const __has = realWeatherData && Object.keys(realWeatherData).length > 0;
+                    if (__box) __box.style.visibility = __has ? "" : "hidden";
+                    if (!__has) return;
+                    let __n = 0;
+                    while (!realWeatherData[weatherCitiesList[cityIdx]] && __n++ < weatherCitiesList.length) {
+                        cityIdx = (cityIdx + 1) % weatherCitiesList.length;
+                    }
+                }
                 const cityName = weatherCitiesList[cityIdx];
                 const weatherBox = document.getElementById("weatherBox");
                 const weatherIcon = document.querySelector(".weather-icon");
                 if (weatherBox) {
-                    const desc = (getDynamicWeatherForCity(cityName) || "☀️ 24°C / Słonecznie").toString();
+                    const desc = (getDynamicWeatherForCity(cityName) || "").toString();
+                    if (!desc) return;
                     weatherBox.innerHTML = `
                         <span class="weather-city">${cityName}</span>
                         <span class="weather-temp-desc">${desc}</span>
@@ -3362,7 +3322,7 @@ function getWeatherPreset(city) {
                     }
 
                     // Match today's date if no manual index override is saved
-                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todayStr = (()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
                     const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
                     let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
                     if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
@@ -3374,7 +3334,7 @@ function getWeatherPreset(city) {
                     fetchRealWeather();
                     setInterval(fetchRealWeather, 900000); 
         // --- MISSION CONTROL: GLOBAL CONFIG LISTENER ---
-        onSnapshot(doc(db, "mission_control_live", "global_config"), (docSnap) => {
+        onSnapshot(doc(mcDb, "mission_control_live", "global_config"), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 const liveBadges = document.querySelectorAll(".live-badge");
@@ -3407,10 +3367,11 @@ function getWeatherPreset(city) {
         <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
+        import { mcDb } from "./js/cc-live-mission-feed.js?v=20261007_kanaly1";
         import { collection, doc, query, where, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         // --- MISSION CONTROL: GLOBAL CONFIG LISTENER ---
-        onSnapshot(doc(db, "mission_control_live", "global_config"), (docSnap) => {
+        onSnapshot(doc(mcDb, "mission_control_live", "global_config"), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 const liveBadges = document.querySelectorAll(".live-badge");
@@ -3430,10 +3391,7 @@ function getWeatherPreset(city) {
         let prayerQueue = [];
         let isShowingPrayer = false;
 
-        const q = query(
-            collection(db, "prayer_intentions"),
-            limit(50)
-        );
+        const q = query(collection(db, "prayer_intentions"), where("approved", "==", true), limit(50));
 
         onSnapshot(q, (snapshot) => {
             const approvedIntentions = [];

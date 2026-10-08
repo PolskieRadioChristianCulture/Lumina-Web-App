@@ -331,6 +331,22 @@
             background: var(--gold-primary);
             color: #000;
         }
+
+        /* ── PLANSZA ZASTĘPCZA (Strażnik 2026-10-07): nigdy czarny ekran na antenie ── */
+        .cc-slate {
+            position: fixed; inset: 0; z-index: 5; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 2.2vh; text-align: center;
+            background: radial-gradient(ellipse at center, #141a2b 0%, #07090e 70%);
+            opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+        }
+        .cc-slate.visible { opacity: 1; }
+        .cc-slate-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 5.2vh; letter-spacing: 0.06em; color: var(--gold-primary); text-shadow: 0 0 30px var(--gold-glow); }
+        .cc-slate-sub { font-size: 2.6vh; font-weight: 600; color: rgba(255,255,255,0.85); letter-spacing: 0.04em; }
+        .cc-slate-dots { display: flex; gap: 1.2vh; margin-top: 1vh; }
+        .cc-slate-dots span { width: 1.2vh; height: 1.2vh; border-radius: 50%; background: var(--gold-primary); animation: ccSlatePulse 1.4s infinite ease-in-out; }
+        .cc-slate-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .cc-slate-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes ccSlatePulse { 0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -338,6 +354,13 @@
     <!-- 100% CLEAN STAGE FOR OBS CAPTURE (NO OVERLAYS DURING LIVE) -->
     <div class="clean-stage">
         <div id="yt-player"></div>
+    </div>
+
+    <!-- PLANSZA ZASTĘPCZA: pokazywana automatycznie, gdy obraz stoi dłużej niż kilka sekund -->
+    <div id="ccSlate" class="cc-slate" aria-hidden="true">
+        <div class="cc-slate-title">APOKALIPSA: KSIĘGA NADZIEI</div>
+        <div class="cc-slate-sub">Za chwilę dalszy ciąg programu</div>
+        <div class="cc-slate-dots"><span></span><span></span><span></span></div>
     </div>
 
     <!-- DISCRETE OPERATOR RE-OPEN BAR (ACCESSIBLE VIA ESC) -->
@@ -520,7 +543,8 @@
                 },
                 events: {
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
                 }
             });
         }
@@ -542,7 +566,7 @@
             if (event.data === YT.PlayerState.ENDED) {
                 if (player && typeof player.getPlaylistIndex === 'function') {
                     const currentIdx = player.getPlaylistIndex();
-                    const nextIdx = (currentIdx + 1) % 25;
+                    const nextIdx = (currentIdx + 1) % playlistLength();
                     console.log(`OBS Clean Feed: Zakończono lekcję ${currentIdx + 1}. Automatyczne przejście do lekcji ${nextIdx + 1} (24/7 Loop).`);
                     player.playVideoAt(nextIdx);
                     updateStatusLabel(nextIdx);
@@ -583,6 +607,8 @@
         }
 
         function executeStart(index) {
+            setSlate(true);
+            lastPlayingAt = Date.now();
             console.log(`OBS Clean Feed: Start emisji na kanale Studio Dees od lekcji: ${index + 1}`);
             
             try {
@@ -630,9 +656,11 @@
 
         function updateStatusLabel(idx) {
             const label = document.getElementById('currentStatusLabel');
-            if (label && LESSONS_25[idx]) {
-                label.textContent = `EMISJA 24/7 • LEKCJA ${LESSONS_25[idx].ep} / 25`;
-            }
+            if (!label) return;
+            let title = '';
+            try { title = (player && typeof player.getVideoData === 'function' && player.getVideoData().title) || ''; } catch (e) {}
+            if (!title && LESSONS_25[idx]) title = LESSONS_25[idx].title;
+            label.textContent = `EMISJA 24/7 • ${idx + 1} / ${playlistLength()}${title ? ' • ' + title : ''}`;
         }
 
         function showCueOverlay() {
@@ -648,11 +676,126 @@
         function jumpNextLesson() {
             if (!player || typeof player.getPlaylistIndex !== 'function') return;
             const currentIdx = player.getPlaylistIndex();
-            const nextIdx = (currentIdx + 1) % 25;
+            const nextIdx = (currentIdx + 1) % playlistLength();
             player.playVideoAt(nextIdx);
             disableCaptions();
             updateStatusLabel(nextIdx);
         }
+
+        // ═════════════════════════════════════════════════════════════════
+        // 🛡️ STANDARD NADAWCZY (Strażnik 2026-10-07): emisja 24/7 bez ręcznej obsługi
+        //  • w OBS startuje sama (po odświeżeniu źródła nie wisi ekran ustawień na antenie),
+        //  • wznawia od miejsca, w którym przerwała (do 6 godzin wstecz),
+        //  • niedostępny film = automatyczne przejście do następnego (zamiast czarnego ekranu),
+        //  • strażnik obrazu: gdy wideo stoi > 30 s — wznowienie, > 60 s — następna lekcja,
+        //  • w przerwie zamiast czerni — plansza „Za chwilę dalszy ciąg programu”.
+        // ═════════════════════════════════════════════════════════════════
+        const RESUME_KEY = 'cc_apokalipsa_obs_resume_v1';
+        let lastPlayingAt = Date.now();
+        let resumeSeekDone = false;
+        let pendingResumeSeconds = 0;
+
+        function playlistLength() {
+            try {
+                const list = player && typeof player.getPlaylist === 'function' ? player.getPlaylist() : null;
+                if (Array.isArray(list) && list.length) return list.length;
+            } catch (e) {}
+            return LESSONS_25.length;
+        }
+
+        function setSlate(visible) {
+            const el = document.getElementById('ccSlate');
+            if (el) el.classList.toggle('visible', !!visible);
+        }
+
+        function onPlayerError(event) {
+            console.warn('OBS Clean Feed: błąd odtwarzania (kod ' + (event && event.data) + ') — przechodzę do następnej lekcji.');
+            setSlate(true);
+            setTimeout(() => {
+                try {
+                    const cur = player.getPlaylistIndex();
+                    const next = ((cur >= 0 ? cur : 0) + 1) % playlistLength();
+                    player.playVideoAt(next);
+                    updateStatusLabel(next);
+                } catch (e) {}
+            }, 2500);
+        }
+
+        function saveResumePoint() {
+            try {
+                if (!player || typeof player.getPlaylistIndex !== 'function') return;
+                const idx = player.getPlaylistIndex();
+                const t = typeof player.getCurrentTime === 'function' ? Math.floor(player.getCurrentTime() || 0) : 0;
+                if (idx >= 0) localStorage.setItem(RESUME_KEY, JSON.stringify({ idx, t, at: Date.now() }));
+            } catch (e) {}
+        }
+
+        function readResumePoint() {
+            try {
+                const r = JSON.parse(localStorage.getItem(RESUME_KEY) || 'null');
+                if (r && Number.isInteger(r.idx) && Date.now() - r.at < 6 * 3600 * 1000) return r;
+            } catch (e) {}
+            return null;
+        }
+
+        // Śledzenie stanu dla strażnika obrazu i planszy
+        (function hookStateForWatchdog() {
+            const original = onPlayerStateChange;
+            onPlayerStateChange = function (event) {
+                if (event.data === YT.PlayerState.PLAYING) {
+                    lastPlayingAt = Date.now();
+                    setSlate(false);
+                    if (!resumeSeekDone && pendingResumeSeconds > 5) {
+                        resumeSeekDone = true;
+                        try { player.seekTo(pendingResumeSeconds, true); } catch (e) {}
+                    }
+                }
+                return original(event);
+            };
+        })();
+
+        setInterval(() => {
+            if (!isBroadcasting || !player || typeof player.getPlayerState !== 'function') return;
+            let state = -1;
+            try { state = player.getPlayerState(); } catch (e) {}
+            if (state === YT.PlayerState.PLAYING) {
+                lastPlayingAt = Date.now();
+                setSlate(false);
+                saveResumePoint();
+                return;
+            }
+            const stalledFor = Date.now() - lastPlayingAt;
+            if (stalledFor > 6000) setSlate(true);
+            if (stalledFor > 60000) {
+                console.warn('OBS Clean Feed: obraz stoi ponad 60 s — przechodzę do następnej lekcji.');
+                lastPlayingAt = Date.now();
+                jumpNextLesson();
+            } else if (stalledFor > 30000) {
+                try { unmuteAudioFully(); } catch (e) {}
+            }
+        }, 5000);
+
+        // Autostart: w OBS (window.obsstudio) albo z parametrem ?autostart=1
+        (function autoStartInObs() {
+            const params = new URLSearchParams(location.search);
+            const wantsAuto = !!window.obsstudio || params.get('autostart') === '1' || params.get('obs') === '1';
+            if (!wantsAuto || params.get('autostart') === '0') return;
+            const go = () => {
+                if (isBroadcasting) return;
+                const resume = readResumePoint();
+                const select = document.getElementById('lessonSelector');
+                if (resume && select) {
+                    select.value = String(resume.idx % LESSONS_25.length);
+                    pendingResumeSeconds = resume.t || 0;
+                }
+                console.log('OBS Clean Feed: autostart emisji' + (resume ? ` (wznowienie: lekcja ${resume.idx + 1}, ${resume.t} s)` : ''));
+                startCleanBroadcast();
+            };
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(go, 300));
+            else setTimeout(go, 300);
+        })();
+
+        window.addEventListener('beforeunload', saveResumePoint);
 
         // ── Keyboard shortcuts ──
         window.addEventListener('keydown', (e) => {

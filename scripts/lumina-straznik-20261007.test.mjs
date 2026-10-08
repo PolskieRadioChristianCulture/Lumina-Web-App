@@ -88,3 +88,34 @@ test('gość nie jest pokazywany jako zalogowany Założyciel (nagłówek z kopi
   assert.match(fn, /lumina_user_session'\) !== 'active'/);
 });
 
+const CHANNELS = ['zapolske-live.html', 'cctv24.html', 'cctv24-pl.html', 'cctv24-global.html', 'cctv24-worship-live.html', 'cctv24-worship.html', 'biblia-spiewana-live.html'];
+
+test('kanały: bez zmyślonej pogody, dane z jednego zapytania Open-Meteo', async () => {
+  for (const f of CHANNELS) {
+    const src = await read(f);
+    assert.doesNotMatch(src, /\d+°C \/ [A-ZŁ]/, f);
+    assert.match(src, /latitude=\$\{lat\}&longitude=\$\{lon\}/, f);
+  }
+});
+
+test('kanały: Mission Control czytany z projektu cc-mission-control', async () => {
+  for (const f of CHANNELS) {
+    const src = await read(f);
+    assert.doesNotMatch(src, /doc\(db, "mission_control_live"/, f);
+    assert.match(src, /cc-live-mission-feed\.js/, f);
+  }
+  assert.match(await read('js/cc-live-mission-feed.js'), /projectId: 'cc-mission-control'/);
+});
+
+test('kanały: intencje modlitwy tylko zatwierdzone (zgodne z regułami bazy)', async () => {
+  for (const f of CHANNELS) {
+    const src = await read(f);
+    for (const m of src.matchAll(/collection\(db, "prayer_intentions"\)[^;]*/g)) assert.match(m[0], /where\("approved", "==", true\)/, f);
+  }
+});
+
+test('pasek wiadomości: świeże nagłówki z serwera, nie plik sprzed tygodni', async () => {
+  assert.match(await read('_worker.js'), /url\.pathname === '\/news\.json'/);
+  assert.equal((await read('news.json')).trim(), '[]');
+});
+

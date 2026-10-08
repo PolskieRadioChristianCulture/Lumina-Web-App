@@ -30,9 +30,20 @@ function logSuccess(msg) {
 try {
     const gitDiff = execSync('git diff --name-only origin/main', { cwd: rootDir, encoding: 'utf8' });
     const frozenFiles = ['cctv24-worship.html', 'cctv24-worship-live.html', 'stream-scene.html'];
+    // Zgody Dowódcy: konkretna treść pliku (SHA-256) zatwierdzona do wydania.
+    // Każda kolejna zmiana wymaga nowej zgody — zamrożenie nadal obowiązuje.
+    let approvals = {};
+    try { approvals = JSON.parse(fs.readFileSync(path.join(rootDir, '.cc-frozen-approvals.json'), 'utf8')); } catch (e) {}
+    const changed = gitDiff.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
     frozenFiles.forEach(f => {
-        if (gitDiff.includes(f)) {
-            logError(f, 'NARUSZENIE ZAMROŻONEGO KANAŁU NADAWCZEGO! Plik jest STRICT READ-ONLY.');
+        if (!changed.includes(f)) return;
+        const a = approvals[f];
+        let hash = '';
+        try { hash = require('crypto').createHash('sha256').update(fs.readFileSync(path.join(rootDir, f))).digest('hex'); } catch (e) {}
+        if (a && a.sha256 === hash) {
+            logSuccess(`[${f}] zmiana zamrożonego kanału z ZGODĄ Dowódcy (${a.date}, ${a.reason || 'bez opisu'}).`);
+        } else {
+            logError(f, 'NARUSZENIE ZAMROŻONEGO KANAŁU NADAWCZEGO! Plik jest STRICT READ-ONLY (brak zgody Dowódcy dla tej treści w .cc-frozen-approvals.json).');
         }
     });
 } catch (e) {
