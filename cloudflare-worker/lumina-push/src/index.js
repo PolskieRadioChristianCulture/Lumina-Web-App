@@ -382,7 +382,10 @@ export default {
         const token = await getGoogleAccessToken(env);
         const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));
         return json(result.body,result.status,{...cors,'cache-control':'no-store'});
-      } catch (_) {return json({error:'Nie udało się obsłużyć subskrypcji.'},502,cors);}
+      } catch (err) {
+        console.error(JSON.stringify({ event: 'course_subscription_error', error: err instanceof Error ? err.message : String(err) }));
+        return json({error:'Nie udało się obsłużyć subskrypcji.'},502,cors);
+      }
     }
     const match = new URL(request.url).pathname.match(/^\/v1\/push\/(request|direct)\/([A-Za-z0-9_-]{1,200})$/);
     if (!match) return json({ error: 'Nieznana trasa.' }, 404, cors);

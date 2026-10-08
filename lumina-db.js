@@ -3582,94 +3582,63 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 }
 
 // ── Oznaczanie wiadomości prywatnych jako Przeczytane (Real-time Read Receipts ✓✓) ──
+const activeDirectReadReceipts = new Set();
 export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName) {
-    if (!chatId || !currentUserId) return;
-    const parts = (chatId || '').split('_');
-    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    const user = currentUserState;
+    if (!db || !chatId || !currentUserId || !user?.uid || user.isAnonymous) return false;
+    const parts = chatId.split('_');
+    const normalizedChatId = parts.length === 2 ? getChatId(parts[0], parts[1]) : chatId;
     const normMyId = normalizeChatUserId(currentUserId);
-    const myName = currentUserName || (normMyId === 'radiocc' ? 'Christian Culture' : (normMyId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normMyId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
-
-    // 1. Zapisz czas odczytania tego czatu
-    localStorage.setItem(`lumina_chat_read_${normalizedChatId}`, String(Date.now()));
-
-    // 2. Zachowaj licznik pozostałych rozmów. Odczyt jednego wątku nie może
-    // ukrywać nowych wiadomości w innych pokojach.
+    const myName = currentUserName || 'Użytkownik LUMINA';
+    // Confirm only incoming messages actually rendered from this room's cache.
+    // Never manufacture a read receipt while offline or before the server commit.
+    let visibleIds;
     try {
-        const remaining = Math.max(0, parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10) || 0);
-        localStorage.setItem('lumina_messages_unread_count', String(remaining));
-        if (typeof window.updateLuminaMessagesBadge === 'function') {
-            window.updateLuminaMessagesBadge(remaining);
-        } else {
-            const b = document.getElementById('floatingChatBadge');
-            if (b) {
-                if (remaining > 0) {
-                    b.style.setProperty('display', 'flex', 'important');
-                    b.classList.add('visible');
-                    b.setAttribute('data-visible', 'true');
-                    b.textContent = remaining > 9 ? '9+' : String(remaining);
-                } else {
-                    b.style.setProperty('display', 'none', 'important');
-                    b.classList.remove('visible');
-                    b.setAttribute('data-visible', 'false');
-                    b.textContent = '';
-                }
-            }
-        }
-    } catch(e) {}
-
-    // 3. Zaktualizuj natychmiast lokalny cache
-    const localKey = `lumina_chat_${normalizedChatId}`;
+        const cached = JSON.parse(localStorage.getItem(`lumina_chat_${normalizedChatId}`) || '[]');
+        visibleIds = new Set(cached.filter(m => !m.isRead || m.status !== 'read').map(m => m.id).filter(Boolean));
+    } catch (_) { return false; }
+    if (!visibleIds.size) return true;
+    const receiptKey = `${user.uid}:${normalizedChatId}`;
+    if (activeDirectReadReceipts.has(receiptKey)) return false;
+    activeDirectReadReceipts.add(receiptKey);
     try {
-        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        let changed = false;
-        cached.forEach(m => {
-            const normRec = normalizeChatUserId(m.receiverId);
-            if ((normRec === normMyId || m.receiverId === normMyId) && (!m.isRead || m.status !== 'read')) {
-                m.isRead = true;
-                m.status = 'read';
-                m.readAt = Date.now();
-                m.readByName = myName;
-                if (!m.readBy) m.readBy = [];
-                if (!m.readBy.includes(normMyId)) m.readBy.push(normMyId);
-                changed = true;
-            }
-        });
-        if (changed) {
-            localStorage.setItem(localKey, JSON.stringify(cached));
-            const listener = activeDirectChatListeners.get(normalizedChatId);
-            if (listener) listener(cached);
-        }
-    } catch(e) {}
-
-    if (!db) return;
-
-    try {
-        // Aktualizacja w chmurze Firestore
-        const qFallback = query(
-            collection(db, 'lumina_direct_messages'),
-            where('chatId', '==', normalizedChatId),
-            limit(50)
-        );
-        const snap = await getDocs(qFallback);
-        const promises = [];
+        const q = query(collection(db, 'lumina_direct_messages'),
+            where('participants', 'array-contains', user.uid),
+            where('chatId', '==', normalizedChatId), limit(400));
+        const snap = await getDocs(q);
+        if (currentUserState?.uid !== user.uid || currentUserState.isAnonymous) return false;
+        const receipts = new Map();
+        const batch = writeBatch(db);
+        const readAt = Date.now();
         snap.forEach(d => {
             const data = d.data();
-            const normReceiver = normalizeChatUserId(data.receiverId);
-            const normSender = normalizeChatUserId(data.senderId);
-            if (normSender !== normMyId && (!data.isRead || data.status !== 'read')) {
-                const ref = doc(db, 'lumina_direct_messages', d.id);
-                promises.push(updateDoc(ref, {
-                    isRead: true,
-                    status: 'read',
-                    readAt: Date.now(),
-                    readByName: myName,
-                    readBy: [normMyId]
-                }));
-            }
+            if (!visibleIds.has(d.id) || data.receiverAuthUid !== user.uid ||
+                data.senderAuthUid === user.uid || (data.isRead && data.status === 'read')) return;
+            const receipt = { isRead: true, status: 'read', readAt, readByName: myName,
+                readBy: Array.from(new Set([...(Array.isArray(data.readBy) ? data.readBy : []), normMyId])) };
+            batch.update(doc(db, 'lumina_direct_messages', d.id), receipt);
+            receipts.set(d.id, receipt);
         });
-        if (promises.length) await Promise.all(promises);
-    } catch(err) {
-        console.warn('Lumina mark direct messages as read notice:', err);
+        if (!receipts.size) return true;
+        await batch.commit();
+        // A logout/account switch during the commit must not update the new session.
+        if (currentUserState?.uid !== user.uid || currentUserState.isAnonymous) return true;
+        try {
+            const localKey = `lumina_chat_${normalizedChatId}`;
+            const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+            const updated = cached.map(m => receipts.has(m.id) ? { ...m, ...receipts.get(m.id) } : m);
+            localStorage.setItem(localKey, JSON.stringify(updated));
+            localStorage.setItem(`lumina_chat_read_${normalizedChatId}`, String(readAt));
+            const listener = activeDirectChatListeners.get(normalizedChatId);
+            if (listener) listener(updated);
+        } catch (_) { /* The server receipt remains authoritative if local cache is unavailable. */ }
+        // Global unread counters belong to the room-list subscription, not this receipt.
+        return true;
+    } catch (err) {
+        console.warn('Lumina mark direct messages as read notice:', err?.code || 'write-failed');
+        return false;
+    } finally {
+        activeDirectReadReceipts.delete(receiptKey);
     }
 }
 

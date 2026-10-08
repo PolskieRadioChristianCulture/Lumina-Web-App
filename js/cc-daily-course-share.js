@@ -85,7 +85,7 @@
   // Backend release approved: expose enrollment on all lessons (can be suppressed with false).
   if (window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED !== false) {
     const subscription = document.createElement('script');
-    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription2';
+    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription3';
     document.head.appendChild(subscription);
   }
 

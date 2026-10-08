@@ -7,6 +7,66 @@ const start=source.indexOf('export async function sendDirectMessageToCloud(');
 const end=source.indexOf('// ── Oznaczanie wiadomości prywatnych',start);
 assert.ok(start>=0 && end>start);
 const fn=source.slice(start,end).replace('export async function','async function');
+const readStart=source.indexOf('export async function markDirectMessagesAsRead(');
+const readEnd=source.indexOf('// ── Public Community Live Chatroom',readStart);
+const readFn=source.slice(readStart,readEnd).replace('export async function','async function');
+function readFixture({offline=false,anonymous=false,failCommit=false,switchAccount=false,cacheFailure=false}={}) {
+  const room='u_synthetic_recipient_u_synthetic_sender';
+  const messages=[
+    {id:'incoming',receiverAuthUid:'recipient-uid',senderAuthUid:'sender-uid',isRead:false,status:'sent',readBy:['previous']},
+    {id:'outgoing',receiverAuthUid:'sender-uid',senderAuthUid:'recipient-uid',isRead:false,status:'sent'},
+    {id:'unseen',receiverAuthUid:'recipient-uid',senderAuthUid:'sender-uid',isRead:false,status:'sent'},
+  ];
+  const storage=new Map([['lumina_chat_'+room,JSON.stringify(messages.slice(0,2))],['lumina_messages_unread_count','7']]);
+  const writes=[],events=[],queries=[];
+  const ctx={db:offline?null:{},currentUserState:{uid:'recipient-uid',isAnonymous:anonymous},
+    normalizeChatUserId:id=>id,getChatId:(a,b)=>[a,b].sort().join('_'),
+    localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>{events.push('cache');if(cacheFailure)throw Error('quota');storage.set(key,value);}},
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>{queries.push({ref,filters});return {ref,filters};},where:(...args)=>args,limit:n=>n,
+    getDocs:async()=>({forEach:cb=>messages.forEach(m=>cb({id:m.id,data:()=>m}))}),doc:(_db,path,id)=>({path,id}),
+    writeBatch:()=>({update:(...args)=>writes.push(args),commit:async()=>{events.push('commit');if(failCommit)throw Error('denied');if(switchAccount)ctx.currentUserState={uid:'other-uid'};}}),
+    activeDirectChatListeners:new Map([[room,()=>events.push('render')]]),console:{warn:()=>{}},
+    activeDirectReadReceipts:new Set(),
+  };
+  return {mark:vm.runInNewContext('('+readFn.trim()+'\n)',ctx),room,storage,writes,events,queries};
+}
+test('read receipts: offline and anonymous accounts never mutate cache or query messages',async()=>{
+  for(const opts of [{offline:true},{anonymous:true}]) {
+    const f=readFixture(opts);assert.equal(await f.mark(f.room,'recipient','Test'),false);
+    assert.equal(f.events.length,0);assert.equal(f.queries.length,0);
+  }
+});
+test('read receipts: participant scope preserves underscore room IDs and marks only visible incoming messages',async()=>{
+  const f=readFixture();assert.equal(await f.mark(f.room,'recipient','Test'),true);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.queries[0].filters)),[['participants','array-contains','recipient-uid'],['chatId','==',f.room],400]);
+  assert.equal(f.writes.length,1);assert.equal(f.writes[0][0].id,'incoming');
+  assert.deepEqual(Array.from(f.writes[0][1].readBy),['previous','recipient']);
+  assert.equal(f.events[0],'commit');assert.equal(f.storage.get('lumina_messages_unread_count'),'7');
+  const cached=JSON.parse(f.storage.get('lumina_chat_'+f.room));
+  assert.equal(cached[0].status,'read');assert.equal(cached[1].status,'sent');
+});
+test('read receipts: rejected server commit never manufactures a local read or read time',async()=>{
+  const f=readFixture({failCommit:true}),before=f.storage.get('lumina_chat_'+f.room);
+  assert.equal(await f.mark(f.room,'recipient','Test'),false);
+  assert.equal(f.storage.get('lumina_chat_'+f.room),before);assert.equal(f.storage.has('lumina_chat_read_'+f.room),false);
+  assert.deepEqual(f.events,['commit']);
+});
+test('read receipts: account switch and full local storage do not invalidate confirmed server writes',async()=>{
+  for(const opts of [{switchAccount:true},{cacheFailure:true}]) {
+    const f=readFixture(opts),before=f.storage.get('lumina_chat_'+f.room);
+    assert.equal(await f.mark(f.room,'recipient','Test'),true);
+    assert.equal(f.storage.get('lumina_chat_'+f.room),before);assert.equal(f.events.includes('render'),false);
+  }
+});
+test('read receipts: repeated rendering of confirmed messages causes no write loop',async()=>{
+  const f=readFixture();await f.mark(f.room,'recipient','Test');const writes=f.writes.length;
+  await f.mark(f.room,'recipient','Test');assert.equal(f.writes.length,writes);
+});
+test('read receipts: concurrent renders do not duplicate the same room write',async()=>{
+  const f=readFixture();const first=f.mark(f.room,'recipient','Test');
+  assert.equal(await f.mark(f.room,'recipient','Test'),false);
+  assert.equal(await first,true);assert.equal(f.writes.length,1);
+});
 test('all active DM streams hide pending writes until metadata confirms them',()=>{
   const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
   const streams=[],updates=[];

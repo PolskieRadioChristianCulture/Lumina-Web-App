@@ -55,3 +55,18 @@ test('preferred hour selection is sent with subscription and updated on status',
   assert.match(f.status(),/20:00/);
   f.w.close();
 });
+test('login link is hidden for authenticated users and visible for guests',async()=>{
+  const fGuest=mount({guest:true});
+  fGuest.w.document.querySelector('input').checked=true;
+  await click(fGuest,'subscribe');
+  const guestLink=fGuest.w.document.querySelector('#ccCourseLoginLink');
+  assert.equal(guestLink.hidden,false);
+  fGuest.w.close();
+
+  const fUser=mount({ok:false}); // even on backend error
+  fUser.w.document.querySelector('input').checked=true;
+  await click(fUser,'subscribe');
+  const userLink=fUser.w.document.querySelector('#ccCourseLoginLink');
+  assert.equal(userLink.hidden,true);
+  fUser.w.close();
+});
