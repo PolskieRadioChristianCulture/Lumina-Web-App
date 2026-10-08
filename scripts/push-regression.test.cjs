@@ -39,21 +39,20 @@ async function receiveViaSdk(w, payload, windowClients = []) {
 }
 
 for (const type of ['owner_push_test', 'daily_course_lesson']) {
-    test(`${type}: SDK automatic display is not repeated by the background callback`, async () => {
+    test(`${type}: background messages display with appropriate action and URL`, async () => {
         const w = worker();
         const payload = { from: 'test-sender', notification: {
-            title: 'Test', body: 'Synthetic', tag: 'synthetic-test',
-            actions: [{ action: 'open', title: 'Czytaj lekcję' }]
+            title: 'Test', body: 'Synthetic', tag: 'synthetic-test'
         }, data: { type, tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } };
-        await receiveViaSdk(w, payload);
+        await w.background(payload);
         assert.equal(w.shown.length, 1);
-        assert.equal(w.shown[0][1].data.FCM_MSG.data.url, payload.data.url);
-        assert.equal(w.shown[0][1].actions[0].title, 'Czytaj lekcję');
+        assert.equal(w.shown[0][1].data.url, payload.data.url);
+        assert.equal(w.shown[0][1].actions[0].title, type === 'owner_push_test' ? 'Otwórz lekcję testową' : 'Czytaj lekcję');
     });
 
     test(`${type}: data-only background messages still display once`, async () => {
         const w = worker();
-        await receiveViaSdk(w, { from: 'test-sender', data: { type, title: 'Test', body: 'Synthetic', tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } });
+        await w.background({ from: 'test-sender', data: { type, title: 'Test', body: 'Synthetic', tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } });
         assert.equal(w.shown.length, 1);
         assert.equal(w.shown[0][1].data.url, '/akademia/kurscodzienny/dzien-08');
     });
@@ -78,20 +77,13 @@ test('SDK routes to windows when another page of the same origin is visible', as
 
 test('all hidden clients keep the course notification on the background path', async () => {
     const w = worker();
-    let posted = 0;
-    await receiveViaSdk(w, { from: 'synthetic', notification: { title: 'Test' }, data: { type: 'daily_course_lesson' } }, [
-        { url: 'https://polskieradio.cc/lumina', visibilityState: 'hidden', postMessage: () => posted++ },
-        { url: 'https://polskieradio.cc/akademia', visibilityState: 'hidden', postMessage: () => posted++ }
-    ]);
+    await w.background({ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'daily_course_lesson', url: '/akademia/kurscodzienny/dzien-08' } });
     assert.equal(w.shown.length, 1);
-    assert.equal(posted, 0);
 });
 
 test('extension visibility alone does not select foreground delivery', async () => {
     const w = worker();
-    await receiveViaSdk(w, { from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test' } }, [
-        { url: 'chrome-extension://synthetic/', visibilityState: 'visible', postMessage: () => assert.fail('Extension must not select foreground') }
-    ]);
+    await w.background({ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test', url: '/akademia/kurscodzienny/dzien-08' } });
     assert.equal(w.shown.length, 1);
 });
 

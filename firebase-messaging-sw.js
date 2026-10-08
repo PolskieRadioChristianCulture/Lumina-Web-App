@@ -24,11 +24,6 @@ try {
         const notification = payload.notification || {};
         const type = data.type || 'general';
 
-        // Firebase 10.12.2 displays notification payloads BEFORE this callback.
-        // Our Worker already supplies the tag/actions/link for these two types.
-        // Keep data-only fallback and existing chat rendering unchanged.
-        if (payload.notification && (type === 'owner_push_test' || type === 'daily_course_lesson')) return;
-
         const title = notification.title || data.title || 'LUMINA ✨';
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
         const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';
@@ -44,7 +39,11 @@ try {
             { action: 'open', title: 'Otwórz LUMINA 🕊️' }
         ];
 
-        if (type === 'devotion' || type === 'ckd') {
+        if (type === 'owner_push_test') {
+            actions = [{ action: 'open', title: 'Otwórz lekcję testową' }];
+        } else if (type === 'daily_course_lesson') {
+            actions = [{ action: 'open', title: 'Czytaj lekcję' }];
+        } else if (type === 'devotion' || type === 'ckd') {
             actions = [
                 { action: 'read', title: '📖 Czytaj' },
                 { action: 'share', title: '🕊️ Udostępnij' }
