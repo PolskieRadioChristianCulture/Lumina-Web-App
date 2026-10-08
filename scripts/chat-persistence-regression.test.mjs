@@ -1,0 +1,89 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const source=await readFile('lumina-db.js','utf8');
+const start=source.indexOf('export async function sendDirectMessageToCloud(');
+const end=source.indexOf('// ── Oznaczanie wiadomości prywatnych',start);
+assert.ok(start>=0 && end>start);
+const fn=source.slice(start,end).replace('export async function','async function');
+test('all active DM streams hide pending writes until metadata confirms them',()=>{
+  const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
+  const streams=[],updates=[];
+  const ctx={db:{},currentUserState:{uid:'synthetic-sender-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    onSnapshot:(q,opts,cb)=>{assert.equal(opts.includeMetadataChanges,true);streams.push({q,cb});return ()=>{};},
+    getDirectMessageKey:m=>m.id,getDirectMessageTime:()=>0,console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_'),
+  };
+  const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  const cleanup=subscribe('synthetic-room',m=>updates.push(m));
+  assert.equal(streams.length,3);
+  for(const [index,stream] of streams.entries()) {
+    const emit=pending=>stream.cb({forEach:cb=>cb({id:'synthetic-'+index,metadata:{hasPendingWrites:pending},data:()=>({chatId:'synthetic-room',text:'Syntetyczny tekst'})})});
+    const before=updates.at(-1)?.length||0;
+    emit(true);assert.equal(updates.at(-1).length,before);
+    emit(false);assert.equal(updates.at(-1).length,before+1);
+  }
+  cleanup();assert.equal(ctx.activeDirectChatListeners.size,0);
+});
+function fixture({offline=false,anonymous=false,failCommit=false,chatExists=true,pushFail=false}={}) {
+  const events=[],committed=[],writes=[],secondary=[];
+  const ctx={
+    db:offline?null:{},currentUserState:{uid:'synthetic-sender-uid',isAnonymous:anonymous},
+    currentProfileState:{slug:'synthetic-sender',name:'Test nadawcy'},
+    normalizeChatUserId:id=>id,getChatId:(a,b)=>[a,b].sort().join('_'),
+    getProfileFromCloud:async()=>({uid:'synthetic-recipient-uid'}),
+    getDoc:async ref=>({exists:()=>ref.path.includes('lumina_chats')?chatExists:false,data:()=>({conversationState:'accepted'})}),
+    doc:(base,collection,id)=> typeof base.path==='string'?{path:base.path+'/synthetic-message-id',id:'synthetic-message-id'}:{path:collection+'/'+id,id},
+    collection:(_db,path)=>({path}),
+    writeBatch:()=>({set:(...args)=>writes.push(args),commit:async()=>{events.push('commit');if(failCommit)throw Error('synthetic rejection');committed.push(...writes);}}),
+    serverTimestamp:()=>({syntheticServerTimestamp:true}),
+    triggerLuminaPush:async()=>{events.push('push');return {delivered:!pushFail};},
+    addDoc:async(ref,data)=>{secondary.push({path:ref.path,data});events.push('secondary');return {id:'synthetic-secondary-id'};},
+    setDoc:async()=>{throw Error('Unexpected non-atomic write');},
+    localStorage:{getItem:()=>{throw Error('Unexpected private cache read');},setItem:()=>{throw Error('Unexpected optimistic cache write');}},
+    activeDirectChatListeners:new Map(),window:{},console:{warn:()=>{}},setTimeout:()=>{},
+    crypto:{randomUUID:()=> 'synthetic-client-id'},
+  };
+  const send=vm.runInNewContext('('+fn.trim()+')',ctx);
+  return {send,events,committed,writes,secondary,ctx};
+}
+const payload={receiverId:'synthetic-recipient',receiverUid:'synthetic-recipient-uid',text:'Syntetyczna wiadomość testowa'};
+test('missing database and anonymous account never report local success or trigger push',async()=>{
+  for(const opts of [{offline:true},{anonymous:true}]) {
+    const f=fixture(opts); assert.equal(await f.send('synthetic-room',payload),null);
+    assert.equal(f.events.length,0);assert.equal(f.writes.length,0);
+  }
+});
+test('message and conversation preview commit together before push; not delivered by assumption',async()=>{
+  const f=fixture({pushFail:true});
+  assert.equal(await f.send('synthetic-room',payload),'synthetic-message-id');
+  assert.equal(f.committed.length,2); assert.deepEqual(f.events.slice(0,2),['commit','push']);
+  const msg=f.committed[0][1],room=f.committed[1][1];
+  assert.equal(msg.status,'sent'); assert.equal(msg.delivered,false); assert.equal(msg.deliveredAt,null);
+  assert.equal(room.lastMessageText,msg.text);
+  assert.equal(room.conversationState,'accepted');
+  assert.equal('participants' in room,false); assert.equal('users' in room,false);
+  assert.equal(f.committed[1][2].merge,true);
+});
+test('rejected atomic commit leaves no partial conversation or optimistic success',async()=>{
+  const f=fixture({failCommit:true});
+  assert.equal(await f.send('synthetic-room',payload),null);
+  assert.equal(f.committed.length,0); assert.deepEqual(f.events,['commit']);
+  assert.equal(f.secondary.length,0);
+});
+test('new conversation includes identities only after an accepted request',async()=>{
+  const f=fixture({chatExists:false});
+  f.ctx.getDoc=async ref=>({exists:()=>ref.path.includes('lumina_message_requests'),data:()=>({status:'accepted'})});
+  assert.equal(await f.send('synthetic-room',payload),'synthetic-message-id');
+  assert.deepEqual(Array.from(f.committed[1][1].participants),['synthetic-sender-uid','synthetic-recipient-uid']);
+});
+test('pending or closed request does not enter the atomic message write',async()=>{
+  for(const status of ['pending','closed']) {
+    const f=fixture({chatExists:false});
+    f.ctx.getDoc=async ref=>({exists:()=>ref.path.includes('lumina_message_requests'),data:()=>({status})});
+    const result=await f.send('synthetic-room',payload);
+    assert.equal(result.status,status==='pending'?'request_pending':'request_closed');
+    assert.equal(f.writes.length,0);
+  }
+});

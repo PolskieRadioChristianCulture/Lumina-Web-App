@@ -3186,9 +3186,11 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('chatId', '==', normalizedChatId),
             limit(400)
         );
-        unsub1 = onSnapshot(scopedQ, (snap) => {
+        unsub1 = onSnapshot(scopedQ, { includeMetadataChanges: true }, (snap) => {
             topLevelMessages = [];
-            snap.forEach(d => topLevelMessages.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => {
+                if (!d.metadata?.hasPendingWrites) topLevelMessages.push({ id: d.id, ...d.data() });
+            });
             emitMergedMessages();
         }, (err) => {
             console.warn('Lumina Direct Messages (rozmowa) — powrót do zapytania ogólnego:', err && err.code);
@@ -3203,9 +3205,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('participants', 'array-contains', authUid),
             limit(150)
         );
-        unsub1 = onSnapshot(directQ, (snap) => {
+        unsub1 = onSnapshot(directQ, { includeMetadataChanges: true }, (snap) => {
             topLevelMessages = [];
             snap.forEach(d => {
+                if (d.metadata?.hasPendingWrites) return;
                 const message = { id: d.id, ...d.data() };
                 if (message.chatId === normalizedChatId) topLevelMessages.push(message);
             });
@@ -3218,6 +3221,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             getDocs(directQ).then((snap) => {
                 topLevelMessages = [];
                 snap.forEach(d => {
+                    if (d.metadata?.hasPendingWrites) return;
                     const message = { id: d.id, ...d.data() };
                     if (message.chatId === normalizedChatId) topLevelMessages.push(message);
                 });
@@ -3234,9 +3238,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('users', 'array-contains', authUid),
             limit(150)
         );
-        unsub3 = onSnapshot(legacyQ, (snap) => {
+        unsub3 = onSnapshot(legacyQ, { includeMetadataChanges: true }, (snap) => {
             legacyMessages = [];
             snap.forEach(d => {
+                if (d.metadata?.hasPendingWrites) return;
                 const message = { id: d.id, ...d.data() };
                 if (message.chatId === normalizedChatId) legacyMessages.push(message);
             });
@@ -3251,9 +3256,11 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             where('participants', 'array-contains', authUid),
             limit(150)
         );
-        unsub2 = onSnapshot(nestedQ, (snap) => {
+        unsub2 = onSnapshot(nestedQ, { includeMetadataChanges: true }, (snap) => {
             nestedMessages = [];
-            snap.forEach(d => nestedMessages.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => {
+                if (!d.metadata?.hasPendingWrites) nestedMessages.push({ id: d.id, ...d.data() });
+            });
             emitMergedMessages();
         }, () => {});
     } catch(e) {}
@@ -3332,6 +3339,7 @@ export async function declineMessageRequest(requestId, shouldBlock = false) {
 }
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
+    if (!db || !chatId) return null;
     const user = currentUserState;
     if (!user || user.isAnonymous || !user.uid) {
         console.warn('Lumina Direct Chat: wiadomości wymagają zalogowanego konta członka.');
@@ -3425,9 +3433,11 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
     // Pierwsza wiadomość jest prośbą o kontakt. Istniejące, historyczne czaty
     // pozostają otwarte, aby nie przerywać dotychczasowych rozmów.
+    let conversationChatExists = false;
     if (db) {
         try {
             const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            conversationChatExists = chatSnapshot.exists();
             const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
             const requestSnapshot = await getDoc(requestRef);
             // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości. Starsze
@@ -3494,33 +3504,18 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         readAt: null,
         readBy: [],
         readByName: null,
-        delivered: true,
-        deliveredAt: Date.now(),
+        delivered: false,
+        deliveredAt: null,
         createdAt: Date.now(),
         timestamp: serverTimestamp(),
         dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    // 1. Save locally and trigger active UI listener immediately
-    const localKey = `lumina_chat_${normalizedChatId}`;
     try {
-        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
-        localStorage.setItem(localKey, JSON.stringify(cached));
-        
-        const listener = activeDirectChatListeners.get(normalizedChatId);
-        if (listener) listener(cached);
-    } catch(e) {}
-
-    if (!db || !normalizedChatId) return 'local_' + Date.now();
-
-    try {
-        // Write to top-level collection (Primary)
-        const msgRef = await addDoc(collection(db, 'lumina_direct_messages'), fullMsg);
-        await triggerLuminaPush('direct', msgRef.id);
-
-        // Also write to subcollection (Backup)
-        addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
+        // Message and conversation preview either commit together or both fail.
+        const msgRef = doc(collection(db, 'lumina_direct_messages'));
+        const batch = writeBatch(db);
+        batch.set(msgRef, fullMsg);
 
         // Update chat room metadata with exact normalized users array (both slugs & UIDs)
         const chatUsers = Array.from(new Set([
@@ -3532,7 +3527,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         ].filter(Boolean)));
         const chatParticipants = Array.from(new Set([user.uid, receiverAuthUid]));
 
-        setDoc(doc(db, 'lumina_chats', normalizedChatId), {
+        batch.set(doc(db, 'lumina_chats', normalizedChatId), {
             chatId: normalizedChatId,
             lastMessageText: fullMsg.text,
             lastMessageTimestamp: serverTimestamp(),
@@ -3541,10 +3536,16 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderAvatar: senderAvatar,
             lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
-            participants: chatParticipants,
-            users: chatUsers,
+            // Existing conversation identities are immutable under the rules.
+            ...(!conversationChatExists ? { participants: chatParticipants, users: chatUsers } : {}),
             conversationState: 'accepted'
-        }, { merge: true }).catch(() => {});
+        }, { merge: true });
+        await batch.commit();
+
+        // Only confirmed persistence permits push and the legacy backup copy.
+        await triggerLuminaPush('direct', msgRef.id);
+        addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg)
+            .catch(() => console.warn('Lumina Direct Chat: kopia zapasowa wymaga ponownej synchronizacji.'));
 
         // Add real-time notification document in Firestore for recipient
         try {

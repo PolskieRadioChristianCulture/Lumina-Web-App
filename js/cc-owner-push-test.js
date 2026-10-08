@@ -52,7 +52,7 @@
     status.textContent = action === 'send' ? 'Zlecanie jednej próby… Nie ponawiaj jej.' : 'Sprawdzanie konta bez wysyłki…';
     let stage = 'ładowanie modułu';
     try {
-      const sdk = await import('/lumina-db.js?v=20261008_foreground1');
+      const sdk = await import('/lumina-db.js?v=20261008_chatcommit1');
       stage = 'gotowość logowania';
       const {auth} = await sdk.ensureDbReady();
       if (!auth) throw Error('login');

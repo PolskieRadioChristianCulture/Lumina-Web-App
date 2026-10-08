@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {Window} from 'happy-dom';
 const source = readFileSync('js/cc-daily-course-subscription.js','utf8');
 // Replace only the SDK import in the test environment; no real users or tokens.
-const isolated = source.replace("import('/lumina-db.js?v=20261008_foreground1')",'Promise.resolve(window.testSdk)');
+const isolated = source.replace("import('/lumina-db.js?v=20261008_chatcommit1')",'Promise.resolve(window.testSdk)');
 function mount({guest=false,registered=true,ok=true,subscribed=true}={}) {
   const w=new Window({url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'});
   let calls=0, permissions=0, imports=0;
