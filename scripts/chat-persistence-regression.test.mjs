@@ -10,7 +10,7 @@ const fn=source.slice(start,end).replace('export async function','async function
 const readStart=source.indexOf('export async function markDirectMessagesAsRead(');
 const readEnd=source.indexOf('// ── Public Community Live Chatroom',readStart);
 const readFn=source.slice(readStart,readEnd).replace('export async function','async function');
-function readFixture({offline=false,anonymous=false,failCommit=false,switchAccount=false,cacheFailure=false,hidden=false}={}) {
+function readFixture({offline=false,anonymous=false,failCommit=false,switchAccount=false,cacheFailure=false,hidden=false,closed=false,listOnly=false,hideDuringQuery=false}={}) {
   const room='u_synthetic_recipient_u_synthetic_sender';
   const messages=[
     {id:'incoming',receiverAuthUid:'recipient-uid',senderAuthUid:'sender-uid',isRead:false,status:'sent',readBy:['previous']},
@@ -23,16 +23,16 @@ function readFixture({offline=false,anonymous=false,failCommit=false,switchAccou
     normalizeChatUserId:id=>id,getChatId:(a,b)=>[a,b].sort().join('_'),
     localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>{events.push('cache');if(cacheFailure)throw Error('quota');storage.set(key,value);}},
     collection:(_db,path)=>({path}),query:(ref,...filters)=>{queries.push({ref,filters});return {ref,filters};},where:(...args)=>args,limit:n=>n,
-    getDocs:async()=>({forEach:cb=>messages.forEach(m=>cb({id:m.id,data:()=>m}))}),doc:(_db,path,id)=>({path,id}),
+    getDocs:async()=>{if(hideDuringQuery)ctx.document.visibilityState='hidden';return {forEach:cb=>messages.forEach(m=>cb({id:m.id,data:()=>m}))};},doc:(_db,path,id)=>({path,id}),
     writeBatch:()=>({update:(...args)=>writes.push(args),commit:async()=>{events.push('commit');if(failCommit)throw Error('denied');if(switchAccount)ctx.currentUserState={uid:'other-uid'};}}),
     activeDirectChatListeners:new Map([[room,()=>events.push('render')]]),console:{warn:()=>{}},
     activeDirectReadReceipts:new Set(),
-    document:{visibilityState:hidden?'hidden':'visible'},
+    document:{visibilityState:hidden?'hidden':'visible',getElementById:id=>id==='directMessagesModal'?{classList:{contains:()=>!closed}}:{getClientRects:()=>listOnly?[]:[{}]}},
   };
   return {mark:vm.runInNewContext('('+readFn.trim()+'\n)',ctx),room,storage,writes,events,queries};
 }
 test('read receipts: offline and anonymous accounts never mutate cache or query messages',async()=>{
-  for(const opts of [{offline:true},{anonymous:true},{hidden:true}]) {
+  for(const opts of [{offline:true},{anonymous:true},{hidden:true},{closed:true},{listOnly:true}]) {
     const f=readFixture(opts);assert.equal(await f.mark(f.room,'recipient','Test'),false);
     assert.equal(f.events.length,0);assert.equal(f.queries.length,0);
   }
@@ -67,6 +67,23 @@ test('read receipts: concurrent renders do not duplicate the same room write',as
   const f=readFixture();const first=f.mark(f.room,'recipient','Test');
   assert.equal(await f.mark(f.room,'recipient','Test'),false);
   assert.equal(await first,true);assert.equal(f.writes.length,1);
+});
+test('read receipts: app hidden while query is pending cannot commit an automatic read',async()=>{
+  const f=readFixture({hideDuringQuery:true});assert.equal(await f.mark(f.room,'recipient','Test'),false);
+  assert.equal(f.writes.length,0);assert.equal(f.events.length,0);
+});
+test('conversation resumes only on visible open room and removes its event listener on cleanup',()=>{
+  const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
+  const hooks=new Map(),updates=[];let open=true;
+  const ctx={db:{},currentUserState:{uid:'synthetic-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    onSnapshot:()=>()=>{},getDirectMessageKey:m=>m.id,getDirectMessageTime:()=>0,console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_'),
+    document:{visibilityState:'hidden',getElementById:()=>({classList:{contains:()=>open}}),addEventListener:(event,fn)=>hooks.set(event,fn),removeEventListener:(event,fn)=>{assert.equal(hooks.get(event),fn);hooks.delete(event);}}};
+  const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  const stop=subscribe('synthetic-room',m=>updates.push(m));const resume=hooks.get('visibilitychange');
+  resume();assert.equal(updates.length,0);ctx.document.visibilityState='visible';resume();assert.equal(updates.length,1);
+  open=false;resume();assert.equal(updates.length,1);open=true;ctx.currentUserState={uid:'different-user'};resume();assert.equal(updates.length,1);
+  stop();assert.equal(hooks.size,0);assert.equal(ctx.activeDirectChatListeners.size,0);
 });
 test('all active DM streams hide pending writes until metadata confirms them',()=>{
   const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);

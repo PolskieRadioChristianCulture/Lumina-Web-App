@@ -3165,6 +3165,13 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         onUpdate(messages);
     };
 
+    const resumeVisibleConversation = () => {
+        if (currentUserState?.uid !== authUid || currentUserState.isAnonymous) return;
+        if (document.visibilityState !== 'visible' || !document.getElementById('directMessagesModal')?.classList.contains('open')) return;
+        emitMergedMessages();
+    };
+    if (typeof document !== 'undefined') document.addEventListener('visibilitychange', resumeVisibleConversation);
+
     // Dwa historyczne magazyny są obserwowane jako jedno źródło prawdy. Bez
     // scalenia UI przełączało się między nimi i wyświetlało duplikaty.
     // 🛡️ STRAŻNIK (czat): wcześniej pobieraliśmy 150 DOWOLNYCH wiadomości użytkownika ze WSZYSTKICH rozmów
@@ -3269,6 +3276,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         try { unsub1(); } catch(e) {}
         try { unsub2(); } catch(e) {}
         try { unsub3(); } catch(e) {}
+        if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', resumeVisibleConversation);
         activeDirectChatListeners.delete(normalizedChatId);
     };
 }
@@ -3586,7 +3594,9 @@ const activeDirectReadReceipts = new Set();
 export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName) {
     const user = currentUserState;
     if (!db || !chatId || !currentUserId || !user?.uid || user.isAnonymous) return false;
-    if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return false;
+    if (typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
+        !document.getElementById('directMessagesModal')?.classList.contains('open') ||
+        !document.getElementById('dmActiveConversationBox')?.getClientRects().length)) return false;
     const parts = chatId.split('_');
     const normalizedChatId = parts.length === 2 ? getChatId(parts[0], parts[1]) : chatId;
     const normMyId = normalizeChatUserId(currentUserId);
@@ -3608,7 +3618,9 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
             where('chatId', '==', normalizedChatId), limit(400));
         const snap = await getDocs(q);
         if (currentUserState?.uid !== user.uid || currentUserState.isAnonymous) return false;
-        if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return false;
+        if (typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
+            !document.getElementById('directMessagesModal')?.classList.contains('open') ||
+            !document.getElementById('dmActiveConversationBox')?.getClientRects().length)) return false;
         const receipts = new Map();
         const batch = writeBatch(db);
         const readAt = Date.now();
