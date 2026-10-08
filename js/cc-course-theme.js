@@ -67,18 +67,15 @@
         if (icon) {
           icon.className = 'fa-solid fa-moon text-amber-500 text-xs theme-toggle-icon';
         }
-        if (label) {
-          label.textContent = 'Ciemny';
-        }
       } else {
         btn.setAttribute('title', 'Przełącz na motyw jasny');
         btn.setAttribute('aria-label', 'Przełącz na motyw jasny');
         if (icon) {
           icon.className = 'fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon';
         }
-        if (label) {
-          label.textContent = 'Jasny';
-        }
+      }
+      if (label) {
+        label.remove();
       }
     });
   }
@@ -107,6 +104,7 @@
     btn.className = 'kc-reader-pill cin-btn-theme';
     btn.title = 'Przełącz motyw (Jasny / Ciemny)';
     btn.setAttribute('aria-label', 'Przełącz motyw');
+    btn.style.cssText = 'width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; padding: 0 !important; justify-content: center !important; align-items: center !important; display: inline-flex !important; border-radius: 9999px !important; box-sizing: border-box !important; flex-shrink: 0 !important;';
     btn.innerHTML = '<i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>';
     btn.addEventListener('click', function(e) {
       e.preventDefault();

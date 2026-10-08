@@ -85,7 +85,7 @@
   // Backend release approved: expose enrollment on all lessons (can be suppressed with false).
   if (window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED !== false) {
     const subscription = document.createElement('script');
-    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription3';
+    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_desktop_icons_v2';
     document.head.appendChild(subscription);
   }
 
@@ -148,7 +148,7 @@
   if (!document.getElementById('ccCourseThemeScript') && !window.CCCourseTheme) {
     const themeScript = document.createElement('script');
     themeScript.id = 'ccCourseThemeScript';
-    themeScript.src = '/js/cc-course-theme.js?v=20261008_theme1';
+    themeScript.src = '/js/cc-course-theme.js?v=20261008_desktop_icons_v2';
     document.head.appendChild(themeScript);
   }
 })();
