@@ -4825,6 +4825,15 @@
             .guest-carousel-cta button { width: 100%; }
         }
     </style>
+    <style>
+        #strefaMisyjna .mission-disclosure-toggle {
+            display: flex !important; align-items: center; justify-content: center; gap: 10px;
+            width: min(100%, 420px) !important; min-height: 48px !important; margin: 12px auto 20px;
+            white-space: normal; text-align: center;
+        }
+        #strefaMisyjna .mission-disclosure-toggle:focus-visible { outline: 3px solid #b08d39; outline-offset: 4px; }
+        #missionShowcasePanel[hidden] { display: none !important; }
+    </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v13">
     <link id="luminaMiniPlayerCSS" rel="stylesheet" href="/css/lumina-mini-player.css?v=20261003_player_above_chat_v7">
@@ -5261,6 +5270,13 @@
 
     <!-- ══════════ STREFA ROZWOJU, MAŁŻEŃSTWA & SKLEP CC (PARTNERZY MISYJNI) ══════════ -->
     <section class="cards-section lumina-mission-showcase-section" id="strefaMisyjna" style="margin-top: 0;">
+        <button id="missionShowcaseToggle" type="button" class="filter-chip mission-disclosure-toggle" aria-expanded="false" aria-controls="missionShowcasePanel" onclick="toggleMissionShowcase()">
+            <i class="fa-solid fa-compass" aria-hidden="true"></i>
+            <span id="missionShowcaseToggleLabel">Odkryj inicjatywy CC</span>
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div id="missionShowcasePanel" hidden></div>
+        <template id="missionShowcaseTemplate">
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollMissionCarousel(-1)" aria-label="Poprzednie inicjatywy"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
             <div class="profiles-grid" id="missionCarousel">
@@ -5268,7 +5284,7 @@
                 <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC) -->
                 <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
-                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" muted loop playsinline preload="none" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
                             <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
                             <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
                         </video>
@@ -5287,7 +5303,7 @@
                 <!-- ✨ REKLAMA WIDEO 2: Sklep Christian Culture (Filipian 4:13 - Wszystko Mogę w Tym, który mnie umacnia) -->
                 <div class="profile-card video-card featured original-promo-card" id="promoAdCard2" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
-                        <video id="promoVideoEl2" src="Reklama 2 Sklep CC.mp4" autoplay muted loop playsinline preload="auto" poster="reklama_2_sklep_cc_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('reklama_2_sklep_cc_poster.jpg') center top/cover no-repeat;">
+                        <video id="promoVideoEl2" src="Reklama 2 Sklep CC.mp4" muted loop playsinline preload="none" poster="reklama_2_sklep_cc_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('reklama_2_sklep_cc_poster.jpg') center top/cover no-repeat;">
                             <source src="Reklama 2 Sklep CC.mp4" type="video/mp4">
                         </video>
                         <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
@@ -5305,7 +5321,7 @@
                 <!-- ✨ REKLAMA WIDEO 3: Dobrze, że jesteś & Live TV24 -->
                 <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja kobieta mezczyzna mlodzi zalozyciele spolecznosc">
                     <div class="card-photo">
-                        <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                        <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" muted loop playsinline preload="none" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
                             <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
                         </video>
                         <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
@@ -5510,6 +5526,7 @@
             </div>
             <button class="carousel-btn right" onclick="scrollMissionCarousel(1)" aria-label="Następne inicjatywy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
         </div>
+        </template>
     </section>
 
     <!-- ══════════ TODAY'S DEVOTIONAL BANNER (SLIM RIBBON) ══════════ -->
@@ -10270,7 +10287,41 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         let resumeMissionAutoplayTimeout = null;
         let lastMissionCenteredCardId = null;
 
+        window.toggleMissionShowcase = function() {
+            const panel = document.getElementById('missionShowcasePanel');
+            const button = document.getElementById('missionShowcaseToggle');
+            const template = document.getElementById('missionShowcaseTemplate');
+            const label = document.getElementById('missionShowcaseToggleLabel');
+            if (!panel || !button || !template || !label) return;
+            const opening = panel.hidden;
+            if (opening) {
+                const firstOpen = !panel.firstElementChild;
+                if (firstOpen) panel.appendChild(template.content.cloneNode(true));
+                panel.hidden = false;
+                button.setAttribute('aria-expanded', 'true');
+                label.textContent = 'Zwiń inicjatywy CC';
+                if (firstOpen) {
+                    window.initMissionCarousel();
+                } else {
+                    requestAnimationFrame(() => {
+                        window.updateMissionCenterActiveCard();
+                        window.startMissionCarouselAutoplay();
+                    });
+                }
+            } else {
+                window.stopMissionCarouselAutoplay();
+                if (resumeMissionAutoplayTimeout) clearTimeout(resumeMissionAutoplayTimeout);
+                resumeMissionAutoplayTimeout = null;
+                panel.querySelectorAll('video').forEach(video => video.pause());
+                panel.hidden = true;
+                button.setAttribute('aria-expanded', 'false');
+                label.textContent = 'Odkryj inicjatywy CC';
+            }
+        };
+
         window.scheduleNextMissionCarouselAdvance = function(delayMs = 4500) {
+            const panel = document.getElementById('missionShowcasePanel');
+            if (!panel || panel.hidden) return;
             if (missionCarouselAutoplayTimer) {
                 clearTimeout(missionCarouselAutoplayTimer);
                 missionCarouselAutoplayTimer = null;
@@ -10443,6 +10494,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         };
 
         window.updateMissionCenterActiveCard = function() {
+            const panel = document.getElementById('missionShowcasePanel');
+            if (!panel || panel.hidden) return;
             const carousel = document.getElementById('missionCarousel');
             if (!carousel) return;
             const cards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
@@ -10478,7 +10531,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         if (isNewCardCentered) {
                             try {
                                 vid.currentTime = 0;
-                                vid.play().catch(() => {});
+                                const rect = vid.getBoundingClientRect();
+                                if (!document.hidden && rect.bottom > 0 && rect.top < window.innerHeight) {
+                                    vid.play().catch(() => {});
+                                }
                             } catch(e) {}
                         }
                     }
@@ -10537,7 +10593,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         window.initMissionCarousel = function() {
             const carousel = document.getElementById('missionCarousel');
-            if (!carousel) return;
+            if (!carousel || carousel.dataset.missionInitialized) return;
+            carousel.dataset.missionInitialized = 'true';
 
             if (!originalMissionCardsHtml) {
                 const initialCards = Array.from(carousel.children);
@@ -13850,7 +13907,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         var videoObserver = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 var vid = entry.target;
-                if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+                var missionCard = vid.closest('#missionCarousel .profile-card');
+                var activeMission = !missionCard || missionCard.classList.contains('active-center-card');
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.45 && activeMission && !document.hidden) {
                     if (vid.paused) {
                         vid.muted = true;
                         vid.playsInline = true;

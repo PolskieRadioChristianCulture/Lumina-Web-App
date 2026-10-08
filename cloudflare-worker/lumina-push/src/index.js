@@ -269,8 +269,9 @@ async function handlePush(request, env, kind, documentId) {
   return { status: 200, body: { delivered: results.filter(Boolean).length, attempted: tokens.length } };
 }
 
-function courseDeps(env, accessToken) {
+function courseDeps(env, accessToken, currentHour = null) {
   return {
+    currentHour,
     store:firestoreCourseStore(env,accessToken),
     latest:()=>latestCourseLesson(),
     lessons:()=>publishedCourseLessons(),
@@ -285,9 +286,12 @@ function courseDeps(env, accessToken) {
 export default {
   async scheduled(event, env) {
     if (env.COURSE_PUSH_ENABLED !== 'true') return;
+    const currentHour = event?.cron
+      ? Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: 'numeric', hourCycle: 'h23' }).format(new Date(event.scheduledTime || Date.now())))
+      : null;
     const token = await getGoogleAccessToken(env,true);
-    const result = await dispatchCourseLesson(courseDeps(env,token));
-    console.log(JSON.stringify({event:'daily_course_push',...result}));
+    const result = await dispatchCourseLesson(courseDeps(env,token,currentHour));
+    console.log(JSON.stringify({event:'daily_course_push',currentHour,...result}));
   },
   async fetch(request, env) {
     const origin = request.headers.get('origin') || '';
@@ -373,7 +377,7 @@ export default {
         catch (_) { return json({error:'Nieprawidłowy JSON.'},400,cors); }
         if (!body || typeof body !== 'object' || Array.isArray(body) ||
             !['status','subscribe','unsubscribe'].includes(body.action) ||
-            Object.keys(body).some(k=>!['action','consent'].includes(k)))
+            Object.keys(body).some(k=>!['action','consent','preferredHour'].includes(k)))
           return json({error:'Nieprawidłowe żądanie.'},400,cors);
         const token = await getGoogleAccessToken(env);
         const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));

@@ -41,3 +41,17 @@ test('unsubscribe requires no permission prompt and resets consent after confirm
   await click(f,'unsubscribe');assert.equal(f.permissions,0);assert.equal(f.calls,1);
   assert.equal(f.w.document.querySelector('input').checked,false);assert.match(f.status(),/czatu pozostają bez zmian/);f.w.close();
 });
+test('preferred hour selection is sent with subscription and updated on status',async()=>{
+  let sentBody;
+  const f=mount({subscribed:true});
+  const origFetch=f.w.fetch;
+  f.w.fetch=async(url,options)=>{sentBody=JSON.parse(options.body);return origFetch(url,options);};
+  const hourSelect=f.w.document.querySelector('#ccCourseHourSelect');
+  assert.equal(hourSelect.value,'7');
+  hourSelect.value='20';
+  f.w.document.querySelector('input').checked=true;
+  await click(f,'subscribe');
+  assert.equal(sentBody.preferredHour,20);
+  assert.match(f.status(),/20:00/);
+  f.w.close();
+});

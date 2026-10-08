@@ -4,9 +4,10 @@
   if (!share || document.getElementById('ccDailySubscription')) return;
   const panel = document.createElement('section');
   panel.id = 'ccDailySubscription'; panel.className = 'cc-daily-share';
-  panel.innerHTML = '<h2>Nie przegap nowej lekcji</h2><p>Subskrypcja jest powiązana z Twoim kontem Christian Culture/LUMINA. Powiadomienia otrzymasz na urządzeniach, na których włączysz push. Możesz zrezygnować w każdej chwili.</p><label style="display:flex;align-items:flex-start;gap:10px;padding:12px 0"><input type="checkbox" style="width:22px;min-height:22px;flex-shrink:0" aria-label="Zgoda na powiadomienia nowych lekcji"><span>Chcę otrzymywać powiadomienia push o nowych lekcjach kursu „Z Biblią za Pan Brat” i zgadzam się na zapis tej preferencji przy moim koncie.</span></label><div class="cc-daily-share-actions"><button type="button" data-action="subscribe">Subskrybuj nowe lekcje</button><button type="button" data-action="status">Sprawdź subskrypcję</button><button type="button" data-action="unsubscribe">Zrezygnuj</button></div><p role="status" aria-live="polite"></p><a href="/lumina-login">Zaloguj się do swojego konta</a>';
+  panel.innerHTML = '<h2>Nie przegap nowej lekcji</h2><p>Subskrypcja jest powiązana z Twoim kontem Christian Culture/LUMINA. Powiadomienia otrzymasz na urządzeniach, na których włączysz push. Możesz zrezygnować w każdej chwili.</p><label style="display:flex;align-items:flex-start;gap:10px;padding:12px 0"><input type="checkbox" style="width:22px;min-height:22px;flex-shrink:0" aria-label="Zgoda na powiadomienia nowych lekcji"><span>Chcę otrzymywać powiadomienia push o nowych lekcjach kursu „Z Biblią za Pan Brat” i zgadzam się na zapis tej preferencji przy moim koncie.</span></label><div style="margin:10px 0 16px"><label for="ccCourseHourSelect" style="display:block;margin-bottom:6px;font-weight:600;color:#e2cc9a">Preferowana godzina powiadomienia:</label><select id="ccCourseHourSelect" aria-label="Preferowana godzina powiadomienia" style="box-sizing:border-box;min-height:44px;min-width:44px;padding:10px 14px;border-radius:12px;border:1px solid #806120;background:#161b26;color:#f4f4f5;font:inherit;font-size:15px;width:100%;max-width:340px;cursor:pointer"><option value="6">06:00 (Poranek / przed pracą)</option><option value="7" selected>07:00 (Rano — zalecana)</option><option value="8">08:00 (Początek dnia)</option><option value="20">20:00 (Wieczorne rozważanie)</option></select></div><div class="cc-daily-share-actions"><button type="button" data-action="subscribe">Subskrybuj / Zapisz godzinę</button><button type="button" data-action="status">Sprawdź subskrypcję</button><button type="button" data-action="unsubscribe">Zrezygnuj</button></div><p role="status" aria-live="polite"></p><a href="/lumina-login">Zaloguj się do swojego konta</a>';
   share.insertAdjacentElement('afterend',panel);
   const status = panel.querySelector('[role="status"]');
+  const hourEl = panel.querySelector('#ccCourseHourSelect');
   let busy = false;
   for (const button of panel.querySelectorAll('button')) button.addEventListener('click',async () => {
     if (busy) return;
@@ -25,14 +26,22 @@
         if (!token) throw Error('Push nie został włączony. Sprawdź zgodę na powiadomienia w przeglądarce i spróbuj ponownie.');
       }
       if (auth.currentUser?.uid!==user.uid) throw Error('Konto się zmieniło. Spróbuj ponownie.');
+      const preferredHour = hourEl ? parseInt(hourEl.value, 10) : 7;
+      const payload = action==='subscribe' ? {action,consent:true,preferredHour} : {action};
       const response = await fetch('https://lumina-push.nazirczarkes.workers.dev/v1/course/subscription',{
         method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+await user.getIdToken()},
-        body:JSON.stringify(action==='subscribe'?{action,consent:true}:{action})
+        body:JSON.stringify(payload)
       });
       const data = await response.json();
       if (!response.ok) throw Error(data.error || 'Zapis subskrypcji nie powiódł się.');
       if (typeof data.subscribed !== 'boolean') throw Error('Serwer nie potwierdził stanu subskrypcji. Spróbuj ponownie.');
-      status.textContent=data.subscribed?'Subskrypcja aktywna. Powiadomimy Cię o następnej nowej lekcji.':'Subskrypcja wyłączona. Powiadomienia czatu pozostają bez zmian.';
+      if (data.subscribed) {
+        if (typeof data.preferredHour === 'number' && hourEl) hourEl.value = String(data.preferredHour);
+        const hourStr = String(data.preferredHour ?? preferredHour).padStart(2,'0') + ':00';
+        status.textContent = `Subskrypcja aktywna (dostawa o ${hourStr}). Powiadomimy Cię o nowej lekcji.`;
+      } else {
+        status.textContent = 'Subskrypcja wyłączona. Powiadomienia czatu pozostają bez zmian.';
+      }
       if (action==='unsubscribe') panel.querySelector('input').checked=false;
     } catch(error) {status.textContent=error.message || 'Operacja nie powiodła się. Spróbuj ponownie.';}
     finally {busy=false;panel.querySelectorAll('button').forEach(b=>b.disabled=false);}

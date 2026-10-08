@@ -91,22 +91,29 @@ export async function latestCourseLesson(fetchImpl = fetch, now = Date.now()) {
 }
 export async function courseSubscriptionAction(uid, body, deps) {
   if (!uid) return {status:401,body:{error:'Wymagane logowanie.'}};
-  if (!body || !['status','subscribe','unsubscribe'].includes(body.action) || Object.keys(body).some(k=>!['action','consent'].includes(k)))
+  if (!body || !['status','subscribe','unsubscribe'].includes(body.action) ||
+      Object.keys(body).some(k=>!['action','consent','preferredHour'].includes(k)))
     return {status:400,body:{error:'Nieprawidłowe żądanie.'}};
   if (body.action==='unsubscribe') {await deps.store.remove(uid);return {status:200,body:{subscribed:false}};}
   const existing = await deps.store.get(uid);
-  if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled}};
+  if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled,preferredHour:existing?.data.preferredHour ?? 7}};
   if (body.consent!==true) return {status:400,body:{error:'Wymagana świadoma zgoda na powiadomienia kursu.'}};
   if (!(await deps.tokens(uid)).length) return {status:409,body:{error:'Najpierw włącz push na tym urządzeniu.'}};
   const lesson = await deps.latest();
   if (!lesson) return {status:503,body:{error:'Katalog lekcji jest niedostępny.'}};
-  if (existing?.data.enabled) return {status:200,body:{subscribed:true}};
+  const allowedHours = [6, 7, 8, 20];
+  const preferredHour = Number.isInteger(body.preferredHour) && allowedHours.includes(body.preferredHour) ? body.preferredHour : 7;
+  if (existing?.data.enabled && existing.data.preferredHour === preferredHour) return {status:200,body:{subscribed:true,preferredHour}};
   const profileId=deps.store.profileForAccount ? await deps.store.profileForAccount(uid) : '';
-  const saved = await deps.store.save(uid,{uid,enabled:true,profileId,consentVersion:'daily-course-push-v1',consentedAt:new Date().toISOString(),lastLessonNumber:lesson.number,attempts:0,leaseUntil:0});
+  const saved = await deps.store.save(uid,{
+    uid,enabled:true,profileId,preferredHour,consentVersion:'daily-course-push-v1',
+    consentedAt:new Date().toISOString(),lastLessonNumber:existing?.data.lastLessonNumber ?? lesson.number,attempts:0,leaseUntil:0
+  },existing?.revision);
   if (!saved) return {status:409,body:{error:'Ponów zapis subskrypcji.'}};
-  return {status:200,body:{subscribed:true}};
+  return {status:200,body:{subscribed:true,preferredHour}};
 }
 export async function dispatchCourseLesson(deps, now = Date.now()) {
+  const currentHour = deps.currentHour;
   const lessons = deps.lessons ? await deps.lessons() : [await deps.latest()].filter(Boolean);
   const newest = lessons.at(-1);
   if (!newest) return {selected:0,accepted:0};
@@ -128,6 +135,8 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       continue;
     }
     if (!record.data.enabled || record.data.uid!==record.uid || record.data.leaseUntil>now) continue;
+    const prefHour = record.data.preferredHour ?? 7;
+    if (currentHour !== null && currentHour !== undefined && Number(prefHour) !== Number(currentHour)) continue;
     // Resume oldest pending lesson; an outage must not silently skip lessons.
     const lesson = lessons.find(l=>l.number>record.data.lastLessonNumber);
     if (!lesson) continue;

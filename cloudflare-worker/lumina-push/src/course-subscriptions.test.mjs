@@ -32,6 +32,30 @@ test('subscription saved only after device registration; no old-lesson broadcast
   assert.equal(f.record.data.lastLessonNumber,8);assert.equal(f.record.data.consentVersion,'daily-course-push-v1');
   await dispatchCourseLesson(f.deps);assert.equal(f.sends,0);
 });
+test('preferred hour selection, validation, update and hour-filtered dispatch',async()=>{
+  const f=fixture();
+  const r1=await courseSubscriptionAction('student',{action:'subscribe',consent:true,preferredHour:99},f.deps);
+  assert.equal(r1.status,200);
+  assert.equal(r1.body.preferredHour,7);
+  assert.equal(f.record.data.preferredHour,7);
+  const s1=await courseSubscriptionAction('student',{action:'status'},f.deps);
+  assert.equal(s1.body.subscribed,true);
+  assert.equal(s1.body.preferredHour,7);
+  const r2=await courseSubscriptionAction('student',{action:'subscribe',consent:true,preferredHour:20},f.deps);
+  assert.equal(r2.status,200);
+  assert.equal(r2.body.preferredHour,20);
+  assert.equal(f.record.data.preferredHour,20);
+  assert.equal(f.record.data.lastLessonNumber,8);
+  f.record.data.lastLessonNumber=7;
+  f.deps.currentHour=8;
+  const d1=await dispatchCourseLesson(f.deps);
+  assert.equal(d1.accepted,0);
+  assert.equal(f.sends,0);
+  f.deps.currentHour=20;
+  const d2=await dispatchCourseLesson(f.deps);
+  assert.equal(d2.accepted,1);
+  assert.equal(f.sends,1);
+});
 test('write failure cannot announce successful subscription',async()=>{
   const f=fixture();f.deps.store.save=async()=>false;
   assert.equal((await courseSubscriptionAction('student',{action:'subscribe',consent:true},f.deps)).status,409);

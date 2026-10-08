@@ -10,7 +10,11 @@
   "vars": {
     "FIREBASE_PROJECT_ID": "lumina-cc",
     "ALLOWED_ORIGIN": "https://polskieradio.cc",
-    "FIREBASE_WEB_API_KEY": "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M"
+    "FIREBASE_WEB_API_KEY": "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+    "COURSE_PUSH_ENABLED": "true"
+  },
+  "triggers": {
+    "crons": ["0 * * * *"]
   },
   "observability": {
     "enabled": true,
