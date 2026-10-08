@@ -417,8 +417,9 @@
             background: rgba(255, 255, 255, 0.08) !important;
             border: none !important;
             color: #cbd5e1 !important;
-            width: 28px !important;
-            height: 28px !important;
+            width: 44px !important;
+            height: 44px !important;
+            flex-shrink: 0 !important;
             border-radius: 50% !important;
             cursor: pointer !important;
             font-size: 1.15rem !important;
@@ -1343,11 +1344,11 @@
         </div>
 
         <!-- ══════════ POPUP ROZWIJANY Z IKONY III TRZECH LINII (Menu Mediów, TV & Profilu) ══════════ -->
-        <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup">
+        <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup" role="region" aria-labelledby="luminaBottomMenuTitle">
             <div class="lumina-bottom-menu-card">
                 <div class="lumina-bottom-menu-header">
-                    <span class="lumina-bottom-menu-title">Centrum Mediów & Opcji</span>
-                    <button type="button" onclick="window.toggleCcBottomNavMenu(event)" class="lumina-bottom-menu-close" title="Zamknij">&times;</button>
+                    <span id="luminaBottomMenuTitle" class="lumina-bottom-menu-title">Centrum Mediów & Opcji</span>
+                    <button type="button" onclick="window.toggleCcBottomNavMenu(event)" class="lumina-bottom-menu-close" title="Zamknij" aria-label="Zamknij menu Więcej">&times;</button>
                 </div>
                 <div class="lumina-bottom-menu-grid">
                     <!-- 1. Radio CC 24/7 -->
@@ -1384,7 +1385,7 @@
                     </a>
 
                     <!-- 4. Rolki Wiary (LUMINA Shorts 9:16) -->
-                    <a href="rolki" class="lumina-menu-btn" onclick="if(window.toggleCcBottomNavMenu) window.toggleCcBottomNavMenu(event);" title="Rolki Wiary • LUMINA Shorts 9:16">
+                    <a href="/rolki" class="lumina-menu-btn" onclick="if(window.toggleCcBottomNavMenu) window.toggleCcBottomNavMenu(event);" title="Rolki Wiary • LUMINA Shorts 9:16">
                         <div class="lumina-menu-btn-icon rolki-icon-bg">
                             <i class="fa-solid fa-clapperboard"></i>
                         </div>

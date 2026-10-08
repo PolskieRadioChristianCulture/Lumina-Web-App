@@ -5,6 +5,22 @@ import vm from 'node:vm';
 import {Window} from 'happy-dom';
 
 const source = await readFile('lumina-bottom-nav.js', 'utf8');
+test('More menu has a named region, explicit close label and rooted Shorts link', () => {
+  const win = new Window({url:'https://polskieradio.cc/lumina/wiolettarogowska'});
+  const menuStart = source.indexOf('<div id="luminaBottomMenuPopup"');
+  const menuEnd = source.indexOf('<!-- 5.', menuStart);
+  assert.ok(menuStart >= 0 && menuEnd > menuStart);
+  win.document.body.innerHTML = source.slice(menuStart, menuEnd);
+  const popup = win.document.getElementById('luminaBottomMenuPopup');
+  assert.equal(popup.getAttribute('role'), 'region');
+  assert.equal(win.document.getElementById(popup.getAttribute('aria-labelledby')).textContent, 'Centrum Mediów & Opcji');
+  assert.equal(popup.querySelector('.lumina-bottom-menu-close').getAttribute('aria-label'), 'Zamknij menu Więcej');
+  assert.equal(popup.querySelector('a[title^="Rolki Wiary"]').href, 'https://polskieradio.cc/rolki');
+  const closeStyle = source.match(/\.lumina-bottom-menu-close \{([^}]+)\}/)[1];
+  assert.match(closeStyle, /width: 44px !important/);
+  assert.match(closeStyle, /height: 44px !important/);
+  assert.match(closeStyle, /flex-shrink: 0 !important/);
+});
 // Isolate the production helper; do not execute unrelated account/media initialization.
 const start = source.indexOf('    function setupAccessibleNavigation(');
 const end = source.indexOf("    if (document.getElementById('luminaBottomNav'))", start);
