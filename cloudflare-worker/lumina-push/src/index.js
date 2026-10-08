@@ -298,6 +298,31 @@ export default {
     }
     if (origin !== env.ALLOWED_ORIGIN) return json({ error: 'Niedozwolone źródło.' }, 403);
     if (request.method !== 'POST') return json({ error: 'Tylko POST.' }, 405, cors);
+    if (new URL(request.url).pathname === '/v1/course/preflight') {
+      // Read-only pilot: one explicitly configured account, no enrollment/send.
+      const headers={...cors,'cache-control':'no-store'};
+      if (!env.COURSE_PUSH_PILOT_UID) return json({error:'Test konta jest wyłączony.'},503,headers);
+      if (request.body) {
+        const reader=request.body.getReader();
+        while (true) {
+          const chunk=await reader.read();if(chunk.done) break;
+          if(chunk.value.byteLength) {await reader.cancel();return json({error:'Test nie przyjmuje danych odbiorcy.'},400,headers);}
+        }
+      }
+      try {
+        const uid=await verifyFirebaseUser(request,env,true);
+        if (!uid) return json({error:'Wymagane logowanie do konta.'},401,headers);
+        if (uid!==env.COURSE_PUSH_PILOT_UID) return json({error:'To konto nie uczestniczy w teście.'},403,headers);
+        const token=await getGoogleAccessToken(env,true);
+        const deps=courseDeps(env,token);
+        if (await deps.accountState(uid)!=='active') return json({error:'Konto testowe nie jest aktywne.'},409,headers);
+        const devices=await deps.tokens(uid);
+        const lesson=await deps.latest();
+        return json({accountRead:true,registeredDeviceCount:devices.length,lessonNumber:lesson?.number || null,automaticDispatchEnabled:env.COURSE_PUSH_ENABLED==='true'},200,headers);
+      } catch (_) {
+        return json({error:'Nie potwierdzono dostępu serwera do konta testowego. Nie zmieniono danych ani uprawnień.'},502,headers);
+      }
+    }
     if (new URL(request.url).pathname === '/v1/course/subscription') {
       if (env.COURSE_PUSH_ENABLED !== 'true') return json({error:'Subskrypcje kursu są wyłączone.'},503,cors);
       try {

@@ -95,6 +95,16 @@ test('backend refuses foreign origin, unauthenticated and anonymous subscription
 test('feature disabled does not call providers or send from scheduled handler',async()=>{
   await worker.scheduled({},{});
 });
+test('pilot preflight is disabled by default; rejects recipients and non-pilot accounts',async t=>{
+  const origin='https://polskieradio.cc';
+  const request=body=>new Request('https://push.example/v1/course/preflight',{method:'POST',headers:{origin,authorization:'Bearer synthetic'},...(body?{body}:{})});
+  const env={ALLOWED_ORIGIN:origin,FIREBASE_WEB_API_KEY:'synthetic'};
+  assert.equal((await worker.fetch(request(),env)).status,503);
+  env.COURSE_PUSH_PILOT_UID='pilot';
+  assert.equal((await worker.fetch(request('{"uid":"another"}'),env)).status,400);
+  let calls=0;t.mock.method(globalThis,'fetch',async()=>{calls++;return Response.json({users:[{localId:'another',email:'synthetic@example.invalid'}]});});
+  assert.equal((await worker.fetch(request(),env)).status,403);assert.equal(calls,1,'Must not use privileged OAuth for non-pilot');
+});
 test('round-robin bypasses leased, completed and failed students and wraps after end',async()=>{
   let after='';let revision=0;const delivered=[];
   const records=new Map(['a','b','c'].map(uid=>[uid,{uid,enabled:true,lastLessonNumber:7,leaseUntil:0}]));

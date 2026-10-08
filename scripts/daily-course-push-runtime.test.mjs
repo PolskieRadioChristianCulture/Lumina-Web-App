@@ -18,7 +18,7 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
   const project='projects/synthetic/databases/(default)/documents/';
   const response=data=>RuntimeResponse.json(data);
   const options={modules:true,script:bundled.outputFiles[0].text,compatibilityDate:'2026-09-13',
-    bindings:{COURSE_PUSH_ENABLED:'true',FIREBASE_PROJECT_ID:'synthetic',ALLOWED_ORIGIN:'https://polskieradio.cc',FIREBASE_WEB_API_KEY:'synthetic',
+    bindings:{COURSE_PUSH_ENABLED:'true',COURSE_PUSH_PILOT_UID:'student',FIREBASE_PROJECT_ID:'synthetic',ALLOWED_ORIGIN:'https://polskieradio.cc',FIREBASE_WEB_API_KEY:'synthetic',
       FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem})},
     outboundService:async request=>{
       outbound++;const url=new URL(request.url);
@@ -66,6 +66,10 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
   const command=action=>mf.dispatchFetch('https://runtime.invalid/v1/course/subscription',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'},body:JSON.stringify({action,...(action==='subscribe'?{consent:true}:{})})});
   const tick=()=>mf.dispatchFetch('https://runtime.invalid/test-tick');
   try {
+    const preflight=await mf.dispatchFetch('https://runtime.invalid/v1/course/preflight',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'}});
+    assert.equal(preflight.status,200);
+    assert.deepEqual(await preflight.json(),{accountRead:true,registeredDeviceCount:1,lessonNumber:8,automaticDispatchEnabled:true});
+    assert.equal(sends,0);assert.equal(documents.size,0,'Preflight must not write');
     assert.equal((await command('subscribe')).status,200);
     assert.equal(documents.get('cc_daily_course_subscriptions/student').fields.lastLessonNumber.integerValue,'8');
     latest=9;const before=outbound;assert.equal((await tick()).status,200);
