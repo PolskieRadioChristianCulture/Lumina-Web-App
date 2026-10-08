@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../lumina-db.js', import.meta.url), 'utf8');
@@ -8,6 +8,20 @@ const start = source.indexOf('export async function showForegroundPushNotificati
 const end = source.indexOf('export async function requestNotificationPermission(', start);
 assert.ok(start > 0 && end > start);
 const show = vm.runInNewContext(`${source.slice(start, end).replace('export ', '')};showForegroundPushNotification`, { URL });
+test('cached security importer receives the same release version as the DB module', () => {
+    const root = new URL('../', import.meta.url);
+    let checked = 0;
+    for (const file of readdirSync(root).filter(file => /^lumina.*\.html$/.test(file) && !file.includes('backup'))) {
+        const html = readFileSync(new URL(file, root), 'utf8');
+        const security = html.match(/src=["'](?:\.\/)?lumina-security\.js(\?v=[^"']+)["']/);
+        if (!security) continue;
+        const db = html.match(/src=["'](?:\.\/)?lumina-db\.js(\?v=[^"']+)["']/);
+        assert.ok(db, `${file}: missing versioned DB entry`);
+        assert.equal(security[1], db[1], `${file}: old cached security importer can load another DB instance`);
+        checked++;
+    }
+    assert.ok(checked >= 19, 'Canonical and legacy profile entry points must be covered');
+});
 function fixture({ permission = 'granted', active = true, fail = false } = {}) {
     const calls = [];
     const environment = {
