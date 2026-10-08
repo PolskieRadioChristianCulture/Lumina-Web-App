@@ -4,22 +4,29 @@ import assert from 'node:assert/strict';
 import {build} from 'esbuild';
 import {Miniflare,convertV4MiniflareOptions,Response as RuntimeResponse} from 'miniflare';
 import path from 'node:path';
+import {mkdtemp} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
 test('workerd: account opt-in, manifest publication, scheduled send, revoke and fail-closed cleanup',async()=>{
   const pair=await crypto.subtle.generateKey({name:'RSASSA-PKCS1-v1_5',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['sign','verify']);
   const key=Buffer.from(await crypto.subtle.exportKey('pkcs8',pair.privateKey)).toString('base64');
   const pem='-----BEGIN '+'PRIVATE KEY-----\n'+key+'\n-----END '+'PRIVATE KEY-----';
   const bundled=await build({stdin:{contents:`import worker from './cloudflare-worker/lumina-push/src/index.js';
+    export {OwnerPushTestGuard} from './cloudflare-worker/lumina-push/src/owner-test-guard.js';
     export default {async fetch(request,env) {
       if(new URL(request.url).pathname==='/test-tick') {await worker.scheduled({},env);return Response.json({ok:true});}
       return worker.fetch(request,env);
-    }};`,resolveDir:process.cwd()},bundle:true,write:false,format:'esm',platform:'browser'});
-  const documents=new Map();let revision=0, sends=0, outbound=0, latest=8, account='active', failStage='';
+    }};`,resolveDir:process.cwd()},bundle:true,write:false,format:'esm',platform:'browser',external:['cloudflare:workers']});
+  const documents=new Map();let revision=0, sends=0, ownerSends=0, outbound=0, latest=8, account='active', failStage='';
   const fields=data=>Object.fromEntries(Object.entries(data).map(([k,v])=>[k,typeof v==='boolean'?{booleanValue:v}:typeof v==='number'?{integerValue:String(v)}:{stringValue:v}]));
   const project='projects/synthetic/databases/(default)/documents/';
   const response=data=>RuntimeResponse.json(data);
-  const options={modules:true,script:bundled.outputFiles[0].text,compatibilityDate:'2026-09-13',
+  const persistence=await mkdtemp(path.join(tmpdir(),'cc-push-synthetic-'));
+  const options={name:'synthetic-push-runtime',modules:true,script:bundled.outputFiles[0].text,compatibilityDate:'2026-09-13',
+    resourcePersistencePath:persistence,
+    durableObjects:{OWNER_PUSH_TEST_GUARD:{className:'OwnerPushTestGuard',useSQLite:true}},
     bindings:{COURSE_PUSH_ENABLED:'true',COURSE_PUSH_PILOT_UID:'student',FIREBASE_PROJECT_ID:'synthetic',ALLOWED_ORIGIN:'https://polskieradio.cc',FIREBASE_WEB_API_KEY:'synthetic',
-      FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem})},
+      FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem}),
+      OWNER_PUSH_TEST_ENABLED:'true',OWNER_PUSH_TEST_START_AT:String(Date.now()-1000),OWNER_PUSH_TEST_EXPIRES_AT:String(Date.now()+600_000),OWNER_PUSH_TEST_RUN_ID:'11111111-1111-4111-8111-111111111111'},
     outboundService:async request=>{
       outbound++;const url=new URL(request.url);
       if ((failStage==='service_account_authorization' && url.hostname==='oauth2.googleapis.com') ||
@@ -45,6 +52,13 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       if(url.hostname==='polskieradio.cc' && url.pathname==='/data/daily-course-push.json')return response({version:1,lessons:[8,9].filter(n=>n<=latest).map(number=>({number,title:'Synthetic lesson',availableAt:'2026-10-01T00:00:00Z',url:`https://polskieradio.cc/akademia/kurscodzienny/dzien-${String(number).padStart(2,'0')}`}))});
       if(url.hostname==='fcm.googleapis.com') {
         const payload=await request.json();assert.equal(payload.message.token,'synthetic-device');
+        if(payload.message.data.type==='owner_push_test') {
+          assert.match(payload.message.notification.title,/TEST/);
+          assert.equal(payload.message.webpush.headers.TTL,'300');
+          assert.equal(payload.message.webpush.headers.Urgency,'high');
+          assert.equal(payload.message.webpush.fcm_options.link,'https://polskieradio.cc/akademia/kurscodzienny/dzien-08');
+          ownerSends++;return response({name:'synthetic-owner-message'});
+        }
         assert.equal(payload.message.webpush.fcm_options.link,'https://polskieradio.cc/akademia/kurscodzienny/dzien-09');
         sends++;return response({name:'synthetic-message'});
       }
@@ -69,10 +83,21 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       }
       throw Error('Unexpected outbound request blocked: '+url.hostname);
     }};
-  const mf=new Miniflare(convertV4MiniflareOptions?convertV4MiniflareOptions(options):options);
+  let mf=new Miniflare(convertV4MiniflareOptions?convertV4MiniflareOptions(options):options);
   const command=action=>mf.dispatchFetch('https://runtime.invalid/v1/course/subscription',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'},body:JSON.stringify({action,...(action==='subscribe'?{consent:true}:{})})});
   const tick=()=>mf.dispatchFetch('https://runtime.invalid/test-tick');
   try {
+    const ownTest=()=>mf.dispatchFetch('https://runtime.invalid/v1/course/owner-test',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'}});
+    assert.equal((await mf.dispatchFetch('https://runtime.invalid/v1/course/owner-test',{method:'POST',headers:{origin:'https://evil.invalid'}})).status,403);
+    assert.equal((await mf.dispatchFetch('https://runtime.invalid/v1/course/owner-test',{headers:{origin:'https://polskieradio.cc'}})).status,405);
+    const ownResults=await Promise.all(Array.from({length:8},ownTest));
+    assert.equal(ownResults.filter(r=>r.status===200).length,1);assert.equal(ownerSends,1);
+    const ownResult=await ownResults.find(r=>r.status===200).json();assert.equal(ownResult.acceptedByFcm,1);assert.equal(ownResult.physicalDeliveryConfirmed,false);
+    assert.equal((await ownTest()).status,409);assert.equal(ownerSends,1);assert.equal(documents.size,0);
+    await mf.dispose();
+    mf=new Miniflare(convertV4MiniflareOptions?convertV4MiniflareOptions(options):options);
+    assert.equal((await ownTest()).status,409,'Consumed attempt persists across complete runtime restart');
+    assert.equal(ownerSends,1);
     const preflight=await mf.dispatchFetch('https://runtime.invalid/v1/course/preflight',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic'}});
     assert.equal(preflight.status,200);
     assert.deepEqual(await preflight.json(),{accountRead:true,registeredDeviceCount:1,lessonNumber:8,automaticDispatchEnabled:true});

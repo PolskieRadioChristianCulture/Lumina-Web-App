@@ -54,6 +54,7 @@ for (const [name, data, expected] of [
     ['public chat with sender', { type: 'public_chat', senderId: 'anna' }, '/lumina?openPublicChat=1'],
     ['foreign redirect rejected', { url: 'https://example.org/' }, '/lumina'],
     ['daily course opens its canonical lesson', { type:'daily_course_lesson', url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08' }, '/akademia/kurscodzienny/dzien-08'],
+    ['owner test opens lesson without fabricating a chat', { FCM_MSG:{data:{type:'owner_push_test',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'}} }, '/akademia/kurscodzienny/dzien-08'],
 ]) {
     test(name, async () => {
         const w = worker();

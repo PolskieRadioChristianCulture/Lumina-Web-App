@@ -1,7 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "lumina-push",
-  "main": "src/index.js",
+  "main": "src/entry.js",
+  "durable_objects": {
+    "bindings": [{ "name": "OWNER_PUSH_TEST_GUARD", "class_name": "OwnerPushTestGuard" }]
+  },
+  "migrations": [{ "tag": "owner-push-test-v1", "new_sqlite_classes": ["OwnerPushTestGuard"] }],
   "compatibility_date": "2026-09-13",
   "vars": {
     "FIREBASE_PROJECT_ID": "lumina-cc",

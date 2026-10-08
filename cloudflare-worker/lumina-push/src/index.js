@@ -1,4 +1,5 @@
 import { firestoreCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
+import { ownerPushTest } from './owner-push-test.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const FIREBASE_LOOKUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup';
@@ -198,7 +199,7 @@ function notificationFor(kind, documentId, record) {
   };
 }
 
-async function sendFcm(token, notification, accessToken, env) {
+async function sendFcm(token, notification, accessToken, env, signal) {
   const data = {
     title: notification.title,
     body: notification.body,
@@ -214,6 +215,7 @@ async function sendFcm(token, notification, accessToken, env) {
   };
   const response = await fetch(`https://fcm.googleapis.com/v1/projects/${encodeURIComponent(env.FIREBASE_PROJECT_ID)}/messages:send`, {
     method: 'POST',
+    ...(signal ? {signal} : {}),
     headers: { authorization: `Bearer ${accessToken}`, ...JSON_HEADERS },
     body: JSON.stringify({
       message: {
@@ -221,7 +223,7 @@ async function sendFcm(token, notification, accessToken, env) {
         notification: { title: notification.title, body: notification.body },
         data,
         webpush: {
-          headers: { Urgency: notification.type === 'daily_course_lesson' ? 'normal' : 'high' },
+          headers: { Urgency: notification.type === 'daily_course_lesson' ? 'normal' : 'high', ...(notification.type === 'owner_push_test' ? {TTL:'300'} : {}) },
           notification: {
             title: notification.title,
             body: notification.body,
@@ -230,7 +232,7 @@ async function sendFcm(token, notification, accessToken, env) {
             tag: notification.tag,
             renotify: true,
             requireInteraction: true,
-            actions: notification.type === 'daily_course_lesson' ? [{action:'open',title:'Czytaj lekcję'}] : [
+            actions: notification.type === 'owner_push_test' ? [{action:'open',title:'Otwórz lekcję testową'}] : notification.type === 'daily_course_lesson' ? [{action:'open',title:'Czytaj lekcję'}] : [
               { action: 'reply', title: '💬 Odpowiedz' },
               { action: 'open', title: 'Otwórz Czat' }
             ]
@@ -298,6 +300,24 @@ export default {
     }
     if (origin !== env.ALLOWED_ORIGIN) return json({ error: 'Niedozwolone źródło.' }, 403);
     if (request.method !== 'POST') return json({ error: 'Tylko POST.' }, 405, cors);
+    if (new URL(request.url).pathname === '/v1/course/owner-test') {
+      const headers = {...cors,'cache-control':'no-store'};
+      try {
+        const result = await ownerPushTest(request, env, {
+          verify: req => verifyFirebaseUser(req, env, true),
+          service: async () => {
+            const token = await getGoogleAccessToken(env, true);
+            return {...courseDeps(env, token), sendTest: (device, lesson) => sendFcm(device, {
+              title:'TEST powiadomienia — Christian Culture',
+              body:'To zatwierdzony test na Twoim koncie, nie nowa wiadomość ani subskrypcja.',
+              type:'owner_push_test',tag:'cc-owner-push-test',url:lesson.url,
+              icon:`${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`,senderId:'',documentId:''
+            }, token, env, AbortSignal.timeout(10_000))};
+          }
+        });
+        return json(result.body, result.status, headers);
+      } catch (_) { return json({error:'Nie potwierdzono wyniku testu. Nie ponawiaj automatycznie.'},502,headers); }
+    }
     if (new URL(request.url).pathname === '/v1/course/preflight') {
       // Read-only pilot: one explicitly configured account, no enrollment/send.
       const headers={...cors,'cache-control':'no-store'};
