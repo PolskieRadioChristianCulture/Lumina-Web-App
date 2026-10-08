@@ -4,6 +4,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 
+test('karty odkrywania nie pokazują sztywnych procentów bez obliczenia', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  assert.doesNotMatch(html, /<div class="card-match"[^>]*>\d+%(?: MATCH)?<\/div>/);
+  assert.doesNotMatch(html, /f\.matchScore\?\.stringValue \|\| '\d+%'/);
+  assert.match(html, /window\.calculateProfileMatchScore\(p\)/);
+  assert.match(html, /\$\{liveScore\}<\/div>/);
+});
+
 const read = (f) => readFile(f, 'utf8');
 const htmlFiles = async () => (await readdir('.')).filter((f) => /^lumina.*\.html$/.test(f) && !f.includes('backup'));
 

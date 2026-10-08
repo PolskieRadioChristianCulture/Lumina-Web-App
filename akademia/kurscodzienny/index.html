@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
@@ -60,8 +60,16 @@
   </script>
 
   <style>
-    body { background: #07090E; color: #e4e4e7; }
     .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
+    @media (max-width: 768px) {
+      .ak-header a[href*="patronite"] span:not(:first-child) { display: none !important; }
+      .ak-header a[href*="patronite"] {
+        width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important;
+        padding: 0 !important; justify-content: center !important; align-items: center !important; display: inline-flex !important;
+        border-radius: 9999px !important; box-sizing: border-box !important;
+      }
+      .ak-header .max-w-7xl { padding-left: 12px !important; padding-right: 12px !important; }
+    }
     .hero-section {
       background: radial-gradient(ellipse at top, rgba(196,163,90,0.12) 0%, rgba(7,9,14,1) 75%);
     }
@@ -136,9 +144,9 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 min-h-[44px]">
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 min-h-[44px]" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
           <span>❤️</span>
-          <span class="hidden sm:inline">Wspieraj</span>
+          <span class="hidden md:inline">Wspieraj</span>
         </a>
         <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
       </div>

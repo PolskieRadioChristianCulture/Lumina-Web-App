@@ -337,14 +337,14 @@
                 bottom: 80px;
                 max-width: none;
             }
-            /* MOBILE: Zminimalizowana pigułka logowania TYLKO DO IMIENIA */
+            /* TABLET / INTERMEDIATE: Zminimalizowana pigułka logowania z imieniem */
             .cc-auth-user-pill,
             .user-nav-profile.cc-auth-user-pill {
                 padding: 3px 8px 3px 4px !important;
                 gap: 5px !important;
                 max-width: 140px !important;
-                min-height: 36px !important;
-                height: 36px !important;
+                min-height: 38px !important;
+                height: 38px !important;
             }
             .cc-auth-user-name,
             .user-nav-name {
@@ -379,10 +379,62 @@
                 font-size: 0.65rem !important;
             }
         }
-        @media (max-width: 380px) {
+        @media (max-width: 640px) {
+            /* 📱 MOBILE PHONES: Inteligentne zwinięcie do intuicyjnych okrągłych ikon (standard @SMCC min. 44px) */
+            .cc-auth-user-pill,
+            .user-nav-profile.cc-auth-user-pill {
+                padding: 3px !important;
+                gap: 0 !important;
+                width: 38px !important;
+                min-width: 38px !important;
+                max-width: 38px !important;
+                min-height: 38px !important;
+                height: 38px !important;
+                border-radius: 50% !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
             .cc-auth-user-name,
-            .user-nav-name {
-                max-width: 55px !important;
+            .user-nav-name,
+            .cc-auth-user-chevron,
+            .user-nav-chevron {
+                display: none !important;
+            }
+            .cc-auth-avatar-wrap,
+            .user-nav-avatar-wrap {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                max-width: 30px !important;
+                flex: 0 0 30px !important;
+                margin: 0 !important;
+            }
+            .cc-auth-avatar-img,
+            .user-nav-avatar {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                max-width: 30px !important;
+                flex: 0 0 30px !important;
+            }
+            .cc-auth-google-btn {
+                width: 38px !important;
+                min-width: 38px !important;
+                max-width: 38px !important;
+                height: 38px !important;
+                min-height: 38px !important;
+                padding: 0 !important;
+                border-radius: 50% !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
+            .cc-auth-google-btn span.cc-auth-btn-text-full,
+            .cc-auth-google-btn span.cc-auth-btn-text-short,
+            .cc-auth-google-btn .cc-auth-lumina-tag {
+                display: none !important;
+            }
+            .cc-auth-google-btn .cc-google-icon-svg {
+                margin: 0 !important;
             }
         }
         @media (min-width: 769px) {

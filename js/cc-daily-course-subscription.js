@@ -10,8 +10,10 @@
   if (topAudioBtn && !document.getElementById('ccTopSubLink')) {
     const topLink = document.createElement('a');
     topLink.id = 'ccTopSubLink'; topLink.href = '#ccDailySubscription';
-    topLink.className = 'px-3.5 py-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition min-h-[44px] inline-flex items-center gap-1.5';
-    topLink.innerHTML = '<i class="fa-solid fa-bell text-xs"></i> <span>Subskrybuj lekcje</span>';
+    topLink.title = 'Subskrybuj lekcje (powiadomienia)';
+    topLink.setAttribute('aria-label', 'Subskrybuj lekcje');
+    topLink.className = 'px-3.5 py-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition min-h-[44px] inline-flex items-center justify-center gap-1.5';
+    topLink.innerHTML = '<i class="fa-solid fa-bell text-xs"></i><span class="hidden md:inline">Subskrybuj</span>';
     topAudioBtn.insertAdjacentElement('afterend', topLink);
     topLink.addEventListener('click', (e) => {
       e.preventDefault();

@@ -2052,6 +2052,19 @@
       .mb-report-btn.header-report {
         display: none !important; /* Dostępne przez pływający FAB na dole ekranu */
       }
+      @media (max-width: 540px) {
+        .mb-audio-pill .mb-audio-short-label {
+          display: none !important;
+        }
+        .mb-audio-pill {
+          width: 38px !important;
+          min-width: 38px !important;
+          height: 38px !important;
+          padding: 0 !important;
+          justify-content: center !important;
+          border-radius: 50% !important;
+        }
+      }
 
       /* 2. Pasek Nawigacyjny i Selektory (Compact Scripture Bar) */
       .mb-toolbar {
