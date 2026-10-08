@@ -7,6 +7,44 @@ const start=source.indexOf('export async function sendDirectMessageToCloud(');
 const end=source.indexOf('// ── Oznaczanie wiadomości prywatnych',start);
 assert.ok(start>=0 && end>start);
 const fn=source.slice(start,end).replace('export async function','async function');
+test('notification presentation never increments the authoritative unread-room counter',()=>{
+  const a=source.indexOf('export function triggerLuminaPushNotification('),b=source.indexOf('let hasStartedRealtimeNotifs',a);
+  const ctx={playNotificationChime:()=>{},navigator:{},window:{},document:{visibilityState:'visible'},
+    showInAppChatBanner:()=>{},showSystemDrawerNotification:()=>{},localStorage:{getItem:()=>{throw Error('Notification must not count rooms');},setItem:()=>{throw Error('Notification must not count rooms');}}};
+  const notify=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  notify({type:'private',senderId:'synthetic'});notify({type:'owner_push_test'});
+});
+test('public chat keeps its existing badge behavior outside the private-room counter',()=>{
+  const a=source.indexOf('export function triggerLuminaPushNotification('),b=source.indexOf('let hasStartedRealtimeNotifs',a);
+  const badges=[];
+  const ctx={playNotificationChime:()=>{},navigator:{},window:{updateLuminaMessagesBadge:n=>badges.push(n)},
+    document:{visibilityState:'visible',getElementById:()=>({classList:{contains:()=>false}})},
+    showInAppChatBanner:()=>{},showSystemDrawerNotification:()=>{},localStorage:{getItem:()=> '2'}};
+  const notify=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  notify({type:'public'});assert.deepEqual(badges,[3]);
+});
+test('room snapshot counts aliases once and refreshes other unread rooms while the modal is open',()=>{
+  const a=source.indexOf('export function startRealtimeChatNotificationsListener('),b=source.indexOf('// Auto-start listener on load',a);
+  const streams=[],storage=new Map(),badges=[];
+  const ctx={db:{},hasStartedRealtimeNotifs:false,currentUserState:{uid:'me'},currentProfileState:{slug:'me'},Date,
+    normalizeChatUserId:id=>String(id||'').toLowerCase(),localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,orderBy:(...a)=>a,
+    onSnapshot:(q,cb)=>{streams.push({q,cb});return ()=>{};},console:{warn:()=>{}},
+    document:{getElementById:()=>({classList:{contains:()=>true}})},window:{updateLuminaMessagesBadge:n=>badges.push(n)},triggerLuminaPushNotification:()=>{throw Error('No notification for old synthetic rooms');}};
+  const start=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);start();
+  const emit=rooms=>streams.find(s=>s.q.ref.path==='lumina_chats').cb({forEach:cb=>rooms.forEach(([id,sender])=>cb({id,data:()=>({users:['me',sender],lastSenderId:sender,lastMessageTimestamp:{seconds:1}})})),docChanges:()=>[]});
+  emit([['room-a','Alice'],['room-b','bob']]);
+  assert.equal(badges.at(-1),2);assert.deepEqual(JSON.parse(storage.get('lumina_unread_rooms_json')),{alice:1,bob:1});
+  assert.equal(ctx.window._luminaUnreadRoomsMap.get('alice'),1);
+  storage.set('lumina_chat_read_room-a','2000');emit([['room-a','Alice'],['room-b','bob']]);
+  assert.equal(badges.at(-1),1);assert.deepEqual(JSON.parse(storage.get('lumina_unread_rooms_json')),{bob:1});
+});
+test('all active chat headers use neutral labels rather than manufactured presence and safety',async()=>{
+  for(const file of ['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html']){
+    const html=await readFile(file,'utf8');assert.doesNotMatch(html,/Aktywny\(a\) teraz|Bezpieczna Rozmowa/);
+    assert.match(html,/Rozmowa prywatna/);
+  }
+});
 const readStart=source.indexOf('export async function markDirectMessagesAsRead(');
 const readEnd=source.indexOf('// ── Public Community Live Chatroom',readStart);
 const readFn=source.slice(readStart,readEnd).replace('export async function','async function');

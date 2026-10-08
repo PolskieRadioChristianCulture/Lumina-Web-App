@@ -4172,6 +4172,8 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
 
 export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type, image }) {
     const isChatNotification = ['private', 'chat', 'public', 'direct_message', 'direct_message_request'].includes(type);
+    // Private room snapshots own their counter; preserve the public-chat indicator.
+    if (type === 'public') {
     // 1. Immediately bump Unread Badge on Floating Chat Button & Navigation
     try {
         const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
@@ -4193,6 +4195,7 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
             }
         }
     } catch(e) {}
+    }
 
     // 2. Play official voice notification audio + vibration (Debounced single chime)
     playNotificationChime();
@@ -4319,12 +4322,13 @@ export function startRealtimeChatNotificationsListener() {
 
                         if (msgTime > lastReadTime) {
                             totalUnread++;
-                            const keysToMark = [normOther, senderId, data.lastSenderId, String(otherUser).toLowerCase()].filter(Boolean);
+                            const keysToMark = new Set([normOther, senderId, data.lastSenderId, String(otherUser).toLowerCase()].filter(Boolean));
                             keysToMark.forEach(k => {
                                 const prev = unreadMap.get(k) || 0;
                                 unreadMap.set(k, prev + 1);
-                                unreadJson[k] = prev + 1;
                             });
+                            // Aliases are lookup keys, not additional unread conversations.
+                            unreadJson[normOther] = (unreadJson[normOther] || 0) + 1;
                         }
                     }
                 });
@@ -4334,10 +4338,7 @@ export function startRealtimeChatNotificationsListener() {
                     localStorage.setItem('lumina_unread_rooms_json', JSON.stringify(unreadJson));
                 } catch(e) {}
 
-                // Update badge in real-time if chat is closed
-                const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
-                                    document.getElementById('modalCcMessages')?.classList.contains('open');
-                if (!isModalOpen) {
+                // Opening one conversation must not hide unread rooms elsewhere.
                     if (typeof window.updateLuminaMessagesBadge === 'function') {
                         window.updateLuminaMessagesBadge(totalUnread);
                     } else {
@@ -4357,8 +4358,6 @@ export function startRealtimeChatNotificationsListener() {
                             }
                         }
                     }
-                }
-
                 // Odśwież listę pokoi w otwartym lub gotowym oknie czatu
                 if (typeof window.renderDmUsersAndConversations === 'function') {
                     try { window.renderDmUsersAndConversations(); } catch(e) {}

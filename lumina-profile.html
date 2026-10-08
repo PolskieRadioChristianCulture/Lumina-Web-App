@@ -286,13 +286,13 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20261008_chatresume1"></script>
+    <script type="module" src="lumina-db.js?v=20261008_chatcounter1"></script>
     <script src="js/lumina-comments-engine.js?v=20261007_guardian2"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-core.js?v=20261008_chatresume1"></script>
-    <script type="module" src="lumina-security.js?v=20261008_chatresume1"></script>
+    <script type="module" src="lumina-core.js?v=20261008_chatcounter1"></script>
+    <script type="module" src="lumina-security.js?v=20261008_chatcounter1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
@@ -4206,14 +4206,14 @@
                                 <button type="button" class="messenger-back-btn" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 6px; flex-shrink: 0;" title="Powrót do listy rozmów"><i class="fa-solid fa-arrow-left"></i></button>
                                 <div style="position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                     <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; max-width: 44px; max-height: 44px; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #c084fc; display: block; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
-                                    <span style="position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px; min-width: 11px; min-height: 11px; border-radius: 50%; background: #10b981; border: 2px solid #070d1e; flex-shrink: 0; pointer-events: none;"></span>
+
                                 </div>
                                 <div style="min-width: 0; flex: 1; overflow: hidden;">
                                     <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}">
                                         Rozmowa Prywatna
                                     </div>
                                     <div style="font-size: 0.70rem; color: #10b981; display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        <span style="width: 6px; height: 6px; min-width: 6px; min-height: 6px; border-radius: 50%; background: #10b981; display: inline-block; flex-shrink: 0;"></span> Aktywny(a) teraz • Bezpieczna Rozmowa ✨
+                                        Rozmowa prywatna
                                     </div>
                                 </div>
                             </div>
@@ -9694,7 +9694,7 @@
             if (box) {
                 box.innerHTML = `
                     <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${escapeHtml(activeChatSession.targetName)} w Chrystusie ✨</span>
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozmowa z ${escapeHtml(activeChatSession.targetName)} w Chrystusie ✨</span>
                     </div>
                 `;
                 scrollChatToBottom(box, false);
