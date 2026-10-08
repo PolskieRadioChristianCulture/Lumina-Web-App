@@ -126,3 +126,9 @@ test('Za Polską: inicjalizacja kanału nie przerywa się na brakującej liście
   const i = z.indexOf('fetch("rozwazania_baza.json');
   assert.doesNotMatch(z.slice(i, i + 6000), /data\.tickerMessage/);
 });
+
+test('kanały: komunikat Mission Control trafia na pasek od razu (loadNewsMarquee dostępne globalnie)', async () => {
+  for (const f of ['zapolske-live.html', 'cctv24.html', 'cctv24-pl.html', 'cctv24-global.html', 'cctv24-worship-live.html', 'cctv24-worship.html', 'biblia-spiewana-live.html']) {
+    assert.match(await read(f), /window\.loadNewsMarquee = loadNewsMarquee/, f);
+  }
+});

@@ -2698,6 +2698,7 @@ function getWeatherPreset(city) {
             }
 
             // Load and build news marquee text dynamically from news.json
+            window.loadNewsMarquee = loadNewsMarquee; // 🛡️ STRAŻNIK: Mission Control odświeża pasek od razu po zmianie komunikatu
             async function loadNewsMarquee() {
                 const marqueeTextEl = document.getElementById("marqueeText");
                 if (!marqueeTextEl) return;
