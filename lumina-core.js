@@ -3,7 +3,7 @@
  * Architektura Danych Firebase/Firestore + Czat Real-Time + Kawa ☕ + Matching Wartości
  * Ekosystem: Christian Culture | Standard: Premium
  */
-import * as LuminaDB from './lumina-db.js?v=20261007_guardian2';
+import * as LuminaDB from './lumina-db.js?v=20261008_foreground1';
 
 class LuminaCoreEngine {
     constructor() {

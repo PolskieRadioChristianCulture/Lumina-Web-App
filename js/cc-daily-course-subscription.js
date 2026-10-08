@@ -14,7 +14,7 @@
     if (action==='subscribe' && !panel.querySelector('input').checked) {status.textContent='Najpierw zaznacz zgodę na powiadomienia kursu.';return;}
     busy=true; panel.querySelectorAll('button').forEach(b=>b.disabled=true);
     try {
-      const sdk = await import('/lumina-db.js?v=20261007_guardian2');
+      const sdk = await import('/lumina-db.js?v=20261008_foreground1');
       const {auth} = await sdk.ensureDbReady();
       if (!auth) throw Error('Nie udało się połączyć z usługą logowania.');
       await auth.authStateReady();

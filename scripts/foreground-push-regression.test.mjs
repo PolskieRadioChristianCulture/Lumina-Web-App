@@ -1,0 +1,74 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+
+const source = readFileSync(new URL('../lumina-db.js', import.meta.url), 'utf8');
+const start = source.indexOf('export async function showForegroundPushNotification(');
+const end = source.indexOf('export async function requestNotificationPermission(', start);
+assert.ok(start > 0 && end > start);
+const show = vm.runInNewContext(`${source.slice(start, end).replace('export ', '')};showForegroundPushNotification`, { URL });
+function fixture({ permission = 'granted', active = true, fail = false } = {}) {
+    const calls = [];
+    const environment = {
+        Notification: { permission, requestPermission() { throw Error('Must not request consent automatically'); } },
+        location: { origin: 'https://polskieradio.cc' },
+        navigator: { serviceWorker: { async getRegistration(scope) {
+            assert.equal(scope, '/');
+            return { active: active ? {} : null, async showNotification(title, options) {
+                if (fail) throw Error('Synthetic notification failure');
+                calls.push({ title, options });
+            } };
+        } } }
+    };
+    return { environment, calls };
+}
+const payload = { notification: { title: 'TEST powiadomienia', body: 'Test, nie nowa wiadomość.' }, data: {
+    type: 'owner_push_test', url: '/akademia/kurscodzienny/dzien-08', tag: 'cc-owner-push-test', secretFixture: 'never-copy-payload'
+} };
+test('foreground FCM callback invokes the system notification path', () => {
+    assert.match(source, /onMessage\(messaging, \(payload\) => \{[\s\S]*?void showForegroundPushNotification\(payload\)/);
+});
+test('owner test displays through the active SW and preserves its lesson link', async () => {
+    const f = fixture();
+    assert.equal(await show(payload, f.environment), true);
+    assert.equal(f.calls.length, 1);
+    assert.equal(f.calls[0].title, payload.notification.title);
+    assert.equal(f.calls[0].options.data.url, 'https://polskieradio.cc/akademia/kurscodzienny/dzien-08');
+    assert.equal(f.calls[0].options.tag, 'cc-owner-push-test');
+    assert.equal(f.calls[0].options.data.secretFixture, undefined);
+});
+test('course data-only messages also display with the correct action', async () => {
+    const f = fixture();
+    assert.equal(await show({ data: { type: 'daily_course_lesson', title: 'Nowa lekcja', body: 'Rdz 8', url: payload.data.url } }, f.environment), true);
+    assert.equal(f.calls[0].title, 'Nowa lekcja');
+    assert.equal(f.calls[0].options.actions[0].title, 'Czytaj lekcję');
+});
+test('default or denied permission never triggers an automatic permission prompt', async () => {
+    for (const permission of ['default', 'denied']) {
+        const f = fixture({ permission });
+        assert.equal(await show(payload, f.environment), false);
+        assert.equal(f.calls.length, 0);
+    }
+});
+test('existing chat paths are not duplicated by the new foreground handler', async () => {
+    for (const type of ['direct_message', 'direct_message_request', 'public_chat', 'mention', undefined]) {
+        const f = fixture();
+        assert.equal(await show({ data: { type } }, f.environment), false);
+        assert.equal(f.calls.length, 0);
+    }
+});
+test('missing or inactive SW and display rejection cannot claim success', async () => {
+    assert.equal(await show(payload, { Notification: { permission: 'granted' } }), false);
+    for (const options of [{ active: false }, { fail: true }]) {
+        const f = fixture(options);
+        assert.equal(await show(payload, f.environment), false);
+    }
+});
+test('external, credentialed and malformed destinations fall back to LUMINA', async () => {
+    for (const url of ['https://example.invalid/', 'javascript:alert(1)', 'https://user:pass@polskieradio.cc/', 'http://[']) {
+        const f = fixture();
+        assert.equal(await show({ ...payload, data: { ...payload.data, url } }, f.environment), true);
+        assert.equal(f.calls[0].options.data.url, 'https://polskieradio.cc/lumina');
+    }
+});

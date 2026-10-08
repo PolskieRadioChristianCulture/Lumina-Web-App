@@ -198,6 +198,9 @@ try {
         if (supported && app) {
             messaging = getMessaging(app);
             onMessage(messaging, (payload) => {
+                // FCM does not display Android notifications automatically in the foreground.
+                // Course/test messages have no Firestore chat listener to display them for us.
+                void showForegroundPushNotification(payload);
                 const title = payload.notification?.title || payload.data?.title || 'LUMINA • Nowa Wiadomość 💌';
                 const body = payload.notification?.body || payload.data?.body || 'Nowa aktywność w społeczności.';
                 window.dispatchEvent(new CustomEvent('lumina-push-message', { detail: { title, body, payload } }));
@@ -218,6 +221,37 @@ try {
 }
 
 // ── Web Push Notifications (FCM) Permission & Token Request ──
+export async function showForegroundPushNotification(payload, environment = window) {
+    const data = payload?.data || {};
+    // Keep existing chat notification ownership unchanged to prevent duplicate alerts.
+    if (!['daily_course_lesson', 'owner_push_test'].includes(data.type)) return false;
+    if (environment.Notification?.permission !== 'granted') return false;
+    const serviceWorker = environment.navigator?.serviceWorker;
+    if (!serviceWorker?.getRegistration) return false;
+    try {
+        const origin = environment.location.origin;
+        let url = new URL('/lumina', origin);
+        try {
+            const candidate = new URL(data.url || '/lumina', origin);
+            if (candidate.origin === origin && !candidate.username && !candidate.password) url = candidate;
+        } catch (_) { /* Invalid links safely fall back to LUMINA. */ }
+        const registration = await serviceWorker.getRegistration('/');
+        if (!registration?.active || !registration.showNotification) return false;
+        await registration.showNotification(payload.notification?.title || data.title || 'Christian Culture', {
+            body: payload.notification?.body || data.body || 'Nowe powiadomienie Christian Culture.',
+            icon: new URL('/lumina-notif-icon-v2.png', origin).href,
+            badge: new URL('/lumina-push-badge-v4.1.5.svg', origin).href,
+            tag: data.tag || `lumina_${data.type}`,
+            data: { url: url.href, type: data.type },
+            actions: [{ action: 'open', title: data.type === 'owner_push_test' ? 'Otwórz lekcję testową' : 'Czytaj lekcję' }]
+        });
+        return true;
+    } catch (_) {
+        // No payload/token logging and no false claim that Android displayed the alert.
+        return false;
+    }
+}
+
 export async function requestNotificationPermission(userUid) {
     if (!('Notification' in window)) {
         console.warn('Notifications not supported in this browser.');
