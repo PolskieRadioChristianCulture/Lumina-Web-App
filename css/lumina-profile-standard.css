@@ -106,6 +106,27 @@ body.lumina-profile-standard.theme-lumina-light .mission-live-broadcast-card :is
     color: #991b1b !important;
 }
 
+/* Legacy profile class names still used by public aliases. Keep media overlays
+ * dark, but make navigation, profile copy and feed/sidebar surfaces readable. */
+html[data-lumina-theme="light"] body.lumina-profile-standard :is(.profile-navbar, .side-card, .feed-post-card) {
+    background: #ffffff !important;
+    border-color: #ddd5c8 !important;
+    color: #292524 !important;
+}
+html[data-lumina-theme="light"] body.lumina-profile-standard :is(.profile-title-name, .side-title, .post-title, .post-author-name, .post-text-content, .profile-meta-row, .info-label, .post-time, .side-card p, .side-card > div, .feed-post-card p) {
+    color: #292524 !important;
+}
+html[data-lumina-theme="light"] body.lumina-profile-standard .nav-brand-title {
+    background: none !important;
+    color: #292524 !important;
+    -webkit-text-fill-color: #292524 !important;
+}
+html[data-lumina-theme="light"] body.lumina-profile-standard :is(.nav-link-btn, .btn-nav-back, .tag-pill, .post-series-tag, .post-badge-daily, .post-action-btn, .verse-box, .post-highlight) {
+    background: #f5f2eb !important;
+    color: #514137 !important;
+    border-color: #b5a48b !important;
+}
+
 /* 44px controls, visible keyboard focus and a readable selected tab. */
 :is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard :is(.head-actions, .hero-actions) > :is(button, a),
 :is(html[data-lumina-theme="light"], html[data-theme="light"]) body.lumina-profile-standard .profile-nav-tabs .tab-btn,

@@ -108,3 +108,21 @@ test('10. Shared runtime module enforces default fallbacks and alt tags', async 
   assert.match(js, /Zdjęcie profilowe/);
   assert.match(js, /LuminaProfileStandard/);
 });
+
+test('11. Nested OSOBOWOSC alias resolves logo, cover and entry scripts from root', async () => {
+  const html = await readFile('lumina.osobowoscplus.html', 'utf8');
+  assert.match(html, /<base href="\/">/);
+  assert.ok(html.indexOf('<base href="/">') < html.indexOf('src='));
+  for (const path of ['logo_osobowosc_plus.jpg', 'lumina_default_cover.jpg', 'lumina-db.js', 'kino-live.html']) {
+    const base = new URL('/', 'https://polskieradio.cc/lumina/osobowoscplus');
+    assert.equal(new URL(path, base).pathname, '/' + path);
+  }
+  assert.match(html, /profile_light_media_v3/);
+});
+
+test('12. Legacy profile navigation, titles and cards have explicit light styles', async () => {
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  assert.match(css, /html\[data-lumina-theme="light"\] body\.lumina-profile-standard :is\(\.profile-navbar, \.side-card, \.feed-post-card\)\s*\{\s*background: #ffffff !important/);
+  assert.match(css, /\.profile-title-name, \.side-title, \.post-title, \.post-author-name/);
+  assert.match(css, /\.nav-brand-title\s*\{[^}]*-webkit-text-fill-color: #292524 !important/);
+});
