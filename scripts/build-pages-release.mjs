@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { dailyCourseManifest } from './daily-course-manifest.mjs';
 
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
@@ -108,6 +109,9 @@ function scan(directory) {
     if (matched) throw new Error(`Wydanie przerwane: wykryto sekret w ${path.relative(resolvedOutput, absolute)}.`);
   }
 }
+const courseManifest = dailyCourseManifest(tracked,file=>fs.readFileSync(path.join(ROOT,file),'utf8'));
+fs.mkdirSync(path.join(resolvedOutput,'data'),{recursive:true});
+fs.writeFileSync(path.join(resolvedOutput,'data','daily-course-push.json'),JSON.stringify(courseManifest));
 scan(resolvedOutput);
 
 console.log(JSON.stringify({ output: resolvedOutput, copied, source: 'tracked-clean-worktree' }, null, 2));

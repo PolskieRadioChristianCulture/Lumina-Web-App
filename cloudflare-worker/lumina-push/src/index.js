@@ -1,3 +1,4 @@
+import { firestoreCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const FIREBASE_LOOKUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup';
@@ -48,7 +49,7 @@ async function signJwt(payload, serviceAccount) {
   return `${signingInput}.${base64UrlEncode(new Uint8Array(signature))}`;
 }
 
-async function getGoogleAccessToken(env) {
+async function getGoogleAccessToken(env, courseAccountLookup = false) {
   let serviceAccount;
   try {
     serviceAccount = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT_JSON);
@@ -61,7 +62,7 @@ async function getGoogleAccessToken(env) {
   const now = Math.floor(Date.now() / 1000);
   const assertion = await signJwt({
     iss: serviceAccount.client_email,
-    scope: GOOGLE_SCOPES,
+    scope: GOOGLE_SCOPES + (courseAccountLookup ? ' https://www.googleapis.com/auth/identitytoolkit' : ''),
     aud: GOOGLE_TOKEN_URL,
     iat: now,
     exp: now + 3600
@@ -80,7 +81,7 @@ async function getGoogleAccessToken(env) {
   return result.access_token;
 }
 
-async function verifyFirebaseUser(request, env) {
+async function verifyFirebaseUser(request, env, registeredOnly = false) {
   const authorization = request.headers.get('authorization') || '';
   const idToken = authorization.startsWith('Bearer ') ? authorization.slice(7) : '';
   if (!idToken || !env.FIREBASE_WEB_API_KEY) return null;
@@ -91,6 +92,7 @@ async function verifyFirebaseUser(request, env) {
   });
   if (!response.ok) return null;
   const result = await response.json();
+  if (registeredOnly && !result.users?.[0]?.email && !result.users?.[0]?.providerUserInfo?.length) return null;
   return result.users?.[0]?.localId || null;
 }
 
@@ -219,7 +221,7 @@ async function sendFcm(token, notification, accessToken, env) {
         notification: { title: notification.title, body: notification.body },
         data,
         webpush: {
-          headers: { Urgency: 'high' },
+          headers: { Urgency: notification.type === 'daily_course_lesson' ? 'normal' : 'high' },
           notification: {
             title: notification.title,
             body: notification.body,
@@ -228,7 +230,7 @@ async function sendFcm(token, notification, accessToken, env) {
             tag: notification.tag,
             renotify: true,
             requireInteraction: true,
-            actions: [
+            actions: notification.type === 'daily_course_lesson' ? [{action:'open',title:'Czytaj lekcję'}] : [
               { action: 'reply', title: '💬 Odpowiedz' },
               { action: 'open', title: 'Otwórz Czat' }
             ]
@@ -265,7 +267,26 @@ async function handlePush(request, env, kind, documentId) {
   return { status: 200, body: { delivered: results.filter(Boolean).length, attempted: tokens.length } };
 }
 
+function courseDeps(env, accessToken) {
+  return {
+    store:firestoreCourseStore(env,accessToken),
+    latest:()=>latestCourseLesson(),
+    lessons:()=>publishedCourseLessons(),
+    accountState:uid=>courseAccountState(uid,env,accessToken),
+    tokens:uid=>getRecipientTokens(uid,'',accessToken,env),
+    send:(token,lesson)=>sendFcm(token,{
+      title:'Nowa lekcja — Z Biblią za Pan Brat',body:lesson.title,type:'daily_course_lesson',
+      tag:`cc-daily-lesson-${lesson.number}`,url:lesson.url,icon:`${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`,senderId:'',documentId:String(lesson.number)
+    },accessToken,env)
+  };
+}
 export default {
+  async scheduled(event, env) {
+    if (env.COURSE_PUSH_ENABLED !== 'true') return;
+    const token = await getGoogleAccessToken(env,true);
+    const result = await dispatchCourseLesson(courseDeps(env,token));
+    console.log(JSON.stringify({event:'daily_course_push',...result}));
+  },
   async fetch(request, env) {
     const origin = request.headers.get('origin') || '';
     const cors = corsHeaders(origin, env);
@@ -277,6 +298,34 @@ export default {
     }
     if (origin !== env.ALLOWED_ORIGIN) return json({ error: 'Niedozwolone źródło.' }, 403);
     if (request.method !== 'POST') return json({ error: 'Tylko POST.' }, 405, cors);
+    if (new URL(request.url).pathname === '/v1/course/subscription') {
+      if (env.COURSE_PUSH_ENABLED !== 'true') return json({error:'Subskrypcje kursu są wyłączone.'},503,cors);
+      try {
+        const uid = await verifyFirebaseUser(request,env,true);
+        if (!uid) return json({error:'Wymagane logowanie do konta.'},401,cors);
+        const reader = request.body?.getReader();
+        let text = '', size = 0;
+        if (!reader) return json({error:'Brak żądania.'},400,cors);
+        const decoder = new TextDecoder();
+        while (true) {
+          const chunk = await reader.read(); if (chunk.done) break;
+          size += chunk.value.byteLength;
+          if (size>1024) {await reader.cancel();return json({error:'Za duże żądanie.'},413,cors);}
+          text += decoder.decode(chunk.value,{stream:true});
+        }
+        text += decoder.decode();
+        let body;
+        try { body = JSON.parse(text); }
+        catch (_) { return json({error:'Nieprawidłowy JSON.'},400,cors); }
+        if (!body || typeof body !== 'object' || Array.isArray(body) ||
+            !['status','subscribe','unsubscribe'].includes(body.action) ||
+            Object.keys(body).some(k=>!['action','consent'].includes(k)))
+          return json({error:'Nieprawidłowe żądanie.'},400,cors);
+        const token = await getGoogleAccessToken(env);
+        const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));
+        return json(result.body,result.status,{...cors,'cache-control':'no-store'});
+      } catch (_) {return json({error:'Nie udało się obsłużyć subskrypcji.'},502,cors);}
+    }
     const match = new URL(request.url).pathname.match(/^\/v1\/push\/(request|direct)\/([A-Za-z0-9_-]{1,200})$/);
     if (!match) return json({ error: 'Nieznana trasa.' }, 404, cors);
     try {

@@ -1,4 +1,4 @@
-/* Public lesson links only. No SDKs, tracking, account access or automatic sends. */
+/* Public lesson links. No SDK loading, tracking or automatic sends. */
 (function () {
   'use strict';
   if (document.getElementById('ccDailyShare')) return;
@@ -18,9 +18,20 @@
   panel.querySelector('h2').textContent = day ? 'Podziel się tą lekcją' : 'Zaproś do codziennego kursu';
   const actions = panel.querySelector('.cc-daily-share-actions');
   const status = panel.querySelector('[role="status"]');
+  const icons = {'Tablica LUMINA':'L','WhatsApp':'fa-brands fa-whatsapp','Facebook':'fa-brands fa-facebook-f','Telegram':'fa-brands fa-telegram','X':'fa-brands fa-x-twitter','E-mail':'fa-regular fa-envelope','Kopiuj link':'fa-solid fa-link','Więcej aplikacji…':'fa-solid fa-share-nodes'};
+  function icon(control, label) {
+    control.setAttribute('aria-label', label);
+    control.title = label;
+    control.style.cssText = 'width:44px;height:44px;padding:0;font-size:20px';
+    const glyph = document.createElement(icons[label] === 'L' ? 'span' : 'i');
+    glyph.setAttribute('aria-hidden', 'true');
+    if (icons[label] === 'L') { glyph.textContent = 'L'; glyph.style.fontWeight = '900'; }
+    else glyph.className = icons[label];
+    control.appendChild(glyph);
+  }
   function link(label, href, external) {
     const a = document.createElement('a');
-    a.textContent = label;
+    icon(a, label);
     a.href = href;
     if (external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
     actions.appendChild(a);
@@ -33,7 +44,7 @@
   link('X', 'https://x.com/intent/tweet?url=' + enc(url) + '&text=' + enc(title), true);
   link('E-mail', 'mailto:?subject=' + enc(title) + '&body=' + enc(message), false);
   function button(label, action) {
-    const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+    const b = document.createElement('button'); b.type = 'button'; icon(b, label);
     b.addEventListener('click', action); actions.appendChild(b);
   }
   function manualCopy() {
@@ -57,5 +68,24 @@
   else {
     const host = document.getElementById('course-view-kurscodzienny') || document.querySelector('main');
     if (host) host.appendChild(panel);
+  }
+  const invitation = document.createElement('section');
+  invitation.id = 'ccDailyAccountInvitation';
+  invitation.className = 'cc-daily-share';
+  invitation.setAttribute('aria-label','Bezpłatne konto Christian Culture');
+  invitation.innerHTML = '<h2>Więcej możliwości — bezpłatnie</h2><p>Zaloguj się, by bezpłatnie korzystać z większej liczby możliwości i dołączyć do społeczności LUMINA.</p><div class="cc-daily-share-actions"><a href="/lumina-login">Zaloguj się — korzystaj bezpłatnie</a></div><p>Czytanie i udostępnianie lekcji pozostaje dostępne bez konta.</p>';
+  panel.insertAdjacentElement('afterend',invitation);
+  function updateInvitation() {
+    // UI events are only a refresh signal, never proof of authentication.
+    const user = window.firebaseAuth?.currentUser;
+    invitation.hidden = !!user && user.isAnonymous === false;
+  }
+  updateInvitation();
+  window.addEventListener('lumina-auth-state',updateInvitation);
+  // Fail closed: expose enrollment only after the backend release is approved.
+  if (window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED === true) {
+    const subscription = document.createElement('script');
+    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription1';
+    document.head.appendChild(subscription);
   }
 })();

@@ -1,0 +1,175 @@
+const ORIGIN = 'https://polskieradio.cc';
+const COLLECTION = 'cc_daily_course_subscriptions';
+const jsonHeaders = {'content-type':'application/json'};
+const decode = fields => Object.fromEntries(Object.entries(fields || {}).map(([k,v]) => [k, v.stringValue ?? v.booleanValue ?? Number(v.integerValue)]));
+const encode = data => Object.fromEntries(Object.entries(data).map(([k,v]) => [k, typeof v === 'boolean' ? {booleanValue:v} : typeof v === 'number' ? {integerValue:String(v)} : {stringValue:String(v)}]));
+export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
+  const base = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(env.FIREBASE_PROJECT_ID)}/databases/(default)/documents`;
+  const headers = {...jsonHeaders, authorization:`Bearer ${accessToken}`};
+  return {
+    async profileForAccount(uid) {
+      const r=await fetchImpl(`${base}:runQuery`,{method:'POST',headers,body:JSON.stringify({structuredQuery:{
+        from:[{collectionId:'lumina_profiles'}],where:{fieldFilter:{field:{fieldPath:'uid'},op:'EQUAL',value:{stringValue:uid}}},limit:1
+      }})});
+      if (!r.ok) throw Error('subscription_profile_lookup_failed');
+      const rows=await r.json();return rows.find(row=>row.document)?.document.name.split('/').pop() || '';
+    },
+    async profileStillOwned(profileId,uid) {
+      if (!profileId || profileId.includes('/')) return false;
+      const r=await fetchImpl(`${base}/lumina_profiles/${encodeURIComponent(profileId)}`,{headers});
+      if (r.status===404) return false;
+      if (!r.ok) throw Error('subscription_profile_check_failed');
+      return decode((await r.json()).fields).uid===uid;
+    },
+    async cursor() {
+      const r=await fetchImpl(`${base}/cc_daily_course_dispatch/state`,{headers});
+      if (r.status===404) return null;
+      if (!r.ok) throw Error('dispatch_cursor_read_failed');
+      const d=await r.json();return {after:decode(d.fields).after || '',revision:d.updateTime};
+    },
+    async advance(after,revision) {
+      const query=new URLSearchParams({'updateMask.fieldPaths':'after'});
+      query.set(revision?'currentDocument.updateTime':'currentDocument.exists',revision || 'false');
+      const r=await fetchImpl(`${base}/cc_daily_course_dispatch/state?${query}`,{
+        method:'PATCH',headers,body:JSON.stringify({fields:encode({after})})
+      });
+      if ([409,412,404].includes(r.status)) return false;
+      if (!r.ok) throw Error('dispatch_cursor_save_failed');
+      return true;
+    },
+    async get(uid) {
+      const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}`, {headers});
+      if (r.status === 404) return null;
+      if (!r.ok) throw Error('subscription_read_failed');
+      const d = await r.json(); return {data:decode(d.fields), revision:d.updateTime};
+    },
+    async save(uid, data, revision) {
+      const query = new URLSearchParams();
+      for (const key of Object.keys(data)) query.append('updateMask.fieldPaths', key);
+      if (revision) query.set('currentDocument.updateTime', revision);
+      const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}?${query}`, {method:'PATCH',headers,body:JSON.stringify({fields:encode(data)})});
+      if (r.status === 409 || r.status === 412 || r.status === 404) return false;
+      if (!r.ok) throw Error('subscription_save_failed');
+      return true;
+    },
+    async remove(uid,revision) {
+      const condition=revision?'?'+new URLSearchParams({'currentDocument.updateTime':revision}):'';
+      const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}${condition}`,{method:'DELETE',headers});
+      if (revision && [409,412].includes(r.status)) return false;
+      if (!r.ok && r.status !== 404) throw Error('subscription_remove_failed');
+      return true;
+    },
+    async pending(lessonNumber,after='') {
+      // Round-robin by document name: failed devices cannot monopolize the batch.
+      // No inequality filter/composite index; completed records are also visited
+      // so subscriptions of deleted accounts can be removed without a new lesson.
+      const structuredQuery={from:[{collectionId:COLLECTION}],orderBy:[{field:{fieldPath:'__name__'},direction:'ASCENDING'}],limit:2};
+      if (after) structuredQuery.startAt={values:[{referenceValue:`${base.replace('https://firestore.googleapis.com/v1/','')}/${COLLECTION}/${after}`}],before:false};
+      const r = await fetchImpl(`${base}:runQuery`, {method:'POST',headers,body:JSON.stringify({structuredQuery:{
+        ...structuredQuery
+      }})});
+      if (!r.ok) throw Error('subscription_query_failed');
+      return (await r.json()).filter(row=>row.document).map(row=>({uid:row.document.name.split('/').pop(),data:decode(row.document.fields),revision:row.document.updateTime}));
+    }
+  };
+}
+export async function publishedCourseLessons(fetchImpl = fetch, now = Date.now()) {
+  const r = await fetchImpl(`${ORIGIN}/data/daily-course-push.json`, {headers:{'cache-control':'no-cache'}});
+  if (!r.ok) throw Error('lesson_manifest_unavailable');
+  const text = await r.text();
+  if (text.length > 500000) throw Error('lesson_manifest_too_large');
+  const manifest = JSON.parse(text);
+  if (manifest.version !== 1 || !Array.isArray(manifest.lessons)) throw Error('invalid_lesson_manifest');
+  const lessons = manifest.lessons.filter(l=>Number.isInteger(l.number) && l.number>0 && l.number<=2009 &&
+    typeof l.title==='string' && l.title.length<=300 &&
+    l.url === `${ORIGIN}/akademia/kurscodzienny/dzien-${String(l.number).padStart(2,'0')}` &&
+    Number.isFinite(Date.parse(l.availableAt)) && Date.parse(l.availableAt)<=now);
+  return lessons.sort((a,b)=>a.number-b.number);
+}
+export async function latestCourseLesson(fetchImpl = fetch, now = Date.now()) {
+  return (await publishedCourseLessons(fetchImpl,now)).at(-1) || null;
+}
+export async function courseSubscriptionAction(uid, body, deps) {
+  if (!uid) return {status:401,body:{error:'Wymagane logowanie.'}};
+  if (!body || !['status','subscribe','unsubscribe'].includes(body.action) || Object.keys(body).some(k=>!['action','consent'].includes(k)))
+    return {status:400,body:{error:'Nieprawidłowe żądanie.'}};
+  if (body.action==='unsubscribe') {await deps.store.remove(uid);return {status:200,body:{subscribed:false}};}
+  const existing = await deps.store.get(uid);
+  if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled}};
+  if (body.consent!==true) return {status:400,body:{error:'Wymagana świadoma zgoda na powiadomienia kursu.'}};
+  if (!(await deps.tokens(uid)).length) return {status:409,body:{error:'Najpierw włącz push na tym urządzeniu.'}};
+  const lesson = await deps.latest();
+  if (!lesson) return {status:503,body:{error:'Katalog lekcji jest niedostępny.'}};
+  if (existing?.data.enabled) return {status:200,body:{subscribed:true}};
+  const profileId=deps.store.profileForAccount ? await deps.store.profileForAccount(uid) : '';
+  const saved = await deps.store.save(uid,{uid,enabled:true,profileId,consentVersion:'daily-course-push-v1',consentedAt:new Date().toISOString(),lastLessonNumber:lesson.number,attempts:0,leaseUntil:0});
+  if (!saved) return {status:409,body:{error:'Ponów zapis subskrypcji.'}};
+  return {status:200,body:{subscribed:true}};
+}
+export async function dispatchCourseLesson(deps, now = Date.now()) {
+  const lessons = deps.lessons ? await deps.lessons() : [await deps.latest()].filter(Boolean);
+  const newest = lessons.at(-1);
+  if (!newest) return {selected:0,accepted:0};
+  const cursor=deps.store.cursor ? await deps.store.cursor() : null;
+  const pending = await deps.store.pending(newest.number,cursor?.after || '');
+  let accepted = 0;
+  let removed = 0;
+  let failed = 0;
+  try {
+  for (const record of pending) {
+    try {
+    if (deps.accountState) {
+      const state=await deps.accountState(record.uid);
+      if (state==='deleted') {if (await deps.store.remove(record.uid,record.revision)) removed++;continue;}
+      if (state!=='active') continue;
+    }
+    if (record.data.profileId && deps.store.profileStillOwned && !await deps.store.profileStillOwned(record.data.profileId,record.uid)) {
+      if (await deps.store.remove(record.uid,record.revision)) removed++;
+      continue;
+    }
+    if (!record.data.enabled || record.data.uid!==record.uid || record.data.leaseUntil>now) continue;
+    // Resume oldest pending lesson; an outage must not silently skip lessons.
+    const lesson = lessons.find(l=>l.number>record.data.lastLessonNumber);
+    if (!lesson) continue;
+    const attempts = record.data.attemptLessonNumber===lesson.number ? record.data.attempts||0 : 0;
+    const leaseId=crypto.randomUUID();
+    // Optimistic precondition prevents overlapping cron invocations claiming one student.
+    if (!await deps.store.save(record.uid,{leaseId,leaseUntil:now+120000,attempts:attempts+1,attemptLessonNumber:lesson.number},record.revision)) continue;
+    const current = await deps.store.get(record.uid);
+    if (!current?.data.enabled || current.data.leaseId!==leaseId || current.data.lastLessonNumber>=lesson.number) continue;
+    try {
+      const tokens = await deps.tokens(record.uid);
+      const outcomes = [];
+      for (const token of tokens) outcomes.push(await deps.send(token,lesson));
+      const success = outcomes.length>0 && outcomes.every(Boolean);
+      const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6))};
+      if (success) update.lastLessonNumber=lesson.number;
+      if (success) accepted++;
+      // Never recreate a subscription deleted while delivery was in flight.
+      await deps.store.save(record.uid,update,current.revision);
+    } catch (_) {
+      // Never mark failure as delivery. Cursor rotation lets other students pass.
+      await deps.store.save(record.uid,{leaseUntil:now+Math.min(3600000,60000*2**Math.min(attempts,6))},current.revision);
+    }
+    } catch (_) { failed++; } // One provider/account failure must not stop the batch.
+  }
+  } finally {
+    if (deps.store.advance) await deps.store.advance(pending.at(-1)?.uid || '',cursor?.revision);
+  }
+  return {selected:pending.length,accepted,removed,failed};
+}
+
+export async function courseAccountState(uid,env,accessToken,fetchImpl=fetch) {
+  const r=await fetchImpl(`https://identitytoolkit.googleapis.com/v1/projects/${encodeURIComponent(env.FIREBASE_PROJECT_ID)}/accounts:lookup`,{
+    method:'POST',headers:{...jsonHeaders,authorization:`Bearer ${accessToken}`},body:JSON.stringify({localId:[uid]})
+  });
+  // A network, IAM or provider error is never proof the account was deleted.
+  if (!r.ok) throw Error('course_account_lookup_failed');
+  const result=await r.json();
+  if (result.users!==undefined && !Array.isArray(result.users)) throw Error('course_account_lookup_invalid');
+  if (!result.users?.length) return 'deleted';
+  if (result.users.length!==1 || result.users[0].localId!==uid) throw Error('course_account_identity_mismatch');
+  const user=result.users[0];
+  if (user.disabled || (!user.email && !user.providerUserInfo?.length)) return 'disabled';
+  return 'active';
+}

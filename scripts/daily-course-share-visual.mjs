@@ -8,6 +8,8 @@ const output = process.argv[2];
 const browser = await chromium.launch({headless:true});
 try {
   const context = await browser.newContext();
+  // Local QA only: production enrollment stays disabled until backend acceptance.
+  await context.addInitScript(()=>{window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED=true;});
   await context.route('https://polskieradio.cc/**', async route => {
     const u = new URL(route.request().url());
     if (u.pathname.includes('auth') || u.pathname.includes('firebase')) return route.abort();
@@ -30,6 +32,18 @@ try {
     await page.goto('https://polskieradio.cc/akademia/kurscodzienny/dzien-08', {waitUntil:'domcontentloaded'});
     const panel = page.locator('#ccDailyShare');
     await panel.waitFor();
+    const invitation=page.locator('#ccDailyAccountInvitation');
+    await invitation.waitFor();
+    assert.ok(await invitation.evaluate(n=>n.getBoundingClientRect().right<=innerWidth));
+    assert.ok(await invitation.locator('a').evaluate(n=>n.getBoundingClientRect().height>=44));
+    if (output) await invitation.screenshot({path:path.join(output,`CC_DAILY_ACCOUNT_INVITATION_${width}_2026-10-08.png`)});
+    const subscription = page.locator('#ccDailySubscription');
+    await subscription.waitFor();
+    assert.ok(await subscription.evaluate(n=>n.getBoundingClientRect().right<=innerWidth));
+    assert.equal(await subscription.locator('input[type="checkbox"]').isChecked(),false);
+    await subscription.getByRole('button',{name:'Subskrybuj nowe lekcje',exact:true}).click();
+    assert.match(await subscription.getByRole('status').textContent(),/zaznacz zgodę/);
+    if (output) await subscription.screenshot({path:path.join(output,`CC_DAILY_SUBSCRIPTION_${width}_2026-10-08.png`)});
     await panel.scrollIntoViewIfNeeded();
     const sizes = await panel.locator('a,button').evaluateAll(nodes => nodes.map(n => ({width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height})));
     assert.ok(sizes.every(s => s.height >= 44 && s.width >= 44), JSON.stringify(sizes));

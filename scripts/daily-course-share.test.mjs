@@ -4,6 +4,26 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { Window } from 'happy-dom';
 
 const script = readFileSync('js/cc-daily-course-share.js', 'utf8');
+test('subscription enrollment fails closed before backend acceptance',()=>{
+  const w=mount();
+  assert.equal(w.document.querySelector('script[src*="cc-daily-course-subscription"]'),null);
+  w.close();
+});
+test('guest invitation is free, nonblocking, and follows actual auth rather than event identity',()=>{
+  const w=mount();const invitation=w.document.getElementById('ccDailyAccountInvitation');
+  assert.equal(invitation.hidden,false);
+  assert.match(invitation.textContent,/bezpłatnie/);
+  assert.match(invitation.textContent,/pozostaje dostępne bez konta/);
+  assert.equal(invitation.querySelector('a').getAttribute('href'),'/lumina-login');
+  w.dispatchEvent(new w.CustomEvent('lumina-auth-state',{detail:{user:{uid:'fake'}}}));
+  assert.equal(invitation.hidden,false);
+  w.firebaseAuth={currentUser:{uid:'synthetic',isAnonymous:false}};
+  w.dispatchEvent(new w.Event('lumina-auth-state'));assert.equal(invitation.hidden,true);
+  w.firebaseAuth.currentUser={isAnonymous:true};
+  w.dispatchEvent(new w.Event('lumina-auth-state'));assert.equal(invitation.hidden,false);
+  w.eval(script);assert.equal(w.document.querySelectorAll('#ccDailyAccountInvitation').length,1);
+  w.close();
+});
 function mount(path = '/akademia/kurscodzienny/dzien-08', navigatorSetup = () => {}) {
   const window = new Window({url: 'https://polskieradio.cc' + path});
   window.document.write('<title>Dzień 8 — Wieża Babel</title><main><section><a href="/tablica?share=dzien-07">Stary link</a></section></main>');
@@ -50,6 +70,18 @@ test('kurs w akademii nie udostępnia losowego dnia', () => {
   assert.equal(link.searchParams.get('share_url'), 'https://polskieradio.cc/akademia#kurscodzienny');
   w.close();
 });
+test('same ikony zachowują nazwy dostępności, tooltip i cele 44x44', () => {
+  const w = mount();
+  for (const control of w.document.querySelectorAll('#ccDailyShare a, #ccDailyShare button')) {
+    assert.ok(control.getAttribute('aria-label'));
+    assert.equal(control.title, control.getAttribute('aria-label'));
+    assert.equal(control.firstElementChild.getAttribute('aria-hidden'), 'true');
+    assert.equal(control.style.width, '44px');
+    assert.equal(control.style.height, '44px');
+    assert.notEqual(control.textContent, control.getAttribute('aria-label'));
+  }
+  w.close();
+});
 test('schowek: sukces dopiero po zapisie, odmowa daje ręczną kopię', async () => {
   let value;
   const w = mount(undefined, nav => Object.defineProperty(nav, 'clipboard', {value: {writeText: async text => {value = text;}}, configurable:true}));
@@ -64,7 +96,7 @@ test('schowek: sukces dopiero po zapisie, odmowa daje ręczną kopię', async ()
 });
 test('natywne udostępnianie opcjonalne; anulowanie nie zgłasza sukcesu', async () => {
   const w = mount(undefined, nav => Object.defineProperty(nav, 'share', {value: async () => {throw Object.assign(Error('cancel'), {name:'AbortError'});}}));
-  const b = [...w.document.querySelectorAll('button')].find(b => b.textContent === 'Więcej aplikacji…');
+  const b = w.document.querySelector('button[aria-label="Więcej aplikacji…"]');
   assert.ok(b);
   b.click(); await new Promise(resolve => setTimeout(resolve, 0));
   assert.equal(w.document.querySelector('[role="status"]').textContent, '');

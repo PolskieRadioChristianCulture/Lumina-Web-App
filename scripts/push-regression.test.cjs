@@ -53,6 +53,7 @@ for (const [name, data, expected] of [
     ['Firebase direct-message click', { FCM_MSG: { data: { type: 'direct_message', senderId: 'anna', messageId: 'm1' } } }, '/lumina?openChat=anna&messageId=m1'],
     ['public chat with sender', { type: 'public_chat', senderId: 'anna' }, '/lumina?openPublicChat=1'],
     ['foreign redirect rejected', { url: 'https://example.org/' }, '/lumina'],
+    ['daily course opens its canonical lesson', { type:'daily_course_lesson', url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08' }, '/akademia/kurscodzienny/dzien-08'],
 ]) {
     test(name, async () => {
         const w = worker();
