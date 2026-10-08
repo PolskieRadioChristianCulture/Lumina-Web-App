@@ -6,6 +6,28 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 (() => {
+    function setupAccessibleNavigation(nav, popup) {
+        if (!nav || !popup) return;
+        const more = nav.querySelector('#navTabMoreMenu');
+        if (!more) return;
+        nav.querySelectorAll('a, button').forEach(control => {
+            control.setAttribute('aria-label', control.id === 'navTabMoreMenu' ? 'Więcej opcji LUMINA' : control.title);
+            control.querySelectorAll('i').forEach(icon => icon.setAttribute('aria-hidden', 'true'));
+            if (control.matches('a.active')) control.setAttribute('aria-current', 'page');
+        });
+        more.setAttribute('aria-controls', popup.id);
+        const sync = () => more.setAttribute('aria-expanded', String(popup.classList.contains('open')));
+        sync();
+        new MutationObserver(sync).observe(popup, { attributes: true, attributeFilter: ['class'] });
+        nav.ownerDocument.addEventListener('keydown', event => {
+            if (event.key !== 'Escape' || !popup.classList.contains('open')) return;
+            event.preventDefault();
+            popup.classList.remove('open');
+            more.classList.remove('active');
+            sync();
+            more.focus();
+        });
+    }
     if (document.getElementById('luminaBottomNav')) {
         document.getElementById('luminaBottomNav').remove();
     }
@@ -262,6 +284,10 @@
         }
         .lumina-nav-tab.active {
             color: #facc15 !important;
+        }
+        .lumina-nav-tab:focus-visible {
+            outline: 3px solid #facc15 !important;
+            outline-offset: -4px !important;
         }
         .lumina-nav-tab.active i {
             color: #facc15 !important;
@@ -1115,7 +1141,7 @@
     // 2. Określenie Aktywnej Karty
     const pathname = window.location.pathname.toLowerCase();
     const isDiscover = pathname.includes('lumina.html') || (pathname.endsWith('/lumina') && !pathname.includes('tablica') && !pathname.includes('women') && !pathname.includes('osobowosc') && !pathname.includes('radiocc') && !pathname.includes('cctv') && !pathname.includes('ccmen'));
-    const isTablica = pathname.includes('lumina-tablica');
+    const isTablica = pathname.includes('lumina-tablica') || /\/tablica\/?$/.test(pathname);
     const isShorts = pathname.includes('lumina-shorts') || pathname.includes('rolki') || pathname.includes('shorts');
     const isProfile = pathname.includes('lumina-profile') || pathname.includes('cezaryrgowski') || pathname.includes('wiolettarogowska');
 
@@ -1418,17 +1444,17 @@
 
         <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
-            <a href="lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('lumina')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('lumina')" title="Odkrywaj Chrześcijańskie Profile">
+            <a href="/lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" title="Odkrywaj Chrześcijańskie Profile">
                 <i class="fa-solid fa-heart-circle-bolt"></i>
             </a>
 
             <!-- 2. Tablica Społeczności -->
-            <a href="tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('tablica')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('tablica')" title="Główna Tablica Społeczności">
+            <a href="/tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/tablica')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/tablica')" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
             <!-- 3. Rolki Wiary (Shorts 9:16) -->
-            <a href="rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('rolki')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('rolki')" title="Rolki Wiary • LUMINA Shorts 9:16">
+            <a href="/rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/rolki')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/rolki')" title="Rolki Wiary • LUMINA Shorts 9:16">
                 <i class="fa-solid fa-clapperboard"></i>
             </a>
 
@@ -1908,6 +1934,7 @@
     }, 1000);
 
     document.body.insertAdjacentHTML('beforeend', navHtml);
+    setupAccessibleNavigation(document.getElementById('luminaBottomNav'), document.getElementById('luminaBottomMenuPopup'));
 
     // ══════════════════════════════════════════════════════════════════════════
     // Pomocnik natychmiastowego pobierania w tle stron portalu LUMINA (Near-Zero Latency)
