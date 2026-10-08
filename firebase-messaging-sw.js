@@ -20,10 +20,14 @@ try {
 
     const fcmMessaging = firebase.messaging();
     fcmMessaging.onBackgroundMessage((payload) => {
-        console.log('[SW] FCM Background Message received:', payload);
         const data = payload.data || {};
         const notification = payload.notification || {};
         const type = data.type || 'general';
+
+        // Firebase 10.12.2 displays notification payloads BEFORE this callback.
+        // Our Worker already supplies the tag/actions/link for these two types.
+        // Keep data-only fallback and existing chat rendering unchanged.
+        if (payload.notification && (type === 'owner_push_test' || type === 'daily_course_lesson')) return;
 
         const title = notification.title || data.title || 'LUMINA ✨';
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';

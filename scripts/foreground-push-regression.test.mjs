@@ -22,6 +22,25 @@ test('cached security importer receives the same release version as the DB modul
     }
     assert.ok(checked >= 19, 'Canonical and legacy profile entry points must be covered');
 });
+test('both board entries refresh the cached importer with the DB/core release', () => {
+    const root = new URL('../', import.meta.url);
+    const board = readFileSync(new URL('lumina-tablica.js', root), 'utf8');
+    const imports = ['db', 'core'].map(name => {
+        const match = board.match(new RegExp(`from ['"]\\./lumina-${name}\\.js(\\?v=[^'"]+)['"]`));
+        assert.ok(match, `Board must import a versioned ${name} module`);
+        return match[1];
+    });
+    assert.equal(imports[0], imports[1]);
+    for (const file of ['lumina-tablica.html', 'lumina-tablica-light.html']) {
+        const html = readFileSync(new URL(file, root), 'utf8');
+        for (const name of ['db', 'core', 'tablica']) {
+            const match = html.match(new RegExp(`src=['"](?:\\./)?lumina-${name}\\.js(\\?v=[^'"]+)['"]`));
+            assert.ok(match, `${file}: missing ${name} entry`);
+            assert.equal(match[1], imports[0], `${file}: stale ${name} entry can restore an older messaging callback`);
+        }
+    }
+});
+
 function fixture({ permission = 'granted', active = true, fail = false } = {}) {
     const calls = [];
     const environment = {

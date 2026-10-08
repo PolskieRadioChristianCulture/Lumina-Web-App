@@ -6,7 +6,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 
 function worker() {
-    const listeners = {}, shown = [], opened = [];
+    const listeners = {}, shown = [], opened = [], logs = [];
     let background;
     const self = {
         location: { origin: 'https://polskieradio.cc' },
@@ -14,15 +14,104 @@ function worker() {
         registration: { showNotification: async (...args) => shown.push(args) },
     };
     vm.runInNewContext(fs.readFileSync(path.join(root, 'firebase-messaging-sw.js'), 'utf8'), {
-        self, URL, console,
+        self, URL, console: { log: (...args) => logs.push(args), warn: (...args) => logs.push(args) },
         importScripts: () => assert.equal(typeof listeners.notificationclick, 'function'),
         firebase: { initializeApp() {}, messaging: () => ({ onBackgroundMessage: fn => { background = fn; } }) },
         clients: { matchAll: async () => [], openWindow: async url => opened.push(url) },
     });
-    return { listeners, shown, opened, background };
+    return { listeners, shown, opened, background, logs, registration: self.registration };
 }
 
-test('FCM notification payload renders once with full title and body', async () => {
+// Model the routing/display contract in Firebase SDK 10.12.2 sw-listeners.ts.
+// The ordinary callback mock alone does NOT include SDK automatic display.
+// This is offline contract coverage, not a real browser or delivery test.
+async function receiveViaSdk(w, payload, windowClients = []) {
+    if (windowClients.some(client => client.visibilityState === 'visible' && !client.url.startsWith('chrome-extension://'))) {
+        for (const client of windowClients) client.postMessage(payload);
+        return;
+    }
+    if (payload.notification) {
+        await w.registration.showNotification(payload.notification.title, {
+            ...payload.notification, data: { FCM_MSG: payload }
+        });
+    }
+    await w.background(payload);
+}
+
+for (const type of ['owner_push_test', 'daily_course_lesson']) {
+    test(`${type}: SDK automatic display is not repeated by the background callback`, async () => {
+        const w = worker();
+        const payload = { from: 'test-sender', notification: {
+            title: 'Test', body: 'Synthetic', tag: 'synthetic-test',
+            actions: [{ action: 'open', title: 'Czytaj lekcję' }]
+        }, data: { type, tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } };
+        await receiveViaSdk(w, payload);
+        assert.equal(w.shown.length, 1);
+        assert.equal(w.shown[0][1].data.FCM_MSG.data.url, payload.data.url);
+        assert.equal(w.shown[0][1].actions[0].title, 'Czytaj lekcję');
+    });
+
+    test(`${type}: data-only background messages still display once`, async () => {
+        const w = worker();
+        await receiveViaSdk(w, { from: 'test-sender', data: { type, title: 'Test', body: 'Synthetic', tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } });
+        assert.equal(w.shown.length, 1);
+        assert.equal(w.shown[0][1].data.url, '/akademia/kurscodzienny/dzien-08');
+    });
+}
+
+test('background callback never logs private payloads', async () => {
+    const w = worker();
+    await w.background({ from: 'synthetic', data: { type: 'direct_message', body: 'PRIVATE-BODY-FIXTURE', senderId: 'PRIVATE-ID-FIXTURE' } });
+    const output = JSON.stringify(w.logs);
+    assert.doesNotMatch(output, /PRIVATE-BODY-FIXTURE|PRIVATE-ID-FIXTURE/);
+});
+
+test('SDK routes to windows when another page of the same origin is visible', async () => {
+    const w = worker(), received = [];
+    await receiveViaSdk(w, { from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test' } }, [
+        { url: 'https://polskieradio.cc/lumina', visibilityState: 'hidden', postMessage: () => received.push('pwa') },
+        { url: 'https://polskieradio.cc/akademia', visibilityState: 'visible', postMessage: () => received.push('other') }
+    ]);
+    assert.equal(w.shown.length, 0);
+    assert.deepEqual(received, ['pwa', 'other']);
+});
+
+test('all hidden clients keep the course notification on the background path', async () => {
+    const w = worker();
+    let posted = 0;
+    await receiveViaSdk(w, { from: 'synthetic', notification: { title: 'Test' }, data: { type: 'daily_course_lesson' } }, [
+        { url: 'https://polskieradio.cc/lumina', visibilityState: 'hidden', postMessage: () => posted++ },
+        { url: 'https://polskieradio.cc/akademia', visibilityState: 'hidden', postMessage: () => posted++ }
+    ]);
+    assert.equal(w.shown.length, 1);
+    assert.equal(posted, 0);
+});
+
+test('extension visibility alone does not select foreground delivery', async () => {
+    const w = worker();
+    await receiveViaSdk(w, { from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test' } }, [
+        { url: 'chrome-extension://synthetic/', visibilityState: 'visible', postMessage: () => assert.fail('Extension must not select foreground') }
+    ]);
+    assert.equal(w.shown.length, 1);
+});
+
+test('all three registration owners use the same root worker and bypass update cache', () => {
+    const sources = ['lumina-db.js', 'js/lumina-background-mission-service.js', 'lumina-pwa-installer.js'].map(file => fs.readFileSync(path.join(root, file), 'utf8'));
+    const urls = sources.map(source => {
+        const call = source.match(/navigator\.serviceWorker\.register\('([^']+)',\s*\{\s*scope:\s*'\/',\s*updateViaCache:\s*'none'\s*\}\)/);
+        assert.ok(call, 'Root registration must use updateViaCache: none');
+        return call[1];
+    });
+    for (const url of urls) assert.equal(url, urls[0]);
+    assert.match(urls[0], /^\/firebase-messaging-sw\.js\?v=/);
+});
+
+test('public worker response has explicit no-store cache policy', () => {
+    const headers = fs.readFileSync(path.join(root, '_headers'), 'utf8');
+    assert.match(headers, /\/firebase-messaging-sw\.js\r?\n\s+Cache-Control: no-cache, no-store, must-revalidate/);
+});
+
+test('legacy notification callback preserves full title and body (SDK display not included)', async () => {
     const w = worker();
     const payload = { from: '413985877183', notification: { title: 'Test', body: 'Tresc' }, data: {} };
     w.listeners.push({ data: { json: () => payload }, waitUntil: p => p });
