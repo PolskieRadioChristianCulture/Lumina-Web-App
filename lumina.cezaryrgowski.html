@@ -10507,36 +10507,45 @@
         async function handleSendActiveChatMessage(e) {
             if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
-            const text = input ? input.value.trim() : '';
-            if (!text) {
-                input?.focus();
-                return;
-            }
-            if (!activeChatSession) return;
-
+            if (!input || input.disabled || !activeChatSession) return;
+            const draft = input.value;
+            const text = draft.trim();
+            if (!text) { input.focus(); return; }
+            const session = activeChatSession;
             const submitButton = document.getElementById('btnActiveChatSubmit');
-            if (input) input.value = '';
-            if (input) input.disabled = true;
+            input.disabled = true;
+            input.setAttribute('aria-busy', 'true');
             if (submitButton) submitButton.disabled = true;
-            handleActiveChatInputChange('');
-            scrollChatToBottom('activeChatMessagesBox', true);
-
+            // Keep the draft until the server confirms a message or a new request.
             try {
-                if (window.LuminaDB) {
-                    const result = await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
-                        receiverId: activeChatSession.targetId,
-                        receiverUid: activeChatSession.targetUid || null,
-                        text: text
-                    });
+                if (typeof window.LuminaDB?.sendDirectMessageToCloud !== 'function') {
+                    showToast?.('Czat nie jest jeszcze gotowy. Tekst zachowano — spróbuj za chwilę.', 'error');
+                    return;
+                }
+                const result = await window.LuminaDB.sendDirectMessageToCloud(session.chatId, {
+                    receiverId: session.targetId,
+                    receiverUid: session.targetUid || null,
+                    text
+                });
+                const saved = (typeof result === 'string' && result.length > 0 && !result.startsWith('local_')) || result?.status === 'request_sent';
+                if (saved) {
+                    if (activeChatSession === session && input.value === draft) input.value = '';
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
-                    if (result?.status === 'request_pending') showToast?.('Ta prośba o rozmowę czeka już na odpowiedź.');
+                    if (activeChatSession === session) scrollChatToBottom('activeChatMessagesBox', true);
+                } else if (result?.status === 'request_pending') {
+                    showToast?.('Prośba o rozmowę czeka na odpowiedź. Tekst zachowano.');
+                } else if (result?.status === 'request_closed') {
+                    showToast?.('Rozmowa nie została zaakceptowana. Wiadomość nie została wysłana; tekst zachowano.', 'error');
+                } else {
+                    showToast?.('Nie udało się potwierdzić zapisu wiadomości. Tekst zachowano — spróbuj ponownie.', 'error');
                 }
+            } catch {
+                showToast?.('Nie udało się wysłać wiadomości. Tekst zachowano — spróbuj ponownie.', 'error');
             } finally {
-                if (input) {
-                    input.disabled = false;
-                    input.focus();
-                }
-                handleActiveChatInputChange(input?.value || '');
+                input.disabled = false;
+                input.removeAttribute('aria-busy');
+                handleActiveChatInputChange(input.value);
+                if (activeChatSession === session) input.focus();
             }
         }
 
