@@ -6,8 +6,8 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js?v=20261008_chatcommit1';
-import * as LuminaCore from './lumina-core.js?v=20261008_chatcommit1';
+import * as LuminaDB from './lumina-db.js?v=20261008_chatread1';
+import * as LuminaCore from './lumina-core.js?v=20261008_chatread1';
 
 class LuminaTablicaEngine {
     constructor() {

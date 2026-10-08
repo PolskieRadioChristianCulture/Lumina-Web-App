@@ -10,7 +10,7 @@ const fn=source.slice(start,end).replace('export async function','async function
 const readStart=source.indexOf('export async function markDirectMessagesAsRead(');
 const readEnd=source.indexOf('// ── Public Community Live Chatroom',readStart);
 const readFn=source.slice(readStart,readEnd).replace('export async function','async function');
-function readFixture({offline=false,anonymous=false,failCommit=false,switchAccount=false,cacheFailure=false}={}) {
+function readFixture({offline=false,anonymous=false,failCommit=false,switchAccount=false,cacheFailure=false,hidden=false}={}) {
   const room='u_synthetic_recipient_u_synthetic_sender';
   const messages=[
     {id:'incoming',receiverAuthUid:'recipient-uid',senderAuthUid:'sender-uid',isRead:false,status:'sent',readBy:['previous']},
@@ -27,11 +27,12 @@ function readFixture({offline=false,anonymous=false,failCommit=false,switchAccou
     writeBatch:()=>({update:(...args)=>writes.push(args),commit:async()=>{events.push('commit');if(failCommit)throw Error('denied');if(switchAccount)ctx.currentUserState={uid:'other-uid'};}}),
     activeDirectChatListeners:new Map([[room,()=>events.push('render')]]),console:{warn:()=>{}},
     activeDirectReadReceipts:new Set(),
+    document:{visibilityState:hidden?'hidden':'visible'},
   };
   return {mark:vm.runInNewContext('('+readFn.trim()+'\n)',ctx),room,storage,writes,events,queries};
 }
 test('read receipts: offline and anonymous accounts never mutate cache or query messages',async()=>{
-  for(const opts of [{offline:true},{anonymous:true}]) {
+  for(const opts of [{offline:true},{anonymous:true},{hidden:true}]) {
     const f=readFixture(opts);assert.equal(await f.mark(f.room,'recipient','Test'),false);
     assert.equal(f.events.length,0);assert.equal(f.queries.length,0);
   }
@@ -108,6 +109,19 @@ function fixture({offline=false,anonymous=false,failCommit=false,chatExists=true
   const send=vm.runInNewContext('('+fn.trim()+')',ctx);
   return {send,events,committed,writes,secondary,ctx};
 }
+test('confirmed primary message ID and read status cannot be overwritten by a stale backup',()=>{
+  const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
+  const streams=[],updates=[];
+  const ctx={db:{},currentUserState:{uid:'synthetic-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    onSnapshot:(q,opts,cb)=>{streams.push({q,cb});return ()=>{};},getDirectMessageKey:m=>m.clientMessageId,getDirectMessageTime:()=>0,
+    console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_')};
+  const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  const stop=subscribe('synthetic-room',m=>updates.push(m));
+  const emit=(stream,id,isRead)=>stream.cb({forEach:cb=>cb({id,metadata:{hasPendingWrites:false},data:()=>({clientMessageId:'same-client',chatId:'synthetic-room',isRead,status:isRead?'read':'sent'})})});
+  emit(streams[0],'primary',true);emit(streams[1],'legacy',false);emit(streams[2],'backup',false);
+  assert.equal(updates.at(-1).length,1);assert.equal(updates.at(-1)[0].id,'primary');assert.equal(updates.at(-1)[0].status,'read');stop();
+});
 const payload={receiverId:'synthetic-recipient',receiverUid:'synthetic-recipient-uid',text:'Syntetyczna wiadomość testowa'};
 test('missing database and anonymous account never report local success or trigger push',async()=>{
   for(const opts of [{offline:true},{anonymous:true}]) {

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {Window} from 'happy-dom';
 const source = readFileSync('js/cc-owner-push-test.js','utf8');
-const isolated = source.replace("import('/lumina-db.js?v=20261008_chatcommit1')", 'Promise.resolve(window.testSdk)');
+const isolated = source.replace("import('/lumina-db.js?v=20261008_chatread1')", 'Promise.resolve(window.testSdk)');
 const pause = () => new Promise(resolve => setTimeout(resolve, 10));
 function mount({url='https://polskieradio.cc/tablica?ownerPushTest=1',guest=false,anonymous=false,preflight={},failSend=false,statusCode=200}={}) {
   const w = new Window({url});
@@ -81,6 +81,6 @@ test('network failure locks further requests; never auto retries',async()=>{
 test('both canonical desktop surfaces include the same versioned sender; SDK version is current',()=>{
   for(const file of ['lumina.html','lumina-tablica.html'])
     assert.equal(readFileSync(file,'utf8').split('/js/cc-owner-push-test.js?v=20261008_sender2').length-1,1);
-  assert.match(source,/import\('\/lumina-db.js\?v=20261008_chatcommit1'\)/);
+  assert.match(source,/import\('\/lumina-db.js\?v=20261008_chatread1'\)/);
   assert.doesNotMatch(source,/requestPermission|localStorage|sessionStorage|console\.|setInterval/);
 });

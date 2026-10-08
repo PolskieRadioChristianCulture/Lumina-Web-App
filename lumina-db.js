@@ -3152,7 +3152,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
     const emitMergedMessages = () => {
         const uniqueMessages = new Map();
-        [...nestedMessages, ...topLevelMessages, ...legacyMessages].forEach(message => {
+        [...legacyMessages, ...nestedMessages, ...topLevelMessages].forEach(message => {
             const key = getDirectMessageKey(message);
             const existing = uniqueMessages.get(key);
             // Preferuj dokument główny, ale zachowaj pełniejsze dane z kopii zapasowej.
@@ -3586,6 +3586,7 @@ const activeDirectReadReceipts = new Set();
 export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName) {
     const user = currentUserState;
     if (!db || !chatId || !currentUserId || !user?.uid || user.isAnonymous) return false;
+    if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return false;
     const parts = chatId.split('_');
     const normalizedChatId = parts.length === 2 ? getChatId(parts[0], parts[1]) : chatId;
     const normMyId = normalizeChatUserId(currentUserId);
@@ -3607,6 +3608,7 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
             where('chatId', '==', normalizedChatId), limit(400));
         const snap = await getDocs(q);
         if (currentUserState?.uid !== user.uid || currentUserState.isAnonymous) return false;
+        if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return false;
         const receipts = new Map();
         const batch = writeBatch(db);
         const readAt = Date.now();
