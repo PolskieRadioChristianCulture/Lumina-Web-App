@@ -82,7 +82,7 @@ export const LUMINA_TRANSLATIONS = {
         hero_subtitle: "Poznaj ludzi, którzy chcą budować relacje oparte na wierze i wartościach. Głębokie rozmowy • Świadectwa • Modlitwa • Małżeństwo",
         search_placeholder: "Szukaj po imieniu, nazwisku, mieście, powołaniu...",
         word_of_the_day: "SŁOWO DNIA",
-        btn_read_devotion: "Czytaj Rozważanie",
+        btn_read_devotion: "CZYTAJ",
         btn_board: "Tablica",
         board_main_title: "Tablica Portalu LUMINA",
         patron_badge: "Patronat Misyjny CC",

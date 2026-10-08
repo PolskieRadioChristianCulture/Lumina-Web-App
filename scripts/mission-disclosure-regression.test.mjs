@@ -62,3 +62,20 @@ test('mission timers and initialization cannot run while collapsed or duplicate 
   assert.match(html,/id="missionShowcaseToggle"[^>]*type="button"/);
   assert.match(html,/\.mission-disclosure-toggle[\s\S]*?min-height:\s*48px/);
 });
+
+test('carousel timer does not start before expansion or after collapse',()=>{
+  const start=html.indexOf('window.scheduleNextMissionCarouselAdvance = function');
+  const end=html.indexOf('window.startMissionCarouselAutoplay = function',start);
+  const panel={hidden:true};
+  let scheduled=0;
+  const context={window:{},document:{getElementById:()=>panel},missionCarouselAutoplayTimer:null,setTimeout:()=>{scheduled++;return 1;},clearTimeout:()=>{}};
+  vm.runInNewContext(html.slice(start,end),context);
+  context.window.scheduleNextMissionCarouselAdvance();
+  assert.equal(scheduled,0);
+  panel.hidden=false;
+  context.window.scheduleNextMissionCarouselAdvance();
+  assert.equal(scheduled,1);
+  panel.hidden=true;
+  context.window.scheduleNextMissionCarouselAdvance();
+  assert.equal(scheduled,1);
+});

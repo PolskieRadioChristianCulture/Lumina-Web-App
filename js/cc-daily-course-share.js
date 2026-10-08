@@ -82,10 +82,10 @@
   }
   updateInvitation();
   window.addEventListener('lumina-auth-state',updateInvitation);
-  // Fail closed: expose enrollment only after the backend release is approved.
-  if (window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED === true) {
+  // Backend release approved: expose enrollment on all lessons (can be suppressed with false).
+  if (window.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED !== false) {
     const subscription = document.createElement('script');
-    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription1';
+    subscription.src='/js/cc-daily-course-subscription.js?v=20261008_subscription2';
     document.head.appendChild(subscription);
   }
 })();

@@ -4,10 +4,13 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { Window } from 'happy-dom';
 
 const script = readFileSync('js/cc-daily-course-share.js', 'utf8');
-test('subscription enrollment fails closed before backend acceptance',()=>{
+test('subscription enrollment mounts by default; can be disabled with false',()=>{
   const w=mount();
-  assert.equal(w.document.querySelector('script[src*="cc-daily-course-subscription"]'),null);
+  assert.ok(w.document.querySelector('script[src*="cc-daily-course-subscription"]'));
   w.close();
+  const wDisabled=mount('/akademia/kurscodzienny/dzien-08',()=>{},win=>{win.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED=false;});
+  assert.equal(wDisabled.document.querySelector('script[src*="cc-daily-course-subscription"]'),null);
+  wDisabled.close();
 });
 test('guest invitation is free, nonblocking, and follows actual auth rather than event identity',()=>{
   const w=mount();const invitation=w.document.getElementById('ccDailyAccountInvitation');
@@ -24,10 +27,11 @@ test('guest invitation is free, nonblocking, and follows actual auth rather than
   w.eval(script);assert.equal(w.document.querySelectorAll('#ccDailyAccountInvitation').length,1);
   w.close();
 });
-function mount(path = '/akademia/kurscodzienny/dzien-08', navigatorSetup = () => {}) {
+function mount(path = '/akademia/kurscodzienny/dzien-08', navigatorSetup = () => {}, windowSetup = () => {}) {
   const window = new Window({url: 'https://polskieradio.cc' + path});
   window.document.write('<title>Dzień 8 — Wieża Babel</title><main><section><a href="/tablica?share=dzien-07">Stary link</a></section></main>');
   navigatorSetup(window.navigator);
+  windowSetup(window);
   window.eval(script);
   return window;
 }
