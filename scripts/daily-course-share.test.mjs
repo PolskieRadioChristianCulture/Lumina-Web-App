@@ -35,21 +35,25 @@ function mount(path = '/akademia/kurscodzienny/dzien-08', navigatorSetup = () =>
   window.eval(script);
   return window;
 }
-test('każda istniejąca lekcja, alias i katalog ładuje jeden wspólny panel', () => {
+test('każda istniejąca lekcja, alias i katalog ładuje jeden wspólny panel i standardowy przycisk powrotu na górę', () => {
   let count = 0;
   function scan(dir) {
     for (const entry of readdirSync(dir, {withFileTypes: true})) {
       const path = dir + '/' + entry.name;
       if (entry.isDirectory()) scan(path);
       else if (path.endsWith('.html')) {
-        assert.equal((readFileSync(path, 'utf8').match(/cc-daily-course-share\.js/g) || []).length, 1, path);
+        const content = readFileSync(path, 'utf8');
+        assert.equal((content.match(/cc-daily-course-share\.js/g) || []).length, 1, path);
+        assert.ok(content.includes('id="backToTopBtn"'), path + ' musi zawierać id="backToTopBtn"');
         count++;
       }
     }
   }
   scan('akademia/kurscodzienny'); scan('kursy/kurscodzienny');
   for (const path of ['akademia.html','akademia/index.html','kursy.html','kursy/index.html','akademia/kurscodzienny.html','kursy/kurscodzienny.html']) {
-    assert.equal((readFileSync(path, 'utf8').match(/cc-daily-course-share\.js/g) || []).length, 1);
+    const content = readFileSync(path, 'utf8');
+    assert.equal((content.match(/cc-daily-course-share\.js/g) || []).length, 1);
+    assert.ok(content.includes('id="backToTopBtn"'), path + ' musi zawierać id="backToTopBtn"');
   }
   assert.ok(count >= 24);
 });
@@ -106,3 +110,40 @@ test('natywne udostępnianie opcjonalne; anulowanie nie zgłasza sukcesu', async
   assert.equal(w.document.querySelector('[role="status"]').textContent, '');
   w.close();
 });
+
+test('standardowy przycisk powrotu na górę (#backToTopBtn) jest zamontowany, dostępny i reaguje na scroll oraz click', () => {
+  let scrolledTo = null;
+  const w = mount('/akademia/kurscodzienny/dzien-01', () => {}, win => {
+    win.scrollTo = (options) => { scrolledTo = options; };
+  });
+  const btn = w.document.getElementById('backToTopBtn');
+  assert.ok(btn, 'Przycisk #backToTopBtn musi istnieć');
+  assert.ok(btn.classList.contains('back-to-top'), 'Musi mieć klasę back-to-top');
+  assert.equal(btn.getAttribute('aria-label'), 'Przewiń do góry');
+  assert.equal(btn.title, 'Przewiń do góry');
+  assert.ok(btn.querySelector('i'), 'Musi zawierać ikonę strzałki');
+
+  // Na starcie (scrollY = 0) nie powinien mieć klasy visible
+  assert.equal(btn.classList.contains('visible'), false);
+
+  // Po przewinięciu powyżej 300px
+  w.document.documentElement.scrollTop = 450;
+  w.dispatchEvent(new w.Event('scroll'));
+  assert.equal(btn.classList.contains('visible'), true);
+
+  // Po powrocie do góry
+  w.document.documentElement.scrollTop = 100;
+  w.dispatchEvent(new w.Event('scroll'));
+  assert.equal(btn.classList.contains('visible'), false);
+
+  // Kliknięcie wywołuje scrollTo({ top: 0, behavior: 'smooth' })
+  btn.click();
+  assert.equal(scrolledTo?.top, 0);
+  assert.equal(scrolledTo?.behavior, 'smooth');
+
+  // Wielokrotna ewaluacja nie duplikuje przycisku
+  w.eval(script);
+  assert.equal(w.document.querySelectorAll('#backToTopBtn').length, 1);
+  w.close();
+});
+

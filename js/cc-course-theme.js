@@ -146,6 +146,51 @@
     }
   }
 
+  function ensureBackToTopMounted() {
+    if (!document.body) return;
+    var btn = document.getElementById('backToTopBtn');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'backToTopBtn';
+      btn.className = 'back-to-top';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Przewiń do góry');
+      btn.title = 'Przewiń do góry';
+      btn.innerHTML = '<i class="fa-solid fa-arrow-up" aria-hidden="true"></i>';
+      document.body.appendChild(btn);
+    } else {
+      if (!btn.getAttribute('aria-label')) btn.setAttribute('aria-label', 'Przewiń do góry');
+      if (!btn.title) btn.title = 'Przewiń do góry';
+      if (!btn.firstElementChild) {
+        btn.innerHTML = '<i class="fa-solid fa-arrow-up" aria-hidden="true"></i>';
+      }
+    }
+    if (btn._scrollBound) return;
+    btn._scrollBound = true;
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof window.scrollTo === 'function') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.documentElement.scrollTop = 0;
+        if (document.body) document.body.scrollTop = 0;
+      }
+    });
+
+    function onScroll() {
+      var scrollY = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+      if (scrollY > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   // Global API
   window.toggleCourseTheme = toggleCourseTheme;
   window.applyCourseTheme = applyCourseTheme;
@@ -171,11 +216,13 @@
       ensureStylesAttached();
       applyCourseTheme(getStoredTheme(), false);
       ensureThemeButtonMounted();
+      ensureBackToTopMounted();
     });
   } else {
     ensureStylesAttached();
     applyCourseTheme(initial, false);
     ensureThemeButtonMounted();
+    ensureBackToTopMounted();
   }
 
   // Synchronizacja między kartami przeglądarki

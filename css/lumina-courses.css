@@ -2152,5 +2152,79 @@ html[data-lumina-theme="light"] .cin-progress-title {
   }
 }
 
+/* FLOATING BACK TO TOP BUTTON (Standard dla wszystkich lekcji i kursów) */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  background: rgba(17, 16, 14, 0.92);
+  border: 1.5px solid #c4a35a;
+  color: #c4a35a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 998;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65), 0 0 10px rgba(196, 163, 90, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.2s ease,
+              color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.back-to-top:hover {
+  background: #c4a35a;
+  color: #0b0d13;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(196, 163, 90, 0.45);
+}
+.back-to-top:active {
+  transform: translateY(0) scale(0.95);
+}
+.back-to-top:focus-visible {
+  outline: 3px solid #e2cc9a;
+  outline-offset: 3px;
+}
+@media (max-width: 768px) {
+  .back-to-top {
+    right: 1.25rem;
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 20px));
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+}
+html[data-lumina-theme="light"] .back-to-top {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(184, 142, 62, 0.65) !important;
+  color: #8c6d23 !important;
+  box-shadow: 0 4px 18px rgba(28, 25, 23, 0.1), 0 0 10px rgba(184, 142, 62, 0.1) !important;
+}
+html[data-lumina-theme="light"] .back-to-top:hover {
+  background: #c4a35a !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 25px rgba(184, 142, 62, 0.4) !important;
+}
+
 
 
