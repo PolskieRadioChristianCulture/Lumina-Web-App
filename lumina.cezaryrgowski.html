@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <base href="/">
     <!-- LUMINA THEME FOIT GUARD (Default Light Edition) -->
     <script>
     (function() {
@@ -3798,8 +3799,8 @@
 
             <!-- Cover Banner (Zoptymalizowane Tło Profilowe MP4 dla Cezarego Rogowskiego) -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <video id="profileCoverVideoEl" class="cover-video" src="tlo_profilowe_cezary.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="tlo_profilowe_cezary_poster.jpg" style="display:block; width:100%; height:100%; object-fit:cover;"></video>
-                <img loading="lazy" decoding="async" src="tlo_profilowe_cezary_poster.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:none;">
+                <video id="profileCoverVideoEl" class="cover-video" src="/tlo_profilowe_cezary.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/tlo_profilowe_cezary_poster.jpg" style="display:block; width:100%; height:100%; object-fit:cover;"></video>
+                <img loading="lazy" decoding="async" src="/tlo_profilowe_cezary_poster.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:none;">
                 <div class="cover-overlay"></div>
 
                 <div class="cover-hint-badge" style="z-index:3;"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -3833,8 +3834,8 @@
                 <div class="profile-head-top" style="display:flex; flex-direction:column; justify-content:flex-start; align-items:center; gap:10px; width:100%; height:auto; min-height:0; border-bottom:none; padding-bottom:0; margin-bottom:0; text-align:center;">
                     <div class="profile-head-main">
                     <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:visible; border:3px solid #facc15; box-shadow:0 0 25px rgba(245,158,11,0.5);">
-                        <video id="profileAvatarVideoEl" src="wideo_profilowe_cezary_rogowski.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="avatar_cezary_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:#000;"></video>
-                        <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
+                        <video id="profileAvatarVideoEl" src="/wideo_profilowe_cezary_rogowski.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/avatar_cezary_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:transparent;"></video>
+                        <img loading="lazy" decoding="async" src="/avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
                         <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku" style="z-index:10;"><i class="fa-solid fa-camera"></i></button>
                         <div class="avatar-status-badge" title="Użytkownik Dostępny na Żywo"></div>
                     </div>

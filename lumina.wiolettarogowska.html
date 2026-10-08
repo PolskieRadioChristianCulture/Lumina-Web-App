@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
+    <base href="/">
     <!-- LUMINA THEME FOIT GUARD (Default Light Edition) -->
     <script>
     (function() {
@@ -3156,7 +3157,7 @@
     <!-- ── Top Navbar ── -->
     <nav class="profile-navbar">
         <a href="lumina" class="nav-logo-wrap">
-            <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="LUMINA Logo" class="nav-logo-badge">
+            <img loading="lazy" decoding="async" src="/lumina_icon.jpg" alt="LUMINA Logo" class="nav-logo-badge">
             <span class="nav-brand-title">LUMINA</span>
         </a>
 
@@ -3209,7 +3210,7 @@
             <div class="user-nav-profile cc-auth-widget-container" id="userNavProfile" data-cc-auth-mount="true" style="display:none; align-items:center; gap:6px; flex-shrink:0;">
                 <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown ? window.toggleCcUserDropdown(event) : handleMyProfileNavigation(event)" title="Twoje Konto LUMINA">
                     <div class="cc-auth-avatar-wrap">
-                        <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar cc-auth-avatar-img" id="userNavAvatar">
+                        <img loading="lazy" decoding="async" src="/icon.png" alt="Avatar" class="user-nav-avatar cc-auth-avatar-img" id="userNavAvatar">
                         <span class="cc-auth-online-dot"></span>
                     </div>
                     <span class="user-nav-name cc-auth-user-name" id="userNavName"></span>
@@ -3279,8 +3280,8 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg" style="display:none;"></video>
-                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/lumina_default_cover.jpg" style="display:none;"></video>
+                <img loading="lazy" decoding="async" src="/lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -3314,8 +3315,8 @@
                 <div class="profile-head-top">
                     <div class="profile-head-main">
                     <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:visible; border:3px solid #ec4899; box-shadow:0 0 25px rgba(236,72,153,0.5);">
-                        <video id="profileAvatarVideoEl" src="wioletta_profile_video.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="avatar_wioletta_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:#000;"></video>
-                        <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
+                        <video id="profileAvatarVideoEl" src="/wioletta_profile_video.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/avatar_wioletta_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:transparent;"></video>
+                        <img loading="lazy" decoding="async" src="/avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
                         <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku" style="z-index:10;"><i class="fa-solid fa-camera"></i></button>
                         <div class="avatar-status-badge" title="Użytkownik Dostępny na Żywo"></div>
                     </div>
@@ -3430,7 +3431,7 @@
                     </div>
                     <div style="text-align:center; padding:6px 0 14px;">
                         <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:8px;">
-                            <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" style="width:48px; height:48px; border-radius:50%; border:2px solid #f472b6; object-fit:cover; box-shadow:0 0 12px rgba(244,114,182,0.4);">
+                            <img src="/avatar_wioletta_official.jpg" alt="Wioletta Rogowska" style="width:48px; height:48px; border-radius:50%; border:2px solid #f472b6; object-fit:cover; box-shadow:0 0 12px rgba(244,114,182,0.4);">
                             <div style="text-align:left;">
                                 <div style="font-size:1.08rem; font-weight:800; color:#fff; font-family:'Outfit',sans-serif; line-height:1.2;">WOMEN TV • CC WOMEN</div>
                                 <div style="font-size:0.78rem; color:#f472b6; font-weight:700;">@womentv24 • Wioletta Rogowska</div>
@@ -3499,7 +3500,7 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
+                            <img loading="lazy" decoding="async" src="/avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
                         </div>
 
@@ -4248,17 +4249,17 @@
             spouse: 'Cezary Rogowski',
             pin: '7777',
             visibility: 'public',
-            avatar: 'avatar_wioletta_official.jpg',
-            cover: 'lumina_default_cover.jpg',
+            avatar: '/avatar_wioletta_official.jpg',
+            cover: '/lumina_default_cover.jpg',
             coverPosY: '50%',
             job: 'Współzałożycielka Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
             verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej i nie brak mu zysku.”',
             verseRef: '— Księga Przysłów 31, 10-11',
-            avatarVideo: 'wioletta_profile_video.mp4',
+            avatarVideo: '/wioletta_profile_video.mp4',
             bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzę, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa i najpiękniejszą drogą do uświęcenia.',
             tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje'],
-            photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'],
+            photos: ['/avatar_wioletta_official.jpg', '/avatar_cezary_official.jpg', '/lumina_default_cover.jpg'],
             posts: [
                 {
                     id: 'post_wioletta_yt_1',
@@ -4330,11 +4331,11 @@
                     const parsed = JSON.parse(saved);
                     let avatar = parsed.avatar;
                     if (!avatar || avatar === 'null' || avatar === 'undefined' || avatar.trim() === '' || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
-                        avatar = 'avatar_wioletta_official.jpg';
+                        avatar = '/avatar_wioletta_official.jpg';
                     }
                     let cover = parsed.cover;
                     if (!cover || cover === 'null' || cover === 'undefined' || cover.trim() === '') {
-                        cover = 'lumina_default_cover.jpg';
+                        cover = '/lumina_default_cover.jpg';
                     }
                     let age = parsed.age;
                     if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
@@ -4691,8 +4692,8 @@
                 if (videoEl) videoEl.style.display = 'none';
                 if (imgEl) {
                     imgEl.style.display = 'block';
-                    const targetCov = data.cover || 'lumina_default_cover.jpg';
-                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = 'lumina_default_cover.jpg'; };
+                    const targetCov = data.cover || '/lumina_default_cover.jpg';
+                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = '/lumina_default_cover.jpg'; };
                     imgEl.src = targetCov;
                     imgEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
                 }
@@ -4782,14 +4783,21 @@
 
             const avatarEl = document.getElementById('avatarImgEl');
             if (avatarEl) {
-                const targetAv = data.avatar || 'avatar_wioletta_official.jpg';
-                avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = 'avatar_wioletta_official.jpg'; };
+                const targetAv = data.avatar || '/avatar_wioletta_official.jpg';
+                avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = '/avatar_wioletta_official.jpg'; };
                 avatarEl.src = targetAv;
                 if (document.getElementById('myComposerAvatar')) {
                     const compAv = document.getElementById('myComposerAvatar');
-                    compAv.onerror = () => { compAv.onerror = null; compAv.src = 'avatar_wioletta_official.jpg'; };
+                    compAv.onerror = () => { compAv.onerror = null; compAv.src = '/avatar_wioletta_official.jpg'; };
                     compAv.src = targetAv;
                 }
+            }
+
+            const avatarVideoEl = document.getElementById('profileAvatarVideoEl');
+            if (avatarVideoEl) {
+                avatarVideoEl.addEventListener('error', () => {
+                    avatarVideoEl.style.display = 'none';
+                });
             }
             
             renderCoverMedia(data);

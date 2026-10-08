@@ -118,6 +118,14 @@ test('11. Nested OSOBOWOSC alias resolves logo, cover and entry scripts from roo
     assert.equal(new URL(path, base).pathname, '/' + path);
   }
   assert.match(html, /profile_compact_v4/);
+
+  const wiolettaHtml = await readFile('lumina.wiolettarogowska.html', 'utf8');
+  assert.match(wiolettaHtml, /<base href="\/">/);
+  assert.ok(wiolettaHtml.indexOf('<base href="/">') < wiolettaHtml.indexOf('src='));
+
+  const cezaryHtml = await readFile('lumina.cezaryrgowski.html', 'utf8');
+  assert.match(cezaryHtml, /<base href="\/">/);
+  assert.ok(cezaryHtml.indexOf('<base href="/">') < cezaryHtml.indexOf('src='));
 });
 
 test('12. Legacy profile navigation, titles and cards have explicit light styles', async () => {
