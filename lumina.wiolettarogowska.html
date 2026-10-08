@@ -487,7 +487,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center center;
+            object-position: center var(--cover-pos-y, 50%);
             display: block;
             transition: transform 0.4s ease;
         }
@@ -591,7 +591,8 @@
             animation: fadeInDown 0.2s ease;
         }
         .cover-reposition-toolbar.open {
-            display: flex;
+            display: flex !important;
+            z-index: 50 !important;
         }
 
         .reposition-title {
@@ -2022,7 +2023,6 @@
         .post-creator-box,
         .cover-hint-badge,
         .cover-upload-btn,
-        .cover-reposition-toolbar,
         .photo-delete-badge,
         .post-header-actions,
         .owner-only {
@@ -4599,6 +4599,26 @@
             if (group) group.classList.remove('active');
         }
 
+        function applyCoverPosition(val) {
+            if (val === undefined || val === null || val === '') val = '50%';
+            let str = String(val).trim();
+            if (!str.endsWith('%')) str += '%';
+            
+            const wrapper = document.querySelector('.cover-wrapper');
+            if (wrapper) wrapper.style.setProperty('--cover-pos-y', str);
+            
+            const img = document.getElementById('coverPhotoEl');
+            if (img) {
+                img.style.setProperty('--cover-pos-y', str);
+                img.style.setProperty('object-position', 'center ' + str, 'important');
+            }
+            const vid = document.getElementById('profileCoverVideoEl');
+            if (vid) {
+                vid.style.setProperty('--cover-pos-y', str);
+                vid.style.setProperty('object-position', 'center ' + str, 'important');
+            }
+        }
+
         function toggleCoverRepositionToolbar() {
             closeCoverActions();
             const tb = document.getElementById('coverRepositionToolbar');
@@ -4611,8 +4631,11 @@
                 const data = getProfileData();
                 let curVal = parseInt(data.coverPosY, 10);
                 if (isNaN(curVal)) curVal = 50;
-                document.getElementById('coverPosRange').value = curVal;
-                document.getElementById('coverPosValueLabel').textContent = curVal + '%';
+                const rangeEl = document.getElementById('coverPosRange');
+                const labelEl = document.getElementById('coverPosValueLabel');
+                if (rangeEl) rangeEl.value = curVal;
+                if (labelEl) labelEl.textContent = curVal + '%';
+                applyCoverPosition(curVal);
             }
         }
 
@@ -4620,26 +4643,41 @@
             const tb = document.getElementById('coverRepositionToolbar');
             if (tb) tb.classList.remove('open');
             const data = getProfileData();
-            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + (data.coverPosY || '50%');
+            applyCoverPosition(data.coverPosY || '50%');
         }
 
         function setCoverPosition(val) {
-            document.getElementById('coverPosRange').value = val;
+            const rangeEl = document.getElementById('coverPosRange');
+            if (rangeEl) rangeEl.value = val;
             onCoverRangeChange(val);
         }
 
         function onCoverRangeChange(val) {
-            document.getElementById('coverPosValueLabel').textContent = val + '%';
-            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + val + '%';
+            const labelEl = document.getElementById('coverPosValueLabel');
+            if (labelEl) labelEl.textContent = val + '%';
+            applyCoverPosition(val);
         }
 
-        function saveCoverPosition() {
-            const val = document.getElementById('coverPosRange').value;
+        async function saveCoverPosition() {
+            const rangeEl = document.getElementById('coverPosRange');
+            const val = rangeEl ? rangeEl.value : 50;
+            const posStr = val + '%';
+            applyCoverPosition(posStr);
+            
             const cur = getProfileData();
-            cur.coverPosY = val + '%';
+            cur.coverPosY = posStr;
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
             } catch(e) {}
+            
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur);
+                } catch(e) {}
+            }
+            
             const tb = document.getElementById('coverRepositionToolbar');
             if (tb) tb.classList.remove('open');
             showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨✨');
@@ -4686,6 +4724,7 @@
                         videoEl.src = videoUrl;
                     }
                     videoEl.play().catch(() => {});
+                    applyCoverPosition(data?.coverPosY || '50%');
                 }
                 if (imgEl) imgEl.style.display = 'none';
             } else {
@@ -4695,7 +4734,7 @@
                     const targetCov = data.cover || '/lumina_default_cover.jpg';
                     imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = '/lumina_default_cover.jpg'; };
                     imgEl.src = targetCov;
-                    imgEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
+                    applyCoverPosition(data?.coverPosY || '50%');
                 }
             }
         }
