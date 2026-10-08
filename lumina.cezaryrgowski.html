@@ -24,18 +24,7 @@
             if (!localStorage.getItem('lumina_lang')) {
                 localStorage.setItem('lumina_lang', 'pl');
             }
-        } catch(e){}
-        try {
-            ['lumina_profile_cezaryrgowski', 'lumina_current_user_profile', 'lumina_my_profile'].forEach(k => {
-                const saved = localStorage.getItem(k);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    parsed.cover = 'tlo_profilowe_cezary.gif';
-                    parsed.coverVideoUrl = '';
-                    localStorage.setItem(k, JSON.stringify(parsed));
-                }
-            });
-        } catch(e){}
+        } catch(e) {}
     })();
     </script>
     <!-- Google Analytics -->
@@ -420,12 +409,10 @@
 
         .cover-wrapper {
             position: relative;
-            width: 100% !important;
-            aspect-ratio: 1782 / 397 !important;
-            height: auto !important;
-            max-height: none !important;
-            min-height: 0 !important;
-            background: #000 !important;
+            width: 100%;
+            aspect-ratio: 1300 / 500;
+            height: auto;
+            background: #000;
             border-radius: 0 0 20px 20px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
@@ -437,7 +424,7 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             object-position: center center;
             display: block;
             z-index: 1;
@@ -456,12 +443,12 @@
         }
 
         .cover-photo {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-            object-position: center center !important;
-            display: block !important;
-            background: #000 !important;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 50%;
+            display: block;
+            background: #000;
             transition: transform 0.4s ease;
         }
 
@@ -659,6 +646,14 @@
             gap: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 24px;
+        }
+
+        .profile-head-main {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            flex: 1;
+            min-width: 0;
         }
 
         .avatar-wrap {
@@ -1406,26 +1401,26 @@
                 box-sizing: border-box !important;
             }
 
-            /* 1. Cover Banner: Pełne 100% widoczne tło GIF z każdej strony (góra, dół, lewa, prawa) bez zasłaniania */
+            /* 1. Cover Banner: Pełne tło dopasowane do ekranu telefonu */
             .cover-wrapper {
                 width: 100% !important;
-                aspect-ratio: 1782 / 397 !important;
+                aspect-ratio: 16 / 9 !important;
                 height: auto !important;
-                min-height: 0 !important;
-                max-height: none !important;
+                min-height: 180px !important;
+                max-height: 260px !important;
                 border-radius: 0 0 16px 16px !important;
                 overflow: hidden !important;
-                background: #000 !important;
+                background: #0b142c !important;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
                 margin-bottom: 12px !important;
             }
             .cover-photo {
                 width: 100% !important;
                 height: 100% !important;
-                object-fit: contain !important;
-                object-position: center center !important;
+                object-fit: cover !important;
+                object-position: center 50% !important;
                 display: block !important;
-                background: #000 !important;
+                background: transparent !important;
             }
 
             /* 2. Karta Główna Profilu: Zaczyna się CAŁKOWICIE POD banerem (margin-top: 0), zero zasłaniania banera u dołu */
@@ -1442,12 +1437,13 @@
                 z-index: 10 !important;
             }
 
-            /* 3. Układ Awatara i Danych */
+            /* 3. Układ Awatara i Danych (Mobilny standard: Awatar z lewej strony) */
             .profile-head-top {
                 display: flex !important;
                 flex-direction: column !important;
-                align-items: center !important;
-                text-align: center !important;
+                align-items: flex-start !important;
+                justify-content: flex-start !important;
+                text-align: left !important;
                 width: 100% !important;
                 height: auto !important;
                 min-height: 0 !important;
@@ -1459,8 +1455,8 @@
             .profile-head-main {
                 display: flex !important;
                 flex-direction: column !important;
-                align-items: center !important;
-                text-align: center !important;
+                align-items: flex-start !important;
+                text-align: left !important;
                 width: 100% !important;
                 height: auto !important;
                 min-height: 0 !important;
@@ -1468,7 +1464,7 @@
                 gap: 8px !important;
             }
 
-            /* Awatar: Wewnątrz karty na samej górze, NIE nachodzi na baner GIF */
+            /* Awatar: Z LEWEJ strony, wewnątrz karty na górze */
             .avatar-wrap {
                 position: relative !important;
                 width: 90px !important;
@@ -1476,6 +1472,8 @@
                 min-width: 90px !important;
                 min-height: 90px !important;
                 margin-top: 0 !important;
+                margin-left: 0 !important;
+                align-self: flex-start !important;
                 border-radius: 50% !important;
                 border: 3px solid #facc15 !important;
                 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.45) !important;
@@ -1498,7 +1496,7 @@
                 min-height: 0 !important;
                 flex: 0 0 auto !important;
                 margin-top: 2px !important;
-                text-align: center !important;
+                text-align: left !important;
             }
             .head-user-name {
                 font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
@@ -1507,11 +1505,12 @@
                 color: #fff !important;
                 display: flex !important;
                 align-items: center !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 gap: 6px !important;
                 flex-wrap: wrap !important;
                 line-height: 1.25 !important;
                 margin: 0 0 4px 0 !important;
+                text-align: left !important;
             }
             .verified-badge {
                 font-size: 1.05rem !important;
@@ -1527,11 +1526,12 @@
             .head-user-tagline {
                 display: flex !important;
                 flex-wrap: wrap !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 gap: 5px !important;
                 font-size: 0.76rem !important;
                 margin: 4px 0 0 0 !important;
+                text-align: left !important;
             }
             .head-user-tagline span {
                 display: inline-flex !important;
@@ -1548,7 +1548,7 @@
                 display: flex !important;
                 flex-wrap: wrap !important;
                 flex-direction: row !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 gap: 8px !important;
                 width: 100% !important;
@@ -1684,14 +1684,14 @@
                 font-size: 16px !important;
             }
 
-            /* ═══ MOBILE FINAL OVERRIDE: Eliminuje pustą przestrzeń ═══
+            /* ═══ MOBILE FINAL OVERRIDE: Avatar i treść z LEWEJ strony ═══
              * Niniejsze reguły muszą wygrać z wszystkimi zewnętrznymi deklaracjami
              * (linie 2441-2462: .profile-head-top i .head-actions poza media query)
              */
             .profile-head-card .profile-head-top {
                 display: flex !important;
                 flex-direction: column !important;
-                align-items: center !important;
+                align-items: flex-start !important;
                 justify-content: flex-start !important;
                 width: 100% !important;
                 height: auto !important;
@@ -1700,16 +1700,22 @@
                 border-bottom: none !important;
                 padding-bottom: 0 !important;
                 margin-bottom: 0 !important;
+                text-align: left !important;
             }
             .profile-head-card .profile-head-main {
                 display: flex !important;
                 flex-direction: column !important;
-                align-items: center !important;
+                align-items: flex-start !important;
+                text-align: left !important;
                 width: 100% !important;
                 height: auto !important;
                 min-height: 0 !important;
                 flex: 0 0 auto !important;
                 gap: 8px !important;
+            }
+            .profile-head-card .avatar-wrap {
+                margin-left: 0 !important;
+                align-self: flex-start !important;
             }
             .profile-head-card .head-user-details {
                 width: 100% !important;
@@ -1718,7 +1724,15 @@
                 min-height: 0 !important;
                 flex: 0 0 auto !important;
                 margin-top: 2px !important;
-                text-align: center !important;
+                text-align: left !important;
+            }
+            .profile-head-card .head-user-name {
+                justify-content: flex-start !important;
+                text-align: left !important;
+            }
+            .profile-head-card .head-user-tagline {
+                justify-content: flex-start !important;
+                text-align: left !important;
             }
             .profile-head-card .head-actions {
                 display: flex !important;
@@ -1726,7 +1740,7 @@
                 flex-wrap: wrap !important;
                 overflow-x: visible !important;
                 overflow-y: visible !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 gap: 8px !important;
                 margin-top: 4px !important;
@@ -3797,10 +3811,10 @@
         <!-- ══════════ FULL PUBLIC PROFILE VIEW ══════════ -->
         <div id="profilePublicView">
 
-            <!-- Cover Banner (Zoptymalizowane Tło Profilowe MP4 dla Cezarego Rogowskiego) -->
+            <!-- Cover Banner (Zoptymalizowane Tło Profilowe dla Cezarego Rogowskiego) -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <video id="profileCoverVideoEl" class="cover-video" src="/tlo_profilowe_cezary.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/tlo_profilowe_cezary_poster.jpg" style="display:block; width:100%; height:100%; object-fit:cover;"></video>
-                <img loading="lazy" decoding="async" src="/tlo_profilowe_cezary_poster.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:none;">
+                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/tlo_profilowe_cezary.jpg" style="display:none; width:100%; height:100%; object-fit:cover;"></video>
+                <img loading="lazy" decoding="async" src="/tlo_profilowe_cezary.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:block; object-fit:cover; object-position:center 50%;">
                 <div class="cover-overlay"></div>
 
                 <div class="cover-hint-badge" style="z-index:3;"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -3831,7 +3845,7 @@
 
             <!-- Profile Head Info -->
             <section class="profile-head-card">
-                <div class="profile-head-top" style="display:flex; flex-direction:column; justify-content:flex-start; align-items:center; gap:10px; width:100%; height:auto; min-height:0; border-bottom:none; padding-bottom:0; margin-bottom:0; text-align:center;">
+                <div class="profile-head-top">
                     <div class="profile-head-main">
                     <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:visible; border:3px solid #facc15; box-shadow:0 0 25px rgba(245,158,11,0.5);">
                         <video id="profileAvatarVideoEl" src="/wideo_profilowe_cezary_rogowski.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="/avatar_cezary_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:transparent;"></video>
@@ -3851,7 +3865,7 @@
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
                             <span id="userMatchEl" style="color: #c084fc; font-weight: 800;"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Założyciel Christian Culture</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span>
-<span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">215</span> Polubień</span>
+                            <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">215</span> Polubień</span>
                             <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">540</span> Obserwujących</span>
                         </div>
                     </div>
@@ -3959,28 +3973,11 @@
                         <span style="font-size: 0.65rem; background: rgba(250, 204, 21, 0.15); border: 1px solid rgba(250, 204, 21, 0.35); color: #fef08a; padding: 2px 7px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">100% Bezpłatne</span>
                     </div>
                     <div style="font-size: 0.78rem; color: #94a3b8; margin: 4px 0 12px; line-height: 1.4;">
-                        E-booki (PDF/EPUB), profesjonalny czytnik online i wersje audio — dostępne bez opłat:
+                        E-booki (PDF/EPUB), czytnik online i wersje audio — dostępne bez opłat:
                     </div>
 
-                    <!-- Książka 1: Kod Źródłowy -->
-                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center;">
-                        <a href="/kod" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
-                            <img src="assets/kod-zrodlowy-book-3d-400.webp" alt="Kod Źródłowy" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-                        </a>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 0.68rem; color: #c084fc; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Powieść & Świadectwo</div>
-                            <a href="/kod" style="color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; line-height: 1.25; display: block; margin-bottom: 4px;">Kod Źródłowy</a>
-                            <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                Powieść o wolności, prawdzie i łasce. Podróż ku prawdziwemu życiu.
-                            </div>
-                            <a href="/kod" class="btn-clean" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.73rem; font-weight: 800; color: #facc15; background: rgba(250, 204, 21, 0.12); border: 1px solid rgba(250, 204, 21, 0.35); padding: 5px 9px; border-radius: 6px; text-decoration: none;">
-                                <i class="fa-solid fa-book-open"></i> Czytaj E-book ➔
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Książka 2: Pokonać Goliata -->
-                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 10px; display: flex; gap: 12px; align-items: center;">
+                    <!-- Książka 1: Pokonać Goliata -->
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center;">
                         <a href="/pokonac-goliata" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
                             <img src="assets/pokonac-goliata-book-3d-400.webp" alt="Pokonać Goliata" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
                         </a>
@@ -3995,6 +3992,79 @@
                             </a>
                         </div>
                     </div>
+
+                    <!-- Książka 2: Kod Źródłowy -->
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center;">
+                        <a href="/kod" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
+                            <img src="assets/kod-zrodlowy-book-3d-400.webp" alt="Kod Źródłowy" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                        </a>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 0.68rem; color: #c084fc; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Powieść & Świadectwo</div>
+                            <a href="/kod" style="color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; line-height: 1.25; display: block; margin-bottom: 4px;">Kod Źródłowy</a>
+                            <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                Powieść o wolności, prawdzie i łasce. Podróż ku prawdziwemu życiu.
+                            </div>
+                            <a href="/kod" class="btn-clean" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.73rem; font-weight: 800; color: #c084fc; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); padding: 5px 9px; border-radius: 6px; text-decoration: none;">
+                                <i class="fa-solid fa-book-open"></i> Czytaj E-book ➔
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Książka 3: U boku Diabła -->
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center;">
+                        <a href="/u-boku-diabla" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
+                            <img src="assets/u-boku-diabla-book-3d-440.webp" alt="U boku Diabła" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                        </a>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 0.68rem; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Powieść • 40 Rozdziałów</div>
+                            <a href="/u-boku-diabla" style="color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; line-height: 1.25; display: block; margin-bottom: 4px;">U boku Diabła</a>
+                            <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                Poruszająca powieść o duchowej konfrontacji, przebaczeniu i wyrwaniu się z mroku.
+                            </div>
+                            <a href="/u-boku-diabla" class="btn-clean" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.73rem; font-weight: 800; color: #38bdf8; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); padding: 5px 9px; border-radius: 6px; text-decoration: none;">
+                                <i class="fa-solid fa-book-open"></i> Czytaj E-book ➔
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Książka 4: Bóg jest MIŁOŚCIĄ? -->
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(244, 63, 94, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center;">
+                        <a href="/bog-jest-miloscia" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
+                            <img src="assets/bog-jest-miloscia-book-3d-440.webp" alt="Bóg jest MIŁOŚCIĄ?" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                        </a>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 0.68rem; color: #fb7185; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Powieść Dialogowa • 38 Rozdziałów</div>
+                            <a href="/bog-jest-miloscia" style="color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; line-height: 1.25; display: block; margin-bottom: 4px;">Bóg jest MIŁOŚCIĄ?</a>
+                            <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                Odpowiedzi na najtrudniejsze pytania o cierpienie, wiarę i Bożą miłość w dialogu.
+                            </div>
+                            <a href="/bog-jest-miloscia" class="btn-clean" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.73rem; font-weight: 800; color: #fb7185; background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.35); padding: 5px 9px; border-radius: 6px; text-decoration: none;">
+                                <i class="fa-solid fa-book-open"></i> Czytaj E-book ➔
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Książka 5: Prawda Bez Filtra (18+) -->
+                    <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(236, 72, 153, 0.35); border-radius: 12px; padding: 10px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center;">
+                        <a href="/prawda-bez-filtra" style="flex-shrink: 0; display: block; width: 68px; aspect-ratio: 1/1.4; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
+                            <img src="assets/prawda-bez-filtra-book-3d-440.webp" alt="Prawda Bez Filtra" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                        </a>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 0.68rem; color: #f472b6; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Dla Dorosłych • 18+</div>
+                            <a href="/prawda-bez-filtra" style="color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; line-height: 1.25; display: block; margin-bottom: 4px;">Prawda Bez Filtra</a>
+                            <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                Powieść bez znieczulenia o prawdzie życia, upadku i potędze ratunku w Chrystusie.
+                            </div>
+                            <a href="/prawda-bez-filtra" class="btn-clean" style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.73rem; font-weight: 800; color: #f472b6; background: rgba(236, 72, 153, 0.12); border: 1px solid rgba(236, 72, 153, 0.35); padding: 5px 9px; border-radius: 6px; text-decoration: none;">
+                                <i class="fa-solid fa-lock-open"></i> Czytaj (18+) ➔
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Przycisk do pełnej półki książek -->
+                    <a href="/ksiazki-autora" class="btn-clean" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; box-sizing: border-box; font-size: 0.8rem; font-weight: 800; color: #000; background: linear-gradient(135deg, #facc15, #eab308); padding: 9px 12px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 12px rgba(250,204,21,0.3); transition: transform 0.2s ease;">
+                        <i class="fa-solid fa-layer-group"></i> Pełna Półka Autorska (5 Książek) ➔
+                    </a>
                 </div>
 
                 <!-- Hobbies & Interests -->
@@ -4135,39 +4205,16 @@
                         </div>
                         <div class="post-content">
                             <div style="font-weight:800; color:#fff; font-size:1.15rem; margin-bottom:8px; line-height:1.35;">
-                                Moje autorskie książki są dla Was całkowicie bezpłatne – Czytajcie i słuchajcie w pokoju serca
+                                Wszystkie moje autorskie książki są dla Was całkowicie bezpłatne – Czytajcie i słuchajcie w pokoju serca
                             </div>
                             <div style="color:#cbd5e1; font-size:0.93rem; line-height:1.6; margin-bottom:16px;">
-                                Drodzy Przyjaciele! Służba słowem i niesienie nadziei Ewangelii to misja całego mojego życia. Dlatego obie moje autorskie książki udostępniam dla każdego z Was w 100% za darmo — bez paywalli, bez reklam i bez ograniczeń. Możecie czytać je bezpośrednio w przeglądarce w nowoczesnym czytniku, słuchać z wbudowanym lektorem audio lub pobrać w formatach PDF i EPUB na swój czytnik i telefon.
+                                Drodzy Przyjaciele! Służba słowem i niesienie nadziei Ewangelii to misja całego mojego życia. Dlatego wszystkie moje książki udostępniam dla każdego z Was w 100% za darmo — bez paywalli, bez reklam i bez ograniczeń: <strong>„Pokonać Goliata”</strong>, <strong>„Kod Źródłowy”</strong>, <strong>„U boku Diabła”</strong>, <strong>„Bóg jest MIŁOŚCIĄ?”</strong> oraz <strong>„Prawda Bez Filtra”</strong> (18+). Możecie czytać je bezpośrednio w przeglądarce w nowoczesnym czytniku, słuchać z wbudowanym lektorem audio lub pobrać w formatach PDF i EPUB na swój czytnik i telefon.
                             </div>
 
-                            <!-- Siatka 2 książek -->
+                            <!-- Siatka 5 książek -->
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 14px;">
                                 
-                                <!-- Karta 1: Kod Źródłowy -->
-                                <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(168, 85, 247, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
-                                    <div>
-                                        <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
-                                            <img src="assets/kod-zrodlowy-og.jpg" alt="Kod Źródłowy — Cezary Rogowski" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-                                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(168,85,247,0.5); color: #e9d5ff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">POWIEŚĆ</span>
-                                        </div>
-                                        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Kod Źródłowy</div>
-                                        <div style="font-size: 0.78rem; color: #c084fc; font-weight: 700; margin-bottom: 8px;">Prawda • Wolność • Zmiana Życia</div>
-                                        <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.45; margin-bottom: 12px;">
-                                            Poruszająca opowieść o ucieczce z pułapek współczesnego świata, zmaganiu z przeszłością i odkryciu łaski, która jako jedyna potrafi napisać nowy kod ludzkiego serca.
-                                        </p>
-                                    </div>
-                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                        <a href="/kod" style="flex: 1; min-width: 130px; text-align: center; text-decoration: none; background: linear-gradient(135deg, #a855f7, #7e22ce); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; box-shadow: 0 4px 14px rgba(168,85,247,0.35); display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                                            <i class="fa-solid fa-book-open"></i> Czytaj E-book
-                                        </a>
-                                        <a href="/kod#sluchaj" style="text-decoration: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;">
-                                            <i class="fa-solid fa-headphones" style="color: #c084fc;"></i> Audio
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <!-- Karta 2: Pokonać Goliata -->
+                                <!-- Karta 1: Pokonać Goliata -->
                                 <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(245, 158, 11, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
                                     <div>
                                         <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
@@ -4190,14 +4237,105 @@
                                     </div>
                                 </div>
 
+                                <!-- Karta 2: Kod Źródłowy -->
+                                <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(168, 85, 247, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
+                                            <img src="assets/kod-zrodlowy-og.jpg" alt="Kod Źródłowy — Cezary Rogowski" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(168,85,247,0.5); color: #e9d5ff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">POWIEŚĆ</span>
+                                        </div>
+                                        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Kod Źródłowy</div>
+                                        <div style="font-size: 0.78rem; color: #c084fc; font-weight: 700; margin-bottom: 8px;">Prawda • Wolność • Zmiana Życia</div>
+                                        <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.45; margin-bottom: 12px;">
+                                            Poruszająca opowieść o ucieczce z pułapek współczesnego świata, zmaganiu z przeszłością i odkryciu łaski, która jako jedyna potrafi napisać nowy kod ludzkiego serca.
+                                        </p>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <a href="/kod" style="flex: 1; min-width: 130px; text-align: center; text-decoration: none; background: linear-gradient(135deg, #a855f7, #7e22ce); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; box-shadow: 0 4px 14px rgba(168,85,247,0.35); display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i class="fa-solid fa-book-open"></i> Czytaj E-book
+                                        </a>
+                                        <a href="/kod#sluchaj" style="text-decoration: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-headphones" style="color: #c084fc;"></i> Audio
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Karta 3: U boku Diabła -->
+                                <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
+                                            <img src="assets/u-boku-diabla-og.jpg" alt="U boku Diabła — Cezary Rogowski" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(56,189,248,0.5); color: #bae6fd; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">POWIEŚĆ 2026</span>
+                                        </div>
+                                        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">U boku Diabła</div>
+                                        <div style="font-size: 0.78rem; color: #38bdf8; font-weight: 700; margin-bottom: 8px;">Duchowa Walka • Przebaczenie • Wolność</div>
+                                        <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.45; margin-bottom: 12px;">
+                                            Głęboka opowieść o manipulacji, duchowym uwikłaniu i ostatecznym zwycięstwie światła nad ciemnością w 40 porywających rozdziałach.
+                                        </p>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <a href="/u-boku-diabla" style="flex: 1; min-width: 130px; text-align: center; text-decoration: none; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; box-shadow: 0 4px 14px rgba(2,132,199,0.35); display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i class="fa-solid fa-book-open"></i> Czytaj E-book
+                                        </a>
+                                        <a href="/u-boku-diabla#pobierz" style="text-decoration: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-download" style="color: #38bdf8;"></i> Pobierz
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Karta 4: Bóg jest MIŁOŚCIĄ? -->
+                                <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(244, 63, 94, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
+                                            <img src="assets/bog-jest-miloscia-og.jpg" alt="Bóg jest MIŁOŚCIĄ? — Cezary Rogowski" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(244,63,94,0.5); color: #fecdd3; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">POWIEŚĆ DIALOGOWA</span>
+                                        </div>
+                                        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Bóg jest MIŁOŚCIĄ?</div>
+                                        <div style="font-size: 0.78rem; color: #fb7185; font-weight: 700; margin-bottom: 8px;">Pytania o Sens • Cierpienie • Łaska</div>
+                                        <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.45; margin-bottom: 12px;">
+                                            38 rozdziałów szczerej rozmowy człowieka z Bogiem. Konfrontacja z bólem, niesprawiedliwością i odkrywanie bezwarunkowej miłości Stwórcy.
+                                        </p>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <a href="/bog-jest-miloscia" style="flex: 1; min-width: 130px; text-align: center; text-decoration: none; background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; box-shadow: 0 4px 14px rgba(225,29,72,0.35); display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i class="fa-solid fa-book-open"></i> Czytaj E-book
+                                        </a>
+                                        <a href="/bog-jest-miloscia#pobierz" style="text-decoration: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-download" style="color: #fb7185;"></i> Pobierz
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Karta 5: Prawda Bez Filtra (18+) -->
+                                <div style="background: rgba(11, 24, 56, 0.7); border: 1.5px solid rgba(236, 72, 153, 0.4); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div style="position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 12px; background: #000;">
+                                            <img src="assets/prawda-bez-filtra-og.jpg" alt="Prawda Bez Filtra — Cezary Rogowski" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(236,72,153,0.5); color: #fbcfe8; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">DLA DOROSŁYCH 18+</span>
+                                        </div>
+                                        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Prawda Bez Filtra</div>
+                                        <div style="font-size: 0.78rem; color: #f472b6; font-weight: 700; margin-bottom: 8px;">Mocne Świadectwo • Prawda Bez Znieczulenia</div>
+                                        <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.45; margin-bottom: 12px;">
+                                            Książka przeznaczona dla dorosłych czytelników, odsłaniająca brutalną prawdę o świecie i ratunku w Chrystusie. Dostępna po zalogowaniu.
+                                        </p>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <a href="/prawda-bez-filtra" style="flex: 1; min-width: 130px; text-align: center; text-decoration: none; background: linear-gradient(135deg, #db2777, #9d174d); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; box-shadow: 0 4px 14px rgba(219,39,119,0.35); display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i class="fa-solid fa-lock-open"></i> Czytaj (18+)
+                                        </a>
+                                        <a href="/prawda-bez-filtra#pobierz" style="text-decoration: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-download" style="color: #f472b6;"></i> Pobierz
+                                        </a>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="post-footer">
-                            <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">482</span><span class="btn-text"> Polubień</span></button>
-                            <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (419)</span></button>
-                            <a href="/kod" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-book" style="color:#c084fc;"></i><span class="btn-text"> Kod Źródłowy</span></a>
-                            <a href="/pokonac-goliata" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-shield-halved" style="color:#fbbf24;"></i><span class="btn-text"> Pokonać Goliata</span></a>
-                            <button class="post-action-btn action-share" onclick="if(window.openShareModal) window.openShareModal({ title: '📖 Autorskie Książki Cezarego Rogowskiego (Bezpłatne)', url: 'https://polskieradio.cc/kod' }); else if(window.openMessageModal) openMessageModal();"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
+                            <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">512</span><span class="btn-text"> Polubień</span></button>
+                            <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (438)</span></button>
+                            <a href="/ksiazki-autora" class="post-action-btn" style="text-decoration:none; color:inherit; font-weight:800;"><i class="fa-solid fa-layer-group" style="color:#facc15;"></i><span class="btn-text"> Półka 5 Książek</span></a>
+                            <button class="post-action-btn action-share" onclick="if(window.openShareModal) window.openShareModal({ title: '📖 Wszystkie 5 Autorskich Książek Cezarego Rogowskiego (Bezpłatne)', url: 'https://polskieradio.cc/ksiazki-autora' }); else if(window.openMessageModal) openMessageModal();"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
                         </div>
                     </article>
 
@@ -5325,8 +5463,59 @@
                             <button class="card-edit-btn" onclick="openEditProfileModal('bio')" title="Edytuj świadectwo"><i class="fa-solid fa-pencil"></i></button>
                         </div>
                         <p style="font-size:0.93rem; line-height:1.65; color:#cbd5e1;" id="userBioFull">
-                            Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.
+                            Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa. Służę słowem, muzyką i technologią na Bożą chwałę.
                         </p>
+                    </div>
+
+                    <!-- Półka z książkami w zakładce O Mnie -->
+                    <div class="sidebar-card" style="border: 1.5px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 15px rgba(212, 175, 55, 0.15); margin-top: 14px;">
+                        <div class="card-title" style="color: #facc15; font-size: 1.05rem; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fa-solid fa-book-bookmark" style="margin-right: 8px; color: #facc15;"></i> Moje Autorskie Książki & Publikacje</span>
+                            <span style="font-size: 0.7rem; background: rgba(250, 204, 21, 0.15); border: 1px solid rgba(250, 204, 21, 0.35); color: #fef08a; padding: 3px 8px; border-radius: 8px; font-weight: 800;">5 POZYCJI • 100% FREE</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin: 6px 0 14px;">
+                            Wszystkie moje książki udostępniam dla Was bez opłat – w e-bookach PDF/EPUB, profesjonalnym czytniku online oraz wersjach audio:
+                        </p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
+                            <a href="/pokonac-goliata" style="display: flex; gap: 10px; align-items: center; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 10px; padding: 8px; text-decoration: none; color: inherit;">
+                                <img src="assets/pokonac-goliata-book-3d-400.webp" alt="Pokonać Goliata" style="width: 44px; aspect-ratio: 1/1.4; object-fit: cover; border-radius: 4px;" loading="lazy">
+                                <div style="min-width: 0;">
+                                    <div style="font-weight: 800; font-size: 0.84rem; color: #fff;">Pokonać Goliata</div>
+                                    <div style="font-size: 0.7rem; color: #fbbf24;">8 Kroków Zwycięstwa</div>
+                                </div>
+                            </a>
+                            <a href="/kod" style="display: flex; gap: 10px; align-items: center; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 10px; padding: 8px; text-decoration: none; color: inherit;">
+                                <img src="assets/kod-zrodlowy-book-3d-400.webp" alt="Kod Źródłowy" style="width: 44px; aspect-ratio: 1/1.4; object-fit: cover; border-radius: 4px;" loading="lazy">
+                                <div style="min-width: 0;">
+                                    <div style="font-weight: 800; font-size: 0.84rem; color: #fff;">Kod Źródłowy</div>
+                                    <div style="font-size: 0.7rem; color: #c084fc;">Powieść & Świadectwo</div>
+                                </div>
+                            </a>
+                            <a href="/u-boku-diabla" style="display: flex; gap: 10px; align-items: center; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 8px; text-decoration: none; color: inherit;">
+                                <img src="assets/u-boku-diabla-book-3d-440.webp" alt="U boku Diabła" style="width: 44px; aspect-ratio: 1/1.4; object-fit: cover; border-radius: 4px;" loading="lazy">
+                                <div style="min-width: 0;">
+                                    <div style="font-weight: 800; font-size: 0.84rem; color: #fff;">U boku Diabła</div>
+                                    <div style="font-size: 0.7rem; color: #38bdf8;">Powieść • 40 Rozdziałów</div>
+                                </div>
+                            </a>
+                            <a href="/bog-jest-miloscia" style="display: flex; gap: 10px; align-items: center; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(244, 63, 94, 0.35); border-radius: 10px; padding: 8px; text-decoration: none; color: inherit;">
+                                <img src="assets/bog-jest-miloscia-book-3d-440.webp" alt="Bóg jest MIŁOŚCIĄ?" style="width: 44px; aspect-ratio: 1/1.4; object-fit: cover; border-radius: 4px;" loading="lazy">
+                                <div style="min-width: 0;">
+                                    <div style="font-weight: 800; font-size: 0.84rem; color: #fff;">Bóg jest MIŁOŚCIĄ?</div>
+                                    <div style="font-size: 0.7rem; color: #fb7185;">Powieść Dialogowa</div>
+                                </div>
+                            </a>
+                            <a href="/prawda-bez-filtra" style="display: flex; gap: 10px; align-items: center; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(236, 72, 153, 0.35); border-radius: 10px; padding: 8px; text-decoration: none; color: inherit;">
+                                <img src="assets/prawda-bez-filtra-book-3d-440.webp" alt="Prawda Bez Filtra" style="width: 44px; aspect-ratio: 1/1.4; object-fit: cover; border-radius: 4px;" loading="lazy">
+                                <div style="min-width: 0;">
+                                    <div style="font-weight: 800; font-size: 0.84rem; color: #fff;">Prawda Bez Filtra</div>
+                                    <div style="font-size: 0.7rem; color: #f472b6;">Dla Dorosłych (18+)</div>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/ksiazki-autora" class="btn-clean" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; box-sizing: border-box; font-size: 0.82rem; font-weight: 800; color: #000; background: linear-gradient(135deg, #facc15, #eab308); padding: 9px 12px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 12px rgba(250,204,21,0.3);">
+                            <i class="fa-solid fa-layer-group"></i> Przejdź do oficjalnej półki z książkami ➔
+                        </a>
                     </div>
                 </div>
 
@@ -6296,7 +6485,7 @@
             pin: '7777',
             visibility: 'public',
             avatar: 'avatar_cezary_official.jpg',
-            cover: 'tlo_profilowe_cezary.gif',
+            cover: '/tlo_profilowe_cezary.jpg',
             coverPosY: '50%',
             job: 'Założyciel Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
@@ -6815,13 +7004,13 @@
                         avatar = 'avatar_cezary_official.jpg';
                     }
                     let cover = parsed.cover;
-                    // Migracja: stary plik MP4 lub domyślne tło → zawsze GIF Cezarego
-                    const OLD_COVERS = ['', 'null', 'undefined', 'lumina_default_cover.jpg', 'tlo_profilowe_cezary.mp4'];
+                    // Migracja: stary plik MP4, GIF lub brak tła → nowe oficjalne tło z gitarą Cezarego
+                    const OLD_COVERS = ['', 'null', 'undefined', 'lumina_default_cover.jpg', 'tlo_profilowe_cezary.mp4', 'tlo_profilowe_cezary.gif'];
                     if (!cover || OLD_COVERS.includes(cover.trim())) {
-                        cover = 'tlo_profilowe_cezary.gif';
+                        cover = '/tlo_profilowe_cezary.jpg';
                         parsed.cover = cover;
                     }
-                    // Migracja coverVideoUrl: jeśli wskazuje na stary lokalny MP4 → wyczyść, żeby GIF był widoczny
+                    // Migracja coverVideoUrl: jeśli wskazuje na stary lokalny MP4 → wyczyść, żeby tło graficzne było widoczne
                     const OLD_VIDEO_URLS = ['tlo_profilowe_cezary.mp4', 'tlo_profilowe_cezary.mp4', './tlo_profilowe_cezary.mp4', '/tlo_profilowe_cezary.mp4'];
                     if (parsed.coverVideoUrl && OLD_VIDEO_URLS.some(v => parsed.coverVideoUrl.trim().endsWith(v) || parsed.coverVideoUrl.trim() === v)) {
                         parsed.coverVideoUrl = '';
@@ -7224,17 +7413,17 @@
                 }
                 if (imgEl) {
                     imgEl.style.display = 'block';
-                    let coverSrc = data?.cover;
-                    if (!coverSrc || coverSrc === 'lumina_default_cover.jpg' || coverSrc === 'tlo_profilowe_cezary.mp4') {
-                        coverSrc = 'tlo_profilowe_cezary.gif';
+                    let coverSrc = (data?.cover || '').trim();
+                    if (!coverSrc || coverSrc === 'lumina_default_cover.jpg' || coverSrc === 'tlo_profilowe_cezary.mp4' || coverSrc === 'tlo_profilowe_cezary.gif') {
+                        coverSrc = '/tlo_profilowe_cezary.jpg';
                     }
-                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = 'tlo_profilowe_cezary_poster.jpg'; };
+                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = '/tlo_profilowe_cezary.jpg'; };
                     if (!imgEl.src.endsWith(coverSrc)) {
                         imgEl.src = coverSrc;
                     }
-                    imgEl.style.objectFit = 'contain';
-                    imgEl.style.objectPosition = 'center center';
-                    imgEl.style.background = '#000';
+                    imgEl.style.objectFit = 'cover';
+                    imgEl.style.objectPosition = 'center ' + (data?.coverPosY || '50%');
+                    imgEl.style.background = 'transparent';
                 }
             }
         }
@@ -8535,13 +8724,19 @@
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia w tle... 🕊️');
-            compressAndReadImage(file, 1200, 600, 0.80, function(dataUrl) {
+            compressAndReadImage(file, 1600, 900, 0.85, function(dataUrl) {
                 const cur = getProfileData();
                 cur.cover = dataUrl;
+                cur.coverVideoUrl = '';
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                     localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                    localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
                 } catch(err) {}
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                    window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur).catch(() => {});
+                }
                 renderProfileView();
                 showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨✨');
             });
