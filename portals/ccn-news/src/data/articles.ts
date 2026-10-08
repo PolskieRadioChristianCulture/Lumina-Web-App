@@ -88,9 +88,9 @@ export const INITIAL_ARTICLES: Article[] = [
     imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg',
     imageCaption: 'Księga Rodzaju 11: Ziggurat w Szinearze — wieża Babel i pomieszanie języków zbuntowanej ludzkości.',
     readTimeMinutes: 6,
-    isHero: true,
+    isHero: false,
     isPopular: true,
-    popularRank: 1,
+    popularRank: 2,
     tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 10', 'Rdz 11', 'Wieża Babel', 'Abraham', 'Cezary Rogowski', 'Wiara'],
     author: AUTHORS.cezary,
     scriptureReference: {
