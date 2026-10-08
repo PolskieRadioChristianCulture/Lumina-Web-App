@@ -14,6 +14,80 @@
  * - Safe: No horizontal overflow, zero collisions, accessible fallbacks
  */
 
+/* Intelligent minimalism: original actions remain available, without covering avatars. */
+/* Decorative cover caption only: profile identity below the cover remains visible. */
+body.lumina-profile-standard .cover-badge-banner:not(:focus-within) {
+    animation: lumina-cover-caption-fade 600ms ease 5s forwards;
+}
+@keyframes lumina-cover-caption-fade {
+    to { opacity: 0; visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+    body.lumina-profile-standard .cover-badge-banner:not(:focus-within) { animation-duration: 1ms; }
+}
+body.lumina-profile-standard .profile-actions-more { display: contents !important; }
+body.lumina-profile-standard .profile-actions-more[hidden] { display: none !important; }
+body.lumina-profile-standard .profile-actions-compact :is(button, a):is([hidden], [style*="display:none"], [style*="display: none"]) {
+    display: none !important;
+}
+body.lumina-profile-standard .profile-actions-more > summary {
+    display: inline-flex; align-items: center; justify-content: center;
+    box-sizing: border-box; cursor: pointer; list-style: none;
+    width: 44px; height: 44px; min-width: 44px; flex: 0 0 44px;
+    border-radius: 50%; border: 1px solid #a89570;
+    background: #17223b; color: #ffffff; font-size: 26px;
+}
+body.lumina-profile-standard .profile-actions-more > summary::-webkit-details-marker { display: none; }
+body.lumina-profile-standard .profile-actions-more > summary > [aria-hidden] {
+    display: inline !important; font-size: 26px !important; color: inherit !important;
+}
+body.lumina-profile-standard .profile-action-label { display: none; }
+body.lumina-profile-standard .profile-actions-more:not([open]) > .profile-actions-panel { display: none; }
+body.lumina-profile-standard .profile-actions-more[open] > .profile-actions-panel {
+    display: grid; grid-template-columns: 1fr; gap: 8px;
+    width: 100%; flex: 0 0 100%; min-width: 0;
+    padding: 8px 0; box-sizing: border-box;
+}
+body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact .profile-actions-panel > :is(button, a) {
+    position: static !important; transform: none !important;
+    box-sizing: border-box !important; min-height: 44px !important; height: auto !important;
+    width: 100% !important; max-width: 100% !important; margin: 0 !important;
+    padding: 12px 16px !important; text-align: left; white-space: normal !important;
+    background: #17223b !important; color: #fff !important; border: 1px solid #a89570 !important;
+    border-radius: 12px !important; font-size: 0.9rem !important;
+}
+body.lumina-profile-standard .profile-actions-panel > .profile-avatar-utility {
+    opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;
+}
+body.lumina-profile-standard .profile-actions-compact .profile-actions-panel :is(.btn-text, .profile-action-label) {
+    display: inline !important; font-size: inherit !important; color: inherit !important;
+}
+body.lumina-profile-standard .profile-actions-compact .profile-actions-panel i { color: currentColor !important; }
+html[data-lumina-theme="light"] body.lumina-profile-standard .profile-actions-compact :is(.profile-actions-more > summary, .profile-actions-panel > button, .profile-actions-panel > a) {
+    background: #f5f2eb !important; color: #292524 !important;
+}
+body.lumina-profile-standard .profile-actions-more > summary:focus-visible {
+    outline: 3px solid #b88e3e; outline-offset: 3px;
+}
+@media (max-width: 768px) {
+    body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact {
+        flex-wrap: wrap !important; overflow: visible !important; gap: 8px !important;
+    }
+    body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact > :is(button, a) {
+        width: 44px !important; min-width: 44px !important; height: 44px !important;
+        min-height: 44px !important; max-height: 44px !important;
+        padding: 0 !important; flex: 0 0 44px !important; font-size: 0 !important;
+        color: #ffffff !important;
+    }
+    body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact > :is(button, a) :is(.btn-text, #followBtnText, #followCountBadge, #heartBtnText, #heartCountBadge, .btn-divider, .profile-action-label) {
+        display: none !important;
+    }
+    body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact > :is(button, a) i { font-size: 1rem !important; }
+    html[data-lumina-theme="light"] body.lumina-profile-standard :is(.head-actions, .hero-actions).profile-actions-compact > :is(button, a) {
+        color: #292524 !important;
+    }
+}
+
 html body.lumina-profile-standard {
     --profile-shell-width: 1200px;
     --profile-page-gutter: clamp(12px, 2.4vw, 24px);

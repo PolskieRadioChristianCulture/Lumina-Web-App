@@ -644,9 +644,10 @@
             const hasVideo = !!this.getVideoForSlug(currentSlug);
             const avatarWraps = document.querySelectorAll('.avatar-wrap, .head-avatar-wrapper, .profile-avatar-wrap');
             avatarWraps.forEach(wrap => {
-                let badge = wrap.querySelector('.btn-video-avatar-badge');
+                let badge = wrap._profileVideoBadge || wrap.querySelector('.btn-video-avatar-badge');
                 if (!hasVideo) {
                     if (badge) badge.remove();
+                    wrap._profileVideoBadge = null;
                     return;
                 }
                 if (!badge) {
@@ -660,6 +661,7 @@
                         e.stopPropagation();
                         this.openModal(this.currentSlug);
                     };
+                    wrap._profileVideoBadge = badge;
                     wrap.appendChild(badge);
                 }
 
@@ -668,6 +670,7 @@
                     wrap._videoBadgeClickBound = true;
 
                     wrap.addEventListener('click', (e) => {
+                        if (!wrap.contains(badge)) return; // Action now lives in the profile More panel.
                         // Jeśli kliknięto w samą plakietkę, obsługa jest w badge.onclick
                         if (e.target.closest('.btn-video-avatar-badge')) return;
 

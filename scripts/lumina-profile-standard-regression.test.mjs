@@ -117,7 +117,7 @@ test('11. Nested OSOBOWOSC alias resolves logo, cover and entry scripts from roo
     const base = new URL('/', 'https://polskieradio.cc/lumina/osobowoscplus');
     assert.equal(new URL(path, base).pathname, '/' + path);
   }
-  assert.match(html, /profile_light_media_v3/);
+  assert.match(html, /profile_compact_v4/);
 });
 
 test('12. Legacy profile navigation, titles and cards have explicit light styles', async () => {
