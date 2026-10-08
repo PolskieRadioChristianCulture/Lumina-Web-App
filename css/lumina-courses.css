@@ -1696,3 +1696,418 @@
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════
+ * LUMINA COURSES & ACADEMY — LUXURY LIGHT EDITION (Warm Ivory & Champagne)
+ * ══════════════════════════════════════════════════════════════════ */
+html[data-lumina-theme="light"],
+html.light,
+body.theme-lumina-light,
+.theme-lumina-light body {
+  color-scheme: light !important;
+  --bg-cinematic: #FAF9F6 !important;
+  --bg-surface: #FFFFFF !important;
+  --bg-surface-elevated: #FAF8F5 !important;
+  --border-subtle: rgba(28, 25, 23, 0.08) !important;
+  --border-focus: rgba(184, 142, 62, 0.45) !important;
+  --text-main: #27221E !important;
+  --text-muted: #6E6761 !important;
+  --text-faint: #8E8780 !important;
+  --accent-warm: #A6802C !important;
+  --accent-warm-light: #8C6D23 !important;
+  --accent-glow: rgba(184, 142, 62, 0.12) !important;
+  --accent-complete: #A6802C !important;
+  --accent-complete-glow: rgba(184, 142, 62, 0.15) !important;
+  --kc-text-color: #27221E !important;
+
+  background-color: #FAF9F6 !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] body {
+  background-color: #FAF9F6 !important;
+  color: #27221E !important;
+}
+
+/* 1. Header & Navigation */
+html[data-lumina-theme="light"] .cin-header,
+html[data-lumina-theme="light"] .cin-topbar,
+html[data-lumina-theme="light"] .ak-header {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(184, 142, 62, 0.22) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .cin-brand-title,
+html[data-lumina-theme="light"] .ak-header .font-display {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .cin-brand-sub,
+html[data-lumina-theme="light"] .ak-header-brand-sub {
+  color: #78716C !important;
+}
+
+/* 2. Karty Lekcji i Karty Kursów */
+html[data-lumina-theme="light"] .kc-card,
+html[data-lumina-theme="light"] .cin-card,
+html[data-lumina-theme="light"] .cin-stage-card,
+html[data-lumina-theme="light"] .cin-lesson-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(28, 25, 23, 0.08) !important;
+  box-shadow: 0 6px 24px rgba(28, 25, 23, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .kc-card h2,
+html[data-lumina-theme="light"] .kc-card h3,
+html[data-lumina-theme="light"] .cin-card h2,
+html[data-lumina-theme="light"] .cin-card h3,
+html[data-lumina-theme="light"] .cin-hero-title,
+html[data-lumina-theme="light"] .cin-stage-title,
+html[data-lumina-theme="light"] .cin-lesson-title {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .kc-card p,
+html[data-lumina-theme="light"] .kc-card li,
+html[data-lumina-theme="light"] .cin-card p {
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .kc-card strong,
+html[data-lumina-theme="light"] .kc-card b {
+  color: #110E0C !important;
+}
+
+html[data-lumina-theme="light"] .kc-card em,
+html[data-lumina-theme="light"] .kc-card i {
+  color: #8C6D23 !important;
+}
+
+/* 3. Wersety Biblijne i Cytaty */
+html[data-lumina-theme="light"] .kc-verse-box,
+html[data-lumina-theme="light"] blockquote,
+html[data-lumina-theme="light"] .cin-verse-highlight {
+  background: #FBF8F1 !important;
+  border-left: 4px solid #B88E3E !important;
+  color: #382C1E !important;
+  box-shadow: 0 2px 12px rgba(184, 142, 62, 0.06) !important;
+}
+
+/* 4. Przyciski i Pigułki */
+html[data-lumina-theme="light"] .kc-reader-pill,
+html[data-lumina-theme="light"] .cin-btn-theme {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(184, 142, 62, 0.35) !important;
+  color: #27221E !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .kc-reader-pill:hover,
+html[data-lumina-theme="light"] .cin-btn-theme:hover {
+  background: #FAF6ED !important;
+  border-color: #B88E3E !important;
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] #btn-audio-tts,
+html[data-lumina-theme="light"] #ccTopSubLink {
+  background: rgba(184, 142, 62, 0.12) !important;
+  border-color: rgba(184, 142, 62, 0.4) !important;
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] #btn-audio-tts:hover,
+html[data-lumina-theme="light"] #ccTopSubLink:hover {
+  background: rgba(184, 142, 62, 0.22) !important;
+}
+
+/* 5. Breadcrumb & Navigation Bars */
+html[data-lumina-theme="light"] nav[aria-label="Nawigacja lekcji"],
+html[data-lumina-theme="light"] .cin-lesson-nav-bar {
+  background: #F3EFE8 !important;
+  border-color: rgba(28, 25, 23, 0.08) !important;
+  color: #78716C !important;
+}
+
+html[data-lumina-theme="light"] nav[aria-label="Nawigacja lekcji"] a {
+  color: #574F47 !important;
+}
+
+html[data-lumina-theme="light"] nav[aria-label="Nawigacja lekcji"] a:hover {
+  color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] nav[aria-label="Nawigacja lekcji"] .text-amber-400 {
+  color: #8C6D23 !important;
+}
+
+/* 6. Quiz & Interakcje */
+html[data-lumina-theme="light"] .quiz-option {
+  background: #FAF8F5 !important;
+  border-color: rgba(28, 25, 23, 0.12) !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .quiz-option:hover {
+  background: #F3ECE0 !important;
+  border-color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] textarea,
+html[data-lumina-theme="light"] input[type="text"],
+html[data-lumina-theme="light"] select {
+  background: #FAF8F5 !important;
+  border-color: rgba(184, 142, 62, 0.35) !important;
+  color: #1C1917 !important;
+}
+
+/* 7. Zakładki i Hero Kursów */
+html[data-lumina-theme="light"] .cin-course-tab {
+  background: #FAF8F5 !important;
+  border-color: rgba(28, 25, 23, 0.1) !important;
+  color: #574F47 !important;
+}
+
+html[data-lumina-theme="light"] .cin-course-tab.active {
+  background: #FFFFFF !important;
+  border-color: #B88E3E !important;
+  color: #8C6D23 !important;
+  box-shadow: 0 4px 14px rgba(184, 142, 62, 0.15) !important;
+}
+
+html[data-lumina-theme="light"] .hero-section {
+  background: radial-gradient(ellipse at top, rgba(196, 163, 90, 0.15) 0%, rgba(250, 249, 246, 1) 75%) !important;
+}
+
+/* 8. Panel Udostępniania i Subskrypcji */
+html[data-lumina-theme="light"] .cc-daily-share {
+  background: #FFFFFF !important;
+  border-color: rgba(184, 142, 62, 0.35) !important;
+  color: #27221E !important;
+  box-shadow: 0 6px 24px rgba(28, 25, 23, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .cc-daily-share h2 {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .cc-daily-share-actions a,
+html[data-lumina-theme="light"] .cc-daily-share-actions button {
+  background: #FAF8F5 !important;
+  border-color: rgba(184, 142, 62, 0.4) !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .cc-daily-share-actions a:hover,
+html[data-lumina-theme="light"] .cc-daily-share-actions button:hover {
+  background: #F3ECE0 !important;
+}
+
+html[data-lumina-theme="light"] footer {
+  background: #F3EFE8 !important;
+  border-top-color: rgba(28, 25, 23, 0.08) !important;
+  color: #6E6761 !important;
+}
+
+/* 9. Apokalipsa & 28 Kroków Lekcje & Karty Katalogu */
+html[data-lumina-theme="light"] .reader-section,
+html[data-lumina-theme="light"] .quiz-card,
+html[data-lumina-theme="light"] article.rounded-3xl,
+html[data-lumina-theme="light"] section.rounded-3xl {
+  background: #FFFFFF !important;
+  border-color: rgba(184, 142, 62, 0.25) !important;
+  box-shadow: 0 6px 24px rgba(28, 25, 23, 0.05) !important;
+}
+
+html[data-lumina-theme="light"] article.rounded-3xl h3,
+html[data-lumina-theme="light"] section.rounded-3xl h2,
+html[data-lumina-theme="light"] .reader-section h2,
+html[data-lumina-theme="light"] .reader-section h3 {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] article.rounded-3xl p,
+html[data-lumina-theme="light"] section.rounded-3xl p,
+html[data-lumina-theme="light"] .reader-section p {
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .bg-black\/40,
+html[data-lumina-theme="light"] .bg-black\/50,
+html[data-lumina-theme="light"] .bg-black\/30 {
+  background: #FBF8F1 !important;
+  border-color: rgba(184, 142, 62, 0.3) !important;
+  color: #382C1E !important;
+}
+
+html[data-lumina-theme="light"] .cin-lesson-step-badge {
+  background: #FAF8F5 !important;
+  border-color: rgba(184, 142, 62, 0.3) !important;
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .quiz-option-btn {
+  background: #FAF8F5 !important;
+  border-color: rgba(28, 25, 23, 0.12) !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .quiz-option-btn:hover {
+  background: #F3ECE0 !important;
+  border-color: #B88E3E !important;
+}
+
+html[data-lumina-theme="light"] .quiz-feedback-box {
+  background: #FAF8F5 !important;
+  border-color: rgba(184, 142, 62, 0.35) !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .sticky.top-16 {
+  background: rgba(250, 249, 246, 0.95) !important;
+  border-bottom-color: rgba(184, 142, 62, 0.22) !important;
+}
+
+/* Przycisk motywu w cin-header / cin-topbar / ak-header */
+.cin-btn-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(22, 27, 38, 0.85);
+  color: #e2e8f0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.cin-btn-theme:hover {
+  border-color: rgba(196, 163, 90, 0.6);
+  color: #fef08a;
+  background: rgba(30, 37, 51, 0.95);
+}
+
+html[data-lumina-theme="light"] .cin-btn-theme {
+  border: 1px solid rgba(184, 142, 62, 0.35) !important;
+  background: #FFFFFF !important;
+  color: #8C6D23 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .cin-btn-theme:hover {
+  border-color: #B88E3E !important;
+  background: #FAF6ED !important;
+  color: #A6802C !important;
+}
+
+/* 10. Typografia Nagłówków i Treści w Trybie Jasnym */
+html[data-lumina-theme="light"] h1,
+html[data-lumina-theme="light"] h1.text-white,
+html[data-lumina-theme="light"] h2.text-white,
+html[data-lumina-theme="light"] h3.text-white,
+html[data-lumina-theme="light"] .cin-lesson-hero-title,
+html[data-lumina-theme="light"] .reader-hero-title,
+html[data-lumina-theme="light"] .font-serif.text-white {
+  color: #110E0C !important;
+}
+
+html[data-lumina-theme="light"] .text-amber-300\/90,
+html[data-lumina-theme="light"] .text-amber-200\/90,
+html[data-lumina-theme="light"] .text-amber-200\/80,
+html[data-lumina-theme="light"] .text-amber-100\/90,
+html[data-lumina-theme="light"] .text-amber-100\/95,
+html[data-lumina-theme="light"] .text-amber-200,
+html[data-lumina-theme="light"] .text-amber-100 {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .text-zinc-300,
+html[data-lumina-theme="light"] .text-zinc-400 {
+  color: #574F47 !important;
+}
+
+html[data-lumina-theme="light"] .bg-zinc-900\/80,
+html[data-lumina-theme="light"] .border-zinc-800 {
+  background-color: #FFFFFF !important;
+  border-color: rgba(184, 142, 62, 0.25) !important;
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .bg-zinc-900\/80 a.text-white {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .reader-badge-gold,
+html[data-lumina-theme="light"] .reader-step-num {
+  background: rgba(184, 142, 62, 0.15) !important;
+  color: #8C6D23 !important;
+  border-color: rgba(184, 142, 62, 0.4) !important;
+}
+
+html[data-lumina-theme="light"] .reader-section-title {
+  color: #8C6D23 !important;
+}
+
+html[data-lumina-theme="light"] .reader-prose p,
+html[data-lumina-theme="light"] .reader-prose li {
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .cin-hero {
+  background: radial-gradient(ellipse at top, rgba(196, 163, 90, 0.15) 0%, rgba(250, 249, 246, 1) 75%) !important;
+}
+
+html[data-lumina-theme="light"] .cin-hero-subtitle {
+  color: #27221E !important;
+}
+
+html[data-lumina-theme="light"] .cin-journey-tag {
+  background: #FFFFFF !important;
+  border-color: rgba(184, 142, 62, 0.4) !important;
+  color: #8C6D23 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .cin-progress-title {
+  color: #574F47 !important;
+}
+
+/* 11. Responsywność Topbaru na Telefonach */
+@media (max-width: 768px) {
+  .cin-header .cin-brand-sub,
+  .cin-topbar .cin-brand-sub,
+  .ak-header .ak-header-brand-sub {
+    display: none !important;
+  }
+
+  #btn-topbar-diploma {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+  }
+
+  #btn-topbar-diploma span {
+    display: none !important;
+  }
+
+  #btn-topbar-diploma::after {
+    content: '🎓';
+    font-size: 14px;
+    display: inline-block;
+  }
+}
+
+
