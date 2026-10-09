@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'Z Biblią za Pan Brat: Dzień 10 — Dwie drogi wyboru: Abram i Lot (Rdz 13:1–14:24)',
   'Bezpłatne e-booki i audiobooki: „Kod Źródłowy” oraz „Pokonać Goliata” Cezarego Rogowskiego już dostępne w ekosystemie CC',
   'Z Biblią za Pan Brat: Dzień 8 — Wieża Babel: Kiedy człowiek chce uczynić sobie imię (Rdz 10:1–11:32)',
   'Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?',
@@ -51,6 +52,48 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-10',
+    title: 'DWIE DROGI WYBORU — ABRAM I LOT ORAZ ZAPOWIEDŹ KAPŁAŃSTWA CHRYSTUSA',
+    slug: 'dwie-drogi-wyboru-abram-i-lot-oraz-zapowiedz-kaplanstwa-chrystusa',
+    excerpt: 'Trzynasty i czternasty rozdział Księgi Rodzaju konfrontuje czytelnika z dwoma stylami podejmowania decyzji w warunkach dobrobytu oraz wprowadza jedną z najważniejszych postaci typologicznych Starego Testamentu — Melchizedeka.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · ROZWAŻANIE DNIA',
+    publishedAt: '2026-10-10',
+    dateFormatted: '10 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_10_abram_lot.jpg',
+    imageCaption: 'Księga Rodzaju 13–14: Abram i Lot rozstają się na wzgórzach Kanaanu — wybór pokoju i zaufania Bożej obietnicy.',
+    readTimeMinutes: 7,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 13', 'Rdz 14', 'Abram', 'Lot', 'Melchizedek', 'Sodoma', 'Pokój', 'Chrystus'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 13:8–9',
+      text: 'Niechaj nie będzie sporu między mną a tobą (…) gdyż jesteśmy braćmi. Czyż nie cała ziemia stoi przed tobą?',
+      strongCode: 'H7965',
+    },
+    lexiconTerms: [
+      {
+        term: 'Melchizedek (Rdz 14:18)',
+        strongCode: 'H4442',
+        definition: 'Hebr. Malki-cedek — Król Sprawiedliwości; król Salemu (Pokoju) i kapłan Boga Najwyższego (El Eljon), zapowiedź wiecznego kapłaństwa Chrystusa (Hbr 7).',
+      },
+      {
+        term: 'Pokój (Rdz 13:8)',
+        strongCode: 'H7965',
+        definition: 'Hebr. szalom — pełnia pomyślności, harmonia relacji i brak wrogości wynikający z oparcia życia na Bogu.',
+      },
+    ],
+    content: [
+      'Po powrocie z Egiptu i ponownym odnowieniu ołtarza w Betel, stada Abrama i Lota rozrosły się do tego stopnia, że ziemia przestała ich mieścić, co doprowadziło do sporów między pasterzami (Rdz 13:5–7). W obliczu kryzysu Abram rezygnuje ze swoich przywilejów starszeństwa i obietnicy, oddając Lotowi pełną swobodę wyboru kierunku osiedlenia.',
+      'Lot kieruje się kryterium czysto pragmatycznym i zmysłowym: dostrzega bujną, nawodnioną równinę Jordanu i wybiera ziemię prowadzącą bezpośrednio pod moralnie zepsutą Sodomę (Rdz 13:10–13). Tekst ukazuje fundamentalną lekcję egzegetyczną: materialna korzyść i atrakcyjność wizualna danej opcji życiowej nie są tożsame z Bożą wolą, jeśli niosą ze sobą duchowe i moralne zagrożenia.',
+      'Konsekwencje wyborów Lota ujawniają się w 14. rozdziale, gdy w wyniku regionalnego konfliktu królów zostaje on uprowadzony w niewolę wraz z dobytkiem (Rdz 14:12). Postawa Abrama stanowi podręcznikowy wzór etyki biblijnej: nie popada on w satysfakcję typu „sam sobie wybrał”, lecz natychmiast organizuje zbrojną wyprawę ratunkową, ryzykując życie dla ocalenia bratanka. Prawdziwa wiara nigdy nie jest obojętna na ludzki ból.',
+      'Centralnym punktem teologicznym tego fragmentu jest pojawienie się Melchizedeka, króla Salemu i kapłana Boga Najwyższego, który przynosi chleb i wino, błogosławi Abramowi i przyjmuje od niego dziesięcinę (Rdz 14:18–20). W Ps 110:4 oraz w Liście do Hebrajczyków (Hbr 7) postać ta urasta do rangi potężnego typu Jezusa Chrystusa — naszego wiecznego Króla i Najwyższego Arcykapłana.',
+      'Zamykając rozdział, Abram kategorycznie odrzuca propozycję króla Sodomy („Abyś nie powiedział: Ja wzbogaciłem Abrama” — Rdz 14:23), zabezpieczając swoją tożsamość wyłącznie w relacji z żywym Bogiem, a nie w kompromitujących układach polityczno-gospodarczych.',
+    ],
+  },
   {
     id: 'art-ksiazki-cezary-rogowski-kod-pokonac-goliata',
     title: '„KOD ŹRÓDŁOWY” ORAZ „POKONAĆ GOLIATA” — BEZPŁATNE E-BOOKI I AUDIOBOOKI CEZAREGO ROGOWSKIEGO',
