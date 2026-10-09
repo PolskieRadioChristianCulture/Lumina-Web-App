@@ -29,13 +29,15 @@ service cloud.firestore {
     }
 
     function isMessageParticipant(data) {
+      // Optional identity fields differ across room and legacy message schemas.
+      // Missing fields must deny that branch, not abort another valid UID check.
       return isMember() && (
-        data.senderAuthUid == request.auth.uid ||
-        data.receiverAuthUid == request.auth.uid ||
-        (data.participants is list && request.auth.uid in data.participants) ||
+        ('senderAuthUid' in data && data.senderAuthUid == request.auth.uid) ||
+        ('receiverAuthUid' in data && data.receiverAuthUid == request.auth.uid) ||
+        ('participants' in data && data.participants.hasAny([request.auth.uid])) ||
         // Historical messages used `users`; retain access only where the
         // authenticated UID is explicitly present in the existing document.
-        (data.users is list && request.auth.uid in data.users)
+        ('users' in data && data.users.hasAny([request.auth.uid]))
       );
     }
 
@@ -282,10 +284,12 @@ service cloud.firestore {
         request.resource.data.participants is list &&
         request.auth.uid in request.resource.data.participants
       );
-      // P0: uczestnik nie może dopisywać nowych osób do cudzej rozmowy.
+      // P0: all fields used by isMessageParticipant are immutable for members.
       allow update: if isMasterAdmin() || (
         isMessageParticipant(resource.data) &&
-        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['participants', 'users'])
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+          'participants', 'users', 'senderAuthUid', 'receiverAuthUid'
+        ])
       );
       allow delete: if isMasterAdmin();
 

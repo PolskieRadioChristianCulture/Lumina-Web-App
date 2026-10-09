@@ -28,7 +28,7 @@ test('room snapshot counts aliases once and refreshes other unread rooms while t
   const streams=[],storage=new Map(),badges=[];
   const ctx={db:{},auth:{currentUser:{uid:'me'}},onAuthChange:cb=>{cb();return ()=>{};},hasStartedRealtimeNotifs:false,currentUserState:{uid:'me'},currentProfileState:{uid:'me',slug:'me'},Date,
     normalizeChatUserId:id=>String(id||'').toLowerCase(),localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,orderBy:(...a)=>a,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,or:(...a)=>({or:a}),limit:n=>n,orderBy:(...a)=>a,
     onSnapshot:(q,cb)=>{streams.push({q,cb});return ()=>{};},console:{warn:()=>{}},
     document:{getElementById:()=>({classList:{contains:()=>true}})},window:{updateLuminaMessagesBadge:n=>badges.push(n)},triggerLuminaPushNotification:()=>{throw Error('No notification for old synthetic rooms');}};
   const start=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);start();
@@ -46,7 +46,7 @@ function sessionFixture() {
     onAuthChange:cb=>{callbacks.push(cb);cb();return ()=>{};},Date,
     normalizeChatUserId:id=>String(id||'').toLowerCase(),
     localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...a)=>a,limit:n=>n,orderBy:(...a)=>a,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...a)=>a,or:(...a)=>({or:a}),limit:n=>n,orderBy:(...a)=>a,
     onSnapshot:(q,cb)=>{const stream={q,cb,stopped:false};streams.push(stream);return()=>{stream.stopped=true;};},
     window:{updateLuminaMessagesBadge:n=>badges.push(n)},document:{getElementById:()=>null},console:{warn:()=>{}},
     triggerLuminaPushNotification:n=>notifications.push(n)};
@@ -59,7 +59,7 @@ test('chat session starts private listeners after late login, without duplicatin
   const f=sessionFixture();f.start();assert.equal(f.streams.length,1);
   f.login('UID_A','alice');assert.equal(f.streams.length,3);
   f.start();f.login('UID_A','alice');assert.equal(f.streams.length,3);assert.equal(f.callbacks.length,1);
-  assert.deepEqual(Array.from(f.streams[1].q.filters[0]),['users','array-contains','alice']);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.streams[1].q.filters[0])),{or:[['participants','array-contains','UID_A'],['users','array-contains','UID_A']]});
 });
 test('cached or anonymous identity cannot start private listeners',()=>{
   const f=sessionFixture();f.ctx.currentUserState={uid:'cached'};f.ctx.currentProfileState={uid:'cached',slug:'old'};
@@ -82,9 +82,9 @@ test('SDK account change suppresses an old callback before delayed profile obser
 test('profile arrival restarts private queries and never reuses a different account profile',()=>{
   const f=sessionFixture();f.start();f.ctx.currentUserState={uid:'CaseSensitive_UID'};f.ctx.auth.currentUser={uid:'CaseSensitive_UID'};
   f.ctx.currentProfileState={uid:'OLD_UID',slug:'old-owner'};f.callbacks.forEach(cb=>cb());
-  assert.equal(f.streams[1].q.filters[0][2],'CaseSensitive_UID');
+  assert.equal(f.streams[1].q.filters[0].or[0][2],'CaseSensitive_UID');
   const prior=f.streams.slice(1);f.login('CaseSensitive_UID','new-owner');assert.ok(prior.every(s=>s.stopped));
-  assert.equal(f.streams[3].q.filters[0][2],'new-owner');const before=f.badges.length;prior[0].cb(f.empty);assert.equal(f.badges.length,before);
+  assert.equal(f.streams[3].q.filters[0].or[0][2],'CaseSensitive_UID');const before=f.badges.length;prior[0].cb(f.empty);assert.equal(f.badges.length,before);
 });
 test('session changes do not reset public notification deduplication',()=>{
   const f=sessionFixture();f.start();const snapshot={docChanges:()=>[{type:'added',doc:{id:'public-id',data:()=>({senderId:'other',timestamp:{seconds:Date.now()/1000},text:'synthetic'})}}]};
@@ -95,6 +95,27 @@ test('late login does not announce private notifications from before that sessio
   const stream=f.streams.find(s=>s.q.ref.path==='lumina_notifications');
   stream.cb({docChanges:()=>[{type:'added',doc:{id:'prior-session',data:()=>({senderId:'other',createdAt:{seconds:20}})}}]});
   assert.equal(f.notifications.length,0);
+});
+function userChatsFixture({anonymous=false,missingSdk=false}={}) {
+  const a=source.indexOf('export function subscribeToUserChats('),b=source.indexOf('// ═',a),streams=[],updates=[];
+  const ctx={db:{},currentUserState:{uid:'UID_Case',isAnonymous:anonymous},auth:{currentUser:missingSdk?null:{uid:'UID_Case',isAnonymous:anonymous}},
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...a)=>a,or:(...a)=>({or:a}),limit:n=>n,
+    onSnapshot:(q,cb)=>{const s={q,cb,stopped:false};streams.push(s);return()=>{s.stopped=true;};},console:{warn:()=>{}}};
+  const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  return {ctx,streams,updates,stop:subscribe('display-slug',rows=>updates.push(rows))};
+}
+test('conversation list uses exact authenticated UID for modern and legacy rooms, never the caller slug',()=>{
+  const f=userChatsFixture();assert.equal(f.streams.length,1);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.streams[0].q.filters)),[{or:[['participants','array-contains','UID_Case'],['users','array-contains','UID_Case']]},40]);
+  f.stop();assert.equal(f.streams[0].stopped,true);
+});
+test('conversation list never queries for anonymous or merely cached identity',()=>{
+  for(const options of [{anonymous:true},{missingSdk:true}]){const f=userChatsFixture(options);assert.equal(f.streams.length,0);f.stop();}
+});
+test('conversation list suppresses snapshots after unsubscribe or SDK account switch',()=>{
+  for(const mode of ['stop','switch']){const f=userChatsFixture();const empty={forEach:()=>{}};f.streams[0].cb(empty);assert.equal(f.updates.length,1);
+    if(mode==='stop')f.stop();else f.ctx.auth.currentUser={uid:'OTHER_UID'};
+    f.streams[0].cb(empty);assert.equal(f.updates.length,1);}
 });
 test('all active chat headers use neutral labels rather than manufactured presence and safety',async()=>{
   for(const file of ['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html']){

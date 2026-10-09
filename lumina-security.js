@@ -6,7 +6,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js?v=20261009_chatsession1';
+import * as LuminaDB from './lumina-db.js?v=20261009_chatuid1';
 
 class LuminaSecurityEngine {
     constructor() {

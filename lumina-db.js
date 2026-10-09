@@ -33,6 +33,7 @@ import {
     onSnapshot, 
     query, 
     where,
+    or,
     orderBy, 
     limit, 
     serverTimestamp,
@@ -3893,13 +3894,20 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
 
 export function subscribeToUserChats(userId, onUpdate) {
     if (!db || !userId) return () => {};
+    const user = currentUserState;
+    const uid = user?.uid;
+    if (!uid || user.isAnonymous || auth?.currentUser?.uid !== uid || auth.currentUser.isAnonymous) return () => {};
+    let stopped = false;
+    const isCurrentSession = () => !stopped && currentUserState?.uid === uid &&
+        !currentUserState.isAnonymous && auth?.currentUser?.uid === uid && !auth.currentUser.isAnonymous;
     try {
         const chatsQuery = query(
             collection(db, 'lumina_chats'),
-            where('users', 'array-contains', userId),
+            or(where('participants', 'array-contains', uid), where('users', 'array-contains', uid)),
             limit(40)
         );
-        return onSnapshot(chatsQuery, (snap) => {
+        const stop = onSnapshot(chatsQuery, (snap) => {
+            if (!isCurrentSession()) return;
             const chats = [];
             snap.forEach(d => chats.push({ id: d.id, ...d.data() }));
             chats.sort((a, b) => {
@@ -3914,8 +3922,9 @@ export function subscribeToUserChats(userId, onUpdate) {
             });
             onUpdate(chats);
         }, (err) => {
-            console.warn('Lumina User Chats listener notice:', err.message);
+            if (isCurrentSession()) console.warn('Lumina User Chats listener notice:', err.message);
         });
+        return () => { stopped = true; stop(); };
     } catch(e) {
         return () => {};
     }
@@ -4291,7 +4300,7 @@ export function startRealtimeChatNotificationsListener() {
     let privateGeneration = 0;
     let privateStops = [];
     // Auth restoration/profile loading may finish after the public listener starts.
-    // Keep the existing queries; session lifecycle must not widen access rules.
+    // Queries must prove authenticated membership, never ownership by display slug.
     onAuthChange(() => {
         const user = currentUserState;
         const sdkUser = auth?.currentUser;
@@ -4322,7 +4331,7 @@ export function startRealtimeChatNotificationsListener() {
         if (myId && myId !== 'guest') {
             const chatsQuery = query(
                 collection(db, 'lumina_chats'),
-                where('users', 'array-contains', myId),
+                or(where('participants', 'array-contains', uid), where('users', 'array-contains', uid)),
                 limit(40)
             );
 
@@ -4341,7 +4350,7 @@ export function startRealtimeChatNotificationsListener() {
                     if (!isFromMe && senderId && senderId !== 'guest') {
                         const chatId = d.id;
                         const otherUser = Array.isArray(data.users)
-                            ? (data.users.find(u => normalizeChatUserId(u) !== currentMyId) || senderId)
+                            ? (data.users.find(u => u !== uid && normalizeChatUserId(u) !== currentMyId) || senderId)
                             : senderId;
                         const normOther = normalizeChatUserId(otherUser);
 
