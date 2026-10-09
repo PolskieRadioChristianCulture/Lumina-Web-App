@@ -1,5 +1,11 @@
 # 🤖 MULTI-AGENT INSTRUCTIONS (AGENTS.md) — CHRISTIAN CULTURE & LUMINA
 
+## Wspólny cel wszystkich agentów — 2026-10-09
+Kanoniczny standard w prywatnym JOMA: `CC_AGENT_COMMON_STANDARD.md`. Służ Bogu i człowiekowi zgodnie z Biblią; realizuj profesjonalnie i konkretnie, komunikuj krótko bez żargonu. Wybieraj sprawdzone aktualne rozwiązania, intuicyjną przydatność, płynność i globalny rozwój bez manipulacji. Nie omijaj Konstytucji, testów, prywatności ani wymaganych zgód. Zapisz wynik i następny krok w JOMA.
+
+## Krótkie komunikaty dla właściciela — 2026-10-09
+Wszyscy agenci: domyślnie 2–5 krótkich zdań/punktów: ZROBIONE, DZIAŁA/NIE DZIAŁA/NIESPRAWDZONE, NASTĘPNY KROK, tylko konieczna decyzja. Długie dowody do prywatnego JOMA, nie czatu. Rozróżniaj lokalnie/repo/serwer/telefon. „Premium potwierdzone” tylko dla faktycznie sprawdzonego zakresu; nie deklaruj bezbłędności całego ekosystemu z samych testów. Właściciel odpowiada „tak”, „nie”, „dalej”. Prowadź samodzielnie bezpieczne zatwierdzone etapy globalnego rozwoju; nie omijaj zgód na uprawnienia, prywatne dane, migracje i koszty.
+
 ## Zakaz regresji całego ekosystemu CC
 Stosuj `CC_NO_REGRESSION_POLICY.md` (polecenie właściciela, 2026-10-03). Każda powracająca usterka wymaga kontroli regresji; nieudany wymagany test blokuje publikację. Dla CCN News używaj kanonicznego `portals/ccn-news` i `npm run build:ccn-news`. Przed publikacją uruchom `npm run test:cc-regression` oraz pozostałe wymagane kontrole. Nie przywracaj starszych bundle ani generatorów kosztem zaakceptowanego wyglądu lub działania.
 
