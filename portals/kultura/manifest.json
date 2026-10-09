@@ -1,0 +1,78 @@
+
+{
+  "name": "Christian Culture 2026",
+  "short_name": "CC 2026",
+  "description": "Twoje Duchowe Centrum 2026. Radio HI-RES, Planer Biblijny i Asystent Miriam CC v4.5.820.",
+  "id": "pl.christianculture.cclite.v4.5.820",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "categories": [
+    "lifestyle",
+    "music",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-narrow.png",
+      "sizes": "720x1468",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Interfejs radia i wersetu dnia"
+    },
+    {
+      "src": "/screenshots/screenshot-wide.jpeg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Duchowe Centrum 2026 na tablety i desktopy"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Radio",
+      "short_name": "Radio",
+      "url": "/?mode=radio",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Kalendarz",
+      "short_name": "Kalendarz",
+      "url": "/?mode=dashboard",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

@@ -416,6 +416,203 @@
                 cursor: pointer;
                 font-family: inherit;
             }
+
+            /* ══════════ POST SHARE DOCK (8 CANONICAL SHARING ICONS) ══════════ */
+            .post-share-dock {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 14px;
+                background: rgba(11, 18, 33, 0.55);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                gap: 10px;
+                flex-wrap: wrap;
+                box-sizing: border-box;
+            }
+
+            .post-share-dock-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .post-share-dock-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.78rem;
+                font-weight: 700;
+                color: #94a3b8;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                user-select: none;
+            }
+
+            .post-share-dock-label i {
+                color: var(--cc-gold, #D4A94A);
+                font-size: 0.85rem;
+            }
+
+            .post-share-dock-actions {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .post-share-btn {
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                min-height: 38px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.04);
+                color: #cbd5e1;
+                font-size: 0.90rem;
+                cursor: pointer;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                padding: 0;
+                margin: 0;
+                touch-action: manipulation;
+                text-decoration: none;
+                box-sizing: border-box;
+            }
+
+            .post-share-btn:hover {
+                transform: translateY(-2px) scale(1.06);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            }
+
+            .post-share-btn .glyph-l {
+                font-family: 'Cinzel', serif, system-ui;
+                font-weight: 900;
+                font-size: 0.98rem;
+                color: #facc15;
+            }
+
+            .post-share-btn.share-lumina:hover {
+                background: rgba(250, 204, 21, 0.18);
+                border-color: #facc15;
+                color: #facc15;
+                box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+            }
+
+            .post-share-btn.share-wa:hover {
+                background: #25D366;
+                border-color: #25D366;
+                color: #0b141a;
+                box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+            }
+
+            .post-share-btn.share-fb:hover {
+                background: #1877F2;
+                border-color: #1877F2;
+                color: #ffffff;
+                box-shadow: 0 0 12px rgba(24, 119, 242, 0.4);
+            }
+
+            .post-share-btn.share-tg:hover {
+                background: #229ED9;
+                border-color: #229ED9;
+                color: #ffffff;
+                box-shadow: 0 0 12px rgba(34, 158, 217, 0.4);
+            }
+
+            .post-share-btn.share-x:hover {
+                background: #000000;
+                border-color: rgba(255, 255, 255, 0.6);
+                color: #ffffff;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            }
+
+            .post-share-btn.share-mail:hover {
+                background: #e2cc9a;
+                border-color: #e2cc9a;
+                color: #161b26;
+                box-shadow: 0 0 12px rgba(226, 204, 154, 0.4);
+            }
+
+            .post-share-btn.share-copy:hover {
+                background: var(--cc-gold, #D4A94A);
+                border-color: var(--cc-gold, #D4A94A);
+                color: #07090E;
+                box-shadow: 0 0 12px rgba(212, 169, 74, 0.4);
+            }
+
+            .post-share-btn.share-more:hover {
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                border-color: #f59e0b;
+                color: #000000;
+                box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+            }
+
+            /* Light theme support */
+            html[data-lumina-theme="light"] .post-share-dock,
+            body.light-mode .post-share-dock {
+                background: #faf8f5 !important;
+                border-top: 1px solid rgba(28, 25, 23, 0.08) !important;
+            }
+
+            html[data-lumina-theme="light"] .post-share-dock-label,
+            body.light-mode .post-share-dock-label {
+                color: #78716c !important;
+            }
+
+            html[data-lumina-theme="light"] .post-share-btn,
+            body.light-mode .post-share-btn {
+                background: #ffffff !important;
+                border: 1px solid rgba(184, 142, 62, 0.3) !important;
+                color: #44403c !important;
+            }
+
+            @media (max-width: 768px) {
+                .post-share-dock {
+                    padding: 8px 10px !important;
+                }
+                .post-share-dock-inner {
+                    flex-direction: row !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
+                }
+                .post-share-dock-label {
+                    font-size: 0.72rem !important;
+                }
+                .post-share-dock-actions {
+                    gap: 6px !important;
+                }
+                .post-share-btn {
+                    width: 38px !important;
+                    height: 38px !important;
+                    min-width: 38px !important;
+                    min-height: 38px !important;
+                    font-size: 0.86rem !important;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .post-share-dock-label {
+                    display: none !important;
+                }
+                .post-share-dock-actions {
+                    width: 100% !important;
+                    justify-content: space-between !important;
+                }
+                .post-share-btn {
+                    width: 36px !important;
+                    height: 36px !important;
+                    min-width: 36px !important;
+                    min-height: 36px !important;
+                }
+            }
         `;
         document.head.appendChild(style);
     }
@@ -1158,6 +1355,179 @@
         });
     }
 
+    // ── Universal Post Share Dock (8 Canonical Icons) ──
+    function buildPostShareDockHtml(item) {
+        if (!item || !item.id) return '';
+        const id = item.id;
+        return `
+            <div class="post-share-dock" id="postShareDock_${id}" data-share-post-id="${id}">
+                <div class="post-share-dock-inner">
+                    <span class="post-share-dock-label"><i class="fa-solid fa-share-nodes"></i> Udostępnij wpis:</span>
+                    <div class="post-share-dock-actions">
+                        <button type="button" class="post-share-btn share-lumina" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'lumina') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij w LUMINA (Repost na Twoim profilu)" aria-label="Udostępnij w LUMINA"><span class="glyph-l">L</span></button>
+                        <button type="button" class="post-share-btn share-wa" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'whatsapp') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na WhatsApp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+                        <button type="button" class="post-share-btn share-fb" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'facebook') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na Facebooku" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></button>
+                        <button type="button" class="post-share-btn share-tg" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'telegram') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na Telegramie" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></button>
+                        <button type="button" class="post-share-btn share-x" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'twitter') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na X (Twitter)" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></button>
+                        <button type="button" class="post-share-btn share-mail" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'email') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Wyślij e-mail" aria-label="E-mail"><i class="fa-regular fa-envelope"></i></button>
+                        <button type="button" class="post-share-btn share-copy" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'copy') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Kopiuj link do wpisu" aria-label="Kopiuj link"><i class="fa-solid fa-link"></i></button>
+                        <button type="button" class="post-share-btn share-more" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'more') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Więcej opcji udostępniania…" aria-label="Więcej aplikacji"><i class="fa-solid fa-share-nodes"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function sharePostDirect(postId, platform = 'more', postData = null) {
+        let resolvedPost = postData && postData.id ? { ...postData } : null;
+
+        if (!resolvedPost) {
+            try {
+                if (typeof window.getUserFeedPosts === 'function') {
+                    const all = window.getUserFeedPosts();
+                    resolvedPost = all.find(p => p && p.id === postId);
+                }
+                if (!resolvedPost && window._luminaDailyReflection && window._luminaDailyReflection.id === postId) {
+                    resolvedPost = window._luminaDailyReflection;
+                }
+                if (!resolvedPost && postId === 'post_sunday_mission_appeal') {
+                    resolvedPost = {
+                        id: 'post_sunday_mission_appeal',
+                        author: 'Christian Culture',
+                        authorAvatar: 'avatar_cezary_official.jpg',
+                        title: '🌿 APEL MISYJNY CHRISTIAN CULTURE',
+                        text: 'Razem budujemy Christian Culture 🌿🤍 Dzisiejsza niedziela to czas wdzięczności za wspólnotę. Wspieraj Bożą misję!',
+                        image: 'apel_misyjny_cc.webp'
+                    };
+                }
+            } catch(e) {}
+        }
+
+        const url = window.location.origin + (window.location.pathname.includes('tablica') ? window.location.pathname : '/lumina-tablica.html') + '#' + postId;
+
+        if (!resolvedPost) {
+            const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
+            if (postEl) {
+                const authorEl = postEl.querySelector('.post-author-name') || postEl.querySelector('.author-name') || postEl.querySelector('.post-author') || postEl.querySelector('h4');
+                const textEl = postEl.querySelector('.post-desc-text') || postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
+                const titleEl = postEl.querySelector('.post-headline') || postEl.querySelector('.post-title');
+                const avatarEl = postEl.querySelector('.post-author-img') || postEl.querySelector('.post-avatar');
+                const imgEl = postEl.querySelector('.media-container-1x1 img') || postEl.querySelector('.post-image');
+
+                resolvedPost = {
+                    id: postId,
+                    author: authorEl ? authorEl.textContent.trim().replace(/\s+NA ŻYWO.*/i, '').replace(/[\r\n]+/g, ' ') : 'Członek Społeczności',
+                    authorAvatar: avatarEl ? avatarEl.src : 'lumina_icon.jpg',
+                    title: titleEl ? titleEl.textContent.trim() : '',
+                    text: textEl ? textEl.textContent.trim() : '',
+                    image: imgEl ? imgEl.src : null,
+                    url: url
+                };
+            }
+        }
+
+        if (!resolvedPost) {
+            resolvedPost = {
+                id: postId,
+                author: 'Członek Społeczności',
+                authorAvatar: 'lumina_icon.jpg',
+                title: '',
+                text: '',
+                url: url
+            };
+        } else if (!resolvedPost.url) {
+            resolvedPost.url = url;
+        }
+
+        const author = resolvedPost.author || 'Członek Społeczności';
+        const title = resolvedPost.title || `Wpis autora ${author} w portalu LUMINA`;
+        const rawText = resolvedPost.text || resolvedPost.desc || '';
+        const snippet = rawText ? (rawText.length > 140 ? rawText.substring(0, 140) + '...' : rawText) : 'Zobacz ten budujący wpis na Tablicy Społeczności LUMINA.';
+        const shareMessage = `„${snippet}”\nAutor: ${author}\n\n${url}`;
+
+        if (typeof window.recordShareEvent === 'function') {
+            window.recordShareEvent({ platform, url, title });
+        }
+
+        switch (platform) {
+            case 'lumina':
+            case 'repost':
+                currentSharePayload = { title, text: snippet, url, post: resolvedPost };
+                openShareModal({
+                    heading: 'Udostępnij Wpis w LUMINA 🕊️',
+                    title: title,
+                    text: `„${snippet}” – ${author}`,
+                    url: url,
+                    post: resolvedPost
+                });
+                if (typeof openLuminaRepostComposer === 'function') {
+                    openLuminaRepostComposer();
+                }
+                break;
+
+            case 'whatsapp':
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`, '_blank');
+                break;
+
+            case 'facebook':
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                break;
+
+            case 'telegram':
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + '\n' + snippet)}`, '_blank');
+                break;
+
+            case 'twitter':
+            case 'x':
+                window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' • ' + snippet)}`, '_blank');
+                break;
+
+            case 'email':
+            case 'mail':
+                window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(shareMessage)}`;
+                break;
+
+            case 'copy':
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).then(() => {
+                        if (typeof window.showToast === 'function') {
+                            window.showToast('Link do wpisu został skopiowany do schowka! 🔗✨');
+                        } else {
+                            alert('Link do wpisu skopiowany!');
+                        }
+                    }).catch(() => {
+                        prompt('Skopiuj link do wpisu:', url);
+                    });
+                } else {
+                    prompt('Skopiuj link do wpisu:', url);
+                }
+                break;
+
+            case 'more':
+            default:
+                if (navigator.share) {
+                    navigator.share({
+                        title: title,
+                        text: `„${snippet}” – ${author}`,
+                        url: url
+                    }).then(() => {
+                        if (typeof window.showToast === 'function') {
+                            window.showToast('Dziękujemy za udostępnienie! ✨🕊️');
+                        }
+                    }).catch(() => {});
+                } else {
+                    openShareModal({
+                        heading: 'Udostępnij Wpis 💬✨',
+                        title: title,
+                        text: `„${snippet}” – ${author} w portalu LUMINA 🕊️`,
+                        url: url,
+                        post: resolvedPost
+                    });
+                }
+                break;
+        }
+    }
+
     // ── Web Push Notifications ──
     async function requestLuminaPushNotifications() {
         dismissPushToast();
@@ -1217,6 +1587,8 @@
     window.copyShareModalUrl = copyShareModalUrl;
     window.openShareLuminaModal = openShareLuminaModal;
     window.sharePostLink = sharePostLink;
+    window.sharePostDirect = sharePostDirect;
+    window.buildPostShareDockHtml = buildPostShareDockHtml;
     window.openShareProfileModal = openShareProfileModal;
     window.openLuminaRepostComposer = openLuminaRepostComposer;
     window.backToShareMainView = backToShareMainView;

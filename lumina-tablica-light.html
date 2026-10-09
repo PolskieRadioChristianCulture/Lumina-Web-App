@@ -2946,6 +2946,167 @@
             }
         }
 
+        /* ══════════ POST SHARE DOCK (8 CANONICAL SHARING ICONS) ══════════ */
+        .post-share-dock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: #faf8f5;
+            border-top: 1px solid rgba(28, 25, 23, 0.08);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .post-share-dock-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .post-share-dock-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #78716c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            user-select: none;
+        }
+        .post-share-dock-label i {
+            color: #8c6d23;
+            font-size: 0.82rem;
+        }
+        .post-share-dock-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .post-share-btn {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(184, 142, 62, 0.3);
+            background: #ffffff;
+            color: #44403c;
+            font-size: 0.90rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0;
+            margin: 0;
+            touch-action: manipulation;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        .post-share-btn:hover {
+            transform: translateY(-2px) scale(1.06);
+            box-shadow: 0 4px 12px rgba(28, 25, 23, 0.15);
+        }
+        .post-share-btn .glyph-l {
+            font-family: 'Cinzel', serif, system-ui;
+            font-weight: 900;
+            font-size: 0.98rem;
+            color: #8c6d23;
+        }
+        .post-share-btn.share-lumina:hover {
+            background: rgba(184, 142, 62, 0.15);
+            border-color: #8c6d23;
+            color: #8c6d23;
+            box-shadow: 0 0 12px rgba(184, 142, 62, 0.3);
+        }
+        .post-share-btn.share-wa:hover {
+            background: #25D366;
+            border-color: #25D366;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+        }
+        .post-share-btn.share-fb:hover {
+            background: #1877F2;
+            border-color: #1877F2;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(24, 119, 242, 0.4);
+        }
+        .post-share-btn.share-tg:hover {
+            background: #229ED9;
+            border-color: #229ED9;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(34, 158, 217, 0.4);
+        }
+        .post-share-btn.share-x:hover {
+            background: #000000;
+            border-color: #000000;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .post-share-btn.share-mail:hover {
+            background: #8c6d23;
+            border-color: #8c6d23;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(140, 109, 35, 0.3);
+        }
+        .post-share-btn.share-copy:hover {
+            background: #8c6d23;
+            border-color: #8c6d23;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(140, 109, 35, 0.3);
+        }
+        .post-share-btn.share-more:hover {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-color: #f59e0b;
+            color: #000000;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+        }
+        @media (max-width: 768px) {
+            .post-share-dock {
+                padding: 8px 10px !important;
+            }
+            .post-share-dock-inner {
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .post-share-dock-label {
+                font-size: 0.72rem !important;
+            }
+            .post-share-dock-actions {
+                gap: 6px !important;
+            }
+            .post-share-btn {
+                width: 38px !important;
+                height: 38px !important;
+                min-width: 38px !important;
+                min-height: 38px !important;
+                font-size: 0.86rem !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .post-share-dock-label {
+                display: none !important;
+            }
+            .post-share-dock-actions {
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+            .post-share-btn {
+                width: 36px !important;
+                height: 36px !important;
+                min-width: 36px !important;
+                min-height: 36px !important;
+            }
+        }
+
         /* Comments Drawer */
         .comments-section {
             padding: 12px 14px;
@@ -9463,6 +9624,9 @@
                         </div>
                     </div>
 
+                    <!-- Post Share Dock (8 Kanonicznych Ikon Udostępniania) -->
+                    ${window.buildPostShareDockHtml ? window.buildPostShareDockHtml(item) : ''}
+
                     <!-- Expandable Comments Drawer V2 -->
                     <div class="comments-section-v2" id="comments_${item.id}"></div>
                 </article>
@@ -9523,6 +9687,29 @@
             } catch(e) {
                 console.warn('[LUMINA Sunday Push Check Error]:', e);
             }
+        };
+
+        // ── Universal Post Share Dock (8 Canonical Icons) Builder ──
+        window.buildPostShareDockHtml = function(item) {
+            if (!item || !item.id) return '';
+            const id = item.id;
+            return `
+                <div class="post-share-dock" id="postShareDock_${id}" data-share-post-id="${id}">
+                    <div class="post-share-dock-inner">
+                        <span class="post-share-dock-label"><i class="fa-solid fa-share-nodes"></i> Udostępnij wpis:</span>
+                        <div class="post-share-dock-actions">
+                            <button type="button" class="post-share-btn share-lumina" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'lumina') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij w LUMINA (Repost na Twoim profilu)" aria-label="Udostępnij w LUMINA"><span class="glyph-l">L</span></button>
+                            <button type="button" class="post-share-btn share-wa" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'whatsapp') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na WhatsApp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+                            <button type="button" class="post-share-btn share-fb" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'facebook') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na Facebooku" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></button>
+                            <button type="button" class="post-share-btn share-tg" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'telegram') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na Telegramie" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></button>
+                            <button type="button" class="post-share-btn share-x" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'twitter') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Udostępnij na X (Twitter)" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></button>
+                            <button type="button" class="post-share-btn share-mail" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'email') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Wyślij e-mail" aria-label="E-mail"><i class="fa-regular fa-envelope"></i></button>
+                            <button type="button" class="post-share-btn share-copy" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'copy') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Kopiuj link do wpisu" aria-label="Kopiuj link"><i class="fa-solid fa-link"></i></button>
+                            <button type="button" class="post-share-btn share-more" onclick="window.sharePostDirect ? window.sharePostDirect('${id}', 'more') : (window.sharePostLink ? window.sharePostLink('${id}') : null)" title="Więcej opcji udostępniania…" aria-label="Więcej aplikacji"><i class="fa-solid fa-share-nodes"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
         };
 
         // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
@@ -10106,6 +10293,9 @@
                                 </div>
                             </div>
 
+                            <!-- Post Share Dock (8 Kanonicznych Ikon Udostępniania) -->
+                            ${window.buildPostShareDockHtml ? window.buildPostShareDockHtml(item) : ''}
+
                             <!-- Expandable Comments Drawer V2 -->
                             <div class="comments-section-v2" id="comments_${item.id}"></div>
                         </article>
@@ -10436,6 +10626,8 @@
                             </div>
                         </div>
 
+                        <!-- Post Share Dock (8 Kanonicznych Ikon Udostępniania) -->
+                        ${window.buildPostShareDockHtml ? window.buildPostShareDockHtml(item) : ''}
 
                         <!-- Expandable Comments Drawer V2 -->
                         <div class="comments-section-v2" id="comments_${item.id}"></div>
@@ -10697,6 +10889,10 @@
         }
 
         function sharePostLink(postId) {
+            if (typeof window.sharePostDirect === 'function') {
+                window.sharePostDirect(postId, 'more');
+                return;
+            }
             const url = window.location.origin + window.location.pathname + '#' + postId;
             let postText = '';
             let postAuthor = '';

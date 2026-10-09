@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Centrum CC">
+    
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "c68fe286-4c70-43b0-ba5a-1e4d195b09c6",
+          notifyButton: { enable: true, position: 'bottom-left' },
+        });
+      });
+    </script>
+    
+    <title>Centrum Christian Culture - Dashboard Globalny</title>
+    <meta name="description" content="Centralny port komunikacyjny i pulpitu nawigacyjny ekosystemu Christian Culture Global." />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+      :root { --color-gold: #C5A059; }
+      body { font-family: 'Inter', sans-serif; background-color: #000000; color: #f4f4f5; margin: 0; }
+      .divine-rays { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(197, 160, 89, 0.05) 20deg, transparent 40deg, rgba(197, 160, 89, 0.03) 150deg, transparent 180deg); animation: rotateRays 120s linear infinite; filter: blur(60px); pointer-events: none; }
+      @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+      }
+    }
+    </script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script>
+        window.handleCredentialResponse = (response, isManagementCenter = false) => {
+          const event = new CustomEvent('google-credential-response', { detail: { response, isManagementCenter } });
+          window.dispatchEvent(event);
+        };
+    </script>
+    <script type="module" crossorigin src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

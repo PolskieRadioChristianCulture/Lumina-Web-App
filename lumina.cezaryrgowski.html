@@ -8362,6 +8362,8 @@
                         <button type="button" class="post-action-btn" onclick="sharePostLink('${p.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
                         <button type="button" class="post-action-btn" onclick="openMessageModal()" title="Czat / Wiadomość"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                     </div>
+                    <!-- Post Share Dock (8 Kanonicznych Ikon Udostępniania) -->
+                    ${window.buildPostShareDockHtml ? window.buildPostShareDockHtml(p) : ''}
                     <!-- Expandable Comments Drawer V2 -->
                     <div class="comments-section-v2" id="comments_${p.id}"></div>
                 </article>

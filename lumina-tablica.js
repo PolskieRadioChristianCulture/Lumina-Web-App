@@ -281,6 +281,7 @@ class LuminaTablicaEngine {
                             <i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span>
                         </button>
                     </div>
+                    ${window.buildPostShareDockHtml ? window.buildPostShareDockHtml(post) : ''}
                 </article>
             `;
         });
