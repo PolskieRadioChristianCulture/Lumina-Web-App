@@ -8435,7 +8435,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                     </div>
                                 ` : ''}
                                 ${isVideoMedia ? `
-                                    <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
+                                    <video src="${mediaUrl}" muted loop playsinline preload="none" poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
                                     <div class="card-video-badge" style="position:absolute; top:12px; right:60px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
                                         <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
                                     </div>
@@ -8628,13 +8628,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             });
 
-            // Initialize promo videos
-            carousel.querySelectorAll('video').forEach(v => {
-                v.muted = true;
-                v.playsInline = true;
-                v.load();
-                v.play().catch(() => {});
-            });
+            // Register without downloading or playing every off-screen promo.
+            if (typeof window._registerVisibleVideos === 'function') window._registerVisibleVideos();
 
             // Aktywuj pulsujący przycisk OBSERWUJ pod dopasowaniem dla wszystkich kart w karuzeli
             if (typeof window.enhanceCarouselCardsWithFollowButtons === 'function') {
@@ -10583,10 +10578,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         if (isNewCardCentered) {
                             try {
                                 vid.currentTime = 0;
-                                const rect = vid.getBoundingClientRect();
-                                if (!document.hidden && rect.bottom > 0 && rect.top < window.innerHeight) {
-                                    vid.play().catch(() => {});
-                                }
                             } catch(e) {}
                         }
                     }
@@ -10600,6 +10591,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             });
 
+            if (typeof window._registerVisibleVideos === 'function') window._registerVisibleVideos();
             // Check infinite boundary during continuous swipe/scroll
             if (typeof window.handleInfiniteMissionScrollBoundary === 'function') {
                 window.handleInfiniteMissionScrollBoundary();
@@ -10889,7 +10881,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         if (isNewCardCentered) {
                             try {
                                 vid.currentTime = 0;
-                                vid.play().catch(() => {});
                             } catch(e) {}
                         }
                     }
@@ -10904,6 +10895,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
 
             // Check infinite boundary during continuous swipe/scroll
+            if (typeof window._registerVisibleVideos === 'function') window._registerVisibleVideos();
             if (typeof window.handleInfiniteScrollBoundary === 'function') {
                 window.handleInfiniteScrollBoundary();
             }
@@ -11245,12 +11237,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 });
                 // ── Koniec drag vs tap vs long-press detection ──
 
-                // Preload all promo videos
-                document.querySelectorAll('#profilesCarousel video, #missionCarousel video').forEach(vid => {
-                    vid.muted = true;
-                    vid.playsInline = true;
-                    vid.play().catch(() => {});
-                });
+                // Only the visible decorative video may play automatically.
+                if (typeof window._registerVisibleVideos === 'function') window._registerVisibleVideos();
             }
         });
 
@@ -13958,49 +13946,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
 </script>
 
-    <!-- High-Performance Mobile Video IntersectionObserver (Zero CPU Overheating) -->
-    <script>
-    (function(){
-        if (!('IntersectionObserver' in window)) return;
-        
-        var videoObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                var vid = entry.target;
-                var missionCard = vid.closest('#missionCarousel .profile-card');
-                var activeMission = !missionCard || missionCard.classList.contains('active-center-card');
-                if (entry.isIntersecting && entry.intersectionRatio >= 0.45 && activeMission && !document.hidden) {
-                    if (vid.paused) {
-                        vid.muted = true;
-                        vid.playsInline = true;
-                        var p = vid.play();
-                        if (p !== undefined) p.catch(function(){});
-                    }
-                } else {
-                    if (!vid.paused) {
-                        vid.pause();
-                    }
-                }
-            });
-        }, { threshold: [0.1, 0.45, 0.8] });
-
-        function registerVisibleVideos() {
-            document.querySelectorAll('video, #profilesCarousel video, #strefaMisyjna video').forEach(function(v) {
-                v.preload = 'metadata';
-                if (typeof videoObserver !== 'undefined' && videoObserver && videoObserver.observe) {
-                    videoObserver.observe(v);
-                }
-            });
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', registerVisibleVideos);
-        } else {
-            registerVisibleVideos();
-        }
-        window.addEventListener('load', registerVisibleVideos);
-        window._registerVisibleVideos = registerVisibleVideos;
-    })();
-    </script>
+    <!-- Decorative videos load only when visible; manual players stay user-controlled. -->
+    <script defer src="/js/cc-mobile-video-loading.js?v=20261009_mobileload1"></script>
 
 <!-- Auto-Deep-Link Handler for Push & URL Chat Navigation -->
     <script>

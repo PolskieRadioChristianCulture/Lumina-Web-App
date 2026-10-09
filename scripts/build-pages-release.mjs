@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { dailyCourseManifest } from './daily-course-manifest.mjs';
+import { applyPageStandard } from './cc-page-standard.mjs';
 
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
@@ -25,6 +26,7 @@ const BLOCKED_EXTENSIONS = new Set([
 const REQUIRED_FILES = [
   '_headers', '_redirects', '_worker.js', 'firebase-messaging-sw.js', 'index.html',
   'lumina.html', 'lumina-tablica.html', 'manifest-lumina.json', 'robots.txt',
+  'js/cc-back-to-top.js',
 ];
 const SECRET_PATTERNS = [
   /-----BEGIN (?:RSA |EC )?PRIVATE KEY-----/,
@@ -84,7 +86,14 @@ for (const relativePath of tracked) {
     throw new Error(`Niedozwolony typ pliku: ${relativePath}`);
   }
   fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.copyFileSync(source, destination);
+  if (relativePath.toLowerCase().endsWith('.html')) {
+    const original = fs.readFileSync(source, 'utf8');
+    const standardized = applyPageStandard(relativePath, original);
+    if (standardized === original) fs.copyFileSync(source, destination);
+    else fs.writeFileSync(destination, standardized);
+  } else {
+    fs.copyFileSync(source, destination);
+  }
   copied++;
 }
 
