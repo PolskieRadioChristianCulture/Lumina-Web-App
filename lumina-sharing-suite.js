@@ -1359,6 +1359,8 @@
     function buildPostShareDockHtml(item) {
         if (!item || !item.id) return '';
         const id = item.id;
+        window._luminaSharedPostsCache = window._luminaSharedPostsCache || {};
+        window._luminaSharedPostsCache[id] = item;
         return `
             <div class="post-share-dock" id="postShareDock_${id}" data-share-post-id="${id}">
                 <div class="post-share-dock-inner">
@@ -1378,8 +1380,12 @@
         `;
     }
 
-    function sharePostDirect(postId, platform = 'more', postData = null) {
+    async function sharePostDirect(postId, platform = 'more', postData = null) {
         let resolvedPost = postData && postData.id ? { ...postData } : null;
+
+        if (!resolvedPost && window._luminaSharedPostsCache && window._luminaSharedPostsCache[postId]) {
+            resolvedPost = { ...window._luminaSharedPostsCache[postId] };
+        }
 
         if (!resolvedPost) {
             try {
@@ -1403,7 +1409,8 @@
             } catch(e) {}
         }
 
-        const url = window.location.origin + (window.location.pathname.includes('tablica') ? window.location.pathname : '/lumina-tablica.html') + '#' + postId;
+        const origin = window.location.origin || 'https://polskieradio.cc';
+        const directPostUrl = `${origin}/lumina-tablica.html${postId ? '#' + postId : ''}`;
 
         if (!resolvedPost) {
             const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
@@ -1412,7 +1419,8 @@
                 const textEl = postEl.querySelector('.post-desc-text') || postEl.querySelector('.post-text') || postEl.querySelector('.post-content') || postEl.querySelector('p');
                 const titleEl = postEl.querySelector('.post-headline') || postEl.querySelector('.post-title');
                 const avatarEl = postEl.querySelector('.post-author-img') || postEl.querySelector('.post-avatar');
-                const imgEl = postEl.querySelector('.media-container-1x1 img') || postEl.querySelector('.post-image');
+                const imgEl = postEl.querySelector('.media-container-1x1 img') || postEl.querySelector('.post-image') || postEl.querySelector('img.campaign-img-full') || postEl.querySelector('img.media-img-1x1') || postEl.querySelector('article img');
+                const videoEl = postEl.querySelector('video') || postEl.querySelector('iframe');
 
                 resolvedPost = {
                     id: postId,
@@ -1421,7 +1429,8 @@
                     title: titleEl ? titleEl.textContent.trim() : '',
                     text: textEl ? textEl.textContent.trim() : '',
                     image: imgEl ? imgEl.src : null,
-                    url: url
+                    videoUrl: videoEl ? (videoEl.src || null) : null,
+                    url: directPostUrl
                 };
             }
         }
@@ -1433,31 +1442,64 @@
                 authorAvatar: 'lumina_icon.jpg',
                 title: '',
                 text: '',
-                url: url
+                url: directPostUrl
             };
-        } else if (!resolvedPost.url) {
-            resolvedPost.url = url;
         }
 
-        const author = resolvedPost.author || 'Członek Społeczności';
-        const title = resolvedPost.title || `Wpis autora ${author} w portalu LUMINA`;
-        const rawText = resolvedPost.text || resolvedPost.desc || '';
-        const snippet = rawText ? (rawText.length > 140 ? rawText.substring(0, 140) + '...' : rawText) : 'Zobacz ten budujący wpis na Tablicy Społeczności LUMINA.';
-        const shareMessage = `„${snippet}”\nAutor: ${author}\n\n${url}`;
+        // ── Pełna ekstrakcja treści i multimediów (brak sztucznego obcinania do 140 znaków) ──
+        const title = (resolvedPost.title || '').trim();
+        const author = (resolvedPost.author || resolvedPost.authorName || 'Członek Społeczności').trim();
+
+        let fullCleanText = (resolvedPost.contentWeb || resolvedPost.fullText || resolvedPost.text || resolvedPost.desc || resolvedPost.teaser || '').trim();
+        fullCleanText = fullCleanText.replace(/<br\s*\/?>/gi, '\n')
+                                     .replace(/<\/p>/gi, '\n\n')
+                                     .replace(/<[^>]+>/g, '')
+                                     .replace(/&nbsp;/g, ' ')
+                                     .replace(/&amp;/g, '&')
+                                     .replace(/&quot;/g, '"')
+                                     .trim();
+
+        let postImageUrl = resolvedPost.image || resolvedPost.imageUrl || '';
+        if (postImageUrl && !postImageUrl.startsWith('http')) {
+            postImageUrl = origin + '/' + postImageUrl.replace(/^\//, '');
+        }
+
+        let postVideoUrl = resolvedPost.videoUrl || resolvedPost.youtubeUrl || resolvedPost.playlistUrl || '';
+        if (postVideoUrl && !postVideoUrl.startsWith('http')) {
+            postVideoUrl = origin + '/' + postVideoUrl.replace(/^\//, '');
+        }
+
+        // Dynamiczny URL Cloudflare Edge Gateway – zapewnia pełny podgląd Open Graph ze zdjęciem posta (nie ogólną ikoną)
+        const gatewayBase = 'https://lumina-push.nazirczarkes.workers.dev/v1/post/share';
+        const sp = new URLSearchParams();
+        if (postId) sp.set('id', postId);
+        if (title) sp.set('title', title);
+        if (author) sp.set('author', author);
+        if (fullCleanText) sp.set('text', fullCleanText.length > 350 ? (fullCleanText.substring(0, 350) + '…') : fullCleanText);
+        if (postImageUrl) sp.set('img', postImageUrl);
+        if (postVideoUrl) sp.set('video', postVideoUrl);
+        const dynamicShareUrl = `${gatewayBase}?${sp.toString()}`;
 
         if (typeof window.recordShareEvent === 'function') {
-            window.recordShareEvent({ platform, url, title });
+            window.recordShareEvent({ platform, url: dynamicShareUrl, title });
         }
 
         switch (platform) {
             case 'lumina':
             case 'repost':
-                currentSharePayload = { title, text: snippet, url, post: resolvedPost };
+                currentSharePayload = {
+                    title: title,
+                    text: fullCleanText,
+                    url: directPostUrl,
+                    image: postImageUrl,
+                    videoUrl: postVideoUrl,
+                    post: resolvedPost
+                };
                 openShareModal({
                     heading: 'Udostępnij Wpis w LUMINA 🕊️',
-                    title: title,
-                    text: `„${snippet}” – ${author}`,
-                    url: url,
+                    title: title || `Wpis autora ${author}`,
+                    text: fullCleanText,
+                    url: directPostUrl,
                     post: resolvedPost
                 });
                 if (typeof openLuminaRepostComposer === 'function') {
@@ -1465,66 +1507,138 @@
                 }
                 break;
 
-            case 'whatsapp':
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`, '_blank');
-                break;
+            case 'whatsapp': {
+                let waText = '';
+                if (title) waText += `🌟 *${title}*\n`;
+                if (author) waText += `👤 *Autor:* ${author}\n\n`;
+                if (fullCleanText) waText += `${fullCleanText}\n\n`;
+                if (postVideoUrl) waText += `🎬 *Wideo do wpisu:* ${postVideoUrl}\n\n`;
+                else if (postImageUrl) waText += `📸 *Zdjęcie / Multimedia:* ${postImageUrl}\n\n`;
+                waText += `🕊️ *Wpis w Społeczności LUMINA:*\n${dynamicShareUrl}`;
 
-            case 'facebook':
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`, '_blank');
                 break;
+            }
 
-            case 'telegram':
-                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + '\n' + snippet)}`, '_blank');
+            case 'facebook': {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(dynamicShareUrl)}`, '_blank');
                 break;
+            }
+
+            case 'telegram': {
+                let tgText = '';
+                if (title) tgText += `🌟 ${title}\n\n`;
+                if (fullCleanText) tgText += (fullCleanText.length > 500 ? fullCleanText.substring(0, 500) + '…\n\n' : `${fullCleanText}\n\n`);
+                if (postImageUrl) tgText += `📸 ${postImageUrl}\n\n`;
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(dynamicShareUrl)}&text=${encodeURIComponent(tgText)}`, '_blank');
+                break;
+            }
 
             case 'twitter':
-            case 'x':
-                window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' • ' + snippet)}`, '_blank');
+            case 'x': {
+                let twText = title ? `🌟 ${title}\n` : '';
+                const twRemain = 180 - twText.length;
+                if (twRemain > 20 && fullCleanText) {
+                    twText += (fullCleanText.length > twRemain ? fullCleanText.substring(0, twRemain) + '…' : fullCleanText);
+                }
+                window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(dynamicShareUrl)}&text=${encodeURIComponent(twText)}`, '_blank');
                 break;
+            }
 
             case 'email':
-            case 'mail':
-                window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(shareMessage)}`;
+            case 'mail': {
+                const subject = title ? `${title} • LUMINA Christian Culture` : `Wpis w portalu LUMINA`;
+                let mailBody = (title ? `${title}\n` : '')
+                    + (author ? `Autor: ${author}\n\n` : '')
+                    + (fullCleanText ? `${fullCleanText}\n\n` : '')
+                    + (postImageUrl ? `Zdjęcie do wpisu: ${postImageUrl}\n\n` : '')
+                    + (postVideoUrl ? `Wideo: ${postVideoUrl}\n\n` : '')
+                    + `Otwórz wpis w portalu LUMINA:\n${dynamicShareUrl}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
                 break;
+            }
 
-            case 'copy':
+            case 'copy': {
+                const copyText = (title ? `${title}\n\n` : '')
+                    + (fullCleanText ? `${fullCleanText}\n\n` : '')
+                    + (postImageUrl ? `Zdjęcie: ${postImageUrl}\n\n` : '')
+                    + `Link do wpisu w LUMINA:\n${dynamicShareUrl}`;
+
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(url).then(() => {
+                    navigator.clipboard.writeText(copyText).then(() => {
                         if (typeof window.showToast === 'function') {
-                            window.showToast('Link do wpisu został skopiowany do schowka! 🔗✨');
+                            window.showToast('Treść wpisu wraz z multimediami i linkiem skopiowana! 🔗✨');
                         } else {
-                            alert('Link do wpisu skopiowany!');
+                            alert('Treść wpisu skopiowana do schowka!');
                         }
                     }).catch(() => {
-                        prompt('Skopiuj link do wpisu:', url);
+                        prompt('Skopiuj link do wpisu:', dynamicShareUrl);
                     });
                 } else {
-                    prompt('Skopiuj link do wpisu:', url);
+                    prompt('Skopiuj link do wpisu:', dynamicShareUrl);
                 }
                 break;
+            }
 
             case 'more':
-            default:
+            default: {
                 if (navigator.share) {
-                    navigator.share({
-                        title: title,
-                        text: `„${snippet}” – ${author}`,
-                        url: url
-                    }).then(() => {
-                        if (typeof window.showToast === 'function') {
-                            window.showToast('Dziękujemy za udostępnienie! ✨🕊️');
+                    const shareTitle = title || `Wpis autora ${author} w portalu LUMINA`;
+                    const shareTextBody = (title ? `🌟 ${title}\n` : '')
+                        + (author ? `👤 Autor: ${author}\n\n` : '')
+                        + (fullCleanText ? `${fullCleanText}\n\n` : '')
+                        + `🕊️ Zobacz w LUMINA: ${dynamicShareUrl}`;
+
+                    let fileToShare = null;
+                    if (postImageUrl && window.fetch) {
+                        try {
+                            const imgRes = await fetch(postImageUrl, { mode: 'cors' });
+                            if (imgRes.ok) {
+                                const blob = await imgRes.blob();
+                                const mime = blob.type || 'image/jpeg';
+                                const ext = mime.includes('png') ? 'png' : (mime.includes('webp') ? 'webp' : 'jpg');
+                                const f = new File([blob], `wpis_lumina_${resolvedPost.id || 'foto'}.${ext}`, { type: mime });
+                                if (navigator.canShare && navigator.canShare({ files: [f] })) {
+                                    fileToShare = f;
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('[Lumina Share] Image fetch skipped:', e);
                         }
-                    }).catch(() => {});
+                    }
+
+                    if (fileToShare) {
+                        navigator.share({
+                            title: shareTitle,
+                            text: shareTextBody,
+                            files: [fileToShare]
+                        }).then(() => {
+                            if (typeof window.showToast === 'function') window.showToast('Wpis ze zdjęciem został pomyślnie udostępniony! ✨🕊️');
+                        }).catch((err) => {
+                            if (err.name !== 'AbortError') {
+                                navigator.share({ title: shareTitle, text: shareTextBody, url: dynamicShareUrl }).catch(()=>{});
+                            }
+                        });
+                    } else {
+                        navigator.share({
+                            title: shareTitle,
+                            text: shareTextBody,
+                            url: dynamicShareUrl
+                        }).then(() => {
+                            if (typeof window.showToast === 'function') window.showToast('Dziękujemy za udostępnienie! ✨🕊️');
+                        }).catch(() => {});
+                    }
                 } else {
                     openShareModal({
                         heading: 'Udostępnij Wpis 💬✨',
-                        title: title,
-                        text: `„${snippet}” – ${author} w portalu LUMINA 🕊️`,
-                        url: url,
+                        title: title || 'Wpis w portalu LUMINA',
+                        text: fullCleanText || 'Zobacz ten budujący wpis na Tablicy Społeczności LUMINA.',
+                        url: dynamicShareUrl,
                         post: resolvedPost
                     });
                 }
                 break;
+            }
         }
     }
 

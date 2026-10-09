@@ -9693,6 +9693,8 @@
         window.buildPostShareDockHtml = function(item) {
             if (!item || !item.id) return '';
             const id = item.id;
+            window._luminaSharedPostsCache = window._luminaSharedPostsCache || {};
+            window._luminaSharedPostsCache[id] = item;
             return `
                 <div class="post-share-dock" id="postShareDock_${id}" data-share-post-id="${id}">
                     <div class="post-share-dock-inner">

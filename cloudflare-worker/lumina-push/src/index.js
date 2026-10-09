@@ -314,6 +314,77 @@ export default {
   async fetch(request, env) {
     const origin = request.headers.get('origin') || '';
     const cors = corsHeaders(origin, env);
+    const urlObj = new URL(request.url);
+
+    // ── Public Dynamic Post Open Graph Preview Gateway ──
+    if (request.method === 'GET' && (urlObj.pathname === '/v1/post/share' || urlObj.pathname === '/share')) {
+      const id = urlObj.searchParams.get('id') || '';
+      const title = urlObj.searchParams.get('title') || 'Wpis w portalu LUMINA';
+      const text = urlObj.searchParams.get('text') || urlObj.searchParams.get('desc') || '';
+      let img = urlObj.searchParams.get('img') || '';
+      const author = urlObj.searchParams.get('author') || 'LUMINA';
+
+      if (img && !img.startsWith('http')) {
+        img = `https://polskieradio.cc/${img.replace(/^\//, '')}`;
+      }
+      if (!img) {
+        img = 'https://polskieradio.cc/lumina_icon.jpg';
+      }
+
+      const postUrl = `https://polskieradio.cc/lumina-tablica.html${id ? '#' + encodeURIComponent(id) : ''}`;
+      const escape = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const cleanTitle = escape(title);
+      const cleanDesc = escape(text);
+      const cleanAuthor = escape(author);
+      const cleanImg = escape(img);
+
+      const html = `<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>${cleanTitle} • ${cleanAuthor} | LUMINA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="LUMINA • Społeczność Christian Culture">
+  <meta property="og:title" content="${cleanTitle}">
+  <meta property="og:description" content="${cleanDesc || 'Zobacz pełny wpis wraz ze zdjęciami i multimediami na Tablicy Społeczności LUMINA.'}">
+  <meta property="og:image" content="${cleanImg}">
+  <meta property="og:image:secure_url" content="${cleanImg}">
+  <meta property="og:url" content="${postUrl}">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${cleanTitle}">
+  <meta name="twitter:description" content="${cleanDesc || 'Zobacz pełny wpis wraz ze zdjęciami i multimediami na Tablicy Społeczności LUMINA.'}">
+  <meta name="twitter:image" content="${cleanImg}">
+
+  <link rel="canonical" href="${postUrl}">
+  <meta http-equiv="refresh" content="0;url=${postUrl}">
+  <script>
+    window.location.replace(${JSON.stringify(postUrl)});
+  </script>
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif; background:#0b0d13; color:#f8fafc; margin:0; padding:40px 20px; text-align:center;">
+  <div style="max-width:540px; margin:0 auto; background:#161b26; border:1px solid rgba(212,169,74,0.3); border-radius:20px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    <div style="font-size:0.85rem; color:#D4A94A; font-weight:800; margin-bottom:8px;">LUMINA • CHRZEŚCIJAŃSKA SPOŁECZNOŚĆ</div>
+    <h1 style="font-size:1.25rem; font-weight:800; color:#fff; margin:0 0 10px;">${cleanTitle}</h1>
+    <div style="font-size:0.9rem; color:#94a3b8; margin-bottom:16px;">Autor: <strong style="color:#fff;">${cleanAuthor}</strong></div>
+    ${cleanImg ? `<div style="margin-bottom:16px; border-radius:12px; overflow:hidden;"><img src="${cleanImg}" alt="${cleanTitle}" style="width:100%; height:auto; max-height:360px; object-fit:cover; display:block;"></div>` : ''}
+    <p style="font-size:0.95rem; line-height:1.6; color:#cbd5e1; text-align:left; white-space:pre-line; margin-bottom:20px;">${cleanDesc}</p>
+    <a href="${postUrl}" style="display:inline-block; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:800; text-decoration:none; padding:12px 24px; border-radius:30px;">Otwórz wpis w aplikacji LUMINA 🕊️</a>
+  </div>
+</body>
+</html>`;
+
+      return new Response(html, {
+        status: 200,
+        headers: {
+          'content-type': 'text/html; charset=utf-8',
+          'cache-control': 'public, max-age=3600, s-maxage=86400'
+        }
+      });
+    }
+
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: origin === env.ALLOWED_ORIGIN ? 204 : 403,
