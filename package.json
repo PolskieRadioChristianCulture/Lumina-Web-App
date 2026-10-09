@@ -5,6 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "test:source-integrity": "node --test scripts/cc-source-check.test.mjs",
     "dev": "node server.js",
     "dev:lumina": "vite",
     "build:lumina": "vite build",
