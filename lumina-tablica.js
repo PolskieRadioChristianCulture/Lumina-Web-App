@@ -346,7 +346,7 @@ class LuminaTablicaEngine {
             time: 'Przed chwilą • 🕊️ Świadectwo Wiary',
             text: cleanText,
             image: this.attachedImageDataUrl || null,
-            likes: 1,
+            likes: 0,
             amen: 0,
             timestamp: new Date()
         };

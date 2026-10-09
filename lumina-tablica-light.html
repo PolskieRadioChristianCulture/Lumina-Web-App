@@ -11137,6 +11137,18 @@
                     }
                 }
             } catch(e) {}
+            const fbUser = (window.LuminaDB?.getCurrentUser && window.LuminaDB.getCurrentUser()) || (window.firebaseAuth && window.firebaseAuth.currentUser);
+            if (fbUser && fbUser.displayName) {
+                const cleanSlug = 'u_' + fbUser.displayName.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + (fbUser.uid ? fbUser.uid.substring(0, 4) : 'user');
+                return {
+                    id: fbUser.uid,
+                    name: fbUser.displayName,
+                    role: 'Społeczność LUMINA ✨',
+                    avatar: fbUser.photoURL || 'icon.png',
+                    slug: cleanSlug,
+                    badge: 'Społeczność LUMINA'
+                };
+            }
             if (localStorage.getItem('lumina_admin') === '1') {
                 return {
                     id: 'cezary_rogowski',
@@ -11211,9 +11223,8 @@
             const file = input && input.files ? input.files[0] : null;
             if (!file) return;
             showToast('Przetwarzanie grafiki... 🕊️');
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                attachedQpImageDataUrl = e.target.result;
+            compressAndReadImage(file, 900, 900, 0.82, function(dataUrl) {
+                attachedQpImageDataUrl = dataUrl;
                 const previewImg = document.getElementById('qpImagePreviewImg');
                 const previewBox = document.getElementById('qpImagePreviewBox');
                 if (previewImg && previewBox) {
@@ -11221,8 +11232,8 @@
                     previewBox.style.display = 'block';
                 }
                 showToast('Zdjęcie dołączone do wpisu! 📸');
-            };
-            reader.readAsDataURL(file);
+            });
+            input.value = '';
         }
 
         function handleQpImageUrl(url) {
@@ -11358,7 +11369,8 @@
             }
 
             // ── BRAMKA LOGOWANIA GOOGLE DLA NOWYCH UŻYTKOWNIKÓW ──
-            if (!isBypassAuth && !isLuminaUserAuthenticated()) {
+            const fbUser = (window.LuminaDB?.getCurrentUser && window.LuminaDB.getCurrentUser()) || (window.firebaseAuth && window.firebaseAuth.currentUser) || (window.luminaAuth && window.luminaAuth.currentUser);
+            if (!isBypassAuth && (!isLuminaUserAuthenticated() || !fbUser || fbUser.isAnonymous)) {
                 openLuminaGoogleAuthGateModal();
                 return;
             }
@@ -11406,116 +11418,115 @@
                 createdAtTimestamp: Date.now(),
                 _isNewlyPublished: true,
                 _isFreshSpotlight: true,
-                likes: 3,
-                amen: 2
+                likes: 0,
+                amen: 0
             };
 
-            // 1. Zapis na Tablicy (local spotlight + cloud cache + memory feed)
             try {
-                localStorage.setItem('lumina_recent_published_post', JSON.stringify(newPost));
-                const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
-                const cloudList = rawCloud ? JSON.parse(rawCloud) : [];
-                cloudList.unshift(newPost);
-                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudList));
-            } catch(e) {}
+                // 1. Zapis na Tablicy (local spotlight + cloud cache + memory feed)
+                try {
+                    localStorage.setItem('lumina_recent_published_post', JSON.stringify(newPost));
+                    const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                    const cloudList = rawCloud ? JSON.parse(rawCloud) : [];
+                    cloudList.unshift(newPost);
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudList));
+                } catch(e) {}
 
-            if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
-                window.cloudFeedPosts.unshift(newPost);
-            }
+                if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
+                    window.cloudFeedPosts.unshift(newPost);
+                }
 
-            // 2. Zapis w profilu autora oraz w Firestore (wymaga trwałego potwierdzenia)
-            try {
+                // 2. Zapis w profilu autora oraz w Firestore (wymaga trwałego potwierdzenia)
                 if (window.LuminaDB?.publishUniversalPost) {
                     const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
                     if (!publishedPost?.cloudDocumentId) {
                         throw new Error('Serwer nie potwierdził zapisu wpisu w chmurze LUMINA.');
                     }
                 }
+
+                // Gwarancja zapisu w profilu autora w localStorage
+                try {
+                    const profKey = 'lumina_profile_' + persona.slug;
+                    const rawProf = localStorage.getItem(profKey);
+                    let profObj = rawProf ? JSON.parse(rawProf) : { name: persona.name, slug: persona.slug, posts: [] };
+                    if (!Array.isArray(profObj.posts)) profObj.posts = [];
+                    profObj.posts.unshift(newPost);
+                    localStorage.setItem(profKey, JSON.stringify(profObj));
+
+                    if (persona.slug === 'cezaryrgowski' || persona.name.includes('Cezary')) {
+                        const rawC = localStorage.getItem('lumina_profile_cezaryrgowski');
+                        if (rawC) {
+                            let cObj = JSON.parse(rawC);
+                            if (Array.isArray(cObj.posts)) {
+                                cObj.posts.unshift(newPost);
+                                localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(cObj));
+                            }
+                        }
+                    }
+                } catch(e) {}
+
+                // 3. Jeśli format 9:16 — dodaj jako NOWOŚĆ do rolek / szortsów
+                if (is916 && (videoUrl || finalImage)) {
+                    try {
+                        const storyItem = {
+                            id: 'short_' + Date.now(),
+                            title: title || (text ? (text.slice(0, 32) + (text.length > 32 ? '...' : '')) : 'Nowa Rolka Wiary'),
+                            author: persona.name,
+                            authorAvatar: persona.avatar,
+                            authorSlug: persona.slug,
+                            videoUrl: normalizedEmbedUrl || finalImage,
+                            poster: finalImage || ytPoster || 'tlo_tv_dzj.jpg',
+                            isVertical: true,
+                            badge: 'NOWOŚĆ',
+                            _isNewlyPublished: true,
+                            createdAtTimestamp: Date.now()
+                        };
+
+                        const rawShorts = localStorage.getItem('lumina_shorts_feed');
+                        let shortsList = rawShorts ? JSON.parse(rawShorts) : [];
+                        if (!Array.isArray(shortsList)) shortsList = [];
+                        shortsList.unshift(storyItem);
+                        localStorage.setItem('lumina_shorts_feed', JSON.stringify(shortsList));
+
+                        if (typeof window.refreshLuminaStoriesRotation === 'function') {
+                            window.refreshLuminaStoriesRotation();
+                        }
+                        window.dispatchEvent(new CustomEvent('lumina_shorts_updated', { detail: { shorts: shortsList } }));
+                    } catch(e) {
+                        console.warn('Błąd publikacji 9:16 w rolkach:', e);
+                    }
+                }
+
+                // 4. Zamknięcie modala, czyszczenie pól i odświeżenie feedu
+                closeModal('quickPostModal');
+                if (document.getElementById('qpTitleInput')) document.getElementById('qpTitleInput').value = '';
+                if (document.getElementById('qpTextInput')) document.getElementById('qpTextInput').value = '';
+                if (document.getElementById('qpVideoUrlInput')) document.getElementById('qpVideoUrlInput').value = '';
+                if (document.getElementById('qpIs916Checkbox')) document.getElementById('qpIs916Checkbox').checked = false;
+                removeQpImage();
+
+                if (typeof renderFeed === 'function') {
+                    renderFeed();
+                }
+
+                showToast('Twój wpis został pomyślnie opublikowany na tablicy i w Twoim profilu! ✨✨');
+
+                // Płynne przewinięcie do nowo opublikowanego wpisu
+                setTimeout(() => {
+                    const bar = document.getElementById('luminaQuickPostBar');
+                    if (bar) {
+                        bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 200);
             } catch(e) {
                 console.error('Błąd publikacji LuminaDB:', e);
                 showToast(e?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.');
-                return;
-            }
-
-            // Gwarancja zapisu w profilu autora w localStorage
-            try {
-                const profKey = 'lumina_profile_' + persona.slug;
-                const rawProf = localStorage.getItem(profKey);
-                let profObj = rawProf ? JSON.parse(rawProf) : { name: persona.name, slug: persona.slug, posts: [] };
-                if (!Array.isArray(profObj.posts)) profObj.posts = [];
-                profObj.posts.unshift(newPost);
-                localStorage.setItem(profKey, JSON.stringify(profObj));
-
-                if (persona.slug === 'cezaryrgowski' || persona.name.includes('Cezary')) {
-                    const rawC = localStorage.getItem('lumina_profile_cezaryrgowski');
-                    if (rawC) {
-                        let cObj = JSON.parse(rawC);
-                        if (Array.isArray(cObj.posts)) {
-                            cObj.posts.unshift(newPost);
-                            localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(cObj));
-                        }
-                    }
-                }
-            } catch(e) {}
-
-            // 3. Jeśli format 9:16 — dodaj jako NOWOŚĆ do rolek / szortsów
-            if (is916 && (videoUrl || finalImage)) {
-                try {
-                    const storyItem = {
-                        id: 'short_' + Date.now(),
-                        title: title || (text ? (text.slice(0, 32) + (text.length > 32 ? '...' : '')) : 'Nowa Rolka Wiary'),
-                        author: persona.name,
-                        authorAvatar: persona.avatar,
-                        authorSlug: persona.slug,
-                        videoUrl: normalizedEmbedUrl || finalImage,
-                        poster: finalImage || ytPoster || 'tlo_tv_dzj.jpg',
-                        isVertical: true,
-                        badge: 'NOWOŚĆ',
-                        _isNewlyPublished: true,
-                        createdAtTimestamp: Date.now()
-                    };
-
-                    const rawShorts = localStorage.getItem('lumina_shorts_feed');
-                    let shortsList = rawShorts ? JSON.parse(rawShorts) : [];
-                    if (!Array.isArray(shortsList)) shortsList = [];
-                    shortsList.unshift(storyItem);
-                    localStorage.setItem('lumina_shorts_feed', JSON.stringify(shortsList));
-
-                    if (typeof window.refreshLuminaStoriesRotation === 'function') {
-                        window.refreshLuminaStoriesRotation();
-                    }
-                    window.dispatchEvent(new CustomEvent('lumina_shorts_updated', { detail: { shorts: shortsList } }));
-                } catch(e) {
-                    console.warn('Błąd publikacji 9:16 w rolkach:', e);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
                 }
             }
-
-            // 4. Zamknięcie modala, czyszczenie pól i odświeżenie feedu
-            closeModal('quickPostModal');
-            if (document.getElementById('qpTitleInput')) document.getElementById('qpTitleInput').value = '';
-            if (document.getElementById('qpTextInput')) document.getElementById('qpTextInput').value = '';
-            if (document.getElementById('qpVideoUrlInput')) document.getElementById('qpVideoUrlInput').value = '';
-            if (document.getElementById('qpIs916Checkbox')) document.getElementById('qpIs916Checkbox').checked = false;
-            removeQpImage();
-
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
-            }
-
-            if (typeof renderFeed === 'function') {
-                renderFeed();
-            }
-
-            showToast('Twój wpis został pomyślnie opublikowany na tablicy i w Twoim profilu! ✨✨');
-
-            // Płynne przewinięcie do nowo opublikowanego wpisu
-            setTimeout(() => {
-                const bar = document.getElementById('luminaQuickPostBar');
-                if (bar) {
-                    bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 200);
         }
 
         // ══════════════════════════════════════════════════════════════════════════

@@ -541,7 +541,7 @@
             authorRole: resolvedRole,
             time: 'Przed chwilą • ✨ Nowy Wpis',
             text: textVal,
-            likes: 1,
+            likes: 0,
             amen: 0,
             image: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'image') ? msgAttachedGdriveData.directImgUrl : (msgAttachedImageDataUrl || null),
             video: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'video') ? msgAttachedGdriveData.directVideoUrl : null,
