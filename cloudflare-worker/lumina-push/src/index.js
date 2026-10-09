@@ -319,6 +319,7 @@ export default {
       ? Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: 'numeric', hourCycle: 'h23' }).format(new Date(event.scheduledTime || Date.now())))
       : null;
     if (currentHour!==null && ![6,7,8,20].includes(currentHour)) return;
+    try {
     const token = await getGoogleAccessToken(env,true);
     const deps=courseDeps(env,token,currentHour);
     // Bound each invocation below Workers Free subrequest limits. Continue
@@ -327,6 +328,10 @@ export default {
       const result=await dispatchCourseLesson(deps);
       console.log(JSON.stringify({event:'daily_course_push',currentHour,page,...result}));
       if (!result.hasMore || !deps.canContinue()) break;
+    }
+    } catch (_) {
+      console.error(JSON.stringify({event:'daily_course_dispatch_error',currentHour,error:'dispatch_failed'}));
+      throw Error('course_dispatch_failed');
     }
   },
   async fetch(request, env) {
@@ -488,6 +493,9 @@ export default {
           return json({error:'Nieprawidłowe żądanie.'},400,cors);
         const token = await getGoogleAccessToken(env);
         const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));
+        // Report only the persisted outcome; never account IDs, device tokens or request bodies.
+        console.log(JSON.stringify({event:'course_subscription_result',action:body.action,status:result.status,
+          subscribed:result.body.subscribed ?? null,preferredHour:result.body.preferredHour ?? null}));
         return json(result.body,result.status,{...cors,'cache-control':'no-store'});
       } catch (err) {
         console.error(JSON.stringify({ event: 'course_subscription_error', error: err instanceof Error ? err.message : 'unknown', providerStatus: err?.providerStatus }));

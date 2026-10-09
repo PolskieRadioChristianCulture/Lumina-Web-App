@@ -212,6 +212,7 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
   let accepted = 0;
   let removed = 0;
   let failed = 0;
+  let attempted = 0;
   try {
   for (const record of pending) {
     try {
@@ -246,6 +247,7 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
         if (!authorized?.data.enabled || authorized.revision!==current.revision || authorized.data.leaseId!==leaseId) {
           outcomes.push(false);break;
         }
+        attempted++;
         outcomes.push(await deps.send(token,lesson));
       }
       const success = outcomes.length>0 && outcomes.every(Boolean);
@@ -254,16 +256,18 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       if (success) accepted++;
       // Never recreate a subscription deleted while delivery was in flight.
       await deps.store.save(record.uid,update,current.revision);
+      if (!success) failed++;
     } catch (_) {
       // Never mark failure as delivery. Cursor rotation lets other students pass.
       await deps.store.save(record.uid,{leaseUntil:now+Math.min(3600000,60000*2**Math.min(attempts,6))},current.revision);
+      failed++;
     }
     } catch (_) { failed++; } // One provider/account failure must not stop the batch.
   }
   } finally {
     if (deps.store.advance) await deps.store.advance(pending.nextCursor ?? pending.at(-1)?.uid ?? '',cursor?.revision);
   }
-  return {selected:pending.length,accepted,removed,failed,...(pending.nextCursor!==undefined ? {hasMore:!!pending.nextCursor} : {})};
+  return {selected:pending.length,accepted,removed,failed,attempted,...(pending.nextCursor!==undefined ? {hasMore:!!pending.nextCursor} : {})};
 }
 
 export async function courseAccountState(uid,env,accessToken,fetchImpl=fetch) {

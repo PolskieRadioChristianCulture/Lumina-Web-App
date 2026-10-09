@@ -119,9 +119,19 @@ test('unsubscription during claim is not recreated or delivered',async()=>{
 test('FCM failure keeps lesson pending with backoff, never discards it',async()=>{
   const f=fixture({});f.deps.send=async()=>false;
   const now=Date.now();
-  for(let i=0;i<3;i++)assert.equal((await dispatchCourseLesson(f.deps,now+i*3600000)).accepted,0);
+  for(let i=0;i<3;i++) {
+    const report=await dispatchCourseLesson(f.deps,now+i*3600000);
+    assert.equal(report.accepted,0);assert.equal(report.attempted,1);assert.equal(report.failed,1);
+  }
   assert.equal(f.record.data.lastLessonNumber,7);
   assert.ok(f.record.data.leaseUntil>now+2*3600000);
+});
+
+test('FCM exceptions are reported as attempted failures and retain pending lesson',async()=>{
+  const f=fixture({});f.deps.send=async()=>{throw Error('synthetic provider failure');};
+  const report=await dispatchCourseLesson(f.deps);
+  assert.equal(report.attempted,1);assert.equal(report.failed,1);assert.equal(report.accepted,0);
+  assert.equal(f.record.data.lastLessonNumber,7);
 });
 test('backlog resumes oldest pending lesson and advances only after acceptance',async()=>{
   const f=fixture({lastLessonNumber:6});
