@@ -239,7 +239,15 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
     try {
       const tokens = await deps.tokens(record.uid);
       const outcomes = [];
-      for (const token of tokens) outcomes.push(await deps.send(token,lesson));
+      for (const token of tokens) {
+        // Recheck durable consent immediately before each device request.
+        // An already accepted provider request cannot be recalled.
+        const authorized=await deps.store.get(record.uid);
+        if (!authorized?.data.enabled || authorized.revision!==current.revision || authorized.data.leaseId!==leaseId) {
+          outcomes.push(false);break;
+        }
+        outcomes.push(await deps.send(token,lesson));
+      }
       const success = outcomes.length>0 && outcomes.every(Boolean);
       const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6))};
       if (success) update.lastLessonNumber=lesson.number;

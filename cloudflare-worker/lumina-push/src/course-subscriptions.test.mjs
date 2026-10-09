@@ -228,3 +228,18 @@ test('cursor create uses exists=false; deletion uses revision to preserve newer 
 test('KV course store cannot use non-atomic storage without the durable binding', () => {
   assert.throws(()=>kvCourseStore({}),/course_store_binding_required/);
 });
+
+test('unsubscribe during device lookup prevents the first provider request',async()=>{
+  const f=fixture({});
+  f.deps.tokens=async()=>{await f.deps.store.remove('student');return ['device'];};
+  await dispatchCourseLesson(f.deps);
+  assert.equal(f.sends,0);assert.equal(f.record,null);
+});
+
+test('unsubscribe after first device request prevents remaining devices',async()=>{
+  const f=fixture({});let requests=0;
+  f.deps.tokens=async()=>['one','two'];
+  f.deps.send=async()=>{requests++;await f.deps.store.remove('student');return true;};
+  await dispatchCourseLesson(f.deps);
+  assert.equal(requests,1);assert.equal(f.record,null);
+});
