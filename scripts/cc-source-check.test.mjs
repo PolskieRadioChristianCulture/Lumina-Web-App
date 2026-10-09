@@ -82,3 +82,32 @@ test('CLI fails closed when mandatory paths are missing', () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /No changes were made/);
 });
+
+test('mandatory CC regression cannot silently omit source-integrity tests', () => {
+  const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+  assert.ok(pkg.scripts['test:cc-regression'].split(/\s+/).includes('scripts/cc-source-check.test.mjs'));
+});
+
+test('CLI reports divergence with exit 2 without copying or printing contents', t => {
+  const { source, mirror } = fixture(t);
+  fs.writeFileSync(path.join(source, 'holos.html'), 'PRIVATE_TEST_CONTENT_NOT_FOR_OUTPUT');
+  const result = spawnSync(process.execPath, ['scripts/cc-source-check.mjs', source, mirror], { encoding: 'utf8', windowsHide: true });
+  assert.equal(result.status, 2);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.discrepancies, 1);
+  assert.equal(report.production.state, 'not-checked');
+  assert.ok(!result.stdout.includes('PRIVATE_TEST_CONTENT_NOT_FOR_OUTPUT'));
+  assert.equal(fs.readFileSync(path.join(mirror, 'holos.html'), 'utf8'), 'fixture\n');
+});
+
+test('directory links outside the selected root are rejected before content is read', t => {
+  const { root, source, mirror } = fixture(t);
+  const outside = path.join(root, 'outside');
+  fs.mkdirSync(outside);
+  fs.writeFileSync(path.join(outside, 'cc-global-auth.js'), 'OUTSIDE_TEST_MARKER');
+  fs.rmSync(path.join(source, 'js'), { recursive: true, force: true });
+  fs.symlinkSync(outside, path.join(source, 'js'), process.platform === 'win32' ? 'junction' : 'dir');
+  const report = inspectSources(source, mirror);
+  assert.equal(report.files.find(f => f.file === 'js/cc-global-auth.js').source.state, 'unsafe-link');
+  assert.ok(!JSON.stringify(report).includes('OUTSIDE_TEST_MARKER'));
+});
