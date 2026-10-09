@@ -1988,37 +1988,81 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
             padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .composer-attach-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .composer-btn-attach {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1.05rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: color 0.2s;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            box-sizing: border-box;
         }
-        .composer-btn-attach:hover { color: var(--cc-parchment, #EDE6D6); }
+        .composer-btn-attach:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            transform: translateY(-1px) scale(1.06);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .composer-btn-attach:active {
+            transform: scale(0.96);
+        }
         .composer-btn-publish {
             background: linear-gradient(135deg, var(--cc-gold, #D4A94A), var(--cc-gold-soft, #E8C97A));
             color: #0A0A0F;
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.85rem;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1rem;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 0 2px 10px rgba(212, 169, 74, 0.35);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            margin-left: auto;
+            box-sizing: border-box;
         }
         .composer-btn-publish:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(212, 169, 74, 0.5);
+            transform: translateY(-1px) scale(1.08);
+            box-shadow: 0 4px 15px rgba(212, 169, 74, 0.55);
+        }
+        .composer-btn-publish:active {
+            transform: scale(0.96);
+        }
+        .composer-btn-attach .btn-text,
+        .composer-btn-attach span:not(.count):not(i),
+        .composer-btn-publish .btn-text,
+        .composer-btn-publish span:not(.count):not(i) {
+            display: none !important;
         }
 
         /* Post Card on Wall */
@@ -3576,14 +3620,14 @@
                             </div>
                         </div>
 
-                        <div class="composer-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 12px;">
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button type="button" id="composerBtnYoutube" class="composer-btn-attach" onclick="toggleComposerYoutubeBox()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / Playlista YT</button>
-                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę</button>
-                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
+                        <div class="composer-actions">
+                            <div class="composer-attach-group">
+                                <button type="button" id="composerBtnYoutube" class="composer-btn-attach" onclick="toggleComposerYoutubeBox()" title="Wideo / Playlista YouTube" aria-label="Wideo YouTube"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Wideo / Playlista YT</span></button>
+                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()" title="Dołącz grafikę z dysku" aria-label="Dołącz grafikę"><i class="fa-solid fa-image" style="color:#22c55e;"></i><span class="btn-text"> Dołącz Grafikę</span></button>
+                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()" title="Dodaj werset biblijny" aria-label="Dodaj werset"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i><span class="btn-text"> Dodaj Werset</span></button>
+                                <button type="button" class="composer-btn-attach composer-btn-gdrive" onclick="openGoogleDriveModal()" title="Dołącz plik z Dysku Google" aria-label="Dysk Google"><i class="fa-brands fa-google-drive" style="color:#34a853;"></i><span class="btn-text"> Dysk Google</span></button>
                             </div>
-                            <button type="button" class="composer-btn-attach composer-btn-gdrive" onclick="openGoogleDriveModal()" title="Dołącz plik z Dysku Google (Wideo, Audio, Zdjęcie, Dokument, Arkusz, PDF)"><i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Dysk Google</button>
-                                <button type="button" class="composer-btn-publish" onclick="publishFeedPost()" style="padding: 9px 20px; font-weight: 800;"><i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis</button>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()" title="Opublikuj wpis" aria-label="Opublikuj wpis"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Opublikuj Wpis</span></button>
                         </div>
                     </div>
 

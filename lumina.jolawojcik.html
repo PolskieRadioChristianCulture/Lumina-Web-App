@@ -2224,19 +2224,19 @@
 
                         <div class="composer-actions-bar">
                             <div class="composer-buttons-group">
-                                <button type="button" class="btn-composer-tool" onclick="document.getElementById('composerImgFileInput').click()">
-                                    <i class="fa-solid fa-image" style="color:#38bdf8;"></i> Zdjęcie
+                                <button type="button" class="btn-composer-tool" onclick="document.getElementById('composerImgFileInput').click()" title="Zdjęcie z dysku" aria-label="Zdjęcie">
+                                    <i class="fa-solid fa-image" style="color:#38bdf8;"></i><span class="btn-text"> Zdjęcie</span>
                                 </button>
-                                <button type="button" class="btn-composer-tool" onclick="promptDirectVideoUrl()">
-                                    <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / YT
+                                <button type="button" class="btn-composer-tool" onclick="promptDirectVideoUrl()" title="Wideo / YouTube" aria-label="Wideo YouTube">
+                                    <i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Wideo / YT</span>
                                 </button>
-                                <button type="button" class="btn-composer-tool" onclick="promptDirectImageUrl()">
-                                    <i class="fa-solid fa-link" style="color:#a855f7;"></i> Link do grafiki
+                                <button type="button" class="btn-composer-tool" onclick="promptDirectImageUrl()" title="Link do grafiki" aria-label="Link do grafiki">
+                                    <i class="fa-solid fa-link" style="color:#a855f7;"></i><span class="btn-text"> Link do grafiki</span>
                                 </button>
                             </div>
 
-                            <button type="button" class="btn-publish-post" onclick="handleQuickPublishJola()">
-                                <i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis
+                            <button type="button" class="btn-publish-post" onclick="handleQuickPublishJola()" title="Opublikuj wpis" aria-label="Opublikuj wpis">
+                                <i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Opublikuj Wpis</span>
                             </button>
                         </div>
 

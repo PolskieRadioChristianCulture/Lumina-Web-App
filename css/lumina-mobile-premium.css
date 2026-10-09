@@ -469,6 +469,16 @@
     .post-action-btn .btn-text,
     .post-act-btn .btn-text,
     .post-action-btn span:not(.count):not(.like-count):not(.amen-count):not(.comment-count-num):not(.pray-sos-badge):not(.pray-live-badge):not(.sound-toggle-label),
+    .composer-btn-attach .btn-text,
+    .composer-btn-attach span:not(.count):not(i),
+    .btn-composer-tool .btn-text,
+    .btn-composer-tool span:not(.count):not(i),
+    .composer-btn-publish .btn-text,
+    .composer-btn-publish span:not(.count):not(i),
+    .btn-publish-post .btn-text,
+    .btn-publish-post span:not(.count):not(i),
+    .comment-submit-btn-v2 .btn-text,
+    .comment-submit-btn-v2 span:not(.count):not(i),
     .btn-lumina-replace-action span,
     .action-icon-only .btn-text {
         display: none !important;

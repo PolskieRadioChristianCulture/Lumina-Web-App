@@ -194,6 +194,124 @@
     background: rgba(255, 255, 255, 0.06);
 }
 
+/* ── PANCERNY MINIMALIZM: Same Ikony w Paskach Narzędziowych i Composerze ── */
+.composer-actions,
+.composer-actions-bar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    padding-top: 10px !important;
+    margin-top: 10px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    max-width: 100% !important;
+    overflow-x: clip !important;
+    box-sizing: border-box !important;
+}
+
+.composer-attach-group,
+.composer-buttons-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+}
+
+.composer-btn-attach,
+.btn-composer-tool {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #cbd5e1 !important;
+    font-size: 1.05rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.composer-btn-attach:hover,
+.btn-composer-tool:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #fff !important;
+    transform: translateY(-1px) scale(1.06) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.composer-btn-attach:active,
+.btn-composer-tool:active {
+    transform: scale(0.96) !important;
+}
+
+.composer-btn-publish,
+.btn-publish-post {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #a855f7, #3b82f6) !important;
+    color: #fff !important;
+    border: none !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+    box-sizing: border-box !important;
+}
+
+.composer-btn-publish:hover,
+.btn-publish-post:hover {
+    transform: translateY(-1px) scale(1.08) !important;
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.55) !important;
+}
+
+.composer-btn-publish:active,
+.btn-publish-post:active {
+    transform: scale(0.96) !important;
+}
+
+/* Ukrycie nadmiarowego tekstu – same ikony */
+.composer-btn-attach .btn-text,
+.composer-btn-attach span:not(.count):not(i),
+.btn-composer-tool .btn-text,
+.btn-composer-tool span:not(.count):not(i),
+.composer-btn-publish .btn-text,
+.composer-btn-publish span:not(.count):not(i),
+.btn-publish-post .btn-text,
+.btn-publish-post span:not(.count):not(i),
+.comment-submit-btn-v2 .btn-text,
+.comment-submit-btn-v2 span:not(.count):not(i) {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    #composerOwnerStatusBadge span {
+        display: none !important;
+    }
+    #composerOwnerStatusBadge {
+        padding: 8px 10px !important;
+        min-width: 38px !important;
+        justify-content: center !important;
+    }
+}
+
 /* ── 9:16 Vertical Sidebar Ads ── */
 .board-container {
     max-width: 1420px !important;
