@@ -4473,6 +4473,7 @@
         const MAIN_USER_KEY = 'lumina_main_user_profile';
         let pendingProtectedAction = null;
         let isOwnerMode = false;
+        let isPersonalOwner = false;
         let attachedPostImageDataUrl = null;
 
         const PROFILES_DB = {
@@ -5870,20 +5871,56 @@
         // ── Security & Authentication System (RBAC: Self-Only or Master Admin) ──
         function checkOwnerAuthSession() {
             const slug = getRequestedUserSlug();
-            const curProf = window.LuminaDB?.getCurrentProfile() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+            let curProf = null;
+            try {
+                if (typeof window.LuminaDB?.getCurrentProfile === 'function') {
+                    curProf = window.LuminaDB.getCurrentProfile();
+                } else if (typeof window.getCurrentProfile === 'function') {
+                    curProf = window.getCurrentProfile();
+                }
+            } catch(e) {}
+            if (!curProf) {
+                try { curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null'); } catch(e) {}
+            }
+            if (!curProf) {
+                try { curProf = JSON.parse(localStorage.getItem(MAIN_USER_KEY) || 'null'); } catch(e) {}
+            }
             const targetUid = curProf?.uid || null;
 
             // 1. Sprawdzenie czy użytkownik to Główny Administrator (WYŁĄCZNIE po autoryzacji PIN-em w bieżącej sesji!)
             // 🛡️ STRAŻNIK: uprawnienia wyłącznie z zalogowanego konta (Firebase Auth), nie z flag w przeglądarce
-            let isMaster = !!(window.LuminaGuard && window.LuminaGuard.isMasterAdmin());
+            let isMaster = false;
             try {
+                isMaster = !!(window.LuminaGuard && typeof window.LuminaGuard.isMasterAdmin === 'function' && window.LuminaGuard.isMasterAdmin());
                 localStorage.removeItem('lumina_auth_master_admin');
             } catch(e) {}
             let isSelf = false;
 
             try {
-                const curUser = window.LuminaDB?.getCurrentUser();
-                if (curUser && curProf && (curProf.slug === slug || curProf.uid === slug || curUser.uid === slug)) {
+                let curUser = null;
+                if (typeof window.LuminaDB?.getCurrentUser === 'function') {
+                    curUser = window.LuminaDB.getCurrentUser();
+                } else if (typeof window.getCurrentUser === 'function') {
+                    curUser = window.getCurrentUser();
+                }
+                if (!curUser) {
+                    try { curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+                }
+                const curUid = curUser?.uid || curProf?.uid;
+                const profileData = getProfileData();
+                const profileUid = profileData?.uid;
+                const localSlug = (localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim();
+
+                if (curProf && curProf.slug && (curProf.slug.toLowerCase() === slug || curProf.uid === slug)) {
+                    isSelf = true;
+                }
+                if (localSlug && localSlug === slug) {
+                    isSelf = true;
+                }
+                if (curUser && (curUser.uid === slug || (profileUid && curUser.uid === profileUid))) {
+                    isSelf = true;
+                }
+                if (curUid && profileUid && curUid === profileUid) {
                     isSelf = true;
                 }
                 if (curUser && (curUser.email === 'robrrtmarecki6@gmail.com' || curUser.uid === 'jIdflt3G8ohgpCoWmCLJAZ9i5d42') && (slug === 'u_robertukaszpio_5668' || slug === 'robertlukaszpio' || slug === 'bratrobert')) {
@@ -5892,11 +5929,9 @@
                 if (curUser && (curUser.email === 'bozenowezycie@gmail.com' || curUser.uid === 'NHjYeuO4nxM8fIfEJPHmi9rTQV12') && (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski')) {
                     isSelf = true;
                 }
-                if ((window.LuminaGuard && window.LuminaGuard.canEditProfile(slug, curProf))) {
-                    isSelf = true;
-                }
             } catch(e) {}
 
+            isPersonalOwner = isSelf;
             isOwnerMode = isMaster || isSelf;
 
             if (isOwnerMode) {
@@ -6496,15 +6531,19 @@
                 tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-star"></i> ${t}</span>`).join('');
             }
 
-            // Real photo requirement check for owner
-            if (isOwnerMode && (targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/') || data.needsRealPhoto || data.profileCompleted === false || !data.age)) {
+            // Real photo requirement check - WYŁĄCZNIE dla właściciela profilu
+            // 🛡️ ZERO-QA: Komunikat o wymogu zdjęcia twarzy kierowany jest WYŁĄCZNIE do rzeczywistego właściciela profilu (isPersonalOwner).
+            // Odwiedzający profil (gość, inny zalogowany użytkownik, czy Administrator przeglądający cudzy profil) NIGDY nie mogą zobaczyć tego modalu.
+            const mPhoto = document.getElementById('modalRealPhotoRequired');
+            if (isPersonalOwner && (targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/') || data.needsRealPhoto || data.profileCompleted === false || !data.age)) {
                 if (!sessionStorage.getItem('lumina_photo_prompt_dismissed')) {
                     setTimeout(() => {
-                        const m = document.getElementById('modalRealPhotoRequired');
-                        if (m) m.classList.add('open');
+                        if (isPersonalOwner && mPhoto) mPhoto.classList.add('open');
                         sessionStorage.setItem('lumina_photo_prompt_dismissed', 'true');
                     }, 1200);
                 }
+            } else {
+                if (mPhoto) mPhoto.classList.remove('open');
             }
 
             renderPhotos();
