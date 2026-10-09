@@ -4138,37 +4138,96 @@ body.lumina-light-theme .reflection-links-container div {
 
 html[data-lumina-theme="light"] .reflection-smart-link,
 body.theme-lumina-light .reflection-smart-link {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link:hover,
+body.theme-lumina-light .reflection-smart-link:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
 }
 html[data-lumina-theme="light"] .reflection-smart-link.whatsapp-link,
 body.theme-lumina-light .reflection-smart-link.whatsapp-link {
     background: rgba(34, 197, 94, 0.10) !important;
     border: 1.5px solid rgba(34, 197, 94, 0.45) !important;
     color: #15803d !important;
+    text-decoration: none !important;
 }
 html[data-lumina-theme="light"] .reflection-smart-link.radio-link,
 body.theme-lumina-light .reflection-smart-link.radio-link {
     background: rgba(2, 132, 199, 0.10) !important;
     border: 1.5px solid rgba(2, 132, 199, 0.40) !important;
     color: #0284c7 !important;
+    text-decoration: none !important;
 }
 html[data-lumina-theme="light"] .reflection-smart-link.tv-link,
 body.theme-lumina-light .reflection-smart-link.tv-link {
     background: rgba(219, 39, 119, 0.10) !important;
     border: 1.5px solid rgba(219, 39, 119, 0.40) !important;
     color: #be185d !important;
+    text-decoration: none !important;
 }
 html[data-lumina-theme="light"] .reflection-smart-link.apps-link,
 body.theme-lumina-light .reflection-smart-link.apps-link {
     background: rgba(217, 119, 6, 0.10) !important;
     border: 1.5px solid rgba(217, 119, 6, 0.40) !important;
     color: #b45309 !important;
+    text-decoration: none !important;
 }
 html[data-lumina-theme="light"] .reflection-smart-link.support-link,
 body.theme-lumina-light .reflection-smart-link.support-link {
-    background: rgba(225, 29, 72, 0.10) !important;
-    border: 1.5px solid rgba(225, 29, 72, 0.40) !important;
+    background: rgba(225, 29, 72, 0.08) !important;
+    border: 1.5px solid rgba(225, 29, 72, 0.35) !important;
     color: #be123c !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+html[data-lumina-theme="light"] .reflection-smart-link.support-link:hover,
+body.theme-lumina-light .reflection-smart-link.support-link:hover {
+    background: rgba(225, 29, 72, 0.16) !important;
+    border-color: #be123c !important;
+    color: #9f1239 !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+/* Jasny motyw — estetyczny chip linkowy dla linków tekstowych w postach */
+html[data-lumina-theme="light"] .reflection-link,
+body.theme-lumina-light .reflection-link,
+html[data-lumina-theme="light"] .lumina-post-link,
+body.theme-lumina-light .lumina-post-link,
+html[data-lumina-theme="light"] .post-rich-link,
+body.theme-lumina-light .post-rich-link,
+html[data-lumina-theme="light"] .post-content a:not(.post-action-btn),
+body.theme-lumina-light .post-content a:not(.post-action-btn) {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+    border: 1px solid rgba(2, 132, 199, 0.25) !important;
+    color: #0284c7 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-lumina-theme="light"] .reflection-link:hover,
+body.theme-lumina-light .reflection-link:hover,
+html[data-lumina-theme="light"] .lumina-post-link:hover,
+body.theme-lumina-light .lumina-post-link:hover,
+html[data-lumina-theme="light"] .post-rich-link:hover,
+body.theme-lumina-light .post-rich-link:hover,
+html[data-lumina-theme="light"] .post-content a:not(.post-action-btn):hover,
+body.theme-lumina-light .post-content a:not(.post-action-btn):hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    background: rgba(2, 132, 199, 0.15) !important;
+    border-color: #0284c7 !important;
+    color: #0369a1 !important;
 }
 
 
@@ -4383,7 +4442,8 @@ html[data-lumina-theme="light"] .post-card-sunday-appeal .post-details-box > p b
 }
 html[data-lumina-theme="light"] .post-card-sunday-appeal .appeal-support-copy a {
     color: #806120 !important;
-    text-decoration: underline;
+    text-decoration: none !important;
+    font-weight: 700 !important;
 }
 
 /* Feed chrome must remain readable around photo and video media. */

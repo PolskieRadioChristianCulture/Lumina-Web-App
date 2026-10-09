@@ -6529,9 +6529,8 @@ export function formatLuminaDevotionalContent(rawText) {
     text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
     // 1. WhatsApp invite -> zamień na elegancki zielony przycisk
-    text = text.replace(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match) => {
-        const urlMatch = match.match(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+/i);
-        const url = urlMatch ? urlMatch[0] : 'https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0';
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?chat\.whatsapp\.com\/([a-zA-Z0-9_-]+)(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match, inviteCode) => {
+        const url = `https://chat.whatsapp.com/${inviteCode || 'DBTRDxQWamZDWaOkjupSt0'}`;
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link whatsapp-link"><i class="fa-brands fa-whatsapp"></i> Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp) <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
@@ -6541,21 +6540,23 @@ export function formatLuminaDevotionalContent(rawText) {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link"><i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
-    // 3. Polskie Radio CC & Lumina Portal
-    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc(\/[a-zA-Z0-9_-]*)?/gi, (match, path) => {
-        if (path && path.toLowerCase().includes('lumina')) {
-            return `<a href="https://www.polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-users-rays"></i> Portal Społeczności LUMINA <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
-        }
+    // 3a. Lumina Portal
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc\/lumina[a-zA-Z0-9_/-]*/gi, () => {
+        return `<a href="https://www.polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-users-rays"></i> Portal Społeczności LUMINA <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 3b. Polskie Radio CC
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc(?!\/[a-zA-Z0-9_/-])/gi, () => {
         return `<a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
     // 4. CC Lite -> zamień na różowy przycisk Telewizji CC Lite
-    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?cclite\.pl[^\s<)]*/gi, () => {
+    text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?cclite\.pl[a-zA-Z0-9_/-]*/gi, () => {
         return `<a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link"><i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     });
 
-    // 6. Patronite / Wsparcie Misji -> zamień na bordowo-czerwony aktywny przycisk ze serduszkiem
-    text = text.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+    // 5. Patronite / Wsparcie Misji -> zamień na bordowo-czerwony aktywny przycisk ze serduszkiem
+    text = text.replace(/(?<!["'/])(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
         const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
         const url = `https://patronite.pl/${targetSlug}`;
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;

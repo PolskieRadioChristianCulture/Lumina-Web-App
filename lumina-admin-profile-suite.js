@@ -528,15 +528,29 @@
             .feed-post-card a.lumina-post-link,
             .post-card a.lumina-post-link,
             .feed-post-card .post-body a,
-            a.lumina-post-link {
-                color: #38bdf8 !important;
+            a.lumina-post-link,
+            .reflection-link,
+            .post-rich-link {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 5px !important;
+                padding: 3px 10px !important;
+                margin: 2px 2px !important;
+                border-radius: 8px !important;
+                font-size: 0.86rem !important;
                 font-weight: 700 !important;
-                text-decoration: underline !important;
-                text-underline-offset: 3px !important;
-                transition: color 0.2s ease, text-shadow 0.2s ease !important;
-                cursor: pointer !important;
-                display: inline !important;
+                line-height: 1.4 !important;
+                vertical-align: middle !important;
                 word-break: break-all !important;
+                background: rgba(56, 189, 248, 0.10) !important;
+                border: 1px solid rgba(56, 189, 248, 0.28) !important;
+                color: #38bdf8 !important;
+                text-decoration: none !important;
+                text-decoration-line: none !important;
+                border-bottom: none !important;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                cursor: pointer !important;
             }
 
             .feed-post-card .post-text-content a:hover,
@@ -544,9 +558,49 @@
             .feed-post-card a.lumina-post-link:hover,
             .post-card a.lumina-post-link:hover,
             .feed-post-card .post-body a:hover,
-            a.lumina-post-link:hover {
-                color: #7dd3fc !important;
-                text-shadow: 0 0 10px rgba(56, 189, 248, 0.6) !important;
+            a.lumina-post-link:hover,
+            .reflection-link:hover,
+            .post-rich-link:hover {
+                background: rgba(56, 189, 248, 0.20) !important;
+                border-color: rgba(56, 189, 248, 0.6) !important;
+                color: #bae6fd !important;
+                transform: translateY(-1.5px) !important;
+                box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25) !important;
+                text-decoration: none !important;
+                text-decoration-line: none !important;
+                border-bottom: none !important;
+            }
+
+            body.theme-lumina-light .feed-post-card .post-text-content a,
+            body.theme-lumina-light .post-card .post-content a,
+            body.theme-lumina-light .feed-post-card a.lumina-post-link,
+            body.theme-lumina-light .post-card a.lumina-post-link,
+            body.theme-lumina-light .feed-post-card .post-body a,
+            body.theme-lumina-light a.lumina-post-link,
+            body.theme-lumina-light .reflection-link,
+            body.theme-lumina-light .post-rich-link {
+                background: rgba(2, 132, 199, 0.08) !important;
+                border: 1px solid rgba(2, 132, 199, 0.3) !important;
+                color: #0284c7 !important;
+                text-decoration: none !important;
+                text-decoration-line: none !important;
+                border-bottom: none !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+            }
+            body.theme-lumina-light .feed-post-card .post-text-content a:hover,
+            body.theme-lumina-light .post-card .post-content a:hover,
+            body.theme-lumina-light .feed-post-card a.lumina-post-link:hover,
+            body.theme-lumina-light .post-card a.lumina-post-link:hover,
+            body.theme-lumina-light .feed-post-card .post-body a:hover,
+            body.theme-lumina-light a.lumina-post-link:hover,
+            body.theme-lumina-light .reflection-link:hover,
+            body.theme-lumina-light .post-rich-link:hover {
+                background: rgba(2, 132, 199, 0.16) !important;
+                border-color: rgba(2, 132, 199, 0.55) !important;
+                color: #0369a1 !important;
+                text-decoration: none !important;
+                text-decoration-line: none !important;
+                border-bottom: none !important;
             }
 
             /* ZAKAZ UCINANIA GRAFIK 1:1 ORAZ ZDJĘĆ W POSTACH NA WSZYSTKICH PROFILACH */

@@ -203,6 +203,7 @@
   <!-- Universal CC Global Auth -->
   <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
   <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v2" />
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
 
@@ -228,6 +229,11 @@
         <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)">
           <i class="fa-solid fa-font text-amber-400 text-xs"></i>
           <span id="reader-font-label" class="sr-only font-semibold">Krój: Lora</span>
+        </button>
+
+<!-- Przełącznik motywu (Jasny / Ciemny) -->
+        <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+          <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
         </button>
 
         <!-- Font Zoom Controls (A- / A+) -->

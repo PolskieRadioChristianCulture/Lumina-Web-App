@@ -2253,17 +2253,36 @@
         }
         /* ══════════ END PERFECT PILL */
     /* ══════════ ACTIVE REFLECTION & POST LINKS ══════════ */
-        .reflection-link, .post-rich-link {
-            color: #facc15 !important;
+        .reflection-link, .post-rich-link, .lumina-post-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 3px 10px !important;
+            margin: 2px 2px !important;
+            border-radius: 8px !important;
+            font-size: 0.86rem !important;
             font-weight: 700 !important;
-            text-decoration: underline !important;
-            word-break: break-word !important;
-            transition: all 0.2s ease !important;
-            display: inline !important;
+            line-height: 1.4 !important;
+            vertical-align: middle !important;
+            word-break: break-all !important;
+            background: rgba(56, 189, 248, 0.10) !important;
+            border: 1px solid rgba(56, 189, 248, 0.28) !important;
+            color: #38bdf8 !important;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            border-bottom: none !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
-        .reflection-link:hover, .post-rich-link:hover {
-            color: #fef08a !important;
-            text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
+        .reflection-link:hover, .post-rich-link:hover, .lumina-post-link:hover {
+            background: rgba(56, 189, 248, 0.20) !important;
+            border-color: rgba(56, 189, 248, 0.6) !important;
+            color: #bae6fd !important;
+            transform: translateY(-1.5px) !important;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25) !important;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            border-bottom: none !important;
         }
 
         .reflection-smart-link {
@@ -5058,18 +5077,58 @@
             if (!rawText) return '';
             let text = rawText;
 
-            // Patronite / Wsparcie Misji -> aktywny przycisk ze serduszkiem
-            text = text.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+            // 1. WhatsApp invite -> zamień na zielony przycisk funkcyjny
+            text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?chat\.whatsapp\.com\/([a-zA-Z0-9_-]+)(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match, inviteCode) => {
+                const url = `https://chat.whatsapp.com/${inviteCode || 'DBTRDxQWamZDWaOkjupSt0'}`;
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link whatsapp-link"><i class="fa-brands fa-whatsapp"></i> Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp) <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            // 2. Google Play Apps -> zamień na złoty przycisk funkcyjny
+            text = text.replace(/(?:Apps:\s*)?https?:\/\/play\.google\.com\/store\/apps\/[^\s<)]+/gi, (match) => {
+                const url = match.replace(/^Apps:\s*/i, '').trim();
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link"><i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            // 3a. Lumina Portal
+            text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc\/lumina[a-zA-Z0-9_/-]*/gi, () => {
+                return `<a href="https://www.polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-users-rays"></i> Portal Społeczności LUMINA <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            // 3b. Polskie Radio CC
+            text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?polskieradio\.cc(?!\/[a-zA-Z0-9_/-])/gi, () => {
+                return `<a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            // 4. CC Lite
+            text = text.replace(/(?<!["'/])(?:https?:\/\/)?(?:www\.)?cclite\.pl[a-zA-Z0-9_/-]*/gi, () => {
+                return `<a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link"><i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+            });
+
+            // 5. Patronite / Wsparcie Misji -> aktywny przycisk ze serduszkiem
+            text = text.replace(/(?<!["'/])(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
                 const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
                 const url = `https://patronite.pl/${targetSlug}`;
                 return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
             });
 
-            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (m, label, url) => {
-                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-link">${label} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>`;
+            // 6. Revolut Wsparcie
+            text = text.replace(/(?<!["'/])(?:(?:Wspomóż misję|Wspieraj Bożą misję|Darowizna|Revolut)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?revolut\.me\/([a-zA-Z0-9_-]+)/gi, (match, tag) => {
+                const targetTag = tag || 'christianculture';
+                const url = `https://revolut.me/${targetTag}`;
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link"><i class="fa-solid fa-hand-holding-dollar" style="color:#ef4444;"></i> Wesprzyj przez Revolut <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
             });
-            const urlRegex = /(^|[\s(>])(https?:\/\/[^\s<)]+)/gi;
-            text = text.replace(urlRegex, (m, prefix, url) => {
+
+            // 7. Oczyszczenie wiszących separatorów '|' między wygenerowanymi przyciskami
+            text = text.replace(/(<\/a>)\s*\|\s*(?=<a [^>]*class="[^"]*reflection-smart-link)/gi, '$1 ');
+
+            // 8. Markdown links [Tytuł](https://...)
+            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (match, label, url) => {
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${label} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:3px;"></i></a>`;
+            });
+
+            // 9. Reszta surowych URL
+            const urlRegex = /(^|[\s(])((https?:\/\/)[^\s<>"')]+)/gi;
+            text = text.replace(urlRegex, (match, prefix, url) => {
                 let cleanUrl = url;
                 let trailing = '';
                 const punct = cleanUrl.match(/[.,;!?:)]+$/);
@@ -5077,11 +5136,14 @@
                     trailing = punct[0];
                     cleanUrl = cleanUrl.slice(0, -trailing.length);
                 }
-                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${cleanUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+                let displayUrl = cleanUrl.replace(/^https?:\/\/(?:www\.)?/, '');
+                if (displayUrl.length > 38) displayUrl = displayUrl.substring(0, 35) + '…';
+                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${displayUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:3px;"></i></a>${trailing}`;
             });
 
-            // URLs zaczynające się od www. (bez protokołu)
-            text = text.replace(/(^|[\s(>])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<)]*)/gi, (m, prefix, rawDomain) => {
+            // 10. URLs zaczynające się od www. (bez protokołu)
+            const wwwRegex = /(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<>"')]*)/gi;
+            text = text.replace(wwwRegex, (match, prefix, rawDomain) => {
                 let domain = rawDomain;
                 let trailing = '';
                 const punct = domain.match(/[.,;!?:)]+$/);
@@ -5089,23 +5151,11 @@
                     trailing = punct[0];
                     domain = domain.slice(0, -trailing.length);
                 }
-                return `${prefix}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${domain} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+                let displayDomain = domain.replace(/^www\./, '');
+                if (displayDomain.length > 38) displayDomain = displayDomain.substring(0, 35) + '…';
+                return `${prefix}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${displayDomain} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:3px;"></i></a>${trailing}`;
             });
 
-            // Bezpośrednie domeny bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
-            const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
-            const bareDomainRegex = new RegExp('(^|[\\s(>])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<)]*)?)', 'gi');
-            text = text.replace(bareDomainRegex, (m, prefix, rawDomain) => {
-                if (m.includes('href=') || m.includes('class=')) return m;
-                let domain = rawDomain;
-                let trailing = '';
-                const punct = domain.match(/[.,;!?:)]+$/);
-                if (punct) {
-                    trailing = punct[0];
-                    domain = domain.slice(0, -trailing.length);
-                }
-                return `${prefix}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="reflection-link lumina-post-link">${domain} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
-            });
             return text;
         }
 

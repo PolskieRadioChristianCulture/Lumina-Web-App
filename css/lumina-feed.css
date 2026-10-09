@@ -65,21 +65,129 @@
     word-break: break-word;
 }
 
-/* ── Clickable Active Links in Reflections & Posts ── */
-.reflection-link {
-    color: #facc15 !important;
-    font-weight: 700 !important;
-    text-decoration: underline !important;
-    text-underline-offset: 3px !important;
+/* ── Active Links in Reflections & Posts (Pancerny brak podkreśleń • Prestiżowy chip linkowy) ── */
+.reflection-link,
+.lumina-post-link,
+.post-rich-link,
+.post-content a:not(.post-action-btn):not(.btn-composer-tool):not(.composer-btn-publish),
+.feed-post a:not(.post-action-btn),
+.reflection-content a,
+.reflection-links-container a,
+.comment-bubble a {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+.reflection-link:hover,
+.reflection-link:focus,
+.reflection-link:active,
+.lumina-post-link:hover,
+.lumina-post-link:focus,
+.lumina-post-link:active,
+.post-rich-link:hover,
+.post-content a:hover,
+.feed-post a:hover,
+.reflection-content a:hover,
+.reflection-links-container a:hover,
+.comment-bubble a:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+/* Nowoczesny estetyczny chip linkowy dla linków tekstowych w postach */
+.reflection-link,
+.lumina-post-link,
+.post-rich-link {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 3px !important;
-    transition: all 0.2s ease !important;
+    gap: 5px !important;
+    padding: 3px 10px !important;
+    margin: 2px 2px !important;
+    border-radius: 8px !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    vertical-align: middle !important;
     word-break: break-all !important;
+    background: rgba(56, 189, 248, 0.10) !important;
+    border: 1px solid rgba(56, 189, 248, 0.28) !important;
+    color: #38bdf8 !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-.reflection-link:hover {
-    color: #fef08a !important;
-    text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
+
+.reflection-link:hover,
+.lumina-post-link:hover,
+.post-rich-link:hover {
+    background: rgba(56, 189, 248, 0.20) !important;
+    border-color: rgba(56, 189, 248, 0.6) !important;
+    color: #bae6fd !important;
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25) !important;
+    text-shadow: none !important;
+}
+
+/* Pigułki Smart Link (Społeczność, Radio, VOD, Patronite, Revolut) — 100% BEZ PODKREŚLEŃ */
+.reflection-smart-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    transition: all 0.22s ease !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25) !important;
+    margin: 4px 4px 4px 0 !important;
+    vertical-align: middle !important;
+}
+
+.reflection-smart-link:hover,
+.reflection-smart-link:focus,
+.reflection-smart-link:active {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    transform: translateY(-1.5px) !important;
+    filter: brightness(1.12) !important;
+}
+
+.reflection-smart-link.whatsapp-link {
+    background: rgba(34, 197, 94, 0.16) !important;
+    border: 1.5px solid #22c55e !important;
+    color: #4ade80 !important;
+}
+.reflection-smart-link.radio-link {
+    background: rgba(56, 189, 248, 0.16) !important;
+    border: 1.5px solid #38bdf8 !important;
+    color: #7dd3fc !important;
+}
+.reflection-smart-link.tv-link {
+    background: rgba(236, 72, 153, 0.16) !important;
+    border: 1.5px solid #ec4899 !important;
+    color: #f472b6 !important;
+}
+.reflection-smart-link.apps-link {
+    background: rgba(245, 158, 11, 0.16) !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #fde047 !important;
+}
+.reflection-smart-link.support-link {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(220, 38, 38, 0.28)) !important;
+    border: 1.5px solid #ef4444 !important;
+    color: #fca5a5 !important;
+    text-decoration: none !important;
+}
+.reflection-smart-link.support-link:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.45)) !important;
+    border-color: #f87171 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
 }
 
 /* ── Full Uncropped Media Containment ── */

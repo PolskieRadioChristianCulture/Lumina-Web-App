@@ -872,3 +872,25 @@
         font-size: 0.72rem !important;
     }
 }
+
+/* ── Universal Zero-Underline Guarantee for Posts and Reflections ── */
+.reflection-link,
+.lumina-post-link,
+.post-rich-link,
+.reflection-smart-link,
+.post-content a,
+.reflection-links-container a,
+.comment-bubble a {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+.reflection-link:hover,
+.lumina-post-link:hover,
+.reflection-smart-link:hover,
+.post-content a:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
