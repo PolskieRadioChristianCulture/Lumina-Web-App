@@ -147,3 +147,33 @@ test('standardowy przycisk powrotu na górę (#backToTopBtn) jest zamontowany, d
   w.close();
 });
 
+test('panel patronacki zawiera 3 filary: social media, bezpośrednie polecenie oraz wsparcie finansowe', () => {
+  const w = mount('/akademia/kurscodzienny/dzien-09');
+  const panel = w.document.getElementById('ccDailyShare');
+  assert.ok(panel, '#ccDailyShare musi istnieć');
+  assert.equal(panel.querySelector('h2').textContent, 'Zostań patronem tej lekcji');
+  assert.ok(panel.textContent.includes('PATRONAT NAD SŁOWEM · WEZWANIE DO DZIAŁANIA'));
+
+  // Filar 1 i 2 w kolumnach
+  const pillars = w.document.querySelectorAll('.cc-patron-col');
+  assert.equal(pillars.length, 2, 'Dwie kolumny akcji w głównym panelu');
+  assert.ok(pillars[0].textContent.includes('Udostępnij w mediach społecznościowych'));
+  assert.ok(pillars[1].textContent.includes('Wyślij kilku znajomym'));
+
+  // Filar 3: Finanse w dedykowanym panelu
+  const finance = w.document.getElementById('ccDailyPatronFinance');
+  assert.ok(finance, '#ccDailyPatronFinance musi istnieć');
+  assert.ok(finance.textContent.includes('Przekaż uznanie (finansowe)'));
+  assert.ok(finance.querySelector('a[href*="patronite.pl/osobowoscplus"]'), 'Musi zawierać link do Patronite');
+  assert.ok(finance.textContent.includes('74 2910 0006 2469 8002 1062 8039'), 'Musi zawierać numer konta');
+  assert.ok(finance.querySelector('.cc-bank-copy-btn'), 'Musi posiadać przycisk kopiowania konta');
+
+  w.close();
+});
+
+test('widok katalogu kursu ma dedykowany nagłówek patronacki', () => {
+  const w = mount('/akademia#kurscodzienny');
+  const panel = w.document.getElementById('ccDailyShare');
+  assert.equal(panel.querySelector('h2').textContent, 'Zostań patronem Kursu Codziennego');
+  w.close();
+});
