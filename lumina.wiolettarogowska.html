@@ -202,14 +202,14 @@
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script>window._currentProfileSlug = 'wiolettarogowska';</script>
-    <script type="module" src="lumina-db.js?v=20261008_chatcounter1"></script>
+    <script type="module" src="lumina-db.js?v=20261009_chatsession1"></script>
     <script src="js/lumina-comments-engine.js?v=20261007_guardian2"></script>
 
     <script src="js/lumina-community-posts.js"></script>
     <script src="lumina-radio.js?v=1"></script>
     <script type="module" src="lumina-chat-typing.js?v=1"></script>
-    <script type="module" src="lumina-core.js?v=20261008_chatcounter1"></script>
-    <script type="module" src="lumina-security.js?v=20261008_chatcounter1"></script>
+    <script type="module" src="lumina-core.js?v=20261009_chatsession1"></script>
+    <script type="module" src="lumina-security.js?v=20261009_chatsession1"></script>
     <script src="lumina-pwa-installer.js?v=4.1.6"></script>
     <script src="js/lumina-start-preferences.js"></script>
     <script src="js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
@@ -1568,36 +1568,60 @@
         }
 
         .post-footer {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+            padding-top: 12px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: clip !important;
         }
         .post-action-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: all 0.2s;
-            font-family: inherit;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-secondary, #cbd5e1) !important;
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            min-height: 34px !important;
+            border-radius: 20px !important;
+            transition: all 0.2s ease !important;
+            font-family: inherit !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
         .post-action-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.06);
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            transform: translateY(-1px) !important;
         }
         .post-action-btn.liked {
-            color: #f43f5e;
+            color: #f43f5e !important;
+            background: rgba(236, 72, 153, 0.2) !important;
+            border-color: rgba(236, 72, 153, 0.5) !important;
         }
-        .post-action-btn.amen-active {
-            color: var(--gold-accent);
+        .post-action-btn.amen-active,
+        .post-action-btn.amen {
+            color: #fbbf24 !important;
+            background: rgba(245, 158, 11, 0.2) !important;
+            border-color: rgba(245, 158, 11, 0.5) !important;
+        }
+
+        /* PANCERNE SKRACANIE DO SAMYCH IKON: Teksty etykiet ukryte, liczniki i ikony zachowane */
+        .post-action-btn .btn-text,
+        .post-action-btn .action-label,
+        .post-action-btn span:not(.count):not(.like-count):not(.amen-count):not(.comment-count-num):not(.pray-sos-badge):not(.pray-live-badge) {
+            display: none !important;
         }
 
         /* ── Modals ── */
@@ -5131,11 +5155,11 @@
                         </div>
 
                         <div class="post-footer">
-                            <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 184}</span><span class="btn-text"> Polubień</span></button>
-                            <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (${p.amen || 156})</span></button>
-                            <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2})</span></button>
-                            <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
+                            <button type="button" class="post-action-btn" onclick="togglePostLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 184}</span><span class="btn-text"> Polubień</span></button>
+                            <button type="button" class="post-action-btn amen" onclick="togglePostAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i><span class="amen-count">${p.amen ? ' ' + p.amen : ''}</span><span class="btn-text"> Amen!</span></button>
+                            <button type="button" class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i> <span class="comment-count-num">${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2}</span><span class="btn-text"> Komentarze</span></button>
+                            <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;" title="Otwórz Kanał"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
+                            <button type="button" class="post-action-btn" onclick="openMessageModal()" title="Czat / Wiadomość"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                         </div>
                         <!-- Expandable Comments Drawer V2 -->
                         <div class="comments-section-v2" id="comments_${p.id}"></div>
@@ -5177,10 +5201,10 @@
                     ${p.gdrive ? (window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(p.gdrive, { mode: p.gdrive.mode }) : '') : (p.gdriveEmbed ? `<div class="rich-gdrive-embed" style="margin-top:12px; border-radius:16px; overflow:hidden; border:1.5px solid rgba(52,168,83,0.35); background:rgba(15,23,42,0.85); box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="position:relative; width:100%; aspect-ratio:16/9; min-height:240px; background:#000;"><iframe src="${p.gdriveEmbed}" title="Dysk Google" style="width:100%; height:100%; border:none; display:block;" allow="autoplay" loading="lazy"></iframe></div></div>` : '')}
                     ${(p.image && p.image.trim() !== '' && !effectiveEmbedHtml) ? `<div style="width:100%; height:auto; max-height:none; overflow:visible; border-radius:16px; margin-top:12px; background:#070b14; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 24px rgba(0,0,0,0.4);"><img loading="lazy" decoding="async" src="${p.image}" alt="Zdjęcie do wpisu" class="post-image" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" style="cursor:pointer; width:100%; height:auto; max-height:none; object-fit:contain; display:block; margin:0 auto;"></div>` : ''}
                     <div class="post-footer">
-                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
-                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
-                        <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2})</span></button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
+                        <button type="button" class="post-action-btn" onclick="togglePostLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
+                        <button type="button" class="post-action-btn amen" onclick="togglePostAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i><span class="amen-count">${p.amen ? ' ' + p.amen : ''}</span><span class="btn-text"> Amen!</span></button>
+                        <button type="button" class="post-action-btn action-comments" onclick="toggleComments('${p.id}', 'wiolettarogowska')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i> <span class="comment-count-num">${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 2}</span><span class="btn-text"> Komentarze</span></button>
+                        <button type="button" class="post-action-btn" onclick="openMessageModal()" title="Czat / Wiadomość"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                     </div>
                     <!-- Expandable Comments Drawer V2 -->
                     <div class="comments-section-v2" id="comments_${p.id}"></div>

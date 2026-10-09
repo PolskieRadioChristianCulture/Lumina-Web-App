@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- LUMINA THEME FOIT GUARD (Default Light Edition) -->
@@ -286,13 +286,13 @@
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js?v=20260919_jola_fix"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20261008_chatcounter1"></script>
+    <script type="module" src="lumina-db.js?v=20261009_chatsession1"></script>
     <script src="js/lumina-comments-engine.js?v=20261007_guardian2"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-core.js?v=20261008_chatcounter1"></script>
-    <script type="module" src="lumina-security.js?v=20261008_chatcounter1"></script>
+    <script type="module" src="lumina-core.js?v=20261009_chatsession1"></script>
+    <script type="module" src="lumina-security.js?v=20261009_chatsession1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
@@ -2217,29 +2217,48 @@
         }
 
         .post-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+            padding-top: 12px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: clip !important;
         }
         .post-action-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 12px;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-secondary, #cbd5e1) !important;
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            min-height: 34px !important;
+            border-radius: 20px !important;
+            transition: all 0.2s ease !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
-        .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
-        .post-action-btn.liked { color: #f43f5e; }
-        .post-action-btn.amen { color: #facc15; }
+        .post-action-btn:hover { background: rgba(255, 255, 255, 0.12) !important; color: #fff !important; transform: translateY(-1px) !important; }
+        .post-action-btn.liked { background: rgba(236, 72, 153, 0.2) !important; border-color: rgba(236, 72, 153, 0.5) !important; color: #f43f5e !important; }
+        .post-action-btn.amen,
+        .post-action-btn.amen-active { background: rgba(245, 158, 11, 0.2) !important; border-color: rgba(245, 158, 11, 0.5) !important; color: #fbbf24 !important; }
+
+        /* PANCERNE SKRACANIE DO SAMYCH IKON: Teksty etykiet ukryte, liczniki i ikony zachowane */
+        .post-action-btn .btn-text,
+        .post-action-btn .action-label,
+        .post-action-btn span:not(.count):not(.like-count):not(.amen-count):not(.comment-count-num):not(.pray-sos-badge):not(.pray-live-badge) {
+            display: none !important;
+        }
 
         /* ──────────────────── MODAL / DIALOG ──────────────────── */
         .modal-overlay {
@@ -6693,11 +6712,11 @@
                         </div>
 
                         <div class="post-footer">
-                            <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 142}</span><span class="btn-text"> Polubień</span></button>
-                            <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (${p.amen || 120})</span></button>
-                            <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 3})</span></button>
-                            <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
+                            <button type="button" class="post-action-btn" onclick="togglePostLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 142}</span><span class="btn-text"> Polubień</span></button>
+                            <button type="button" class="post-action-btn amen" onclick="togglePostAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i><span class="amen-count">${p.amen ? ' ' + p.amen : ''}</span><span class="btn-text"> Amen!</span></button>
+                            <button type="button" class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i> <span class="comment-count-num">${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 3}</span><span class="btn-text"> Komentarze</span></button>
+                            <a href="${p.fullPageUrl || '#'}" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;" title="Otwórz Kanał"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
+                            <button type="button" class="post-action-btn" onclick="openMessageModal()" title="Czat / Wiadomość"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                         </div>
                         <!-- Expandable Comments Drawer V2 -->
                         <div class="comments-section-v2" id="comments_${p.id}"></div>
@@ -6795,11 +6814,11 @@
                     ${effectiveEmbedHtml || ''}
                     ${(!p.isRepost && hasRealPostImage) ? `<img src="${p.image}" alt="Post Image" class="post-image" loading="lazy" decoding="async" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')">` : ''}
                     <div class="post-footer">
-                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
-                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
-                        <button class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 1})</span></button>
-                        <button class="post-action-btn" onclick="sharePostLink('${p.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
+                        <button type="button" class="post-action-btn" onclick="togglePostLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
+                        <button type="button" class="post-action-btn amen" onclick="togglePostAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i><span class="amen-count">${p.amen ? ' ' + p.amen : ''}</span><span class="btn-text"> Amen!</span></button>
+                        <button type="button" class="post-action-btn action-comments" onclick="toggleComments('${p.id}', '${(p.authorSlug || curSlug || '').replace(/'/g, "\\'")}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i> <span class="comment-count-num">${window.LuminaComments ? window.LuminaComments.getCommentCount(p.id) : 1}</span><span class="btn-text"> Komentarze</span></button>
+                        <button type="button" class="post-action-btn" onclick="sharePostLink('${p.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i><span class="btn-text"> Udostępnij</span></button>
+                        <button type="button" class="post-action-btn" onclick="openMessageModal()" title="Czat / Wiadomość"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Czat</span></button>
                     </div>
                     <!-- Expandable Comments Drawer V2 -->
                     <div class="comments-section-v2" id="comments_${p.id}"></div>

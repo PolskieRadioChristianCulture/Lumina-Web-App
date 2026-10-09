@@ -107,43 +107,61 @@
     margin: 0 auto !important;
 }
 
-/* ── Post Footer Actions ── */
+/* ── Post Footer Actions (Pancerny standard samych ikon Zero-QA) ── */
 .post-footer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: clip !important;
 }
 .post-action-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #cbd5e1;
-    font-size: 0.80rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 6px 12px !important;
+    min-height: 34px !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e1 !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-family: inherit !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 .post-action-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #fff !important;
+    transform: translateY(-1px) !important;
 }
 .post-action-btn.liked {
-    background: rgba(236, 72, 153, 0.2);
-    border-color: rgba(236, 72, 153, 0.5);
-    color: #f472b6;
+    background: rgba(236, 72, 153, 0.2) !important;
+    border-color: rgba(236, 72, 153, 0.5) !important;
+    color: #f472b6 !important;
 }
-.post-action-btn.amen-active {
-    background: rgba(245, 158, 11, 0.2);
-    border-color: rgba(245, 158, 11, 0.5);
-    color: #fbbf24;
+.post-action-btn.amen-active,
+.post-action-btn.amen {
+    background: rgba(245, 158, 11, 0.2) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #fbbf24 !important;
+}
+/* PANCERNE SKRACANIE DO SAMYCH IKON: Teksty etykiet ukryte, liczniki i ikony zachowane */
+.post-action-btn .btn-text,
+.post-action-btn .action-label,
+.post-action-btn span:not(.count):not(.like-count):not(.amen-count):not(.comment-count-num):not(.pray-sos-badge):not(.pray-live-badge) {
+    display: none !important;
 }
 
 /* ── Post Composer Box ── */

@@ -4244,8 +4244,10 @@ export function startRealtimeChatNotificationsListener() {
     function getMyUserId() {
         const user = currentUserState;
         const prof = currentProfileState;
-        const raw = prof?.slug || prof?.uid || user?.slug || user?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
-        return normalizeChatUserId(raw);
+        const ownedProfile = user?.uid && prof?.uid === user.uid ? prof : null;
+        const raw = ownedProfile?.slug || user?.slug || user?.uid || localStorage.getItem('lumina_guest_id') || 'guest';
+        // Auth UIDs are case-sensitive; only display slugs may be normalized.
+        return raw === user?.uid ? raw : normalizeChatUserId(raw);
     }
 
     // 1. Listen to Public Chat Realtime Notifications
@@ -4285,8 +4287,38 @@ export function startRealtimeChatNotificationsListener() {
     } catch(e) {}
 
     // 2. Listen to User's Private Direct Chats Realtime Notifications & Badge Counts
+    let privateSessionKey = null;
+    let privateGeneration = 0;
+    let privateStops = [];
+    // Auth restoration/profile loading may finish after the public listener starts.
+    // Keep the existing queries; session lifecycle must not widen access rules.
+    onAuthChange(() => {
+        const user = currentUserState;
+        const sdkUser = auth?.currentUser;
+        const uid = user?.uid && !user.isAnonymous && sdkUser?.uid === user.uid && !sdkUser.isAnonymous
+            ? user.uid : null;
+        const myId = uid ? getMyUserId() : null;
+        const nextKey = uid ? `${uid}\u0000${myId}` : null;
+        if (nextKey === privateSessionKey) return;
+        const hadPrivateSession = privateSessionKey !== null;
+        privateSessionKey = nextKey;
+        const generation = ++privateGeneration;
+        privateStops.forEach(stop => { try { stop(); } catch(e) {} });
+        privateStops = [];
+        if (hadPrivateSession) {
+            window._luminaUnreadRoomsMap = new Map();
+            try {
+                localStorage.removeItem('lumina_unread_rooms_json');
+                localStorage.setItem('lumina_messages_unread_count', '0');
+            } catch(e) {}
+            if (typeof window.updateLuminaMessagesBadge === 'function') window.updateLuminaMessagesBadge(0);
+        }
+        if (!uid) return;
+        const isCurrentSession = () => generation === privateGeneration &&
+            currentUserState?.uid === uid && !currentUserState.isAnonymous &&
+            auth?.currentUser?.uid === uid && !auth.currentUser.isAnonymous;
+        const privateSessionStartTime = Date.now() - 4000;
     try {
-        const myId = getMyUserId();
         if (myId && myId !== 'guest') {
             const chatsQuery = query(
                 collection(db, 'lumina_chats'),
@@ -4294,7 +4326,8 @@ export function startRealtimeChatNotificationsListener() {
                 limit(40)
             );
 
-            onSnapshot(chatsQuery, (snap) => {
+            privateStops.push(onSnapshot(chatsQuery, (snap) => {
+                if (!isCurrentSession()) return;
                 const currentMyId = getMyUserId();
                 let totalUnread = 0;
                 const unreadMap = new Map();
@@ -4374,7 +4407,7 @@ export function startRealtimeChatNotificationsListener() {
                         handledMessageIds.add(lastMsgKey);
 
                         const ts = data.lastMessageTimestamp?.seconds ? (data.lastMessageTimestamp.seconds * 1000) : Date.now();
-                        if (ts >= sessionStartTime) {
+                        if (ts >= privateSessionStartTime) {
                             triggerLuminaPushNotification({
                                 title: `Masz wiadomość od ${data.lastSenderName || 'Użytkownika'}`,
                                 body: data.lastMessageText || '',
@@ -4386,7 +4419,7 @@ export function startRealtimeChatNotificationsListener() {
                         }
                     }
                 });
-            }, (err) => console.warn('Private Chat notif listener notice:', err));
+            }, (err) => { if (isCurrentSession()) console.warn('Private Chat notif listener notice:', err); }));
 
             // 3. Listen directly to lumina_notifications collection for recipient
             try {
@@ -4396,7 +4429,8 @@ export function startRealtimeChatNotificationsListener() {
                     orderBy('createdAt', 'desc'),
                     limit(15)
                 );
-                onSnapshot(notifsQuery, (snap) => {
+                privateStops.push(onSnapshot(notifsQuery, (snap) => {
+                    if (!isCurrentSession()) return;
                     snap.docChanges().forEach((change) => {
                         if (change.type === 'added') {
                             const data = change.doc.data();
@@ -4408,7 +4442,7 @@ export function startRealtimeChatNotificationsListener() {
                             if (senderId === myId) return;
 
                             const ts = data.createdAt?.seconds ? (data.createdAt.seconds * 1000) : Date.now();
-                            if (ts >= sessionStartTime) {
+                            if (ts >= privateSessionStartTime) {
                                 triggerLuminaPushNotification({
                                     title: data.title || 'Masz nową wiadomość',
                                     body: data.body || '',
@@ -4420,10 +4454,11 @@ export function startRealtimeChatNotificationsListener() {
                             }
                         }
                     });
-                }, () => {});
+                }, () => {}));
             } catch(e) {}
         }
     } catch(e) {}
+    });
 }
 
 // Auto-start listener on load

@@ -468,7 +468,7 @@
     /* PANCERNA ZASADA: na mobile przyciski akcji = TYLKO IKONY, zero tekstu */
     .post-action-btn .btn-text,
     .post-act-btn .btn-text,
-    .post-action-btn span:not(.count):not(.amen-count):not(.sound-toggle-label),
+    .post-action-btn span:not(.count):not(.like-count):not(.amen-count):not(.comment-count-num):not(.pray-sos-badge):not(.pray-live-badge):not(.sound-toggle-label),
     .btn-lumina-replace-action span,
     .action-icon-only .btn-text {
         display: none !important;

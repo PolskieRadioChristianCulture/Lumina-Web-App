@@ -133,9 +133,9 @@
                         const btn = document.createElement('button');
                         btn.type = 'button';
                         btn.className = 'post-action-btn action-comments post-act-btn';
-                        btn.title = 'Komentarze';
                         const count = this.getCommentCount(rawId) || this.getCommentCount(postId) || 2;
-                        btn.innerHTML = `<i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze (${count})</span>`;
+                        btn.innerHTML = `<i class="fa-solid fa-comment-dots"></i> <span class="comment-count-num">${count}</span><span class="btn-text"> Komentarze</span>`;
+                        btn.title = `Komentarze (${count})`;
                         btn.setAttribute('onclick', `toggleComments('${rawId}')`);
                         btn.onclick = (e) => {
                             if (e) {
@@ -347,9 +347,22 @@
         const searchScope = postCard || document;
         const btn = searchScope.querySelector(`.action-comments, [onclick*="toggleComments('${postId}')"]`);
         if (btn) {
-            const countSpan = btn.querySelector('.comment-count-num') || btn.querySelector('.btn-text');
+            btn.title = `Komentarze (${count})`;
+            let countSpan = btn.querySelector('.comment-count-num');
+            if (!countSpan) {
+                const textEl = btn.querySelector('.btn-text');
+                if (textEl) {
+                    countSpan = document.createElement('span');
+                    countSpan.className = 'comment-count-num';
+                    btn.insertBefore(countSpan, textEl);
+                    textEl.textContent = ' Komentarze';
+                }
+            }
             if (countSpan) {
-                countSpan.innerHTML = ` Komentarze (${count})`;
+                countSpan.textContent = count;
+            } else {
+                const legacyText = btn.querySelector('.btn-text');
+                if (legacyText) legacyText.innerHTML = ` Komentarze (${count})`;
             }
         }
     },
@@ -360,8 +373,23 @@
             if (m && m[1]) {
                 const postId = m[1];
                 const count = this.getCommentCount(postId);
-                const textEl = btn.querySelector('.btn-text') || btn;
-                textEl.innerHTML = ` Komentarze (${count})`;
+                btn.title = `Komentarze (${count})`;
+                let countSpan = btn.querySelector('.comment-count-num');
+                if (!countSpan) {
+                    const textEl = btn.querySelector('.btn-text');
+                    if (textEl) {
+                        countSpan = document.createElement('span');
+                        countSpan.className = 'comment-count-num';
+                        btn.insertBefore(countSpan, textEl);
+                        textEl.textContent = ' Komentarze';
+                    }
+                }
+                if (countSpan) {
+                    countSpan.textContent = count;
+                } else {
+                    const legacyText = btn.querySelector('.btn-text');
+                    if (legacyText) legacyText.innerHTML = ` Komentarze (${count})`;
+                }
             }
         });
     },
