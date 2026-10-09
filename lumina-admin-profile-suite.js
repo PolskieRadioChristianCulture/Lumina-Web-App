@@ -641,6 +641,81 @@
                     left: 14px;
                 }
             }
+
+            /* ══════════ AUTOHIDE STREAM / VIDEO OVERLAY BUTTONS (Włącz Dźwięk & Pełny Ekran TV) ══════════ */
+            .mission-live-player-wrapper {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .mission-live-player-overlay {
+                position: absolute;
+                bottom: 12px;
+                right: 12px;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                z-index: 10 !important;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                            visibility 0.4s ease !important;
+                pointer-events: auto;
+            }
+
+            /* Po kilku sekundach bezczynności przyciski płynnie znikają */
+            .mission-live-player-overlay.controls-faded {
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transform: translateY(8px) !important;
+                pointer-events: none !important;
+            }
+
+            /* Gdy kursor myszy lub dotyk jest bezpośrednio na przyciskach - wstrzymaj znikanie */
+            .mission-live-player-overlay:hover,
+            .mission-live-player-overlay:focus-within {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateY(0) !important;
+                pointer-events: auto !important;
+            }
+
+            .btn-unmute-live,
+            .btn-expand-live {
+                background: rgba(15, 23, 42, 0.88) !important;
+                border: 1px solid rgba(255, 255, 255, 0.28) !important;
+                color: #fff !important;
+                font-size: 0.80rem !important;
+                font-weight: 700 !important;
+                padding: 7px 15px !important;
+                border-radius: 20px !important;
+                cursor: pointer !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                backdrop-filter: blur(8px) !important;
+                -webkit-backdrop-filter: blur(8px) !important;
+                transition: all 0.2s ease !important;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+                text-decoration: none !important;
+                line-height: 1.3 !important;
+            }
+
+            .btn-unmute-live:hover {
+                background: rgba(212, 175, 55, 0.35) !important;
+                border-color: #d4af37 !important;
+                color: #fde047 !important;
+                transform: translateY(-1.5px) !important;
+            }
+
+            .btn-expand-live:hover {
+                background: rgba(56, 189, 248, 0.35) !important;
+                border-color: #38bdf8 !important;
+                color: #7dd3fc !important;
+                transform: translateY(-1.5px) !important;
+            }
         `;
         document.head.appendChild(style);
     }
@@ -1360,6 +1435,7 @@
             this.checkIfCurrentProfileIsBlocked();
             this.enrichLuminaPostElements();
             this.setupPostEnricherObserver();
+            this.initLivePlayerOverlayAutoHide();
             window.addEventListener('resize', () => this.repositionHudBar());
         },
 
@@ -3022,8 +3098,81 @@
                     }
                     el.dataset.luminaAutoLinked = 'true';
                 });
+
+                // 3. Automatyczne podpinanie autoukrywania przycisków odtwarzacza live
+                this.initLivePlayerOverlayAutoHide();
             } catch(err) {
                 console.warn('[LuminaAdminSuite] Error enriching post elements:', err);
+            }
+        },
+
+        initLivePlayerOverlayAutoHide: function() {
+            try {
+                const overlays = document.querySelectorAll('.mission-live-player-overlay');
+                overlays.forEach(overlay => {
+                    const wrapper = overlay.closest('.mission-live-player-wrapper') ||
+                                    overlay.closest('.post-card-live') ||
+                                    overlay.closest('#card_live_tablica_community') ||
+                                    overlay.closest('#post_live_sds_apokalipsa') ||
+                                    overlay.parentElement;
+
+                    if (!wrapper || wrapper._liveOverlayAutoHideAttached) return;
+                    wrapper._liveOverlayAutoHideAttached = true;
+
+                    let hideTimeout = null;
+
+                    const showControls = () => {
+                        overlay.classList.remove('controls-faded');
+                        startHideTimer(3500);
+                    };
+
+                    const hideControls = () => {
+                        if (overlay.matches(':hover') || overlay.contains(document.activeElement)) {
+                            return;
+                        }
+                        overlay.classList.add('controls-faded');
+                    };
+
+                    const startHideTimer = (ms = 3500) => {
+                        if (hideTimeout) clearTimeout(hideTimeout);
+                        hideTimeout = setTimeout(hideControls, ms);
+                    };
+
+                    // 1. Start: przyciski są widoczne na początku, a po 3.5s bezczynności płynnie znikają
+                    startHideTimer(3500);
+
+                    // 2. Aktywność: ruch myszą, dotyk, klik na odtwarzaczu lub jego karcie
+                    const triggerEl = wrapper.closest('.feed-post-card, .post-card, .post-card-live') || wrapper;
+                    ['mousemove', 'mouseenter', 'touchstart', 'pointermove', 'click'].forEach(evtType => {
+                        triggerEl.addEventListener(evtType, showControls, { passive: true });
+                    });
+
+                    // 3. Po opuszczeniu odtwarzacza schowaj po 1.5s
+                    triggerEl.addEventListener('mouseleave', () => {
+                        startHideTimer(1500);
+                    });
+
+                    // 4. Gdy mysz jest bezpośrednio nad przyciskami - wstrzymaj ukrywanie
+                    overlay.addEventListener('mouseenter', () => {
+                        if (hideTimeout) clearTimeout(hideTimeout);
+                        overlay.classList.remove('controls-faded');
+                    });
+
+                    overlay.addEventListener('mouseleave', () => {
+                        startHideTimer(2500);
+                    });
+
+                    // 5. Po kliknięciu w "Włącz Dźwięk" / "Wycisz Dźwięk" - odśwież widoczność na chwilę i schowaj
+                    const unmuteBtn = overlay.querySelector('.btn-unmute-live');
+                    if (unmuteBtn) {
+                        unmuteBtn.addEventListener('click', () => {
+                            showControls();
+                            startHideTimer(3000);
+                        });
+                    }
+                });
+            } catch(e) {
+                console.warn('[LuminaAdminSuite] Live overlay auto-hide error:', e);
             }
         },
 
@@ -3059,9 +3208,14 @@
         }
     };
 
-    // Globalna ekspozycja funkcji formatującej
+    // Globalna ekspozycja funkcji formatującej i autoukrywania
     window.formatLuminaPostTextWithLinks = function(text) {
         return window.LuminaAdminSuite ? window.LuminaAdminSuite.formatLuminaPostTextWithLinks(text) : text;
+    };
+    window.initLivePlayerOverlayAutoHide = function() {
+        if (window.LuminaAdminSuite && typeof window.LuminaAdminSuite.initLivePlayerOverlayAutoHide === 'function') {
+            window.LuminaAdminSuite.initLivePlayerOverlayAutoHide();
+        }
     };
 
     // Automatyczna inicjalizacja po załadowaniu DOM

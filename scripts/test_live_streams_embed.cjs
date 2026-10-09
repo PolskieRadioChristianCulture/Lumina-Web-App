@@ -67,8 +67,9 @@ server.listen(PORT, async () => {
         }
 
         const unmuteBtnTablica = tablicaLiveCard.locator('.btn-unmute-live');
+        const overlayTablica = tablicaLiveCard.locator('.mission-live-player-overlay');
         const isUnmuteTablicaVisible = await unmuteBtnTablica.isVisible();
-        console.log(`Tablica Unmute button visible: ${isUnmuteTablicaVisible}`);
+        console.log(`Tablica Unmute button initially visible: ${isUnmuteTablicaVisible}`);
 
         // Check initial default muted state
         let tablicaBtnText = (await unmuteBtnTablica.innerText()).trim();
@@ -76,6 +77,25 @@ server.listen(PORT, async () => {
         console.log(`Initial Tablica button state: text="${tablicaBtnText}", data-unmuted="${tablicaBtnUnmuted}"`);
         if (tablicaBtnUnmuted !== 'false' || !tablicaBtnText.includes('Włącz Dźwięk')) {
             throw new Error(`Tablica default state is not muted: ${tablicaBtnText}, data-unmuted=${tablicaBtnUnmuted}`);
+        }
+
+        // Test Auto-Hide: wait 4s without mouse activity and verify controls fade away
+        console.log('Testing auto-hide after inactivity (waiting 4s)...');
+        await page.waitForTimeout(4000);
+        const isFadedAfterTimeout = await overlayTablica.evaluate(el => el.classList.contains('controls-faded'));
+        console.log(`Controls faded after timeout: ${isFadedAfterTimeout}`);
+        if (!isFadedAfterTimeout) {
+            throw new Error('Overlay did not receive controls-faded class after inactivity!');
+        }
+
+        // Test Wake-up on user activity: hover over player restores buttons
+        console.log('Testing wake-up on mouse hover...');
+        await tablicaLiveCard.hover();
+        await page.waitForTimeout(400);
+        const isRestored = await overlayTablica.evaluate(el => !el.classList.contains('controls-faded'));
+        console.log(`Controls restored after hover: ${isRestored}`);
+        if (!isRestored) {
+            throw new Error('Overlay did not restore visibility on hover!');
         }
 
         // Click to unmute
@@ -103,7 +123,7 @@ server.listen(PORT, async () => {
 
         console.log('2. Verifying Cezary Personal Profile Live Stream & Mute/Unmute...');
         await page.goto(`http://127.0.0.1:${PORT}/lumina.cezaryrgowski.html`, { waitUntil: 'domcontentloaded' });
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(500);
 
         const cezaryLiveCard = page.locator('#post_live_cezary_personal_stream');
         await cezaryLiveCard.waitFor({ state: 'visible', timeout: 5000 });
@@ -115,8 +135,9 @@ server.listen(PORT, async () => {
         }
 
         const unmuteBtnCezary = cezaryLiveCard.locator('.btn-unmute-live');
+        const overlayCezary = cezaryLiveCard.locator('.mission-live-player-overlay');
         const isUnmuteCezaryVisible = await unmuteBtnCezary.isVisible();
-        console.log(`Cezary Unmute button visible: ${isUnmuteCezaryVisible}`);
+        console.log(`Cezary Unmute button initially visible: ${isUnmuteCezaryVisible}`);
 
         // Check initial default muted state
         let cezaryBtnText = (await unmuteBtnCezary.innerText()).trim();
@@ -124,6 +145,26 @@ server.listen(PORT, async () => {
         console.log(`Initial Cezary button state: text="${cezaryBtnText}", data-unmuted="${cezaryBtnUnmuted}"`);
         if (cezaryBtnUnmuted !== 'false' || !cezaryBtnText.includes('Włącz Dźwięk')) {
             throw new Error(`Cezary default state is not muted: ${cezaryBtnText}, data-unmuted=${cezaryBtnUnmuted}`);
+        }
+
+        // Test Auto-Hide: wait 4s without mouse activity and verify controls fade away
+        console.log('Testing Cezary profile auto-hide after inactivity (waiting 4s)...');
+        await page.mouse.move(0, 0);
+        await page.waitForTimeout(4000);
+        const isCezaryFaded = await overlayCezary.evaluate(el => el.classList.contains('controls-faded'));
+        console.log(`Cezary controls faded after timeout: ${isCezaryFaded}`);
+        if (!isCezaryFaded) {
+            throw new Error('Cezary overlay did not receive controls-faded class after inactivity!');
+        }
+
+        // Test Wake-up on user activity: hover over player restores buttons
+        console.log('Testing Cezary profile wake-up on mouse hover...');
+        await cezaryLiveCard.locator('.post-header').hover();
+        await page.waitForTimeout(400);
+        const isCezaryRestored = await overlayCezary.evaluate(el => !el.classList.contains('controls-faded'));
+        console.log(`Cezary controls restored after hover: ${isCezaryRestored}`);
+        if (!isCezaryRestored) {
+            throw new Error('Cezary overlay did not restore visibility on hover!');
         }
 
         // Click to unmute

@@ -4097,6 +4097,28 @@
             align-items: center;
             gap: 8px;
             z-index: 10;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.4s ease;
+            pointer-events: auto;
+        }
+
+        .mission-live-player-overlay.controls-faded {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(8px) !important;
+            pointer-events: none !important;
+        }
+
+        .mission-live-player-overlay:hover,
+        .mission-live-player-overlay:focus-within {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
         }
 
         .btn-unmute-live {

@@ -995,7 +995,7 @@
             width: 100%; height: 100%;
             border: none;
         }
-        /* Nakładka kontrolna odtwarzacza: ukryta domyślnie, pojawia się płynnie przy najechaniu myszką lub dotknięciu */
+        /* Nakładka kontrolna odtwarzacza: widoczna na start, znika po 3.5s bezczynności, pojawia się przy aktywności */
         .mission-live-player-overlay {
             position: absolute;
             bottom: 12px;
@@ -1006,18 +1006,24 @@
             align-items: center;
             gap: 10px;
             z-index: 10;
-            pointer-events: none;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-        .mission-live-player-wrapper:hover .mission-live-player-overlay,
-        .mission-live-player-wrapper.show-controls .mission-live-player-overlay {
+            pointer-events: auto;
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
-            pointer-events: auto;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+        }
+        .mission-live-player-overlay.controls-faded {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: translateY(8px) !important;
+            pointer-events: none !important;
+        }
+        .mission-live-player-overlay:hover,
+        .mission-live-player-overlay:focus-within {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
         }
         .btn-unmute-live, .btn-expand-live {
             pointer-events: auto;
