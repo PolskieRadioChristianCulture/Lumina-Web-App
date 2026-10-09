@@ -2139,15 +2139,40 @@
         .composer-btn-publish span:not(.count):not(i) {
             display: none !important;
         }
-        @media (max-width: 600px) {
-            #composerOwnerStatusBadge span {
-                display: none !important;
-            }
-            #composerOwnerStatusBadge {
-                padding: 8px 10px !important;
-                min-width: 38px !important;
-                justify-content: center !important;
-            }
+        #composerOwnerStatusBadge,
+        .composer-btn-owner-status {
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            min-height: 38px !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 1rem !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+            background: rgba(34, 197, 94, 0.15) !important;
+            border: 1px solid rgba(34, 197, 94, 0.4) !important;
+            color: #86efac !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        #composerOwnerStatusBadge.locked {
+            background: rgba(250, 204, 21, 0.15) !important;
+            border-color: rgba(250, 204, 21, 0.4) !important;
+            color: #fde047 !important;
+        }
+        #composerOwnerStatusBadge:hover {
+            transform: translateY(-1px) scale(1.08) !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+        }
+        #composerOwnerStatusBadge:active {
+            transform: scale(0.96) !important;
+        }
+        #composerOwnerStatusBadge span {
+            display: none !important;
         }
 
         /* Post Card on Wall */
@@ -4478,7 +4503,6 @@
                         <div class="composer-top">
                             <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(typeof checkOwnerAuthSession==='function')checkOwnerAuthSession();" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
-                            <button type="button" onclick="toggleOwnerAuthMode()" id="composerOwnerStatusBadge" title="Status Właściciela" style="border:none; border-radius:10px; padding:6px 10px; font-size:0.75rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; transition:all 0.2s;"></button>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -4517,6 +4541,7 @@
                                 <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()" title="Osadź wideo (YouTube / MP4)" aria-label="Osadź wideo"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><span class="btn-text"> Osadź Wideo</span></button>
                                 <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()" title="Dodaj werset biblijny" aria-label="Dodaj werset"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i><span class="btn-text"> Dodaj Werset</span></button>
                                 <button type="button" class="composer-btn-attach composer-btn-gdrive" onclick="openGoogleDriveModal()" title="Dołącz plik z Dysku Google" aria-label="Dysk Google"><i class="fa-brands fa-google-drive" style="color:#34a853;"></i><span class="btn-text"> Dysk Google</span></button>
+                                <button type="button" class="composer-btn-attach composer-btn-owner-status" onclick="toggleOwnerAuthMode()" id="composerOwnerStatusBadge" title="Status Właściciela" aria-label="Status Właściciela"><i class="fa-solid fa-lock-open" style="color:#22c55e;"></i><span class="btn-text"> Właściciel</span></button>
                             </div>
                             <button type="button" class="composer-btn-publish" onclick="publishFeedPost()" title="Opublikuj wpis" aria-label="Opublikuj wpis"><i class="fa-solid fa-paper-plane"></i><span class="btn-text"> Opublikuj</span></button>
                         </div>
@@ -7342,11 +7367,13 @@
                 if (hud) hud.style.display = 'grid';
             const compBadge = document.getElementById('composerOwnerStatusBadge');
             if (compBadge) {
-                compBadge.style.background = 'rgba(34,197,94,0.15)';
-                compBadge.style.color = '#86efac';
-                compBadge.style.border = '1px solid rgba(34,197,94,0.4)';
-                compBadge.innerHTML = '<i class="fa-solid fa-lock-open"></i> <span>Właściciel</span>';
-                compBadge.title = 'Profil odblokowany (Cezary Rogowski). Kliknij, aby zablokować.';
+                compBadge.className = 'composer-btn-attach composer-btn-owner-status unlocked';
+                compBadge.style.background = 'rgba(34,197,94,0.18)';
+                compBadge.style.color = '#4ade80';
+                compBadge.style.borderColor = 'rgba(34,197,94,0.45)';
+                compBadge.innerHTML = '<i class="fa-solid fa-lock-open" style="color:#22c55e;"></i>';
+                compBadge.title = 'Profil odblokowany (Właściciel). Kliknij, aby zablokować.';
+                compBadge.setAttribute('aria-label', 'Status Właściciela: Odblokowany');
             }
             } else {
                 document.body.classList.remove('owner-mode-active');
@@ -7360,11 +7387,13 @@
                 if (hud) hud.style.display = 'none';
             const compBadge = document.getElementById('composerOwnerStatusBadge');
             if (compBadge) {
+                compBadge.className = 'composer-btn-attach composer-btn-owner-status locked';
                 compBadge.style.background = 'rgba(250,204,21,0.15)';
                 compBadge.style.color = '#fde047';
-                compBadge.style.border = '1px solid rgba(250,204,21,0.4)';
-                compBadge.innerHTML = '<i class="fa-solid fa-key"></i> <span>Zaloguj PIN</span>';
-                compBadge.title = 'Kliknij, aby odblokować panel właściciela (PIN 7777).';
+                compBadge.style.borderColor = 'rgba(250,204,21,0.4)';
+                compBadge.innerHTML = '<i class="fa-solid fa-lock" style="color:#facc15;"></i>';
+                compBadge.title = 'Zaloguj się kodem PIN jako Właściciel.';
+                compBadge.setAttribute('aria-label', 'Zaloguj kodem PIN');
             }
             }
         }

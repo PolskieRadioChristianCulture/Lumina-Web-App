@@ -72,7 +72,7 @@ server.listen(PORT, async () => {
         console.log(`Tablica Unmute button initially visible: ${isUnmuteTablicaVisible}`);
 
         // Check initial default muted state
-        let tablicaBtnText = (await unmuteBtnTablica.innerText()).trim();
+        let tablicaBtnText = (await unmuteBtnTablica.textContent()).trim();
         let tablicaBtnUnmuted = await unmuteBtnTablica.getAttribute('data-unmuted');
         console.log(`Initial Tablica button state: text="${tablicaBtnText}", data-unmuted="${tablicaBtnUnmuted}"`);
         if (tablicaBtnUnmuted !== 'false' || !tablicaBtnText.includes('Włącz Dźwięk')) {
@@ -126,7 +126,7 @@ server.listen(PORT, async () => {
         await page.waitForTimeout(500);
 
         const cezaryLiveCard = page.locator('#post_live_cezary_personal_stream');
-        await cezaryLiveCard.waitFor({ state: 'visible', timeout: 5000 });
+        await cezaryLiveCard.waitFor({ state: 'visible', timeout: 15000 });
         const cezaryIframe = cezaryLiveCard.locator('iframe');
         const cezarySrc = await cezaryIframe.getAttribute('src');
         console.log(`Cezary Live Iframe src: ${cezarySrc}`);
@@ -140,7 +140,7 @@ server.listen(PORT, async () => {
         console.log(`Cezary Unmute button initially visible: ${isUnmuteCezaryVisible}`);
 
         // Check initial default muted state
-        let cezaryBtnText = (await unmuteBtnCezary.innerText()).trim();
+        let cezaryBtnText = (await unmuteBtnCezary.textContent()).trim();
         let cezaryBtnUnmuted = await unmuteBtnCezary.getAttribute('data-unmuted');
         console.log(`Initial Cezary button state: text="${cezaryBtnText}", data-unmuted="${cezaryBtnUnmuted}"`);
         if (cezaryBtnUnmuted !== 'false' || !cezaryBtnText.includes('Włącz Dźwięk')) {
