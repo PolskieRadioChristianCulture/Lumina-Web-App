@@ -88,6 +88,64 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
     }
   };
 }
+export function kvCourseStore(kv) {
+  if (!kv) throw new Error('KV binding required for kvCourseStore');
+  return {
+    async profileForAccount(uid) {
+      return '';
+    },
+    async profileStillOwned(profileId, uid) {
+      return true;
+    },
+    async cursor() {
+      const cur = await kv.get('__dispatch_cursor__', 'json');
+      return cur ? { after: cur.after || '', revision: cur.revision || '1' } : null;
+    },
+    async advance(after, revision) {
+      const rev = String(Date.now());
+      await kv.put('__dispatch_cursor__', JSON.stringify({ after, revision: rev }));
+      return true;
+    },
+    async get(uid) {
+      const record = await kv.get(`sub:${uid}`, 'json');
+      if (!record) return null;
+      return { data: record, revision: record.revision || '1' };
+    },
+    async save(uid, data, revision) {
+      const existing = await kv.get(`sub:${uid}`, 'json');
+      if (revision && existing && existing.revision !== revision) {
+        return false;
+      }
+      const rev = String((Number(existing?.revision || 0) + 1));
+      const merged = { ...existing, ...data, revision: rev };
+      await kv.put(`sub:${uid}`, JSON.stringify(merged));
+      return true;
+    },
+    async remove(uid, revision) {
+      const existing = await kv.get(`sub:${uid}`, 'json');
+      if (revision && existing && existing.revision !== revision) {
+        return false;
+      }
+      await kv.delete(`sub:${uid}`);
+      return true;
+    },
+    async pending(lessonNumber, after = '') {
+      const list = await kv.list({ prefix: 'sub:', limit: 10, cursor: after || undefined });
+      const records = [];
+      for (const key of list.keys) {
+        const data = await kv.get(key.name, 'json');
+        if (data) {
+          records.push({
+            uid: data.uid || key.name.replace(/^sub:/, ''),
+            data,
+            revision: data.revision || '1'
+          });
+        }
+      }
+      return records;
+    }
+  };
+}
 export async function publishedCourseLessons(fetchImpl = fetch, now = Date.now()) {
   const r = await fetchImpl(`${ORIGIN}/data/daily-course-push.json`, {headers:{'cache-control':'no-cache'}});
   if (!r.ok) throw Error('lesson_manifest_unavailable');
@@ -107,22 +165,32 @@ export async function latestCourseLesson(fetchImpl = fetch, now = Date.now()) {
 export async function courseSubscriptionAction(uid, body, deps) {
   if (!uid) return {status:401,body:{error:'Wymagane logowanie.'}};
   if (!body || !['status','subscribe','unsubscribe'].includes(body.action) ||
-      Object.keys(body).some(k=>!['action','consent','preferredHour'].includes(k)))
+      Object.keys(body).some(k=>!['action','consent','preferredHour','fcmToken'].includes(k)))
     return {status:400,body:{error:'Nieprawidłowe żądanie.'}};
   if (body.action==='unsubscribe') {await deps.store.remove(uid);return {status:200,body:{subscribed:false}};}
   const existing = await deps.store.get(uid);
   if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled,preferredHour:existing?.data.preferredHour ?? 7}};
   if (body.consent!==true) return {status:400,body:{error:'Wymagana świadoma zgoda na powiadomienia kursu.'}};
-  if (!(await deps.tokens(uid)).length) return {status:409,body:{error:'Najpierw włącz push na tym urządzeniu.'}};
+  const existingTokens = existing?.data?.tokens || (existing?.data?.fcmToken ? [existing.data.fcmToken] : []);
+  const availableTokens = (body.fcmToken && typeof body.fcmToken === 'string' && body.fcmToken.length > 10)
+    ? [body.fcmToken]
+    : (existingTokens.length ? existingTokens : await deps.tokens(uid));
+  if (!availableTokens.length) return {status:409,body:{error:'Najpierw włącz push na tym urządzeniu.'}};
   const lesson = await deps.latest();
   if (!lesson) return {status:503,body:{error:'Katalog lekcji jest niedostępny.'}};
   const allowedHours = [6, 7, 8, 20];
   const preferredHour = Number.isInteger(body.preferredHour) && allowedHours.includes(body.preferredHour) ? body.preferredHour : 7;
-  if (existing?.data.enabled && existing.data.preferredHour === preferredHour) return {status:200,body:{subscribed:true,preferredHour}};
+  if (existing?.data.enabled && existing.data.preferredHour === preferredHour && (!body.fcmToken || existingTokens.includes(body.fcmToken))) {
+    return {status:200,body:{subscribed:true,preferredHour}};
+  }
   const profileId=deps.store.profileForAccount ? await deps.store.profileForAccount(uid) : '';
+  const tokensToSave = (body.fcmToken && typeof body.fcmToken === 'string')
+    ? [...new Set([body.fcmToken, ...existingTokens])]
+    : availableTokens;
   const saved = await deps.store.save(uid,{
     uid,enabled:true,profileId,preferredHour,consentVersion:'daily-course-push-v1',
-    consentedAt:new Date().toISOString(),lastLessonNumber:existing?.data.lastLessonNumber ?? lesson.number,attempts:0,leaseUntil:0
+    consentedAt:new Date().toISOString(),lastLessonNumber:existing?.data.lastLessonNumber ?? lesson.number,attempts:0,leaseUntil:0,
+    tokens: tokensToSave
   },existing?.revision);
   if (!saved) return {status:409,body:{error:'Ponów zapis subskrypcji.'}};
   return {status:200,body:{subscribed:true,preferredHour}};

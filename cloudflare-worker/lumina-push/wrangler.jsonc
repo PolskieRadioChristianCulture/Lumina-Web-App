@@ -5,6 +5,12 @@
   "durable_objects": {
     "bindings": [{ "name": "OWNER_PUSH_TEST_GUARD", "class_name": "OwnerPushTestGuard" }]
   },
+  "kv_namespaces": [
+    {
+      "binding": "COURSE_SUBSCRIPTIONS",
+      "id": "635b6023022f4b118dcd73ace8b16ecd"
+    }
+  ],
   "migrations": [{ "tag": "owner-push-test-v1", "new_sqlite_classes": ["OwnerPushTestGuard"] }],
   "compatibility_date": "2026-09-13",
   "vars": {

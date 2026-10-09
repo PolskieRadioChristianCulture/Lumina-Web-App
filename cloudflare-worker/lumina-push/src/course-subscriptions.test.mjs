@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from './index.js';
-import {courseSubscriptionAction,courseSubscriptionFailure,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,courseAccountState} from './course-subscriptions.js';
+import {courseSubscriptionAction,courseSubscriptionFailure,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,kvCourseStore,courseAccountState} from './course-subscriptions.js';
 import {dailyCourseManifest} from '../../../scripts/daily-course-manifest.mjs';
 const lesson = {number:8,title:'Wieża Babel',availableAt:'2026-10-08T00:00:00.000Z',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'};
 test('quota and IAM failures never appear as a missing or successful subscription',async()=>{
@@ -224,4 +224,48 @@ test('cursor create uses exists=false; deletion uses revision to preserve newer 
   let request;const store=firestoreCourseStore({FIREBASE_PROJECT_ID:'synthetic'},'fake',async(url,opt)=>{request={url,opt};return Response.json({});});
   await store.advance('student');assert.ok(request.url.includes('currentDocument.exists=false'));
   await store.remove('student','r1');assert.ok(request.url.includes('currentDocument.updateTime=r1'));
+});
+test('kvCourseStore implements get, save, remove, cursor, advance and pending', async () => {
+  const map = new Map();
+  const mockKv = {
+    async get(key, format) {
+      const val = map.get(key);
+      if (!val) return null;
+      return format === 'json' ? JSON.parse(val) : val;
+    },
+    async put(key, value) {
+      map.set(key, typeof value === 'string' ? value : JSON.stringify(value));
+    },
+    async delete(key) {
+      map.delete(key);
+    },
+    async list({ prefix }) {
+      const keys = [...map.keys()]
+        .filter(k => k.startsWith(prefix))
+        .map(name => ({ name }));
+      return { keys };
+    }
+  };
+  const store = kvCourseStore(mockKv);
+  assert.equal(await store.get('student1'), null);
+  assert.equal(await store.save('student1', { uid: 'student1', enabled: true, preferredHour: 7 }), true);
+  const sub = await store.get('student1');
+  assert.equal(sub.data.uid, 'student1');
+  assert.equal(sub.data.preferredHour, 7);
+  assert.equal(sub.revision, '1');
+
+  // Pending listing
+  const pending = await store.pending(8);
+  assert.equal(pending.length, 1);
+  assert.equal(pending[0].uid, 'student1');
+
+  // Cursor & advance
+  assert.equal(await store.cursor(), null);
+  await store.advance('student1');
+  const cur = await store.cursor();
+  assert.equal(cur.after, 'student1');
+
+  // Remove
+  await store.remove('student1');
+  assert.equal(await store.get('student1'), null);
 });

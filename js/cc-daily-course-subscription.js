@@ -49,13 +49,17 @@
       const isLogged = !!(user && !user.isAnonymous);
       if (loginLink) loginLink.hidden = isLogged;
       if (!isLogged) throw Error('Zaloguj się, by bezpłatnie korzystać z większej liczby możliwości i zarządzać subskrypcją lekcji.');
+      let pushToken = null;
       if (action==='subscribe') {
-        const token = await sdk.requestNotificationPermission(user.uid);
-        if (!token) throw Error('Push nie został włączony. Sprawdź zgodę na powiadomienia w przeglądarce i spróbuj ponownie.');
+        pushToken = await sdk.requestNotificationPermission(user.uid);
+        if (!pushToken) {
+          try { pushToken = localStorage.getItem('lumina_fcm_token'); } catch(_) {}
+        }
+        if (!pushToken) throw Error('Push nie został włączony. Sprawdź zgodę na powiadomienia w przeglądarce i spróbuj ponownie.');
       }
       if (auth.currentUser?.uid!==user.uid) throw Error('Konto się zmieniło. Spróbuj ponownie.');
       const preferredHour = hourEl ? parseInt(hourEl.value, 10) : 7;
-      const payload = action==='subscribe' ? {action,consent:true,preferredHour} : {action};
+      const payload = action==='subscribe' ? {action,consent:true,preferredHour,fcmToken:pushToken} : {action};
       const response = await fetch('https://lumina-push.nazirczarkes.workers.dev/v1/course/subscription',{
         method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+await user.getIdToken()},
         body:JSON.stringify(payload)

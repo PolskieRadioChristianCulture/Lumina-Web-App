@@ -1,4 +1,4 @@
-import { firestoreCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, courseSubscriptionFailure, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
+import { firestoreCourseStore, kvCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, courseSubscriptionFailure, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
 import { ownerPushTest } from './owner-push-test.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -274,17 +274,31 @@ async function handlePush(request, env, kind, documentId) {
 }
 
 function courseDeps(env, accessToken, currentHour = null) {
+  const store = env.COURSE_SUBSCRIPTIONS
+    ? kvCourseStore(env.COURSE_SUBSCRIPTIONS)
+    : firestoreCourseStore(env, accessToken);
+
   return {
     currentHour,
-    store:firestoreCourseStore(env,accessToken),
-    latest:()=>latestCourseLesson(),
-    lessons:()=>publishedCourseLessons(),
-    accountState:uid=>courseAccountState(uid,env,accessToken),
-    tokens:uid=>getRecipientTokens(uid,'',accessToken,env),
-    send:(token,lesson)=>sendFcm(token,{
-      title:'Nowa lekcja — Z Biblią za Pan Brat',body:lesson.title,type:'daily_course_lesson',
-      tag:`cc-daily-lesson-${lesson.number}`,url:lesson.url,icon:`${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`,senderId:'',documentId:String(lesson.number)
-    },accessToken,env)
+    store,
+    latest: () => latestCourseLesson(),
+    lessons: () => publishedCourseLessons(),
+    accountState: uid => courseAccountState(uid, env, accessToken),
+    tokens: async uid => {
+      if (env.COURSE_SUBSCRIPTIONS) {
+        try {
+          const sub = await store.get(uid);
+          if (sub?.data?.tokens && Array.isArray(sub.data.tokens) && sub.data.tokens.length > 0) {
+            return sub.data.tokens;
+          }
+        } catch (_) {}
+      }
+      return await getRecipientTokens(uid, '', accessToken, env);
+    },
+    send: (token, lesson) => sendFcm(token, {
+      title: 'Nowa lekcja — Z Biblią za Pan Brat', body: lesson.title, type: 'daily_course_lesson',
+      tag: `cc-daily-lesson-${lesson.number}`, url: lesson.url, icon: `${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`, senderId: '', documentId: String(lesson.number)
+    }, accessToken, env)
   };
 }
 export default {
@@ -381,7 +395,7 @@ export default {
         catch (_) { return json({error:'Nieprawidłowy JSON.'},400,cors); }
         if (!body || typeof body !== 'object' || Array.isArray(body) ||
             !['status','subscribe','unsubscribe'].includes(body.action) ||
-            Object.keys(body).some(k=>!['action','consent','preferredHour'].includes(k)))
+            Object.keys(body).some(k=>!['action','consent','preferredHour','fcmToken'].includes(k)))
           return json({error:'Nieprawidłowe żądanie.'},400,cors);
         const token = await getGoogleAccessToken(env);
         const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));
