@@ -143,6 +143,10 @@
     const params = new URLSearchParams();
     if (title) params.set('share_title', title);
     if (text) params.set('share_text', text);
+    if (url) {
+      params.set('share_url', url);
+      params.set('url', url);
+    }
     if (imageUrl) {
       params.set('share_image', imageUrl);
       params.set('share_img', imageUrl);

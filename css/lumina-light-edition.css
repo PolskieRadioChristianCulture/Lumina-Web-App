@@ -1561,7 +1561,7 @@ html[data-lumina-theme="light"] #userStatusEl a,
 body.theme-lumina-light #userStatusEl a {
     color: #9D174D !important;
     font-weight: 800 !important;
-    text-decoration: underline !important;
+    text-decoration: none !important;
 }
 
 html[data-lumina-theme="light"] #userGoalEl,
@@ -4469,7 +4469,12 @@ html[data-lumina-theme="light"] .rich-og-top-bar {
     background: #FFFFFF !important;
     color: #3B3632 !important;
 }
-html[data-lumina-theme="light"] .rich-og-title { color: #1C1917 !important; }
+html[data-lumina-theme="light"] .rich-og-title {
+    color: #1C1917 !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
 html[data-lumina-theme="light"] .rich-og-desc { color: #3B3632 !important; }
 html[data-lumina-theme="light"] .rich-og-host { color: #655F58 !important; }
 html[data-lumina-theme="light"] .rich-og-action-row { border-color: #DDD5C8 !important; }
@@ -4490,8 +4495,47 @@ html[data-lumina-theme="light"] .rich-og-cta.store-cta :is(span,i) {
     background: #806120 !important;
     border-color: #806120 !important;
 }
-html[data-lumina-theme="light"] .rich-og-cta:hover { filter: brightness(.9); }
 html[data-lumina-theme="light"] .rich-og-cta:focus-visible {
     outline: 3px solid #806120 !important;
     outline-offset: 3px;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LUMINA GLOBAL ZERO-UNDERLINE POLICY FOR ALL FEED POST LINKS (LIGHT EDITION)
+   ══════════════════════════════════════════════════════════════════════════ */
+html[data-lumina-theme="light"] .post-details-box a,
+html[data-lumina-theme="light"] .post-desc-text a,
+html[data-lumina-theme="light"] .post-card-1x1 a.post-rich-link,
+html[data-lumina-theme="light"] .post-card-1x1 a.lumina-post-link,
+html[data-lumina-theme="light"] .post-card-1x1 a.reflection-link,
+html[data-lumina-theme="light"] .post-rich-link,
+html[data-lumina-theme="light"] .lumina-post-link,
+html[data-lumina-theme="light"] .reflection-link,
+html[data-lumina-theme="light"] a.post-rich-link,
+html[data-lumina-theme="light"] a.lumina-post-link,
+html[data-lumina-theme="light"] a.reflection-link,
+html[data-lumina-theme="light"] .rich-og-preview-card a,
+html[data-lumina-theme="light"] .rich-og-content a {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+html[data-lumina-theme="light"] .post-details-box a:hover,
+html[data-lumina-theme="light"] .post-desc-text a:hover,
+html[data-lumina-theme="light"] .post-card-1x1 a.post-rich-link:hover,
+html[data-lumina-theme="light"] .post-card-1x1 a.lumina-post-link:hover,
+html[data-lumina-theme="light"] .post-card-1x1 a.reflection-link:hover,
+html[data-lumina-theme="light"] .post-rich-link:hover,
+html[data-lumina-theme="light"] .lumina-post-link:hover,
+html[data-lumina-theme="light"] .reflection-link:hover,
+html[data-lumina-theme="light"] a.post-rich-link:hover,
+html[data-lumina-theme="light"] a.lumina-post-link:hover,
+html[data-lumina-theme="light"] a.reflection-link:hover,
+html[data-lumina-theme="light"] .rich-og-preview-card a:hover,
+html[data-lumina-theme="light"] .rich-og-content a:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+

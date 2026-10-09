@@ -7857,7 +7857,17 @@
                 const saved = localStorage.getItem('lumina_cc_campaigns');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        parsed.forEach(c => {
+                            const cText = `${c.title || ''} ${c.desc || ''} ${c.btnUrl || ''}`;
+                            if (/ai-antychryst|antychryst/i.test(cText)) {
+                                if (!c.image || c.image.includes('tlo_tv_radiocc')) {
+                                    c.image = '/images/si/ai-vs-antychryst.webp';
+                                }
+                            }
+                        });
+                        return parsed;
+                    }
                 }
             } catch(e) {}
             return [...DEFAULT_CC_CAMPAIGNS];
@@ -10261,6 +10271,24 @@
                     authorLink = 'lumina.cezaryrgowski.html';
                 }
 
+                // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. AI Antychryst, artykuły CCN itp.)
+                const itemContentScope = `${item.title || ''} ${item.desc || ''} ${item.text || ''} ${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
+                const isAiAntychrystPost = /ai-antychryst|antychryst/i.test(itemContentScope);
+
+                if (isAiAntychrystPost) {
+                    if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
+                        item.image = '/images/si/ai-vs-antychryst.webp';
+                    }
+                } else if ((!item.image || item.image.includes('tlo_tv_radiocc')) && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl;
+                    if (candidateUrl) {
+                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
+                        if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                            item.image = hMeta.image;
+                        }
+                    }
+                }
+
                 const authorAvatarSrc = resolveLuminaAuthorAvatar(item);
                 const cardImgSrc = (item.image && item.image.trim() !== '') ? item.image : authorAvatarSrc;
 
@@ -10318,7 +10346,10 @@
 
                 let effectiveEmbedHtml = '';
                 if (!postYtId) {
-                    if (item.linkPreview && window.LuminaDB?.createRichOpenGraphCardHtml) {
+                    if (isAiAntychrystPost && window.LuminaDB?.createRichOpenGraphCardHtml && window.LuminaDB?.getHeuristicLinkMetadata) {
+                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata('https://polskieradio.cc/si/ai-antychryst');
+                        effectiveEmbedHtml = window.LuminaDB.createRichOpenGraphCardHtml(hMeta);
+                    } else if (item.linkPreview && window.LuminaDB?.createRichOpenGraphCardHtml) {
                         effectiveEmbedHtml = window.LuminaDB.createRichOpenGraphCardHtml(item.linkPreview);
                     } else if (item.embedHtml) {
                         effectiveEmbedHtml = item.embedHtml;
@@ -11631,12 +11662,27 @@
                 badge: '✨ Założyciel CC'
             };
 
+            // Auto-resolve campaign image if not manually uploaded:
+            let defaultCampImg = attachedCampaignImgDataUrl;
+            if (!defaultCampImg) {
+                const combinedCampText = `${title || ''} ${desc || ''} ${btnUrl || ''}`;
+                if (/ai-antychryst|antychryst/i.test(combinedCampText)) {
+                    defaultCampImg = '/images/si/ai-vs-antychryst.webp';
+                } else if (btnUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const hMeta = window.LuminaDB.getHeuristicLinkMetadata(btnUrl);
+                    if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                        defaultCampImg = hMeta.image;
+                    }
+                }
+                if (!defaultCampImg) defaultCampImg = 'tlo_tv_radiocc.jpg';
+            }
+
             const newCampaign = {
                 id: 'camp_' + Date.now(),
                 type: type,
                 title: title,
                 desc: desc,
-                image: attachedCampaignImgDataUrl || 'tlo_tv_radiocc.jpg',
+                image: defaultCampImg,
                 btnText: btnText,
                 btnUrl: btnUrl,
                 eventDate: eventDate,

@@ -5439,26 +5439,100 @@ export function getHeuristicLinkMetadata(url) {
             };
         }
 
-        // 2. Polskie Radio Christian Culture
+        // 2. Polskie Radio Christian Culture & Portale Tematyczne CCN
         if (host.includes('polskieradio.cc') || host.includes('christian-culture.web.app')) {
             let title = 'Polskie Radio Christian Culture • 24/7 Ku Bożej Chwale';
             let desc = 'Słuchaj na żywo muzyki uwielbienia, Biblii Śpiewanej, codziennych inspiracji i programów ku Bożej chwale.';
             let badge = '📻 MEDIA CHRISTIAN CULTURE';
             let ctaText = 'Słuchaj / Otwórz ✨';
             let img = 'https://polskieradio.cc/logo-glowne.png';
+            let icon = 'fa-solid fa-radio';
 
-            if (pathname.includes('vod')) {
+            // A. Artykuł Flagowy: AI, SI a biblijny Antychryst
+            if (pathname.includes('ai-antychryst') || pathname.includes('antychryst')) {
+                title = 'AI, SI a biblijny Antychryst: Dlaczego sztuczna inteligencja nie może być Antychrystem';
+                desc = 'Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem. Prawidłowa hermeneutyka wymaga, aby to tekst Pisma definiował symbol, a nie współczesna technologia sposób czytania tekstu.';
+                badge = '🔬 NOWE TECHNOLOGIE & SI';
+                ctaText = 'Czytaj Cały Artykuł ➔';
+                img = '/images/si/ai-vs-antychryst.webp';
+                icon = 'fa-solid fa-microchip';
+            } else if (pathname.includes('/si')) {
+                title = 'CCN Nowe Technologie & Sztuczna Inteligencja • Chrześcijańska Perspektywa';
+                desc = 'Rzetelne analizy teologiczne, etyczne i technologiczne w świecie dynamicznego rozwoju sztucznej inteligencji.';
+                badge = '🔬 NOWE TECHNOLOGIE & SI';
+                ctaText = 'Otwórz Portal SI ➔';
+                img = '/images/si/ai-vs-antychryst.webp';
+                icon = 'fa-solid fa-microchip';
+            } else if (pathname.includes('/nauka')) {
+                title = 'CCN Nauka i Wiara • Odkrycia w Świetle Pisma Świętego';
+                desc = 'Fascynujące dowody naukowe, archeologia biblijna i harmonia nauki ze Słowem Bożym.';
+                badge = '🔬 NAUKA & WIARA';
+                ctaText = 'Otwórz Portal Nauka ➔';
+                img = 'https://polskieradio.cc/images/si/si-imago-dei.webp';
+                icon = 'fa-solid fa-atom';
+            } else if (pathname.includes('/historia')) {
+                title = 'CCN Historia i Proroctwa • Dzieje Świata w Świetle Biblii';
+                desc = 'Analizy historyczne, wypełnione proroctwa i prawda o minionych wiekach.';
+                badge = '📜 HISTORIA & ARCHEO';
+                ctaText = 'Otwórz Portal Historia ➔';
+                img = 'https://polskieradio.cc/assets/prawda-bez-filtra-scene-960.webp';
+                icon = 'fa-solid fa-scroll';
+            } else if (pathname.includes('/biologia')) {
+                title = 'CCN Biologia i Kreacja • Niezwykły Projekt Życia';
+                desc = 'Projekt w naturze, genetyka, inteligentny projekt i dowody na stworzenie.';
+                badge = '🧬 BIOLOGIA & KREACJA';
+                ctaText = 'Otwórz Portal Biologia ➔';
+                img = 'https://polskieradio.cc/images/player/art-dna.jpg';
+                icon = 'fa-solid fa-dna';
+            } else if (pathname.includes('/prawo')) {
+                title = 'CCN Prawo i Wolność • Boże Prawo i Wolność Sumienia';
+                desc = 'Etyka, wolność religijna i Boży Dekalog we współczesnym świecie.';
+                badge = '⚖️ PRAWO & ETYKA';
+                ctaText = 'Otwórz Portal Prawo ➔';
+                img = 'https://polskieradio.cc/assets/kod-zrodlowy-scene-960.webp';
+                icon = 'fa-solid fa-scale-balanced';
+            } else if (pathname.includes('/seks') || pathname.includes('relacje') || pathname.includes('malzenstwo')) {
+                title = 'CCN Relacje i Małżeństwo • Czystość i Prawdziwa Miłość';
+                desc = 'Biblijny fundament miłości, relacji narzeczeńskich i trwałego małżeństwa.';
+                badge = '❤️ MAŁŻEŃSTWO & CZYSTOŚĆ';
+                ctaText = 'Otwórz Portal Relacje ➔';
+                img = 'https://polskieradio.cc/nie-bylejaki-kurs-malzenski.webp';
+                icon = 'fa-solid fa-heart';
+            } else if (pathname.includes('/akademia') || pathname.includes('kurscodzienny')) {
+                title = 'Akademia Biblijna • Codzienny Kurs „Z Biblią za Pan Brat”';
+                desc = 'Kompletny 365-dniowy bezpłatny kurs biblijny od Księgi Rodzaju po Apokalipsę.';
+                badge = '📖 AKADEMIA BIBLIJNA';
+                ctaText = 'Rozpocznij Kurs ➔';
+                img = 'https://polskieradio.cc/images/academy/z_biblia_za_pan_brat_hero.jpg';
+                icon = 'fa-solid fa-book-bible';
+            } else if (pathname.includes('mojabiblia')) {
+                title = 'MojaBiblia • Interlinearna Biblia z Kodami Stronga';
+                desc = 'Badaj teksty hebrajskie i greckie, leksykon i porównuj 4 przekłady biblijne.';
+                badge = '📜 MOJA BIBLIA';
+                ctaText = 'Badaj Pismo ➔';
+                img = 'https://polskieradio.cc/reklama_telebiblia_wikifaith_916.jpg';
+                icon = 'fa-solid fa-book-open';
+            } else if (pathname.includes('player')) {
+                title = 'PLAYER CC • Spotify-Style Audio Dashboard';
+                desc = 'Strumień radiowy w jakości bezstratnej, teksty pieśni, kanały tematyczne i odsłuch w tle.';
+                badge = '🎵 PLAYER CC';
+                ctaText = 'Słuchaj Muzyki ➔';
+                img = 'https://polskieradio.cc/images/player/player-clean-art.jpg';
+                icon = 'fa-solid fa-music';
+            } else if (pathname.includes('vod')) {
                 title = 'Kino Chrześcijańskie VOD • Christian Culture';
                 desc = 'Oglądaj pełnometrażowe filmy chrześcijańskie, dokumenty i wartościowe produkcje filmowe bez opłat.';
                 badge = '🎬 VOD CHRISTIAN CULTURE';
                 ctaText = 'Oglądaj Film 🍿';
                 img = 'https://polskieradio.cc/vod_hity_kina_poster.jpg';
+                icon = 'fa-solid fa-film';
             } else if (pathname.includes('lumina')) {
                 title = 'Portal Społecznościowy LUMINA ✨';
                 desc = 'Pierwszy polski chrześcijański portal społecznościowy. Łączymy wierzących, dzielimy się Słowem i świadectwami.';
                 badge = '🕊️ PORTAL LUMINA';
                 ctaText = 'Przejdź do Portalu 🕊️';
                 img = 'https://polskieradio.cc/lumina_cover_bg.jpg';
+                icon = 'fa-solid fa-users-rays';
             }
 
             return {
@@ -5470,7 +5544,7 @@ export function getHeuristicLinkMetadata(url) {
                 image: img,
                 badge,
                 ctaText,
-                icon: 'fa-solid fa-radio'
+                icon
             };
         }
 
@@ -5623,11 +5697,15 @@ export async function fetchLinkOpenGraphMetadata(url) {
             const json = await resp.json();
             if (json && json.status === 'success' && json.data) {
                 const d = json.data;
+                let resolvedImg = d.image?.url || baseMeta.image;
+                if (resolvedImg && (resolvedImg.includes('polskieradio.cc/images/') || resolvedImg.includes('polskieradio.cc/assets/'))) {
+                    resolvedImg = resolvedImg.replace(/^https?:\/\/(?:www\.)?polskieradio\.cc/, '');
+                }
                 const merged = {
                     ...baseMeta,
                     title: d.title || baseMeta.title,
                     description: d.description || baseMeta.description,
-                    image: d.image?.url || baseMeta.image,
+                    image: resolvedImg,
                     publisher: d.publisher || baseMeta.host,
                     logo: d.logo?.url || null
                 };
@@ -5714,28 +5792,35 @@ export function formatRichTextAndMedia(rawText, postData = null) {
     // 1. Zabezpieczenie przed XSS (Sanityzacja znaczników HTML)
     const sanitizedText = escapeHtml(rawText || '');
 
-    // Rozpoznanie i zamiana linku wsparcia Patronite na aktywny lśniący przycisk
-    let preprocessedText = sanitizedText.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
+    // Używamy tokenizera placeholderów, aby zapobiec zagnieżdżaniu tagów <a> wewnątrz już wygenerowanych <a>
+    const linkPlaceholders = [];
+    function stashLink(html) {
+        const id = `___LUMINA_LNK_${linkPlaceholders.length}___`;
+        linkPlaceholders.push(html);
+        return id;
+    }
+
+    // 0. Rozpoznanie i zamiana linku wsparcia Patronite na aktywny lśniący przycisk (schowany w tokenie)
+    let placeholderText = sanitizedText.replace(/(?:(?:Wspomóż misję|Wspieraj Bożą misję|Wsparcie misji|Wspieraj misję|Zostań patronem|Patronite)\s*:?\s*)?(?:https?:\/\/)?(?:www\.)?patronite\.pl\/([a-zA-Z0-9_-]+)/gi, (match, slug) => {
         const targetSlug = (slug && slug.toLowerCase() !== 'patronite') ? slug : 'osobowoscplus';
         const url = `https://patronite.pl/${targetSlug}`;
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link" onclick="event.stopPropagation()"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+        return stashLink(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link support-link" onclick="event.stopPropagation()"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wesprzyj Misję na Patronite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`);
     });
 
     // Regex for URLs, www domains, and bare domains
     const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
-    const foundUrls = preprocessedText.match(urlRegex) || [];
+    const foundUrls = placeholderText.match(urlRegex) || [];
 
-    // 1. Zamiana pełnych URLs (http/https) na aktywne linki
-    let formattedText = preprocessedText.replace(urlRegex, (url) => {
-        if (url.includes('patronite.pl/')) return url; // pomiń jeśli już sparsowany
+    // 1. Zamiana pełnych URLs (http/https) na aktywne linki (schowane w tokenach)
+    placeholderText = placeholderText.replace(urlRegex, (url) => {
         let display = url.replace(/^https?:\/\/(www\.)?/, '');
         if (display.length > 38) display = display.substring(0, 35) + '...';
         const safeUrl = encodeURI(url).replace(/"/g, '&quot;');
-        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+        return stashLink(`<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`);
     });
 
     // 2. Zamiana adresów www. (bez protokołu)
-    formattedText = formattedText.replace(/(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<]*)/gi, (match, p1, rawDomain) => {
+    placeholderText = placeholderText.replace(/(^|[\s(])(www\.[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[^\s<]*)/gi, (match, p1, rawDomain) => {
         let domain = rawDomain;
         let trail = '';
         const trailMatch = domain.match(/[.,:;!?)\]]+$/);
@@ -5745,14 +5830,14 @@ export function formatRichTextAndMedia(rawText, postData = null) {
         }
         let display = domain;
         if (display.length > 38) display = display.substring(0, 35) + '...';
-        return `${p1}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>${trail}`;
+        return `${p1}${stashLink(`<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`)}${trail}`;
     });
 
     // 3. Zamiana domen bazowych bez protokołu (np. apokalipsa.online, studiods.pl, polskieradio.cc)
     const tlds = 'online|pl|cc|com|org|net|eu|tv|live|app|edu|gov|io|info|biz|me|fm|ai|co';
     const bareDomainRegex = new RegExp('(^|[\\s(])([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:' + tlds + ')(?:\\/[^\\s<]*)?)', 'gi');
-    formattedText = formattedText.replace(bareDomainRegex, (match, p1, rawDomain) => {
-        if (match.includes('href=') || match.includes('class=')) return match;
+    placeholderText = placeholderText.replace(bareDomainRegex, (match, p1, rawDomain) => {
+        if (match.includes('___LUMINA_LNK_')) return match;
         let domain = rawDomain;
         let trail = '';
         const trailMatch = domain.match(/[.,:;!?)\]]+$/);
@@ -5763,26 +5848,32 @@ export function formatRichTextAndMedia(rawText, postData = null) {
         if (!foundUrls.includes('https://' + domain)) foundUrls.push('https://' + domain);
         let display = domain;
         if (display.length > 38) display = display.substring(0, 35) + '...';
-        return `${p1}<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>${trail}`;
+        return `${p1}${stashLink(`<a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="post-rich-link lumina-post-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`)}${trail}`;
     });
 
-    // Replace @mentions with clickable profile pills
-    formattedText = formattedText.replace(/(^|[\s>(])@([a-zA-Z0-9_]+)/g, (match, p1, handle) => {
+    // Replace @mentions with clickable profile pills (schowane w tokenach)
+    placeholderText = placeholderText.replace(/(^|[\s>(])@([a-zA-Z0-9_]+)/g, (match, p1, handle) => {
         const hInfo = resolveMentionHandle(handle);
         const nameAttr = (hInfo && hInfo.name) ? escapeHtml(hInfo.name) : escapeHtml(handle);
         const urlAttr = (hInfo && hInfo.url) ? encodeURI(hInfo.url) : `lumina-profile.html?u=${encodeURIComponent(handle)}`;
-        return `${p1}<a href="${urlAttr}" class="lumina-mention-pill" title="Przejdź do profilu: ${nameAttr}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`;
+        return `${p1}${stashLink(`<a href="${urlAttr}" class="lumina-mention-pill" title="Przejdź do profilu: ${nameAttr}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`)}`;
     });
 
-    // Replace #hashtags with clickable search pills
-    formattedText = formattedText.replace(/(^|[\s>(])#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, p1, tag) => {
+    // Replace #hashtags with clickable search pills (schowane w tokenach)
+    placeholderText = placeholderText.replace(/(^|[\s>(])#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, p1, tag) => {
         const safeTag = escapeHtml(tag);
         const encTag = encodeURIComponent(tag);
-        return `${p1}<a href="lumina-tablica.html?q=%23${encTag}" class="lumina-hashtag-pill" data-tag="${safeTag}" title="Filtruj wpisy #${safeTag}" onclick="if(window.filterFeedByTag){event.preventDefault();event.stopPropagation();window.filterFeedByTag('${safeTag}');}else{event.stopPropagation();}"><i class="fa-solid fa-hashtag"></i>${safeTag}</a>`;
+        return `${p1}${stashLink(`<a href="lumina-tablica.html?q=%23${encTag}" class="lumina-hashtag-pill" data-tag="${safeTag}" title="Filtruj wpisy #${safeTag}" onclick="if(window.filterFeedByTag){event.preventDefault();event.stopPropagation();window.filterFeedByTag('${safeTag}');}else{event.stopPropagation();}"><i class="fa-solid fa-hashtag"></i>${safeTag}</a>`)}`;
     });
 
     // Replace linebreaks with <br>
-    formattedText = formattedText.replace(/\n/g, '<br>');
+    placeholderText = placeholderText.replace(/\n/g, '<br>');
+
+    // 4. Przywróć wszystkie linki z tokenów
+    let formattedText = placeholderText;
+    linkPlaceholders.forEach((html, idx) => {
+        formattedText = formattedText.replace(`___LUMINA_LNK_${idx}___`, html);
+    });
 
     // Generate Rich Embed Card if URL is present or iframe is embedded
     let embedHtml = '';

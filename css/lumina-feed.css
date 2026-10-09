@@ -616,3 +616,45 @@
     transform: translateY(-1.5px) !important;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   LUMINA GLOBAL ZERO-UNDERLINE POLICY FOR ALL FEED POST LINKS
+   ══════════════════════════════════════════════════════════════════════════ */
+.post-details-box a,
+.post-desc-text a,
+.post-card-1x1 a.post-rich-link,
+.post-card-1x1 a.lumina-post-link,
+.post-card-1x1 a.reflection-link,
+.post-rich-link,
+.lumina-post-link,
+.reflection-link,
+a.post-rich-link,
+a.lumina-post-link,
+a.reflection-link,
+.rich-og-preview-card a,
+.rich-og-content a,
+.rich-og-title {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+.post-details-box a:hover,
+.post-desc-text a:hover,
+.post-card-1x1 a.post-rich-link:hover,
+.post-card-1x1 a.lumina-post-link:hover,
+.post-card-1x1 a.reflection-link:hover,
+.post-rich-link:hover,
+.lumina-post-link:hover,
+.reflection-link:hover,
+a.post-rich-link:hover,
+a.lumina-post-link:hover,
+a.reflection-link:hover,
+.rich-og-preview-card a:hover,
+.rich-og-content a:hover,
+.rich-og-title:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+}
+
+
