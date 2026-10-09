@@ -3,6 +3,21 @@ const COLLECTION = 'cc_daily_course_subscriptions';
 const jsonHeaders = {'content-type':'application/json'};
 const decode = fields => Object.fromEntries(Object.entries(fields || {}).map(([k,v]) => [k, v.stringValue ?? v.booleanValue ?? Number(v.integerValue)]));
 const encode = data => Object.fromEntries(Object.entries(data).map(([k,v]) => [k, typeof v === 'boolean' ? {booleanValue:v} : typeof v === 'number' ? {integerValue:String(v)} : {stringValue:String(v)}]));
+// Keep provider bodies, document paths, account IDs and tokens out of diagnostics.
+function storeError(operation, response) {
+  const error = new Error(operation);
+  error.providerStatus = response.status;
+  return error;
+}
+export function courseSubscriptionFailure(error) {
+  if (error?.providerStatus === 429) return {
+    status:503, body:{error:'Baza danych osiągnęła limit bezpłatnych operacji. Nie potwierdzono zmiany subskrypcji. Spróbuj ponownie po odnowieniu limitu.'}
+  };
+  if (error?.providerStatus === 403) return {
+    status:503, body:{error:'Usługa subskrypcji wymaga naprawy uprawnień do bazy danych. Nie potwierdzono zmiany subskrypcji.'}
+  };
+  return {status:502,body:{error:'Nie udało się obsłużyć subskrypcji. Spróbuj ponownie później.'}};
+}
 export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
   const base = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(env.FIREBASE_PROJECT_ID)}/databases/(default)/documents`;
   const headers = {...jsonHeaders, authorization:`Bearer ${accessToken}`};
@@ -11,20 +26,20 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
       const r=await fetchImpl(`${base}:runQuery`,{method:'POST',headers,body:JSON.stringify({structuredQuery:{
         from:[{collectionId:'lumina_profiles'}],where:{fieldFilter:{field:{fieldPath:'uid'},op:'EQUAL',value:{stringValue:uid}}},limit:1
       }})});
-      if (!r.ok) throw Error('subscription_profile_lookup_failed');
+      if (!r.ok) throw storeError('subscription_profile_lookup_failed',r);
       const rows=await r.json();return rows.find(row=>row.document)?.document.name.split('/').pop() || '';
     },
     async profileStillOwned(profileId,uid) {
       if (!profileId || profileId.includes('/')) return false;
       const r=await fetchImpl(`${base}/lumina_profiles/${encodeURIComponent(profileId)}`,{headers});
       if (r.status===404) return false;
-      if (!r.ok) throw Error('subscription_profile_check_failed');
+      if (!r.ok) throw storeError('subscription_profile_check_failed',r);
       return decode((await r.json()).fields).uid===uid;
     },
     async cursor() {
       const r=await fetchImpl(`${base}/cc_daily_course_dispatch/state`,{headers});
       if (r.status===404) return null;
-      if (!r.ok) throw Error('dispatch_cursor_read_failed');
+      if (!r.ok) throw storeError('dispatch_cursor_read_failed',r);
       const d=await r.json();return {after:decode(d.fields).after || '',revision:d.updateTime};
     },
     async advance(after,revision) {
@@ -34,13 +49,13 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
         method:'PATCH',headers,body:JSON.stringify({fields:encode({after})})
       });
       if ([409,412,404].includes(r.status)) return false;
-      if (!r.ok) throw Error('dispatch_cursor_save_failed');
+      if (!r.ok) throw storeError('dispatch_cursor_save_failed',r);
       return true;
     },
     async get(uid) {
       const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}`, {headers});
       if (r.status === 404) return null;
-      if (!r.ok) throw Error('subscription_read_failed');
+      if (!r.ok) throw storeError('subscription_read_failed',r);
       const d = await r.json(); return {data:decode(d.fields), revision:d.updateTime};
     },
     async save(uid, data, revision) {
@@ -49,14 +64,14 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
       if (revision) query.set('currentDocument.updateTime', revision);
       const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}?${query}`, {method:'PATCH',headers,body:JSON.stringify({fields:encode(data)})});
       if (r.status === 409 || r.status === 412 || r.status === 404) return false;
-      if (!r.ok) throw Error('subscription_save_failed');
+      if (!r.ok) throw storeError('subscription_save_failed',r);
       return true;
     },
     async remove(uid,revision) {
       const condition=revision?'?'+new URLSearchParams({'currentDocument.updateTime':revision}):'';
       const r = await fetchImpl(`${base}/${COLLECTION}/${encodeURIComponent(uid)}${condition}`,{method:'DELETE',headers});
       if (revision && [409,412].includes(r.status)) return false;
-      if (!r.ok && r.status !== 404) throw Error('subscription_remove_failed');
+      if (!r.ok && r.status !== 404) throw storeError('subscription_remove_failed',r);
       return true;
     },
     async pending(lessonNumber,after='') {
@@ -68,7 +83,7 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
       const r = await fetchImpl(`${base}:runQuery`, {method:'POST',headers,body:JSON.stringify({structuredQuery:{
         ...structuredQuery
       }})});
-      if (!r.ok) throw Error('subscription_query_failed');
+      if (!r.ok) throw storeError('subscription_query_failed',r);
       return (await r.json()).filter(row=>row.document).map(row=>({uid:row.document.name.split('/').pop(),data:decode(row.document.fields),revision:row.document.updateTime}));
     }
   };

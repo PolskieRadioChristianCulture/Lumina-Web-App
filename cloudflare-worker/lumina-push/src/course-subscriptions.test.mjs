@@ -1,9 +1,46 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from './index.js';
-import {courseSubscriptionAction,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,courseAccountState} from './course-subscriptions.js';
+import {courseSubscriptionAction,courseSubscriptionFailure,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,courseAccountState} from './course-subscriptions.js';
 import {dailyCourseManifest} from '../../../scripts/daily-course-manifest.mjs';
 const lesson = {number:8,title:'Wieża Babel',availableAt:'2026-10-08T00:00:00.000Z',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'};
+test('quota and IAM failures never appear as a missing or successful subscription',async()=>{
+  for (const providerStatus of [429,403,500]) {
+    let mutations=0;
+    const store=firestoreCourseStore({FIREBASE_PROJECT_ID:'synthetic'},'synthetic',async(_url,options)=>{
+      if (options.method) mutations++;
+      return new Response('private provider diagnostics',{status:providerStatus});
+    });
+    for (const action of ['status','subscribe']) {
+      await assert.rejects(courseSubscriptionAction('student',{action,consent:true},{store}),error=>{
+        assert.equal(error.message,'subscription_read_failed');
+        assert.equal(error.providerStatus,providerStatus);
+        const failure=courseSubscriptionFailure(error);
+        assert.equal(failure.status,providerStatus===500?502:503);
+        assert.equal(failure.body.subscribed,undefined);
+        assert.doesNotMatch(JSON.stringify(failure),/private provider|synthetic|student/);
+        assert.match(failure.body.error,providerStatus===429?/limit/:providerStatus===403?/uprawnień/:/ponownie/);
+        return true;
+      });
+    }
+    assert.equal(mutations,0);
+  }
+});
+test('save and unsubscribe provider failures preserve safe diagnostics and do not confirm success',async()=>{
+  for (const action of ['subscribe','unsubscribe']) {
+    const store=firestoreCourseStore({FIREBASE_PROJECT_ID:'synthetic'},'synthetic',async(_url,options)=>{
+      if (!options.method) return new Response('',{status:404});
+      if (options.method==='POST') return Response.json([]);
+      return new Response('private detail',{status:403});
+    });
+    await assert.rejects(courseSubscriptionAction('student',{action,consent:true},{store,tokens:async()=>['synthetic'],latest:async()=>lesson}),error=>{
+      assert.equal(error.providerStatus,403);
+      assert.equal(error.message,action==='subscribe'?'subscription_save_failed':'subscription_remove_failed');
+      assert.equal(courseSubscriptionFailure(error).status,503);
+      return true;
+    });
+  }
+});
 function fixture(initial) {
   let record=initial?{data:{uid:'student',enabled:true,lastLessonNumber:7,leaseUntil:0,attempts:0,...initial},revision:'1'}:null;
   let revision=1; let sends=0;

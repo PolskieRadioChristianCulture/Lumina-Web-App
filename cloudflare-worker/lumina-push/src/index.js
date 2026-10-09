@@ -1,4 +1,4 @@
-import { firestoreCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
+import { firestoreCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, courseSubscriptionFailure, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
 import { ownerPushTest } from './owner-push-test.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -156,7 +156,11 @@ async function queryTokens(field, receiverId, accessToken, env) {
       }
     })
   });
-  if (!response.ok) throw new Error('Nie udało się pobrać tokenów urządzeń.');
+  if (!response.ok) {
+    const error = new Error('Nie udało się pobrać tokenów urządzeń.');
+    error.providerStatus = response.status;
+    throw error;
+  }
   const rows = await response.json();
   return rows
     .filter((row) => row.document?.fields)
@@ -383,8 +387,9 @@ export default {
         const result = await courseSubscriptionAction(uid,body,courseDeps(env,token));
         return json(result.body,result.status,{...cors,'cache-control':'no-store'});
       } catch (err) {
-        console.error(JSON.stringify({ event: 'course_subscription_error', error: err instanceof Error ? err.message : String(err) }));
-        return json({error:'Nie udało się obsłużyć subskrypcji.'},502,cors);
+        console.error(JSON.stringify({ event: 'course_subscription_error', error: err instanceof Error ? err.message : 'unknown', providerStatus: err?.providerStatus }));
+        const failure = courseSubscriptionFailure(err);
+        return json(failure.body,failure.status,{...cors,'cache-control':'no-store'});
       }
     }
     const match = new URL(request.url).pathname.match(/^\/v1\/push\/(request|direct)\/([A-Za-z0-9_-]{1,200})$/);

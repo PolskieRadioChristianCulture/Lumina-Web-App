@@ -29,6 +29,8 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       OWNER_PUSH_TEST_ENABLED:'true',OWNER_PUSH_TEST_START_AT:String(Date.now()-1000),OWNER_PUSH_TEST_EXPIRES_AT:String(Date.now()+600_000),OWNER_PUSH_TEST_RUN_ID:'11111111-1111-4111-8111-111111111111'},
     outboundService:async request=>{
       outbound++;const url=new URL(request.url);
+      if (url.hostname==='firestore.googleapis.com' && ['subscription_quota','subscription_iam'].includes(failStage))
+        return new RuntimeResponse('synthetic-private-provider-detail',{status:failStage==='subscription_quota'?429:403});
       if ((failStage==='service_account_authorization' && url.hostname==='oauth2.googleapis.com') ||
           (failStage==='account_lookup' && url.hostname==='identitytoolkit.googleapis.com' && url.pathname.includes('/projects/')) ||
           (failStage==='device_registry' && url.hostname==='firestore.googleapis.com') ||
@@ -111,6 +113,20 @@ test('workerd: account opt-in, manifest publication, scheduled send, revoke and 
       assert.equal(diagnostic.stage,stage==='authentication'?undefined:stage);
       assert.equal(JSON.stringify(diagnostic).includes('synthetic'),false,'No provider details, identifiers or token values');
       assert.equal(sends,0);assert.equal(documents.size,0,'Failure diagnostics must not write or send');
+    }
+    failStage='';
+    for (const stage of ['subscription_quota','subscription_iam']) {
+      failStage=stage;
+      for (const action of ['status','subscribe','unsubscribe']) {
+        const failed=await command(action);
+        assert.equal(failed.status,503);
+        assert.equal(failed.headers.get('cache-control'),'no-store');
+        const body=await failed.json();
+        assert.deepEqual(Object.keys(body),['error']);
+        assert.match(body.error,stage==='subscription_quota'?/limit/:/uprawnień/);
+        assert.doesNotMatch(body.error,/synthetic|student|private/);
+        assert.equal(documents.size,0);assert.equal(sends,0);
+      }
     }
     failStage='';
     assert.equal((await command('subscribe')).status,200);
