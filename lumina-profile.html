@@ -7767,7 +7767,16 @@
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    let dataUrl = canvas.toDataURL('image/jpeg', quality || 0.82);
+                    if (dataUrl.length > 550000) {
+                        const sCanvas = document.createElement('canvas');
+                        const sScale = Math.min(1, 750 / Math.max(width, height));
+                        sCanvas.width = Math.round(width * sScale);
+                        sCanvas.height = Math.round(height * sScale);
+                        const sCtx = sCanvas.getContext('2d');
+                        sCtx.drawImage(img, 0, 0, sCanvas.width, sCanvas.height);
+                        dataUrl = sCanvas.toDataURL('image/jpeg', 0.70);
+                    }
                     callback(dataUrl);
                 };
                 img.src = e.target.result;

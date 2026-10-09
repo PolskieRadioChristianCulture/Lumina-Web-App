@@ -11227,7 +11227,18 @@
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', quality || 0.92);
+                    let dataUrl = canvas.toDataURL('image/jpeg', quality || 0.82);
+                    if (dataUrl.length > 550000) {
+                        const sCanvas = document.createElement('canvas');
+                        const sScale = Math.min(1, 750 / Math.max(width, height));
+                        sCanvas.width = Math.round(width * sScale);
+                        sCanvas.height = Math.round(height * sScale);
+                        const sCtx = sCanvas.getContext('2d');
+                        sCtx.imageSmoothingEnabled = true;
+                        sCtx.imageSmoothingQuality = 'medium';
+                        sCtx.drawImage(img, 0, 0, sCanvas.width, sCanvas.height);
+                        dataUrl = sCanvas.toDataURL('image/jpeg', 0.70);
+                    }
                     callback(dataUrl);
                 };
                 img.src = e.target.result;
@@ -11394,12 +11405,29 @@
             const trimmed = (url || '').trim();
             const previewImg = document.getElementById('qpImagePreviewImg');
             const previewBox = document.getElementById('qpImagePreviewBox');
-            if (trimmed && (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:image/'))) {
+            if (trimmed && (trimmed.startsWith('http://') || trimmed.startsWith('https://'))) {
                 attachedQpImageDataUrl = trimmed;
                 if (previewImg && previewBox) {
                     previewImg.src = trimmed;
                     previewBox.style.display = 'block';
                 }
+            } else if (trimmed && trimmed.startsWith('data:image/')) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = Math.max(img.width, img.height);
+                    const scale = maxDim > 900 ? (900 / maxDim) : 1;
+                    canvas.width = Math.round(img.width * scale);
+                    canvas.height = Math.round(img.height * scale);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    attachedQpImageDataUrl = canvas.toDataURL('image/jpeg', 0.80);
+                    if (previewImg && previewBox) {
+                        previewImg.src = attachedQpImageDataUrl;
+                        previewBox.style.display = 'block';
+                    }
+                };
+                img.src = trimmed;
             } else if (!trimmed && (!document.getElementById('qpImageFileInput') || !document.getElementById('qpImageFileInput').files.length)) {
                 if (previewBox) previewBox.style.display = 'none';
                 attachedQpImageDataUrl = null;
@@ -11522,9 +11550,18 @@
                 return;
             }
 
-            // ── BRAMKA LOGOWANIA GOOGLE DLA NOWYCH UŻYTKOWNIKÓW ──
-            const fbUser = (window.LuminaDB?.getCurrentUser && window.LuminaDB.getCurrentUser()) || (window.firebaseAuth && window.firebaseAuth.currentUser) || (window.luminaAuth && window.luminaAuth.currentUser);
-            if (!isBypassAuth && (!isLuminaUserAuthenticated() || !fbUser || fbUser.isAnonymous)) {
+            // ── BRAMKA LOGOWANIA GOOGLE (Wymagany rzeczywisty token Firebase Auth do zapisu w chmurze) ──
+            let realAuthUser = (window.LuminaDB?.getFirebaseAuthUser && window.LuminaDB.getFirebaseAuthUser()) || (window.firebaseAuth && window.firebaseAuth.currentUser) || (window.luminaAuth && window.luminaAuth.currentUser);
+            if (!realAuthUser && window.LuminaDB?.waitForAuthReady) {
+                try {
+                    realAuthUser = await window.LuminaDB.waitForAuthReady(1200);
+                } catch(e) {}
+            }
+            if (!isBypassAuth && (!realAuthUser || realAuthUser.isAnonymous)) {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
+                }
                 openLuminaGoogleAuthGateModal();
                 return;
             }
@@ -11674,7 +11711,15 @@
                 }, 200);
             } catch(e) {
                 console.error('Błąd publikacji LuminaDB:', e);
-                showToast(e?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.');
+                const msg = e?.message || 'Nie udało się opublikować wpisu. Treść pozostała w formularzu.';
+                if (msg.includes('AUTH_REQUIRED') || msg.includes('Brak uprawnień') || msg.includes('Zaloguj się') || msg.includes('zaloguj się')) {
+                    showToast('Wymagane logowanie przez konto Google do publikacji w chmurze 🕊️');
+                    if (typeof openLuminaGoogleAuthGateModal === 'function') {
+                        setTimeout(() => openLuminaGoogleAuthGateModal(), 400);
+                    }
+                } else {
+                    showToast(msg);
+                }
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;

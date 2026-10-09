@@ -830,6 +830,33 @@ export function getCurrentProfile() {
     return currentProfileState;
 }
 
+export function getFirebaseAuthUser() {
+    return auth?.currentUser || null;
+}
+
+export function waitForAuthReady(timeoutMs = 2500) {
+    return new Promise((resolve) => {
+        if (auth?.currentUser) return resolve(auth.currentUser);
+        let resolved = false;
+        let unsubscribe = null;
+        if (auth && typeof onAuthStateChanged === 'function') {
+            unsubscribe = onAuthStateChanged(auth, (user) => {
+                if (!resolved) {
+                    resolved = true;
+                    if (typeof unsubscribe === 'function') unsubscribe();
+                    resolve(user);
+                }
+            });
+        }
+        setTimeout(() => {
+            if (!resolved) {
+                resolved = true;
+                if (typeof unsubscribe === 'function') unsubscribe();
+                resolve(auth?.currentUser || null);
+            }
+        }, timeoutMs);
+    });
+}
 
 // ── Globalna obietnica gotowości bazy ──
 let dbReadyPromise = null;
@@ -1275,6 +1302,8 @@ window.LuminaDB.getCurrentUser = getCurrentUser;
 window.LuminaDB.getCurrentProfile = getCurrentProfile;
 window.LuminaDB.ensureDbReady = ensureDbReady;
 window.LuminaDB.onAuthChange = onAuthChange;
+window.LuminaDB.getFirebaseAuthUser = getFirebaseAuthUser;
+window.LuminaDB.waitForAuthReady = waitForAuthReady;
 
 // ── Phone (SMS OTP) Authentication ──
 export function setupPhoneRecaptcha(containerId = 'recaptcha-container') {
@@ -2214,25 +2243,44 @@ export async function publishUniversalPost(postData) {
     // 1. Trwały zapis jest źródłem prawdy. Dopiero po jego potwierdzeniu
     // aktualizujemy pamięć urządzenia i interfejs.
     if (!db) {
-        throw new Error('Połączenie z bazą LUMINA nie jest dostępne. Wpis nie został opublikowany.');
+        throw new Error('Połączenie z bazą LUMINA nie jest dostępne. Odśwież stronę i spróbuj ponownie.');
     }
-    if (!authorUid && !postData.isDevotion) {
-        throw new Error('Sesja użytkownika wygasła. Zaloguj się ponownie przed publikacją.');
+    const realAuth = auth?.currentUser;
+    if (!realAuth && !postData.isDevotion) {
+        throw new Error('AUTH_REQUIRED: Aby opublikować wpis w chmurze LUMINA, zaloguj się przez konto Google.');
     }
+
+    // Sanityzacja i zabezpieczenie pól pod kątem Firestore (brak undefined, poprawne typy liczników)
+    const sanitizedPayload = {};
+    for (const [k, v] of Object.entries(normalizedPost)) {
+        if (v !== undefined) {
+            sanitizedPayload[k] = v;
+        }
+    }
+    sanitizedPayload.authorUid = realAuth ? realAuth.uid : (authorUid || 'anonymous');
+    sanitizedPayload.createdAtTimestamp = serverTimestamp();
+    sanitizedPayload.likes = 0;
+    sanitizedPayload.amen = 0;
 
     let cloudDocumentId = null;
     try {
-        const cloudDoc = await addDoc(collection(db, 'lumina_posts'), {
-            ...normalizedPost,
-            authorUid: authorUid,
-            createdAtTimestamp: serverTimestamp()
-        });
+        const cloudDoc = await addDoc(collection(db, 'lumina_posts'), sanitizedPayload);
         cloudDocumentId = cloudDoc.id;
     } catch(err) {
         console.error('Lumina Firestore addDoc error:', err);
-        const reason = err?.code === 'permission-denied'
-            ? 'Brak uprawnień do publikacji. Zaloguj się ponownie.'
-            : 'Nie udało się zapisać wpisu w chmurze LUMINA.';
+        let reason = '';
+        const errMsg = String(err?.message || '').toLowerCase();
+        const errCode = String(err?.code || '').toLowerCase();
+        
+        if (errCode.includes('permission') || errMsg.includes('permission') || errMsg.includes('missing or insufficient')) {
+            reason = 'Brak uprawnień do publikacji w chmurze LUMINA. Zaloguj się przez konto Google (wymagane zweryfikowane konto).';
+        } else if (errCode.includes('invalid-argument') || errMsg.includes('longer than') || errMsg.includes('size')) {
+            reason = 'Załączona grafika jest zbyt duża dla bazy chmurowej (maks. 800 KB). Wybierz mniejszy plik lub link.';
+        } else if (errCode.includes('unavailable') || errMsg.includes('offline') || errMsg.includes('network')) {
+            reason = 'Brak połączenia z siecią. Sprawdź swoje połączenie internetowe.';
+        } else {
+            reason = 'Błąd zapisu w chmurze LUMINA: ' + (err?.message || err?.code || 'Nieznany błąd');
+        }
         throw new Error(reason);
     }
 
