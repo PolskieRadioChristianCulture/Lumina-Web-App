@@ -9,6 +9,14 @@ Wszyscy agenci: domyślnie 2–5 krótkich zdań/punktów: ZROBIONE, DZIAŁA/NIE
 ## Zakaz regresji całego ekosystemu CC
 Stosuj `CC_NO_REGRESSION_POLICY.md` (polecenie właściciela, 2026-10-03). Każda powracająca usterka wymaga kontroli regresji; nieudany wymagany test blokuje publikację. Dla CCN News używaj kanonicznego `portals/ccn-news` i `npm run build:ccn-news`. Przed publikacją uruchom `npm run test:cc-regression` oraz pozostałe wymagane kontrole. Nie przywracaj starszych bundle ani generatorów kosztem zaakceptowanego wyglądu lub działania.
 
+## 📰 Cykliczna Rutyna Publikacji na 20 Portalach Tematycznych CCN (Polecenie Dowódcy — 2026-10-09)
+Obowiązuje stała rutyna cyklicznych publikacji artykułów na wszystkich 20 portalach ekosystemu: 1. `/news`, 2. `/nauka`, 3. `/historia`, 4. `/biologia`, 5. `/prawo`, 6. `/seks`, 7. `/kultura`, 8. `/biznes`, 9. `/kuchnia`, 10. `/ziu`, 11. `/ogloszenia`, 12. `/wspolpraca`, 13. `/network`, 14. `/biblioteka`, 15. `/edukacja`, 16. `/psychologia`, 17. `/finanse`, 18. `/technologie`, 19. `/misje`, 20. `/apologetyka`.
+- **Autorzy:** wyłącznie Cezary Rogowski, Wioletta Rogowska lub Redakcja CCN News (bezwzględny zakaz fikcyjnych postaci i zdjęć ze stocka).
+- **Oprawa:** autorskie kinowe grafiki 16:9 (`images/news/art-*.jpg`).
+- **Dystrybucja:** obowiązkowe przyciski [L] (Lumina) i [X] (Twitter) w każdym artykule (min. 44x44px).
+- **Standard Zero-QA:** weryfikacja Playwright, testy regresji, podwójny push Git i deploy Cloudflare Pages.
+
+
 ## ✝️ ZASADA NAJWYŻSZA: BÓG I CZŁOWIEK
 Portal LUMINA i cały ekosystem Christian Culture są tworzone i prowadzone, aby **służyć Bogu i człowiekowi — zawsze i bezwzględnie**. Misja trzyma się Bożego Prawa, z Dekalogiem (Wj 20,1–17) jako nadrzędnym moralnym punktem odniesienia opisanym w Art. 0 `LUMINA_CONSTITUTION.md`.
 
