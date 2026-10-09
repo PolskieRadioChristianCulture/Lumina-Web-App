@@ -7,6 +7,7 @@ const script = readFileSync('js/cc-daily-course-share.js', 'utf8');
 test('subscription enrollment mounts by default; can be disabled with false',()=>{
   const w=mount();
   assert.ok(w.document.querySelector('script[src*="cc-daily-course-subscription"]'));
+  assert.ok(w.document.querySelector('script[src*="cc-daily-course-subscription"]').src.endsWith('?v=20261009_coursekv2'));
   w.close();
   const wDisabled=mount('/akademia/kurscodzienny/dzien-08',()=>{},win=>{win.CC_DAILY_COURSE_SUBSCRIPTIONS_ENABLED=false;});
   assert.equal(wDisabled.document.querySelector('script[src*="cc-daily-course-subscription"]'),null);
@@ -44,6 +45,7 @@ test('każda istniejąca lekcja, alias i katalog ładuje jeden wspólny panel i 
       else if (path.endsWith('.html')) {
         const content = readFileSync(path, 'utf8');
         assert.equal((content.match(/cc-daily-course-share\.js/g) || []).length, 1, path);
+        assert.ok(content.includes('cc-daily-course-share.js?v=20261009_coursekv2'),path+' musi ładować aktualną subskrypcję');
         assert.ok(content.includes('id="backToTopBtn"'), path + ' musi zawierać id="backToTopBtn"');
         count++;
       }

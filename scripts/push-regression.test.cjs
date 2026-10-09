@@ -190,3 +190,24 @@ test('logged-out visitor cannot register a private-message device', async () => 
     assert.equal(result.token, null);
     assert.equal(result.writes.length, 0);
 });
+
+test('course token works without Firestore and rejects account changes',async()=>{
+    const source=fs.readFileSync(path.join(root,'lumina-db.js'),'utf8');
+    const start=source.indexOf('export async function requestCourseNotificationToken(');
+    const end=source.indexOf('export async function requestNotificationPermission(',start);
+    let writes=0;
+    const user={uid:'student',isAnonymous:false};
+    const context=vm.createContext({window:{Notification:{}},Notification:{requestPermission:async()=> 'granted'},
+      auth:{currentUser:user,authStateReady:async()=>{}},messaging:{},db:null,
+      navigator:{serviceWorker:{register:async()=>({}),ready:Promise.resolve({})}},
+      getToken:async()=> 'synthetic-device',LUMINA_VAPID_KEY:'synthetic',
+      setDoc:async()=>{writes++;throw Error('Firestore unavailable');}});
+    vm.runInContext(source.slice(start,end).replace('export async','async'),context);
+    assert.equal(await vm.runInContext('requestCourseNotificationToken("student")',context),'synthetic-device');
+    assert.equal(writes,0);
+    context.auth.currentUser={uid:'other',isAnonymous:false};
+    assert.equal(await vm.runInContext('requestCourseNotificationToken("student")',context),null);
+    context.auth.currentUser=user;
+    context.getToken=async()=>{context.auth.currentUser={uid:'other',isAnonymous:false};return 'synthetic-device';};
+    assert.equal(await vm.runInContext('requestCourseNotificationToken("student")',context),null);
+});

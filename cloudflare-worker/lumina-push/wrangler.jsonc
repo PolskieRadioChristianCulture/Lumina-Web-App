@@ -20,7 +20,7 @@
     "COURSE_PUSH_ENABLED": "true"
   },
   "triggers": {
-    "crons": ["0 * * * *"]
+    "crons": ["*/5 * * * *"]
   },
   "observability": {
     "enabled": true,

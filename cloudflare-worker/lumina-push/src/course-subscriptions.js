@@ -88,60 +88,62 @@ export function firestoreCourseStore(env, accessToken, fetchImpl = fetch) {
     }
   };
 }
-export function kvCourseStore(kv) {
-  if (!kv) throw new Error('KV binding required for kvCourseStore');
+export function kvCourseStore(kv, namespace) {
+  if (!kv || !namespace) throw new Error('course_store_binding_required');
+  const hash = async uid => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(uid))))
+    .map(b=>b.toString(16).padStart(2,'0')).join('');
+  const stub = id => namespace.getByName(`course-state-v2:${id}`);
+  const load = async (id,uid) => {
+    const object=stub(id);
+    let state=await object.courseRead();
+    if (!state.initialized) {
+      const legacy=uid ? await kv.get(`sub:${uid}`,'json') : null;
+      state=await object.courseRead(legacy?.uid===uid && legacy.enabled ? legacy : null);
+    }
+    return state.record;
+  };
+  const cursorObject=namespace.getByName('course-cursor-v2');
   return {
-    async profileForAccount(uid) {
-      return '';
-    },
-    async profileStillOwned(profileId, uid) {
-      return true;
-    },
+    async profileForAccount() { return ''; },
     async cursor() {
-      const cur = await kv.get('__dispatch_cursor__', 'json');
-      return cur ? { after: cur.after || '', revision: cur.revision || '1' } : null;
+      const state=await cursorObject.courseRead(null);
+      return state.record ? {after:state.record.data.after,revision:state.record.revision} : null;
     },
     async advance(after, revision) {
-      const rev = String(Date.now());
-      await kv.put('__dispatch_cursor__', JSON.stringify({ after, revision: rev }));
-      return true;
+      await cursorObject.courseRead(null);
+      return cursorObject.courseSave({after},revision);
     },
     async get(uid) {
-      const record = await kv.get(`sub:${uid}`, 'json');
-      if (!record) return null;
-      return { data: record, revision: record.revision || '1' };
+      return load(await hash(uid),uid);
     },
     async save(uid, data, revision) {
-      const existing = await kv.get(`sub:${uid}`, 'json');
-      if (revision && existing && existing.revision !== revision) {
-        return false;
-      }
-      const rev = String((Number(existing?.revision || 0) + 1));
-      const merged = { ...existing, ...data, revision: rev };
-      await kv.put(`sub:${uid}`, JSON.stringify(merged));
-      return true;
+      const id=await hash(uid);
+      await load(id,uid);
+      // KV is only a discovery index. Lease/completion writes never touch KV.
+      // Index before enabling: failed indexing cannot announce enrollment.
+      if (data.uid===uid && data.enabled && await kv.get(`account:${id}`)===null)
+        await kv.put(`account:${id}`,'1');
+      return stub(id).courseSave(data,revision);
     },
     async remove(uid, revision) {
-      const existing = await kv.get(`sub:${uid}`, 'json');
-      if (revision && existing && existing.revision !== revision) {
-        return false;
-      }
-      await kv.delete(`sub:${uid}`);
-      return true;
+      const id=await hash(uid);await load(id,uid);
+      const removed=await stub(id).courseRemove(revision);
+      if (removed) await kv.delete(`sub:${uid}`);
+      // The index retains only a SHA-256 identifier, no UID, consent or token.
+      return removed;
     },
     async pending(lessonNumber, after = '') {
-      const list = await kv.list({ prefix: 'sub:', limit: 10, cursor: after || undefined });
+      const list = await kv.list({limit:2,cursor:after || undefined});
       const records = [];
       for (const key of list.keys) {
-        const data = await kv.get(key.name, 'json');
-        if (data) {
-          records.push({
-            uid: data.uid || key.name.replace(/^sub:/, ''),
-            data,
-            revision: data.revision || '1'
-          });
-        }
+        let record;
+        if (key.name.startsWith('sub:')) {const uid=key.name.slice(4);record=await load(await hash(uid),uid);}
+        else if (/^account:[a-f0-9]{64}$/.test(key.name)) record=await load(key.name.slice(8));
+        if (record?.data.enabled && !records.some(r=>r.uid===record.data.uid))
+          records.push({uid:record.data.uid,...record});
       }
+      // Preserve opaque KV pagination, including empty pages and wraparound.
+      records.nextCursor=list.list_complete ? '' : list.cursor;
       return records;
     }
   };
@@ -167,11 +169,16 @@ export async function courseSubscriptionAction(uid, body, deps) {
   if (!body || !['status','subscribe','unsubscribe'].includes(body.action) ||
       Object.keys(body).some(k=>!['action','consent','preferredHour','fcmToken'].includes(k)))
     return {status:400,body:{error:'Nieprawidłowe żądanie.'}};
-  if (body.action==='unsubscribe') {await deps.store.remove(uid);return {status:200,body:{subscribed:false}};}
+  if (body.action==='unsubscribe') {
+    if (!await deps.store.remove(uid)) return {status:409,body:{error:'Ponów wypisanie z subskrypcji.'}};
+    return {status:200,body:{subscribed:false}};
+  }
   const existing = await deps.store.get(uid);
   if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled,preferredHour:existing?.data.preferredHour ?? 7}};
   if (body.consent!==true) return {status:400,body:{error:'Wymagana świadoma zgoda na powiadomienia kursu.'}};
-  const existingTokens = existing?.data?.tokens || (existing?.data?.fcmToken ? [existing.data.fcmToken] : []);
+  if (body.fcmToken!==undefined && (typeof body.fcmToken!=='string' || body.fcmToken.length<11 || body.fcmToken.length>512 || !/^[A-Za-z0-9_:\-]+$/.test(body.fcmToken)))
+    return {status:400,body:{error:'Nieprawidłowy token urządzenia.'}};
+  const existingTokens = Array.isArray(existing?.data?.tokens) ? existing.data.tokens : [];
   const availableTokens = (body.fcmToken && typeof body.fcmToken === 'string' && body.fcmToken.length > 10)
     ? [body.fcmToken]
     : (existingTokens.length ? existingTokens : await deps.tokens(uid));
@@ -185,7 +192,7 @@ export async function courseSubscriptionAction(uid, body, deps) {
   }
   const profileId=deps.store.profileForAccount ? await deps.store.profileForAccount(uid) : '';
   const tokensToSave = (body.fcmToken && typeof body.fcmToken === 'string')
-    ? [...new Set([body.fcmToken, ...existingTokens])]
+    ? [...new Set([body.fcmToken, ...existingTokens])].slice(0,10)
     : availableTokens;
   const saved = await deps.store.save(uid,{
     uid,enabled:true,profileId,preferredHour,consentVersion:'daily-course-push-v1',
@@ -208,6 +215,8 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
   try {
   for (const record of pending) {
     try {
+    const prefHour = record.data.preferredHour ?? 7;
+    if (currentHour !== null && currentHour !== undefined && Number(prefHour) !== Number(currentHour)) continue;
     if (deps.accountState) {
       const state=await deps.accountState(record.uid);
       if (state==='deleted') {if (await deps.store.remove(record.uid,record.revision)) removed++;continue;}
@@ -218,8 +227,6 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       continue;
     }
     if (!record.data.enabled || record.data.uid!==record.uid || record.data.leaseUntil>now) continue;
-    const prefHour = record.data.preferredHour ?? 7;
-    if (currentHour !== null && currentHour !== undefined && Number(prefHour) !== Number(currentHour)) continue;
     // Resume oldest pending lesson; an outage must not silently skip lessons.
     const lesson = lessons.find(l=>l.number>record.data.lastLessonNumber);
     if (!lesson) continue;
@@ -246,9 +253,9 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
     } catch (_) { failed++; } // One provider/account failure must not stop the batch.
   }
   } finally {
-    if (deps.store.advance) await deps.store.advance(pending.at(-1)?.uid || '',cursor?.revision);
+    if (deps.store.advance) await deps.store.advance(pending.nextCursor ?? pending.at(-1)?.uid ?? '',cursor?.revision);
   }
-  return {selected:pending.length,accepted,removed,failed};
+  return {selected:pending.length,accepted,removed,failed,...(pending.nextCursor!==undefined ? {hasMore:!!pending.nextCursor} : {})};
 }
 
 export async function courseAccountState(uid,env,accessToken,fetchImpl=fetch) {

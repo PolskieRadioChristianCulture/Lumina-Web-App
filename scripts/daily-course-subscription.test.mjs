@@ -4,12 +4,12 @@ import {readFileSync} from 'node:fs';
 import {Window} from 'happy-dom';
 const source = readFileSync('js/cc-daily-course-subscription.js','utf8');
 // Replace only the SDK import in the test environment; no real users or tokens.
-const isolated = source.replace("import('/lumina-db.js?v=20261009_chatuid1')",'Promise.resolve(window.testSdk)');
+const isolated = source.replace("import('/lumina-db.js?v=20261009_coursekv2')",'Promise.resolve(window.testSdk)');
 function mount({guest=false,registered=true,ok=true,subscribed=true}={}) {
   const w=new Window({url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'});
   let calls=0, permissions=0, imports=0;
   const user={uid:'synthetic-student',isAnonymous:false,getIdToken:async()=>'synthetic'};
-  w.testSdk={ensureDbReady:async()=>{imports++;return {auth:{currentUser:guest?null:user,authStateReady:async()=>{}}};},requestNotificationPermission:async()=>{permissions++;return registered?'synthetic-device':null;}};
+  w.testSdk={ensureDbReady:async()=>{imports++;return {auth:{currentUser:guest?null:user,authStateReady:async()=>{}}};},requestCourseNotificationToken:async()=>{permissions++;return registered?'synthetic-device':null;}};
   w.fetch=async(url,options)=>{calls++;assert.equal(JSON.parse(options.body).uid,undefined);return {ok,json:async()=>ok?{subscribed}:{error:'Zapis nie powiódł się.'}};};
   w.document.write('<section id="ccDailyShare"></section>');w.eval(isolated);
   return {w,get calls(){return calls;},get permissions(){return permissions;},get imports(){return imports;},status:()=>w.document.querySelector('[role="status"]').textContent};
@@ -30,6 +30,7 @@ test('guest cannot subscribe even after checking consent',async()=>{
 });
 test('device registration failure prevents subscription',async()=>{
   const f=mount({registered:false});f.w.document.querySelector('input').checked=true;
+  f.w.localStorage.setItem('lumina_fcm_token','foreign-account-device');
   await click(f,'subscribe');assert.equal(f.calls,0);assert.match(f.status(),/nie został włączony/);f.w.close();
 });
 test('backend failure does not claim active subscription',async()=>{
@@ -52,6 +53,7 @@ test('preferred hour selection is sent with subscription and updated on status',
   f.w.document.querySelector('input').checked=true;
   await click(f,'subscribe');
   assert.equal(sentBody.preferredHour,20);
+  assert.equal(sentBody.fcmToken,'synthetic-device');
   assert.match(f.status(),/20:00/);
   f.w.close();
 });

@@ -41,7 +41,7 @@
     if (action==='subscribe' && !panel.querySelector('input').checked) {status.textContent='Najpierw zaznacz zgodę na powiadomienia kursu.';return;}
     busy=true; panel.querySelectorAll('button').forEach(b=>b.disabled=true);
     try {
-      const sdk = await import('/lumina-db.js?v=20261009_chatuid1');
+      const sdk = await import('/lumina-db.js?v=20261009_coursekv2');
       const {auth} = await sdk.ensureDbReady();
       if (!auth) throw Error('Nie udało się połączyć z usługą logowania.');
       await auth.authStateReady();
@@ -51,10 +51,7 @@
       if (!isLogged) throw Error('Zaloguj się, by bezpłatnie korzystać z większej liczby możliwości i zarządzać subskrypcją lekcji.');
       let pushToken = null;
       if (action==='subscribe') {
-        pushToken = await sdk.requestNotificationPermission(user.uid);
-        if (!pushToken) {
-          try { pushToken = localStorage.getItem('lumina_fcm_token'); } catch(_) {}
-        }
+        pushToken = await sdk.requestCourseNotificationToken(user.uid);
         if (!pushToken) throw Error('Push nie został włączony. Sprawdź zgodę na powiadomienia w przeglądarce i spróbuj ponownie.');
       }
       if (auth.currentUser?.uid!==user.uid) throw Error('Konto się zmieniło. Spróbuj ponownie.');
@@ -70,7 +67,7 @@
       if (data.subscribed) {
         if (typeof data.preferredHour === 'number' && hourEl) hourEl.value = String(data.preferredHour);
         const hourStr = String(data.preferredHour ?? preferredHour).padStart(2,'0') + ':00';
-        status.textContent = `Subskrypcja aktywna (dostawa o ${hourStr}). Powiadomimy Cię o nowej lekcji.`;
+        status.textContent = `Subskrypcja aktywna. Preferowana godzina: ${hourStr}. Powiadomimy Cię o nowej lekcji.`;
       } else {
         status.textContent = 'Subskrypcja wyłączona. Powiadomienia czatu pozostają bez zmian.';
       }

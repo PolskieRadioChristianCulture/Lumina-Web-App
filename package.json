@@ -17,7 +17,7 @@
     "test:guardian:extended": "node scripts/straznik-kodu-check.js",
     "test:smoke": "node scripts/lumina-smoke-check.js",
     "test:firestore-rules": "node scripts/firestore-rules-smoke-check.js",
-    "test:push": "node --test scripts/push-regression.test.cjs cloudflare-worker/lumina-push/src/recipient.test.mjs cloudflare-worker/lumina-push/src/course-subscriptions.test.mjs cloudflare-worker/lumina-push/src/owner-push-test.test.mjs scripts/daily-course-subscription.test.mjs scripts/daily-course-push-runtime.test.mjs",
+    "test:push": "node --test scripts/push-regression.test.cjs cloudflare-worker/lumina-push/src/recipient.test.mjs cloudflare-worker/lumina-push/src/course-subscriptions.test.mjs cloudflare-worker/lumina-push/src/owner-push-test.test.mjs scripts/daily-course-subscription.test.mjs scripts/daily-course-push-runtime.test.mjs scripts/daily-course-kv-runtime.test.mjs",
     "test:security-edge": "node --test scripts/security-edge-regression.test.mjs",
     "test:mobile-premium": "node --test scripts/mobile-premium-regression.test.mjs",
     "test:inline": "node validate_lumina.js",

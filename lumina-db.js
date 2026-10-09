@@ -253,6 +253,23 @@ export async function showForegroundPushNotification(payload, environment = wind
     }
 }
 
+// Course enrollment persists its device in the authenticated course service.
+// Chat registration below keeps its independent Firestore persistence contract.
+export async function requestCourseNotificationToken(userUid) {
+    if (!auth || !('Notification' in window) || !('serviceWorker' in navigator)) return null;
+    await auth.authStateReady();
+    const user = auth.currentUser;
+    if (!user || user.isAnonymous || user.uid !== userUid) return null;
+    if (await Notification.requestPermission() !== 'granted') return null;
+    if (auth.currentUser?.uid !== user.uid) return null;
+    if (!messaging && isMessagingSupported && await isMessagingSupported() && app) messaging = getMessaging(app);
+    if (!messaging) return null;
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync', {scope:'/',updateViaCache:'none'});
+    await navigator.serviceWorker.ready;
+    const token = await getToken(messaging,{vapidKey:LUMINA_VAPID_KEY,serviceWorkerRegistration:registration});
+    return auth.currentUser?.uid === user.uid ? token : null;
+}
+
 export async function requestNotificationPermission(userUid) {
     if (!('Notification' in window)) {
         console.warn('Notifications not supported in this browser.');

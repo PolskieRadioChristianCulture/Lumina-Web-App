@@ -274,8 +274,9 @@ async function handlePush(request, env, kind, documentId) {
 }
 
 function courseDeps(env, accessToken, currentHour = null) {
+  let deliveryBudget=30; // Leaves room for Auth, OAuth and manifest on Workers Free.
   const store = env.COURSE_SUBSCRIPTIONS
-    ? kvCourseStore(env.COURSE_SUBSCRIPTIONS)
+    ? kvCourseStore(env.COURSE_SUBSCRIPTIONS,env.OWNER_PUSH_TEST_GUARD)
     : firestoreCourseStore(env, accessToken);
 
   return {
@@ -283,7 +284,12 @@ function courseDeps(env, accessToken, currentHour = null) {
     store,
     latest: () => latestCourseLesson(),
     lessons: () => publishedCourseLessons(),
-    accountState: uid => courseAccountState(uid, env, accessToken),
+    accountState: async uid => {
+      if (deliveryBudget<11) throw Error('course_dispatch_budget');
+      deliveryBudget--;
+      return courseAccountState(uid,env,accessToken);
+    },
+    canContinue: () => deliveryBudget>=11,
     tokens: async uid => {
       if (env.COURSE_SUBSCRIPTIONS) {
         try {
@@ -291,14 +297,19 @@ function courseDeps(env, accessToken, currentHour = null) {
           if (sub?.data?.tokens && Array.isArray(sub.data.tokens) && sub.data.tokens.length > 0) {
             return sub.data.tokens;
           }
-        } catch (_) {}
+          return [];
+        } catch (_) { throw Error('course_device_lookup_failed'); }
       }
       return await getRecipientTokens(uid, '', accessToken, env);
     },
-    send: (token, lesson) => sendFcm(token, {
+    send: (token, lesson) => {
+      if (deliveryBudget<=0) return false;
+      deliveryBudget--;
+      return sendFcm(token, {
       title: 'Nowa lekcja — Z Biblią za Pan Brat', body: lesson.title, type: 'daily_course_lesson',
       tag: `cc-daily-lesson-${lesson.number}`, url: lesson.url, icon: `${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`, senderId: '', documentId: String(lesson.number)
-    }, accessToken, env)
+    }, accessToken, env);
+    }
   };
 }
 export default {
@@ -307,9 +318,16 @@ export default {
     const currentHour = event?.cron
       ? Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: 'numeric', hourCycle: 'h23' }).format(new Date(event.scheduledTime || Date.now())))
       : null;
+    if (currentHour!==null && ![6,7,8,20].includes(currentHour)) return;
     const token = await getGoogleAccessToken(env,true);
-    const result = await dispatchCourseLesson(courseDeps(env,token,currentHour));
-    console.log(JSON.stringify({event:'daily_course_push',currentHour,...result}));
+    const deps=courseDeps(env,token,currentHour);
+    // Bound each invocation below Workers Free subrequest limits. Continue
+    // opaque pages in the same preferred-hour window, not one page per day.
+    for (let page=0;page<10;page++) {
+      const result=await dispatchCourseLesson(deps);
+      console.log(JSON.stringify({event:'daily_course_push',currentHour,page,...result}));
+      if (!result.hasMore || !deps.canContinue()) break;
+    }
   },
   async fetch(request, env) {
     const origin = request.headers.get('origin') || '';

@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source = readFileSync(new URL('../lumina-db.js', import.meta.url), 'utf8');
 const start = source.indexOf('export async function showForegroundPushNotification(');
-const end = source.indexOf('export async function requestNotificationPermission(', start);
+const end = source.indexOf('export async function requestCourseNotificationToken(', start);
 assert.ok(start > 0 && end > start);
 const show = vm.runInNewContext(`${source.slice(start, end).replace('export ', '')};showForegroundPushNotification`, { URL });
 test('cached security importer receives the same release version as the DB module', () => {
