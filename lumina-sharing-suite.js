@@ -1280,7 +1280,8 @@
     }
 
     function sharePostLink(postId, postData = {}) {
-        const url = window.location.origin + (window.location.pathname.includes('tablica') ? window.location.pathname : '/lumina-tablica.html') + '#' + postId;
+        const origin = window.location.origin || 'https://polskieradio.cc';
+        const url = `${origin}/tablica?post=${encodeURIComponent(postId)}#${encodeURIComponent(postId)}`;
         let resolvedPost = postData && postData.id ? { ...postData } : null;
 
         // Auto-resolve post from feed or DOM if not passed
@@ -1410,7 +1411,7 @@
         }
 
         const origin = window.location.origin || 'https://polskieradio.cc';
-        const directPostUrl = `${origin}/lumina-tablica.html${postId ? '#' + postId : ''}`;
+        const directPostUrl = `${origin}/tablica?post=${postId ? encodeURIComponent(postId) : ''}#${postId ? encodeURIComponent(postId) : ''}`;
 
         if (!resolvedPost) {
             const postEl = document.getElementById(postId) || document.querySelector(`[data-post-id="${postId}"]`);
@@ -1469,16 +1470,15 @@
             postVideoUrl = origin + '/' + postVideoUrl.replace(/^\//, '');
         }
 
-        // Dynamiczny URL Cloudflare Edge Gateway – zapewnia pełny podgląd Open Graph ze zdjęciem posta (nie ogólną ikoną)
-        const gatewayBase = 'https://lumina-push.nazirczarkes.workers.dev/v1/post/share';
+        // Dynamiczny URL Cloudflare Edge na polskieradio.cc – zapewnia pełny podgląd Open Graph ze zdjęciem posta (nie ogólną ikoną)
         const sp = new URLSearchParams();
-        if (postId) sp.set('id', postId);
+        if (postId) sp.set('post', postId);
         if (title) sp.set('title', title);
         if (author) sp.set('author', author);
-        if (fullCleanText) sp.set('text', fullCleanText.length > 350 ? (fullCleanText.substring(0, 350) + '…') : fullCleanText);
+        if (fullCleanText) sp.set('text', fullCleanText.length > 300 ? (fullCleanText.substring(0, 300) + '…') : fullCleanText);
         if (postImageUrl) sp.set('img', postImageUrl);
         if (postVideoUrl) sp.set('video', postVideoUrl);
-        const dynamicShareUrl = `${gatewayBase}?${sp.toString()}`;
+        const dynamicShareUrl = `${origin}/tablica?${sp.toString()}`;
 
         if (typeof window.recordShareEvent === 'function') {
             window.recordShareEvent({ platform, url: dynamicShareUrl, title });
@@ -1559,10 +1559,11 @@
             }
 
             case 'copy': {
+                const cleanPostUrl = `${origin}/tablica?post=${encodeURIComponent(postId || '')}`;
                 const copyText = (title ? `${title}\n\n` : '')
                     + (fullCleanText ? `${fullCleanText}\n\n` : '')
                     + (postImageUrl ? `Zdjęcie: ${postImageUrl}\n\n` : '')
-                    + `Link do wpisu w LUMINA:\n${dynamicShareUrl}`;
+                    + `Link do wpisu w LUMINA:\n${cleanPostUrl}`;
 
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(copyText).then(() => {
@@ -1572,10 +1573,10 @@
                             alert('Treść wpisu skopiowana do schowka!');
                         }
                     }).catch(() => {
-                        prompt('Skopiuj link do wpisu:', dynamicShareUrl);
+                        prompt('Skopiuj link do wpisu:', cleanPostUrl);
                     });
                 } else {
-                    prompt('Skopiuj link do wpisu:', dynamicShareUrl);
+                    prompt('Skopiuj link do wpisu:', cleanPostUrl);
                 }
                 break;
             }

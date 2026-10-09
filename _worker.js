@@ -202,6 +202,147 @@ async function handleAdultContent(request, env, url, fetchImpl = fetch) {
   return json({ ok: true, ...data }, 200);
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// LUMINA DYNAMIC SOCIAL SHARING & OPEN GRAPH CRAWLER INTERCEPTOR
+// Facebook, WhatsApp, Twitter, Telegram, LinkedIn, Discord nie wykonują JS.
+// Gdy robot pobiera /tablica?post=:id, /post/:id lub /v1/post/share, serwer
+// odpytuje Firestore REST o treść i grafikę danego posta i serwuje pełny
+// zestaw tagów og:image, og:title, og:description, twitter:image itp.
+// Dla zwykłych użytkowników serwowane jest natychmiastowe przekierowanie/strona.
+// ═══════════════════════════════════════════════════════════════════════════
+function isSocialCrawler(ua) {
+  if (!ua) return false;
+  return /facebookexternalhit|facebot|twitterbot|whatsapp|telegrambot|linkedinbot|discordbot|skypeuripreview|slackbot|pinterest|redditbot|vkshare|w3c_validator|googlebot|bingbot/i.test(ua);
+}
+
+async function handleSocialPostCrawler(postId, url, userAgent) {
+  const searchParams = url.searchParams;
+  let title = (searchParams.get('title') || '').trim();
+  let text = (searchParams.get('text') || searchParams.get('desc') || '').trim();
+  let author = (searchParams.get('author') || '').trim();
+  let image = (searchParams.get('img') || searchParams.get('image') || searchParams.get('photo') || '').trim();
+  let video = (searchParams.get('video') || '').trim();
+
+  if (postId) {
+    try {
+      const fsRes = await fetch(
+        `https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_posts/${encodeURIComponent(postId)}`,
+        { headers: { 'User-Agent': 'ChristianCulture-Worker/1.0' }, cf: { cacheTtl: 120 } }
+      );
+      if (fsRes.ok) {
+        const doc = await fsRes.json();
+        const f = doc.fields || {};
+        if (f.author?.stringValue) author = f.author.stringValue.trim();
+        if (f.title?.stringValue && f.title.stringValue.trim() !== 'Wpis LUMINA') {
+          title = f.title.stringValue.trim();
+        }
+        if (f.contentWeb?.stringValue || f.fullText?.stringValue || f.text?.stringValue || f.desc?.stringValue || f.teaser?.stringValue) {
+          const raw = f.contentWeb?.stringValue || f.fullText?.stringValue || f.text?.stringValue || f.desc?.stringValue || f.teaser?.stringValue;
+          text = raw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+        if (f.image?.stringValue || f.imageUrl?.stringValue) {
+          image = (f.image?.stringValue || f.imageUrl?.stringValue).trim();
+        }
+        if (f.videoUrl?.stringValue || f.youtubeUrl?.stringValue) {
+          video = (f.videoUrl?.stringValue || f.youtubeUrl?.stringValue).trim();
+        }
+      }
+    } catch (e) {
+      // Fallback do parametrów URL
+    }
+  }
+
+  if (!author) author = 'Christian Culture';
+  if (!title) {
+    title = `${author} • Wpis w Społeczności LUMINA`;
+  } else if (!title.toLowerCase().includes(author.toLowerCase()) && author !== 'Christian Culture') {
+    title = `${author}: ${title}`;
+  }
+  if (!text) {
+    text = `Zobacz wpis ${author} w chrześcijańskiej społeczności LUMINA. Przestrzeń wartościowych relacji, wiary i inspiracji. 🕊️✨`;
+  }
+  const cleanSnippet = text.length > 280 ? (text.substring(0, 280) + '…') : text;
+
+  if (image && !image.startsWith('http')) {
+    image = 'https://polskieradio.cc/' + image.replace(/^\//, '');
+  }
+  if (!image) {
+    image = 'https://polskieradio.cc/lumina_og.jpg';
+  }
+
+  const destinationUrl = `https://polskieradio.cc/tablica?post=${encodeURIComponent(postId || '')}#${encodeURIComponent(postId || '')}`;
+  const canonicalUrl = `https://polskieradio.cc/tablica?post=${encodeURIComponent(postId || '')}`;
+
+  const escapeHtml = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  const safeTitle = escapeHtml(title);
+  const safeDesc = escapeHtml(cleanSnippet);
+  const safeImage = escapeHtml(image);
+  const safeDest = escapeHtml(destinationUrl);
+  const safeCanon = escapeHtml(canonicalUrl);
+
+  const html = `<!DOCTYPE html>
+<html lang="pl" prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb#">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${safeTitle} | LUMINA</title>
+  <meta name="description" content="${safeDesc}">
+  <link rel="canonical" href="${safeCanon}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="LUMINA • Christian Culture">
+  <meta property="og:url" content="${safeCanon}">
+  <meta property="og:title" content="${safeTitle}">
+  <meta property="og:description" content="${safeDesc}">
+  <meta property="og:image" content="${safeImage}">
+  <meta property="og:image:secure_url" content="${safeImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${safeTitle}">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ChristianCultPL">
+  <meta name="twitter:url" content="${safeCanon}">
+  <meta name="twitter:title" content="${safeTitle}">
+  <meta name="twitter:description" content="${safeDesc}">
+  <meta name="twitter:image" content="${safeImage}">
+  <meta name="twitter:image:alt" content="${safeTitle}">
+
+  <!-- Natychmiastowe przekierowanie dla przeglądarek użytkowników -->
+  <meta http-equiv="refresh" content="0;url=${safeDest}">
+  <script>
+    window.location.replace("${safeDest}");
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #070d1e; color: #fff; padding: 40px 20px; text-align: center; }
+    .card { max-width: 520px; margin: 0 auto; background: #0f172a; padding: 24px; border-radius: 16px; border: 1.5px solid rgba(250,204,21,0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    img { max-width: 100%; border-radius: 12px; margin: 16px 0; max-height: 400px; object-fit: cover; }
+    a { color: #facc15; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 12px; padding: 10px 20px; background: rgba(250,204,21,0.15); border-radius: 10px; border: 1px solid #facc15; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 style="font-size:1.2rem;margin-top:0;">${safeTitle}</h2>
+    <img src="${safeImage}" alt="${safeTitle}">
+    <p style="font-size:0.9rem;line-height:1.5;color:#cbd5e1;">${safeDesc}</p>
+    <div><a href="${safeDest}">Otwórz wpis w portalu LUMINA 🕊️</a></div>
+  </div>
+</body>
+</html>`;
+
+  return new Response(html, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=300, s-maxage=600',
+      'X-Robots-Tag': 'all',
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -229,12 +370,38 @@ export default {
       });
     }
 
+    const ua = request.headers.get('user-agent') || '';
+    const isCrawler = isSocialCrawler(ua);
+
+    // Dynamiczne udostępnianie postów pod ścieżką /post/:id
+    if (url.pathname.startsWith('/post/')) {
+      const postId = url.pathname.slice('/post/'.length).replace(/\/$/, '');
+      if (isCrawler) {
+        return handleSocialPostCrawler(postId, url, ua);
+      }
+      return Response.redirect(`https://polskieradio.cc/tablica?post=${encodeURIComponent(postId)}#${encodeURIComponent(postId)}`, 302);
+    }
+
+    // Endpoint wstecznej zgodności /v1/post/share
+    if (url.pathname === '/v1/post/share') {
+      const postId = url.searchParams.get('id') || url.searchParams.get('post') || '';
+      return handleSocialPostCrawler(postId, url, ua);
+    }
+
     const p = url.pathname.toLowerCase().replace(/\/$/, '');
     let decodedP = p;
     try {
       decodedP = decodeURIComponent(url.pathname).toLowerCase().replace(/\/$/, '');
     } catch {
       decodedP = p;
+    }
+
+    // Przechwycenie social crawlerów dla /tablica?post=... oraz /lumina-tablica?post=...
+    if ((decodedP === '/tablica' || decodedP === '/lumina-tablica' || decodedP === '/lumina-tablica.html') && (url.searchParams.has('post') || url.searchParams.has('id'))) {
+      if (isCrawler) {
+        const postId = url.searchParams.get('post') || url.searchParams.get('id') || '';
+        return handleSocialPostCrawler(postId, url, ua);
+      }
     }
 
     if (decodedP === '/pokonaćgoliata' || decodedP === '/pokonacgoliata') {
