@@ -2,7 +2,70 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
+import {Window} from 'happy-dom';
 const source=await readFile('lumina-db.js','utf8');
+
+test('logout clears private history and read markers without deleting unrelated preferences',async()=>{
+  const a=source.indexOf('export async function logoutUser('),b=source.indexOf('// Global window exposure',a);
+  const storage=new Map([['lumina_chat_room','private'],['lumina_chat_read_room','123'],['theme','light']]);
+  const ctx={auth:{},signOut:async()=>{},currentUserState:{uid:'UID_A'},currentProfileState:{uid:'UID_A'},
+    localStorage:{get length(){return storage.size;},key:i=>[...storage.keys()][i],removeItem:k=>storage.delete(k)},
+    sessionStorage:{length:0},document:{body:{classList:{remove:()=>{}}},getElementById:()=>null},console:{error:()=>{}}};
+  const logout=vm.runInNewContext('('+source.slice(a,b).replace('export async function','async function').trim()+'\n)',ctx);
+  await logout();assert.equal(storage.size,1);assert.equal(storage.get('theme'),'light');assert.equal(ctx.currentUserState,null);
+});
+
+test('private history cannot be restored before login or rendered after account switch',()=>{
+  const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
+  const streams=[],updates=[];let reads=0,writes=0;
+  const ctx={db:{},currentUserState:null,auth:{currentUser:null},onAuthChange:()=>()=>{},
+    localStorage:{getItem:()=>{reads++;return '[{"text":"private cached text"}]';},setItem:()=>writes++,removeItem:()=>{}},
+    activeDirectChatListeners:new Map(),collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),
+    where:(...args)=>args,orderBy:(...args)=>args,limit:n=>n,getChatId:(a,b)=>[a,b].sort().join('_'),
+    getDirectMessageKey:m=>m.id,getDirectMessageTime:()=>0,console:{warn:()=>{}},
+    onSnapshot:(q,opts,cb)=>{streams.push({q,cb});return ()=>{};}};
+  const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
+  subscribe('private-room',m=>updates.push(m));assert.equal(reads,0);assert.equal(updates.length,0);
+  ctx.currentUserState={uid:'UID_A'};ctx.auth.currentUser={uid:'UID_B'};
+  subscribe('private-room',m=>updates.push(m));assert.equal(streams.length,0,'stale profile cannot open another session');
+  ctx.auth.currentUser={uid:'UID_A'};const stop=subscribe('private-room',m=>updates.push(m));
+  assert.deepEqual(Array.from(streams[0].q.filters[2]),['timestamp','desc']);
+  streams[0].cb({forEach:cb=>cb({id:'one',data:()=>({text:'synthetic'}),metadata:{hasPendingWrites:false}})});
+  assert.equal(updates.length,1);assert.equal(reads+writes,0,'private snapshots never persist plaintext');
+  ctx.auth.currentUser={uid:'UID_B'};streams[0].cb({forEach:()=>{}});assert.equal(updates.length,1);stop();
+});
+
+test('receiver acceptance commits consent and conversation together, preserving existing identities',async()=>{
+  const a=source.indexOf('export async function acceptMessageRequest('),b=source.indexOf('export async function declineMessageRequest(',a);
+  for(const rejected of [false,true]) {
+    const writes=[];let committed=false;
+    const request={chatId:'room',senderAuthUid:'UID_A',receiverAuthUid:'UID_B',status:'pending'};
+    const ctx={db:{},currentUserState:{uid:'UID_B'},doc:(_db,path,id)=>({path,id}),
+      getDoc:async ref=>({exists:()=>true,data:()=>ref.path==='lumina_message_requests'?request:{participants:['UID_A','UID_B']}}),
+      writeBatch:()=>({set:(...args)=>writes.push(['set',...args]),update:(...args)=>writes.push(['update',...args]),
+        commit:async()=>{if(rejected)throw Error('synthetic rejection');committed=true;}}),serverTimestamp:()=>0,console:{warn:()=>{}}};
+    const accept=vm.runInNewContext('('+source.slice(a,b).replace('export async function','async function').trim()+')',ctx);
+    assert.equal(!!await accept('room'),!rejected);assert.equal(committed,!rejected);
+    assert.equal(writes.length,2);assert.equal('participants' in writes[0][2],false);
+  }
+});
+
+test('messenger keyboard cycles focus, closes on Escape and restores opener',async()=>{
+  const w=new Window();w.document.write('<button id="opener">Rozmowy</button><div id="directMessagesModal"><button class="modal-close-btn">Zamknij</button><input></div>');
+  const modal=w.document.getElementById('directMessagesModal'),opener=w.document.getElementById('opener');
+  modal.querySelectorAll('button,input').forEach(el=>el.getClientRects=()=>[{}]);
+  const code=await readFile('js/lumina-chat-accessibility.js','utf8');
+  w.eval(code.replace('export function enhanceChatDialog','function enhanceChatDialog'));
+  modal.querySelector('button').onclick=()=>modal.classList.remove('open');
+  opener.focus();modal.classList.add('open');await new Promise(r=>setTimeout(r,0));
+  assert.equal(modal.getAttribute('role'),'dialog');assert.equal(w.document.activeElement,modal.querySelector('button'));
+  modal.querySelector('input').focus();w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}));
+  assert.equal(w.document.activeElement,modal.querySelector('button'));
+  w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}));
+  assert.equal(w.document.activeElement,modal.querySelector('input'));
+  w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await new Promise(r=>setTimeout(r,0));
+  assert.equal(modal.classList.contains('open'),false);assert.equal(w.document.activeElement,opener);w.close();
+});
 const start=source.indexOf('export async function sendDirectMessageToCloud(');
 const end=source.indexOf('// ── Oznaczanie wiadomości prywatnych',start);
 assert.ok(start>=0 && end>start);
@@ -138,7 +201,7 @@ function readFixture({offline=false,anonymous=false,failCommit=false,switchAccou
   const ctx={db:offline?null:{},currentUserState:{uid:'recipient-uid',isAnonymous:anonymous},
     normalizeChatUserId:id=>id,getChatId:(a,b)=>[a,b].sort().join('_'),
     localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>{events.push('cache');if(cacheFailure)throw Error('quota');storage.set(key,value);}},
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>{queries.push({ref,filters});return {ref,filters};},where:(...args)=>args,limit:n=>n,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>{queries.push({ref,filters});return {ref,filters};},where:(...args)=>args,orderBy:(...args)=>args,limit:n=>n,
     getDocs:async()=>{if(hideDuringQuery)ctx.document.visibilityState='hidden';return {forEach:cb=>messages.forEach(m=>cb({id:m.id,data:()=>m}))};},doc:(_db,path,id)=>({path,id}),
     writeBatch:()=>({update:(...args)=>writes.push(args),commit:async()=>{events.push('commit');if(failCommit)throw Error('denied');if(switchAccount)ctx.currentUserState={uid:'other-uid'};}}),
     activeDirectChatListeners:new Map([[room,()=>events.push('render')]]),console:{warn:()=>{}},
@@ -192,7 +255,7 @@ test('conversation resumes only on visible open room and removes its event liste
   const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
   const hooks=new Map(),updates=[];let open=true;
   const ctx={db:{},currentUserState:{uid:'synthetic-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,orderBy:(...args)=>args,limit:n=>n,
     onSnapshot:()=>()=>{},getDirectMessageKey:m=>m.id,getDirectMessageTime:()=>0,console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_'),
     document:{visibilityState:'hidden',getElementById:()=>({classList:{contains:()=>open}}),addEventListener:(event,fn)=>hooks.set(event,fn),removeEventListener:(event,fn)=>{assert.equal(hooks.get(event),fn);hooks.delete(event);}}};
   const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);
@@ -205,7 +268,7 @@ test('all active DM streams hide pending writes until metadata confirms them',()
   const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
   const streams=[],updates=[];
   const ctx={db:{},currentUserState:{uid:'synthetic-sender-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,orderBy:(...args)=>args,limit:n=>n,
     onSnapshot:(q,opts,cb)=>{assert.equal(opts.includeMetadataChanges,true);streams.push({q,cb});return ()=>{};},
     getDirectMessageKey:m=>m.id,getDirectMessageTime:()=>0,console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_'),
   };
@@ -246,7 +309,7 @@ test('confirmed primary message ID and read status cannot be overwritten by a st
   const a=source.indexOf('export function subscribeToDirectMessages('),b=source.indexOf('export function subscribeToIncomingMessageRequests(',a);
   const streams=[],updates=[];
   const ctx={db:{},currentUserState:{uid:'synthetic-uid'},localStorage:{getItem:()=>null,setItem:()=>{}},activeDirectChatListeners:new Map(),
-    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,limit:n=>n,
+    collection:(_db,path)=>({path}),query:(ref,...filters)=>({ref,filters}),where:(...args)=>args,orderBy:(...args)=>args,limit:n=>n,
     onSnapshot:(q,opts,cb)=>{streams.push({q,cb});return ()=>{};},getDirectMessageKey:m=>m.clientMessageId,getDirectMessageTime:()=>0,
     console:{warn:()=>{}},getChatId:(a,b)=>[a,b].sort().join('_')};
   const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function').trim()+'\n)',ctx);

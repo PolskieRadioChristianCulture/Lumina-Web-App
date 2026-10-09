@@ -156,6 +156,62 @@ test('chat membership OR query respects the actual Firestore rules', {
           `shared helper access boundary ${path}/${uid}/${provider}`);
       }
     }
+    const consentMessage = (sender,receiver) => ({ fields: {
+      chatId:{stringValue:'consent-audit'},participants:array([sender,receiver]),
+      senderAuthUid:{stringValue:sender},receiverAuthUid:{stringValue:receiver},text:{stringValue:'synthetic'}
+    }});
+    const consentPath = `${root}/lumina_message_requests/consent-audit`;
+    const directPath = `${root}/lumina_direct_messages/consent-audit`;
+    const nestedPath = `${root}/lumina_chats/consent-audit/messages/audit`;
+    assert.equal((await request(directPath,consentMessage('UID_A','UID_B'),token('UID_A'),'PATCH')).status,403,
+      'client bypass cannot send before receiver consent');
+    assert.equal((await request(nestedPath,consentMessage('UID_A','UID_B'),token('UID_A'),'PATCH')).status,403,
+      'backup cannot bypass receiver consent');
+    assert.equal((await request(`${root}/lumina_chats/forged`,{fields:{participants:array(['UID_A','UID_B']),
+      conversationState:{stringValue:'accepted'}}},token('UID_A'),'PATCH')).status,403,'forged room cannot authorize messaging');
+    assert.equal((await request(consentPath,{fields:{...consentMessage('UID_A','UID_B').fields,
+      previewText:{stringValue:'synthetic'},status:{stringValue:'pending'}}},token('UID_A'),'PATCH')).status,200);
+    const acceptedFields={status:{stringValue:'accepted'},acceptedBy:{stringValue:'UID_B'},
+      acceptedAt:{timestampValue:new Date().toISOString()}};
+    const acceptUrl=`${consentPath}?updateMask.fieldPaths=status&updateMask.fieldPaths=acceptedBy&updateMask.fieldPaths=acceptedAt`;
+    assert.equal((await request(acceptUrl,{fields:acceptedFields},token('UID_A'),'PATCH')).status,403,'sender cannot accept own request');
+    assert.equal((await request(acceptUrl,{fields:acceptedFields},token('UID_B'),'PATCH')).status,200,'receiver can accept');
+    assert.equal((await request(directPath,consentMessage('UID_A','UID_B'),token('UID_A'),'PATCH')).status,200,'accepted direct message works');
+    assert.equal((await request(nestedPath,consentMessage('UID_A','UID_B'),token('UID_A'),'PATCH')).status,200,'accepted backup works');
+    assert.equal((await request(`${root}/lumina_direct_messages/reply`,consentMessage('UID_B','UID_A'),token('UID_B'),'PATCH')).status,200,
+      'accepted conversation works in both directions');
+    assert.equal((await request(`${root}/lumina_direct_messages/foreign-pair`,consentMessage('UID_A','UID_C'),token('UID_A'),'PATCH')).status,403,
+      'consent cannot be reused for a different recipient');
+    assert.equal((await request(`${root}/lumina_user_blocks/UID_B_UID_A`,{fields:{blockerUid:{stringValue:'UID_B'},blockedUid:{stringValue:'UID_A'}}},'owner','PATCH')).status,200);
+    assert.equal((await request(`${root}/lumina_direct_messages/blocked`,consentMessage('UID_A','UID_B'),token('UID_A'),'PATCH')).status,403,
+      'blocking still overrides accepted consent');
+    // Acceptance and room state must authorize each other in one atomic commit.
+    const batchRequest = {...consentMessage('UID_C','UID_D').fields,previewText:{stringValue:'synthetic'},status:{stringValue:'pending'}};
+    assert.equal((await request(`${root}/lumina_message_requests/batch-room`,{fields:batchRequest},token('UID_C'),'PATCH')).status,200);
+    const commitBody={writes:[
+      {update:{name:`projects/${project}/databases/(default)/documents/lumina_message_requests/batch-room`,fields:{
+        status:{stringValue:'accepted'},acceptedBy:{stringValue:'UID_D'},acceptedAt:{timestampValue:new Date().toISOString()}}},
+        updateMask:{fieldPaths:['status','acceptedBy','acceptedAt']}},
+      {update:{name:`projects/${project}/databases/(default)/documents/lumina_chats/batch-room`,fields:{
+        participants:array(['UID_C','UID_D']),conversationState:{stringValue:'accepted'}}}}
+    ]};
+    assert.equal((await request(`${root}:commit`,commitBody,token('UID_C'))).status,403,'sender cannot forge atomic acceptance');
+    assert.equal((await request(`${root}:commit`,commitBody,token('UID_D'))).status,200,'receiver atomic acceptance passes getAfter');
+    // Latest messages must survive a conversation longer than the bounded page.
+    const historyWrites=Array.from({length:451},(_,i)=>({update:{
+      name:`projects/${project}/databases/(default)/documents/lumina_direct_messages/history-${String(i).padStart(3,'0')}`,
+      fields:{participants:array(['UID_A','UID_B']),chatId:{stringValue:'history-room'},
+        timestamp:{timestampValue:new Date(1700000000000+i*1000).toISOString()}}
+    }}));
+    assert.equal((await request(`${root}:commit`,{writes:historyWrites},'owner')).status,200);
+    const latestPage=await request(`${root}:runQuery`,{structuredQuery:{from:[{collectionId:'lumina_direct_messages'}],
+      where:{compositeFilter:{op:'AND',filters:[filter('participants','UID_A'),
+        {fieldFilter:{field:{fieldPath:'chatId'},op:'EQUAL',value:{stringValue:'history-room'}}}]}},
+      orderBy:[{field:{fieldPath:'timestamp'},direction:'DESCENDING'}],limit:400}},token('UID_A'));
+    assert.equal(latestPage.status,200);
+    const latestDocs=latestPage.data.filter(x=>x.document);
+    assert.equal(latestDocs.length,400);assert.ok(latestDocs[0].document.name.endsWith('history-450'));
+    assert.ok(latestDocs.at(-1).document.name.endsWith('history-051'),'bounded page contains the newest 400 messages');
   } finally {
     emulator.kill();
     await exited;

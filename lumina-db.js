@@ -1239,7 +1239,7 @@ export async function logoutUser() {
     }
     for (let i = localStorage.length - 1; i >= 0; i--) {
         const k = localStorage.key(i);
-        if (k && k.startsWith('lumina_auth_owner_')) {
+        if (k && (k.startsWith('lumina_auth_owner_') || k.startsWith('lumina_chat_'))) {
             localStorage.removeItem(k);
         }
     }
@@ -3134,16 +3134,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         }
     }
 
-    // 1. Check and emit local cached messages immediately
-    try {
-        const localKey = `lumina_chat_${normalizedChatId}`;
-        const cached = localStorage.getItem(localKey);
-        if (cached) onUpdate(JSON.parse(cached));
-    } catch(e) {}
-
     if (!db || !normalizedChatId) return () => {};
     const authUid = currentUserState?.uid;
-    if (!authUid || currentUserState.isAnonymous) {
+    if (!authUid || currentUserState.isAnonymous ||
+        (typeof auth !== 'undefined' && auth?.currentUser?.uid !== authUid)) {
         let activeUnsubscribe = () => {};
         let retryUnsubscribe = () => {};
         retryUnsubscribe = onAuthChange((user) => {
@@ -3158,6 +3152,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         };
     }
 
+    // Private history is never restored from an unscoped persistent browser cache.
+    // Confirmed snapshots populate this session after authentication instead.
+    try { localStorage.removeItem(`lumina_chat_${normalizedChatId}`); } catch (_) {}
+
     // Register active listener callback for optimistic instant rendering
     activeDirectChatListeners.set(normalizedChatId, onUpdate);
 
@@ -3169,6 +3167,8 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     let legacyMessages = [];
 
     const emitMergedMessages = () => {
+        if (currentUserState?.uid !== authUid || currentUserState.isAnonymous ||
+            (typeof auth !== 'undefined' && auth?.currentUser?.uid !== authUid)) return;
         const uniqueMessages = new Map();
         [...legacyMessages, ...nestedMessages, ...topLevelMessages].forEach(message => {
             const key = getDirectMessageKey(message);
@@ -3177,9 +3177,6 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             uniqueMessages.set(key, existing ? { ...existing, ...message } : message);
         });
         const messages = [...uniqueMessages.values()].sort((a, b) => getDirectMessageTime(a) - getDirectMessageTime(b));
-        try {
-            localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(messages));
-        } catch(e) {}
         onUpdate(messages);
     };
 
@@ -3209,6 +3206,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             collection(db, 'lumina_direct_messages'),
             where('participants', 'array-contains', authUid),
             where('chatId', '==', normalizedChatId),
+            orderBy('timestamp', 'desc'),
             limit(400)
         );
         unsub1 = onSnapshot(scopedQ, { includeMetadataChanges: true }, (snap) => {
@@ -3228,6 +3226,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         const directQ = query(
             collection(db, 'lumina_direct_messages'),
             where('participants', 'array-contains', authUid),
+            orderBy('timestamp', 'desc'),
             limit(150)
         );
         unsub1 = onSnapshot(directQ, { includeMetadataChanges: true }, (snap) => {
@@ -3290,13 +3289,23 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         }, () => {});
     } catch(e) {}
 
-    return () => {
+    let stopAuthObserver = () => {};
+    const stopConversation = () => {
         try { unsub1(); } catch(e) {}
         try { unsub2(); } catch(e) {}
         try { unsub3(); } catch(e) {}
+        stopAuthObserver();
         if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', resumeVisibleConversation);
-        activeDirectChatListeners.delete(normalizedChatId);
+        if (activeDirectChatListeners.get(normalizedChatId) === onUpdate) activeDirectChatListeners.delete(normalizedChatId);
     };
+    if (typeof onAuthChange === 'function') stopAuthObserver = onAuthChange(() => {
+        if (currentUserState?.uid !== authUid || currentUserState?.isAnonymous ||
+            (typeof auth !== 'undefined' && auth?.currentUser?.uid !== authUid)) {
+            stopConversation();
+            onUpdate([]);
+        }
+    });
+    return stopConversation;
 }
 
 // ── Prośby o rozmowę: pierwszy kontakt wymaga zgody odbiorcy ──
@@ -3331,15 +3340,21 @@ export async function acceptMessageRequest(requestId) {
         const requestSnap = await getDoc(requestRef);
         const request = requestSnap.data();
         if (!requestSnap.exists() || request.receiverAuthUid !== user.uid || request.status !== 'pending') return false;
-        await setDoc(doc(db, 'lumina_chats', request.chatId), {
+        const chatRef = doc(db, 'lumina_chats', request.chatId);
+        const chatSnap = await getDoc(chatRef);
+        const batch = writeBatch(db);
+        batch.set(chatRef, {
             chatId: request.chatId,
-            participants: [request.senderAuthUid, request.receiverAuthUid],
-            users: [request.senderId, request.receiverId, request.senderAuthUid, request.receiverAuthUid],
+            ...(!chatSnap.exists() ? {
+                participants: [request.senderAuthUid, request.receiverAuthUid],
+                users: [request.senderId, request.receiverId, request.senderAuthUid, request.receiverAuthUid].filter(Boolean)
+            } : {}),
             conversationState: 'accepted',
             acceptedAt: serverTimestamp(),
             acceptedBy: user.uid
         }, { merge: true });
-        await updateDoc(requestRef, { status: 'accepted', acceptedAt: serverTimestamp(), acceptedBy: user.uid });
+        batch.update(requestRef, { status: 'accepted', acceptedAt: serverTimestamp(), acceptedBy: user.uid });
+        await batch.commit();
         return request;
     } catch (e) {
         console.warn('Lumina accept message request notice:', e.message);
