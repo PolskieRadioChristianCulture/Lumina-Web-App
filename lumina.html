@@ -4267,20 +4267,25 @@
         window._cloudProfilesMap = window._cloudProfilesMap || {};
         window._cachedLiveProfiles = window._cachedLiveProfiles || [];
 
+        let communityProfilesSyncInFlight = false;
+        let communityProfilesSyncCompleted = false;
         async function fetchAndSyncAllCommunityProfiles() {
+            if (communityProfilesSyncInFlight || communityProfilesSyncCompleted) return;
+            communityProfilesSyncInFlight = true;
             try {
                 let allDocs = [];
                 let pageToken = '';
                 do {
                     const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?pageSize=100' + (pageToken ? '&pageToken=' + encodeURIComponent(pageToken) : '');
                     const res = await fetch(restUrl);
-                    if (!res.ok) break;
+                    if (!res.ok) throw new Error('Nie udało się pobrać katalogu społeczności: HTTP ' + res.status);
                     const json = await res.json();
                     if (json.documents) {
                         allDocs.push(...json.documents);
                     }
                     pageToken = json.nextPageToken || '';
                 } while (pageToken);
+                communityProfilesSyncCompleted = true;
 
                 if (allDocs.length > 0) {
                     const profiles = [];
@@ -4330,6 +4335,8 @@
                 }
             } catch(e) {
                 console.warn('[LUMINA] Error fetching community profiles REST:', e);
+            } finally {
+                communityProfilesSyncInFlight = false;
             }
         }
 
@@ -5054,6 +5061,8 @@
     </header>
 
     <!-- ══════════ CARDS ══════════ -->
+    <div id="luminaMemberWelcome" class="lumina-member-welcome"></div>
+    <script defer src="/js/lumina-member-welcome.js?v=20261009_welcome1"></script>
     <section class="cards-section" id="odkrywaj" tabindex="-1" aria-label="Odkrywaj społeczność LUMINA">
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)" aria-label="Poprzednie profile"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
