@@ -242,6 +242,14 @@
       letter-spacing: -0.07em;
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6), 0 4px 6px #000;
       user-select: none;
+      display: inline-block;
+      transform-origin: center;
+      transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s ease;
+    }
+    .digit-patch span.flipping {
+      transform: scaleY(0.08) rotateX(-50deg);
+      opacity: 0.35;
+      filter: blur(1px);
     }
 
     /* 7 pozycji cyfr dokładnie dopasowanych do obrazu bazowego */
@@ -511,13 +519,27 @@
       }, 4000);
     }
 
-    /* Wymagana integracja globalna window.CCMilion.setCount() */
+    /* Wymagana integracja globalna window.CCMilion.setCount() z animacją klapkową */
     function setCount(value) {
       if (!Number.isSafeInteger(value) || value < 0) return;
-      currentCount = Math.min(value, 9999999);
-      const str = String(currentCount).padStart(7, '0');
+      const targetCount = Math.min(value, 9999999);
+      const oldStr = String(currentCount).padStart(7, '0');
+      const newStr = String(targetCount).padStart(7, '0');
+      currentCount = targetCount;
+
       for (let i = 0; i < 7; i++) {
-        if (cells[i]) cells[i].textContent = str[i];
+        if (cells[i]) {
+          if (cells[i].textContent !== newStr[i]) {
+            const cell = cells[i];
+            cell.classList.add('flipping');
+            setTimeout(() => {
+              cell.textContent = newStr[i];
+              cell.classList.remove('flipping');
+            }, 180);
+          } else {
+            cells[i].textContent = newStr[i];
+          }
+        }
       }
       if (liveOutput) {
         liveOutput.textContent = 'Łączna aktywność ekosystemu: ' + new Intl.NumberFormat('pl-PL').format(currentCount);
@@ -526,7 +548,10 @@
     window.CCMilion = Object.freeze({ setCount });
 
     /* Pobranie autorytatywnego stanu z chmury Cloudflare D1 */
+    let isFetching = false;
     async function fetchCountFromServer() {
+      if (isFetching) return;
+      isFetching = true;
       try {
         const res = await fetch('/api/milion/count', { cache: 'no-store' });
         if (res.ok) {
@@ -537,8 +562,40 @@
         }
       } catch (err) {
         console.warn('Błąd pobierania stanu licznika:', err);
+      } finally {
+        isFetching = false;
       }
     }
+
+    /* SMART REAL-TIME POLLING: Cykliczna synchronizacja z chmurą D1 w tle */
+    let pollInterval = null;
+    const POLL_INTERVAL_MS = 3500; // 3.5s dla natychmiastowej reakcji
+
+    function startLivePolling() {
+      if (pollInterval) clearInterval(pollInterval);
+      pollInterval = setInterval(() => {
+        if (!document.hidden) {
+          fetchCountFromServer();
+        }
+      }, POLL_INTERVAL_MS);
+    }
+
+    function stopLivePolling() {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+      }
+    }
+
+    // Detekcja widoczności karty (ZERO COST & oszczędność baterii/sieci)
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        fetchCountFromServer();
+        startLivePolling();
+      } else {
+        stopLivePolling();
+      }
+    });
 
     /* Autorytatywny zapis kliknięcia w bazie D1 */
     async function recordRealActivity(type) {
@@ -628,6 +685,7 @@
     // Inicjalizacja przy załadowaniu strony
     window.addEventListener('DOMContentLoaded', () => {
       fetchCountFromServer();
+      startLivePolling();
     });
   </script>
 </body>
