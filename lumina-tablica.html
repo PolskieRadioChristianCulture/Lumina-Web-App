@@ -219,14 +219,14 @@
     <!-- Lumina Community Core Posts Data -->
     <script src="js/lumina-community-posts.js?v=20261004_ai_antychryst_v2"></script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=20261009_chatquality1"></script>
+    <script type="module" src="lumina-db.js?v=20261010_quickpost1"></script>
     <script src="js/lumina-comments-engine.js?v=20261007_guardian2"></script>
 
     <script src="lumina-radio.js?v=4.1.1_20260909"></script>
     <script type="module" src="lumina-chat-typing.js?v=4.1.1_20260909"></script>
-    <script type="module" src="lumina-core.js?v=20261009_chatquality1"></script>
-    <script type="module" src="lumina-security.js?v=20261009_chatquality1"></script>
-    <script type="module" src="lumina-tablica.js?v=20261009_chatquality1"></script>
+    <script type="module" src="lumina-core.js?v=20261010_quickpost1"></script>
+    <script type="module" src="lumina-security.js?v=20261010_quickpost1"></script>
+    <script type="module" src="lumina-tablica.js?v=20261010_quickpost1"></script>
     <script type="module" src="lumina-i18n.js?v=4.3.2_20260918_SMART_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.1_20260909"></script>
     <script src="lumina-sharing-suite.js?v=20260919_repost_v1"></script>
@@ -11528,6 +11528,8 @@
 
         async function submitQuickPost(event, isBypassAuth = false) {
             if (event && event.preventDefault) event.preventDefault();
+            const submitBtn = document.getElementById('qpSubmitBtn');
+            if (submitBtn?.disabled) return;
 
             const title = (document.getElementById('qpTitleInput') ? document.getElementById('qpTitleInput').value.trim() : '');
             const text = (document.getElementById('qpTextInput') ? document.getElementById('qpTextInput').value.trim() : '');
@@ -11551,13 +11553,14 @@
             }
 
             // ── BRAMKA LOGOWANIA GOOGLE (Wymagany rzeczywisty token Firebase Auth do zapisu w chmurze) ──
+            if (submitBtn) submitBtn.disabled = true;
             let realAuthUser = (window.LuminaDB?.getFirebaseAuthUser && window.LuminaDB.getFirebaseAuthUser()) || (window.firebaseAuth && window.firebaseAuth.currentUser) || (window.luminaAuth && window.luminaAuth.currentUser);
             if (!realAuthUser && window.LuminaDB?.waitForAuthReady) {
                 try {
                     realAuthUser = await window.LuminaDB.waitForAuthReady(1200);
                 } catch(e) {}
             }
-            if (!isBypassAuth && (!realAuthUser || realAuthUser.isAnonymous)) {
+            if (!realAuthUser || realAuthUser.isAnonymous) {
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
@@ -11572,7 +11575,6 @@
             }
 
             const persona = getActiveAuthorPersona();
-            const submitBtn = document.getElementById('qpSubmitBtn');
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publikowanie...';
@@ -11614,6 +11616,14 @@
             };
 
             try {
+                // Potwierdzenie chmury poprzedza cache, feed i komunikat sukcesu.
+                if (typeof window.LuminaDB?.publishUniversalPost !== 'function') {
+                    throw new Error('Moduł publikacji nie jest gotowy. Treść zachowano; odśwież stronę i spróbuj ponownie.');
+                }
+                const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
+                if (!publishedPost?.cloudDocumentId) {
+                    throw new Error('Serwer nie potwierdził zapisu wpisu w chmurze LUMINA.');
+                }
                 // 1. Zapis na Tablicy (local spotlight + cloud cache + memory feed)
                 try {
                     localStorage.setItem('lumina_recent_published_post', JSON.stringify(newPost));
@@ -11625,14 +11635,6 @@
 
                 if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
                     window.cloudFeedPosts.unshift(newPost);
-                }
-
-                // 2. Zapis w profilu autora oraz w Firestore (wymaga trwałego potwierdzenia)
-                if (window.LuminaDB?.publishUniversalPost) {
-                    const publishedPost = await window.LuminaDB.publishUniversalPost(newPost);
-                    if (!publishedPost?.cloudDocumentId) {
-                        throw new Error('Serwer nie potwierdził zapisu wpisu w chmurze LUMINA.');
-                    }
                 }
 
                 // Gwarancja zapisu w profilu autora w localStorage

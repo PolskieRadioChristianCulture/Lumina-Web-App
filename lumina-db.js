@@ -2271,7 +2271,7 @@ export async function publishUniversalPost(postData) {
         let reason = '';
         const errMsg = String(err?.message || '').toLowerCase();
         const errCode = String(err?.code || '').toLowerCase();
-        
+
         if (errCode.includes('permission') || errMsg.includes('permission') || errMsg.includes('missing or insufficient')) {
             reason = 'Brak uprawnień do publikacji w chmurze LUMINA. Zaloguj się przez konto Google (wymagane zweryfikowane konto).';
         } else if (errCode.includes('invalid-argument') || errMsg.includes('longer than') || errMsg.includes('size')) {
