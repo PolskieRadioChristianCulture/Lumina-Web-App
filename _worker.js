@@ -623,12 +623,6 @@ export default {
       return env.ASSETS.fetch(new Request(akademiaUrl, request));
     }
 
-    const SKINS_ROUTES = ['/skins', '/skin', '/vibe', '/radiostyle', '/mojeradio'];
-    if (SKINS_ROUTES.includes(decodedP) || SKINS_ROUTES.some((r) => decodedP === r + '/')) {
-      const skinsUrl = new URL(request.url);
-      skinsUrl.pathname = '/skins.html';
-      return env.ASSETS.fetch(new Request(skinsUrl, request));
-    }
 
 
 
