@@ -292,10 +292,39 @@
       transform: translateY(1px);
       box-shadow: 0 6px 16px rgba(11, 102, 254, 0.35);
     }
+
+    /* TŁO STUDIA RADIOWEGO Z PRZYCIEMNIENIEM (DLA DOBREJ CZYTELNOŚCI) */
+    .studio-bg-layer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('../assets/studio-bg.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.40;
+      filter: saturate(1.1);
+    }
+    .studio-bg-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 35%, rgba(6, 7, 10, 0.68) 0%, rgba(6, 7, 10, 0.88) 60%, rgba(4, 5, 8, 0.96) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
   </style>
 </head>
 
-<body class="bg-[#06070a] text-white min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-shoperBlue/30 selection:text-white p-3 sm:p-6 lg:p-8 overflow-x-hidden">
+<body class="bg-[#06070a] text-white min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-shoperBlue/30 selection:text-white p-3 sm:p-6 lg:p-8 overflow-x-hidden relative">
+
+  <!-- Warstwa tła studia radiowego z przyciemnieniem -->
+  <div class="studio-bg-layer" aria-hidden="true"></div>
+  <div class="studio-bg-overlay" aria-hidden="true"></div>
 
   <!-- Audio strumienia Christian Culture -->
   <audio id="live-radio-audio" preload="none">
