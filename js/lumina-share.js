@@ -54,7 +54,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
       }
 
-      /* Ikona badge "L" z aureolą */
+      /* Kanoniczna ikona LUMINA Share: purpurowy/karmazynowy krążek #a61229, złota obwódka #d4af37, czysta biała litera L */
       .lumina-badge-l-icon {
         display: inline-flex;
         align-items: center;
@@ -64,21 +64,45 @@
         min-width: 26px;
         min-height: 26px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #facc15, #d97706);
-        color: #07090e;
-        font-family: 'Cinzel', Georgia, serif;
+        background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%);
+        border: 1.5px solid #d4af37;
+        color: #ffffff !important;
+        font-family: 'Cinzel', 'Montserrat', -apple-system, system-ui, sans-serif;
         font-weight: 900;
         font-size: 0.95rem;
         line-height: 1;
-        box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
-        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 8px rgba(166, 18, 41, 0.45), 0 0 8px rgba(212, 175, 55, 0.35);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        box-sizing: border-box;
       }
 
       .lumina-share-btn-l.icon-only {
-        padding: 8px;
+        padding: 0;
         width: 44px;
         height: 44px;
+        min-width: 44px;
+        min-height: 44px;
         border-radius: 50%;
+        background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%);
+        border: 2px solid #d4af37;
+        color: #ffffff !important;
+        box-shadow: 0 4px 14px rgba(166, 18, 41, 0.45), 0 0 10px rgba(212, 175, 55, 0.3);
+      }
+
+      .lumina-share-btn-l.icon-only .lumina-badge-l-icon {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        font-size: 1.15rem;
+      }
+
+      .lumina-share-btn-l.icon-only:hover {
+        background: linear-gradient(135deg, #c71f37 0%, #a01227 100%);
+        border-color: #facc15;
+        box-shadow: 0 6px 20px rgba(166, 18, 41, 0.6), 0 0 16px rgba(250, 204, 21, 0.5);
+        transform: translateY(-2px) scale(1.06);
       }
 
       .lumina-share-btn-l.icon-only .lumina-share-label {
@@ -93,6 +117,8 @@
       .lumina-share-btn-l.compact .lumina-badge-l-icon {
         width: 22px;
         height: 22px;
+        min-width: 22px;
+        min-height: 22px;
         font-size: 0.82rem;
       }
     `;

@@ -493,17 +493,25 @@
             }
 
             .post-share-btn .glyph-l {
-                font-family: 'Cinzel', serif, system-ui;
+                font-family: 'Cinzel', 'Montserrat', serif, system-ui;
                 font-weight: 900;
                 font-size: 0.98rem;
-                color: #facc15;
+                color: #ffffff !important;
+            }
+
+            .post-share-btn.share-lumina {
+                background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%) !important;
+                border: 1.5px solid #d4af37 !important;
+                color: #ffffff !important;
+                box-shadow: 0 2px 8px rgba(166, 18, 41, 0.45), 0 0 8px rgba(212, 175, 55, 0.3);
             }
 
             .post-share-btn.share-lumina:hover {
-                background: rgba(250, 204, 21, 0.18);
-                border-color: #facc15;
-                color: #facc15;
-                box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+                background: linear-gradient(135deg, #c71f37 0%, #a01227 100%) !important;
+                border-color: #facc15 !important;
+                color: #ffffff !important;
+                box-shadow: 0 0 16px rgba(212, 175, 55, 0.6), 0 4px 14px rgba(166, 18, 41, 0.5) !important;
+                transform: translateY(-2px) scale(1.08);
             }
 
             .post-share-btn.share-wa:hover {

@@ -176,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Udostępnij na Tablicy Społeczności LUMINA"
               aria-label="Udostępnij na Tablicy LUMINA"
             >
-              <span className="w-5 h-5 rounded-full bg-gradient-to-br from-[#facc15] to-[#d97706] text-[#07090e] font-serif font-black text-xs flex items-center justify-center shadow-xs">L</span>
+              <span className="w-5 h-5 rounded-full bg-gradient-to-br from-[#b3182d] to-[#8f0f22] border border-[#d4af37] text-white font-serif font-black text-xs flex items-center justify-center shadow-xs">L</span>
               <span className="hidden md:inline ml-1.5 font-bold text-xs">Tablica</span>
             </button>
 
