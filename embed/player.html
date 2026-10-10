@@ -99,12 +99,51 @@
       transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
       will-change: opacity, transform;
     }
+
+    /* LIGHT MODE STYLES */
+    html[data-theme="light"] #bar-root-box,
+    body.light-mode #bar-root-box {
+      background: #ffffff !important;
+      border-color: rgba(197, 160, 89, 0.45) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="light"] #crossfade-carousel-box,
+    body.light-mode #crossfade-carousel-box {
+      background: #f8f6f0 !important;
+      border-color: rgba(197, 160, 89, 0.3) !important;
+    }
+    html[data-theme="light"] #rds-active-title,
+    body.light-mode #rds-active-title {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #rds-active-subtitle,
+    body.light-mode #rds-active-subtitle {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] .vol-box,
+    body.light-mode .vol-box {
+      background: #f8f6f0 !important;
+      border-color: #e2d9c8 !important;
+    }
+    html[data-theme="light"] .nav-prev-next,
+    body.light-mode .nav-prev-next {
+      background: #f8f6f0 !important;
+      border-color: #e2d9c8 !important;
+      color: #475569 !important;
+    }
+    html[data-theme="light"] .station-btn-inactive,
+    body.light-mode .station-btn-inactive {
+      background: #f1ede3 !important;
+      color: #64748b !important;
+      border-color: #dcd4c3 !important;
+    }
   </style>
 </head>
 <body class="bg-transparent text-[#fdfbf7] font-sans antialiased p-0 m-0 overflow-hidden select-none">
   <audio id="audio-live-engine" preload="none"></audio>
 
-  <div class="w-full bg-[#0d0f14] border border-[rgba(197,160,89,0.35)] rounded-2xl p-2.5 sm:p-3 shadow-[0_16px_45px_rgba(0,0,0,0.9)] relative overflow-hidden box-border">
+  <div id="bar-root-box" class="w-full bg-[#0d0f14] border border-[rgba(197,160,89,0.35)] rounded-2xl p-2.5 sm:p-3 shadow-[0_16px_45px_rgba(0,0,0,0.9)] relative overflow-hidden box-border">
     <!-- Blask tła -->
     <div class="absolute -top-10 -left-10 w-40 h-40 bg-[#c5a059]/10 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -371,12 +410,37 @@
     function pauseCarousel() { isCarouselSuspended = true; }
     function resumeCarousel() { isCarouselSuspended = false; }
 
+    function setTheme(theme) {
+      const isLight = theme === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-lumina-theme', isLight ? 'light' : 'dark');
+      if (document.body) {
+        document.body.classList.toggle('light-mode', isLight);
+      }
+    }
+
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.theme) {
+        setTheme(event.data.theme);
+      }
+    });
+
     window.onload = function() {
       const params = new URLSearchParams(window.location.search);
       const ch = params.get('channel');
       if (ch === 'cc') currentStationIndex = 1;
       else if (ch === 'biblia') currentStationIndex = 2;
       else currentStationIndex = 0;
+
+      const themeParam = params.get('theme');
+      if (themeParam) {
+        setTheme(themeParam);
+      } else {
+        try {
+          const savedTheme = localStorage.getItem('lumina_theme');
+          if (savedTheme) setTheme(savedTheme);
+        } catch (e) {}
+      }
 
       audioNode.volume = previousVolume;
       audioNode.src = RADIO_STATIONS[currentStationIndex].streamUrl;

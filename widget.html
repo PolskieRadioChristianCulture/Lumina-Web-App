@@ -137,6 +137,168 @@
     .preview-device-box {
       transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    /* ========================================================================= */
+    /* STRZAŁKA PRZEWIJANIA STRONY W GÓRĘ (BACK TO TOP)                          */
+    /* ========================================================================= */
+    #backToTopBtn {
+      position: fixed;
+      right: 20px;
+      bottom: 24px;
+      width: 48px;
+      height: 48px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fae69e 0%, #c5a059 60%, #806225 100%);
+      color: #000000;
+      border: 1px solid rgba(255, 242, 184, 0.8);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 20px rgba(203, 162, 88, 0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.9);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+      touch-action: manipulation;
+    }
+    #backToTopBtn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    #backToTopBtn:hover {
+      background: radial-gradient(circle at 35% 30%, #fff4be 0%, #dbb263 60%, #93712b 100%);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.8), 0 0 28px rgba(230, 202, 101, 0.7);
+      transform: translateY(-2px) scale(1.06);
+    }
+    #backToTopBtn:active {
+      transform: translateY(1px) scale(0.96);
+    }
+
+    /* ========================================================================= */
+    /* TRYB JASNY (WARM IVORY & GOLD LIGHT MODE)                                 */
+    /* ========================================================================= */
+    html[data-theme="light"],
+    body.light-mode {
+      background-color: #f8f6f0 !important;
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] header,
+    body.light-mode header {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(197, 160, 89, 0.35) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] .bg-\[\#0a0d13\],
+    body.light-mode .bg-\[\#0a0d13\] {
+      background-color: #efece4 !important;
+      border-color: #e2dcce !important;
+      color: #475569 !important;
+    }
+    html[data-theme="light"] .bg-\[\#0b0e15\]\/95,
+    body.light-mode .bg-\[\#0b0e15\]\/95 {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+    html[data-theme="light"] .bg-\[\#080b10\],
+    body.light-mode .bg-\[\#080b10\] {
+      background-color: #f4f0e6 !important;
+      border-color: rgba(197, 160, 89, 0.25) !important;
+    }
+    html[data-theme="light"] .bg-\[\#0b0e15\],
+    body.light-mode .bg-\[\#0b0e15\],
+    html[data-theme="light"] .bg-\[\#0d0f14\],
+    body.light-mode .bg-\[\#0d0f14\],
+    html[data-theme="light"] .bg-\[\#0d111a\],
+    body.light-mode .bg-\[\#0d111a\],
+    html[data-theme="light"] .bg-\[\#0f1422\],
+    body.light-mode .bg-\[\#0f1422\],
+    html[data-theme="light"] .bg-\[\#080a0f\],
+    body.light-mode .bg-\[\#080a0f\] {
+      background-color: #ffffff !important;
+      border-color: rgba(197, 160, 89, 0.35) !important;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05) !important;
+    }
+    html[data-theme="light"] .bg-\[\#05070a\],
+    body.light-mode .bg-\[\#05070a\],
+    html[data-theme="light"] .bg-\[\#06080b\],
+    body.light-mode .bg-\[\#06080b\] {
+      background-color: #f1ece1 !important;
+      border-color: #ded6c4 !important;
+    }
+    html[data-theme="light"] .bg-\[\#0e121a\],
+    body.light-mode .bg-\[\#0e121a\],
+    html[data-theme="light"] .bg-\[\#0e131d\],
+    body.light-mode .bg-\[\#0e131d\],
+    html[data-theme="light"] .bg-\[\#11151e\],
+    body.light-mode .bg-\[\#11151e\],
+    html[data-theme="light"] .bg-\[\#121622\],
+    body.light-mode .bg-\[\#121622\],
+    html[data-theme="light"] .bg-\[\#141824\],
+    body.light-mode .bg-\[\#141824\],
+    html[data-theme="light"] .bg-\[\#161d2b\],
+    body.light-mode .bg-\[\#161d2b\] {
+      background-color: #ebe5d8 !important;
+      border-color: #ded6c4 !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="light"] select,
+    body.light-mode select {
+      background-color: #ffffff !important;
+      border-color: #ded6c4 !important;
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .bg-\[\#0a0d14\],
+    body.light-mode .bg-\[\#0a0d14\] {
+      background-color: #ffffff !important;
+      border-color: #e2dcce !important;
+    }
+    html[data-theme="light"] .text-white,
+    body.light-mode .text-white,
+    html[data-theme="light"] .text-\[\#fdfbf7\],
+    body.light-mode .text-\[\#fdfbf7\] {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .text-\[\#cbd5e1\],
+    body.light-mode .text-\[\#cbd5e1\],
+    html[data-theme="light"] .text-\[\#94a3b8\],
+    body.light-mode .text-\[\#94a3b8\],
+    html[data-theme="light"] .text-gray-400,
+    body.light-mode .text-gray-400 {
+      color: #475569 !important;
+    }
+    html[data-theme="light"] .text-\[\#7e8a9f\],
+    body.light-mode .text-\[\#7e8a9f\],
+    html[data-theme="light"] .text-gray-500,
+    body.light-mode .text-gray-500 {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] .border-\[\#1e2534\],
+    body.light-mode .border-\[\#1e2534\],
+    html[data-theme="light"] .border-\[\#1f2635\],
+    body.light-mode .border-\[\#1f2635\],
+    html[data-theme="light"] .border-\[\#1b2230\],
+    body.light-mode .border-\[\#1b2230\],
+    html[data-theme="light"] .border-\[\#232b3b\],
+    body.light-mode .border-\[\#232b3b\],
+    html[data-theme="light"] .border-\[\#1f1f1f\],
+    body.light-mode .border-\[\#1f1f1f\] {
+      border-color: #ded6c4 !important;
+    }
+    html[data-theme="light"] footer,
+    body.light-mode footer {
+      background-color: #efebe2 !important;
+      border-color: #ded6c4 !important;
+    }
+    html[data-theme="light"] #embed-code-display,
+    body.light-mode #embed-code-display {
+      background-color: #1e2534 !important;
+      color: #f5dd8c !important;
+      border-color: #334155 !important;
+    }
   </style>
 </head>
 
@@ -216,13 +378,18 @@
           <span class="px-2.5 py-1.5 rounded-lg text-black bg-[#c5a059] font-bold">Widget</span>
         </nav>
 
-        <!-- Prawa strona nagłówka: Szybkie akcje -->
-        <div class="flex items-center gap-2.5">
-          <a href="#live-preview-section" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 text-xs font-bold transition-all shadow-sm">
+        <!-- Prawa strona nagłówka: Szybkie akcje & Przełącznik motywu -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+          <!-- Przełącznik Motywu Jasny / Ciemny (Min 44x44px touch) -->
+          <button id="themeToggleBtn" onclick="toggleTheme()" type="button" aria-label="Przełącz tryb jasny/ciemny" title="Przełącz tryb jasny/ciemny" class="w-10 h-10 sm:w-11 sm:h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 flex items-center justify-center transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c5a059]/50">
+            <i id="themeToggleIcon" class="fa-solid fa-sun text-sm"></i>
+          </button>
+
+          <a href="#live-preview-section" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 text-xs font-bold transition-all shadow-sm">
             <i class="fa-solid fa-play text-[10px]"></i>
             <span>Testuj na żywo</span>
           </a>
-          <a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#fae69e] text-black font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all">
+          <a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="inline-flex items-center gap-2 px-3.5 py-2 min-h-[44px] rounded-xl bg-gradient-to-r from-[#c5a059] to-[#fae69e] text-black font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all">
             <i class="fa-solid fa-download"></i>
             <span>Pobierz .html</span>
           </a>
@@ -698,6 +865,13 @@
   </div>
 
   <!-- ========================================================================= -->
+  <!-- STRZAŁKA PRZEWIJANIA STRONY W GÓRĘ (BACK TO TOP BUTTON - SMCC 44PX+)       -->
+  <!-- ========================================================================= -->
+  <button id="backToTopBtn" type="button" aria-label="Przewiń stronę w górę" title="Przewiń w górę" onclick="scrollToTop()">
+    <i class="fa-solid fa-arrow-up text-base"></i>
+  </button>
+
+  <!-- ========================================================================= -->
   <!-- SKRYPTY INTERAKTYWNE STRONY WIDGETU                                       -->
   <!-- ========================================================================= -->
   <script>
@@ -869,7 +1043,72 @@ https://polskieradio.cc/radio_christian_culture_widget.html`;
       }, 3000);
     }
 
+    /* ========================================================================= */
+    /* OBSŁUGA TRYBU JASNEGO / CIEMNEGO & STRZAŁKI SCROLL W GÓRĘ                */
+    /* ========================================================================= */
+    function applyPageTheme(theme) {
+      const isLight = theme === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-lumina-theme', isLight ? 'light' : 'dark');
+      document.body.classList.toggle('light-mode', isLight);
+
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        if (isLight) {
+          icon.className = 'fa-solid fa-moon text-sm text-[#0f172a]';
+        } else {
+          icon.className = 'fa-solid fa-sun text-sm text-[#f5dd8c]';
+        }
+      }
+
+      // Wyślij stan motywu do osadzonego podglądu iframe
+      const previewIframe = document.getElementById('live-widget-iframe');
+      if (previewIframe && previewIframe.contentWindow) {
+        try {
+          previewIframe.contentWindow.postMessage({ theme: isLight ? 'light' : 'dark' }, '*');
+        } catch (e) {}
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      try {
+        localStorage.setItem('lumina_theme', newTheme);
+      } catch (e) {}
+      applyPageTheme(newTheme);
+    }
+
+    function initTheme() {
+      let savedTheme = 'dark';
+      try {
+        savedTheme = localStorage.getItem('lumina_theme') || 'dark';
+      } catch (e) {}
+      applyPageTheme(savedTheme);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function initBackToTop() {
+      const btn = document.getElementById('backToTopBtn');
+      if (!btn) return;
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      }, { passive: true });
+    }
+
     window.onload = function() {
+      initTheme();
+      initBackToTop();
       generateEmbedCode();
     };
   </script>
