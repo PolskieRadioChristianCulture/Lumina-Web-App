@@ -106,13 +106,13 @@ let auth = null;
 // że prawdziwi ludzie o tych imionach dostawali twarz i dane innych osób.
 // ═══════════════════════════════════════════════════════════════════════════
 export const LUMINA_OFFICIAL_ACCOUNTS = Object.freeze({
-    cezary: ['nazirczarkes@gmail.com', 'studiodees7@gmail.com', 'czarekrogowski3@gmail.com', 'osobowoscplus@gmail.com', 'yourimaginationstudio@gmail.com'],
+    cezary: ['nazirczarkes@gmail.com', 'studiodees7@gmail.com', 'czarekrogowski3@gmail.com', 'osobowoscplus@gmail.com', 'yourimaginationstudio@gmail.com', 'polskiercctv@gmail.com'],
     radiocc: ['radiochristianculture@gmail.com'],
     wiolettaLocalPart: 'wioletta1240'
 });
 export const LUMINA_MASTER_ADMIN_EMAILS = Object.freeze([
     'nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
-    'polskieradiocc@gmail.com', 'studiodees7@gmail.com'
+    'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com'
 ]);
 export const LUMINA_RESERVED_PROFILE_SLUGS = Object.freeze([
     'cezaryrgowski', 'wiolettarogowska', 'radiocc', 'andrzejthiel', 'christianculture', 'lumina'
@@ -137,6 +137,31 @@ export function detectLuminaOfficialIdentity(user) {
 export function isLuminaMasterAdmin(user = currentUserState) {
     if (!user || !user.email || user.emailVerified === false) return false;
     return LUMINA_MASTER_ADMIN_EMAILS.includes(String(user.email).trim().toLowerCase());
+}
+
+/**
+ * Sprawdza czy użytkownik/nadawca posiada uprawnienia administratora społeczności / Założyciela.
+ * Administrator społeczności ma nieograniczone możliwości komunikacji na czacie
+ * i nie wymaga akceptacji prośby o rozmowę od odbiorcy.
+ */
+export function isCommunityAdmin(user = currentUserState, fromId = null, profile = currentProfileState) {
+    if (user && isLuminaMasterAdmin(user)) return true;
+    if (user && (detectLuminaOfficialIdentity(user) === 'cezary' || detectLuminaOfficialIdentity(user) === 'radiocc')) return true;
+    if (user && user.email && LUMINA_MASTER_ADMIN_EMAILS.includes(String(user.email).trim().toLowerCase())) return true;
+    if (profile && (profile.isAdmin === true || profile.isFounder === true || profile.isMissionAccount === true)) return true;
+    const normFrom = String(fromId || profile?.slug || user?.slug || '').trim().toLowerCase();
+    if (normFrom === 'cezaryrgowski' || normFrom === 'cezary' || normFrom === 'radiocc') return true;
+    if (typeof localStorage !== 'undefined') {
+        if (localStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1' || localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+            return true;
+        }
+    }
+    if (typeof sessionStorage !== 'undefined') {
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_admin') === '1' || sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+            return true;
+        }
+    }
+    return false;
 }
 
 const OFFICIAL_ID_TO_SLUG = { cezary: 'cezaryrgowski', wioletta: 'wiolettarogowska', radiocc: 'radiocc' };
@@ -3529,10 +3554,12 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             conversationChatExists = chatSnapshot.exists();
             const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
             const requestSnapshot = await getDoc(requestRef);
-            // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości. Starsze
-            // rekordy czatu bez tego stanu zachowują historię, ale wymagają
-            // ponownego, świadomego potwierdzenia odbiorcy.
-            const conversationAccepted = (
+            // Administrator społeczności (Założyciel / oficjalne profile CC) posiada
+            // nieograniczone możliwości pisania i nie wymaga akceptacji drugiej osoby.
+            const isSenderAdmin = typeof isCommunityAdmin === 'function' ? isCommunityAdmin(user, fromId, myProfile) : false;
+
+            // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości dla zwykłych użytkowników.
+            const conversationAccepted = isSenderAdmin || (
                 chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted'
             ) || (
                 requestSnapshot.exists() && requestSnapshot.data()?.status === 'accepted'
@@ -8979,6 +9006,7 @@ export async function completeOwnLuminaProfile(fields) {
 window.LuminaDB = Object.assign(window.LuminaDB || {}, {
     detectLuminaOfficialIdentity,
     isLuminaMasterAdmin,
+    isCommunityAdmin,
     canEditLuminaProfile,
     isLuminaRealPersonPhoto,
     getLuminaProfileCompletion,
@@ -8989,6 +9017,7 @@ window.LuminaDB = Object.assign(window.LuminaDB || {}, {
 window.LuminaGuard = Object.freeze({
     canEditProfile: (slug, data) => canEditLuminaProfile(slug, data),
     isMasterAdmin: () => isLuminaMasterAdmin(),
+    isCommunityAdmin: (user, fromId, profile) => isCommunityAdmin(user, fromId, profile),
     isRealPhoto: (url, slug) => isLuminaRealPersonPhoto(url, slug)
 });
 

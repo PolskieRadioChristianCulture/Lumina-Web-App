@@ -1,4 +1,4 @@
-﻿import { Article, Author } from '../types';
+import { Article, Author } from '../types';
 
 export const AUTHORS: Record<string, Author> = {
   cezary: {
@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'Z Biblią za Pan Brat: Dzień 11 — Uwierzył Panu: Abraham, gwiazdy i przymierze łaski (Rdz 15:1–21)',
   'Prawda Bez Filtra: Wioletta Rogowska o ucieczce w iluzję relacji i odzyskaniu godności córki Króla',
   'Kod Źródłowy Duszy: Cezary Rogowski o resecie wewnętrznego systemu i wolności w Chrystusie',
   'Pokonać Goliata: 8 kroków zwycięzcy z doliny lęku do duchowego przełomu (Wydanie 2026)',
@@ -260,6 +261,48 @@ export const INITIAL_ARTICLES: Article[] = [
       'Mechanizm kuszenia nie zmienił się od czasów Edenu ani od kuszenia Jezusa na pustyni. Szatan nie pojawia się z rogami i widłami; przychodzi w garniturze doradcy biznesowego, oferując złudzenie potęgi: „Wszystko to ci dam, jeśli upadniesz i oddasz mi pokłon” (Mt 4:9). W realiach XXI wieku pokłon oddaje się algorytmom, kompromisom etycznym i milczeniu w obliczu zła.',
       'Najtragiczniejszą ceną pogoni za viralowym sukcesem jest utrata autentyczności i sumienia. Człowiek zaczyna żyć pod dyktando cudzych oczekiwań, aż w końcu nie pamięta, kim był, zanim założył konto w sieci. Przyjaźnie stają się rekwizytami do nagrań, a relacje rodzinne znikają pod lawiną powiadomień.',
       'Słowa Jezusa z Ewangelii Mateusza wybrzmiewają dziś z niebywałą mocą: „Cóż pomoże człowiekowi, choćby cały świat pozyskał, a na duszy swej szkodę poniósł?” (Mt 16:26). Możesz mieć dwa miliony obserwujących i zero spokoju w sercu. Prawdziwe przywództwo i godność polegają na umiejętności powiedzenia „NIE” potężnym instytucjom tego świata, gdy żądają one zapłaty w walucie sumienia.',
+    ],
+  },
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-11',
+    title: 'UWIERZYŁ PANU — ANATOMIA USPRAWIEDLIWIENIA Z ŁASKI W KSIĘDZE RODZAJU 15',
+    slug: 'uwierzyl-panu-anatomia-usprawiedliwienia-z-laski-w-ksiedze-rodzaju-15',
+    excerpt: 'Piętnasty rozdział Księgi Rodzaju stanowi teologiczny fundament całej Ewangelii. Abram uwierzył obietnicy Boga pod rozgwieżdżonym niebem, a Stwórca poczytał mu to za sprawiedliwość — z łaski, przez wiarę w Chrystusa.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · LEKSYKON BIBLIJNY',
+    publishedAt: '2026-10-11',
+    dateFormatted: '11 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_11_abram_gwiazdy.jpg',
+    imageCaption: 'Księga Rodzaju 15:1–21: Abram pod rozgwieżdżonym niebem i Boże przymierze łaski — wiara poczytana za sprawiedliwość.',
+    readTimeMinutes: 7,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 15', 'Abram', 'Gwiazdy', 'Przymierze', 'Usprawiedliwienie', 'Łaska', 'Wiara', 'Chrystus'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 15:6',
+      text: 'I uwierzył PANU, a On poczytał mu to za sprawiedliwość.',
+      strongCode: 'H539',
+    },
+    lexiconTerms: [
+      {
+        term: 'Uwierzył (Rdz 15:6)',
+        strongCode: 'H539',
+        definition: 'Hebr. heemin — oprzeć się całym ciężarem na Bogu, uznać Jego Słowo za niezawodne, zaufać obietnicy pomimo braku widzialnych dowodów.',
+      },
+      {
+        term: 'Sprawiedliwość (Rdz 15:6)',
+        strongCode: 'H6666',
+        definition: 'Hebr. cedaka — Boży stan prawości przypisany człowiekowi z łaski, fundament nowotestamentowego usprawiedliwienia (gr. dikaiosyne, G1343).',
+      },
+    ],
+    content: [
+      'W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, piętnasty rozdział Księgi Rodzaju skupia się na jednym z najważniejszych i najbardziej przełomowych wersetów całego Pisma Świętego — Rdz 15:6. Tekst ten stanowi starotestamentowy fundament doktryny o usprawiedliwieniu z wiary, która w Nowym Testamencie staje się centralnym filarem chrześcijańskiej soteriologii.',
+      '1. Kryzys Abrama i Boża Odpowiedź Przymierza. Piętnasty rozdział rozpoczyna się w momencie egzystencjalnego napięcia. Abram, mimo odniesionego zwycięstwa i rezygnacji z łupów Sodomy, pozostaje bezdzietny, a obietnica potomstwa wydaje się niemożliwa do zrealizowania w świetle jego podeszłego wieku. W odpowiedzi Bóg objawia się mu jako jego osobista Tarcza i wielka Nagroda (Rdz 15:1), wyprowadzając go pod rozgwieżdżone niebo i obiecując potomstwo liczne jak gwiazdy (Rdz 15:5).',
+      '2. Teologiczny Punkt Zwrotny: Rdz 15:6. Kluczowym momentem narracji i całego biblijnego kanonu jest reakcja patriarchy: „I uwierzył PANU, a On poczytał mu to za sprawiedliwość” (Rdz 15:6). Hebrajskie słowo heemin wskazuje na akt całkowitego oparcia się na Bożej obietnicy. Bóg nie uznaje Abrama za sprawiedliwego z powodu jego moralnej bezbłędności czy religijnych zasług, lecz przypisuje mu sprawiedliwość na rachunek jego żywej wiary.',
+      '3. Perspektywa Nowego Testamentu: Paweł i Usprawiedliwienie. W Liście do Rzymian (Rz 4) oraz w Liście do Galatów (Ga 3) apostoł Paweł czyni z Rdz 15:6 główne oręże w walce z legalizmem. Paweł wykazuje, że Abraham został uznany za sprawiedliwego: z łaski, a nie z uczynków (ponieważ zapłata z uczynków jest należnością, a zbawienie jest darmowym darem — Rz 4:4), przed obrzezaniem (co dowodzi, że przynależność do Boga nie zależy od rytuałów czy pochodzenia etnicznego). Fundamentem tego usprawiedliwienia jest dzieło odkupienia dokonane przez Jezusa Chrystusa, który stał się przebłaganiem za nasze grzechy (Rz 3:24–25; Rz 5:1).',
+      '4. Uroczyste Potwierdzenie Przymierza. Dalsza część rozdziału (Rdz 15:9–18) opisuje starożytny rytuał przymierza z rozciętymi zwierzętami, w którym to Boża obecność (dymiący piec i płonąca pochodnia) przechodzi między cząstkami, biorąc na siebie całkowitą odpowiedzialność za wierność zobowiązaniu. Bóg uprzedza zarazem Abrama o trudnej przyszłości jego potomków (niewola egipska), potwierdzając, że Jego plany realizują się w wyznaczonym przez Niego czasie i porządku moralnym. Relacja ze Stwórcą opiera się nie na ludzkich wysiłkach i zasługach, lecz na darmowym darze łaski, przyjmowanym przez wiarę w Jezusa Chrystusa.',
     ],
   },
   {
