@@ -524,8 +524,15 @@
     }
 
     window.addEventListener('message', (event) => {
-      if (event.data && event.data.theme) {
-        setTheme(event.data.theme);
+      if (event.data) {
+        if (event.data.theme) {
+          setTheme(event.data.theme);
+        }
+        if (event.data.action === 'play' || event.data.action === 'toggle' || event.data.type === 'play') {
+          if (!isLivePlaying) toggleAudioStreaming();
+        } else if (event.data.action === 'pause' || event.data.type === 'pause') {
+          if (isLivePlaying) toggleAudioStreaming();
+        }
       }
     });
 

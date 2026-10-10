@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Celujemy w Pierwszy Milion – Christian Culture</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clockBg: '#06070a',
+            clockChassis: '#12141a',
+            clockCard: '#1a1c24',
+            clockBorder: '#272a38',
+            shoperBlue: '#0b66fe',
+            shoperBlueHover: '#0854d4',
+            sacredGold: '#c5a059',
+            sacredGoldLight: '#f3d993',
+            sacredGoldDark: '#8a6e35'
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serif: ['Cinzel', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter oraz Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Rygorystyczny reset suwaków */
+    *, *::before, *::after {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    /* Precyzyjne zmienne wymiarów klapek zapobiegające ucinaniu cyfr */
+    :root {
+      --flip-h: 114px;
+      --flip-w: 66px;
+      --flip-font: 74px;
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --flip-h: 64px;
+        --flip-w: 37px;
+        --flip-font: 42px;
+      }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+      :root {
+        --flip-h: 92px;
+        --flip-w: 54px;
+        --flip-font: 60px;
+      }
+    }
+
+    /* Luksusowa obudowa kasetki inspirowana minimalistycznym plakatem */
+    .clock-chassis-box {
+      background: linear-gradient(180deg, #161822 0%, #0c0e13 100%);
+      box-shadow: 
+        0 35px 85px -10px rgba(0, 0, 0, 0.98),
+        0 15px 35px -5px rgba(0, 0, 0, 0.85),
+        inset 0 1px 1px rgba(255, 255, 255, 0.14),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.95);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Tajemnicza wiązka światła (Golden Aura Shimmer) przelatująca w tle */
+    .golden-shimmer-sweep {
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        rgba(197, 160, 89, 0.0) 38%,
+        rgba(243, 217, 147, 0.14) 50%,
+        rgba(197, 160, 89, 0.0) 62%,
+        transparent 100%
+      );
+      transform: translateX(-100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .shimmer-active {
+      animation: sweepShimmer 1.8s ease-in-out infinite;
+    }
+
+    @keyframes sweepShimmer {
+      0% { transform: translateX(-100%) rotate(5deg); }
+      100% { transform: translateX(100%) rotate(5deg); }
+    }
+
+    /* Wklęsłe łoże na klapki cyfrowe */
+    .clock-recess-slot {
+      background: #08090d;
+      box-shadow: 
+        inset 0 10px 24px rgba(0, 0, 0, 0.98),
+        inset 0 1px 3px rgba(0, 0, 0, 0.99),
+        0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    /* Kasetka pojedynczej cyfry */
+    .flip-digit-card {
+      width: var(--flip-w);
+      height: var(--flip-h);
+      position: relative;
+      background: #14161f;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75);
+      perspective: 1200px;
+      user-select: none;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Złoty rozbłysk w momencie zablokowania cyfry (Lock-in Flash) */
+    .flip-digit-card.locked-flash {
+      box-shadow: 0 0 24px rgba(243, 217, 147, 0.65), inset 0 0 12px rgba(197, 160, 89, 0.5);
+    }
+
+    /* Płytka połówkowa klapki */
+    .flap-half {
+      position: absolute;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: #1c1e28;
+      box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    /* Górna połówka */
+    .flap-half-top {
+      top: 0;
+      height: 50%;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.85);
+      transform-origin: bottom center;
+    }
+
+    /* Dolna połówka */
+    .flap-half-bottom {
+      bottom: 0;
+      height: 50%;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      transform-origin: top center;
+    }
+
+    /* Geometryczne wyśrodkowanie bez ucinania glifów */
+    .flap-half-top .num-glyph {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--flip-h);
+      font-size: var(--flip-font);
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .flap-half-bottom .num-glyph {
+      position: absolute;
+      top: calc(var(--flip-h) * -0.5);
+      left: 0;
+      right: 0;
+      height: var(--flip-h);
+      font-size: var(--flip-font);
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    /* Efekt cyfry w fazie tajemniczego tasowania */
+    .scrambling .num-glyph {
+      color: #f3d993;
+      text-shadow: 0 0 10px rgba(197, 160, 89, 0.8);
+      filter: blur(0.4px);
+    }
+
+    /* Pozioma szczelina cięcia klapki */
+    .flip-gap-seam {
+      position: absolute;
+      top: calc(50% - 1px);
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #06070a;
+      z-index: 30;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+      pointer-events-none;
+    }
+
+    /* Boczne zawiasy cylindryczne */
+    .chassis-side-hinge {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 48px;
+      background: linear-gradient(90deg, #101116 0%, #303340 50%, #0d0e12 100%);
+      border-radius: 9999px;
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.85),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.9);
+      z-index: 35;
+    }
+
+    /* Mechaniczne opadanie klapki 3D */
+    .animate-flip-drop-top {
+      animation: flipDropTop 0.22s cubic-bezier(0.4, 0, 0.7, 1) forwards;
+    }
+    .animate-flip-drop-bottom {
+      animation: flipDropBottom 0.22s cubic-bezier(0.2, 0, 0.6, 1) forwards 0.2s;
+    }
+
+    @keyframes flipDropTop {
+      0% {
+        transform: rotateX(0deg);
+        filter: brightness(1);
+      }
+      100% {
+        transform: rotateX(-90deg);
+        filter: brightness(0.35);
+      }
+    }
+
+    @keyframes flipDropBottom {
+      0% {
+        transform: rotateX(90deg);
+        filter: brightness(0.35);
+      }
+      100% {
+        transform: rotateX(0deg);
+        filter: brightness(1);
+      }
+    }
+
+    /* Złota linia postępu */
+    .gold-progress-fill {
+      background: linear-gradient(90deg, #8a6e35 0%, #c5a059 40%, #f7e2a9 75%, #c5a059 100%);
+      box-shadow: 0 0 14px rgba(197, 160, 89, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Przycisk CTA Shoper-style */
+    .btn-cta-blue {
+      background: linear-gradient(180deg, #1d74fe 0%, #0b66fe 100%);
+      box-shadow: 
+        0 14px 32px rgba(11, 102, 254, 0.4),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-cta-blue:hover {
+      background: linear-gradient(180deg, #2c81ff 0%, #156dff 100%);
+      box-shadow: 
+        0 18px 38px rgba(11, 102, 254, 0.6),
+        inset 0 2px 2px rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-cta-blue:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 16px rgba(11, 102, 254, 0.35);
+    }
+  </style>
+</head>
+
+<body class="bg-[#06070a] text-white min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-shoperBlue/30 selection:text-white p-3 sm:p-6 lg:p-8 overflow-x-hidden">
+
+  <!-- Audio strumienia Christian Culture -->
+  <audio id="live-radio-audio" preload="none">
+    <source src="https://stream.zeno.fm/vz96pvl3pnktv" type="audio/mpeg">
+  </audio>
+
+  <!-- PASEK NARZĘDZI: DŹWIĘK, TAJEMNICZE ODKRYCIE ORAZ ANTYGRAVITY -->
+  <header class="max-w-4xl mx-auto w-full flex items-center justify-between py-2 text-xs select-none">
+    <!-- Dyskretny przycisk wywołania tajemniczej rotacji -->
+    <button onclick="triggerMysteriousReveal()" id="btn-reveal-trigger" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#12141a]/70 hover:bg-[#1c1e28] border border-sacredGold/20 hover:border-sacredGold/50 text-sacredGold hover:text-sacredGoldLight font-semibold transition-all">
+      <span class="text-xs">✨</span>
+      <span>Odkryj ponownie</span>
+    </button>
+
+    <div class="flex items-center space-x-2">
+      <!-- Przełącznik dźwięku mechanicznego -->
+      <button onclick="toggleMechanicalClackSound()" id="btn-sound-toggle" title="Przełącz dźwięk mechaniczny" class="p-2 rounded-xl bg-[#12141a]/60 hover:bg-[#1c1e28] border border-white/5 text-gray-400 hover:text-white transition-all">
+        <span id="sound-icon-indicator" class="text-sm">🔊</span>
+      </button>
+
+      <!-- Eksport kodu dla Antygravity -->
+      <button onclick="toggleModalAntygravity()" class="px-3 py-1.5 rounded-xl bg-[#12141a]/60 hover:bg-[#1c1e28] border border-white/5 text-xs text-gray-300 hover:text-sacredGold font-mono transition-all">
+        KOD ANTYGRAVITY
+      </button>
+    </div>
+  </header>
+
+  <!-- GŁÓWNA KOMPOZYCJA PLAKATOWA -->
+  <main class="max-w-4xl mx-auto w-full flex-1 flex flex-col items-center justify-center py-4 sm:py-8">
+
+    <!-- POTĘŻNY PLAKATOWY BIAŁY NAGŁÓWEK -->
+    <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-[70px] font-black text-white text-center tracking-tight leading-[1.05] mb-2 select-none">
+      CELUJEMY W PIERWSZY MILION
+    </h1>
+
+    <!-- SUBTELNY SZERYFOWY PODTYTUŁ EKOSYSTEMU -->
+    <div class="text-[11px] sm:text-xs font-serif tracking-[0.22em] text-sacredGold uppercase text-center mb-7 sm:mb-9 select-none">
+      CHRISTIAN CULTURE – EKOSYSTEM OSOBISTEGO UŚWIĘCENIA
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- KASETKA ZEGARA KLAPKOWEGO NA 7 CYFR Z SEPARATORAMI TYSIĘCY I MILIONA -->
+    <!-- ------------------------------------------------------------------- -->
+    <div class="w-full max-w-3xl px-1 sm:px-4 mb-7 relative">
+      <div id="clock-chassis-container" class="clock-chassis-box rounded-[24px] sm:rounded-[36px] p-3 sm:p-5 border border-white/10 relative">
+        
+        <!-- Tajemnicza wiązka światła (Golden Aura) -->
+        <div id="aura-shimmer-sweep" class="golden-shimmer-sweep"></div>
+
+        <!-- Boczne cylindryczne zawiasy obudowy -->
+        <div class="chassis-side-hinge -left-2 sm:-left-3"></div>
+        <div class="chassis-side-hinge -right-2 sm:-right-3"></div>
+
+        <!-- ŁOŻE NA 7 CYFR Z DYSKRETNYMI ZŁOTYMI SEPARATORAMI -->
+        <div class="clock-recess-slot rounded-xl sm:rounded-2xl p-2.5 sm:p-5 flex items-center justify-center gap-1 sm:gap-2 md:gap-2.5 relative overflow-hidden z-20">
+          
+          <!-- MILIONY (Pozycja 6) -->
+          <div id="digit-slot-6" class="flip-digit-card"></div>
+
+          <!-- Złoty punkt separatora miliona -->
+          <div class="flex items-center justify-center px-0.5 select-none">
+            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-sacredGold shadow-[0_0_8px_rgba(197,160,89,0.7)]"></span>
+          </div>
+
+          <!-- SETKI TYSIĘCY (Pozycja 5) -->
+          <div id="digit-slot-5" class="flip-digit-card"></div>
+          <!-- DZIESIĄTKI TYSIĘCY (Pozycja 4) -->
+          <div id="digit-slot-4" class="flip-digit-card"></div>
+          <!-- TYSIĄCE (Pozycja 3) -->
+          <div id="digit-slot-3" class="flip-digit-card"></div>
+
+          <!-- Złoty punkt separatora tysięcy -->
+          <div class="flex items-center justify-center px-0.5 select-none">
+            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-sacredGold shadow-[0_0_8px_rgba(197,160,89,0.7)]"></span>
+          </div>
+
+          <!-- SETKI (Pozycja 2) -->
+          <div id="digit-slot-2" class="flip-digit-card"></div>
+          <!-- DZIESIĄTKI (Pozycja 1) -->
+          <div id="digit-slot-1" class="flip-digit-card"></div>
+          <!-- JEDNOŚCI (Pozycja 0) -->
+          <div id="digit-slot-0" class="flip-digit-card"></div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SMUKŁA ZŁOTA LINIA POSTĘPU DO 1 MILIONA -->
+    <div class="w-full max-w-xl px-4 mb-8">
+      <div class="flex items-center justify-between text-xs font-semibold mb-2">
+        <span class="text-gray-400">
+          Postęp: <span id="label-current-formatted" class="text-white font-mono font-bold">0</span> / 1 000 000
+        </span>
+        <span id="label-percentage-progress" class="text-sacredGold font-mono font-bold">
+          0.00%
+        </span>
+      </div>
+
+      <!-- Tło linii postępu -->
+      <div class="w-full h-1.5 sm:h-2 bg-[#12141a] rounded-full overflow-hidden border border-white/5 relative">
+        <div id="progress-bar-fill" class="h-full rounded-full gold-progress-fill transition-all duration-700 ease-out" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- 4 ZBALANSOWANE PRZYCISKI AKTYWNOŚCI -->
+    <div class="w-full max-w-xl px-4 grid grid-cols-2 gap-2.5 sm:gap-3">
+      
+      <!-- 1. POBIERZ WIDGET (+1) -->
+      <button onclick="handleRealDownloadAction()" class="btn-cta-blue py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl text-white font-bold text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer shadow-lg">
+        <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        <span>Pobierz widget (+1)</span>
+      </button>
+
+      <!-- 2. WŁĄCZ RADIO (+1) -->
+      <button onclick="handleRealRadioListenAction()" id="btn-radio-listen" class="py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-[#12141a] hover:bg-[#1a1c26] border border-white/10 hover:border-sacredGold/50 text-gray-200 hover:text-white font-semibold text-xs sm:text-sm text-center transition-all flex items-center justify-center gap-1.5 sm:gap-2">
+        <span id="radio-play-icon" class="text-sacredGold text-sm">▶</span>
+        <span id="radio-btn-label">Włącz Radio (+1)</span>
+      </button>
+
+      <!-- 3. UDOSTĘPNIJ (+1) -->
+      <button onclick="handleRealShareAction()" class="py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-[#12141a] hover:bg-[#1a1c26] border border-white/10 hover:border-emerald-500/40 text-gray-200 hover:text-white font-semibold text-xs sm:text-sm text-center transition-all flex items-center justify-center gap-1.5 sm:gap-2">
+        <svg class="w-4 h-4 text-emerald-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+        <span>Udostępnij (+1)</span>
+      </button>
+
+      <!-- 4. WSPIERAM (+1) (PATRONITE) -->
+      <button onclick="handleRealSupportAction()" class="py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-[#161214] hover:bg-[#23171b] border border-red-500/30 hover:border-red-500/70 text-gray-200 hover:text-white font-bold text-xs sm:text-sm text-center transition-all flex items-center justify-center gap-1.5 sm:gap-2 shadow-[0_4px_16px_rgba(239,68,68,0.12)]">
+        <span class="text-red-400 text-sm">❤️</span>
+        <span>WSPIERAM (+1)</span>
+      </button>
+
+    </div>
+
+  </main>
+
+  <!-- MINIMALISTYCZNA STOPKA -->
+  <footer class="max-w-4xl mx-auto w-full pt-6 pb-2 text-center select-none">
+    <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer" class="group inline-block">
+      <div class="font-serif text-xs sm:text-sm tracking-[0.2em] text-gray-400 group-hover:text-sacredGold transition-colors uppercase">
+        CHRISTIAN CULTURE
+      </div>
+      <div class="mx-auto w-12 h-[1px] bg-sacredGold/40 mt-1"></div>
+    </a>
+  </footer>
+
+  <!-- MODAL DLA ANTYGRAVITY -->
+  <div id="antygravity-modal-window" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-[#121319] border border-white/10 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative">
+      
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">
+            Licznik „Pierwszy Milion” – Kod dla Antygravity
+          </h3>
+          <p class="text-xs text-gray-400 mt-0.5">
+            Zliczanie realnych kliknięć z animacją odsłonięcia stanu.
+          </p>
+        </div>
+        <button onclick="toggleModalAntygravity()" class="p-1.5 text-gray-400 hover:text-white rounded-lg transition-colors">
+          <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between mb-3 text-xs font-mono">
+        <div class="flex items-center gap-2">
+          <span class="text-gray-400">Format:</span>
+          <div class="p-1 bg-[#08090d] rounded-lg border border-white/10 flex">
+            <button id="btn-format-js" onclick="setExportFormat('js')" class="px-2.5 py-1 rounded font-bold bg-shoperBlue text-white">
+              HTML / JS
+            </button>
+            <button id="btn-format-iframe" onclick="setExportFormat('iframe')" class="px-2.5 py-1 rounded font-medium text-gray-400 hover:text-white">
+              iFrame
+            </button>
+          </div>
+        </div>
+
+        <button onclick="copySnippetToClipboard()" class="px-3 py-1.5 rounded-lg bg-shoperBlue hover:bg-shoperBlueHover text-white font-bold flex items-center gap-1.5 transition-all shadow">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          <span id="copy-btn-feedback">Kopiuj Kod</span>
+        </button>
+      </div>
+
+      <pre class="bg-[#08090d] p-3.5 rounded-xl border border-white/5 font-mono text-xs text-blue-200 overflow-x-auto max-h-52 leading-relaxed select-all"><code id="code-output-area"></code></pre>
+
+      <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end">
+        <button onclick="toggleModalAntygravity()" class="px-4 py-1.5 rounded-lg bg-[#1a1c24] text-xs text-white hover:bg-[#252834]">
+          Zamknij
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST POWIADOMIENIE -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <div class="bg-shoperBlue text-white px-4 py-2.5 rounded-xl shadow-2xl font-bold text-xs flex items-center gap-2 border border-blue-400/40">
+      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      <span id="toast-notify-text">Zarejestrowano kliknięcie (+1)</span>
+    </div>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // WEB AUDIO API – DŹWIĘKI SZUMU TASOWANIA ORAZ MECHANICZNEGO ZATRZASKU
+    // -------------------------------------------------------------------------
+    let audioCtx = null;
+    let isMechanicalSoundEnabled = true;
+
+    function getAudioContext() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!audioCtx && AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Szybki, cichy trzask pojedynczej tasowanej cyfry
+    function playScrambleClackSound() {
+      if (!isMechanicalSoundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      try {
+        const now = ctx.currentTime;
+        const bufferSize = ctx.sampleRate * 0.012;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1400 + Math.random() * 300, now);
+        filter.Q.setValueAtTime(4.0, now);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.011);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noise.start(now);
+      } catch (err) {
+        // Ignoruj ograniczenia autoodtwarzania przed interakcją
+      }
+    }
+
+    // Ciężki, satysfakcjonujący zatrzask mechaniczny (Lock-In)
+    function playHeavyLockInSound() {
+      if (!isMechanicalSoundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      try {
+        const now = ctx.currentTime;
+
+        // Komponent 1: Niski impuls mechaniczny (uderzenie o korpus)
+        const osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.07);
+
+        const oscGain = ctx.createGain();
+        oscGain.gain.setValueAtTime(0.35, now);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+        osc.connect(oscGain);
+        oscGain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.07);
+
+        // Komponent 2: Metaliczny klik zapadki
+        const bufferSize = ctx.sampleRate * 0.035;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2200, now);
+        filter.Q.setValueAtTime(3.2, now);
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.28, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.032);
+
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+
+        noise.start(now);
+      } catch (err) {
+        // Audio error handling
+      }
+    }
+
+    function toggleMechanicalClackSound() {
+      isMechanicalSoundEnabled = !isMechanicalSoundEnabled;
+      const icon = document.getElementById('sound-icon-indicator');
+      if (isMechanicalSoundEnabled) {
+        icon.textContent = '🔊';
+        showToast('Dźwięk mechaniczny włączony');
+        playHeavyLockInSound();
+      } else {
+        icon.textContent = '🔇';
+        showToast('Dźwięk wyciszony');
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // KONTROLER POJEDYNCZEJ CYFRY KLAPKOWEJ (100% PEŁNY GLIF BEZ UCINANIA)
+    // -------------------------------------------------------------------------
+    class FullDigitFlipDisplay {
+      constructor(containerElement, initialValue = '0') {
+        this.container = containerElement;
+        this.currentValue = String(initialValue);
+        this.isLocked = true;
+        this.buildDom();
+      }
+
+      buildDom() {
+        this.container.innerHTML = `
+          <!-- Statyczna górna część -->
+          <div class="flap-half flap-half-top static-top">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+
+          <!-- Statyczna dolna część -->
+          <div class="flap-half flap-half-bottom static-bottom">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+
+          <!-- Pozioma szczelina mechanicznego cięcia -->
+          <div class="flip-gap-seam"></div>
+
+          <!-- Ruchoma górna klapka (opadanie w dół) -->
+          <div class="flap-half flap-half-top moving-top hidden z-20">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+
+          <!-- Ruchoma dolna klapka (odsłanianie) -->
+          <div class="flap-half flap-half-bottom moving-bottom hidden z-20">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+        `;
+
+        this.staticTopGlyph = this.container.querySelector('.static-top .num-glyph');
+        this.staticBottomGlyph = this.container.querySelector('.static-bottom .num-glyph');
+        this.movingTopCard = this.container.querySelector('.moving-top');
+        this.movingTopGlyph = this.container.querySelector('.moving-top .num-glyph');
+        this.movingBottomCard = this.container.querySelector('.moving-bottom');
+        this.movingBottomGlyph = this.container.querySelector('.moving-bottom .num-glyph');
+      }
+
+      setValueDirect(val) {
+        this.currentValue = String(val);
+        this.staticTopGlyph.textContent = this.currentValue;
+        this.staticBottomGlyph.textContent = this.currentValue;
+      }
+
+      setScramblingState(isScrambling) {
+        if (isScrambling) {
+          this.container.classList.add('scrambling');
+        } else {
+          this.container.classList.remove('scrambling');
+        }
+      }
+
+      triggerLockInFlash() {
+        this.container.classList.add('locked-flash');
+        setTimeout(() => {
+          this.container.classList.remove('locked-flash');
+        }, 380);
+      }
+
+      flipTo(newValue, withSound = true) {
+        newValue = String(newValue);
+        if (this.currentValue === newValue) return;
+
+        const oldValue = this.currentValue;
+        this.currentValue = newValue;
+
+        this.staticTopGlyph.textContent = newValue;
+        this.staticBottomGlyph.textContent = oldValue;
+        this.movingTopGlyph.textContent = oldValue;
+        this.movingBottomGlyph.textContent = newValue;
+
+        this.movingTopCard.classList.remove('animate-flip-drop-top', 'hidden');
+        this.movingBottomCard.classList.remove('animate-flip-drop-bottom', 'hidden');
+
+        if (withSound) {
+          playScrambleClackSound();
+        }
+
+        void this.movingTopCard.offsetWidth;
+        this.movingTopCard.classList.add('animate-flip-drop-top');
+
+        void this.movingBottomCard.offsetWidth;
+        this.movingBottomCard.classList.add('animate-flip-drop-bottom');
+
+        setTimeout(() => {
+          this.staticBottomGlyph.textContent = newValue;
+          this.movingTopCard.classList.add('hidden');
+          this.movingBottomCard.classList.add('hidden');
+          this.movingTopCard.classList.remove('animate-flip-drop-top');
+          this.movingBottomCard.classList.remove('animate-flip-drop-bottom');
+        }, 360);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // STAN LICZNIKA ORAZ TAJEMNICZA SEKWENCJA ROTACJI LICZB
+    // -------------------------------------------------------------------------
+    const TARGET_GOAL = 1000000;
+    if (localStorage.getItem('cc_real_total') === '12480' || !localStorage.getItem('cc_million_v4_reset')) {
+      localStorage.setItem('cc_real_total', '0');
+      localStorage.setItem('cc_million_v4_reset', 'true');
+    }
+    let totalRealClicks = parseInt(localStorage.getItem('cc_real_total')) || 0;
+
+    const digitDisplays = [];
+    let isRevealing = false;
+    let currentExportFormat = 'js';
+    let isRadioPlaying = false;
+
+    function initSevenDigitDisplay() {
+      // Inicjalizacja 7 kasetek
+      for (let i = 6; i >= 0; i--) {
+        const slotEl = document.getElementById(`digit-slot-${i}`);
+        digitDisplays[i] = new FullDigitFlipDisplay(slotEl, '0');
+      }
+
+      // Uruchomienie tajemniczej sekwencji przy wejściu na stronę
+      setTimeout(() => {
+        triggerMysteriousReveal();
+      }, 400);
+    }
+
+    // TAJEMNICZA ANIMACJA ROTACJI I ODKRYWANIA STANU LICZNIKA
+    function triggerMysteriousReveal() {
+      if (isRevealing) return;
+      isRevealing = true;
+
+      // Aktywacja złotej aury shimmer
+      const shimmerEl = document.getElementById('aura-shimmer-sweep');
+      shimmerEl.classList.add('shimmer-active');
+
+      const triggerBtn = document.getElementById('btn-reveal-trigger');
+      triggerBtn.classList.add('opacity-50', 'pointer-events-none');
+
+      // Docelowe cyfry rzeczywistego stanu licznika
+      const paddedTarget = String(totalRealClicks).padStart(7, '0');
+
+      // Włączenie stanu tasowania (scrambling) dla wszystkich 7 kasetek
+      digitDisplays.forEach(display => display.setScramblingState(true));
+
+      // Szybka rotacja losowych cyfr
+      const scrambleIntervals = [];
+      for (let i = 0; i < 7; i++) {
+        scrambleIntervals[i] = setInterval(() => {
+          const randomDigit = Math.floor(Math.random() * 10);
+          digitDisplays[i].setValueDirect(randomDigit);
+          if (Math.random() > 0.4) {
+            playScrambleClackSound();
+          }
+        }, 55);
+      }
+
+      // Kaskadowe blokowanie cyfr od lewej (miliony) do prawej (jedności)
+      // Indeksy: 6 (milion), 5, 4, 3, 2, 1, 0 (jedności)
+      const lockDelays = [1100, 1350, 1600, 1850, 2100, 2350, 2600];
+
+      lockDelays.forEach((delay, stepIndex) => {
+        setTimeout(() => {
+          const digitIndex = 6 - stepIndex; // od 6 w dół do 0
+          clearInterval(scrambleIntervals[digitIndex]);
+
+          const targetChar = paddedTarget[stepIndex];
+          digitDisplays[digitIndex].setScramblingState(false);
+          digitDisplays[digitIndex].flipTo(targetChar, false);
+          digitDisplays[digitIndex].triggerLockInFlash();
+
+          playHeavyLockInSound();
+
+          // Ostatnia cyfra zatrzaśnięta -> zakończenie sekwencji
+          if (stepIndex === 6) {
+            setTimeout(() => {
+              isRevealing = false;
+              shimmerEl.classList.remove('shimmer-active');
+              triggerBtn.classList.remove('opacity-50', 'pointer-events-none');
+              updateProgressUI();
+              showToast('Odkryto rzeczywisty stan aktywności');
+            }, 300);
+          }
+        }, delay);
+      });
+    }
+
+    function recordRealClick() {
+      if (isRevealing) return;
+
+      totalRealClicks++;
+      if (totalRealClicks > TARGET_GOAL) totalRealClicks = TARGET_GOAL;
+
+      localStorage.setItem('cc_real_total', totalRealClicks);
+
+      const paddedStr = String(totalRealClicks).padStart(7, '0');
+      for (let i = 6; i >= 0; i--) {
+        const targetChar = paddedStr[6 - i];
+        if (digitDisplays[i].currentValue !== targetChar) {
+          digitDisplays[i].flipTo(targetChar, true);
+        }
+      }
+
+      updateProgressUI();
+      updateExportCodeSnippet();
+    }
+
+    function updateProgressUI() {
+      const pct = ((totalRealClicks / TARGET_GOAL) * 100).toFixed(2);
+      document.getElementById('label-current-formatted').textContent = totalRealClicks.toLocaleString('pl-PL');
+      document.getElementById('label-percentage-progress').textContent = `${pct}%`;
+      document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+    }
+
+    // -------------------------------------------------------------------------
+    // OBSŁUGA REALNYCH AKCJI
+    // -------------------------------------------------------------------------
+    function handleRealDownloadAction() {
+      recordRealClick();
+      const codeSnippet = generateWidgetSnippet('js');
+      copyTextToClipboard(codeSnippet);
+      showToast('🎉 Kod widgetu skopiowany! (+1 do miliona)');
+    }
+
+    function handleRealShareAction() {
+      recordRealClick();
+      const shareData = {
+        title: 'Christian Culture – Celujemy w Pierwszy Milion',
+        text: 'Dołącz do społeczności Christian Culture i słuchaj Radia oraz Biblii Audio online!',
+        url: 'https://polskieradio.cc'
+      };
+
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        navigator.share(shareData).catch(() => {
+          copyTextToClipboard('https://polskieradio.cc');
+          showToast('🔗 Link skopiowany! (+1 do miliona)');
+        });
+      } else {
+        copyTextToClipboard('https://polskieradio.cc');
+        showToast('🔗 Link skopiowany do schowka! (+1)');
+      }
+    }
+
+    function handleRealRadioListenAction() {
+      const audio = document.getElementById('live-radio-audio');
+      const icon = document.getElementById('radio-play-icon');
+      const label = document.getElementById('radio-btn-label');
+
+      if (!isRadioPlaying) {
+        audio.play().then(() => {
+          isRadioPlaying = true;
+          icon.textContent = '⏸';
+          label.textContent = 'Pauza Radia';
+          recordRealClick();
+          showToast('📻 Odsłuch na żywo rozpoczęty! (+1)');
+        }).catch(() => {
+          recordRealClick();
+          showToast('📻 Odsłuch zarejestrowany (+1)');
+        });
+      } else {
+        audio.pause();
+        isRadioPlaying = false;
+        icon.textContent = '▶';
+        label.textContent = 'Włącz Radio (+1)';
+        showToast('Wstrzymano odtwarzanie');
+      }
+    }
+
+    function handleRealSupportAction() {
+      recordRealClick();
+      window.open('https://patronite.pl/osobowoscplus', '_blank', 'noopener,noreferrer');
+      showToast('❤️ Dziękujemy za wsparcie na Patronite! (+1)');
+    }
+
+    // -------------------------------------------------------------------------
+    // INTEGRACJA ANTYGRAVITY
+    // -------------------------------------------------------------------------
+    function toggleModalAntygravity() {
+      const modal = document.getElementById('antygravity-modal-window');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        updateExportCodeSnippet();
+      }
+    }
+
+    function setExportFormat(fmt) {
+      currentExportFormat = fmt;
+      const btnJs = document.getElementById('btn-format-js');
+      const btnIframe = document.getElementById('btn-format-iframe');
+
+      if (fmt === 'js') {
+        btnJs.className = 'px-2.5 py-1 rounded font-bold bg-shoperBlue text-white';
+        btnIframe.className = 'px-2.5 py-1 rounded font-medium text-gray-400 hover:text-white';
+      } else {
+        btnIframe.className = 'px-2.5 py-1 rounded font-bold bg-shoperBlue text-white';
+        btnJs.className = 'px-2.5 py-1 rounded font-medium text-gray-400 hover:text-white';
+      }
+      updateExportCodeSnippet();
+    }
+
+    function generateWidgetSnippet(format) {
+      if (format === 'iframe') {
+        return `<!-- Christian Culture – Licznik „Pierwszy Milion” -->
+<iframe 
+  src="https://polskieradio.cc/embed/milion-counter" 
+  width="100%" 
+  height="460" 
+  frameborder="0" 
+  scrolling="no"
+  style="border-radius:24px; border:1px solid rgba(255,255,255,0.08); background:#06070a;" 
+  title="Christian Culture Milion Counter">
+</iframe>`;
+      }
+
+      const padded = String(totalRealClicks).padStart(7, '0');
+
+      return `<!-- LICZNIK „CELUJEMY W PIERWSZY MILION” – CHRISTIAN CULTURE -->
+<div id="cc-million-widget" style="background:#06070a; color:#fff; padding:28px 20px; border-radius:28px; border:1px solid rgba(255,255,255,0.08); font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; text-align:center; max-width:680px; margin:0 auto; box-shadow:0 30px 80px rgba(0,0,0,0.95);">
+  <h2 style="font-size:32px; font-weight:900; line-height:1.1; margin:0 0 6px; letter-spacing:-0.03em;">CELUJEMY W PIERWSZY MILION</h2>
+  <div style="font-size:11px; color:#c5a059; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px;">Christian Culture – Ekosystem Osobistego Uświęcenia</div>
+  
+  <div style="background:#12141a; border-radius:20px; padding:16px 12px; display:inline-flex; gap:6px; align-items:center; justify-content:center; margin-bottom:18px; border:1px solid rgba(255,255,255,0.08);">
+    ${padded.split('').map((char, idx) => `
+      ${(idx === 1 || idx === 4) ? '<span style="color:#c5a059; font-weight:900; font-size:18px; padding:0 2px;">•</span>' : ''}
+      <span style="background:#1c1e28; border-radius:8px; font-size:34px; font-weight:900; width:40px; height:58px; line-height:58px; text-align:center; display:inline-block; border-bottom:2px solid #000; box-shadow:0 4px 8px rgba(0,0,0,0.6);">${char}</span>
+    `).join('')}
+  </div>
+
+  <div style="max-width:440px; margin:0 auto 20px;">
+    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+      <span style="color:#9ca3af;">Postęp: <strong style="color:#fff;">${totalRealClicks.toLocaleString('pl-PL')}</strong> / 1 000 000</span>
+      <span style="color:#c5a059;">${((totalRealClicks / TARGET_GOAL) * 100).toFixed(2)}%</span>
+    </div>
+    <div style="height:6px; background:#12141a; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,0.06);">
+      <div style="width:${((totalRealClicks / TARGET_GOAL) * 100).toFixed(2)}%; height:100%; background:linear-gradient(90deg, #8a6e35, #c5a059, #f7e2a9);"></div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:480px; margin:0 auto;">
+    <button onclick="location.href='https://polskieradio.cc';" style="background:#0b66fe; color:#fff; font-weight:700; font-size:13px; padding:12px; border-radius:12px; border:none; cursor:pointer;">Pobierz widget (+1)</button>
+    <button onclick="location.href='https://polskieradio.cc';" style="background:#12141a; color:#fff; font-weight:600; font-size:13px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); cursor:pointer;">Włącz Radio (+1)</button>
+    <button onclick="location.href='https://polskieradio.cc';" style="background:#12141a; color:#fff; font-weight:600; font-size:13px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); cursor:pointer;">Udostępnij (+1)</button>
+    <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" style="background:#161214; color:#fff; font-weight:700; font-size:13px; padding:12px; border-radius:12px; border:1px solid rgba(239,68,68,0.3); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;">❤️ WSPIERAM (+1)</a>
+  </div>
+</div>`;
+    }
+
+    function updateExportCodeSnippet() {
+      const codeArea = document.getElementById('code-output-area');
+      codeArea.textContent = generateWidgetSnippet(currentExportFormat);
+    }
+
+    function copySnippetToClipboard() {
+      const text = document.getElementById('code-output-area').textContent;
+      copyTextToClipboard(text);
+      const btn = document.getElementById('copy-btn-feedback');
+      btn.textContent = 'Skopiowano!';
+      setTimeout(() => btn.textContent = 'Kopiuj Kod', 2000);
+      showToast('Kod skopiowany pomyślnie');
+    }
+
+    function copyTextToClipboard(text) {
+      const dummy = document.createElement('textarea');
+      dummy.value = text;
+      dummy.style.position = 'fixed';
+      dummy.style.left = '-9999px';
+      document.body.appendChild(dummy);
+      dummy.select();
+      try {
+        document.execCommand('copy');
+      } catch (e) {
+        console.error('Kopiowanie nieudane:', e);
+      }
+      document.body.removeChild(dummy);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-notify');
+      const text = document.getElementById('toast-notify-text');
+      text.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2800);
+    }
+
+    // -------------------------------------------------------------------------
+    // INICJALIZACJA STRONY
+    // -------------------------------------------------------------------------
+    window.onload = function() {
+      initSevenDigitDisplay();
+    };
+  </script>
+</body>
+</html>
