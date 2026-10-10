@@ -14148,6 +14148,7 @@
             setTimeout(() => {
                 const input = document.getElementById('activeChatInput');
                 if (input) {
+                    if (window.LuminaDB?.isCommunityAdmin?.() || localStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1' || localStorage.getItem('lumina_current_user_slug') === 'cezaryrgowski') { input.removeAttribute('maxlength'); } else { input.setAttribute('maxlength', '1000'); }
                     input.focus();
                     handleActiveChatInputChange(input.value);
                 }

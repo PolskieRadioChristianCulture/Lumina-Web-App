@@ -69,7 +69,11 @@ test('messenger keyboard cycles focus, closes on Escape and restores opener',asy
 const start=source.indexOf('export async function sendDirectMessageToCloud(');
 const end=source.indexOf('// ── Oznaczanie wiadomości prywatnych',start);
 assert.ok(start>=0 && end>start);
-const fn=source.slice(start,end).replace('export async function','async function');
+const adminHelperStart=source.indexOf('export const LUMINA_OFFICIAL_ACCOUNTS =');
+const adminHelperEnd=source.indexOf('const OFFICIAL_ID_TO_SLUG',adminHelperStart);
+const adminHelper=source.slice(adminHelperStart,adminHelperEnd).replaceAll('export const','const').replaceAll('export function','function');
+const fnCode=source.slice(start,end).replace('export async function','async function');
+const fn='(()=>{ ' + adminHelper + '\n return ' + fnCode + '; })()';
 test('notification presentation never increments the authoritative unread-room counter',()=>{
   const a=source.indexOf('export function triggerLuminaPushNotification('),b=source.indexOf('let hasStartedRealtimeNotifs',a);
   const ctx={playNotificationChime:()=>{},navigator:{},window:{},document:{visibilityState:'visible'},
@@ -357,3 +361,20 @@ test('pending or closed request does not enter the atomic message write',async()
     assert.equal(f.writes.length,0);
   }
 });
+test('community administrator bypasses conversation acceptance and delivers message unconditionally',async()=>{
+  for(const adminIdent of [
+    {uid:'ADMIN_UID',email:'nazirczarkes@gmail.com',emailVerified:true,slug:'cezaryrgowski'},
+    {uid:'ADMIN_UID',email:'polskiercctv@gmail.com',emailVerified:true,slug:'cezaryrgowski'},
+    {uid:'ADMIN_UID',slug:'radiocc',isMissionAccount:true}
+  ]) {
+    const f=fixture({chatExists:false});
+    f.ctx.currentUserState={uid:adminIdent.uid,email:adminIdent.email,emailVerified:adminIdent.emailVerified,isAnonymous:false};
+    f.ctx.currentProfileState={slug:adminIdent.slug,name:'Administrator',isAdmin:true,isFounder:true};
+    f.ctx.getDoc=async ref=>({exists:()=>ref.path.includes('lumina_message_requests'),data:()=>({status:'pending'})});
+    const result=await f.send('synthetic-room',payload);
+    assert.equal(result,'synthetic-message-id');
+    assert.equal(f.committed.length,2);
+    assert.equal(f.committed[1][1].conversationState,'accepted');
+  }
+});
+

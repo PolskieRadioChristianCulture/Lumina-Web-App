@@ -151,16 +151,20 @@ export function isCommunityAdmin(user = currentUserState, fromId = null, profile
     if (profile && (profile.isAdmin === true || profile.isFounder === true || profile.isMissionAccount === true)) return true;
     const normFrom = String(fromId || profile?.slug || user?.slug || '').trim().toLowerCase();
     if (normFrom === 'cezaryrgowski' || normFrom === 'cezary' || normFrom === 'radiocc') return true;
-    if (typeof localStorage !== 'undefined') {
-        if (localStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1' || localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
-            return true;
+    try {
+        if (typeof localStorage !== 'undefined' && localStorage) {
+            if (localStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1' || localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+                return true;
+            }
         }
-    }
-    if (typeof sessionStorage !== 'undefined') {
-        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_admin') === '1' || sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
-            return true;
+    } catch (_) {}
+    try {
+        if (typeof sessionStorage !== 'undefined' && sessionStorage) {
+            if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_admin') === '1' || sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+                return true;
+            }
         }
-    }
+    } catch (_) {}
     return false;
 }
 
