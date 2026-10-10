@@ -400,8 +400,10 @@
                 max-width: 38px !important;
                 min-height: 38px !important;
                 height: 38px !important;
+                aspect-ratio: 1 / 1 !important;
                 border-radius: 50% !important;
                 justify-content: center !important;
+                align-items: center !important;
                 box-sizing: border-box !important;
             }
             .cc-auth-user-name,
@@ -416,6 +418,7 @@
                 height: 30px !important;
                 min-width: 30px !important;
                 max-width: 30px !important;
+                aspect-ratio: 1 / 1 !important;
                 flex: 0 0 30px !important;
                 margin: 0 !important;
             }
@@ -425,6 +428,7 @@
                 height: 30px !important;
                 min-width: 30px !important;
                 max-width: 30px !important;
+                aspect-ratio: 1 / 1 !important;
                 flex: 0 0 30px !important;
             }
             .cc-auth-google-btn {
@@ -433,9 +437,11 @@
                 max-width: 38px !important;
                 height: 38px !important;
                 min-height: 38px !important;
+                aspect-ratio: 1 / 1 !important;
                 padding: 0 !important;
                 border-radius: 50% !important;
                 justify-content: center !important;
+                align-items: center !important;
                 box-sizing: border-box !important;
             }
             .cc-auth-google-btn span.cc-auth-btn-text-full,

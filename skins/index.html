@@ -298,28 +298,133 @@
     .top-auth-cluster {
       display: flex;
       align-items: center;
-      min-height: 44px;
+      justify-content: center;
+      min-height: 48px;
     }
 
     .cc-auth-widget-container {
       min-height: 44px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
     }
 
+    /* Pancerne okrągłe kółko wokół awatara - Standard @SMCC min. 44px (Zakaz elips i jajek) */
     .cc-auth-widget-container .cc-auth-user-pill,
-    .cc-auth-widget-container .cc-auth-google-btn {
+    .cc-auth-widget-container .user-nav-profile.cc-auth-user-pill {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      max-width: 44px !important;
       min-height: 44px !important;
-      padding: 6px 14px 6px 10px !important;
+      max-height: 44px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+      border: 1.5px solid var(--skin-border, rgba(212, 175, 55, 0.45)) !important;
+      background: rgba(8, 12, 35, 0.85) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5) !important;
+      overflow: visible !important;
+      position: relative !important;
+    }
+
+    .cc-auth-widget-container .cc-auth-google-btn {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      max-width: 44px !important;
+      min-height: 44px !important;
+      max-height: 44px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+    }
+
+    .cc-auth-widget-container .cc-auth-user-name,
+    .cc-auth-widget-container .user-nav-name,
+    .cc-auth-widget-container .cc-auth-user-chevron,
+    .cc-auth-widget-container .user-nav-chevron {
+      display: none !important;
+    }
+
+    .cc-auth-widget-container .cc-auth-avatar-wrap,
+    .cc-auth-widget-container .user-nav-avatar-wrap {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      max-width: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+      position: relative !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      flex: 0 0 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .cc-auth-widget-container .cc-auth-avatar-img,
+    .cc-auth-widget-container .user-nav-avatar {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      max-width: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      display: block !important;
+      border: 1.5px solid #d4af37 !important;
+      box-sizing: border-box !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .cc-auth-widget-container .cc-auth-online-dot {
+      position: absolute !important;
+      bottom: -1px !important;
+      right: -1px !important;
+      width: 9px !important;
+      height: 9px !important;
+      min-width: 9px !important;
+      min-height: 9px !important;
+      max-width: 9px !important;
+      max-height: 9px !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+      background: #22c55e !important;
+      border: 1.5px solid #090d1a !important;
+      box-shadow: 0 0 6px #22c55e !important;
+      z-index: 5 !important;
     }
 
     .avatar-btn {
       display: grid;
       place-items: center;
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       min-width: 44px;
       min-height: 44px;
+      max-width: 44px;
+      max-height: 44px;
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
       border: 1.5px solid var(--skin-border);
       background: rgba(8, 12, 35, 0.85);
@@ -337,6 +442,8 @@
     .avatar-btn img {
       width: 100%;
       height: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
       object-fit: cover;
     }
 
