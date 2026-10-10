@@ -151,3 +151,12 @@ Każdy agent podejmujący prace nad portalem LUMINA realizuje poniższy harmonog
    - Dwustronna blokada użytkownika i formularz odwoławczy od decyzji moderacyjnej.
 5. **Bramka P0-5 (Engineering & CI Pipeline):**
    - Włączenie weryfikatora konstytucyjnego do automatycznego skryptu `node scripts/straznik-kodu-check.js`.
+
+---
+
+## 📰 6. STANDARD INFORMACYJNY PORTALU CCN NEWS & PORTALI TEMATYCZNYCH (DYREKTYWA DOWÓDCY)
+1. **Wiarygodność Faktograficzna (Prawdziwe Wiadomości):** Wszystkie doniesienia z kraju i ze świata na `polskieradio.cc/news` oraz w 20 portalach tematycznych muszą opierać się wyłącznie na zweryfikowanych źródłach chrześcijańskich (Open Doors, Pomoc Kościołowi w Potrzebie PKWP, Polska Rada Ekumeniczna, Towarzystwo Biblijne itp.) z jawnym polem `sourceCitation`. Bezwzględny zakaz zmyślania faktów, statystyk czy wypowiedzi.
+2. **Fotorealistyczne, Tematyczne Grafiki 16:9:** Ilustracje muszą być ściśle powiązane z tematyką wiadomości, w estetyce fotorealistycznej dokumentalnej (8k, naturalne światło, godność i szacunek dla przedstawianych treści). Zakaz syntetycznych, nierealistycznych renderów.
+3. **Fundament Biblijny:** Każdy artykuł informacyjny musi zawierać odniesienie biblijne (`scriptureReference`) oraz egzegezę kluczowych pojęć hebrajskich/greckich z kodami Stronga (`lexiconTerms`).
+4. **Autorstwo:** Wyłącznie oficjalne profile: Cezary Rogowski, Wioletta Rogowska lub Redakcja CCN News.
+
