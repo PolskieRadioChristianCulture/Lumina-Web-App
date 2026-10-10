@@ -22,6 +22,10 @@
     <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
     <link rel="canonical" href="https://polskieradio.cc/">
 
+    <!-- RSS Auto-Discovery (Apple Podcasts, Spotify, Feed Readers) -->
+    <link rel="alternate" type="application/rss+xml" title="Polskie Radio Christian Culture • Podcast RSS" href="https://polskieradio.cc/podcast.xml">
+    <link rel="alternate" type="application/rss+xml" title="LUMINA • Tablica Społeczności i Rozważania RSS" href="https://polskieradio.cc/tablica.xml">
+
     <!-- ══════════ GWARANCJA JĘZYKA POLSKIEGO JAKO DOMYŚLNEGO (Christian Culture) ══════════ -->
     <script>
         (function() {
@@ -140,7 +144,37 @@
             "https://polskieradio.cc/lumina",
             "https://polskieradio.cc/vod",
             "https://christian-culture.web.app/"
-          ]
+          ],
+          "subOrganization": {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://polskieradio.cc/news#ccn",
+            "name": "CCN (Christian Culture Network)",
+            "alternateName": "CCN News & Portale Tematyczne",
+            "url": "https://polskieradio.cc/news",
+            "founder": { "@id": "https://polskieradio.cc/lumina.cezaryrgowski#person" },
+            "hasPart": [
+              { "@type": "WebPage", "name": "CCN News", "url": "https://polskieradio.cc/news" },
+              { "@type": "WebPage", "name": "CCN Nauka", "url": "https://polskieradio.cc/nauka" },
+              { "@type": "WebPage", "name": "CCN Historia", "url": "https://polskieradio.cc/historia" },
+              { "@type": "WebPage", "name": "CCN Biologia", "url": "https://polskieradio.cc/biologia" },
+              { "@type": "WebPage", "name": "CCN Prawo", "url": "https://polskieradio.cc/prawo" },
+              { "@type": "WebPage", "name": "CCN Małżeństwo", "url": "https://polskieradio.cc/seks" },
+              { "@type": "WebPage", "name": "CCN Kultura", "url": "https://polskieradio.cc/kultura" },
+              { "@type": "WebPage", "name": "CCN Biznes", "url": "https://polskieradio.cc/biznes" },
+              { "@type": "WebPage", "name": "CCN Kuchnia", "url": "https://polskieradio.cc/kuchnia" },
+              { "@type": "WebPage", "name": "CCN ZIU (Zdrowie i Uroda)", "url": "https://polskieradio.cc/ziu" },
+              { "@type": "WebPage", "name": "CCN Ogłoszenia", "url": "https://polskieradio.cc/ogloszenia" },
+              { "@type": "WebPage", "name": "CCN Współpraca Misyjna", "url": "https://polskieradio.cc/wspolpraca" },
+              { "@type": "WebPage", "name": "CC Network", "url": "https://polskieradio.cc/network" },
+              { "@type": "WebPage", "name": "CCN Biblioteka", "url": "https://polskieradio.cc/biblioteka" },
+              { "@type": "WebPage", "name": "CCN Edukacja & Wychowanie", "url": "https://polskieradio.cc/edukacja" },
+              { "@type": "WebPage", "name": "CCN Psychologia & Emocje", "url": "https://polskieradio.cc/psychologia" },
+              { "@type": "WebPage", "name": "CCN Finanse", "url": "https://polskieradio.cc/finanse" },
+              { "@type": "WebPage", "name": "CCN Technologie & AI", "url": "https://polskieradio.cc/technologie" },
+              { "@type": "WebPage", "name": "CCN Misje & Świadectwa", "url": "https://polskieradio.cc/misje" },
+              { "@type": "WebPage", "name": "CCN Apologetyka & Światopoglądy", "url": "https://polskieradio.cc/apologetyka" }
+            ]
+          }
         },
         {
           "@type": "FAQPage",
@@ -160,6 +194,14 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "Na portalu dostępnych jest 6 stacji nadawanych 24/7 w jakości HD: 1) Radio PL (audycje autorskie, muzyka, komentarze biblijne), 2) Radio Global (pasmo anglojęzyczne), 3) Radio Biblia (ciągłe czytanie Pisma Świętego po polsku), 4) Global Biblia (anglojęzyczna Biblia Audio), 5) Instrumental Worship (spokojna muzyka instrumentalna do modlitwy), 6) Biblia Śpiewana (wersety biblijne w pięknych aranżacjach muzycznych)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Czym jest sieć 20 portali tematycznych marki CCN?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "CCN (Christian Culture Network, https://polskieradio.cc/news) to 20 autorytatywnych serwisów wiedzy i publicystyki chrześcijańskiej w 4 klastrach: 1) Nauka, Historia, Biologia, Technologie & AI, Apologetyka; 2) Małżeństwo, Psychologia, Edukacja, Zdrowie ZIU, Kuchnia; 3) Prawo, Biznes, Finanse, Kultura, Ogłoszenia; 4) News, Biblioteka, Misje, Współpraca, CC Network."
               }
             },
             {
@@ -246,8 +288,48 @@
     <meta name="googlebot" content="index, follow">
 
     <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="style.css?v=41">
+    <link rel="stylesheet" href="css/christian-culture-design-system.css">
+    <link rel="stylesheet" href="style.css?v=45">
     <style>
+        /* Mobile Full-Screen Side Drawer Navigation (<= 768px) */
+        @media (max-width: 768px) {
+            .side-drawer {
+                left: -100% !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 100% !important;
+                height: 100dvh !important;
+                border-right: none !important;
+                padding: 1.5rem 1.25rem 3rem 1.25rem !important;
+                box-shadow: none !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+            .side-drawer.active {
+                left: 0 !important;
+            }
+            .drawer-close {
+                top: 1rem !important;
+                right: 1rem !important;
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 1.5rem !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                border: 1px solid rgba(212, 169, 74, 0.3) !important;
+                border-radius: 50% !important;
+                cursor: pointer !important;
+            }
+            .drawer-brand {
+                margin-top: 0.5rem !important;
+                margin-bottom: 1.5rem !important;
+                font-size: 1.25rem !important;
+            }
+        }
+
         /* Aggressive Google Translate Banner and Offsets Hider */
         .goog-te-banner-frame,
         .goog-te-banner-frame.skiptranslate,
@@ -450,7 +532,7 @@
             background: rgba(10, 12, 22, 0.88);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.25);
+            border: 1px solid rgba(212, 169, 74, 0.25);
             border-radius: 16px;
             padding: 14px 12px;
             text-align: center;
@@ -462,8 +544,8 @@
         }
         .side-promo-inner:hover {
             transform: translateY(-3px);
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.15);
-            border-color: rgba(212, 175, 55, 0.55);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 169, 74, 0.15);
+            border-color: rgba(212, 169, 74, 0.55);
         }
         .side-slide {
             transition: opacity 0.6s ease;
@@ -495,9 +577,9 @@
             line-height: 1.4;
         }
         .side-badge-gold {
-            background: rgba(212, 175, 55, 0.12);
+            background: rgba(212, 169, 74, 0.12);
             color: #f5d77e;
-            border: 1px solid rgba(212, 175, 55, 0.35);
+            border: 1px solid rgba(212, 169, 74, 0.35);
             font-size: 0.55rem;
             font-weight: 700;
             letter-spacing: 0.5px;
@@ -532,7 +614,7 @@
         }
         .side-cta {
             display: block;
-            background: linear-gradient(135deg, #d4af37, #b38f24);
+            background: linear-gradient(135deg, #D4A94A, #b38f24);
             color: #000;
             font-weight: 800;
             font-size: 0.72rem;
@@ -548,6 +630,16 @@
         }
         .side-promo-inner:hover .side-cta {
             filter: brightness(1.1);
+        }
+        /* CCN Drawer Accordion */
+        details.drawer-ccn-hub summary::-webkit-details-marker { display: none; }
+        details.drawer-ccn-hub summary::marker { display: none; }
+        details.drawer-ccn-hub[open] .ccn-arrow { transform: rotate(180deg); }
+        .ccn-sublink { transition: all 0.2s ease; text-decoration: none; }
+        .ccn-sublink:hover {
+            background: rgba(212, 169, 74, 0.2) !important;
+            border-color: rgba(212, 169, 74, 0.6) !important;
+            transform: translateX(3px);
         }
         /* Ukryj na mniejszych ekranach (wymagają miejsca po bokach) */
         @media (max-width: 1360px) { .side-promo { display: none !important; } }
@@ -583,11 +675,11 @@
 
     <!-- Panel PRAWY — Wsparcie Misji QR -->
     <div class="side-promo side-promo-right" id="sidePanelRight">
-        <a class="side-promo-inner" href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" style="border-color: rgba(212, 175, 55, 0.5); text-decoration: none;">
-            <span class="side-badge" style="background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; font-weight: 900;">🤍 WSPARCIE MISJI</span><br>
+        <a class="side-promo-inner" href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" style="border-color: rgba(212, 169, 74, 0.5); text-decoration: none;">
+            <span class="side-badge" style="background: linear-gradient(135deg, #D4A94A, #aa820a); color: #000; font-weight: 900;">🤍 WSPARCIE MISJI</span><br>
             <span class="side-badge-gold">Zeskanuj Kod QR</span>
             <img src="wsparcie_cc_qr.png" alt="Wsparcie Misji QR" loading="lazy" decoding="async" style="width: 100%; height: auto; display: block; background: #000; border: none; object-fit: contain; margin: 8px 0 12px 0; border-radius: 8px; padding: 4px;">
-            <div class="side-title" style="color: #d4af37; font-size: 0.9rem;">Wesprzyj Misję<br>Christian Culture</div>
+            <div class="side-title" style="color: #D4A94A; font-size: 0.9rem;">Wesprzyj Misję<br>Christian Culture</div>
             <div class="side-sub" style="color: #e0e0e0; margin-bottom: 10px; font-size: 0.72rem; line-height: 1.5;">BLIK: <strong>537 137 043</strong><br>Patronite • Revolut</div>
             <span class="side-cta" style="text-align: center; display: block;">🤍 WESPRZYJ TERAZ</span>
         </a>
@@ -691,6 +783,7 @@
                             <i class="fa-solid fa-plus" id="actionsToggleIcon" style="color: var(--gold-primary); font-size: 1.15rem; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;"></i>
                         </div>
                     </button>
+                    
                 </div>
             </div>
         </div>
@@ -784,6 +877,14 @@
                         </div>
                         <i class="fa-solid fa-chevron-right pill-arrow"></i>
                     </a>
+                    <a href="https://polskieradio.cc/milion" class="strip-pill-card pill-spolecznosc" data-title="Licznik CC" data-keywords="licznik cc milion celujemy w pierwszy milion społeczność licznik na żywo akcja ewangelizacja widget">
+                        <div class="pill-icon" style="color: #f472b6;"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">Licznik CC</span>
+                            <span class="pill-desc">Pierwszy Milion</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
                 </div>
             </section>
 
@@ -811,6 +912,17 @@
                                     <span class="cc-card-badge">AUDIO 24/7</span>
                                 </div>
                                 <span class="cc-card-sub">Radio Biblia • Audycje</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/skins" class="cc-card" data-keywords="skins radio skins 2.0 odtwarzacz muzyka wizualizator skórki earth gold cosmic studio word radio na żywo equalizer">
+                            <div class="cc-card-icon" style="color: #38bdf8;"><i class="fa-solid fa-compact-disc"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Radio SKINS 2.0</span>
+                                    <span class="cc-card-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);">NOWOŚĆ</span>
+                                </div>
+                                <span class="cc-card-sub">Odtwarzacz • 5 skórek wizualnych</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -847,14 +959,47 @@
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="https://polskieradio.cc/news" class="cc-card" data-keywords="ccn news portal informacyjny wiadomości fakty publicystyka christian culture aktualności świat">
+                        <a href="https://polskieradio.cc/news" class="cc-card" data-keywords="ccn news portal informacyjny wiadomości fakty publicystyka christian culture aktualności świat nauka historia biologia prawo małżeństwo seks biznes technologia ai biblioteka misje edukacja psychologia finanse apologetyka">
                             <div class="cc-card-icon" style="color: #ef4444;"><i class="fa-solid fa-newspaper"></i></div>
                             <div class="cc-card-body">
                                 <div class="cc-card-head">
-                                    <span class="cc-card-title">CCN</span>
-                                    <span class="cc-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35);">NEWS</span>
+                                    <span class="cc-card-title">CCN News</span>
+                                    <span class="cc-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35);">20 SERWISÓW</span>
                                 </div>
-                                <span class="cc-card-sub">Portal informacyjny • Wiadomości</span>
+                                <span class="cc-card-sub">Wiadomości • Sieć 20 Portali Wiedzy</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/kultura" class="cc-card" data-keywords="ccn kultura sztuka muzyka literatura teatr film christian culture recenzje wystawy">
+                            <div class="cc-card-icon" style="color: #ec4899;"><i class="fa-solid fa-masks-theater"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">CCN</span>
+                                    <span class="cc-card-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);">KULTURA</span>
+                                </div>
+                                <span class="cc-card-sub">Sztuka • Muzyka • Literatura</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="#books-section" class="cc-card" data-keywords="kod zrodlowy pokonac goliata ksiazki cezary rogowski ebook audiobook czytaj literatura powiesc wolnosc">
+                            <div class="cc-card-icon" style="color: #fbbf24;"><i class="fa-solid fa-book-bookmark"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Książki Autorskie</span>
+                                    <span class="cc-card-badge" style="background: rgba(250, 204, 21, 0.15); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.35);">E-BOOK & AUDIO</span>
+                                </div>
+                                <span class="cc-card-sub">Kod Źródłowy • Pokonać Goliata</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/biznes" class="cc-card" data-keywords="ccn biznes przedsiebiorczosc etyka finanse praca rynek gospodarka inwestycje szafarstwo">
+                            <div class="cc-card-icon" style="color: #3b82f6;"><i class="fa-solid fa-briefcase"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">CCN</span>
+                                    <span class="cc-card-badge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);">BIZNES</span>
+                                </div>
+                                <span class="cc-card-sub">Przedsiębiorczość • Etyka • Finanse</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -985,6 +1130,17 @@
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
+                        <a href="https://polskieradio.cc/ksiazki-autora" class="cc-card" data-keywords="książki cezary rogowski cezarego rogowskiego pokonać goliata kod źródłowy bóg jest miłością u boku diabła prawda bez filtra e-booki audiobooki autor półka">
+                            <div class="cc-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-book-open-reader"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Książki Autora</span>
+                                    <span class="cc-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);">E-BOOKI</span>
+                                </div>
+                                <span class="cc-card-sub">Cezary Rogowski • Półka z książkami</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
                         <a href="werset-dnia" class="cc-card" data-keywords="werset dnia karty słowa generator cytaty biblia">
                             <div class="cc-card-icon"><i class="fa-solid fa-scroll"></i></div>
                             <div class="cc-card-body">
@@ -1085,6 +1241,50 @@
                                     <span class="cc-card-badge">PORTAL</span>
                                 </div>
                                 <span class="cc-card-sub">Sieć relacji & wartości</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/milion" class="cc-card" data-keywords="licznik cc milion celujemy w pierwszy milion społeczność 1000000 licznik na żywo akcja ewangelizacja widget odtwarzacz">
+                            <div class="cc-card-icon" style="color: #ec4899;"><i class="fa-solid fa-gauge-high"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Licznik CC</span>
+                                    <span class="cc-card-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);">1 000 000</span>
+                                </div>
+                                <span class="cc-card-sub">Celujemy w Pierwszy Milion • Społeczność</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/ogloszenia" class="cc-card" data-keywords="ogloszenia kupie sprzedam oddam za darmo zamienie pomoc praca nieruchomosci auta podroze nocleg tablica">
+                            <div class="cc-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-bullhorn"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">CCN Ogłoszenia</span>
+                                    <span class="cc-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);">SPOŁECZNOŚĆ</span>
+                                </div>
+                                <span class="cc-card-sub">Tablica ogłoszeń • Wzajemna pomoc</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/ziu" class="cc-card" data-keywords="ziu zdrowie uroda atlas ziol dieta stwórcy post psychika regeneracja sport aktywnosc cialo swiatynia ducha">
+                            <div class="cc-card-icon" style="color: #10b981;"><i class="fa-solid fa-leaf"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">CCN ZIU</span>
+                                    <span class="cc-card-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35);">ZDROWIE & URODA</span>
+                                </div>
+                                <span class="cc-card-sub">Atlas ziół • Ciało Świątynią Ducha</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/kuchnia" class="cc-card" data-keywords="kuchnia biblijna chleb ezechiela potrawy ryba galilejska dieta daniela przepisy stol chrzescijanski tradycja post">
+                            <div class="cc-card-icon" style="color: #d97706;"><i class="fa-solid fa-utensils"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">CCN Kuchnia</span>
+                                    <span class="cc-card-badge" style="background: rgba(217, 119, 6, 0.15); color: #f59e0b; border: 1px solid rgba(217, 119, 6, 0.35);">KUCHNIA</span>
+                                </div>
+                                <span class="cc-card-sub">Chleb Ezechiela • Przepisy biblijne</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -1373,100 +1573,17 @@
         </div>
     </div>
 
-    
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div class="side-drawer" id="sideDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="drawer-content">
+            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
+            <nav class="drawer-nav">
+                <a href="#hero" class="drawer-link active" style="margin-bottom: 4px;"><i class="fa-solid fa-house"></i> Strona Główna</a>
 
-    <!-- ==========================================
-         MENU CC — CC COMMAND CENTER (PREMIUM 2026 ECOSYSTEM HUB)
-         Full-screen Navigation, Real-time Search, Surface/Glass Cards, Thematic Columns
-         ========================================== -->
-    <div id="actionsList" class="cc-command-center" role="dialog" aria-modal="true" aria-label="CC Command Center">
-        <!-- Ambient Glow in Top-Right (Earth Atmosphere Glow) -->
-        <div class="menu-cc-bg-glow"></div>
-
-        <div class="menu-cc-wrapper">
-            <!-- Top Navigation / Search Bar -->
-            <header class="menu-cc-topbar">
-                <!-- Brand Info -->
-                <div class="menu-cc-brand">
-                    <div class="menu-cc-logo-icon">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                    <div class="menu-cc-brand-text">
-                        <h2 class="menu-cc-title">MENU CC</h2>
-                        <p class="menu-cc-tagline">Centrum nawigacyjne chrześcijańskiego radia, telewizji, mediów i usług</p>
-                    </div>
-                </div>
-
-                <!-- Modern Search Box with Ctrl+K shortcut -->
-                <div class="menu-cc-search">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="menuCcSearchInput" placeholder="Czego szukasz w ekosystemie Christian Culture?" autocomplete="off" spellcheck="false" aria-label="Szukaj w ekosystemie Christian Culture">
-                    <kbd class="search-kbd-badge">Ctrl K</kbd>
-                    <button id="menuCcSearchClear" class="search-clear-btn" aria-label="Wyczyść szukanie" style="display: none;">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-
-                <!-- Close Button -->
-                <button id="actionsCloseBtn" class="menu-cc-close-btn" aria-label="Zamknij MENU CC" title="Zamknij (ESC)">
-                    <i class="fa-solid fa-xmark"></i>
-                    <span>Zamknij</span>
-                </button>
-            </header>
-
-            <!-- Top Pinned: Najczęściej używane -->
-            <section class="menu-cc-quick-strip" aria-label="Najczęściej używane">
-                <div class="strip-label">
-                    <i class="fa-solid fa-star"></i>
-                    <span>NAJCZĘŚCIEJ UŻYWANE</span>
-                </div>
-                <div class="strip-pills-row">
-                    <a href="https://polskieradio.cc/player" class="strip-pill-card pill-media" data-title="PLAYER CC" data-keywords="player radio audycje audio muzyka na żywo">
-                        <div class="pill-icon"><i class="fa-solid fa-bars-staggered"></i></div>
-                        <div class="pill-info">
-                            <span class="pill-name">PLAYER CC</span>
-                            <span class="pill-desc">Radio Biblia 24/7</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
-                    </a>
-                    <a href="lumina" class="strip-pill-card pill-spolecznosc" data-title="LUMINA" data-keywords="lumina społeczność portal znajomi grupy tablica">
-                        <div class="pill-icon"><i class="fa-solid fa-users"></i></div>
-                        <div class="pill-info">
-                            <span class="pill-name">LUMINA</span>
-                            <span class="pill-desc">Społeczność CC</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
-                    </a>
-                    <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" class="strip-pill-card pill-slowo" data-title="Werset Dnia" data-keywords="werset dnia biblia słowo cytat generator">
-                        <div class="pill-icon"><i class="fa-solid fa-book-open"></i></div>
-                        <div class="pill-info">
-                            <span class="pill-name">Werset Dnia</span>
-                            <span class="pill-desc">Biblia na dziś</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
-                    </a>
-                    <a href="tv" class="strip-pill-card pill-media" data-title="Smart TV CC" data-keywords="smart tv telewizja online stream ekran 6 stacji">
-                        <div class="pill-icon"><i class="fa-solid fa-tv"></i></div>
-                        <div class="pill-info">
-                            <span class="pill-name">Smart TV CC</span>
-                            <span class="pill-desc">Telewizja online</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
-                    </a>
-                    <a href="cctv24-pl.html" class="strip-pill-card pill-slowo" data-title="Dobrze, że jesteś" data-keywords="dobrze że jesteś codzienne rozważania tts bartek">
-                        <div class="pill-icon"><i class="fa-solid fa-heart"></i></div>
-                        <div class="pill-info">
-                            <span class="pill-name">Dobrze, że jesteś</span>
-                            <span class="pill-desc">Codzienne rozważania</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
-                    </a>
-                </div>
-            </section>
-
-            <!-- 5 Columns Container (Desktop 5 columns / Mobile Accordion) -->
-            <main class="menu-cc-grid" id="menuCcGrid">
-                <!-- COL 1: STACJE & MEDIA LIVE (Cyan/Blue) -->
+                <!-- KAFEL 1: STACJE & MEDIA LIVE (Cyan) -->
                 <div class="cc-col cc-col-media" data-col="media">
                     <div class="cc-col-banner">
                         <img src="images/menu_col_media.jpg" alt="Stacje & Media LIVE" loading="lazy">
@@ -1480,74 +1597,76 @@
                         <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
                     </div>
                     <div class="cc-col-cards">
-                        <a href="https://polskieradio.cc/player" class="cc-card" data-keywords="player cc audio radio biblia audycje 24/7">
+                        <a href="https://polskieradio.cc/player" class="cc-card">
                             <div class="cc-card-icon"><i class="fa-solid fa-circle-play"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">PLAYER CC</span>
-                                    <span class="cc-card-badge">AUDIO 24/7</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">PLAYER CC</span><span class="cc-card-badge">AUDIO 24/7</span></div>
                                 <span class="cc-card-sub">Radio Biblia • Audycje</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="AmbientSleep" class="cc-card" data-keywords="ambient sleep mikser snu fale 3hz 8hz odpoczynek noc">
-                            <div class="cc-card-icon"><i class="fa-solid fa-moon"></i></div>
+                        <a href="https://polskieradio.cc/skins" class="cc-card" data-keywords="skins radio skins 2.0 odtwarzacz muzyka wizualizator skórki earth gold cosmic studio word radio na żywo equalizer">
+                            <div class="cc-card-icon" style="color: #38bdf8;"><i class="fa-solid fa-compact-disc"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Ambient Sleep</span>
-                                    <span class="cc-card-badge">NOWOŚĆ</span>
-                                </div>
-                                <span class="cc-card-sub">Mikser snu • Fale 3Hz/8Hz</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Radio SKINS 2.0</span><span class="cc-card-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);">NOWOŚĆ</span></div>
+                                <span class="cc-card-sub">Odtwarzacz • 5 skórek wizualnych</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="tv" class="cc-card" data-keywords="smart tv cc 6 stacji ekran telewizora pilot online live">
+                        <a href="AmbientSleep" class="cc-card">
+                            <div class="cc-card-icon cc-card-avatar" style="border-color: rgba(56, 189, 248, 0.4);">
+                                <img src="ambient_logo.jpg" alt="Ambient Sleep" loading="lazy" style="object-fit: cover; width: 100%; height: 100%; border-radius: 50%;">
+                            </div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Ambient Sleep</span><span class="cc-card-badge">RELAKS</span></div>
+                                <span class="cc-card-sub">Mikser & Fale Snu</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="tv" class="cc-card">
                             <div class="cc-card-icon"><i class="fa-solid fa-tv"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Smart TV CC</span>
-                                    <span class="cc-card-badge">6 STACJI</span>
-                                </div>
-                                <span class="cc-card-sub">Ekran telewizora & pilot</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Smart TV CC</span><span class="cc-card-badge">6 STACJI</span></div>
+                                <span class="cc-card-sub">Telewizja & Pilot</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="vod" class="cc-card" data-keywords="vod cc kino 24/7 filmy z wartościami seriale wideo">
-                            <div class="cc-card-icon"><i class="fa-solid fa-clapperboard"></i></div>
+                        <a href="tv-epafraz-live.html" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-satellite-dish"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">VOD CC</span>
-                                    <span class="cc-card-badge">KINO 24/7</span>
-                                </div>
-                                <span class="cc-card-sub">Filmy z wartościami</span>
+                                <div class="cc-card-head"><span class="cc-card-title">TV Epafraz</span><span class="cc-card-badge">LIVE</span></div>
+                                <span class="cc-card-sub">Transmisja 24/7</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="program.html" class="cc-card" data-keywords="program tv ramówka dziś tydzień nadchodzące audycje">
-                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <a href="nadawaj" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Program TV & Ramówka</span>
-                                </div>
-                                <span class="cc-card-sub">Dziś • Tydzień • Nadchodzące</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Nadawaj z CC</span><span class="cc-card-badge">OBS</span></div>
+                                <span class="cc-card-sub">Retransmisja & Studio</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="nadawaj" class="cc-card" data-keywords="nadawaj z nami obs stream pobierz sygnał live retransmisja">
-                            <div class="cc-card-icon"><i class="fa-solid fa-signal"></i></div>
+                        <a href="#radio-player-anchor" class="cc-card scroll-to">
+                            <div class="cc-card-icon"><i class="fa-solid fa-radio"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Nadawaj z nami</span>
-                                </div>
-                                <span class="cc-card-sub">Pobierz sygnał dla OBS</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Radio Internetowe</span><span class="cc-card-badge">STREAM</span></div>
+                                <span class="cc-card-sub">Szybki odtwarzacz</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://youtube.com/@ChristianCultureTV/live" target="_blank" rel="noopener" class="cc-card">
+                            <div class="cc-card-icon" style="color: #ff4d4d;"><i class="fa-brands fa-youtube"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">YouTube LIVE</span><span class="cc-card-badge" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);">WIDEO</span></div>
+                                <span class="cc-card-sub">Transmisja na żywo</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- COL 2: SŁOWO & DUCHOWOŚĆ (Warm Gold) -->
+                <!-- KAFEL 2: SŁOWO & DUCHOWOŚĆ (Gold) -->
                 <div class="cc-col cc-col-slowo" data-col="slowo">
                     <div class="cc-col-banner">
                         <img src="images/menu_col_slowo.jpg" alt="Słowo & Duchowość" loading="lazy">
@@ -1561,65 +1680,76 @@
                         <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
                     </div>
                     <div class="cc-col-cards">
-                        <a href="https://polskieradio.cc/mojabiblia" class="cc-card" data-keywords="mojabiblia interlinearna greka hebrajski strong pismo święte">
+                        <a href="akademia" class="cc-card">
+                            <div class="cc-card-icon cc-card-avatar" style="border-color: rgba(245, 158, 11, 0.4);">
+                                <img src="images/academy/lumina_bible_academy_star_icon_80.png" alt="Akademia Biblijna" loading="lazy" style="object-fit: cover; width: 100%; height: 100%; border-radius: 50%;">
+                            </div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Akademia Biblijna</span><span class="cc-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.35);">28 KROKÓW</span></div>
+                                <span class="cc-card-sub">Kurs & Certyfikat</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/mojabiblia" class="cc-card">
                             <div class="cc-card-icon"><i class="fa-solid fa-book-bible"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">MojaBiblia</span>
-                                    <span class="cc-card-badge">INTERLINEARNA</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">MojaBiblia</span><span class="cc-card-badge">INTERLINEAR</span></div>
                                 <span class="cc-card-sub">Greka • Hebrajski • Strong</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" class="cc-card" data-keywords="werset dnia karty słowa generator cytaty pismo">
-                            <div class="cc-card-icon"><i class="fa-solid fa-scroll"></i></div>
+                        <a href="https://polskieradio.cc/ksiazki-autora" class="cc-card" data-keywords="książki cezary rogowski cezarego rogowskiego pokonać goliata kod źródłowy bóg jest miłością u boku diabła prawda bez filtra e-booki audiobooki autor półka">
+                            <div class="cc-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-book-open-reader"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Werset Dnia</span>
-                                    <span class="cc-card-badge">NOWOŚĆ</span>
-                                </div>
-                                <span class="cc-card-sub">Karty Słowa • Generator</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Książki Autora</span><span class="cc-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);">E-BOOKI</span></div>
+                                <span class="cc-card-sub">Cezary Rogowski • Półka z książkami</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="cctv24-pl.html" class="cc-card" data-keywords="dobrze że jesteś codzienne rozważania bartek tts audio">
-                            <div class="cc-card-icon cc-card-avatar">
-                                <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" loading="lazy">
-                            </div>
+                        <a href="cctv24-pl.html" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-heart"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Dobrze, że jesteś</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">Dobrze, że jesteś</span><span class="cc-card-badge">DZIEŃ</span></div>
                                 <span class="cc-card-sub">Codzienne rozważania</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="modlitwa.html" class="cc-card" data-keywords="ściana modlitwy narodowa zjednoczeni za polskę intencje modlitewne">
-                            <div class="cc-card-icon"><i class="fa-solid fa-hands-praying"></i></div>
+                        <a href="https://werset-dnia.polskieradio.cc/" target="_blank" rel="noopener" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-scroll"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Ściana Modlitwy</span>
-                                    <span class="cc-card-badge">NARODOWA</span>
-                                </div>
-                                <span class="cc-card-sub">Zjednoczeni za Polskę</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Werset Dnia</span><span class="cc-card-badge">GENERATOR</span></div>
+                                <span class="cc-card-sub">Karty Słowa Bożego</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="biblia-do-pobrania.html" class="cc-card" data-keywords="biblia do pobrania darmowy plik pdf pismo święte pobierz">
-                            <div class="cc-card-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+                        <a href="modlitwa.html" class="cc-card">
+                            <div class="cc-card-icon" style="color: var(--gold-primary);"><i class="fa-solid fa-hands-praying"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Biblia do pobrania</span>
-                                </div>
-                                <span class="cc-card-sub">Darmowy plik PDF</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Zjednoczeni za Polskę</span><span class="cc-card-badge">MODLITWA</span></div>
+                                <span class="cc-card-sub">Wstawiennictwo za Ojczyznę</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="biblia-do-pobrania.html" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-download"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Biblia do pobrania</span><span class="cc-card-badge">PDF/EPUB</span></div>
+                                <span class="cc-card-sub">Pismo Święte offline</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="#aktualnosci-wrzesien" class="cc-card scroll-to">
+                            <div class="cc-card-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Dekalog</span><span class="cc-card-badge">PRAWO</span></div>
+                                <span class="cc-card-sub">Boże Przykazania</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- COL 3: SPOŁECZNOŚĆ (Purple/Violet) -->
+                <!-- KAFEL 3: SPOŁECZNOŚĆ (Purple) -->
                 <div class="cc-col cc-col-spolecznosc" data-col="spolecznosc">
                     <div class="cc-col-banner">
                         <img src="images/menu_col_spolecznosc.jpg" alt="Społeczność" loading="lazy">
@@ -1633,61 +1763,97 @@
                         <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
                     </div>
                     <div class="cc-col-cards">
-                        <a href="lumina" class="cc-card" data-keywords="portal lumina sieć relacji wartości posty tablica społeczność">
+                        <a href="lumina" class="cc-card">
                             <div class="cc-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Portal LUMINA</span>
-                                    <span class="cc-card-badge">PORTAL</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">Portal LUMINA</span><span class="cc-card-badge">PORTAL</span></div>
                                 <span class="cc-card-sub">Sieć relacji & wartości</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="herbatka/index.html" class="cc-card" data-keywords="herbatka między słowami poczytaj i posłuchaj opowiadania kawa herbata">
-                            <div class="cc-card-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                        <a href="https://polskieradio.cc/milion" class="cc-card">
+                            <div class="cc-card-icon" style="color: #ec4899;"><i class="fa-solid fa-gauge-high"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Herbatka między słowami</span>
-                                </div>
-                                <span class="cc-card-sub">Poczytaj i posłuchaj</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Licznik CC</span><span class="cc-card-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);">1 000 000</span></div>
+                                <span class="cc-card-sub">Celujemy w Pierwszy Milion • Społeczność</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="lumina" class="cc-card" data-keywords="grupy tematyczne dyskusje pasja wsparcie lumina społeczność">
-                            <div class="cc-card-icon"><i class="fa-solid fa-people-group"></i></div>
+                        <a href="vod" class="cc-card">
+                            <div class="cc-card-icon" style="color: var(--gold-primary);"><i class="fa-solid fa-film"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Grupy tematyczne</span>
-                                </div>
-                                <span class="cc-card-sub">Dyskusje • Pasja • Wsparcie</span>
+                                <div class="cc-card-head"><span class="cc-card-title">VOD CC</span><span class="cc-card-badge">KINO 24/7</span></div>
+                                <span class="cc-card-sub">Filmy Fabularne</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="lumina-profile.html" class="cc-card" data-keywords="profile użytkowników poznaj społeczność autorzy członkowie">
-                            <div class="cc-card-icon"><i class="fa-solid fa-user-group"></i></div>
-                            <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Profile użytkowników</span>
+                        <!-- CCN — SIEĆ 20 PORTALI TEMATYCZNYCH (Accordion wewnętrzny) -->
+                        <details class="drawer-ccn-hub" style="margin: 4px 0; border: 1px solid rgba(212, 169, 74, 0.4); border-radius: 12px; background: rgba(20, 20, 25, 0.7); overflow: hidden; transition: all 0.25s ease;">
+                            <summary style="list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; cursor: pointer; user-select: none; color: #fff; font-weight: 800; background: rgba(212, 169, 74, 0.08);">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-newspaper" style="color: #ef4444; font-size: 1.1rem; width: 20px; text-align: center;"></i>
+                                    <span style="font-size: 0.82rem;">CCN — Sieć 20 Portali</span>
+                                </span>
+                                <span style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 0.58rem; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.45); padding: 2px 6px; border-radius: 5px; font-weight: 900;">20 DZIEDZIN</span>
+                                    <i class="fa-solid fa-chevron-down ccn-arrow" style="font-size: 0.7rem; color: #D4A94A; transition: transform 0.2s;"></i>
+                                </span>
+                            </summary>
+                            <div style="padding: 8px 10px 12px 10px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid rgba(212, 169, 74, 0.2); background: rgba(10, 10, 15, 0.85);">
+                                <div>
+                                    <div style="font-size: 0.6rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.8px; margin: 4px 0 6px 4px;"><i class="fa-solid fa-atom"></i> Nauka & AI</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <a href="https://polskieradio.cc/nauka" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(56, 189, 248, 0.08); color: #e0f2fe; display: flex; justify-content: space-between;"><span>CCN Nauka</span><span style="font-size: 0.55rem; color: #7dd3fc;">Kosmologia</span></a>
+                                        <a href="https://polskieradio.cc/historia" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(56, 189, 248, 0.08); color: #e0f2fe; display: flex; justify-content: space-between;"><span>CCN Historia</span><span style="font-size: 0.55rem; color: #7dd3fc;">Archeologia</span></a>
+                                        <a href="https://polskieradio.cc/biologia" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(56, 189, 248, 0.08); color: #e0f2fe; display: flex; justify-content: space-between;"><span>CCN Biologia</span><span style="font-size: 0.55rem; color: #7dd3fc;">Kod DNA</span></a>
+                                        <a href="https://polskieradio.cc/si" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(56, 189, 248, 0.08); color: #e0f2fe; display: flex; justify-content: space-between;"><span>CCN AI & Tech</span><span style="font-size: 0.55rem; color: #7dd3fc;">Technologie</span></a>
+                                    </div>
                                 </div>
-                                <span class="cc-card-sub">Poznaj społeczność</span>
+                                <div>
+                                    <div style="font-size: 0.6rem; font-weight: 800; color: #ec4899; text-transform: uppercase; letter-spacing: 0.8px; margin: 4px 0 6px 4px;"><i class="fa-solid fa-heart"></i> Rodzina & Życie</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <a href="https://polskieradio.cc/seks" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(236, 72, 153, 0.08); color: #fce7f3; display: flex; justify-content: space-between;"><span>CCN Małżeństwo</span><span style="font-size: 0.55rem; color: #f472b6;">Czystość</span></a>
+                                        <a href="https://polskieradio.cc/psychologia" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(236, 72, 153, 0.08); color: #fce7f3; display: flex; justify-content: space-between;"><span>CCN Psychologia</span><span style="font-size: 0.55rem; color: #f472b6;">Emocje</span></a>
+                                        <a href="https://polskieradio.cc/edukacja" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(236, 72, 153, 0.08); color: #fce7f3; display: flex; justify-content: space-between;"><span>CCN Edukacja</span><span style="font-size: 0.55rem; color: #f472b6;">Młodzież</span></a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.6rem; font-weight: 800; color: #ef4444; text-transform: uppercase; letter-spacing: 0.8px; margin: 4px 0 6px 4px;"><i class="fa-solid fa-newspaper"></i> Informacje & Misje</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <a href="https://polskieradio.cc/news" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(239, 68, 68, 0.08); color: #fee2e2; display: flex; justify-content: space-between;"><span>CCN News</span><span style="font-size: 0.55rem; color: #fca5a5;">Wiadomości</span></a>
+                                        <a href="https://polskieradio.cc/misje" class="drawer-link ccn-sublink" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 6px; background: rgba(239, 68, 68, 0.08); color: #fee2e2; display: flex; justify-content: space-between;"><span>CCN Misje</span><span style="font-size: 0.55rem; color: #fca5a5;">Świadectwa</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                        <a href="herbatka/index.html" class="cc-card">
+                            <div class="cc-card-icon" style="color: var(--gold-primary);"><i class="fa-solid fa-mug-hot"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Herbatka między słowami</span><span class="cc-card-badge">KLUB</span></div>
+                                <span class="cc-card-sub">Społeczność & rozmowy</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="modlitwa.html" class="cc-card" data-keywords="wydarzenia cc spotkania modlitwy live transmisje zjazdy">
-                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <a href="https://polskieradio.cc/misje" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-earth-americas"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Wydarzenia CC</span>
-                                </div>
-                                <span class="cc-card-sub">Spotkania • Modlitwy • LIVE</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Misje & Świadectwa</span><span class="cc-card-badge">WIARA</span></div>
+                                <span class="cc-card-sub">Relacje z całego świata</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="#social-channels" class="cc-card scroll-to">
+                            <div class="cc-card-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">YouTube & Spotify</span><span class="cc-card-badge">SOCIAL</span></div>
+                                <span class="cc-card-sub">Kanały multimedialne</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- COL 4: NARZĘDZIA (Emerald Green) -->
+                <!-- KAFEL 4: NARZĘDZIA (Green) -->
                 <div class="cc-col cc-col-narzedzia" data-col="narzedzia">
                     <div class="cc-col-banner">
                         <img src="images/menu_col_narzedzia.jpg" alt="Narzędzia" loading="lazy">
@@ -1695,68 +1861,58 @@
                     </div>
                     <div class="cc-col-header" data-toggle="accordion">
                         <div class="cc-col-title-wrap">
-                            <div class="cc-col-title"><i class="fa-solid fa-screwdriver-wrench"></i> NARZĘDZIA</div>
+                            <div class="cc-col-title"><i class="fa-solid fa-toolbox"></i> NARZĘDZIA</div>
                             <div class="cc-col-subtitle">Kreatywność i rozszerzenia misji</div>
                         </div>
                         <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
                     </div>
                     <div class="cc-col-cards">
-                        <a href="kalendarz2027" class="cc-card" data-keywords="kalendarz 2027 a4 pdf kreator do druku harmonogram">
-                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+                        <a href="holos" class="cc-card">
+                            <div class="cc-card-icon cc-card-avatar" style="border-color: rgba(56, 189, 248, 0.4);">
+                                <img src="images/holos/img_holos_logo.jpg" alt="HOLOS" loading="lazy" style="object-fit: cover; width: 100%; height: 100%; border-radius: 50%;">
+                            </div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Kalendarz 2027</span>
-                                    <span class="cc-card-badge">A4/PDF</span>
-                                </div>
-                                <span class="cc-card-sub">Kreator do druku</span>
+                                <div class="cc-card-head"><span class="cc-card-title">HOLOS</span><span class="cc-card-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">NOWOŚĆ</span></div>
+                                <span class="cc-card-sub">Platforma Life OS</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="bank-tresci.html" class="cc-card" data-keywords="bank treści darmowe materiały pliki audio grafiki wideo">
-                            <div class="cc-card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                        <a href="studio" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-sliders"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Bank Treści</span>
-                                </div>
-                                <span class="cc-card-sub">Darmowe materiały</span>
+                                <div class="cc-card-head"><span class="cc-card-title">CC Studio DAW</span><span class="cc-card-badge">PRO</span></div>
+                                <span class="cc-card-sub">Studio nagrań & mikser</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" class="cc-card" data-keywords="aplikacja cc web pwa telefon smartfon zainstaluj">
-                            <div class="cc-card-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <a href="kalendarz2027" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-calendar-days"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Aplikacja CC Web</span>
-                                </div>
-                                <span class="cc-card-sub">christian-culture.web.app</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Kreator Kalendarza 2027</span><span class="cc-card-badge">2027</span></div>
+                                <span class="cc-card-sub">Generator & Druk</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="projektant" class="cc-card" data-keywords="projektant cc studio kreator grafik canva yis design projekt">
-                            <div class="cc-card-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                        <a href="bank-tresci.html" class="cc-card">
+                            <div class="cc-card-icon"><i class="fa-solid fa-folder-open"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Projektant CC</span>
-                                    <span class="cc-card-badge">STUDIO</span>
-                                </div>
-                                <span class="cc-card-sub">Kreator grafik CC</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Bank Treści</span><span class="cc-card-badge">ZASOBY</span></div>
+                                <span class="cc-card-sub">Materiały do pobrania</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <div id="shortcutLangRow" class="cc-card" role="button" tabindex="0" data-keywords="język language polish english zmień na angielski translate">
-                            <div class="cc-card-icon"><i class="fa-solid fa-language"></i></div>
+                        <a href="#apps-section" class="cc-card scroll-to">
+                            <div class="cc-card-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Język / Language</span>
-                                </div>
-                                <span id="langToggleText" class="cc-card-sub">Zmień na angielski</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Aplikacje Mobilne</span><span class="cc-card-badge">APPS</span></div>
+                                <span class="cc-card-sub">Android & PWA</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
-                <!-- COL 5: USŁUGI (Warm Amber / Red) -->
+                <!-- KAFEL 5: USŁUGI (Orange) -->
                 <div class="cc-col cc-col-uslugi" data-col="uslugi">
                     <div class="cc-col-banner">
                         <img src="images/menu_col_uslugi.jpg" alt="Usługi" loading="lazy">
@@ -1770,183 +1926,55 @@
                         <i class="fa-solid fa-chevron-down cc-accordion-icon"></i>
                     </div>
                     <div class="cc-col-cards">
-                        <a href="tel:+48730958583" id="shortcutHelpline" class="cc-card cc-card-highlight" data-keywords="infolinia nadzieja telefon rozmowa pomoc wsparcie duchowe kryzys +48730958583">
+                        <a href="tel:+48730958583" class="cc-card cc-card-highlight">
                             <div class="cc-card-icon"><i class="fa-solid fa-phone-volume"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Infolinia Nadzieja</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">Infolinia Nadzieja</span><span class="cc-card-badge">POMOC</span></div>
                                 <span class="cc-card-sub" style="font-weight: 800; color: #fff;">+48 730 958 583</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="https://polskieradio.cc/premier-heatfix" class="cc-card" data-keywords="premier heatfix uk gaz hydraulika kotły londyn heating boiler">
-                            <div class="cc-card-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                        <a href="tel:+48608337477" class="cc-card">
+                            <div class="cc-card-icon" style="color: var(--gold-primary);"><i class="fa-solid fa-hands-praying"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Premier HeatFix</span>
-                                    <span class="cc-card-badge">UK</span>
-                                </div>
-                                <span class="cc-card-sub">Gaz & hydraulika UK</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Duszpasterz Mariusz</span><span class="cc-card-badge">DUSZPASTERZ</span></div>
+                                <span class="cc-card-sub" style="font-weight: 700; color: #fff;">Tel / SMS 608 337 477</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="https://polskieradio.cc/holistyczny-coaching" class="cc-card" data-keywords="holistyczny coaching paweł murawski rozwój terapia wolność kryzysy uzależnienia">
-                            <div class="cc-card-icon cc-card-avatar">
-                                <img src="avatar_pawel_murawski.jpg" alt="Paweł Murawski" loading="lazy">
-                            </div>
-                            <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Holistyczny Coaching</span>
-                                    <span class="cc-card-badge">COACHING</span>
-                                </div>
-                                <span class="cc-card-sub">Paweł Murawski • Rozwój</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
-                        </a>
-                        <div id="shortcutSmsRow" class="cc-card" role="button" tabindex="0" data-keywords="subskrypcje sms słowo boże na telefon wiadomości codzienne cytaty">
+                        <div id="navSmsLink" class="cc-card" role="button" tabindex="0">
                             <div class="cc-card-icon"><i class="fa-solid fa-comment-sms"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Subskrypcje SMS</span>
-                                </div>
+                                <div class="cc-card-head"><span class="cc-card-title">Subskrypcje SMS</span><span class="cc-card-badge">SMS</span></div>
                                 <span class="cc-card-sub">Słowo Boże na telefon</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </div>
-                        <a href="#support-modal" id="shortcutSupportRow" class="cc-card" data-keywords="wsparcie misji zostań partnerem cc darowizna blik wspieram przelew misja">
+                        <a href="https://my-store-1009741.creator-spring.com" target="_blank" rel="noopener" class="cc-card">
+                            <div class="cc-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-bag-shopping"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Sklep CC</span><span class="cc-card-badge">MISJA</span></div>
+                                <span class="cc-card-sub">Odzież & Akcesoria</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="#support-modal" class="cc-card">
                             <div class="cc-card-icon" style="color: #ef4444;"><i class="fa-solid fa-heart"></i></div>
                             <div class="cc-card-body">
-                                <div class="cc-card-head">
-                                    <span class="cc-card-title">Wsparcie Misji</span>
-                                </div>
-                                <span class="cc-card-sub">Zostań Partnerem CC</span>
+                                <div class="cc-card-head"><span class="cc-card-title">Wesprzyj Misję</span><span class="cc-card-badge">PARTNER</span></div>
+                                <span class="cc-card-sub">Patronite • BLIK • PayPal</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="#contact-section" class="cc-card scroll-to">
+                            <div class="cc-card-icon"><i class="fa-solid fa-envelope"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Kontakt CC</span><span class="cc-card-badge">BIURO</span></div>
+                                <span class="cc-card-sub">Napisz do nas</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
                     </div>
-                </div>
-            </main>
-
-            <!-- No search results state -->
-            <div id="menuCcNoResults" class="menu-cc-no-results" style="display: none;">
-                <i class="fa-solid fa-circle-question"></i>
-                <h3>Nie znaleziono w ekosystemie</h3>
-                <p>Spróbuj wpisać inne słowo, np. <em>player, biblia, lumina, telewizja, kalendarz</em>.</p>
-            </div>
-        </div>
-    </div>
-
-    
-
-    <!-- SIDE DRAWER NAVIGATION -->
-    <div class="side-drawer" id="sideDrawer">
-        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div class="drawer-content">
-            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
-            <nav class="drawer-nav">
-                <a href="#hero" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
-                <a href="lumina" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="LUMINA" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-primary);">
-                        LUMINA — Portal Społeczności
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">PORTAL</span>
-                </a>
-                <a href="vod" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-film" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
-                        VOD CC — Filmy Fabularne
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">KINO 24/7</span>
-                </a>
-                <a href="https://polskieradio.cc/news" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 169, 74, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 169, 74, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-newspaper" style="color: #ef4444; font-size: 1.1rem; width: 24px; text-align: center;"></i>
-                        CCN — Wiadomości & Portal
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">NEWS</span>
-                </a>
-                <a href="akademia" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <img loading="lazy" decoding="async" src="images/academy/lumina_bible_academy_star_icon_80.png" alt="Akademia Biblijna" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-primary);">
-                        Akademia Biblijna — Kurs 28 Kroków
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">28 KROKÓW</span>
-                </a>
-                <a href="https://polskieradio.cc/mojabiblia" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-book-bible" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
-                        MojaBiblia — Interlinearna Biblia Badawcza
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">NOWOŚĆ</span>
-                </a>
-                <a href="https://polskieradio.cc/player" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-circle-play" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
-                        PLAYER — Odtwarzacz Audio CC
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">AUDIO 24/7</span>
-                </a>
-                <a href="tv" class="drawer-link" style="color: #fff; font-weight: 800; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 12px; padding: 8px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.08); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px;">
-                        <i class="fa-solid fa-tv" style="color: var(--gold-primary); font-size: 1.1rem; width: 24px; text-align: center;"></i>
-                        Smart TV CC — Telewizja & Pilot
-                    </span>
-                    <span style="font-size: 0.62rem; background: rgba(212, 175, 55, 0.2); color: #fbbf24; border: 1px solid rgba(212, 175, 55, 0.45); padding: 2px 7px; border-radius: 6px; font-weight: 900; text-transform: uppercase; white-space: nowrap;">6 STACJI</span>
-                </a>
-                <a href="modlitwa.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-hands-praying"></i> ZJEDNOCZENI ZA POLSKĘ</a>
-                <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
-                <div style="margin: 0.8rem 0 0.25rem 12px; font-size: 0.65rem; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(212, 175, 55, 0.55); font-weight: 700; font-family: 'Cinzel', serif;">Polskie Radio Christian Culture poleca:</div>
-                <a href="herbatka/index.html" class="drawer-link" style="color: #fff; font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 0.5rem; background: rgba(212, 175, 55, 0.05); transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(212, 175, 55, 0.12)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.05)'; this.style.borderColor='rgba(212, 175, 55, 0.25)';"><i class="fa-solid fa-mug-hot" style="color: var(--gold-primary);"></i> Herbatka między słowami</a>
-                <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
-                <a href="nadawaj" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
-                <a href="biblia-do-pobrania.html" class="drawer-link" style="color: #f3e5ab; font-weight: 700;"><i class="fa-solid fa-book-bible"></i> Biblia do pobrania</a>
-                <a href="kalendarz2027" class="drawer-link" style="color: #fbbf24; font-weight: 700;"><i class="fa-solid fa-calendar-days"></i> Kreator Kalendarza 2027</a>
-                <a href="bank-tresci.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-download"></i> Bank Treści</a>
-                <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
-                <a href="#aktualnosci-wrzesien" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
-                <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
-                <!-- Promocja Pisma Świętego (Biblia UBG) -->
-                <div class="drawer-bible-promo">
-                    <div class="bible-promo-badge">Darmowy Egzemplarz</div>
-                    <h3 class="bible-promo-title">PISMO ŚWIĘTE</h3>
-                    <p class="bible-promo-subtitle">Biblia UBG</p>
-                    <div class="bible-promo-image-wrapper">
-                        <img loading="lazy" decoding="async" src="reklama_biblia_2.jpeg" alt="Reklama Pismo Święte Biblia UBG" class="bible-promo-img">
-                    </div>
-                    <div class="bible-promo-actions">
-                        <div class="sms-instruction">
-                            <span>Wyślij SMS o treści:</span>
-                            <strong>"BIBLIA"</strong>
-                        </div>
-                        <a href="tel:+48530736155" class="promo-btn call-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
-                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-phone"></i> Zadzwoń</span>
-                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
-                        </a>
-                        <a href="sms:+48530736155?body=BIBLIA" class="promo-btn sms-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
-                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-envelope"></i> Wyślij SMS</span>
-                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
-                        </a>
-                    </div>
-                    <p class="bible-promo-footnote">* Zamawiający ponosi jedynie koszt przesyłki</p>
-                </div>
-
-                <!-- Reklama Sklepu CC (Mogę Wszystko) -->
-                <div class="drawer-shop-promo" style="margin: 1rem 0; padding: 16px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(12, 14, 24, 0.85)); border: 1.5px solid rgba(212, 175, 55, 0.4); border-radius: 18px; text-align: center; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); transition: border-color 0.3s ease;">
-                    <div style="display: inline-block; padding: 3px 12px; background: var(--gold-primary); color: #000; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; margin-bottom: 8px;">
-                        <i class="fa-solid fa-store"></i> Sklep Christian Culture
-                    </div>
-                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Kolekcja "Mogę Wszystko"</h3>
-                    <p style="font-size: 0.72rem; color: rgba(243, 229, 171, 0.85); margin-bottom: 12px; font-family: 'Montserrat', sans-serif;">Oficjalny motyw &mdash; zyski wspierają naszą misję</p>
-                    <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" style="display: block; border-radius: 12px; overflow: hidden; border: 1.5px solid rgba(212, 175, 55, 0.35); transition: transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='rgba(212, 175, 55, 0.35)';">
-                        <img loading="lazy" decoding="async" src="reklama_sklepu_cc.png" alt="Reklama Sklepu CC - Mogę Wszystko" style="width: 100%; height: auto; display: block; border-radius: 12px;">
-                    </a>
-                    <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px; padding: 10px 16px; background: linear-gradient(135deg, #f5c518, #e6a817); color: #000; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(245, 197, 24, 0.3); transition: all 0.2s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 20px rgba(245, 197, 24, 0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 14px rgba(245, 197, 24, 0.3)';">
-                        <i class="fa-solid fa-cart-shopping"></i> Otwórz Sklep CC
-                    </a>
                 </div>
 
 
@@ -1983,25 +2011,25 @@
             <svg class="mandala-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                        <stop offset="0%" stop-color="#f3e5ab" stop-opacity="0.25" />
-                        <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+                        <stop offset="0%" stop-color="#E8C97A" stop-opacity="0.25" />
+                        <stop offset="100%" stop-color="#D4A94A" stop-opacity="0" />
                     </radialGradient>
                 </defs>
                 <circle cx="100" cy="100" r="95" fill="url(#goldGlow)" />
                 <!-- Mandala Rings -->
-                <circle cx="100" cy="100" r="90" fill="none" stroke="#d4af37" stroke-width="0.3" stroke-opacity="0.3" stroke-dasharray="1, 2" />
-                <circle cx="100" cy="100" r="75" fill="none" stroke="#d4af37" stroke-width="0.5" stroke-opacity="0.4" />
-                <circle cx="100" cy="100" r="60" fill="none" stroke="#d4af37" stroke-width="0.4" stroke-opacity="0.3" stroke-dasharray="3, 1" />
-                <circle cx="100" cy="100" r="45" fill="none" stroke="#d4af37" stroke-width="0.6" stroke-opacity="0.5" />
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#D4A94A" stroke-width="0.3" stroke-opacity="0.3" stroke-dasharray="1, 2" />
+                <circle cx="100" cy="100" r="75" fill="none" stroke="#D4A94A" stroke-width="0.5" stroke-opacity="0.4" />
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#D4A94A" stroke-width="0.4" stroke-opacity="0.3" stroke-dasharray="3, 1" />
+                <circle cx="100" cy="100" r="45" fill="none" stroke="#D4A94A" stroke-width="0.6" stroke-opacity="0.5" />
                 <!-- Rays & Geometric shapes -->
-                <g stroke="#d4af37" stroke-width="0.3" stroke-opacity="0.4">
+                <g stroke="#D4A94A" stroke-width="0.3" stroke-opacity="0.4">
                     <line x1="100" y1="5" x2="100" y2="195" />
                     <line x1="5" y1="100" x2="195" y2="100" />
                     <line x1="33" y1="33" x2="167" y2="167" />
                     <line x1="33" y1="167" x2="167" y2="33" />
                 </g>
                 <!-- Detailed Petals -->
-                <g fill="none" stroke="#d4af37" stroke-width="0.4" stroke-opacity="0.6" class="mandala-petals">
+                <g fill="none" stroke="#D4A94A" stroke-width="0.4" stroke-opacity="0.6" class="mandala-petals">
                     <!-- 12 Petal shapes rotated -->
                     <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" />
                     <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(30 100 100)" />
@@ -2016,8 +2044,8 @@
                     <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(300 100 100)" />
                     <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(330 100 100)" />
                 </g>
-                <circle cx="100" cy="100" r="10" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-opacity="0.8" />
-                <circle cx="100" cy="100" r="3" fill="#f3e5ab" />
+                <circle cx="100" cy="100" r="10" fill="none" stroke="#D4A94A" stroke-width="0.8" stroke-opacity="0.8" />
+                <circle cx="100" cy="100" r="3" fill="#E8C97A" />
             </svg>
         </div>
 
@@ -2044,16 +2072,37 @@
                     </style>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: live-glow 1.8s infinite ease-in-out;"></div>
-                            <span style="color: #ff0000; font-weight: 800; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 1.5px;">Transmisja na żywo</span>
+                            <div style="width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: live-glow 1.8s infinite ease-in-out;" title="Transmisja na żywo"></div>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <a href="https://youtube.com/@ChristianCultureTV/live" target="_blank" style="color: #ff4d4d; text-decoration: none; font-weight: 800; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" title="Oglądaj na żywo na YouTube"><i class="fa-brands fa-youtube" style="font-size: 0.95rem;"></i> Na YouTube</a>
-                            <a href="nadawaj" style="color: var(--gold-primary); text-decoration: none; font-weight: 700; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" title="Przejdź do panelu nadawania"><i class="fa-solid fa-tower-broadcast"></i> NADAWAJ</a>
-                            <button onclick="shareLiveStream()" style="background: none; border: none; color: rgba(255, 255, 255, 0.4); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; padding: 2px 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.4)'" title="Udostępnij transmisję"><i class="fa-solid fa-share-nodes"></i></button>
+                        <div style="position: relative;">
+                            <button id="liveActionsToggle" onclick="toggleLiveActions(event)" aria-label="Więcej opcji transmisji" style="background: none; border: none; color: rgba(255,255,255,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0; font-size: 1.35rem; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'" title="Więcej opcji"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                            <div id="liveActionsMenu" style="display: none; position: absolute; right: 0; top: 50px; background: rgba(12,12,18,0.97); border: 1px solid rgba(212,169,74,0.3); border-radius: 14px; padding: 6px 8px; flex-direction: row; align-items: center; gap: 4px; z-index: 9999; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(0,0,0,0.7);">
+                                <a href="https://youtube.com/@ChristianCultureTV/live" target="_blank" aria-label="Oglądaj na żywo na YouTube" style="color: #ff4d4d; text-decoration: none; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 10px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,77,77,0.12)'" onmouseout="this.style.background='transparent'" title="Oglądaj na żywo na YouTube"><i class="fa-brands fa-youtube" style="font-size: 1.25rem;"></i></a>
+                                <a href="nadawaj" aria-label="Nadawaj z nami" style="color: var(--gold-primary); text-decoration: none; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 10px; transition: background 0.2s;" onmouseover="this.style.background='rgba(212,169,74,0.12)'" onmouseout="this.style.background='transparent'" title="Przejdź do panelu nadawania"><i class="fa-solid fa-tower-broadcast" style="font-size: 1.15rem;"></i></a>
+                                <button onclick="shareLiveStream(); toggleLiveActions()" aria-label="Udostępnij transmisję" style="background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.15rem; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0; border-radius: 10px; transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'; this.style.color='var(--gold-primary)'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255,255,255,0.5)'" title="Udostępnij transmisję"><i class="fa-solid fa-share-nodes"></i></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 175, 55, 0.35); background: #000;">
+                    <script>
+                        (function() {
+                            window.toggleLiveActions = function(e) {
+                                if (e) e.stopPropagation();
+                                var menu = document.getElementById('liveActionsMenu');
+                                if (!menu) return;
+                                var open = menu.style.display === 'flex';
+                                menu.style.display = open ? 'none' : 'flex';
+                            };
+                            document.addEventListener('click', function(e) {
+                                var menu = document.getElementById('liveActionsMenu');
+                                var btn = document.getElementById('liveActionsToggle');
+                                if (!menu || !btn) return;
+                                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                                    menu.style.display = 'none';
+                                }
+                            });
+                        })();
+                    </script>
+                    <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 169, 74, 0.35); background: #000;">
                         <style>
                             /* ── Jedna płynna animacja: fade-in (pierwsze 23%) + Ken Burns zoom ── */
                             @keyframes liveShowZoomIn {
@@ -2223,7 +2272,7 @@
                 <span class="section-tag">Dobrze, że jesteś</span>
                 <h2 class="section-title" id="homepageDzjTitle">ŁADOWANIE ROZWAŻANIA...</h2>
                 <div class="gold-divider centered"></div>
-                <div class="dzj-date-badge" style="display: inline-block; margin: 10px auto; padding: 6px 16px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-gold-low); border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--gold-primary); letter-spacing: 0.05em;">
+                <div class="dzj-date-badge" style="display: inline-block; margin: 10px auto; padding: 6px 16px; background: rgba(212, 169, 74, 0.1); border: 1px solid var(--border-gold-low); border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--gold-primary); letter-spacing: 0.05em;">
                     <i class="fa-solid fa-calendar"></i> <span id="homepageDzjDate">Szukam...</span>
                 </div>
             </div>
@@ -2231,7 +2280,7 @@
             <div class="reflection-card">
                 <div class="reflection-body" id="homepageDzjContent">
                     <div class="dzj-loading" style="text-align: center; padding: 40px 0;">
-                        <div class="dzj-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto;"></div>
+                        <div class="dzj-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(212, 169, 74, 0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto;"></div>
                         <p style="color: var(--text-muted-gold); font-size: 0.9rem; font-weight: bold; letter-spacing: 0.1em;">Pobieranie z chmury...</p>
                     </div>
                 </div>
@@ -2241,6 +2290,10 @@
                     <button onclick="window.shareDzjContent()" style="background: var(--gold-primary); color: #000; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit; font-size: 0.85rem; letter-spacing: 0.05em; transition: var(--transition-smooth);">
                         <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
                     </button>
+                    <button type="button" class="lumina-share-btn-l" onclick="if(window.shareToLumina){window.shareToLumina({title: window.currentDzjTitle || 'Dobrze, że jesteś — rozważanie dnia', text: window.currentDzjText || '', url: window.location.origin + '/?dzj=true'});}" title="Opublikuj całe rozważanie na Tablicy Społeczności LUMINA">
+                        <span class="lumina-badge-l-icon">L</span>
+                        <span>TABLICA LUMINA</span>
+                    </button>
                     <a id="btnTvVersion" href="cctv24-pl.html" target="_blank" style="background: rgba(226, 184, 89, 0.1); color: var(--gold-primary); border: 2px solid var(--gold-primary); padding: 12px 28px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; font-size: 0.85rem; letter-spacing: 0.05em; text-decoration: none; transition: var(--transition-smooth);">
                         <i class="fa-solid fa-tv"></i> ZOBACZ WERSJĘ TV
                     </a>
@@ -2248,7 +2301,7 @@
 
                 <!-- Video / Audio Hymn Section: Dobrze, że jesteś (Pancerny Odtwarzacz Wideo) -->
                 <div class="dzj-youtube-section" style="margin-top: 40px; border-radius: 16px; overflow: hidden; border: 1.5px solid var(--border-gold-low); box-shadow: 0 10px 30px rgba(0,0,0,0.6); background: #000;">
-                    <div class="dzj-youtube-header" style="background: linear-gradient(90deg, rgba(212, 175, 55, 0.12), rgba(0,0,0,0.4)); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-gold-low);">
+                    <div class="dzj-youtube-header" style="background: linear-gradient(90deg, rgba(212, 169, 74, 0.12), rgba(0,0,0,0.4)); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-gold-low);">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <i class="fa-solid fa-heart" style="color: var(--gold-primary); font-size: 1rem;"></i>
                             <span style="font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; color: var(--gold-primary); font-family: 'Cinzel', serif;">POSŁUCHAJ HYMNU — DOBRZE, ŻE JESTEŚ</span>
@@ -2271,7 +2324,7 @@
                 </div>
 
                 <!-- SMS CTA -->
-                <div class="dzj-sms-cta" style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(0,0,0,0.4)); border: 1px solid var(--border-gold-low); border-radius: 16px;">
+                <div class="dzj-sms-cta" style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, rgba(212, 169, 74,0.08), rgba(0,0,0,0.4)); border: 1px solid var(--border-gold-low); border-radius: 16px;">
                     <p class="dzj-sms-title" style="font-size: 0.85rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-comment-sms"></i> Bądź na bieżąco</p>
                     <p class="dzj-sms-text" style="font-size: 0.9rem; color: #ccc; line-height: 1.6;">Jeśli Twój frontowy system powiadomień jeszcze nie działa, wyślij darmowy SMS o treści <strong>Inspiracje</strong> <span style="white-space: nowrap;">na numer <strong style="color: #fff; font-size: 1.1rem;">783&nbsp;478&nbsp;280</strong></span>, by codziennie odbierać to Słowo na swój telefon!</p>
                 </div>
@@ -2290,7 +2343,7 @@
             <!-- Promo Banner Image CC -->
             <div style="margin: 15px auto 15px auto; max-width: 728px; text-align: center;">
                 <a href="https://polskieradio.cc/modlitwa.html">
-                    <img loading="lazy" decoding="async" src="Za_Polske.jpg" alt="Zjednoczeni za Polskę" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid rgba(212, 175, 55, 0.35); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <img loading="lazy" decoding="async" src="Za_Polske.jpg" alt="Zjednoczeni za Polskę" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1.5px solid rgba(212, 169, 74, 0.35); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
                 </a>
             </div>
 
@@ -2311,10 +2364,10 @@
                 <span id="sprawozdanie-misyjne" style="position: absolute; top: -100px; left: 0;"></span>
                 <button 
                     onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za wrzesień 2026!',url:'https://polskieradio.cc/#aktualnosci-wrzesien'}).catch(console.error)}else{navigator.clipboard.writeText('https://polskieradio.cc/#aktualnosci-wrzesien');alert('Skopiowano link do schowka!');}"
-                    style="position: absolute; top: 20px; right: 20px; padding: 10px; background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold-low); color: var(--gold-primary); border-radius: 50%; cursor: pointer; transition: 0.3s; z-index: 10;"
+                    style="position: absolute; top: 20px; right: 20px; padding: 10px; background: rgba(212, 169, 74,0.1); border: 1px solid var(--border-gold-low); color: var(--gold-primary); border-radius: 50%; cursor: pointer; transition: 0.3s; z-index: 10;"
                     title="Udostępnij raport"
                     onmouseover="this.style.background='var(--gold-primary)'; this.style.color='#000';"
-                    onmouseout="this.style.background='rgba(212,175,55,0.1)'; this.style.color='var(--gold-primary)';"
+                    onmouseout="this.style.background='rgba(212, 169, 74,0.1)'; this.style.color='var(--gold-primary)';"
                 >
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
@@ -2390,7 +2443,7 @@
                         <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
                             <p style="color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; font-size: 0.9rem;">❤️ Twoje wsparcie naprawdę ma znaczenie!</p>
                             <p style="margin-bottom: 24px; font-size: 0.85rem; color: #a1a1aa;">Każda przekazana złotówka pomaga kontynuować misję i nieść Ewangelię do kolejnych domów i serc. Dziękujemy za modlitwę, wsparcie i wierność!</p>
-                            <a href="https://patronite.pl/osobowoscplus" target="_blank" style="display: inline-block; background: #D4AF37; color: #000; font-weight: 800; text-decoration: none; padding: 12px 24px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; transition: 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                            <a href="https://patronite.pl/osobowoscplus" target="_blank" style="display: inline-block; background: #D4A94A; color: #000; font-weight: 800; text-decoration: none; padding: 12px 24px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; transition: 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
                                 👉 Wesprzyj Misję na Patronite
                             </a>
                         </div>
@@ -2398,15 +2451,15 @@
 
                     <!-- Wideo Shorts (Prawa strona) -->
                     <div style="flex: 1 1 260px; max-width: 340px; margin: 0 auto; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px;">
-                        <div style="width: 100%; aspect-ratio: 9/16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(212,175,55,0.3); background: #000; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                        <div style="width: 100%; aspect-ratio: 9/16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(212, 169, 74,0.3); background: #000; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
                             <!-- Używamy normalnego linku embed ale formatowanego do proporcji 9:16 dla formatu Shorts -->
                             <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/IEj259GRhaw?rel=0&autoplay=0" title="Christian Culture Shorts" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <p style="text-align: center; font-size: 0.75rem; color: #a1a1aa; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Zobacz wideo-podsumowanie</p>
 
                         <!-- Course Ad: Apokalipsa - Księga Nadziei -->
-                        <div style="margin-top: 20px; width: 100%; border-radius: 12px; overflow: hidden; border: 1.5px solid rgba(212,175,55,0.3); background: rgba(212,175,55,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                            <div style="padding: 10px 12px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.15);">
+                        <div style="margin-top: 20px; width: 100%; border-radius: 12px; overflow: hidden; border: 1.5px solid rgba(212, 169, 74,0.3); background: rgba(212, 169, 74,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            <div style="padding: 10px 12px; text-align: center; border-bottom: 1px solid rgba(212, 169, 74,0.15);">
                                 <span style="font-size: 0.65rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; display: block; margin-bottom: 3px;">🔥 Polecamy</span>
                                 <span style="font-size: 0.85rem; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 600; line-height: 1.2; display: block;">Kurs "Apokalipsa - Księga Nadziei"</span>
                             </div>
@@ -2452,7 +2505,7 @@
                 <p class="section-subtitle">
                     Przenieś ekosystem Christian Culture na swój smartfon i korzystaj z nowoczesnych narzędzi formacyjnych, gdziekolwiek jesteś.
                 </p>
-                <a href="https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl" target="_blank" style="display: block; width: 100%; max-width: 800px; margin: 0 auto 40px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 2px solid rgba(212, 175, 55, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 20px 45px rgba(212, 175, 55, 0.4)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.5)'; this.style.borderColor='rgba(212, 175, 55, 0.3)';">
+                <a href="https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl" target="_blank" style="display: block; width: 100%; max-width: 800px; margin: 0 auto 40px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 2px solid rgba(212, 169, 74, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 20px 45px rgba(212, 169, 74, 0.4)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.5)'; this.style.borderColor='rgba(212, 169, 74, 0.3)';">
                     <picture>
                         <source srcset="Sluchaj-Instaluj-Pobieraj.webp" type="image/webp">
                         <img src="Sluchaj-Instaluj-Pobieraj.png" alt="Słuchaj, instaluj, pobieraj aplikacje ze sklepu Google Play" onerror="this.onerror=null; this.src='Sluchaj-Instaluj-Pobieraj.jpg';" loading="lazy" decoding="async" width="728" height="180" style="width: 100%; height: auto; display: block;">
@@ -2573,7 +2626,7 @@
                             Zadawaj pytania i pogłębiaj swoją wiedzę religijną. Autorski asystent AI, wyszkolony, by odpowiadać na pytania o wiarę i Pismo Święte w duchu chrześcijańskim.
                         </p>
                         <div class="app-download-links">
-                            <a href="https://chatgpt.com/g/g-683a0f4c86108191b0633a08b8b28580-gpt-dla-jezusa" target="_blank" class="download-badge play-store-badge" style="border-color: var(--gold-primary); background: rgba(212, 175, 55, 0.08);">
+                            <a href="https://chatgpt.com/g/g-683a0f4c86108191b0633a08b8b28580-gpt-dla-jezusa" target="_blank" class="download-badge play-store-badge" style="border-color: var(--gold-primary); background: rgba(212, 169, 74, 0.08);">
                                 <i class="fa-solid fa-robot" style="color: var(--gold-primary);"></i>
                                 <span class="badge-text">
                                      <span class="badge-sub">Uruchom narzędzie</span>
@@ -2585,7 +2638,7 @@
                 </div>
 
                 <!-- App Card 5: LUMINA Portal Randkowy (Wczesny Dostęp - Soft Launch) -->
-                <div class="app-card" style="border-color: rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(212, 175, 55, 0.06)); opacity: 1;">
+                <div class="app-card" style="border-color: rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(212, 169, 74, 0.06)); opacity: 1;">
                     <div class="app-card-glow" style="background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, transparent 70%);"></div>
                     <div class="app-card-content">
                         <a href="lumina" class="app-icon-link" style="cursor: pointer; text-decoration: none;">
@@ -2603,13 +2656,13 @@
                         </p>
                         <div class="app-download-links">
                             <a href="lumina" class="download-badge play-store-badge" style="border-color: rgba(168, 85, 247, 0.6); background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(99, 102, 241, 0.25)); color: #fff; cursor: pointer; text-decoration: none;">
-                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #ffd700;"></i>
+                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #E8C97A;"></i>
                                 <span class="badge-text">
                                      <span class="badge-sub">Wczesny Dostęp (Beta)</span>
-                                     <span class="badge-main" style="color: #ffd700;">Wejdź do Portalu ➔</span>
+                                     <span class="badge-main" style="color: #E8C97A;">Wejdź do Portalu ➔</span>
                                 </span>
                             </a>
-                            <a href="lumina-safety.html" class="download-badge play-store-badge" style="border-color: rgba(212, 175, 55, 0.4);">
+                            <a href="lumina-safety.html" class="download-badge play-store-badge" style="border-color: rgba(212, 169, 74, 0.4);">
                                 <i class="fa-solid fa-shield-halved"></i>
                                 <span class="badge-text">
                                      <span class="badge-sub">Standardy</span>
@@ -2623,6 +2676,115 @@
         </div>
     </div>
 </section>
+
+    <!-- SECTION: AUTORSKIE KSIĄŻKI & E-BOOKI ZAŁOŻYCIELA (CEZARY ROGOWSKI) -->
+    <section class="books-section collapsible-section" id="books-section">
+        <button type="button" class="collapsible-trigger-bar" aria-expanded="false" aria-controls="content-books-section">
+            <div class="collapsible-trigger-info">
+                <div class="collapsible-trigger-icon">
+                    <i class="fa-solid fa-book-open" style="color: #fbbf24;"></i>
+                </div>
+                <div class="collapsible-trigger-text">
+                    <span class="collapsible-trigger-tag">Literatura & Formacja</span>
+                    <span class="collapsible-trigger-title">Książki Założyciela – Cezary Rogowski</span>
+                    <span class="collapsible-trigger-subtitle">„Kod Źródłowy” oraz „Pokonać Goliata” • 100% Bezpłatne E-booki & Audiobooki</span>
+                </div>
+            </div>
+            <div class="collapsible-trigger-action">
+                <span class="collapsible-status-pill">
+                    <span class="pill-label">Rozwiń</span>
+                    <i class="fa-solid fa-chevron-down collapsible-chevron"></i>
+                </span>
+            </div>
+        </button>
+
+        <div class="collapsible-content" id="content-books-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Literatura Chrześcijańska</span>
+                    <h2 class="section-title">AUTORSKIE KSIĄŻKI & E-BOOKI</h2>
+                    <div class="gold-divider centered"></div>
+                    <p class="section-subtitle">
+                        Służba słowem i ewangelizacja bez barier komercyjnych. Obie książki Założyciela Christian Culture, Cezarego Rogowskiego, są dostępne bezpłatnie – z czytnikiem online, lektorem audio oraz plikami PDF i EPUB.
+                    </p>
+                </div>
+
+                <div class="apps-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                    <!-- Book Card 1: Kod Źródłowy -->
+                    <div class="app-card" style="border: 1px solid rgba(168, 85, 247, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <div class="app-card-glow" style="background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.25), transparent 70%);"></div>
+                        <div class="app-card-content">
+                            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+                                <a href="https://polskieradio.cc/kod" style="width: 80px; aspect-ratio: 1/1.45; border-radius: 8px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.6); border: 1px solid rgba(168, 85, 247, 0.4);">
+                                    <img src="assets/kod-zrodlowy-book-3d-400.webp" alt="Kod Źródłowy" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                </a>
+                                <div>
+                                    <span style="font-size: 0.72rem; color: #c084fc; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 6px;">Powieść & Świadectwo</span>
+                                    <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; line-height: 1.25;">Kod Źródłowy</h3>
+                                    <span style="font-size: 0.8rem; color: #94a3b8;">Cezary Rogowski • 86 stron</span>
+                                </div>
+                            </div>
+                            <p class="app-desc" style="font-size: 0.9rem; line-height: 1.55; color: #cbd5e1; margin-bottom: 20px;">
+                                Poruszająca historia wyzwolenia z pułapek współczesności, walki o tożsamość i spotkania z Bogiem, który na nowo programuje ludzkie serce. Wciągająca narracja, czytnik webowy i audiobook online.
+                            </p>
+                            <div class="app-download-links" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="https://polskieradio.cc/kod" class="download-badge play-store-badge" style="flex: 1; min-width: 140px; border-color: rgba(168, 85, 247, 0.6); background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(126, 34, 206, 0.3)); color: #fff; text-decoration: none;">
+                                    <i class="fa-solid fa-book-open" style="color: #e9d5ff;"></i>
+                                    <span class="badge-text">
+                                        <span class="badge-sub">Czytaj E-book</span>
+                                        <span class="badge-main" style="color: #e9d5ff;">Otwórz Książkę ➔</span>
+                                    </span>
+                                </a>
+                                <a href="https://polskieradio.cc/kod#sluchaj" class="download-badge web-app-badge" style="border-color: rgba(255, 255, 255, 0.2); text-decoration: none;">
+                                    <i class="fa-solid fa-headphones"></i>
+                                    <span class="badge-text">
+                                        <span class="badge-sub">Lektor</span>
+                                        <span class="badge-main">Audiobook</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Card 2: Pokonać Goliata -->
+                    <div class="app-card" style="border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <div class="app-card-glow" style="background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.25), transparent 70%);"></div>
+                        <div class="app-card-content">
+                            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+                                <a href="https://polskieradio.cc/pokonac-goliata" style="width: 80px; aspect-ratio: 1/1.45; border-radius: 8px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.6); border: 1px solid rgba(245, 158, 11, 0.4);">
+                                    <img src="assets/pokonac-goliata-book-3d-400.webp" alt="Pokonać Goliata" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                                </a>
+                                <div>
+                                    <span style="font-size: 0.72rem; color: #fde047; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 6px;">Wydanie 2026 • 8 Kroków</span>
+                                    <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; line-height: 1.25;">Pokonać Goliata</h3>
+                                    <span style="font-size: 0.8rem; color: #94a3b8;">Cezary Rogowski • 111 stron</span>
+                                </div>
+                            </div>
+                            <p class="app-desc" style="font-size: 0.9rem; line-height: 1.55; color: #cbd5e1; margin-bottom: 20px;">
+                                Praktyczny podręcznik zwycięstwa nad słabościami, nałogami i lękiem. Osiem sprawdzonych kroków w oparciu o walkę Dawida z Goliatem (1 Sm 17), z Generatorem Mocy TTS i plikami PDF/EPUB.
+                            </p>
+                            <div class="app-download-links" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="https://polskieradio.cc/pokonac-goliata" class="download-badge play-store-badge" style="flex: 1; min-width: 140px; border-color: rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3)); color: #fff; text-decoration: none;">
+                                    <i class="fa-solid fa-shield-halved" style="color: #fef08a;"></i>
+                                    <span class="badge-text">
+                                        <span class="badge-sub">Odkryj 8 Kroków</span>
+                                        <span class="badge-main" style="color: #fef08a;">Wejdź do Książki ➔</span>
+                                    </span>
+                                </a>
+                                <a href="https://polskieradio.cc/pokonac-goliata#czytaj" class="download-badge web-app-badge" style="border-color: rgba(255, 255, 255, 0.2); text-decoration: none;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span class="badge-text">
+                                        <span class="badge-sub">Generator</span>
+                                        <span class="badge-main">Mocy TTS</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- SECTION E: STRUMIENIE SOCIAL MEDIA (SPOTIFY & YOUTUBE) -->
     <section class="social-channels-section collapsible-section" id="social-channels">
@@ -2811,7 +2973,7 @@
         <div class="collapsible-content" id="content-broadcast-section">
             <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
                 <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-                <span class="section-tag" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 12px; background: rgba(212, 175, 55, 0.08); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(212, 175, 55, 0.2);">Retransmisja 24/7</span>
+                <span class="section-tag" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 12px; background: rgba(212, 169, 74, 0.08); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(212, 169, 74, 0.2);">Retransmisja 24/7</span>
                 <h2 class="section-title" style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; margin-bottom: 15px;">NADAWAJ Z CHRISTIAN CULTURE</h2>
                 <div class="gold-divider centered" style="width: 60px; height: 3px; background: var(--gold-primary); margin: 0 auto 20px auto; border-radius: 2px;"></div>
                 <p class="section-subtitle" style="font-size: 1.05rem; color: #a1a1aa; max-width: 800px; margin: 0 auto; line-height: 1.6;">
@@ -2820,7 +2982,7 @@
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
-                <a href="nadawaj" style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%); color: #000; text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px 40px; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(212, 175, 55, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(212, 175, 55, 0.2)';">
+                <a href="nadawaj" style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%); color: #000; text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px 40px; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(212, 169, 74, 0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(212, 169, 74, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(212, 169, 74, 0.2)';">
                     <i class="fa-solid fa-layer-group"></i> Zobacz wszystkie formaty
                 </a>
             </div>
@@ -3201,7 +3363,33 @@
             <span class="footer-separator">|</span>
             <a href="vod">Kino VOD</a>
             <span class="footer-separator">|</span>
-            <a href="https://polskieradio.cc/news">CCN News</a>
+            <a href="https://polskieradio.cc/news">CCN (20 Portali Wiedzy)</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/nauka">Nauka</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/historia">Historia</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/biologia">Biologia</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/prawo">Prawo</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/seks">Małżeństwo</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/apologetyka">Apologetyka</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/biblioteka">Biblioteka</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/ogloszenia">Ogłoszenia</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/ziu">Zdrowie</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/kuchnia">Kuchnia</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/kultura">Kultura</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/biznes">Biznes</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/milion">Licznik CC (1 000 000)</a>
         </div>
     </footer>
 
@@ -3241,7 +3429,7 @@
                                 <span class="dot worship-accent" style="background: #8E2DE2; box-shadow: 0 0 8px #8E2DE2;"></span> Instrumental Worship
                             </button>
                             <button class="dropdown-item" data-station-id="biblia_spiewana">
-                                <span class="dot biblia-spiewana-accent" style="background: #D4AF37; box-shadow: 0 0 8px #D4AF37;"></span> Biblia Śpiewana
+                                <span class="dot biblia-spiewana-accent" style="background: #D4A94A; box-shadow: 0 0 8px #D4A94A;"></span> Biblia Śpiewana
                             </button>
                         </div>
                     </div>
@@ -3330,13 +3518,13 @@
     <!-- MODAL DEKALOG -->
     <div id="decalogueModal" class="dzj-modal-wrapper" style="z-index: 10000; display: none;">
         <div class="dzj-modal-overlay" id="decalogueModalOverlay"></div>
-        <div class="dzj-modal-content" style="max-height: 90vh; overflow-y: auto; background: linear-gradient(135deg, #111, #0a0a0a); border: 1px solid rgba(212, 175, 55, 0.2);">
+        <div class="dzj-modal-content" style="max-height: 90vh; overflow-y: auto; background: linear-gradient(135deg, #111, #0a0a0a); border: 1px solid rgba(212, 169, 74, 0.2);">
             <button class="dzj-close-top" id="decalogueCloseBtn" style="color: #fff;"><i class="fa-solid fa-xmark"></i></button>
-            <div class="dzj-header" style="background: none; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 1rem;">
-                <div class="dzj-logo-wrapper" style="box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);">
+            <div class="dzj-header" style="background: none; border-bottom: 1px solid rgba(212, 169, 74, 0.2); padding-bottom: 1rem;">
+                <div class="dzj-logo-wrapper" style="box-shadow: 0 0 15px rgba(212, 169, 74, 0.4);">
                     <img loading="lazy" decoding="async" src="icon.png" alt="Christian Culture Logo" style="filter: brightness(1.2);">
                 </div>
-                <h2 class="dzj-title" style="color: #d4af37; font-family: 'Cinzel', serif; letter-spacing: 0.1em; text-transform: uppercase;">Dekalog</h2>
+                <h2 class="dzj-title" style="color: #D4A94A; font-family: 'Cinzel', serif; letter-spacing: 0.1em; text-transform: uppercase;">Dekalog</h2>
                 <p style="color: #a0a0a0; font-size: 0.85rem; margin-top: 5px;">DZIESIĘCIORO PRZYKAZAŃ</p>
             </div>
             <div class="dzj-body" id="decalogueContentBox" style="color: #eaeaea; font-family: 'Montserrat', sans-serif; line-height: 1.6; padding: 20px;">
@@ -3367,6 +3555,10 @@
                         </button>
                         <button id="btnShareDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #C5A059; color: black; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border: none; box-shadow: 0 0 20px rgba(197,160,89,0.3); transition: all 0.3s;">
                             <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                        <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="📜 Dekalog — Dziesięć Przykazań Bożych" data-text="Poznaj Dziesięć Przykazań — Boże Prawo miłości (Wyjścia 20:1–17). 🕊️" data-url="https://polskieradio.cc/#dekalog" title="Opublikuj na Tablicy Społeczności LUMINA">
+                            <span class="lumina-badge-l-icon">L</span>
+                            <span>Tablica LUMINA</span>
                         </button>
                     </div>
                 </div>
@@ -3455,18 +3647,21 @@
  
             // Sync button label on load
             function syncLangButton() {
+                const langToggleText = document.getElementById('langToggleText');
                 if (langBtn) {
                     if (isEnglish()) {
                         langBtn.title = 'Przełącz na język polski 🇵🇱';
                         if (langSubtitle) langSubtitle.textContent = 'Zmień na polski';
+                        if (langToggleText) langToggleText.textContent = 'Zmień na polski';
                     } else {
                         langBtn.title = 'Switch to English 🇬🇧';
                         if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
+                        if (langToggleText) langToggleText.textContent = 'Zmień na angielski';
                     }
                 }
             }
             syncLangButton();
- 
+
             if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -3487,7 +3682,7 @@
                     }
                 });
             }
- 
+
             // --- Expandable Quick Actions Controller (Pełnoekranowe MENU CC / CC Command Center) ---
             const actionsToggleBtn = document.getElementById("actionsToggleBtn");
             const actionsList = document.getElementById("actionsList");
@@ -3580,7 +3775,12 @@
                     // Reset all
                     cards.forEach(card => card.classList.remove("hidden"));
                     pills.forEach(pill => pill.classList.remove("hidden"));
-                    cols.forEach(col => col.classList.remove("hidden"));
+                    cols.forEach(col => {
+                        col.classList.remove("hidden");
+                        col.classList.remove("open");
+                        const h = col.querySelector(".cc-col-header");
+                        if (h) h.setAttribute("aria-expanded", "false");
+                    });
                     if (menuCcNoResults) menuCcNoResults.style.display = "none";
                     return;
                 }
@@ -3608,11 +3808,15 @@
                         }
                     });
 
+                    const h = col.querySelector(".cc-col-header");
                     if (colMatches > 0) {
                         col.classList.remove("hidden");
-                        col.classList.remove("collapsed");
+                        col.classList.add("open");
+                        if (h) h.setAttribute("aria-expanded", "true");
                     } else {
                         col.classList.add("hidden");
+                        col.classList.remove("open");
+                        if (h) h.setAttribute("aria-expanded", "false");
                     }
                 });
 
@@ -3637,23 +3841,70 @@
                 });
             }
 
-            // Mobile Accordion Toggle for .cc-col-header
-            if (actionsList) {
-                actionsList.querySelectorAll(".cc-col-header").forEach(header => {
-                    header.addEventListener("click", (e) => {
-                        if (window.innerWidth <= 900) {
-                            const col = header.closest(".cc-col");
-                            if (col) {
-                                col.classList.toggle("collapsed");
-                            }
+            // Uniwersalny kontroler 5 Kafli (dla MENU CC oraz Lewego Panelu Bocznego #sideDrawer)
+            const sideDrawer = document.getElementById("sideDrawer");
+            const drawerOverlay = document.getElementById("drawerOverlay");
+
+            document.querySelectorAll("#actionsList .cc-col, #sideDrawer .cc-col").forEach(col => {
+                const header = col.querySelector(".cc-col-header");
+                const banner = col.querySelector(".cc-col-banner");
+
+                const toggleCol = (e) => {
+                    // Nie zamykaj jeśli kliknięto wewnątrz spisu treści (w link karty)
+                    if (e.target.closest(".cc-col-cards")) return;
+
+                    const parent = col.closest("#actionsList") || col.closest("#sideDrawer");
+                    const siblings = parent ? parent.querySelectorAll(".cc-col") : [];
+                    const isOpen = col.classList.contains("open");
+
+                    // Zamknij pozostałe kafle w tym samym panelu (akordeon)
+                    siblings.forEach(other => {
+                        if (other !== col) {
+                            other.classList.remove("open");
+                            const oh = other.querySelector(".cc-col-header");
+                            if (oh) oh.setAttribute("aria-expanded", "false");
                         }
                     });
-                });
 
-                // Auto-close MENU CC on link click
+                    // Przełącz stan klikniętego kafla
+                    col.classList.toggle("open", !isOpen);
+                    if (header) header.setAttribute("aria-expanded", String(!isOpen));
+                };
+
+                if (header) {
+                    header.setAttribute("role", "button");
+                    header.setAttribute("tabindex", "0");
+                    header.setAttribute("aria-expanded", "false");
+                    header.addEventListener("click", toggleCol);
+                    header.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            toggleCol(e);
+                        }
+                    });
+                }
+                if (banner) {
+                    banner.addEventListener("click", toggleCol);
+                }
+            });
+
+            // Auto-close MENU CC on link click
+            if (actionsList) {
                 actionsList.querySelectorAll("a.cc-card, a.strip-pill-card").forEach(link => {
                     link.addEventListener("click", () => {
                         setTimeout(closeMenuCC, 150);
+                    });
+                });
+            }
+
+            // Auto-close Side Drawer on link click
+            if (sideDrawer) {
+                sideDrawer.querySelectorAll("a.cc-card, a.drawer-link").forEach(link => {
+                    link.addEventListener("click", () => {
+                        setTimeout(() => {
+                            sideDrawer.classList.remove("active");
+                            if (drawerOverlay) drawerOverlay.classList.remove("active");
+                        }, 150);
                     });
                 });
             }
@@ -3751,23 +4002,23 @@
                 else if (timeInMinutes >= 10 * 60 && timeInMinutes < 10 * 60 + 55) {
                     current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
-                    third = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
+                    third = { time: "13:00", title: "Biblia Śpiewana & Uwielbienie" };
                 }
                 // 10:55 - 12:00 (Zjednoczeni za Polskę Pasmo Południowe)
                 else if (timeInMinutes >= 10 * 60 + 55 && timeInMinutes < 12 * 60) {
                     current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
-                    third = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
+                    third = { time: "13:00", title: "Biblia Śpiewana & Uwielbienie" };
                 }
                 // 12:00 - 13:00 (Biblia Śpiewana Popołudnie)
                 else if (timeInMinutes >= 12 * 60 && timeInMinutes < 13 * 60) {
                     current = { title: "Biblia Śpiewana (Wydanie Południowe)", url: "master" };
-                    next = { time: "13:00", title: "TV Epafraz — Główne Pasmo Biblijne" };
+                    next = { time: "13:00", title: "Biblia Śpiewana & Uwielbienie" };
                     third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
                 }
-                // 13:00 - 15:00 (TV Epafraz — Główne Pasmo Biblijne 2h)
+                // 13:00 - 15:00 (Biblia Śpiewana & Muzyka Uwielbienia 2h)
                 else if (timeInMinutes >= 13 * 60 && timeInMinutes < 15 * 60) {
-                    current = { title: "TV Epafraz — Główne Pasmo Biblijne (24 Serie)", url: "master" };
+                    current = { title: "Biblia Śpiewana & Muzyka Uwielbienia (Wydanie Główne)", url: "master" };
                     next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "16:00", title: "Codzienne Uwielbienie" };
                 }
@@ -3888,7 +4139,7 @@
                         // Visual highlight pulse so the user instantly sees the report
                         el.style.transition = 'box-shadow 0.6s ease, border-color 0.6s ease';
                         el.style.borderColor = 'var(--gold-primary)';
-                        el.style.boxShadow = '0 0 35px rgba(212, 175, 55, 0.45)';
+                        el.style.boxShadow = '0 0 35px rgba(212, 169, 74, 0.45)';
                         setTimeout(function() {
                             el.style.borderColor = 'var(--border-gold-low)';
                             el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
@@ -4001,6 +4252,8 @@
     </script>
     <!-- Christian Culture & LUMINA Universal Google Auth Connector -->
     <script src="js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
+    <script src="js/lumina-share.js" defer></script>
+  <script src="/components/cc-support-footer.js" defer></script>
+    <script src="js/lumina-rss-suite.js" defer></script>
 </body>
 </html>
-

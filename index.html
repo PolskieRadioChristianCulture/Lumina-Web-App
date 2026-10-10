@@ -289,7 +289,7 @@
 
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
-    <link rel="stylesheet" href="style.css?v=45">
+    <link rel="stylesheet" href="style.css?v=46">
     <style>
         /* Mobile Full-Screen Side Drawer Navigation (<= 768px) */
         @media (max-width: 768px) {
@@ -631,10 +631,13 @@
         .side-promo-inner:hover .side-cta {
             filter: brightness(1.1);
         }
-        /* CCN Drawer Accordion */
-        details.drawer-ccn-hub summary::-webkit-details-marker { display: none; }
-        details.drawer-ccn-hub summary::marker { display: none; }
-        details.drawer-ccn-hub[open] .ccn-arrow { transform: rotate(180deg); }
+        /* CCN & Books Drawer Accordion */
+        details.drawer-ccn-hub summary::-webkit-details-marker,
+        details.drawer-books-hub summary::-webkit-details-marker { display: none; }
+        details.drawer-ccn-hub summary::marker,
+        details.drawer-books-hub summary::marker { display: none; }
+        details.drawer-ccn-hub[open] .ccn-arrow,
+        details.drawer-books-hub[open] .books-arrow { transform: rotate(180deg); }
         .ccn-sublink { transition: all 0.2s ease; text-decoration: none; }
         .ccn-sublink:hover {
             background: rgba(212, 169, 74, 0.2) !important;
@@ -877,6 +880,14 @@
                         </div>
                         <i class="fa-solid fa-chevron-right pill-arrow"></i>
                     </a>
+                    <a href="https://polskieradio.cc/milion" class="strip-pill-card pill-spolecznosc" data-title="Licznik CC" data-keywords="licznik cc milion celujemy w pierwszy milion społeczność licznik na żywo akcja ewangelizacja widget">
+                        <div class="pill-icon" style="color: #f472b6;"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div class="pill-info">
+                            <span class="pill-name">Licznik CC</span>
+                            <span class="pill-desc">Pierwszy Milion</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right pill-arrow"></i>
+                    </a>
                 </div>
             </section>
 
@@ -973,14 +984,14 @@
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
-                        <a href="#books-section" class="cc-card" data-keywords="kod zrodlowy pokonac goliata ksiazki cezary rogowski ebook audiobook czytaj literatura powiesc wolnosc">
+                        <a href="https://polskieradio.cc/ksiazki-autora" class="cc-card" data-keywords="książki cezary rogowski pokonać goliata kod źródłowy u boku diabła prawda bez filtra bóg jest miłością e-booki audiobooki autor półka 5 książek">
                             <div class="cc-card-icon" style="color: #fbbf24;"><i class="fa-solid fa-book-bookmark"></i></div>
                             <div class="cc-card-body">
                                 <div class="cc-card-head">
-                                    <span class="cc-card-title">Książki Autorskie</span>
-                                    <span class="cc-card-badge" style="background: rgba(250, 204, 21, 0.15); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.35);">E-BOOK & AUDIO</span>
+                                    <span class="cc-card-title">Książki Autora</span>
+                                    <span class="cc-card-badge" style="background: rgba(250, 204, 21, 0.15); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.35);">5 KSIĄŻEK</span>
                                 </div>
-                                <span class="cc-card-sub">Kod Źródłowy • Pokonać Goliata</span>
+                                <span class="cc-card-sub">Półka Autorska • Wszystkie 5 tytułów</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -1233,6 +1244,17 @@
                                     <span class="cc-card-badge">PORTAL</span>
                                 </div>
                                 <span class="cc-card-sub">Sieć relacji & wartości</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/milion" class="cc-card" data-keywords="licznik cc milion celujemy w pierwszy milion społeczność 1000000 licznik na żywo akcja ewangelizacja widget odtwarzacz">
+                            <div class="cc-card-icon" style="color: #ec4899;"><i class="fa-solid fa-gauge-high"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head">
+                                    <span class="cc-card-title">Licznik CC</span>
+                                    <span class="cc-card-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);">1 000 000</span>
+                                </div>
+                                <span class="cc-card-sub">Celujemy w Pierwszy Milion • Społeczność</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -1749,6 +1771,14 @@
                             <div class="cc-card-body">
                                 <div class="cc-card-head"><span class="cc-card-title">Portal LUMINA</span><span class="cc-card-badge">PORTAL</span></div>
                                 <span class="cc-card-sub">Sieć relacji & wartości</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
+                        </a>
+                        <a href="https://polskieradio.cc/milion" class="cc-card">
+                            <div class="cc-card-icon" style="color: #ec4899;"><i class="fa-solid fa-gauge-high"></i></div>
+                            <div class="cc-card-body">
+                                <div class="cc-card-head"><span class="cc-card-title">Licznik CC</span><span class="cc-card-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);">1 000 000</span></div>
+                                <span class="cc-card-sub">Celujemy w Pierwszy Milion • Społeczność</span>
                             </div>
                             <i class="fa-solid fa-chevron-right cc-card-arrow"></i>
                         </a>
@@ -3361,6 +3391,8 @@
             <a href="https://polskieradio.cc/kultura">Kultura</a>
             <span class="footer-separator">|</span>
             <a href="https://polskieradio.cc/biznes">Biznes</a>
+            <span class="footer-separator">|</span>
+            <a href="https://polskieradio.cc/milion">Licznik CC (1 000 000)</a>
         </div>
     </footer>
 
