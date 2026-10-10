@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Pobierz i Osadź Widget Radiowy Christian Culture | CCN News</title>
+  <meta name="description" content="Oficjalny widget audio Christian Culture. Pobierz bezpłatny odtwarzacz lub skopiuj kod do osadzenia na blogu, stronie parafii czy portalu. 3 stacje na żywo 24/7.">
+  <link rel="canonical" href="https://polskieradio.cc/widget">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Widget Radiowy Christian Culture – Pobierz i Osadź na Stronie | CCN">
+  <meta property="og:description" content="Bezpłatny odtwarzacz audio 24/7 dla Twojej strony internetowej lub bloga. 3 stacje radiowe, luksusowa estetyka Sacred Gold, zero reklam.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://polskieradio.cc/widget">
+  <meta property="og:image" content="https://polskieradio.cc/ccn-logo-square.png">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <link rel="icon" type="image/png" href="/ccn-logo-square.png">
+  <meta name="theme-color" content="#06080b">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y4EFTVBPE3');
+  </script>
+
+  <!-- Google Fonts: Cinzel, Playfair Display, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS CDN z konfiguracją CCN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            onyx: {
+              950: '#06080b',
+              900: '#0d0f14',
+              850: '#11151e',
+              800: '#161b26',
+              700: '#1f2635'
+            },
+            ccnRed: {
+              DEFAULT: '#bb142e',
+              bright: '#f9282b',
+              dark: '#8b0e22'
+            },
+            sacredGold: {
+              100: '#fff7d6',
+              200: '#fae69e',
+              300: '#f5dd8c',
+              400: '#e6ca65',
+              500: '#c5a059',
+              600: '#a37f37',
+              700: '#7e6024',
+              border: 'rgba(197, 160, 89, 0.32)',
+              glow: 'rgba(230, 202, 101, 0.45)'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Georgia', 'serif'],
+            headline: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    .sacred-play-btn {
+      background: radial-gradient(circle at 35% 30%, #fae69e 0%, #c5a059 55%, #806225 100%);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 24px rgba(203, 162, 88, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.65);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sacred-play-btn:hover {
+      background: radial-gradient(circle at 35% 30%, #fff4be 0%, #dbb263 55%, #93712b 100%);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.9), 0 0 32px rgba(230, 202, 101, 0.75), inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
+      transform: scale(1.04);
+    }
+    .sacred-volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 9999px;
+      background: #1e2534;
+      outline: none;
+    }
+    .sacred-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff3c4 15%, #c5a059 75%, #7e6024 100%);
+      box-shadow: 0 0 12px 2px rgba(230, 202, 101, 0.85);
+      cursor: pointer;
+      border: 1px solid #f5dd8c;
+    }
+    .eq-bar {
+      width: 3px;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, #f5dd8c 0%, #c5a059 100%);
+      height: 4px;
+      transition: height 0.15s ease;
+    }
+    .is-playing .eq-bar:nth-child(1) { animation: eqBarPulse 0.85s ease-in-out infinite alternate; }
+    .is-playing .eq-bar:nth-child(2) { animation: eqBarPulse 0.65s ease-in-out infinite alternate 0.15s; }
+    .is-playing .eq-bar:nth-child(3) { animation: eqBarPulse 0.95s ease-in-out infinite alternate 0.3s; }
+    .is-playing .eq-bar:nth-child(4) { animation: eqBarPulse 0.75s ease-in-out infinite alternate 0.1s; }
+    @keyframes eqBarPulse {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+    .crossfade-card {
+      transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform;
+    }
+    .preview-device-box {
+      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+
+<body class="bg-[#06080b] text-[#fdfbf7] font-sans antialiased selection:bg-[#c5a059]/30 selection:text-white overflow-x-hidden min-h-screen flex flex-col justify-between">
+
+  <!-- ========================================================================= -->
+  <!-- 1. PASEK INFORMACYJNY TOP BAR (CCN LIVE STATUS)                           -->
+  <!-- ========================================================================= -->
+  <div class="bg-[#0a0d13] border-b border-[#1b2230] text-[11px] text-[#94a3b8] py-1.5 px-4 font-mono select-none">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#bb142e]/20 text-[#f9282b] font-bold text-[10px] tracking-wider uppercase border border-[#bb142e]/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#f9282b] animate-pulse"></span>
+          CCN LIVE
+        </span>
+        <span class="text-[#cbd5e1] font-sans font-medium truncate">
+          Oficjalny Widget Odtwarzacza Ekosystemu Christian Culture dla Webmasterów i Blogerów
+        </span>
+      </div>
+      <div class="hidden md:flex items-center gap-4 flex-shrink-0">
+        <a href="/player" class="hover:text-[#f5dd8c] transition-colors flex items-center gap-1 text-[10px]">
+          <i class="fa-solid fa-headphones"></i> Player Radiowy
+        </a>
+        <a href="/cctv24-worship.html" class="hover:text-[#f5dd8c] transition-colors flex items-center gap-1 text-[10px]">
+          <i class="fa-solid fa-tv"></i> CCTV24 Worship 24/7
+        </a>
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="text-[#f5dd8c] hover:underline font-bold flex items-center gap-1 text-[10px]">
+          <i class="fa-solid fa-heart text-[#bb142e]"></i> Patronite
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. GŁÓWNY NAGŁÓWEK CCN NEWS (BRAND HEADER & PORTAL NAVIGATION)            -->
+  <!-- ========================================================================= -->
+  <header class="bg-[#0b0e15]/95 backdrop-blur-md border-b border-[rgba(197,160,89,0.22)] sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        
+        <!-- Logo CCN News z emblematem -->
+        <a href="/news" class="flex items-center gap-3 group select-none flex-shrink-0" title="Przejdź do CCN News">
+          <div class="flex items-center gap-0.5">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 bg-[#010101] border border-[#232b3b] flex items-center justify-center rounded">
+              <span class="text-white text-lg sm:text-xl font-black font-sans">C</span>
+            </div>
+            <div class="w-8 h-8 sm:w-9 sm:h-9 bg-[#010101] border border-[#232b3b] flex items-center justify-center rounded">
+              <span class="text-white text-lg sm:text-xl font-black font-sans">C</span>
+            </div>
+            <div class="w-8 h-8 sm:w-9 sm:h-9 bg-[#010101] border border-[#232b3b] flex items-center justify-center rounded">
+              <span class="text-[#f9282b] text-lg sm:text-xl font-black font-sans">N</span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center leading-none">
+            <span class="font-serif text-xl sm:text-2xl font-black tracking-wide text-white group-hover:text-[#f5dd8c] transition-colors">
+              WIDGET
+            </span>
+            <span class="text-[9px] sm:text-[10px] font-serif font-bold tracking-[0.22em] text-[#c5a059] uppercase mt-0.5">
+              CHRISTIAN CULTURE
+            </span>
+          </div>
+        </a>
+
+        <!-- Nawigacja po portalach CCN (Desktop) -->
+        <nav class="hidden xl:flex items-center gap-1 text-xs font-medium text-[#94a3b8] overflow-x-auto py-1">
+          <a href="/news" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">News</a>
+          <a href="/nauka" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Nauka</a>
+          <a href="/historia" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Historia</a>
+          <a href="/biologia" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Biologia</a>
+          <a href="/prawo" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Prawo</a>
+          <a href="/seks" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Etyka</a>
+          <a href="/kultura" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Kultura</a>
+          <a href="/vod" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">VOD</a>
+          <a href="/akademia" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Akademia</a>
+          <a href="/mojabiblia" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">MojaBiblia</a>
+          <a href="/lumina" class="px-2.5 py-1.5 rounded-lg hover:text-white hover:bg-[#141824] transition-colors">Lumina</a>
+          <span class="px-2.5 py-1.5 rounded-lg text-black bg-[#c5a059] font-bold">Widget</span>
+        </nav>
+
+        <!-- Prawa strona nagłówka: Szybkie akcje -->
+        <div class="flex items-center gap-2.5">
+          <a href="#live-preview-section" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 text-xs font-bold transition-all shadow-sm">
+            <i class="fa-solid fa-play text-[10px]"></i>
+            <span>Testuj na żywo</span>
+          </a>
+          <a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#fae69e] text-black font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all">
+            <i class="fa-solid fa-download"></i>
+            <span>Pobierz .html</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HERO SECTION (TYTUŁ, ZAPROSZENIE, KORZYŚCI DLA STRON)                   -->
+  <!-- ========================================================================= -->
+  <section class="relative pt-10 sm:pt-16 pb-12 sm:pb-16 px-4 sm:px-6 overflow-hidden">
+    <!-- Tło dekoracyjne ze złotym blaskiem -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-[#c5a059]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#161d2b] border border-[#c5a059]/40 text-[#f5dd8c] text-xs font-mono font-semibold mb-5 shadow">
+        <i class="fa-solid fa-code text-[#c5a059]"></i>
+        <span>NARZĘDZIE DLA PARAFII, BLOGERÓW I PORTALI CHRZEŚCIJAŃSKICH</span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#fdfbf7] uppercase leading-tight drop-shadow-md">
+        Zainstaluj Radio i Słowo Boże <br class="hidden sm:block">
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fae69e] via-[#c5a059] to-[#e6ca65]">
+          na Swojej Stronie
+        </span>
+      </h1>
+
+      <p class="font-sans text-sm sm:text-base text-[#94a3b8] max-w-3xl mx-auto mt-4 sm:mt-6 leading-relaxed">
+        Udostępnij swoim czytelnikom, parafianom i gościom 3 całodobowe stacje radiowe, pieśni uwielbienia oraz Pismo Święte non-stop. 
+        Oficjalny widget Christian Culture to luksusowa estetyka Sacred Gold, <strong>100% niezależności</strong>, brak reklam i intuicyjna instalacja w 3 minuty.
+      </p>
+
+      <!-- Przyciski akcji Hero -->
+      <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-8">
+        <a href="#embed-generator-section" class="px-5 sm:px-7 py-3 rounded-xl bg-gradient-to-r from-[#fae69e] via-[#c5a059] to-[#806225] text-black font-bold text-xs sm:text-sm shadow-[0_4px_20px_rgba(203,162,88,0.45)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-code"></i>
+          <span>Skopiuj Kod Osadzenia</span>
+        </a>
+        <a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="px-5 sm:px-7 py-3 rounded-xl bg-[#11151e] hover:bg-[#161c28] text-[#f5dd8c] border border-[#c5a059]/40 font-bold text-xs sm:text-sm shadow transition-all flex items-center gap-2">
+          <i class="fa-solid fa-file-arrow-down"></i>
+          <span>Pobierz Plik (.html)</span>
+        </a>
+        <a href="#live-preview-section" class="px-5 sm:px-6 py-3 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#94a3b8] hover:text-white border border-[#232b3b] font-medium text-xs sm:text-sm transition-all flex items-center gap-2">
+          <i class="fa-solid fa-eye"></i>
+          <span>Zobacz Podgląd</span>
+        </a>
+      </div>
+
+      <!-- Liczniki / Zaufanie -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-12 pt-8 border-t border-[#1b2230] text-left">
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">3 STACJE</div>
+          <div class="text-[#7e8a9f] text-xs mt-0.5">Polskie Radio, CC, Biblia</div>
+        </div>
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">192 KBPS</div>
+          <div class="text-[#7e8a9f] text-xs mt-0.5">Krystaliczny dźwięk HD</div>
+        </div>
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">0 REKLAM</div>
+          <div class="text-[#7e8a9f] text-xs mt-0.5">Czysty, godny przekaz</div>
+        </div>
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">100% FREE</div>
+          <div class="text-[#7e8a9f] text-xs mt-0.5">Darmowe użytkowanie</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. SEKCJA: INTERAKTYWNY PODGLĄD WIDGETU NA ŻYWO (LIVE INTERACTIVE PLAYER)  -->
+  <!-- ========================================================================= -->
+  <section id="live-preview-section" class="py-12 sm:py-16 px-4 sm:px-6 bg-[#080b10] border-y border-[rgba(197,160,89,0.2)]">
+    <div class="max-w-5xl mx-auto">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div>
+          <span class="text-[10px] font-mono font-bold text-[#c5a059] uppercase tracking-wider block">
+            DZIAŁAJĄCY EGZEMPLARZ PRODUKCYJNY
+          </span>
+          <h2 class="font-serif text-xl sm:text-2xl font-bold text-white tracking-wide mt-1">
+            Interaktywny Podgląd na Żywo
+          </h2>
+          <p class="text-xs text-[#7e8a9f] mt-1">
+            Możesz kliknąć Play, zmienić stację i wyregulować dźwięk bezpośrednio poniżej.
+          </p>
+        </div>
+
+        <!-- Przełącznik symulacji urządzenia -->
+        <div class="flex items-center gap-1.5 bg-[#0e121a] p-1 rounded-xl border border-[#232b3b] self-start sm:self-auto">
+          <span class="text-[10px] font-mono text-[#7e8a9f] px-2">Szerokość:</span>
+          <button type="button" onclick="setPreviewWidth('full')" id="prev-btn-full" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#c5a059] text-black transition-all">
+            Desktop (100%)
+          </button>
+          <button type="button" onclick="setPreviewWidth('tablet')" id="prev-btn-tablet" class="px-2.5 py-1 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white transition-all">
+            Tablet (650px)
+          </button>
+          <button type="button" onclick="setPreviewWidth('mobile')" id="prev-btn-mobile" class="px-2.5 py-1 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white transition-all">
+            Smartfon (380px)
+          </button>
+        </div>
+      </div>
+
+      <!-- KONTENER INTERAKTYWNEGO WIDGETU (PŁYNNE SKALOWANIE) -->
+      <div class="w-full flex justify-center py-4 sm:py-8 bg-[#05070a] rounded-2xl border border-[#1f2635] shadow-inner p-3 sm:p-6 overflow-hidden">
+        <div id="interactive-preview-wrapper" class="preview-device-box w-full max-w-4xl transition-all">
+          
+          <!-- EMBED RAMKI Z AUTONOMICZNYM WIDGETEM -->
+          <iframe 
+            id="live-widget-iframe"
+            src="embed/bar.html?channel=prcc" 
+            class="w-full h-[105px] border-none rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.9)] overflow-hidden" 
+            title="Christian Culture Live Widget Preview"
+            scrolling="no"
+            loading="lazy">
+          </iframe>
+
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-[#7e8a9f] gap-2 font-mono">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Strumienie aktywne: Polskie Radio CC, Christian Culture, Biblia Audio</span>
+        </div>
+        <a href="/embed/bar" target="_blank" class="text-[#c5a059] hover:underline flex items-center gap-1 font-sans">
+          <span>Otwórz samą belkę w nowej karcie</span>
+          <span>↗</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. SEKCJA: GENERATOR KODU OSADZENIA I POBIERANIE (EMBED CENTER)           -->
+  <!-- ========================================================================= -->
+  <section id="embed-generator-section" class="py-12 sm:py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono font-bold text-[#c5a059] uppercase tracking-wider">
+          POBIERZ LUB ZAINSTALUJ
+        </span>
+        <h2 class="font-serif text-2xl sm:text-4xl font-bold text-white tracking-wide mt-1">
+          Wybierz Sposób Osadzenia
+        </h2>
+        <p class="text-sm text-[#94a3b8] mt-2">
+          Dla większości stron i blogów (WordPress, Blogger) zalecamy prostą <strong>ramkę iFrame</strong>. 
+          Możesz także pobrać kompletny plik HTML do uruchomienia na własnym serwerze.
+        </p>
+      </div>
+
+      <!-- Karta konfiguratora i generatora -->
+      <div class="bg-[#0b0e15] border border-[rgba(197,160,89,0.35)] rounded-2xl p-4 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
+        
+        <!-- Zakładki wyboru formatu -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-1.5 bg-[#06080b] rounded-xl border border-[#1f2635] mb-6">
+          <button type="button" onclick="setExportFormat('iframe')" id="tab-fmt-iframe" class="py-2.5 px-3 rounded-lg text-xs font-bold bg-[#c5a059] text-black flex items-center justify-center gap-2 transition-all shadow">
+            <i class="fa-solid fa-window-maximize"></i>
+            <span>Ramka iFrame (Zalecane)</span>
+          </button>
+          <button type="button" onclick="setExportFormat('htmljs')" id="tab-fmt-htmljs" class="py-2.5 px-3 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-code"></i>
+            <span>Czysty HTML & JS</span>
+          </button>
+          <button type="button" onclick="setExportFormat('file')" id="tab-fmt-file" class="py-2.5 px-3 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-download"></i>
+            <span>Plik do Pobrania (.html)</span>
+          </button>
+        </div>
+
+        <!-- Opcje personalizacji kodu -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 mb-6 border-b border-[#1b2230]">
+          <div>
+            <label class="block text-xs font-bold text-[#fdfbf7] uppercase tracking-wider mb-2 font-mono">
+              1. Domyślna stacja po załadowaniu:
+            </label>
+            <select id="cfg-station-select" onchange="generateEmbedCode()" class="w-full bg-[#11151e] border border-[#232b3b] focus:border-[#c5a059] text-white text-xs rounded-xl px-3.5 py-2.5 outline-none font-sans">
+              <option value="prcc">Polskie Radio CC (Główna stacja radiowa)</option>
+              <option value="cc">Christian Culture (Muzyka & Tradycja)</option>
+              <option value="biblia">Biblia Audio (Słowo Boże non-stop)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-[#fdfbf7] uppercase tracking-wider mb-2 font-mono">
+              2. Sugerowana szerokość widgetu:
+            </label>
+            <select id="cfg-width-select" onchange="generateEmbedCode()" class="w-full bg-[#11151e] border border-[#232b3b] focus:border-[#c5a059] text-white text-xs rounded-xl px-3.5 py-2.5 outline-none font-sans">
+              <option value="100%">100% (Responsywna – dopasuje się do kolumny)</option>
+              <option value="850px">850 px (Układ poziomy dla szerszych treści)</option>
+              <option value="600px">600 px (Układ średni)</option>
+              <option value="420px">420 px (Wąski pasek boczny)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Podgląd Kodu z przyciskiem kopiowania -->
+        <div class="relative">
+          <div class="flex items-center justify-between pb-2 mb-2 text-xs font-mono text-[#7e8a9f]">
+            <span id="code-box-header-title">Kod do wklejenia w szablonie:</span>
+            <div class="flex items-center gap-2">
+              <a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="px-3 py-1.5 rounded-lg bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 font-bold text-xs flex items-center gap-1.5 transition-all">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span>Pobierz .html</span>
+              </a>
+              <button type="button" onclick="copyEmbedCode()" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#fae69e] via-[#c5a059] to-[#806225] text-black font-bold text-xs flex items-center gap-1.5 shadow hover:scale-105 active:scale-95 transition-all">
+                <i class="fa-regular fa-copy"></i>
+                <span id="copy-btn-label">Kopiuj Kod</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Okno kodu -->
+          <pre class="bg-[#05070a] p-4 rounded-xl border border-[#1f2635] font-mono text-xs text-[#e6ca65] overflow-x-auto leading-relaxed select-all max-h-72"><code id="embed-code-display"></code></pre>
+        </div>
+
+        <!-- Podpowiedź instalacyjna -->
+        <div id="embed-tip-box" class="mt-4 p-3.5 rounded-xl bg-[#0e131d] border border-[#1b2230] text-xs text-[#94a3b8] flex items-start gap-3">
+          <i class="fa-solid fa-circle-info text-[#c5a059] text-base mt-0.5"></i>
+          <div>
+            <span class="font-bold text-white">Instrukcja szybkiego osadzenia:</span>
+            <p id="embed-tip-text" class="mt-0.5 leading-relaxed">
+              Skopiuj powyższy kod i wklej go w edytorze WordPress za pomocą bloku <strong>Własny HTML</strong>, w gadżecie Bloggera lub w dowolnym pliku HTML swojej strony.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. SEKCJA: INSTRUKCJA DLA POPULARNYCH PLATFORM (WORDPRESS, BLOGGER, CMS)   -->
+  <!-- ========================================================================= -->
+  <section class="py-12 sm:py-16 px-4 sm:px-6 bg-[#080b10] border-t border-[#1b2230]">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-mono font-bold text-[#c5a059] uppercase tracking-wider">
+          PROSTA INTEGRACJA
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide mt-1">
+          Instalacja w 3 Minuty na Dowolnej Platformie
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        
+        <!-- WordPress -->
+        <div class="bg-[#0d0f14] border border-[#232b3b] hover:border-[#c5a059]/40 rounded-2xl p-5 sm:p-6 transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#141824] border border-[#232b3b] flex items-center justify-center text-[#c5a059] text-lg font-bold mb-4">
+              <i class="fa-brands fa-wordpress"></i>
+            </div>
+            <h3 class="font-serif text-base font-bold text-white">WordPress</h3>
+            <p class="text-xs text-[#7e8a9f] mt-2 leading-relaxed">
+              1. Otwórz edytor wpisu lub strony.<br>
+              2. Kliknij <strong>+</strong> i wybierz blok <strong>Własny HTML</strong>.<br>
+              3. Wklej skopiowany kod iFrame.<br>
+              4. Zaktualizuj stronę – gotowe!
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#1b2230] text-[11px] text-[#c5a059] font-mono">
+            Działa też w Elementor / Divi
+          </div>
+        </div>
+
+        <!-- Blogger / Blogspot -->
+        <div class="bg-[#0d0f14] border border-[#232b3b] hover:border-[#c5a059]/40 rounded-2xl p-5 sm:p-6 transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#141824] border border-[#232b3b] flex items-center justify-center text-[#c5a059] text-lg font-bold mb-4">
+              <i class="fa-brands fa-blogger-b"></i>
+            </div>
+            <h3 class="font-serif text-base font-bold text-white">Blogger / Blogspot</h3>
+            <p class="text-xs text-[#7e8a9f] mt-2 leading-relaxed">
+              1. Przejdź do zakładki <strong>Układ</strong> w panelu.<br>
+              2. Kliknij <strong>Dodaj gadżet</strong> w wybranym miejscu.<br>
+              3. Wybierz <strong>HTML/JavaScript</strong>.<br>
+              4. Wklej kod i zapisz zmiany.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#1b2230] text-[11px] text-[#c5a059] font-mono">
+            W stopce lub pasku bocznym
+          </div>
+        </div>
+
+        <!-- Czysty HTML / Inne CMS -->
+        <div class="bg-[#0d0f14] border border-[#232b3b] hover:border-[#c5a059]/40 rounded-2xl p-5 sm:p-6 transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#141824] border border-[#232b3b] flex items-center justify-center text-[#c5a059] text-lg font-bold mb-4">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <h3 class="font-serif text-base font-bold text-white">HTML / Joomla / Webflow</h3>
+            <p class="text-xs text-[#7e8a9f] mt-2 leading-relaxed">
+              1. Otwórz kod źródłowy swojego szablonu.<br>
+              2. Wklej kod wewnątrz znacznika <code>&lt;body&gt;</code>.<br>
+              3. Ramka automatycznie dostosuje się do szerokości nadrzędnego kontenera.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#1b2230] text-[11px] text-[#c5a059] font-mono">
+            Wspiera dowolny CMS
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 7. SEKCJA: DLACZEGO WARTO OSADZIĆ WIDGET (CECHY TECHNICZNE)                -->
+  <!-- ========================================================================= -->
+  <section class="py-12 sm:py-16 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono font-bold text-[#c5a059] uppercase tracking-wider">
+          SZWAJCARSKA JAKOŚĆ KODU
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide mt-1">
+          Dlaczego Warto Wybrać Widget Christian Culture?
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-signal"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">3 Stacje w Jakości 192 kbps</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Niezawodna transmisja ze światowych serwerów CDN ZenoFM. Płynne przełączanie między stacjami bez zacięć.
+          </p>
+        </div>
+
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-ban"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">Zero Reklam Komercyjnych</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Żadnych banerów zewnętrznych sieci reklamowych, wyskakujących okienek ani irytujących dźwięków pre-roll.
+          </p>
+        </div>
+
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-arrows-left-right-to-line"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">Zero Scrollbar Architecture</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Koniec z brzydkimi paskami przewijania. Kompaktowy, zoptymalizowany interfejs mieszczący się w zaledwie 95-105 px wysokości.
+          </p>
+        </div>
+
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">Prywatność i Zgodność z RODO</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Widget nie zapisuje inwazyjnych plików cookie stron trzecich ani nie śledzi prywatności Twoich gości.
+          </p>
+        </div>
+
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-mobile-screen-button"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">100% Mobile Ready (SMCC 44px)</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Ergonomiczne przyciski dotykowe min. 44x44px. Znakomita czytelność na ekranach iPhone, Android i tabletów.
+          </p>
+        </div>
+
+        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-4 sm:p-5">
+          <div class="text-[#c5a059] text-xl mb-2"><i class="fa-solid fa-crown"></i></div>
+          <h4 class="font-serif text-sm font-bold text-white">Luksusowa Paleta Sacred Gold</h4>
+          <p class="text-xs text-[#7e8a9f] mt-1 leading-relaxed">
+            Szlachetna typografia Cinzel, głęboka czerń Onyx oraz złote wykończenia nadające prestiż każdemu serwisowi.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 8. OFICJALNA STOPKA CCN NEWS / CHRISTIAN CULTURE                           -->
+  <!-- ========================================================================= -->
+  <footer class="bg-[#010101] text-zinc-300 border-t border-[#1f1f1f] mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10">
+        
+        <!-- Kolumna 1: Brand -->
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-8 h-8 rounded bg-[#11151e] border border-[#c5a059]/40 flex items-center justify-center font-bold text-sm text-[#f5dd8c]">CC</span>
+            <span class="font-serif text-lg font-bold text-white">CHRISTIAN CULTURE</span>
+          </div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Niezależny chrześcijański ekosystem mediów, ewangelizacji i formacji biblijnej.
+            Wiara. Kultura. Prawda.
+          </p>
+          <div class="mt-4 text-xs text-[#c5a059] font-mono">
+            Infolinia: <a href="tel:+48730958583" class="hover:underline">+48 730 958 583</a>
+          </div>
+        </div>
+
+        <!-- Kolumna 2: Portale CCN -->
+        <div>
+          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider font-mono">Portale CCN News</h4>
+          <ul class="space-y-1.5 text-xs text-gray-400">
+            <li><a href="/news" class="hover:text-white transition">CCN Wiadomości</a></li>
+            <li><a href="/nauka" class="hover:text-white transition">CCN Nauka & Kosmologia</a></li>
+            <li><a href="/historia" class="hover:text-white transition">CCN Historia & Korzenie</a></li>
+            <li><a href="/biologia" class="hover:text-white transition">CCN Biologia & Życie</a></li>
+            <li><a href="/prawo" class="hover:text-white transition">CCN Prawo & Wolność</a></li>
+            <li><a href="/seks" class="hover:text-white transition">CCN Etyka & Rodzina</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolumna 3: Główne filary -->
+        <div>
+          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider font-mono">Ekosystem Misyjny</h4>
+          <ul class="space-y-1.5 text-xs text-gray-400">
+            <li><a href="/akademia" class="hover:text-white transition">Akademia Biblijna CC</a></li>
+            <li><a href="/mojabiblia" class="hover:text-white transition">Interlinearna MojaBiblia</a></li>
+            <li><a href="/vod" class="hover:text-white transition">Kino Chrześcijańskie VOD</a></li>
+            <li><a href="/kultura" class="hover:text-white transition">Centrum Kultury</a></li>
+            <li><a href="/player" class="hover:text-white transition">Odtwarzacz Audio Live</a></li>
+            <li><a href="/lumina" class="hover:text-white transition">Społeczność LUMINA</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolumna 4: Narzędzia & Kontakt -->
+        <div>
+          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider font-mono">Dla Twórców & Kontakt</h4>
+          <ul class="space-y-1.5 text-xs text-gray-400">
+            <li><a href="/widget" class="text-[#c5a059] font-bold">Widget do pobrania</a></li>
+            <li><a href="/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html" class="hover:text-white transition">Pobierz plik widgetu</a></li>
+            <li><a href="mailto:polskiercctv@gmail.com" class="hover:text-white transition">polskiercctv@gmail.com</a></li>
+            <li><a href="mailto:radiochristianculture@gmail.com" class="hover:text-white transition">radiochristianculture@gmail.com</a></li>
+            <li><a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="hover:text-[#f5dd8c] transition">Wspieraj nas na Patronite</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-[#1f1f1f] flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500 gap-3">
+        <div>
+          &copy; 2026 Christian Culture & CCN News. Wszelkie prawa zastrzeżone.
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="/widget" class="hover:text-gray-300">Widget Audio</a>
+          <span>•</span>
+          <a href="https://polskieradio.cc" class="hover:text-gray-300">polskieradio.cc</a>
+          <span>•</span>
+          <a href="https://cclite.pl" class="hover:text-gray-300">cclite.pl</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- TOAST POWIADOMIENIE (BEZPIECZNE)                                          -->
+  <!-- ========================================================================= -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <div class="bg-gradient-to-r from-[#f5dd8c] to-[#c5a059] text-black px-4 py-2.5 rounded-xl shadow-2xl font-bold text-xs flex items-center gap-2 border border-[#fff2b8]">
+      <i class="fa-solid fa-check text-black"></i>
+      <span id="toast-notify-text">Skopiowano kod do schowka!</span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- SKRYPTY INTERAKTYWNE STRONY WIDGETU                                       -->
+  <!-- ========================================================================= -->
+  <script>
+    let currentExportFormat = 'iframe';
+
+    function setPreviewWidth(mode) {
+      const box = document.getElementById('interactive-preview-wrapper');
+      const btnFull = document.getElementById('prev-btn-full');
+      const btnTab = document.getElementById('prev-btn-tablet');
+      const btnMob = document.getElementById('prev-btn-mobile');
+
+      [btnFull, btnTab, btnMob].forEach(b => {
+        b.className = "px-2.5 py-1 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white transition-all";
+      });
+
+      if (mode === 'full') {
+        box.style.maxWidth = '100%';
+        btnFull.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-[#c5a059] text-black transition-all";
+      } else if (mode === 'tablet') {
+        box.style.maxWidth = '650px';
+        btnTab.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-[#c5a059] text-black transition-all";
+      } else if (mode === 'mobile') {
+        box.style.maxWidth = '380px';
+        btnMob.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-[#c5a059] text-black transition-all";
+      }
+    }
+
+    function setExportFormat(format) {
+      currentExportFormat = format;
+      const tabIframe = document.getElementById('tab-fmt-iframe');
+      const tabHtmljs = document.getElementById('tab-fmt-htmljs');
+      const tabFile = document.getElementById('tab-fmt-file');
+
+      [tabIframe, tabHtmljs, tabFile].forEach(t => {
+        t.className = "py-2.5 px-3 rounded-lg text-xs font-bold text-[#7e8a9f] hover:text-white flex items-center justify-center gap-2 transition-all";
+      });
+
+      if (format === 'iframe') {
+        tabIframe.className = "py-2.5 px-3 rounded-lg text-xs font-bold bg-[#c5a059] text-black flex items-center justify-center gap-2 transition-all shadow";
+      } else if (format === 'htmljs') {
+        tabHtmljs.className = "py-2.5 px-3 rounded-lg text-xs font-bold bg-[#c5a059] text-black flex items-center justify-center gap-2 transition-all shadow";
+      } else if (format === 'file') {
+        tabFile.className = "py-2.5 px-3 rounded-lg text-xs font-bold bg-[#c5a059] text-black flex items-center justify-center gap-2 transition-all shadow";
+      }
+
+      generateEmbedCode();
+    }
+
+    function generateEmbedCode() {
+      const station = document.getElementById('cfg-station-select').value || 'prcc';
+      const width = document.getElementById('cfg-width-select').value || '100%';
+      const display = document.getElementById('embed-code-display');
+      const headerTitle = document.getElementById('code-box-header-title');
+      const tipText = document.getElementById('embed-tip-text');
+
+      if (currentExportFormat === 'iframe') {
+        headerTitle.textContent = "Kod ramki iFrame (WordPress, Blogger, CMS):";
+        tipText.innerHTML = "Wklej ten kod w edytorze WordPress za pomocą bloku <strong>Własny HTML</strong> lub w gadżecie <strong>HTML/JavaScript</strong> w Bloggerze. Ramka jest samowystarczalna i automatycznie dopasuje się do szerokości kolumny.";
+        
+        display.textContent = `<!-- Christian Culture – Ekosystem Osobistego Uświęcenia (Widget Audio) -->
+<iframe 
+  src="https://polskieradio.cc/embed/bar?channel=${station}" 
+  width="${width}" 
+  height="105" 
+  frameborder="0" 
+  scrolling="no" 
+  allow="autoplay" 
+  loading="lazy" 
+  style="border-radius: 16px; border: 1px solid rgba(197, 160, 89, 0.35); box-shadow: 0 16px 45px rgba(0,0,0,0.85); overflow: hidden;" 
+  title="Radio Christian Culture Player">
+</iframe>`;
+      } else if (currentExportFormat === 'htmljs') {
+        headerTitle.textContent = "Autonomiczny kod HTML & JavaScript (dla deweloperów):";
+        tipText.innerHTML = "Wklej ten kod bezpośrednio w sekcji <code>&lt;body&gt;</code> szablonu strony. Kod jest całkowicie lekki, nie wymaga zewnętrznych bibliotek i bezpośrednio łączy się ze strumieniami audio.";
+
+        display.textContent = `<!-- ========================================================================= -->
+<!-- CHRISTIAN CULTURE – WIDGET AUDIO PLAYER BAR                               -->
+<!-- ========================================================================= -->
+<div id="cc-player-bar-embed" style="width: ${width}; max-width: 900px; margin: 10px auto; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;"></div>
+
+<script>
+(function() {
+  var STATIONS = [
+    { id: 'prcc', name: 'Polskie Radio CC', url: 'https://stream.zeno.fm/vz96pvl3pnktv' },
+    { id: 'cc', name: 'Christian Culture', url: 'https://stream.zeno.fm/umej2cuqncluv' },
+    { id: 'biblia', name: 'Biblia Audio', url: 'https://stream.zeno.fm/gn3uhltrrytuv' }
+  ];
+  var currentIdx = STATIONS.findIndex(function(s){ return s.id === '${station}'; });
+  if (currentIdx === -1) currentIdx = 0;
+
+  var isPlaying = false;
+  var audio = new Audio(STATIONS[currentIdx].url);
+
+  var root = document.getElementById('cc-player-bar-embed');
+  root.innerHTML = '<div style="background: #0d0f14; border: 1px solid rgba(197, 160, 89, 0.35); border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 16px 45px rgba(0,0,0,0.85); color: #fff;">' +
+    '<div style="display: flex; items-center; gap: 10px; flex-shrink: 0;">' +
+      '<button id="cc-btn-play" style="width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fae69e 0%, #c5a059 55%, #806225 100%); border:none; color:#000; font-size:18px; font-weight:900; cursor:pointer; box-shadow: 0 0 18px rgba(203,162,88,0.45);">▶</button>' +
+    '</div>' +
+    '<div style="flex: 1; min-width: 0; background: #07090d; border: 1px solid rgba(197, 160, 89, 0.24); border-radius: 10px; padding: 8px 12px; height: 46px; display: flex; flex-direction: column; justify-content: center;">' +
+      '<div style="display: flex; align-items: center; gap: 6px;">' +
+        '<span style="width: 6px; height: 6px; border-radius: 50%; background: #e6ca65; box-shadow: 0 0 6px #e6ca65;"></span>' +
+        '<span id="cc-txt-title" style="font-weight: 700; font-size: 13px; color: #fdfbf7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + STATIONS[currentIdx].name + '</span>' +
+      '</div>' +
+      '<div style="font-size: 11px; color: #7e8a9f; margin-top: 1px;">' +
+        'Christian Culture • <a href="https://polskieradio.cc" target="_blank" style="color: #c5a059; text-decoration: none; font-weight: 600;">polskieradio.cc</a>' +
+      '</div>' +
+    '</div>' +
+    '<div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">' +
+      '<input type="range" min="0" max="1" step="0.05" value="0.85" id="cc-rng-vol" style="accent-color: #c5a059; width: 70px; cursor: pointer;">' +
+    '</div>' +
+  '</div>';
+
+  var btn = document.getElementById('cc-btn-play');
+  var title = document.getElementById('cc-txt-title');
+  var vol = document.getElementById('cc-rng-vol');
+
+  btn.onclick = function() {
+    if (!isPlaying) {
+      audio.play();
+      isPlaying = true;
+      btn.innerText = '⏸';
+      title.innerText = 'Odtwarzanie: ' + STATIONS[currentIdx].name;
+    } else {
+      audio.pause();
+      isPlaying = false;
+      btn.innerText = '▶';
+      title.innerText = 'Wstrzymano: ' + STATIONS[currentIdx].name;
+    }
+  };
+
+  vol.oninput = function() { audio.volume = this.value; };
+})();
+<\/script>`;
+      } else {
+        headerTitle.textContent = "Pobieranie kompletnego pliku HTML:";
+        tipText.innerHTML = "Pobierz plik <strong>radio_christian_culture_widget.html</strong> i wgraj go na swój hosting, serwer FTP lub otwórz lokalnie w dowolnej przeglądarce. Plik jest w 100% samowystarczalny.";
+
+        display.textContent = `<!-- Link do bezpośredniego pobrania pliku HTML -->
+<a href="https://polskieradio.cc/radio_christian_culture_widget.html" download="radio_christian_culture_widget.html">
+  Pobierz Widget Christian Culture (.html)
+</a>
+
+<!-- Lub otwórz bezpośrednio w oknie / ramce: -->
+https://polskieradio.cc/radio_christian_culture_widget.html`;
+      }
+    }
+
+    function copyEmbedCode() {
+      const code = document.getElementById('embed-code-display').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btnLabel = document.getElementById('copy-btn-label');
+        btnLabel.textContent = "Skopiowano!";
+        showToast("Kod został skopiowany do schowka!");
+        setTimeout(() => { btnLabel.textContent = "Kopiuj Kod"; }, 2500);
+      }).catch(() => {
+        showToast("Zaznacz kod i skopiuj ręcznie (Ctrl+C)");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-notify');
+      const text = document.getElementById('toast-notify-text');
+      text.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    window.onload = function() {
+      generateEmbedCode();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christian Culture – Ekosystem Osobistego Uświęcenia</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            onyx: {
+              950: '#06080b',
+              900: '#0d0f14',
+              850: '#11151e',
+              800: '#161b26',
+              700: '#1f2635'
+            },
+            sacredGold: {
+              100: '#fff7d6',
+              200: '#fae69e',
+              300: '#f5dd8c',
+              400: '#e6ca65',
+              500: '#c5a059',
+              600: '#a37f37',
+              700: '#7e6024',
+              border: 'rgba(197, 160, 89, 0.32)',
+              glow: 'rgba(230, 202, 101, 0.45)'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Georgia', 'serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          },
+          letterSpacing: {
+            sacred: '0.25em',
+            heading: '0.08em'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Cinzel (Szeryfowy) & Inter (Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------------------
+       RYGORYSTYCZNY RESET SUWAKÓW (ZERO SCROLLBAR ARCHITECTURE)
+       ------------------------------------------------------------------------- */
+    *, *::before, *::after {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+
+    /* ZŁOTY PRZYCISK PLAY/STOP Z PROMIENIOWYM GRADIENTEM I POŚWIATĄ */
+    .sacred-play-btn {
+      background: radial-gradient(circle at 35% 30%, #fae69e 0%, #c5a059 55%, #806225 100%);
+      box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.8),
+        0 0 24px rgba(203, 162, 88, 0.45),
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.65);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sacred-play-btn:hover {
+      background: radial-gradient(circle at 35% 30%, #fff4be 0%, #dbb263 55%, #93712b 100%);
+      box-shadow: 
+        0 6px 22px rgba(0, 0, 0, 0.9),
+        0 0 32px rgba(230, 202, 101, 0.75),
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
+      transform: scale(1.04);
+    }
+    .sacred-play-btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 14px rgba(203, 162, 88, 0.4);
+    }
+
+    /* ZŁOTY SUWAK GŁOŚNOŚCI ZE ŚWIECĄCYM PUNKTEM */
+    .sacred-volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 9999px;
+      background: #1e2534;
+      outline: none;
+    }
+    .sacred-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff3c4 15%, #c5a059 75%, #7e6024 100%);
+      box-shadow: 0 0 12px 2px rgba(230, 202, 101, 0.85);
+      cursor: pointer;
+      border: 1px solid #f5dd8c;
+      transition: transform 0.1s ease;
+    }
+    .sacred-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+    .sacred-volume-slider::-moz-range-thumb {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff3c4 15%, #c5a059 75%, #7e6024 100%);
+      box-shadow: 0 0 12px 2px rgba(230, 202, 101, 0.85);
+      border: 1px solid #f5dd8c;
+      cursor: pointer;
+    }
+
+    /* 4-SŁUPKOWY ZŁOTY KOREKTOR AUDIO */
+    .eq-bar {
+      width: 3px;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, #f5dd8c 0%, #c5a059 100%);
+      height: 4px;
+      transition: height 0.15s ease;
+    }
+    .is-playing .eq-bar:nth-child(1) { animation: eqBarPulse 0.85s ease-in-out infinite alternate; }
+    .is-playing .eq-bar:nth-child(2) { animation: eqBarPulse 0.65s ease-in-out infinite alternate 0.15s; }
+    .is-playing .eq-bar:nth-child(3) { animation: eqBarPulse 0.95s ease-in-out infinite alternate 0.3s; }
+    .is-playing .eq-bar:nth-child(4) { animation: eqBarPulse 0.75s ease-in-out infinite alternate 0.1s; }
+
+    @keyframes eqBarPulse {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    /* ŁAGODNY CROSSFADE PLANSZY PROMOCYJNEJ (700MS) */
+    .crossfade-card {
+      transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform;
+    }
+  </style>
+</head>
+
+<body class="bg-[#06080b] text-[#fdfbf7] min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-[#c5a059]/30 selection:text-white p-3 sm:p-6 lg:p-8 overflow-x-hidden">
+
+  <!-- Ukryty silnik audio HTML5 z 3 strumieniami -->
+  <audio id="audio-live-engine" preload="none"></audio>
+
+  <!-- NAGŁÓWEK TOŻSAMOŚCI ZE ZRZUTU EKRANU -->
+  <header class="max-w-5xl mx-auto w-full mb-6 sm:mb-8 text-center select-none pt-2">
+    <h1 class="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold tracking-heading text-[#fdfbf7] uppercase drop-shadow-[0_2px_14px_rgba(0,0,0,0.85)]">
+      CHRISTIAN CULTURE
+    </h1>
+    <p class="font-sans text-[11px] sm:text-[13px] font-bold tracking-sacred text-[#c5a059] uppercase mt-2">
+      EKOSYSTEM OSOBISTEGO UŚWIĘCENIA
+    </p>
+    <div class="mx-auto w-24 sm:w-32 h-[1.5px] bg-gradient-to-r from-transparent via-[#f5dd8c] to-transparent mt-2 shadow-[0_0_10px_#f5dd8c]"></div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- GŁÓWNA POJEDYNCZA BELKA ODTWARZACZA I PROMOCJI EKOSYSTEMU                 -->
+  <!-- ========================================================================= -->
+  <main class="max-w-5xl mx-auto w-full flex-1 flex flex-col justify-center">
+
+    <div class="w-full bg-[#0d0f14] border border-[rgba(197,160,89,0.35)] rounded-2xl p-3 sm:p-4 shadow-[0_20px_60px_rgba(0,0,0,0.9)] relative overflow-hidden">
+      
+      <!-- Złoty blask tła -->
+      <div class="absolute -top-16 -left-16 w-56 h-56 bg-[#c5a059]/6 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 relative z-10">
+
+        <!-- ------------------------------------------------------------------- -->
+        <!-- 1. LEWY BLOK: STAŁY ZŁOTY PRZYCISK PLAY/STOP ORAZ ZMIANA STACJI     -->
+        <!-- ------------------------------------------------------------------- -->
+        <div class="flex items-center space-x-2.5 sm:space-x-3 flex-shrink-0">
+          
+          <!-- Poprzednia stacja -->
+          <button onclick="changeStationOffset(-1)" title="Poprzednia stacja radiowa" class="w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95 shadow">
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+
+          <!-- GŁÓWNY ZŁOTY PRZYCISK PLAY / STOP -->
+          <button id="master-play-btn" onclick="toggleAudioStreaming()" title="Włącz / Zatrzymaj odtwarzanie" class="w-13 h-13 sm:w-14 sm:h-14 rounded-full sacred-play-btn flex items-center justify-center text-black cursor-pointer flex-shrink-0">
+            <!-- Ikona PLAY -->
+            <svg id="icon-play-state" class="w-6 h-6 fill-black ml-0.5 drop-shadow" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <!-- Ikona STOP / PAUZA (jak na zrzucie ekranu) -->
+            <svg id="icon-pause-state" class="w-6 h-6 fill-black hidden drop-shadow" viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+
+          <!-- Następna stacja -->
+          <button onclick="changeStationOffset(1)" title="Następna stacja radiowa" class="w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95 shadow">
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+        </div>
+
+        <!-- ------------------------------------------------------------------- -->
+        <!-- 2. CENTRALNY MODUŁ PROMOCJI (ŁAGODNY CROSSFADE 700MS • ZERO SUWAKÓW) -->
+        <!-- ------------------------------------------------------------------- -->
+        <div id="crossfade-carousel-box" onmouseenter="pauseCarousel()" onmouseleave="resumeCarousel()" class="flex-1 w-full min-w-0 relative h-[58px] overflow-hidden bg-[#07090d]/85 rounded-xl border border-[rgba(197,160,89,0.24)] px-3 py-1 flex items-center">
+
+          <!-- PLANSZA A: RDS „TERAZ GRAMY” -->
+          <div id="slide-item-0" class="crossfade-card absolute inset-0 px-3.5 flex flex-col justify-center opacity-100 scale-100 pointer-events-auto">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-2 h-2 rounded-full bg-[#e6ca65] shadow-[0_0_8px_#f5dd8c] animate-pulse flex-shrink-0"></span>
+                <span class="text-[9px] font-black tracking-widest text-[#f5dd8c] uppercase bg-[#181d28] border border-[#c5a059]/30 px-1.5 py-0.5 rounded flex-shrink-0 font-mono">
+                  NA ŻYWO
+                </span>
+                <h2 id="rds-active-title" class="text-xs sm:text-sm font-bold text-[#fdfbf7] truncate">
+                  Odtwarzanie na żywo: Polskie Radio CC
+                </h2>
+              </div>
+              <span class="hidden sm:inline-block text-[10px] text-[#f5dd8c] font-mono bg-[#11151e] px-2 py-0.5 rounded border border-[#c5a059]/25 flex-shrink-0">
+                192 kbps HD Audio
+              </span>
+            </div>
+            <p id="rds-active-subtitle" class="text-[11px] text-[#7e8a9f] truncate mt-0.5">
+              Strumień: Polskie Radio Christian Culture
+            </p>
+          </div>
+
+          <!-- PLANSZA B: SZYBKI WYBÓR 3 STRUMIENI (3 SEGMENTY • ZERO SUWAKÓW) -->
+          <div id="slide-item-1" class="crossfade-card absolute inset-0 px-2 sm:px-3 flex items-center opacity-0 scale-[0.98] pointer-events-none">
+            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 w-full">
+              <button onclick="selectDirectStation('prcc')" id="channel-btn-prcc" class="py-1.5 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center truncate bg-[#c5a059] text-black shadow-[0_0_10px_rgba(197,160,89,0.4)] transition-all">
+                Polskie Radio CC
+              </button>
+              <button onclick="selectDirectStation('cc')" id="channel-btn-cc" class="py-1.5 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] transition-all">
+                Christian Culture
+              </button>
+              <button onclick="selectDirectStation('biblia')" id="channel-btn-biblia" class="py-1.5 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] transition-all">
+                Biblia Audio
+              </button>
+            </div>
+          </div>
+
+          <!-- PLANSZA C: ROTUJĄCE OFERTY EKOSYSTEMU (DYNAMICZNY MIKRO-BANER • ZERO SUWAKÓW) -->
+          <div id="slide-item-2" class="crossfade-card absolute inset-0 px-2.5 sm:px-3 flex items-center opacity-0 scale-[0.98] pointer-events-none">
+            <div class="w-full flex items-center justify-between bg-[#11151e]/95 border border-[#c5a059]/30 rounded-lg px-2.5 sm:px-3 py-1.5">
+              <div class="flex items-center gap-2 min-w-0 pr-2">
+                <span id="promo-category-badge" class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#c5a059] text-black tracking-wider flex-shrink-0 font-mono">
+                  PORTALE
+                </span>
+                <div class="min-w-0">
+                  <div id="promo-offer-headline" class="text-xs font-bold text-[#fdfbf7] truncate">
+                    Portal Społecznościowy LUMINA
+                  </div>
+                  <div id="promo-offer-caption" class="text-[10px] text-[#7e8a9f] truncate hidden sm:block">
+                    Przestrzeń dialogu, świadectw i budowania relacji
+                  </div>
+                </div>
+              </div>
+              <a id="promo-external-link" href="https://polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer" class="flex-shrink-0 px-2.5 py-1 rounded-md bg-[#c5a059]/20 hover:bg-[#c5a059] text-[#f5dd8c] hover:text-black border border-[#c5a059]/40 transition-all font-bold text-[10px] sm:text-[11px] flex items-center gap-1">
+                <span>Otwórz</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- PLANSZA D: TOŻSAMOŚĆ & EKOSYSTEM -->
+          <div id="slide-item-3" class="crossfade-card absolute inset-0 px-3.5 flex flex-col justify-center opacity-0 scale-[0.98] pointer-events-none">
+            <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer" class="group block">
+              <div class="flex items-center gap-2">
+                <span class="font-serif text-xs sm:text-sm font-bold text-[#fdfbf7] group-hover:text-[#f5dd8c] transition-colors tracking-wide uppercase">
+                  CHRISTIAN CULTURE
+                </span>
+                <span class="text-[9px] text-[#c5a059] font-mono px-1.5 py-0.5 rounded border border-[#c5a059]/30 bg-[#121620]">
+                  EKOSYSTEM ↗
+                </span>
+              </div>
+              <p class="font-sans text-[10px] tracking-sacred text-[#c5a059] uppercase font-bold mt-0.5">
+                EKOSYSTEM OSOBISTEGO UŚWIĘCENIA
+              </p>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- ------------------------------------------------------------------- -->
+        <!-- 3. PRAWY BLOK: EQUALIZER, GŁOŚNOŚĆ, KATALOG I PRZYCISK KODU         -->
+        <!-- ------------------------------------------------------------------- -->
+        <div class="flex items-center space-x-2.5 sm:space-x-3 flex-shrink-0">
+
+          <!-- 4-słupkowy animowany złoty equalizer -->
+          <div id="sacred-audio-eq" class="flex items-end gap-1 h-5 w-6 px-0.5" title="Korektor pasma audio">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+
+          <!-- Regulacja Głośności -->
+          <div class="flex items-center space-x-2 bg-[#121620] px-2.5 py-1.5 rounded-xl border border-[#232b3b]">
+            <button id="btn-vol-mute" onclick="toggleVolumeMute()" title="Wycisz dźwięk" class="text-[#7e8a9f] hover:text-[#f5dd8c] transition-colors">
+              <svg id="vol-active-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </svg>
+              <svg id="vol-muted-icon" class="w-4 h-4 hidden text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+              </svg>
+            </button>
+            <input id="master-volume-fader" type="range" min="0" max="1" step="0.02" value="0.85" oninput="changeMasterVolume(this.value)" class="sacred-volume-slider w-16 sm:w-20 cursor-pointer" title="Regulacja głośności">
+          </div>
+
+          <!-- Przycisk KATALOG EKOSYSTEMU (wszystkie 25 ofert) -->
+          <button onclick="toggleModalCatalog()" title="Otwórz pełny Katalog Ekosystemu" class="px-2.5 py-1.5 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 transition-all font-sans text-[11px] font-bold flex items-center gap-1.5 shadow active:scale-95">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+            <span class="hidden sm:inline">KATALOG</span>
+          </button>
+
+          <!-- Przycisk modala ANTYGRAVITY (KOD) -->
+          <button onclick="toggleModalAntygravity()" title="Kod dla Antygravity" class="px-2.5 py-1.5 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#e6ca65] border border-[#c5a059]/40 transition-all font-mono text-[11px] font-bold flex items-center gap-1 shadow active:scale-95">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.89 3l1.96.75-5.74 15L7.15 18l5.74-15zm4.84 4.5l4.27 4.5-4.27 4.5-1.42-1.42 2.92-3.08-2.92-3.08 1.42-1.42zM6.27 12l2.92 3.08-1.42 1.42L3.5 12l4.27-4.5 1.42 1.42L6.27 12z"/></svg>
+            <span>KOD</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- DOLNA LINIA STATUSU I WSKAŹNIKÓW (MINIMALISTYCZNE ZŁOTE PUNKTY) -->
+      <div class="mt-2.5 pt-2 border-t border-[rgba(197,160,89,0.16)] flex items-center justify-between text-[10px] text-[#7e8a9f]">
+        <div class="flex items-center space-x-1.5">
+          <button onclick="displayTargetSlide(0)" id="dot-indicator-0" aria-label="Plansza 1" class="w-2 h-2 rounded-full bg-[#c5a059] shadow-[0_0_6px_#f5dd8c] transition-all"></button>
+          <button onclick="displayTargetSlide(1)" id="dot-indicator-1" aria-label="Plansza 2" class="w-2 h-2 rounded-full bg-[#1e2534] hover:bg-[#c5a059]/60 transition-all"></button>
+          <button onclick="displayTargetSlide(2)" id="dot-indicator-2" aria-label="Plansza 3" class="w-2 h-2 rounded-full bg-[#1e2534] hover:bg-[#c5a059]/60 transition-all"></button>
+          <button onclick="displayTargetSlide(3)" id="dot-indicator-3" aria-label="Plansza 4" class="w-2 h-2 rounded-full bg-[#1e2534] hover:bg-[#c5a059]/60 transition-all"></button>
+        </div>
+
+        <div class="flex items-center space-x-2 font-mono">
+          <span id="active-station-badge" class="text-[#f5dd8c] font-semibold">POLSKIE RADIO CC</span>
+          <span class="text-[#3c4556]">|</span>
+          <button onclick="toggleModalCatalog()" class="text-[#c5a059] hover:underline font-bold">25 Portali i Usług Ekosystemu</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: PEŁNY KATALOG OFERT EKOSYSTEMU (25 PORTALI I USŁUG)               -->
+  <!-- ========================================================================= -->
+  <div id="catalog-modal-window" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-[#0d0f14] border border-[#c5a059]/50 rounded-2xl max-w-4xl w-full p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.95)] max-h-[90vh] flex flex-col relative overflow-hidden">
+      
+      <!-- Nagłówek modala -->
+      <div class="flex items-center justify-between pb-3 border-b border-[#232b3b] flex-shrink-0">
+        <div>
+          <h2 class="font-serif text-lg sm:text-xl font-bold text-[#fdfbf7] tracking-wide">
+            Katalog Ekosystemu Christian Culture
+          </h2>
+          <p class="text-xs text-[#7e8a9f] mt-0.5">
+            Wszystkie oficjalne portale, aplikacje, transmisje na żywo i publikacje.
+          </p>
+        </div>
+        <button onclick="toggleModalCatalog()" class="p-2 text-[#7e8a9f] hover:text-white rounded-lg transition-colors">
+          <svg class="w-6 h-6 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Wyszukiwarka i filtry kategorii -->
+      <div class="pt-3 pb-2 flex-shrink-0 flex flex-col sm:flex-row gap-2.5">
+        <div class="relative flex-1">
+          <input id="catalog-search-input" oninput="filterCatalogCards()" type="text" placeholder="Szukaj w ekosystemie (np. Biblia, CCTV, prawo, VOD, Lumia)..." class="w-full bg-[#11151e] border border-[#232b3b] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white placeholder-[#5d687c] outline-none">
+          <span class="absolute right-3 top-2.5 text-xs text-[#5d687c]">🔍</span>
+        </div>
+        <div class="flex items-center gap-1 overflow-x-hidden text-[11px] font-mono">
+          <button onclick="setCategoryFilter('all')" id="cat-tab-all" class="px-2.5 py-1.5 rounded-lg bg-[#c5a059] text-black font-bold">Wszystkie</button>
+          <button onclick="setCategoryFilter('main')" id="cat-tab-main" class="px-2.5 py-1.5 rounded-lg bg-[#141824] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Główne</button>
+          <button onclick="setCategoryFilter('ccn')" id="cat-tab-ccn" class="px-2.5 py-1.5 rounded-lg bg-[#141824] text-[#7e8a9f] hover:text-white border border-[#232b3b]">CCN News</button>
+          <button onclick="setCategoryFilter('live')" id="cat-tab-live" class="px-2.5 py-1.5 rounded-lg bg-[#141824] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Transmisje</button>
+          <button onclick="setCategoryFilter('mission')" id="cat-tab-mission" class="px-2.5 py-1.5 rounded-lg bg-[#141824] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Misja</button>
+        </div>
+      </div>
+
+      <!-- Siatka kafelków ofert (Dynamicznie renderowana, zero scrollbara) -->
+      <div id="catalog-tiles-grid" class="flex-1 overflow-y-auto py-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pr-1">
+        <!-- Renderowane przez JS -->
+      </div>
+
+      <!-- Stopka modala -->
+      <div class="pt-3 border-t border-[#232b3b] flex items-center justify-between text-xs text-[#7e8a9f] flex-shrink-0">
+        <span>Łącznie 25 aktywnych usług ekosystemu</span>
+        <button onclick="toggleModalCatalog()" class="px-4 py-1.5 rounded-lg bg-[#141824] text-[#fdfbf7] hover:bg-[#202735]">
+          Zamknij Katalog
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: KOD BELKI DLA ANTYGRAVITY                                          -->
+  <!-- ========================================================================= -->
+  <div id="antygravity-modal-window" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-[#0d0f14] border border-[#c5a059]/45 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.95)] relative">
+      
+      <!-- Nagłówek modala -->
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#232b3b]">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#fdfbf7] tracking-wide">
+            Kod Belki dla Antygravity
+          </h3>
+          <p class="text-xs text-[#7e8a9f] mt-0.5">
+            Samowystarczalna pojedyncza belka ze złotą estetyką i zerem suwaków.
+          </p>
+        </div>
+        <button onclick="toggleModalAntygravity()" class="p-1.5 text-[#7e8a9f] hover:text-white rounded-lg transition-colors">
+          <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Wybór formatu -->
+      <div class="flex items-center justify-between mb-3 text-xs font-mono">
+        <div class="flex items-center gap-2">
+          <span class="text-[#7e8a9f]">Wariant:</span>
+          <div class="p-1 bg-[#06080b] rounded-lg border border-[#232b3b] flex">
+            <button id="btn-format-js" onclick="selectExportFormat('js')" class="px-2.5 py-1 rounded font-bold bg-[#c5a059] text-black">
+              Autonomiczny HTML/JS
+            </button>
+            <button id="btn-format-iframe" onclick="selectExportFormat('iframe')" class="px-2.5 py-1 rounded font-medium text-[#7e8a9f] hover:text-white">
+              Ramka iFrame
+            </button>
+          </div>
+        </div>
+
+        <button onclick="copySnippetToClipboard()" class="px-3 py-1.5 rounded-lg bg-[#c5a059] hover:bg-[#f5dd8c] text-black font-bold flex items-center gap-1.5 transition-all active:scale-95 shadow">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          <span id="copy-btn-feedback">Kopiuj Kod</span>
+        </button>
+      </div>
+
+      <!-- Okno kodu -->
+      <pre class="bg-[#05070a] p-3.5 rounded-xl border border-[#1f2635] font-mono text-xs text-[#e6ca65] overflow-x-auto max-h-64 leading-relaxed select-all"><code id="code-output-area"></code></pre>
+
+      <div class="mt-4 pt-3 border-t border-[#232b3b] flex items-center justify-between text-xs text-[#7e8a9f]">
+        <span>Obsługuje: Polskie Radio CC, Christian Culture, Biblia Audio</span>
+        <button onclick="toggleModalAntygravity()" class="px-3.5 py-1.5 rounded-lg bg-[#141824] text-[#fdfbf7] hover:bg-[#202735]">
+          Zamknij
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POWIADOMIENIE TOAST (BEZPIECZNE - BEZ ALERTÓW) -->
+  <div id="toast-notify" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <div class="bg-gradient-to-r from-[#f5dd8c] to-[#c5a059] text-black px-4 py-2 rounded-xl shadow-2xl font-bold text-xs flex items-center gap-2 border border-[#fff2b8]">
+      <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      <span id="toast-notify-text">Skopiowano kod do schowka!</span>
+    </div>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // 3 STRUMIENIE AUDIO LIVE
+    // -------------------------------------------------------------------------
+    const RADIO_STATIONS = [
+      {
+        id: 'prcc',
+        name: 'Polskie Radio CC',
+        fullTitle: 'Polskie Radio Christian Culture',
+        streamUrl: 'https://stream.zeno.fm/vz96pvl3pnktv',
+        caption: 'Strumień: Polskie Radio Christian Culture'
+      },
+      {
+        id: 'cc',
+        name: 'Christian Culture',
+        fullTitle: 'Christian Culture',
+        streamUrl: 'https://stream.zeno.fm/umej2cuqncluv',
+        caption: 'Strumień: Christian Culture – Muzyka & Tradycja'
+      },
+      {
+        id: 'biblia',
+        name: 'Biblia Audio',
+        fullTitle: 'Biblia Audio',
+        streamUrl: 'https://stream.zeno.fm/gn3uhltrrytuv',
+        caption: 'Strumień: Biblia Audio – Słowo Boże Non-Stop'
+      }
+    ];
+
+    // -------------------------------------------------------------------------
+    // KOMPLETNA BAZA 25 OFERT I USŁUG EKOSYSTEMU CHRISTIAN CULTURE
+    // -------------------------------------------------------------------------
+    const ECOSYSTEM_SERVICES = [
+      // 1. Portale Główne i Aplikacje
+      { category: 'main', catLabel: 'Portal Główny', title: 'Strona Główna', desc: 'Centralny portal informacyjny i formacyjny ekosystemu', link: 'https://polskieradio.cc' },
+      { category: 'main', catLabel: 'Społeczność', title: 'Portal LUMINA', desc: 'Przestrzeń dialogu, świadectw i budowania relacji wiary', link: 'https://polskieradio.cc/lumina' },
+      { category: 'main', catLabel: 'Audio Player', title: 'Odtwarzacz Radiowy', desc: 'Luksusowy streaming i biblioteka audycji radiowych', link: 'https://polskieradio.cc/player' },
+      { category: 'main', catLabel: 'Formacja', title: 'Akademia Biblijna CC', desc: 'Codzienny kurs biblijny, egzegeza i systematyczne studium', link: 'https://polskieradio.cc/akademia' },
+      { category: 'main', catLabel: 'Biblia', title: 'Interlinearna MojaBiblia', desc: 'Teksty oryginalne z kodami Stronga, greką i hebrajskim', link: 'https://polskieradio.cc/mojabiblia' },
+      { category: 'main', catLabel: 'Kino VOD', title: 'Kino VOD', desc: 'Wartościowe kino, filmy fabularne i dokumentalne', link: 'https://polskieradio.cc/vod' },
+      { category: 'main', catLabel: 'Kultura', title: 'Centrum Kultury', desc: 'Promocja sztuki, literatury i muzyki tradycji chrześcijańskiej', link: 'https://polskieradio.cc/kultura' },
+      { category: 'main', catLabel: 'Biblioteka', title: 'Biblioteka Literatury CC', desc: 'Elektroniczne archiwum publikacji, artykułów i dokumentów', link: 'https://polskieradio.cc/biblioteka' },
+      { category: 'main', catLabel: 'Biznes', title: 'Hub Biznesowy CC', desc: 'Środowisko przedsiębiorców kierujących się etyką chrześcijańską', link: 'https://polskieradio.cc/biznes' },
+      { category: 'main', catLabel: 'Modlitwa', title: 'Zjednoczeni za Polskę', desc: 'Ogólnonarodowe czuwanie modlitewne i intencje', link: 'https://polskieradio.cc/modlitwa' },
+      { category: 'main', catLabel: 'Aplikacja', title: 'Portal Mobilny CC Lite', desc: 'Ultralekka wersja mobilna zoptymalizowana na każdy smartfon', link: 'https://cclite.pl' },
+      { category: 'main', catLabel: 'Aplikacja', title: 'Aplikacja PWA Firebase', desc: 'Instalowalna aplikacja sieciowa z dostępem offline', link: 'https://christian-culture.web.app' },
+
+      // 2. Portale Tematyczne CCN News
+      { category: 'ccn', catLabel: 'CCN Wiadomości', title: 'CCN News Główne', desc: 'Rzetelne wiadomości ze świata i Polski z perspektywy wartości', link: 'https://polskieradio.cc/news' },
+      { category: 'ccn', catLabel: 'CCN Nauka', title: 'CCN Nauka', desc: 'Przegląd odkryć naukowych, kosmologia i kreacjonizm', link: 'https://polskieradio.cc/nauka' },
+      { category: 'ccn', catLabel: 'CCN Historia', title: 'CCN Historia', desc: 'Prawda historyczna, dzieje narodu i korzenie cywilizacji', link: 'https://polskieradio.cc/historia' },
+      { category: 'ccn', catLabel: 'CCN Biologia', title: 'CCN Biologia', desc: 'Złożoność życia, bioetyka i fenomen natury', link: 'https://polskieradio.cc/biologia' },
+      { category: 'ccn', catLabel: 'CCN Prawo', title: 'CCN Prawo', desc: 'Analizy prawne, ochrona wolności sumienia i prawo naturalne', link: 'https://polskieradio.cc/prawo' },
+      { category: 'ccn', catLabel: 'CCN Etyka', title: 'CCN Etyka & Rodzina', desc: 'Etyka relacji, narzeczeństwo i budowanie trwałego małżeństwa', link: 'https://polskieradio.cc/seks' },
+
+      // 3. Kanały Transmisyjne LIVE i CCTV24
+      { category: 'live', catLabel: 'CCTV24 LIVE', title: 'CCTV24 Worship 24/7', desc: 'Całodobowy kanał uwielbienia i pieśni chwały', link: 'https://polskieradio.cc/cctv24-worship.html' },
+      { category: 'live', catLabel: 'Transmisja', title: 'Scena Transmisyjna LIVE', desc: 'Transmisje wydarzeń, konferencji i debat na żywo', link: 'https://polskieradio.cc/stream-scene.html' },
+      { category: 'live', catLabel: 'Telewizja', title: 'Telewizja Śniadaniowa Live', desc: 'Poranne pasmo publicystyczno-kulturalne na żywo', link: 'https://polskieradio.cc/snadaniowa-live.html' },
+      { category: 'live', catLabel: 'Modlitwa LIVE', title: 'Zjednoczeni za Polskę Live', desc: 'Transmisja na żywo wspólnej modlitwy za ojczyznę', link: 'https://polskieradio.cc/zapolske-live.html' },
+      { category: 'live', catLabel: 'Słowo LIVE', title: 'Biblia Śpiewana Live', desc: 'Śpiewane teksty biblijne i psalmy na żywo przez całą dobę', link: 'https://polskieradio.cc/biblia-spiewana-live.html' },
+
+      // 4. Wsparcie Misji i E-Booki
+      { category: 'mission', catLabel: 'Wsparcie Misji', title: 'Oficjalny Patronat', desc: 'Wspieraj budowę i rozwój niezależnych mediów na Patronite', link: 'https://patronite.pl/osobowoscplus' },
+      { category: 'mission', catLabel: 'E-Booki', title: 'Książki & Publikacje Autora', desc: 'Autorskie e-booki, podręczniki duchowe i rozważania', link: 'https://polskieradio.cc/ksiazki-autora' }
+    ];
+
+    // Zmienne stanu odtwarzacza
+    const audioNode = document.getElementById('audio-live-engine');
+    let currentStationIndex = 0;
+    let isLivePlaying = false;
+    let isMutedState = false;
+    let previousVolume = 0.85;
+
+    // Zmienne rotacji plansz
+    let activeSlideIndex = 0;
+    let activeEcosystemOfferIndex = 0;
+    const TOTAL_SLIDES = 4;
+    const ROTATION_INTERVAL_MS = 6000;
+    let carouselIntervalTimer = null;
+    let isCarouselSuspended = false;
+    let selectedExportType = 'js';
+    let currentCategoryFilter = 'all';
+
+    // =========================================================================
+    // STEROWANIE ODTWARZANIEM AUDIO
+    // =========================================================================
+    function toggleAudioStreaming() {
+      const station = RADIO_STATIONS[currentStationIndex];
+
+      if (!audioNode.src || !audioNode.src.includes('stream')) {
+        audioNode.src = station.streamUrl;
+      }
+
+      if (isLivePlaying) {
+        audioNode.pause();
+        updatePlaybackInterface(false);
+      } else {
+        document.getElementById('rds-active-title').textContent = `Łączenie: ${station.name}...`;
+
+        const playPromise = audioNode.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            updatePlaybackInterface(true);
+          }).catch(err => {
+            console.warn('Wymagana interakcja użytkownika:', err);
+            updatePlaybackInterface(true);
+          });
+        }
+      }
+    }
+
+    function updatePlaybackInterface(isPlaying) {
+      isLivePlaying = isPlaying;
+      const playIcon = document.getElementById('icon-play-state');
+      const pauseIcon = document.getElementById('icon-pause-state');
+      const eqContainer = document.getElementById('sacred-audio-eq');
+      const station = RADIO_STATIONS[currentStationIndex];
+
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        eqContainer.classList.add('is-playing');
+        document.getElementById('rds-active-title').textContent = `Odtwarzanie na żywo: ${station.name}`;
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        eqContainer.classList.remove('is-playing');
+        document.getElementById('rds-active-title').textContent = `Transmisja wstrzymana: ${station.name}`;
+      }
+    }
+
+    // =========================================================================
+    // PRZEŁĄCZANIE STRUMIENI
+    // =========================================================================
+    function changeStationOffset(offset) {
+      currentStationIndex = (currentStationIndex + offset + RADIO_STATIONS.length) % RADIO_STATIONS.length;
+      applyStationUpdate();
+    }
+
+    function selectDirectStation(channelId) {
+      const targetIndex = RADIO_STATIONS.findIndex(s => s.id === channelId);
+      if (targetIndex !== -1) {
+        currentStationIndex = targetIndex;
+        applyStationUpdate();
+      }
+    }
+
+    function applyStationUpdate() {
+      const station = RADIO_STATIONS[currentStationIndex];
+
+      document.getElementById('rds-active-title').textContent = isLivePlaying 
+        ? `Odtwarzanie na żywo: ${station.name}`
+        : `Wybrano: ${station.name}`;
+      document.getElementById('rds-active-subtitle').textContent = station.caption;
+      document.getElementById('active-station-badge').textContent = station.name.toUpperCase();
+
+      ['prcc', 'cc', 'biblia'].forEach(id => {
+        const btn = document.getElementById(`channel-btn-${id}`);
+        if (id === station.id) {
+          btn.className = "py-1.5 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center truncate bg-[#c5a059] text-black shadow-[0_0_10px_rgba(197,160,89,0.4)] transition-all";
+        } else {
+          btn.className = "py-1.5 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] transition-all";
+        }
+      });
+
+      const wasPlaying = isLivePlaying;
+      audioNode.src = station.streamUrl;
+
+      if (wasPlaying) {
+        audioNode.play().then(() => {
+          updatePlaybackInterface(true);
+        }).catch(() => {
+          updatePlaybackInterface(false);
+        });
+      }
+
+      showToastNotification(`Stacja: ${station.fullTitle}`);
+      updateExportCodeContent();
+    }
+
+    // =========================================================================
+    // REGULACJA GŁOŚNOŚCI
+    // =========================================================================
+    function changeMasterVolume(val) {
+      audioNode.volume = parseFloat(val);
+      previousVolume = audioNode.volume;
+      if (previousVolume === 0) {
+        setMuteVisual(true);
+      } else {
+        setMuteVisual(false);
+        isMutedState = false;
+      }
+    }
+
+    function toggleVolumeMute() {
+      isMutedState = !isMutedState;
+      audioNode.muted = isMutedState;
+      setMuteVisual(isMutedState);
+
+      const slider = document.getElementById('master-volume-fader');
+      if (isMutedState) {
+        slider.value = 0;
+      } else {
+        slider.value = previousVolume;
+      }
+    }
+
+    function setMuteVisual(muted) {
+      const activeIcon = document.getElementById('vol-active-icon');
+      const mutedIcon = document.getElementById('vol-muted-icon');
+      if (muted) {
+        activeIcon.classList.add('hidden');
+        mutedIcon.classList.remove('hidden');
+      } else {
+        activeIcon.classList.remove('hidden');
+        mutedIcon.classList.add('hidden');
+      }
+    }
+
+    // =========================================================================
+    // ŁAGODNE PRZENIKANIE PLANSZ (CROSSFADE ENGINE 700ms)
+    // =========================================================================
+    function displayTargetSlide(targetIdx) {
+      activeSlideIndex = targetIdx;
+
+      if (activeSlideIndex === 2) {
+        cycleNextOffer();
+      }
+
+      for (let i = 0; i < TOTAL_SLIDES; i++) {
+        const slide = document.getElementById(`slide-item-${i}`);
+        const dot = document.getElementById(`dot-indicator-${i}`);
+
+        if (i === activeSlideIndex) {
+          slide.classList.remove('opacity-0', 'scale-[0.98]', 'pointer-events-none');
+          slide.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+          dot.className = "w-2 h-2 rounded-full bg-[#c5a059] shadow-[0_0_6px_#f5dd8c] transition-all";
+        } else {
+          slide.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+          slide.classList.add('opacity-0', 'scale-[0.98]', 'pointer-events-none');
+          dot.className = "w-2 h-2 rounded-full bg-[#1e2534] hover:bg-[#c5a059]/60 transition-all";
+        }
+      }
+    }
+
+    function cycleNextOffer() {
+      activeEcosystemOfferIndex = (activeEcosystemOfferIndex + 1) % ECOSYSTEM_SERVICES.length;
+      const offer = ECOSYSTEM_SERVICES[activeEcosystemOfferIndex];
+      document.getElementById('promo-category-badge').textContent = offer.catLabel.toUpperCase();
+      document.getElementById('promo-offer-headline').textContent = offer.title;
+      document.getElementById('promo-offer-caption').textContent = offer.desc;
+      document.getElementById('promo-external-link').href = offer.link;
+    }
+
+    function initCarouselLoop() {
+      clearInterval(carouselIntervalTimer);
+      carouselIntervalTimer = setInterval(() => {
+        if (!isCarouselSuspended) {
+          const nextIndex = (activeSlideIndex + 1) % TOTAL_SLIDES;
+          displayTargetSlide(nextIndex);
+        }
+      }, ROTATION_INTERVAL_MS);
+    }
+
+    function pauseCarousel() {
+      isCarouselSuspended = true;
+    }
+
+    function resumeCarousel() {
+      isCarouselSuspended = false;
+    }
+
+    // =========================================================================
+    // KATALOG EKOSYSTEMU (MODAL I FILTROWANIE)
+    // =========================================================================
+    function toggleModalCatalog() {
+      const modal = document.getElementById('catalog-modal-window');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        renderCatalogCards();
+      }
+    }
+
+    function setCategoryFilter(category) {
+      currentCategoryFilter = category;
+      ['all', 'main', 'ccn', 'live', 'mission'].forEach(cat => {
+        const btn = document.getElementById(`cat-tab-${cat}`);
+        if (cat === category) {
+          btn.className = "px-2.5 py-1.5 rounded-lg bg-[#c5a059] text-black font-bold";
+        } else {
+          btn.className = "px-2.5 py-1.5 rounded-lg bg-[#141824] text-[#7e8a9f] hover:text-white border border-[#232b3b]";
+        }
+      });
+      renderCatalogCards();
+    }
+
+    function filterCatalogCards() {
+      renderCatalogCards();
+    }
+
+    function renderCatalogCards() {
+      const container = document.getElementById('catalog-tiles-grid');
+      const query = (document.getElementById('catalog-search-input').value || '').toLowerCase().trim();
+
+      const filtered = ECOSYSTEM_SERVICES.filter(item => {
+        const matchesCategory = currentCategoryFilter === 'all' || item.category === currentCategoryFilter;
+        const matchesQuery = !query || 
+          item.title.toLowerCase().includes(query) || 
+          item.desc.toLowerCase().includes(query) || 
+          item.catLabel.toLowerCase().includes(query) ||
+          item.link.toLowerCase().includes(query);
+        return matchesCategory && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-8 text-center text-[#7e8a9f] text-xs font-mono">
+            Brak wyników spełniających kryteria wyszukiwania.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="group bg-[#11151e] hover:bg-[#161c28] border border-[#232b3b] hover:border-[#c5a059]/50 rounded-xl p-3 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1.5">
+              <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-[#181d28] border border-[#c5a059]/30 text-[#f5dd8c]">
+                ${item.catLabel}
+              </span>
+              <span class="text-xs text-[#7e8a9f] group-hover:text-[#f5dd8c] transition-colors">↗</span>
+            </div>
+            <h4 class="text-xs font-bold text-[#fdfbf7] group-hover:text-[#f5dd8c] transition-colors">
+              ${item.title}
+            </h4>
+            <p class="text-[11px] text-[#7e8a9f] mt-1 line-clamp-2 leading-relaxed">
+              ${item.desc}
+            </p>
+          </div>
+          <div class="mt-2 pt-2 border-t border-[#1b2230] flex items-center justify-between text-[10px] text-[#5d687c] font-mono">
+            <span class="truncate">${item.link.replace('https://', '')}</span>
+            <span class="text-[#c5a059] font-bold group-hover:translate-x-0.5 transition-transform">Przejdź</span>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // =========================================================================
+    // MODAL I GENERATOR KODU DLA ANTYGRAVITY
+    // =========================================================================
+    function toggleModalAntygravity() {
+      const modal = document.getElementById('antygravity-modal-window');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        updateExportCodeContent();
+      }
+    }
+
+    function selectExportFormat(format) {
+      selectedExportType = format;
+      const btnJs = document.getElementById('btn-format-js');
+      const btnIframe = document.getElementById('btn-format-iframe');
+
+      if (format === 'js') {
+        btnJs.className = "px-2.5 py-1 rounded font-bold bg-[#c5a059] text-black";
+        btnIframe.className = "px-2.5 py-1 rounded font-medium text-[#7e8a9f] hover:text-white";
+      } else {
+        btnIframe.className = "px-2.5 py-1 rounded font-bold bg-[#c5a059] text-black";
+        btnJs.className = "px-2.5 py-1 rounded font-medium text-[#7e8a9f] hover:text-white";
+      }
+      updateExportCodeContent();
+    }
+
+    function updateExportCodeContent() {
+      const targetArea = document.getElementById('code-output-area');
+      const station = RADIO_STATIONS[currentStationIndex];
+
+      if (selectedExportType === 'iframe') {
+        targetArea.textContent = `<!-- Christian Culture – Ekosystem Osobistego Uświęcenia (Belka Audio Player Bar) -->
+<iframe 
+  src="https://polskieradio.cc/embed/bar?channel=${station.id}" 
+  width="100%" 
+  height="90" 
+  frameborder="0" 
+  scrolling="no"
+  allow="autoplay"
+  loading="lazy" 
+  style="border-radius: 16px; border: 1px solid rgba(197, 160, 89, 0.35); box-shadow: 0 12px 36px rgba(0,0,0,0.85); overflow: hidden;" 
+  title="Radio Christian Culture Player">
+</iframe>`;
+      } else {
+        targetArea.textContent = `<!-- ========================================================================= -->
+<!-- CHRISTIAN CULTURE – EKOSYSTEM OSOBISTEGO UŚWIĘCENIA                       -->
+<!-- Belka Audio Player Bar (Architektura Bez Suwaków • Płynny Crossfade)      -->
+<!-- ========================================================================= -->
+<style>
+  #cc-player-bar * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+  #cc-player-bar *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+</style>
+
+<div id="cc-player-bar" style="width: 100%; max-width: 900px; margin: 10px auto; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;"></div>
+
+<script>
+(function() {
+  var STATIONS = [
+    { id: 'prcc', name: 'Polskie Radio CC', url: 'https://stream.zeno.fm/vz96pvl3pnktv' },
+    { id: 'cc', name: 'Christian Culture', url: 'https://stream.zeno.fm/umej2cuqncluv' },
+    { id: 'biblia', name: 'Biblia Audio', url: 'https://stream.zeno.fm/gn3uhltrrytuv' }
+  ];
+  var currentIdx = 0;
+  var isPlaying = false;
+  var audio = new Audio(STATIONS[currentIdx].url);
+
+  var root = document.getElementById('cc-player-bar');
+  root.innerHTML = \`
+    <div style="background: #0d0f14; border: 1px solid rgba(197, 160, 89, 0.35); border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 16px 45px rgba(0,0,0,0.85); color: #fff;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+        <button id="cc-bar-play" style="width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fae69e 0%, #c5a059 55%, #806225 100%); border:none; color:#000; font-size:18px; font-weight:900; cursor:pointer; box-shadow: 0 0 18px rgba(203,162,88,0.45);">▶</button>
+      </div>
+
+      <div style="flex: 1; min-width: 0; background: #07090d; border: 1px solid rgba(197, 160, 89, 0.24); border-radius: 10px; padding: 8px 12px; height: 46px; display: flex; flex-direction: column; justify-content: center;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #e6ca65; box-shadow: 0 0 6px #e6ca65;"></span>
+          <span id="cc-bar-title" style="font-weight: 700; font-size: 13px; color: #fdfbf7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Polskie Radio CC</span>
+        </div>
+        <div style="font-size: 11px; color: #7e8a9f; margin-top: 1px;">
+          Christian Culture • <a href="https://polskieradio.cc" target="_blank" style="color: #c5a059; text-decoration: none; font-weight: 600;">polskieradio.cc</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+        <input type="range" min="0" max="1" step="0.05" value="0.85" id="cc-bar-vol" style="accent-color: #c5a059; width: 70px; cursor: pointer;">
+      </div>
+    </div>
+  \`;
+
+  var btn = document.getElementById('cc-bar-play');
+  var title = document.getElementById('cc-bar-title');
+  var vol = document.getElementById('cc-bar-vol');
+
+  btn.onclick = function() {
+    if (!isPlaying) {
+      audio.play();
+      isPlaying = true;
+      btn.innerText = '⏸';
+      title.innerText = 'Odtwarzanie: ' + STATIONS[currentIdx].name;
+    } else {
+      audio.pause();
+      isPlaying = false;
+      btn.innerText = '▶';
+      title.innerText = 'Wstrzymano: ' + STATIONS[currentIdx].name;
+    }
+  };
+
+  vol.oninput = function() { audio.volume = this.value; };
+})();
+<\/script>`;
+      }
+    }
+
+    function copySnippetToClipboard() {
+      const textToCopy = document.getElementById('code-output-area').textContent;
+      const dummyArea = document.createElement('textarea');
+      dummyArea.value = textToCopy;
+      dummyArea.style.position = 'fixed';
+      dummyArea.style.left = '-9999px';
+      document.body.appendChild(dummyArea);
+      dummyArea.select();
+
+      try {
+        const result = document.execCommand('copy');
+        if (result) {
+          const btnLabel = document.getElementById('copy-btn-feedback');
+          btnLabel.textContent = 'Skopiowano!';
+          setTimeout(() => btnLabel.textContent = 'Kopiuj Kod', 2000);
+          showToastNotification('Kod dla Antygravity skopiowany pomyślnie!');
+        }
+      } catch (e) {
+        showToastNotification('Zaznacz i skopiuj kod ręcznie');
+      }
+      document.body.removeChild(dummyArea);
+    }
+
+    function showToastNotification(message) {
+      const toast = document.getElementById('toast-notify');
+      const label = document.getElementById('toast-notify-text');
+      label.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // =========================================================================
+    // INICJALIZACJA SYSTEMOWA
+    // =========================================================================
+    window.onload = function() {
+      audioNode.volume = previousVolume;
+      audioNode.src = RADIO_STATIONS[0].streamUrl;
+      displayTargetSlide(0);
+      initCarouselLoop();
+      updateExportCodeContent();
+      renderCatalogCards();
+    };
+  </script>
+</body>
+</html>
