@@ -289,7 +289,7 @@
 
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
-    <link rel="stylesheet" href="style.css?v=42">
+    <link rel="stylesheet" href="style.css?v=43">
     <style>
         /* Mobile Full-Screen Side Drawer Navigation (<= 768px) */
         @media (max-width: 768px) {
@@ -3575,7 +3575,12 @@
                     // Reset all
                     cards.forEach(card => card.classList.remove("hidden"));
                     pills.forEach(pill => pill.classList.remove("hidden"));
-                    cols.forEach(col => col.classList.remove("hidden"));
+                    cols.forEach(col => {
+                        col.classList.remove("hidden");
+                        col.classList.remove("open");
+                        const h = col.querySelector(".cc-col-header");
+                        if (h) h.setAttribute("aria-expanded", "false");
+                    });
                     if (menuCcNoResults) menuCcNoResults.style.display = "none";
                     return;
                 }
@@ -3603,11 +3608,15 @@
                         }
                     });
 
+                    const h = col.querySelector(".cc-col-header");
                     if (colMatches > 0) {
                         col.classList.remove("hidden");
-                        col.classList.remove("collapsed");
+                        col.classList.add("open");
+                        if (h) h.setAttribute("aria-expanded", "true");
                     } else {
                         col.classList.add("hidden");
+                        col.classList.remove("open");
+                        if (h) h.setAttribute("aria-expanded", "false");
                     }
                 });
 
@@ -3632,17 +3641,48 @@
                 });
             }
 
-            // Mobile Accordion Toggle for .cc-col-header
+            // 5 Kafli MENU CC Toggle Controller (Desktop, Tablet & Mobile)
             if (actionsList) {
-                actionsList.querySelectorAll(".cc-col-header").forEach(header => {
-                    header.addEventListener("click", (e) => {
-                        if (window.innerWidth <= 900) {
-                            const col = header.closest(".cc-col");
-                            if (col) {
-                                col.classList.toggle("collapsed");
+                const cols = actionsList.querySelectorAll(".cc-col");
+                cols.forEach(col => {
+                    const header = col.querySelector(".cc-col-header");
+                    const banner = col.querySelector(".cc-col-banner");
+
+                    const toggleCol = (e) => {
+                        // Nie zamykaj jeśli kliknięto wewnątrz spisu treści (w kartę)
+                        if (e.target.closest(".cc-col-cards")) return;
+
+                        const isOpen = col.classList.contains("open");
+
+                        // Zamknij pozostałe kafle (akordeon)
+                        cols.forEach(other => {
+                            if (other !== col) {
+                                other.classList.remove("open");
+                                const oh = other.querySelector(".cc-col-header");
+                                if (oh) oh.setAttribute("aria-expanded", "false");
                             }
-                        }
-                    });
+                        });
+
+                        // Przełącz stan klikniętego kafla
+                        col.classList.toggle("open", !isOpen);
+                        if (header) header.setAttribute("aria-expanded", String(!isOpen));
+                    };
+
+                    if (header) {
+                        header.setAttribute("role", "button");
+                        header.setAttribute("tabindex", "0");
+                        header.setAttribute("aria-expanded", "false");
+                        header.addEventListener("click", toggleCol);
+                        header.addEventListener("keydown", (e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                toggleCol(e);
+                            }
+                        });
+                    }
+                    if (banner) {
+                        banner.addEventListener("click", toggleCol);
+                    }
                 });
 
                 // Auto-close MENU CC on link click
