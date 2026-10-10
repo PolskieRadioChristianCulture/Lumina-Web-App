@@ -575,11 +575,24 @@
                 color: #78716c !important;
             }
 
-            html[data-lumina-theme="light"] .post-share-btn,
-            body.light-mode .post-share-btn {
+            html[data-lumina-theme="light"] .post-share-btn:not(.share-lumina),
+            body.light-mode .post-share-btn:not(.share-lumina) {
                 background: #ffffff !important;
                 border: 1px solid rgba(184, 142, 62, 0.3) !important;
                 color: #44403c !important;
+            }
+
+            html[data-lumina-theme="light"] .post-share-btn.share-lumina,
+            body.light-mode .post-share-btn.share-lumina {
+                background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%) !important;
+                border: 1.5px solid #d4af37 !important;
+                color: #ffffff !important;
+                box-shadow: 0 2px 8px rgba(166, 18, 41, 0.45), 0 0 8px rgba(212, 175, 55, 0.3) !important;
+            }
+
+            html[data-lumina-theme="light"] .post-share-btn.share-lumina .glyph-l,
+            body.light-mode .post-share-btn.share-lumina .glyph-l {
+                color: #ffffff !important;
             }
 
             @media (max-width: 768px) {
