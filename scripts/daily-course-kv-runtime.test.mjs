@@ -22,7 +22,7 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
       if(p==='/seed'){const b=await request.json();await env.COURSE_SUBSCRIPTIONS.put(b.key,JSON.stringify(b.data));return Response.json({ok:true});}
       return worker.fetch(request,env);
     }};`,resolveDir:process.cwd()},bundle:true,write:false,format:'esm',platform:'browser',external:['cloudflare:workers']});
-  let newest=9,firestore=0,sends=0;
+  let newest=9,firestore=0,sends=0,legacyMode=false;
   const persistence=await mkdtemp(path.join(tmpdir(),'cc-course-kv-'));
   const workerOptions={name:'course-kv-runtime',modules:true,script:bundled.outputFiles[0].text,compatibilityDate:'2026-09-13',
     kvNamespaces:['COURSE_SUBSCRIPTIONS'],
@@ -31,7 +31,15 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
       FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem})},
     outboundService:async request=>{
       const url=new URL(request.url);
-      if(url.hostname==='firestore.googleapis.com'){firestore++;return new RuntimeResponse('',{status:429});}
+      if(url.hostname==='firestore.googleapis.com'){
+        firestore++;
+        if(!legacyMode)return new RuntimeResponse('',{status:429});
+        const q=(await request.json()).structuredQuery;
+        const encode=data=>Object.fromEntries(Object.entries(data).map(([k,v])=>[k,typeof v==='boolean'?{booleanValue:v}:typeof v==='number'?{integerValue:String(v)}:{stringValue:v}]));
+        if(q.from[0].collectionId==='cc_daily_course_subscriptions')return RuntimeResponse.json(q.startAt?[]:[{document:{name:'projects/synthetic/databases/(default)/documents/cc_daily_course_subscriptions/old-student',fields:encode({uid:'old-student',enabled:true,preferredHour:7,lastLessonNumber:9,profileId:'',consentVersion:'daily-course-push-v1',consentedAt:'2026-10-09T00:00:00Z'})}}]);
+        if(q.from[0].collectionId==='LuminaDeviceTokens')return RuntimeResponse.json([{document:{fields:encode({token:'synthetic-device'})}}]);
+        throw Error('Unexpected legacy query');
+      }
       if(url.hostname==='oauth2.googleapis.com')return RuntimeResponse.json({access_token:'synthetic'});
       if(url.hostname==='identitytoolkit.googleapis.com'){
         if(url.pathname.includes('/projects/')){const b=await request.json();return RuntimeResponse.json({users:[{localId:b.localId[0],email:'synthetic@example.invalid'}]});}
@@ -47,6 +55,14 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
   const action=body=>mf.dispatchFetch('https://synthetic.invalid/v1/course/subscription',{method:'POST',headers:{origin:'https://polskieradio.cc',authorization:'Bearer synthetic','content-type':'application/json'},body:JSON.stringify(body)});
   const seed=(key,data)=>mf.dispatchFetch('https://synthetic.invalid/seed',{method:'POST',body:JSON.stringify({key,data})});
   try {
+    const legacy={uid:'imported-student',enabled:true,preferredHour:7,lastLessonNumber:10,tokens:['synthetic-device']};
+    assert.equal(await call('importLegacy','imported-student',legacy),true);
+    assert.equal((await call('get','imported-student')).data.lastLessonNumber,10);
+    assert.equal(await call('importLegacy','imported-student',{...legacy,lastLessonNumber:0}),false);
+    await call('remove','imported-student');
+    assert.equal(await call('importLegacy','imported-student',legacy),false,'backfill never overrides withdrawal');
+    // An orphan discovery key must safely initialize to empty, not throw.
+    await seed('account:'+'f'.repeat(64),'1');
     let r=await action({action:'subscribe',consent:true,preferredHour:20,fcmToken:'synthetic-device'});
     assert.equal(r.status,200);assert.equal((await r.json()).subscribed,true);
     let rec=await call('get','student');assert.equal(rec.data.preferredHour,20);
@@ -85,5 +101,17 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
     assert.equal(await call('get','student'),null);
     assert.equal(firestore,0,'course never calls exhausted Firestore');
     assert.equal((await action({action:'subscribe',consent:true,fcmToken:'x'.repeat(513)})).status,400);
+    await mf.dispose();
+    legacyMode=true;
+    workerOptions.bindings.COURSE_LEGACY_BACKFILL_ENABLED='true';
+    mf=new Miniflare(convertV4MiniflareOptions({...workerOptions,resourcePersistencePath:persistence}));
+    assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
+    assert.equal(sends,1,'import and delivery are separate bounded ticks');
+    for(let i=0;i<5;i++)assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
+    assert.equal(sends,2,'pre-migration consent receives its missed lesson exactly once');
+    const completedReads=firestore;
+    await mf.dispatchFetch('https://synthetic.invalid/tick');
+    assert.equal(firestore,completedReads,'completed migration performs no further Firestore reads');
+    assert.equal((await call('get','old-student')).data.lastLessonNumber,10);
   } finally {await mf.dispose();}
 });

@@ -1,5 +1,6 @@
 import { firestoreCourseStore, kvCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, courseSubscriptionFailure, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
 import { ownerPushTest } from './owner-push-test.js';
+import { backfillCourseSubscriptions } from './course-backfill.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const FIREBASE_LOOKUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup';
@@ -318,9 +319,21 @@ export default {
     const currentHour = event?.cron
       ? Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: 'numeric', hourCycle: 'h23' }).format(new Date(event.scheduledTime || Date.now())))
       : null;
-    if (currentHour!==null && ![6,7,8,20].includes(currentHour)) return;
+    if (currentHour!==null && currentHour<6) return;
     try {
     const token = await getGoogleAccessToken(env,true);
+    if (env.COURSE_LEGACY_BACKFILL_ENABLED==='true' && env.COURSE_SUBSCRIPTIONS) {
+      const result=await backfillCourseSubscriptions({
+        checkpoint:env.OWNER_PUSH_TEST_GUARD.getByName('course-legacy-backfill-v1'),
+        legacy:firestoreCourseStore(env,token),
+        store:kvCourseStore(env.COURSE_SUBSCRIPTIONS,env.OWNER_PUSH_TEST_GUARD),
+        accountState:uid=>courseAccountState(uid,env,token),
+        tokens:(uid,profileId)=>getRecipientTokens(uid,profileId,token,env)
+      });
+      console.log(JSON.stringify({event:'course_legacy_backfill',...result}));
+      // Separate import and delivery to keep each tick within the free budget.
+      if (!result.complete) return;
+    }
     const deps=courseDeps(env,token,currentHour);
     // Bound each invocation below Workers Free subrequest limits. Continue
     // opaque pages in the same preferred-hour window, not one page per day.

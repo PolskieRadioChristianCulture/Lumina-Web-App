@@ -98,13 +98,22 @@ export function kvCourseStore(kv, namespace) {
     let state=await object.courseRead();
     if (!state.initialized) {
       const legacy=uid ? await kv.get(`sub:${uid}`,'json') : null;
-      state=await object.courseRead(legacy?.uid===uid && legacy.enabled ? legacy : null);
+      state=await object.courseRead(legacy && legacy.uid===uid && legacy.enabled ? legacy : null);
     }
     return state.record;
   };
   const cursorObject=namespace.getByName('course-cursor-v2');
   return {
     async profileForAccount() { return ''; },
+    async importLegacy(uid, data) {
+      const id=await hash(uid);
+      const object=stub(id);
+      // Existing consent, newer enrollment and tombstones always win.
+      if ((await object.courseRead()).initialized) return false;
+      await kv.put(`account:${id}`,'1');
+      await object.courseRead({...data,uid});
+      return true;
+    },
     async cursor() {
       const state=await cursorObject.courseRead(null);
       return state.record ? {after:state.record.data.after,revision:state.record.revision} : null;
@@ -149,7 +158,7 @@ export function kvCourseStore(kv, namespace) {
   };
 }
 export async function publishedCourseLessons(fetchImpl = fetch, now = Date.now()) {
-  const r = await fetchImpl(`${ORIGIN}/data/daily-course-push.json`, {headers:{'cache-control':'no-cache'}});
+  const r = await fetchImpl(`${ORIGIN}/data/daily-course-push.json`, {cache:'no-store',headers:{'cache-control':'no-cache'}});
   if (!r.ok) throw Error('lesson_manifest_unavailable');
   const text = await r.text();
   if (text.length > 500000) throw Error('lesson_manifest_too_large');
@@ -217,7 +226,8 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
   for (const record of pending) {
     try {
     const prefHour = record.data.preferredHour ?? 7;
-    if (currentHour !== null && currentHour !== undefined && Number(prefHour) !== Number(currentHour)) continue;
+    // Never send early; retry a missed lesson after the preferred hour today.
+    if (currentHour !== null && currentHour !== undefined && Number(prefHour) > Number(currentHour)) continue;
     if (deps.accountState) {
       const state=await deps.accountState(record.uid);
       if (state==='deleted') {if (await deps.store.remove(record.uid,record.revision)) removed++;continue;}

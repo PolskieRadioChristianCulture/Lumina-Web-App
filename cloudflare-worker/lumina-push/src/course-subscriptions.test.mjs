@@ -1,9 +1,40 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from './index.js';
+import {backfillCourseSubscriptions} from './course-backfill.js';
 import {courseSubscriptionAction,courseSubscriptionFailure,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,kvCourseStore,courseAccountState} from './course-subscriptions.js';
 import {dailyCourseManifest} from '../../../scripts/daily-course-manifest.mjs';
 const lesson = {number:8,title:'Wieża Babel',availableAt:'2026-10-08T00:00:00.000Z',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'};
+
+test('late recovery sends pending lesson once, never before the preferred hour',async()=>{
+  const f=fixture({preferredHour:7,lastLessonNumber:7});
+  f.deps.currentHour=6;assert.equal((await dispatchCourseLesson(f.deps)).attempted,0);
+  f.deps.currentHour=9;assert.equal((await dispatchCourseLesson(f.deps)).accepted,1);
+  assert.equal((await dispatchCourseLesson(f.deps)).attempted,0);
+  assert.equal(f.sends,1);
+});
+
+test('bounded legacy import requires original consent, ownership and devices, then stops reading Firestore',async()=>{
+  let checkpoint=null,reads=0;const imported=[];
+  const valid={uid:'student',enabled:true,consentVersion:'daily-course-push-v1',consentedAt:'2026-10-09T06:00:00Z',preferredHour:7,lastLessonNumber:9,profileId:'profile'};
+  const deps={checkpoint:{courseRead:async()=>({record:checkpoint}),courseSave:async data=>{checkpoint={data,revision:'r'};return true;}},
+    legacy:{pending:async()=>{reads++;return reads===1?[{uid:'student',data:valid},{uid:'bad',data:{...valid,uid:'bad',consentVersion:''}}]:[];},profileStillOwned:async()=>true},
+    accountState:async()=> 'active',tokens:async()=>['synthetic-device'],store:{importLegacy:async(uid,data)=>{imported.push({uid,data});return true;}}};
+  assert.deepEqual(await backfillCourseSubscriptions(deps),{complete:false,imported:1,scanned:2});
+  assert.equal(imported[0].data.lastLessonNumber,9,'missed lesson is preserved');
+  assert.equal((await backfillCourseSubscriptions(deps)).complete,true);
+  await backfillCourseSubscriptions(deps);assert.equal(reads,2,'completed import never polls old Firestore');
+});
+
+test('legacy import provider failure leaves cursor pending; foreign profile never imports',async()=>{
+  let saved=0,imported=0;
+  const deps={checkpoint:{courseRead:async()=>({record:null}),courseSave:async()=>{saved++;return true;}},
+    legacy:{pending:async()=>[{uid:'student',data:{uid:'student',enabled:true,consentVersion:'daily-course-push-v1',consentedAt:'2026-10-09',preferredHour:7,lastLessonNumber:9,profileId:'profile'}}],profileStillOwned:async()=>true},
+    accountState:async()=> 'active',tokens:async()=>{throw Error('synthetic');},store:{importLegacy:async()=>{imported++;return true;}}};
+  await assert.rejects(backfillCourseSubscriptions(deps));assert.equal(saved,0);assert.equal(imported,0);
+  deps.legacy.profileStillOwned=async()=>false;
+  await backfillCourseSubscriptions(deps);assert.equal(imported,0);assert.equal(saved,1);
+});
 test('quota and IAM failures never appear as a missing or successful subscription',async()=>{
   for (const providerStatus of [429,403,500]) {
     let mutations=0;
