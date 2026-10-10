@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b24">
+  <title>Christian Culture Radio • SKINS — Odtwarzacz &amp; Kolekcja Skórek</title>
+  <meta name="description" content="Oficjalny odtwarzacz Christian Culture Radio z kolekcją 5 skórek wizualnych (Earth of Light, Golden Faith, Cosmic Worship, Radio Studio, Living Word) i animowanym equalizerem na żywo.">
+  <link rel="canonical" href="https://polskieradio.cc/skins">
+  <link rel="icon" type="image/png" href="/ccn-logo-square.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="music.radio_station">
+  <meta property="og:site_name" content="Christian Culture">
+  <meta property="og:url" content="https://polskieradio.cc/skins">
+  <meta property="og:title" content="Christian Culture Radio • SKINS — Kolekcja Skórek">
+  <meta property="og:description" content="Wybierz swój styl i słuchaj radia na żywo: 5 unikalnych skórek wizualnych, logowanie LUMINA i animowany wizualizator audio.">
+  <meta property="og:image" content="https://polskieradio.cc/assets/skins/skin-earth.webp">
+  <meta property="og:locale" content="pl_PL">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ChristianCultPL">
+  <meta name="twitter:title" content="Christian Culture Radio • SKINS">
+  <meta name="twitter:description" content="Kolekcja skórek odtwarzacza radiowego Christian Culture z wizualizatorem audio na żywo.">
+  <meta name="twitter:image" content="https://polskieradio.cc/assets/skins/skin-earth.webp">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CC Global Auth Connector -->
+  <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --gold: #e7c177;
+      --gold-dark: #a66c18;
+      --purple: #b944ff;
+      --bg-base: #05091d;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--bg-base);
+      color: #ffffff;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .player {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 440px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #05091d;
+    }
+    .art {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.35s ease-in-out, filter 0.35s ease-in-out;
+      z-index: -2;
+    }
+    .player:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 55%, transparent 15%, rgba(2, 3, 18, 0.2) 75%);
+    }
+
+    /* ── 5 SKINS DEFINITIONS ── */
+    .player[data-skin="earth"] .art {
+      background-image: linear-gradient(to bottom, rgba(2, 6, 25, 0.04), transparent 60%, rgba(2, 4, 20, 0.7)), url('/assets/skins/skin-earth.webp');
+    }
+    .player[data-skin="gold"] .art {
+      background-image: linear-gradient(to bottom, rgba(2, 6, 25, 0.04), transparent 60%, rgba(2, 4, 20, 0.7)), url('/assets/skins/skin-gold.webp');
+    }
+    .player[data-skin="cosmic"] .art {
+      background-image: linear-gradient(to bottom, rgba(2, 6, 25, 0.04), transparent 60%, rgba(2, 4, 20, 0.7)), url('/assets/skins/skin-cosmic.webp');
+    }
+    .player[data-skin="studio"] .art {
+      background-image: linear-gradient(to bottom, rgba(2, 6, 25, 0.04), transparent 60%, rgba(2, 4, 20, 0.7)), url('/assets/skins/skin-studio.webp');
+    }
+    .player[data-skin="word"] .art {
+      background-image: linear-gradient(to bottom, rgba(2, 6, 25, 0.04), transparent 60%, rgba(2, 4, 20, 0.7)), url('/assets/skins/skin-word.webp');
+    }
+
+    /* Play button and bar themes */
+    .player[data-skin="earth"] .play {
+      background: radial-gradient(circle at 35% 25%, #ae4fff, #5012a5);
+      border-color: #edcaff;
+      box-shadow: 0 0 25px rgba(184, 51, 255, 0.7), 0 0 65px rgba(184, 51, 255, 0.4);
+    }
+    .player[data-skin="earth"] .bar {
+      background: linear-gradient(#8ef1ff, #bc5cff, #ffcb8a);
+      box-shadow: 0 0 12px rgba(174, 92, 255, 0.8);
+    }
+
+    .player[data-skin="gold"] .play {
+      background: radial-gradient(circle at 30% 20%, #f1c06a, #8c4e12);
+      border-color: #ffdf9b;
+      box-shadow: 0 0 30px rgba(216, 153, 75, 0.6), 0 0 70px rgba(216, 153, 75, 0.3);
+    }
+    .player[data-skin="gold"] .bar {
+      background: linear-gradient(#ffffff, #f7d794, #c9932e);
+      box-shadow: 0 0 12px rgba(245, 205, 115, 0.75);
+    }
+
+    .player[data-skin="cosmic"] .play {
+      background: radial-gradient(circle at 30% 20%, #60b9ff, #15396e);
+      border-color: #bde2ff;
+      box-shadow: 0 0 30px rgba(75, 166, 255, 0.6), 0 0 70px rgba(75, 166, 255, 0.3);
+    }
+    .player[data-skin="cosmic"] .bar {
+      background: linear-gradient(#d3f4ff, #40a9ff, #1849a9);
+      box-shadow: 0 0 12px rgba(64, 169, 255, 0.8);
+    }
+
+    .player[data-skin="studio"] .play {
+      background: radial-gradient(circle at 30% 20%, #ffcf78, #8b351f);
+      border-color: #ffd99e;
+      box-shadow: 0 0 30px rgba(224, 94, 46, 0.6), 0 0 70px rgba(224, 94, 46, 0.3);
+    }
+    .player[data-skin="studio"] .bar {
+      background: linear-gradient(#fff2d6, #ff914d, #d9381e);
+      box-shadow: 0 0 12px rgba(255, 112, 67, 0.8);
+    }
+
+    .player[data-skin="word"] .play {
+      background: radial-gradient(circle at 30% 20%, #f1c06a, #8c4e12);
+      border-color: #ffdf9b;
+      box-shadow: 0 0 30px rgba(216, 153, 75, 0.6), 0 0 70px rgba(216, 153, 75, 0.3);
+    }
+    .player[data-skin="word"] .bar {
+      background: linear-gradient(#ffffff, #e0be68, #9a6f18);
+      box-shadow: 0 0 12px rgba(224, 190, 104, 0.75);
+    }
+
+    /* ── HEADER / TOP NAVIGATION ── */
+    .top {
+      position: absolute;
+      z-index: 4;
+      top: max(14px, env(safe-area-inset-top));
+      left: max(16px, env(safe-area-inset-left));
+      right: max(16px, env(safe-area-inset-right));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .top-left, .top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .iconbtn, .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      border-radius: 16px;
+      background: rgba(8, 12, 39, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 5px 22px rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .iconbtn:hover, .avatar:hover {
+      border-color: rgba(255, 255, 255, 0.65);
+      background: rgba(16, 23, 64, 0.88);
+      transform: translateY(-1px);
+    }
+    .avatar {
+      border-radius: 50%;
+      overflow: hidden;
+      font-weight: 800;
+      font-size: 14px;
+      color: #f7d79c;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cc-auth-widget-container {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .cc-auth-widget-container .cc-auth-user-pill,
+    .cc-auth-widget-container .cc-auth-google-btn {
+      min-height: 44px !important;
+      padding: 6px 14px 6px 10px !important;
+    }
+    .brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 22px;
+      background: rgba(8, 12, 39, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      transition: all 0.2s ease;
+    }
+    .brand-chip:hover {
+      background: rgba(16, 23, 64, 0.85);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+    .brand-chip img {
+      border-radius: 6px;
+    }
+
+    /* ── DRAWER / MENU SKÓREK ── */
+    .drawer {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: min(360px, 92vw);
+      padding: calc(24px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+      background: rgba(7, 10, 32, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-right: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6);
+      transform: translateX(-110%);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .drawer.open {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .drawer h2 {
+      font-size: 21px;
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.03em;
+    }
+    .close-btn {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+    .drawer-skins {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .skin {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 72px;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .skin:hover {
+      border-color: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateX(2px);
+    }
+    .skin[aria-pressed="true"] {
+      border-color: #c66aff;
+      background: rgba(123, 44, 191, 0.38);
+      box-shadow: 0 4px 18px rgba(123, 44, 191, 0.3);
+    }
+    .skin img {
+      width: 46px;
+      height: 66px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      flex: none;
+    }
+    .skin-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+    }
+    .skin-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #ffffff;
+    }
+    .skin-desc {
+      font-size: 12px;
+      color: rgba(233, 198, 255, 0.82);
+    }
+    .veil {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9;
+      display: none;
+      backdrop-filter: blur(4px);
+    }
+    .veil.open {
+      display: block;
+    }
+
+    /* ── DRAWER AUTH CARD ── */
+    .drawer-auth-box {
+      margin-top: 4px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .auth-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .auth-user-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .auth-dot.online {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+    .auth-action-link {
+      color: #e7c177;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .auth-action-link:hover {
+      text-decoration: underline;
+    }
+    .auth-guest-msg {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+    .btn-drawer-login {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(212, 175, 55, 0.4);
+      background: linear-gradient(165deg, rgba(20, 20, 28, 0.98), rgba(10, 10, 16, 0.99));
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-drawer-login:hover {
+      border-color: rgba(212, 175, 55, 0.7);
+      background: rgba(28, 28, 40, 0.99);
+      transform: translateY(-1px);
+    }
+    .drawer-footnote {
+      font-size: 11px;
+      color: rgba(233, 198, 255, 0.65);
+      line-height: 1.4;
+      margin-top: auto;
+    }
+    .muted {
+      color: #e9c6ff;
+      font-size: 13px;
+    }
+
+    /* ── VISUALIZER & EQUALIZER ── */
+    .visualizer {
+      position: absolute;
+      left: 4%;
+      width: 92%;
+      top: 42%;
+      height: 16%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3px;
+      pointer-events: none;
+      opacity: 0.92;
+      mix-blend-mode: screen;
+      z-index: 2;
+    }
+    .bar {
+      width: 2.1%;
+      height: 5%;
+      min-height: 4px;
+      border-radius: 9px;
+      transform-origin: center;
+      transition: height 75ms linear;
+    }
+
+    /* ── CONTROLS & STATUS ── */
+    .controls {
+      position: absolute;
+      bottom: max(28px, calc(env(safe-area-inset-bottom) + 24px));
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 4;
+    }
+    .play {
+      width: 82px;
+      height: 82px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      border: 2px solid #edcaff;
+      font-size: 32px;
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .play:hover {
+      transform: scale(1.05);
+    }
+    .play:active {
+      transform: scale(0.96);
+    }
+    .play:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+    .play-icon {
+      display: inline-block;
+      line-height: 1;
+    }
+    .status {
+      position: absolute;
+      bottom: calc(max(28px, env(safe-area-inset-bottom) + 24px) + 94px);
+      left: 8%;
+      width: 84%;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+      color: #ffffff;
+      opacity: 0.94;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* ── ACCESSIBILITY FOCUS ── */
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 3px;
+    }
+
+    /* ── ORIENTATION LANDSCAPE (DESKTOP & POZIOM) ── */
+    @media (orientation: landscape) {
+      .art {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: #060921;
+      }
+      .player {
+        min-height: 320px;
+      }
+      .visualizer {
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(88vw, calc(100vh * 0.52));
+        top: 48%;
+        height: 20%;
+      }
+      .controls {
+        bottom: max(14px, env(safe-area-inset-bottom));
+      }
+      .play {
+        width: 64px;
+        height: 64px;
+        font-size: 26px;
+      }
+      .status {
+        bottom: 86px;
+      }
+      .top {
+        top: max(12px, env(safe-area-inset-top));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bar, .drawer, .art, .skin, .play {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="player" id="player" data-skin="earth">
+    <div class="art" aria-hidden="true"></div>
+
+    <header class="top">
+      <div class="top-left">
+        <button class="iconbtn" id="menu" aria-label="Otwórz menu skórek" aria-expanded="false" title="Wybierz skórkę odtwarzacza">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <a href="/" class="brand-chip" title="Strona główna Christian Culture">
+          <img src="/ccn-logo-square.png" alt="Logo" width="22" height="22">
+          <span>RADIO SKINS</span>
+        </a>
+      </div>
+
+      <div class="top-right">
+        <div id="ccAuthWidgetSlot" class="cc-auth-widget-container" data-cc-auth-mount="true">
+          <a id="profile" class="avatar" href="/lumina" aria-label="Profil użytkownika LUMINA" title="Zaloguj się przez Google do społeczności LUMINA">
+            <span id="initials">CC</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="visualizer" id="visualizer" aria-hidden="true"></div>
+
+    <div class="status" id="status" role="status" aria-live="polite">Gotowe do słuchania • Kliknij PLAY</div>
+
+    <div class="controls">
+      <button id="play" class="play" aria-label="Odtwórz radio" title="Odtwórz / Zatrzymaj">
+        <span class="play-icon" id="playIcon">▶</span>
+      </button>
+    </div>
+
+    <div class="veil" id="veil"></div>
+
+    <aside class="drawer" id="drawer" aria-label="Wybór skórki" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <h2>Radio SKINS</h2>
+          <p class="muted">Wybierz wygląd odtwarzacza</p>
+        </div>
+        <button class="close-btn" id="closeDrawer" aria-label="Zamknij menu skórek" title="Zamknij">✕</button>
+      </div>
+
+      <div class="drawer-skins">
+        <button class="skin" data-choice="earth" aria-pressed="true">
+          <img src="/assets/skins/skin-earth.webp" alt="" loading="lazy">
+          <div class="skin-info">
+            <span class="skin-title">🌍 Earth of Light</span>
+            <span class="skin-desc">Światłość i błękit globu</span>
+          </div>
+        </button>
+
+        <button class="skin" data-choice="gold" aria-pressed="false">
+          <img src="/assets/skins/skin-gold.webp" alt="" loading="lazy">
+          <div class="skin-info">
+            <span class="skin-title">✨ Golden Faith</span>
+            <span class="skin-desc">Królewskie złoto i majestat</span>
+          </div>
+        </button>
+
+        <button class="skin" data-choice="cosmic" aria-pressed="false">
+          <img src="/assets/skins/skin-cosmic.webp" alt="" loading="lazy">
+          <div class="skin-info">
+            <span class="skin-title">🌌 Cosmic Worship</span>
+            <span class="skin-desc">Astralna głębia kosmosu</span>
+          </div>
+        </button>
+
+        <button class="skin" data-choice="studio" aria-pressed="false">
+          <img src="/assets/skins/skin-studio.webp" alt="" loading="lazy">
+          <div class="skin-info">
+            <span class="skin-title">🎙️ Radio Studio</span>
+            <span class="skin-desc">Ciepła lampowa akustyka</span>
+          </div>
+        </button>
+
+        <button class="skin" data-choice="word" aria-pressed="false">
+          <img src="/assets/skins/skin-word.webp" alt="" loading="lazy">
+          <div class="skin-info">
+            <span class="skin-title">📖 Living Word</span>
+            <span class="skin-desc">Wieczne Słowo Boże</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="drawer-auth-box" id="drawerAuthBox"></div>
+
+      <p class="drawer-footnote muted">
+        Zmiana skórki nie zatrzymuje odtwarzania radia. Wybór zostanie bezpiecznie zapamiętany na Twoim urządzeniu.
+      </p>
+    </aside>
+
+    <audio id="audio" preload="none" playsinline></audio>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = s => document.querySelector(s);
+      const player = $('#player');
+      const audio = $('#audio');
+      const play = $('#play');
+      const playIcon = $('#playIcon');
+      const status = $('#status');
+      const drawer = $('#drawer');
+      const veil = $('#veil');
+      const menu = $('#menu');
+      const closeDrawer = $('#closeDrawer');
+      const viz = $('#visualizer');
+      const profile = $('#profile');
+      const initials = $('#initials');
+      const drawerAuthBox = $('#drawerAuthBox');
+
+      const config = window.CC_RADIO_CONFIG || {};
+      const STREAM_URL = config.streamUrl || 'https://stream.zeno.fm/vz96pvl3pnktv';
+
+      audio.removeAttribute('crossorigin');
+      audio.src = STREAM_URL;
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function getLuminaUser() {
+        try {
+          const L = window.LuminaDB;
+          if (L && typeof L.getCurrentUser === 'function') {
+            const fbUser = L.getCurrentUser();
+            if (fbUser && !fbUser.isAnonymous) {
+              const prof = (typeof L.getCurrentProfile === 'function' && L.getCurrentProfile()) || {};
+              return {
+                name: prof.name || fbUser.displayName || 'Użytkownik',
+                avatarUrl: prof.avatarUrl || prof.photoURL || fbUser.photoURL || '',
+                profileUrl: prof.handle ? ('/lumina-profile.html?u=' + encodeURIComponent(prof.handle)) : '/lumina-profile.html',
+                isLogged: true
+              };
+            }
+          }
+          if (localStorage.getItem('lumina_user_session') === 'active') {
+            const userStr = localStorage.getItem('lumina_current_user');
+            if (userStr) {
+              const u = JSON.parse(userStr);
+              if (u && (u.uid || u.email)) {
+                let prof = {};
+                try {
+                  prof = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || '{}');
+                } catch (e) {}
+                return {
+                  name: prof.name || u.displayName || (u.email ? u.email.split('@')[0] : 'Użytkownik'),
+                  avatarUrl: prof.avatarUrl || prof.photoURL || u.photoURL || '',
+                  profileUrl: prof.handle ? ('/lumina-profile.html?u=' + encodeURIComponent(prof.handle)) : '/lumina-profile.html',
+                  isLogged: true
+                };
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Lumina user inspect error:', e);
+        }
+        return null;
+      }
+
+      function updateLuminaUI() {
+        const user = getLuminaUser();
+        if (user && user.isLogged) {
+          const safeName = escapeHtml(user.name);
+          const shortName = (user.name || 'CC').slice(0, 2).toUpperCase();
+          initials.textContent = shortName;
+          if (user.avatarUrl) {
+            const img = document.createElement('img');
+            img.src = user.avatarUrl;
+            img.alt = user.name;
+            img.onerror = () => { profile.replaceChildren(initials); };
+            profile.replaceChildren(img);
+          } else {
+            profile.replaceChildren(initials);
+          }
+          profile.href = user.profileUrl;
+          profile.setAttribute('title', 'Mój profil LUMINA (' + safeName + ')');
+          profile.setAttribute('aria-label', 'Mój profil LUMINA (' + safeName + ')');
+
+          if (drawerAuthBox) {
+            drawerAuthBox.innerHTML =
+              '<div class="auth-card logged-in">' +
+                '<div class="auth-user-meta">' +
+                  '<span class="auth-dot online"></span>' +
+                  '<span class="auth-name">' + safeName + '</span>' +
+                '</div>' +
+                '<a href="' + escapeHtml(user.profileUrl) + '" class="auth-action-link">Otwórz profil LUMINA &rarr;</a>' +
+              '</div>';
+          }
+        } else {
+          initials.textContent = 'CC';
+          profile.replaceChildren(initials);
+          profile.href = '/lumina';
+          profile.setAttribute('title', 'Zaloguj się przez Google do społeczności LUMINA');
+          profile.setAttribute('aria-label', 'Zaloguj się przez Google do społeczności LUMINA');
+
+          if (drawerAuthBox) {
+            drawerAuthBox.innerHTML =
+              '<div class="auth-card guest">' +
+                '<span class="auth-guest-msg">Społeczność LUMINA</span>' +
+                '<button type="button" class="btn-drawer-login" id="drawerLoginBtn">' +
+                  '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
+                    '<path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"/>' +
+                    '<path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.13C3.26 21.36 7.36 24 12 24z"/>' +
+                    '<path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.26C.46 8.18 0 9.99 0 12s.46 3.82 1.26 5.42l4.02-3.13z"/>' +
+                    '<path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.26 6.58l4.02 3.13c.95-2.83 3.6-4.96 6.72-4.96z"/>' +
+                  '</svg>' +
+                  '<span>Zaloguj z Google</span>' +
+                '</button>' +
+              '</div>';
+
+            const drawerLoginBtn = $('#drawerLoginBtn');
+            if (drawerLoginBtn) {
+              drawerLoginBtn.addEventListener('click', () => {
+                if (typeof window.ccLoginWithGoogle === 'function') {
+                  window.ccLoginWithGoogle(window.location.pathname);
+                } else {
+                  window.location.href = '/lumina';
+                }
+              });
+            }
+          }
+        }
+      }
+
+      profile.addEventListener('click', (e) => {
+        const user = getLuminaUser();
+        if (!user || !user.isLogged) {
+          e.preventDefault();
+          if (typeof window.ccLoginWithGoogle === 'function') {
+            window.ccLoginWithGoogle(window.location.pathname);
+          } else {
+            window.location.href = '/lumina';
+          }
+        }
+      });
+
+      window.addEventListener('lumina-auth-state', updateLuminaUI);
+      window.addEventListener('storage', (e) => {
+        if (e.key && e.key.includes('lumina')) updateLuminaUI();
+      });
+      window.addEventListener('pageshow', updateLuminaUI);
+      updateLuminaUI();
+
+      // Visualizer bars
+      const BAR_COUNT = 44;
+      viz.replaceChildren();
+      const bars = Array.from({ length: BAR_COUNT }, () => {
+        const b = document.createElement('span');
+        b.className = 'bar';
+        viz.appendChild(b);
+        return b;
+      });
+
+      let ctx = null, analyser = null, data = null, raf = null;
+      let connected = false, active = false;
+      let waveTime = 0;
+
+      function message(s) {
+        status.textContent = s;
+      }
+
+      function setBarsIdle() {
+        bars.forEach(b => { b.style.height = '5%'; });
+      }
+      setBarsIdle();
+
+      function renderOrganicWave() {
+        waveTime += 0.045;
+        const t = waveTime;
+        for (let i = 0; i < BAR_COUNT; i++) {
+          const rel = i / (BAR_COUNT - 1);
+          const bassPunch = (1 - rel * 0.8) * (Math.sin(t * 3.5) > 0.4 ? 24 : 6);
+          const wave1 = Math.sin(t * 4 + i * 0.28) * 22;
+          const wave2 = Math.cos(t * 7 - i * 0.45) * 16;
+          const wave3 = Math.sin(t * 11 + i * 0.75) * 10;
+          const flutter = (rel > 0.6) ? (Math.sin(t * 15 + i) * 12) : 0;
+          const base = 18 + (1 - Math.abs(rel - 0.35) * 1.5) * 28;
+          const height = Math.max(6, Math.min(96, Math.round(base + wave1 + wave2 + wave3 + bassPunch + flutter)));
+          bars[i].style.height = height + '%';
+        }
+      }
+
+      function visual() {
+        cancelAnimationFrame(raf);
+        if (!active) {
+          setBarsIdle();
+          return;
+        }
+
+        let hasRealData = false;
+        if (analyser && data) {
+          try {
+            analyser.getByteFrequencyData(data);
+            let sum = 0;
+            for (let j = 0; j < 50; j++) sum += data[j];
+            if (sum > 0) {
+              hasRealData = true;
+              bars.forEach((b, i) => {
+                const idx = Math.min(data.length - 1, Math.floor((i / bars.length) * Math.min(data.length, 200)));
+                b.style.height = Math.max(5, Math.round(data[idx] / 255 * 100)) + '%';
+              });
+            }
+          } catch (e) {}
+        }
+
+        if (!hasRealData) {
+          renderOrganicWave();
+        }
+
+        raf = requestAnimationFrame(visual);
+      }
+
+      function menuOpen(on) {
+        drawer.classList.toggle('open', on);
+        veil.classList.toggle('open', on);
+        menu.setAttribute('aria-expanded', String(on));
+        drawer.setAttribute('aria-hidden', String(!on));
+      }
+
+      menu.addEventListener('click', () => menuOpen(!drawer.classList.contains('open')));
+      if (closeDrawer) closeDrawer.addEventListener('click', () => menuOpen(false));
+      veil.addEventListener('click', () => menuOpen(false));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') menuOpen(false);
+      });
+
+      document.querySelectorAll('[data-choice]').forEach(b => {
+        b.addEventListener('click', () => {
+          const choice = b.dataset.choice;
+          player.dataset.skin = choice;
+          document.querySelectorAll('[data-choice]').forEach(x => {
+            x.setAttribute('aria-pressed', String(x === b));
+          });
+          try {
+            localStorage.setItem('cc-radio-skin', choice);
+          } catch (e) {}
+          menuOpen(false);
+        });
+      });
+
+      try {
+        const saved = localStorage.getItem('cc-radio-skin') || 'earth';
+        const match = document.querySelector('[data-choice="' + saved + '"]');
+        if (match) {
+          player.dataset.skin = saved;
+          document.querySelectorAll('[data-choice]').forEach(x => {
+            x.setAttribute('aria-pressed', String(x === match));
+          });
+        }
+      } catch (e) {}
+
+      async function setupWebAudio() {
+        if (connected) return;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        try {
+          ctx = new AC();
+          analyser = ctx.createAnalyser();
+          analyser.fftSize = 1024;
+          analyser.smoothingTimeConstant = 0.72;
+          data = new Uint8Array(analyser.frequencyBinCount);
+          const source = ctx.createMediaElementSource(audio);
+          source.connect(analyser);
+          analyser.connect(ctx.destination);
+          connected = true;
+        } catch (e) {
+          console.info('Native streaming fallback active with synthesized equalizer spectrum:', e.message);
+        }
+      }
+
+      play.addEventListener('click', async () => {
+        if (active) {
+          audio.pause();
+          audio.currentTime = 0;
+          active = false;
+          playIcon.textContent = '▶';
+          play.setAttribute('aria-label', 'Odtwórz radio');
+          message('Odtwarzanie zatrzymane');
+          cancelAnimationFrame(raf);
+          setBarsIdle();
+          return;
+        }
+
+        play.disabled = true;
+        message('Łączenie ze strumieniem radiowym…');
+
+        try {
+          await setupWebAudio();
+          if (ctx && ctx.state === 'suspended') {
+            await ctx.resume();
+          }
+          active = true;
+          playIcon.textContent = '■';
+          play.setAttribute('aria-label', 'Zatrzymaj radio');
+          visual();
+          await audio.play();
+          message('NA ŻYWO • Christian Culture Radio');
+        } catch (err) {
+          console.warn('Audio play attempt 1 error:', err);
+          try {
+            active = true;
+            playIcon.textContent = '■';
+            play.setAttribute('aria-label', 'Zatrzymaj radio');
+            visual();
+            await audio.play();
+            message('NA ŻYWO • Christian Culture Radio');
+          } catch (fallbackErr) {
+            console.error('Audio play failed:', fallbackErr);
+            message('Nie udało się uruchomić strumienia. Dotknij ponownie PLAY.');
+            active = false;
+            playIcon.textContent = '▶';
+            setBarsIdle();
+          }
+        } finally {
+          play.disabled = false;
+        }
+      });
+
+
+      audio.addEventListener('error', () => {
+        active = false;
+        playIcon.textContent = '▶';
+        play.disabled = false;
+        message('Błąd transmisji — kliknij PLAY, aby ponowić');
+        setBarsIdle();
+      });
+
+      audio.addEventListener('waiting', () => {
+        if (active) message('Buforowanie transmisji…');
+      });
+
+      audio.addEventListener('playing', () => {
+        if (active) message('NA ŻYWO • Christian Culture Radio');
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && active) visual();
+      });
+    })();
+  </script>
+</body>
+</html>
