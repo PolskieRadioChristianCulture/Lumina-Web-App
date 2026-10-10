@@ -41,6 +41,8 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'RAPORT ZE ŚWIATA: Ponad 380 milionów chrześcijan doświadcza prześladowań — dramatyczny apel Open Doors i PKWP',
+  'KRAJ: Polska Rada Ekumeniczna i Tydzień Biblijny — wspólne świadectwo i zaangażowanie chrześcijan w Polsce',
   'Z Biblią za Pan Brat: Dzień 11 — Uwierzył Panu: Abraham, gwiazdy i przymierze łaski (Rdz 15:1–21)',
   'Prawda Bez Filtra: Wioletta Rogowska o ucieczce w iluzję relacji i odzyskaniu godności córki Króla',
   'Kod Źródłowy Duszy: Cezary Rogowski o resecie wewnętrznego systemu i wolności w Chrystusie',
@@ -53,6 +55,100 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-swiat-przesladowania-chrzescijan-2026',
+    title: 'ŚWIAT: PONAD 380 MILIONÓW CHRZEŚCIJAN DOŚWIADCZA PRZEŚLADOWAŃ — RAPORT OPEN DOORS I APEL O SOLIDARNOŚĆ',
+    slug: 'swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc',
+    excerpt: 'Według najnowszego Światowego Indeksu Prześladowań Open Doors oraz danych Pomocy Kościołowi w Potrzebie (PKWP), co siódmy chrześcijanin na świecie zmaga się z wysokim lub skrajnym poziomem dyskryminacji i przemocy. Redakcja CCN News analizuje sytuację w Nigerii, na Bliskim Wschodzie i w Azji w świetle biblijnego wezwania do jedności Ciała Chrystusa.',
+    category: 'swiat',
+    categoryLabel: 'ŚWIAT · WOLNOŚĆ RELIGIJNA & PRZEŚLADOWANIA',
+    publishedAt: '2026-10-10',
+    dateFormatted: '10 października 2026',
+    imageUrl: '/images/news/art-swiat-przesladowania-chrzescijan-2026.jpg',
+    imageCaption: 'Autentyczna fotografia dokumentalna: Pismo Święte w skórzanej oprawie, oliwny krzyż i historyczna mapa świata — symbol modlitwy i solidarności z prześladowanym Kościołem.',
+    readTimeMinutes: 6,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Prześladowania', 'Open Doors', 'PKWP', 'Nigeria', 'Bliski Wschód', 'Wolność Religijna', 'Kościół Cierpiący', 'Modlitwa', 'Solidarność'],
+    author: AUTHORS.redakcja,
+    sourceCitation: {
+      sourceName: 'Open Doors Polska — Światowy Indeks Prześladowań & Pomoc Kościołowi w Potrzebie (PKWP)',
+      sourceUrl: 'https://www.opendoors.pl/indeks-przesladowan',
+      quotationDate: '10 października 2026',
+    },
+    scriptureReference: {
+      verse: '1 List do Koryntian 12:26',
+      text: 'I tak, jeśli jeden członek cierpi, cierpią z nim wszystkie członki; a jeśli jeden członek doznaje czci, radują się z nim wszystkie członki.',
+      strongCode: 'G3958',
+    },
+    lexiconTerms: [
+      {
+        term: 'Pascho / Cierpieć (1 Kor 12:26)',
+        strongCode: 'G3958',
+        definition: 'Gr. pascho — doświadczać cierpienia, znosić bolesne prześladowania ze względu na wierność Ewangelii i imię Chrystusa.',
+      },
+      {
+        term: 'Hypomone / Wytrwałość (Obj 14:12)',
+        strongCode: 'G5281',
+        definition: 'Gr. hypomone — niezłomne trwanie pod ciężarem prób, cierpliwość wiary i zachowanie przykazań Bożych.',
+      },
+    ],
+    content: [
+      'Liczby publikowane przez międzynarodowe organizacje monitorujące przestrzeganie wolności religijnej nie pozostawiają złudzeń: żyjemy w epoce największego natężenia nękania wyznawców Chrystusa w nowożytnej historii. Według danych opublikowanych przez organizację Open Doors w Światowym Indeksie Prześladowań oraz w raportach Papieskiego Stowarzyszenia Pomoc Kościołowi w Potrzebie (PKWP), już ponad 380 milionów chrześcijan w ponad 70 krajach doświadcza wysokiego, bardzo wysokiego lub ekstremalnego poziomu prześladowań z powodu wyznawanej wiary.',
+      '1. Nigeria i Pas Sahelu: Epizentrum Przemocy. Najbardziej dramatycznym obszarem pozostaje Afryka Subsaharyjska, ze szczególnym uwzględnieniem Nigerii. W tym najludniejszym kraju kontynentu ataki bojówek islamskich (takich jak Boko Haram, ISWAP czy uzbrojone formacje pasterzy Fulani) pochłaniają co roku tysiące istnień ludzkich. Setki kościołów zostało zniszczonych, całe chrześcijańskie wioski są wypalane, a porywanie księży, pastorów oraz młodzieży szkolnej dla okupu stało się bezwzględnym procederem. Wierni w wielu diecezjach zmuszeni są do rezygnacji z wieczornych nabożeństw, by chronić swoje życie.',
+      '2. Bliski Wschód: Zagrożenie Zniknięciem Starożytnych Wspólnot. W kolebce chrześcijaństwa — Syrii i Iraku — populacja wyznawców Chrystusa zmniejszyła się w ciągu minionych dwóch dekad o ponad 80%. Wieloletnie konflikty zbrojne, ruina gospodarcza i dyskryminacja sprawiły, że młode pokolenia masowo emigrują na Zachód. W Iranie z kolei konwertyci z islamu podlegają bezwzględnym represjom, wyrokom więzienia i zamknięciom w aresztach za sam fakt posiadania egzemplarza Nowego Testamentu w języku farsi.',
+      '3. Azja: Reżimy Autorytarne i Cyfrowa Kontrola. Na szczycie listy krajów o skrajnych represjach od lat pozostaje Korea Północna, gdzie za znalezienie Biblii grozi natychmiastowe uwięzienie w obozie pracy przymusowej lub egzekucja całej rodziny. W Indiach rosnący radykalizm hinduski skutkuje aktami agresji wobec chrześcijan i ustawami zakazującymi konwersji, a w Chinach postępuje proces zaostrzania cyfrowego nadzoru nad nielicencjonowanymi wspólnotami domowymi.',
+      '4. Biblijne Wezwanie: Jedno Ciało, Jedno Cierpienie. Pismo Święte kategorycznie przypomina nam w 1 Liście do Koryntian (1 Kor 12:26): „Gdy jeden członek cierpi, społem z nim cierpią wszystkie członki”. Prześladowany Kościół nie prosi w pierwszej kolejności o dobra materialne, lecz o modlitwę, wierność Słowu i nagłaśnianie prawdy w wolnym świecie. Redakcja Polskiego Radia Christian Culture oraz CCN News wzywa do regularnego wstawiennictwa za naszych braci i siostry na całym świecie.',
+    ],
+  },
+  {
+    id: 'art-kraj-ekumenizm-biblia-polska-2026',
+    title: 'KRAJ: POLSKA RADA EKUMENICZNA I DNI BIBLIJNE — WSPÓLNA TROSKA O OBECNOŚĆ SŁOWA BOŻEGO W SPOŁECZEŃSTWIE',
+    slug: 'kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie',
+    excerpt: 'W całym kraju trwają inicjatywy biblijne i modlitewne organizowane przez Polską Radę Ekumeniczną oraz środowiska chrześcijańskie. W dobie narastającej laicyzacji i polaryzacji społecznej, wyznawcy Chrystusa w Polsce łączą siły w promowaniu lektury Pisma Świętego, troski o potrzebujących i ewangelizacji.',
+    category: 'kraj',
+    categoryLabel: 'KRAJ · BIBLIA & WSPÓLNOTA CHRZEŚCIJAŃSKA',
+    publishedAt: '2026-10-10',
+    dateFormatted: '10 października 2026',
+    imageUrl: '/images/news/art-kraj-ekumenizm-biblia-polska-2026.jpg',
+    imageCaption: 'Autentyczna fotografia dokumentalna: Chrześcijanie różnych tradycji w Polsce zgromadzeni na wspólnej modlitwie i studium Pisma Świętego.',
+    readTimeMinutes: 5,
+    isHero: false,
+    isPopular: true,
+    popularRank: 2,
+    tags: ['Polska', 'Ekumenizm', 'Biblia', 'Polska Rada Ekumeniczna', 'Jedność', 'Ewangelizacja', 'Społeczeństwo', 'Słowo Boże'],
+    author: AUTHORS.cezary,
+    sourceCitation: {
+      sourceName: 'Polska Rada Ekumeniczna (ekumenia.pl) & Towarzystwo Biblijne w Polsce',
+      sourceUrl: 'https://ekumenia.pl/',
+      quotationDate: '10 października 2026',
+    },
+    scriptureReference: {
+      verse: 'Ewangelia według św. Jana 17:21',
+      text: 'Aby wszyscy byli jedno, jak Ty, Ojcze, we Mnie, a Ja w Tobie, aby i oni w Nas jedno byli, aby świat uwierzył, że Ty Mnie posłałeś.',
+      strongCode: 'G1520',
+    },
+    lexiconTerms: [
+      {
+        term: 'Hen / Jedno (J 17:21)',
+        strongCode: 'G1520',
+        definition: 'Gr. hen — organiczna jedność duchowa uczniów Chrystusa oparta na prawdzie Słowa Bożego i miłości agape.',
+      },
+      {
+        term: 'Koinonia / Wspólnota (Dz 2:42)',
+        strongCode: 'G2842',
+        definition: 'Gr. koinonia — braterska więź, dzielenie się wiarą i wzajemna pomoc wierzących w Chrystusie.',
+      },
+    ],
+    content: [
+      'W polskich miastach — od Warszawy, przez Poznań i Kraków, aż po Trójmiasto i Śląsk — środowiska chrześcijańskie różnych tradycji wyznaniowych podejmują wspólne inicjatywy mające na celu przypomnienie o centralnym miejscu Pisma Świętego w życiu narodu i pojedynczego człowieka. W dobie postępującej sekularyzacji i głębokich pęknięć społecznych, Słowo Boże pozostaje jedynym niezmiennym punktem odniesienia i fundamentem etycznym.',
+      '1. Ekumeniczne Święto Biblii i Dni Biblijne. W Poznaniu oraz w Krakowie pod hasłami czerpanymi z Księgi Objawienia („Oto wszystko czynię nowe”, Ap 21:5) odbywają się spotkania, maratony czytania Biblii oraz nabożeństwa Słowa. Współpraca Polskiej Rady Ekumenicznej, Towarzystwa Biblijnego w Polsce oraz Kościoła rzymskokatolickiego pokazuje, że Pismo Święte nie dzieli, lecz łączy tych, którzy uznają Jezusa Chrystusa za Pana i Zbawiciela.',
+      '2. Chrześcijańska Odpowiedź na Kryzys Moralny. Uczestnicy spotkań podkreślają, że współczesna Polska potrzebuje nie tyle politycznych deklaracji o wartościach, co autentycznego świadectwa życia zgodnego z Ewangelią. Chodzi o bezkompromisową troskę o najsłabszych, pomoc ubogim i samotnym, obronę godności każdego życia oraz budowanie trwałych małżeństw opartych na wierności i miłości.',
+      '3. Rola Mediów Chrześcijańskich w Erze Cyfrowej. Ważnym tematem debat jest również obecność Ewangelii w nowoczesnych mediach. Tradycyjne kanały dotarcia ustępują miejsca podcastom, aplikacjom mobilnym oraz stacjom radiowym działającym online. Polskie Radio Christian Culture (polskieradio.cc) wpisuje się w ten nurt, udostępniając bezpłatnie Pismo Święte z kodami Stronga (MojaBiblia), codzienne rozważania oraz muzykę uwielbienia przez całą dobę.',
+      '4. Fundament Przyszłości: Chrystus w Centrum. Prawdziwa jedność chrześcijan nie polega na zacieraniu prawdy doktrynalnej ani na powierzchownym kompromisie. Jej istotą jest wspólne uklęknięcie przed Krzyżem Chrystusa i wierność natchnionemu Słowu Bożemu. Jak przypominał apostoł Paweł: „Jeden jest Pan, jedna wiara, jeden chrzest, jeden Bóg i Ojciec wszystkich” (Ef 4:5–6).',
+    ],
+  },
   {
     id: 'art-kod-zrodlowy-reset-duszy',
     title: 'KOD ŹRÓDŁOWY DUSZY — JAK ZRESETOWAĆ WEWNĘTRZNY SYSTEM I ODRZUCIĆ FAŁSZYWY BŁYSK SUKCESU',
