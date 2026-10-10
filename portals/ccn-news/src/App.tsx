@@ -79,6 +79,16 @@ export default function App() {
     }
   });
 
+  // Prune invalid or phantom bookmark IDs
+  useEffect(() => {
+    setBookmarkedIds((prev) => {
+      const sanitized = prev.filter(
+        (id) => typeof id === 'string' && id.trim().length > 1 && id !== 'undefined' && id !== 'null' && id !== '1'
+      );
+      return sanitized.length !== prev.length ? sanitized : prev;
+    });
+  }, []);
+
   // Audio Radio Stream
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
   const [radioVolume, setRadioVolume] = useState(0.85);
@@ -222,7 +232,7 @@ export default function App() {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenRadio={() => setIsRadioModalOpen(true)}
         onOpenBookmarks={() => setIsBookmarksOpen(true)}
-        bookmarksCount={bookmarkedIds.length}
+        bookmarksCount={bookmarkedArticlesList.length}
         isRadioPlaying={isRadioPlaying}
         onToggleRadio={toggleRadioPlayback}
       />
