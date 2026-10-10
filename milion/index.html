@@ -1732,6 +1732,24 @@ https://polskieradio.cc/radio_christian_culture_widget.html`;
     let isModalRadioPlaying = false;
     let currentModalExportFormat = 'js';
 
+    // Synchronizacja globalna z Cloudflare D1
+    async function syncGlobalCounterFromServer() {
+      try {
+        const res = await fetch('/api/milion/count', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data.count === 'number' && data.count >= 0) {
+            totalRealClicks = Math.max(totalRealClicks, data.count);
+            localStorage.setItem('cc_real_total', totalRealClicks);
+            updateModalProgressUI();
+            updateModalExportCodeSnippet();
+          }
+        }
+      } catch (e) {
+        console.warn('Global counter sync offline fallback:', e);
+      }
+    }
+
     function initWelcomeModal() {
       // Inicjalizacja 7 kasetek
       for (let i = 6; i >= 0; i--) {
@@ -1748,9 +1766,13 @@ https://polskieradio.cc/radio_christian_culture_widget.html`;
       if (modal) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100', 'pointer-events-auto');
-        setTimeout(() => {
-          triggerModalMysteriousReveal();
-        }, 350);
+        
+        // Pobierz najnowszy stan z chmury i uruchom odkrywanie
+        syncGlobalCounterFromServer().finally(() => {
+          setTimeout(() => {
+            triggerModalMysteriousReveal();
+          }, 350);
+        });
       }
     }
 
@@ -1819,6 +1841,20 @@ https://polskieradio.cc/radio_christian_culture_widget.html`;
       try {
         localStorage.setItem('cc_real_total', totalRealClicks);
       } catch (e) {}
+
+      // Wyślij globalne kliknięcie do Cloudflare D1
+      fetch('/api/milion/count', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).then(r => r.json()).then(data => {
+        if (data && typeof data.count === 'number' && data.count > totalRealClicks) {
+          totalRealClicks = data.count;
+          localStorage.setItem('cc_real_total', totalRealClicks);
+          updateModalProgressUI();
+        }
+      }).catch(err => {
+        console.warn('Global click post fallback:', err);
+      });
 
       if (!isModalRevealing) {
         const paddedStr = String(totalRealClicks).padStart(7, '0');

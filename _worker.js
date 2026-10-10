@@ -648,6 +648,60 @@ export default {
       return env.ASSETS.fetch(ubgInfoReq);
     }
 
+    // ──────────────────────────────────────────────────────────────────────────
+    // GLOBALNY LICZNIK KAMPANII: /api/milion/count (CLOUDFLARE D1)
+    // ──────────────────────────────────────────────────────────────────────────
+    if (url.pathname === '/api/milion/count') {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+      };
+
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers });
+      }
+
+      const db = env.milion_db;
+
+      if (request.method === 'GET') {
+        try {
+          if (db) {
+            const row = await db.prepare('SELECT count, updated_at FROM counters WHERE id = ?').bind('milion_listeners').first();
+            const count = row ? Number(row.count || 0) : 0;
+            return new Response(JSON.stringify({ success: true, count, source: 'd1' }), { status: 200, headers });
+          }
+        } catch (err) {
+          console.error('D1 GET Error:', err);
+        }
+        return new Response(JSON.stringify({ success: true, count: 0, source: 'fallback' }), { status: 200, headers });
+      }
+
+      if (request.method === 'POST') {
+        try {
+          if (db) {
+            const now = Date.now();
+            // Atomowa inkrementacja +1 w D1
+            await db.prepare(`
+              INSERT INTO counters (id, count, updated_at) VALUES ('milion_listeners', 1, ?)
+              ON CONFLICT(id) DO UPDATE SET count = count + 1, updated_at = excluded.updated_at
+            `).bind(now).run();
+
+            const row = await db.prepare('SELECT count, updated_at FROM counters WHERE id = ?').bind('milion_listeners').first();
+            const count = row ? Number(row.count || 0) : 1;
+            return new Response(JSON.stringify({ success: true, count, source: 'd1' }), { status: 200, headers });
+          }
+        } catch (err) {
+          console.error('D1 POST Error:', err);
+        }
+        return new Response(JSON.stringify({ success: true, count: 1, source: 'fallback' }), { status: 200, headers });
+      }
+
+      return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
+    }
+
     if (url.pathname === '/api/auth/me') {
       return new Response(
         JSON.stringify({ user: null, isAdmin: false, firebaseAdminReady: true }),

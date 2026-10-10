@@ -764,6 +764,24 @@
     let currentExportFormat = 'js';
     let isRadioPlaying = false;
 
+    // Synchronizacja globalna z Cloudflare D1
+    async function syncGlobalCounterFromServer() {
+      try {
+        const res = await fetch('/api/milion/count', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data.count === 'number' && data.count >= 0) {
+            totalRealClicks = Math.max(totalRealClicks, data.count);
+            localStorage.setItem('cc_real_total', totalRealClicks);
+            updateProgressUI();
+            updateExportCodeSnippet();
+          }
+        }
+      } catch (e) {
+        console.warn('Global counter sync offline fallback:', e);
+      }
+    }
+
     function initSevenDigitDisplay() {
       // Inicjalizacja 7 kasetek
       for (let i = 6; i >= 0; i--) {
@@ -771,10 +789,12 @@
         digitDisplays[i] = new FullDigitFlipDisplay(slotEl, '0');
       }
 
-      // Uruchomienie tajemniczej sekwencji przy wejściu na stronę
-      setTimeout(() => {
-        triggerMysteriousReveal();
-      }, 400);
+      // Uruchomienie tajemniczej sekwencji przy wejściu po synchronizacji z chmury
+      syncGlobalCounterFromServer().finally(() => {
+        setTimeout(() => {
+          triggerMysteriousReveal();
+        }, 400);
+      });
     }
 
     // TAJEMNICZA ANIMACJA ROTACJI I ODKRYWANIA STANU LICZNIKA
@@ -844,6 +864,20 @@
       if (totalRealClicks > TARGET_GOAL) totalRealClicks = TARGET_GOAL;
 
       localStorage.setItem('cc_real_total', totalRealClicks);
+
+      // Zapis kliknięcia w globalnej bazie Cloudflare D1
+      fetch('/api/milion/count', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).then(r => r.json()).then(data => {
+        if (data && typeof data.count === 'number' && data.count > totalRealClicks) {
+          totalRealClicks = data.count;
+          localStorage.setItem('cc_real_total', totalRealClicks);
+          updateProgressUI();
+        }
+      }).catch(err => {
+        console.warn('Global click post fallback:', err);
+      });
 
       const paddedStr = String(totalRealClicks).padStart(7, '0');
       for (let i = 6; i >= 0; i--) {
