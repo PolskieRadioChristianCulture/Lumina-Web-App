@@ -307,6 +307,147 @@
       color: #f5dd8c !important;
       border-color: #334155 !important;
     }
+
+    /* ========================================================================= */
+    /* OKNO POWITALNE / LICZNIK „CELUJEMY W PIERWSZY MILION”                     */
+    /* ========================================================================= */
+    :root {
+      --flip-h: 76px;
+      --flip-w: 44px;
+      --flip-font: 48px;
+    }
+    @media (max-width: 640px) {
+      :root {
+        --flip-h: 52px;
+        --flip-w: 30px;
+        --flip-font: 34px;
+      }
+    }
+    .clock-chassis-box {
+      background: linear-gradient(180deg, #161822 0%, #0c0e13 100%);
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.98), inset 0 1px 1px rgba(255, 255, 255, 0.14);
+      position: relative;
+      overflow: hidden;
+    }
+    .golden-shimmer-sweep {
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(115deg, transparent 0%, rgba(197, 160, 89, 0.0) 38%, rgba(243, 217, 147, 0.14) 50%, rgba(197, 160, 89, 0.0) 62%, transparent 100%);
+      transform: translateX(-100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .shimmer-active {
+      animation: sweepShimmer 1.8s ease-in-out infinite;
+    }
+    @keyframes sweepShimmer {
+      0% { transform: translateX(-100%) rotate(5deg); }
+      100% { transform: translateX(100%) rotate(5deg); }
+    }
+    .clock-recess-slot {
+      background: #08090d;
+      box-shadow: inset 0 8px 20px rgba(0, 0, 0, 0.98), 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .flip-digit-card {
+      width: var(--flip-w);
+      height: var(--flip-h);
+      position: relative;
+      background: #14161f;
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75);
+      perspective: 1000px;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+    .flip-digit-card.locked-flash {
+      box-shadow: 0 0 20px rgba(243, 217, 147, 0.65), inset 0 0 10px rgba(197, 160, 89, 0.5);
+    }
+    .flap-half {
+      position: absolute;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: #1c1e28;
+    }
+    .flap-half-top {
+      top: 0;
+      height: 50%;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.85);
+      transform-origin: bottom center;
+    }
+    .flap-half-bottom {
+      bottom: 0;
+      height: 50%;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      transform-origin: top center;
+    }
+    .flap-half-top .num-glyph {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--flip-h);
+      font-size: var(--flip-font);
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .flap-half-bottom .num-glyph {
+      position: absolute;
+      top: calc(var(--flip-h) * -0.5);
+      left: 0;
+      right: 0;
+      height: var(--flip-h);
+      font-size: var(--flip-font);
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .scrambling .num-glyph {
+      color: #f3d993;
+      text-shadow: 0 0 10px rgba(197, 160, 89, 0.8);
+      filter: blur(0.4px);
+    }
+    .flip-gap-seam {
+      position: absolute;
+      top: calc(50% - 1px);
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #06070a;
+      z-index: 30;
+      pointer-events-none;
+    }
+    .animate-flip-drop-top {
+      animation: flipDropTop 0.22s cubic-bezier(0.4, 0, 0.7, 1) forwards;
+    }
+    .animate-flip-drop-bottom {
+      animation: flipDropBottom 0.22s cubic-bezier(0.2, 0, 0.6, 1) forwards 0.2s;
+    }
+    @keyframes flipDropTop {
+      0% { transform: rotateX(0deg); filter: brightness(1); }
+      100% { transform: rotateX(-90deg); filter: brightness(0.35); }
+    }
+    @keyframes flipDropBottom {
+      0% { transform: rotateX(90deg); filter: brightness(0.35); }
+      100% { transform: rotateX(0deg); filter: brightness(1); }
+    }
+    .gold-progress-fill {
+      background: linear-gradient(90deg, #8a6e35 0%, #c5a059 40%, #f7e2a9 75%, #c5a059 100%);
+      box-shadow: 0 0 12px rgba(197, 160, 89, 0.6);
+    }
   </style>
 </head>
 
@@ -873,6 +1014,110 @@
   </div>
 
   <!-- ========================================================================= -->
+  <!-- SPECJALNE OKNO POWITALNE / LICZNIK „CELUJEMY W PIERWSZY MILION”            -->
+  <!-- ========================================================================= -->
+  <div id="welcome-million-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-[#0e1017] border border-[rgba(197,160,89,0.35)] rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-[0_25px_80px_rgba(0,0,0,0.95)] relative overflow-hidden">
+      
+      <!-- Górny pasek modala -->
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-[rgba(197,160,89,0.15)] select-none">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#c5a059]/15 text-[#f5dd8c] font-bold text-[10px] tracking-wider uppercase border border-[#c5a059]/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#f5dd8c] animate-pulse"></span>
+            MISJA 2026
+          </span>
+          <span class="text-xs text-[#94a3b8] font-mono hidden sm:inline">polskieradio.cc</span>
+        </div>
+        <button onclick="closeWelcomeModal()" type="button" aria-label="Zamknij okno powitalne" title="Zamknij" class="w-8 h-8 rounded-full bg-[#161a24] hover:bg-[#202636] border border-[#272e40] text-[#94a3b8] hover:text-white flex items-center justify-center transition-all cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Treść nagłówkowa modala -->
+      <div class="text-center mb-5">
+        <h3 class="text-2xl sm:text-4xl font-serif font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+          CELUJEMY W PIERWSZY MILION
+        </h3>
+        <p class="text-[10px] sm:text-xs font-serif tracking-[0.22em] text-[#c5a059] uppercase mt-1">
+          CHRISTIAN CULTURE – EKOSYSTEM OSOBISTEGO UŚWIĘCENIA
+        </p>
+      </div>
+
+      <!-- Kasetka zegara klapkowego (7 cyfr) -->
+      <div class="w-full max-w-xl mx-auto mb-5 relative">
+        <div id="modal-clock-chassis" class="clock-chassis-box rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 border border-[rgba(197,160,89,0.25)] relative">
+          <!-- Złota wiązka światła (Golden Aura) -->
+          <div id="modal-aura-shimmer" class="golden-shimmer-sweep"></div>
+
+          <!-- Łoże na 7 cyfr -->
+          <div class="clock-recess-slot rounded-xl p-2 sm:p-3 flex items-center justify-center gap-1 sm:gap-2 relative z-20">
+            <!-- Pozycja 6 (Milion) -->
+            <div id="modal-digit-slot-6" class="flip-digit-card"></div>
+
+            <div class="flex items-center justify-center px-0.5 select-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#c5a059] shadow-[0_0_6px_#f5dd8c]"></span>
+            </div>
+
+            <!-- Tysiące (5, 4, 3) -->
+            <div id="modal-digit-slot-5" class="flip-digit-card"></div>
+            <div id="modal-digit-slot-4" class="flip-digit-card"></div>
+            <div id="modal-digit-slot-3" class="flip-digit-card"></div>
+
+            <div class="flex items-center justify-center px-0.5 select-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#c5a059] shadow-[0_0_6px_#f5dd8c]"></span>
+            </div>
+
+            <!-- Jedności (2, 1, 0) -->
+            <div id="modal-digit-slot-2" class="flip-digit-card"></div>
+            <div id="modal-digit-slot-1" class="flip-digit-card"></div>
+            <div id="modal-digit-slot-0" class="flip-digit-card"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pasek postępu do 1 miliona -->
+      <div class="w-full max-w-md mx-auto mb-6 px-1">
+        <div class="flex items-center justify-between text-xs font-semibold mb-1.5 font-mono">
+          <span class="text-[#94a3b8] text-[11px]">
+            Postęp: <span id="modal-label-current-formatted" class="text-white font-bold">0</span> / 1 000 000
+          </span>
+          <span id="modal-label-percentage-progress" class="text-[#f5dd8c] font-bold text-[11px]">
+            0.00%
+          </span>
+        </div>
+        <div class="w-full h-2 bg-[#12141a] rounded-full overflow-hidden border border-[rgba(197,160,89,0.2)]">
+          <div id="modal-progress-bar-fill" class="h-full rounded-full gold-progress-fill transition-all duration-700 ease-out" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Przyciski akcji modala powitalnego -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-w-xl mx-auto">
+        <button onclick="handleModalDownloadAction()" type="button" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#fae69e] via-[#c5a059] to-[#806225] text-black font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(203,162,88,0.4)] hover:scale-105 active:scale-95 transition-all">
+          <i class="fa-solid fa-code"></i>
+          <span>Pobierz Widget (+1)</span>
+        </button>
+
+        <button onclick="handleModalRadioAction()" type="button" class="py-3 px-3 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+          <i class="fa-solid fa-play text-[10px]"></i>
+          <span>Włącz Radio (+1)</span>
+        </button>
+
+        <button onclick="handleModalShareAction()" type="button" class="py-3 px-3 rounded-xl bg-[#11151e] hover:bg-[#161d2b] text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Udostępnij (+1)</span>
+        </button>
+      </div>
+
+      <div class="text-center mt-4">
+        <button onclick="closeWelcomeModal()" type="button" class="text-xs text-[#7e8a9f] hover:text-[#f5dd8c] transition-colors underline font-sans">
+          Przejdź do strony widgetu →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- STRZAŁKA PRZEWIJANIA STRONY W GÓRĘ (BACK TO TOP BUTTON - SMCC 44PX+)       -->
   <!-- ========================================================================= -->
   <button id="backToTopBtn" type="button" aria-label="Przewiń stronę w górę" title="Przewiń w górę" onclick="scrollToTop()">
@@ -1114,10 +1359,228 @@ https://polskieradio.cc/radio_christian_culture_widget.html`;
       }, { passive: true });
     }
 
+    /* ========================================================================= */
+    /* ZEGAR KLAPKOWY & OKNO POWITALNE „CELUJEMY W PIERWSZY MILION”               */
+    /* ========================================================================= */
+    class ModalDigitFlipDisplay {
+      constructor(containerElement, initialValue = '0') {
+        this.container = containerElement;
+        this.currentValue = String(initialValue);
+        this.buildDom();
+      }
+
+      buildDom() {
+        this.container.innerHTML = `
+          <div class="flap-half flap-half-top static-top">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+          <div class="flap-half flap-half-bottom static-bottom">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+          <div class="flip-gap-seam"></div>
+          <div class="flap-half flap-half-top moving-top hidden z-20">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+          <div class="flap-half flap-half-bottom moving-bottom hidden z-20">
+            <span class="num-glyph">${this.currentValue}</span>
+          </div>
+        `;
+        this.staticTopGlyph = this.container.querySelector('.static-top .num-glyph');
+        this.staticBottomGlyph = this.container.querySelector('.static-bottom .num-glyph');
+        this.movingTopCard = this.container.querySelector('.moving-top');
+        this.movingTopGlyph = this.container.querySelector('.moving-top .num-glyph');
+        this.movingBottomCard = this.container.querySelector('.moving-bottom');
+        this.movingBottomGlyph = this.container.querySelector('.moving-bottom .num-glyph');
+      }
+
+      setValueDirect(val) {
+        this.currentValue = String(val);
+        this.staticTopGlyph.textContent = this.currentValue;
+        this.staticBottomGlyph.textContent = this.currentValue;
+      }
+
+      setScramblingState(isScrambling) {
+        if (isScrambling) this.container.classList.add('scrambling');
+        else this.container.classList.remove('scrambling');
+      }
+
+      triggerLockInFlash() {
+        this.container.classList.add('locked-flash');
+        setTimeout(() => this.container.classList.remove('locked-flash'), 380);
+      }
+
+      flipTo(newValue) {
+        newValue = String(newValue);
+        if (this.currentValue === newValue) return;
+        const oldValue = this.currentValue;
+        this.currentValue = newValue;
+
+        this.staticTopGlyph.textContent = newValue;
+        this.staticBottomGlyph.textContent = oldValue;
+        this.movingTopGlyph.textContent = oldValue;
+        this.movingBottomGlyph.textContent = newValue;
+
+        this.movingTopCard.classList.remove('animate-flip-drop-top', 'hidden');
+        this.movingBottomCard.classList.remove('animate-flip-drop-bottom', 'hidden');
+
+        void this.movingTopCard.offsetWidth;
+        this.movingTopCard.classList.add('animate-flip-drop-top');
+        void this.movingBottomCard.offsetWidth;
+        this.movingBottomCard.classList.add('animate-flip-drop-bottom');
+
+        setTimeout(() => {
+          this.staticBottomGlyph.textContent = newValue;
+          this.movingTopCard.classList.add('hidden');
+          this.movingBottomCard.classList.add('hidden');
+          this.movingTopCard.classList.remove('animate-flip-drop-top');
+          this.movingBottomCard.classList.remove('animate-flip-drop-bottom');
+        }, 360);
+      }
+    }
+
+    const TARGET_GOAL = 1000000;
+    let totalRealClicks = parseInt(localStorage.getItem('cc_real_total')) || 12480;
+    const modalDigitDisplays = [];
+    let isModalRevealing = false;
+
+    function initWelcomeModal() {
+      // Inicjalizacja 7 kasetek
+      for (let i = 6; i >= 0; i--) {
+        const slotEl = document.getElementById(`modal-digit-slot-${i}`);
+        if (slotEl) {
+          modalDigitDisplays[i] = new ModalDigitFlipDisplay(slotEl, '0');
+        }
+      }
+
+      // Pokaż modal na powitanie
+      const modal = document.getElementById('welcome-million-modal');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        setTimeout(() => {
+          triggerModalMysteriousReveal();
+        }, 300);
+      }
+    }
+
+    function closeWelcomeModal() {
+      const modal = document.getElementById('welcome-million-modal');
+      if (modal) {
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function triggerModalMysteriousReveal() {
+      if (isModalRevealing) return;
+      isModalRevealing = true;
+
+      const shimmerEl = document.getElementById('modal-aura-shimmer');
+      if (shimmerEl) shimmerEl.classList.add('shimmer-active');
+
+      const paddedTarget = String(totalRealClicks).padStart(7, '0');
+      modalDigitDisplays.forEach(display => display && display.setScramblingState(true));
+
+      const scrambleIntervals = [];
+      for (let i = 0; i < 7; i++) {
+        scrambleIntervals[i] = setInterval(() => {
+          if (modalDigitDisplays[i]) {
+            const randomDigit = Math.floor(Math.random() * 10);
+            modalDigitDisplays[i].setValueDirect(randomDigit);
+          }
+        }, 55);
+      }
+
+      const lockDelays = [800, 1000, 1200, 1400, 1600, 1800, 2000];
+      lockDelays.forEach((delay, stepIndex) => {
+        setTimeout(() => {
+          const digitIndex = 6 - stepIndex;
+          clearInterval(scrambleIntervals[digitIndex]);
+
+          if (modalDigitDisplays[digitIndex]) {
+            const targetChar = paddedTarget[stepIndex];
+            modalDigitDisplays[digitIndex].setScramblingState(false);
+            modalDigitDisplays[digitIndex].flipTo(targetChar);
+            modalDigitDisplays[digitIndex].triggerLockInFlash();
+          }
+
+          if (stepIndex === 6) {
+            setTimeout(() => {
+              isModalRevealing = false;
+              if (shimmerEl) shimmerEl.classList.remove('shimmer-active');
+              updateModalProgressUI();
+            }, 250);
+          }
+        }, delay);
+      });
+    }
+
+    function recordModalClick() {
+      totalRealClicks++;
+      if (totalRealClicks > TARGET_GOAL) totalRealClicks = TARGET_GOAL;
+      try {
+        localStorage.setItem('cc_real_total', totalRealClicks);
+      } catch (e) {}
+
+      const paddedStr = String(totalRealClicks).padStart(7, '0');
+      for (let i = 6; i >= 0; i--) {
+        const targetChar = paddedStr[6 - i];
+        if (modalDigitDisplays[i] && modalDigitDisplays[i].currentValue !== targetChar) {
+          modalDigitDisplays[i].flipTo(targetChar);
+        }
+      }
+      updateModalProgressUI();
+    }
+
+    function updateModalProgressUI() {
+      const pct = ((totalRealClicks / TARGET_GOAL) * 100).toFixed(2);
+      const labelCurrent = document.getElementById('modal-label-current-formatted');
+      const labelPct = document.getElementById('modal-label-percentage-progress');
+      const barFill = document.getElementById('modal-progress-bar-fill');
+      if (labelCurrent) labelCurrent.textContent = totalRealClicks.toLocaleString('pl-PL');
+      if (labelPct) labelPct.textContent = `${pct}%`;
+      if (barFill) barFill.style.width = `${pct}%`;
+    }
+
+    function handleModalDownloadAction() {
+      recordModalClick();
+      copyEmbedCode();
+      showToast('🎉 Kod widgetu skopiowany! (+1 do pierwszego miliona)');
+      setTimeout(() => closeWelcomeModal(), 1200);
+    }
+
+    function handleModalRadioAction() {
+      recordModalClick();
+      showToast('Włączono radio Christian Culture! (+1)');
+      const iframe = document.getElementById('live-widget-iframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage({ action: 'play' }, '*');
+        } catch (e) {}
+      }
+      setTimeout(() => closeWelcomeModal(), 1000);
+    }
+
+    function handleModalShareAction() {
+      recordModalClick();
+      const shareData = {
+        title: 'Christian Culture – Celujemy w Pierwszy Milion',
+        text: 'Dołącz do społeczności Christian Culture i słuchaj Radia oraz Biblii Audio online!',
+        url: 'https://polskieradio.cc/widget'
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText('https://polskieradio.cc/widget');
+        showToast('Link do widgetu skopiowany do schowka! (+1)');
+      }
+    }
+
     window.onload = function() {
       initTheme();
       initBackToTop();
       generateEmbedCode();
+      initWelcomeModal();
     };
   </script>
 </body>
