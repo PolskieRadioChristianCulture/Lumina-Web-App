@@ -356,11 +356,11 @@
     /* Dynamic Pulsing Halo Synchronized with Planet Earth */
     .orbital-ring-container {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(78vw, 360px);
-      height: min(78vw, 360px);
+      width: min(68vw, 290px);
+      height: min(68vw, 290px);
       pointer-events: none;
       z-index: 2;
     }
@@ -369,25 +369,24 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 2px solid var(--skin-ring-color);
+      border: 1.5px solid var(--skin-ring-color);
       box-shadow: var(--skin-ring-shadow);
-      opacity: 0.65;
+      opacity: 0.45;
       transform: scale(1);
-      transition: transform 0.08s ease-out, opacity 0.08s ease-out, box-shadow 0.08s ease-out;
+      transition: transform 0.08s ease-out, opacity 0.08s ease-out;
     }
 
     /* Real-Time Spectrum Equalizer (44 Bars) */
     .spectrum-visualizer {
-      position: absolute;
-      left: 5%;
-      width: 90%;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 18%;
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      height: 26px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 3px;
+      margin: 8px auto 6px auto;
       pointer-events: none;
       opacity: 0.94;
       mix-blend-mode: screen;
@@ -400,7 +399,7 @@
       min-height: 4px;
       border-radius: 8px;
       background: var(--skin-bar-grad);
-      box-shadow: 0 0 10px var(--skin-glow);
+      box-shadow: 0 0 8px var(--skin-glow);
       transform-origin: center;
       transition: height 70ms linear;
     }
@@ -412,9 +411,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 20px max(24px, calc(env(safe-area-inset-bottom) + 16px));
-      gap: 16px;
+      padding: 18px 20px max(24px, calc(env(safe-area-inset-bottom) + 16px));
+      gap: 12px;
       width: 100%;
+      background: linear-gradient(180deg, rgba(5, 8, 25, 0) 0%, rgba(5, 8, 25, 0.72) 20%, rgba(5, 8, 25, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     /* Station Meta Card */
@@ -657,13 +659,19 @@
 
       /* Desktop Orbital Ring & Spectrum */
       .desktop-stage-visual .orbital-ring-container {
-        width: 320px;
-        height: 320px;
+        width: 290px;
+        height: 290px;
+        top: 42%;
       }
 
       .desktop-stage-visual .spectrum-visualizer {
-        top: 50%;
-        height: 16%;
+        position: absolute;
+        bottom: 24px;
+        left: 5%;
+        width: 90%;
+        height: 28px;
+        top: auto;
+        transform: none;
       }
 
       /* Right Stage: Studio Audio Deck */
@@ -1127,12 +1135,11 @@
         </div>
       </header>
 
-      <!-- Center Stage: Earth Halo & Spectrum Equalizer -->
+      <!-- Center Stage: Earth Halo -->
       <section class="center-stage" aria-hidden="true">
         <div class="orbital-ring-container">
           <div class="orbital-ring" id="orbitalRing"></div>
         </div>
-        <div class="spectrum-visualizer" id="spectrumMobile"></div>
       </section>
 
       <!-- Lower Deck: Station Info & Transport Buttons -->
@@ -1143,6 +1150,9 @@
           </div>
           <h1 class="station-title" id="stationTitle">Polskie Radio CC</h1>
           <p class="station-slogan" id="stationSlogan">Dobra muzyka • Dobra wiadomość</p>
+
+          <!-- Real-Time Spectrum Equalizer (44 Bars) -->
+          <div class="spectrum-visualizer" id="spectrumMobile"></div>
 
           <!-- Quick 3-Station Pill Switcher -->
           <nav class="station-pill-strip" id="stationPillStrip" aria-label="Wybór stacji radiowej">
