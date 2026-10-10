@@ -221,33 +221,119 @@
     }
 
     /* ========================================================================= */
-    /* TRYB JASNY (WARM IVORY & GOLD LIGHT MODE)                                 */
+    /* POPRAWA CZYTELNOŚCI I KONTRASTU: TRYB CIEMNY (DARK MODE CONTRAST)         */
+    /* ========================================================================= */
+    .hero-title-gradient {
+      background: linear-gradient(135deg, #fae69e 0%, #d4af37 40%, #c5a059 70%, #f3d993 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+    }
+    .hero-desc-text {
+      color: #cbd5e1;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    .hero-stat-card {
+      background-color: rgba(11, 14, 21, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(197, 160, 89, 0.28);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    }
+    .hero-stat-number {
+      color: #f5dd8c;
+      text-shadow: 0 0 10px rgba(197, 160, 89, 0.4);
+    }
+    .hero-stat-desc {
+      color: #94a3b8;
+    }
+
+    /* ========================================================================= */
+    /* TRYB JASNY (WARM IVORY & GOLD LIGHT MODE) — PERFEKCYJNY KONTRAST          */
     /* ========================================================================= */
     html[data-theme="light"],
     body.light-mode {
-      background-color: #f8f6f0 !important;
+      background-color: #f7f5ed !important;
       color: #0f172a !important;
     }
     html[data-theme="light"] header,
     body.light-mode header {
-      background-color: rgba(255, 255, 255, 0.95) !important;
-      border-color: rgba(197, 160, 89, 0.35) !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+      background-color: rgba(255, 255, 255, 0.98) !important;
+      border-color: rgba(163, 127, 55, 0.35) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
     }
+    html[data-theme="light"] header nav a,
+    body.light-mode header nav a {
+      color: #1e293b !important;
+      font-weight: 600 !important;
+    }
+    html[data-theme="light"] header nav a:hover,
+    body.light-mode header nav a:hover {
+      color: #0f172a !important;
+      background-color: #ede7d8 !important;
+    }
+    html[data-theme="light"] .hero-title-gradient,
+    body.light-mode .hero-title-gradient {
+      background: linear-gradient(135deg, #7a5813 0%, #9e792f 40%, #70541d 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.9)) !important;
+    }
+    html[data-theme="light"] .hero-desc-text,
+    body.light-mode .hero-desc-text {
+      color: #1e293b !important;
+      text-shadow: none !important;
+    }
+    html[data-theme="light"] .hero-stat-card,
+    body.light-mode .hero-stat-card {
+      background-color: #ffffff !important;
+      border-color: #ded6c4 !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
+    }
+    html[data-theme="light"] .hero-stat-number,
+    body.light-mode .hero-stat-number {
+      color: #8a6417 !important;
+      text-shadow: none !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="light"] .hero-stat-desc,
+    body.light-mode .hero-stat-desc {
+      color: #475569 !important;
+      font-weight: 500 !important;
+    }
+    /* Top Bar w trybie jasnym */
+    html[data-theme="light"] .top-bar-strip,
+    body.light-mode .top-bar-strip,
     html[data-theme="light"] .bg-\[\#0a0d13\],
     body.light-mode .bg-\[\#0a0d13\] {
-      background-color: #efece4 !important;
-      border-color: #e2dcce !important;
-      color: #475569 !important;
+      background-color: #ebe4d5 !important;
+      border-color: #d6ccb8 !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="light"] .top-bar-strip span,
+    body.light-mode .top-bar-strip span,
+    html[data-theme="light"] .bg-\[\#0a0d13\] span,
+    body.light-mode .bg-\[\#0a0d13\] span,
+    html[data-theme="light"] .top-bar-strip a,
+    body.light-mode .top-bar-strip a,
+    html[data-theme="light"] .bg-\[\#0a0d13\] a,
+    body.light-mode .bg-\[\#0a0d13\] a {
+      color: #1e293b !important;
+    }
+    html[data-theme="light"] .top-bar-strip a:hover,
+    body.light-mode .top-bar-strip a:hover,
+    html[data-theme="light"] .bg-\[\#0a0d13\] a:hover,
+    body.light-mode .bg-\[\#0a0d13\] a:hover {
+      color: #7a5813 !important;
     }
     html[data-theme="light"] .bg-\[\#0b0e15\]\/95,
     body.light-mode .bg-\[\#0b0e15\]\/95 {
-      background-color: rgba(255, 255, 255, 0.95) !important;
+      background-color: rgba(255, 255, 255, 0.98) !important;
     }
     html[data-theme="light"] .bg-\[\#080b10\],
     body.light-mode .bg-\[\#080b10\] {
-      background-color: #f4f0e6 !important;
-      border-color: rgba(197, 160, 89, 0.25) !important;
+      background-color: #f2eee3 !important;
+      border-color: rgba(163, 127, 55, 0.25) !important;
     }
     html[data-theme="light"] .bg-\[\#0b0e15\],
     body.light-mode .bg-\[\#0b0e15\],
@@ -260,15 +346,17 @@
     html[data-theme="light"] .bg-\[\#080a0f\],
     body.light-mode .bg-\[\#080a0f\] {
       background-color: #ffffff !important;
-      border-color: rgba(197, 160, 89, 0.35) !important;
+      border-color: rgba(163, 127, 55, 0.3) !important;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05) !important;
     }
     html[data-theme="light"] .bg-\[\#05070a\],
     body.light-mode .bg-\[\#05070a\],
-    html[data-theme="light"] .bg-\[\#06080b\],
-    body.light-mode .bg-\[\#06080b\] {
-      background-color: #f1ece1 !important;
-      border-color: #ded6c4 !important;
+    html[data-theme="light"] div.bg-\[\#06080b\],
+    body.light-mode div.bg-\[\#06080b\],
+    html[data-theme="light"] section.bg-\[\#06080b\],
+    body.light-mode section.bg-\[\#06080b\] {
+      background-color: #ebe5d7 !important;
+      border-color: #d8cebc !important;
     }
     html[data-theme="light"] .bg-\[\#0e121a\],
     body.light-mode .bg-\[\#0e121a\],
@@ -282,14 +370,14 @@
     body.light-mode .bg-\[\#141824\],
     html[data-theme="light"] .bg-\[\#161d2b\],
     body.light-mode .bg-\[\#161d2b\] {
-      background-color: #ebe5d8 !important;
-      border-color: #ded6c4 !important;
+      background-color: #ebe4d5 !important;
+      border-color: #d6ccb8 !important;
       color: #1e293b !important;
     }
     html[data-theme="light"] select,
     body.light-mode select {
       background-color: #ffffff !important;
-      border-color: #ded6c4 !important;
+      border-color: #c9bea7 !important;
       color: #0f172a !important;
     }
     html[data-theme="light"] .bg-\[\#0a0d14\],
@@ -309,13 +397,18 @@
     body.light-mode .text-\[\#94a3b8\],
     html[data-theme="light"] .text-gray-400,
     body.light-mode .text-gray-400 {
-      color: #475569 !important;
+      color: #1e293b !important;
     }
     html[data-theme="light"] .text-\[\#7e8a9f\],
     body.light-mode .text-\[\#7e8a9f\],
     html[data-theme="light"] .text-gray-500,
     body.light-mode .text-gray-500 {
-      color: #64748b !important;
+      color: #334155 !important;
+    }
+    html[data-theme="light"] .text-\[\#c5a059\],
+    body.light-mode .text-\[\#c5a059\] {
+      color: #7a5813 !important;
+      font-weight: 700 !important;
     }
     html[data-theme="light"] .border-\[\#1e2534\],
     body.light-mode .border-\[\#1e2534\],
@@ -331,8 +424,22 @@
     }
     html[data-theme="light"] footer,
     body.light-mode footer {
-      background-color: #efebe2 !important;
+      background-color: #ece6d8 !important;
       border-color: #ded6c4 !important;
+    }
+    html[data-theme="light"] footer h4,
+    body.light-mode footer h4 {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] footer a,
+    body.light-mode footer a,
+    html[data-theme="light"] footer p,
+    body.light-mode footer p {
+      color: #334155 !important;
+    }
+    html[data-theme="light"] footer a:hover,
+    body.light-mode footer a:hover {
+      color: #7a5813 !important;
     }
     html[data-theme="light"] #embed-code-display,
     body.light-mode #embed-code-display {
@@ -561,7 +668,7 @@
   <!-- ========================================================================= -->
   <!-- 1. PASEK INFORMACYJNY TOP BAR (CCN LIVE STATUS)                           -->
   <!-- ========================================================================= -->
-  <div class="bg-[#0a0d13] border-b border-[#1b2230] text-[11px] text-[#94a3b8] py-1.5 px-4 font-mono select-none">
+  <div class="top-bar-strip relative z-20 bg-[#0a0d13] border-b border-[#1b2230] text-[11px] text-[#94a3b8] py-1.5 px-4 font-mono select-none">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
       <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
         <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#bb142e]/20 text-[#f9282b] font-bold text-[10px] tracking-wider uppercase border border-[#bb142e]/30">
@@ -668,12 +775,12 @@
 
       <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#fdfbf7] uppercase leading-tight drop-shadow-md">
         Zainstaluj Radio i Słowo Boże <br class="hidden sm:block">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fae69e] via-[#c5a059] to-[#e6ca65]">
+        <span class="hero-title-gradient">
           na Swojej Stronie
         </span>
       </h1>
 
-      <p class="font-sans text-sm sm:text-base text-[#94a3b8] max-w-3xl mx-auto mt-4 sm:mt-6 leading-relaxed">
+      <p class="font-sans text-sm sm:text-base hero-desc-text max-w-3xl mx-auto mt-4 sm:mt-6 leading-relaxed">
         Udostępnij swoim czytelnikom, parafianom i gościom 3 całodobowe stacje radiowe, pieśni uwielbienia oraz Pismo Święte non-stop. 
         Oficjalny widget Christian Culture to luksusowa estetyka Sacred Gold, <strong>100% niezależności</strong>, brak reklam i intuicyjna instalacja w 3 minuty.
       </p>
@@ -696,21 +803,21 @@
 
       <!-- Liczniki / Zaufanie -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-12 pt-8 border-t border-[#1b2230] text-left">
-        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
-          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">3 STACJE</div>
-          <div class="text-[#7e8a9f] text-xs mt-0.5">Polskie Radio, CC, Biblia</div>
+        <div class="hero-stat-card border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="hero-stat-number font-mono font-bold text-lg sm:text-xl">3 STACJE</div>
+          <div class="hero-stat-desc text-xs mt-0.5">Polskie Radio, CC, Biblia</div>
         </div>
-        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
-          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">192 KBPS</div>
-          <div class="text-[#7e8a9f] text-xs mt-0.5">Krystaliczny dźwięk HD</div>
+        <div class="hero-stat-card border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="hero-stat-number font-mono font-bold text-lg sm:text-xl">192 KBPS</div>
+          <div class="hero-stat-desc text-xs mt-0.5">Krystaliczny dźwięk HD</div>
         </div>
-        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
-          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">0 REKLAM</div>
-          <div class="text-[#7e8a9f] text-xs mt-0.5">Czysty, godny przekaz</div>
+        <div class="hero-stat-card border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="hero-stat-number font-mono font-bold text-lg sm:text-xl">0 REKLAM</div>
+          <div class="hero-stat-desc text-xs mt-0.5">Czysty, godny przekaz</div>
         </div>
-        <div class="bg-[#0b0e15] border border-[#1b2230] rounded-xl p-3 sm:p-4">
-          <div class="text-[#c5a059] font-mono font-bold text-lg sm:text-xl">100% FREE</div>
-          <div class="text-[#7e8a9f] text-xs mt-0.5">Darmowe użytkowanie</div>
+        <div class="hero-stat-card border border-[#1b2230] rounded-xl p-3 sm:p-4">
+          <div class="hero-stat-number font-mono font-bold text-lg sm:text-xl">100% FREE</div>
+          <div class="hero-stat-desc text-xs mt-0.5">Darmowe użytkowanie</div>
         </div>
       </div>
     </div>
