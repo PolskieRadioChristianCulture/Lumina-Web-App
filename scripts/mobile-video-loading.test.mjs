@@ -2,7 +2,39 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { Window } from 'happy-dom';
 const source = fs.readFileSync(new URL('../js/cc-mobile-video-loading.js', import.meta.url), 'utf8');
+for (const file of ['lumina-tablica.html','lumina-tablica-light.html']) {
+  const html=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  const start=html.indexOf('(function initVodAdPlayback() {');
+  const end=html.indexOf('</script>',start);
+  const fallback=html.slice(start,end);
+  test(file+': VOD poster and unavailable-playback fallback never request the heavy GIF',()=>{
+    assert.ok(start>=0 && end>start);
+    assert.doesNotMatch(html,/vod_hity_kina\.gif/);
+    assert.match(html,/<video id="vod-ad-video"[^>]*poster="vod_hity_kina_poster\.jpg"/);
+    assert.match(html,/<source src="vod_hity_kina\.mp4" type="video\/mp4">/);
+    assert.ok(fs.statSync(new URL('../vod_hity_kina_poster.jpg',import.meta.url)).size < fs.statSync(new URL('../vod_hity_kina.gif',import.meta.url)).size * .05);
+  });
+  test(file+': rejected playback uses one cover and successful playback keeps the original player',async()=>{
+    for(const rejected of [true,false]) {
+      const win=new Window({url:'http://localhost/'});
+      win.document.body.innerHTML='<div><video id="vod-ad-video" class="card-916-img" style="width:100%"></video></div>';
+      const video=win.document.querySelector('video'),timers=[];
+      Object.defineProperty(win.document,'readyState',{value:'complete'});
+      Object.defineProperty(video,'paused',{get:()=>rejected});
+      video.play=()=>rejected?Promise.reject(Error('synthetic autoplay denied')):Promise.resolve();
+      vm.runInNewContext(fallback,{window:win,document:win.document,setTimeout:fn=>timers.push(fn)});
+      await Promise.resolve();await Promise.resolve();
+      timers.forEach(fn=>fn());
+      if(rejected) {
+        const img=win.document.querySelector('img');assert.ok(img);
+        assert.equal(img.getAttribute('src'),'vod_hity_kina_poster.jpg');assert.equal(img.className,'card-916-img');
+        assert.equal(win.document.querySelectorAll('img').length,1);assert.match(img.alt,/VOD/);
+      } else {assert.equal(win.document.querySelector('video'),video);assert.equal(win.document.querySelector('img'),null);}
+    }
+  });
+}
 function fixture(options = {}) {
   let callback; const events = {}; const watched = [];
   const video = { muted: true, controls: false, paused: true, isConnected: true, preload: 'none', plays: 0, pauses: 0,
