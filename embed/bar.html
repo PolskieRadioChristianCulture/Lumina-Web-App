@@ -143,15 +143,71 @@
 <body class="bg-transparent text-[#fdfbf7] font-sans antialiased p-0 m-0 overflow-hidden select-none">
   <audio id="audio-live-engine" preload="none"></audio>
 
-  <div id="bar-root-box" class="w-full bg-[#0d0f14] border border-[rgba(197,160,89,0.35)] rounded-2xl p-2.5 sm:p-3 shadow-[0_16px_45px_rgba(0,0,0,0.9)] relative overflow-hidden box-border">
+  <div id="bar-root-box" class="w-full bg-[#0d0f14] border border-[rgba(197,160,89,0.35)] rounded-2xl p-2 sm:p-2.5 md:p-3 shadow-[0_16px_45px_rgba(0,0,0,0.9)] relative overflow-hidden box-border">
     <!-- Blask tła -->
     <div class="absolute -top-10 -left-10 w-40 h-40 bg-[#c5a059]/10 rounded-full blur-2xl pointer-events-none"></div>
 
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 relative z-10">
-      
+    <!-- WIDOK DLA SMARTFONÓW (< 640px) -->
+    <div class="flex flex-col gap-2 sm:hidden relative z-10 w-full">
+      <!-- Rząd 1 (Góra na smartfonie): Przyciski stacji, Duży Play, Nazwa stacji / status -->
+      <div class="flex items-center justify-between gap-2 w-full">
+        <div class="flex items-center space-x-1.5 flex-shrink-0">
+          <button type="button" onclick="changeStationOffset(-1)" title="Poprzednia stacja" aria-label="Poprzednia stacja" class="nav-prev-next w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+
+          <button type="button" id="master-play-btn-mob" onclick="toggleAudioStreaming()" title="Włącz / Zatrzymaj odtwarzanie" aria-label="Włącz lub zatrzymaj radio" class="w-11 h-11 rounded-full sacred-play-btn flex items-center justify-center text-black cursor-pointer flex-shrink-0">
+            <svg id="icon-play-state-mob" class="w-4 h-4 fill-black ml-0.5 drop-shadow" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="icon-pause-state-mob" class="w-4 h-4 fill-black hidden drop-shadow" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+
+          <button type="button" onclick="changeStationOffset(1)" title="Następna stacja" aria-label="Następna stacja" class="nav-prev-next w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- Środkowy box informacyjny na smartfonie -->
+        <div class="flex-1 min-w-0 bg-[#07090d]/90 rounded-xl border border-[rgba(197,160,89,0.24)] px-2.5 py-1.5 flex flex-col justify-center">
+          <div class="flex items-center justify-between gap-1">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="w-2 h-2 rounded-full bg-[#e6ca65] shadow-[0_0_6px_#f5dd8c] animate-pulse flex-shrink-0"></span>
+              <span id="rds-active-title-mob" class="text-xs font-bold text-[#fdfbf7] truncate">Polskie Radio CC</span>
+            </div>
+            <span class="text-[8px] text-[#f5dd8c] font-mono bg-[#11151e] px-1.5 py-0.2 rounded border border-[#c5a059]/25 flex-shrink-0">192k</span>
+          </div>
+          <p id="rds-active-subtitle-mob" class="text-[10px] text-[#7e8a9f] truncate mt-0.5">Wstrzymano</p>
+        </div>
+
+        <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer" title="Portal Polskie Radio CC" class="px-2 py-2 rounded-xl bg-[#141824] hover:bg-[#1a2130] text-[#f5dd8c] border border-[#c5a059]/40 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+          <span>PORTAL ↗</span>
+        </a>
+      </div>
+
+      <!-- Rząd 2 (Dół na smartfonie): Szybki wybór stacji + Regulacja głośności -->
+      <div class="flex items-center justify-between gap-2 w-full pt-1.5 border-t border-[rgba(197,160,89,0.15)]">
+        <!-- 3 stacje pigułki -->
+        <div class="flex items-center gap-1 flex-1 min-w-0">
+          <button type="button" onclick="selectDirectStation('prcc')" id="channel-btn-prcc-mob" class="py-1 px-2 rounded-lg text-[10px] font-bold truncate bg-[#c5a059] text-black flex-1 text-center">Radio CC</button>
+          <button type="button" onclick="selectDirectStation('cc')" id="channel-btn-cc-mob" class="station-btn-inactive py-1 px-2 rounded-lg text-[10px] font-bold truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] flex-1 text-center">Muzyka</button>
+          <button type="button" onclick="selectDirectStation('biblia')" id="channel-btn-biblia-mob" class="station-btn-inactive py-1 px-2 rounded-lg text-[10px] font-bold truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] flex-1 text-center">Biblia</button>
+        </div>
+
+        <!-- Głośność -->
+        <div class="vol-box flex items-center space-x-1.5 bg-[#121620] px-2 py-1 rounded-lg border border-[#232b3b] flex-shrink-0">
+          <button type="button" onclick="toggleVolumeMute()" title="Wycisz" aria-label="Wycisz dźwięk" class="text-[#7e8a9f] hover:text-[#f5dd8c]">
+            <svg class="vol-active-icon-mob w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            <svg class="vol-muted-icon-mob w-3.5 h-3.5 hidden text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+          </button>
+          <input type="range" min="0" max="1" step="0.02" value="0.85" oninput="changeMasterVolume(this.value)" class="sacred-volume-slider master-volume-fader-mob w-16 cursor-pointer" title="Głośność" aria-label="Regulacja głośności">
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDOK DLA TABLETÓW I DESKTOPÓW (>= 640px) -->
+    <div class="hidden sm:flex items-center justify-between gap-2.5 relative z-10 w-full">
       <!-- 1. Lewy blok: stacje + przycisk Play -->
       <div class="flex items-center space-x-2 flex-shrink-0">
-        <button type="button" onclick="changeStationOffset(-1)" title="Poprzednia stacja" aria-label="Poprzednia stacja" class="w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
+        <button type="button" onclick="changeStationOffset(-1)" title="Poprzednia stacja" aria-label="Poprzednia stacja" class="nav-prev-next w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
           <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
         </button>
 
@@ -160,13 +216,13 @@
           <svg id="icon-pause-state" class="w-5 h-5 fill-black hidden drop-shadow" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
 
-        <button type="button" onclick="changeStationOffset(1)" title="Następna stacja" aria-label="Następna stacja" class="w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
+        <button type="button" onclick="changeStationOffset(1)" title="Następna stacja" aria-label="Następna stacja" class="nav-prev-next w-8 h-8 rounded-full bg-[#141824] border border-[#232b3b] text-[#7e8a9f] hover:text-[#f5dd8c] hover:border-[#c5a059]/40 flex items-center justify-center transition-all active:scale-95">
           <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
 
       <!-- 2. Środek: rotacja RDS / stacje / ekosystem -->
-      <div id="crossfade-carousel-box" onmouseenter="pauseCarousel()" onmouseleave="resumeCarousel()" class="flex-1 w-full min-w-0 relative h-[48px] overflow-hidden bg-[#07090d]/90 rounded-xl border border-[rgba(197,160,89,0.24)] px-2.5 py-1 flex items-center">
+      <div id="crossfade-carousel-box" onmouseenter="pauseCarousel()" onmouseleave="resumeCarousel()" class="flex-1 min-w-0 relative h-[48px] overflow-hidden bg-[#07090d]/90 rounded-xl border border-[rgba(197,160,89,0.24)] px-2.5 py-1 flex items-center">
         <!-- RDS -->
         <div id="slide-item-0" class="crossfade-card absolute inset-0 px-3 flex flex-col justify-center opacity-100 scale-100 pointer-events-auto">
           <div class="flex items-center justify-between gap-1.5">
@@ -184,8 +240,8 @@
         <div id="slide-item-1" class="crossfade-card absolute inset-0 px-2 flex items-center opacity-0 scale-[0.98] pointer-events-none">
           <div class="grid grid-cols-3 gap-1 w-full">
             <button type="button" onclick="selectDirectStation('prcc')" id="channel-btn-prcc" class="py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#c5a059] text-black">Radio CC</button>
-            <button type="button" onclick="selectDirectStation('cc')" id="channel-btn-cc" class="py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Muzyka</button>
-            <button type="button" onclick="selectDirectStation('biblia')" id="channel-btn-biblia" class="py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Biblia</button>
+            <button type="button" onclick="selectDirectStation('cc')" id="channel-btn-cc" class="station-btn-inactive py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Muzyka</button>
+            <button type="button" onclick="selectDirectStation('biblia')" id="channel-btn-biblia" class="station-btn-inactive py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]">Biblia</button>
           </div>
         </div>
 
@@ -225,7 +281,7 @@
         </div>
 
         <!-- Głośność -->
-        <div class="flex items-center space-x-1.5 bg-[#121620] px-2 py-1 rounded-lg border border-[#232b3b]">
+        <div class="vol-box flex items-center space-x-1.5 bg-[#121620] px-2 py-1 rounded-lg border border-[#232b3b]">
           <button type="button" id="btn-vol-mute" onclick="toggleVolumeMute()" title="Wycisz" aria-label="Wycisz dźwięk" class="text-[#7e8a9f] hover:text-[#f5dd8c]">
             <svg id="vol-active-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
             <svg id="vol-muted-icon" class="w-3.5 h-3.5 hidden text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
@@ -239,21 +295,20 @@
           <span>↗</span>
         </a>
       </div>
-
     </div>
 
-    <!-- Pasek wskaźników -->
-    <div class="mt-1.5 pt-1.5 border-t border-[rgba(197,160,89,0.14)] flex items-center justify-between text-[9px] text-[#7e8a9f]">
+    <!-- Pasek wskaźników (Wspólny na dole) -->
+    <div class="mt-1.5 pt-1.5 border-t border-[rgba(197,160,89,0.14)] flex items-center justify-between text-[8px] sm:text-[9px] text-[#7e8a9f]">
       <div class="flex items-center space-x-1">
         <button type="button" onclick="displayTargetSlide(0)" id="dot-indicator-0" aria-label="Plansza 1" class="w-1.5 h-1.5 rounded-full bg-[#c5a059] shadow-[0_0_4px_#f5dd8c]"></button>
         <button type="button" onclick="displayTargetSlide(1)" id="dot-indicator-1" aria-label="Plansza 2" class="w-1.5 h-1.5 rounded-full bg-[#1e2534]"></button>
         <button type="button" onclick="displayTargetSlide(2)" id="dot-indicator-2" aria-label="Plansza 3" class="w-1.5 h-1.5 rounded-full bg-[#1e2534]"></button>
         <button type="button" onclick="displayTargetSlide(3)" id="dot-indicator-3" aria-label="Plansza 4" class="w-1.5 h-1.5 rounded-full bg-[#1e2534]"></button>
       </div>
-      <div class="flex items-center space-x-2 font-mono">
-        <span id="active-station-badge" class="text-[#f5dd8c] font-semibold">POLSKIE RADIO CC</span>
+      <div class="flex items-center space-x-1.5 font-mono truncate">
+        <span id="active-station-badge" class="text-[#f5dd8c] font-semibold truncate">POLSKIE RADIO CC</span>
         <span class="text-[#3c4556]">|</span>
-        <a href="https://polskieradio.cc/widget" target="_blank" rel="noopener noreferrer" class="text-[#c5a059] hover:underline">Pobierz ten widget</a>
+        <a href="https://polskieradio.cc/widget" target="_blank" rel="noopener noreferrer" class="text-[#c5a059] hover:underline flex-shrink-0">Pobierz widget</a>
       </div>
     </div>
   </div>
@@ -296,7 +351,10 @@
         audioNode.pause();
         updatePlaybackUi(false);
       } else {
-        document.getElementById('rds-active-title').textContent = `Łączenie: ${station.name}...`;
+        const titleDesk = document.getElementById('rds-active-title');
+        const titleMob = document.getElementById('rds-active-title-mob');
+        if (titleDesk) titleDesk.textContent = `Łączenie: ${station.name}...`;
+        if (titleMob) titleMob.textContent = `Łączenie: ${station.name}...`;
         audioNode.play().then(() => updatePlaybackUi(true)).catch(() => updatePlaybackUi(true));
       }
     }
@@ -305,19 +363,35 @@
       isLivePlaying = isPlaying;
       const playIcon = document.getElementById('icon-play-state');
       const pauseIcon = document.getElementById('icon-pause-state');
+      const playIconMob = document.getElementById('icon-play-state-mob');
+      const pauseIconMob = document.getElementById('icon-pause-state-mob');
       const eq = document.getElementById('sacred-audio-eq');
       const station = RADIO_STATIONS[currentStationIndex];
 
       if (isPlaying) {
-        playIcon.classList.add('hidden');
-        pauseIcon.classList.remove('hidden');
-        eq.classList.add('is-playing');
-        document.getElementById('rds-active-title').textContent = `Odtwarzanie: ${station.name}`;
+        if (playIcon) playIcon.classList.add('hidden');
+        if (pauseIcon) pauseIcon.classList.remove('hidden');
+        if (playIconMob) playIconMob.classList.add('hidden');
+        if (pauseIconMob) pauseIconMob.classList.remove('hidden');
+        if (eq) eq.classList.add('is-playing');
+        const titleDesk = document.getElementById('rds-active-title');
+        const titleMob = document.getElementById('rds-active-title-mob');
+        const subMob = document.getElementById('rds-active-subtitle-mob');
+        if (titleDesk) titleDesk.textContent = `Odtwarzanie: ${station.name}`;
+        if (titleMob) titleMob.textContent = station.name;
+        if (subMob) subMob.textContent = 'Na żywo 192 kbps HD';
       } else {
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');
-        eq.classList.remove('is-playing');
-        document.getElementById('rds-active-title').textContent = `Wstrzymano: ${station.name}`;
+        if (playIcon) playIcon.classList.remove('hidden');
+        if (pauseIcon) pauseIcon.classList.add('hidden');
+        if (playIconMob) playIconMob.classList.remove('hidden');
+        if (pauseIconMob) pauseIconMob.classList.add('hidden');
+        if (eq) eq.classList.remove('is-playing');
+        const titleDesk = document.getElementById('rds-active-title');
+        const titleMob = document.getElementById('rds-active-title-mob');
+        const subMob = document.getElementById('rds-active-subtitle-mob');
+        if (titleDesk) titleDesk.textContent = `Wstrzymano: ${station.name}`;
+        if (titleMob) titleMob.textContent = station.name;
+        if (subMob) subMob.textContent = 'Wstrzymano';
       }
     }
 
@@ -336,17 +410,32 @@
 
     function applyStation() {
       const station = RADIO_STATIONS[currentStationIndex];
-      document.getElementById('rds-active-title').textContent = isLivePlaying ? `Odtwarzanie: ${station.name}` : `Wybrano: ${station.name}`;
-      document.getElementById('rds-active-subtitle').textContent = station.caption;
-      document.getElementById('active-station-badge').textContent = station.name.toUpperCase();
+      const titleDesk = document.getElementById('rds-active-title');
+      const titleMob = document.getElementById('rds-active-title-mob');
+      const subDesk = document.getElementById('rds-active-subtitle');
+      const subMob = document.getElementById('rds-active-subtitle-mob');
+      const badge = document.getElementById('active-station-badge');
+
+      if (titleDesk) titleDesk.textContent = isLivePlaying ? `Odtwarzanie: ${station.name}` : `Wybrano: ${station.name}`;
+      if (titleMob) titleMob.textContent = station.name;
+      if (subDesk) subDesk.textContent = station.caption;
+      if (subMob) subMob.textContent = isLivePlaying ? 'Na żywo 192 kbps HD' : 'Wybrano';
+      if (badge) badge.textContent = station.name.toUpperCase();
 
       ['prcc', 'cc', 'biblia'].forEach(id => {
-        const btn = document.getElementById(`channel-btn-${id}`);
-        if (!btn) return;
-        if (id === station.id) {
-          btn.className = "py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#c5a059] text-black";
-        } else {
-          btn.className = "py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]";
+        const btnDesk = document.getElementById(`channel-btn-${id}`);
+        const btnMob = document.getElementById(`channel-btn-${id}-mob`);
+        const isActive = id === station.id;
+
+        if (btnDesk) {
+          btnDesk.className = isActive 
+            ? "py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#c5a059] text-black"
+            : "station-btn-inactive py-1 px-1 rounded-md text-[10px] font-bold text-center truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b]";
+        }
+        if (btnMob) {
+          btnMob.className = isActive 
+            ? "py-1 px-2 rounded-lg text-[10px] font-bold truncate bg-[#c5a059] text-black flex-1 text-center"
+            : "station-btn-inactive py-1 px-2 rounded-lg text-[10px] font-bold truncate bg-[#131722] text-[#7e8a9f] hover:text-white border border-[#232b3b] flex-1 text-center";
         }
       });
 
@@ -361,25 +450,40 @@
       audioNode.volume = parseFloat(val);
       previousVolume = audioNode.volume;
       setMuteIcon(previousVolume === 0);
+      const faderDesk = document.getElementById('master-volume-fader');
+      const faderMob = document.querySelector('.master-volume-fader-mob');
+      if (faderDesk) faderDesk.value = val;
+      if (faderMob) faderMob.value = val;
     }
 
     function toggleVolumeMute() {
       isMutedState = !isMutedState;
       audioNode.muted = isMutedState;
       setMuteIcon(isMutedState);
-      document.getElementById('master-volume-fader').value = isMutedState ? 0 : previousVolume;
+      const val = isMutedState ? 0 : previousVolume;
+      const faderDesk = document.getElementById('master-volume-fader');
+      const faderMob = document.querySelector('.master-volume-fader-mob');
+      if (faderDesk) faderDesk.value = val;
+      if (faderMob) faderMob.value = val;
     }
 
     function setMuteIcon(muted) {
       const activeIcon = document.getElementById('vol-active-icon');
       const mutedIcon = document.getElementById('vol-muted-icon');
-      if (muted) {
-        activeIcon.classList.add('hidden');
-        mutedIcon.classList.remove('hidden');
-      } else {
-        activeIcon.classList.remove('hidden');
-        mutedIcon.classList.add('hidden');
-      }
+      const activeIconMob = document.querySelector('.vol-active-icon-mob');
+      const mutedIconMob = document.querySelector('.vol-muted-icon-mob');
+
+      [activeIcon, activeIconMob].forEach(el => {
+        if (!el) return;
+        if (muted) el.classList.add('hidden');
+        else el.classList.remove('hidden');
+      });
+
+      [mutedIcon, mutedIconMob].forEach(el => {
+        if (!el) return;
+        if (muted) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
     }
 
     function displayTargetSlide(idx) {

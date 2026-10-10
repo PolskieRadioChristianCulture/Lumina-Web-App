@@ -143,10 +143,10 @@
     /* ========================================================================= */
     #backToTopBtn {
       position: fixed;
-      right: 20px;
-      bottom: 24px;
-      width: 48px;
-      height: 48px;
+      right: 16px;
+      bottom: 20px;
+      width: 44px;
+      height: 44px;
       min-width: 44px;
       min-height: 44px;
       border-radius: 50%;
@@ -164,6 +164,14 @@
       transform: translateY(16px) scale(0.9);
       transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
       touch-action: manipulation;
+    }
+    @media (min-width: 640px) {
+      #backToTopBtn {
+        right: 24px;
+        bottom: 24px;
+        width: 48px;
+        height: 48px;
+      }
     }
     #backToTopBtn.visible {
       opacity: 1;
@@ -504,7 +512,7 @@
           <iframe 
             id="live-widget-iframe"
             src="embed/bar.html?channel=prcc" 
-            class="w-full h-[105px] border-none rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.9)] overflow-hidden" 
+            class="w-full h-[118px] sm:h-[105px] border-none rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.9)] overflow-hidden" 
             title="Christian Culture Live Widget Preview"
             scrolling="no"
             loading="lazy">
@@ -935,12 +943,12 @@
 <iframe 
   src="https://polskieradio.cc/embed/bar?channel=${station}" 
   width="${width}" 
-  height="105" 
+  height="118" 
   frameborder="0" 
   scrolling="no" 
   allow="autoplay" 
   loading="lazy" 
-  style="border-radius: 16px; border: 1px solid rgba(197, 160, 89, 0.35); box-shadow: 0 16px 45px rgba(0,0,0,0.85); overflow: hidden;" 
+  style="border-radius: 16px; border: 1px solid rgba(197, 160, 89, 0.35); box-shadow: 0 16px 45px rgba(0,0,0,0.85); overflow: hidden; max-height: 120px;" 
   title="Radio Christian Culture Player">
 </iframe>`;
       } else if (currentExportFormat === 'htmljs') {
