@@ -374,8 +374,9 @@ button {
 .side-drawer {
     position: fixed;
     top: 0;
-    left: -320px;
-    width: 320px;
+    left: -380px;
+    width: 380px;
+    max-width: 92vw;
     height: 100%;
     background: linear-gradient(180deg, rgba(18, 18, 20, 0.99) 0%, rgba(8, 8, 10, 0.99) 100%);
     border-right: 1.5px solid rgba(212, 169, 74, 0.35);
@@ -383,7 +384,7 @@ button {
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
     z-index: 99999;
-    padding: 2.5rem 2rem;
+    padding: 2.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -392,6 +393,61 @@ button {
 
 .side-drawer.active {
     left: 0;
+}
+
+/* 5 Kafli wewnątrz Side Drawer */
+.side-drawer .drawer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.side-drawer .cc-col {
+    width: 100%;
+    margin-bottom: 2px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+    background: rgba(13, 16, 23, 0.95);
+    overflow: hidden;
+}
+
+.side-drawer .cc-col-banner {
+    display: block !important;
+    height: 105px;
+}
+
+.side-drawer .cc-col-header {
+    padding: 12px 14px;
+    cursor: pointer;
+}
+
+.side-drawer .cc-col-title {
+    font-size: 0.82rem;
+}
+
+.side-drawer .cc-col-subtitle {
+    font-size: 0.65rem;
+}
+
+.side-drawer .cc-accordion-icon {
+    display: flex !important;
+}
+
+.side-drawer .cc-col:not(.open) .cc-col-cards {
+    display: none !important;
+}
+
+.side-drawer .cc-col.open .cc-col-cards {
+    display: flex !important;
+    padding: 8px 10px 14px 10px;
+    gap: 7px;
+    background: rgba(9, 11, 16, 0.75);
+}
+
+.side-drawer .cc-card {
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
 }
 
 @media (max-width: 768px) {
