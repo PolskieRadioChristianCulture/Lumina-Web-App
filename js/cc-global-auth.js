@@ -874,7 +874,7 @@
     function loadSupportFooter() {
         if (window._ccSupportFooterLoaded || document.querySelector('script[src*="cc-support-footer"]')) return;
         const p = (window.location.pathname || '').toLowerCase();
-        if (p.includes('-live') || p.includes('stream-scene') || p.includes('cctv24-worship') || p.includes('pilot') || p.includes('smart-tv')) return;
+        if (p.includes('-live') || p.includes('stream-scene') || p.includes('cctv24-worship') || p.includes('pilot') || p.includes('smart-tv') || p.includes('skin') || p.includes('vibe') || p.includes('radiostyle') || p.includes('mojeradio')) return;
         window._ccSupportFooterLoaded = true;
         const s = document.createElement('script');
         s.src = '/components/cc-support-footer.js?v=20261002_v1';

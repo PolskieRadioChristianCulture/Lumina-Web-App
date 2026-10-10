@@ -37,6 +37,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
+  <!-- Shield: Radio SKINS is a fullscreen music app (never mount web support footer) -->
+  <script>
+    window._ccSupportFooterLoaded = true;
+    window._ccSupportFooterInitialized = true;
+  </script>
+
   <!-- CC Global Auth Connector -->
   <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
 
@@ -1130,7 +1136,7 @@
       </section>
 
       <!-- Lower Deck: Station Info & Transport Buttons -->
-      <footer class="app-lower-deck">
+      <section class="app-lower-deck" aria-label="Sterowanie odtwarzaczem">
         <div class="station-meta-card">
           <div class="station-badge-strip">
             <span id="stationLiveBadge">ON AIR • CC MAIN</span>
@@ -1141,7 +1147,7 @@
           <!-- Quick 3-Station Pill Switcher -->
           <nav class="station-pill-strip" id="stationPillStrip" aria-label="Wybór stacji radiowej">
             <button class="station-pill active" data-station="0" aria-label="Stacja 1: Polskie Radio CC">Radio CC</button>
-            <button class="station-pill" data-station="1" aria-label="Stacja 2: CC Worship">CC Worship</button>
+            <button class="station-pill" data-station="1" aria-label="Stacja 2: CC Global">CC Global</button>
             <button class="station-pill" data-station="2" aria-label="Stacja 3: Biblia Audio">Biblia Audio</button>
           </nav>
         </div>
@@ -1167,7 +1173,7 @@
         </div>
 
         <div class="status-ticker" id="status" role="status" aria-live="polite">Gotowe do słuchania • Dotknij PLAY</div>
-      </footer>
+      </section>
     </main>
 
     <!-- ══════════════════════════════════════════════════════════════════
@@ -1202,14 +1208,14 @@
         <!-- 3 Interactive Studio Tiles -->
         <div class="station-matrix" id="stationMatrix">
           <button class="station-tile active" data-station="0">
-            <span class="tile-badge">KANAŁ 1 • GŁÓWNY</span>
+            <span class="tile-badge">KANAŁ 1 • POLSKA</span>
             <span class="tile-name">Polskie Radio CC</span>
             <span class="tile-slogan">Dobra muzyka • Dobra wiadomość</span>
           </button>
           <button class="station-tile" data-station="1">
-            <span class="tile-badge">KANAŁ 2 • WORSHIP</span>
-            <span class="tile-name">CC Worship</span>
-            <span class="tile-slogan">Uwielbienie &amp; Tradycja</span>
+            <span class="tile-badge">KANAŁ 2 • GLOBAL</span>
+            <span class="tile-name">CC Global</span>
+            <span class="tile-slogan">Global Broadcast • Faith &amp; Worship</span>
           </button>
           <button class="station-tile" data-station="2">
             <span class="tile-badge">KANAŁ 3 • SŁOWO</span>
@@ -1380,21 +1386,24 @@
           id: 'prcc',
           name: 'Polskie Radio CC',
           slogan: 'Dobra muzyka • Dobra wiadomość',
-          badge: 'ON AIR • CC MAIN',
+          badge: 'ON AIR • POLSKIE RADIO CC',
+          freqTag: 'POLSKIE RADIO CC • 108.0 FM',
           streamUrl: 'https://stream.zeno.fm/vz96pvl3pnktv'
         },
         {
-          id: 'worship',
-          name: 'Christian Culture Worship',
-          slogan: 'Uwielbienie & Tradycja 24/7',
-          badge: 'ON AIR • WORSHIP',
+          id: 'global',
+          name: 'CC Global',
+          slogan: 'Global Broadcast • Faith & Worship',
+          badge: 'ON AIR • CC GLOBAL',
+          freqTag: 'CC GLOBAL • WORLDWIDE HD',
           streamUrl: 'https://stream.zeno.fm/umej2cuqncluv'
         },
         {
           id: 'biblia',
-          name: 'Biblia Audio Non-Stop',
+          name: 'Biblia Audio',
           slogan: 'Pismo Święte 24 Godziny na Dobę',
           badge: 'ON AIR • BIBLIA AUDIO',
+          freqTag: 'BIBLIA AUDIO • 24H NON-STOP',
           streamUrl: 'https://stream.zeno.fm/gn3uhltrrytuv'
         }
       ];
@@ -1419,6 +1428,11 @@
           }, 150);
         }
 
+        const studioFreqTag = $('#studioFreqTag');
+        if (studioFreqTag) {
+          studioFreqTag.textContent = st.freqTag;
+        }
+
         // Update mobile pills
         $$('.station-pill').forEach((p, i) => {
           p.classList.toggle('active', i === idx);
@@ -1432,22 +1446,28 @@
 
       async function switchStation(targetIndex) {
         targetIndex = (targetIndex + STATIONS.length) % STATIONS.length;
-        if (targetIndex === currentStationIndex && audio.src === STATIONS[targetIndex].streamUrl) return;
+        if (targetIndex === currentStationIndex && active) return;
 
         updateStationUI(targetIndex);
-        const newUrl = STATIONS[targetIndex].streamUrl;
-        audio.src = newUrl;
+        const st = STATIONS[targetIndex];
 
         if (active) {
+          message('Łączenie: ' + st.name + '…');
+          audio.pause();
+          audio.src = st.streamUrl;
+          audio.load();
           try {
-            message('Przełączanie stacji…');
             await audio.play();
-            message('NA ŻYWO • ' + STATIONS[targetIndex].name);
+            setPlayingState(true);
+            message('NA ŻYWO • ' + st.name);
           } catch (e) {
             console.warn('Station switch play error:', e);
+            message('Dotknij PLAY, aby włączyć ' + st.name);
+            setPlayingState(false);
           }
         } else {
-          message('Wybrano: ' + STATIONS[targetIndex].name + ' • Kliknij PLAY');
+          audio.src = st.streamUrl;
+          message('Wybrano: ' + st.name + ' • Kliknij PLAY');
         }
       }
 
@@ -1528,8 +1548,7 @@
       }
       setBarsIdle();
 
-      let ctx = null, analyser = null, data = null, raf = null;
-      let connected = false;
+      let raf = null;
       let waveTime = 0;
 
       function renderOrganicWave() {
@@ -1573,47 +1592,8 @@
           setBarsIdle();
           return;
         }
-
-        let hasRealData = false;
-        if (analyser && data) {
-          try {
-            analyser.getByteFrequencyData(data);
-            let sum = 0;
-            for (let j = 0; j < 50; j++) sum += data[j];
-            if (sum > 0) {
-              hasRealData = true;
-              allBars.forEach((b, i) => {
-                const idx = Math.min(data.length - 1, Math.floor((i / BAR_COUNT) * Math.min(data.length, 200)));
-                b.style.height = Math.max(5, Math.round(data[idx] / 255 * 100)) + '%';
-              });
-            }
-          } catch (e) {}
-        }
-
-        if (!hasRealData) {
-          renderOrganicWave();
-        }
-
+        renderOrganicWave();
         raf = requestAnimationFrame(visual);
-      }
-
-      async function setupWebAudio() {
-        if (connected) return;
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
-        try {
-          ctx = new AC();
-          analyser = ctx.createAnalyser();
-          analyser.fftSize = 1024;
-          analyser.smoothingTimeConstant = 0.72;
-          data = new Uint8Array(analyser.frequencyBinCount);
-          const source = ctx.createMediaElementSource(audio);
-          source.connect(analyser);
-          analyser.connect(ctx.destination);
-          connected = true;
-        } catch (e) {
-          console.info('Native HTML5 audio stream fallback active with synthesized spectrum:', e.message);
-        }
       }
 
       function message(s) {
@@ -1643,8 +1623,8 @@
       async function togglePlay() {
         if (active) {
           audio.pause();
-          audio.currentTime = 0;
           setPlayingState(false);
+          message('Odtwarzanie zatrzymane');
           return;
         }
 
@@ -1653,17 +1633,22 @@
         message('Łączenie ze strumieniem radiowym…');
 
         try {
-          await setupWebAudio();
-          if (ctx && ctx.state === 'suspended') {
-            await ctx.resume();
+          const currentSt = STATIONS[currentStationIndex];
+          if (!audio.src || !audio.src.includes('zeno.fm')) {
+            audio.src = currentSt.streamUrl;
           }
-          setPlayingState(true);
+          audio.volume = volumeSlider ? parseFloat(volumeSlider.value) : 1;
           await audio.play();
+          setPlayingState(true);
+          message('NA ŻYWO • ' + currentSt.name);
         } catch (err) {
           console.warn('Audio play attempt 1 error:', err);
           try {
-            setPlayingState(true);
+            audio.src = STATIONS[currentStationIndex].streamUrl;
+            audio.load();
             await audio.play();
+            setPlayingState(true);
+            message('NA ŻYWO • ' + STATIONS[currentStationIndex].name);
           } catch (fallbackErr) {
             console.error('Audio play failed:', fallbackErr);
             message('Nie udało się uruchomić strumienia. Dotknij ponownie PLAY.');

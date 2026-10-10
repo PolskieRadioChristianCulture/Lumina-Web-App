@@ -462,7 +462,7 @@
   function autoMountSupportFooter() {
     // Sprawdź czy strona nie jest kanałem transmisyjnym LIVE (Ochrona Kanałów LIVE)
     const p = (window.location.pathname || '').toLowerCase();
-    if (p.includes('-live') || p.includes('stream-scene') || p.includes('cctv24-worship') || p.includes('pilot') || p.includes('smart-tv')) {
+    if (p.includes('-live') || p.includes('stream-scene') || p.includes('cctv24-worship') || p.includes('pilot') || p.includes('smart-tv') || p.includes('skin') || p.includes('vibe') || p.includes('radiostyle') || p.includes('mojeradio')) {
       return;
     }
 
