@@ -343,6 +343,65 @@ async function handleSocialPostCrawler(postId, url, userAgent) {
   });
 }
 
+function handleSocialMilionCrawler(url) {
+  const canonical = 'https://polskieradio.cc/milion';
+  const ogImage = 'https://polskieradio.cc/assets/milion-og.jpg';
+  const title = 'CELUJEMY W PIERWSZY MILION • Christian Culture Radio & Widget';
+  const desc = 'Oficjalny licznik słuchaczy i wsparcia misji Christian Culture. Dołącz do dzieła, pobierz darmowy widget odtwarzacza na stronę lub słuchaj radia na żywo.';
+
+  const html = `<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>${title}</title>
+  <meta name="description" content="${desc}">
+  <link rel="canonical" href="${canonical}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Christian Culture">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${desc}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:secure_url" content="${ogImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Celujemy w pierwszy milion słuchaczy - Radio Christian Culture">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ChristianCultPL">
+  <meta name="twitter:url" content="${canonical}">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:description" content="${desc}">
+  <meta name="twitter:image" content="${ogImage}">
+  <meta name="twitter:image:alt" content="Celujemy w pierwszy milion słuchaczy - Radio Christian Culture">
+
+  <!-- Natychmiastowe przekierowanie dla przeglądarek użytkowników -->
+  <meta http-equiv="refresh" content="0;url=${canonical}">
+  <script>
+    window.location.replace("${canonical}");
+  </script>
+</head>
+<body>
+  <h1>${title}</h1>
+  <p>${desc}</p>
+  <img src="${ogImage}" alt="${title}">
+  <p><a href="${canonical}">Przejdź do oficjalnego licznika: ${canonical}</a></p>
+</body>
+</html>`;
+
+  return new Response(html, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=300, s-maxage=600',
+      'X-Robots-Tag': 'all',
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -394,6 +453,45 @@ export default {
       decodedP = decodeURIComponent(url.pathname).toLowerCase().replace(/\/$/, '');
     } catch {
       decodedP = p;
+    }
+
+    // Przechwycenie social crawlerów dla /milion oraz /widget
+    if (decodedP === '/milion' || decodedP === '/milion.html' || decodedP === '/widget' || decodedP === '/widget.html') {
+      if (isCrawler) {
+        return handleSocialMilionCrawler(url);
+      }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // SEO & KAMPANIJNE ALIAS (301) DLA LICZNIKA I WIDGETU: /milion
+    // ──────────────────────────────────────────────────────────────────────────
+    const MILION_ALIASES = [
+      '/cel',
+      '/licznik',
+      '/misja-milion',
+      '/cel-milion',
+      '/onemillion',
+      '/1m',
+      '/live',
+      '/stream',
+      '/dlastron',
+      '/partnerzy',
+      '/odtwarzacz',
+      '/kod-widget',
+      '/kod-odtwarzacza',
+      '/razem',
+      '/glos'
+    ];
+    if (MILION_ALIASES.includes(decodedP) || decodedP === '/embed') {
+      if (isCrawler) {
+        return handleSocialMilionCrawler(url);
+      }
+      return Response.redirect('https://polskieradio.cc/milion', 301);
+    }
+
+    // Skrót /wspieram kierujący do wsparcia mecenatu / Patronite
+    if (decodedP === '/wspieram') {
+      return Response.redirect('https://patronite.pl/christian-culture', 302);
     }
 
     // Przechwycenie social crawlerów dla /tablica?post=... oraz /lumina-tablica?post=...
