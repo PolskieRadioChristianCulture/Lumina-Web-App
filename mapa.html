@@ -41,11 +41,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
-  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v4_drawer_fix">
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v7_drawer_fullscreen">
 
   <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
   <style>
     :root {
+      --header-height: 68px;
+      --mapa-header-height: 68px;
+      --mapa-ctrl-height: 56px;
       --map-bg: #080F20;
       --map-surface: #121D32;
       --gold-primary: #C4A35A;
@@ -61,6 +64,83 @@
       padding: 0;
       font-family: 'Montserrat', sans-serif;
       overflow-x: hidden;
+    }
+    .mapa-viewport {
+      position: relative;
+      flex: 1 1 auto;
+      height: calc(100vh - var(--mapa-header-height, 68px) - var(--mapa-ctrl-height, 56px)) !important;
+      height: calc(100dvh - var(--mapa-header-height, 68px) - var(--mapa-ctrl-height, 56px)) !important;
+      min-height: 480px;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+    .mapa-control-bar {
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, padding 0.3s ease, border-color 0.25s ease;
+      max-height: 140px;
+      overflow: hidden;
+    }
+    .mapa-control-bar.is-hidden {
+      max-height: 0 !important;
+      opacity: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom-color: transparent !important;
+      pointer-events: none !important;
+    }
+    .mapa-collapse-bar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 34px;
+      padding: 0 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(196, 163, 90, 0.25);
+      background: rgba(18, 29, 50, 0.65);
+      color: #CBD5E1;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .mapa-collapse-bar-btn:hover {
+      color: #E2CC9A;
+      border-color: #C4A35A;
+      background: rgba(196, 163, 90, 0.15);
+    }
+    .mapa-bar-restore-pill {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      z-index: 45;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 38px;
+      padding: 0 1rem;
+      background: rgba(18, 29, 50, 0.94);
+      border: 1px solid #C4A35A;
+      border-radius: 20px;
+      color: #E2CC9A;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mapa-bar-restore-pill:hover {
+      background: #C4A35A;
+      color: #080F20;
+      transform: translateY(-1px);
+    }
+    .mapa-header-toggle-bar.active {
+      background: rgba(196, 163, 90, 0.22);
+      border-color: #C4A35A;
+      color: #E2CC9A;
     }
     .mapa-search-wrap {
       position: relative;
@@ -138,12 +218,78 @@
     .mapa-drawer-reopen-btn.visible {
       display: inline-flex !important;
     }
+    .mapa-card-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .mapa-card-action-btn {
+      background: transparent;
+      border: none;
+      color: #8E9BAE;
+      font-size: 1.15rem;
+      cursor: pointer;
+      padding: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      line-height: 1;
+      transition: all 0.2s ease;
+    }
+    .mapa-card-action-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.08);
+    }
+    .mapa-side-card.is-fullscreen {
+      position: fixed !important;
+      top: 1.5rem !important;
+      left: 1.5rem !important;
+      right: 1.5rem !important;
+      bottom: 1.5rem !important;
+      width: auto !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+      height: calc(100vh - 3rem) !important;
+      max-height: calc(100vh - 3rem) !important;
+      z-index: 100 !important;
+      padding: 1.75rem 2rem !important;
+      gap: 1.25rem !important;
+      border-radius: 24px !important;
+      border: 1px solid #C4A35A !important;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 50px rgba(196, 163, 90, 0.25) !important;
+    }
+    .mapa-side-card.is-fullscreen .mapa-card-projects-list {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+      max-height: none !important;
+      gap: 0.65rem !important;
+    }
     @media (max-width: 1200px) {
       .mapa-side-card.is-closed {
         transform: translateY(100%) !important;
         opacity: 0 !important;
         pointer-events: none !important;
         visibility: hidden !important;
+      }
+      .mapa-side-card.is-fullscreen {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        padding: 1.25rem !important;
+        margin: 0 !important;
+      }
+      .mapa-side-card.is-fullscreen .mapa-card-projects-list {
+        grid-template-columns: 1fr !important;
       }
       .mapa-drawer-reopen-btn {
         top: 1rem;
@@ -361,6 +507,10 @@
         </nav>
 
         <div class="mapa-header-actions">
+          <button id="mapaHeaderToggleBarBtn" class="mapa-btn mapa-header-toggle-bar" type="button" title="Pokaż / schowaj belkę filtrów i narzędzi" aria-label="Przełącz belkę filtrów">
+            <i class="fa-solid fa-sliders"></i>
+            <span class="mapa-header-toggle-label">Filtry</span>
+          </button>
           <a href="/" class="mapa-btn" title="Powrót na portal">
             <i class="fa-solid fa-house"></i>
             <span>Portal</span>
@@ -376,7 +526,7 @@
     </header>
 
     <!-- PASEK FILTRÓW I KONTROLEK ZASOBÓW (SUB-BAR) -->
-    <section class="mapa-control-bar" aria-label="Narzędzia eksploracji ekosystemu">
+    <section class="mapa-control-bar" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
       <div class="mapa-filter-chips" id="mapaFilterStrip" role="group" aria-label="Filtry statusu i kategorii">
         <button class="mapa-chip active" data-filter="all">
           <span>Wszystkie</span>
@@ -422,6 +572,12 @@
             <span>Drzewo & Siatka</span>
           </button>
         </div>
+
+        <!-- Przycisk zwijania drugiej belki -->
+        <button id="mapaHideControlBarBtn" class="mapa-sub-btn mapa-collapse-bar-btn" type="button" title="Schowaj belkę filtrów (zwiększ widok mapy)" aria-label="Schowaj belkę filtrów">
+          <i class="fa-solid fa-chevron-up"></i>
+          <span>Schowaj belkę</span>
+        </button>
       </div>
     </section>
 
@@ -443,6 +599,13 @@
         </button>
       </div>
 
+      <!-- Przycisk przywrócenia schowanej belki filtrów i kontrolek -->
+      <button id="mapaRestoreControlBarBtn" class="mapa-bar-restore-pill" title="Pokaż belkę filtrów i narzędzi" aria-label="Pokaż belkę filtrów">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Pokaż filtry & narzędzia</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+
       <!-- Przycisk przywrócenia zminimalizowanego panelu szczegółów -->
       <button id="mapaDrawerReopenBtn" class="mapa-drawer-reopen-btn" title="Pokaż panel szczegółów" aria-label="Pokaż panel szczegółów">
         <i class="fa-solid fa-layer-group"></i>
@@ -453,9 +616,14 @@
       <aside id="mapaDrawer" class="mapa-side-card" role="dialog" aria-label="Szczegóły wybranego obszaru">
         <div class="mapa-card-head-bar">
           <div class="mapa-card-eyebrow">WYBRANY OBSZAR</div>
-          <button id="mapaDrawerClose" class="mapa-card-close" aria-label="Zamknij panel" title="Zamknij (ESC)">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <div class="mapa-card-head-actions">
+            <button id="mapaDrawerMaximize" class="mapa-card-action-btn" aria-label="Przełącz tryb pełnoekranowy" title="Powiększ do pełnego ekranu">
+              <i class="fa-solid fa-expand"></i>
+            </button>
+            <button id="mapaDrawerClose" class="mapa-card-close" aria-label="Zamknij panel" title="Zamknij (ESC)">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
         </div>
 
         <div class="mapa-card-hero">
@@ -588,8 +756,8 @@
 
   <!-- Uniwersalny konektor logowania CC & LUMINA Google Auth Connector -->
   <script src="/js/cc-global-auth.js?v=20261011_auth" defer></script>
-  <!-- Skrypt silnika mapy (v5 - warstwa @A Agenci Misji) -->
-  <script src="/js/mapa-ekosystemu.js?v=20261011_v5_agents_mission" defer></script>
+  <!-- Skrypt silnika mapy (v7 - tryb pełnoekranowy panelu Wybrany Obszar) -->
+  <script src="/js/mapa-ekosystemu.js?v=20261011_v7_drawer_fullscreen" defer></script>
   <!-- Wspólna stopka i narzędzia -->
   <script src="/components/cc-support-footer.js" defer></script>
   <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>

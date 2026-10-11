@@ -85,6 +85,14 @@
 
     // Sprawdź autoryzację Dowódcy do warstwy @A
     checkCommanderAccess();
+
+    // Oblicz i wyrównaj dokładne wysokości widoku (eliminacja zbędnego paska na dole)
+    updateViewportHeights();
+    try {
+      if (localStorage.getItem('mapa_ctrl_bar_hidden') === '1') {
+        toggleControlBar(false);
+      }
+    } catch (e) {}
   }
 
   function cacheDom() {
@@ -129,7 +137,11 @@
       fitBtn: document.getElementById('mapaFitBtn'),
       layerSwitch: document.getElementById('mapaLayerSwitch'),
       layerBtnPublic: document.getElementById('layerBtnPublic'),
-      layerBtnAgents: document.getElementById('layerBtnAgents')
+      layerBtnAgents: document.getElementById('layerBtnAgents'),
+      controlBar: document.getElementById('mapaControlBar'),
+      hideControlBarBtn: document.getElementById('mapaHideControlBarBtn'),
+      restoreControlBarBtn: document.getElementById('mapaRestoreControlBarBtn'),
+      headerToggleBarBtn: document.getElementById('mapaHeaderToggleBarBtn')
     };
   }
 
@@ -284,6 +296,24 @@
       if (e.key === 'lumina_current_user' || e.key === 'lumina_user_session') {
         checkCommanderAccess();
       }
+    });
+
+    // Obsługa zwijania / pokazywania drugiej belki od góry (sub-bar)
+    if (els.hideControlBarBtn) {
+      els.hideControlBarBtn.addEventListener('click', () => toggleControlBar(false));
+    }
+    if (els.restoreControlBarBtn) {
+      els.restoreControlBarBtn.addEventListener('click', () => toggleControlBar(true));
+    }
+    if (els.headerToggleBarBtn) {
+      els.headerToggleBarBtn.addEventListener('click', () => toggleControlBar());
+    }
+
+    // Dynamiczne wyrównanie dolnego paska i wysokości widoku przy zmianie rozmiaru okna
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateViewportHeights, 80);
     });
 
     // Panning & Zooming w SVG

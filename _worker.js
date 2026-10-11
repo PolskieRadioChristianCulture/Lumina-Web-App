@@ -1264,6 +1264,12 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (decodedP === '/onas' || decodedP === '/about' || decodedP === '/o-inicjatywie') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/o-nas';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     
     if (decodedP === '/ai-antychryst' || decodedP === '/ai-kontra-antychryst' || decodedP === '/si-antychryst') {
       const redirectUrl = new URL(request.url);
