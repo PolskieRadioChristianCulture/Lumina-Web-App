@@ -12,6 +12,8 @@ ALWAYS state: "📡 MONIT OPERACYJNY: [Agent] ➔ Aktualnie pracuję nad: ..." b
 ALWAYS run "node scripts/straznik-kodu-check.js" before git commits.
 ALWAYS push to both "origin" and "lumina-repo".
 ALWAYS update completed actions on @m = @mapaCC at https://polskieradio.cc/mapa (data/ecosystem-map.json).
+ALWAYS keep map reporting symbolic (Topic, Date, Agent: A, G, C, J); technical details are CONFIDENTIAL in @joma.
 NEVER touch frozen broadcast channels (e.g. cctv24-worship.html).
+
 NEVER expose Mission Control text on public sites.
 

@@ -937,9 +937,23 @@
       els.drawerBadge.className = 'mapa-card-badge ' + (node.status === 'beta' ? 'mapa-badge-beta' : 'mapa-badge-active');
     }
 
+    // Symboliczny status aktualizacji (Temat • Data • Agent [A/G/C/J])
+    const updateWrap = document.getElementById('mapaDrawerUpdateWrap');
+    const updateText = document.getElementById('mapaDrawerUpdateText');
+    if (updateWrap && updateText) {
+      if (node.lastUpdate && node.lastUpdate.topic) {
+        updateWrap.style.display = 'block';
+        updateText.textContent = `${node.lastUpdate.topic} • ${node.lastUpdate.date || ''} • Agent [${node.lastUpdate.agent || 'A'}]`;
+      } else {
+        updateWrap.style.display = 'none';
+        updateText.textContent = '';
+      }
+    }
+
     if (els.drawerDesc) {
       els.drawerDesc.textContent = node.fullDesc || node.shortDesc;
     }
+
 
     // Słowa kluczowe
     if (els.drawerTags) {

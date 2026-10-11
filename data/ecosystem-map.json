@@ -1,8 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "updatedAt": "2026-10-11T06:20:00Z",
+  "updatedAt": "2026-10-11T06:26:00Z",
   "name": "Mapa Ekosystemu Christian Culture",
+  "updatesLog": [
+    {
+      "topic": "Rejestr węzłów @mapaCC, Licznik CC i Książki Autora",
+      "date": "2026-10-11",
+      "agent": "A"
+    }
+  ],
+
   "root": {
     "id": "cc-root",
     "name": "CHRISTIAN CULTURE",
@@ -691,7 +699,13 @@
       "icon": "📖",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
+      "lastUpdate": {
+        "topic": "Wdrożenie tła i autorskiej biblioteki",
+        "date": "2026-10-11",
+        "agent": "A"
+      },
       "keywords": ["książki autora", "cezary rogowski", "książki", "autor", "pokonać goliata", "kod źródłowy", "biblioteka"],
+
       "connections": ["biblioteka-ccn", "pokonac-goliata", "kod-zrodlowy", "lumina-profile"]
     },
     {
@@ -1043,6 +1057,11 @@
       "icon": "🗺️",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
+      "lastUpdate": {
+        "topic": "Rejestr i doktryna symbolicznego raportowania",
+        "date": "2026-10-11",
+        "agent": "A"
+      },
       "keywords": ["mapa", "mapacc", "ekosystem", "projekty", "architektura", "nawigacja", "joma", "graf", "baza"],
       "connections": ["radio-main", "lumina-portal", "akademia-main", "cclite", "ccn-news", "vod-kino"]
     },
@@ -1059,7 +1078,13 @@
       "icon": "⏱️",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
+      "lastUpdate": {
+        "topic": "Wdrożenie Licznika CC",
+        "date": "2026-10-11",
+        "agent": "A"
+      },
       "keywords": ["licznik", "milion", "licznik cc", "misja milion", "modlitwa", "zjednoczeni", "zasięg"],
+
       "connections": ["radio-main", "zapolske-modlitwa", "lumina-main"]
     },
     {
