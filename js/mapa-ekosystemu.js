@@ -317,7 +317,40 @@
     });
 
     // Panning & Zooming w SVG
-    setupSvgPanZoom();
+  function updateViewportHeights() {
+    const header = document.querySelector('.mapa-header');
+    const ctrl = document.querySelector('.mapa-control-bar');
+    if (header) {
+      const hH = header.getBoundingClientRect().height;
+      if (hH > 0) document.documentElement.style.setProperty('--mapa-header-height', `${hH}px`);
+    }
+    if (ctrl) {
+      const isHidden = ctrl.classList.contains('is-hidden');
+      const cH = isHidden ? 0 : ctrl.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--mapa-ctrl-height', `${cH}px`);
+    }
+  }
+
+  function toggleControlBar(forceState) {
+    if (!els.controlBar) return;
+    const shouldShow = typeof forceState === 'boolean' 
+      ? forceState 
+      : els.controlBar.classList.contains('is-hidden');
+
+    if (shouldShow) {
+      els.controlBar.classList.remove('is-hidden');
+      if (els.restoreControlBarBtn) els.restoreControlBarBtn.style.display = 'none';
+      if (els.headerToggleBarBtn) els.headerToggleBarBtn.classList.add('active');
+      try { localStorage.removeItem('mapa_ctrl_bar_hidden'); } catch (e) {}
+    } else {
+      els.controlBar.classList.add('is-hidden');
+      if (els.restoreControlBarBtn) els.restoreControlBarBtn.style.display = 'inline-flex';
+      if (els.headerToggleBarBtn) els.headerToggleBarBtn.classList.remove('active');
+      try { localStorage.setItem('mapa_ctrl_bar_hidden', '1'); } catch (e) {}
+    }
+
+    updateViewportHeights();
+    setTimeout(updateViewportHeights, 320);
   }
 
   function parseUrlParams() {
