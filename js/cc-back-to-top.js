@@ -91,7 +91,7 @@
       'html.cc-fab-dock-open #luminaFloatingChatBtn{bottom:calc(var(--cc-dock-b) + 120px)!important;right:var(--cc-dock-r)!important}' +
       'html.cc-fab-dock-open #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-dock-b) + 180px)!important;right:var(--cc-dock-r)!important}' +
       '#ccFabDockToggle{position:fixed;z-index:100006;bottom:var(--cc-dock-b);right:var(--cc-dock-r);width:48px;height:48px;border-radius:50%;border:1px solid #b08a3c;background:#fff;color:#63470e;box-shadow:0 3px 14px #0003;display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;touch-action:manipulation;transition:transform .2s}' +
-      'html.cc-fab-dock-on #ccFabDockToggle{display:flex}html.cc-fab-dock-open #ccFabDockToggle{transform:rotate(45deg)}' +
+      'html.cc-fab-dock-on #ccFabDockToggle{display:flex}html.cc-fab-dock-open #ccFabDockToggle{transform:rotate(90deg)}' +
       '#ccFabDockToggle:focus-visible{outline:3px solid #2563eb;outline-offset:3px}' +
       '[data-lumina-theme="dark"] #ccFabDockToggle,html.dark #ccFabDockToggle{background:#171923;color:#ffe2a1}';
     document.head.appendChild(css);
@@ -130,7 +130,7 @@
         toggle.setAttribute('aria-label', 'Skróty: radio, czat, motyw');
         toggle.title = 'Skróty';
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>';
+        toggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>';
         toggle.addEventListener('click', function (event) {
           event.stopPropagation();
           setOpen(!root.classList.contains('cc-fab-dock-open'));

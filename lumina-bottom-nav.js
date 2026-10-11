@@ -592,6 +592,16 @@
             }
         }
 
+        /* ── Dolny pasek z podpisami i środkowym „+” (makieta 2026-10-11) ── */
+        .lumina-bottom-nav--labels .lumina-nav-tab { gap: 3px !important; padding: 4px 2px !important; }
+        .lumina-bottom-nav--labels .lumina-nav-label { display: block !important; font-size: 0.68rem !important; font-weight: 600 !important; line-height: 1 !important; letter-spacing: 0 !important; white-space: nowrap !important; }
+        .lumina-bottom-nav--labels .lumina-nav-tab i { font-size: 1.2rem !important; }
+        .lumina-bottom-nav--labels .lumina-nav-compose { flex: 0 0 72px !important; overflow: visible !important; background: none !important; }
+        .lumina-bottom-nav--labels .lumina-nav-compose:hover { transform: none !important; background: none !important; }
+        .lumina-nav-compose-circle { width: 56px !important; height: 56px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #d4a94a, #b8862f) !important; color: #fff !important; box-shadow: 0 6px 18px rgba(184, 134, 47, 0.45) !important; transform: translateY(-14px) !important; border: 3px solid #fff !important; }
+        .lumina-nav-compose-circle i { color: #fff !important; font-size: 1.5rem !important; text-shadow: none !important; }
+        .lumina-nav-compose:focus-visible .lumina-nav-compose-circle { outline: 3px solid #2563eb !important; outline-offset: 3px !important; }
+
         /* ── LIGHT MODE STYLING DLA LUMINA BOTTOM NAV & POPUP ── */
         html[data-lumina-theme="light"] .lumina-bottom-nav,
         body.theme-lumina-light .lumina-bottom-nav {
@@ -1443,25 +1453,30 @@
             </div>
         </div>
 
-        <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
-            <!-- 1. Odkrywaj -->
-            <a href="/lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" title="Odkrywaj Chrześcijańskie Profile">
-                <i class="fa-solid fa-heart-circle-bolt"></i>
+        <nav class="lumina-bottom-nav lumina-bottom-nav--labels" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
+            <!-- 1. Start -->
+            <a href="/lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/lumina')" title="Start">
+                <i class="fa-solid fa-house"></i><span class="lumina-nav-label">Start</span>
             </a>
 
             <!-- 2. Tablica Społeczności -->
             <a href="/tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/tablica')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/tablica')" title="Główna Tablica Społeczności">
-                <i class="fa-solid fa-users-viewfinder"></i>
+                <i class="fa-solid fa-users"></i><span class="lumina-nav-label">Tablica</span>
             </a>
 
-            <!-- 3. Rolki Wiary (Shorts 9:16) -->
+            <!-- 3. Napisz post (środkowy przycisk) -->
+            <button type="button" class="lumina-nav-tab lumina-nav-compose" id="navTabCompose" aria-label="Napisz post" title="Napisz post" onclick="if (typeof window.openQuickPostComposer === 'function') { window.openQuickPostComposer('post'); } else { window.location.href = '/tablica?compose=first-post'; }">
+                <span class="lumina-nav-compose-circle"><i class="fa-solid fa-plus"></i></span>
+            </button>
+
+            <!-- 4. Rolki Wiary (Shorts 9:16) -->
             <a href="/rolki" class="lumina-nav-tab ${isShorts ? 'active' : ''}" id="navTabShorts" onmouseenter="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/rolki')" ontouchstart="if(window.luminaPrefetchPage) window.luminaPrefetchPage('/rolki')" title="Rolki Wiary • LUMINA Shorts 9:16">
-                <i class="fa-solid fa-clapperboard"></i>
+                <i class="fa-solid fa-clapperboard"></i><span class="lumina-nav-label">Rolki</span>
             </a>
 
-            <!-- 4. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, VOD, Profil, Q&A, Master Admin) -->
+            <!-- 5. Menu Więcej (Radio, TV, VOD, Profil, Q&A, Master Admin) -->
             <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Q&A, Master Admin)">
-                <i class="fa-solid fa-bars" id="bottomNavBarsIcon"></i>
+                <i class="fa-solid fa-bars" id="bottomNavBarsIcon"></i><span class="lumina-nav-label">Menu</span>
             </button>
         </nav>
 

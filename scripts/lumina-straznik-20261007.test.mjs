@@ -310,3 +310,27 @@ test('profil nie zawiesza się po kliknięciu, wsparcie na górnej belce, czytel
   const top = await readFile('js/cc-back-to-top.js', 'utf8');
   assert.match(top, /--cc-dock-r', 'max\(16px, env\(safe-area-inset-right\)\)'/);
 });
+
+test('strona główna członka według makiety: skróty, Polecane, Ostatnie posty; goście bez zmian', async () => {
+  const t = await readFile('lumina.html', 'utf8');
+  assert.match(t, /\/js\/lumina-member-home\.js\?v=/);
+  assert.match(t, /js\/lumina-community-people\.js\?v=/);
+  const home = await readFile('js/lumina-member-home.js', 'utf8');
+  for (const s of ['Społeczność', 'Modlitwa', 'Małżeństwo', 'Świadectwa', 'Polecane', 'Ostatnie posty']) assert.ok(home.includes(s), s);
+  assert.match(home, /if \(!member\(\)\)/);
+  assert.match(home, /lumina-avatar-zastepczy/);
+  assert.match(t, /id="heroGuestCta"/);
+});
+
+test('dolny pasek: podpisy pod ikonami i środkowy „+” do napisania posta; dok pływający bez drugiego „+”', async () => {
+  const nav = await readFile('lumina-bottom-nav.js', 'utf8');
+  assert.match(nav, /id="navTabCompose" aria-label="Napisz post"/);
+  for (const l of ['Start', 'Tablica', 'Rolki', 'Menu']) assert.match(nav, new RegExp(`<span class="lumina-nav-label">${l}</span>`));
+  for (const f of await htmlFiles()) {
+    const t = await readFile(f, 'utf8');
+    if (t.includes('lumina-bottom-nav.js?v=')) assert.match(t, /lumina-bottom-nav\.js\?v=20261011_nav_mockup1/, f);
+  }
+  for (const f of ['lumina-tablica.html', 'lumina-tablica-light.html']) assert.match(await readFile(f, 'utf8'), /id="lumina-compose-param"/, f);
+  const top = await readFile('js/cc-back-to-top.js', 'utf8');
+  assert.doesNotMatch(top, /M12 5v14M5 12h14/);
+});
