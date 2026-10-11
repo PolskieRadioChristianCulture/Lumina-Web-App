@@ -2168,6 +2168,133 @@ html[data-lumina-theme="light"] .cin-progress-title {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   13. PREMIUM MOBILE COURSE HARMONY & ANTI-CHAOS STANDARD (max-width: 640px)
+   Eliminacja ścisku w nagłówku, jednoliniowe okruszki i spójna hierarchia
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Nagłówek mobilny: ukrycie zbędnych elementów, zwolnienie miejsca */
+  .ak-header .ak-header-slash,
+  .ak-header .ak-header-course-title,
+  .ak-header .ak-header-brand-sub,
+  .ak-header .rounded-full.border-zinc-800,
+  .ak-header #btn-reader-font {
+    display: none !important;
+  }
+
+  .ak-header .max-w-6xl,
+  .ak-header .max-w-7xl {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .ak-header .flex.items-center.gap-2.sm\:gap-3 {
+    gap: 6px !important;
+  }
+
+  .ak-header .kc-reader-pill,
+  .ak-header #btn-audio-tts,
+  .ak-header #btn-theme-toggle,
+  .ak-header #ccTopSubLink,
+  .ak-header a[href*="patronite"] {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+
+  /* Pasek nawigacyjny i okruszki: dwie uporządkowane linie bez chaosu */
+  nav[aria-label="Nawigacja lekcji"] {
+    padding: 8px 12px !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div > div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    font-size: 11.5px !important;
+    color: #71717a !important;
+    width: 100% !important;
+  }
+  /* Na mobile ukryj powtarzające się człony ścieżki (Akademia, Z Biblią za Pan Brat) oraz separatory › */
+  nav[aria-label="Nawigacja lekcji"] > div > div:first-child > a,
+  nav[aria-label="Nawigacja lekcji"] > div > div:first-child > span:not(:last-child):not(.text-zinc-400) {
+    display: none !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div > div:first-child > span.text-zinc-400 {
+    color: #a1a1aa !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div > div:first-child > span:last-child {
+    margin-left: auto !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div > div:last-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-top: 6px !important;
+  }
+  nav[aria-label="Nawigacja lekcji"] > div > div:last-child a,
+  nav[aria-label="Nawigacja lekcji"] > div > div:last-child button {
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+    min-height: 38px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Hero lekcji: harmonijna typografia i oddechy */
+  section.relative.overflow-hidden.py-10 {
+    padding-top: 20px !important;
+    padding-bottom: 24px !important;
+  }
+  section.relative.overflow-hidden.py-10 .max-w-4xl > div:first-child {
+    font-size: 11px !important;
+    letter-spacing: 0.12em !important;
+    margin-bottom: 8px !important;
+    flex-wrap: wrap !important;
+    gap: 4px 8px !important;
+  }
+  section.relative.overflow-hidden.py-10 h1 {
+    font-size: 26px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 0.02em !important;
+  }
+  section.relative.overflow-hidden.py-10 p.lead,
+  section.relative.overflow-hidden.py-10 p.font-display {
+    font-size: 14.5px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 18px !important;
+  }
+
+  /* Metryka lekcji: czyste proporcje */
+  section.relative.overflow-hidden.py-10 .grid.grid-cols-2 {
+    gap: 8px !important;
+    margin-bottom: 18px !important;
+  }
+  section.relative.overflow-hidden.py-10 .grid.grid-cols-2 > div {
+    padding: 10px 12px !important;
+  }
+
+  /* Grafika lekcji: responsywny kadr 16:9 na telefonie z zaokrągleniami */
+  section.relative.overflow-hidden.py-10 .aspect-\[21\/9\] {
+    aspect-ratio: 16 / 9 !important;
+    margin-bottom: 20px !important;
+  }
+}
+
 /* FLOATING BACK TO TOP BUTTON (Standard dla wszystkich lekcji i kursów) */
 .back-to-top {
   position: fixed;
