@@ -12,6 +12,9 @@
   const state = {
     data: null,
     viewMode: 'galaxy', // 'galaxy' | 'tree'
+    currentLayer: 'public', // 'public' | 'agents'
+    agentsData: null,
+    isCommander: false,
     selectedNodeId: null,
     selectedBranchId: 'radio-tv',
     activeFilter: 'all',
@@ -79,6 +82,9 @@
     } else {
       selectBranch('radio-tv');
     }
+
+    // Sprawdź autoryzację Dowódcy do warstwy @A
+    checkCommanderAccess();
   }
 
   function cacheDom() {
@@ -120,7 +126,10 @@
       zoomInBtn: document.getElementById('mapaZoomInBtn'),
       zoomOutBtn: document.getElementById('mapaZoomOutBtn'),
       resetBtn: document.getElementById('mapaResetBtn'),
-      fitBtn: document.getElementById('mapaFitBtn')
+      fitBtn: document.getElementById('mapaFitBtn'),
+      layerSwitch: document.getElementById('mapaLayerSwitch'),
+      layerBtnPublic: document.getElementById('layerBtnPublic'),
+      layerBtnAgents: document.getElementById('layerBtnAgents')
     };
   }
 
@@ -259,6 +268,24 @@
       }
     });
 
+    // Obsługa przełącznika warstw: Mapa CC | @A — Agenci Misji
+    if (els.layerBtnPublic) {
+      els.layerBtnPublic.addEventListener('click', () => switchLayer('public'));
+    }
+    if (els.layerBtnAgents) {
+      els.layerBtnAgents.addEventListener('click', () => switchLayer('agents'));
+    }
+
+    // Nasłuchiwanie na stan autoryzacji z cc-global-auth / LUMINA
+    window.addEventListener('lumina-auth-state', (e) => {
+      checkCommanderAccess(e?.detail?.user);
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'lumina_current_user' || e.key === 'lumina_user_session') {
+        checkCommanderAccess();
+      }
+    });
+
     // Panning & Zooming w SVG
     setupSvgPanZoom();
   }
@@ -313,12 +340,26 @@
   }
 
   function renderStats() {
-    if (!els.statsCount || !state.data) return;
-    const total = state.data.nodes.length;
-    els.statsCount.textContent = total;
+    if (!els.statsCount) return;
+    if (state.currentLayer === 'agents' && state.agentsData) {
+      let count = 0;
+      state.agentsData.branches.forEach(b => {
+        count += (b.agent.subagents || []).length;
+      });
+      els.statsCount.textContent = `${count} agentów`;
+      return;
+    }
+    if (state.data) {
+      const total = state.data.nodes.length;
+      els.statsCount.textContent = total;
+    }
   }
 
   function applyFiltersAndSearch() {
+    if (state.currentLayer === 'agents') {
+      renderAgentsTree();
+      return;
+    }
     const q = state.searchQuery;
     const filter = state.activeFilter;
     const status = state.statusFilter;
@@ -669,29 +710,55 @@
       `;
     });
 
-    // D. Węzeł centralny: CHRISTIAN CULTURE (Słońce galaktyki z koroną i promieniami)
-    let sunRaysSvg = '';
-    for (let i = 0; i < 20; i++) {
-      const angleDeg = i * (360 / 20);
-      sunRaysSvg += `<line x1="0" y1="92" x2="0" y2="104" stroke="rgba(196, 163, 90, 0.45)" stroke-width="1.5" transform="rotate(${angleDeg})" />`;
-    }
+    // D. Węzeł centralny: Dostosowany do wybranej warstwy (CC lub @A Agenci Misji)
+    let centerSvg = '';
+    if (state.currentLayer === 'agents' && state.agentsData) {
+      centerSvg = `
+        <g class="map-node map-node-root map-node-root-agents" transform="translate(0, 0)">
+          <!-- Aura sztabowa -->
+          <circle cx="0" cy="0" r="135" fill="rgba(196, 163, 90, 0.06)" />
+          <circle cx="0" cy="0" r="110" fill="rgba(196, 163, 90, 0.14)" stroke="rgba(196, 163, 90, 0.35)" stroke-width="1.5" />
+          <circle cx="0" cy="0" r="88" fill="#080F20" stroke="#C4A35A" stroke-width="3.5" style="filter: drop-shadow(0 0 28px rgba(196,163,90,0.65));" />
+          
+          <!-- Nad centrum: Czarek — Administrator Misji -->
+          <g transform="translate(0, -115)">
+            <rect x="-115" y="-14" width="230" height="28" rx="14" fill="rgba(8, 15, 32, 0.95)" stroke="#C4A35A" stroke-width="1.5" style="filter: drop-shadow(0 4px 12px rgba(0,0,0,0.7));" />
+            <text x="0" y="4" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="10" font-weight="700" fill="#E2CC9A">👑 Czarek — Administrator Misji</text>
+          </g>
+          <line x1="0" y1="-100" x2="0" y2="-88" stroke="#C4A35A" stroke-width="2" stroke-dasharray="3,3" />
 
-    svgHtml += `
-      <g class="map-node map-node-root" transform="translate(0, 0)">
-        <!-- Promienista wielowarstwowa korona słoneczna -->
-        <circle cx="0" cy="0" r="130" fill="rgba(196, 163, 90, 0.05)" />
-        <circle cx="0" cy="0" r="105" fill="rgba(196, 163, 90, 0.12)" stroke="rgba(196, 163, 90, 0.25)" stroke-width="1.5" />
-        <circle cx="0" cy="0" r="85" fill="#080F20" stroke="#C4A35A" stroke-width="3.5" style="filter: drop-shadow(0 0 28px rgba(196,163,90,0.65));" />
-        ${sunRaysSvg}
-        <!-- Krzyż i inskrypcja -->
-        <text x="0" y="-30" text-anchor="middle" font-family="'Cinzel', serif" font-size="20" font-weight="700" fill="#E2CC9A">+</text>
-        <text x="0" y="-6" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#C4A35A">Christian</text>
-        <text x="0" y="16" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">Culture</text>
-        <text x="0" y="34" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8.5" font-weight="600" fill="#CBD5E1">polskieradio.cc</text>
-        <text x="0" y="48" text-anchor="middle" font-family="'Cinzel', serif" font-size="7" font-weight="700" letter-spacing="1" fill="#E2CC9A" opacity="0.9">WIĘKSZE ŚWIATŁO</text>
-        <text x="0" y="58" text-anchor="middle" font-family="'Cinzel', serif" font-size="6" font-weight="600" letter-spacing="0.8" fill="#E2CC9A" opacity="0.75">W REALNYM ŚWIECIE</text>
-      </g>
-    `;
+          <!-- Węzeł Centralny: @A — Centrum Agentów Misji -->
+          <text x="0" y="-22" text-anchor="middle" font-size="24">✦</text>
+          <text x="0" y="2" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1" fill="#C4A35A">@A CENTRUM</text>
+          <text x="0" y="18" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1" fill="#FFFFFF">AGENTÓW MISJI</text>
+          <text x="0" y="34" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8" font-weight="600" fill="#CBD5E1">11 Dywizji • 37 SubAgentów</text>
+          <text x="0" y="48" text-anchor="middle" font-family="'Cinzel', serif" font-size="7" font-weight="700" letter-spacing="1" fill="#10B981">100% ZERO-COST</text>
+        </g>
+      `;
+    } else {
+      let sunRaysSvg = '';
+      for (let i = 0; i < 20; i++) {
+        const angleDeg = i * (360 / 20);
+        sunRaysSvg += `<line x1="0" y1="92" x2="0" y2="104" stroke="rgba(196, 163, 90, 0.45)" stroke-width="1.5" transform="rotate(${angleDeg})" />`;
+      }
+      centerSvg = `
+        <g class="map-node map-node-root" transform="translate(0, 0)">
+          <!-- Promienista wielowarstwowa korona słoneczna -->
+          <circle cx="0" cy="0" r="130" fill="rgba(196, 163, 90, 0.05)" />
+          <circle cx="0" cy="0" r="105" fill="rgba(196, 163, 90, 0.12)" stroke="rgba(196, 163, 90, 0.25)" stroke-width="1.5" />
+          <circle cx="0" cy="0" r="85" fill="#080F20" stroke="#C4A35A" stroke-width="3.5" style="filter: drop-shadow(0 0 28px rgba(196,163,90,0.65));" />
+          ${sunRaysSvg}
+          <!-- Krzyż i inskrypcja -->
+          <text x="0" y="-30" text-anchor="middle" font-family="'Cinzel', serif" font-size="20" font-weight="700" fill="#E2CC9A">+</text>
+          <text x="0" y="-6" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#C4A35A">Christian</text>
+          <text x="0" y="16" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">Culture</text>
+          <text x="0" y="34" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8.5" font-weight="600" fill="#CBD5E1">polskieradio.cc</text>
+          <text x="0" y="48" text-anchor="middle" font-family="'Cinzel', serif" font-size="7" font-weight="700" letter-spacing="1" fill="#E2CC9A" opacity="0.9">WIĘKSZE ŚWIATŁO</text>
+          <text x="0" y="58" text-anchor="middle" font-family="'Cinzel', serif" font-size="6" font-weight="600" letter-spacing="0.8" fill="#E2CC9A" opacity="0.75">W REALNYM ŚWIECIE</text>
+        </g>
+      `;
+    }
+    svgHtml += centerSvg;
 
     els.svgGroup.innerHTML = svgHtml;
 
@@ -726,8 +793,408 @@
     }
   }
 
+  // ── OBSŁUGA WARSTWY @A — AGENCI MISJI & AUTORYZACJA DOWÓDCY ──
+  async function checkCommanderAccess(passedUser) {
+    let email = null;
+    let token = null;
+
+    if (passedUser && passedUser.email) {
+      email = String(passedUser.email).trim().toLowerCase();
+    } else {
+      try {
+        const uStr = localStorage.getItem('lumina_current_user');
+        if (uStr) {
+          const u = JSON.parse(uStr);
+          email = (u.email || '').trim().toLowerCase();
+        }
+      } catch (e) {}
+    }
+
+    const isCommanderEmail = email === 'nazirczarkes@gmail.com';
+    state.isCommander = isCommanderEmail;
+
+    if (els.layerSwitch) {
+      if (isCommanderEmail) {
+        els.layerSwitch.style.display = 'inline-flex';
+      } else {
+        els.layerSwitch.style.display = 'none';
+        if (state.currentLayer === 'agents') {
+          switchLayer('public');
+        }
+      }
+    }
+
+    if (!isCommanderEmail && state.agentsData) {
+      state.agentsData = null; // Czystość pamięci zgodnie ze specyfikacją
+    }
+  }
+
+  async function getCommanderToken() {
+    // 1. Z globalnego Firebase Auth
+    if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+      try {
+        return await window.firebaseAuth.currentUser.getIdToken();
+      } catch (e) {}
+    }
+    // 2. Przez LuminaDB
+    if (window.LuminaDB && typeof window.LuminaDB.getFirebaseAuthUser === 'function') {
+      const u = window.LuminaDB.getFirebaseAuthUser();
+      if (u && typeof u.getIdToken === 'function') {
+        try {
+          return await u.getIdToken();
+        } catch (e) {}
+      }
+    }
+    // 3. Fallback: sesja tokenowa w localStorage / sessionStorage
+    const localToken = localStorage.getItem('lumina_id_token') || sessionStorage.getItem('lumina_id_token');
+    if (localToken) return localToken;
+    return null;
+  }
+
+  async function loadAgentsData() {
+    if (state.agentsData) return state.agentsData;
+    const token = await getCommanderToken();
+    if (!token) {
+      // Jeśli brak tokena, spróbuj wywołać logowanie lub poproś o odświeżenie
+      console.warn('Brak aktywnego tokenu Google/Firebase dla Dowódcy.');
+      return null;
+    }
+
+    try {
+      const resp = await fetch('/api/admin/agents-map', {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Cache-Control': 'no-store'
+        }
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${resp.status}`);
+      }
+      const res = await resp.json();
+      state.agentsData = res.agentsData;
+      return state.agentsData;
+    } catch (err) {
+      console.error('Błąd pobierania /api/admin/agents-map:', err);
+      alert('Błąd pobierania warstwy @A: ' + err.message);
+      return null;
+    }
+  }
+
+  async function switchLayer(layer) {
+    if (layer === state.currentLayer) return;
+
+    if (layer === 'agents') {
+      if (!state.isCommander) {
+        alert('Warstwa @A — Agenci Misji dostępna wyłącznie dla Dowódcy (nazirczarkes@gmail.com).');
+        return;
+      }
+      const data = await loadAgentsData();
+      if (!data) {
+        alert('Nie udało się pobrać danych sztabowych. Upewnij się, że jesteś zalogowany jako Administrator.');
+        return;
+      }
+      state.currentLayer = 'agents';
+      if (els.layerBtnPublic) els.layerBtnPublic.classList.remove('active');
+      if (els.layerBtnAgents) els.layerBtnAgents.classList.add('active');
+      
+      initAgentsGraphLayout();
+      renderAgentsTree();
+      renderStats();
+      selectAgent(data.branches[0].agent.id);
+    } else {
+      state.currentLayer = 'public';
+      if (els.layerBtnPublic) els.layerBtnPublic.classList.add('active');
+      if (els.layerBtnAgents) els.layerBtnAgents.classList.remove('active');
+
+      renderStats();
+      renderTree();
+      initGraphLayout();
+      selectBranch('radio-tv');
+    }
+  }
+
+  function initAgentsGraphLayout() {
+    if (!state.agentsData || !els.svgGroup) return;
+
+    layout.branches.clear();
+    layout.nodes.clear();
+    layout.links = [];
+
+    const branches = state.agentsData.branches;
+
+    branches.forEach((b, idx) => {
+      const isLeft = idx < 6;
+      const count = isLeft ? 6 : 5;
+      const localIdx = isLeft ? idx : idx - 6;
+      const x = isLeft ? -460 : 460;
+      const y = -280 + localIdx * 115;
+
+      layout.branches.set(b.id, {
+        x: x,
+        y: y,
+        r: 42,
+        side: isLeft ? 'left' : 'right',
+        mockIcon: b.icon,
+        sub: b.agent.name,
+        color: b.color,
+        data: b
+      });
+
+      // Połączenie root -> Agent Hub
+      layout.links.push({
+        from: { x: 0, y: 0 },
+        to: { x: x, y: y },
+        type: 'primary',
+        color: b.color
+      });
+
+      // SubAgenci
+      const subagents = b.agent.subagents || [];
+      const subCount = subagents.length;
+      subagents.forEach((sub, sIdx) => {
+        const yOffset = (sIdx - (subCount - 1) / 2) * 28;
+        const ny = Math.round(y + yOffset);
+        const nx = isLeft ? x - 200 : x + 200;
+
+        layout.nodes.set(sub.id, {
+          x: nx,
+          y: ny,
+          r: 5,
+          data: sub,
+          branchId: b.id,
+          side: isLeft ? 'left' : 'right'
+        });
+
+        layout.links.push({
+          from: { x: x, y: y },
+          to: { x: nx, y: ny },
+          type: 'sub',
+          color: b.color
+        });
+      });
+    });
+
+    renderSvgGraph();
+  }
+
+  function renderAgentsTree() {
+    if (!state.agentsData || !els.branchesContainer) return;
+    const branches = state.agentsData.branches;
+    let html = '';
+
+    branches.forEach(b => {
+      const agent = b.agent;
+      const subagents = agent.subagents || [];
+      const isOpen = state.expandedBranches.has(b.id);
+      const stageText = agent.stage === 'deployed' ? 'Wdrożony' : (agent.stage === 'configured' ? 'Skonfigurowany' : 'Planowany');
+      const stateText = agent.state === 'running' ? 'Pracuje' : (agent.state === 'idle' ? 'Bezczynny' : 'Oczekuje');
+
+      html += `
+        <div class="mapa-branch-section ${isOpen ? 'open' : ''}" data-branch-id="${escapeHtml(b.id)}">
+          <div class="mapa-branch-header" role="button" tabindex="0" aria-expanded="${isOpen}">
+            <div class="mapa-branch-title-wrap">
+              <div class="mapa-branch-icon" style="border-color: ${escapeHtml(b.color)}">${escapeHtml(b.icon)}</div>
+              <div>
+                <div class="mapa-branch-name">${escapeHtml(agent.name)}</div>
+                <div class="mapa-branch-tagline">${escapeHtml(agent.role)}</div>
+              </div>
+            </div>
+            <div class="mapa-branch-meta">
+              <span class="agent-status-pill agent-status-${agent.state}">${stateText}</span>
+              <span class="mapa-branch-badge">${subagents.length} SubAgentów</span>
+              <i class="fa-solid fa-chevron-down mapa-branch-toggle-icon"></i>
+            </div>
+          </div>
+          <div class="mapa-branch-body">
+            ${subagents.map(sub => `
+              <div class="mapa-card" data-id="${escapeHtml(sub.id)}" data-type="subagent">
+                <div>
+                  <div class="mapa-card-head">
+                    <div class="mapa-card-icon-wrap">
+                      <div class="mapa-card-icon">⚡</div>
+                      <div class="mapa-card-title">${escapeHtml(sub.name)}</div>
+                    </div>
+                    <span class="agent-status-pill agent-status-${sub.state}">${sub.state === 'running' ? 'Pracuje' : 'Bezczynny'}</span>
+                  </div>
+                  <p class="mapa-card-desc">${escapeHtml(sub.role)}</p>
+                </div>
+                <div class="mapa-card-footer">
+                  <span>${escapeHtml(sub.tool || 'Ekosystem CC')}</span>
+                  <span style="color: #C4A35A; font-weight: 600;">${stageText}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    els.branchesContainer.innerHTML = html;
+
+    els.branchesContainer.querySelectorAll('.mapa-branch-header').forEach(hdr => {
+      hdr.addEventListener('click', function () {
+        const section = this.closest('.mapa-branch-section');
+        const branchId = section.getAttribute('data-branch-id');
+        if (state.expandedBranches.has(branchId)) {
+          state.expandedBranches.delete(branchId);
+          section.classList.remove('open');
+          this.setAttribute('aria-expanded', 'false');
+        } else {
+          state.expandedBranches.add(branchId);
+          section.classList.add('open');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    els.branchesContainer.querySelectorAll('.mapa-card').forEach(card => {
+      card.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        selectAgentNode(id);
+      });
+    });
+  }
+
+  function selectAgent(agentId) {
+    if (!state.agentsData) return;
+    const branch = state.agentsData.branches.find(b => b.agent.id === agentId || b.id === agentId);
+    if (!branch) return;
+    const agent = branch.agent;
+
+    state.selectedBranchId = branch.id;
+    state.selectedNodeId = agent.id;
+
+    openSideCard();
+    if (els.drawerIcon) els.drawerIcon.textContent = branch.icon;
+    if (els.drawerTitle) els.drawerTitle.textContent = agent.name;
+    if (els.drawerCategory) els.drawerCategory.textContent = branch.name;
+    
+    const stateLabels = { running: 'Pracuje', idle: 'Bezczynny', waiting: 'Oczekuje', error: 'Błąd', unknown: 'Nieznany' };
+    if (els.drawerBadge) els.drawerBadge.textContent = stateLabels[agent.state] || 'Aktywny';
+    if (els.drawerDesc) {
+      els.drawerDesc.innerHTML = `
+        <div style="margin-bottom: 8px;"><strong>Rola:</strong> ${escapeHtml(agent.role)}</div>
+        <p style="margin-bottom: 8px;">${escapeHtml(agent.desc)}</p>
+        <div style="font-size: 0.8rem; color: #CBD5E1; margin-top: 6px;">
+          <div>🔧 <strong>Narzędzie/Model:</strong> ${escapeHtml(agent.toolOrModel || 'AI Model')}</div>
+          <div>📡 <strong>Źródło statusu:</strong> ${escapeHtml(agent.source || 'JOMA Shared Memory')}</div>
+          <div>💰 <strong>Budżet:</strong> <span style="color: #10B981; font-weight: 700;">${escapeHtml(agent.limits || '100% Zero-Cost')}</span></div>
+        </div>
+      `;
+    }
+    if (els.drawerMetricProjects) els.drawerMetricProjects.textContent = (agent.subagents || []).length;
+    if (els.drawerMetricAudience) els.drawerMetricAudience.textContent = '100%';
+    if (els.drawerMetricHours) els.drawerMetricHours.textContent = '24/7';
+
+    // SubAgenci w panelu
+    if (els.drawerProjectsList) {
+      const subs = agent.subagents || [];
+      els.drawerProjectsList.innerHTML = `
+        <div class="mapa-card-sublabel" style="margin-bottom: 8px;">SUBAGENCI W TEJ DYWIZJI (${subs.length})</div>
+        ${subs.map(s => `
+          <div class="agent-subagent-card" data-sub-id="${escapeHtml(s.id)}" role="button" tabindex="0">
+            <div class="agent-subagent-header">
+              <span class="agent-subagent-title">${escapeHtml(s.name)}</span>
+              <span class="agent-status-pill agent-status-${s.state}">${s.state === 'running' ? 'Pracuje' : 'Bezczynny'}</span>
+            </div>
+            <div class="agent-subagent-role">${escapeHtml(s.role)}</div>
+            <div class="agent-subagent-meta">
+              <span>🔧 ${escapeHtml(s.tool || 'Moduł CC')}</span>
+              <span>•</span>
+              <span>${s.stage === 'deployed' ? 'Wdrożony' : 'Planowany'}</span>
+            </div>
+          </div>
+        `).join('')}
+        <div class="agent-ctrl-actions">
+          <button type="button" class="agent-ctrl-btn" onclick="alert('Weryfikacja agenta: proces aktywny w JOMA Shared Memory.')">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span>Sprawdź stan</span>
+          </button>
+          <button type="button" class="agent-ctrl-btn" onclick="window.open('/content-registry.html', '_blank')">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Rejestr zadań</span>
+          </button>
+        </div>
+      `;
+
+      els.drawerProjectsList.querySelectorAll('.agent-subagent-card').forEach(card => {
+        card.addEventListener('click', function () {
+          const sid = this.getAttribute('data-sub-id');
+          selectAgentNode(sid);
+        });
+      });
+    }
+
+    if (els.drawerBtnLabel) els.drawerBtnLabel.textContent = 'Szczegóły w JOMA ↗';
+    if (els.drawerOpenBtn) els.drawerOpenBtn.href = '/content-registry.html';
+
+    renderSvgGraph();
+  }
+
+  function selectAgentNode(subId) {
+    if (!state.agentsData) return;
+    let foundSub = null;
+    let foundBranch = null;
+
+    state.agentsData.branches.forEach(b => {
+      (b.agent.subagents || []).forEach(s => {
+        if (s.id === subId) {
+          foundSub = s;
+          foundBranch = b;
+        }
+      });
+    });
+
+    if (!foundSub) return;
+
+    state.selectedNodeId = foundSub.id;
+    state.selectedBranchId = foundBranch.id;
+
+    openSideCard();
+    if (els.drawerIcon) els.drawerIcon.textContent = '⚡';
+    if (els.drawerTitle) els.drawerTitle.textContent = foundSub.name;
+    if (els.drawerCategory) els.drawerCategory.textContent = `${foundBranch.name} • ${foundBranch.agent.name}`;
+    if (els.drawerBadge) els.drawerBadge.textContent = foundSub.state === 'running' ? 'Pracuje' : 'Bezczynny';
+    if (els.drawerDesc) {
+      els.drawerDesc.innerHTML = `
+        <div style="margin-bottom: 8px;"><strong>Zadanie:</strong> ${escapeHtml(foundSub.role)}</div>
+        <p style="margin-bottom: 8px;">${escapeHtml(foundSub.desc)}</p>
+        <div style="font-size: 0.8rem; color: #CBD5E1; margin-top: 6px;">
+          <div>🔧 <strong>Narzędzie:</strong> ${escapeHtml(foundSub.tool || 'Moduł')}</div>
+          <div>📡 <strong>Źródło:</strong> ${escapeHtml(foundSub.source || 'JOMA')}</div>
+          <div>📌 <strong>Etap wdrożenia:</strong> <span style="color: #C4A35A; font-weight: 700;">${foundSub.stage === 'deployed' ? 'Wdrożony' : 'Planowany'}</span></div>
+        </div>
+      `;
+    }
+
+    if (els.drawerProjectsList) {
+      els.drawerProjectsList.innerHTML = `
+        <div class="mapa-card-sublabel" style="margin-bottom: 8px;">AGENT NADRZĘDNY</div>
+        <div class="agent-subagent-card" style="cursor: pointer;" onclick="window.selectAgentBranch('${foundBranch.id}')">
+          <div class="agent-subagent-header">
+            <span class="agent-subagent-title">${escapeHtml(foundBranch.agent.name)}</span>
+            <span class="agent-status-pill agent-status-${foundBranch.agent.state}">${foundBranch.agent.state}</span>
+          </div>
+          <div class="agent-subagent-role">${escapeHtml(foundBranch.agent.role)}</div>
+        </div>
+      `;
+    }
+
+    renderSvgGraph();
+  }
+
+  window.selectAgentBranch = function(branchId) {
+    selectAgent(branchId);
+  };
+
   // ── WYBÓR OBSZARU I AKTUALIZACJA PRAWEJ KARTY (MOCKUP 1:1) ──
   function selectBranch(branchId) {
+    if (state.currentLayer === 'agents') {
+      selectAgent(branchId);
+      return;
+    }
+
     if (!state.data) return;
     const branch = state.data.branches.find(b => b.id === branchId);
     if (!branch) return;
@@ -784,6 +1251,11 @@
   }
 
   function selectNode(nodeId, panTo) {
+    if (state.currentLayer === 'agents') {
+      selectAgentNode(nodeId);
+      return;
+    }
+
     if (!state.data) return;
     const node = state.data.nodes.find(n => n.id === nodeId);
     if (!node) return;

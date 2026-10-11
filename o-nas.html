@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>O nas — Misja, Wiara, Media i Edukacja | Christian Culture</title>
+  <meta name="description" content="Poznaj Christian Culture — niezależną, prywatną chrześcijańską inicjatywę ewangelizacyjną i ekosystem medialny. 6 stacji radia 24/7, TV CCTV24, Akademia Biblijna, MojaBiblia, LUMINA i CCN." />
+  <link rel="canonical" href="https://polskieradio.cc/o-nas" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://polskieradio.cc/o-nas" />
+  <meta property="og:title" content="O nas — Christian Culture | Służba Bogu i Człowiekowi" />
+  <meta property="og:description" content="Niezależna misja ewangelizacyjna i medialna. Radio 24/7 bez reklam, telewizja CCTV24, Akademia Biblijna, portal LUMINA i portale wiedzy CCN." />
+  <meta property="og:image" content="https://polskieradio.cc/images/logo.png" />
+  <meta property="og:site_name" content="Christian Culture" />
+  <meta property="og:locale" content="pl_PL" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="O nas — Christian Culture | Służba Bogu i Człowiekowi" />
+  <meta name="twitter:description" content="Niezależna misja ewangelizacyjna i medialna tworzona z pasją i wiarą." />
+  <meta name="twitter:image" content="https://polskieradio.cc/images/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              100: '#F1E7D0',
+              200: '#E2CC9A',
+              300: '#D4B578',
+              400: '#C4A35A',
+              500: '#B39250',
+              600: '#A08040',
+              900: '#403526',
+              950: '#29231C'
+            },
+            brand: {
+              gold: '#C4A35A',
+              'gold-light': '#E2CC9A',
+              'gold-dark': '#A08040',
+              dark: '#07090E',
+              surface: '#0E121A',
+              elevated: '#161B26',
+              line: 'rgba(255, 255, 255, 0.08)'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            display: ['Cinzel', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            bible: ['Lora', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- LUMINA Courses & Ecosystem Styling System -->
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20261011_onas_v1" />
+
+  <!-- Universal CC & LUMINA Global Auth & Theme -->
+  <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
+  <script src="/js/cc-course-theme.js?v=20261011_onas_v1" defer></script>
+  <script src="/components/cc-support-footer.js" defer></script>
+
+  <style>
+    .onas-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      color: #E2CC9A;
+    }
+    .onas-card {
+      background: #0E121A;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 28px;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .onas-card:hover {
+      border-color: rgba(196, 163, 90, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+    }
+    .onas-stat-box {
+      background: rgba(22, 27, 38, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+    }
+    html[data-lumina-theme="light"] .onas-card {
+      background: #FFFFFF !important;
+      border-color: rgba(184, 142, 62, 0.25) !important;
+      color: #27221E !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-lumina-theme="light"] .onas-stat-box {
+      background: #F7F4EC !important;
+      border-color: rgba(184, 142, 62, 0.2) !important;
+      color: #27221E !important;
+    }
+    html[data-lumina-theme="light"] .onas-pill {
+      background: rgba(196, 163, 90, 0.18) !important;
+      border-color: rgba(160, 128, 64, 0.4) !important;
+      color: #8C6D23 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+  <div class="ambient-glow"></div>
+
+  <!-- ── TOPBAR HEADER ── -->
+  <header class="cin-header">
+    <div class="flex items-center gap-4 sm:gap-5">
+      <a href="/" class="cin-brand" title="Christian Culture — Strona Główna">
+        <div class="cin-logo-mark">
+          <img src="/images/academy/lumina_star_champagne_20260928.png" alt="Christian Culture" />
+        </div>
+        <div class="cin-brand-text">
+          <span class="cin-brand-title">CHRISTIAN CULTURE</span>
+          <span class="cin-brand-sub">O INICJATYWIE & MISJI</span>
+        </div>
+      </a>
+      <span class="text-zinc-600 hidden lg:inline">/</span>
+      <nav class="hidden md:flex items-center gap-4 lg:gap-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 overflow-hidden" aria-label="Nawigacja ekosystemu">
+        <a href="/" class="hover:text-brand-gold transition-colors whitespace-nowrap">Portal Główny</a>
+        <a href="/player" class="hover:text-brand-gold transition-colors whitespace-nowrap">Radio 24/7</a>
+        <a href="/akademia" class="hover:text-brand-gold text-amber-300 font-bold transition-colors whitespace-nowrap">Akademia Biblijna</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors whitespace-nowrap">MojaBiblia</a>
+        <a href="/lumina" class="hover:text-brand-gold transition-colors whitespace-nowrap">Społeczność</a>
+        <a href="/news" class="hover:text-brand-gold transition-colors whitespace-nowrap">CCN News</a>
+        <a href="/vod" class="hover:text-brand-gold transition-colors whitespace-nowrap">Kino VOD</a>
+        <a href="/mapa" class="hover:text-brand-gold text-amber-400 font-bold transition-colors whitespace-nowrap">🗺️ Mapa</a>
+      </nav>
+    </div>
+
+    <!-- Actions & Auth (Icon-First Standard) -->
+    <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+      <!-- Przełącznik motywu (Jasny / Ciemny) -->
+      <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+        <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
+      </button>
+
+      <!-- Wsparcie Patronite -->
+      <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <span class="support-icon text-sm">❤️</span>
+        <span class="support-text sr-only">Wspieraj Misję</span>
+      </a>
+
+      <!-- CC Global Auth Connector Injection Point -->
+      <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="flex-grow z-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full pt-10 pb-20">
+
+    <!-- 1. HERO BANNER -->
+    <section class="text-center mb-16">
+      <div class="onas-pill mb-4">
+        <span>✦</span>
+        <span>SŁUŻBA BOGU I LUDZIOM • SOLA SCRIPTURA • MEDIA BEZ REKLAM</span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 tracking-tight leading-tight">
+        O Inicjatywie <span class="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent">Christian Culture</span>
+      </h1>
+
+      <p class="font-serif text-lg sm:text-xl text-amber-200/90 max-w-3xl mx-auto mb-6 leading-relaxed font-normal">
+        Niezależna, prywatna chrześcijańska inicjatywa ewangelizacyjna i ekosystem medialny budowany z wiary, pasji i szacunku do Słowa Bożego.
+      </p>
+
+      <p class="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        Tworzymy cyfrową przestrzeń, w której każdy człowiek może odkrywać Bożą prawdę, słuchać czystego Słowa bez komercyjnego hałasu i wzrastać w osobistej relacji z Jezusem Chrystusem.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href="/mapa" class="cin-btn-primary min-h-[46px] px-6 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+          <span>Odkryj Żywą Mapę Ekosystemu</span>
+          <span>→</span>
+        </a>
+        <a href="/player" class="cin-btn-secondary min-h-[46px] px-6 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+          <i class="fa-solid fa-play text-amber-400"></i>
+          <span>Włącz Radio 24/7</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 2. STATS OVERVIEW -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
+      <div class="onas-stat-box">
+        <div class="font-display text-2xl sm:text-3xl font-bold text-amber-400 mb-1">6 STACJI</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-wider font-semibold">Radia 24/7 bez reklam</div>
+      </div>
+      <div class="onas-stat-box">
+        <div class="font-display text-2xl sm:text-3xl font-bold text-amber-400 mb-1">CCTV24</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-wider font-semibold">Telewizja Uwielbienia LIVE</div>
+      </div>
+      <div class="onas-stat-box">
+        <div class="font-display text-2xl sm:text-3xl font-bold text-amber-400 mb-1">3 PROGRAMY</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-wider font-semibold">Akademia & Kurs Codzienny</div>
+      </div>
+      <div class="onas-stat-box">
+        <div class="font-display text-2xl sm:text-3xl font-bold text-amber-400 mb-1">20 PORTALI</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-wider font-semibold">CCN Wiedza, Nauka i Prawda</div>
+      </div>
+    </section>
+
+    <!-- 3. KIM JESTEŚMY & CHARAKTER SŁUŻBY -->
+    <section class="mb-16">
+      <div class="onas-card border-amber-500/30">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-2xl">🕊️</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Tożsamość i Prywatny Charakter Misji</h2>
+        </div>
+        <div class="space-y-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
+          <p>
+            <strong>Christian Culture</strong> to prywatna, niezależna inicjatywa misyjna i medialna, prowadzona z osobistego powołania przez <strong>Cezarego i Wiolettę Rogowskich</strong> wraz z osobami zaangażowanymi w służbę Ewangelii.
+          </p>
+          <p>
+            Nie jesteśmy korporacją medialną, instytucją komercyjną ani ugrupowaniem politycznym. Wszystkie nasze projekty — od rozgłośni radiowej, przez aplikacje, po kursy biblijne — są <strong>służbą prywatną</strong>, realizowaną na chwałę Bożą i dla dobra człowieka.
+          </p>
+          <p>
+            Wierzymy, że darmo otrzymaliśmy, dlatego darmo dajemy. Żaden z naszych zasobów duchowych, radiowych czy edukacyjnych nie jest obwarowany płatnymi subskrypcjami ani komercyjnymi blokami reklamowymi.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GŁÓWNE FILARY EKOSYSTEMU -->
+    <section class="mb-16">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase tracking-widest text-brand-gold font-bold block mb-2">Struktura Inicjatywy</span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Główne Filary Działania</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Filar 1: Radio -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            📻
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">Radio Internetowe 24/7</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Sześć wyspecjalizowanych strumieni audio bez reklam: Radio PL, Radio Global, Radio Biblia Audio, Global Audio Bible, Instrumental Worship oraz Biblia Śpiewana.
+          </p>
+          <a href="/player" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Słuchaj w Playerze</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Filar 2: Telewizja -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            📺
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">CCTV24 Worship TV</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Telewizja internetowa nadająca 24/7. Sceny transmisyjne OBS, nabożeństwa, koncerty uwielbienia, wykłady biblijne oraz transmisje modlitewne na żywo.
+          </p>
+          <a href="/cctv24" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Oglądaj CCTV24</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Filar 3: Akademia -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            📖
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">LUMINA Bible Academy</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Kompleksowa platforma edukacji biblijnej: program 28 Kroków Pielgrzyma, Apokalipsa – Księga Nadziei oraz codzienny kurs „Z Biblią za Pan Brat” (66 ksiąg w 66 miesięcy).
+          </p>
+          <a href="/akademia" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Rozpocznij Studium</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Filar 4: MojaBiblia -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            📜
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">MojaBiblia Online</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Nowoczesne studium interlinearne Pisma Świętego ze słownikiem kodów Stronga, analizą języka hebrajskiego i greckiego oraz porównywaniem przekładów.
+          </p>
+          <a href="/mojabiblia" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Badaj Pismo Święte</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Filar 5: Społeczność LUMINA -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            🤝
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">Społeczność LUMINA</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Przestrzeń społecznościowa skupiona wokół wiary, świadectw, relacji i wzajemnego wsparcia modlitewnego.
+          </p>
+          <a href="/lumina" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Dołącz do Społeczności</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Filar 6: CCN Portale Wiedzy -->
+        <div class="onas-card">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl mb-4 text-amber-300">
+            🌐
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-2">CCN — 20 Portali Wiedzy</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Rzetelne artykuły i analizy z dziedziny nauki, historii, biologii, prawa, rodziny, małżeństwa, apologetyki i zdrowia oparte na faktach i prawdzie Bożej.
+          </p>
+          <a href="/news" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+            <span>Czytaj Artykuły CCN</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. FUNDAMENT DUCHOWY & WARTOŚCI -->
+    <section class="mb-16">
+      <div class="onas-card bg-gradient-to-br from-[#0E121A] to-[#161B26]">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-6 text-center">Nasz Fundament Duchowy</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          <div class="space-y-2">
+            <div class="font-serif font-bold text-amber-400 text-base">✦ Sola Scriptura</div>
+            <p class="text-zinc-400 leading-relaxed">
+              Pismo Święte jest dla nas jedynym, natchnionym i nieomylnym autorytetem w sprawach wiary, doktryny i codziennego życia chrześcijańskiego.
+            </p>
+          </div>
+          <div class="space-y-2">
+            <div class="font-serif font-bold text-amber-400 text-base">✦ Chrystus w Centrum</div>
+            <p class="text-zinc-400 leading-relaxed">
+              Głosimy zbawienie z łaski przez wiarę w Jezusa Chrystusa, Jego ofiarę na krzyżu Golgoty, zmartwychwstanie i obietnicę powtórnego przyjścia.
+            </p>
+          </div>
+          <div class="space-y-2">
+            <div class="font-serif font-bold text-amber-400 text-base">✦ Prawda i Staranność</div>
+            <p class="text-zinc-400 leading-relaxed">
+              Odrzucamy fałsz, manipulację i powierzchowność. W każdym projekcie medialnym dążymy do najwyższego światowego standardu technicznego i estetycznego.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ZESPÓŁ I OSOBY PROWADZĄCE -->
+    <section class="mb-16">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase tracking-widest text-brand-gold font-bold block mb-2">Odpowiedzialność & Redakcja</span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Ludzie Misji Christian Culture</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Cezary Rogowski -->
+        <div class="onas-card text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-brand-gold/40 shadow-lg">
+            <span class="w-full h-full flex items-center justify-center bg-amber-500/10 font-display font-bold text-xl text-amber-400" aria-hidden="true">CR</span>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-1">Cezary Rogowski</h3>
+          <p class="text-xs text-amber-400 font-semibold mb-3">Założyciel & Autor</p>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Założyciel ekosystemu Christian Culture i autor książek, m.in. „Pokonać Goliata”, „Kod Źródłowy” i „U boku Diabła”.
+          </p>
+          <a href="/ksiazki-autora" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors">
+            Zobacz książki autora →
+          </a>
+        </div>
+
+        <!-- Wioletta Rogowska -->
+        <div class="onas-card text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-brand-gold/40 shadow-lg">
+            <span class="w-full h-full flex items-center justify-center bg-amber-500/10 font-display font-bold text-xl text-amber-400" aria-hidden="true">WR</span>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-1">Wioletta Rogowska</h3>
+          <p class="text-xs text-amber-400 font-semibold mb-3">Redakcja & Społeczność</p>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Współzałożycielka misji Christian Culture i współautorka publikacji portali CCN.
+          </p>
+          <a href="/lumina" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors">
+            Społeczność LUMINA →
+          </a>
+        </div>
+
+        <!-- Duszpasterz Mariusz -->
+        <div class="onas-card text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-brand-gold/40 shadow-lg flex items-center justify-center bg-amber-500/10 text-2xl text-amber-400">
+            🙏
+          </div>
+          <h3 class="font-serif font-bold text-lg text-white mb-1">Duchowny Mariusz</h3>
+          <p class="text-xs text-amber-400 font-semibold mb-3">Wsparcie Duszpasterskie</p>
+          <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+            Rozmowa duszpasterska, modlitwa i wsparcie — telefonicznie lub SMS.
+          </p>
+          <a href="tel:+48608337477" class="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors">
+            Zadzwoń: +48 608 337 477 →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CENTRUM KONTAKTU I WSPARCIA -->
+    <section class="mb-16">
+      <div class="onas-card border-brand-gold/40">
+        <div class="text-center mb-8">
+          <span class="text-xs uppercase tracking-widest text-brand-gold font-bold block mb-2">Łączność i Pomoc</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Kontakt z Redakcją</h2>
+          <p class="text-xs text-zinc-400 mt-2">Jesteśmy do Twojej dyspozycji w sprawach duchowych, technicznych i partnerskich.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Infolinia Nadzieja -->
+          <div class="p-4 rounded-xl bg-black/20 border border-white/5 text-center">
+            <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-headset"></i></div>
+            <div class="text-xs text-zinc-400 uppercase font-semibold">Infolinia — Nadzieja</div>
+            <a href="tel:+48730958583" class="text-sm font-bold text-white hover:text-amber-300 transition-colors block mt-1">+48 730 958 583</a>
+          </div>
+
+          <!-- Rozmowa duszpasterska -->
+          <div class="p-4 rounded-xl bg-black/20 border border-white/5 text-center">
+            <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-hands-praying"></i></div>
+            <div class="text-xs text-zinc-400 uppercase font-semibold">Duchowny Mariusz</div>
+            <a href="tel:+48608337477" class="text-sm font-bold text-white hover:text-amber-300 transition-colors block mt-1">+48 608 337 477</a>
+          </div>
+
+          <!-- Telefon ogólny -->
+          <div class="p-4 rounded-xl bg-black/20 border border-white/5 text-center">
+            <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-phone"></i></div>
+            <div class="text-xs text-zinc-400 uppercase font-semibold">Telefon / SMS</div>
+            <a href="tel:+48783478280" class="text-sm font-bold text-white hover:text-amber-300 transition-colors block mt-1">+48 783 478 280</a>
+          </div>
+
+          <!-- E-mail -->
+          <div class="p-4 rounded-xl bg-black/20 border border-white/5 text-center">
+            <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-envelope"></i></div>
+            <div class="text-xs text-zinc-400 uppercase font-semibold">E-mail Redakcji</div>
+            <a href="mailto:radiochristianculture@gmail.com" class="text-xs font-bold text-white hover:text-amber-300 transition-colors block mt-1 truncate">radiochristianculture@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-400">
+          <div>
+            <span>Wspieraj nas na Patronite:</span>
+            <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="text-amber-400 font-bold ml-1 hover:underline">patronite.pl/osobowoscplus</a>
+          </div>
+          <div>
+            <span>Zobacz pełną mapę serwisów:</span>
+            <a href="/mapa" class="text-amber-400 font-bold ml-1 hover:underline">polskieradio.cc/mapa</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── SITE FOOTER ── -->
+  <footer class="border-t border-brand-line py-8 px-4 text-center text-xs text-zinc-500 bg-[#07090E]">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        &copy; 2026 Polskie Radio Christian Culture. Prywatna inicjatywa misyjna. Sola Scriptura.
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4 text-zinc-400">
+        <a href="/" class="hover:text-amber-300 transition">Portal</a>
+        <a href="/player" class="hover:text-amber-300 transition">Radio</a>
+        <a href="/akademia" class="hover:text-amber-300 transition">Akademia</a>
+        <a href="/mapa" class="hover:text-amber-300 transition">Mapa Ekosystemu</a>
+        <a href="/privacy" class="hover:text-amber-300 transition">Prywatność</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+</body>
+</html>

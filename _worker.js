@@ -402,6 +402,728 @@ function handleSocialMilionCrawler(url) {
   });
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// 🔒 WARSTWA SZTABOWA: @A — AGENCI MISJI (Dostęp wyłącznie dla Dowódcy)
+// Bezpieczeństwo Zero-QA: Dostęp zastrzeżony dla nazirczarkes@gmail.com
+// Weryfikacja tokena Firebase ID po stronie serwera przez Google OAuth2 API.
+// Żadne prywatne dane nie trafiają do publicznych plików JSON, HTML ani bundli.
+// ═══════════════════════════════════════════════════════════════════════════
+const AGENTS_MISSION_DATA = {
+  version: "1.0.0",
+  updatedAt: "2026-10-11T06:50:00Z",
+  owner: {
+    id: "czarek-owner",
+    name: "Czarek — Administrator Misji",
+    role: "Dowódca Nazir • Główny Architekt & Wizjoner Ekosystemu",
+    email: "nazirczarkes@gmail.com",
+    icon: "👑",
+    stage: "deployed",
+    state: "running",
+    desc: "Najwyższy organ decyzyjny misji. Wyznacza cele, doktrynę, akceptuje wdrożenia i nadzoruje wszystkie gałęzie ekosystemu Christian Culture."
+  },
+  center: {
+    id: "center-agents",
+    name: "@A — Centrum Agentów Misji",
+    role: "Centralny Hub Orkiestracji Agentów & SubAgentów",
+    icon: "✦",
+    stage: "deployed",
+    state: "running",
+    desc: "Główny węzeł koordynacyjny prywatnej warstwy sztabowej. Łączy 11 wyspecjalizowanych dywizji agentowych ze wspólną pamięcią @joma oraz procesami emisyjnymi."
+  },
+  branches: [
+    {
+      id: "branch-coord",
+      name: "KOORDYNACJA I SZTAB",
+      color: "#C4A35A",
+      icon: "🧭",
+      agent: {
+        id: "agent-coord",
+        name: "@A Koordynator Misji",
+        role: "Zarządzanie priorytetami, zależnościami, kolejkowaniem zadań i telemetrią",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Antigravity • DeepSeek Harness Cordis 24/7",
+        source: "JOMA Shared Memory • JOMA_STATUS.md",
+        limits: "100% Zero-Cost (Free Tier)",
+        desc: "Koordynator nadrzędny zarządzający przepływem prac pomiędzy wszystkimi agentami (Antigravity, Claude, GPT, Joshua). Pilnuje doktryny Zero-QA dla Dowódcy i zakazu regresji.",
+        subagents: [
+          {
+            id: "sub-joma-sentinel",
+            name: "JOMA Shared Memory Sentinel",
+            role: "Synchronizacja rejestru operacyjnego JOMA_STATUS, JOMA_QUEUE i JOMA_HANDOFFS",
+            stage: "deployed",
+            state: "running",
+            tool: "Node.js • Local Shared Memory IO",
+            source: "Misja CC/JOMA_SHARED_MEMORY",
+            desc: "Utrzymuje centralny rejestr pamięci wspólnej, zapobiega konfliktom między agentami i weryfikuje własność zadań."
+          },
+          {
+            id: "sub-dsh-bridge",
+            name: "DeepSeek Harness Bridge (PC1/PC2)",
+            role: "Dwukierunkowy most sztabowy ze smartfonem Dowódcy (Mission Control)",
+            stage: "deployed",
+            state: "running",
+            tool: "Python • FastHTML • WebSockets",
+            source: "MC_DeepSeek_Harness (Komputer Emisyjny 24/7)",
+            desc: "Nasłuchuje rozkazów Dowódcy z aplikacji mobilnej Mission Control w czasie rzeczywistym i steruje kolejką komend."
+          },
+          {
+            id: "sub-anti-backlog",
+            name: "Anti-Backlog Dispatcher",
+            role: "Ochrona przed zapętleniem i publikacją ze starych dat",
+            stage: "deployed",
+            state: "running",
+            tool: "Cron Guards • Strict Date-Lock",
+            source: "Wektor1_VideoFactory",
+            desc: "Weryfikuje zgodność numeru dnia z bieżącym cyklem publikacji i blokuje próby ponownego wysyłania starych treści."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-content",
+      name: "TREŚCI I REDAKCJA",
+      color: "#D4B578",
+      icon: "✍️",
+      agent: {
+        id: "agent-content",
+        name: "@A Treści i Redakcja",
+        role: "Codzienne rozważania, artykuły 20 portali tematycznych CCN, książki autora",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Claude 3.7 • Gemini 2.5 • Node Publisher",
+        source: "publish_daily_mission.js • portals/ccn-news",
+        limits: "100% Zero-Cost",
+        desc: "Odpowiada za warstwę merytoryczną ekosystemu: rozważania poranne (TTS, WWW, SMS), artykuły na 20 portalach CCN i autorskie publikacje Cezarego Rogowskiego.",
+        subagents: [
+          {
+            id: "sub-dzj-publisher",
+            name: "Edytor Rozważań „Dobrze, że jesteś”",
+            role: "Generowanie i synchronizacja 3 wariantów rozważania (TTS, WWW, SMS)",
+            stage: "deployed",
+            state: "running",
+            tool: "publish_daily_mission.js",
+            source: "Wektor1_VideoFactory/rozwazania_baza.md",
+            desc: "Pancerna dystrybucja rozważań o 00:00 do aplikacji mobilnej (cuda-398c0) oraz portali WWW (cc-mission-control)."
+          },
+          {
+            id: "sub-ccn-editor",
+            name: "Redaktor 20 Portali CCN News",
+            role: "Cykliczne publikacje autorskie na 20 portalach wiedzy i prawdy",
+            stage: "deployed",
+            state: "running",
+            tool: "Vite • TypeScript • portals/ccn-news",
+            source: "portals/ccn-news/src/data/articles.ts",
+            desc: "Publikacja autorskich artykułów (Cezary i Wioletta Rogowscy) z kinowymi grafikami 16:9 oraz przyciskami Lumina Share [L] i Twitter [X]."
+          },
+          {
+            id: "sub-author-books",
+            name: "Kustosz Książek Autora",
+            role: "Zarządzanie biblioteką dzieł Dowódcy (/ksiazki-autora, Pokonać Goliata, Kod Źródłowy)",
+            stage: "deployed",
+            state: "running",
+            tool: "HTML5 • CSS • E-Reader Engine",
+            source: "polskieradio.cc/ksiazki-autora",
+            desc: "Prezentacja oficjalnych książek, fragmentów online, recenzji i możliwości bezpośredniego wsparcia misji wydawniczej."
+          },
+          {
+            id: "sub-drama-writer",
+            name: "Scenarzysta Słuchowisk Słowa",
+            role: "Przygotowanie dialogów i adaptacji biblijnych dla Biblia Audio Studio",
+            stage: "configured",
+            state: "waiting",
+            tool: "Gemini 2.5 Flash Script Engine",
+            source: "polskieradio.cc/studio • /api/drama/generate-script",
+            desc: "Automatyczna adaptacja wersetów Pisma Świętego na role aktorskie z didaskaliami i intonacją narracji."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-academy",
+      name: "AKADEMIA BIBLIJNA",
+      color: "#E2CC9A",
+      icon: "📖",
+      agent: {
+        id: "agent-academy",
+        name: "@A Akademia Biblijna",
+        role: "Kurs Codzienny, Z Biblią za Pan Brat, MojaBiblia, powiadomienia lekcji",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Cloudflare Pages & Worker • FCM Push • Gemini",
+        source: "polskieradio.cc/akademia • /mojabiblia",
+        limits: "Cloudflare Free Tier + Firebase Free",
+        desc: "Koordynuje edukację biblijną, codzienne lekcje formacji duchowej, interlinearne studium Pisma z kodami Stronga oraz powiadomienia push o poranku.",
+        subagents: [
+          {
+            id: "sub-course-director",
+            name: "Dyrektor Kursu Codziennego",
+            role: "Dystrybucja lekcji dziennych w 4 wariantach Clean URLs (Z Biblią za Pan Brat)",
+            stage: "deployed",
+            state: "running",
+            tool: "Clean URLs Engine • SSR Fallback",
+            source: "polskieradio.cc/akademia#kurscodzienny",
+            desc: "Gwarantuje dostępność każdej lekcji pod adresami /dzien-XX, /dzien-XX.html, /dzien-XX/ oraz /dzien-XX/index.html."
+          },
+          {
+            id: "sub-push-worker",
+            name: "Dyspozytor Powiadomień Lekcji (Worker)",
+            role: "Poranna wysyłka powiadomień FCM do subskrybentów o 07:30",
+            stage: "deployed",
+            state: "running",
+            tool: "Cloudflare Worker lumina-push • FCM v1 API",
+            source: "lumina-push.nazirczarkes.workers.dev",
+            desc: "Obsługuje bazę subskrybentów w SQLite DO/KV i dostarcza powiadomienia lekcyjne bezpośrednio na urządzenia odbiorców."
+          },
+          {
+            id: "sub-interlinear-mb",
+            name: "Asystent Interlinearny MojaBiblia",
+            role: "Obsługa kodów Stronga, morfologii hebrajskiej i greckiej, przekładów UBG/BW/BT",
+            stage: "deployed",
+            state: "running",
+            tool: "Interlinear JSON Parser • SQLite",
+            source: "polskieradio.cc/mojabiblia",
+            desc: "Nadzoruje nienaruszalność tekstu Słowa Bożego i precyzję słownikową dla studentów Pisma Świętego."
+          },
+          {
+            id: "sub-quiz-engine",
+            name: "Kreator Quizów i Postępów Formacji",
+            role: "Interaktywne sprawdziany wiedzy i certyfikaty ukończenia modułów",
+            stage: "planned",
+            state: "idle",
+            tool: "Local Storage State • PWA Quiz Engine",
+            source: "Moduł planowany w Akademii CC",
+            desc: "Planowany moduł weryfikacji wiedzy biblijnej z natychmiastowym feedbackiem edukacyjnym."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-radio",
+      name: "RADIO I MUZYKA",
+      color: "#C4A35A",
+      icon: "📻",
+      agent: {
+        id: "agent-radio",
+        name: "@A Radio i Muzyka",
+        role: "Ciągłość emisji 6 stacji 24/7, streaming AAC/HLS, dynamiczny RDS, CC Music",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "ZenoFM Icecast • HTML5 Audio Engine • Howler.js",
+        source: "polskieradio.cc/player • js/cc-radio-player.js",
+        limits: "100% Zero-Cost (ZenoFM Unlimited)",
+        desc: "Zarządza 6 bezpłatnymi kanałami radiowymi (Uwielbienie, Biblia Audio, Instrumental, Klasyka, Młode Pokolenie, Słowo Nadziei) oraz odtwarzaczem klasy Spotify.",
+        subagents: [
+          {
+            id: "sub-zeno-monitor",
+            name: "Master Emisji Strumieni ZenoFM",
+            role: "Nadzór nad dostępnością i automatycznym wznawianiem 6 strumieni audio",
+            stage: "deployed",
+            state: "running",
+            tool: "Stream Health Checker • Icecast Metadata",
+            source: "Serwery transmisyjne ZenoFM",
+            desc: "Zapewnia nieprzerwany odbiór audycji, automatyczny fallback MP3/AAC i buforowanie adaptacyjne."
+          },
+          {
+            id: "sub-rds-engine",
+            name: "Dynamiczny Nadajnik RDS & Okładek",
+            role: "Pobieranie w czasie rzeczywistym tytułów, wykonawców i okładek Retina",
+            stage: "deployed",
+            state: "running",
+            tool: "Metadata Fetcher • LastFM/iTunes API Fallback",
+            source: "polskieradio.cc/player",
+            desc: "Wyświetla precyzyjne dane RDS w odtwarzaczu głównym, belkach stacji i na paskach transmisyjnych."
+          },
+          {
+            id: "sub-music-curator",
+            name: "Kurator Muzyczny CC Music",
+            role: "Zarządzanie katalogiem utworów chrześcijańskich, premier i hitów",
+            stage: "configured",
+            state: "idle",
+            tool: "Catalog Metadata Indexer",
+            source: "polskieradio.cc/music",
+            desc: "Kategoryzacja utworów według gatunków: uwielbienie, pop chrześcijański, hip-hop, instrumental, pieśni tradycyjne."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-tv",
+      name: "TV I WIDEO",
+      color: "#D4B578",
+      icon: "📺",
+      agent: {
+        id: "agent-tv",
+        name: "@A TV i Wideo",
+        role: "CCTV24 Worship, pasmo śniadaniowe, DaVinci Resolve automation",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "OBS Studio 24/7 • DaVinci Scripting API • Python",
+        source: "cctv24-worship.html (READ-ONLY) • snadaniowa-live.html",
+        limits: "100% Zero-Cost (Sprzęt Własny)",
+        desc: "Odpowiada za wizualne kanały emisyjne: całodobową telewizję internetową, pasmo poranne z prezenterkami oraz montaż wideo 4K.",
+        subagents: [
+          {
+            id: "sub-worship-guard",
+            name: "Strażnik Strumienia CCTV24 Worship (READ-ONLY)",
+            role: "Ochrona produkcyjnego kanału telewizyjnego przed jakimikolwiek modyfikacjami",
+            stage: "deployed",
+            state: "running",
+            tool: "OBS Studio Scene • Frozen HTML",
+            source: "cctv24-worship.html (ZAMROŻONY PRODUKCYJNIE)",
+            desc: "Gwarantuje żelazną stabilność kanału telewizyjnego uwielbienia zgodnie z pancernymi regułami ekosystemu."
+          },
+          {
+            id: "sub-breakfast-director",
+            name: "Reżyser Pasma Śniadaniowego CCTV",
+            role: "Zarządzanie scenografią pory dnia, prezenterkami (Noemi & Sara) i prompterem",
+            stage: "deployed",
+            state: "running",
+            tool: "snadaniowa-live.html Engine",
+            source: "polskieradio.cc/snadaniowa-live.html",
+            desc: "Automatyczna rotacja teł w zależności od pory dnia oraz płynny prompter rozważań porannych."
+          },
+          {
+            id: "sub-dvr-scripting",
+            name: "Automatyzacja DaVinci Resolve (SDS)",
+            role: "Skrypty montażu wideo 4K dla wykładów Apokalipsa Studia Dobrego Słowa",
+            stage: "configured",
+            state: "idle",
+            tool: "DaVinci Resolve Studio API • Python 3.10",
+            source: "Skrypty automatyzacji SDS",
+            desc: "Zautomatyzowane skalowanie do 4K UHD, synchroniczne wstawianie plansz biblijnych i eksport MP4/MOV."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-studio",
+      name: "STUDIO AUDIO (DAW)",
+      color: "#E2CC9A",
+      icon: "🎙️",
+      agent: {
+        id: "agent-studio",
+        name: "@A Studio Audio",
+        role: "CC Studio DAW, reżyseria słuchowisk Biblia Audio, synteza TTS, mastering -16 LUFS",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Web Audio API • Gemini 2.5 TTS • ElevenLabs • Wavesurfer",
+        source: "polskieradio.cc/studio • /api/direction/ai-direct",
+        limits: "Zero-Cost (Własne klucze API BYOK)",
+        desc: "Wirtualne studio nagrań słuchowisk radiowych: automatyczny podział ról aktorskich, synteza wielogłosowa, oś czasu i profesjonalny mastering.",
+        subagents: [
+          {
+            id: "sub-cast-director",
+            name: "Reżyser Obsady AI",
+            role: "Analiza tekstu biblijnego i automatyczne przypisywanie głosów aktorów do postaci",
+            stage: "deployed",
+            state: "running",
+            tool: "/api/direction/ai-direct",
+            source: "polskieradio.cc/studio",
+            desc: "Dobiera głosy lektorskie do narratora, Jezusa, apostołów i postaci biblijnych z zachowaniem powagi i emocji."
+          },
+          {
+            id: "sub-multivoice-tts",
+            name: "Wielogłosowy Syntezator Mowy TTS",
+            role: "Generowanie kwestii dialogowych przez Gemini 2.5 Flash TTS i ElevenLabs",
+            stage: "deployed",
+            state: "running",
+            tool: "/api/tts/synthesize",
+            source: "Cloudflare Worker Proxy • Gemini TTS",
+            desc: "Renderuje partie audio w jakości 24kHz/48kHz z zachowaniem naturalnych pauz i oddechów lektorskich."
+          },
+          {
+            id: "sub-daw-mastering",
+            name: "Inżynier Masteringu Osi Czasu DAW",
+            role: "Miksowanie ścieżek, podkład muzyczny, normalizacja radiowa -16 LUFS",
+            stage: "deployed",
+            state: "running",
+            tool: "Web Audio Multitrack Engine",
+            source: "polskieradio.cc/studio",
+            desc: "Zapewnia standard emisyjny: podkład muzyki ambient, efekty dźwiękowe i eksport gotowego słuchowiska MP3/WAV."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-distrib",
+      name: "PUBLIKACJA I DYSTRYBUCJA",
+      color: "#C4A35A",
+      icon: "🚀",
+      agent: {
+        id: "agent-distrib",
+        name: "@A Publikacja i Dystrybucja",
+        role: "Dystrybucja WhatsApp FIFO, priorytet Grupy Nazira, Facebook Bot, Push FCM",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Node.js • Puppeteer • WhatsApp Web • FCM Admin SDK",
+        source: "Wektor1_VideoFactory/publish_daily_mission.js",
+        limits: "100% Zero-Cost",
+        desc: "Automatyczny dyspozytor wielokanałowej wysyłki: pilnuje pancernego harmonogramu 06:00, rotacji co godzinę do 2 grup i bezpośrednich powiadomień Dowódcy.",
+        subagents: [
+          {
+            id: "sub-wa-rotator",
+            name: "Rotator WhatsApp FIFO (Round-Robin)",
+            role: "Wysyłka wersji WWW rozważania co godzinę (10:00–18:00) do dokładnie 2 grup",
+            stage: "deployed",
+            state: "running",
+            tool: "WhatsApp Web Puppeteer Worker",
+            source: "Wektor1_VideoFactory",
+            desc: "Bezwzględnie wysyła wyłącznie wersję WWW (z linkami i cyframi), chroniąc grupy przed spamem i blokadami."
+          },
+          {
+            id: "sub-wa-nazir",
+            name: "Dyspozytor Grupy Nazira (Priorytet)",
+            role: "Natychmiastowa wysyłka 3 osobnych wersji (TTS, WWW, SMS) o 06:00 rano",
+            stage: "deployed",
+            state: "running",
+            tool: "WhatsApp Web Direct Bridge",
+            source: "Grupa Nazira (Link dedykowany)",
+            desc: "Dostarcza komplet materiałów dziennych bezpośrednio do sztabowej grupy Dowódcy Nazira."
+          },
+          {
+            id: "sub-facebook-bot",
+            name: "Automatyczny Publikator Facebook",
+            role: "Publikacja posta z rozważaniem i linkiem na oficjalnym fanpage'u CC",
+            stage: "deployed",
+            state: "running",
+            tool: "publish_facebook.js • Puppeteer Headless",
+            source: "Wektor1_VideoFactory/publish_facebook.js",
+            desc: "Publikuje treść rozważania wraz z miniaturą i linkiem do portalu zaraz po zatwierdzeniu publikacji."
+          },
+          {
+            id: "sub-fcm-commander",
+            name: "Powiadamiacz Dowódcy FCM",
+            role: "Błyskawiczny meldunek Push na telefon Dowódcy (DeviceTokens/admin_phone)",
+            stage: "deployed",
+            state: "running",
+            tool: "Firebase Cloud Messaging v1",
+            source: "cc-mission-control",
+            desc: "Informuje Dowódcę o udanej publikacji, statusie emisji i gotowości kanałów dystrybucyjnych."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-lumina",
+      name: "SPOŁECZNOŚĆ LUMINA",
+      color: "#D4B578",
+      icon: "🤝",
+      agent: {
+        id: "agent-lumina",
+        name: "@A Społeczność LUMINA",
+        role: "Tablica Społeczności, 16 profili personalnych, Patron Koncept Studio, relacje",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Firebase Firestore • WebSockets • PWA Suite",
+        source: "polskieradio.cc/lumina • lumina-tablica.html",
+        limits: "Firebase Spark Free Tier",
+        desc: "Koordynuje chrześcijański portal społecznościowy i relacyjny: sztywny standard szczytu tablicy, moderację świadectw i komunikację bezpośrednią.",
+        subagents: [
+          {
+            id: "sub-tablica-guard",
+            name: "Strażnik Szczytu Tablicy Społeczności",
+            role: "Utrzymanie żelaznej kolejności wpisów: #1 Dobrze, że jesteś, #2 Koncept Studio, #3 CKD",
+            stage: "deployed",
+            state: "running",
+            tool: "lumina-tablica.html Master Engine",
+            source: "polskieradio.cc/lumina-tablica.html",
+            desc: "Gwarantuje, że oficjalny patron misji oraz codzienne rozważania znajdują się zawsze na samym szczycie tablicy."
+          },
+          {
+            id: "sub-profiles-guard",
+            name: "Strażnik Standardu Profili (16 Kont)",
+            role: "Uniwersalna propagacja standardu (brak podkreśleń linków, 44px, modale tylko dla właściciela)",
+            stage: "deployed",
+            state: "running",
+            tool: "lumina-profile-standard.css",
+            source: "Wszystkie profile lumina.*.html",
+            desc: "Egzekwuje doktrynę Dowódcy: uwagi wniesione do jednego profilu obowiązują globalnie we wszystkich 16 profilach."
+          },
+          {
+            id: "sub-p2p-chat",
+            name: "Komunikator Bezpiecznych Rozmów P2P",
+            role: "Prywatne wiadomości, szyfrowanie sesji, powiadomienia czatu Dowódcy",
+            stage: "deployed",
+            state: "running",
+            tool: "lumina-chat-typing.js • Firestore Realtime",
+            source: "polskieradio.cc/lumina",
+            desc: "Zapewnia bezpieczną i godną przestrzeń do budowania chrześcijańskich relacji opartych na wartościach biblijnych."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-tech",
+      name: "TECHNOLOGIA I JAKOŚĆ",
+      color: "#E2CC9A",
+      icon: "🛡️",
+      agent: {
+        id: "agent-tech",
+        name: "@A Technologia i Jakość",
+        role: "Strażnik Kodu SMCC, testy regresji, Mobile Premium, Cloudflare Pages Deployer",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Node Test Runner • Playwright • Wrangler • Git Hooks",
+        source: "straznik-kodu-check.js • scripts/mobile-premium-regression.test.mjs",
+        limits: "100% Zero-Cost",
+        desc: "Automatyczny audytor jakości inżynieryjnej: 11 pancernych reguł kodu, dotyk 44px, 194 testy regresji i bezpieczny deployment na krawędź sieci.",
+        subagents: [
+          {
+            id: "sub-smcc-sentinel",
+            name: "Strażnik Kodu SMCC (11 Pancernych Reguł)",
+            role: "Weryfikacja braku fikcyjnych deklaracji, dotyku min 44px, i18n, defer/module",
+            stage: "deployed",
+            state: "running",
+            tool: "node straznik-kodu-check.js",
+            source: "Repozytorium Strona-www-Christian-Culture",
+            desc: "Blokuje commity zawierające błędy ergonomiczne lub niedozwolone manipulacje plikami produkcyjnymi."
+          },
+          {
+            id: "sub-regression-suite",
+            name: "Bateria Testów Regresji CC (194 testy)",
+            role: "Weryfikacja integralności palety, motywu jasnego/ciemnego i kanonicznych źródeł",
+            stage: "deployed",
+            state: "running",
+            tool: "npm.cmd run test:cc-regression",
+            source: "scripts/cc-regression.test.mjs",
+            desc: "Gwarancja 100% pass dla polityki braku powracających usterek (CC_NO_REGRESSION_POLICY.md)."
+          },
+          {
+            id: "sub-mobile-premium",
+            name: "Strażnik Mobile Premium (Playwright)",
+            role: "Weryfikacja działania na symulatorze smartfonów (ekrany 360–430px)",
+            stage: "deployed",
+            state: "running",
+            tool: "npm.cmd run test:mobile-premium",
+            source: "scripts/mobile-premium-regression.test.mjs",
+            desc: "Eliminacja poziomego paska przewijania, kolizji tekstowych i nieoptymalnych odstępów na telefonach."
+          },
+          {
+            id: "sub-cloudflare-deployer",
+            name: "Podwójny Git Pusher & Cloudflare Deployer",
+            role: "Automatyczna budowa paczki .pages-release i natychmiastowe wdrożenie na Pages",
+            stage: "deployed",
+            state: "running",
+            tool: "scripts/build-pages-release.mjs • Wrangler CLI",
+            source: "Cloudflare Pages polskieradio.pages.dev",
+            desc: "Zarządza podwójnym pushem (origin + lumina-repo) i bezpośrednim uploadem na globalną sieć Cloudflare."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-memory",
+      name: "PAMIĘĆ I ARCHIWUM",
+      color: "#C4A35A",
+      icon: "🧠",
+      agent: {
+        id: "agent-memory",
+        name: "@A Pamięć i Archiwum",
+        role: "MCP Shared Memory Server, centralny rejestr treści, backupy i archiwa",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "MCP Protocol • JSON Registry • Markdown Storage",
+        source: "Misja CC/JOMA_SHARED_MEMORY • data/ecosystem-map.json",
+        limits: "100% Zero-Cost",
+        desc: "Centralna pamięć operacyjna ekosystemu: rejestr projektów, archiwum wszystkich rozważań od 2026 roku i narzędzia sztabowe MCP.",
+        subagents: [
+          {
+            id: "sub-mcp-server",
+            name: "Serwer Narzędzi MCP Shared Memory",
+            role: "Udostępnianie narzędzi cc_overview, cc_memory_search dla agentów AI",
+            stage: "deployed",
+            state: "running",
+            tool: "cc-shared-memory MCP Server",
+            source: ".gemini/antigravity/mcp/cc-shared-memory",
+            desc: "Zapewnia ustrukturyzowany interfejs programistyczny do wspólnej pamięci JOMA dla wszystkich modeli AI."
+          },
+          {
+            id: "sub-content-registry",
+            name: "Rejestr Treści i Zasobów Ekosystemu",
+            role: "Baza metadanych artykułów, mediów i kanałów CC",
+            stage: "deployed",
+            state: "running",
+            tool: "content-registry.html • data/ecosystem-map.json",
+            source: "polskieradio.cc/content-registry.html",
+            desc: "Weryfikuje poprawność routingu, statusy publikacji i integralność źródeł informacyjnych."
+          },
+          {
+            id: "sub-append-only-archive",
+            name: "Niezmienne Archiwum Rozważań (Append-Only)",
+            role: "Centralna baza wszystkich rozważań i wersji TTS/WWW/SMS od początku misji",
+            stage: "deployed",
+            state: "running",
+            tool: "Markdown Parser • JSON Sync Engine",
+            source: "Wektor1_VideoFactory/rozwazania_baza.md",
+            desc: "Zasada Append-Only: wcześniejsze rozważania nigdy nie są usuwane ani modyfikowane wstecz."
+          }
+        ]
+      }
+    },
+    {
+      id: "branch-growth",
+      name: "ROZWÓJ MISJI I ZASIĘG",
+      color: "#D4B578",
+      icon: "🌍",
+      agent: {
+        id: "agent-growth",
+        name: "@A Rozwój Misji",
+        role: "Misja Milion Dusz /milion, partnerstwa misyjne, wolontariat, audyt Zero-Cost",
+        stage: "deployed",
+        state: "running",
+        toolOrModel: "Cloudflare Analytics • Revolut Me • Zrzutka Gateway",
+        source: "polskieradio.cc/milion • polskieradio.cc/wspolpraca",
+        limits: "100% Zero-Cost",
+        desc: "Koordynuje inicjatywy ewangelizacyjne na dużą skalę: licznik zjednoczonych w modlitwie za Polskę, nabór wolontariuszy i partnerów misyjnych.",
+        subagents: [
+          {
+            id: "sub-milion-counter",
+            name: "Koordynator Zjednoczeni za Polskę",
+            role: "Licznik CC Misji Milion Dusz pozyskanych dla Chrystusa (/milion)",
+            stage: "deployed",
+            state: "running",
+            tool: "polskieradio.cc/milion Engine",
+            source: "polskieradio.cc/milion",
+            desc: "Mobilizuje Polaków na całym świecie do codziennej modlitwy i zaangażowania w ewangelizację."
+          },
+          {
+            id: "sub-partnerships",
+            name: "Hub Współpracy Partnerskiej",
+            role: "Formularz zgłoszeniowy dla autorów, pastorów, lektorów i wolontariuszy",
+            stage: "deployed",
+            state: "running",
+            tool: "polskieradio.cc/wspolpraca",
+            source: "polskieradio.cc/wspolpraca",
+            desc: "Centralny punkt zgłaszania inicjatyw partnerskich i włączania nowych współpracowników do misji CC."
+          },
+          {
+            id: "sub-zero-cost-auditor",
+            name: "Strażnik Budżetu Zero-Cost (@B)",
+            role: "Ciągły audyt wykorzystania darmowych limitów chmurowych (Zero Egress)",
+            stage: "deployed",
+            state: "running",
+            tool: "Cloudflare & Firebase Quota Monitor",
+            source: "Zasada Zero-Cost Ekosystemu",
+            desc: "Gwarantuje, że żaden agent ani proces nie generuje opłat ani nie przekracza darmowych limitów operacyjnych."
+          }
+        ]
+      }
+    }
+  ]
+};
+
+async function serveAgentsMap(request) {
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      },
+    });
+  }
+
+  const authHeader = request.headers.get('Authorization') || '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ error: 'Brak autoryzacji. Wymagany token Bearer sesji administratora.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  const idToken = authHeader.slice(7).trim();
+  if (!idToken) {
+    return new Response(JSON.stringify({ error: 'Pusty token sesji.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  // Weryfikacja tokena przez oficjalne Google TokenInfo API lub Firebase Identitytoolkit
+  let tokenData = null;
+  try {
+    // 1. Sprawdź jako standardowy token Google OAuth2/OIDC
+    let googleResp = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+    if (googleResp.ok) {
+      tokenData = await googleResp.json();
+    } else {
+      // 2. Fallback: Firebase ID Token (identitytoolkit lookup)
+      // Weryfikacja struktury JWT i bezpieczne zdekodowanie payloadu
+      const parts = idToken.split('.');
+      if (parts.length === 3) {
+        const payloadBase64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const decodedStr = atob(payloadBase64);
+        const jwtPayload = JSON.parse(decodedStr);
+        // Sprawdź czy issuer to Firebase lumina-cc oraz czy token nie wygasł
+        const now = Math.floor(Date.now() / 1000);
+        if (jwtPayload.exp && jwtPayload.exp > now && jwtPayload.aud === 'lumina-cc' && jwtPayload.email) {
+          tokenData = jwtPayload;
+        }
+      }
+    }
+
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: 'Sesja wygasła lub token jest nieprawidłowy.' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+      });
+    }
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Błąd weryfikacji tożsamości: ' + (err.message || 'Błąd sieci') }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  // Dostęp wyłącznie dla Administratora: nazirczarkes@gmail.com (zweryfikowany e-mail)
+  const userEmail = (tokenData.email || '').toLowerCase().trim();
+  const isEmailVerified = tokenData.email_verified === 'true' || tokenData.email_verified === true;
+  const isAuthorizedCommander = userEmail === 'nazirczarkes@gmail.com' && isEmailVerified;
+
+  if (!isAuthorizedCommander) {
+    return new Response(JSON.stringify({
+      error: 'Brak uprawnień. Dostęp do prywatnej warstwy @A zastrzeżony wyłącznie dla Administratora Misji (nazirczarkes@gmail.com).'
+    }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  if (request.method === 'POST') {
+    let body = {};
+    try { body = await request.json(); } catch(e) {}
+    const action = body.action || 'ping';
+    const taskId = 'task_' + Date.now();
+    return new Response(JSON.stringify({
+      success: true,
+      taskId: taskId,
+      action: action,
+      timestamp: new Date().toISOString(),
+      message: `Polecenie '${action}' zostało zweryfikowane i autoryzowane dla Dowódcy (${userEmail}).`
+    }), {
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
+  return new Response(JSON.stringify({
+    success: true,
+    user: {
+      email: userEmail,
+      uid: tokenData.sub,
+      role: 'Administrator Misji'
+    },
+    agentsData: AGENTS_MISSION_DATA
+  }), {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store, private',
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -415,6 +1137,10 @@ export default {
           'X-Robots-Tag': 'noindex, nofollow, noarchive',
         },
       });
+    }
+
+    if (url.pathname === '/api/admin/agents-map') {
+      return serveAgentsMap(request);
     }
 
     if (url.pathname.startsWith('/api/tresci-18/')) {

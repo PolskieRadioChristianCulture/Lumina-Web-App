@@ -5,6 +5,16 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Warstwa Sztabowa @A — Agenci Misji i Protokół JOMA",
+      "date": "2026-10-11",
+      "agent": "A"
+    },
+    {
+      "topic": "Strona O nas i naprawa trybu ciemnego w Akademii",
+      "date": "2026-10-11",
+      "agent": "A"
+    },
+    {
       "topic": "Wdrożenie Masterpiece 1:1, Prawy Panel i Dendryty",
       "date": "2026-10-11",
       "agent": "A"
@@ -1315,6 +1325,22 @@
       "verifiedDate": "2026-10-11",
       "keywords": ["prywatność", "rodo", "regulamin", "bezpieczeństwo", "dane", "polityka"],
       "connections": ["lumina-safety", "radio-main"]
+    },
+    {
+      "id": "o-nas",
+      "branchId": "misja-wspolpraca",
+      "name": "O Inicjatywie Christian Culture",
+      "shortDesc": "Prywatna misja ewangelizacyjna, historia, wartości i zespół.",
+      "fullDesc": "Oficjalna prezentacja niezależnej chrześcijańskiej misji medialnej prowadzonej przez Cezarego i Wiolettę Rogowskich. Filary działania: Radio 24/7, TV CCTV24, Akademia Biblijna, MojaBiblia, LUMINA i CCN.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/o-nas",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🕊️",
+      "category": "Misja & Współpraca",
+      "verifiedDate": "2026-10-11",
+      "keywords": ["o nas", "misja", "inicjatywa", "służba", "zespół", "autor", "kontakt", "wartości"],
+      "connections": ["wspolpraca-hub", "polityka-prywatnosci", "radio-main", "lumina-main", "akademia"]
     }
   ]
 }
