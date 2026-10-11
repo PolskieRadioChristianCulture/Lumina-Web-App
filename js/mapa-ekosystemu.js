@@ -87,17 +87,13 @@
     // Sprawdź autoryzację Dowódcy do warstwy @A
     checkCommanderAccess();
 
-    // Domyślnie schowaj belkę filtrów (jak na zrzucie Dowódcy) i wyrównaj widok
+    // Oblicz i wyrównaj dokładne wysokości widoku
+    updateViewportHeights();
     try {
-      const stored = localStorage.getItem('mapa_ctrl_bar_hidden');
-      if (stored === '0') {
-        toggleControlBar(true);
-      } else {
+      if (localStorage.getItem('mapa_ctrl_bar_hidden') === '1') {
         toggleControlBar(false);
       }
-    } catch (e) {
-      toggleControlBar(false);
-    }
+    } catch (e) {}
   }
 
   function cacheDom() {
