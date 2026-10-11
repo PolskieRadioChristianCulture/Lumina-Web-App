@@ -912,11 +912,6 @@ body.lumina-profile-standard :is(button, a, input, textarea, select):focus-visib
 html[data-lumina-theme="light"] body.lumina-profile-standard :is(.service-title, .service-desc, .hero-bio-quote, .post-body, .post-body b, .main-column-area h2, .main-column-area h3, .sidebar-title, .profile-navbar .btn-action-secondary) { color: #292524 !important; }
 html[data-lumina-theme="light"] body.lumina-profile-standard .hero-bio-quote { color: #44403c !important; }
 html[data-lumina-theme="light"] body.lumina-profile-standard :is(.badge-community, .post-badge-role) { color: #765414 !important; background: #f5f2eb !important; border-color: #b5a48b !important; }
-html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#fde047"], [style*="color: #fde047"], [style*="color:#fef08a"], [style*="color: #fef08a"], [style*="color:#facc15"], [style*="color: #facc15"], [style*="color: var(--gold-accent)"], [style*="color:var(--gold-accent)"]) { color: #765414 !important; }
-html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#bbf7d0"], [style*="color: #bbf7d0"], [style*="color:#4ade80"], [style*="color: #4ade80"]) { color: #166534 !important; }
-html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#bae6fd"], [style*="color: #bae6fd"], [style*="color:#38bdf8"], [style*="color: #38bdf8"], [style*="color:#60a5fa"], [style*="color: #60a5fa"]) { color: #075985 !important; }
-html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#e9d5ff"], [style*="color: #e9d5ff"], [style*="color:#c084fc"], [style*="color: #c084fc"]) { color: #6b21a8 !important; }
-html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#e2e8f0"], [style*="color: #e2e8f0"], [style*="color:#cbd5e1"], [style*="color: #cbd5e1"], [style*="color:#fff;"], [style*="color: #fff;"], [style*="color:#ffffff"], [style*="color: #ffffff"]):not(button, a, .btn-action-green):not([style*="background"]) { color: #292524 !important; }
 html[data-lumina-theme="light"] body.lumina-profile-standard :is(.post-act-btn, .tab-btn.active) { color: #765414 !important; }
 html[data-lumina-theme="light"] body.lumina-profile-standard .stat-label { color: #e7e5e4 !important; }
 html[data-lumina-theme="light"] body.lumina-profile-standard .hero-cc-badge { color: #ffffff !important; }

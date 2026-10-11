@@ -293,3 +293,20 @@ test('powitanie członka na /lumina nie chowa się pod tłem nagłówka (brak pu
   const t = await readFile('lumina.html', 'utf8');
   assert.match(t, /#luminaMemberWelcome\.lumina-member-welcome \{ position: relative; z-index: 6;/);
 });
+
+test('profil nie zawiesza się po kliknięciu, wsparcie na górnej belce, czytelny jasny motyw tablicy', async () => {
+  for (const f of ['lumina.cezaryrgowski.html', 'lumina.wiolettarogowska.html', 'lumina-profile.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.match(t, /if \(stream\.__ccFeedHtml === __ccFeedHtml\) return;/, f);
+    assert.doesNotMatch(t, /stream\.innerHTML = posts\.map\(/, f);
+  }
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  assert.doesNotMatch(css, /data-lumina-theme="light"\][^\n]*\[style\*=/);
+  for (const f of ['lumina.html', 'lumina-tablica.html', 'lumina-tablica-light.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.match(t, /id="lumina-light-fixes-20261011"/, f);
+    assert.match(t, /S\.openModal\(\)/, f);
+  }
+  const top = await readFile('js/cc-back-to-top.js', 'utf8');
+  assert.match(top, /--cc-dock-r', 'max\(16px, env\(safe-area-inset-right\)\)'/);
+});

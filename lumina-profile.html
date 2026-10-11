@@ -3215,7 +3215,7 @@
 </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v13">
-    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20261011_profile_compact_v6">
+    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20261011_profile_compact_v7">
     <script src="/js/lumina-profile-actions.js?v=20261008_compact_v1" defer></script>
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20261003_player_above_chat_v7">
     <script src="js/lumina-mission-blik.js"></script>
@@ -6896,7 +6896,7 @@
                 return;
             }
 
-            stream.innerHTML = posts.map(p => {
+            const __ccFeedHtml = posts.map(p => {
                 if (p.isLiveBroadcastPost || p.streamUrl) {
                     return `
                     <article class="post-card mission-live-broadcast-card" id="${p.id}">
@@ -6921,7 +6921,7 @@
                                     title="${escapeHtml(p.channelTitle || 'Transmisja na Żywo')}"
                                     allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
                                     allowfullscreen 
-                                    loading="eager"></iframe>
+                                    loading="lazy"></iframe>
                             
                             <div class="mission-live-player-overlay">
                                 <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
@@ -7048,6 +7048,11 @@
                     <div class="comments-section-v2" id="comments_${p.id}"></div>
                 </article>
             `;}).join('');
+            // 🛡️ STRAŻNIK 2026-10-11: nie przebudowuj tablicy, gdy nic się nie zmieniło — każde przerysowanie
+            // ładowało od nowa kilka odtwarzaczy TV na żywo i zawieszało profil na telefonie po kliknięciu.
+            if (stream.__ccFeedHtml === __ccFeedHtml) return;
+            stream.__ccFeedHtml = __ccFeedHtml;
+            stream.innerHTML = __ccFeedHtml;
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(stream);
             }

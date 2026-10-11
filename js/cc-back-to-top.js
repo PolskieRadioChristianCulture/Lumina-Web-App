@@ -113,15 +113,16 @@
       }
       var items = present();
       if (items.length < 2) return;
-      var bottom = Infinity, right = 10;
+      var bottom = Infinity;
       items.forEach(function (el) {
         var cs = window.getComputedStyle(el);
         var b = parseFloat(cs.bottom);
-        if (!isNaN(b) && b < bottom) { bottom = b; right = parseFloat(cs.right) || right; }
+        if (!isNaN(b) && b < bottom) bottom = b;
       });
       if (!isFinite(bottom)) bottom = 142;
       root.style.setProperty('--cc-dock-b', bottom + 'px');
-      root.style.setProperty('--cc-dock-r', right + 'px');
+      // Ten sam odstęp od prawej co przycisk „do góry” — oba przyciski w jednej, równej kolumnie.
+      root.style.setProperty('--cc-dock-r', 'max(16px, env(safe-area-inset-right))');
       if (!toggle) {
         toggle = document.createElement('button');
         toggle.id = 'ccFabDockToggle';

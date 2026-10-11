@@ -900,12 +900,20 @@
     </style>
     <link rel="stylesheet" href="/css/lumina-mobile-premium.css?v=20260928_single_v3">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261004_palette_v13">
-    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20261011_profile_compact_v6">
+    <link rel="stylesheet" href="/css/lumina-profile-standard.css?v=20261011_profile_compact_v7">
     <script src="/js/lumina-profile-actions.js?v=20261008_compact_v1" defer></script>
     <script src="js/lumina-mission-blik.js"></script>
     <script src="js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
     <script src="js/lumina-profile-standard.js?v=20260925_v1" defer></script>
     <script src="/js/lumina-theme-manager.js?v=20261007_guardian2"></script>
+<style id="mariusz-light-contrast">
+/* Jasny motyw: czytelne kolory dla treści projektowanych na ciemne tło (tylko ten profil). */
+html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#fde047"], [style*="color: #fde047"], [style*="color:#fef08a"], [style*="color: #fef08a"], [style*="color:#facc15"], [style*="color: #facc15"], [style*="color: var(--gold-accent)"], [style*="color:var(--gold-accent)"]) { color: #765414 !important; }
+html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#bbf7d0"], [style*="color: #bbf7d0"], [style*="color:#4ade80"], [style*="color: #4ade80"]) { color: #166534 !important; }
+html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#bae6fd"], [style*="color: #bae6fd"], [style*="color:#38bdf8"], [style*="color: #38bdf8"], [style*="color:#60a5fa"], [style*="color: #60a5fa"]) { color: #075985 !important; }
+html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#e9d5ff"], [style*="color: #e9d5ff"], [style*="color:#c084fc"], [style*="color: #c084fc"]) { color: #6b21a8 !important; }
+html[data-lumina-theme="light"] body.lumina-profile-standard :is([style*="color:#e2e8f0"], [style*="color: #e2e8f0"], [style*="color:#cbd5e1"], [style*="color: #cbd5e1"], [style*="color:#fff;"], [style*="color: #fff;"], [style*="color:#ffffff"], [style*="color: #ffffff"]):not(button, a, .btn-action-green):not([style*="background"]) { color: #292524 !important; }
+</style>
 </head>
 <body class="lumina-profile-standard">
 
