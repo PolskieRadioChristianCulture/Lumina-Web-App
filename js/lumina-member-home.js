@@ -115,6 +115,7 @@
     }
 
     var lastPosts = null;
+    var renderTimer = 0;
     function render() {
         if (!member()) { if (root) { root.remove(); root = null; } return; }
         styles();
@@ -129,10 +130,15 @@
         var html = tilesHtml() + peopleHtml() + postsHtml(lastPosts);
         if (root.__html !== html) { root.__html = html; root.innerHTML = html; }
         if (!feedUnsub && window.LuminaDB && typeof window.LuminaDB.subscribeToFeedPosts === 'function') {
-            feedUnsub = window.LuminaDB.subscribeToFeedPosts(function (posts) {
+            // Znacznik PRZED subskrypcją: pamięć podręczna wywołuje callback synchronicznie —
+            // bez tego render() subskrybowałby w kółko (pętla i zawieszenie strony).
+            feedUnsub = function () {};
+            var unsub = window.LuminaDB.subscribeToFeedPosts(function (posts) {
                 lastPosts = posts;
-                render();
-            }) || function () {};
+                clearTimeout(renderTimer);
+                renderTimer = setTimeout(render, 0);
+            });
+            if (typeof unsub === 'function') feedUnsub = unsub;
         }
     }
 

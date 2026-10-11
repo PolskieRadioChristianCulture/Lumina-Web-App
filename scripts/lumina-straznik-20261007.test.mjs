@@ -319,6 +319,9 @@ test('strona główna członka według makiety: skróty, Polecane, Ostatnie post
   for (const s of ['Społeczność', 'Modlitwa', 'Małżeństwo', 'Świadectwa', 'Polecane', 'Ostatnie posty']) assert.ok(home.includes(s), s);
   assert.match(home, /if \(!member\(\)\)/);
   assert.match(home, /lumina-avatar-zastepczy/);
+  // callback z pamięci podręcznej jest synchroniczny — znacznik musi być ustawiony przed subskrypcją (inaczej pętla)
+  assert.match(home, /feedUnsub = function \(\) \{\};\s*var unsub = window\.LuminaDB\.subscribeToFeedPosts/);
+  assert.doesNotMatch(home, /subscribeToFeedPosts\(function \(posts\) \{\s*lastPosts = posts;\s*render\(\);/);
   assert.match(t, /id="heroGuestCta"/);
 });
 
