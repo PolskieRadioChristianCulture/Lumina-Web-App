@@ -18,7 +18,7 @@
     <script src="js/lumina-identity-guard.js" defer></script>
     <!-- 🛡️ Strażnik Standardów 2026-10-07: stabilny render tablicy, prawdziwi ludzie na karuzeli, oszczędne wideo, kreator profilu -->
     <script src="js/lumina-stable-render.js?v=20261007_guardian2"></script>
-    <script src="js/lumina-community-people.js?v=20261007_guardian2" defer></script>
+    <script src="js/lumina-community-people.js?v=20261011_all_members1" defer></script>
     <script src="js/lumina-media-economy.js?v=20261007_guardian2" defer></script>
     <script src="js/lumina-onboarding.js?v=20261007_guardian2" defer></script>
     <script src="js/lumina-mission-blik.js"></script>
@@ -5218,6 +5218,14 @@
          wyświetlenia — pasek wstawiany później przez lumina-bottom-nav.js nie przesuwa już tablicy (CLS). -->
     <script>try{if(localStorage.getItem('lumina_user_session')==='active')document.documentElement.classList.add('cc-authed')}catch(e){}</script>
     <style>@media (max-width:900px){html:not(.cc-authed) nav.lumina-nav{margin-bottom:42px}html:not(.cc-authed) nav.lumina-nav + .lumina-mobile-auth-bar{margin-top:-42px}}</style>
+<style id="lumina-live-card-standard">
+/* Karta transmisji na żywo: jedna informacja „NA ŻYWO”, bez powtórzeń; przyciski jako czytelne ikony (Strażnik, 2026-10-11). */
+.mission-live-broadcast-card .post-header .post-time { display: none !important; }
+.mission-live-broadcast-card .live-viewer-chip { width: 34px !important; height: 34px !important; min-width: 34px !important; padding: 0 !important; justify-content: center !important; border-radius: 50% !important; flex: 0 0 34px !important; }
+.mission-live-broadcast-card .live-viewer-chip > span,
+.mission-live-player-overlay :is(.btn-unmute-live, .btn-expand-live) > span { display: none !important; }
+.mission-live-player-overlay :is(.btn-unmute-live, .btn-expand-live) { min-width: 44px !important; min-height: 44px !important; padding: 0 !important; justify-content: center !important; border-radius: 50% !important; gap: 0 !important; }
+</style>
 </head>
 <body>
 
@@ -8477,7 +8485,7 @@
                         category: 'ckd',
                         isDevotion: true,
                         author: 'Andrzej Thiel',
-                        authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
+                        authorRole: 'Cuda Każdego Dnia 📖✨ • aut. Bogusia Król',
                         authorAvatar: 'avatar_andrzej_thiel.jpg',
                         authorSlug: 'andrzejthiel',
                         time: `${cDate} • 🕊️ Cuda Każdego Dnia`,
@@ -8507,7 +8515,7 @@
                     category: 'ckd',
                     isDevotion: true,
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '27 SIERPNIA 2026 • ✨ Cuda Każdego Dnia',
@@ -8532,7 +8540,7 @@
                     id: 'post_andrzej_cuda_25_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '25 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
@@ -8556,7 +8564,7 @@
                     id: 'post_andrzej_cuda_24_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '24 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
@@ -8580,7 +8588,7 @@
                     id: 'post_andrzej_cuda_23_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '23 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
@@ -8604,7 +8612,7 @@
                     id: 'post_andrzej_cuda_22_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '22 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
@@ -8628,7 +8636,7 @@
                     id: 'post_andrzej_cuda_21_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '21 SIERPNIA 2026 • ✨ Cuda Każdego Dnia',
@@ -8652,7 +8660,7 @@
                     id: 'post_andrzej_cuda_20_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨✨ • aut. Bogusia Król',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
                     time: '20 SIERPNIA 2026 • ✨ Cuda Każdego Dnia',
@@ -9104,7 +9112,7 @@
                 icon: 'fa-cloud-sun',
                 iconColor: '#10b981',
                 currentShow: 'Cuda Każdego Dnia • Świadectwa Wiary • Społeczność ✨',
-                desc: 'Trwa pasmo: Cuda Każdego Dnia (Andrzej Thiel) • Kurs Apokalipsa • Świadectwa nawróceń',
+                desc: 'Trwa pasmo: Cuda Każdego Dnia (Bogusia Król) • Kurs Apokalipsa • Świadectwa nawróceń',
                 featuredChannelIds: ['apokalipsa_live', 'swiadectwa_live', 'cctv24_pl', 'biblia_spiewana_169', 'dzj_916'],
                 keywords: ['cuda każdego dnia', 'świadectw', 'nawróc', 'przemian', 'spotkan', 'relacj', 'kobiety', 'podcast', 'pasj', 'szlak', 'gór', 'twórczość', 'sztuka', 'architekt', 'miłość']
             },
@@ -10211,7 +10219,7 @@
                     const p = LUMINA_FEED_PROFILES[(offset + i) % LUMINA_FEED_PROFILES.length];
                     return `<div class="profile-carousel-card" onclick="window.location.href='lumina-profile.html?user=${p.slug}'" title="Zobacz profil: ${p.name}">
                         <div class="profile-carousel-avatar-wrap">
-                            <img class="profile-carousel-avatar" src="${p.avatar}" alt="${p.name}" loading="lazy" decoding="async" width="72" height="72" onerror="this.closest('.profile-carousel-card').style.display='none'">
+                            <img class="profile-carousel-avatar" src="${p.avatar}" alt="${p.name}" loading="lazy" decoding="async" width="72" height="72" onerror="window.luminaCarouselAvatarFallback?window.luminaCarouselAvatarFallback(this):(this.onerror=null,this.src='images/lumina-avatar-zastepczy.jpg')">
                             ${p.verified ? `<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>` : ''}
                         </div>
                         <div class="profile-carousel-name">${p.name}</div>
@@ -13070,7 +13078,7 @@
             { slug: 'cezaryrgowski', name: 'Cezary Rogowski', job: 'Założyciel Christian Culture ✨', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel', isMission: true },
             { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', job: 'Liderka Społeczności & Współzałożycielka 🌸', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Liderka CC', isMission: true },
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
-            { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Autor rozważań Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
+            { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Udostępnia rozważania Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
             { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️✨', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Świadectwo', isMission: true },
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Członkini Społeczności • Modlitwa & Wiara 🌸🕊️', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Modlitwa & Wiara', isMission: false },
@@ -16486,7 +16494,7 @@ window.initFeedCarousels = function(container) {
             var badge = p.verified ? '<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>' : '';
             cards += '<div class="profile-carousel-card" onclick="window.location.href=\'lumina-profile.html?user=' + p.slug + '\'" title="Zobacz profil: ' + p.name + '">'
                    + '<div class="profile-carousel-avatar-wrap">'
-                   + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" decoding="async" width="72" height="72" onerror="this.closest(\'.profile-carousel-card\').style.display=\'none\'">'
+                   + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" decoding="async" width="72" height="72" onerror="window.luminaCarouselAvatarFallback&&window.luminaCarouselAvatarFallback(this)">'
                    + badge + '</div>'
                    + '<div class="profile-carousel-name">' + p.name + '</div>'
                    + '<div class="profile-carousel-tag">' + p.tag + '</div>'

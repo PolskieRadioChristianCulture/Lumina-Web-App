@@ -192,3 +192,32 @@ test('tablica: miejsce na mobilny pasek logowania rezerwowane od początku (bez 
 test('widget: nagłówek mieści się na telefonie', async () => {
   assert.match(await read('widget.html'), /header a\[download\] span \{ display: none; \}/);
 });
+
+test('karuzela „Poznajmy się bliżej”: wszyscy członkowie, zdjęcie użytkownika, logo LUMINA w ostateczności', async () => {
+  const db = await readFile('lumina-db.js', 'utf8');
+  const fn = db.slice(db.indexOf('export function getCommunityCarouselProfiles'), db.indexOf('export async function completeOwnLuminaProfile'));
+  assert.doesNotMatch(fn, /hasRealPhoto/);
+  assert.match(fn, /LUMINA_CAROUSEL_FALLBACK_AVATAR/);
+  assert.match(fn, /isLuminaRealPersonPhoto\(p\.avatar, slug\)/);
+  const people = await readFile('js/lumina-community-people.js', 'utf8');
+  assert.match(people, /window\.luminaCarouselAvatarFallback/);
+  assert.doesNotMatch(people, /MIN_CARDS/);
+  for (const f of ['lumina-tablica.html', 'lumina-tablica-light.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.doesNotMatch(t, /profile-carousel-card'\)\.style\.display='none'/, `${f}: karta znika zamiast pokazać logo`);
+    assert.match(t, /luminaCarouselAvatarFallback/);
+    assert.match(t, /js\/lumina-community-people\.js\?v=20261011_all_members1/);
+  }
+  const img = await readFile('images/lumina-avatar-zastepczy.jpg');
+  assert.ok(img.length > 1000 && img.length < 60000);
+});
+
+test('jeden przycisk „do góry” i karta transmisji bez powtórzeń', async () => {
+  const top = await readFile('js/cc-back-to-top.js', 'utf8');
+  assert.match(top, /#luminaScrollTop\{display:none!important\}/);
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  for (const t of [css, await readFile('lumina-tablica.html', 'utf8')]) {
+    assert.match(t, /\.mission-live-broadcast-card \.post-header \.post-time \{ display: none !important; \}/);
+    assert.match(t, /\.btn-expand-live\) > span \{ display: none !important; \}/);
+  }
+});

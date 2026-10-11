@@ -117,7 +117,7 @@ test('11. Nested OSOBOWOSC alias resolves logo, cover and entry scripts from roo
     const base = new URL('/', 'https://polskieradio.cc/lumina/osobowoscplus');
     assert.equal(new URL(path, base).pathname, '/' + path);
   }
-  assert.match(html, /profile_compact_v4/);
+  assert.match(html, /profile_compact_v5/);
 
   const wiolettaHtml = await readFile('lumina.wiolettarogowska.html', 'utf8');
   assert.match(wiolettaHtml, /<base href="\/">/);
@@ -133,4 +133,18 @@ test('12. Legacy profile navigation, titles and cards have explicit light styles
   assert.match(css, /html\[data-lumina-theme="light"\] body\.lumina-profile-standard :is\(\.profile-navbar, \.side-card, \.feed-post-card\)\s*\{\s*background: #ffffff !important/);
   assert.match(css, /\.profile-title-name, \.side-title, \.post-title, \.post-author-name/);
   assert.match(css, /\.nav-brand-title\s*\{[^}]*-webkit-text-fill-color: #292524 !important/);
+});
+
+test('13. Mobile header standard: avatar centred on the cover edge, details centred, tabs in a grid', async () => {
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  const block = css.slice(css.indexOf('9. MOBILE PROFILE HEADER'));
+  assert.ok(block.length > 100, 'mobile header block present');
+  assert.match(block, /\.profile-head-main \{[^}]*margin-top: 0 !important/);
+  assert.match(block, /align-self: center !important;\s*margin: -48px auto 0 !important/);
+  assert.match(block, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\) !important/);
+  assert.match(block, /\.cover-hint-badge \{[^}]*bottom: auto !important/);
+  for (const file of profileFiles) {
+    const html = await readFile(file, 'utf8');
+    assert.match(html, /lumina-profile-standard\.css\?v=20261011_profile_compact_v5/, `${file} must load the current profile standard`);
+  }
 });

@@ -34,6 +34,13 @@ $Files = @(
     'milion.html', 'milion\index.html', 'widget.html', 'widget\index.html', 'stream-scene-vertical.html', 'stream-scene.html', 'scripts\build-pages-release.mjs',
     'news.json', '_worker.js', '.cc-frozen-approvals.json', 'scripts\joma_guard_sentinel.cjs',
     'scripts\lumina-straznik-20261007.test.mjs',
+    'js\lumina-community-people.js', 'js\cc-back-to-top.js', 'scripts\cc-page-standard.mjs', 'holos.html',
+    'images\lumina-avatar-zastepczy.jpg', 'css\lumina-profile-standard.css', 'lumina-profile.html',
+    'lumina.andrzejthiel.html', 'lumina.ccmen.html', 'lumina.cctv.html', 'lumina.ccwomen.html', 'lumina.cezaryrgowski.html',
+    'lumina.jolawojcik.html', 'lumina.magdalena.html', 'lumina.mariusz.html', 'lumina.osobowoscplus.html', 'lumina.pawelmurawski.html',
+    'lumina.radiocc.html', 'lumina.studiodobregoslowa.html', 'lumina.wiolettarogowska.html', 'lumina.zbyszekgieron.html', 'lumina.zofiadudek.html',
+    'js\lumina-db-profiles.js', 'lumina-admin-profile-suite.js',
+    'scripts\lumina-profile-standard-regression.test.mjs', 'scripts\profile-actions-regression.test.mjs',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'
@@ -63,7 +70,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): stream-scene bez zmyślonego licznika słuchaczy (zgoda Dowódcy)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): karuzela LUMINA — wszyscy członkowie; jeden przycisk do góry; profesjonalny układ profili na telefonie; karta transmisji bez powtórzeń; autorka Cuda Każdego Dnia: Bogusia Król" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -83,7 +90,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Kanaly nadawcze Straznik 2026-10-08" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-11 profile i karuzela" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"

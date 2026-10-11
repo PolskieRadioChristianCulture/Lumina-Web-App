@@ -1,5 +1,6 @@
 /**
- * LUMINA — „Poznajmy się bliżej”: prawdziwi ludzie z prawdziwym zdjęciem
+ * LUMINA — „Poznajmy się bliżej”: wszyscy członkowie społeczności (2026-10-11)
+ * Zdjęcie profilowe użytkownika; zastępcze logo LUMINA wyłącznie w ostateczności.
  * Strażnik Standardów Christian Culture • 2026-10-07
  *
  * Wcześniej karuzela pokazywała stałą listę 10 kont, w większości logotypów marek
@@ -17,8 +18,15 @@
         { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true },
         { name: 'Zbyszek Gieroń',    slug: 'zbyszekgieron',    tag: 'Świadectwo',           avatar: 'avatar_zbyszek_gieron.jpg',    verified: false }
     ];
-    var MIN_CARDS = 6;
+    var FALLBACK_AVATAR = 'images/lumina-avatar-zastepczy.jpg';
     var community = [];
+    window.LUMINA_CAROUSEL_FALLBACK_AVATAR = FALLBACK_AVATAR;
+    // Gdy zdjęcie się nie wczyta — logo LUMINA (karta zostaje; nikt nie znika z karuzeli).
+    window.luminaCarouselAvatarFallback = function (img) {
+        if (!img || img.getAttribute('data-fallback') === '1') return;
+        img.setAttribute('data-fallback', '1');
+        img.src = FALLBACK_AVATAR;
+    };
 
     function esc(v) {
         return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
@@ -36,16 +44,13 @@
                 name: esc(p.name),
                 slug: encodeURIComponent(p.slug),
                 tag: esc(p.city || 'Społeczność LUMINA'),
-                avatar: esc(p.avatar),
+                avatar: esc(p.avatar || FALLBACK_AVATAR),
                 verified: !!p.verified
             });
         });
-        if (list.length < MIN_CARDS) {
-            OFFICIAL_PEOPLE.forEach(function (p) {
-                if (!seen[p.slug]) { seen[p.slug] = true; list.push(p); }
-            });
-        }
-        return list;
+        // Osoby oficjalne zawsze obecne (jeśli nie przyszły już z bazy) — na początku listy.
+        var official = OFFICIAL_PEOPLE.filter(function (p) { return !seen[p.slug]; });
+        return official.concat(list);
     };
 
     function load(attempt) {
@@ -54,7 +59,7 @@
             if ((attempt || 0) < 40) setTimeout(function () { load((attempt || 0) + 1); }, 250);
             return;
         }
-        db.getCommunityCarouselProfiles(14).then(function (people) {
+        db.getCommunityCarouselProfiles(60).then(function (people) {
             if (!Array.isArray(people) || !people.length) return;
             community = people;
             try { window.dispatchEvent(new CustomEvent('lumina:carousel-people')); } catch (e) {}

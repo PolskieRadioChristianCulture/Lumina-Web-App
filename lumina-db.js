@@ -8911,11 +8911,21 @@ export function isLuminaCommunityReadyProfile(p) {
 
 let _carouselProfilesCache = null;
 let _carouselProfilesPromise = null;
+export const LUMINA_CAROUSEL_FALLBACK_AVATAR = 'images/lumina-avatar-zastepczy.jpg';
 /**
- * Prawdziwi członkowie społeczności z prawdziwym zdjęciem — do karuzeli „Poznajmy się bliżej”.
- * Jednorazowy odczyt (bez nasłuchu na całą kolekcję), wynik stały w obrębie wizyty, by karuzela nie „skakała”.
+ * Karuzela „Poznajmy się bliżej” — WSZYSCY członkowie społeczności (Strażnik, 2026-10-11).
+ * Każdy publiczny profil z imieniem; zdjęcie profilowe użytkownika, a logo LUMINA tylko w ostateczności.
+ * Najpierw osoby ze zdjęciem, potem pozostali; kolejność stała w obrębie wizyty, by karuzela nie „skakała”.
  */
-export function getCommunityCarouselProfiles(max = 14) {
+export function isLuminaCarouselMember(p) {
+    if (!p) return false;
+    if (p.isBlocked || p.isMissionAccount || p.visibility === 'private') return false;
+    const slug = String(p.slug || p.uid || p.id || '').toLowerCase();
+    if (!slug) return false;
+    const name = String(p.name || '').trim();
+    return name.length >= 2 && !LUMINA_PLACEHOLDER_NAMES.includes(name.toLowerCase());
+}
+export function getCommunityCarouselProfiles(max = 60) {
     if (_carouselProfilesCache) return Promise.resolve(_carouselProfilesCache.slice(0, max));
     if (_carouselProfilesPromise) return _carouselProfilesPromise.then(list => list.slice(0, max));
     _carouselProfilesPromise = (async () => {
@@ -8927,34 +8937,38 @@ export function getCommunityCarouselProfiles(max = 14) {
             snap.forEach(d => {
                 const p = { id: d.id, ...d.data() };
                 const slug = String(p.slug || d.id || '').toLowerCase();
-                if (!slug || seen.has(slug)) return;
-                if (!isLuminaCommunityReadyProfile(p)) return;
+                const uidKey = 'uid:' + String(p.uid || '');
+                if (!slug || seen.has(slug) || (p.uid && seen.has(uidKey))) return;
+                if (!isLuminaCarouselMember(p)) return;
                 seen.add(slug);
+                if (p.uid) seen.add(uidKey);
+                const hasPhoto = isLuminaRealPersonPhoto(p.avatar, slug);
                 out.push({
                     slug,
                     uid: p.uid || d.id,
                     name: String(p.name || '').trim(),
                     city: String(p.city || '').split(',')[0].trim(),
-                    avatar: p.avatar,
+                    avatar: hasPhoto ? String(p.avatar).trim() : LUMINA_CAROUSEL_FALLBACK_AVATAR,
+                    hasPhoto,
                     verified: LUMINA_RESERVED_PROFILE_SLUGS.includes(slug)
                 });
             });
         };
         try {
-            take(await getDocs(query(collection(db, 'lumina_profiles'), where('hasRealPhoto', '==', true), limit(24))));
+            take(await getDocs(query(collection(db, 'lumina_profiles'), limit(300))));
         } catch(e) {
             console.warn('[LUMINA] Karuzela społeczności — odczyt nieudany:', e && e.message);
         }
-        // Stała, ale losowa kolejność na czas wizyty (bez przetasowań przy każdym odświeżeniu tablicy)
         let seed = 0;
         try {
             seed = Number(sessionStorage.getItem('lumina_carousel_seed')) || Math.floor(Math.random() * 1e9);
             sessionStorage.setItem('lumina_carousel_seed', String(seed));
         } catch(e) { seed = 12345; }
         const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
-        for (let i = out.length - 1; i > 0; i--) { const k = Math.floor(rnd() * (i + 1)); [out[i], out[k]] = [out[k], out[i]]; }
-        _carouselProfilesCache = out;
-        return out;
+        const shuffle = (arr) => { for (let i = arr.length - 1; i > 0; i--) { const k = Math.floor(rnd() * (i + 1)); [arr[i], arr[k]] = [arr[k], arr[i]]; } return arr; };
+        const ordered = shuffle(out.filter(p => p.hasPhoto)).concat(shuffle(out.filter(p => !p.hasPhoto)));
+        _carouselProfilesCache = ordered;
+        return ordered;
     })();
     return _carouselProfilesPromise.then(list => list.slice(0, max));
 }

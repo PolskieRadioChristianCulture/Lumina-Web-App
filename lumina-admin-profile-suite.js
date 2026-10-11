@@ -14,7 +14,7 @@
     // Domena znanych profili systemowych
     const SYSTEM_PROFILES = [
         { slug: 'andrzejhamera', name: 'Andrzej Hamera', role: 'Właściciel KONCEPT Lublin', type: 'community', verified: true, avatar: 'avatar_andrzej_hamera.jpg' },
-        { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Autor: Cuda Każdego Dnia', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
+        { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Cuda Każdego Dnia (autorka: Bogusia Król)', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
         { slug: 'cezaryrgowski', name: 'Cezary Rogowski', role: 'Dyrektor Projektu & Autor', type: 'official', verified: true, avatar: 'avatar_cezary_official.jpg' },
         { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Moderator Społeczności & Współzałożycielka', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', role: 'Oficjalny Kanał Audio & Wideo', type: 'channel', verified: true, avatar: 'studiodobregoslowa_avatar.jpg' },
@@ -868,7 +868,7 @@
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
                             <div>
                                 <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Rola / Zawód / Misja</label>
-                                <input type="text" id="adminInputJob" placeholder="np. Autor: Cuda Każdego Dnia" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; font-weight:700;">
+                                <input type="text" id="adminInputJob" placeholder="np. Ewangelizacja, Studio Dobrego Słowa" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; font-weight:700;">
                             </div>
                             <div>
                                 <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Wspólnota / Kościół / Wyznanie</label>
