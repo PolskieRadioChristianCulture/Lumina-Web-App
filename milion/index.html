@@ -603,7 +603,8 @@
       try {
         const res = await fetch('/api/milion/count', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: String(type || 'akcja').slice(0, 20) })
         });
         if (res.ok) {
           const data = await res.json();

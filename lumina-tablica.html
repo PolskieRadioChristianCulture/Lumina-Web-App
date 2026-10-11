@@ -5214,6 +5214,10 @@
     })();
     </script>
     <script src="/js/lumina-theme-manager.js?v=20261007_guardian2"></script>
+    <!-- STRAŻNIK (2026-10-11): miejsce na mobilny pasek ZAŁÓŻ KONTO | LOGOWANIE rezerwowane od pierwszego
+         wyświetlenia — pasek wstawiany później przez lumina-bottom-nav.js nie przesuwa już tablicy (CLS). -->
+    <script>try{if(localStorage.getItem('lumina_user_session')==='active')document.documentElement.classList.add('cc-authed')}catch(e){}</script>
+    <style>@media (max-width:900px){html:not(.cc-authed) nav.lumina-nav{margin-bottom:42px}html:not(.cc-authed) nav.lumina-nav + .lumina-mobile-auth-bar{margin-top:-42px}}</style>
 </head>
 <body>
 
@@ -7126,7 +7130,7 @@
                                     <div class="sync-video-container" id="syncTvContainer">
                                         <iframe id="syncTvIframe" src="" title="CCTV24 Worship Live" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                                         <div id="syncTvPlaceholder" class="sync-media-placeholder" style="display:none;" onclick="startSyncTvVideo(true)">
-                                            <img src="tlo_cctv.jpg" alt="CCTV24 Live TV" class="sync-placeholder-img" onerror="this.src='tlo_pr_cc.jpg'">
+                                            <img src="tlo_tv_dzj.jpg" alt="CCTV24 Live TV" class="sync-placeholder-img" onerror="this.src='tlo_pr_cc.jpg'">
                                             <div class="sync-placeholder-overlay">
                                                 <button type="button" class="sync-placeholder-big-play" onclick="event.stopPropagation(); startSyncTvVideo(true);" title="Uruchom CCTV24 TV">
                                                     <i class="fa-solid fa-play"></i>
@@ -7159,7 +7163,7 @@
                                     <div class="sync-video-container" id="syncCourseContainer">
                                         <iframe id="syncCourseIframe" src="" title="Nie Bylejaki Kurs Małżeński" allow="autoplay; fullscreen; picture-in-picture; accelerometer; clipboard-write; encrypted-media; gyroscope;" allowfullscreen loading="lazy"></iframe>
                                         <div id="syncCoursePlaceholder" class="sync-media-placeholder" style="display:none;" onclick="startSyncCourseVideo(true)">
-                                            <img id="syncCoursePlaceholderImg" src="randki_malzenstwo_plakat_hq.webp" alt="Kurs Małżeński" class="sync-placeholder-img" onerror="this.src='tlo_profilowe_wioletta.jpg'">
+                                            <img id="syncCoursePlaceholderImg" src="nie-bylejaki-kurs-malzenski.png" alt="Kurs Małżeński" class="sync-placeholder-img" onerror="this.src='tlo_profilowe_wioletta.jpg'">
                                             <div class="sync-placeholder-overlay">
                                                 <button type="button" class="sync-placeholder-big-play" onclick="event.stopPropagation(); startSyncCourseVideo(true);" title="Uruchom Kurs">
                                                     <i class="fa-solid fa-play"></i>

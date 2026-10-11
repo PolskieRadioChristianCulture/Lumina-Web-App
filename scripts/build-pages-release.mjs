@@ -8,12 +8,12 @@ import { applyPageStandard } from './cc-page-standard.mjs';
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
 const BLOCKED_DIRECTORIES = new Set([
-  '.agents', '.firebase', '.gemini', '.github', '.vscode', '.wrangler',
+  '.agents', '.firebase', '.gemini', '.github', '.vscode', '.wrangler', '_wydanie',
   'cloudflare', 'cloudflare-worker', 'docs', 'firebase_functions', 'functions', 'node_modules',
   'lib', 'scratch', 'scripts', 'src', 'test', 'tests', 'windows_tools',
 ]);
 const BLOCKED_FILES = new Set([
-  '.env', '.env.example', '.firebaserc', '.gitignore', 'agents.md', 'claude.md',
+  '.env', '.env.example', '.firebaserc', '.gitignore', '.cc-frozen-approvals.json', 'wydanie-kanaly.log', 'agents.md', 'claude.md',
   'codex.md', 'database.rules.json', 'firebase.json', 'firestore.indexes.json',
   'firestore.rules', 'gemini.md', 'package-lock.json', 'package.json',
   'playwright.config.ts', 'server.js', 'storage.rules', 'straznik-kodu-check.js',

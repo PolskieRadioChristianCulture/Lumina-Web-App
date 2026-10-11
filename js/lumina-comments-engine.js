@@ -637,7 +637,7 @@
             return `
                 <div class="comment-preview-card">
                     <div class="comment-preview-thumb-wrap">
-                        <img src="randki_malzenstwo_plakat_hq.webp" alt="Kurs Małżeński" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='tlo_profilowe_wioletta.jpg';">
+                        <img src="nie-bylejaki-kurs-malzenski.png" alt="Kurs Małżeński" class="comment-preview-thumb" loading="lazy" onerror="this.onerror=null; this.src='tlo_profilowe_wioletta.jpg';">
                     </div>
                     <div class="comment-preview-body">
                         <div class="comment-preview-badge-row">

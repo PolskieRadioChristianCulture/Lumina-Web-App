@@ -1417,6 +1417,28 @@ export default {
         try {
           if (db) {
             const now = Date.now();
+            // 🛡️ STRAŻNIK (2026-10-11): licznik ma pokazywać prawdziwą aktywność, nie liczbę kliknięć.
+            // Ta sama osoba (adres IP + przeglądarka) liczona jest raz dziennie dla każdego rodzaju akcji.
+            // Przechowujemy wyłącznie skrót SHA-256 (bez adresu IP), a wpisy starsze niż 3 dni są usuwane.
+            let actionType = 'akcja';
+            try {
+              const body = await request.clone().json();
+              if (body && typeof body.type === 'string') actionType = body.type.replace(/[^a-z0-9_-]/gi, '').slice(0, 20) || 'akcja';
+            } catch (e) {}
+            const day = new Date(now).toISOString().slice(0, 10);
+            const who = (request.headers.get('CF-Connecting-IP') || '') + '|' + (request.headers.get('User-Agent') || '');
+            const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(day + '|' + actionType + '|' + who));
+            const visitorKey = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
+            await db.prepare('CREATE TABLE IF NOT EXISTS milion_seen (k TEXT PRIMARY KEY, ts INTEGER NOT NULL)').run();
+            const seen = await db.prepare('INSERT OR IGNORE INTO milion_seen (k, ts) VALUES (?, ?)').bind(visitorKey, now).run();
+            const isNew = !!(seen && seen.meta && seen.meta.changes > 0);
+            if (Math.random() < 0.02) {
+              ctx.waitUntil(db.prepare('DELETE FROM milion_seen WHERE ts < ?').bind(now - 3 * 86400000).run().catch(() => {}));
+            }
+            if (!isNew) {
+              const row0 = await db.prepare('SELECT count FROM counters WHERE id = ?').bind('milion_listeners').first();
+              return new Response(JSON.stringify({ success: true, counted: false, count: row0 ? Number(row0.count || 0) : 0, source: 'd1' }), { status: 200, headers });
+            }
             // Atomowa inkrementacja +1 w D1
             await db.prepare(`
               INSERT INTO counters (id, count, updated_at) VALUES ('milion_listeners', 1, ?)

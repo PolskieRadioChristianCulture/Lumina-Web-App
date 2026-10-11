@@ -163,3 +163,30 @@ test('Master: ramówka odświeża się co dzień, zawieszone przejście i pusty 
   assert.match(m, /przejście zawisło/);
   assert.match(m, /kanał nie odpowiada/);
 });
+
+test('Shorts Live: bez symulowanego licznika słuchaczy', async () => {
+  const v = await read('stream-scene-vertical.html');
+  assert.doesNotMatch(v, /let audience = \d+/);
+  assert.doesNotMatch(v, /osób słuchających teraz/);
+});
+
+test('licznik /milion: jedna akcja danego rodzaju na osobę dziennie', async () => {
+  const w = await read('_worker.js');
+  assert.match(w, /INSERT OR IGNORE INTO milion_seen/);
+  assert.match(await read('milion.html'), /body: JSON\.stringify\(\{ type:/);
+});
+
+test('brak odwołań do nieistniejących grafik na tablicy i w Rolkach', async () => {
+  for (const f of ['lumina-tablica.html', 'rolki.html', 'data/shorts/shorts_feed.json', 'lumina-db.js']) {
+    const s = await read(f);
+    assert.doesNotMatch(s, /randki_malzenstwo_plakat_hq|tlo_cctv\.jpg|logo_christian_culture_small|[^_\w]avatar_wioletta\.jpg/, f);
+  }
+});
+
+test('tablica: miejsce na mobilny pasek logowania rezerwowane od początku (bez skoku układu)', async () => {
+  assert.match(await read('lumina-tablica.html'), /html:not\(\.cc-authed\) nav\.lumina-nav\{margin-bottom:42px\}/);
+});
+
+test('widget: nagłówek mieści się na telefonie', async () => {
+  assert.match(await read('widget.html'), /header a\[download\] span \{ display: none; \}/);
+});
