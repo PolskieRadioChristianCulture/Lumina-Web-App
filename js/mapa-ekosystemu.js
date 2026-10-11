@@ -115,6 +115,7 @@
       collapseAllBtn: document.getElementById('mapaCollapseAllBtn'),
       drawer: document.getElementById('mapaDrawer'),
       drawerClose: document.getElementById('mapaDrawerClose'),
+      drawerMaximize: document.getElementById('mapaDrawerMaximize'),
       drawerReopenBtn: document.getElementById('mapaDrawerReopenBtn'),
       drawerIcon: document.getElementById('mapaDrawerIcon'),
       drawerTitle: document.getElementById('mapaDrawerTitle'),
@@ -254,12 +255,24 @@
       });
     }
 
-    // Zamykanie / minimalizacja side-card
+    // Zamykanie / minimalizacja / pełny ekran side-card
     if (els.drawerClose) {
       els.drawerClose.addEventListener('click', closeSideCard);
     }
+    if (els.drawerMaximize) {
+      els.drawerMaximize.addEventListener('click', toggleDrawerFullscreen);
+    }
     if (els.drawerReopenBtn) {
       els.drawerReopenBtn.addEventListener('click', openSideCard);
+    }
+
+    const headBar = document.querySelector('.mapa-card-head-bar');
+    if (headBar) {
+      headBar.addEventListener('dblclick', function (e) {
+        if (!e.target.closest('button')) {
+          toggleDrawerFullscreen();
+        }
+      });
     }
 
     // Udostępnianie linku
@@ -273,10 +286,14 @@
     if (els.resetBtn) els.resetBtn.addEventListener('click', resetView);
     if (els.fitBtn) els.fitBtn.addEventListener('click', fitToScreen);
 
-    // Klawisz Escape zamyka Side Card
+    // Klawisz Escape zamyka Side Card (lub wychodzi z trybu pełnoekranowego)
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && els.drawer) {
-        closeSideCard();
+        if (els.drawer.classList.contains('is-fullscreen')) {
+          toggleDrawerFullscreen();
+        } else {
+          closeSideCard();
+        }
       }
     });
 
@@ -317,6 +334,9 @@
     });
 
     // Panning & Zooming w SVG
+    setupSvgPanZoom();
+  }
+
   function updateViewportHeights() {
     const header = document.querySelector('.mapa-header');
     const ctrl = document.querySelector('.mapa-control-bar');
@@ -1387,9 +1407,29 @@
     if (els.drawer) {
       els.drawer.classList.add('is-closed');
       els.drawer.classList.remove('active');
+      els.drawer.classList.remove('is-fullscreen');
+      if (els.drawerMaximize) {
+        els.drawerMaximize.innerHTML = '<i class="fa-solid fa-expand"></i>';
+        els.drawerMaximize.title = 'Powiększ do pełnego ekranu';
+        els.drawerMaximize.setAttribute('aria-label', 'Powiększ do pełnego ekranu');
+      }
     }
     if (els.drawerReopenBtn) {
       els.drawerReopenBtn.classList.add('visible');
+    }
+  }
+
+  function toggleDrawerFullscreen() {
+    if (!els.drawer) return;
+    const isFull = els.drawer.classList.toggle('is-fullscreen');
+    if (els.drawerMaximize) {
+      els.drawerMaximize.innerHTML = isFull 
+        ? '<i class="fa-solid fa-compress"></i>' 
+        : '<i class="fa-solid fa-expand"></i>';
+      els.drawerMaximize.title = isFull 
+        ? 'Przywróć standardowy rozmiar' 
+        : 'Powiększ do pełnego ekranu';
+      els.drawerMaximize.setAttribute('aria-label', els.drawerMaximize.title);
     }
   }
 

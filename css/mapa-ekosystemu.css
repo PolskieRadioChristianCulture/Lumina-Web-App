@@ -1376,6 +1376,25 @@ html, body {
     pointer-events: none !important;
   }
 
+  .mapa-side-card.is-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    padding: 1.25rem !important;
+    margin: 0 !important;
+    z-index: 100 !important;
+  }
+
+  .mapa-side-card.is-fullscreen .mapa-card-projects-list {
+    grid-template-columns: 1fr !important;
+  }
+
   .mapa-drawer-reopen-btn {
     top: 1rem;
     bottom: auto;
