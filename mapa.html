@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
-  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v10_rotating_ring">
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v11_video_bg">
 
   <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
   <style>
@@ -56,6 +56,38 @@
       --gold-dark: #A08040;
       --text-primary: #F8FAFC;
       --text-muted: #8E9BAE;
+    }
+    .cc-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: #080F20 url('/assets/mapa/planeta-poster.jpg') center/cover no-repeat;
+      overflow: hidden;
+    }
+    .cc-background video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .cc-background video.ready {
+      opacity: 1;
+    }
+    .cc-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 15, 32, 0.52);
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cc-background video {
+        display: none;
+      }
     }
     .mapa-hud-controls {
       bottom: 6.25rem !important;
@@ -479,9 +511,12 @@
 </head>
 <body>
 
-  <!-- Kosmiczne tło galaktyki z Ziemią z orbity -->
-  <div class="mapa-galaxy-bg" aria-hidden="true">
-    <div class="mapa-galaxy-stars"></div>
+  <!-- Kosmiczne dynamiczne tło planety Christian Culture (Wideo / Poster) -->
+  <div class="cc-background" aria-hidden="true">
+    <video id="cc-planet" muted loop playsinline preload="none" poster="/assets/mapa/planeta-poster.jpg">
+      <source data-src="/assets/mapa/planeta.webm" type="video/webm">
+      <source data-src="/assets/mapa/planeta.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div class="mapa-app">
@@ -537,7 +572,7 @@
     </header>
 
     <!-- PASEK FILTRÓW I KONTROLEK ZASOBÓW (SUB-BAR) -->
-    <section class="mapa-control-bar" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
+    <section class="mapa-control-bar is-hidden" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
       <div class="mapa-filter-chips" id="mapaFilterStrip" role="group" aria-label="Filtry statusu i kategorii">
         <button class="mapa-chip active" data-filter="all">
           <span>Wszystkie</span>
@@ -792,5 +827,53 @@
   <!-- Wspólna stopka i narzędzia -->
   <script src="/components/cc-support-footer.js" defer></script>
   <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>
+
+  <!-- Dynamiczne sterowanie odtwarzaniem tła wideo planety CC -->
+  <script>
+    (function () {
+      const v = document.getElementById('cc-planet');
+      if (!v) return;
+      const motion = matchMedia('(prefers-reduced-motion: reduce)');
+      let loaded = false;
+      let blocked = false;
+
+      async function sync() {
+        if (motion.matches || navigator.connection?.saveData || document.hidden || blocked) {
+          v.pause();
+          return;
+        }
+        if (!loaded) {
+          v.querySelectorAll('source').forEach(function (s) {
+            if (s.dataset.src) s.src = s.dataset.src;
+          });
+          v.load();
+          loaded = true;
+        }
+        try {
+          await v.play();
+        } catch (_) {
+          blocked = true;
+          v.classList.remove('ready');
+        }
+      }
+
+      v.addEventListener('playing', function () {
+        v.classList.add('ready');
+      });
+      v.addEventListener('error', function () {
+        blocked = true;
+        v.classList.remove('ready');
+      });
+      document.addEventListener('visibilitychange', sync);
+      motion.addEventListener('change', sync);
+      window.addEventListener('pointerdown', function () {
+        if (blocked) {
+          blocked = false;
+          sync();
+        }
+      }, { passive: true, once: true });
+      sync();
+    })();
+  </script>
 </body>
 </html>

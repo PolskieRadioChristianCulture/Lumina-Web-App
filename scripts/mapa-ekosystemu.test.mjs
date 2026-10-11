@@ -53,6 +53,20 @@ test('mapa.html is well-formed, contains required controls and loads dedicated a
   assert.match(html, /href="\/css\/mapa-ekosystemu\.css/);
   assert.match(html, /src="\/js\/mapa-ekosystemu\.js/);
   
+  assert.match(html, /class="cc-background"/);
+  assert.match(html, /id="cc-planet"/);
+  assert.match(html, /planeta-poster\.jpg/);
+  assert.match(html, /planeta\.webm/);
+  assert.match(html, /planeta\.mp4/);
+
+  // Verification of background assets existence and size
+  const posterPath = path.join(ROOT, 'assets', 'mapa', 'planeta-poster.jpg');
+  const webmPath = path.join(ROOT, 'assets', 'mapa', 'planeta.webm');
+  const mp4Path = path.join(ROOT, 'assets', 'mapa', 'planeta.mp4');
+  assert.ok(fs.existsSync(posterPath) && fs.statSync(posterPath).size > 10000, 'planeta-poster.jpg must exist');
+  assert.ok(fs.existsSync(webmPath) && fs.statSync(webmPath).size > 100000, 'planeta.webm must exist');
+  assert.ok(fs.existsSync(mp4Path) && fs.statSync(mp4Path).size > 100000, 'planeta.mp4 must exist');
+
   // Zero QA: no broken placeholder links
   assert.ok(!html.includes('href="javascript:void(0)"'));
 });
