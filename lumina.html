@@ -4870,6 +4870,18 @@
     <link id="luminaMiniPlayerCSS" rel="stylesheet" href="/css/lumina-mini-player.css?v=20261003_player_above_chat_v7">
     <script src="/js/lumina-theme-manager.js?v=20261007_guardian2"></script>
     <script src="js/lumina-stable-render.js?v=20261007_guardian2"></script>
+<style id="lumina-member-welcome-fix">
+/* Strażnik 2026-10-11: powitanie członka było schowane pod tłem nagłówka (pusta przestrzeń nad karuzelą).
+   Teraz jest widoczne nad tłem, a na telefonie — w jednej zwartej linii. */
+#luminaMemberWelcome.lumina-member-welcome { position: relative; z-index: 6; margin: 4px auto 0; }
+@media (max-width: 600px) {
+  #luminaMemberWelcome .lumina-member-welcome-card { flex-direction: row !important; align-items: center !important; gap: 10px !important; padding: 10px 46px 10px 14px !important; border-radius: 16px !important; }
+  #luminaMemberWelcome .lumina-member-welcome-copy p { display: none; }
+  #luminaMemberWelcome .lumina-member-welcome-copy strong { font-size: .9rem; }
+  #luminaMemberWelcome .lumina-member-welcome-action { min-height: 44px; padding: 0 14px; white-space: nowrap !important; font-size: .85rem; }
+  #luminaMemberWelcome .lumina-member-welcome-close { top: 50% !important; transform: translateY(-50%); right: 2px !important; }
+}
+</style>
 </head>
 <body class="user-is-guest">
     <a class="lumina-skip-link" href="#odkrywaj">Przejdź do społeczności</a>

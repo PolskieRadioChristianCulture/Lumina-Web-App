@@ -288,3 +288,8 @@ test('widgety i odtwarzacze osadzone także zasilają licznik /milion', async ()
   assert.match(radio, /https:\/\/polskieradio\.cc\/api\/milion\/count/);
   assert.match(radio, /type: 'text\/plain'/);
 });
+
+test('powitanie członka na /lumina nie chowa się pod tłem nagłówka (brak pustej przestrzeni)', async () => {
+  const t = await readFile('lumina.html', 'utf8');
+  assert.match(t, /#luminaMemberWelcome\.lumina-member-welcome \{ position: relative; z-index: 6;/);
+});
