@@ -180,12 +180,13 @@
 
     <!-- Universal CC Auth & Action (Icon-First Standard) -->
     <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
-      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
-        <span>🎓 MÓJ DYPLOM</span>
+      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] items-center gap-1.5 shadow-lg shadow-amber-900/40">
+        <span class="diploma-icon">🎓</span>
+        <span class="diploma-label">MÓJ DYPLOM</span>
       </button>
 
       <!-- Przełącznik motywu (Jasny / Ciemny) - Czysta okrągła ikona 38x38px -->
-      <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+      <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
         <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
       </button>
 

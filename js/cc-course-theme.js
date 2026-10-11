@@ -8,6 +8,14 @@
 (function() {
   'use strict';
 
+  if (window.CCCourseThemeLoaded) {
+    return;
+  }
+  window.CCCourseThemeLoaded = true;
+  window.CCCourseTheme = true;
+
+  var _lastToggleTime = 0;
+
   function getStoredTheme() {
     try {
       var param = new URLSearchParams(window.location.search).get('theme');
@@ -50,14 +58,20 @@
   }
 
   function toggleCourseTheme() {
+    var now = Date.now();
+    if (now - _lastToggleTime < 300) {
+      return;
+    }
+    _lastToggleTime = now;
     var currentIsLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' ||
                          document.documentElement.classList.contains('light');
     applyCourseTheme(currentIsLight ? 'dark' : 'light', true);
   }
 
   function updateThemeButtonsUI(isLight) {
-    var btns = document.querySelectorAll('#btn-theme-toggle, .btn-course-theme-toggle');
+    var btns = document.querySelectorAll('#btn-theme-toggle, .btn-course-theme-toggle, .cin-btn-theme-toggle');
     btns.forEach(function(btn) {
+      bindButtonEvents(btn);
       var icon = btn.querySelector('.theme-toggle-icon, i');
       var label = btn.querySelector('.theme-toggle-label, span.theme-text');
 
@@ -90,9 +104,20 @@
     }
   }
 
+  function bindButtonEvents(btn) {
+    if (!btn || btn._themeBound) return;
+    btn._themeBound = true;
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      toggleCourseTheme();
+    });
+  }
+
   function ensureThemeButtonMounted() {
-    // 1. Sprawdź, czy przycisk już istnieje na stronie
-    if (document.getElementById('btn-theme-toggle')) {
+    // 1. Sprawdź wszystkie istniejące przyciski na stronie i podepnij zdarzenia
+    var existingBtns = document.querySelectorAll('#btn-theme-toggle, .btn-course-theme-toggle, .cin-btn-theme-toggle');
+    if (existingBtns.length > 0) {
+      existingBtns.forEach(bindButtonEvents);
       var isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light';
       updateThemeButtonsUI(isLight);
       return;
@@ -104,12 +129,9 @@
     btn.className = 'kc-reader-pill cin-btn-theme';
     btn.title = 'Przełącz motyw (Jasny / Ciemny)';
     btn.setAttribute('aria-label', 'Przełącz motyw');
-    btn.style.cssText = 'width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; padding: 0 !important; justify-content: center !important; align-items: center !important; display: inline-flex !important; border-radius: 9999px !important; box-sizing: border-box !important; flex-shrink: 0 !important;';
+    btn.style.cssText = 'width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; padding: 0 !important; justify-content: center !important; align-items: center !important; display: inline-flex !important; border-radius: 9999px !important; box-sizing: border-box !important; flex-shrink: 0 !important; cursor: pointer !important; position: relative !important; touch-action: manipulation !important;';
     btn.innerHTML = '<i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>';
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      toggleCourseTheme();
-    });
+    bindButtonEvents(btn);
 
     // 2. Automatyczny montaż w .ak-header obok #btn-reader-font (Lekcje Kursu Codziennego)
     var fontBtn = document.getElementById('btn-reader-font');
@@ -222,6 +244,15 @@
     ensureThemeButtonMounted();
     ensureBackToTopMounted();
   }
+
+  // Delegated event listener for instant responsiveness on any click/tap
+  document.addEventListener('click', function(e) {
+    var btn = e.target && e.target.closest && e.target.closest('#btn-theme-toggle, .btn-course-theme-toggle, .cin-btn-theme-toggle');
+    if (btn) {
+      e.preventDefault();
+      toggleCourseTheme();
+    }
+  }, true);
 
   // Synchronizacja między kartami przeglądarki
   window.addEventListener('storage', function(e) {

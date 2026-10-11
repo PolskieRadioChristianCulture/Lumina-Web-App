@@ -1971,7 +1971,8 @@ html[data-lumina-theme="light"] .sticky.top-16 {
 }
 
 /* Przycisk motywu w cin-header / cin-topbar / ak-header */
-.cin-btn-theme {
+.cin-btn-theme,
+#btn-theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1988,22 +1989,34 @@ html[data-lumina-theme="light"] .sticky.top-16 {
   cursor: pointer;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  position: relative;
 }
 
-.cin-btn-theme:hover {
+.cin-btn-theme *,
+#btn-theme-toggle * {
+  pointer-events: none;
+}
+
+.cin-btn-theme:hover,
+#btn-theme-toggle:hover {
   border-color: rgba(196, 163, 90, 0.6);
   color: #fef08a;
   background: rgba(30, 37, 51, 0.95);
 }
 
-html[data-lumina-theme="light"] .cin-btn-theme {
+html[data-lumina-theme="light"] .cin-btn-theme,
+html[data-lumina-theme="light"] #btn-theme-toggle {
   border: 1px solid rgba(184, 142, 62, 0.35) !important;
   background: #FFFFFF !important;
   color: #8C6D23 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
-html[data-lumina-theme="light"] .cin-btn-theme:hover {
+html[data-lumina-theme="light"] .cin-btn-theme:hover,
+html[data-lumina-theme="light"] #btn-theme-toggle:hover {
   border-color: #B88E3E !important;
   background: #FAF6ED !important;
   color: #A6802C !important;
@@ -2089,17 +2102,27 @@ html[data-lumina-theme="light"] .cin-progress-title {
     display: none !important;
   }
 
-  #btn-topbar-diploma {
+  #btn-topbar-diploma.hidden,
+  #btn-topbar-diploma[style*="display: none"],
+  #btn-topbar-diploma[style*="display:none"] {
+    display: none !important;
+  }
+
+  #btn-topbar-diploma:not(.hidden) {
     width: 38px !important;
     height: 38px !important;
     min-width: 38px !important;
     min-height: 38px !important;
     padding: 0 !important;
     justify-content: center !important;
+    align-items: center !important;
+    display: inline-flex !important;
     border-radius: 9999px !important;
+    font-size: 15px !important;
   }
 
-  #btn-topbar-diploma span {
+  #btn-topbar-diploma .diploma-label,
+  #btn-topbar-diploma span:not(:first-child) {
     display: none !important;
   }
 }

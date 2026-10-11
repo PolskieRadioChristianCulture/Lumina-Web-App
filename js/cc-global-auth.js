@@ -18,7 +18,7 @@
 
     // Auto-load Course Theme Controller on all course & academy pages
     if (/\/kursy|\/akademia|\/0[1-9]-|\/1[0-9]-|\/2[0-8]-/i.test(window.location.pathname)) {
-        if (!document.getElementById('ccCourseThemeScript') && !window.CCCourseTheme) {
+        if (!document.getElementById('ccCourseThemeScript') && !window.CCCourseTheme && !window.CCCourseThemeLoaded && !document.querySelector('script[src*="cc-course-theme"]')) {
             const themeScript = document.createElement('script');
             themeScript.id = 'ccCourseThemeScript';
             themeScript.src = '/js/cc-course-theme.js?v=20261008_theme1';
