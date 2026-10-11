@@ -94,6 +94,12 @@
         toggleControlBar(false);
       }
     } catch (e) {}
+
+    // Uruchom dopasowanie do ekranu z uwzględnieniem pełnych etykiet po wyrenderowaniu
+    requestAnimationFrame(() => {
+      fitToScreen();
+      setTimeout(fitToScreen, 150);
+    });
   }
 
   function cacheDom() {
@@ -427,18 +433,20 @@
   }
 
   function renderStats() {
-    if (!els.statsCount) return;
+    const missionProjectsEl = document.getElementById('mapaMissionStatsProjects');
     if (state.currentLayer === 'agents' && state.agentsData) {
       let count = 0;
       state.agentsData.branches.forEach(b => {
         count += (b.agent.subagents || []).length;
       });
-      els.statsCount.textContent = `${count} agentów`;
+      if (els.statsCount) els.statsCount.textContent = `${count} agentów`;
+      if (missionProjectsEl) missionProjectsEl.textContent = count;
       return;
     }
     if (state.data) {
       const total = state.data.nodes.length;
-      els.statsCount.textContent = total;
+      if (els.statsCount) els.statsCount.textContent = total;
+      if (missionProjectsEl) missionProjectsEl.textContent = total;
     }
   }
 
@@ -738,37 +746,68 @@
       }
     });
 
-    // B. Warstwa pod-węzłów (Czysta, elegancka typografia z kropką w stylu Mockupa 1:1)
+    // B. Warstwa pod-węzłów (Powiększona, czytelna typografia z ciemną pigułką pod tekstem)
     layout.nodes.forEach((pos, id) => {
       const node = pos.data;
       const isSelected = state.selectedNodeId === id;
       const isLeft = pos.side === 'left';
+      const labelText = node.name || '';
+
+      // Precyzyjna estymacja szerokości pigułki (Montserrat 13.5px semibold: ~8.6px na znak + 24px marginesu)
+      const estWidth = Math.round(labelText.length * 8.6) + 24;
+      const pillHeight = 28;
+      const pillY = -14;
+      const pillX = isLeft ? -estWidth - 14 : 14;
+      const textX = isLeft ? -26 : 26;
       const textAnchor = isLeft ? 'end' : 'start';
-      const textX = isLeft ? -10 : 10;
+
       const dotColor = isSelected ? '#FFFFFF' : '#C4A35A';
-      const textColor = isSelected ? '#FFFFFF' : '#E2CC9A';
+      const textColor = isSelected ? '#FFFFFF' : '#F8FAFC';
+      const pillBg = isSelected 
+        ? 'rgba(196, 163, 90, 0.28)' 
+        : 'rgba(6, 11, 23, 0.90)';
+      const pillBorder = isSelected 
+        ? '#FFFFFF' 
+        : 'rgba(196, 163, 90, 0.38)';
+      const pillBorderWidth = isSelected ? '1.5' : '1';
 
       svgHtml += `
         <g class="map-node map-node-item" data-id="${escapeHtml(id)}" transform="translate(${pos.x}, ${pos.y})">
-          <!-- Złoty świecący punkt węzła -->
-          <circle cx="0" cy="0" r="7" fill="rgba(196, 163, 90, 0.15)" />
-          <circle cx="0" cy="0" r="3.5" fill="${dotColor}" />
-          <!-- Etykieta tekstowa z głębią cienia -->
+          <!-- Złoty punkt węzła z łącznikiem -->
+          <circle cx="0" cy="0" r="8" fill="rgba(196, 163, 90, 0.18)" />
+          <circle cx="0" cy="0" r="4" fill="${dotColor}" stroke="rgba(8,15,32,0.9)" stroke-width="1.5" />
+
+          <!-- Przyciemniona pigułka ochronna pod etykietą projektu -->
+          <rect 
+            class="map-node-pill"
+            x="${pillX}" 
+            y="${pillY}" 
+            width="${estWidth}" 
+            height="${pillHeight}" 
+            rx="6" 
+            ry="6" 
+            fill="${pillBg}" 
+            stroke="${pillBorder}" 
+            stroke-width="${pillBorderWidth}"
+            style="filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85));"
+          />
+
+          <!-- Powiększona, czytelna etykieta tekstowa -->
           <text 
             x="${textX}" 
-            y="4" 
+            y="5" 
             text-anchor="${textAnchor}" 
             font-family="'Montserrat', sans-serif" 
-            font-size="11.5" 
-            font-weight="500" 
+            font-size="13.5" 
+            font-weight="600" 
             fill="${textColor}" 
-            style="text-shadow: 0 2px 8px #000, 0 1px 4px #000; letter-spacing: 0.02em;"
-          >${escapeHtml(node.name)}</text>
+            style="letter-spacing: 0.015em; text-shadow: 0 1px 4px rgba(0,0,0,0.9); pointer-events: none;"
+          >${escapeHtml(labelText)}</text>
         </g>
       `;
     });
 
-    // C. Warstwa 8 głównych hubów galaktyki (Mockup 1:1)
+    // C. Warstwa 8 głównych hubów galaktyki (Mockup 1:1 z ciemnym tłem pod tytułem)
     layout.branches.forEach((pos, id) => {
       const b = pos.data;
       const isSelected = state.selectedBranchId === id;
@@ -784,12 +823,13 @@
           <!-- Ikona w okręgu -->
           <text x="0" y="8" text-anchor="middle" font-size="22">${escapeHtml(pos.mockIcon || b.icon)}</text>
           
-          <!-- Etykieta pod hubem -->
+          <!-- Etykieta pod hubem z ciemnym tłem ochronnym -->
           <g transform="translate(0, 58)">
-            <text x="0" y="0" text-anchor="middle" font-family="'Cinzel', serif" font-size="11.5" font-weight="700" fill="#F8FAFC" style="text-shadow: 0 2px 8px #000;">
+            <rect x="-95" y="-12" width="190" height="34" rx="8" fill="rgba(6, 11, 23, 0.90)" stroke="rgba(196, 163, 90, 0.40)" stroke-width="1" style="filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85));" />
+            <text x="0" y="3" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" fill="#F8FAFC">
               ${escapeHtml(b.name)}
             </text>
-            <text x="0" y="14" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="7.5" font-weight="600" fill="#8E9BAE" letter-spacing="0.08em" style="text-shadow: 0 1px 4px #000;">
+            <text x="0" y="17" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8" font-weight="600" fill="#CBD5E1" letter-spacing="0.08em">
               ${escapeHtml(pos.sub || b.tagline)}
             </text>
           </g>
@@ -1560,30 +1600,48 @@
   }
 
   function resetView() {
-    if (!els.viewport) return;
-    const rect = els.viewport.getBoundingClientRect();
-    state.transform.x = rect.width / 2;
-    state.transform.y = rect.height / 2;
-    state.transform.k = 1;
-    applyTransform();
+    fitToScreen();
   }
 
   function fitToScreen() {
-    if (!els.viewport) return;
+    if (!els.viewport || !els.svgGroup) return;
     const rect = els.viewport.getBoundingClientRect();
-    const graphWidth = 1600;
-    const graphHeight = 840;
+    if (rect.width <= 0 || rect.height <= 0) return;
 
-    const scaleX = rect.width / graphWidth;
-    const scaleY = rect.height / graphHeight;
-    const targetK = Math.min(scaleX, scaleY, 1.05) * 0.95;
+    let bbox = null;
+    try {
+      bbox = els.svgGroup.getBBox();
+    } catch (_) {}
 
-    // Przesuń nieco w lewo, aby zrobić miejsce dla prawej karty na dużych ekranach
-    const offsetX = rect.width > 1200 ? -80 : 0;
+    // Rzeczywisty obszar grafu z uwzględnieniem pełnej szerokości powiększonych etykiet i pigułek
+    const graphLeft = (bbox && bbox.width > 200) ? bbox.x : -1080;
+    const graphRight = (bbox && bbox.width > 200) ? (bbox.x + bbox.width) : 1080;
+    const graphTop = (bbox && bbox.height > 200) ? bbox.y : -350;
+    const graphBottom = (bbox && bbox.height > 200) ? (bbox.y + bbox.height) : 350;
 
-    state.transform.x = (rect.width / 2) + offsetX;
-    state.transform.y = rect.height / 2;
-    state.transform.k = Math.max(0.42, targetK);
+    const graphWidth = graphRight - graphLeft;
+    const graphHeight = graphBottom - graphTop;
+    const graphCenterX = graphLeft + (graphWidth / 2);
+    const graphCenterY = graphTop + (graphHeight / 2);
+
+    // Margines bezpieczeństwa, aby żadna boczna nazwa nie dotykała krawędzi ekranu
+    const paddingX = Math.max(64, rect.width * 0.055);
+    const paddingY = Math.max(40, rect.height * 0.06);
+
+    const availableWidth = rect.width - (paddingX * 2);
+    const availableHeight = rect.height - (paddingY * 2);
+
+    const scaleX = availableWidth / graphWidth;
+    const scaleY = availableHeight / graphHeight;
+
+    // Skalowanie gwarantujące, że 100% szerokości etykiet mieści się na ekranie
+    const targetK = Math.min(scaleX, scaleY);
+    const finalK = Math.max(0.25, Math.min(1.0, targetK));
+
+    state.transform.k = finalK;
+    state.transform.x = (rect.width / 2) - (graphCenterX * finalK);
+    state.transform.y = (rect.height / 2) - (graphCenterY * finalK);
+
     applyTransform();
   }
 
