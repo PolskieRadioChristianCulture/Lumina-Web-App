@@ -276,3 +276,15 @@ test('każde włączenie Radia CC w ekosystemie zasila licznik /milion', async (
   assert.match(radio, /type: 'radio'/);
   assert.match(radio, /\/api\/milion\/count/);
 });
+
+test('widgety i odtwarzacze osadzone także zasilają licznik /milion', async () => {
+  for (const f of ['embed/bar.html', 'embed/player.html', 'radio_christian_culture_widget.html']) {
+    assert.match(await readFile(f, 'utf8'), /https:\/\/polskieradio\.cc\/js\/cc-radio-milion\.js\?v=/, f);
+  }
+  for (const f of ['widget.html', 'widget/index.html']) {
+    assert.match(await readFile(f, 'utf8'), /cc-radio-milion\.js\?v=[^"]*" defer><\\\/script>`;/, f);
+  }
+  const radio = await readFile('js/cc-radio-milion.js', 'utf8');
+  assert.match(radio, /https:\/\/polskieradio\.cc\/api\/milion\/count/);
+  assert.match(radio, /type: 'text\/plain'/);
+});
