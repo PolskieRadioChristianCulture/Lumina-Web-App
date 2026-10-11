@@ -4748,6 +4748,8 @@
         .lumina-guest-only { display: none !important; }
         body.user-is-guest .lumina-guest-only { display: flex !important; }
         body.user-is-authenticated .lumina-guest-only { display: none !important; }
+        body.user-is-authenticated #heroGuestCta,
+        body.user-is-authenticated .hero-cta-actions { display: none !important; }
 
         body.user-is-guest .mobile-nav-search-btn,
         body.user-is-guest #navSearchWrapper,
@@ -5054,7 +5056,7 @@
                     Poznaj ludzi, którzy budują relacje oparte na wierze i wartościach • Świadectwa • Modlitwa
                 </p>
                 <!-- ✨ GŁÓWNE WEZWANIE DO DZIAŁANIA (CTA) DLA NOWEGO UŻYTKOWNIKA ✨ -->
-                <div class="hero-cta-actions" id="heroGuestCta" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; margin-bottom: 6px;">
+                <div class="hero-cta-actions lumina-guest-only" id="heroGuestCta" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; margin-bottom: 6px;">
                     <button type="button" class="btn-hero-join-prominent" onclick="if(window.openRegister) window.openRegister(); else if(window.openAuth) window.openAuth('register');" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; min-height: 44px; background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 800; border-radius: 999px; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4), 0 0 16px rgba(168, 85, 247, 0.3); transition: all 0.2s ease;">
                         <i class="fa-solid fa-wand-magic-sparkles" style="color: #fef08a;"></i>
                         <span>Dołącz bezpłatnie – zacznij w minutę</span>
