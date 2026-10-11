@@ -1043,17 +1043,20 @@
 
         @media (max-width: 768px) {
             .hero-title { font-size: clamp(1.3rem, 5vw, 1.7rem); line-height: 1.25; margin-bottom: 6px; }
-            .hero-subtitle { font-size: 0.82rem; line-height: 1.4; margin-bottom: 10px; }
-            .hero-section { min-height: 220px; padding: 20px 14px 14px; }
-            .hero-content { padding: 4px 8px 0; max-width: 100%; }
+            .hero-subtitle { font-size: 0.82rem; line-height: 1.4; margin-bottom: 6px; }
+            .hero-section { min-height: auto !important; padding: 10px 14px 0 !important; }
+            .hero-content { padding: 0; max-width: 100%; }
             .hero-break { display: none; }
+            .cards-section { padding-top: 0 !important; }
+            .carousel-container { margin-top: 0 !important; padding-top: 0 !important; }
+            .profiles-grid { padding-top: 10px !important; }
         }
 
         @media (max-width: 480px) {
             .hero-title { font-size: 1.25rem; line-height: 1.22; }
             .hero-subtitle { font-size: 0.78rem; }
-            .hero-section { min-height: 200px; padding: 16px 10px 12px; }
-            .hero-pill-badge { font-size: 0.68rem; padding: 3px 8px; margin-bottom: 8px; }
+            .hero-section { min-height: auto !important; padding: 8px 10px 0 !important; }
+            .hero-pill-badge { font-size: 0.68rem; padding: 3px 8px; margin-bottom: 6px; }
         }
 
         .btn-hero-main {
@@ -4700,8 +4703,14 @@
             cursor: pointer;
             transition: background 0.5s ease;
         }
-        @media (max-width: 680px) {
-            .hero-section { min-height: auto !important; }
+        @media (max-width: 900px) {
+            .hero-section {
+                min-height: auto !important;
+                padding: 10px 14px 0 !important;
+                display: flex !important;
+                align-items: flex-start !important;
+                justify-content: center !important;
+            }
         }
         .hero-content {
             transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
