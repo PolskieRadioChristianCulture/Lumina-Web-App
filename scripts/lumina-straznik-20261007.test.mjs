@@ -165,9 +165,11 @@ test('Master: ramówka odświeża się co dzień, zawieszone przejście i pusty 
 });
 
 test('Shorts Live: bez symulowanego licznika słuchaczy', async () => {
-  const v = await read('stream-scene-vertical.html');
+  for (const f of ['stream-scene-vertical.html', 'stream-scene.html']) {
+  const v = await read(f);
   assert.doesNotMatch(v, /let audience = \d+/);
   assert.doesNotMatch(v, /osób słuchających teraz/);
+  }
 });
 
 test('licznik /milion: jedna akcja danego rodzaju na osobę dziennie', async () => {

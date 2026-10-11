@@ -734,14 +734,14 @@
                         </div>
                         <div class="card-progress-labels">
                             <span>Aktualny rozdział</span>
-                            <span id="cardProgressLabel">45%</span>
+                            <span id="cardProgressLabel">0:00</span>
                         </div>
                     </div>
 
                     <!-- Audience count -->
                     <div class="live-count-text">
                         <div class="live-count-dot"></div>
-                        Dołącz do <span id="audienceCount" style="color: #ffffff; font-weight: 700;">1 547</span> osób słuchających teraz
+                        Słuchaj razem z nami — na żywo 24/7
                     </div>
                 </div>
             </aside>
@@ -1137,7 +1137,7 @@
                     
                     // Update app card progress bar
                     document.getElementById('cardProgressBar').style.width = `${percent}%`;
-                    document.getElementById('cardProgressLabel').textContent = `${Math.floor(percent)}%`;
+                    document.getElementById('cardProgressLabel').textContent = formatTime(trackElapsed); // prawdziwy czas od początku rozdziału
                     
                     // Dynamically push progress change to update scripture text!
                     const currentTitle = document.getElementById('chapterHeading').textContent;
@@ -1274,14 +1274,7 @@
             }
         }
 
-        // --- 9. AUDIENCE SIMULATOR ---
-        let audience = 1547;
-        function updateAudience() {
-            const delta = Math.floor(Math.random() * 5) - 2;
-            audience = Math.max(1300, audience + delta);
-            document.getElementById('audienceCount').textContent = audience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        }
-        setInterval(updateAudience, 7000);
+        // --- 9. 🛡️ STRAŻNIK (2026-10-11, zgoda Dowódcy): usunięto symulowany licznik słuchaczy („1 547 osób słuchających”).
 
         // --- 10. AUDIO INITIALIZATION (DIRECT PLAYOUT) ---
         const streamAudio = document.getElementById('stream-audio');
@@ -1427,8 +1420,7 @@
             
             // Audience live count translation
             document.querySelector('.live-count-text').innerHTML = `<div class="live-count-dot"></div>` + 
-                (lang === 'en' ? `Join <span id="audienceCount" style="color: #ffffff; font-weight: 700;">${audience}</span> people listening now` 
-                               : `Dołącz do <span id="audienceCount" style="color: #ffffff; font-weight: 700;">${audience}</span> osób słuchających teraz`);
+                (lang === 'en' ? `Listen with us — live 24/7` : `Słuchaj razem z nami — na żywo 24/7`);
             
             // Translate footer
             document.getElementById('footerVersionLbl').textContent = active.footerVersionLbl;

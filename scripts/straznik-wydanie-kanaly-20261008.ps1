@@ -31,7 +31,7 @@ $Files = @(
     'ambient-sleep-live.html', 'dzj-vertical-live.html', 'master-live.html',
     'lumina.html', 'scripts\mobile-premium-regression.test.mjs',
     'lumina-tablica.html', 'lumina-tablica-light.html', 'lumina-db.js', 'rolki.html', 'js\lumina-comments-engine.js', 'data\shorts\shorts_feed.json',
-    'milion.html', 'milion\index.html', 'widget.html', 'widget\index.html', 'stream-scene-vertical.html', 'scripts\build-pages-release.mjs',
+    'milion.html', 'milion\index.html', 'widget.html', 'widget\index.html', 'stream-scene-vertical.html', 'stream-scene.html', 'scripts\build-pages-release.mjs',
     'news.json', '_worker.js', '.cc-frozen-approvals.json', 'scripts\joma_guard_sentinel.cjs',
     'scripts\lumina-straznik-20261007.test.mjs',
     'CLAUDE.md',
@@ -63,7 +63,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): lżejsze obrazy (telefon), brakujące grafiki, uczciwy licznik /milion i Shorts Live, widget i tablica na telefonie" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): stream-scene bez zmyślonego licznika słuchaczy (zgoda Dowódcy)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
