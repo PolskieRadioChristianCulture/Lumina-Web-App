@@ -21,6 +21,8 @@
     statusFilter: null,
     searchQuery: '',
     expandedBranches: new Set(),
+    activeTreeBranch: null, // pojedyncza aktywna kategoria (efekt domina)
+    showAllTree: false,     // flaga "Pokaż wszystko"
     
     // Transformacje SVG grafu
     transform: {
@@ -65,9 +67,9 @@
       }
     }
 
-    if (state.data && state.data.branches) {
-      state.data.branches.forEach(b => state.expandedBranches.add(b.id));
-    }
+    state.activeTreeBranch = null;
+    state.showAllTree = false;
+    state.expandedBranches.clear();
 
     parseUrlParams();
 
@@ -250,17 +252,18 @@
       });
     }
 
-    // Rozwijanie / zwijanie w widoku drzewa
+    // Rozwijanie / zwijanie w widoku drzewa ("Pokaż wszystko" / "Zwiń wszystkie")
     if (els.expandAllBtn) {
       els.expandAllBtn.addEventListener('click', () => {
-        if (!state.data) return;
-        state.data.branches.forEach(b => state.expandedBranches.add(b.id));
+        state.showAllTree = true;
+        state.activeTreeBranch = null;
         renderTree();
       });
     }
     if (els.collapseAllBtn) {
       els.collapseAllBtn.addEventListener('click', () => {
-        state.expandedBranches.clear();
+        state.showAllTree = false;
+        state.activeTreeBranch = null;
         renderTree();
       });
     }
@@ -503,104 +506,265 @@
     }
   }
 
-  // ── WIDOK DRZEWA / SIATKI HIERARCHICZNEJ ──
+  // ── WIDOK DRZEWA / PROGRESYWNA SIATKA 8 KAFELKÓW (EFEKT DOMINA 2026) ──
+  const BRANCH_SHORT_NAMES = {
+    'radio-tv': 'Radio',
+    'biblia-edukacja': 'Biblia',
+    'spolecznosc': 'Społeczność',
+    'media-wiedza': 'Media',
+    'muzyka-produkcja': 'Muzyka',
+    'aplikacje-technologia': 'Aplikacje',
+    'cc-network': 'Network',
+    'misja-wspolpraca': 'Misja'
+  };
+
+  function isNodeMatching(node, q, status, filter) {
+    if (filter && filter !== 'all' && node.branchId !== filter) return false;
+    if (status && node.status !== status) return false;
+    if (!q) return true;
+    return (
+      (node.name && node.name.toLowerCase().includes(q)) ||
+      (node.shortDesc && node.shortDesc.toLowerCase().includes(q)) ||
+      (node.keywords && node.keywords.some(k => k.toLowerCase().includes(q))) ||
+      (node.url && node.url.toLowerCase().includes(q))
+    );
+  }
+
   function renderTree() {
     if (!els.branchesContainer || !state.data) return;
 
-    const q = state.searchQuery;
+    const q = state.searchQuery ? state.searchQuery.trim().toLowerCase() : '';
     const filter = state.activeFilter;
     const status = state.statusFilter;
 
-    let html = '';
-    let totalMatching = 0;
+    // 1. Renderowanie siatki 8 kafelków głównych obszarów
+    let tilesHtml = '<div class="mapa-categories-grid" role="tablist" aria-label="8 głównych obszarów ekosystemu Christian Culture">';
+    let totalMatchingAll = 0;
+    const branchMatchingMap = new Map();
 
     state.data.branches.forEach(branch => {
-      if (filter !== 'all' && branch.id !== filter) return;
+      const allBranchNodes = state.data.nodes.filter(n => n.branchId === branch.id);
+      const matchingNodes = allBranchNodes.filter(n => isNodeMatching(n, q, status, filter));
+      branchMatchingMap.set(branch.id, matchingNodes);
+      totalMatchingAll += matchingNodes.length;
 
-      const nodes = state.data.nodes.filter(n => {
-        if (n.branchId !== branch.id) return false;
-        if (status && n.status !== status) return false;
-        if (!q) return true;
-        return (
-          n.name.toLowerCase().includes(q) ||
-          n.shortDesc.toLowerCase().includes(q) ||
-          (n.keywords && n.keywords.some(k => k.toLowerCase().includes(q))) ||
-          (n.url && n.url.toLowerCase().includes(q))
-        );
-      });
+      const shortName = BRANCH_SHORT_NAMES[branch.id] || branch.name;
+      const isActive = state.activeTreeBranch === branch.id;
+      const hasSearchHits = q && matchingNodes.length > 0;
+      const isDimmed = (q || status) && matchingNodes.length === 0;
 
-      if (nodes.length === 0 && (q || status)) return;
-      totalMatching += nodes.length;
-
-      const isOpen = state.expandedBranches.has(branch.id);
-
-      html += `
-        <div class="mapa-branch-section ${isOpen ? 'open' : ''}" data-branch-id="${escapeHtml(branch.id)}">
-          <div class="mapa-branch-header" role="button" tabindex="0" aria-expanded="${isOpen}">
-            <div class="mapa-branch-title-wrap">
-              <div class="mapa-branch-icon" style="border-color: ${escapeHtml(branch.color)}">${escapeHtml(branch.icon)}</div>
-              <div>
-                <div class="mapa-branch-name">${escapeHtml(branch.name)}</div>
-                <div class="mapa-branch-tagline">${escapeHtml(branch.tagline)}</div>
-              </div>
-            </div>
-            <div class="mapa-branch-meta">
-              <span class="mapa-branch-badge">${nodes.length} pozycji</span>
-              <i class="fa-solid fa-chevron-down mapa-branch-toggle-icon"></i>
-            </div>
+      tilesHtml += `
+        <div 
+          class="mapa-category-tile ${isActive ? 'is-active' : ''} ${isDimmed ? 'is-dimmed' : ''}" 
+          data-branch-id="${escapeHtml(branch.id)}" 
+          role="button" 
+          tabindex="0" 
+          aria-expanded="${isActive ? 'true' : 'false'}" 
+          aria-controls="mapaTreeExpandedContainer"
+          title="Kliknij, aby rozwinąć projekty obszaru ${escapeHtml(shortName)}"
+        >
+          <div class="mapa-category-tile-head">
+            <div class="mapa-category-tile-icon" style="border-color: ${escapeHtml(branch.color)}">${escapeHtml(branch.icon)}</div>
+            <i class="fa-solid fa-chevron-down mapa-category-tile-chevron" aria-hidden="true"></i>
           </div>
-          <div class="mapa-branch-body">
-            ${nodes.map(node => renderNodeCard(node)).join('')}
+          <div class="mapa-category-tile-body">
+            <div class="mapa-category-tile-name">${escapeHtml(shortName)}</div>
+            <div class="mapa-category-tile-tagline">${escapeHtml(branch.tagline)}</div>
+          </div>
+          <div class="mapa-category-tile-foot">
+            <span class="mapa-category-tile-badge">${allBranchNodes.length} pozycji</span>
+            ${hasSearchHits ? `<span class="mapa-category-tile-search-badge">${matchingNodes.length} pasujących</span>` : ''}
           </div>
         </div>
       `;
     });
+    tilesHtml += '</div>';
 
-    if (totalMatching === 0) {
-      html = `
-        <div style="text-align: center; padding: 3rem 1rem; color: #8E9BAE;">
-          <i class="fa-solid fa-compass" style="font-size: 2.5rem; color: #C4A35A; margin-bottom: 1rem; display: block;"></i>
-          <h3 style="font-family: 'Cinzel', serif; color: #F8FAFC; margin-bottom: 0.5rem;">Nie znaleziono pasujących projektów</h3>
+    // 2. Renderowanie kontenera rozwiniętego obszaru
+    let expandedHtml = '<div class="mapa-tree-expanded-container" id="mapaTreeExpandedContainer" aria-live="polite">';
+
+    if (totalMatchingAll === 0 && (q || status)) {
+      expandedHtml += `
+        <div class="mapa-tree-empty-prompt">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i>
+          <h3>Nie znaleziono pasujących projektów</h3>
           <p>Spróbuj zmienić słowa kluczowe lub wybierz kategorię „Wszystkie”.</p>
+        </div>
+      `;
+    } else if (state.showAllTree) {
+      // Tryb "Pokaż wszystko" — wszystkie gałęzie kolejno z nagłówkami
+      state.data.branches.forEach(branch => {
+        const nodes = branchMatchingMap.get(branch.id) || [];
+        if (nodes.length === 0 && (q || status)) return;
+
+        expandedHtml += `
+          <div class="mapa-expanded-branch-section" data-branch-id="${escapeHtml(branch.id)}">
+            <div class="mapa-expanded-branch-header">
+              <div class="mapa-expanded-branch-title-wrap">
+                <span class="mapa-expanded-branch-icon">${escapeHtml(branch.icon)}</span>
+                <div>
+                  <h2 class="mapa-expanded-branch-name">${escapeHtml(branch.name)}</h2>
+                  <div class="mapa-expanded-branch-sub">${escapeHtml(branch.tagline)} (${nodes.length} pozycji)</div>
+                </div>
+              </div>
+            </div>
+            <div class="mapa-domino-grid">
+              ${nodes.map((node, idx) => renderDominoCard(node, idx)).join('')}
+            </div>
+          </div>
+        `;
+      });
+    } else if (state.activeTreeBranch) {
+      // Tryb pojedynczej aktywnej kategorii z kaskadą domina
+      const activeBranch = state.data.branches.find(b => b.id === state.activeTreeBranch);
+      if (activeBranch) {
+        const nodes = branchMatchingMap.get(activeBranch.id) || [];
+        expandedHtml += `
+          <div class="mapa-expanded-branch-section" data-branch-id="${escapeHtml(activeBranch.id)}">
+            <div class="mapa-expanded-branch-header">
+              <div class="mapa-expanded-branch-title-wrap">
+                <span class="mapa-expanded-branch-icon">${escapeHtml(activeBranch.icon)}</span>
+                <div>
+                  <h2 class="mapa-expanded-branch-name">${escapeHtml(activeBranch.name)}</h2>
+                  <div class="mapa-expanded-branch-sub">${escapeHtml(activeBranch.tagline)} (${nodes.length} pozycji)</div>
+                </div>
+              </div>
+              <button class="mapa-expanded-close-btn" type="button" aria-label="Zwiń ten obszar">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                <span>Zwiń</span>
+              </button>
+            </div>
+            ${nodes.length === 0 ? `
+              <div class="mapa-tree-empty-prompt" style="padding: 1.5rem;">
+                <p>Brak projektów spełniających bieżące kryteria w tym obszarze.</p>
+              </div>
+            ` : `
+              <div class="mapa-domino-grid">
+                ${nodes.map((node, idx) => renderDominoCard(node, idx)).join('')}
+              </div>
+            `}
+          </div>
+        `;
+      }
+    } else if (q) {
+      // Wyszukiwanie bez wybranej kategorii — pokazujemy gałęzie z trafieniami
+      state.data.branches.forEach(branch => {
+        const nodes = branchMatchingMap.get(branch.id) || [];
+        if (nodes.length === 0) return;
+
+        expandedHtml += `
+          <div class="mapa-expanded-branch-section" data-branch-id="${escapeHtml(branch.id)}">
+            <div class="mapa-expanded-branch-header">
+              <div class="mapa-expanded-branch-title-wrap">
+                <span class="mapa-expanded-branch-icon">${escapeHtml(branch.icon)}</span>
+                <div>
+                  <h2 class="mapa-expanded-branch-name">${escapeHtml(branch.name)}</h2>
+                  <div class="mapa-expanded-branch-sub">${nodes.length} pasujących projektów</div>
+                </div>
+              </div>
+            </div>
+            <div class="mapa-domino-grid">
+              ${nodes.map((node, idx) => renderDominoCard(node, idx)).join('')}
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      // Domyślny stan początkowy: wyłącznie 8 kafelków, zachęta do wyboru
+      expandedHtml += `
+        <div class="mapa-tree-empty-prompt">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i>
+          <h3>Wybierz obszar, aby odkryć projekty</h3>
+          <p>Kliknij dowolny z powyższych 8 kafelków, aby rozwinąć jego projekty z płynnym efektem domina. W każdej chwili możesz także skorzystać z opcji „Pokaż wszystko”.</p>
         </div>
       `;
     }
 
-    els.branchesContainer.innerHTML = html;
+    expandedHtml += '</div>';
 
-    // Podpięcie zdarzeń
-    els.branchesContainer.querySelectorAll('.mapa-branch-header').forEach(hdr => {
-      hdr.addEventListener('click', function () {
-        const section = this.closest('.mapa-branch-section');
-        const branchId = section.getAttribute('data-branch-id');
-        if (state.expandedBranches.has(branchId)) {
-          state.expandedBranches.delete(branchId);
-          section.classList.remove('open');
-          this.setAttribute('aria-expanded', 'false');
+    // Łączymy siatkę kafelków z kontenerem rozwinięcia
+    els.branchesContainer.innerHTML = tilesHtml + expandedHtml;
+
+    // 3. Podpięcie interakcji kafelków (kliknięcie i obsługa klawiatury Enter/Spacja)
+    els.branchesContainer.querySelectorAll('.mapa-category-tile').forEach(tile => {
+      const toggleTile = () => {
+        const branchId = tile.getAttribute('data-branch-id');
+        if (state.activeTreeBranch === branchId) {
+          state.activeTreeBranch = null;
+          state.showAllTree = false;
         } else {
-          state.expandedBranches.add(branchId);
-          section.classList.add('open');
-          this.setAttribute('aria-expanded', 'true');
+          state.activeTreeBranch = branchId;
+          state.showAllTree = false;
+        }
+        renderTree();
+
+        // Płynne doprowadzenie wzroku na smartfonach
+        if (state.activeTreeBranch && window.innerWidth <= 768) {
+          const exp = document.getElementById('mapaTreeExpandedContainer');
+          if (exp) {
+            exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      };
+
+      tile.addEventListener('click', toggleTile);
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleTile();
         }
       });
     });
 
+    // Przycisk "Zwiń" w nagłówku rozwiniętego obszaru
+    const closeBtn = els.branchesContainer.querySelector('.mapa-expanded-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        state.activeTreeBranch = null;
+        state.showAllTree = false;
+        renderTree();
+      });
+    }
+
+    // Kliknięcie w karty projektów
     els.branchesContainer.querySelectorAll('.mapa-card').forEach(card => {
-      card.addEventListener('click', function (e) {
+      const handleSelect = (e) => {
         if (e.target.closest('.mapa-card-btn-open')) return;
-        const nodeId = this.getAttribute('data-id');
+        const nodeId = card.getAttribute('data-id');
         selectNode(nodeId, true);
+      };
+
+      card.addEventListener('click', handleSelect);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          if (!e.target.closest('.mapa-card-btn-open')) {
+            e.preventDefault();
+            handleSelect(e);
+          }
+        }
       });
     });
   }
 
-  function renderNodeCard(node) {
+  // Renderowanie pojedynczej karty z kaskadową animacją domina
+  function renderDominoCard(node, index) {
     const isSelected = state.selectedNodeId === node.id;
     const badgeClass = node.status === 'beta' ? 'mapa-badge-beta' : 'mapa-badge-active';
     const statusText = node.status === 'beta' ? 'BETA' : 'AKTYWNY';
 
+    // Odstęp między kafelkami 45ms, sekwencja max 600ms (340ms max delay + 260ms duration)
+    const delayMs = Math.min(index * 45, 340);
+    const delayStyle = `--domino-delay: ${delayMs}ms; --domino-i: ${index};`;
+
     return `
-      <div class="mapa-card ${isSelected ? 'active-selected' : ''}" data-id="${escapeHtml(node.id)}">
+      <div 
+        class="mapa-card domino-item ${isSelected ? 'active-selected' : ''}" 
+        data-id="${escapeHtml(node.id)}"
+        style="${delayStyle}"
+        role="button"
+        tabindex="0"
+        aria-label="Projekt ${escapeHtml(node.name)}"
+      >
         <div>
           <div class="mapa-card-head">
             <div class="mapa-card-icon-wrap">
@@ -613,7 +777,18 @@
         </div>
         <div class="mapa-card-footer">
           <span>${escapeHtml(node.category)}</span>
-          ${node.url ? `<a href="${escapeHtml(node.url)}" target="_blank" rel="noopener" class="mapa-card-btn-open">Otwórz ↗</a>` : ''}
+          ${node.url ? `
+            <a 
+              href="${escapeHtml(node.url)}" 
+              target="_blank" 
+              rel="noopener" 
+              class="mapa-card-btn-open"
+              aria-label="Otwórz ${escapeHtml(node.name)} w nowej karcie"
+            >
+              <span>Otwórz</span>
+              <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+          ` : ''}
         </div>
       </div>
     `;

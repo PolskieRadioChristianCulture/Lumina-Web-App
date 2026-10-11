@@ -1219,158 +1219,356 @@ html, body {
   flex-wrap: wrap;
 }
 
+/* ── PROGRESYWNA SIATKA 8 KAFELKÓW & EFEKT DOMINA (2026) ── */
 .mapa-branches-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.mapa-branch-section {
-  background: var(--map-surface);
-  border: 1px solid var(--map-border);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: var(--transition-smooth);
-}
-
-.mapa-branch-section:hover {
-  border-color: var(--map-border-strong);
-}
-
-.mapa-branch-header {
-  padding: 1.1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
-  background: rgba(18, 29, 50, 0.8);
-  transition: var(--transition-smooth);
-}
-
-.mapa-branch-header:hover {
-  background: var(--map-surface-hover);
-}
-
-.mapa-branch-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.mapa-branch-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  background: rgba(8, 15, 32, 0.7);
-  border: 1.5px solid var(--gold-primary);
-  flex-shrink: 0;
-}
-
-.mapa-branch-name {
-  font-family: var(--font-serif);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--gold-light);
-  letter-spacing: 0.04em;
-}
-
-.mapa-branch-tagline {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-
-.mapa-branch-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.mapa-branch-badge {
-  font-size: 0.72rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-  background: rgba(196, 163, 90, 0.15);
-  color: var(--gold-light);
-  border: 1px solid var(--map-border);
-}
-
-.mapa-branch-toggle-icon {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  transition: transform 0.3s ease;
-}
-
-.mapa-branch-section.open .mapa-branch-toggle-icon {
-  transform: rotate(180deg);
-}
-
-.mapa-branch-body {
-  display: none;
-  padding: 1.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  background: rgba(8, 15, 32, 0.4);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.mapa-branch-section.open .mapa-branch-body {
+.mapa-categories-grid {
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 0 auto 1.5rem auto;
+  max-width: 1280px;
+  width: 100%;
 }
 
-.mapa-card {
+.mapa-category-tile {
   background: rgba(18, 29, 50, 0.85);
   border: 1px solid var(--map-border);
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 14px;
+  padding: 1rem 1.15rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 0.75rem;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  user-select: none;
+  min-height: 88px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+.mapa-category-tile:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
+}
+
+.mapa-category-tile:hover {
+  border-color: var(--gold-hover);
+  background: rgba(24, 38, 64, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.mapa-category-tile.is-active {
+  border-color: var(--gold-primary);
+  background: linear-gradient(145deg, rgba(32, 52, 86, 0.95), rgba(18, 29, 50, 0.98));
+  box-shadow: 0 0 24px rgba(196, 163, 90, 0.35), 0 8px 28px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.mapa-category-tile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.mapa-category-tile-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  background: rgba(8, 15, 32, 0.8);
+  border: 1.5px solid var(--gold-primary);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mapa-category-tile.is-active .mapa-category-tile-icon {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(196, 163, 90, 0.5);
+}
+
+.mapa-category-tile-chevron {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+}
+
+.mapa-category-tile:hover .mapa-category-tile-chevron {
+  color: var(--gold-light);
+}
+
+.mapa-category-tile.is-active .mapa-category-tile-chevron {
+  transform: rotate(180deg);
+  color: var(--gold-primary);
+}
+
+.mapa-category-tile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mapa-category-tile-name {
+  font-family: var(--font-serif);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+
+.mapa-category-tile.is-active .mapa-category-tile-name {
+  color: var(--gold-light);
+}
+
+.mapa-category-tile-tagline {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mapa-category-tile-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mapa-category-tile-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(196, 163, 90, 0.12);
+  color: var(--gold-light);
+  border: 1px solid rgba(196, 163, 90, 0.25);
+}
+
+.mapa-category-tile-search-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+/* ── KONTENER ROZWINIĘTEGO OBSZARU ── */
+.mapa-tree-expanded-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+  max-width: 1280px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mapa-tree-empty-prompt {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: rgba(18, 29, 50, 0.5);
+  border: 1px dashed var(--map-border);
+  border-radius: 14px;
+  color: var(--text-secondary);
+}
+
+.mapa-tree-empty-prompt i {
+  font-size: 2rem;
+  color: var(--gold-primary);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.mapa-tree-empty-prompt h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: #F8FAFC;
+  margin-bottom: 0.35rem;
+}
+
+.mapa-tree-empty-prompt p {
+  font-size: 0.88rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.mapa-expanded-branch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(90deg, rgba(24, 38, 64, 0.95), rgba(18, 29, 50, 0.75));
+  border: 1px solid var(--map-border-strong);
+  border-left: 4px solid var(--gold-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mapa-expanded-branch-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mapa-expanded-branch-icon {
+  font-size: 1.4rem;
+}
+
+.mapa-expanded-branch-name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.03em;
+}
+
+.mapa-expanded-branch-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.mapa-expanded-close-btn {
+  background: transparent;
+  border: 1px solid var(--map-border);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.mapa-expanded-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFF;
+  border-color: var(--gold-hover);
+}
+
+/* ── DOMINO GRID & ANIMACJA ── */
+.mapa-domino-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+@keyframes dominoCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) rotate(-1.5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.mapa-card.domino-item {
+  opacity: 0;
+  animation: dominoCascade 260ms cubic-bezier(0.16, 1, 0.3, 1) var(--domino-delay, 0ms) forwards;
+  pointer-events: auto !important;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-card.domino-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .mapa-category-tile,
+  .mapa-category-tile-chevron {
+    transition: none !important;
+  }
+}
+
+.mapa-card {
+  background: rgba(18, 29, 50, 0.88);
+  border: 1px solid var(--map-border);
+  border-radius: 12px;
+  padding: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  min-height: 140px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .mapa-card:hover {
   transform: translateY(-2px);
   border-color: var(--gold-hover);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.mapa-card.active-selected {
+  border-color: var(--gold-primary);
+  background: linear-gradient(145deg, rgba(26, 42, 70, 0.95), rgba(18, 29, 50, 0.95));
+  box-shadow: 0 0 20px rgba(196, 163, 90, 0.3);
 }
 
 .mapa-card-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .mapa-card-icon-wrap {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
 }
 
 .mapa-card-icon {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
 .mapa-card-title {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 600;
   color: #F8FAFC;
+  line-height: 1.35;
 }
 
 .mapa-card-badge {
   font-size: 0.65rem;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 8px;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .mapa-badge-active {
@@ -1386,17 +1584,17 @@ html, body {
 }
 
 .mapa-card-desc {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.45;
+  line-height: 1.48;
 }
 
 .mapa-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   font-size: 0.75rem;
   color: var(--text-muted);
 }
@@ -1407,11 +1605,55 @@ html, body {
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0 4px;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .mapa-card-btn-open:hover {
   color: var(--gold-light);
+  transform: translateX(2px);
+}
+
+/* ── RESPONSYWNOŚĆ MOBILNA DLA KAFELKÓW I KART ── */
+@media (max-width: 900px) {
+  .mapa-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .mapa-category-tile {
+    padding: 0.85rem 0.95rem;
+    min-height: 80px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mapa-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+  .mapa-category-tile {
+    padding: 0.75rem 0.75rem;
+    min-height: 76px;
+    border-radius: 12px;
+  }
+  .mapa-category-tile-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  .mapa-category-tile-name {
+    font-size: 0.85rem;
+  }
+  .mapa-category-tile-tagline {
+    display: none;
+  }
+  .mapa-domino-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
 }
 
 /* ── RESPONSYWNOŚĆ MOBILNA I TABLETOWA ── */

@@ -85,3 +85,28 @@ test('index.html contains entries for Mapa Ekosystemu without regression', () =>
   assert.match(indexHtml, /href="\/mapa"[^>]*class="cc-card/);
   assert.match(indexHtml, /href="\/mapa"[^>]*class="drawer-link/);
 });
+
+test('tree view implements progressive 8-category tiles and domino animation', () => {
+  const cssPath = path.join(ROOT, 'css', 'mapa-ekosystemu.css');
+  const css = fs.readFileSync(cssPath, 'utf8');
+  assert.match(css, /\.mapa-categories-grid/);
+  assert.match(css, /\.mapa-category-tile/);
+  assert.match(css, /\.mapa-category-tile\.is-active/);
+  assert.match(css, /\.mapa-domino-grid/);
+  assert.match(css, /@keyframes dominoCascade/);
+  assert.match(css, /translateY\(18px\)\s*rotate\(-1\.5deg\)/);
+  assert.match(css, /pointer-events:\s*auto\s*!important/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+
+  const jsPath = path.join(ROOT, 'js', 'mapa-ekosystemu.js');
+  const js = fs.readFileSync(jsPath, 'utf8');
+  assert.match(js, /activeTreeBranch/);
+  assert.match(js, /BRANCH_SHORT_NAMES/);
+  assert.match(js, /renderDominoCard/);
+  assert.match(js, /--domino-delay/);
+
+  const htmlPath = path.join(ROOT, 'mapa.html');
+  const html = fs.readFileSync(htmlPath, 'utf8');
+  assert.match(html, /Pokaż wszystko/);
+  assert.match(html, /Zwiń wszystkie/);
+});
