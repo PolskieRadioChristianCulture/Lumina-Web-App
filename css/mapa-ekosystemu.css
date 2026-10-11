@@ -639,7 +639,49 @@ html, body {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-primary) transparent;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.35s;
+}
+
+.mapa-side-card.is-closed {
+  transform: translateX(calc(100% + 2.5rem)) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Przycisk przywrócenia zminimalizowanego panelu */
+.mapa-drawer-reopen-btn {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  z-index: 40;
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1.15rem;
+  background: rgba(18, 29, 50, 0.94);
+  border: 1px solid var(--gold-primary);
+  border-radius: 22px;
+  color: var(--gold-light);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.2s ease;
+}
+
+.mapa-drawer-reopen-btn:hover {
+  background: var(--gold-primary);
+  color: #080F20;
+  transform: translateY(-1px);
+}
+
+.mapa-drawer-reopen-btn.visible {
+  display: inline-flex !important;
 }
 
 .mapa-card-head-bar {
@@ -661,14 +703,23 @@ html, body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
   line-height: 1;
+  transition: all 0.2s ease;
 }
 
 .mapa-card-close:hover {
   color: #FFF;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.08);
 }
 
 .mapa-card-hero {
@@ -1159,10 +1210,29 @@ html, body {
     border-left: none;
     border-right: none;
     transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
-  .mapa-side-card.active {
+  .mapa-side-card.active:not(.is-closed) {
     transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mapa-side-card.is-closed {
+    transform: translateY(100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .mapa-drawer-reopen-btn {
+    top: 1rem;
+    bottom: auto;
+    right: 1rem;
   }
 }
 

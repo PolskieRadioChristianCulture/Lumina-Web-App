@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
-  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v3_masterpiece">
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v4_drawer_fix">
 
   <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
   <style>
@@ -98,6 +98,206 @@
       line-height: 1.4;
       display: inline-block;
     }
+    .mapa-side-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.35s !important;
+    }
+    .mapa-side-card.is-closed {
+      transform: translateX(calc(100% + 2.5rem)) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+    .mapa-drawer-reopen-btn {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.5rem;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      padding: 0 1.15rem;
+      background: rgba(18, 29, 50, 0.94);
+      border: 1px solid #C4A35A;
+      border-radius: 22px;
+      color: #E2CC9A;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.2s ease;
+    }
+    .mapa-drawer-reopen-btn:hover {
+      background: #C4A35A;
+      color: #080F20;
+      transform: translateY(-1px);
+    }
+    .mapa-drawer-reopen-btn.visible {
+      display: inline-flex !important;
+    }
+    @media (max-width: 1200px) {
+      .mapa-side-card.is-closed {
+        transform: translateY(100%) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+      .mapa-drawer-reopen-btn {
+        top: 1rem;
+        bottom: auto;
+        right: 1rem;
+      }
+    }
+
+    /* ── PRZEŁĄCZNIK WARSTW MAPA CC | @A — AGENCI MISJI ── */
+    .mapa-layer-switch {
+      display: none;
+      align-items: center;
+      background: rgba(18, 29, 50, 0.85);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 20px;
+      padding: 2px;
+      gap: 2px;
+      margin-right: 0.5rem;
+    }
+    .mapa-layer-btn {
+      background: transparent;
+      border: none;
+      color: #CBD5E1;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .mapa-layer-btn:hover {
+      color: #E2CC9A;
+    }
+    .mapa-layer-btn.active {
+      background: #C4A35A;
+      color: #080F20;
+      box-shadow: 0 0 12px rgba(196, 163, 90, 0.4);
+    }
+    .mapa-layer-btn .agent-badge {
+      background: rgba(8, 15, 32, 0.85);
+      color: #C4A35A;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .mapa-layer-btn.active .agent-badge {
+      background: #080F20;
+      color: #E2CC9A;
+    }
+
+    /* Wskaźnik stanu agenta w panelu */
+    .agent-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .agent-status-running {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .agent-status-idle {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38BDF8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .agent-status-waiting {
+      background: rgba(245, 158, 11, 0.15);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .agent-status-error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .agent-status-unknown {
+      background: rgba(142, 155, 174, 0.15);
+      color: #8E9BAE;
+      border: 1px solid rgba(142, 155, 174, 0.3);
+    }
+
+    /* SubAgenci w wysuwanym panelu */
+    .agent-subagent-card {
+      background: rgba(8, 15, 32, 0.65);
+      border: 1px solid rgba(196, 163, 90, 0.15);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+    .agent-subagent-card:hover {
+      border-color: rgba(196, 163, 90, 0.35);
+      background: rgba(8, 15, 32, 0.85);
+    }
+    .agent-subagent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .agent-subagent-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .agent-subagent-role {
+      font-size: 0.75rem;
+      color: #CBD5E1;
+      margin-bottom: 4px;
+    }
+    .agent-subagent-meta {
+      font-size: 0.7rem;
+      color: #8E9BAE;
+      display: flex;
+      gap: 8px;
+    }
+    .agent-ctrl-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .agent-ctrl-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      background: rgba(18, 29, 50, 0.9);
+      color: #F8FAFC;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .agent-ctrl-btn:hover {
+      background: #C4A35A;
+      color: #080F20;
+    }
   </style>
 </head>
 <body>
@@ -140,6 +340,19 @@
 
       <!-- Zakładki nawigacyjne po prawej stronie -->
       <div class="mapa-header-right">
+        <!-- Przełącznik warstw dla Administratora (widoczny tylko dla nazirczarkes@gmail.com) -->
+        <div id="mapaLayerSwitch" class="mapa-layer-switch" role="group" aria-label="Wybór warstwy mapy">
+          <button id="layerBtnPublic" class="mapa-layer-btn active" type="button" title="Publiczna mapa projektów CC">
+            <i class="fa-solid fa-globe"></i>
+            <span>Mapa CC</span>
+          </button>
+          <button id="layerBtnAgents" class="mapa-layer-btn" type="button" title="Prywatna mapa sztabowa agentów CC">
+            <i class="fa-solid fa-robot"></i>
+            <span>@A — Agenci Misji</span>
+            <span class="agent-badge">Sztab</span>
+          </button>
+        </div>
+
         <nav class="mapa-nav-tabs" aria-label="Nawigacja sekcji mapy">
           <button id="navTabGalaxy" class="mapa-nav-tab active" type="button">Mapa</button>
           <button id="navTabProjects" class="mapa-nav-tab" type="button">Projekty</button>
@@ -156,6 +369,8 @@
             <i class="fa-solid fa-circle-play"></i>
             <span>Radio 24/7</span>
           </a>
+          <!-- Gniazdo logowania CC & LUMINA Google Auth Connector -->
+          <div class="user-nav-profile" id="userNavProfile" style="display: none;"></div>
         </div>
       </div>
     </header>
@@ -227,6 +442,12 @@
           <i class="fa-solid fa-crosshairs"></i>
         </button>
       </div>
+
+      <!-- Przycisk przywrócenia zminimalizowanego panelu szczegółów -->
+      <button id="mapaDrawerReopenBtn" class="mapa-drawer-reopen-btn" title="Pokaż panel szczegółów" aria-label="Pokaż panel szczegółów">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Pokaż szczegóły</span>
+      </button>
 
       <!-- KARTA „WYBRANY OBSZAR” (DOKŁADNIE JAK NA ZAAKCEPTOWANEJ WIZUALIZACJI) -->
       <aside id="mapaDrawer" class="mapa-side-card" role="dialog" aria-label="Szczegóły wybranego obszaru">
@@ -365,8 +586,10 @@
     <cc-support-footer></cc-support-footer>
   </div>
 
-  <!-- Skrypt silnika mapy (v3) -->
-  <script src="/js/mapa-ekosystemu.js?v=20261011_v3_masterpiece" defer></script>
+  <!-- Uniwersalny konektor logowania CC & LUMINA Google Auth Connector -->
+  <script src="/js/cc-global-auth.js?v=20261011_auth" defer></script>
+  <!-- Skrypt silnika mapy (v5 - warstwa @A Agenci Misji) -->
+  <script src="/js/mapa-ekosystemu.js?v=20261011_v5_agents_mission" defer></script>
   <!-- Wspólna stopka i narzędzia -->
   <script src="/components/cc-support-footer.js" defer></script>
   <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>

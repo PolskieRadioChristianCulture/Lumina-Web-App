@@ -101,6 +101,7 @@
       collapseAllBtn: document.getElementById('mapaCollapseAllBtn'),
       drawer: document.getElementById('mapaDrawer'),
       drawerClose: document.getElementById('mapaDrawerClose'),
+      drawerReopenBtn: document.getElementById('mapaDrawerReopenBtn'),
       drawerIcon: document.getElementById('mapaDrawerIcon'),
       drawerTitle: document.getElementById('mapaDrawerTitle'),
       drawerCategory: document.getElementById('mapaDrawerCategory'),
@@ -232,9 +233,12 @@
       });
     }
 
-    // Zamykanie side-card
+    // Zamykanie / minimalizacja side-card
     if (els.drawerClose) {
       els.drawerClose.addEventListener('click', closeSideCard);
+    }
+    if (els.drawerReopenBtn) {
+      els.drawerReopenBtn.addEventListener('click', openSideCard);
     }
 
     // Udostępnianie linku
@@ -734,9 +738,7 @@
 
     const bNodes = state.data.nodes.filter(n => n.branchId === branchId);
 
-    if (els.drawer) {
-      els.drawer.classList.add('active');
-    }
+    openSideCard();
     if (els.drawerIcon) els.drawerIcon.textContent = branch.icon;
     if (els.drawerTitle) els.drawerTitle.textContent = branch.name;
     if (els.drawerCategory) els.drawerCategory.textContent = branch.tagline;
@@ -790,9 +792,7 @@
     state.selectedBranchId = node.branchId;
     updateUrlParam('node', node.id);
 
-    if (els.drawer) {
-      els.drawer.classList.add('active');
-    }
+    openSideCard();
     if (els.drawerIcon) els.drawerIcon.textContent = node.icon;
     if (els.drawerTitle) els.drawerTitle.textContent = node.name;
     if (els.drawerCategory) els.drawerCategory.textContent = node.category;
@@ -838,9 +838,23 @@
     renderSvgGraph();
   }
 
+  function openSideCard() {
+    if (els.drawer) {
+      els.drawer.classList.remove('is-closed');
+      els.drawer.classList.add('active');
+    }
+    if (els.drawerReopenBtn) {
+      els.drawerReopenBtn.classList.remove('visible');
+    }
+  }
+
   function closeSideCard() {
     if (els.drawer) {
+      els.drawer.classList.add('is-closed');
       els.drawer.classList.remove('active');
+    }
+    if (els.drawerReopenBtn) {
+      els.drawerReopenBtn.classList.add('visible');
     }
   }
 
