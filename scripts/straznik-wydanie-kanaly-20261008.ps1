@@ -29,6 +29,7 @@ $Files = @(
     'cctv24-worship-live.html', 'biblia-spiewana-live.html',
     'cctv24-worship.html', 'cctv24-worship.backup-20261008.html',
     'ambient-sleep-live.html', 'dzj-vertical-live.html', 'master-live.html',
+    'lumina.html', 'scripts\mobile-premium-regression.test.mjs',
     'news.json', '_worker.js', '.cc-frozen-approvals.json', 'scripts\joma_guard_sentinel.cjs',
     'scripts\lumina-straznik-20261007.test.mjs',
     'CLAUDE.md',
@@ -57,7 +58,7 @@ if ($rc -ne 0) { Stop "git add nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Kanały nadawcze: prawdziwe dane (pogoda, Mission Control, wiadomości, intencje), ciągłość emisji, cctv24-worship (Strażnik 2026-10-08)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMINA — przycisk dołączenia w dwóch liniach; kanały nadawcze" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()

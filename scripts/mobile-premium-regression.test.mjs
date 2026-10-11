@@ -147,7 +147,7 @@ test('registration starts cleanly and guest-only services stay quiet', async () 
   const badges = await readFile('lumina-badges-engine.js', 'utf8');
   const typing = await readFile('lumina-chat-typing.js', 'utf8');
 
-  assert.match(html, /Dołącz bezpłatnie – zacznij w minutę/);
+  assert.match(html, /Dołącz bezpłatnie<\/span><span>Zacznij w minutę/); // dwie linijki (decyzja Dowódcy 2026-10-11)
   assert.match(html, /id="btnGoogleRegister"[\s\S]*Zacznij przez Google/);
 
   const stepTwoGuard = html.slice(
