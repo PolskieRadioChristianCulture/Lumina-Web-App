@@ -117,7 +117,7 @@ test('11. Nested OSOBOWOSC alias resolves logo, cover and entry scripts from roo
     const base = new URL('/', 'https://polskieradio.cc/lumina/osobowoscplus');
     assert.equal(new URL(path, base).pathname, '/' + path);
   }
-  assert.match(html, /profile_compact_v5/);
+  assert.match(html, /profile_compact_v6/);
 
   const wiolettaHtml = await readFile('lumina.wiolettarogowska.html', 'utf8');
   assert.match(wiolettaHtml, /<base href="\/">/);
@@ -145,6 +145,6 @@ test('13. Mobile header standard: avatar centred on the cover edge, details cent
   assert.match(block, /\.cover-hint-badge \{[^}]*bottom: auto !important/);
   for (const file of profileFiles) {
     const html = await readFile(file, 'utf8');
-    assert.match(html, /lumina-profile-standard\.css\?v=20261011_profile_compact_v5/, `${file} must load the current profile standard`);
+    assert.match(html, /lumina-profile-standard\.css\?v=20261011_profile_compact_v6/, `${file} must load the current profile standard`);
   }
 });

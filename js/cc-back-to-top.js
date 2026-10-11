@@ -75,6 +75,82 @@
     if (window.visualViewport) window.visualViewport.addEventListener('resize', schedule, { passive: true });
     update();
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });
-  else mount();
+
+  // ── Dok szybkich skrótów (Strażnik, 2026-10-11) ─────────────────────────────
+  // Zamiast trzech pływających przycisków (radio, czat, motyw) zasłaniających treść
+  // po prawej — jeden przycisk; po dotknięciu pokazuje skróty nad sobą.
+  function mountFabDock() {
+    if (typeof document.querySelector !== 'function' || window.CCFabDock) return;
+    window.CCFabDock = true;
+    var IDS = ['#luminaThemeSwitchBtn', '#luminaFloatingChatBtn', '#luminaMiniPlayerContainer.minimized'];
+    var root = document.documentElement;
+    var toggle = null;
+    var css = document.createElement('style');
+    css.textContent = 'html.cc-fab-dock-on:not(.cc-fab-dock-open) :is(#luminaThemeSwitchBtn,#luminaFloatingChatBtn,#luminaMiniPlayerContainer.minimized){display:none!important}' +
+      'html.cc-fab-dock-open #luminaThemeSwitchBtn{bottom:calc(var(--cc-dock-b) + 60px)!important;right:var(--cc-dock-r)!important}' +
+      'html.cc-fab-dock-open #luminaFloatingChatBtn{bottom:calc(var(--cc-dock-b) + 120px)!important;right:var(--cc-dock-r)!important}' +
+      'html.cc-fab-dock-open #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-dock-b) + 180px)!important;right:var(--cc-dock-r)!important}' +
+      '#ccFabDockToggle{position:fixed;z-index:100006;bottom:var(--cc-dock-b);right:var(--cc-dock-r);width:48px;height:48px;border-radius:50%;border:1px solid #b08a3c;background:#fff;color:#63470e;box-shadow:0 3px 14px #0003;display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;touch-action:manipulation;transition:transform .2s}' +
+      'html.cc-fab-dock-on #ccFabDockToggle{display:flex}html.cc-fab-dock-open #ccFabDockToggle{transform:rotate(45deg)}' +
+      '#ccFabDockToggle:focus-visible{outline:3px solid #2563eb;outline-offset:3px}' +
+      '[data-lumina-theme="dark"] #ccFabDockToggle,html.dark #ccFabDockToggle{background:#171923;color:#ffe2a1}';
+    document.head.appendChild(css);
+    function present() {
+      return IDS.map(function (s) { return document.querySelector(s); }).filter(function (el) {
+        return el && window.getComputedStyle(el).position === 'fixed';
+      });
+    }
+    function setOpen(open) {
+      root.classList.toggle('cc-fab-dock-open', open);
+      if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function check() {
+      if (root.classList.contains('cc-fab-dock-on')) {
+        if (!document.querySelector('#luminaThemeSwitchBtn, #luminaFloatingChatBtn, #luminaMiniPlayerContainer')) {
+          root.classList.remove('cc-fab-dock-on', 'cc-fab-dock-open');
+        }
+        return;
+      }
+      var items = present();
+      if (items.length < 2) return;
+      var bottom = Infinity, right = 10;
+      items.forEach(function (el) {
+        var cs = window.getComputedStyle(el);
+        var b = parseFloat(cs.bottom);
+        if (!isNaN(b) && b < bottom) { bottom = b; right = parseFloat(cs.right) || right; }
+      });
+      if (!isFinite(bottom)) bottom = 142;
+      root.style.setProperty('--cc-dock-b', bottom + 'px');
+      root.style.setProperty('--cc-dock-r', right + 'px');
+      if (!toggle) {
+        toggle = document.createElement('button');
+        toggle.id = 'ccFabDockToggle';
+        toggle.type = 'button';
+        toggle.setAttribute('aria-label', 'Skróty: radio, czat, motyw');
+        toggle.title = 'Skróty';
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>';
+        toggle.addEventListener('click', function (event) {
+          event.stopPropagation();
+          setOpen(!root.classList.contains('cc-fab-dock-open'));
+        });
+        document.body.appendChild(toggle);
+        document.addEventListener('click', function (event) {
+          if (!root.classList.contains('cc-fab-dock-open') || event.target === toggle) return;
+          // Po wybraniu skrótu lub dotknięciu poza dokiem — zwiń.
+          setTimeout(function () { setOpen(false); }, 150);
+        });
+        document.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape' && root.classList.contains('cc-fab-dock-open')) { setOpen(false); toggle.focus(); }
+        });
+      }
+      root.classList.add('cc-fab-dock-on');
+    }
+    var tries = 0;
+    var timer = setInterval(function () { check(); if (++tries > 20) clearInterval(timer); }, 750);
+    check();
+  }
+  function start() { mount(); try { mountFabDock(); } catch (e) {} }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })();

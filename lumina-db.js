@@ -6213,6 +6213,12 @@ export const LUMINA_BADGES_CATALOG = {
     }
 };
 
+// Odznaki się ZDOBYWA (Strażnik, 2026-10-11): nikt nie dostaje kompletu na start.
+// Zdobyte = przyznane w profilu (pole badges w Firestore) + to, co wynika z prawdziwych danych:
+// „Zweryfikowany Świadek” za prawdziwe zdjęcie profilowe, „Królewskie Dziedzictwo” dla Założycieli.
+const LUMINA_FOUNDER_SLUGS = ['cezaryrgowski', 'cezaryrogowski', 'wiolettarogowska'];
+const LUMINA_OFFICIAL_PHOTO_SLUGS = ['cezaryrgowski', 'cezaryrogowski', 'wiolettarogowska', 'andrzejthiel'];
+
 export function getUserBadges(slugOrProfile) {
     let slug = '';
     let prof = null;
@@ -6220,92 +6226,50 @@ export function getUserBadges(slugOrProfile) {
         slug = slugOrProfile.toLowerCase().trim();
     } else if (slugOrProfile && typeof slugOrProfile === 'object') {
         prof = slugOrProfile;
-        slug = (prof.slug || prof.id || prof.uid || '').toLowerCase().trim();
+        slug = String(prof.slug || prof.id || prof.uid || '').toLowerCase().trim();
     }
-
-    // 1. Sprawdź, czy profil ma zapisaną listę odznak w Firestore
-    if (prof && Array.isArray(prof.badges) && prof.badges.length > 0) {
-        return prof.badges
-            .map(bId => LUMINA_BADGES_CATALOG[bId])
-            .filter(Boolean);
+    const earned = new Set();
+    if (prof && Array.isArray(prof.badges)) {
+        prof.badges.forEach(id => { if (LUMINA_BADGES_CATALOG[id]) earned.add(id); });
     }
-
-    // 2. Domyślne przypisanie kluczowych odznak według rangi
-    if (slug === 'cezaryrgowski' || slug === 'cezaryrogowski') {
-        return [
-            LUMINA_BADGES_CATALOG['royal_heritage'],
-            LUMINA_BADGES_CATALOG['word_guardian'],
-            LUMINA_BADGES_CATALOG['prayer_flame'],
-            LUMINA_BADGES_CATALOG['verified_authentic'],
-            LUMINA_BADGES_CATALOG['gospel_ambassador'],
-            LUMINA_BADGES_CATALOG['worship_pillar'],
-            LUMINA_BADGES_CATALOG['kingdom_marriage']
-        ];
-    }
-    if (slug === 'wiolettarogowska' || slug === 'wioletta') {
-        return [
-            LUMINA_BADGES_CATALOG['royal_heritage'],
-            LUMINA_BADGES_CATALOG['prayer_flame'],
-            LUMINA_BADGES_CATALOG['heart_of_peace'],
-            LUMINA_BADGES_CATALOG['verified_authentic'],
-            LUMINA_BADGES_CATALOG['kingdom_marriage'],
-            LUMINA_BADGES_CATALOG['fellowship_builder']
-        ];
-    }
-    if (slug === 'andrzejthiel') {
-        return [
-            LUMINA_BADGES_CATALOG['word_guardian'],
-            LUMINA_BADGES_CATALOG['royal_heritage'],
-            LUMINA_BADGES_CATALOG['prayer_flame'],
-            LUMINA_BADGES_CATALOG['verified_authentic'],
-            LUMINA_BADGES_CATALOG['gospel_ambassador']
-        ];
-    }
-    if (slug === 'radiocc' || slug.includes('bibliaaudio')) {
-        return [
-            LUMINA_BADGES_CATALOG['royal_heritage'],
-            LUMINA_BADGES_CATALOG['gospel_ambassador'],
-            LUMINA_BADGES_CATALOG['word_guardian']
-        ];
-    }
-
-    // Standardowe odznaki dla aktywnych członków społeczności
-    return [
-        LUMINA_BADGES_CATALOG['prayer_flame'],
-        LUMINA_BADGES_CATALOG['word_guardian'],
-        LUMINA_BADGES_CATALOG['verified_authentic'],
-        LUMINA_BADGES_CATALOG['fellowship_builder']
-    ];
+    if (LUMINA_FOUNDER_SLUGS.includes(slug)) earned.add('royal_heritage');
+    const realPhoto = prof ? isLuminaRealPersonPhoto(prof.avatar, slug) : LUMINA_OFFICIAL_PHOTO_SLUGS.includes(slug);
+    if (realPhoto || LUMINA_OFFICIAL_PHOTO_SLUGS.includes(slug)) earned.add('verified_authentic');
+    return [...earned].map(id => LUMINA_BADGES_CATALOG[id]).filter(Boolean);
 }
 
 export function render3DBadgesGridHtml(slugOrProfile, ownerName = 'Członek Społeczności') {
     const badges = getUserBadges(slugOrProfile);
-    if (!badges || badges.length === 0) return '';
+    const earnedIds = new Set(badges.map(b => b.id));
+    const locked = Object.values(LUMINA_BADGES_CATALOG).filter(b => !earnedIds.has(b.id));
+    const total = badges.length + locked.length;
+    const safeOwner = String(ownerName).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const card = (b, isLocked) => `
+                    <div class="lumina-badge-3d-card${isLocked ? ' is-locked' : ''}" role="button" tabindex="0" aria-label="${b.name}${isLocked ? ' — jeszcze nie zdobyta' : ''}" onclick="window.open3DBadgeDetailsModal('${b.id}', '${safeOwner}', ${isLocked ? 'true' : 'false'})"${isLocked ? ' style="opacity:0.5; filter:grayscale(1);"' : ''}>
+                        <div class="badge-3d-medal" style="background:${b.gradient}; box-shadow:0 8px 24px ${isLocked ? 'transparent' : b.bgGlow}; position:relative;">
+                            <i class="${b.icon}"></i>
+                            ${isLocked ? '<i class="fa-solid fa-lock" aria-hidden="true" style="position:absolute; right:-2px; bottom:-2px; font-size:0.7rem; background:#334155; color:#fff; border-radius:50%; padding:5px;"></i>' : ''}
+                        </div>
+                        <div class="badge-3d-name">${b.name}</div>
+                        <div class="badge-3d-tier">
+                            <span class="badge-dot" style="background:${isLocked ? '#94a3b8' : b.color};"></span>
+                            ${isLocked ? 'Do zdobycia' : b.rarity}
+                        </div>
+                    </div>`;
 
     return `
         <div class="lumina-3d-badges-section">
             <div class="lumina-3d-badges-header">
                 <div class="lumina-3d-badges-title">
                     <i class="fa-solid fa-medal" style="color:#f59e0b; font-size:1.15rem;"></i>
-                    <span>Wyróżnienia & Odznaki 3D ✨</span>
+                    <span>Odznaki</span>
                 </div>
-                <span style="font-size:0.75rem; color:#94a3b8; font-weight:700; background:rgba(255,255,255,0.06); padding:3px 10px; border-radius:10px;">
-                    ${badges.length} Osiągnięć
+                <span title="Zdobyte odznaki" style="font-size:0.75rem; color:#94a3b8; font-weight:700; background:rgba(255,255,255,0.06); padding:3px 10px; border-radius:10px;">
+                    <i class="fa-solid fa-trophy" aria-hidden="true"></i> ${badges.length} / ${total}
                 </span>
             </div>
             <div class="lumina-3d-badges-grid">
-                ${badges.map(b => `
-                    <div class="lumina-badge-3d-card" onclick="window.open3DBadgeDetailsModal('${b.id}', '${ownerName.replace(/'/g, "\\'")}')">
-                        <div class="badge-3d-medal" style="background:${b.gradient}; box-shadow:0 8px 24px ${b.bgGlow};">
-                            <i class="${b.icon}"></i>
-                        </div>
-                        <div class="badge-3d-name">${b.name}</div>
-                        <div class="badge-3d-tier">
-                            <span class="badge-dot" style="background:${b.color};"></span>
-                            ${b.rarity}
-                        </div>
-                    </div>
-                `).join('')}
+                ${badges.map(b => card(b, false)).join('')}${locked.map(b => card(b, true)).join('')}
             </div>
         </div>
     `;
@@ -6482,12 +6446,12 @@ export function ensure3DBadgeModalInDom() {
 
 window._activeBadgeModalData = null;
 
-export function open3DBadgeDetailsModal(badgeId, ownerName = 'Członek Społeczności') {
+export function open3DBadgeDetailsModal(badgeId, ownerName = 'Członek Społeczności', locked = false) {
     ensure3DBadgeModalInDom();
     const badge = LUMINA_BADGES_CATALOG[badgeId];
     if (!badge) return;
 
-    window._activeBadgeModalData = { badge, ownerName };
+    window._activeBadgeModalData = locked ? null : { badge, ownerName };
 
     const modal = document.getElementById('modal3DBadgeDetails');
     if (!modal) return;
@@ -6517,7 +6481,12 @@ export function open3DBadgeDetailsModal(badgeId, ownerName = 'Członek Społeczn
         tier.style.color = badge.color;
         tier.style.borderColor = badge.color;
     }
-    if (owner) owner.innerHTML = `✨ Wyróżnienie członka społeczności: <b>${ownerName}</b>`;
+    if (owner) owner.innerHTML = locked
+        ? '<i class="fa-solid fa-lock" aria-hidden="true"></i> Jeszcze nie zdobyta — jak ją zdobyć, opisuje tekst poniżej.'
+        : `✨ Wyróżnienie członka społeczności: <b>${escapeHtml(String(ownerName))}</b>`;
+    const shareBtn = modal.querySelector('[onclick*="share3DBadgeToFeed"]');
+    if (shareBtn) shareBtn.style.display = locked ? 'none' : '';
+    if (medal) medal.style.filter = locked ? 'grayscale(1)' : '';
     if (verse) verse.textContent = badge.verse;
     if (desc) desc.textContent = badge.desc;
 
@@ -6547,7 +6516,7 @@ window.share3DBadgeToFeed = async function() {
     const { badge, ownerName } = window._activeBadgeModalData;
     close3DBadgeModal();
 
-    const postText = `🏆 Zdobyłem(am) nowe wyróżnienie 3D w społeczności LUMINA!\n✨ Odznaka: **${badge.name}** (${badge.tier})\n📖 ${badge.verse}\n\n${badge.desc}\n\nDołącz do nas i buduj Królestwo Boże! 🕊️✨`;
+    const postText = `🏆 Zdobyłem(am) nową odznakę w społeczności LUMINA!\n✨ Odznaka: **${badge.name}** (${badge.tier})\n📖 ${badge.verse}\n\n${badge.desc}\n\nDołącz do nas i buduj Królestwo Boże! 🕊️✨`;
 
     if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
         const res = await window.LuminaDB.publishUniversalPost({
@@ -6556,7 +6525,7 @@ window.share3DBadgeToFeed = async function() {
             mediaType: 'badge',
             badgeId: badge.id
         });
-        if (typeof showToast === 'function') showToast('🏆 Udostępniono odznakę 3D na Tablicy Społeczności!');
+        if (typeof showToast === 'function') showToast('🏆 Udostępniono odznakę na Tablicy Społeczności!');
     } else {
         if (typeof showToast === 'function') showToast(`Skopiowano treść odznaki: ${badge.name}! ✨`);
     }

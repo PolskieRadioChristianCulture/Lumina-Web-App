@@ -221,3 +221,33 @@ test('jeden przycisk „do góry” i karta transmisji bez powtórzeń', async (
     assert.match(t, /\.btn-expand-live\) > span \{ display: none !important; \}/);
   }
 });
+
+test('odznaki się zdobywa: brak kompletu na start, bez dopisku „3D”', async () => {
+  const db = await readFile('lumina-db.js', 'utf8');
+  const fn = db.slice(db.indexOf('export function getUserBadges'), db.indexOf('export function render3DBadgesGridHtml'));
+  assert.doesNotMatch(fn, /Standardowe odznaki dla aktywnych członków/);
+  assert.doesNotMatch(fn, /LUMINA_BADGES_CATALOG\['prayer_flame'\]/);
+  assert.match(fn, /prof\.badges/);
+  const render = db.slice(db.indexOf('export function render3DBadgesGridHtml'), db.indexOf('export function ensure3DBadgeModalInDom'));
+  assert.match(render, /is-locked/);
+  assert.match(render, /Do zdobycia/);
+  assert.doesNotMatch(render, /Odznaki 3D/);
+  for (const f of ['lumina.cezaryrgowski.html', 'lumina.wiolettarogowska.html', 'lumina-profile.html']) {
+    assert.doesNotMatch(await readFile(f, 'utf8'), /<span class="tab-text">Odznaki 3D<\/span>/, f);
+  }
+});
+
+test('profile bez „????” w miejscu emoji i polskich liter; jeden dok skrótów zamiast trzech pływających przycisków', async () => {
+  for (const f of ['lumina.mariusz.html', 'lumina.magdalena.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.doesNotMatch(t, /[A-Za-z!.] \?{2,}/, `${f}: zostały znaki „??”`);
+  }
+  const mag = await readFile('lumina.magdalena.html', 'utf8');
+  assert.match(mag, /Szczęść Boże wszystkim!/);
+  assert.doesNotMatch(mag, /spo\?eczno/);
+  const top = await readFile('js/cc-back-to-top.js', 'utf8');
+  assert.match(top, /function mountFabDock\(\)/);
+  assert.match(top, /cc-fab-dock-on:not\(\.cc-fab-dock-open\)/);
+  const css = await readFile('css/lumina-profile-standard.css', 'utf8');
+  assert.match(css, /\.hero-bio-quote \{ color: #44403c !important; \}/);
+});
