@@ -41,14 +41,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
-  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v9_subbar_search">
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v10_rotating_ring">
 
   <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
   <style>
     :root {
       --header-height: 68px;
       --mapa-header-height: 68px;
-      --mapa-ctrl-height: 56px;
+      --mapa-ctrl-height: 0px;
       --map-bg: #080F20;
       --map-surface: #121D32;
       --gold-primary: #C4A35A;
@@ -56,6 +56,9 @@
       --gold-dark: #A08040;
       --text-primary: #F8FAFC;
       --text-muted: #8E9BAE;
+    }
+    .mapa-hud-controls {
+      bottom: 6.25rem !important;
     }
     html, body {
       background-color: #080F20;
@@ -100,6 +103,20 @@
         flex: 1 1 100%;
         max-width: 100%;
         margin: 0.35rem 0 0 0;
+      }
+    }
+    @keyframes mapRingRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .map-root-rotating-ring {
+      transform-origin: 0px 0px;
+      animation: mapRingRotate 60s linear infinite;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .map-root-rotating-ring {
+        animation: none;
       }
     }
     .mapa-collapse-bar-btn {
@@ -520,7 +537,7 @@
     </header>
 
     <!-- PASEK FILTRÓW I KONTROLEK ZASOBÓW (SUB-BAR) -->
-    <section class="mapa-control-bar" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
+    <section class="mapa-control-bar is-hidden" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
       <div class="mapa-filter-chips" id="mapaFilterStrip" role="group" aria-label="Filtry statusu i kategorii">
         <button class="mapa-chip active" data-filter="all">
           <span>Wszystkie</span>
@@ -621,13 +638,13 @@
       </button>
 
       <!-- Przycisk przywrócenia zminimalizowanego panelu szczegółów -->
-      <button id="mapaDrawerReopenBtn" class="mapa-drawer-reopen-btn" title="Pokaż panel szczegółów" aria-label="Pokaż panel szczegółów">
+      <button id="mapaDrawerReopenBtn" class="mapa-drawer-reopen-btn visible" title="Pokaż panel szczegółów" aria-label="Pokaż panel szczegółów">
         <i class="fa-solid fa-layer-group"></i>
         <span>Pokaż szczegóły</span>
       </button>
 
       <!-- KARTA „WYBRANY OBSZAR” (DOKŁADNIE JAK NA ZAAKCEPTOWANEJ WIZUALIZACJI) -->
-      <aside id="mapaDrawer" class="mapa-side-card" role="dialog" aria-label="Szczegóły wybranego obszaru">
+      <aside id="mapaDrawer" class="mapa-side-card is-closed" role="dialog" aria-label="Szczegóły wybranego obszaru">
         <div class="mapa-card-head-bar">
           <div class="mapa-card-eyebrow">WYBRANY OBSZAR</div>
           <div class="mapa-card-head-actions">
@@ -770,8 +787,8 @@
 
   <!-- Uniwersalny konektor logowania CC & LUMINA Google Auth Connector -->
   <script src="/js/cc-global-auth.js?v=20261011_auth" defer></script>
-  <!-- Skrypt silnika mapy (v9 - wyszukiwarka w dolnej belce narzędziowej) -->
-  <script src="/js/mapa-ekosystemu.js?v=20261011_v9_subbar_search" defer></script>
+  <!-- Skrypt silnika mapy (v10 - obracający się pierścień i wyśrodkowany napis) -->
+  <script src="/js/mapa-ekosystemu.js?v=20261011_v10_rotating_ring" defer></script>
   <!-- Wspólna stopka i narzędzia -->
   <script src="/components/cc-support-footer.js" defer></script>
   <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>

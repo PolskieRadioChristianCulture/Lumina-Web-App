@@ -76,23 +76,28 @@
     initGraphLayout();
     updateViewMode(state.viewMode);
 
-    // Domyślnie zaznacz pierwszy obszar (Radio & TV) jak na zaakceptowanym mockupie
+    // Domyślnie załaduj dane dla pierwszego obszaru (Radio & TV), ale pozostaw panel zminimalizowany (jak na zrzucie Dowódcy)
     if (state.selectedNodeId) {
       selectNode(state.selectedNodeId, false);
     } else {
       selectBranch('radio-tv');
+      closeSideCard();
     }
 
     // Sprawdź autoryzację Dowódcy do warstwy @A
     checkCommanderAccess();
 
-    // Oblicz i wyrównaj dokładne wysokości widoku (eliminacja zbędnego paska na dole)
-    updateViewportHeights();
+    // Domyślnie schowaj belkę filtrów (jak na zrzucie Dowódcy) i wyrównaj widok
     try {
-      if (localStorage.getItem('mapa_ctrl_bar_hidden') === '1') {
+      const stored = localStorage.getItem('mapa_ctrl_bar_hidden');
+      if (stored === '0') {
+        toggleControlBar(true);
+      } else {
         toggleControlBar(false);
       }
-    } catch (e) {}
+    } catch (e) {
+      toggleControlBar(false);
+    }
   }
 
   function cacheDom() {
@@ -823,24 +828,44 @@
       `;
     } else {
       let sunRaysSvg = '';
-      for (let i = 0; i < 20; i++) {
-        const angleDeg = i * (360 / 20);
-        sunRaysSvg += `<line x1="0" y1="92" x2="0" y2="104" stroke="rgba(196, 163, 90, 0.45)" stroke-width="1.5" transform="rotate(${angleDeg})" />`;
+      for (let i = 0; i < 24; i++) {
+        const angleDeg = i * (360 / 24);
+        const isMajor = (i % 6 === 0);
+        const yStart = isMajor ? 87 : 91;
+        const yEnd = 104;
+        const strokeWidth = isMajor ? 2 : 1.2;
+        const strokeOpacity = isMajor ? 0.75 : 0.45;
+        sunRaysSvg += `<line x1="0" y1="${yStart}" x2="0" y2="${yEnd}" stroke="rgba(196, 163, 90, ${strokeOpacity})" stroke-width="${strokeWidth}" transform="rotate(${angleDeg})" />`;
       }
       centerSvg = `
         <g class="map-node map-node-root" transform="translate(0, 0)">
           <!-- Promienista wielowarstwowa korona słoneczna -->
           <circle cx="0" cy="0" r="130" fill="rgba(196, 163, 90, 0.05)" />
-          <circle cx="0" cy="0" r="105" fill="rgba(196, 163, 90, 0.12)" stroke="rgba(196, 163, 90, 0.25)" stroke-width="1.5" />
+
+          <!-- Obracający się majestatycznie złoty pierścień z podziałką i tarczą kompasową -->
+          <g class="map-root-rotating-ring">
+            <animateTransform 
+              attributeName="transform" 
+              type="rotate" 
+              from="0 0 0" 
+              to="360 0 0" 
+              dur="60s" 
+              repeatCount="indefinite" 
+            />
+            <circle cx="0" cy="0" r="105" fill="rgba(196, 163, 90, 0.08)" stroke="rgba(196, 163, 90, 0.35)" stroke-width="1.5" />
+            <circle cx="0" cy="0" r="95" fill="none" stroke="rgba(196, 163, 90, 0.18)" stroke-width="1" stroke-dasharray="2, 4" />
+            ${sunRaysSvg}
+          </g>
+
+          <!-- Centralny ciemnogranatowy dysk -->
           <circle cx="0" cy="0" r="85" fill="#080F20" stroke="#C4A35A" stroke-width="3.5" style="filter: drop-shadow(0 0 28px rgba(196,163,90,0.65));" />
-          ${sunRaysSvg}
-          <!-- Krzyż i inskrypcja -->
-          <text x="0" y="-30" text-anchor="middle" font-family="'Cinzel', serif" font-size="20" font-weight="700" fill="#E2CC9A">+</text>
-          <text x="0" y="-6" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#C4A35A">Christian</text>
-          <text x="0" y="16" text-anchor="middle" font-family="'Cinzel', serif" font-size="14" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">Culture</text>
-          <text x="0" y="34" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8.5" font-weight="600" fill="#CBD5E1">polskieradio.cc</text>
-          <text x="0" y="48" text-anchor="middle" font-family="'Cinzel', serif" font-size="7" font-weight="700" letter-spacing="1" fill="#E2CC9A" opacity="0.9">WIĘKSZE ŚWIATŁO</text>
-          <text x="0" y="58" text-anchor="middle" font-family="'Cinzel', serif" font-size="6" font-weight="600" letter-spacing="0.8" fill="#E2CC9A" opacity="0.75">W REALNYM ŚWIECIE</text>
+
+          <!-- Idealnie wyśrodkowana inskrypcja bez krzyżyka -->
+          <text x="0" y="-28" text-anchor="middle" font-family="'Cinzel', serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#C4A35A">CHRISTIAN</text>
+          <text x="0" y="-8" text-anchor="middle" font-family="'Cinzel', serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">CULTURE</text>
+          <text x="0" y="12" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8.5" font-weight="600" fill="#CBD5E1">polskieradio.cc</text>
+          <text x="0" y="28" text-anchor="middle" font-family="'Cinzel', serif" font-size="7.5" font-weight="700" letter-spacing="1" fill="#E2CC9A" opacity="0.9">WIĘKSZE ŚWIATŁO</text>
+          <text x="0" y="40" text-anchor="middle" font-family="'Cinzel', serif" font-size="6.5" font-weight="600" letter-spacing="0.8" fill="#E2CC9A" opacity="0.75">W REALNYM ŚWIECIE</text>
         </g>
       `;
     }
