@@ -266,3 +266,13 @@ test('bez paska „Status Ochrony” i bez kodów PIN; zachęta do zdjęcia prof
     assert.match(await readFile(f, 'utf8'), /\/js\/lumina-photo-nudge\.js\?v=/, f);
   }
 });
+
+test('każde włączenie Radia CC w ekosystemie zasila licznik /milion', async () => {
+  const top = await readFile('js/cc-back-to-top.js', 'utf8');
+  assert.match(top, /\/js\/cc-radio-milion\.js\?v=/);
+  const radio = await readFile('js/cc-radio-milion.js', 'utf8');
+  assert.match(radio, /zeno\\\.fm/);
+  assert.match(radio, /addEventListener\('play'[^]*?, true\)/);
+  assert.match(radio, /type: 'radio'/);
+  assert.match(radio, /\/api\/milion\/count/);
+});

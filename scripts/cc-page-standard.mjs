@@ -1,5 +1,5 @@
 // Public web documents only: never alter broadcast, operational or embed screens.
-export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261011_top3';
+export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261011_top4';
 export function applyPageStandard(file, html) {
   const name = file.replaceAll('\\', '/').toLowerCase();
   if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24)/.test(name)) return html;

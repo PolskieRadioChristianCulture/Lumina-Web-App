@@ -150,7 +150,15 @@
     var timer = setInterval(function () { check(); if (++tries > 20) clearInterval(timer); }, 750);
     check();
   }
-  function start() { mount(); try { mountFabDock(); } catch (e) {} }
+  // Każde włączenie Radia CC na stronie zasila licznik /milion (osobny, mały moduł).
+  function loadRadioMilion() {
+    if (typeof document.createElement !== 'function' || !document.head || window.CCRadioMilion) return;
+    var script = document.createElement('script');
+    script.src = '/js/cc-radio-milion.js?v=20261011_1';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+  function start() { mount(); try { mountFabDock(); } catch (e) {} try { loadRadioMilion(); } catch (e) {} }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();
