@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "updatedAt": "2026-10-11T06:00:00Z",
+  "updatedAt": "2026-10-11T06:20:00Z",
   "name": "Mapa Ekosystemu Christian Culture",
   "root": {
     "id": "cc-root",
@@ -679,6 +679,22 @@
       "connections": ["pokonac-goliata", "kod-zrodlowy", "ccn-kultura"]
     },
     {
+      "id": "ksiazki-autora",
+      "branchId": "media-wiedza",
+      "name": "Książki Autora — Cezary Rogowski",
+      "shortDesc": "Oficjalna autorska księgarnia i biblioteka dzieł Założyciela Christian Culture.",
+      "fullDesc": "Kompletny zbiór publikacji, książek, e-booków i opracowań teologicznych Cezarego Rogowskiego, m.in. 'Pokonać Goliata', 'Kod Źródłowy'. Czytnik online, bezpośrednie fragmenty i możliwość wsparcia misji.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/ksiazki-autora",
+      "status": "active",
+      "lang": "pl",
+      "icon": "📖",
+      "category": "Media & Wiedza",
+      "verifiedDate": "2026-10-11",
+      "keywords": ["książki autora", "cezary rogowski", "książki", "autor", "pokonać goliata", "kod źródłowy", "biblioteka"],
+      "connections": ["biblioteka-ccn", "pokonac-goliata", "kod-zrodlowy", "lumina-profile"]
+    },
+    {
       "id": "ccn-edukacja",
       "branchId": "media-wiedza",
       "name": "CCN Edukacja & Wychowanie",
@@ -1013,6 +1029,38 @@
       "verifiedDate": "2026-10-11",
       "keywords": ["rejestr", "content registry", "zasoby", "metadane", "baza", "portale"],
       "connections": ["ccn-news", "cc-network-hub"]
+    },
+    {
+      "id": "mapa-ekosystemu",
+      "branchId": "aplikacje-technologia",
+      "name": "Mapa Ekosystemu Christian Culture (@mapaCC / @m)",
+      "shortDesc": "Interaktywna mapa i żywy rejestr projektów, stacji, portali i aplikacji.",
+      "fullDesc": "Centralna, żywa i interaktywna mapa całego ekosystemu Christian Culture (8 gałęzi, ponad 70 zweryfikowanych projektów). Graf powiązań SVG, drzewo hierarchiczne, filtrowanie i wyszukiwarka w czasie rzeczywistym.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/mapa",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🗺️",
+      "category": "Aplikacje & Technologia",
+      "verifiedDate": "2026-10-11",
+      "keywords": ["mapa", "mapacc", "ekosystem", "projekty", "architektura", "nawigacja", "joma", "graf", "baza"],
+      "connections": ["radio-main", "lumina-portal", "akademia-main", "cclite", "ccn-news", "vod-kino"]
+    },
+    {
+      "id": "licznik-milion",
+      "branchId": "aplikacje-technologia",
+      "name": "Licznik CC — Misja Milion Dusz",
+      "shortDesc": "Licznik globalnego zasięgu Ewangelii i zjednoczenia modlitewnego za Polskę.",
+      "fullDesc": "Oficjalny licznik zjednoczonych serc w modlitwie i zasięgu ewangelizacji ekosystemu Christian Culture ku chwale Bożej. Cel: milion dusz pozyskanych dla Chrystusa.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/milion",
+      "status": "active",
+      "lang": "pl",
+      "icon": "⏱️",
+      "category": "Aplikacje & Technologia",
+      "verifiedDate": "2026-10-11",
+      "keywords": ["licznik", "milion", "licznik cc", "misja milion", "modlitwa", "zjednoczeni", "zasięg"],
+      "connections": ["radio-main", "zapolske-modlitwa", "lumina-main"]
     },
     {
       "id": "cc-network-hub",

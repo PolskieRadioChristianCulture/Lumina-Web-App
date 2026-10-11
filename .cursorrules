@@ -1,4 +1,4 @@
-﻿# LUMINA & CHRISTIAN CULTURE — MULTI-AGENT INSTRUCTIONS
+# LUMINA & CHRISTIAN CULTURE — MULTI-AGENT INSTRUCTIONS
 # SUPREME COMMANDER TRIGGER: @ICC (or @monit)
 When the Commander inputs "@ICC" or "@monit", immediately generate the full Operation Monitor report:
 - Aktywny Agent
@@ -11,5 +11,7 @@ When the Commander inputs "@ICC" or "@monit", immediately generate the full Oper
 ALWAYS state: "📡 MONIT OPERACYJNY: [Agent] ➔ Aktualnie pracuję nad: ..." before taking actions.
 ALWAYS run "node scripts/straznik-kodu-check.js" before git commits.
 ALWAYS push to both "origin" and "lumina-repo".
+ALWAYS update completed actions on @m = @mapaCC at https://polskieradio.cc/mapa (data/ecosystem-map.json).
 NEVER touch frozen broadcast channels (e.g. cctv24-worship.html).
 NEVER expose Mission Control text on public sites.
+
