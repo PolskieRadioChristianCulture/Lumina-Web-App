@@ -119,7 +119,9 @@
       zoomInBtn: document.getElementById('mapaZoomInBtn'),
       zoomOutBtn: document.getElementById('mapaZoomOutBtn'),
       resetBtn: document.getElementById('mapaResetBtn'),
-      fitBtn: document.getElementById('mapaFitBtn')
+      fitBtn: document.getElementById('mapaFitBtn'),
+      navTabGalaxy: document.getElementById('navTabGalaxy'),
+      navTabProjects: document.getElementById('navTabProjects')
     };
   }
 
@@ -147,13 +149,37 @@
       });
     }
 
-    // Przełącznik widoków
+    // Przełącznik widoków (Przyciski na pasku narzędzi)
     if (els.viewGalaxyBtn) {
       els.viewGalaxyBtn.addEventListener('click', () => updateViewMode('galaxy'));
     }
     if (els.viewTreeBtn) {
       els.viewTreeBtn.addEventListener('click', () => updateViewMode('tree'));
     }
+
+    // Zakładki w nagłówku
+    if (els.navTabGalaxy) {
+      els.navTabGalaxy.addEventListener('click', () => {
+        updateViewMode('galaxy');
+        resetView();
+      });
+    }
+    if (els.navTabProjects) {
+      els.navTabProjects.addEventListener('click', () => {
+        updateViewMode('tree');
+      });
+    }
+
+    // Skrót klawiszowy Ctrl+K / Cmd+K do szukania
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (els.search) {
+          els.search.focus();
+          els.search.select();
+        }
+      }
+    });
 
     // Rozwijanie / zwijanie w widoku drzewa
     if (els.expandAllBtn) {
@@ -224,6 +250,8 @@
       if (els.treeView) els.treeView.style.display = 'none';
       if (els.viewGalaxyBtn) els.viewGalaxyBtn.classList.add('active');
       if (els.viewTreeBtn) els.viewTreeBtn.classList.remove('active');
+      if (els.navTabGalaxy) els.navTabGalaxy.classList.add('active');
+      if (els.navTabProjects) els.navTabProjects.classList.remove('active');
       // Dopasuj graf przy pierwszym wejściu
       requestAnimationFrame(() => fitToScreen());
     } else {
@@ -231,6 +259,8 @@
       if (els.treeView) els.treeView.style.display = 'block';
       if (els.viewGalaxyBtn) els.viewGalaxyBtn.classList.remove('active');
       if (els.viewTreeBtn) els.viewTreeBtn.classList.add('active');
+      if (els.navTabGalaxy) els.navTabGalaxy.classList.remove('active');
+      if (els.navTabProjects) els.navTabProjects.classList.add('active');
     }
     updateUrlParam('view', mode);
   }
@@ -438,10 +468,10 @@
 
   // ── GRAF WEKTOROWY SVG (GALAKTYKA) ──
   const layout = {
-    root: { x: 0, y: 0, r: 60 },
-    branches: new Map(), // branchId -> { x, y, r, angle }
-    nodes: new Map(),    // nodeId -> { x, y, r, branchId }
-    links: []            // { from: {x,y}, to: {x,y}, type: 'primary'|'cross' }
+    root: { x: 0, y: 0, r: 76 },
+    branches: new Map(), // branchId -> { x, y, r, side, data }
+    nodes: new Map(),    // nodeId -> { x, y, r, branchId, side, data }
+    links: []            // { from: {x,y}, to: {x,y}, type: 'primary'|'sub'|'cross', color }
   };
 
   function initGraphLayout() {
@@ -452,54 +482,116 @@
     layout.links = [];
 
     const branches = state.data.branches;
-    const totalBranches = branches.length;
-    const branchRadius = 380; // Odległość gałęzi od centrum
 
-    // 1. Pozycje gałęzi wokół centrum (układ promienisty)
+    // Pozycje 8 głównych gałęzi (4 po lewej, 4 po prawej wokół centrum)
+    const branchPositions = {
+      'radio-tv': { x: -440, y: -290, side: 'left' },
+      'spolecznosc': { x: -520, y: -95, side: 'left' },
+      'muzyka-produkcja': { x: -520, y: 100, side: 'left' },
+      'cc-network': { x: -440, y: 295, side: 'left' },
+      'biblia-edukacja': { x: 440, y: -290, side: 'right' },
+      'media-wiedza': { x: 520, y: -95, side: 'right' },
+      'aplikacje-technologia': { x: 520, y: 100, side: 'right' },
+      'misja-wspolpraca': { x: 440, y: 295, side: 'right' }
+    };
+
     branches.forEach((b, idx) => {
-      const angle = (idx / totalBranches) * (2 * Math.PI) - (Math.PI / 2);
-      const bx = Math.round(Math.cos(angle) * branchRadius);
-      const by = Math.round(Math.sin(angle) * branchRadius);
-      layout.branches.set(b.id, { x: bx, y: by, r: 42, angle, data: b });
+      const fallbackSide = idx < 4 ? 'left' : 'right';
+      const fallbackPos = {
+        x: fallbackSide === 'left' ? -460 : 460,
+        y: -280 + (idx % 4) * 190,
+        side: fallbackSide
+      };
+      const pos = branchPositions[b.id] || fallbackPos;
+
+      layout.branches.set(b.id, {
+        x: pos.x,
+        y: pos.y,
+        r: 36,
+        side: pos.side,
+        data: b
+      });
 
       // Połączenie root -> gałąź
       layout.links.push({
         from: { x: 0, y: 0 },
-        to: { x: bx, y: by },
+        to: { x: pos.x, y: pos.y },
         type: 'primary',
         color: b.color
       });
     });
 
-    // 2. Pozycje węzłów potomnych wokół ich gałęzi
+    // 2. Pozycje węzłów potomnych (projekty w gałęziach)
     branches.forEach(b => {
       const bPos = layout.branches.get(b.id);
       const bNodes = state.data.nodes.filter(n => n.branchId === b.id);
       const nodeCount = bNodes.length;
-      const arcSpread = Math.PI * 0.7; // Wachlarz 126 stopni na zewnątrz
-      const startAngle = bPos.angle - (arcSpread / 2);
+      if (nodeCount === 0) return;
 
-      bNodes.forEach((node, nIdx) => {
-        const step = nodeCount > 1 ? nIdx / (nodeCount - 1) : 0.5;
-        const nAngle = startAngle + step * arcSpread;
-        // Zróżnicowana odległość dla organicznego wyglądu gwiazdozbioru
-        const distance = 210 + ((nIdx % 3) * 50);
-        const nx = Math.round(bPos.x + Math.cos(nAngle) * distance);
-        const ny = Math.round(bPos.y + Math.sin(nAngle) * distance);
+      const isLeft = bPos.side === 'left';
 
-        layout.nodes.set(node.id, { x: nx, y: ny, r: 24, data: node, branchId: b.id });
+      if (nodeCount <= 6) {
+        // 1 kolumna
+        const colX = isLeft ? bPos.x - 220 : bPos.x + 220;
+        bNodes.forEach((node, nIdx) => {
+          const yOffset = (nIdx - (nodeCount - 1) / 2) * 44;
+          const ny = Math.round(bPos.y + yOffset);
+          const nx = colX;
 
-        // Połączenie gałąź -> węzeł
-        layout.links.push({
-          from: { x: bPos.x, y: bPos.y },
-          to: { x: nx, y: ny },
-          type: 'sub',
-          color: b.color
+          layout.nodes.set(node.id, {
+            x: nx,
+            y: ny,
+            r: 16,
+            data: node,
+            branchId: b.id,
+            side: bPos.side
+          });
+
+          layout.links.push({
+            from: { x: bPos.x, y: bPos.y },
+            to: { x: nx, y: ny },
+            type: 'sub',
+            color: b.color
+          });
         });
-      });
+      } else {
+        // 2 kolumny dla większych gałęzi
+        const half = Math.ceil(nodeCount / 2);
+        bNodes.forEach((node, nIdx) => {
+          const inCol2 = nIdx >= half;
+          const colIdx = inCol2 ? nIdx - half : nIdx;
+          const colTotal = inCol2 ? nodeCount - half : half;
+          const colX = inCol2
+            ? (isLeft ? bPos.x - 440 : bPos.x + 440)
+            : (isLeft ? bPos.x - 220 : bPos.x + 220);
+          const yOffset = (colIdx - (colTotal - 1) / 2) * 44;
+          const ny = Math.round(bPos.y + yOffset);
+          const nx = colX;
+
+          layout.nodes.set(node.id, {
+            x: nx,
+            y: ny,
+            r: 16,
+            data: node,
+            branchId: b.id,
+            side: bPos.side
+          });
+
+          const connectFrom = inCol2
+            ? { x: isLeft ? bPos.x - 220 : bPos.x + 220, y: ny }
+            : { x: bPos.x, y: bPos.y };
+
+          layout.links.push({
+            from: connectFrom,
+            to: { x: nx, y: ny },
+            type: 'sub',
+            color: b.color
+          });
+        });
+      }
     });
 
-    // 3. Połączenia krzyżowe (cross-connections) między powiązanymi projektami
+    // 3. Połączenia krzyżowe
     state.data.nodes.forEach(node => {
       if (!node.connections || !Array.isArray(node.connections)) return;
       const fromPos = layout.nodes.get(node.id);
@@ -507,7 +599,7 @@
 
       node.connections.forEach(targetId => {
         const toPos = layout.nodes.get(targetId);
-        if (toPos && node.id < targetId) { // Rysuj raz między parą
+        if (toPos && node.id < targetId) {
           layout.links.push({
             from: { x: fromPos.x, y: fromPos.y },
             to: { x: toPos.x, y: toPos.y },
@@ -525,79 +617,101 @@
 
     let svgHtml = '';
 
-    // A. Warstwa połączeń (linie krzywe Beziera dla estetyki)
+    // A. Warstwa połączeń (krzywe Beziera)
     layout.links.forEach(link => {
       const { from, to, type, color } = link;
       const dx = to.x - from.x;
       const dy = to.y - from.y;
-      const cx1 = from.x + dx * 0.4;
-      const cy1 = from.y + dy * 0.1;
-      const cx2 = from.x + dx * 0.6;
-      const cy2 = from.y + dy * 0.9;
-      const pathD = `M ${from.x} ${from.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${to.x} ${to.y}`;
 
-      if (type === 'cross') {
-        svgHtml += `<path d="${pathD}" class="map-link-cross" />`;
-      } else if (type === 'primary') {
+      let pathD = '';
+      if (type === 'primary') {
+        const cx1 = from.x + dx * 0.45;
+        const cy1 = from.y;
+        const cx2 = from.x + dx * 0.55;
+        const cy2 = to.y;
+        pathD = `M ${from.x} ${from.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${to.x} ${to.y}`;
         svgHtml += `
           <path d="${pathD}" class="map-link-bg" stroke="${color || '#C4A35A'}" stroke-width="2.5" />
           <path d="${pathD}" class="map-link-pulse" />
         `;
+      } else if (type === 'cross') {
+        const cx1 = from.x + dx * 0.5;
+        const cy1 = from.y + dy * 0.1;
+        const cx2 = from.x + dx * 0.5;
+        const cy2 = from.y + dy * 0.9;
+        pathD = `M ${from.x} ${from.y} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${to.x} ${to.y}`;
+        svgHtml += `<path d="${pathD}" class="map-link-cross" />`;
       } else {
+        const midX = from.x + dx * 0.5;
+        pathD = `M ${from.x} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${to.x} ${to.y}`;
         svgHtml += `<path d="${pathD}" class="map-link-bg" stroke="${color || '#C4A35A'}" stroke-width="1.5" />`;
       }
     });
 
-    // B. Warstwa węzłów potomnych (kółka z ikonami i podpisami)
+    // B. Warstwa węzłów potomnych (kapsułki projektów)
     layout.nodes.forEach((pos, id) => {
       const node = pos.data;
       const isSelected = state.selectedNodeId === id;
-      const strokeColor = isSelected ? '#FFFFFF' : '#C4A35A';
-      const strokeWidth = isSelected ? 3 : 1.5;
+      const strokeColor = isSelected ? '#FFFFFF' : (node.status === 'beta' ? '#38BDF8' : '#C4A35A');
+      const strokeWidth = isSelected ? 2.5 : 1.2;
+      const displayName = node.name.length > 21 ? node.name.slice(0, 19) + '…' : node.name;
+      const textColor = isSelected ? '#FFFFFF' : '#F8FAFC';
 
       svgHtml += `
-        <g class="map-node" data-id="${escapeHtml(id)}" transform="translate(${pos.x}, ${pos.y})">
-          <!-- Poświata -->
-          <circle cx="0" cy="0" r="${pos.r + 6}" fill="rgba(196, 163, 90, 0.12)" />
-          <!-- Główny okrąg -->
-          <circle cx="0" cy="0" r="${pos.r}" fill="#121D32" stroke="${strokeColor}" stroke-width="${strokeWidth}" />
-          <!-- Ikona -->
-          <text x="0" y="5" text-anchor="middle" font-size="14" fill="#E2CC9A">${escapeHtml(node.icon)}</text>
-          <!-- Etykieta tekstowa -->
-          <text x="0" y="${pos.r + 16}" text-anchor="middle" font-family="'Cinzel', serif" font-size="11" font-weight="600" fill="#F8FAFC" style="text-shadow: 0 2px 6px #000;">
-            ${escapeHtml(node.name.length > 20 ? node.name.slice(0, 18) + '…' : node.name)}
+        <g class="map-node map-node-project" data-id="${escapeHtml(id)}" transform="translate(${pos.x}, ${pos.y})">
+          <!-- Kapsułka projektu -->
+          <rect x="-92" y="-17" width="184" height="34" rx="17" fill="rgba(18, 29, 50, 0.92)" stroke="${strokeColor}" stroke-width="${strokeWidth}" style="filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));" />
+          <!-- Kółko ikony -->
+          <circle cx="-70" cy="0" r="11" fill="rgba(196, 163, 90, 0.16)" stroke="rgba(196, 163, 90, 0.3)" stroke-width="1" />
+          <text x="-70" y="4" text-anchor="middle" font-size="11">${escapeHtml(node.icon)}</text>
+          <!-- Nazwa projektu -->
+          <text x="-52" y="4" text-anchor="start" font-family="'Montserrat', sans-serif" font-size="10" font-weight="600" fill="${textColor}">
+            ${escapeHtml(displayName)}
           </text>
         </g>
       `;
     });
 
-    // C. Warstwa gałęzi głównych (8 stacji galaktyki)
+    // C. Warstwa gałęzi głównych (8 stacji ekosystemu)
     layout.branches.forEach((pos, id) => {
       const b = pos.data;
       svgHtml += `
         <g class="map-node map-node-branch" data-branch="${escapeHtml(id)}" transform="translate(${pos.x}, ${pos.y})">
-          <circle cx="0" cy="0" r="${pos.r + 10}" fill="rgba(196, 163, 90, 0.15)" />
-          <circle cx="0" cy="0" r="${pos.r}" fill="#0D162B" stroke="${b.color || '#C4A35A'}" stroke-width="2.5" />
-          <text x="0" y="7" text-anchor="middle" font-size="22">${escapeHtml(b.icon)}</text>
-          <text x="0" y="${pos.r + 18}" text-anchor="middle" font-family="'Cinzel', serif" font-size="13" font-weight="700" fill="${b.color || '#E2CC9A'}" style="text-shadow: 0 2px 8px #000;">
-            ${escapeHtml(b.name)}
-          </text>
+          <circle cx="0" cy="0" r="50" fill="rgba(196, 163, 90, 0.12)" />
+          <circle cx="0" cy="0" r="38" fill="#0D162B" stroke="${b.color || '#C4A35A'}" stroke-width="2.5" style="filter: drop-shadow(0 0 12px rgba(196, 163, 90, 0.35));" />
+          <text x="0" y="7" text-anchor="middle" font-size="20">${escapeHtml(b.icon)}</text>
+          
+          <!-- Tabliczka z nazwą i licznikiem pozycji -->
+          <g transform="translate(0, 52)">
+            <rect x="-85" y="-14" width="170" height="28" rx="14" fill="rgba(8, 15, 32, 0.94)" stroke="${b.color || '#C4A35A'}" stroke-width="1.2" />
+            <text x="0" y="4" text-anchor="middle" font-family="'Cinzel', serif" font-size="10.5" font-weight="700" fill="${b.color || '#E2CC9A'}" letter-spacing="0.5">
+              ${escapeHtml(b.name)}
+            </text>
+          </g>
         </g>
       `;
     });
 
     // D. Węzeł centralny: CHRISTIAN CULTURE (Słońce ekosystemu)
-    const root = state.data.root || { name: 'CHRISTIAN CULTURE' };
+    let sunRaysSvg = '';
+    for (let i = 0; i < 16; i++) {
+      const angleDeg = i * (360 / 16);
+      sunRaysSvg += `<line x1="0" y1="84" x2="0" y2="94" stroke="rgba(196, 163, 90, 0.35)" stroke-width="1.5" transform="rotate(${angleDeg})" />`;
+    }
+
     svgHtml += `
       <g class="map-node map-node-root" transform="translate(0, 0)">
-        <!-- Wielowarstwowa złota korona -->
-        <circle cx="0" cy="0" r="85" fill="rgba(196, 163, 90, 0.08)" />
-        <circle cx="0" cy="0" r="72" fill="rgba(196, 163, 90, 0.16)" />
-        <circle cx="0" cy="0" r="60" fill="#080F20" stroke="#C4A35A" stroke-width="3" />
-        <!-- Logo / Symbol -->
-        <text x="0" y="-8" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1" fill="#C4A35A">CHRISTIAN</text>
-        <text x="0" y="10" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1" fill="#FFFFFF">CULTURE</text>
-        <text x="0" y="26" text-anchor="middle" font-size="8" fill="#CBD5E1">polskieradio.cc</text>
+        <!-- Promieniste tło słońca -->
+        <circle cx="0" cy="0" r="115" fill="rgba(196, 163, 90, 0.05)" />
+        <circle cx="0" cy="0" r="96" fill="rgba(196, 163, 90, 0.10)" stroke="rgba(196, 163, 90, 0.2)" stroke-width="1.5" />
+        <circle cx="0" cy="0" r="76" fill="#080F20" stroke="#C4A35A" stroke-width="3" style="filter: drop-shadow(0 0 20px rgba(196,163,90,0.55));" />
+        ${sunRaysSvg}
+        <!-- Krzyż i emblemat -->
+        <text x="0" y="-24" text-anchor="middle" font-family="'Cinzel', serif" font-size="16" font-weight="700" fill="#E2CC9A">†</text>
+        <text x="0" y="-4" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#C4A35A">CHRISTIAN</text>
+        <text x="0" y="14" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">CULTURE</text>
+        <text x="0" y="30" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="8.5" font-weight="500" fill="#CBD5E1">polskieradio.cc</text>
+        <text x="0" y="44" text-anchor="middle" font-family="'Cinzel', serif" font-size="6.5" font-weight="600" letter-spacing="0.8" fill="#E2CC9A" opacity="0.85">WIĘKSZE ŚWIATŁO</text>
       </g>
     `;
 
@@ -745,16 +859,16 @@
   function fitToScreen() {
     if (!els.viewport) return;
     const rect = els.viewport.getBoundingClientRect();
-    const graphWidth = 1400;
-    const graphHeight = 1100;
+    const graphWidth = 1950;
+    const graphHeight = 980;
 
     const scaleX = rect.width / graphWidth;
     const scaleY = rect.height / graphHeight;
-    const targetK = Math.min(scaleX, scaleY, 1.1) * 0.9;
+    const targetK = Math.min(scaleX, scaleY, 1.1) * 0.92;
 
     state.transform.x = rect.width / 2;
     state.transform.y = rect.height / 2;
-    state.transform.k = Math.max(0.45, targetK);
+    state.transform.k = Math.max(0.38, targetK);
     applyTransform();
   }
 

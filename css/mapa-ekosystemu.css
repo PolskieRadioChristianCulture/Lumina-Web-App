@@ -56,11 +56,14 @@ html, body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: 
-    radial-gradient(circle at 50% 20%, rgba(196, 163, 90, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 85% 75%, rgba(56, 189, 248, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 15% 80%, rgba(196, 163, 90, 0.05) 0%, transparent 40%),
-    linear-gradient(180deg, #060B17 0%, #080F20 50%, #0A1428 100%);
+  background-color: #060B17;
+  background-image: 
+    radial-gradient(circle at 50% 35%, rgba(196, 163, 90, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(8, 15, 32, 0.6) 0%, rgba(8, 15, 32, 0.78) 55%, rgba(8, 15, 32, 0.94) 100%),
+    url('/images/mapa-bg-earth.jpg');
+  background-position: center bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .mapa-galaxy-stars {
@@ -149,6 +152,47 @@ html, body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+/* Zakładki nawigacyjne (Styl Premium 2026) */
+.mapa-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(18, 29, 50, 0.7);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--map-border);
+}
+
+.mapa-nav-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  user-select: none;
+}
+
+.mapa-nav-tab:hover {
+  color: var(--gold-light);
+  background: rgba(196, 163, 90, 0.1);
+}
+
+.mapa-nav-tab.active {
+  background: linear-gradient(135deg, rgba(196, 163, 90, 0.28) 0%, rgba(196, 163, 90, 0.12) 100%);
+  color: var(--gold-light);
+  border: 1px solid rgba(196, 163, 90, 0.35);
+  box-shadow: 0 0 10px rgba(196, 163, 90, 0.18);
 }
 
 .mapa-header-actions {
@@ -261,6 +305,23 @@ html, body {
   border-color: var(--gold-primary);
   box-shadow: 0 0 14px var(--gold-glow);
   background: rgba(8, 15, 32, 0.98);
+}
+
+.mapa-search-kbd {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.68rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gold-light);
+  background: rgba(196, 163, 90, 0.14);
+  border: 1px solid var(--map-border);
+  padding: 3px 7px;
+  border-radius: 6px;
+  pointer-events: none;
 }
 
 .mapa-search-clear {
@@ -472,7 +533,7 @@ html, body {
 .mapa-hud-controls {
   position: absolute;
   right: 1.5rem;
-  bottom: 2rem;
+  bottom: 4.8rem;
   z-index: 40;
   display: flex;
   flex-direction: column;
@@ -511,7 +572,7 @@ html, body {
 .mapa-hud-legend {
   position: absolute;
   left: 1.5rem;
-  bottom: 2rem;
+  bottom: 4.8rem;
   z-index: 40;
   background: rgba(18, 29, 50, 0.85);
   backdrop-filter: blur(12px);
@@ -544,6 +605,92 @@ html, body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+}
+
+/* ── DOLNY PASEK MISYJNY (PREMIUM 2026) ── */
+.mapa-mission-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  background: linear-gradient(180deg, rgba(8, 15, 32, 0.78) 0%, rgba(8, 15, 32, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--map-border);
+  padding: 0.65rem 1.5rem;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.mapa-mission-bar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.mapa-mission-highlight {
+  display: flex;
+  align-items: center;
+}
+
+.mapa-mission-tag {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold-light);
+  background: rgba(196, 163, 90, 0.15);
+  border: 1px solid var(--map-border-strong);
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.mapa-mission-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.mapa-mstat-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.mapa-mstat-num {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.mapa-mstat-lbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.mapa-mstat-sep {
+  color: rgba(196, 163, 90, 0.3);
+  font-size: 0.8rem;
+}
+
+.mapa-mission-verse {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--gold-light);
+  letter-spacing: 0.03em;
+  opacity: 0.92;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
 }
 
 /* ── WIDOK DRZEWA / SIATKI (HIERARCHICZNY) ── */
@@ -1013,15 +1160,40 @@ html, body {
   }
 
   .mapa-header {
-    padding: 0 1rem;
+    padding: 0 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .mapa-header-brand {
+    gap: 0.6rem;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .mapa-header-title {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .mapa-header-sub {
-    font-size: 0.6rem;
+    display: none;
+  }
+
+  .mapa-header-actions {
+    flex-shrink: 0;
+    gap: 0.35rem;
+  }
+
+  .mapa-header-actions .mapa-btn {
+    min-height: 38px;
+    padding: 0 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .mapa-nav-tabs {
+    display: none;
   }
 
   .mapa-control-bar {
@@ -1031,6 +1203,10 @@ html, body {
   .mapa-search-wrap {
     max-width: 100%;
     flex: 1 1 100%;
+  }
+
+  .mapa-search-kbd {
+    display: none;
   }
 
   .mapa-view-switch {
@@ -1068,11 +1244,29 @@ html, body {
 
   .mapa-hud-controls {
     right: 1rem;
-    bottom: 1.5rem;
+    bottom: 4rem;
   }
 
   .mapa-hud-legend {
     display: none; /* Ukryj na telefonach, aby nie zasłaniać obszaru grafu */
+  }
+
+  .mapa-mission-bar {
+    padding: 0.5rem 1rem;
+  }
+
+  .mapa-mission-bar-inner {
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .mapa-mission-verse {
+    display: none;
+  }
+
+  .mapa-mission-stats {
+    gap: 0.5rem;
+    font-size: 0.75rem;
   }
 
   .mapa-tree-view {
