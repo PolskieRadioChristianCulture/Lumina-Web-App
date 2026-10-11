@@ -3336,18 +3336,6 @@
             </div>
         </div>
 
-        <!-- Security & Owner Access Bar -->
-        <div class="profile-security-bar" id="profileSecurityBar">
-            <div class="security-status-left">
-                <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #38bdf8; font-size: 1.1rem;"></i>
-                <span id="secStatusText">Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN 🛡️</b></span>
-            </div>
-            <div class="security-status-right">
-                <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Autoryzacja Administratora</span>
-                </button>
-            </div>
-        </div>
 
         <!-- Private Profile Notice for Owner / Authorized Visitors -->
         <div id="privateModeOwnerNotice" style="display:none; background: linear-gradient(90deg, rgba(168,85,247,0.18), rgba(59,130,246,0.18)); border: 1px solid rgba(168,85,247,0.4); border-radius: 16px; padding: 12px 18px; margin-bottom: 16px; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
@@ -10824,5 +10812,6 @@
     <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
+    <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
 </body>
 </html>

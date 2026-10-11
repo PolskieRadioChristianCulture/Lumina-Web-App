@@ -3323,18 +3323,6 @@
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
         
-        <!-- Security & Owner Access Bar -->
-        <div class="profile-security-bar" id="profileSecurityBar">
-            <div class="security-status-left">
-                <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #f472b6; font-size: 1.1rem;"></i>
-                <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b></span>
-            </div>
-            <div class="security-status-right">
-                <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Odblokuj Tryb Właścicielki</span>
-                </button>
-            </div>
-        </div>
 
         <!-- Private Profile Notice for Owner / Authorized Visitors -->
         <div id="privateModeOwnerNotice" style="display:none; background: linear-gradient(90deg, rgba(236,72,153,0.18), rgba(168,85,247,0.18)); border: 1px solid rgba(236,72,153,0.4); border-radius: 16px; padding: 12px 18px; margin-bottom: 16px; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
@@ -3696,7 +3684,7 @@
                 Ten profil jest chroniony przed niepowołaną edycją. Wprowadź swój 4-cyfrowy kod PIN, aby odblokować panel edycji i usuwania.
             </p>
             <div style="margin-bottom: 16px;">
-                <input type="password" id="ownerPinInput" maxlength="6" placeholder="Wprowadź PIN (Domyślny: 7777)" style="width: 100%; text-align: center; letter-spacing: 6px; font-size: 1.4rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #f472b6; color: #fff; outline: none;">
+                <input type="password" id="ownerPinInput" maxlength="6" placeholder="Kod PIN" style="width: 100%; text-align: center; letter-spacing: 6px; font-size: 1.4rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #f472b6; color: #fff; outline: none;">
                 <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;"><i class="fa-solid fa-circle-info"></i> Kod PIN możesz zmienić w dowolnym momencie w edycji profilu.</div>
             </div>
             <div style="display:flex; gap: 10px;">
@@ -7972,6 +7960,7 @@
 /* 🛡️ Strażnik Standardów 2026-10-07: po zalogowaniu ponownie ustal tryb właściciela na podstawie konta */
 (function(){function hook(t){var L=window.LuminaDB;if(L&&typeof L.onAuthChange==='function'){L.onAuthChange(function(){try{if(typeof checkOwnerAuthSession==='function')checkOwnerAuthSession();}catch(e){}});}else if(t<80){setTimeout(function(){hook(t+1);},250);}}hook(0);})();
 </script>
+    <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
 </body>
 </html>
 

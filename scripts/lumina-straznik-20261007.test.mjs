@@ -251,3 +251,18 @@ test('profile bez „????” w miejscu emoji i polskich liter; jeden dok skrót�
   const css = await readFile('css/lumina-profile-standard.css', 'utf8');
   assert.match(css, /\.hero-bio-quote \{ color: #44403c !important; \}/);
 });
+
+test('bez paska „Status Ochrony” i bez kodów PIN; zachęta do zdjęcia profilowego', async () => {
+  for (const f of ['lumina-profile.html', 'lumina.wiolettarogowska.html', 'lumina.magdalena.html', 'lumina.cezaryrgowski.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.doesNotMatch(t, /id="profileSecurityBar"/, f);
+    assert.doesNotMatch(t, /[Dd]omyślny:? 7777/, f);
+  }
+  assert.doesNotMatch(await readFile('lumina.magdalena.html', 'utf8'), /pin === '0455'/);
+  const nudge = await readFile('js/lumina-photo-nudge.js', 'utf8');
+  assert.match(nudge, /getLuminaProfileCompletion\(profile\)\.missing\.indexOf\('photo'\)/);
+  assert.match(nudge, /openLuminaProfileWizard/);
+  for (const f of ['lumina.html', 'lumina-tablica.html', 'lumina-profile.html']) {
+    assert.match(await readFile(f, 'utf8'), /\/js\/lumina-photo-nudge\.js\?v=/, f);
+  }
+});

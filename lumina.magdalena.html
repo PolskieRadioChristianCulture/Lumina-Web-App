@@ -1098,18 +1098,6 @@
     <!-- PROFILE CONTAINER -->
     <main class="profile-container">
 
-        <!-- Security & Owner Access Bar -->
-        <div class="profile-security-bar" id="profileSecurityBar">
-            <div class="security-status-left">
-                <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #f472b6; font-size: 1.1rem;"></i>
-                <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN</b></span>
-            </div>
-            <div class="security-status-right">
-                <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Odblokuj Tryb Właścicielki</span>
-                </button>
-            </div>
-        </div>
 
         <div id="profilePublicView">
             <!-- Cover Banner -->
@@ -1360,10 +1348,10 @@
             <div style="font-size:2.4rem; margin-bottom:8px;" aria-hidden="true"><i class="fa-solid fa-lock"></i></div>
             <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Weryfikacja Właścicielki</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
-                Wprowadź kod PIN (domyślny: 7777), aby odblokować panel edycji profilu.
+                Zaloguj się na swoje konto, aby edytować profil.
             </p>
             <div style="margin-bottom: 16px;">
-                <input type="password" id="ownerPinInput" maxlength="6" placeholder="Wprowadź PIN (7777)" style="width: 100%; text-align: center; letter-spacing: 6px; font-size: 1.4rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #f472b6; color: #fff; outline: none;">
+                <input type="password" id="ownerPinInput" maxlength="6" placeholder="Kod PIN" style="width: 100%; text-align: center; letter-spacing: 6px; font-size: 1.4rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #f472b6; color: #fff; outline: none;">
             </div>
             <div style="display:flex; gap: 10px;">
                 <button type="button" onclick="closeModal('securityPinModal')" style="flex:1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.08); border: none; color: #fff; font-weight: 700; cursor: pointer;">Anuluj</button>
@@ -1586,7 +1574,7 @@
                 isOwnerMode = false;
                 sessionStorage.removeItem(AUTH_SESSION_KEY);
                 document.body.classList.remove('owner-mode-active');
-                document.getElementById('btnOwnerAuthLabel').textContent = 'Odblokuj Tryb Właścicielki';
+                
                 showToast('Zablokowano tryb edycji.');
             } else {
                 openModal('securityPinModal');
@@ -1596,11 +1584,13 @@
         function verifyOwnerPinSubmit() {
             const pin = document.getElementById('ownerPinInput').value;
             const data = getProfileData();
-            if (pin === (data.pin || '7777') || pin === '0455') {
+            // 🛡️ STRAŻNIK: edycja tylko dla zalogowanej właścicielki (bez kodów PIN)
+            void pin; void data;
+            if (window.LuminaGuard && window.LuminaGuard.canEditProfile('magdalena', null)) {
                 isOwnerMode = true;
                 sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
                 document.body.classList.add('owner-mode-active');
-                document.getElementById('btnOwnerAuthLabel').textContent = 'Zablokuj Tryb Właścicielki';
+                
                 closeModal('securityPinModal');
                 showToast('Tryb Właścicielki Odblokowany!');
             } else {
@@ -1820,12 +1810,14 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') {
-                isOwnerMode = true;
-                document.body.classList.add('owner-mode-active');
-                const lbl = document.getElementById('btnOwnerAuthLabel');
-                if (lbl) lbl.textContent = 'Zablokuj Tryb Właścicielki';
-            }
+            // 🛡️ STRAŻNIK: tryb właścicielki wyłącznie dla zalogowanego konta tej osoby (bez kodu PIN)
+            sessionStorage.removeItem(AUTH_SESSION_KEY);
+            const applyOwner = () => {
+                isOwnerMode = !!(window.LuminaGuard && window.LuminaGuard.canEditProfile('magdalena', null));
+                document.body.classList.toggle('owner-mode-active', isOwnerMode);
+            };
+            applyOwner();
+            window.addEventListener('lumina-auth-state', applyOwner);
             renderProfile();
         });
     </script>
@@ -1839,5 +1831,6 @@
     <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
+    <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
 </body>
 </html>
