@@ -529,9 +529,9 @@
 
   <!-- Kosmiczne dynamiczne tło planety Christian Culture (Wideo / Poster) -->
   <div class="cc-background" aria-hidden="true">
-    <video id="cc-planet" muted loop playsinline preload="none" poster="/assets/mapa/planeta-poster.jpg">
-      <source data-src="/assets/mapa/planeta.webm" type="video/webm">
-      <source data-src="/assets/mapa/planeta.mp4" type="video/mp4">
+    <video id="cc-planet" autoplay muted loop playsinline preload="auto" poster="/assets/mapa/planeta-poster.jpg">
+      <source src="/assets/mapa/planeta.webm" type="video/webm">
+      <source src="/assets/mapa/planeta.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -850,45 +850,64 @@
       const v = document.getElementById('cc-planet');
       if (!v) return;
       const motion = matchMedia('(prefers-reduced-motion: reduce)');
-      let loaded = false;
-      let blocked = false;
 
-      async function sync() {
-        if (motion.matches || navigator.connection?.saveData || document.hidden || blocked) {
+      function showVideo() {
+        v.classList.add('ready');
+      }
+
+      function checkMotionOrData() {
+        if (motion.matches || navigator.connection?.saveData) {
+          v.pause();
+          v.style.display = 'none';
+          return true;
+        }
+        return false;
+      }
+
+      if (checkMotionOrData()) return;
+
+      function tryPlay() {
+        if (document.hidden) {
           v.pause();
           return;
         }
-        if (!loaded) {
-          v.querySelectorAll('source').forEach(function (s) {
-            if (s.dataset.src) s.src = s.dataset.src;
+        const promise = v.play();
+        if (promise !== undefined) {
+          promise.then(showVideo).catch(function () {
+            const onInteraction = function () {
+              v.play().then(showVideo).catch(function () {});
+              window.removeEventListener('pointerdown', onInteraction);
+              window.removeEventListener('scroll', onInteraction);
+              window.removeEventListener('keydown', onInteraction);
+            };
+            window.addEventListener('pointerdown', onInteraction, { passive: true });
+            window.addEventListener('scroll', onInteraction, { passive: true });
+            window.addEventListener('keydown', onInteraction, { passive: true });
           });
-          v.load();
-          loaded = true;
-        }
-        try {
-          await v.play();
-        } catch (_) {
-          blocked = true;
-          v.classList.remove('ready');
         }
       }
 
-      v.addEventListener('playing', function () {
-        v.classList.add('ready');
+      v.addEventListener('playing', showVideo);
+      v.addEventListener('canplay', showVideo);
+      v.addEventListener('loadeddata', showVideo);
+      v.addEventListener('timeupdate', function () {
+        if (v.currentTime > 0) showVideo();
       });
-      v.addEventListener('error', function () {
-        blocked = true;
-        v.classList.remove('ready');
-      });
-      document.addEventListener('visibilitychange', sync);
-      motion.addEventListener('change', sync);
-      window.addEventListener('pointerdown', function () {
-        if (blocked) {
-          blocked = false;
-          sync();
+
+      if (v.readyState >= 2 || (v.currentTime > 0 && !v.paused)) {
+        showVideo();
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          v.pause();
+        } else {
+          tryPlay();
         }
-      }, { passive: true, once: true });
-      sync();
+      });
+      motion.addEventListener('change', checkMotionOrData);
+
+      tryPlay();
     })();
   </script>
 </body>
