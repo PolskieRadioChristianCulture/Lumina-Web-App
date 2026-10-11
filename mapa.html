@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
-  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v8_fullscreen_master">
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v9_subbar_search">
 
   <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
   <style>
@@ -77,7 +77,7 @@
     }
     .mapa-control-bar {
       transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, padding 0.3s ease, border-color 0.25s ease;
-      max-height: 140px;
+      max-height: 240px;
       overflow: hidden;
     }
     .mapa-control-bar.is-hidden {
@@ -87,6 +87,20 @@
       padding-bottom: 0 !important;
       border-bottom-color: transparent !important;
       pointer-events: none !important;
+    }
+    .mapa-subbar-search-box {
+      flex: 1 1 340px;
+      max-width: 540px;
+      min-width: 200px;
+      margin: 0 0.5rem;
+    }
+    @media (max-width: 1100px) {
+      .mapa-subbar-search-box {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 0.35rem 0 0 0;
+      }
     }
     .mapa-collapse-bar-btn {
       display: inline-flex;
@@ -464,26 +478,6 @@
         </div>
       </a>
 
-      <!-- Centralna wyszukiwarka w belce górnej -->
-      <div class="mapa-header-search-box">
-        <div class="mapa-search-wrap">
-          <i class="fa-solid fa-magnifying-glass mapa-search-icon" aria-hidden="true"></i>
-          <input 
-            type="text" 
-            id="mapaSearchInput" 
-            class="mapa-search-input" 
-            placeholder="Szukaj projektów, osób, treści, inicjatyw..." 
-            autocomplete="off" 
-            spellcheck="false" 
-            aria-label="Szukaj projektu w ekosystemie Christian Culture"
-          >
-          <span class="mapa-search-kbd" aria-hidden="true">Ctrl K</span>
-          <button id="mapaSearchClear" class="mapa-search-clear" aria-label="Wyczyść szukanie" style="display: none;">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      </div>
-
       <!-- Zakładki nawigacyjne po prawej stronie -->
       <div class="mapa-header-right">
         <!-- Przełącznik warstw dla Administratora (widoczny tylko dla nazirczarkes@gmail.com) -->
@@ -544,6 +538,26 @@
           <span class="mapa-status-dot planned"></span>
           <span>W przygotowaniu</span>
         </button>
+      </div>
+
+      <!-- Przestronna wyszukiwarka w belce narzędziowej (sub-bar) -->
+      <div class="mapa-subbar-search-box">
+        <div class="mapa-search-wrap">
+          <i class="fa-solid fa-magnifying-glass mapa-search-icon" aria-hidden="true"></i>
+          <input 
+            type="text" 
+            id="mapaSearchInput" 
+            class="mapa-search-input" 
+            placeholder="Szukaj projektów, osób, treści, inicjatyw..." 
+            autocomplete="off" 
+            spellcheck="false" 
+            aria-label="Szukaj projektu w ekosystemie Christian Culture"
+          >
+          <span class="mapa-search-kbd" aria-hidden="true">Ctrl K</span>
+          <button id="mapaSearchClear" class="mapa-search-clear" aria-label="Wyczyść szukanie" style="display: none;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Kontrolki widoku i powiększenia po prawej -->
@@ -756,8 +770,8 @@
 
   <!-- Uniwersalny konektor logowania CC & LUMINA Google Auth Connector -->
   <script src="/js/cc-global-auth.js?v=20261011_auth" defer></script>
-  <!-- Skrypt silnika mapy (v8 - tryb pełnoekranowy panelu Wybrany Obszar) -->
-  <script src="/js/mapa-ekosystemu.js?v=20261011_v8_fullscreen_master" defer></script>
+  <!-- Skrypt silnika mapy (v9 - wyszukiwarka w dolnej belce narzędziowej) -->
+  <script src="/js/mapa-ekosystemu.js?v=20261011_v9_subbar_search" defer></script>
   <!-- Wspólna stopka i narzędzia -->
   <script src="/components/cc-support-footer.js" defer></script>
   <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>

@@ -174,6 +174,9 @@
     document.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
+        if (els.controlBar && els.controlBar.classList.contains('is-hidden')) {
+          toggleControlBar(true);
+        }
         if (els.search) {
           els.search.focus();
           els.search.select();
