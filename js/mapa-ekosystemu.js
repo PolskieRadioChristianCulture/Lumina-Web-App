@@ -90,7 +90,7 @@
     // Oblicz i wyrównaj dokładne wysokości widoku
     updateViewportHeights();
     try {
-      if (localStorage.getItem('mapa_ctrl_bar_hidden') === '1') {
+      if (localStorage.getItem('mapa_ctrl_bar_hidden') !== '0') {
         toggleControlBar(false);
       }
     } catch (e) {}
