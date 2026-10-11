@@ -4552,6 +4552,14 @@ html {
     background-position: right center;
 }
 
+/* 2b. Literatura & Formacja - Książki Założyciela */
+#books-section .collapsible-trigger-bar::before {
+    background-image: 
+        linear-gradient(90deg, #09090c 0%, rgba(9,9,12,0.96) 45%, rgba(9,9,12,0.55) 70%, rgba(9,9,12,0.18) 100%),
+        url('assets/ksiazki-autora-backdrop.webp');
+    background-position: right center;
+}
+
 /* 3. Nasze Media Społecznościowe - Sieć YouTube & Spotify */
 #social-channels .collapsible-trigger-bar::before {
     background-image: 
