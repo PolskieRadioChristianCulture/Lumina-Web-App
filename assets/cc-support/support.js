@@ -72,6 +72,24 @@ let playing = false;
 let pauseUntil = 0;
 let previousTime = 0;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+// Duplikuj elementy listy żeby scrollWidth > clientWidth (ticker infinite scroll)
+function ensureTickerWidth() {
+  const items = Array.from(thanksList.querySelectorAll('li:not([data-clone])'));
+  // Usuń stare klony
+  thanksList.querySelectorAll('[data-clone]').forEach(el => el.remove());
+  // Dodaj 3 kopie żeby lista była dłuższa niż viewport
+  for (let i = 0; i < 3; i++) {
+    items.forEach(item => {
+      const clone = item.cloneNode(true);
+      clone.dataset.clone = 'true';
+      clone.setAttribute('aria-hidden', 'true');
+      thanksList.append(clone);
+    });
+  }
+}
+ensureTickerWidth();
+
 function setPlaying(value) {
   playing = value;
   pauseButton.setAttribute('aria-pressed', String(value));
@@ -92,8 +110,8 @@ function animateThanks(time) {
   if (playing && !hovering && !document.hidden && time > pauseUntil) {
     const maximum = viewport.scrollWidth - viewport.clientWidth;
     if (maximum > 0) {
-      if (viewport.scrollLeft >= maximum - 1) { viewport.scrollLeft = 0; pauseUntil = time + 3500; }
-      else viewport.scrollLeft += delta * 0.026;
+      if (viewport.scrollLeft >= maximum - 1) { viewport.scrollLeft = 0; pauseUntil = time + 2000; }
+      else viewport.scrollLeft += delta * 0.04;
     }
   }
   requestAnimationFrame(animateThanks);
@@ -113,6 +131,7 @@ const authStatus = document.querySelector('#auth-status');
 const consentForm = document.querySelector('#consent-form');
 const api = '/api/cc-support';
 let session = null;
+
 async function refreshThanks() {
   try {
     const data = await readJson(api + '/thanks');
@@ -123,22 +142,41 @@ async function refreshThanks() {
       const li = document.createElement('li');
       li.dataset.confirmed = 'true';
       li.textContent = item.text.slice(0, 220);
-      thanksList.append(li);
+      thanksList.prepend(li);
     }
+    ensureTickerWidth();
   } catch { /* No placeholder supporters, no fake recent payments. */ }
 }
+
+function hasSessionCookie() {
+  return document.cookie.split(';').some(c => c.trim().startsWith('__session='));
+}
+
 async function loadSession() {
+  const loginLink = document.querySelector('#login-link');
   try {
     session = await readJson(api + '/session');
-    if (!session.authenticated) { authStatus.textContent = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania.'; return; }
+    if (!session.authenticated) {
+      authStatus.textContent = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania.';
+      return;
+    }
     authStatus.textContent = 'Jesteś zalogowany. Możesz wybrać publiczną nazwę i zarządzać zgodą.';
-    document.querySelector('#login-link').textContent = 'Moje podziękowania';
-    document.querySelector('#login-link').href = '#moje-podziekowania';
+    loginLink.textContent = 'Moje podziękowania';
+    loginLink.href = '#moje-podziekowania';
     consentForm.hidden = false;
     document.querySelector('#public-name').value = session.publicName || '';
     document.querySelector('#public-consent').checked = session.consent === true;
     document.querySelector('#anonymous-consent').checked = session.anonymousConsent === true;
-  } catch { authStatus.textContent = 'Ustawienia podziękowań będą dostępne po połączeniu tej strony z kontem LUMINA.'; }
+  } catch {
+    // API niedostępne (brak D1 lub błąd sieci) — sprawdź cookie LUMINA
+    if (hasSessionCookie()) {
+      authStatus.textContent = 'Konto LUMINA aktywne. Integracja podziękowań będzie dostępna wkrótce.';
+      loginLink.textContent = 'Moje konto LUMINA';
+      loginLink.href = 'https://polskieradio.cc/lumina';
+    } else {
+      authStatus.textContent = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania.';
+    }
+  }
 }
 consentForm.addEventListener('submit', async event => {
   event.preventDefault();
