@@ -6,6 +6,9 @@
  */
 
 import { ensureDbReady, getCurrentUser, getCurrentProfile } from '../lumina-db.js?v=registry_1';
+// Wersja SDK Firestore MUSI być taka sama jak w lumina-db.js (10.12.2). Inna wersja (wcześniej 12.18.0) daje błąd
+// „Expected first argument to collection() to be a CollectionReference…”, bo instancja bazy pochodzi z innej kopii SDK.
+const FIRESTORE_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 let firestoreDb = null;
 let currentItems = [];
@@ -60,7 +63,7 @@ async function loadContentRegistry() {
     `;
 
     try {
-        const { collection, getDocs, query, orderBy, limit, where } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+        const { collection, getDocs, query, orderBy, limit, where } = await import(FIRESTORE_SDK);
         const colRef = collection(firestoreDb, 'cc_content');
 
         let q = query(colRef, orderBy('createdAt', 'desc'), limit(25));
@@ -184,7 +187,7 @@ window.openDetailModal = async function(contentId) {
     document.getElementById('detailTitle').textContent = 'Pobieranie szczegółów...';
 
     try {
-        const { doc, getDoc, collection, getDocs, orderBy, query } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+        const { doc, getDoc, collection, getDocs, orderBy, query } = await import(FIRESTORE_SDK);
         const docRef = doc(firestoreDb, 'cc_content', contentId);
         const docSnap = await getDoc(docRef);
 
@@ -639,7 +642,7 @@ function initAiFactoryControls() {
             }
 
             try {
-                const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+                const { doc, updateDoc, setDoc } = await import(FIRESTORE_SDK);
                 const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
                 const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
 
@@ -688,7 +691,7 @@ function initAiFactoryControls() {
         if (!reason) return;
 
         try {
-            const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const { doc, updateDoc, setDoc } = await import(FIRESTORE_SDK);
             const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
             const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
 
@@ -745,7 +748,7 @@ function initAiFactoryControls() {
         if (!confirmed) return;
 
         try {
-            const { doc, updateDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const { doc, updateDoc, setDoc } = await import(FIRESTORE_SDK);
             const varRef = doc(firestoreDb, 'cc_content', contentId, 'variants', candidateVariantId);
             const auditRef = doc(firestoreDb, 'cc_content', contentId, 'audit', 'aud_' + Date.now());
 
@@ -843,7 +846,7 @@ function initModalControls() {
         if (!confirm(`Czy na pewno chcesz zarchiwizować materiał ${contentId}? Operacja zachowa historię (Soft Delete).`)) return;
 
         try {
-            const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const { doc, updateDoc } = await import(FIRESTORE_SDK);
             const docRef = doc(firestoreDb, 'cc_content', contentId);
             await updateDoc(docRef, {
                 status: 'ARCHIVED',
@@ -925,7 +928,7 @@ function initNewContentForm() {
         btnSubmit.textContent = 'Zapisywanie w CC Content Core...';
 
         try {
-            const { doc, runTransaction } = await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+            const { doc, runTransaction } = await import(FIRESTORE_SDK);
             const year = new Date().getFullYear();
             const counterRef = doc(firestoreDb, 'cc_content_meta', 'counters');
 
