@@ -68,9 +68,14 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 const thanksList = document.querySelector('#thanks-list');
 const viewport = document.querySelector('#thanks-viewport');
 const pauseButton = document.querySelector('#thanks-pause');
+if (viewport) {
+  viewport.style.scrollBehavior = 'auto';
+}
+
 let playing = false;
 let pauseUntil = 0;
 let previousTime = 0;
+let scrollAccumulator = 0;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 // Duplikuj elementy listy żeby scrollWidth > clientWidth (ticker infinite scroll)
@@ -87,6 +92,7 @@ function ensureTickerWidth() {
       thanksList.append(clone);
     });
   }
+  scrollAccumulator = viewport.scrollLeft;
 }
 ensureTickerWidth();
 
@@ -95,42 +101,107 @@ function setPlaying(value) {
   pauseButton.setAttribute('aria-pressed', String(value));
   pauseButton.setAttribute('aria-label', value ? 'Zatrzymaj przewijanie' : 'Włącz automatyczne przewijanie');
   pauseButton.textContent = value ? 'Ⅱ' : '▶';
+  if (value) {
+    scrollAccumulator = viewport.scrollLeft;
+  }
 }
 pauseButton.addEventListener('click', () => setPlaying(!playing));
-document.querySelector('#thanks-prev').addEventListener('click', () => { setPlaying(false); viewport.scrollBy({ left: -300, behavior: reducedMotion.matches ? 'instant' : 'smooth' }); });
-document.querySelector('#thanks-next').addEventListener('click', () => { setPlaying(false); viewport.scrollBy({ left: 300, behavior: reducedMotion.matches ? 'instant' : 'smooth' }); });
-['pointerdown', 'wheel', 'keydown'].forEach(type => viewport.addEventListener(type, () => setPlaying(false), { passive: true }));
+
+document.querySelector('#thanks-prev').addEventListener('click', () => {
+  setPlaying(false);
+  viewport.scrollBy({ left: -300, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  setTimeout(() => { scrollAccumulator = viewport.scrollLeft; }, 320);
+});
+document.querySelector('#thanks-next').addEventListener('click', () => {
+  setPlaying(false);
+  viewport.scrollBy({ left: 300, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  setTimeout(() => { scrollAccumulator = viewport.scrollLeft; }, 320);
+});
+
+['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(type => {
+  viewport.addEventListener(type, () => {
+    setPlaying(false);
+    scrollAccumulator = viewport.scrollLeft;
+  }, { passive: true });
+});
+
+viewport.addEventListener('scroll', () => {
+  if (!playing || hovering) {
+    scrollAccumulator = viewport.scrollLeft;
+  }
+}, { passive: true });
+
 let hovering = false;
-viewport.addEventListener('mouseenter', () => { hovering = true; });
-viewport.addEventListener('mouseleave', () => { hovering = false; });
-viewport.addEventListener('focus', () => { setPlaying(false); });
+viewport.addEventListener('mouseenter', () => {
+  hovering = true;
+  scrollAccumulator = viewport.scrollLeft;
+});
+viewport.addEventListener('mouseleave', () => {
+  hovering = false;
+  scrollAccumulator = viewport.scrollLeft;
+});
+viewport.addEventListener('focus', () => {
+  setPlaying(false);
+  scrollAccumulator = viewport.scrollLeft;
+});
+
 function animateThanks(time) {
   const delta = Math.min(time - previousTime, 50);
   previousTime = time;
   if (playing && !hovering && !document.hidden && time > pauseUntil) {
     const maximum = viewport.scrollWidth - viewport.clientWidth;
     if (maximum > 0) {
-      if (viewport.scrollLeft >= maximum - 1) { viewport.scrollLeft = 0; pauseUntil = time + 2000; }
-      else viewport.scrollLeft += delta * 0.04;
+      if (scrollAccumulator >= maximum - 1) {
+        scrollAccumulator = 0;
+        viewport.scrollLeft = 0;
+        pauseUntil = time + 2000;
+      } else {
+        scrollAccumulator += delta * 0.04;
+        viewport.scrollLeft = scrollAccumulator;
+      }
     }
   }
   requestAnimationFrame(animateThanks);
 }
 setPlaying(!reducedMotion.matches);
-reducedMotion.addEventListener('change', event => { if (event.matches) setPlaying(false); });
+reducedMotion.addEventListener('change', event => {
+  if (event.matches) {
+    setPlaying(false);
+  }
+});
 requestAnimationFrame(animateThanks);
 
 async function readJson(url, options = {}) {
   const headers = { ...options.headers };
-  if (options.method && options.method !== 'GET' && session?.csrfToken) headers['X-CC-CSRF'] = session.csrfToken;
+  if (options.method && options.method !== 'GET' && session?.csrfToken && !headers['X-CC-CSRF']) {
+    headers['X-CC-CSRF'] = session.csrfToken;
+  }
   const response = await fetch(url, { credentials: 'same-origin', ...options, headers });
   if (!response.ok) throw new Error('Service unavailable');
   return response.json();
 }
+
 const authStatus = document.querySelector('#auth-status');
 const consentForm = document.querySelector('#consent-form');
+const loginLink = document.querySelector('#login-link');
 const api = '/api/cc-support';
 let session = null;
+let currentLuminaAuth = null;
+let currentLuminaUser = null;
+
+// Przycisk "Zaloguj się" wywołuje window.ccLoginWithGoogle('/wspieraj')
+if (loginLink) {
+  loginLink.addEventListener('click', (event) => {
+    if (!currentLuminaUser) {
+      event.preventDefault();
+      if (typeof window.ccLoginWithGoogle === 'function') {
+        window.ccLoginWithGoogle('/wspieraj');
+      } else {
+        window.location.href = 'https://polskieradio.cc/lumina?next=%2Fwspieraj';
+      }
+    }
+  });
+}
 
 async function refreshThanks() {
   try {
@@ -148,47 +219,138 @@ async function refreshThanks() {
   } catch { /* No placeholder supporters, no fake recent payments. */ }
 }
 
-function hasSessionCookie() {
-  return document.cookie.split(';').some(c => c.trim().startsWith('__session='));
+async function getLuminaAuth() {
+  if (currentLuminaAuth) return currentLuminaAuth;
+  try {
+    const mod = await import('/lumina-db.js?v=cc_auth_v12');
+    const { auth } = await mod.ensureDbReady();
+    await auth.authStateReady();
+    currentLuminaAuth = auth;
+    return auth;
+  } catch (err) {
+    console.warn('LuminaDB auth import:', err);
+    return null;
+  }
 }
 
 async function loadSession() {
-  const loginLink = document.querySelector('#login-link');
   try {
-    session = await readJson(api + '/session');
-    if (!session.authenticated) {
-      authStatus.textContent = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania.';
+    const auth = await getLuminaAuth();
+    currentLuminaUser = auth?.currentUser || null;
+
+    if (!currentLuminaUser) {
+      session = null;
+      if (loginLink) {
+        loginLink.textContent = 'Zaloguj się';
+        loginLink.href = 'https://polskieradio.cc/lumina?next=%2Fwspieraj';
+      }
+      authStatus.innerHTML = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania. <button type="button" class="btn small" id="auth-status-login" style="margin-top:8px;display:inline-block;">Zaloguj się przez Google</button>';
+      const inlineLoginBtn = document.querySelector('#auth-status-login');
+      if (inlineLoginBtn) {
+        inlineLoginBtn.addEventListener('click', () => {
+          if (typeof window.ccLoginWithGoogle === 'function') {
+            window.ccLoginWithGoogle('/wspieraj');
+          } else {
+            window.location.href = 'https://polskieradio.cc/lumina?next=%2Fwspieraj';
+          }
+        });
+      }
+      consentForm.hidden = true;
       return;
     }
-    authStatus.textContent = 'Jesteś zalogowany. Możesz wybrać publiczną nazwę i zarządzać zgodą.';
-    loginLink.textContent = 'Moje podziękowania';
-    loginLink.href = '#moje-podziekowania';
-    consentForm.hidden = false;
-    document.querySelector('#public-name').value = session.publicName || '';
-    document.querySelector('#public-consent').checked = session.consent === true;
-    document.querySelector('#anonymous-consent').checked = session.anonymousConsent === true;
-  } catch {
-    // API niedostępne (brak D1 lub błąd sieci) — sprawdź cookie LUMINA
-    if (hasSessionCookie()) {
-      authStatus.textContent = 'Konto LUMINA aktywne. Integracja podziękowań będzie dostępna wkrótce.';
-      loginLink.textContent = 'Moje konto LUMINA';
-      loginLink.href = 'https://polskieradio.cc/lumina';
-    } else {
-      authStatus.textContent = 'Zaloguj się w LUMINA, aby zarządzać zgodą na podziękowania.';
+
+    // Stan konta LUMINA: ZALOGOWANY
+    const displayName = currentLuminaUser.displayName || currentLuminaUser.email || 'Użytkownik LUMINA';
+    if (loginLink) {
+      loginLink.textContent = 'Moje podziękowania';
+      loginLink.href = '#moje-podziekowania';
     }
+
+    let token = '';
+    try {
+      token = await currentLuminaUser.getIdToken();
+    } catch (e) {
+      console.warn('getIdToken:', e);
+    }
+
+    // Zapytanie do bazy podziękowań z tokenem Bearer
+    try {
+      const headers = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      session = await readJson(api + '/session', { headers });
+      authStatus.textContent = `Jesteś zalogowany (${displayName}). Możesz wybrać publiczną nazwę i zarządzać zgodą.`;
+      consentForm.hidden = false;
+      document.querySelector('#public-name').value = session.publicName || '';
+      document.querySelector('#public-consent').checked = session.consent === true;
+      document.querySelector('#anonymous-consent').checked = session.anonymousConsent === true;
+    } catch (dbErr) {
+      // ROZDZIELENIE STANU LOGOWANIA OD DOSTĘPNOŚCI BAZY:
+      // Błąd bazy NIE MOŻE oznaczać, że konto LUMINA jest wylogowane!
+      authStatus.textContent = `Jesteś zalogowany w LUMINA jako ${displayName}. Usługa preferencji podziękowań jest chwilowo niedostępna.`;
+      consentForm.hidden = true;
+    }
+  } catch (err) {
+    console.error('Błąd sesji:', err);
+    authStatus.textContent = 'Sprawdzanie stanu konta LUMINA…';
   }
 }
+
 consentForm.addEventListener('submit', async event => {
   event.preventDefault();
   const button = consentForm.querySelector('button');
   button.disabled = true;
   try {
-    await readJson(api + '/consent', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ consent: document.querySelector('#public-consent').checked, anonymousConsent: document.querySelector('#anonymous-consent').checked, publicName: document.querySelector('#public-name').value.trim() }) });
+    if (!currentLuminaUser) {
+      announce('Zaloguj się w LUMINA przed zapisaniem ustawień.');
+      return;
+    }
+    const token = await currentLuminaUser.getIdToken();
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+    if (session?.csrfToken) {
+      headers['X-CC-CSRF'] = session.csrfToken;
+    }
+    await readJson(api + '/consent', {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        consent: document.querySelector('#public-consent').checked,
+        anonymousConsent: document.querySelector('#anonymous-consent').checked,
+        publicName: document.querySelector('#public-name').value.trim()
+      })
+    });
     announce('Zapisano ustawienia podziękowań.');
     await refreshThanks();
-  } catch { announce('Nie zapisano ustawień. Spróbuj ponownie po zalogowaniu.'); }
-  finally { button.disabled = false; }
+  } catch {
+    announce('Nie zapisano ustawień. Spróbuj ponownie za chwilę.');
+  } finally {
+    button.disabled = false;
+  }
 });
+
+// Nasłuchiwanie zdarzeń stanu autoryzacji
+window.addEventListener('lumina-auth-state', () => {
+  loadSession();
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'lumina_current_user' || e.key === 'lumina_user_session') {
+    loadSession();
+  }
+});
+
+getLuminaAuth().then(auth => {
+  if (auth && typeof auth.onAuthStateChanged === 'function') {
+    auth.onAuthStateChanged(() => {
+      loadSession();
+    });
+  }
+});
+
 loadSession();
 refreshThanks();
 setInterval(() => { if (!document.hidden) refreshThanks(); }, 60000);
@@ -196,3 +358,4 @@ setInterval(() => { if (!document.hidden) refreshThanks(); }, 60000);
 for (const [own, other] of [['public-consent','anonymous-consent'],['anonymous-consent','public-consent']]) {
   document.querySelector('#' + own).addEventListener('change', event => { if (event.target.checked) document.querySelector('#' + other).checked = false; });
 }
+
