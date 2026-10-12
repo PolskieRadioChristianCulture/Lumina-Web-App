@@ -1312,15 +1312,6 @@ async function handleSupportRoute(request, env) {
     targetUrl.pathname = '/wspieraj';
     return Response.redirect(targetUrl.toString(), 301);
   }
-  if (url.pathname === '/wspieraj' || url.pathname === '/wspieraj/') {
-    const assetUrl = new URL(request.url);
-    assetUrl.pathname = '/wspieraj.html';
-    const resp = await env.ASSETS.fetch(new Request(assetUrl, request));
-    if (resp.status < 400) return resp;
-    const dirUrl = new URL(request.url);
-    dirUrl.pathname = '/wspieraj/index.html';
-    return env.ASSETS.fetch(new Request(dirUrl, request));
-  }
   return null;
 }
 
