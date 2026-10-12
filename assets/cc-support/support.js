@@ -72,7 +72,9 @@ if (viewport) {
   viewport.style.scrollBehavior = 'auto';
 }
 
-let playing = false;
+let playing = true;
+let userInteracting = false;
+let hovering = false;
 let pauseUntil = 0;
 let previousTime = 0;
 let scrollAccumulator = 0;
@@ -83,8 +85,8 @@ function ensureTickerWidth() {
   const items = Array.from(thanksList.querySelectorAll('li:not([data-clone])'));
   // Usuń stare klony
   thanksList.querySelectorAll('[data-clone]').forEach(el => el.remove());
-  // Dodaj 3 kopie żeby lista była dłuższa niż viewport
-  for (let i = 0; i < 3; i++) {
+  // Dodaj 4 kopie żeby lista była bezwzględnie dłuższa niż viewport na każdym ekranie
+  for (let i = 0; i < 4; i++) {
     items.forEach(item => {
       const clone = item.cloneNode(true);
       clone.dataset.clone = 'true';
@@ -103,35 +105,48 @@ function setPlaying(value) {
   pauseButton.textContent = value ? 'Ⅱ' : '▶';
   if (value) {
     scrollAccumulator = viewport.scrollLeft;
+    pauseUntil = 0;
   }
 }
 pauseButton.addEventListener('click', () => setPlaying(!playing));
 
+// Strzałki nawigacyjne: przewiń i wstrzymaj na 2s, ale nie wyłączaj trwale autoodtwarzania
 document.querySelector('#thanks-prev').addEventListener('click', () => {
-  setPlaying(false);
-  viewport.scrollBy({ left: -300, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  viewport.scrollBy({ left: -300, behavior: 'smooth' });
+  pauseUntil = performance.now() + 2000;
   setTimeout(() => { scrollAccumulator = viewport.scrollLeft; }, 320);
 });
 document.querySelector('#thanks-next').addEventListener('click', () => {
-  setPlaying(false);
-  viewport.scrollBy({ left: 300, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  viewport.scrollBy({ left: 300, behavior: 'smooth' });
+  pauseUntil = performance.now() + 2000;
   setTimeout(() => { scrollAccumulator = viewport.scrollLeft; }, 320);
 });
 
-['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(type => {
+// Dotyk i interakcja użytkownika: chwilowe wstrzymanie zamiast trwałego wyłączenia
+['pointerdown', 'touchstart', 'wheel'].forEach(type => {
   viewport.addEventListener(type, () => {
-    setPlaying(false);
+    userInteracting = true;
+    pauseUntil = performance.now() + 2500;
     scrollAccumulator = viewport.scrollLeft;
   }, { passive: true });
 });
 
+['pointerup', 'touchend', 'pointercancel'].forEach(type => {
+  window.addEventListener(type, () => {
+    if (userInteracting) {
+      userInteracting = false;
+      pauseUntil = performance.now() + 2000;
+      scrollAccumulator = viewport.scrollLeft;
+    }
+  }, { passive: true });
+});
+
 viewport.addEventListener('scroll', () => {
-  if (!playing || hovering) {
+  if (userInteracting || hovering || !playing) {
     scrollAccumulator = viewport.scrollLeft;
   }
 }, { passive: true });
 
-let hovering = false;
 viewport.addEventListener('mouseenter', () => {
   hovering = true;
   scrollAccumulator = viewport.scrollLeft;
@@ -140,21 +155,19 @@ viewport.addEventListener('mouseleave', () => {
   hovering = false;
   scrollAccumulator = viewport.scrollLeft;
 });
-viewport.addEventListener('focus', () => {
-  setPlaying(false);
-  scrollAccumulator = viewport.scrollLeft;
-});
 
 function animateThanks(time) {
+  if (!previousTime) previousTime = time;
   const delta = Math.min(time - previousTime, 50);
   previousTime = time;
-  if (playing && !hovering && !document.hidden && time > pauseUntil) {
+
+  if (playing && !hovering && !userInteracting && !document.hidden && time > pauseUntil) {
     const maximum = viewport.scrollWidth - viewport.clientWidth;
     if (maximum > 0) {
       if (scrollAccumulator >= maximum - 1) {
         scrollAccumulator = 0;
         viewport.scrollLeft = 0;
-        pauseUntil = time + 2000;
+        pauseUntil = time + 1500;
       } else {
         scrollAccumulator += delta * 0.04;
         viewport.scrollLeft = scrollAccumulator;
@@ -163,12 +176,9 @@ function animateThanks(time) {
   }
   requestAnimationFrame(animateThanks);
 }
-setPlaying(!reducedMotion.matches);
-reducedMotion.addEventListener('change', event => {
-  if (event.matches) {
-    setPlaying(false);
-  }
-});
+
+// Startuj automatyczne przewijanie domyślnie
+setPlaying(true);
 requestAnimationFrame(animateThanks);
 
 async function readJson(url, options = {}) {
