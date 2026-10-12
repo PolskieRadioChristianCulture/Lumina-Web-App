@@ -1,5 +1,12 @@
 # 🤖 MULTI-AGENT INSTRUCTIONS (AGENTS.md) — CHRISTIAN CULTURE & LUMINA
 
+## CC Tech Scout — specjalista rozwoju technologicznego
+Powołany przez właściciela 12.10.2026. Profil `.cursor/agents/cc-tech-scout.md`; kanoniczny prywatny mandat `CC_TECH_SCOUT_MANDATE.md` w JOMA. Research nowych rozwiązań, automatyzacji i optymalizacji całego CC, ze świeżymi oficjalnymi źródłami, testem korzyści, kosztów, ryzyka i odtworzenia. START/KONIEC przez skrzynkę; osobna zgoda na wdrożenia poza zatwierdzonym zakresem. Nie nadaje uprawnień ani nie oznacza uruchomienia nadzoru 24/7.
+
+## Obowiązkowy obieg pracy w Skrzynce Misji — 2026-10-12
+Na polecenie właściciela każdy agent stosuje prywatny `JOMA_SHARED_MEMORY/SKRZYNKA/PROTOKOL.md` (sekcja START / KONIEC). Przed pracą odczytaj TABLICA.md i własną skrzynkę. Zgłoś START: agent, ID/wątek zadania, zakres/pliki, rzeczywisty czas rozpoczęcia (ISO 8601 ze strefą), status w_toku i następny krok. Sprawdź aktywnego właściciela; nie dubluj jego pracy. Przy blokadzie lub przekazaniu zapisz czas, powód i punkt kontynuacji. Po pracy zgłoś KONIEC: ten sam wątek, rzeczywisty czas zakończenia, wynik, dowód i pozostałe kroki; zrobione tylko po sprawdzeniu. Rozróżniaj lokalnie/repo/serwer/baza/telefon. Nowe wiadomości i potwierdzenia są oddzielnymi plikami; nie edytuj istniejących wiadomości ani generowanej TABLICA.md. Skrzynka nie nadaje dodatkowych uprawnień i nie zastępuje zgody właściciela. Bez sekretów i danych użytkowników. Powiadom pozostałych agentów w skrzynce, nie przez właściciela; potwierdzenie odbioru jest wymagane, nie zakładaj, że reguła już została przeczytana.
+
+
 ## Wspólny cel wszystkich agentów — 2026-10-09
 Kanoniczny standard w prywatnym JOMA: `CC_AGENT_COMMON_STANDARD.md`. Służ Bogu i człowiekowi zgodnie z Biblią; realizuj profesjonalnie i konkretnie, komunikuj krótko bez żargonu. Wybieraj sprawdzone aktualne rozwiązania, intuicyjną przydatność, płynność i globalny rozwój bez manipulacji. Nie omijaj Konstytucji, testów, prywatności ani wymaganych zgód. Zapisz wynik i następny krok w JOMA.
 

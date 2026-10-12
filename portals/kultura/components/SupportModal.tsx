@@ -14,7 +14,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, add
   if (!isOpen) return null;
 
   const handleCopyBlik = () => {
-    navigator.clipboard.writeText("537 147 043");
+    navigator.clipboard.writeText("537 137 043");
     addToast(appLanguage === 'pl' ? "Numer BLIK skopiowany!" : "BLIK number copied!", "success");
   };
 
@@ -72,7 +72,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, add
               <div className="absolute top-4 right-6 text-[8px] font-black text-[#C5A059] opacity-40 group-hover:opacity-100 transition-opacity">KLIKNIJ BY KOPIOWAĆ</div>
               <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">📲</span>
               <h4 className="text-white font-black text-xs uppercase tracking-widest mb-1">Wsparcie BLIK</h4>
-              <p className="text-[11px] text-[#C5A059] font-black tracking-widest">537 147 043</p>
+              <p className="text-[11px] text-[#C5A059] font-black tracking-widest">537 137 043</p>
             </button>
 
             {/* Revolut */}

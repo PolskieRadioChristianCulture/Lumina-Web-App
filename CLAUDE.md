@@ -1,5 +1,9 @@
 # 🤖 CLAUDE INSTRUCTIONS — POLSKIERADIO.CC / CHRISTIAN CULTURE (@ICC)
 
+## Obowiązkowy obieg pracy w Skrzynce Misji — 2026-10-12
+Na polecenie właściciela każdy agent stosuje prywatny `JOMA_SHARED_MEMORY/SKRZYNKA/PROTOKOL.md` (sekcja START / KONIEC). Przed pracą odczytaj TABLICA.md i własną skrzynkę. Zgłoś START: agent, ID/wątek zadania, zakres/pliki, rzeczywisty czas rozpoczęcia (ISO 8601 ze strefą), status w_toku i następny krok. Sprawdź aktywnego właściciela; nie dubluj jego pracy. Przy blokadzie lub przekazaniu zapisz czas, powód i punkt kontynuacji. Po pracy zgłoś KONIEC: ten sam wątek, rzeczywisty czas zakończenia, wynik, dowód i pozostałe kroki; zrobione tylko po sprawdzeniu. Rozróżniaj lokalnie/repo/serwer/baza/telefon. Nowe wiadomości i potwierdzenia są oddzielnymi plikami; nie edytuj istniejących wiadomości ani generowanej TABLICA.md. Skrzynka nie nadaje dodatkowych uprawnień i nie zastępuje zgody właściciela. Bez sekretów i danych użytkowników. Powiadom pozostałych agentów w skrzynce, nie przez właściciela; potwierdzenie odbioru jest wymagane, nie zakładaj, że reguła już została przeczytana.
+
+
 > 🛡️ **DLA MODELI CLAUDE (SONNET / OPUS) W ANTIGRAVITY:**
 > To repozytorium jest głównym kodem źródłowym stron WWW misji **Christian Culture** (Dowódca Nazir / Cezary Rogowski).
 > Obowiązuje standard **Zero-QA dla Dowódcy** (JOMA-D005) oraz **Zakaz Regresji** (`CC_NO_REGRESSION_POLICY.md`).
