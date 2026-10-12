@@ -1306,7 +1306,13 @@ async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
 async function handleSupportRoute(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
-  // Bezkonfliktowe aliasy z README.md (/misja i /partnerzy mają swoje dedykowane trasy, nie są nadpisywane)
+  // Bezpośrednia obsługa /wspieraj i /wspieraj/ — worker serwuje asset, omijając pętlę 308 Pages
+  if (path === '/wspieraj') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/wspieraj.html';
+    return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+  }
+  // Bezkonfliktowe aliasy z README.md
   if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj.html') {
     const targetUrl = new URL(request.url);
     targetUrl.pathname = '/wspieraj';
