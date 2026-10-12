@@ -36,7 +36,7 @@ function generateLessonHtml(lesson) {
   const id = lesson.id;
   const num = zeroPad(id);
   const prevNum = id > 1 ? zeroPad(id - 1) : null;
-  const nextNum = id < 26 ? zeroPad(id + 1) : null;
+  const nextNum = id < LESSONS.length ? zeroPad(id + 1) : null;
   const videoId = lesson.videoId || '';
   const isPremiere = videoId.startsWith('PREMIERA');
   const shortTitle = lesson.tytul.replace(/^LEKCJA \d+:\s*/i, '');
@@ -255,7 +255,7 @@ function generateLessonHtml(lesson) {
 
     <div class="cin-topbar-meta">
       <span class="cin-lesson-step-badge">
-        <span>Lekcja ${id} / 26</span>
+        <span>Lekcja ${id} / ${LESSONS.length}</span>
       </span>
       <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
         <span class="support-icon text-sm">❤️</span>
@@ -277,7 +277,7 @@ function generateLessonHtml(lesson) {
         <span class="text-zinc-600">›</span>
         <a href="/akademia#apokalipsa" class="hover:text-amber-300 transition-colors">Apokalipsa – Księga Nadziei</a>
         <span class="text-zinc-600">›</span>
-        <span class="text-amber-400 font-bold">Lekcja ${id} z 26</span>
+        <span class="text-amber-400 font-bold">Lekcja ${id} z ${LESSONS.length}</span>
       </div>
       <div class="flex items-center gap-2">
         ${prevNum ? `<a href="/akademia/apokalipsa/lekcja-${prevNum}" class="cin-nav-prev text-xs py-1.5 px-3 min-h-[34px]">← Lekcja ${parseInt(prevNum)}</a>` : ''}
@@ -292,7 +292,7 @@ function generateLessonHtml(lesson) {
     <!-- HEADER LEKCJI -->
     <div class="reader-stage-header mb-4">
       <span class="reader-badge-gold">APOKALIPSA – KSIĘGA NADZIEI</span>
-      <span class="text-zinc-400 text-xs font-semibold">Lekcja ${id} z 26 • Studio Dobrego Słowa</span>
+      <span class="text-zinc-400 text-xs font-semibold">Lekcja ${id} z ${LESSONS.length} • Studio Dobrego Słowa</span>
     </div>
 
     <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-3 leading-tight">
@@ -587,7 +587,7 @@ function generateLessonHtml(lesson) {
       <div class="reader-finish-box text-center py-8 px-4 sm:px-8">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
           <span>✦</span>
-          <span>Apokalipsa – Księga Nadziei • Lekcja ${id} z 26</span>
+          <span>Apokalipsa – Księga Nadziei • Lekcja ${id} z ${LESSONS.length}</span>
         </div>
         <h3 class="text-white font-serif font-bold text-xl sm:text-2xl mb-2">Gotowy na kolejny krok?</h3>
         <p class="text-zinc-400 text-xs sm:text-sm max-w-lg mx-auto mb-6 leading-relaxed">
@@ -615,7 +615,7 @@ function generateLessonHtml(lesson) {
       </a>` : '<span></span>'}
 
       <a href="/akademia#apokalipsa" class="cin-btn-secondary text-xs px-4 py-2 min-h-[44px]">
-        <span>Wszystkie 26 Lekcji</span>
+        <span>Wszystkie ${LESSONS.length} Lekcji</span>
       </a>
 
       ${nextNum ? `
@@ -766,7 +766,7 @@ function generateLessonHtml(lesson) {
 }
 
 /* ═════════════════════════════════════════════════════════════════
-   2. GENEROWANIE WSZYSTKICH 26 PODSTRON W KAŻDYM FORMACIE
+   2. GENEROWANIE WSZYSTKICH PODSTRON W KAŻDYM FORMACIE
 ═════════════════════════════════════════════════════════════════ */
 console.log('Rozpoczynam zapis ulepszonych podstron lekcji...');
 
@@ -808,4 +808,4 @@ LESSONS.forEach(l => {
   fs.writeFileSync(k4, html, 'utf8');
 });
 
-console.log('✅ Zapisano 26 ulepszonych lekcji w katalogach akademia/apokalipsa oraz kursy/apokalipsa.');
+console.log(`✅ Zapisano ${LESSONS.length} ulepszonych lekcji w katalogach akademia/apokalipsa oraz kursy/apokalipsa.`);

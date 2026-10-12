@@ -48,9 +48,10 @@ Apokalipsa nie została dana po to, aby przestraszyć człowieka przyszłością
   - Lekcja 24: Czoło i Ręka — Komu należy twoja wierność? (Ap 13:16–17) [YouTube: XrkR6XdmXTM]
   - Lekcja 25: 666 — Liczba bestii i fałszywy autorytet (Ap 13:17–18) [YouTube: qocOjx5xfBs]
 
-- **Blok VI: Kulminacja — Trójanielskie Poselstwo (Lekcja 26)**
-  - Lekcja 26: Pierwszy Anioł — Wieczna Ewangelia dla świata (Ap 14:6–7) [Wideo premiera: 2 października]
+- **Blok VI: Kulminacja — Trójanielskie Poselstwo i Godzina Sądu (Lekcje 26–27)**
+  - Lekcja 26: Pierwszy Anioł — Wieczna Ewangelia dla świata (Ap 14:6–7) [YouTube: ZQfzarxSDkU]
+  - Lekcja 27: Tajemnica Jom Kippur — Dzień sądu i pojednania (Kpł 16; Dn 7; Ap 14:7) [YouTube: WCswnJ9taFQ]
 
 ---
 
-*(Pełna treść 26 lekcji z pytaniami, wersetami, cytatami i modlitwami zintegrowana w formacie bazy danych LUMINA).*
+*(Pełna treść 27 lekcji z pytaniami, wersetami, cytatami i modlitwami zintegrowana w formacie bazy danych LUMINA).*

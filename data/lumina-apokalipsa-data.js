@@ -1,11 +1,11 @@
 // LUMINA Bible Academy - Kurs "Apokalipsa – Księga Nadziei"
-// Baza danych kursu (Lekcje 1 - 26) - Wygenerowano automatycznie
+// Baza danych kursu (Lekcje 1 - 27) - Wygenerowano automatycznie
 
 export const KURS_APOKALIPSA_INFO = {
   id: "kurs-apokalipsa-ksiega-nadziei",
   title: "Apokalipsa – Księga Nadziei",
   subtitle: "Odkryj Jezusa, Ewangelię i proroctwa czasów ostatecznych",
-  totalLessons: 26,
+  totalLessons: 27,
   author: "Biblijna Akademia LUMINA / Studio Dobrego Słowa (Pr. Wincenty Sieja)",
   banner: "/LUMINA/images/courses/apokalipsa/banner-promo.jpg",
   logo: "/LUMINA/images/courses/apokalipsa/logo-master.jpg",
@@ -2276,8 +2276,8 @@ export const KURS_APOKALIPSA_LEKCJE = [
   {
     "id": 26,
     "slug": "26-pierwszy-anio-wieczna-ewangelia-dla-wiata",
-    "videoId": "PREMIERA-02-10",
-    "duration": "Premiera: 2 października",
+    "videoId": "ZQfzarxSDkU",
+    "duration": "51:51",
     "tytul": "LEKCJA 26: PIERWSZY ANIOŁ – WIECZNA EWANGELIA DLA ŚWIATA",
     "podtytul": "Apokalipsa 14:6–7 — Godzina sądu, wezwanie do uwielbienia Stwórcy i globalna misja",
     "zakresBiblijny": "Apokalipsa 14:6–7 (oraz paralele: Wyjścia 20:8–11; Dzieje Apostolskie 17:30–31; Rzymian 1:16–17; Kaznodziei 12:13–14).",
@@ -2364,6 +2364,100 @@ export const KURS_APOKALIPSA_LEKCJE = [
     ],
     "twojaDecyzja": "Przyjmuję Wieczną Ewangelię o bezwarunkowym ratunku w Jezusie Chrystusie. Wybieram oddawanie czci Bogu jako mojemu jedynemu Stwórcy i Odkupicielowi, zachowując Jego święty Szabat i głosząc Jego miłość całemu światu.",
     "modlitwa": "Boże Wszechmogący, Stwórco nieba, ziemi, morza i wszystkich źródeł wód! Uwielbiam Cię z całego serca za dar Wiecznej Ewangelii. Dziękuję Ci, że w Panu Jezusie Chrystusie mam Obrońcę na sądzie i pewność życia wiecznego. Wypisz swoje Prawo w moim sercu, uzdolnij mnie do wiernego święcenia Twojego Szabatu i uczyń mnie zwiastunem Twojej prawdy dla ludzi, którzy jeszcze Ciebie nie poznali. W imieniu Jezusa Chrystusa. Amen!"
+  },
+  {
+    "id": 27,
+    "slug": "27-tajemnica-jom-kippur-dzien-sadu-i-pojednania",
+    "videoId": "WCswnJ9taFQ",
+    "duration": "58:45",
+    "tytul": "LEKCJA 27: TAJEMNICA JOM KIPPUR — DZIEŃ SĄDU I POJEDNANIA",
+    "podtytul": "Księga Kapłańska 16, Daniel 7:9–14 i Apokalipsa 14:7 — Świątynia, Dzień Pojednania i pewność uniewinnienia w Chrystusie",
+    "zakresBiblijny": "Księga Kapłańska 16; Daniel 7:9–14; Apokalipsa 14:7; Jan 5:24; Hebrajczyków 9:1–28.",
+    "tekstGlowny": "„Albowiem w dniu tym dostąpią przebłagania, abyście byli oczyszczeni ze wszystkich waszych grzechów; przed Panem będziecie czyści. [...] A Syn Człowieczy przyszedł do Przedwiecznego... I dano Mu panowanie, chwałę i królestwo”. (Kpł 16:30; Dn 7:13–14)",
+    "tekstPamieciowy": "„Zaprawdę, zaprawdę powiadam wam: Kto słucha słowa mego i wierzy Temu, który mnie posłał, ma żywot wieczny i nie stanie przed sądem, lecz przeszedł ze śmierci do żywota”. (Ewangelia Jana 5:24)",
+    "celLekcji": "Odkryć starotestamentowy Dzień Pojednania (Jom Kippur) jako proroczy klucz do zrozumienia niebiańskiego sądu przed powtórnym przyjściem Chrystusa oraz przyjąć pewność, że w Jezusie Boży sąd przynosi uniewinnienie i pokój, a nie potępienie.",
+    "wprowadzenie": "Czy słowo „SĄD” musi kojarzyć się z surowym wyrokiem i potępieniem? Dlaczego w 14. rozdziale Księgi Apokalipsy Pierwszy Anioł ogłasza „godzinę sądu Bożego” jako część Wiecznej Ewangelii — Dobrej Nowiny? W tym wykładzie pastor Wincenty Sieja zabiera nas w pasjonującą podróż przez symbolikę biblijnej Świątyni, proroctwa Księgi Daniela i tajemnicę starotestamentowego Dnia Pojednania (Jom Kippur). Odkrywa hebrajskie znaczenie sądu, w którym Boży trybunał staje po stronie grzesznika, by go publicznie uniewinnić i oczyścić przed całym wszechświatem.",
+    "studiumKrokPoKroku": [
+      {
+        "tytul": "1. Trzy etapy Świątyni a etapy planu zbawienia",
+        "tresc": "Ziemska świątynia na pustyni była największą Bożą poglądową lekcją o planie odkupienia. Dziedziniec (ofiara na ołtarzu) wypełnił się na Golgocie w 31 r. n.e., gdzie Chrystus złożył Siebie w ofierze. Po zmartwychwstaniu i wniebowstąpieniu Jezus rozpoczął służbę w Miejscu Świętym niebiańskiej świątyni jako nasz Arcykapłan i Pośrednik (Hbr 8–9). Trzecim etapem jest wejście do Miejsca Najświętszego — ostateczne oczyszczenie i pojednanie."
+      },
+      {
+        "tytul": "2. Jom Kippur — Dzień Sądu, Oczyszczenia i Pojednania",
+        "tresc": "W kalendarzu hebrajskim dziesiąty dzień siódmego miesiąca (Tiszri) był dniem Jom Kippur. Był to jedyny dzień w roku, kiedy arcykapłan wchodził za zasłonę do Miejsca Najświętszego ze krwią ofiary, by oczyścić świątynię z nagromadzonych grzechów ludu (Kpł 16). Dla Izraela był to dzień pełnego oczyszczenia, pojednania z Bogiem i usunięcia wszelkiego śladu grzechu."
+      },
+      {
+        "tytul": "3. Tajemnica dwóch kozłów — Zastępca i sprawca zła",
+        "tresc": "W Dniu Pojednania losowano dwa kozły: jeden 'dla Pana' — składany w ofierze na przebłaganie, reprezentujący Chrystusa, którego krew oczyszcza świątynię; drugi 'dla Azazela' — wyprowadzany żywy na pustynię. Po zakończeniu dzieła przebłagania grzechy były składane na kozła dla Azazela. Kozioł ten nie ponosił ofiary za grzechy, lecz reprezentował szatana, który jako inicjator buntu zostanie ostatecznie obarczony ostateczną odpowiedzialnością za całe zło wszechświata."
+      },
+      {
+        "tytul": "4. Daniel 7:9–14 — Zasiadł sąd i otwarto księgi",
+        "tresc": "Prorok Daniel oglądał moment rozpoczęcia niebiańskiego sądu: Przedwieczny zasiada na tronie z płomieni ognistych, tysiące tysięcy Mu służą, księgi zostają otwarte, a na obłokach niebieskich wkracza Syn Człowieczy. Jest to sąd przedadwentowy — odbywający się przed powrotem Chrystusa, w którym sprawa każdego człowieka jest rozpatrywana w świetle Bożej sprawiedliwości i ofiary Baranka."
+      },
+      {
+        "tytul": "5. Jezus naszym Obrońcą — Jan 5:24 niszczy strach",
+        "tresc": "Chrystus nie przychodzi na sąd, by nas oskarżać, lecz by stanąć jako nasz Obrońca: 'Jeśliby kto zgrzeszył, mamy Orędownika u Ojca, Jezusa Chrystusa sprawiedliwego' (1 J 2:1). Jezus ogłasza w Ewangelii Jana 5:24: 'Kto wierzy, nie stanie przed sądem, lecz przeszedł ze śmierci do żywota'. Dla tych, którzy oddali życie Zbawicielowi, wyrok uniewinniający zapadł już na Krzyżu!"
+      }
+    ],
+    "danielIApokalipsa": "Wizja sądu z Daniela 7:9–14 oraz oczyszczenia świątyni po 2300 wieczorach i porankach (Dn 8:14) to dokładne tło proroctwa z Apokalipsy 14:7: 'Nadeszła godzina Jego sądu'. Apokalipsa 11:19 odsłania niebiańską świątynię i ukazuje Skrzynię Przymierza — miejsce obecności Boga i Dnia Pojednania. Obie księgi zgodnie wskazują, że przed powrotem Chrystusa w chwale ma miejsce decydujący proces prawnego uniewinnienia Bożego ludu przed całym wszechświatem.",
+    "perspektywaHistoryczna": "Instytucja Jom Kippur ustanowiona w Księdze Kapłańskiej przez tysiąclecia wskazywała na ostateczne rozprawienie się Boga z problemem grzechu. W historii Kościoła w średniowieczu prawda o arcykapłańskiej posłudze Chrystusa w niebie została przysłonięta przez ziemskie kapłaństwo, konfesjonał i odpusty. Ruch biblijny XIX wieku na nowo odkrył niebiańską świątynię, proroczą datę 1844 roku oraz biblijne orędzie Dnia Pojednania, wzywając ludzkość do zaufania jedynemu Pośrednikowi — Jezusowi Chrystusowi.",
+    "jezusWCentrum": "W starotestamentowej świątyni wszystko wskazywało na Chrystusa: On jest Bramą, Ofiarą na ołtarzu, Chlebem Żywota, Światłością Świata, Kadzidłem niosącym nasze modlitwy i Arcykapłanem w Miejscu Najświętszym. Na Bożym sądzie Jezus staje przed Ojcem i mówi: 'To Moje dziecko — Moja krew za niego przelana!'. Jezus nie jest sędzią, którego musimy przekonać — On jest naszym Odkupicielem, który wywalczył dla nas wieczne zbawienie.",
+    "sprawdzWBiblii": [
+      "Kpł 16:29–34 — Ustanowienie Dnia Pojednania (Jom Kippur): doroczne oczyszczenie świątyni i ludu",
+      "Dn 7:9–14 — Wizja sceny sądowej: Przedwieczny na tronie i Syn Człowieczy przyjmujący Królestwo",
+      "Dn 8:14 — 'Aż do dwóch tysięcy i trzystu wieczorów i poranków, wtedy świątynia będzie oczyszczona'",
+      "J 5:24 — 'Kto słucha słowa mego i wierzy... nie stanie przed sądem, lecz przeszedł ze śmierci do żywota'",
+      "Hbr 9:11–14 — Chrystus jako Arcykapłan wszedł raz na zawsze do Miejsca Najświętszego przez własną krew",
+      "Ap 11:19 — Otwarcie świątyni Bożej w niebie i ukazanie Skrzyni Przymierza"
+    ],
+    "zastosowanieOsobiste": "Czy lękasz się sądu Bożego? Spójrz na Krzyż i na niebiańską świątynię. Jeśli zaufałeś Jezusowi Chrystusowi i wyznałeś swoje grzechy, twoja sprawa jest w rękach najlepszego Adwokata we wszechświecie. Dzień Pojednania wzywa nas do uświęcenia, pokuty i całkowitego oddania życia Bogu w pokoju i radości.",
+    "pytaniaDoStudium": [
+      "Czym różniła się codzienna służba na dziedzińcu i w Miejscu Świętym od dorocznej służby w Dniu Pojednania (Jom Kippur)?",
+      "Jaką rolę pełniły dwa kozły opisane w 16. rozdziale Księgi Kapłańskiej i kogo symbolizowały?",
+      "W jaki sposób wizja Daniela 7:9–14 łączy się z orędziem pierwszego anioła z Apokalipsy 14:7?",
+      "Dlaczego werset Jana 5:24 daje wierzącemu absolutną pewność zbawienia i usuwa strach przed potępieniem?",
+      "Co oznacza, że sąd Boży przed przyjściem Chrystusa staje 'po stronie świętych Najwyższego'?"
+    ],
+    "quiz": [
+      {
+        "pytanie": "W którym rozdziale Starego Testamentu znajduje się opis dorocznego Dnia Pojednania (Jom Kippur)?",
+        "opcje": [
+          "Księga Rodzaju 1",
+          "Księga Kapłańska (3 Mojżeszowa) 16",
+          "Księga Przysłów 10",
+          "Księga Jonasza 2"
+        ],
+        "poprawna": 1,
+        "odpowiedz": "Księga Kapłańska (3 Mojżeszowa) 16",
+        "wyjasnienie": "Rozdział 16 Księgi Kapłańskiej szczegółowo opisuje ceremoniał Jom Kippur, wejście arcykapłana za zasłonę oraz rytuał dwóch kozłów."
+      },
+      {
+        "pytanie": "Co symbolizował kozioł 'dla Azazela' w obrzędzie Jom Kippur?",
+        "opcje": [
+          "Ofiarę przebłagalną za kapłanów",
+          "Obarczenie szatana — inicjatora buntu — ostateczną odpowiedzialnością za grzech",
+          "Błogosławieństwo dla narodów pogańskich",
+          "Święto Namiotów"
+        ],
+        "poprawna": 1,
+        "odpowiedz": "Obarczenie szatana — inicjatora buntu — ostateczną odpowiedzialnością za grzech",
+        "wyjasnienie": "Kozioł dla Azazela nie był składany w ofierze; po dokonaniu oczyszczenia świątyni krwią kozła Pańskiego, grzechy składano na Azazela i wyprowadzano go na pustynię, co symbolizuje ostateczną karę szatana."
+      },
+      {
+        "pytanie": "Jaką obietnicę składa Jezus każdemu wierzącemu w Ewangelii Jana 5:24?",
+        "opcje": [
+          "Że musi przejść przez czyściec",
+          "Że ma żywot wieczny i nie stanie przed sądem na potępienie",
+          "Że jego zbawienie zależy od uczynków w ostatnim dniu",
+          "Że nie dowie się o wyroku aż do końca świata"
+        ],
+        "poprawna": 1,
+        "odpowiedz": "Że ma żywot wieczny i nie stanie przed sądem na potępienie",
+        "wyjasnienie": "Jezus zapewnia: 'Kto słucha słowa mego i wierzy Temu, który mnie posłał, ma żywot wieczny i nie stanie przed sądem, lecz przeszedł ze śmierci do żywota' (J 5:24)."
+      }
+    ],
+    "twojaDecyzja": "Oddaję swoje serce i wszystkie moje grzechy Jezusowi Chrystusowi — mojemu jedynemu Arcykapłanowi i Orędownikowi. Przyjmuję dar przebaczenia i z ufnością spoglądam w przyszłość, wiedząc, że On uniewinnił mnie swoją krwią.",
+    "modlitwa": "Panie Jezu Chryste, mój wspaniały Arcykapłanie i Zbawicielu! Dziękuję Ci, że Twoja ofiara na Golgocie i Twoje wstawiennictwo w niebiańskiej świątyni dają mi pełną wolność, pokój i pewność zbawienia. Dziękuję, że na sądzie Bożym to Ty stoisz w mojej obronie. Oczyść moje serce z wszelkiego grzechu, napełnij mnie Swoim Duchem i przygotuj mnie na Twój bliski powrót w chwale. Amen!"
   }
 ];
 
