@@ -58,8 +58,12 @@ document.addEventListener('click', event => { if (!event.target.closest('header'
 
 if (support.shop) {
   const link = document.querySelector('#shop-link');
-  link.href = support.shop;
-  link.textContent = 'Odwiedź sklep CC →';
+  if (link) {
+    link.href = support.shop;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Odwiedź sklep CC →';
+  }
 }
 document.querySelector('#year').textContent = new Date().getFullYear();
 

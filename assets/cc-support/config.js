@@ -9,6 +9,6 @@ export const support = Object.freeze({
   patronite: 'https://patronite.pl/osobowoscplus',
   revolut: 'https://revolut.me/christianculture',
   email: 'radiochristianculture@gmail.com',
-  shop: null,
+  shop: 'https://my-store-1009741.creator-spring.com/',
   fundraisers: ['https://zrzutka.pl/rs4g4v', 'https://zrzutka.pl/3bbxzn']
 });
