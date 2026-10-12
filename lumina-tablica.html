@@ -10539,20 +10539,39 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     authorLink = 'lumina.cezaryrgowski.html';
                 }
 
-                // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. AI Antychryst, artykuły CCN itp.)
-                // UWAGA: sprawdzamy wyłącznie pola URL (nie tekst/tytuł), żeby unikać fałszywych trafień w postach biblijnych
+                // Event details
+                let eventInfoHtml = '';
+                if (item.type === 'event' && (item.eventDate || item.eventLoc)) {
+                    eventInfoHtml = `
+                        <div class="event-info-pill">
+                            ${item.eventDate ? `<span><i class="fa-solid fa-calendar-days"></i> ${item.eventDate}</span>` : ''}
+                            ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                const rawBody = item.text || item.desc || '';
+                const richResult = window.LuminaDB?.formatRichTextAndMedia
+                    ? window.LuminaDB.formatRichTextAndMedia(rawBody, item)
+                    : { html: rawBody, embedHtml: '' };
+
+                // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. /wspieraj, artykuły CCN itp.)
                 const itemUrlScope = `${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
                 const isAiAntychrystPost = /ai-antychryst/i.test(itemUrlScope) || /\/si\/ai-antychryst/i.test(itemUrlScope);
+
+                // Wykryj URL kandydata: z dedykowanych pól, podglądu linku lub z treści wpisu
+                const textFirstUrl = (richResult?.urls && richResult.urls.length > 0) ? richResult.urls[0] : ((item.text || item.desc || '').match(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])|(?:^|[\s(])((?:www\.)?[a-zA-Z0-9-]+\.(?:pl|cc|com|online|app)[^\s<]*)/i)?.[0]?.trim() || null);
+                const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl || item.linkPreview?.url || textFirstUrl;
 
                 if (isAiAntychrystPost) {
                     if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
                         item.image = '/images/si/ai-vs-antychryst.webp';
                     }
-                } else if ((!item.image || item.image.includes('tlo_tv_radiocc')) && window.LuminaDB?.getHeuristicLinkMetadata) {
-                    const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl;
-                    if (candidateUrl) {
-                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
-                        if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                } else if (candidateUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
+                    if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                        // Jeśli link ma dedykowaną grafikę (np. /wspieraj -> social.jpg), podmień grafikę jeśli wpis nie miał własnej ręcznie dodanej grafiki
+                        if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_') || item.image.includes('kc_day_') || item.image.includes('lesson-')) {
                             item.image = hMeta.image;
                         }
                     }
@@ -10583,31 +10602,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                             </a>
                         </div>
                     `;
-                } else if (false) {
-                    ctaHtml = `
-                        <div style="margin: 14px 0 6px;">
-                            <a href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:800; font-size:0.9rem; padding:10px 18px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(245,158,11,0.35); transition:all 0.2s ease;">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(item.externalUrlLabel || 'Otwórz Analizę w Claude AI')}
-                            </a>
-                        </div>
-                    `;
                 }
-
-                // Event details
-                let eventInfoHtml = '';
-                if (item.type === 'event' && (item.eventDate || item.eventLoc)) {
-                    eventInfoHtml = `
-                        <div class="event-info-pill">
-                            ${item.eventDate ? `<span><i class="fa-solid fa-calendar-days"></i> ${item.eventDate}</span>` : ''}
-                            ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
-                        </div>
-                    `;
-                }
-
-                const rawBody = item.text || item.desc || '';
-                const richResult = window.LuminaDB?.formatRichTextAndMedia
-                    ? window.LuminaDB.formatRichTextAndMedia(rawBody, item)
-                    : { html: rawBody, embedHtml: '' };
 
                 // ── Sprawdzenie czy wpis posiada YouTube (w polach wideo lub w tekście) ──
                 const postYtMatch = `${item.videoUrl || ''} ${item.youtubeUrl || ''} ${item.playlistUrl || ''} ${item.text || ''} ${item.desc || ''} ${item.title || ''} ${item.image || ''}`.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/|i\.ytimg\.com\/vi\/|img\.youtube\.com\/vi\/)([a-zA-Z0-9_-]{11})/i);
