@@ -1458,6 +1458,12 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (decodedP === '/moj-werset-dnia' || decodedP === '/mój-werset-dnia' || decodedP === '/mojwersetdnia') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/werset-dnia';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     if (decodedP === '/ksiazki' || decodedP === '/audiobooki' || decodedP === '/ebooki') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/biblioteka';
