@@ -5640,6 +5640,13 @@ export function getHeuristicLinkMetadata(url) {
                 ctaText = 'Oglądaj Film 🍿';
                 img = 'https://polskieradio.cc/vod_hity_kina_poster.jpg';
                 icon = 'fa-solid fa-film';
+            } else if (pathname.includes('wspieraj')) {
+                title = 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję';
+                desc = 'Nie każdy może dać pieniądze. Każdy może pomóc nieść Ewangelię dalej. Wesprzyj nas przez modlitwę, BLIK, przelew, Patronite lub udostępnianie.';
+                badge = '🤝 WSPIERAJ MISJĘ CC';
+                ctaText = 'Wspieraj Dzieło Boże ➔';
+                img = 'https://polskieradio.cc/assets/cc-support/social.jpg';
+                icon = 'fa-solid fa-hand-holding-heart';
             } else if (pathname.includes('lumina')) {
                 title = 'Portal Społecznościowy LUMINA ✨';
                 desc = 'Pierwszy polski chrześcijański portal społecznościowy. Łączymy wierzących, dzielimy się Słowem i świadectwami.';
