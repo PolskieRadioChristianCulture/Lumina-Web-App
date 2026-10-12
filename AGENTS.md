@@ -9,6 +9,10 @@ Wszyscy agenci: domyślnie 2–5 krótkich zdań/punktów: ZROBIONE, DZIAŁA/NIE
 ## Zakaz regresji całego ekosystemu CC
 Stosuj `CC_NO_REGRESSION_POLICY.md` (polecenie właściciela, 2026-10-03). Każda powracająca usterka wymaga kontroli regresji; nieudany wymagany test blokuje publikację. Dla CCN News używaj kanonicznego `portals/ccn-news` i `npm run build:ccn-news`. Przed publikacją uruchom `npm run test:cc-regression` oraz pozostałe wymagane kontrole. Nie przywracaj starszych bundle ani generatorów kosztem zaakceptowanego wyglądu lub działania.
 
+## 📬 Skrzynka Misji CC (Start sesji agentów)
+Na początku każdej sesji przeczytaj `JOMA_SHARED_MEMORY/SKRZYNKA/TABLICA.md` i swoją skrzynkę (`node narzedzia/skrzynka.mjs skrzynka --agent <ty>`). Potwierdzaj wiadomości statusem; „zrobione” tylko z dowodem. Zasady: `SKRZYNKA/PROTOKOL.md`.
+
+
 ## 📰 Cykliczna Rutyna Publikacji na 20 Portalach Tematycznych CCN (Polecenie Dowódcy — 2026-10-09)
 Obowiązuje stała rutyna cyklicznych publikacji artykułów na wszystkich 20 portalach ekosystemu: 1. `/news`, 2. `/nauka`, 3. `/historia`, 4. `/biologia`, 5. `/prawo`, 6. `/seks`, 7. `/kultura`, 8. `/biznes`, 9. `/kuchnia`, 10. `/ziu`, 11. `/ogloszenia`, 12. `/wspolpraca`, 13. `/network`, 14. `/biblioteka`, 15. `/edukacja`, 16. `/psychologia`, 17. `/finanse`, 18. `/technologie`, 19. `/misje`, 20. `/apologetyka`.
 - **Autorzy:** wyłącznie Cezary Rogowski, Wioletta Rogowska lub Redakcja CCN News (bezwzględny zakaz fikcyjnych postaci i zdjęć ze stocka).

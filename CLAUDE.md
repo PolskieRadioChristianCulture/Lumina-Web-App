@@ -51,3 +51,5 @@ Gdy Dowódca wpisze w czacie hasło z `@`:
 4. **Synchronizacja lustra:** Po zatwierdzeniu zmian skopiuj zmienione pliki do `C:\Users\czark\Desktop\@ICC\LUMINA`.
 5. **JOMA Handoff:** Zaktualizuj `C:\Users\czark\Desktop\Misja CC\JOMA_SHARED_MEMORY\JOMA_HANDOFFS.md` ze statusem `done`.
 6. **Poufność Mission Control:** Nigdy nie emituj ani nie wpisuj słów "Mission Control" na stronach publicznych.
+7. **Skrzynka Misji CC:** Na początku każdej sesji przeczytaj `JOMA_SHARED_MEMORY/SKRZYNKA/TABLICA.md` i swoją skrzynkę (`node narzedzia/skrzynka.mjs skrzynka --agent <ty>`). Potwierdzaj wiadomości statusem; „zrobione” tylko z dowodem. Zasady: `SKRZYNKA/PROTOKOL.md`.
+
