@@ -1116,6 +1116,211 @@ async function serveAgentsMap(request) {
   });
 }
 
+// ──────────────────────────────────────────────────────────────────────────
+// MODUŁ WSPARCIA I PODZIĘKOWAŃ: polskieradio.cc/wspieraj
+// Realizuje zero-qa standard: prawdziwe podziękowania wyłącznie z potwierdzonym
+// wsparciem i zgodą (imienną lub anonimową). Brak fikcyjnych wpisów.
+// Weryfikacja sesji LUMINA (Firebase ID Token) po stronie serwera.
+// ──────────────────────────────────────────────────────────────────────────
+const SUPPORT_ORIGIN = 'https://polskieradio.cc';
+const SUPPORT_SOURCES = new Set(['patronite', 'youtube', 'bank', 'blik', 'revolut', 'zrzutka']);
+const SUPPORT_ALIASES = new Set(['/wsparcie', '/pomoc', '/darowizna', '/donate']);
+
+function supportNormalizeName(value) {
+  return String(value || '').normalize('NFC').replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/g, '').trim().slice(0, 60);
+}
+
+const luminaSupportAdapter = {
+  async verifySession(request) {
+    const authHeader = request.headers.get('Authorization') || '';
+    let token = '';
+    if (authHeader.startsWith('Bearer ')) {
+      token = authHeader.slice(7).trim();
+    }
+    if (!token) {
+      const cookie = request.headers.get('Cookie') || '';
+      const match = cookie.match(/(?:^|;\s*)__session=([^;]+)/);
+      if (match) token = decodeURIComponent(match[1]);
+    }
+    if (!token) return null;
+    const verified = await verifyFirebaseIdToken(token);
+    if (!verified || !verified.sub) return null;
+    return { uid: verified.sub, email: verified.email || '' };
+  },
+
+  async createCsrfToken(session) {
+    const key = session.uid + '|' + Math.floor(Date.now() / 3600000);
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key + '|cc_support_csrf_salt'));
+    return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+  },
+
+  async verifyCsrfToken(session, token) {
+    if (!token || typeof token !== 'string') return false;
+    const cur = await this.createCsrfToken(session);
+    if (token === cur) return true;
+    const prevKey = session.uid + '|' + (Math.floor(Date.now() / 3600000) - 1);
+    const prevDigest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(prevKey + '|cc_support_csrf_salt'));
+    const prev = [...new Uint8Array(prevDigest)].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+    return token === prev;
+  },
+
+  async verifySupportEvidence(event) {
+    return { verified: false };
+  }
+};
+
+async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
+  const url = new URL(request.url);
+  if (!url.pathname.startsWith('/api/cc-support/')) return null;
+  const db = env.CC_SUPPORT_DB || env.milion_db;
+  if (!db) {
+    return new Response(JSON.stringify({ error: 'Integration unavailable' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+    });
+  }
+
+  const jsonResp = (body, status = 200) => new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff'
+    }
+  });
+
+  try {
+    if (url.pathname === '/api/cc-support/thanks' && request.method === 'GET') {
+      let results = [];
+      try {
+        const queryResult = await db.prepare(`
+          SELECT p.public_name, p.consent, p.anonymous_consent, s.source, MAX(s.confirmed_at) AS recent
+          FROM cc_verified_support s
+          JOIN cc_support_preferences p ON p.uid = s.supporter_uid
+          WHERE s.revoked = 0 AND ((p.consent = 1 AND p.public_name <> '') OR p.anonymous_consent = 1)
+          GROUP BY p.uid, s.source
+          ORDER BY recent DESC LIMIT 50
+        `).all();
+        results = queryResult?.results || [];
+      } catch (tableErr) {
+        // Tabela może jeszcze nie istnieć przed schema.sql — zwróć pustą listę potwierdzonych (bez fikcyjnych)
+        results = [];
+      }
+
+      const labels = {
+        patronite: 'patronat w Patronite',
+        youtube: 'wsparcie na YouTube',
+        bank: 'dar misyjny',
+        blik: 'dar misyjny',
+        revolut: 'dar misyjny',
+        zrzutka: 'wsparcie zbiórki'
+      };
+      const anonymousLabels = {
+        patronite: 'Dziękujemy anonimowym patronom z Patronite.',
+        youtube: 'Dziękujemy anonimowym wspierającym na YouTube.',
+        bank: 'Dziękujemy anonimowym darczyńcom misji.',
+        blik: 'Dziękujemy anonimowym darczyńcom misji.',
+        revolut: 'Dziękujemy anonimowym darczyńcom misji.',
+        zrzutka: 'Dziękujemy anonimowym wspierającym zbiórki.'
+      };
+
+      const items = [];
+      const seen = new Set();
+      for (const row of results) {
+        const name = supportNormalizeName(row.public_name);
+        if (!labels[row.source]) continue;
+        if (row.anonymous_consent !== 1 && !name) continue;
+        const text = row.anonymous_consent === 1
+          ? anonymousLabels[row.source]
+          : 'Dziękujemy: ' + name + ' — ' + labels[row.source] + '.';
+        if (!seen.has(text)) {
+          seen.add(text);
+          items.push({ text });
+        }
+      }
+      return jsonResp({ items });
+    }
+
+    if (typeof adapter?.verifySession !== 'function') return jsonResp({ error: 'LUMINA session adapter unavailable' }, 503);
+    const session = await adapter.verifySession(request);
+    if (!session || typeof session.uid !== 'string' || !session.uid.trim()) {
+      return jsonResp({ authenticated: false }, 401);
+    }
+
+    if (url.pathname === '/api/cc-support/session' && request.method === 'GET') {
+      let preference = null;
+      try {
+        preference = await db.prepare('SELECT public_name, consent, anonymous_consent FROM cc_support_preferences WHERE uid = ?').bind(session.uid).first();
+      } catch (e) {
+        preference = null;
+      }
+      const csrf = typeof adapter.createCsrfToken === 'function' ? await adapter.createCsrfToken(session) : '';
+      return jsonResp({
+        authenticated: true,
+        publicName: preference?.public_name || '',
+        consent: preference?.consent === 1,
+        anonymousConsent: preference?.anonymous_consent === 1,
+        csrfToken: csrf
+      });
+    }
+
+    if (url.pathname === '/api/cc-support/consent' && request.method === 'PUT') {
+      if (request.headers.get('Origin') !== SUPPORT_ORIGIN || !request.headers.get('Content-Type')?.startsWith('application/json')) {
+        return jsonResp({ error: 'Invalid origin or content type' }, 403);
+      }
+      if (typeof adapter.verifyCsrfToken !== 'function' || !(await adapter.verifyCsrfToken(session, request.headers.get('X-CC-CSRF')))) {
+        return jsonResp({ error: 'Invalid CSRF token' }, 403);
+      }
+      const raw = await request.text();
+      if (raw.length > 4096) return jsonResp({ error: 'Payload too large' }, 413);
+      let body;
+      try { body = JSON.parse(raw); } catch { return jsonResp({ error: 'Invalid JSON' }, 400); }
+      if (!body || typeof body.consent !== 'boolean' || typeof body.anonymousConsent !== 'boolean' || (body.consent && body.anonymousConsent)) {
+        return jsonResp({ error: 'Invalid consent' }, 400);
+      }
+      const name = supportNormalizeName(body.publicName);
+      if (body.consent && !name) return jsonResp({ error: 'Public name required' }, 400);
+
+      try {
+        await db.prepare(`
+          INSERT INTO cc_support_preferences (uid, public_name, consent, anonymous_consent, consent_updated_at)
+          VALUES (?, ?, ?, ?, ?)
+          ON CONFLICT(uid) DO UPDATE SET
+            public_name = excluded.public_name,
+            consent = excluded.consent,
+            anonymous_consent = excluded.anonymous_consent,
+            consent_updated_at = excluded.consent_updated_at
+        `).bind(session.uid, body.consent ? name : '', body.consent ? 1 : 0, body.anonymousConsent ? 1 : 0, new Date().toISOString()).run();
+      } catch (dbErr) {
+        return jsonResp({ error: 'Database update failed' }, 500);
+      }
+      return jsonResp({ saved: true });
+    }
+
+    return jsonResp({ error: 'Not found' }, 404);
+  } catch (err) {
+    return jsonResp({ error: 'Service temporarily unavailable' }, 503);
+  }
+}
+
+async function handleSupportRoute(request, env) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/$/, '');
+  // Bezkonfliktowe aliasy z README.md (/misja i /partnerzy mają swoje dedykowane trasy, nie są nadpisywane)
+  if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj/' || url.pathname === '/wspieraj.html') {
+    const targetUrl = new URL(request.url);
+    targetUrl.pathname = '/wspieraj';
+    return Response.redirect(targetUrl.toString(), 301);
+  }
+  if (url.pathname === '/wspieraj') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/wspieraj.html';
+    return env.ASSETS.fetch(new Request(assetUrl, request));
+  }
+  return null;
+}
+
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -1134,6 +1339,12 @@ export default {
     if (url.pathname === '/api/admin/agents-map') {
       return serveAgentsMap(request);
     }
+
+    // Obsługa CC Support API (podziękowania i zgody) oraz tras /wspieraj
+    const supportApiResponse = await handleSupportApi(request, env);
+    if (supportApiResponse) return supportApiResponse;
+    const supportPageRoute = await handleSupportRoute(request, env);
+    if (supportPageRoute) return supportPageRoute;
 
     if (url.pathname.startsWith('/api/tresci-18/')) {
       return handleAdultContent(request, env, url);

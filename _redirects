@@ -188,6 +188,7 @@
 /heatfix /premier-heatfix 200
 /werset-dnia /werset-dnia 200
 /Werset-Dnia /werset-dnia 200
+/moj-werset-dnia /werset-dnia 301
 /wersety /werset-dnia 200
 /verseoftheday /werset-dnia 200
 /moja-ksiazka /moja-ksiazka 200
@@ -384,5 +385,19 @@
 /mapa/ /mapa.html 200
 /mapa-ekosystemu /mapa 301
 /mapa-ekosystemu/ /mapa 301
+
+# === CENTRUM WSPARCIA MISJI CHRISTIAN CULTURE (/wspieraj) ===
+# Bezkonfliktowe aliasy z README.md (/misja -> /misje oraz /partnerzy -> /wspolpraca zachowane zgodnie z regułą bez regresji)
+/wsparcie /wspieraj 301
+/wsparcie/ /wspieraj 301
+/pomoc /wspieraj 301
+/pomoc/ /wspieraj 301
+/darowizna /wspieraj 301
+/darowizna/ /wspieraj 301
+/donate /wspieraj 301
+/donate/ /wspieraj 301
+/wspieraj/ /wspieraj 301
+/wspieraj /wspieraj.html 200
+
 
 

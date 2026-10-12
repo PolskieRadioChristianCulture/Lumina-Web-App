@@ -34,7 +34,7 @@
                 }
                 if (isLogged) {
                     const params = new URLSearchParams(window.location.search);
-                    const r = params.get('redirect') || params.get('to') || params.get('target');
+                    const r = params.get('next') || params.get('redirect') || params.get('to') || params.get('target');
                     let target = 'lumina';
                     if (r) {
                         if (r.includes('projektant')) target = '/projektant';
@@ -245,7 +245,7 @@
         // Pobierz cel przekierowania z URL (np. ?redirect=tablica lub ?redirect=profil)
         function getRedirectTarget() {
             const params = new URLSearchParams(window.location.search);
-            const r = params.get('redirect') || params.get('to') || params.get('target');
+            const r = params.get('next') || params.get('redirect') || params.get('to') || params.get('target');
             if (r) {
                 if (r.includes('projektant')) return '/projektant';
                 if (r === 'tablica' || r.includes('tablica')) return 'tablica';
