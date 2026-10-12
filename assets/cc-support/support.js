@@ -1,4 +1,4 @@
-import { support } from './config.js';
+import { support } from './config.js?v=20261012_ticker_v6';
 
 const status = document.querySelector('#status');
 let timer;
@@ -78,7 +78,6 @@ if (viewport) {
 
 let playing = true;
 let userInteracting = false;
-let hovering = false;
 let pauseUntil = 0;
 let previousTime = 0;
 let scrollAccumulator = 0;
@@ -146,34 +145,25 @@ document.querySelector('#thanks-next').addEventListener('click', () => {
 });
 
 viewport.addEventListener('scroll', () => {
-  if (userInteracting || hovering || !playing) {
+  if (userInteracting || !playing) {
     scrollAccumulator = viewport.scrollLeft;
   }
 }, { passive: true });
-
-viewport.addEventListener('mouseenter', () => {
-  hovering = true;
-  scrollAccumulator = viewport.scrollLeft;
-});
-viewport.addEventListener('mouseleave', () => {
-  hovering = false;
-  scrollAccumulator = viewport.scrollLeft;
-});
 
 function animateThanks(time) {
   if (!previousTime) previousTime = time;
   const delta = Math.min(time - previousTime, 50);
   previousTime = time;
 
-  if (playing && !hovering && !userInteracting && !document.hidden && time > pauseUntil) {
+  if (playing && !userInteracting && !document.hidden && time > pauseUntil) {
     const maximum = viewport.scrollWidth - viewport.clientWidth;
     if (maximum > 0) {
       if (scrollAccumulator >= maximum - 1) {
         scrollAccumulator = 0;
         viewport.scrollLeft = 0;
-        pauseUntil = time + 1500;
+        pauseUntil = time + 1200;
       } else {
-        scrollAccumulator += delta * 0.04;
+        scrollAccumulator += delta * 0.05;
         viewport.scrollLeft = scrollAccumulator;
       }
     }
