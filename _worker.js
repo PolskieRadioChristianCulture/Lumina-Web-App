@@ -1049,19 +1049,11 @@ async function serveAgentsMap(request) {
     if (googleResp.ok) {
       tokenData = await googleResp.json();
     } else {
-      // 2. Fallback: Firebase ID Token (identitytoolkit lookup)
-      // Weryfikacja struktury JWT i bezpieczne zdekodowanie payloadu
-      const parts = idToken.split('.');
-      if (parts.length === 3) {
-        const payloadBase64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-        const decodedStr = atob(payloadBase64);
-        const jwtPayload = JSON.parse(decodedStr);
-        // Sprawdź czy issuer to Firebase lumina-cc oraz czy token nie wygasł
-        const now = Math.floor(Date.now() / 1000);
-        if (jwtPayload.exp && jwtPayload.exp > now && jwtPayload.aud === 'lumina-cc' && jwtPayload.email) {
-          tokenData = jwtPayload;
-        }
-      }
+      // 2. Firebase ID Token (lumina-cc): PEŁNA weryfikacja podpisu RS256 kluczami Google (securetoken).
+      // Poprawka bezpieczeństwa (Claude, 2026-10-12): wcześniej payload był tylko dekodowany (atob) bez sprawdzenia
+      // podpisu — spreparowany token z adresem Dowódcy dawał dostęp do warstwy @A.
+      const verified = await verifyFirebaseIdToken(idToken);
+      if (verified && verified.email) tokenData = verified;
     }
 
     if (!tokenData) {
