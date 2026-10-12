@@ -4539,3 +4539,120 @@ html[data-lumina-theme="light"] .rich-og-content a:hover {
     border-bottom: none !important;
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CZAT LUMINA — TRYB JASNY: UZUPEŁNIENIE (Claude, 2026-10-12)
+   Zmierzone na produkcji: białe nazwy grup na białym tle, jasnoszare tematy grup,
+   ciemne paski szybkich odpowiedzi, żółte/zielone/niebieskie napisy o kontraście 1,1–2,5.
+   Zakres: tylko modal czatu (#directMessagesModal / #messageModal) i tylko motyw jasny.
+   Nie zmienia własnych dymków (.lumina-bubble-mine / .fb-msg-bubble-me) ani przycisków z gradientem.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Paski szybkich odpowiedzi i wersetów (dotąd granatowe w jasnym motywie) */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-smart-bar-container {
+    background: #fffdf7 !important;
+    border-color: #ece3cf !important;
+    box-shadow: none !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .smart-chip-btn {
+    background: #f8f2e5 !important;
+    border-color: #dfd1b1 !important;
+    color: #3b3632 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .smart-chip-btn:hover {
+    background: #f3e9d2 !important;
+    border-color: #b88e3e !important;
+    color: #1c1917 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .smart-chip-btn.scripture-chip {
+    background: #fdf2f8 !important;
+    border-color: #f2c4dc !important;
+    color: #9d174d !important;
+}
+
+/* Karty grup tematycznych */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .group-card-item {
+    background: #ffffff !important;
+    border-color: #ece3cf !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .group-topic-chip {
+    background: #f8f2e5 !important;
+    border-color: #e7dcc6 !important;
+    color: #57534e !important;
+}
+
+/* Panel podglądu posta w czacie (dotąd ciemny) */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) #messengerPostView {
+    background: #fffdf7 !important;
+    color: #3b3632 !important;
+}
+
+/* Plakietka nadawcy w cudzym dymku (dotąd ciemne tło) */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-bubble-theirs span[style*="rgba(0,0,0,0.25)"] {
+    background: #f3eddf !important;
+    color: #57534e !important;
+}
+
+/* Przycisk „Odkrywaj Profile” — kolorystyka jak pozostałe przyciski główne w jasnym motywie */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) button[style*="#ec4899,#8b5cf6"] {
+    background: linear-gradient(120deg, #6b501c, #806120) !important;
+    color: #fff !important;
+}
+
+/* Napisy z kolorami zaprojektowanymi pod ciemne tło (inline) → odpowiedniki czytelne na jasnym.
+   Wyłączone: własne dymki i zawartość przycisków z gradientem. */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #fff;"], [style*="color:#fff;"], [style*="color: #ffffff"], [style*="color:#ffffff"],
+      [style*="color: white"], [style*="color:white"], [style*="color: #f8fafc"], [style*="color:#f8fafc"],
+      [style*="color: #f1f5f9"], [style*="color: #e2e8f0"], [style*="color:#e2e8f0"],
+      [style*="color: #cbd5e1"], [style*="color:#cbd5e1"])
+  :not(button, a, [style*="gradient"], .lumina-bubble-mine, .fb-msg-bubble-me,
+       .lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *, button *, #msgComposerImgPreviewBox *) {
+    color: #1c1917 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #facc15"], [style*="color:#facc15"], [style*="color: #fde047"], [style*="color:#fde047"],
+      [style*="color: #fef08a"], [style*="color:#fef08a"], [style*="color: #eab308"], [style*="color:#eab308"],
+      [style*="color: #fbbf24"], [style*="color:#fbbf24"], [style*="color: #f59e0b"], [style*="color:#f59e0b"])
+  :not(.lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *) {
+    color: #74520f !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #f472b6"], [style*="color:#f472b6"], [style*="color: #ec4899"], [style*="color:#ec4899"],
+      [style*="color: #c084fc"], [style*="color:#c084fc"], [style*="color: #a855f7"], [style*="color:#a855f7"])
+  :not(.lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *) {
+    color: #9d174d !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #38bdf8"], [style*="color:#38bdf8"], [style*="color: #7dd3fc"], [style*="color:#7dd3fc"],
+      [style*="color: #93c5fd"], [style*="color:#93c5fd"], [style*="color: #60a5fa"], [style*="color:#60a5fa"],
+      [style*="color: #06b6d4"], [style*="color:#06b6d4"], [style*="color: #22d3ee"], [style*="color:#22d3ee"])
+  :not(.lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *) {
+    color: #0369a1 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #10b981"], [style*="color:#10b981"], [style*="color: #34d399"], [style*="color:#34d399"],
+      [style*="color: #4ade80"], [style*="color:#4ade80"], [style*="color: #22c55e"], [style*="color:#22c55e"])
+  :not(.lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *) {
+    color: #047857 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal)
+  :is([style*="color: #94a3b8"], [style*="color:#94a3b8"], [style*="color: #64748b"], [style*="color:#64748b"])
+  :not(.lumina-bubble-mine *, .fb-msg-bubble-me *, button[style*="gradient"] *) {
+    color: #57534e !important;
+}
+
+/* Przyciski paska „Wersety / Pytania na start / Losuj” (klasy smart-action-btn / smart-cycle-btn) */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-smart-bar-container :is(.smart-action-btn, .smart-cycle-btn) {
+    background: #f8f2e5 !important;
+    border-color: #dfd1b1 !important;
+    color: #3b3632 !important;
+}
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) .lumina-smart-bar-container :is(.smart-action-btn, .smart-cycle-btn) * {
+    color: inherit !important;
+}
+
+/* Ciemne plakietki (nadawca, „Misja CC”) — jasne tło w jasnym motywie */
+html[data-lumina-theme="light"] :is(#directMessagesModal, #messageModal) span:is([style*="background:rgba(0,0,0,0.35)"], [style*="background:rgba(0,0,0,0.25)"], [style*="background: rgba(0,0,0,0.35)"], [style*="background: rgba(0,0,0,0.25)"]) {
+    background: #f3eddf !important;
+}

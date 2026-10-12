@@ -3780,13 +3780,16 @@ export function subscribeToPublicChat(onUpdate) {
     try {
         const publicQuery = query(
             collection(db, 'lumina_public_chat_messages'),
-            orderBy('timestamp', 'asc'),
+            // Claude 2026-10-12: 120 NAJNOWSZYCH (wcześniej 'asc' + limit = 120 najstarszych — po 120 wiadomościach
+            // nowe przestałyby się pojawiać). Kolejność do wyświetlenia odwracamy poniżej.
+            orderBy('timestamp', 'desc'),
             limit(120)
         );
 
         return onSnapshot(publicQuery, (snap) => {
             const msgs = [];
             snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+            msgs.reverse();
             try {
                 localStorage.setItem('lumina_public_chat_cache', JSON.stringify(msgs));
             } catch(e) {}
