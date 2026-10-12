@@ -5522,14 +5522,16 @@ const _luminaOgCache = new Map();
 export function getHeuristicLinkMetadata(url) {
     if (!url) return null;
     try {
-        const u = new URL(url);
+        const rawUrl = String(url).trim();
+        const normalizedUrl = /^https?:\/\//i.test(rawUrl) ? rawUrl : ('https://' + rawUrl);
+        const u = new URL(normalizedUrl);
         const host = u.hostname.replace(/^www\./, '').toLowerCase();
         const pathname = u.pathname;
 
         // 0. Kampania Wspieraj Misję Christian Culture (polskieradio.cc/wspieraj)
-        if (url.includes('wspieraj') || pathname.includes('wspieraj')) {
+        if (rawUrl.includes('wspieraj') || pathname.includes('wspieraj')) {
             return {
-                url: url,
+                url: normalizedUrl,
                 host: 'polskieradio.cc/wspieraj',
                 domain: host,
                 title: 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję',
@@ -5808,12 +5810,12 @@ export async function fetchLinkOpenGraphMetadata(url) {
     if (!url) return null;
     const baseMeta = getHeuristicLinkMetadata(url) || { url, host: '', title: '', description: '', image: '' };
 
-    // Czyszczenie starego legacy cache (lumina_og_ -> lumina_og_v4_)
+    // Czyszczenie starego legacy cache (lumina_og_ -> lumina_og_v5_)
     try {
         if (typeof localStorage !== 'undefined') {
             for (let i = localStorage.length - 1; i >= 0; i--) {
                 const k = localStorage.key(i);
-                if (k && k.startsWith('lumina_og_') && !k.startsWith('lumina_og_v4_')) {
+                if (k && k.startsWith('lumina_og_') && !k.startsWith('lumina_og_v5_')) {
                     localStorage.removeItem(k);
                 }
             }
@@ -5832,7 +5834,7 @@ export async function fetchLinkOpenGraphMetadata(url) {
     }
 
     // Check localStorage cache (TTL: 7 days)
-    let cacheKey = 'lumina_og_v4_';
+    let cacheKey = 'lumina_og_v5_';
     try {
         cacheKey += btoa(encodeURIComponent(url)).slice(0, 32);
         const raw = localStorage.getItem(cacheKey);

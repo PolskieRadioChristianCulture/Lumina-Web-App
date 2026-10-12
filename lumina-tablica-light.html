@@ -11489,13 +11489,30 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             const normalizedEmbedUrl = ytId ? ('https://www.youtube-nocookie.com/embed/' + ytId) : (videoUrl || null);
             const ytPoster = ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : null;
 
+            let effectiveFinalImage = finalImage;
+            let detectedLinkPreview = null;
+            if (!effectiveFinalImage && !videoUrl && text) {
+                const rawLinkMatch = text.match(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])|(?:^|[\s(])((?:www\.)?[a-zA-Z0-9-]+\.(?:pl|cc|com|online|app)[^\s<]*)/i);
+                const candidateLink = rawLinkMatch ? (rawLinkMatch[1] || (rawLinkMatch[2] ? 'https://' + rawLinkMatch[2].replace(/^https?:\/\//, '') : null)) : null;
+                if (candidateLink && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const linkMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateLink);
+                    if (linkMeta) {
+                        detectedLinkPreview = linkMeta;
+                        if (linkMeta.image && !linkMeta.image.includes('logo-glowne')) {
+                            effectiveFinalImage = linkMeta.image;
+                        }
+                    }
+                }
+            }
+
             const newPost = {
                 id: postId,
                 type: is916 ? 'short' : 'post',
                 title: title,
                 text: text,
                 desc: text,
-                image: finalImage || ytPoster || (videoUrl && !ytId && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4')) ? videoUrl : null),
+                image: effectiveFinalImage || ytPoster || (videoUrl && !ytId && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4')) ? videoUrl : null),
+                linkPreview: detectedLinkPreview,
                 videoUrl: normalizedEmbedUrl,
                 youtubeUrl: normalizedYtUrl,
                 isShort: !!is916,

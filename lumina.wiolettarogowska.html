@@ -2402,7 +2402,7 @@
         .rich-og-thumb-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             background: #0b1329;
             display: flex;
@@ -2412,7 +2412,7 @@
         .rich-og-thumb {
             width: 100%;
             height: 100%;
-            object-fit: contain !important;
+            object-fit: cover !important;
             background: #0f172a;
             display: block;
             transition: transform 0.4s ease;
@@ -2421,6 +2421,7 @@
             transform: scale(1.03);
         }
         .rich-og-card-store .rich-og-thumb-wrapper {
+            aspect-ratio: 1 / 1;
             background: #ffffff !important;
         }
         .rich-og-card-store .rich-og-thumb {
@@ -5255,10 +5256,32 @@
                     `;
                 }
 
-                const rawBody = p.text || '';
+                const rawBody = p.text || p.fullText || p.contentWeb || '';
                 const richResult = window.LuminaDB?.formatRichTextAndMedia 
                     ? window.LuminaDB.formatRichTextAndMedia(rawBody, p)
                     : { html: formatPostTextWithLinks(rawBody), embedHtml: '' };
+
+                // Automatyczna obsługa kart linków dla /wspieraj i portali Christian Culture
+                const detectedUrl = (richResult?.urls && richResult.urls.length > 0) ? richResult.urls[0] : (rawBody.match(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])|(?:^|[\s(])((?:www\.)?[a-zA-Z0-9-]+\.(?:pl|cc|com|online|app)[^\s<]*)/i)?.[0]?.trim() || null);
+                if (detectedUrl && detectedUrl.includes('wspieraj')) {
+                    p.linkPreview = {
+                        url: detectedUrl.startsWith('http') ? detectedUrl : ('https://' + detectedUrl.replace(/^\/+/, '')),
+                        host: 'polskieradio.cc/wspieraj',
+                        domain: 'polskieradio.cc',
+                        title: 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję',
+                        description: 'Nie każdy może dać pieniądze. Każdy może pomóc nieść Ewangelię dalej. Wybierz swoją formę wsparcia.',
+                        image: 'https://polskieradio.cc/assets/cc-support/social.jpg',
+                        badge: '🤝 WSPIERAJ MISJĘ CC',
+                        ctaText: 'Wspieraj Dzieło Boże ➔',
+                        icon: 'fa-solid fa-hand-holding-heart'
+                    };
+                    if (p.image && (p.image.includes('social.jpg') || p.image.includes('kc_day_') || p.image.includes('lesson-'))) {
+                        p.image = null;
+                    }
+                } else if (!p.linkPreview && detectedUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const hMeta = window.LuminaDB.getHeuristicLinkMetadata(detectedUrl);
+                    if (hMeta) p.linkPreview = hMeta;
+                }
 
                 let effectiveEmbedHtml = '';
                 if (p.linkPreview && window.LuminaDB?.createRichOpenGraphCardHtml) {
