@@ -1306,11 +1306,23 @@ async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
 async function handleSupportRoute(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
-  // Bezpośrednia obsługa /wspieraj i /wspieraj/ — worker serwuje asset, omijając pętlę 308 Pages
+  // Bezpośrednia obsługa /wspieraj i /wspieraj/ — worker pobiera asset i zwraca świeży 200
+  // (omija wbudowany mechanizm canonical redirect Cloudflare Pages → 308)
   if (path === '/wspieraj') {
     const assetUrl = new URL(request.url);
     assetUrl.pathname = '/wspieraj.html';
-    return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+    assetUrl.search = '';
+    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+    // Zwróć świeży 200 niezależnie od tego co CF Pages odpowiedział wewnętrznie
+    const body = await assetResp.arrayBuffer();
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
   }
   // Bezkonfliktowe aliasy z README.md
   if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj.html') {
@@ -1320,6 +1332,8 @@ async function handleSupportRoute(request, env) {
   }
   return null;
 }
+
+
 
 
 export default {
