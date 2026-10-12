@@ -2484,7 +2484,7 @@
         .rich-og-thumb-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             background: #0b1329;
             display: flex;
@@ -2494,7 +2494,7 @@
         .rich-og-thumb {
             width: 100%;
             height: 100%;
-            object-fit: contain !important;
+            object-fit: cover !important;
             background: #0f172a;
             display: block;
             transition: transform 0.4s ease;
@@ -2503,6 +2503,7 @@
             transform: scale(1.03);
         }
         .rich-og-card-store .rich-og-thumb-wrapper {
+            aspect-ratio: 1 / 1;
             background: #ffffff !important;
         }
         .rich-og-card-store .rich-og-thumb {
@@ -10567,10 +10568,24 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
                         item.image = '/images/si/ai-vs-antychryst.webp';
                     }
+                } else if (candidateUrl && candidateUrl.includes('wspieraj')) {
+                    item.linkPreview = {
+                        url: candidateUrl,
+                        host: 'polskieradio.cc/wspieraj',
+                        domain: 'polskieradio.cc',
+                        title: 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję',
+                        description: 'Nie każdy może dać pieniądze. Każdy może pomóc nieść Ewangelię dalej. Wybierz swoją formę wsparcia.',
+                        image: 'https://polskieradio.cc/assets/cc-support/social.jpg',
+                        badge: '🤝 WSPIERAJ MISJĘ CC',
+                        ctaText: 'Wspieraj Dzieło Boże ➔',
+                        icon: 'fa-solid fa-hand-holding-heart'
+                    };
+                    if (item.image && (item.image.includes('social.jpg') || item.image.includes('kc_day_') || item.image.includes('lesson-'))) {
+                        item.image = null;
+                    }
                 } else if (candidateUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
                     if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
-                        // Jeśli link ma dedykowaną grafikę (np. /wspieraj -> social.jpg), podmień grafikę jeśli wpis nie miał własnej ręcznie dodanej grafiki
                         if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_') || item.image.includes('kc_day_') || item.image.includes('lesson-')) {
                             item.image = hMeta.image;
                         }

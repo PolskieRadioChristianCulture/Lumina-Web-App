@@ -5526,6 +5526,21 @@ export function getHeuristicLinkMetadata(url) {
         const host = u.hostname.replace(/^www\./, '').toLowerCase();
         const pathname = u.pathname;
 
+        // 0. Kampania Wspieraj Misję Christian Culture (polskieradio.cc/wspieraj)
+        if (url.includes('wspieraj') || pathname.includes('wspieraj')) {
+            return {
+                url: url,
+                host: 'polskieradio.cc/wspieraj',
+                domain: host,
+                title: 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję',
+                description: 'Nie każdy może dać pieniądze. Każdy może pomóc nieść Ewangelię dalej. Wybierz swoją formę wsparcia.',
+                image: 'https://polskieradio.cc/assets/cc-support/social.jpg',
+                badge: '🤝 WSPIERAJ MISJĘ CC',
+                ctaText: 'Wspieraj Dzieło Boże ➔',
+                icon: 'fa-solid fa-hand-holding-heart'
+            };
+        }
+
         // 1. Oficjalny Sklep Christian Culture (Creator Spring / Teespring)
         if (host.includes('creator-spring.com') || host.includes('teespring.com') || pathname.includes('/listing/')) {
             let itemName = 'Kolekcja Christian Culture';
@@ -5792,6 +5807,24 @@ export function createRichOpenGraphCardHtml(meta) {
 export async function fetchLinkOpenGraphMetadata(url) {
     if (!url) return null;
     const baseMeta = getHeuristicLinkMetadata(url) || { url, host: '', title: '', description: '', image: '' };
+
+    // Czyszczenie starego legacy cache (lumina_og_ -> lumina_og_v4_)
+    try {
+        if (typeof localStorage !== 'undefined') {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith('lumina_og_') && !k.startsWith('lumina_og_v4_')) {
+                    localStorage.removeItem(k);
+                }
+            }
+        }
+    } catch(e) {}
+
+    // Dedykowany priorytet dla podstrony wsparcia /wspieraj
+    if (url.includes('wspieraj')) {
+        _luminaOgCache.set(url, baseMeta);
+        return baseMeta;
+    }
     
     // Check in-memory cache
     if (_luminaOgCache.has(url)) {
@@ -5799,7 +5832,7 @@ export async function fetchLinkOpenGraphMetadata(url) {
     }
 
     // Check localStorage cache (TTL: 7 days)
-    let cacheKey = 'lumina_og_';
+    let cacheKey = 'lumina_og_v4_';
     try {
         cacheKey += btoa(encodeURIComponent(url)).slice(0, 32);
         const raw = localStorage.getItem(cacheKey);
@@ -5882,7 +5915,7 @@ export function hydrateOpenGraphCards(container = document) {
                 if (body && actionRow) body.insertBefore(p, actionRow);
             }
 
-            // Update or show image
+            // Update or show image & floating badge
             if (meta.image) {
                 let thumbWrapper = card.querySelector('.rich-og-thumb-wrapper');
                 let thumbImg = card.querySelector('.rich-og-thumb');
@@ -5891,6 +5924,10 @@ export function hydrateOpenGraphCards(container = document) {
                         thumbImg.src = meta.image;
                     }
                     thumbWrapper.style.display = '';
+                    const badgeEl = thumbWrapper.querySelector('.rich-og-floating-badge');
+                    if (badgeEl && meta.badge) {
+                        badgeEl.innerHTML = `<i class="${meta.icon || 'fa-solid fa-globe'}"></i> ${escapeHtml(meta.badge)}`;
+                    }
                 } else if (!thumbWrapper) {
                     thumbWrapper = document.createElement('div');
                     thumbWrapper.className = 'rich-og-thumb-wrapper';
@@ -5899,9 +5936,9 @@ export function hydrateOpenGraphCards(container = document) {
                         <div class="rich-og-floating-badge"><i class="${meta.icon || 'fa-solid fa-globe'}"></i> ${escapeHtml(meta.badge || 'LINK')}</div>
                     `;
                     card.insertBefore(thumbWrapper, card.firstChild);
-                    const topBar = card.querySelector('.rich-og-top-bar');
-                    if (topBar) topBar.remove();
                 }
+                const topBar = card.querySelector('.rich-og-top-bar');
+                if (topBar) topBar.remove();
             }
         } catch(e) {}
     });
