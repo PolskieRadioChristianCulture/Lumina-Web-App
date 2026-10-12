@@ -10540,8 +10540,9 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 }
 
                 // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. AI Antychryst, artykuły CCN itp.)
-                const itemContentScope = `${item.title || ''} ${item.desc || ''} ${item.text || ''} ${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
-                const isAiAntychrystPost = /ai-antychryst|antychryst/i.test(itemContentScope);
+                // UWAGA: sprawdzamy wyłącznie pola URL (nie tekst/tytuł), żeby unikać fałszywych trafień w postach biblijnych
+                const itemUrlScope = `${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
+                const isAiAntychrystPost = /ai-antychryst/i.test(itemUrlScope) || /\/si\/ai-antychryst/i.test(itemUrlScope);
 
                 if (isAiAntychrystPost) {
                     if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
@@ -12005,8 +12006,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             // Auto-resolve campaign image if not manually uploaded:
             let defaultCampImg = attachedCampaignImgDataUrl;
             if (!defaultCampImg) {
-                const combinedCampText = `${title || ''} ${desc || ''} ${btnUrl || ''}`;
-                if (/ai-antychryst|antychryst/i.test(combinedCampText)) {
+                if (/ai-antychryst/i.test(btnUrl || '')) {
                     defaultCampImg = '/images/si/ai-vs-antychryst.webp';
                 } else if (btnUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const hMeta = window.LuminaDB.getHeuristicLinkMetadata(btnUrl);
@@ -16171,7 +16171,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     } catch(e) {}
                 }
 
-                const isAiAntychryst = (shareUrl && shareUrl.includes('ai-antychryst')) || (shareTitle && shareTitle.includes('Antychryst'));
+                const isAiAntychryst = (shareUrl && shareUrl.includes('ai-antychryst'));
                 let combinedBody = '';
                 if (shareText) combinedBody += shareText;
                 if (shareUrl && !combinedBody.includes(shareUrl)) {
