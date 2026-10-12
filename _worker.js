@@ -1307,15 +1307,19 @@ async function handleSupportRoute(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
   // Bezkonfliktowe aliasy z README.md (/misja i /partnerzy mają swoje dedykowane trasy, nie są nadpisywane)
-  if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj/' || url.pathname === '/wspieraj.html') {
+  if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj.html') {
     const targetUrl = new URL(request.url);
     targetUrl.pathname = '/wspieraj';
     return Response.redirect(targetUrl.toString(), 301);
   }
-  if (url.pathname === '/wspieraj') {
+  if (url.pathname === '/wspieraj' || url.pathname === '/wspieraj/') {
     const assetUrl = new URL(request.url);
     assetUrl.pathname = '/wspieraj.html';
-    return env.ASSETS.fetch(new Request(assetUrl, request));
+    const resp = await env.ASSETS.fetch(new Request(assetUrl, request));
+    if (resp.status < 400) return resp;
+    const dirUrl = new URL(request.url);
+    dirUrl.pathname = '/wspieraj/index.html';
+    return env.ASSETS.fetch(new Request(dirUrl, request));
   }
   return null;
 }
