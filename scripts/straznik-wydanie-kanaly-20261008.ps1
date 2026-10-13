@@ -44,7 +44,7 @@ $Files = @(
     'lumina-app.html', 'lumina-login.html', 'lumina-safety.html', 'lumina-shorts.html', 'lumina.cezaryrogowski.html', 'lumina-core.js', 'lumina-tablica.js', 'lumina-security.js', 'js\cc-global-auth.js',
     'scripts\lumina-profile-standard-regression.test.mjs', 'scripts\profile-actions-regression.test.mjs',
     'js\lumina-member-home.js', 'lumina-bottom-nav.js',
-    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'assets\ogloszenia-index-cc20261013c.js', 'images\ogloszenia-hero.webp', 'images\ogloszenia-hero.jpg', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
+    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'assets\ogloszenia-index-cc20261013c.js', 'assets\ogloszenia-index-cc20261013e.js', 'images\ogloszenia-hero.webp', 'images\ogloszenia-hero.jpg', 'images\ogloszenia-sprzet-studio.webp', 'images\ogloszenia-dom-studio.webp', 'images\ogloszenia-infolinia-nadzieja.webp', 'images\ogloszenia-premier-heatfix.webp', 'images\ogloszenia-tworcy-wolontariat.webp', 'images\ogloszenia-herbatka.webp', 'images\ogloszenia-akademia.webp', 'images\ogloszenia-duszpasterz-mariusz.webp', 'images\ogloszenia-pawel-murawski.webp', 'images\ogloszenia-widget-radio.webp', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'

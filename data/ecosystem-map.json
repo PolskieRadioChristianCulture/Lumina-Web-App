@@ -5,6 +5,16 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "CCN Ogłoszenia: Dodanie ogłoszenia o sprzęcie studyjnym za czekoladę oraz kompletu grafik",
+      "date": "2026-10-13",
+      "agent": "A"
+    },
+    {
+      "topic": "Aktualizacja Mission Control v1.4.5: Wdrożenie precyzyjnej diagnostyki komunikacji",
+      "date": "2026-10-13",
+      "agent": "A"
+    },
+    {
       "topic": "Automatyczna miniatura 16:9 social.jpg i karty linku /wspieraj na profilach i Tablicy LUMINA",
       "date": "2026-10-12",
       "agent": "A"
@@ -85,7 +95,6 @@
       "agent": "A"
     }
   ],
-
   "root": {
     "id": "cc-root",
     "name": "CHRISTIAN CULTURE",
@@ -166,8 +175,23 @@
       "icon": "📻",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["radio", "stacje", "muzyka", "uwielbienie", "audycje", "stream", "live", "polskieradio"],
-      "connections": ["player-spotify", "radio-skins", "cctv24", "cclite", "music-main"]
+      "keywords": [
+        "radio",
+        "stacje",
+        "muzyka",
+        "uwielbienie",
+        "audycje",
+        "stream",
+        "live",
+        "polskieradio"
+      ],
+      "connections": [
+        "player-spotify",
+        "radio-skins",
+        "cctv24",
+        "cclite",
+        "music-main"
+      ]
     },
     {
       "id": "player-spotify",
@@ -182,8 +206,20 @@
       "icon": "▶",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["player", "odtwarzacz", "spotify", "muzyka", "rds", "retina", "stacje"],
-      "connections": ["radio-main", "radio-skins", "cclite"]
+      "keywords": [
+        "player",
+        "odtwarzacz",
+        "spotify",
+        "muzyka",
+        "rds",
+        "retina",
+        "stacje"
+      ],
+      "connections": [
+        "radio-main",
+        "radio-skins",
+        "cclite"
+      ]
     },
     {
       "id": "radio-skins",
@@ -198,8 +234,18 @@
       "icon": "🎨",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["skórki", "motywy", "skins", "personalizacja", "wygląd", "odtwarzacz"],
-      "connections": ["player-spotify", "radio-main"]
+      "keywords": [
+        "skórki",
+        "motywy",
+        "skins",
+        "personalizacja",
+        "wygląd",
+        "odtwarzacz"
+      ],
+      "connections": [
+        "player-spotify",
+        "radio-main"
+      ]
     },
     {
       "id": "cctv24",
@@ -214,8 +260,21 @@
       "icon": "📺",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["telewizja", "cctv", "tv", "wideo", "transmisja", "live", "programy"],
-      "connections": ["radio-main", "cctv24-worship", "vod-kino", "yt-cctv"]
+      "keywords": [
+        "telewizja",
+        "cctv",
+        "tv",
+        "wideo",
+        "transmisja",
+        "live",
+        "programy"
+      ],
+      "connections": [
+        "radio-main",
+        "cctv24-worship",
+        "vod-kino",
+        "yt-cctv"
+      ]
     },
     {
       "id": "cctv24-worship",
@@ -230,8 +289,20 @@
       "icon": "🕊️",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["worship", "uwielbienie", "modlitwa", "cctv24", "live", "pieśni", "muzyka"],
-      "connections": ["cctv24", "spiewajmy-panu", "music-main"]
+      "keywords": [
+        "worship",
+        "uwielbienie",
+        "modlitwa",
+        "cctv24",
+        "live",
+        "pieśni",
+        "muzyka"
+      ],
+      "connections": [
+        "cctv24",
+        "spiewajmy-panu",
+        "music-main"
+      ]
     },
     {
       "id": "vod-kino",
@@ -246,8 +317,19 @@
       "icon": "🎬",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["vod", "kino", "filmy", "dokumenty", "kino chrześcijańskie", "wideo"],
-      "connections": ["cctv24", "biblioteka-ccn", "lumina-main"]
+      "keywords": [
+        "vod",
+        "kino",
+        "filmy",
+        "dokumenty",
+        "kino chrześcijańskie",
+        "wideo"
+      ],
+      "connections": [
+        "cctv24",
+        "biblioteka-ccn",
+        "lumina-main"
+      ]
     },
     {
       "id": "nadawaj-z-nami",
@@ -262,8 +344,19 @@
       "icon": "📡",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["retransmisja", "obs", "stream", "nadawaj", "współpraca", "radio"],
-      "connections": ["radio-main", "wspolpraca-hub", "stream-scene"]
+      "keywords": [
+        "retransmisja",
+        "obs",
+        "stream",
+        "nadawaj",
+        "współpraca",
+        "radio"
+      ],
+      "connections": [
+        "radio-main",
+        "wspolpraca-hub",
+        "stream-scene"
+      ]
     },
     {
       "id": "stream-scene",
@@ -278,8 +371,18 @@
       "icon": "🎛️",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["obs", "scena", "studio", "telemetria", "stream-scene", "live"],
-      "connections": ["nadawaj-z-nami", "radio-main"]
+      "keywords": [
+        "obs",
+        "scena",
+        "studio",
+        "telemetria",
+        "stream-scene",
+        "live"
+      ],
+      "connections": [
+        "nadawaj-z-nami",
+        "radio-main"
+      ]
     },
     {
       "id": "yt-radio-cc",
@@ -294,8 +397,19 @@
       "icon": "▶",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["youtube", "radio", "podcasty", "audycje", "wideo", "kanał"],
-      "connections": ["radio-main", "yt-cctv", "cc-network-hub"]
+      "keywords": [
+        "youtube",
+        "radio",
+        "podcasty",
+        "audycje",
+        "wideo",
+        "kanał"
+      ],
+      "connections": [
+        "radio-main",
+        "yt-cctv",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-cctv",
@@ -310,8 +424,19 @@
       "icon": "▶",
       "category": "Radio & TV",
       "verifiedDate": "2026-10-11",
-      "keywords": ["youtube", "cctv", "telewizja", "filmy", "wykłady", "wideo"],
-      "connections": ["cctv24", "yt-radio-cc", "cc-network-hub"]
+      "keywords": [
+        "youtube",
+        "cctv",
+        "telewizja",
+        "filmy",
+        "wykłady",
+        "wideo"
+      ],
+      "connections": [
+        "cctv24",
+        "yt-radio-cc",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "akademia",
@@ -326,8 +451,22 @@
       "icon": "🎓",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["akademia", "kursy", "studium", "biblia", "certyfikat", "lekcje", "apokalipsa"],
-      "connections": ["kurs-codzienny", "mojabiblia", "apokalipsa-studium", "lumina-main", "biblia-audio"]
+      "keywords": [
+        "akademia",
+        "kursy",
+        "studium",
+        "biblia",
+        "certyfikat",
+        "lekcje",
+        "apokalipsa"
+      ],
+      "connections": [
+        "kurs-codzienny",
+        "mojabiblia",
+        "apokalipsa-studium",
+        "lumina-main",
+        "biblia-audio"
+      ]
     },
     {
       "id": "kurs-codzienny",
@@ -342,8 +481,19 @@
       "icon": "📖",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["kurs codzienny", "z biblią za pan brat", "lekcje", "tts", "quiz", "akademia"],
-      "connections": ["akademia", "mojabiblia", "lumina-tablica"]
+      "keywords": [
+        "kurs codzienny",
+        "z biblią za pan brat",
+        "lekcje",
+        "tts",
+        "quiz",
+        "akademia"
+      ],
+      "connections": [
+        "akademia",
+        "mojabiblia",
+        "lumina-tablica"
+      ]
     },
     {
       "id": "mojabiblia",
@@ -358,8 +508,20 @@
       "icon": "📜",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["mojabiblia", "interlinearna", "strong", "greka", "hebrajski", "przekłady", "wersety"],
-      "connections": ["akademia", "kurs-codzienny", "biblia-planer"]
+      "keywords": [
+        "mojabiblia",
+        "interlinearna",
+        "strong",
+        "greka",
+        "hebrajski",
+        "przekłady",
+        "wersety"
+      ],
+      "connections": [
+        "akademia",
+        "kurs-codzienny",
+        "biblia-planer"
+      ]
     },
     {
       "id": "apokalipsa-studium",
@@ -374,8 +536,19 @@
       "icon": "☀️",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-12",
-      "keywords": ["apokalipsa", "księga nadziei", "proroctwa", "objawienie", "wykłady", "nadzieja"],
-      "connections": ["akademia", "cctv24", "yt-osobowosc-plus"]
+      "keywords": [
+        "apokalipsa",
+        "księga nadziei",
+        "proroctwa",
+        "objawienie",
+        "wykłady",
+        "nadzieja"
+      ],
+      "connections": [
+        "akademia",
+        "cctv24",
+        "yt-osobowosc-plus"
+      ]
     },
     {
       "id": "pokonac-goliata",
@@ -390,8 +563,21 @@
       "icon": "⚔️",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["pokonać goliata", "książka", "cezary rogowski", "tts", "zwycięstwo", "czytnik", "e-book"],
-      "connections": ["kod-zrodlowy", "biblioteka-ccn", "lumina-main", "revolut-cc"]
+      "keywords": [
+        "pokonać goliata",
+        "książka",
+        "cezary rogowski",
+        "tts",
+        "zwycięstwo",
+        "czytnik",
+        "e-book"
+      ],
+      "connections": [
+        "kod-zrodlowy",
+        "biblioteka-ccn",
+        "lumina-main",
+        "revolut-cc"
+      ]
     },
     {
       "id": "kod-zrodlowy",
@@ -406,8 +592,18 @@
       "icon": "🧬",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["kod źródłowy", "książka", "tożsamość", "cezary rogowski", "dna", "fundamenty"],
-      "connections": ["pokonac-goliata", "biblioteka-ccn"]
+      "keywords": [
+        "kod źródłowy",
+        "książka",
+        "tożsamość",
+        "cezary rogowski",
+        "dna",
+        "fundamenty"
+      ],
+      "connections": [
+        "pokonac-goliata",
+        "biblioteka-ccn"
+      ]
     },
     {
       "id": "zapolske-modlitwa",
@@ -422,8 +618,19 @@
       "icon": "🇵🇱",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["modlitwa", "za polskę", "wstawiennictwo", "intencje", "czuwanie", "ojczyzna"],
-      "connections": ["lumina-tablica", "radio-main", "yt-prayer24"]
+      "keywords": [
+        "modlitwa",
+        "za polskę",
+        "wstawiennictwo",
+        "intencje",
+        "czuwanie",
+        "ojczyzna"
+      ],
+      "connections": [
+        "lumina-tablica",
+        "radio-main",
+        "yt-prayer24"
+      ]
     },
     {
       "id": "biblia-spiewana",
@@ -438,8 +645,18 @@
       "icon": "🎶",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["biblia śpiewana", "psalmy", "wersety", "muzyka biblijna", "śpiew"],
-      "connections": ["music-main", "spiewajmy-panu", "radio-main"]
+      "keywords": [
+        "biblia śpiewana",
+        "psalmy",
+        "wersety",
+        "muzyka biblijna",
+        "śpiew"
+      ],
+      "connections": [
+        "music-main",
+        "spiewajmy-panu",
+        "radio-main"
+      ]
     },
     {
       "id": "biblia-planer",
@@ -454,8 +671,18 @@
       "icon": "📅",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["plan czytania", "terminarz", "biblia w rok", "cclite", "lekturę"],
-      "connections": ["cclite", "mojabiblia", "akademia"]
+      "keywords": [
+        "plan czytania",
+        "terminarz",
+        "biblia w rok",
+        "cclite",
+        "lekturę"
+      ],
+      "connections": [
+        "cclite",
+        "mojabiblia",
+        "akademia"
+      ]
     },
     {
       "id": "yt-werset-dnia",
@@ -470,8 +697,18 @@
       "icon": "▶",
       "category": "Biblia & Edukacja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["werset dnia", "youtube", "shorts", "słowo boże", "cytaty"],
-      "connections": ["lumina-shorts", "akademia", "cc-network-hub"]
+      "keywords": [
+        "werset dnia",
+        "youtube",
+        "shorts",
+        "słowo boże",
+        "cytaty"
+      ],
+      "connections": [
+        "lumina-shorts",
+        "akademia",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "lumina-main",
@@ -486,8 +723,22 @@
       "icon": "✨",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["lumina", "społeczność", "portal", "profile", "świadectwa", "wiara", "relacje"],
-      "connections": ["lumina-tablica", "lumina-shorts", "lumina-profile", "randka-cc", "whatsapp-nazir"]
+      "keywords": [
+        "lumina",
+        "społeczność",
+        "portal",
+        "profile",
+        "świadectwa",
+        "wiara",
+        "relacje"
+      ],
+      "connections": [
+        "lumina-tablica",
+        "lumina-shorts",
+        "lumina-profile",
+        "randka-cc",
+        "whatsapp-nazir"
+      ]
     },
     {
       "id": "lumina-tablica",
@@ -502,8 +753,20 @@
       "icon": "📋",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["tablica", "posty", "wpisy", "świadectwa", "amen", "społeczność", "feed"],
-      "connections": ["lumina-main", "lumina-shorts", "zapolske-modlitwa"]
+      "keywords": [
+        "tablica",
+        "posty",
+        "wpisy",
+        "świadectwa",
+        "amen",
+        "społeczność",
+        "feed"
+      ],
+      "connections": [
+        "lumina-main",
+        "lumina-shorts",
+        "zapolske-modlitwa"
+      ]
     },
     {
       "id": "lumina-shorts",
@@ -518,8 +781,19 @@
       "icon": "📱",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["shorts", "rolki", "wideo", "pionowe", "świadectwa", "lumina"],
-      "connections": ["lumina-main", "lumina-tablica", "yt-werset-dnia"]
+      "keywords": [
+        "shorts",
+        "rolki",
+        "wideo",
+        "pionowe",
+        "świadectwa",
+        "lumina"
+      ],
+      "connections": [
+        "lumina-main",
+        "lumina-tablica",
+        "yt-werset-dnia"
+      ]
     },
     {
       "id": "lumina-profile",
@@ -534,8 +808,19 @@
       "icon": "👤",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["profile", "autorzy", "cezary rogowski", "twórcy", "użytkownicy", "lumina"],
-      "connections": ["lumina-main", "pokonac-goliata", "revolut-cc"]
+      "keywords": [
+        "profile",
+        "autorzy",
+        "cezary rogowski",
+        "twórcy",
+        "użytkownicy",
+        "lumina"
+      ],
+      "connections": [
+        "lumina-main",
+        "pokonac-goliata",
+        "revolut-cc"
+      ]
     },
     {
       "id": "randka-cc",
@@ -550,8 +835,19 @@
       "icon": "💍",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["randka", "małżeństwo", "relacje", "single", "miłość", "wartości"],
-      "connections": ["lumina-main", "ccn-seks", "cclite"]
+      "keywords": [
+        "randka",
+        "małżeństwo",
+        "relacje",
+        "single",
+        "miłość",
+        "wartości"
+      ],
+      "connections": [
+        "lumina-main",
+        "ccn-seks",
+        "cclite"
+      ]
     },
     {
       "id": "whatsapp-nazir",
@@ -566,8 +862,18 @@
       "icon": "💬",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["whatsapp", "grupa", "komunikator", "społeczność", "kontakt", "czat"],
-      "connections": ["lumina-main", "zapolske-modlitwa"]
+      "keywords": [
+        "whatsapp",
+        "grupa",
+        "komunikator",
+        "społeczność",
+        "kontakt",
+        "czat"
+      ],
+      "connections": [
+        "lumina-main",
+        "zapolske-modlitwa"
+      ]
     },
     {
       "id": "lumina-safety",
@@ -582,8 +888,18 @@
       "icon": "🛡️",
       "category": "Społeczność",
       "verifiedDate": "2026-10-11",
-      "keywords": ["bezpieczeństwo", "standardy", "regulamin", "ochrona", "etyka", "moderacja"],
-      "connections": ["lumina-main", "polityka-prywatnosci"]
+      "keywords": [
+        "bezpieczeństwo",
+        "standardy",
+        "regulamin",
+        "ochrona",
+        "etyka",
+        "moderacja"
+      ],
+      "connections": [
+        "lumina-main",
+        "polityka-prywatnosci"
+      ]
     },
     {
       "id": "ccn-news",
@@ -598,8 +914,21 @@
       "icon": "📰",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["news", "wiadomości", "informacje", "ccn", "dziennikarstwo", "świat"],
-      "connections": ["ccn-nauka", "ccn-historia", "ccn-prawo", "yt-ccnews", "content-registry"]
+      "keywords": [
+        "news",
+        "wiadomości",
+        "informacje",
+        "ccn",
+        "dziennikarstwo",
+        "świat"
+      ],
+      "connections": [
+        "ccn-nauka",
+        "ccn-historia",
+        "ccn-prawo",
+        "yt-ccnews",
+        "content-registry"
+      ]
     },
     {
       "id": "ccn-nauka",
@@ -614,8 +943,19 @@
       "icon": "🔬",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["nauka", "fizyka", "kosmologia", "stworzenie", "astronomia", "badania"],
-      "connections": ["ccn-news", "ccn-biologia", "ccn-technologie"]
+      "keywords": [
+        "nauka",
+        "fizyka",
+        "kosmologia",
+        "stworzenie",
+        "astronomia",
+        "badania"
+      ],
+      "connections": [
+        "ccn-news",
+        "ccn-biologia",
+        "ccn-technologie"
+      ]
     },
     {
       "id": "ccn-historia",
@@ -630,8 +970,19 @@
       "icon": "🏛️",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["historia", "archeologia", "ziemia święta", "wykopaliska", "biblia", "fakty"],
-      "connections": ["ccn-news", "mojabiblia", "akademia"]
+      "keywords": [
+        "historia",
+        "archeologia",
+        "ziemia święta",
+        "wykopaliska",
+        "biblia",
+        "fakty"
+      ],
+      "connections": [
+        "ccn-news",
+        "mojabiblia",
+        "akademia"
+      ]
     },
     {
       "id": "ccn-biologia",
@@ -646,8 +997,19 @@
       "icon": "🌿",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["biologia", "dna", "komórka", "życie", "stworzenie", "natura"],
-      "connections": ["ccn-nauka", "kod-zrodlowy", "ccn-ziu"]
+      "keywords": [
+        "biologia",
+        "dna",
+        "komórka",
+        "życie",
+        "stworzenie",
+        "natura"
+      ],
+      "connections": [
+        "ccn-nauka",
+        "kod-zrodlowy",
+        "ccn-ziu"
+      ]
     },
     {
       "id": "ccn-prawo",
@@ -662,8 +1024,18 @@
       "icon": "⚖️",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["prawo", "dekalog", "wolność sumienia", "sprawiedliwość", "konstytucja", "etyka"],
-      "connections": ["ccn-news", "ccn-biznes"]
+      "keywords": [
+        "prawo",
+        "dekalog",
+        "wolność sumienia",
+        "sprawiedliwość",
+        "konstytucja",
+        "etyka"
+      ],
+      "connections": [
+        "ccn-news",
+        "ccn-biznes"
+      ]
     },
     {
       "id": "ccn-seks",
@@ -678,8 +1050,20 @@
       "icon": "❤️",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["małżeństwo", "rodzina", "czystość", "narzeczeństwo", "relacje", "mąż", "żona"],
-      "connections": ["randka-cc", "ccn-psychologia", "ccn-edukacja"]
+      "keywords": [
+        "małżeństwo",
+        "rodzina",
+        "czystość",
+        "narzeczeństwo",
+        "relacje",
+        "mąż",
+        "żona"
+      ],
+      "connections": [
+        "randka-cc",
+        "ccn-psychologia",
+        "ccn-edukacja"
+      ]
     },
     {
       "id": "ccn-kultura",
@@ -694,8 +1078,18 @@
       "icon": "🎭",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["kultura", "sztuka", "literatura", "malarstwo", "estetyka", "książki"],
-      "connections": ["biblioteka-ccn", "music-main"]
+      "keywords": [
+        "kultura",
+        "sztuka",
+        "literatura",
+        "malarstwo",
+        "estetyka",
+        "książki"
+      ],
+      "connections": [
+        "biblioteka-ccn",
+        "music-main"
+      ]
     },
     {
       "id": "ccn-biznes",
@@ -710,8 +1104,19 @@
       "icon": "💼",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["biznes", "przedsiębiorczość", "gospodarka", "finanse", "firma", "etyka"],
-      "connections": ["ccn-finanse", "centrum-cclite", "uslugi-cclite"]
+      "keywords": [
+        "biznes",
+        "przedsiębiorczość",
+        "gospodarka",
+        "finanse",
+        "firma",
+        "etyka"
+      ],
+      "connections": [
+        "ccn-finanse",
+        "centrum-cclite",
+        "uslugi-cclite"
+      ]
     },
     {
       "id": "ccn-kuchnia",
@@ -726,8 +1131,18 @@
       "icon": "🍞",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["kuchnia", "odżywianie", "dieta", "chleb", "zdrowie", "przepisy"],
-      "connections": ["ccn-ziu", "ccn-biologia"]
+      "keywords": [
+        "kuchnia",
+        "odżywianie",
+        "dieta",
+        "chleb",
+        "zdrowie",
+        "przepisy"
+      ],
+      "connections": [
+        "ccn-ziu",
+        "ccn-biologia"
+      ]
     },
     {
       "id": "ccn-ziu",
@@ -742,8 +1157,18 @@
       "icon": "🌿",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["zdrowie", "uroda", "medycyna", "odporność", "ciało", "profilaktyka"],
-      "connections": ["ccn-kuchnia", "ccn-psychologia"]
+      "keywords": [
+        "zdrowie",
+        "uroda",
+        "medycyna",
+        "odporność",
+        "ciało",
+        "profilaktyka"
+      ],
+      "connections": [
+        "ccn-kuchnia",
+        "ccn-psychologia"
+      ]
     },
     {
       "id": "biblioteka-ccn",
@@ -758,8 +1183,19 @@
       "icon": "📚",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["biblioteka", "książki", "audiobooki", "e-booki", "lektury", "czytnik"],
-      "connections": ["pokonac-goliata", "kod-zrodlowy", "ccn-kultura"]
+      "keywords": [
+        "biblioteka",
+        "książki",
+        "audiobooki",
+        "e-booki",
+        "lektury",
+        "czytnik"
+      ],
+      "connections": [
+        "pokonac-goliata",
+        "kod-zrodlowy",
+        "ccn-kultura"
+      ]
     },
     {
       "id": "ksiazki-autora",
@@ -779,9 +1215,21 @@
         "date": "2026-10-11",
         "agent": "A"
       },
-      "keywords": ["książki autora", "cezary rogowski", "książki", "autor", "pokonać goliata", "kod źródłowy", "biblioteka"],
-
-      "connections": ["biblioteka-ccn", "pokonac-goliata", "kod-zrodlowy", "lumina-profile"]
+      "keywords": [
+        "książki autora",
+        "cezary rogowski",
+        "książki",
+        "autor",
+        "pokonać goliata",
+        "kod źródłowy",
+        "biblioteka"
+      ],
+      "connections": [
+        "biblioteka-ccn",
+        "pokonac-goliata",
+        "kod-zrodlowy",
+        "lumina-profile"
+      ]
     },
     {
       "id": "ccn-edukacja",
@@ -796,8 +1244,19 @@
       "icon": "🎒",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["edukacja", "wychowanie", "dzieci", "młodzież", "szkoła", "rodzice"],
-      "connections": ["ccn-seks", "ccn-psychologia", "akademia"]
+      "keywords": [
+        "edukacja",
+        "wychowanie",
+        "dzieci",
+        "młodzież",
+        "szkoła",
+        "rodzice"
+      ],
+      "connections": [
+        "ccn-seks",
+        "ccn-psychologia",
+        "akademia"
+      ]
     },
     {
       "id": "ccn-psychologia",
@@ -812,8 +1271,19 @@
       "icon": "🧠",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["psychologia", "emocje", "zdrowie psychiczne", "lęk", "depresja", "pokój"],
-      "connections": ["pokonac-goliata", "ccn-ziu", "ccn-edukacja"]
+      "keywords": [
+        "psychologia",
+        "emocje",
+        "zdrowie psychiczne",
+        "lęk",
+        "depresja",
+        "pokój"
+      ],
+      "connections": [
+        "pokonac-goliata",
+        "ccn-ziu",
+        "ccn-edukacja"
+      ]
     },
     {
       "id": "ccn-finanse",
@@ -828,8 +1298,18 @@
       "icon": "🪙",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["finanse", "pieniądze", "budżet", "długi", "oszczędzanie", "inwestycje"],
-      "connections": ["ccn-biznes", "centrum-cclite"]
+      "keywords": [
+        "finanse",
+        "pieniądze",
+        "budżet",
+        "długi",
+        "oszczędzanie",
+        "inwestycje"
+      ],
+      "connections": [
+        "ccn-biznes",
+        "centrum-cclite"
+      ]
     },
     {
       "id": "ccn-technologie",
@@ -844,8 +1324,19 @@
       "icon": "🤖",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["technologia", "ai", "sztuczna inteligencja", "etyka", "transhumanizm", "cyfrowy"],
-      "connections": ["ccn-nauka", "holos-system", "cclite"]
+      "keywords": [
+        "technologia",
+        "ai",
+        "sztuczna inteligencja",
+        "etyka",
+        "transhumanizm",
+        "cyfrowy"
+      ],
+      "connections": [
+        "ccn-nauka",
+        "holos-system",
+        "cclite"
+      ]
     },
     {
       "id": "ccn-misje",
@@ -860,8 +1351,19 @@
       "icon": "🌍",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["misje", "prześladowania", "kościół", "świadectwa", "ewangelizacja", "męczennicy"],
-      "connections": ["ccn-news", "wspolpraca-hub", "zapolske-modlitwa"]
+      "keywords": [
+        "misje",
+        "prześladowania",
+        "kościół",
+        "świadectwa",
+        "ewangelizacja",
+        "męczennicy"
+      ],
+      "connections": [
+        "ccn-news",
+        "wspolpraca-hub",
+        "zapolske-modlitwa"
+      ]
     },
     {
       "id": "ccn-apologetyka",
@@ -876,8 +1378,19 @@
       "icon": "🛡️",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["apologetyka", "obrona wiary", "prawda", "sekty", "zmartwychwstanie", "filozofia"],
-      "connections": ["ccn-historia", "mojabiblia", "akademia"]
+      "keywords": [
+        "apologetyka",
+        "obrona wiary",
+        "prawda",
+        "sekty",
+        "zmartwychwstanie",
+        "filozofia"
+      ],
+      "connections": [
+        "ccn-historia",
+        "mojabiblia",
+        "akademia"
+      ]
     },
     {
       "id": "ccn-ogloszenia",
@@ -892,8 +1405,19 @@
       "icon": "📌",
       "category": "Media & Wiedza",
       "verifiedDate": "2026-10-11",
-      "keywords": ["ogłoszenia", "praca", "pomoc", "mieszkania", "usługi", "społeczność"],
-      "connections": ["ccn-biznes", "centrum-cclite", "lumina-tablica"]
+      "keywords": [
+        "ogłoszenia",
+        "praca",
+        "pomoc",
+        "mieszkania",
+        "usługi",
+        "społeczność"
+      ],
+      "connections": [
+        "ccn-biznes",
+        "centrum-cclite",
+        "lumina-tablica"
+      ]
     },
     {
       "id": "music-main",
@@ -908,8 +1432,20 @@
       "icon": "🎵",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["muzyka", "music", "albumy", "dyskografia", "utwory", "wytwórnia"],
-      "connections": ["cc-studio-daw", "spiewajmy-panu", "radio-main", "linktree-music"]
+      "keywords": [
+        "muzyka",
+        "music",
+        "albumy",
+        "dyskografia",
+        "utwory",
+        "wytwórnia"
+      ],
+      "connections": [
+        "cc-studio-daw",
+        "spiewajmy-panu",
+        "radio-main",
+        "linktree-music"
+      ]
     },
     {
       "id": "cc-studio-daw",
@@ -924,8 +1460,20 @@
       "icon": "🎚️",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["studio", "daw", "reżyseria", "montaż", "mastering", "tts", "timeline"],
-      "connections": ["music-main", "biblia-audio", "spiewajmy-panu"]
+      "keywords": [
+        "studio",
+        "daw",
+        "reżyseria",
+        "montaż",
+        "mastering",
+        "tts",
+        "timeline"
+      ],
+      "connections": [
+        "music-main",
+        "biblia-audio",
+        "spiewajmy-panu"
+      ]
     },
     {
       "id": "spiewajmy-panu",
@@ -940,8 +1488,19 @@
       "icon": "🎤",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["śpiewajmy panu", "śpiewnik", "akordy", "uwielbienie", "pieśni", "teksty"],
-      "connections": ["music-main", "biblia-spiewana", "cctv24-worship"]
+      "keywords": [
+        "śpiewajmy panu",
+        "śpiewnik",
+        "akordy",
+        "uwielbienie",
+        "pieśni",
+        "teksty"
+      ],
+      "connections": [
+        "music-main",
+        "biblia-spiewana",
+        "cctv24-worship"
+      ]
     },
     {
       "id": "biblia-audio",
@@ -956,8 +1515,19 @@
       "icon": "🎧",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["biblia audio", "słuchowisko", "lektor", "nagrania", "pismo", "dźwięk"],
-      "connections": ["cc-studio-daw", "radio-main", "akademia"]
+      "keywords": [
+        "biblia audio",
+        "słuchowisko",
+        "lektor",
+        "nagrania",
+        "pismo",
+        "dźwięk"
+      ],
+      "connections": [
+        "cc-studio-daw",
+        "radio-main",
+        "akademia"
+      ]
     },
     {
       "id": "yt-osobowosc-plus",
@@ -972,8 +1542,19 @@
       "icon": "▶",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["osobowość plus", "youtube", "sds", "wykłady", "inspiracja", "rozwój"],
-      "connections": ["apokalipsa-studium", "cc-network-hub", "music-main"]
+      "keywords": [
+        "osobowość plus",
+        "youtube",
+        "sds",
+        "wykłady",
+        "inspiracja",
+        "rozwój"
+      ],
+      "connections": [
+        "apokalipsa-studium",
+        "cc-network-hub",
+        "music-main"
+      ]
     },
     {
       "id": "yt-cc-hiphop",
@@ -988,8 +1569,17 @@
       "icon": "▶",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["hip hop", "rap", "muzyka miejska", "klipy", "christian rap"],
-      "connections": ["music-main", "linktree-music"]
+      "keywords": [
+        "hip hop",
+        "rap",
+        "muzyka miejska",
+        "klipy",
+        "christian rap"
+      ],
+      "connections": [
+        "music-main",
+        "linktree-music"
+      ]
     },
     {
       "id": "linktree-music",
@@ -1004,8 +1594,17 @@
       "icon": "🔗",
       "category": "Muzyka & Produkcja",
       "verifiedDate": "2026-10-11",
-      "keywords": ["linktree", "music", "spotify", "apple music", "streaming"],
-      "connections": ["music-main", "cc-network-hub"]
+      "keywords": [
+        "linktree",
+        "music",
+        "spotify",
+        "apple music",
+        "streaming"
+      ],
+      "connections": [
+        "music-main",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "cclite",
@@ -1020,8 +1619,21 @@
       "icon": "📱",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["cclite", "aplikacja", "pwa", "mobile", "telefon", "radio", "lekka"],
-      "connections": ["radio-main", "dzj-app", "centrum-cclite", "holos-system"]
+      "keywords": [
+        "cclite",
+        "aplikacja",
+        "pwa",
+        "mobile",
+        "telefon",
+        "radio",
+        "lekka"
+      ],
+      "connections": [
+        "radio-main",
+        "dzj-app",
+        "centrum-cclite",
+        "holos-system"
+      ]
     },
     {
       "id": "dzj-app",
@@ -1036,8 +1648,19 @@
       "icon": "☀️",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["dobrze że jesteś", "aplikacja", "rozważania", "cuda każdego dnia", "android", "tts"],
-      "connections": ["cclite", "radio-main", "lumina-main"]
+      "keywords": [
+        "dobrze że jesteś",
+        "aplikacja",
+        "rozważania",
+        "cuda każdego dnia",
+        "android",
+        "tts"
+      ],
+      "connections": [
+        "cclite",
+        "radio-main",
+        "lumina-main"
+      ]
     },
     {
       "id": "holos-system",
@@ -1052,8 +1675,20 @@
       "icon": "🧭",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["holos", "life os", "planowanie", "nawyki", "cele", "duchowość", "organizacja"],
-      "connections": ["cclite", "centrum-cclite", "ccn-technologie"]
+      "keywords": [
+        "holos",
+        "life os",
+        "planowanie",
+        "nawyki",
+        "cele",
+        "duchowość",
+        "organizacja"
+      ],
+      "connections": [
+        "cclite",
+        "centrum-cclite",
+        "ccn-technologie"
+      ]
     },
     {
       "id": "centrum-cclite",
@@ -1068,8 +1703,19 @@
       "icon": "🏢",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["centrum", "usługi", "konto", "logowanie", "cclite", "narzędzia"],
-      "connections": ["cclite", "uslugi-cclite", "holos-system"]
+      "keywords": [
+        "centrum",
+        "usługi",
+        "konto",
+        "logowanie",
+        "cclite",
+        "narzędzia"
+      ],
+      "connections": [
+        "cclite",
+        "uslugi-cclite",
+        "holos-system"
+      ]
     },
     {
       "id": "uslugi-cclite",
@@ -1084,8 +1730,18 @@
       "icon": "🛠️",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["usługi", "katalog", "firmy", "przedsiębiorcy", "fachowcy", "zaufanie"],
-      "connections": ["centrum-cclite", "ccn-biznes"]
+      "keywords": [
+        "usługi",
+        "katalog",
+        "firmy",
+        "przedsiębiorcy",
+        "fachowcy",
+        "zaufanie"
+      ],
+      "connections": [
+        "centrum-cclite",
+        "ccn-biznes"
+      ]
     },
     {
       "id": "yis-designer",
@@ -1100,8 +1756,18 @@
       "icon": "📐",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["projektant", "grafika", "design", "kreator", "banery", "studio"],
-      "connections": ["holos-system", "lumina-main"]
+      "keywords": [
+        "projektant",
+        "grafika",
+        "design",
+        "kreator",
+        "banery",
+        "studio"
+      ],
+      "connections": [
+        "holos-system",
+        "lumina-main"
+      ]
     },
     {
       "id": "content-registry",
@@ -1116,8 +1782,18 @@
       "icon": "🗂️",
       "category": "Aplikacje & Technologia",
       "verifiedDate": "2026-10-11",
-      "keywords": ["rejestr", "content registry", "zasoby", "metadane", "baza", "portale"],
-      "connections": ["ccn-news", "cc-network-hub"]
+      "keywords": [
+        "rejestr",
+        "content registry",
+        "zasoby",
+        "metadane",
+        "baza",
+        "portale"
+      ],
+      "connections": [
+        "ccn-news",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "mapa-ekosystemu",
@@ -1137,8 +1813,25 @@
         "date": "2026-10-11",
         "agent": "A"
       },
-      "keywords": ["mapa", "mapacc", "ekosystem", "projekty", "architektura", "nawigacja", "joma", "graf", "baza"],
-      "connections": ["radio-main", "lumina-portal", "akademia-main", "cclite", "ccn-news", "vod-kino"]
+      "keywords": [
+        "mapa",
+        "mapacc",
+        "ekosystem",
+        "projekty",
+        "architektura",
+        "nawigacja",
+        "joma",
+        "graf",
+        "baza"
+      ],
+      "connections": [
+        "radio-main",
+        "lumina-portal",
+        "akademia-main",
+        "cclite",
+        "ccn-news",
+        "vod-kino"
+      ]
     },
     {
       "id": "licznik-milion",
@@ -1158,9 +1851,20 @@
         "date": "2026-10-11",
         "agent": "A"
       },
-      "keywords": ["licznik", "milion", "licznik cc", "misja milion", "modlitwa", "zjednoczeni", "zasięg"],
-
-      "connections": ["radio-main", "zapolske-modlitwa", "lumina-main"]
+      "keywords": [
+        "licznik",
+        "milion",
+        "licznik cc",
+        "misja milion",
+        "modlitwa",
+        "zjednoczeni",
+        "zasięg"
+      ],
+      "connections": [
+        "radio-main",
+        "zapolske-modlitwa",
+        "lumina-main"
+      ]
     },
     {
       "id": "cc-network-hub",
@@ -1175,8 +1879,21 @@
       "icon": "🌐",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["network", "sieć", "kanały", "youtube", "media", "świat"],
-      "connections": ["linktree-network", "linktree-main", "yt-personality-en", "yt-cc-women", "yt-cc-men"]
+      "keywords": [
+        "network",
+        "sieć",
+        "kanały",
+        "youtube",
+        "media",
+        "świat"
+      ],
+      "connections": [
+        "linktree-network",
+        "linktree-main",
+        "yt-personality-en",
+        "yt-cc-women",
+        "yt-cc-men"
+      ]
     },
     {
       "id": "linktree-network",
@@ -1191,8 +1908,17 @@
       "icon": "🔗",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["linktree", "network", "linki", "kanały", "dystrybucja"],
-      "connections": ["cc-network-hub", "linktree-main"]
+      "keywords": [
+        "linktree",
+        "network",
+        "linki",
+        "kanały",
+        "dystrybucja"
+      ],
+      "connections": [
+        "cc-network-hub",
+        "linktree-main"
+      ]
     },
     {
       "id": "linktree-main",
@@ -1207,8 +1933,18 @@
       "icon": "🔗",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["linktree", "główny", "wszystkie linki", "hub", "kontakt"],
-      "connections": ["cc-network-hub", "radio-main", "zrzutka-glowna"]
+      "keywords": [
+        "linktree",
+        "główny",
+        "wszystkie linki",
+        "hub",
+        "kontakt"
+      ],
+      "connections": [
+        "cc-network-hub",
+        "radio-main",
+        "zrzutka-glowna"
+      ]
     },
     {
       "id": "yt-personality-en",
@@ -1223,8 +1959,18 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["personality plus", "english", "youtube", "international", "faith", "success"],
-      "connections": ["yt-osobowosc-plus", "cc-network-hub"]
+      "keywords": [
+        "personality plus",
+        "english",
+        "youtube",
+        "international",
+        "faith",
+        "success"
+      ],
+      "connections": [
+        "yt-osobowosc-plus",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-cc-women",
@@ -1239,8 +1985,19 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["kobiety", "women", "macierzyństwo", "piękno", "duchowość", "kobiecość"],
-      "connections": ["yt-cc-men", "ccn-seks", "cc-network-hub"]
+      "keywords": [
+        "kobiety",
+        "women",
+        "macierzyństwo",
+        "piękno",
+        "duchowość",
+        "kobiecość"
+      ],
+      "connections": [
+        "yt-cc-men",
+        "ccn-seks",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-cc-men",
@@ -1255,8 +2012,19 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["mężczyźni", "men", "odpowiedzialność", "przywództwo", "ojcostwo", "honor"],
-      "connections": ["yt-cc-women", "pokonac-goliata", "cc-network-hub"]
+      "keywords": [
+        "mężczyźni",
+        "men",
+        "odpowiedzialność",
+        "przywództwo",
+        "ojcostwo",
+        "honor"
+      ],
+      "connections": [
+        "yt-cc-women",
+        "pokonac-goliata",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-prayer24",
@@ -1271,8 +2039,19 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["prayer", "modlitwa", "czuwanie", "24/7", "wstawiennictwo", "psalmy"],
-      "connections": ["zapolske-modlitwa", "cctv24-worship", "cc-network-hub"]
+      "keywords": [
+        "prayer",
+        "modlitwa",
+        "czuwanie",
+        "24/7",
+        "wstawiennictwo",
+        "psalmy"
+      ],
+      "connections": [
+        "zapolske-modlitwa",
+        "cctv24-worship",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-top-seven",
@@ -1287,8 +2066,19 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["top seven", "lista przebojów", "muzyka", "hity", "notowanie", "radio"],
-      "connections": ["music-main", "radio-main", "cc-network-hub"]
+      "keywords": [
+        "top seven",
+        "lista przebojów",
+        "muzyka",
+        "hity",
+        "notowanie",
+        "radio"
+      ],
+      "connections": [
+        "music-main",
+        "radio-main",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "yt-ccnews",
@@ -1303,8 +2093,17 @@
       "icon": "▶",
       "category": "CC Network",
       "verifiedDate": "2026-10-11",
-      "keywords": ["news", "youtube", "reportaże", "publicystyka", "komentarze"],
-      "connections": ["ccn-news", "cc-network-hub"]
+      "keywords": [
+        "news",
+        "youtube",
+        "reportaże",
+        "publicystyka",
+        "komentarze"
+      ],
+      "connections": [
+        "ccn-news",
+        "cc-network-hub"
+      ]
     },
     {
       "id": "zrzutka-glowna",
@@ -1319,8 +2118,19 @@
       "icon": "💛",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["zrzutka", "wsparcie", "darowizna", "finanse", "misja", "pomoc"],
-      "connections": ["zrzutka-technologia", "revolut-cc", "wspolpraca-hub"]
+      "keywords": [
+        "zrzutka",
+        "wsparcie",
+        "darowizna",
+        "finanse",
+        "misja",
+        "pomoc"
+      ],
+      "connections": [
+        "zrzutka-technologia",
+        "revolut-cc",
+        "wspolpraca-hub"
+      ]
     },
     {
       "id": "zrzutka-technologia",
@@ -1335,8 +2145,19 @@
       "icon": "⚡",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["technologia", "studio", "zbiórka", "inwestycje", "kamery", "serwery"],
-      "connections": ["zrzutka-glowna", "cc-studio-daw", "revolut-cc"]
+      "keywords": [
+        "technologia",
+        "studio",
+        "zbiórka",
+        "inwestycje",
+        "kamery",
+        "serwery"
+      ],
+      "connections": [
+        "zrzutka-glowna",
+        "cc-studio-daw",
+        "revolut-cc"
+      ]
     },
     {
       "id": "revolut-cc",
@@ -1351,8 +2172,20 @@
       "icon": "💳",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["revolut", "płatność", "wsparcie", "darowizna", "karta", "apple pay", "google pay"],
-      "connections": ["zrzutka-glowna", "pokonac-goliata", "lumina-profile"]
+      "keywords": [
+        "revolut",
+        "płatność",
+        "wsparcie",
+        "darowizna",
+        "karta",
+        "apple pay",
+        "google pay"
+      ],
+      "connections": [
+        "zrzutka-glowna",
+        "pokonac-goliata",
+        "lumina-profile"
+      ]
     },
     {
       "id": "wspolpraca-hub",
@@ -1367,8 +2200,19 @@
       "icon": "🤝",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["współpraca", "partnerstwo", "wolontariat", "kontakt", "zaangażowanie", "misja"],
-      "connections": ["nadawaj-z-nami", "ccn-wspolpraca", "zrzutka-glowna"]
+      "keywords": [
+        "współpraca",
+        "partnerstwo",
+        "wolontariat",
+        "kontakt",
+        "zaangażowanie",
+        "misja"
+      ],
+      "connections": [
+        "nadawaj-z-nami",
+        "ccn-wspolpraca",
+        "zrzutka-glowna"
+      ]
     },
     {
       "id": "polityka-prywatnosci",
@@ -1383,8 +2227,18 @@
       "icon": "📄",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["prywatność", "rodo", "regulamin", "bezpieczeństwo", "dane", "polityka"],
-      "connections": ["lumina-safety", "radio-main"]
+      "keywords": [
+        "prywatność",
+        "rodo",
+        "regulamin",
+        "bezpieczeństwo",
+        "dane",
+        "polityka"
+      ],
+      "connections": [
+        "lumina-safety",
+        "radio-main"
+      ]
     },
     {
       "id": "o-nas",
@@ -1399,8 +2253,23 @@
       "icon": "🕊️",
       "category": "Misja & Współpraca",
       "verifiedDate": "2026-10-11",
-      "keywords": ["o nas", "misja", "inicjatywa", "służba", "zespół", "autor", "kontakt", "wartości"],
-      "connections": ["wspolpraca-hub", "polityka-prywatnosci", "radio-main", "lumina-main", "akademia"]
+      "keywords": [
+        "o nas",
+        "misja",
+        "inicjatywa",
+        "służba",
+        "zespół",
+        "autor",
+        "kontakt",
+        "wartości"
+      ],
+      "connections": [
+        "wspolpraca-hub",
+        "polityka-prywatnosci",
+        "radio-main",
+        "lumina-main",
+        "akademia"
+      ]
     }
   ]
 }
