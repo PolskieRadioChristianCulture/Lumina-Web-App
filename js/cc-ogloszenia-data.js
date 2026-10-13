@@ -26,12 +26,17 @@
             imageUrl: o.image || '',
             youtubeUrl: o.youtube || '',
             date: DATE,
-            urgent: false,
+            urgent: !!o.urgent,
             isCommunityVerified: true
         };
     }
 
     window.CC_OGLOSZENIA = [
+        ad({ id: 'szukamy-domu-studio', type: 'potrzebuje', category: 'nieruchomosci', price: 'Szczegóły do rozmowy',
+            title: 'Szukamy domu dla rodziny – z miejscem na studio radiowo-telewizyjne misji',
+            desc: 'Drodzy Przyjaciele, Bracia i Siostry,\n\nPiszę do Was z serca. Nazywam się Cezary i od trzech lat, wraz z moją rodziną, z radością dzielimy się Dobrą Nowiną za pośrednictwem polskieradio.cc oraz dzieła Christian Culture. Dziś stoimy przed nowym, ważnym krokiem i w wierze otwieramy się na to, co przygotował dla nas Pan.\n\nSzukamy miejsca, które stanie się naszym domem. Nie szukamy jednak tylko ścian – szukamy przestrzeni z misją. Pragniemy, aby w naszym przyszłym domu powstało ciche studio radiowo-telewizyjne, z którego – prosto z serca naszego regionu – Ewangelia będzie płynąć w świat. 🎙️📻\n\nCzego potrzebujemy?\n• Domu, w którym będziemy mogli zamieszkać z rodziną.\n• Przestrzeni z choć jednym dodatkowym pomieszczeniem, które moglibyśmy zaadaptować na studio nagrań.\n• Miejsca, o które zadbamy z największą starannością, szacunkiem i odpowiedzialnością.\n\nJeśli wiesz o takim miejscu lub znasz kogoś, kto posiada dom wymagający dobrych i troskliwych gospodarzy – prosimy, odezwij się do nas.\n\nJak jeszcze możesz pomóc?\nUdostępnij ten post. Twoje „udostępnienie” to szansa, że ten list trafi dokładnie do osoby, która na nas czeka.\n\nDziękujemy za każdą życzliwość, pomocną dłoń i modlitwę w tej sprawie. Niech Pan błogosławi Wam w każdym dniu!\n\nZ wdzięcznością i pokojem,\nCzarek z rodziną',
+            contact: 'Cezary Rogowski (Czarek) z rodziną', urgent: true,
+            link: '/lumina.cezaryrgowski.html', linkLabel: 'Profil w LUMINA' }),
         ad({ id: 'infolinia-nadzieja', type: 'pomoge', category: 'opieka', price: 'Bezpłatnie',
             title: 'Infolinia Nadzieja – porozmawiajmy i pomódlmy się razem',
             desc: 'Przeżywasz trudny czas, kryzys albo potrzebujesz modlitwy? Zadzwoń na Infolinię Nadzieja Christian Culture. Nie musisz przechodzić przez to sam.',
