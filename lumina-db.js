@@ -4156,6 +4156,14 @@ export function openNotificationChat({ type, senderId, senderName, avatar, messa
     return true;
 }
 
+function safeChatNotificationAvatar(value) {
+    try {
+        const url = new URL(typeof value === 'string' ? value : '/lumina_icon.jpg', window.location.origin);
+        if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return '/lumina_icon.jpg';
+        return url.href;
+    } catch (error) { return '/lumina_icon.jpg'; }
+}
+
 export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type, messageId }) {
     if (typeof document === 'undefined') return;
     let banner = document.getElementById('lumina-chat-notification-banner');
@@ -4190,25 +4198,26 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
         document.body.appendChild(banner);
     }
 
-    const iconSrc = avatar || 'lumina_icon.jpg';
+    const iconSrc = escapeHtml(safeChatNotificationAvatar(avatar));
     const tagText = ['public', 'public_chat', 'chat_public'].includes(type) ? '🌐 Czat Ogólny' : '🔒 Prywatna 1:1';
     const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+    const safeName = escapeHtml(dispName);
 
     banner.innerHTML = `
         <div style="position: relative; flex-shrink: 0;">
-            <img src="${iconSrc}" alt="${dispName}" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #ec4899; box-shadow: 0 0 12px rgba(236,72,153,0.6); display: block;">
+            <img src="${iconSrc}" alt="${safeName}" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #ec4899; box-shadow: 0 0 12px rgba(236,72,153,0.6); display: block;">
             <span style="position: absolute; bottom: -2px; right: -2px; width: 13px; height: 13px; background: #10b981; border-radius: 50%; border: 2px solid #0f172a;"></span>
         </div>
         <div style="flex: 1; min-width: 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; gap: 6px;">
-                <span style="font-weight: 800; font-size: 0.92rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dispName}</span>
+                <span style="font-weight: 800; font-size: 0.92rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${safeName}</span>
                 <span style="font-size: 0.65rem; color: #f472b6; font-weight: 700; background: rgba(236,72,153,0.18); border: 1px solid rgba(236,72,153,0.35); padding: 2px 7px; border-radius: 8px; flex-shrink: 0;">${tagText}</span>
             </div>
             <div style="font-size: 0.78rem; color: #fdf4ff; font-weight: 600; margin-bottom: 2px;">
                 💬 Masz wiadomość
             </div>
             <div style="font-size: 0.8rem; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;">
-                ${body || 'Kliknij, aby odczytać wiadomość...'}
+                ${escapeHtml(body || 'Kliknij, aby odczytać wiadomość...')}
             </div>
         </div>
         <div style="flex-shrink: 0; color: #ec4899; font-size: 1.1rem; padding-left: 2px;">

@@ -779,7 +779,7 @@
                     });
                     sysNotif.onclick = () => {
                         window.focus();
-                        window.location.href = actionUrl;
+                        this.handleItemClick(notif.id, notif.actionUrl);
                     };
                 } catch(e) {}
             }
@@ -831,19 +831,30 @@
                 return;
             }
 
-            list.innerHTML = this.notifications.map(n => `
-                <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl || '#'}')">
-                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-avatar" alt="" onerror="this.src='lumina_icon.jpg'">
-                    <div class="notif-content">
-                        <div class="notif-item-title">${escapeHtml(n.title)}</div>
-                        <div class="notif-item-body">${escapeHtml(n.body)}</div>
-                        <div class="notif-time">${n.time || 'Przed chwilą'}</div>
-                    </div>
-                </div>
-            `).join('');
+            list.replaceChildren();
+            this.notifications.forEach(n => {
+                const row = document.createElement('div');
+                row.className = 'notif-item' + (n.unread ? ' unread' : '');
+                row.setAttribute('role', 'button');
+                row.tabIndex = 0;
+                row.innerHTML = '<img class="notif-avatar" alt=""><div class="notif-content"><div class="notif-item-title"></div><div class="notif-item-body"></div><div class="notif-time"></div></div>';
+                const image = row.querySelector('img');
+                image.src = safeNotificationUrl(n.icon, '/lumina_icon.jpg');
+                image.addEventListener('error', () => { image.src = '/lumina_icon.jpg'; }, { once: true });
+                row.querySelector('.notif-item-title').textContent = n.title || '';
+                row.querySelector('.notif-item-body').textContent = n.body || '';
+                row.querySelector('.notif-time').textContent = n.time || 'Przed chwilą';
+                const activate = () => this.handleItemClick(n.id, n.actionUrl || '#');
+                row.addEventListener('click', activate);
+                row.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); }
+                });
+                list.appendChild(row);
+            });
         }
 
         handleItemClick(notifId, url) {
+            url = safeNotificationUrl(url, '#', true);
             const item = this.notifications.find(n => n.id === notifId);
             if (item && item.unread) {
                 item.unread = false;
@@ -984,6 +995,16 @@
                 }
             });
         }
+    }
+
+    function safeNotificationUrl(value, fallback, sameOrigin = false) {
+        if (typeof value !== 'string' || !value.trim() || value === '#') return fallback;
+        try {
+            const url = new URL(value, window.location.origin + '/');
+            if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return fallback;
+            if (sameOrigin && url.origin !== window.location.origin) return fallback;
+            return url.href;
+        } catch (error) { return fallback; }
     }
 
     function escapeHtml(text) {

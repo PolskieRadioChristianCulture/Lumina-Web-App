@@ -6,7 +6,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-import * as LuminaDB from './lumina-db.js?v=20261013_notifroute1';
+import * as LuminaDB from './lumina-db.js?v=20261013_notifsafe1';
 
 class LuminaSecurityEngine {
     constructor() {

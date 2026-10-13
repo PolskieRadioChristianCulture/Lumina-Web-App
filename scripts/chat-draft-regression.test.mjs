@@ -8,7 +8,9 @@ test('notification bubble routes to the exact conversation, including fallback a
  const start=source.indexOf('export function openNotificationChat(');
  const end=source.indexOf('export async function showSystemDrawerNotification(',start);
  assert.ok(start>0&&end>start);
- const code=source.slice(start,end).replaceAll('export function ','function ');
+ const escapeStart=source.indexOf('export function escapeHtml(');
+ const escapeEnd=source.indexOf('\n}',escapeStart)+2;
+ const code=source.slice(start,end).replaceAll('export function ','function ')+source.slice(escapeStart,escapeEnd).replace('export ','');
  function fixture({guest=false,native=true,fail=false}={}){
   const dom=new Window(),calls=[];
   if(native)dom.document.body.innerHTML='<div id="directMessagesModal"></div>';
@@ -50,6 +52,45 @@ test('notification bubble routes to the exact conversation, including fallback a
  assert.equal(new URL(pub.calls.at(-1)[1]).searchParams.get('openPublicChat'),'1');
  const invalid=fixture();assert.equal(invalid.win.openNotificationChat({type:'private'}),false);
  assert.deepEqual(invalid.calls,[]);
+ const attack=fixture();
+ const unsafe='<img src=x onerror="window.attacked=true"><script>window.attacked=true</script>';
+ attack.banner({type:'private',senderId:'FixtureUID',senderName:unsafe,body:unsafe,avatar:'javascript:alert(1)'});
+ const safeBubble=attack.dom.document.getElementById('lumina-chat-notification-banner');
+ assert.equal(safeBubble.querySelectorAll('img').length,1);
+ assert.equal(safeBubble.querySelectorAll('script,[onerror],[onload]').length,0);
+ assert.ok(safeBubble.textContent.includes(unsafe));
+ assert.equal(safeBubble.querySelector('img').getAttribute('src'),'/lumina_icon.jpg');
+ attack.banner({type:'private',senderId:'FixtureUID',avatar:'" onerror="alert(1)'});
+ assert.equal(safeBubble.querySelectorAll('[onerror]').length,0);
+});
+
+test('notification list treats cached and received fields as text and restricts navigation',async()=>{
+ const source=await readFile('lumina-notifications.js','utf8');
+ const classStart=source.indexOf('    class LuminaNotificationEngine');
+ const helperStart=source.indexOf('    function safeNotificationUrl');
+ const helperEnd=source.indexOf('    function escapeHtml',helperStart);
+ const dom=new Window();dom.document.body.innerHTML='<div id="notif-list"></div>';
+ const calls=[];const win={location:{origin:'https://polskieradio.cc',href:'https://polskieradio.cc/akademia/example'},openChatWith:(...args)=>calls.push(['private',...args])};
+ const ctx=vm.createContext({window:win,document:dom.document,URL});
+ const proto=vm.runInContext(source.slice(classStart,helperStart)+source.slice(helperStart,helperEnd)+';LuminaNotificationEngine.prototype',ctx);
+ const engine=Object.create(proto);engine.updateBadge=()=>{};engine.saveToStorage=()=>{};
+ const attack='<svg onload="window.attacked=true"></svg>';
+ engine.notifications=[{id:"bad');alert(1);//",title:attack,body:attack,time:attack,icon:'javascript:alert(1)',actionUrl:'javascript:alert(1)'},
+  {id:'safe-fixture',title:'Zażółć gęślą jaźń',body:'Test',icon:'/avatar_fixture.png',actionUrl:'/lumina?openChat=FixtureUID'}];
+ engine.renderList();
+ const list=dom.document.getElementById('notif-list');
+ assert.equal(list.querySelectorAll('.notif-item').length,2);
+ assert.equal(list.querySelectorAll('script,svg,[onclick],[onerror],[onload]').length,0);
+ assert.ok(list.textContent.includes(attack));assert.ok(list.textContent.includes('Zażółć gęślą jaźń'));
+ assert.equal(list.querySelector('img').getAttribute('src'),'/lumina_icon.jpg');
+ list.querySelector('.notif-item').click();assert.equal(win.location.href,'https://polskieradio.cc/akademia/example');
+ list.querySelectorAll('.notif-item')[1].dispatchEvent(new dom.KeyboardEvent('keydown',{key:' ',bubbles:true}));
+ assert.equal(calls.at(-1)[3],'FixtureUID');
+ for(const url of ['javascript:alert(1)','data:text/html,test','https://example.invalid/', '//example.invalid/', 'https://user:pass@polskieradio.cc/','http://[']){
+  const count=calls.length;engine.handleItemClick('unknown',url);assert.equal(calls.length,count);assert.equal(win.location.href,'https://polskieradio.cc/akademia/example');
+ }
+ engine.handleItemClick('safe','/akademia/kurscodzienny/dzien-08');
+ assert.equal(win.location.href,'https://polskieradio.cc/akademia/kurscodzienny/dzien-08');
 });
 
 const surfaces=['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html'];
