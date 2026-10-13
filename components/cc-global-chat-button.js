@@ -793,6 +793,10 @@
       .cc-chat-msg-sender {
         font-weight: 700 !important;
         color: #F8FAFC !important;
+        transition: color 0.2s ease !important;
+      }
+      .cc-chat-msg-sender:hover {
+        color: #FACC15 !important;
       }
 
       .cc-chat-msg-badge {
@@ -1333,8 +1337,8 @@
       <div class="cc-chat-drawer" role="dialog" aria-modal="true" aria-labelledby="ccChatHeaderTitle">
         <!-- Nagłówek okna -->
         <div class="cc-chat-header">
-          <div class="cc-chat-header-brand">
-            <img src="/images/chat/cc-chat-button-120.webp" id="ccChatHeaderPartnerAvatar" alt="CC Chat" class="cc-chat-header-icon" width="36" height="36" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+          <a href="/lumina-tablica.html" target="_blank" rel="noopener noreferrer" class="cc-chat-header-brand" id="ccChatHeaderProfileLink" title="Otwórz stronę / profil w portalu LUMINA" style="text-decoration:none;">
+            <img src="/images/chat/cc-chat-button-120.webp" id="ccChatHeaderPartnerAvatar" alt="CC Chat" class="cc-chat-header-icon" width="38" height="38" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
             <div class="cc-chat-header-titles">
               <div class="cc-chat-header-title" id="ccChatHeaderTitle">
                 <span>CC CHAT</span>
@@ -1345,7 +1349,7 @@
                 <span id="ccChatHeaderSubText">Czat Ogólny Społeczności</span>
               </div>
             </div>
-          </div>
+          </a>
           <div class="cc-chat-header-actions">
             <a href="/lumina.html?openPublicChat=1" target="_blank" rel="noopener noreferrer" class="cc-chat-icon-btn" title="Otwórz pełny portal LUMINA" aria-label="Otwórz pełny portal LUMINA">
               <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
@@ -1382,6 +1386,9 @@
             <div class="cc-chat-active-info-left">
               <span class="cc-chat-active-name" id="ccChatActiveName">Czat Ogólny Społeczności</span>
               <span class="cc-chat-active-badge" id="ccChatActiveBadge">🌐 Społeczność</span>
+              <a href="/lumina-tablica.html" target="_blank" rel="noopener noreferrer" class="cc-chat-active-profile-btn" id="ccChatActiveProfileBtn" title="Otwórz pełny profil w portalu LUMINA">
+                <span>Tablica</span> 🕊️
+              </a>
             </div>
             <button type="button" class="cc-chat-members-switch-btn" id="ccChatOpenMembersBtn" title="Zobacz wszystkich użytkowników społeczności">
               <span>Wszyscy członkowie →</span>
@@ -1578,6 +1585,8 @@
       const headerSub = document.getElementById('ccChatHeaderSubText');
       const activeName = document.getElementById('ccChatActiveName');
       const activeBadge = document.getElementById('ccChatActiveBadge');
+      const activeProfileBtn = document.getElementById('ccChatActiveProfileBtn');
+      const headerProfileLink = document.getElementById('ccChatHeaderProfileLink');
 
       if (headerAvatar) headerAvatar.src = currentChatPartner.avatar || '/images/chat/cc-chat-button-120.webp';
       if (headerSub) {
@@ -1585,21 +1594,30 @@
       }
       if (activeName) activeName.textContent = currentChatPartner.name;
       if (activeBadge) activeBadge.textContent = currentChatPartner.badge;
+      if (activeProfileBtn) {
+        activeProfileBtn.href = currentChatPartner.profileUrl || '/lumina-tablica.html';
+        activeProfileBtn.title = currentChatPartner.isPublic ? 'Otwórz Tablicę Społeczności LUMINA' : `Otwórz profil: ${currentChatPartner.name}`;
+        activeProfileBtn.innerHTML = currentChatPartner.isPublic ? '<span>Tablica</span> 🕊️' : '<span>Profil</span> 👤';
+      }
+      if (headerProfileLink) {
+        headerProfileLink.href = currentChatPartner.profileUrl || '/lumina-tablica.html';
+        headerProfileLink.title = currentChatPartner.isPublic ? 'Otwórz Tablicę LUMINA' : `Otwórz profil: ${currentChatPartner.name}`;
+      }
 
       renderPartnersBar();
     }
 
-    // Renderowanie poziomego paska awatarów
+    // Renderowanie poziomego paska awatarów (pełny katalog ze swobodnym przewijaniem)
     function renderPartnersBar() {
       const bar = document.getElementById('ccChatPartnersBar');
       if (!bar) return;
 
       let html = '';
-      COMMUNITY_MEMBERS.slice(0, 7).forEach(m => {
+      COMMUNITY_MEMBERS.forEach(m => {
         const isActive = currentChatPartner.id === m.id;
         const shortName = m.isPublic ? 'Ogólny' : m.name.split(' ')[0];
         html += `
-          <button type="button" class="cc-chat-partner-chip ${isActive ? 'is-active' : ''}" data-partner-id="${m.id}" title="${escapeHtml(m.name)} • ${escapeHtml(m.badge)}">
+          <button type="button" class="cc-chat-partner-chip ${isActive ? 'is-active' : ''}" data-partner-id="${m.id}" title="${escapeHtml(m.name)} • ${escapeHtml(m.badge)} (kliknij, by rozmawiać)">
             <div class="cc-chat-partner-avatar-wrap">
               <img src="${escapeHtml(m.avatar)}" alt="${escapeHtml(m.name)}" class="cc-chat-partner-chip-img" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
             </div>
@@ -1607,16 +1625,6 @@
           </button>
         `;
       });
-
-      // Przycisk "Więcej..."
-      html += `
-        <button type="button" class="cc-chat-partner-chip" id="ccChatPartnerChipMore" title="Wszyscy użytkownicy społeczności">
-          <div class="cc-chat-partner-avatar-wrap" style="display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);color:#C4A35A;">
-            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-          </div>
-          <span class="cc-chat-partner-chip-name">Więcej...</span>
-        </button>
-      `;
 
       bar.innerHTML = html;
 
@@ -1628,14 +1636,9 @@
           if (p) setChatPartner(p);
         });
       });
-
-      const moreBtn = document.getElementById('ccChatPartnerChipMore');
-      if (moreBtn) {
-        moreBtn.addEventListener('click', function () { switchTab('members'); });
-      }
     }
 
-    // Renderowanie katalogu użytkowników (zakładka Społeczność)
+    // Renderowanie katalogu użytkowników (zakładka Społeczność — swobodny dostęp do profili i rozmów)
     function renderMembersList(query) {
       const list = document.getElementById('ccChatMembersList');
       if (!list) return;
@@ -1647,21 +1650,30 @@
 
       let html = '';
       filtered.forEach(m => {
+        const profileUrl = m.profileUrl || '/lumina-tablica.html';
+        const isPublicRoom = !!m.isPublic;
         html += `
           <div class="cc-chat-member-card" data-member-id="${m.id}">
             <div class="cc-chat-member-card-left">
-              <img src="${escapeHtml(m.avatar)}" alt="${escapeHtml(m.name)}" class="cc-chat-member-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+              <a href="${escapeHtml(profileUrl)}" target="_blank" rel="noopener noreferrer" title="Otwórz profil: ${escapeHtml(m.name)}" style="display:inline-flex;text-decoration:none;" onclick="event.stopPropagation();">
+                <img src="${escapeHtml(m.avatar)}" alt="${escapeHtml(m.name)}" class="cc-chat-member-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+              </a>
               <div class="cc-chat-member-info">
                 <div class="cc-chat-member-name-row">
-                  <span class="cc-chat-member-name">${escapeHtml(m.name)}</span>
+                  <a href="${escapeHtml(profileUrl)}" target="_blank" rel="noopener noreferrer" class="cc-chat-member-name" title="Otwórz profil: ${escapeHtml(m.name)}" onclick="event.stopPropagation();" style="text-decoration:none;">${escapeHtml(m.name)}</a>
                   <span class="cc-chat-active-badge">${escapeHtml(m.badge)}</span>
                 </div>
                 <div class="cc-chat-member-desc">${escapeHtml(m.desc)}</div>
               </div>
             </div>
-            <button type="button" class="cc-chat-member-chat-btn" data-start-chat="${m.id}" aria-label="Rozpocznij rozmowę z ${escapeHtml(m.name)}">
-              <span>Rozmawiaj</span> 💬
-            </button>
+            <div class="cc-chat-member-actions">
+              <a href="${escapeHtml(profileUrl)}" target="_blank" rel="noopener noreferrer" class="cc-chat-member-profile-btn" title="Otwórz profil: ${escapeHtml(m.name)}" onclick="event.stopPropagation();">
+                <span>${isPublicRoom ? 'Tablica' : 'Profil'}</span> ${isPublicRoom ? '🕊️' : '👤'}
+              </a>
+              <button type="button" class="cc-chat-member-chat-btn" data-start-chat="${m.id}" aria-label="Rozpocznij rozmowę z ${escapeHtml(m.name)}">
+                <span>Rozmawiaj</span> 💬
+              </button>
+            </div>
           </div>
         `;
       });
@@ -1669,7 +1681,9 @@
       list.innerHTML = html || `<div style="text-align:center;padding:24px;color:#94A3B8;font-size:0.82rem;">Nie znaleziono użytkownika dla zapytania "${escapeHtml(query)}"</div>`;
 
       list.querySelectorAll('.cc-chat-member-card, [data-start-chat]').forEach(el => {
-        el.addEventListener('click', function () {
+        el.addEventListener('click', function (e) {
+          // Jeśli kliknięto w link profilu, nie przechwytuj
+          if (e.target.closest('a')) return;
           const mid = el.getAttribute('data-member-id') || el.getAttribute('data-start-chat');
           const member = COMMUNITY_MEMBERS.find(x => x.id === mid);
           if (member) setChatPartner(member);
@@ -1861,7 +1875,7 @@
           {
             id: 'init_pub_1',
             senderName: 'Cezary Rogowski',
-            senderAvatar: '/images/team/cezary-rogowski.webp',
+            senderAvatar: '/avatar_cezary_official.jpg',
             senderBadge: '👑 Założyciel',
             senderId: 'cezaryrgowski',
             text: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i portalu LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!',
@@ -1922,12 +1936,18 @@
       const time = escapeHtml(m.dateStr || '');
       const text = escapeHtml(m.text || '');
 
+      // Odnalezienie profilu nadawcy
+      const partnerObj = COMMUNITY_MEMBERS.find(c => c.id === m.senderId || c.slug === m.senderId);
+      const profileLink = partnerObj ? partnerObj.profileUrl : '/lumina-tablica.html';
+
       html += `
         <div class="cc-chat-msg-row ${isMe ? 'is-me' : ''}">
-          <img src="${avatar}" alt="${name}" class="cc-chat-msg-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+          <a href="${escapeHtml(profileLink)}" target="_blank" rel="noopener noreferrer" title="Otwórz profil: ${name}" style="display:inline-flex;text-decoration:none;">
+            <img src="${avatar}" alt="${name}" class="cc-chat-msg-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+          </a>
           <div class="cc-chat-msg-content">
             <div class="cc-chat-msg-meta">
-              <span class="cc-chat-msg-sender">${name}</span>
+              <a href="${escapeHtml(profileLink)}" target="_blank" rel="noopener noreferrer" class="cc-chat-msg-sender" title="Otwórz profil: ${name}" style="text-decoration:none;">${name}</a>
               <span class="cc-chat-msg-badge">${badge}</span>
               ${time ? `<span style="opacity: 0.7;">${time}</span>` : ''}
             </div>
