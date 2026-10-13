@@ -337,3 +337,18 @@ test('dolny pasek: podpisy pod ikonami i środkowy „+” do napisania posta; d
   const top = await readFile('js/cc-back-to-top.js', 'utf8');
   assert.doesNotMatch(top, /M12 5v14M5 12h14/);
 });
+
+test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyjnych osób i telefonów', async () => {
+  for (const f of ['ogloszenia/index.html', 'ogloszenia.html']) {
+    const t = await readFile(f, 'utf8');
+    assert.match(t, /<script src="\/js\/cc-ogloszenia-data\.js\?v=[^"]+"><\/script>\s*<script type="module" crossorigin src="\/assets\/ogloszenia-index-cc20261013\.js">/, f);
+  }
+  const bundle = await readFile('assets/ogloszenia-index-cc20261013.js', 'utf8');
+  assert.match(bundle, /Ke=\(Array\.isArray\(window\.CC_OGLOSZENIA\)\?window\.CC_OGLOSZENIA:\[\]\)/);
+  for (const fake of ['Wiśniewscy', 'Złota Rączka CC', 'Skoda Octavia', 'images.unsplash.com', 'Setki braci']) assert.ok(!bundle.includes(fake), fake);
+  const data = await readFile('js/cc-ogloszenia-data.js', 'utf8');
+  assert.match(data, /Infolinia Nadzieja/);
+  assert.match(data, /\/ksiazki-autora|\/pokonac-goliata/);
+  const w = await readFile('_worker.js', 'utf8');
+  assert.match(w, /kalendarz-\?20\(26\|27\|28\|29\|30\)/);
+});

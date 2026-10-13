@@ -1452,6 +1452,13 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    // Kreator kalendarza: stare i skrócone adresy (np. /kalendarz2027 z menu strony głównej) → /kalendarz
+    if (/^\/(kalendarz-?20(26|27|28|29|30)|kreator-?kalendarza)\/?$/i.test(decodedP)) {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/kalendarz';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     if (decodedP === '/ogłoszenia' || decodedP === '/tablica-ogloszen') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/ogloszenia';
