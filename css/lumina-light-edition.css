@@ -4301,7 +4301,7 @@ html[data-lumina-theme="light"] :is(.lumina-share-repost-badge, .lumina-share-re
     background: #F8F2E5 !important; color: #806120 !important;
 }
 html[data-lumina-theme="light"] :is(.lumina-share-copy-btn, .lumina-push-accept,
-    .lumina-legal-close-btn, #luminaFloatingChatBtn) {
+    .lumina-legal-close-btn) {
     background: linear-gradient(135deg, #806120, #654B18) !important;
     color: #FFFFFF !important; border-color: #654B18 !important;
     text-shadow: none !important;

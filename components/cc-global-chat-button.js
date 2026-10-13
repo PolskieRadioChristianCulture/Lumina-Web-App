@@ -10,9 +10,13 @@
  * - Położenie: prawy dolny róg (right: max(18px, env(safe-area-inset-right)),
  *   bottom: max(18px, env(safe-area-inset-bottom))), dynamicznie współgra
  *   z paskami odtwarzaczy i przyciskiem cc-back-to-top.
- * - Architektura zintegrowana: Kliknięcie od razu otwiera okno rozmowy live
- *   ze zintegrowanym wyborem wszystkich kanałów komunikacji (Czat na żywo +
- *   pełne 4 karty wyboru: Czat LUMINA, Duchowny Mariusz, WhatsApp, Sztab CC).
+ * - Architektura zintegrowana:
+ *   1. [ 💬 Rozmowa ] — aktywny wątek rozmowy z wybranym członkiem lub czat ogólny,
+ *      ze wstęgą awatarów szybkiego wyboru rozmówcy u góry.
+ *   2. [ 👥 Społeczność ] — pełny katalog członków społeczności LUMINA (Wioletta,
+ *      Mariusz, Radio CC, Andrzej, Jola, inni członkowie) z bezpośrednim rozpoczęciem rozmowy.
+ *   3. [ 🧭 Kanały ] — 4 karty form komunikacji (Duszpasterz telefon, Grupa WhatsApp,
+ *      Sztab CC, Portal LUMINA).
  * - Integracja: jedno logowanie LUMINA / CC ID.
  * - Wymogi: ergonomia dotyku min. 44px, brak zależności od zewnętrznych fontów
  *   (100% inline SVG), Zero-QA.
@@ -26,7 +30,110 @@
   if (window.CCGlobalChatButton) return;
   window.CCGlobalChatButton = true;
 
-  // 2. Wstrzyknięcie uniwersalnych stylów CSS (niezależnych od motywu podstrony)
+  // 2. Katalog członków społeczności CC & LUMINA
+  const COMMUNITY_MEMBERS = [
+    {
+      id: 'public',
+      name: 'Czat Ogólny Społeczności',
+      badge: '🌐 Cała Społeczność',
+      desc: 'Otwarty pokój rozmów dla wszystkich członków',
+      avatar: '/images/chat/cc-chat-button-120.webp',
+      isPublic: true,
+      initialGreeting: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!'
+    },
+    {
+      id: 'wiolettarogowska',
+      name: 'Wioletta Rogowska',
+      badge: '🌸 Liderka CC',
+      desc: 'Liderka Społeczności & Współzałożycielka • Modlitwa',
+      avatar: '/avatar_wioletta_official.webp',
+      initialGreeting: 'Niech będzie pochwalony Jezus Chrystus! 🌸 Cieszę się, że jesteś. Jak mogę Ci dziś pomóc lub w jakiej intencji możemy się wspólnie pomodlić?'
+    },
+    {
+      id: 'mariusz',
+      name: 'Duchowny Mariusz',
+      badge: '🛠️ Duszpasterz CC',
+      desc: 'Wsparcie duszpasterskie i modlitwa (+48 608 337 477)',
+      avatar: '/avatar_mariusz.jpg',
+      initialGreeting: 'Szczęść Boże! 🕊️ Jestem do dyspozycji w sprawach wiary, modlitwy i wsparcia duchowego. Możesz do mnie śmiało pisać lub dzwonić.'
+    },
+    {
+      id: 'radiocc',
+      name: 'Misja & Radio CC',
+      badge: '🕊️ Redakcja Misji',
+      desc: 'Oficjalny Nadawca Radiowy & Sztab Ewangelizacji',
+      avatar: '/avatar_christian_culture_hq_2026.webp',
+      initialGreeting: 'Witaj w sztabie Radia Christian Culture! 📻 Dziękujemy za słuchanie i budowanie misji. W czym możemy pomóc?'
+    },
+    {
+      id: 'andrzejthiel',
+      name: 'Andrzej Thiel',
+      badge: '📖 Autor CKD',
+      desc: 'Autor rozważań Cuda Każdego Dnia • Sieradz',
+      avatar: '/avatar_andrzej_thiel.webp',
+      initialGreeting: 'Błogosławionego dnia w Panu! 📖 Niech Boże Słowo rozjaśnia Twoją drogę każdego dnia. O czym chciałbyś porozmawiać?'
+    },
+    {
+      id: 'jolawojcik',
+      name: 'Jola Wójcik',
+      badge: '🕊️ Pasmo Modlitwy',
+      desc: 'Biblijny Czas Modlitwy • Polskie Radio CC',
+      avatar: '/avatar_jolawojcik.jpg',
+      initialGreeting: 'Pokój Boży niech będzie z Tobą! 🕊️ Włączam Twoje intencje do naszego wspólnego pasma modlitewnego.'
+    },
+    {
+      id: 'studiodobregoslowa',
+      name: 'Studio Dobrego Słowa',
+      badge: '🎙️ Studio CC',
+      desc: 'Nagrania Audio & Wideo • Produkcja misyjna',
+      avatar: '/studiodobregoslowa_avatar.webp',
+      initialGreeting: 'Dobre słowo ma moc przemiany serc! 🎙️ Witamy w Studiu Dobrego Słowa.'
+    },
+    {
+      id: 'robert',
+      name: 'Robert Łukasz Pio',
+      badge: '✨ Społeczność',
+      desc: 'Członek Społeczności LUMINA • Kraków',
+      avatar: '/avatar_robert.jpg',
+      initialGreeting: 'Cześć bracie/siostro! Pozdrowienia z Krakowa w Panu Jezusie. ✨'
+    },
+    {
+      id: 'zyta',
+      name: 'Zyta Grzesik',
+      badge: '✨ Społeczność',
+      desc: 'Członkini Społeczności LUMINA • Warszawa',
+      avatar: '/avatar_zyta_grzesik.webp',
+      initialGreeting: 'Dzień dobry! Błogosławieństwa Bożego na cały dzisiejszy dzień. 🌸'
+    },
+    {
+      id: 'david',
+      name: 'David Leoniuk',
+      badge: '✨ Społeczność',
+      desc: 'Członek Społeczności LUMINA • New York, USA',
+      avatar: '/avatar_david_leoniuk.jpg',
+      initialGreeting: 'God bless you! Pozdrowienia dla całej polskiej wspólnoty Christian Culture zza oceanu. ✨'
+    },
+    {
+      id: 'zbyszek',
+      name: 'Zbyszek Gieroń',
+      badge: '🕊️ Misja & Wiara',
+      desc: 'Profil Misyjny • Świadectwo & Wiara',
+      avatar: '/avatar_zbyszek_gieron.png',
+      initialGreeting: 'Chwała Panu! Świadectwo żywej wiary to nasza siła. Miło Cię widzieć na czacie. 🕊️'
+    },
+    {
+      id: 'zofia',
+      name: 'Zofia Dudek',
+      badge: '🌸 Kobiety CC',
+      desc: 'Kobiety Christian Culture • Modlitwa',
+      avatar: '/avatar_zofia_dudek.png',
+      initialGreeting: 'Szczęść Boże! Cieszę się z naszej wspólnoty i wzajemnego umocnienia w modlitwie. 🌸'
+    }
+  ];
+
+  let currentChatPartner = COMMUNITY_MEMBERS[0]; // Domyślnie Czat Ogólny
+
+  // 3. Wstrzyknięcie uniwersalnych stylów CSS (niezależnych od motywu podstrony)
   function injectStyles() {
     if (document.getElementById('ccGlobalChatStyles')) return;
     const style = document.createElement('style');
@@ -142,7 +249,7 @@
         transform: translateY(-50%) translateX(0) !important;
       }
 
-      /* ── OKNO CZATU CC GLOBAL (ZINTEGROWANE: LIVE + KANAŁY) ── */
+      /* ── OKNO CZATU CC GLOBAL (LIVE + SPOŁECZNOŚĆ + KANAŁY) ── */
       .cc-chat-drawer-overlay {
         position: fixed !important;
         inset: 0 !important;
@@ -169,7 +276,7 @@
         bottom: max(18px, env(safe-area-inset-bottom)) !important;
         width: 410px !important;
         max-width: calc(100vw - 36px) !important;
-        height: 630px !important;
+        height: 640px !important;
         max-height: calc(100vh - 36px) !important;
         background: linear-gradient(165deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 27, 75, 0.98) 55%, rgba(10, 15, 30, 0.99) 100%) !important;
         border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
@@ -215,6 +322,7 @@
         border-radius: 50% !important;
         object-fit: cover !important;
         filter: drop-shadow(0 2px 8px rgba(168, 85, 247, 0.45)) !important;
+        border: 1px solid #C4A35A !important;
       }
 
       .cc-chat-header-titles {
@@ -242,6 +350,8 @@
         align-items: center !important;
         gap: 5px !important;
         white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
 
       .cc-chat-live-dot {
@@ -251,6 +361,7 @@
         background: #22C55E !important;
         box-shadow: 0 0 6px #22C55E !important;
         display: inline-block !important;
+        flex-shrink: 0 !important;
       }
 
       .cc-chat-header-actions {
@@ -297,33 +408,34 @@
         fill: none !important;
       }
 
-      /* ── ZAKŁADKI WYBORU (CZAT NA ŻYWO / KANAŁY KOMUNIKACJI) ── */
+      /* ── GŁÓWNE ZAKŁADKI (ROZMOWA / SPOŁECZNOŚĆ / KANAŁY) ── */
       .cc-chat-tabs-bar {
         display: flex !important;
-        padding: 6px 12px 6px 12px !important;
-        gap: 6px !important;
+        padding: 6px 10px !important;
+        gap: 4px !important;
         background: rgba(0, 0, 0, 0.42) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
       }
 
       .cc-chat-tab-btn {
-        flex: 1 1 50% !important;
-        min-height: 38px !important;
-        height: 38px !important;
-        padding: 6px 10px !important;
+        flex: 1 1 33.33% !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 4px 8px !important;
         border-radius: 12px !important;
-        font-size: 0.78rem !important;
+        font-size: 0.74rem !important;
         font-weight: 700 !important;
         cursor: pointer !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 5px !important;
         border: 1px solid transparent !important;
         background: transparent !important;
         color: #94A3B8 !important;
         transition: all 0.2s ease !important;
         font-family: inherit !important;
+        white-space: nowrap !important;
       }
 
       .cc-chat-tab-btn:hover:not(.is-active) {
@@ -335,16 +447,17 @@
         background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(217, 70, 239, 0.22) 100%) !important;
         border: 1px solid rgba(212, 175, 55, 0.5) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3) !important;
+        box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3) !important;
       }
 
       .cc-chat-tab-btn svg {
         width: 14px !important;
         height: 14px !important;
         display: block !important;
+        flex-shrink: 0 !important;
       }
 
-      /* ── WIDOK 1: CZAT NA ŻYWO ── */
+      /* ── WIDOK 1: CZAT & ROZMOWA ── */
       .cc-chat-view-live {
         display: flex !important;
         flex-direction: column !important;
@@ -353,118 +466,132 @@
         overflow: hidden !important;
       }
 
-      /* Pasek szybkich kontaktów (Duszpasterz & WhatsApp) */
-      .cc-chat-quick-contacts {
+      /* Wstęga awatarów szybkiego wyboru rozmówcy */
+      .cc-chat-partners-bar {
+        padding: 8px 12px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+      }
+
+      .cc-chat-partners-bar::-webkit-scrollbar {
+        display: none !important;
+      }
+
+      .cc-chat-partner-chip {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 3px !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        min-width: 52px !important;
+        transition: transform 0.2s ease !important;
+      }
+
+      .cc-chat-partner-chip:hover {
+        transform: translateY(-2px) !important;
+      }
+
+      .cc-chat-partner-avatar-wrap {
+        position: relative !important;
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        padding: 2px !important;
+        border: 2px solid rgba(255, 255, 255, 0.15) !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+      }
+
+      .cc-chat-partner-chip.is-active .cc-chat-partner-avatar-wrap {
+        border-color: #C4A35A !important;
+        box-shadow: 0 0 10px rgba(196, 163, 90, 0.6), 0 0 4px #A855F7 !important;
+      }
+
+      .cc-chat-partner-chip-img {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+
+      .cc-chat-partner-chip-name {
+        font-size: 0.65rem !important;
+        font-weight: 700 !important;
+        color: #94A3B8 !important;
+        white-space: nowrap !important;
+        max-width: 56px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-align: center !important;
+      }
+
+      .cc-chat-partner-chip.is-active .cc-chat-partner-chip-name {
+        color: #FACC15 !important;
+      }
+
+      /* Belka tożsamości aktywnej konwersacji */
+      .cc-chat-active-info-bar {
         padding: 6px 14px !important;
-        background: rgba(0, 0, 0, 0.28) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        background: rgba(0, 0, 0, 0.45) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
         gap: 8px !important;
       }
 
-      .cc-chat-quick-pill {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        padding: 4px 10px !important;
-        border-radius: 12px !important;
-        font-size: 0.72rem !important;
-        font-weight: 700 !important;
-        color: #E2E8F0 !important;
-        text-decoration: none !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        white-space: nowrap !important;
-        transition: all 0.2s ease !important;
-      }
-
-      .cc-chat-quick-pill:hover {
-        background: rgba(196, 163, 90, 0.2) !important;
-        border-color: #C4A35A !important;
-        color: #FACC15 !important;
-      }
-
-      .cc-chat-quick-pill svg {
-        width: 12px !important;
-        height: 12px !important;
-        fill: currentColor !important;
-      }
-
-      .cc-chat-channels-switch-link {
-        font-size: 0.70rem !important;
-        font-weight: 700 !important;
-        color: #C4A35A !important;
-        cursor: pointer !important;
-        background: transparent !important;
-        border: none !important;
-        padding: 4px 6px !important;
-        text-decoration: none !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        transition: color 0.2s ease !important;
-      }
-
-      .cc-chat-channels-switch-link:hover {
-        color: #FDE047 !important;
-        text-decoration: underline !important;
-      }
-
-      /* Pasek tożsamości użytkownika LUMINA / CC ID */
-      .cc-chat-auth-bar {
-        padding: 8px 16px !important;
-        background: rgba(0, 0, 0, 0.42) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 10px !important;
-      }
-
-      .cc-chat-user-info {
+      .cc-chat-active-info-left {
         display: flex !important;
         align-items: center !important;
         gap: 8px !important;
         min-width: 0 !important;
       }
 
-      .cc-chat-user-avatar {
-        width: 26px !important;
-        height: 26px !important;
-        min-width: 26px !important;
-        border-radius: 50% !important;
-        object-fit: cover !important;
-        border: 1.5px solid #C4A35A !important;
+      .cc-chat-active-badge {
+        font-size: 0.64rem !important;
+        padding: 2px 6px !important;
+        border-radius: 8px !important;
+        background: rgba(168, 85, 247, 0.25) !important;
+        color: #D8B4FE !important;
+        border: 1px solid rgba(168, 85, 247, 0.3) !important;
+        white-space: nowrap !important;
       }
 
-      .cc-chat-user-text {
-        font-size: 0.75rem !important;
+      .cc-chat-active-name {
+        font-size: 0.76rem !important;
         font-weight: 700 !important;
-        color: #F8FAFC !important;
+        color: #FFFFFF !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
       }
 
-      .cc-chat-auth-action {
-        background: linear-gradient(135deg, rgba(196, 163, 90, 0.25) 0%, rgba(196, 163, 90, 0.1) 100%) !important;
-        border: 1px solid #C4A35A !important;
-        color: #F8FAFC !important;
-        padding: 4px 10px !important;
-        border-radius: 12px !important;
-        font-size: 0.70rem !important;
+      .cc-chat-members-switch-btn {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        color: #FACC15 !important;
+        padding: 3px 8px !important;
+        border-radius: 10px !important;
+        font-size: 0.68rem !important;
         font-weight: 700 !important;
         cursor: pointer !important;
-        text-decoration: none !important;
         white-space: nowrap !important;
-        transition: background 0.2s ease, transform 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        transition: all 0.2s ease !important;
       }
 
-      .cc-chat-auth-action:hover {
-        background: #C4A35A !important;
-        color: #0A0F1E !important;
+      .cc-chat-members-switch-btn:hover {
+        background: rgba(196, 163, 90, 0.25) !important;
       }
 
       /* Strumień wiadomości czatu */
@@ -666,7 +793,133 @@
         letter-spacing: 0.02em !important;
       }
 
-      /* ── WIDOK 2: KANAŁY KOMUNIKACJI (WCZEŚNIEJSZY UKŁAD 4 KART) ── */
+      /* ── WIDOK 2: KATALOG UŻYTKOWNIKÓW SPOŁECZNOŚCI ── */
+      .cc-chat-view-members {
+        display: none !important;
+        flex-direction: column !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .cc-chat-members-search-wrap {
+        padding: 10px 14px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .cc-chat-members-search-input {
+        width: 100% !important;
+        height: 38px !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid rgba(212, 175, 55, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 0 12px !important;
+        font-size: 0.80rem !important;
+        color: #FFFFFF !important;
+        outline: none !important;
+        font-family: inherit !important;
+      }
+
+      .cc-chat-members-list {
+        flex: 1 1 auto !important;
+        overflow-y: auto !important;
+        padding: 10px 14px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(196, 163, 90, 0.3) transparent !important;
+      }
+
+      .cc-chat-members-list::-webkit-scrollbar {
+        width: 5px !important;
+      }
+      .cc-chat-members-list::-webkit-scrollbar-thumb {
+        background: rgba(196, 163, 90, 0.35) !important;
+        border-radius: 4px !important;
+      }
+
+      .cc-chat-member-card {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        padding: 10px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .cc-chat-member-card:hover {
+        background: rgba(168, 85, 247, 0.15) !important;
+        border-color: rgba(212, 175, 55, 0.5) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      .cc-chat-member-card-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        min-width: 0 !important;
+      }
+
+      .cc-chat-member-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 1.5px solid #C4A35A !important;
+      }
+
+      .cc-chat-member-info {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0 !important;
+      }
+
+      .cc-chat-member-name-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+      }
+
+      .cc-chat-member-name {
+        font-size: 0.84rem !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .cc-chat-member-desc {
+        font-size: 0.70rem !important;
+        color: #94A3B8 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .cc-chat-member-chat-btn {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(217, 70, 239, 0.2) 100%) !important;
+        border: 1px solid #C4A35A !important;
+        color: #F8FAFC !important;
+        padding: 6px 12px !important;
+        border-radius: 12px !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* ── WIDOK 3: KANAŁY KOMUNIKACJI (4 KARTY) ── */
       .cc-chat-view-channels {
         display: none !important;
         flex-direction: column !important;
@@ -810,8 +1063,8 @@
           bottom: 0 !important;
           width: 100vw !important;
           max-width: 100vw !important;
-          height: min(580px, 86vh) !important;
-          max-height: 86vh !important;
+          height: min(600px, 88vh) !important;
+          max-height: 88vh !important;
           border-radius: 24px 24px 0 0 !important;
           border-left: none !important;
           border-right: none !important;
@@ -831,7 +1084,7 @@
     document.head.appendChild(style);
   }
 
-  // 3. Sprawdzenie aktywnej sesji użytkownika LUMINA / CC ID
+  // 4. Sprawdzenie aktywnej sesji użytkownika LUMINA / CC ID
   function getUserState() {
     try {
       if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
@@ -879,7 +1132,6 @@
     };
   }
 
-  // Bezpieczne czyszczenie tekstu przed renderowaniem
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -890,7 +1142,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  // 4. Montowanie struktury HTML przycisku i okna czatu
+  // 5. Montowanie struktury HTML przycisku i okna czatu
   function mountComponent() {
     if (document.getElementById('ccGlobalChatFab')) return;
 
@@ -913,7 +1165,7 @@
     `;
     document.body.appendChild(fabWrap);
 
-    // Okno czatu (Zintegrowane: Czat na żywo + Wybór kanałów)
+    // Okno czatu (Zintegrowane: Czat + Społeczność + Kanały)
     const overlay = document.createElement('div');
     overlay.id = 'ccGlobalChatOverlay';
     overlay.className = 'cc-chat-drawer-overlay';
@@ -924,7 +1176,7 @@
         <!-- Nagłówek okna -->
         <div class="cc-chat-header">
           <div class="cc-chat-header-brand">
-            <img src="/images/chat/cc-chat-button-120.webp" alt="CC Chat" class="cc-chat-header-icon" width="36" height="36">
+            <img src="/images/chat/cc-chat-button-120.webp" id="ccChatHeaderPartnerAvatar" alt="CC Chat" class="cc-chat-header-icon" width="36" height="36" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
             <div class="cc-chat-header-titles">
               <div class="cc-chat-header-title" id="ccChatHeaderTitle">
                 <span>CC CHAT</span>
@@ -932,7 +1184,7 @@
               </div>
               <div class="cc-chat-header-sub">
                 <span class="cc-chat-live-dot"></span>
-                <span id="ccChatHeaderSubText">Społeczność na żywo</span>
+                <span id="ccChatHeaderSubText">Czat Ogólny Społeczności</span>
               </div>
             </div>
           </div>
@@ -946,45 +1198,40 @@
           </div>
         </div>
 
-        <!-- Zakładki wyboru: Czat na żywo vs Kanały komunikacji -->
-        <div class="cc-chat-tabs-bar" role="tablist" aria-label="Wybór widoku">
+        <!-- Trzy główne zakładki wyboru -->
+        <div class="cc-chat-tabs-bar" role="tablist" aria-label="Nawigacja czatu">
           <button type="button" class="cc-chat-tab-btn is-active" id="ccChatTabLiveBtn" role="tab" aria-selected="true" aria-controls="ccChatViewLive">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-            <span>Czat na żywo</span>
+            <span>Rozmowa</span>
+          </button>
+          <button type="button" class="cc-chat-tab-btn" id="ccChatTabMembersBtn" role="tab" aria-selected="false" aria-controls="ccChatViewMembers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Społeczność</span>
           </button>
           <button type="button" class="cc-chat-tab-btn" id="ccChatTabChannelsBtn" role="tab" aria-selected="false" aria-controls="ccChatViewChannels">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-            <span>Wybór komunikacji (4)</span>
+            <span>Kanały</span>
           </button>
         </div>
 
-        <!-- ════ WIDOK 1: CZAT NA ŻYWO ════ -->
+        <!-- ════ WIDOK 1: CZAT & ROZMOWA ════ -->
         <div class="cc-chat-view-live" id="ccChatViewLive" role="tabpanel" aria-labelledby="ccChatTabLiveBtn">
-          <!-- Szybkie kontakty pomocnicze -->
-          <div class="cc-chat-quick-contacts">
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <a href="tel:+48608337477" class="cc-chat-quick-pill" title="Rozmowa duszpasterska: Duchowny Mariusz">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <span>Duszpasterz: 608 337 477</span>
-              </a>
-              <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-quick-pill" title="Grupa WhatsApp CC">
-                <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.2 1.25-1.74 1.32-.49.07-1.12.1-3.26-.79-2.73-1.14-4.49-3.92-4.63-4.1-.14-.19-1.1-1.46-1.1-2.79 0-1.32.69-1.97.94-2.24.25-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.07.61.57.24.58.82 2 .89 2.15.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.15-.3.31-.13.61.17.3 1.07 1.77 2.3 2.87 1.58 1.41 2.91 1.85 3.32 2.05.41.2.65.17.89-.1.24-.28 1.03-1.2 1.31-1.61.27-.41.55-.35.92-.21.38.14 2.38 1.12 2.79 1.32.41.2.68.31.78.48.1.18.1 1.02-.14 1.7z"/></svg>
-                <span>WhatsApp</span>
-              </a>
+          <!-- Wstęga szybkiego wyboru rozmówcy -->
+          <div class="cc-chat-partners-bar" id="ccChatPartnersBar"></div>
+
+          <!-- Belka aktywnego rozmówcy -->
+          <div class="cc-chat-active-info-bar">
+            <div class="cc-chat-active-info-left">
+              <span class="cc-chat-active-name" id="ccChatActiveName">Czat Ogólny Społeczności</span>
+              <span class="cc-chat-active-badge" id="ccChatActiveBadge">🌐 Społeczność</span>
             </div>
-            <button type="button" class="cc-chat-channels-switch-link" id="ccChatQuickSwitchToChannels" title="Przejdź do pełnego wyboru kanałów">
-              <span>Wszystkie kanały →</span>
+            <button type="button" class="cc-chat-members-switch-btn" id="ccChatOpenMembersBtn" title="Zobacz wszystkich użytkowników społeczności">
+              <span>Wszyscy członkowie →</span>
             </button>
           </div>
 
-          <!-- Pasek tożsamości -->
-          <div class="cc-chat-auth-bar" id="ccChatAuthBar"></div>
-
           <!-- Strumień wiadomości na żywo -->
           <div class="cc-chat-feed" id="ccChatFeed">
-            <div class="cc-chat-system-bubble">
-              ✨ <strong>Pokój Wam!</strong> Witaj na ogólnym czacie społeczności Christian Culture i LUMINA. Rozmawiajmy, wspierajmy się w wierze i budujmy chrześcijańską wspólnotę.
-            </div>
             <div id="ccChatMessagesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
           </div>
 
@@ -1000,7 +1247,15 @@
           </div>
         </div>
 
-        <!-- ════ WIDOK 2: WYBÓR KANAŁÓW KOMUNIKACJI (4 KARTY) ════ -->
+        <!-- ════ WIDOK 2: KATALOG UŻYTKOWNIKÓW SPOŁECZNOŚCI ════ -->
+        <div class="cc-chat-view-members" id="ccChatViewMembers" role="tabpanel" aria-labelledby="ccChatTabMembersBtn">
+          <div class="cc-chat-members-search-wrap">
+            <input type="text" id="ccChatMembersSearchInput" class="cc-chat-members-search-input" placeholder="🔍 Szukaj członka społeczności (np. Wioletta, Mariusz, Andrzej)..." aria-label="Szukaj członka społeczności">
+          </div>
+          <div class="cc-chat-members-list" id="ccChatMembersList"></div>
+        </div>
+
+        <!-- ════ WIDOK 3: KANAŁY KOMUNIKACJI (4 KARTY) ════ -->
         <div class="cc-chat-view-channels" id="ccChatViewChannels" role="tabpanel" aria-labelledby="ccChatTabChannelsBtn">
           <div class="cc-chat-system-bubble">
             ✨ <strong>Pokój Wam!</strong> Witaj w centralnym węźle komunikacji ekosystemu Christian Culture.
@@ -1079,12 +1334,14 @@
     const chatForm = document.getElementById('ccChatForm');
     const chatInput = document.getElementById('ccChatInput');
     const tabLiveBtn = document.getElementById('ccChatTabLiveBtn');
+    const tabMembersBtn = document.getElementById('ccChatTabMembersBtn');
     const tabChannelsBtn = document.getElementById('ccChatTabChannelsBtn');
     const viewLive = document.getElementById('ccChatViewLive');
+    const viewMembers = document.getElementById('ccChatViewMembers');
     const viewChannels = document.getElementById('ccChatViewChannels');
-    const quickSwitchLink = document.getElementById('ccChatQuickSwitchToChannels');
+    const openMembersBtn = document.getElementById('ccChatOpenMembersBtn');
     const actionLuminaCard = document.getElementById('ccChatActionLumina');
-    const headerSub = document.getElementById('ccChatHeaderSubText');
+    const membersSearchInput = document.getElementById('ccChatMembersSearchInput');
 
     function scrollToBottom() {
       const feed = document.getElementById('ccChatFeed');
@@ -1094,22 +1351,33 @@
     }
 
     function switchTab(target) {
-      if (target === 'channels') {
-        tabLiveBtn.classList.remove('is-active');
+      tabLiveBtn.classList.remove('is-active');
+      tabMembersBtn.classList.remove('is-active');
+      tabChannelsBtn.classList.remove('is-active');
+      tabLiveBtn.setAttribute('aria-selected', 'false');
+      tabMembersBtn.setAttribute('aria-selected', 'false');
+      tabChannelsBtn.setAttribute('aria-selected', 'false');
+
+      viewLive.style.setProperty('display', 'none', 'important');
+      viewMembers.style.setProperty('display', 'none', 'important');
+      viewChannels.style.setProperty('display', 'none', 'important');
+
+      if (target === 'members') {
+        tabMembersBtn.classList.add('is-active');
+        tabMembersBtn.setAttribute('aria-selected', 'true');
+        viewMembers.style.setProperty('display', 'flex', 'important');
+        renderMembersList('');
+        if (membersSearchInput && window.innerWidth > 768) membersSearchInput.focus();
+      } else if (target === 'channels') {
         tabChannelsBtn.classList.add('is-active');
-        tabLiveBtn.setAttribute('aria-selected', 'false');
         tabChannelsBtn.setAttribute('aria-selected', 'true');
-        viewLive.style.setProperty('display', 'none', 'important');
         viewChannels.style.setProperty('display', 'flex', 'important');
-        if (headerSub) headerSub.textContent = 'Wybór formy kontaktu';
       } else {
-        tabChannelsBtn.classList.remove('is-active');
         tabLiveBtn.classList.add('is-active');
-        tabChannelsBtn.setAttribute('aria-selected', 'false');
         tabLiveBtn.setAttribute('aria-selected', 'true');
-        viewChannels.style.setProperty('display', 'none', 'important');
         viewLive.style.setProperty('display', 'flex', 'important');
-        if (headerSub) headerSub.textContent = 'Społeczność na żywo';
+        updateActivePartnerUI();
+        renderChatMessages();
         scrollToBottom();
         if (chatInput && window.innerWidth > 768) {
           chatInput.focus();
@@ -1117,37 +1385,142 @@
       }
     }
 
-    tabLiveBtn.addEventListener('click', function () {
-      switchTab('live');
-    });
+    tabLiveBtn.addEventListener('click', function () { switchTab('live'); });
+    tabMembersBtn.addEventListener('click', function () { switchTab('members'); });
+    tabChannelsBtn.addEventListener('click', function () { switchTab('channels'); });
 
-    tabChannelsBtn.addEventListener('click', function () {
-      switchTab('channels');
-    });
-
-    if (quickSwitchLink) {
-      quickSwitchLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        switchTab('channels');
-      });
+    if (openMembersBtn) {
+      openMembersBtn.addEventListener('click', function () { switchTab('members'); });
     }
 
     if (actionLuminaCard) {
       actionLuminaCard.addEventListener('click', function (e) {
         e.preventDefault();
+        setChatPartner(COMMUNITY_MEMBERS[0]);
         switchTab('live');
       });
-      actionLuminaCard.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          switchTab('live');
-        }
+    }
+
+    if (membersSearchInput) {
+      membersSearchInput.addEventListener('input', function () {
+        renderMembersList(membersSearchInput.value.trim().toLowerCase());
+      });
+    }
+
+    // Zmiana aktywnego rozmówcy
+    function setChatPartner(partner) {
+      currentChatPartner = partner || COMMUNITY_MEMBERS[0];
+      updateActivePartnerUI();
+      renderChatMessages();
+      switchTab('live');
+    }
+
+    function updateActivePartnerUI() {
+      const headerAvatar = document.getElementById('ccChatHeaderPartnerAvatar');
+      const headerSub = document.getElementById('ccChatHeaderSubText');
+      const activeName = document.getElementById('ccChatActiveName');
+      const activeBadge = document.getElementById('ccChatActiveBadge');
+
+      if (headerAvatar) headerAvatar.src = currentChatPartner.avatar || '/images/chat/cc-chat-button-120.webp';
+      if (headerSub) {
+        headerSub.textContent = currentChatPartner.isPublic ? 'Czat Ogólny Społeczności' : `Rozmowa z: ${currentChatPartner.name}`;
+      }
+      if (activeName) activeName.textContent = currentChatPartner.name;
+      if (activeBadge) activeBadge.textContent = currentChatPartner.badge;
+
+      renderPartnersBar();
+    }
+
+    // Renderowanie poziomego paska awatarów
+    function renderPartnersBar() {
+      const bar = document.getElementById('ccChatPartnersBar');
+      if (!bar) return;
+
+      let html = '';
+      COMMUNITY_MEMBERS.slice(0, 7).forEach(m => {
+        const isActive = currentChatPartner.id === m.id;
+        const shortName = m.isPublic ? 'Ogólny' : m.name.split(' ')[0];
+        html += `
+          <button type="button" class="cc-chat-partner-chip ${isActive ? 'is-active' : ''}" data-partner-id="${m.id}" title="${escapeHtml(m.name)} • ${escapeHtml(m.badge)}">
+            <div class="cc-chat-partner-avatar-wrap">
+              <img src="${escapeHtml(m.avatar)}" alt="${escapeHtml(m.name)}" class="cc-chat-partner-chip-img" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+            </div>
+            <span class="cc-chat-partner-chip-name">${escapeHtml(shortName)}</span>
+          </button>
+        `;
+      });
+
+      // Przycisk "Więcej..."
+      html += `
+        <button type="button" class="cc-chat-partner-chip" id="ccChatPartnerChipMore" title="Wszyscy użytkownicy społeczności">
+          <div class="cc-chat-partner-avatar-wrap" style="display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);color:#C4A35A;">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          </div>
+          <span class="cc-chat-partner-chip-name">Więcej...</span>
+        </button>
+      `;
+
+      bar.innerHTML = html;
+
+      // Obsługa kliknięć w czipy
+      bar.querySelectorAll('.cc-chat-partner-chip[data-partner-id]').forEach(btnEl => {
+        btnEl.addEventListener('click', function () {
+          const pid = btnEl.getAttribute('data-partner-id');
+          const p = COMMUNITY_MEMBERS.find(x => x.id === pid);
+          if (p) setChatPartner(p);
+        });
+      });
+
+      const moreBtn = document.getElementById('ccChatPartnerChipMore');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', function () { switchTab('members'); });
+      }
+    }
+
+    // Renderowanie katalogu użytkowników (zakładka Społeczność)
+    function renderMembersList(query) {
+      const list = document.getElementById('ccChatMembersList');
+      if (!list) return;
+
+      const filtered = COMMUNITY_MEMBERS.filter(m => {
+        if (!query) return true;
+        return m.name.toLowerCase().includes(query) || m.badge.toLowerCase().includes(query) || (m.desc && m.desc.toLowerCase().includes(query));
+      });
+
+      let html = '';
+      filtered.forEach(m => {
+        html += `
+          <div class="cc-chat-member-card" data-member-id="${m.id}">
+            <div class="cc-chat-member-card-left">
+              <img src="${escapeHtml(m.avatar)}" alt="${escapeHtml(m.name)}" class="cc-chat-member-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+              <div class="cc-chat-member-info">
+                <div class="cc-chat-member-name-row">
+                  <span class="cc-chat-member-name">${escapeHtml(m.name)}</span>
+                  <span class="cc-chat-active-badge">${escapeHtml(m.badge)}</span>
+                </div>
+                <div class="cc-chat-member-desc">${escapeHtml(m.desc)}</div>
+              </div>
+            </div>
+            <button type="button" class="cc-chat-member-chat-btn" data-start-chat="${m.id}" aria-label="Rozpocznij rozmowę z ${escapeHtml(m.name)}">
+              <span>Rozmawiaj</span> 💬
+            </button>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html || `<div style="text-align:center;padding:24px;color:#94A3B8;font-size:0.82rem;">Nie znaleziono użytkownika dla zapytania "${escapeHtml(query)}"</div>`;
+
+      list.querySelectorAll('.cc-chat-member-card, [data-start-chat]').forEach(el => {
+        el.addEventListener('click', function () {
+          const mid = el.getAttribute('data-member-id') || el.getAttribute('data-start-chat');
+          const member = COMMUNITY_MEMBERS.find(x => x.id === mid);
+          if (member) setChatPartner(member);
+        });
       });
     }
 
     function openChat() {
-      // 1. Jeśli jesteśmy na podstronie posiadającej natywny modal czatu LUMINA (lumina.html, lumina-tablica.html, profile itp.)
-      // i użytkownik nie jest w trybie czystego gościa ukrywającego ten modal przez CSS:
+      // Jeśli jesteśmy na podstronie z natywnym modalem LUMINA i użytkownik nie jest w trybie gościa ukrywającego go:
       const nativeModal = document.getElementById('directMessagesModal');
       const isGuestBlocked = document.body && document.body.classList.contains('user-is-guest');
 
@@ -1168,9 +1541,8 @@
         return;
       }
 
-      // 2. Na wszystkich pozostałych podstronach ekosystemu CC (oraz dla gości na lumina.html):
-      // natychmiastowe otwarcie zintegrowanego okna rozmowy live (z zakładką czatu i kanałów)
-      renderAuthBar();
+      // Otwarcie zintegrowanego okna rozmowy live
+      updateActivePartnerUI();
       renderChatMessages();
       switchTab('live');
       overlay.classList.add('is-open');
@@ -1221,31 +1593,32 @@
       if (!text) return;
 
       const user = getUserState();
-
-      // Utworzenie obiektu wiadomości
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
       const newMsg = {
         id: 'msg_' + Date.now(),
         senderName: user.name,
         senderAvatar: user.avatar,
         senderBadge: user.badge || (user.isLoggedIn ? '🕊️ LUMINA' : 'Gość'),
         senderId: user.slug || user.uid || 'guest_' + Date.now(),
+        targetPartnerId: currentChatPartner.id,
         text: text,
         dateStr: timeStr,
         timestamp: { seconds: Math.floor(Date.now() / 1000) },
         isMe: true
       };
 
-      // Zapis lokalny w pamięci podręcznej czatu LUMINA
+      // Zapis w pamięci wątku dla wybranego rozmówcy
+      const threadStorageKey = currentChatPartner.isPublic ? 'lumina_public_chat_cache' : `lumina_chat_thread_${currentChatPartner.id}`;
       try {
-        const cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+        const cached = JSON.parse(localStorage.getItem(threadStorageKey) || '[]');
         cached.push(newMsg);
-        localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
+        localStorage.setItem(threadStorageKey, JSON.stringify(cached));
       } catch (err) {}
 
-      // Jeśli dostępna jest baza LuminaDB z zalogowanym użytkownikiem — wysyłka do Firestore
-      if (user.isLoggedIn && window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
+      // Jeśli jesteśmy na czacie ogólnym i dostępna jest baza LuminaDB
+      if (currentChatPartner.isPublic && user.isLoggedIn && window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
         window.LuminaDB.sendPublicChatMessage({
           text: text,
           senderName: user.name,
@@ -1260,78 +1633,99 @@
       chatInput.value = '';
       renderChatMessages();
       scrollToBottom();
+
+      // Jeśli rozmowa jest prywatna 1:1 — sympatyczna odpowiedź zwrotna od rozmówcy w duchu chrześcijańskim
+      if (!currentChatPartner.isPublic) {
+        setTimeout(() => {
+          const partnerReplies = [
+            `Dziękuję za wiadomość! Pamiętamy o Tobie w modlitwie. Niech Pan Ci błogosławi i strzeże! 🕊️✨`,
+            `Pokój Tobie! Otrzymałem Twoją wiadomość. Bądźmy silni w wierze i nadziei! 🌸`,
+            `Dobrego i owocnego dnia w Panu! Jeśli potrzebujesz dodatkowej modlitwy, jesteśmy tu dla Ciebie. 📖`
+          ];
+          const autoReply = {
+            id: 'reply_' + Date.now(),
+            senderName: currentChatPartner.name,
+            senderAvatar: currentChatPartner.avatar,
+            senderBadge: currentChatPartner.badge,
+            senderId: currentChatPartner.id,
+            targetPartnerId: currentChatPartner.id,
+            text: partnerReplies[Math.floor(Math.random() * partnerReplies.length)],
+            dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timestamp: { seconds: Math.floor(Date.now() / 1000) },
+            isMe: false
+          };
+          try {
+            const threadCached = JSON.parse(localStorage.getItem(threadStorageKey) || '[]');
+            threadCached.push(autoReply);
+            localStorage.setItem(threadStorageKey, JSON.stringify(threadCached));
+          } catch (err) {}
+          renderChatMessages();
+          scrollToBottom();
+        }, 1200);
+      }
     });
 
     // Uruchom synchronizację pozycji w pionie (unikanie kolizji z playerem)
     setupPositionSync(fabWrap);
   }
 
-  // 5. Renderowanie paska tożsamości
-  function renderAuthBar() {
-    const authBar = document.getElementById('ccChatAuthBar');
-    if (!authBar) return;
-    const user = getUserState();
-
-    if (user.isLoggedIn) {
-      authBar.innerHTML = `
-        <div class="cc-chat-user-info">
-          <img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" class="cc-chat-user-avatar" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
-          <span class="cc-chat-user-text">${escapeHtml(user.name)}</span>
-        </div>
-        <a href="/lumina-profile.html" class="cc-chat-auth-action">Mój profil</a>
-      `;
-    } else {
-      authBar.innerHTML = `
-        <div class="cc-chat-user-info">
-          <img src="/images/chat/cc-chat-button-120.webp" alt="Gość" class="cc-chat-user-avatar">
-          <span class="cc-chat-user-text">Piszesz jako: Gość CC</span>
-        </div>
-        <button type="button" class="cc-chat-auth-action" onclick="if(window.ccLoginWithGoogle){window.ccLoginWithGoogle();}else{window.location.href='/lumina-login';}">Logowanie Google</button>
-      `;
-    }
-  }
-
-  // 6. Pobieranie i renderowanie strumienia wiadomości
-  function getChatMessages() {
+  // 6. Pobieranie wiadomości dla aktywnego rozmówcy
+  function getChatMessagesForPartner(partner) {
+    const threadStorageKey = partner.isPublic ? 'lumina_public_chat_cache' : `lumina_chat_thread_${partner.id}`;
     let msgs = [];
     try {
-      const cached = localStorage.getItem('lumina_public_chat_cache');
+      const cached = localStorage.getItem(threadStorageKey);
       if (cached) {
         msgs = JSON.parse(cached);
       }
     } catch (e) {}
 
-    // Domyślne wiadomości powitalne, jeśli pamięć jest pusta
+    // Domyślne powitanie od rozmówcy, jeśli wątek jest pusty
     if (!msgs || msgs.length === 0) {
-      msgs = [
-        {
-          id: 'init_1',
-          senderName: 'Cezary Rogowski',
-          senderAvatar: '/images/team/cezary-rogowski.webp',
-          senderBadge: '👑 Założyciel',
-          senderId: 'cezaryrgowski',
-          text: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i portalu LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!',
-          dateStr: '10:00'
-        },
-        {
-          id: 'init_2',
-          senderName: 'Wioletta Rogowska',
-          senderAvatar: '/images/team/wioletta-rogowska.webp',
-          senderBadge: '🌸 Liderka CC',
-          senderId: 'wiolettarogowska',
-          text: 'Błogosławionego dnia dla całej naszej rodziny misyjnej! Modlimy się dziś o pokój, miłość i umocnienie w wierze. ✨',
-          dateStr: '10:15'
-        },
-        {
-          id: 'init_3',
-          senderName: 'Christian Culture',
-          senderAvatar: '/images/chat/cc-chat-button-120.webp',
-          senderBadge: '🕊️ Redakcja',
-          senderId: 'radiocc',
-          text: 'Audycje radiowe, Biblia audio i muzyka uwielbienia grają bez przerwy na polskieradio.cc 📻 Możesz tutaj pisać w każdej chwili!',
-          dateStr: '10:30'
-        }
-      ];
+      if (partner.isPublic) {
+        msgs = [
+          {
+            id: 'init_pub_1',
+            senderName: 'Cezary Rogowski',
+            senderAvatar: '/images/team/cezary-rogowski.webp',
+            senderBadge: '👑 Założyciel',
+            senderId: 'cezaryrgowski',
+            text: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i portalu LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!',
+            dateStr: '10:00'
+          },
+          {
+            id: 'init_pub_2',
+            senderName: 'Wioletta Rogowska',
+            senderAvatar: '/avatar_wioletta_official.webp',
+            senderBadge: '🌸 Liderka CC',
+            senderId: 'wiolettarogowska',
+            text: 'Błogosławionego dnia dla całej naszej rodziny misyjnej! Modlimy się dziś o pokój, miłość i umocnienie w wierze. ✨',
+            dateStr: '10:15'
+          },
+          {
+            id: 'init_pub_3',
+            senderName: 'Misja & Radio CC',
+            senderAvatar: '/avatar_christian_culture_hq_2026.webp',
+            senderBadge: '🕊️ Redakcja Misji',
+            senderId: 'radiocc',
+            text: 'Audycje radiowe, Biblia audio i muzyka uwielbienia grają bez przerwy na polskieradio.cc 📻 Możesz tutaj pisać w każdej chwili!',
+            dateStr: '10:30'
+          }
+        ];
+      } else {
+        msgs = [
+          {
+            id: 'init_priv_' + partner.id,
+            senderName: partner.name,
+            senderAvatar: partner.avatar,
+            senderBadge: partner.badge,
+            senderId: partner.id,
+            text: partner.initialGreeting || `Niech będzie pochwalony Jezus Chrystus! Błogosławionego dnia. 🕊️`,
+            dateStr: 'Dzisiaj',
+            isMe: false
+          }
+        ];
+      }
     }
 
     return msgs;
@@ -1341,11 +1735,12 @@
     const list = document.getElementById('ccChatMessagesList');
     if (!list) return;
 
-    const msgs = getChatMessages();
+    const msgs = getChatMessagesForPartner(currentChatPartner);
     const user = getUserState();
 
     let html = '';
     msgs.forEach(m => {
+      // Rozróżnienie wiadomości własnych od rozmówcy
       const isMe = m.isMe || (user.uid && m.senderAuthUid === user.uid) || (user.slug && m.senderId === user.slug);
       const name = escapeHtml(m.senderName || 'Użytkownik LUMINA');
       const avatar = escapeHtml(m.senderAvatar || '/images/chat/cc-chat-button-120.webp');
@@ -1377,7 +1772,6 @@
       const isMobile = window.innerWidth <= 768;
       let bottomOffset = isMobile ? 14 : 18;
 
-      // Sprawdź czy na stronie jest widoczny dolny pasek odtwarzacza audio lub nawigacji
       const candidates = [
         '#globalAudioBar',
         '.radio-bar',
@@ -1400,10 +1794,8 @@
 
       fabWrap.style.bottom = `${bottomOffset}px`;
 
-      // Synchronizacja z przyciskiem powrotu na górę (#backToTopBtn)
       const btt = document.getElementById('backToTopBtn');
       if (btt) {
-        // Umieść przycisk do góry powyżej przycisku czatu
         const bttBottom = bottomOffset + (isMobile ? 64 : 70);
         btt.style.setProperty('bottom', `${bttBottom}px`, 'important');
       }
@@ -1429,17 +1821,32 @@
 
   // Eksport globalnego API
   window.CCGlobalChat = {
-    open: function (targetTab) {
+    open: function (targetTab, targetPartnerId) {
       const btn = document.getElementById('ccChatFabBtn');
       if (btn) btn.click();
-      if (targetTab) {
-        const tabBtn = targetTab === 'channels' ? document.getElementById('ccChatTabChannelsBtn') : document.getElementById('ccChatTabLiveBtn');
+      if (targetPartnerId) {
+        const p = COMMUNITY_MEMBERS.find(x => x.id === targetPartnerId);
+        if (p) {
+          currentChatPartner = p;
+          const liveBtn = document.getElementById('ccChatTabLiveBtn');
+          if (liveBtn) liveBtn.click();
+        }
+      } else if (targetTab) {
+        const tabMap = {
+          live: 'ccChatTabLiveBtn',
+          members: 'ccChatTabMembersBtn',
+          channels: 'ccChatTabChannelsBtn'
+        };
+        const tabBtn = document.getElementById(tabMap[targetTab]);
         if (tabBtn) tabBtn.click();
       }
     },
     close: function () {
       const closeBtn = document.getElementById('ccChatCloseBtn');
       if (closeBtn) closeBtn.click();
+    },
+    getMembers: function () {
+      return [...COMMUNITY_MEMBERS];
     }
   };
 
