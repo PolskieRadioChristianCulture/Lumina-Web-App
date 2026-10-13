@@ -1,6 +1,7 @@
 import { firestoreCourseStore, kvCourseStore, latestCourseLesson, publishedCourseLessons, courseSubscriptionAction, courseSubscriptionFailure, dispatchCourseLesson, courseAccountState } from './course-subscriptions.js';
 import { ownerPushTest } from './owner-push-test.js';
 import { backfillCourseSubscriptions } from './course-backfill.js';
+import { classifyFcmResponse } from './fcm-result.js';
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const FIREBASE_LOOKUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup';
@@ -204,7 +205,7 @@ function notificationFor(kind, documentId, record) {
   };
 }
 
-async function sendFcm(token, notification, accessToken, env, signal) {
+async function sendFcm(token, notification, accessToken, env, signal, detailed = false) {
   const data = {
     title: notification.title,
     body: notification.body,
@@ -247,7 +248,7 @@ async function sendFcm(token, notification, accessToken, env, signal) {
       }
     })
   });
-  return response.ok;
+  return detailed ? classifyFcmResponse(response) : response.ok;
 }
 
 async function handlePush(request, env, kind, documentId) {
@@ -309,7 +310,7 @@ function courseDeps(env, accessToken, currentHour = null) {
       return sendFcm(token, {
       title: 'Nowa lekcja — Z Biblią za Pan Brat', body: lesson.title, type: 'daily_course_lesson',
       tag: `cc-daily-lesson-${lesson.number}`, url: lesson.url, icon: `${PUBLIC_ORIGIN}/lumina-notif-icon-v2.png`, senderId: '', documentId: String(lesson.number)
-    }, accessToken, env);
+    }, accessToken, env, undefined, true);
     }
   };
 }

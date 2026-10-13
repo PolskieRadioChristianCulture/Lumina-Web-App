@@ -1983,6 +1983,7 @@
                 window.triggerSecretAdminPrompt();
             });
         });
+    }, 1000);
     document.body.insertAdjacentHTML('beforeend', navHtml);
     try {
         const dupChat = document.getElementById('ccGlobalChatFab');

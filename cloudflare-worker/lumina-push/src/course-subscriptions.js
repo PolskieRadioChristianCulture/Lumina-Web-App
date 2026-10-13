@@ -250,7 +250,11 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
     try {
       const tokens = await deps.tokens(record.uid);
       const outcomes = [];
+      const acceptedTokens = new Set(current.data.acceptedLessonNumber===lesson.number && Array.isArray(current.data.acceptedTokens) ? current.data.acceptedTokens : []);
+      const expiredTokens = new Set();
       for (const token of tokens) {
+        // Retry only devices still pending for this lesson.
+        if (acceptedTokens.has(token)) { outcomes.push(true);continue; }
         // Recheck durable consent immediately before each device request.
         // An already accepted provider request cannot be recalled.
         const authorized=await deps.store.get(record.uid);
@@ -258,10 +262,22 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
           outcomes.push(false);break;
         }
         attempted++;
-        outcomes.push(await deps.send(token,lesson));
+        try {
+          const result=await deps.send(token,lesson);
+          const ok=result===true || result?.accepted===true;
+          if (ok) acceptedTokens.add(token);
+          if (result?.permanent===true && result.code==='UNREGISTERED') expiredTokens.add(token);
+          outcomes.push(ok || expiredTokens.has(token));
+          // Only closed provider categories; never include device or account data.
+          if (!ok && result?.code) {
+            const code=['UNREGISTERED','SENDER_ID_MISMATCH','QUOTA_EXCEEDED','UNAVAILABLE','INTERNAL','THIRD_PARTY_AUTH_ERROR','INVALID_ARGUMENT','provider_error'].includes(result.code) ? result.code : 'provider_error';
+            console.log(JSON.stringify({event:'course_device_result',code}));
+          }
+        } catch { outcomes.push(false); }
       }
-      const success = outcomes.length>0 && outcomes.every(Boolean);
-      const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6))};
+      const success = acceptedTokens.size>0 && outcomes.length>0 && outcomes.every(Boolean);
+      const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6)),acceptedLessonNumber:lesson.number,acceptedTokens:[...acceptedTokens]};
+      if (expiredTokens.size) update.tokens=tokens.filter(token=>!expiredTokens.has(token));
       if (success) update.lastLessonNumber=lesson.number;
       if (success) accepted++;
       // Never recreate a subscription deleted while delivery was in flight.

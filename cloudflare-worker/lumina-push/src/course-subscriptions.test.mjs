@@ -1,10 +1,40 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from './index.js';
+import {classifyFcmResponse} from './fcm-result.js';
 import {backfillCourseSubscriptions} from './course-backfill.js';
 import {courseSubscriptionAction,courseSubscriptionFailure,dispatchCourseLesson,latestCourseLesson,firestoreCourseStore,kvCourseStore,courseAccountState} from './course-subscriptions.js';
 import {dailyCourseManifest} from '../../../scripts/daily-course-manifest.mjs';
 const lesson = {number:8,title:'Wieża Babel',availableAt:'2026-10-08T00:00:00.000Z',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08'};
+
+test('partial device acceptance is retained; retries do not resend to accepted devices',async()=>{
+  const f=fixture({tokens:['good','retry']});const sent=[];let retryOk=false;
+  f.deps.tokens=async()=>f.record.data.tokens;
+  f.deps.send=async token=>{sent.push(token);return {accepted:token==='good'||retryOk};};
+  const now=Date.now();assert.equal((await dispatchCourseLesson(f.deps,now)).failed,1);
+  assert.equal(f.record.data.lastLessonNumber,7);
+  retryOk=true;assert.equal((await dispatchCourseLesson(f.deps,now+3600000)).accepted,1);
+  assert.deepEqual(sent,['good','retry','retry']);assert.equal(f.record.data.lastLessonNumber,8);
+});
+
+test('expired device cannot block healthy device; all expired never counts as acceptance',async()=>{
+  for (const healthy of [true,false]) {
+    const f=fixture({tokens:healthy?['good','expired']:['expired']});
+    f.deps.tokens=async()=>f.record.data.tokens;
+    f.deps.send=async token=>token==='good'?{accepted:true}:{accepted:false,permanent:true,code:'UNREGISTERED'};
+    const report=await dispatchCourseLesson(f.deps);
+    assert.equal(report.accepted,healthy?1:0);assert.equal(f.record.data.lastLessonNumber,healthy?8:7);
+    assert.deepEqual(f.record.data.tokens,healthy?['good']:[]);
+  }
+});
+
+test('provider classification never deletes devices for IAM, quota, invalid argument or malformed responses',async()=>{
+  for(const code of ['UNREGISTERED','SENDER_ID_MISMATCH','QUOTA_EXCEEDED','INVALID_ARGUMENT']) {
+    const result=await classifyFcmResponse(Response.json({error:{message:'private token detail',details:[{'@type':'type.googleapis.com/google.firebase.fcm.v1.FcmError',errorCode:code}]}},{status:400}));
+    assert.equal(result.permanent,code==='UNREGISTERED');assert.doesNotMatch(JSON.stringify(result),/private token/);
+  }
+  assert.deepEqual(await classifyFcmResponse(new Response('private error',{status:503})),{accepted:false,code:'provider_error',permanent:false});
+});
 
 test('late recovery sends pending lesson once, never before the preferred hour',async()=>{
   const f=fixture({preferredHour:7,lastLessonNumber:7});
