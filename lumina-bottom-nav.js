@@ -1970,6 +1970,7 @@
                 window.triggerSecretAdminPrompt();
             });
         });
+    }, 1000);
     document.body.insertAdjacentHTML('beforeend', navHtml);
     setupAccessibleNavigation(document.getElementById('luminaBottomNav'), document.getElementById('luminaBottomMenuPopup'));
 
