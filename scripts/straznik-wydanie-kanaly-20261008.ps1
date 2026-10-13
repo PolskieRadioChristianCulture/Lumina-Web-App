@@ -18,6 +18,8 @@ function Krok($t) { Write-Host "`n▶ $t" -ForegroundColor Cyan }
 function Ok($t)   { Write-Host "  ✔ $t" -ForegroundColor Green }
 function Stop($t) { Write-Host "`n✖ $t" -ForegroundColor Red; Write-Host "  Nic dalej nie zostało opublikowane. Claude odczyta WYDANIE-KANALY.log." -ForegroundColor Yellow; Stop-Transcript | Out-Null; Read-Host "Naciśnij Enter, aby zamknąć"; exit 1 }
 
+node scripts/build-bible-search.mjs; if ($LASTEXITCODE -ne 0) { Stop "indeks wyszukiwarki Biblii nie powstał" }
+
 $Files = @(
     'apokalipsa-ksiega-nadziei-live-YT.html',
     'apokalipsa-live.html', 'kino-live.html', 'nocne-czuwanie-live.html', 'spiewajmy-panu-live.html',
@@ -44,7 +46,8 @@ $Files = @(
     'lumina-app.html', 'lumina-login.html', 'lumina-safety.html', 'lumina-shorts.html', 'lumina.cezaryrogowski.html', 'lumina-core.js', 'lumina-tablica.js', 'lumina-security.js', 'js\cc-global-auth.js',
     'scripts\lumina-profile-standard-regression.test.mjs', 'scripts\profile-actions-regression.test.mjs',
     'js\lumina-member-home.js', 'lumina-bottom-nav.js',
-    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'assets\ogloszenia-index-cc20261013c.js', 'assets\ogloszenia-index-cc20261013e.js', 'assets\ogloszenia-index-cc20261013f.js', 'assets\ogloszenia-index-cc20261013g.js', 'assets\ogloszenia-index-cc20261013h.js', 'images\ogloszenia-hero.webp', 'images\ogloszenia-hero.jpg', 'images\ogloszenia-sprzet-studio.webp', 'images\ogloszenia-dom-studio.webp', 'images\ogloszenia-infolinia-nadzieja.webp', 'images\ogloszenia-premier-heatfix.webp', 'images\ogloszenia-tworcy-wolontariat.webp', 'images\ogloszenia-herbatka.webp', 'images\ogloszenia-akademia.webp', 'images\ogloszenia-duszpasterz-mariusz.webp', 'images\ogloszenia-pawel-murawski.webp', 'images\ogloszenia-widget-radio.webp', 'images\ogloszenia-biblia-gdanska.webp', 'images\ogloszenia-biblia-gdanska.jpg', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
+    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
+    'mojabiblia.html', 'mojabiblia-engine.js', 'data\bible\glosy-pl.json', 'data\bible\szukaj-ubg.json', 'scripts\build-bible-search.mjs', 'tests\mojabiblia-regression.test.mjs',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'
@@ -74,7 +77,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): CCN Ogłoszenia — ogłoszenia z formularza zapisywane we wspólnej bazie i widoczne dla wszystkich (logowanie LUMINA, usuwanie przez autora/admina)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): MojaBiblia — polskie znaczenia słów w interlinii, uczciwa lista przekładów (tylko UBG), wyszukiwarka pełnotekstowa wersetów" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -94,7 +97,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-13 ogloszenia wspolne" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-13 MojaBiblia" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"

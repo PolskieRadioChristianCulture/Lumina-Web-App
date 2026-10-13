@@ -259,10 +259,14 @@
 
     async loadMetadataAndLexicon() {
       try {
-        const [booksRes, lexRes] = await Promise.all([
+        const [booksRes, lexRes, glossRes] = await Promise.all([
           fetch('/data/bible/bible_books_metadata.json'),
-          fetch('/data/bible/strong_lexicon.json')
+          fetch('/data/bible/strong_lexicon.json'),
+          fetch('/data/bible/glosy-pl.json?v=20261013_1').catch(() => null)
         ]);
+        if (glossRes && glossRes.ok) {
+          try { this.glossPl = await glossRes.json(); } catch (e) { this.glossPl = {}; }
+        }
 
         if (booksRes.ok) {
           this.books = await booksRes.json();
@@ -460,6 +464,73 @@
       };
     }
 
+    // ── Polskie znaczenia słów w interlinii (Strażnik, 2026-10-13) ──
+    // Dane źródłowe mieszały angielskie i błędne odpowiedniki (np. „he created”, „[ten/ta/to]” zamiast „niebo”).
+    // Słownik glosy-pl.json (kod Stronga → polskie znaczenie) ma pierwszeństwo; przedrostek hebrajski (ב/ו/ל/כ/מ/ש)
+    // jest dopisywany przed słowem. Słowa jeszcze bez polskiego odpowiednika są oznaczone, nie udają tłumaczenia.
+    glossFor(w) {
+      const dict = this.glossPl || {};
+      const prefixes = { 'ב': 'w', 'ו': 'i', 'ל': 'do', 'כ': 'jak', 'מ': 'z', 'ש': 'który', 'ה': '' };
+      const strong = String((w && w.strong) || '');
+      const raw = String((w && w.gloss) || '').trim();
+      const orig = String((w && w.original) || '').replace(/[,\.;·¶׃׀]/g, '').trim();
+      const morph = String((w && w.morph) || '').trim();
+
+      // Specjalne kontekstowe formy zaimkowe (np. ἡμῖν w J 1:14 = „nam / wśród nas”, nie angielskie „I”)
+      if (orig === 'ἡμῖν' || (morph === 'P-1DP' && w && w.lemma === 'ἐγώ')) {
+        return { text: 'nam / wśród nas', en: false };
+      }
+      if (orig === 'ἡμῶν' || (morph === 'P-1GP' && w && w.lemma === 'ἐγώ')) {
+        return { text: 'nas / nasz', en: false };
+      }
+      if (orig === 'ἡμᾶς' || (morph === 'P-1AP' && w && w.lemma === 'ἐγώ')) {
+        return { text: 'nas', en: false };
+      }
+      if (orig === 'ὑμῖν' || (morph === 'P-2DP' && w && w.lemma === 'σύ')) {
+        return { text: 'wam', en: false };
+      }
+      if (orig === 'αὐτοῦ' && morph === 'P-GSM') {
+        return { text: 'Jego / jego', en: false };
+      }
+
+      let pl = dict[strong];
+      if (pl) {
+        const lemma = String((w && w.lemma) || '');
+        if (strong.charAt(0) === 'H' && lemma.length === 1 && prefixes[lemma]) {
+          if (strong === 'H7225' && lemma === 'ב') {
+            pl = 'na początku';
+          } else {
+            const p = prefixes[lemma];
+            if (p) pl = p + ' ' + pl;
+          }
+        }
+        return { text: pl, en: false };
+      }
+
+      if (raw === '[ten/ta/to]') return { text: '(rodzajnik)', en: false };
+      if (/^obj\.?$/i.test(raw)) return { text: '(dopełnienie)', en: false };
+      const english = /\b(the|of|to|he|she|it|they|you|I|we|was|were|is|are|be|been|will|shall|and|but|or|not|with|from|for|on|by|this|that|which|who|all|my|your|his|her|their|our|God|LORD|said|says)\b|(ness|ing|ed|tion|ly)$/i.test(raw);
+      return { text: raw, en: english };
+    }
+
+    // Przekłady pokazywane tylko wtedy, gdy ich tekst naprawdę różni się od UBG (bez kopii podpisanych innymi nazwami).
+    availableTranslations(data) {
+      const list = ['UBG'];
+      const verses = (data && data.verses) || [];
+      ['BW', 'BT', 'BG'].forEach(t => {
+        if (verses.some(v => v.text && typeof v.text[t] === 'string' && v.text[t].trim() && v.text[t].trim() !== String(v.text.UBG || '').trim())) list.push(t);
+      });
+      return list;
+    }
+
+    updateTranslationFilters() {
+      const avail = this.availableTranslations(this.currentChapterData);
+      document.querySelectorAll('.mb-trans-filter').forEach(btn => {
+        btn.style.display = avail.includes(btn.dataset.trans) ? '' : 'none';
+      });
+      return avail;
+    }
+
     renderCurrentView() {
       if (!this.currentChapterData || !this.contentContainer) return;
 
@@ -527,7 +598,7 @@
             <div class="mb-integration-banner-left">
               <div class="mb-integration-badge"><i class="fa-solid fa-sparkles"></i> GŁĘBSZE STUDIUM • WERSET DNIA</div>
               <div class="mb-integration-title">Księga: <strong>${bName} ${ch}${vRefStr}</strong></div>
-              <div class="mb-integration-sub">Tryb analityczny: Oryginał interlinearny · Kody Stronga · Przekłady UBG, BW, BT, BG</div>
+              <div class="mb-integration-sub">Tryb analityczny: Oryginał interlinearny · Kody Stronga · Przekład UBG</div>
             </div>
             <a href="${returnUrl}" class="mb-integration-return-btn" id="mbIntegrationReturnBtn" title="Powrót do wersetu w aplikacji Werset Dnia">
               <i class="fa-solid fa-arrow-left"></i> Wróć do karty wersetu
@@ -633,7 +704,7 @@
                 <div class="mb-word-translit">${w.translit}</div>
                 <div class="mb-word-strong-badge" title="Kliknij, aby otworzyć leksykon Stronga">${w.strong}</div>
                 <div class="mb-word-morph" title="${morphDesc}">${w.morph}</div>
-                <div class="mb-word-gloss">${w.gloss}</div>
+                ${(() => { const g = this.glossFor(w); return `<div class="mb-word-gloss${g.en ? ' mb-gloss-en' : ''}"${g.en ? ' title="Polskie znaczenie tego słowa jest w przygotowaniu"' : ''}>${this.escapeHtml(g.text)}</div>`; })()}
               </div>
             `;
           });
@@ -654,7 +725,12 @@
     // ── 2. WIDOK PORÓWNYWARKI PRZEKŁADÓW (UBG, BW, BT, BG) ──
     renderParallelView() {
       const data = this.currentChapterData;
+      const avail = this.updateTranslationFilters();
+      const show = t => avail.includes(t) && this.activeTranslations.includes(t);
       let html = `<div class="mb-parallel-wrapper">`;
+      if (avail.length === 1) {
+        html += `<div class="mb-interlinear-empty" style="margin-bottom:12px;">Ten rozdział jest obecnie dostępny w przekładzie UBG (Uwspółcześniona Biblia Gdańska). Kolejne przekłady dodamy, gdy będą gotowe.</div>`;
+      }
 
       data.verses.forEach(v => {
         const short = data.shortPl || this.getBookShort(data.bookId);
@@ -674,28 +750,28 @@
             <div class="mb-parallel-grid">
         `;
 
-        if (this.activeTranslations.includes('UBG')) {
+        if (show('UBG') || avail.length === 1) {
           html += `
             <div class="mb-trans-card">
               <div class="mb-trans-badge ubg-badge">UBG (Gdańska Nowa)</div>
               <div class="mb-trans-text">${v.text.UBG || '—'}</div>
             </div>`;
         }
-        if (this.activeTranslations.includes('BW')) {
+        if (show('BW')) {
           html += `
             <div class="mb-trans-card">
               <div class="mb-trans-badge bw-badge">BW (Warszawska)</div>
               <div class="mb-trans-text">${v.text.BW || '—'}</div>
             </div>`;
         }
-        if (this.activeTranslations.includes('BT')) {
+        if (show('BT')) {
           html += `
             <div class="mb-trans-card">
               <div class="mb-trans-badge bt-badge">BT (Tysiąclecia)</div>
               <div class="mb-trans-text">${v.text.BT || '—'}</div>
             </div>`;
         }
-        if (this.activeTranslations.includes('BG')) {
+        if (show('BG')) {
           html += `
             <div class="mb-trans-card">
               <div class="mb-trans-badge bg-badge">BG (Gdańska 1632)</div>
@@ -730,7 +806,7 @@
           verseHtml = v.interlinear.map(w => {
             const safeOrig = this.escapeHtml(w.original);
             const safeTranslit = this.escapeHtml(w.translit);
-            const safeGloss = this.escapeHtml(w.gloss);
+            const safeGloss = this.escapeHtml(this.glossFor(w).text);
             const safeMorph = this.escapeHtml(w.morph);
             const safeStrong = this.escapeHtml(w.strong);
             return `<span class="mb-rev-word" data-strong="${safeStrong}" data-orig="${safeOrig}" data-translit="${safeTranslit}" data-gloss="${safeGloss}" data-morph="${safeMorph}" onclick="window.mbApp.handleWordClick(event, this)">${safeGloss || safeOrig}</span>`;
@@ -1026,7 +1102,8 @@
 
             <div class="mb-lexicon-section">
               <div class="mb-lexicon-label"><i class="fa-solid fa-book-bible"></i> Znaczenie w języku polskim:</div>
-              <div class="mb-lexicon-def-pl">${info.definitionPl}</div>
+              ${(this.glossPl || {})[strongCode] ? `<div class="mb-lexicon-def-pl" style="font-weight:700;">${this.escapeHtml(this.glossPl[strongCode])}</div>` : ''}
+              ${/[ąęłśżźćńó]/i.test(String(info.definitionPl || '')) ? `<div class="mb-lexicon-def-pl">${info.definitionPl}</div>` : `<div class="mb-lexicon-def-pl" style="opacity:.8;font-size:.9em;"><em>Opis ze słownika źródłowego (po angielsku, tłumaczenie w przygotowaniu):</em><br>${info.definitionPl || ''}</div>`}
             </div>
 
             <div class="mb-lexicon-section">
@@ -1317,7 +1394,7 @@
             <div class="mb-form-group">
               <label for="mbReportCategory"><i class="fa-solid fa-list-check"></i> Kategoria zgłoszenia:</label>
               <select id="mbReportCategory" class="mb-input-select" required>
-                <option value="translation_error">Błąd w tekście lub tłumaczeniu (UBG / BW / BT / BG)</option>
+                <option value="translation_error">Błąd w tekście lub tłumaczeniu</option>
                 <option value="strong_morph_error">Uwaga do kodu Stronga, greki lub hebrajskiego</option>
                 <option value="feature_request">Sugestia nowej funkcji / usprawnienia aplikacji</option>
                 <option value="scripture_question">Pytanie biblijne / prośba o modlitwę</option>
@@ -1584,7 +1661,7 @@
         const v = this.currentVerse;
         const modeLabels = {
           interlinear: 'Interlinia i Kody Stronga',
-          parallel: 'Porównanie Przekładów UBG / BW / BT / BG',
+          parallel: 'Przekład UBG',
           reader: 'Czytnik Biblijny'
         };
         const currentModeName = modeLabels[this.currentMode] || 'Biblia Badawcza';
@@ -1598,7 +1675,7 @@
         const isNT = (this.currentChapterData?.originalLang === 'Greek' || !this.books.find(b => b.id === this.currentBookId)?.testament || this.books.find(b => b.id === this.currentBookId)?.testament === 'NT');
         const origLangStr = isNT ? 'greka Koine (Textus Receptus / NA28)' : 'hebrajski biblijny (Tekst Masorecki)';
 
-        const metaDescContent = `Badaj ${bookName} rozdział ${ch}${v ? ', werset ' + v : ''} w serwisie MojaBiblia Christian Culture. Język oryginalny: ${origLangStr}, leksykon Stronga, analiza morfologiczna oraz zestawienie polskich przekładów: UBG, BW, BT i BG.`;
+        const metaDescContent = `Badaj ${bookName} rozdział ${ch}${v ? ', werset ' + v : ''} w serwisie MojaBiblia Christian Culture. Język oryginalny: ${origLangStr}, leksykon Stronga, analiza morfologiczna oraz polski przekład UBG.`;
         const canonicalUrl = `https://polskieradio.cc/mojabiblia?book=${this.currentBookId}&ch=${ch}${v ? '&v=' + v : ''}&mode=${this.currentMode}`;
 
         const setMeta = (selector, attr, val) => {
@@ -1724,7 +1801,94 @@
         return;
       }
 
-      this.showToast(`Wpisz np. "Jan 1:1", "Rdz 1:1", "Ps 23", kod "G3056" lub słowo np. "logos"`);
+      this.fullTextSearch(q);
+    }
+
+    // ── WYSZUKIWARKA PEŁNOTEKSTOWA (UBG) — Strażnik, 2026-10-13 ──
+    // Wszystkie słowa muszą wystąpić w wersecie; "fraza w cudzysłowie" dokładnie; -słowo wyklucza;
+    // wielkość liter i polskie znaki bez znaczenia; dopasowanie początku/środka słowa (miłość → miłości).
+    async fullTextSearch(query) {
+      const norm = str => String(str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l');
+      if (!this.searchIndex) {
+        this.showToast('Wczytuję wyszukiwarkę Pisma Świętego…');
+        try {
+          const res = await fetch('/data/bible/szukaj-ubg.json?v=20261013_1');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const idx = await res.json();
+          idx.n = idx.r.map(r => norm(r[3]));
+          this.searchIndex = idx;
+        } catch (e) {
+          this.showToast('Wyszukiwarka jest chwilowo niedostępna. Spróbuj ponownie za chwilę.');
+          return;
+        }
+      }
+      const idx = this.searchIndex;
+      const phrases = [...String(query).matchAll(/"([^"]+)"/g)].map(m => norm(m[1]).trim()).filter(Boolean);
+      const words = norm(String(query).replace(/"[^"]*"/g, ' ')).split(/\s+/).filter(Boolean);
+      const exclude = words.filter(t => t.startsWith('-') && t.length > 2).map(t => t.slice(1));
+      const include = words.filter(t => !t.startsWith('-')).map(t => t.replace(/\*+$/, '')).filter(t => t.length > 1);
+      if (!include.length && !phrases.length) {
+        this.showToast('Wpisz słowo (np. miłość), frazę w cudzysłowie, adres (np. Jan 3:16) albo kod Stronga (np. G3056).');
+        return;
+      }
+      const hits = [];
+      for (let i = 0; i < idx.n.length; i++) {
+        const t = idx.n[i];
+        if (include.every(w => t.includes(w)) && phrases.every(p => t.includes(p)) && !exclude.some(w => t.includes(w))) hits.push(i);
+      }
+      this.renderSearchResults(String(query).trim(), hits, include.concat(phrases));
+    }
+
+    renderSearchResults(query, hits, terms) {
+      const idx = this.searchIndex;
+      const limit = 300;
+      const shortOf = id => (this.books.find(b => b.id === id) || {}).shortPl || id;
+      const nameOf = id => (this.books.find(b => b.id === id) || {}).namePl || id;
+      const counts = {};
+      hits.forEach(i => { const id = idx.b[idx.r[i][0]]; counts[id] = (counts[id] || 0) + 1; });
+      const mark = text => {
+        let out = this.escapeHtml(text);
+        const map = {
+          'a': '[aąAĄ]', 'c': '[cćCĆ]', 'e': '[eęEĘ]', 'l': '[lłLŁ]',
+          'n': '[nńNŃ]', 'o': '[oóOÓ]', 's': '[sśSŚ]', 'z': '[zźżZŹŻ]'
+        };
+        terms.filter(t => t.length > 1).forEach(t => {
+          let pat = '';
+          for (const ch of t) {
+            pat += map[ch] || ch.replace(/[\^$\\.*+?()[\]{}|]/g, '\\$&');
+          }
+          if (pat) {
+            try {
+              out = out.replace(new RegExp('(' + pat + ')', 'gi'), '<mark>$1</mark>');
+            } catch (e) {}
+          }
+        });
+        return out;
+      };
+      let html = `<div class="mb-search-results" style="max-width:860px;margin:0 auto;">
+        <div class="mb-interlinear-empty" style="text-align:left;margin-bottom:12px;">
+          <strong>Wyniki dla „${this.escapeHtml(query)}”: ${hits.length}</strong> ${hits.length > limit ? `(pokazuję pierwsze ${limit})` : ''}<br>
+          <span style="font-size:.85em;opacity:.8;">Przekład UBG. Wskazówka: "fraza w cudzysłowie", -słowo wyklucza.</span>
+          ${Object.keys(counts).length > 1 ? `<div style="margin-top:8px;font-size:.85em;">${Object.entries(counts).map(([id, c]) => `${this.escapeHtml(shortOf(id))}: ${c}`).join(' · ')}</div>` : ''}
+        </div>`;
+      if (!hits.length) html += `<div class="mb-interlinear-empty">Brak wersetów zawierających te słowa. Spróbuj krótszego słowa lub innej formy (np. „miłoś” znajdzie miłość i miłości).</div>`;
+      hits.slice(0, limit).forEach(i => {
+        const [bi, ch, v, text] = idx.r[i];
+        const id = idx.b[bi];
+        html += `<button type="button" class="mb-verse-card" style="display:block;width:100%;text-align:left;cursor:pointer;min-height:44px;" onclick="window.mbApp.openSearchHit('${id}', ${ch}, ${v})">
+            <div class="mb-verse-ref"><span class="mb-verse-ref-text">${this.escapeHtml(shortOf(id))} ${ch}:${v}</span> <span style="opacity:.7;font-size:.85em;">${this.escapeHtml(nameOf(id))}</span></div>
+            <div class="mb-verse-smooth-text">${mark(text)}</div>
+          </button>`;
+      });
+      html += `</div>`;
+      this.contentContainer.innerHTML = html;
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+    }
+
+    openSearchHit(bookId, ch, v) {
+      this.currentVerse = v;
+      this.currentVerseEnd = null;
+      this.loadChapter(bookId, ch, true);
     }
 
     escapeHtml(str) {
