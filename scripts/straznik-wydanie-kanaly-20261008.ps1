@@ -1,4 +1,4 @@
-﻿# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
 # WYDANIE STRAŻNIKA — KANAŁY NADAWCZE 2026-10-08 (Claude, Cowork)
 # Prawdziwe dane na antenie: pogoda, Mission Control, wiadomości, intencje
 # • standard ciągłości emisji • kanał główny OBS • cctv24-worship.
@@ -44,7 +44,7 @@ $Files = @(
     'lumina-app.html', 'lumina-login.html', 'lumina-safety.html', 'lumina-shorts.html', 'lumina.cezaryrogowski.html', 'lumina-core.js', 'lumina-tablica.js', 'lumina-security.js', 'js\cc-global-auth.js',
     'scripts\lumina-profile-standard-regression.test.mjs', 'scripts\profile-actions-regression.test.mjs',
     'js\lumina-member-home.js', 'lumina-bottom-nav.js',
-    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
+    'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'assets\ogloszenia-index-cc20261013c.js', 'images\ogloszenia-hero.webp', 'images\ogloszenia-hero.jpg', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'
