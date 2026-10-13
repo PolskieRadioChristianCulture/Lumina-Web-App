@@ -69,7 +69,7 @@ test('primary entrypoints request fresh, consistent auth modules',()=>{
   const html=readFileSync(path,'utf8');
   assert.ok(html.includes('lumina-db.js?v=20261013_notifroute1'));
   assert.ok(!html.includes('lumina-db.js?v=20261011_odznaki1'));
-  if(html.includes('cc-global-auth.js?v='))assert.ok(html.includes('cc-global-auth.js?v=20261013_auth_session1'));
+  if(html.includes('cc-global-auth.js?v='))assert.ok(html.includes('cc-global-auth.js?v=20261013_auth_notifroute1'));
  }
 });
 test('session regression is included in mandatory CC release gate',()=>{
