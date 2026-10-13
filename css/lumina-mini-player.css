@@ -483,7 +483,7 @@ body:has(#messageModal.open) :is(#luminaMiniPlayerContainer, #luminaFloatingRadi
     }
 
     #luminaMiniPlayerContainer.minimized {
-        bottom: calc(194px + env(safe-area-inset-bottom, 8px)) !important;
+        bottom: calc(192px + env(safe-area-inset-bottom, 8px)) !important;
         right: 10px !important;
         left: auto !important;
         width: 48px !important;

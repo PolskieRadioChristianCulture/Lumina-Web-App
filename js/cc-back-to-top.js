@@ -158,7 +158,7 @@
     script.defer = true;
     document.head.appendChild(script);
   }
-  function start() { mount(); try { mountFabDock(); } catch (e) {} try { loadRadioMilion(); } catch (e) {} }
+  function start() { mount(); try { loadRadioMilion(); } catch (e) {} }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();

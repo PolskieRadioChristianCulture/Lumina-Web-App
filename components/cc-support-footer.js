@@ -543,7 +543,7 @@
     if (!window.CCGlobalChatButton && !document.getElementById('ccGlobalChatScript') && !document.querySelector('script[src*="cc-global-chat-button"]')) {
       const chatScript = document.createElement('script');
       chatScript.id = 'ccGlobalChatScript';
-      chatScript.src = '/components/cc-global-chat-button.js?v=20261013_chat_v5';
+      chatScript.src = '/components/cc-global-chat-button.js?v=20261013_fab_col_v1';
       chatScript.defer = true;
       document.head.appendChild(chatScript);
     }

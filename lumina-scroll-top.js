@@ -11,7 +11,7 @@
     const styles = `
       .lumina-scroll-top {
         position: fixed !important;
-        bottom: 24px !important;
+        bottom: 74px !important;
         right: 10px !important;
         width: 50px !important;
         height: 50px !important;
@@ -93,7 +93,7 @@
       @media (max-width: 768px) {
         #luminaScrollTop.lumina-scroll-top,
         .lumina-scroll-top {
-          bottom: calc(82px + env(safe-area-inset-bottom, 8px)) !important;
+          bottom: calc(76px + env(safe-area-inset-bottom, 8px)) !important;
           right: 10px !important;
           width: 48px !important;
           min-width: 48px !important;
