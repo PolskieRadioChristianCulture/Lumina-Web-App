@@ -209,7 +209,8 @@ const PORTALS = [
         },
         publishedAt: '2026-09-30T14:20:00Z',
         dateFormatted: '30 września 2026',
-        imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+        imageUrl: '/images/news/nauka-moralnosc-obiektywna.jpg',
+        imageCaption: 'Ilustracja AI: Mosiężna waga sprawiedliwości, otwarta Księga i kamienne tablice Prawa — symbol obiektywnego porządku moralnego wypisanego w sumieniu człowieka (Rz 2:15; ilustracja poglądowa wygenerowana z pomocą AI).',
         readTimeMinutes: 5,
         tags: ['Moralność', 'Etyka', 'Sumienie', 'Apologetyka', 'Rz 2:15']
       },
