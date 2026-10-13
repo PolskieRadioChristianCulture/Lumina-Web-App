@@ -180,12 +180,13 @@
 
     <!-- Universal CC Auth & Action (Icon-First Standard) -->
     <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
-      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
-        <span>🎓 MÓJ DYPLOM</span>
+      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] items-center gap-1.5 shadow-lg shadow-amber-900/40">
+        <span class="diploma-icon">🎓</span>
+        <span class="diploma-label">MÓJ DYPLOM</span>
       </button>
 
       <!-- Przełącznik motywu (Jasny / Ciemny) - Czysta okrągła ikona 38x38px -->
-      <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+      <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
         <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
       </button>
 
@@ -1126,12 +1127,12 @@
 
         <!-- Hero Actions -->
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/akademia/kurscodzienny/dzien-06" class="cin-btn-primary min-h-[48px]">
-            <span>CZYTAJ DZIEŃ 6 (6 PAŹDZIERNIKA)</span>
+          <a href="/akademia/kurscodzienny/dzien-14" class="cin-btn-primary min-h-[48px]">
+            <span>CZYTAJ DZIEŃ 14 (14 PAŹDZIERNIKA)</span>
             <span>→</span>
           </a>
-          <a href="/akademia/kurscodzienny/dzien-05" class="cin-btn-secondary min-h-[48px]">
-            <span>← DZIEŃ 5</span>
+          <a href="/akademia/kurscodzienny/dzien-13" class="cin-btn-secondary min-h-[48px]">
+            <span>← DZIEŃ 13</span>
           </a>
           <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
             <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
@@ -1175,7 +1176,7 @@
             <p class="text-xs text-zinc-400">Codziennie nowa lekcja z Pisma Świętego. Zacznij od Dnia 1 już teraz.</p>
           </div>
           <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
-            Dni 1–8 Dostępne (Październik 2026)
+            Dni 1–14 Dostępne (Październik 2026)
           </span>
         </div>
 
@@ -1337,7 +1338,7 @@
           </a>
 
           <!-- KARTA DZIEŃ 6 -->
-          <a href="/akademia/kurscodzienny/dzien-06" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+          <a href="/akademia/kurscodzienny/dzien-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
             <div class="flex items-center justify-between gap-2 mb-3">
               <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 06 • 6 PAŹDZIERNIKA 2026</span>
               <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
@@ -1576,6 +1577,37 @@
               <span class="text-zinc-500 flex items-center gap-1.5">
                 <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
                 <span>Księga Rodzaju 18:1–33</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 14 -->
+          <a href="/akademia/kurscodzienny/dzien-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 14 • 14 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_14_sodoma_lot.jpg" alt="Dzień 14: SODOMA: ŁASKA, SĄD I RATUNEK — Rdz 19:1–38" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              SODOMA: ŁASKA, SĄD I RATUNEK
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Gdy Bóg wyprowadza człowieka z miejsca zagłady — Rdz 19:1–38.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 19:1–38</span>
               </span>
               <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
                 <span>Studiuj</span>

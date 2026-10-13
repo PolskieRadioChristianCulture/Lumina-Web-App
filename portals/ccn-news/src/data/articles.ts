@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'Z Biblią za Pan Brat: Dzień 14 — Sodoma: Łaska, sąd i ratunek — Gdy Bóg wyprowadza człowieka z miejsca zagłady (Rdz 19:1–38)',
   'ŚWIAT: 544 języki oczekujące na przekład i 4457 aktywnych projektów — raport 2025 Global Scripture Access (Wycliffe Global Alliance)',
   'KRAJ: Jesienna mobilizacja chrześcijańskich organizacji charytatywnych w Polsce — Diakonia, ChSCh i Caritas wspierają seniorów',
   'ŚWIAT: Monumentalna fosa obronna i pieczęć z okresu Pierwszej Świątyni w Jerozolimie — odkrycia archeologów potwierdzają Księgi Królewskie',
@@ -545,6 +546,47 @@ export const INITIAL_ARTICLES: Article[] = [
       'Mechanizm kuszenia nie zmienił się od czasów Edenu ani od kuszenia Jezusa na pustyni. Szatan nie pojawia się z rogami i widłami; przychodzi w garniturze doradcy biznesowego, oferując złudzenie potęgi: „Wszystko to ci dam, jeśli upadniesz i oddasz mi pokłon” (Mt 4:9). W realiach XXI wieku pokłon oddaje się algorytmom, kompromisom etycznym i milczeniu w obliczu zła.',
       'Najtragiczniejszą ceną pogoni za viralowym sukcesem jest utrata autentyczności i sumienia. Człowiek zaczyna żyć pod dyktando cudzych oczekiwań, aż w końcu nie pamięta, kim był, zanim założył konto w sieci. Przyjaźnie stają się rekwizytami do nagrań, a relacje rodzinne znikają pod lawiną powiadomień.',
       'Słowa Jezusa z Ewangelii Mateusza wybrzmiewają dziś z niebywałą mocą: „Cóż pomoże człowiekowi, choćby cały świat pozyskał, a na duszy swej szkodę poniósł?” (Mt 16:26). Możesz mieć dwa miliony obserwujących i zero spokoju w sercu. Prawdziwe przywództwo i godność polegają na umiejętności powiedzenia „NIE” potężnym instytucjom tego świata, gdy żądają one zapłaty w walucie sumienia.',
+    ],
+  },
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-14',
+    title: 'SODOMA: SĄD, MIŁOSIERDZIE I OCALENIE LOTA W ŚWIETLE PISMA ŚWIĘTEGO (RDZ 19:1–38)',
+    slug: 'sodoma-sad-milosierdzie-i-ocalenie-lota-w-swietle-pisma-swietego-rdz-19-1-38',
+    excerpt: 'Dziewiętnasty rozdział Księgi Rodzaju stawia nas wobec dramatycznego sądu nad Sodomą i Gomorą oraz niewyczerpanego miłosierdzia Boga, który chwyta za rękę zwlekającego Lota, by go ocalić przed zagładą.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · LEKSYKON BIBLIJNY',
+    publishedAt: '2026-10-14',
+    dateFormatted: '14 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_14_sodoma_lot.jpg',
+    imageCaption: 'Ilustracja AI: Księga Rodzaju 19:1–38 — aniołowie o świcie chwytają za rękę Lota i jego rodzinę, wyprowadzając ich poza mury Sodomy przed nadchodzącym sądem (ilustracja poglądowa wygenerowana z pomocą AI).',
+    readTimeMinutes: 7,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 19', 'Sodoma', 'Lot', 'Łaska', 'Sąd', 'Ratunek', 'Wspomnijcie żonę Lota', 'Chrystus'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 19:16',
+      text: 'Lecz gdy zwlekał, mężowie chwycili go za rękę, a także jego żonę i obie córki, gdyż PAN chciał go oszczędzić.',
+      strongCode: 'H2551',
+    },
+    lexiconTerms: [
+      {
+        term: 'Miłosierdzie / Chęć oszczędzenia (Rdz 19:16)',
+        strongCode: 'H2551',
+        definition: 'Hebr. chemla — tkliwe współczucie, litość i łaskawe oszczędzenie grzesznika, który sam z siebie nie potrafi wyrwać się z miejsca zagłady.',
+      },
+      {
+        term: 'Wspomnijcie żonę Lota (Łk 17:32)',
+        strongCode: 'G3421',
+        definition: 'Gr. mnemoneuo — zachować w żywej pamięci jako przestrogę; eschatologiczne wezwanie Chrystusa przeciwko zwlekaniu i duchowemu oglądaniu się za światem grzechu.',
+      },
+    ],
+    content: [
+      'W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, opracowanie leksykonu teologicznego na portalu CCN analizuje dziewiętnasty rozdział Księgi Rodzaju. Tekst ten stanowi przejmujące studium kontrastu pomiędzy radykalnym rozkładem moralnym społeczeństwa a suwerenną łaską Boga, która wyrywa człowieka z samego epicentrum nadchodzącego sądu.',
+      '1. Anatomia Upadku i Zwlekania: Rdz 19:1–16. Przybycie dwóch aniołów do Sodomy obnaża całkowitą deprawację mieszkańców miasta, którzy z pogwałceniem świętego prawa gościnności otaczają dom Lota (Rdz 19:4–11; por. Ez 16:49–50). Choć aniołowie ogłaszają nieuchronny wyrok sądu i wzywają rodzinę do natychmiastowego wyjścia, zięciowie Lota traktują ostrzeżenie jak żart (Rdz 19:14). Co najbardziej poruszające, sam Lot — sprawiedliwy, lecz duchowo sparaliżowany wieloletnim kompromisem — o świcie zwleka z opuszczeniem miasta. Wówczas następuje interwencja czystej łaski: „Lecz gdy zwlekał, mężowie chwycili go za rękę, a także jego żonę i obie córki, gdyż PAN chciał go oszczędzić” (Rdz 19:16).',
+      '2. Przestroga Słupa Soli i Owoce Kompromisu: Rdz 19:17–38. Wyprowadzeni poza miasto otrzymują jednoznaczny rozkaz: „Uciekaj, abyś ocalił swe życie! Nie oglądaj się za siebie” (Rdz 19:17). Żona Lota łamie jednak ten nakaz; jej spojrzenie wstecz nie jest zwykłym odruchem ciekawości, lecz wyrazem serca wciąż przywiązanego do pozostawionego świata Sodomy (Rdz 19:26). Rozdział kończy się podwójnym podsumowaniem: z jednej strony widzimy wierność Boga, który ocalił Lota ze względu na wstawienniczą modlitwę Abrahama (Rdz 19:29), z drugiej zaś — gorzkie owoce duchowej erozji w jaskini górskiej, z której biorą początek ludy Moabitów i Ammonitów (Rdz 19:30–38).',
+      '3. Perspektywa Nowego Testamentu: Chrystus jako Jedyny Ratunek. W Ewangelii Łukasza Jezus Chrystus bezpośrednio przywołuje historię Sodomy w kontekście swojego powtórnego przyjścia, wypowiadając jedno z najkrótszych i najbardziej wstrząsających ostrzeżeń w Biblii: „Wspomnijcie żonę Lota. Kto będzie starał się zachować swoje życie, straci je; a kto je straci, zachowa je” (Łk 17:32–33). Z kolei apostoł Piotr wskazuje na ocalenie udręczonego Lota jako dowód na to, że „umie Pan pobożnych wyrwać z pokuszenia” (2 P 2:7–9). Tam, gdzie ludzka wola zawodzi i zwleka, przebita dłoń Zbawiciela chwyta wierzącego i wyprowadza go z ciemności ku życiu wiecznemu.',
     ],
   },
       {
