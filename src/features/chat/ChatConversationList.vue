@@ -82,7 +82,7 @@ function handleAvatarError(e: Event) {
             class="item-avatar"
             @error="handleAvatarError"
           />
-          <span class="status-dot-online"></span>
+          <span v-if="chat.isOnline" class="status-dot-online"></span>
         </div>
 
         <div class="item-info">

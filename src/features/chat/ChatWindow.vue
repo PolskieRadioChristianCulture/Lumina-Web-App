@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from "vue";
 import type { ChatMessage, DirectChatRoom } from "@/types/chat";
 import { chatRepository } from "@/services/repositories/chatRepository";
 
@@ -17,11 +17,41 @@ const emit = defineEmits<{
 const messages = ref<ChatMessage[]>([]);
 const messageText = ref("");
 const isSending = ref(false);
+const sendError = ref<string | null>(null);
 const messagesContainer = ref<HTMLElement | null>(null);
 
 let unsubscribe: (() => void) | null = null;
 
 const quickEmojis = ["🙏", "❤️", "✨", "🕊️", "🔥", "🙌"];
+
+const isPartnerVerified = computed(() => {
+  return Boolean(props.chat.isVerified);
+});
+
+const isPartnerOnline = computed(() => {
+  return Boolean(props.chat.isOnline);
+});
+
+const partnerStatusText = computed(() => {
+  if (props.chat.isOnline) return "Aktywny teraz";
+  if (props.chat.statusText) return props.chat.statusText;
+  if (props.chat.lastSeen) return `Ostatnio: ${props.chat.lastSeen}`;
+  return "Społeczność LUMINA";
+});
+
+function formatTimestamp(ts: any): string {
+  if (!ts) return "Teraz";
+  if (typeof ts === "string") return ts;
+  if (ts.toDate && typeof ts.toDate === "function") {
+    const d = ts.toDate();
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+  if (ts.seconds) {
+    const d = new Date(ts.seconds * 1000);
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+  return "Teraz";
+}
 
 function scrollToBottom() {
   nextTick(() => {
@@ -37,6 +67,8 @@ function startSubscription(chatId: string) {
   unsubscribe = chatRepository.subscribeToMessages(chatId, (loaded) => {
     messages.value = loaded;
     scrollToBottom();
+    // Oznaczamy odebrane wiadomości jako przeczytane przez odbiorcę
+    chatRepository.markMessagesAsRead(chatId, props.currentUserId);
   });
 }
 
@@ -59,20 +91,34 @@ async function handleSendMessage() {
   const chatId = props.chat.chatId || props.chat.id;
   const otherUserId = props.chat.participants?.find((p) => p !== props.currentUserId) || "";
 
-  messageText.value = "";
+  sendError.value = null;
   isSending.value = true;
 
-  await chatRepository.sendMessage(
-    chatId,
-    props.currentUserId,
-    props.currentUserName,
-    props.currentUserAvatar || "lumina_icon.jpg",
-    text,
-    otherUserId
-  );
+  try {
+    const res = await chatRepository.sendMessage(
+      chatId,
+      props.currentUserId,
+      props.currentUserName,
+      props.currentUserAvatar || "lumina_icon.jpg",
+      text,
+      otherUserId
+    );
 
-  isSending.value = false;
-  scrollToBottom();
+    if (res) {
+      // Sukces - czyścimy pole tekstowe i resetujemy ewentualne błędy
+      messageText.value = "";
+      sendError.value = null;
+      scrollToBottom();
+    } else {
+      // Błąd - ZACHOWUJEMY wpisaną treść w polu, aby użytkownik jej nie stracił!
+      sendError.value = "Nie udało się zapisać wiadomości na serwerze. Twój tekst został zachowany — spróbuj wysłać ponownie.";
+    }
+  } catch (err) {
+    console.error("[ChatWindow] Błąd podczas wysyłania wiadomości:", err);
+    sendError.value = "Błąd połączenia z siecią. Twój tekst został zachowany — spróbuj ponownie.";
+  } finally {
+    isSending.value = false;
+  }
 }
 
 function addEmoji(emoji: string) {
@@ -102,9 +148,19 @@ function addEmoji(emoji: string) {
         <div>
           <div class="partner-name-row">
             <span class="partner-name">{{ chat.otherUserName || 'Rozmówca LUMINA' }}</span>
-            <i class="fa-solid fa-circle-check check-icon" title="Zweryfikowany Profil"></i>
+            <i 
+              v-if="isPartnerVerified" 
+              class="fa-solid fa-circle-check check-icon" 
+              title="Zweryfikowany Profil"
+            ></i>
           </div>
-          <span class="partner-status">Aktywny teraz</span>
+          <span 
+            class="partner-status" 
+            :class="{ 'is-online': isPartnerOnline, 'is-offline': !isPartnerOnline }"
+          >
+            <span v-if="isPartnerOnline" class="status-indicator-dot"></span>
+            {{ partnerStatusText }}
+          </span>
         </div>
       </div>
     </header>
@@ -125,8 +181,20 @@ function addEmoji(emoji: string) {
         <div class="message-bubble">
           <p class="msg-text">{{ msg.text }}</p>
           <span class="msg-meta">
-            {{ typeof msg.timestamp === 'string' ? msg.timestamp : 'Teraz' }}
-            <i v-if="msg.senderId === currentUserId" class="fa-solid fa-check-double read-check"></i>
+            {{ formatTimestamp(msg.timestamp) }}
+            <!-- Potwierdzenie dostarczenia i przeczytania dla wiadomości wychodzących -->
+            <template v-if="msg.senderId === currentUserId">
+              <i 
+                v-if="msg.isRead || msg.status === 'read'" 
+                class="fa-solid fa-check-double read-check is-read" 
+                title="Przeczytano"
+              ></i>
+              <i 
+                v-else 
+                class="fa-solid fa-check read-check is-sent" 
+                title="Wysłano / Dostarczono"
+              ></i>
+            </template>
           </span>
         </div>
       </div>
@@ -142,6 +210,20 @@ function addEmoji(emoji: string) {
         @click="addEmoji(emoji)"
       >
         {{ emoji }}
+      </button>
+    </div>
+
+    <!-- Error Banner (gdy zapis się nie powiódł, tekst nie jest tracony) -->
+    <div v-if="sendError" class="chat-send-error-banner" role="alert">
+      <i class="fa-solid fa-triangle-exclamation error-icon"></i>
+      <span class="error-text">{{ sendError }}</span>
+      <button 
+        type="button" 
+        class="btn-dismiss-error" 
+        @click="sendError = null" 
+        title="Ukryj powiadomienie"
+      >
+        ✕
       </button>
     </div>
 
@@ -236,8 +318,27 @@ function addEmoji(emoji: string) {
 
 .partner-status {
   font-size: 0.72rem;
-  color: #10b981;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 600;
+}
+
+.partner-status.is-online {
+  color: #10b981;
+}
+
+.partner-status.is-offline {
+  color: #94a3b8;
+}
+
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+  display: inline-block;
 }
 
 .messages-container {
@@ -307,7 +408,7 @@ function addEmoji(emoji: string) {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
+  gap: 5px;
   font-size: 0.65rem;
   margin-top: 4px;
   opacity: 0.75;
@@ -315,6 +416,19 @@ function addEmoji(emoji: string) {
 
 .read-check {
   font-size: 0.68rem;
+}
+
+.read-check.is-read {
+  color: #0284c7;
+  font-weight: bold;
+}
+
+.is-outgoing .read-check.is-read {
+  color: #0f172a;
+}
+
+.read-check.is-sent {
+  color: #64748b;
 }
 
 .quick-emoji-bar {
@@ -337,6 +451,37 @@ function addEmoji(emoji: string) {
 
 .btn-emoji:hover {
   transform: scale(1.25);
+}
+
+.chat-send-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  font-size: 0.82rem;
+  border-radius: 8px;
+  margin: 0 16px 8px 16px;
+}
+
+.chat-send-error-banner .error-icon {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+.chat-send-error-banner .error-text {
+  flex: 1;
+}
+
+.btn-dismiss-error {
+  background: transparent;
+  border: none;
+  color: #fca5a5;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 4px;
 }
 
 .chat-input-bar {

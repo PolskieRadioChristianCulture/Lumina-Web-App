@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ==========================================================================
  * LUMINA TYPED DATA CONTRACTS - CHAT & MESSENGER MODEL
  * ==========================================================================
@@ -35,4 +35,8 @@ export interface DirectChatRoom {
   otherUserName?: string;
   otherUserAvatar?: string;
   otherUserSlug?: string;
+  isVerified?: boolean;
+  isOnline?: boolean;
+  statusText?: string;
+  lastSeen?: any;
 }

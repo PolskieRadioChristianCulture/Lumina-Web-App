@@ -18,7 +18,10 @@ const conversations = ref<DirectChatRoom[]>([
     otherUserSlug: "cezaryrgowski",
     lastMessage: "Niech Pan Ci błogosławi dzisiaj i strzeże! 🙏",
     lastMessageTime: "12:15",
-    unreadCount: 1
+    unreadCount: 1,
+    isVerified: true,
+    isOnline: true,
+    statusText: "Założyciel CC"
   },
   {
     id: "chat_wioletta",
@@ -29,7 +32,10 @@ const conversations = ref<DirectChatRoom[]>([
     otherUserSlug: "wiolettarogowska",
     lastMessage: "Świetnie! Cieszę się ze wspólnej modlitwy ✨",
     lastMessageTime: "Wczoraj",
-    unreadCount: 0
+    unreadCount: 0,
+    isVerified: true,
+    isOnline: false,
+    statusText: "Współzałożycielka CC"
   },
   {
     id: "chat_andrzej",
@@ -40,7 +46,10 @@ const conversations = ref<DirectChatRoom[]>([
     otherUserSlug: "andrzejthiel",
     lastMessage: "Chwała Bogu za to dzieło w radiu CC!",
     lastMessageTime: "27 sie",
-    unreadCount: 0
+    unreadCount: 0,
+    isVerified: false,
+    isOnline: false,
+    statusText: "Społeczność LUMINA"
   }
 ]);
 
