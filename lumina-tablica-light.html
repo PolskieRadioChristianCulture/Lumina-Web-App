@@ -12990,7 +12990,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
             { slug: 'tomek', name: 'Tomasz', job: 'Społeczność LUMINA ✨', city: 'Gdańsk, Polska', avatar: 'avatar_widget_tomek.webp', badge: '✨ Społeczność', isMission: false },
-            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Warszawa, Polska', avatar: 'avatar_widget_ania.webp', badge: '✨ Społeczność', isMission: false }
+            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Warszawa, Polska', avatar: 'avatar_widget_ania.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'jadwiga-piotr-laskowscy', name: 'Jadwiga i Piotr Laskowscy', job: 'Poszukujący Dzisiejszej Biblii Gdańskiej (DBG) 📖', city: 'Polska', avatar: 'images/ogloszenia-biblia-gdanska.webp', badge: '📖 Społeczność', isMission: false }
         ];
 
         async function fetchCommunityUsersDirectory() {
@@ -15927,8 +15928,9 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 let attempts = 0;
                 const tryOpen = () => {
                     attempts++;
-                    let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : 'Rozmówca');
-                    let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg');
+                    let urlName = params.get('name') || params.get('chatName') || '';
+                    let name = urlName || ((normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : ((normUser === 'jadwiga-piotr-laskowscy') ? 'Jadwiga i Piotr Laskowscy' : 'Rozmówca')));
+                    let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : ((normUser === 'jadwiga-piotr-laskowscy') ? 'images/ogloszenia-biblia-gdanska.webp' : 'lumina_icon.jpg'));
 
                     if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
                         name = window._cloudProfilesMap[normUser].name || name;
