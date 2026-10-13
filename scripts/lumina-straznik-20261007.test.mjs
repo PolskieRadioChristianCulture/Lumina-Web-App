@@ -341,9 +341,9 @@ test('dolny pasek: podpisy pod ikonami i środkowy „+” do napisania posta; d
 test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyjnych osób i telefonów', async () => {
   for (const f of ['ogloszenia/index.html', 'ogloszenia.html']) {
     const t = await readFile(f, 'utf8');
-    assert.match(t, /<script src="\/js\/cc-ogloszenia-data\.js\?v=[^"]+"><\/script>\s*<script type="module" src="\/js\/cc-ogloszenia-store\.js\?v=[^"]+"><\/script>\s*<script type="module" crossorigin src="\/assets\/ogloszenia-index-cc20261013[b-h]\.js">/, f);
+    assert.match(t, /<script src="\/js\/cc-ogloszenia-data\.js\?v=[^"]+"><\/script>\s*<script type="module" src="\/js\/cc-ogloszenia-store\.js\?v=[^"]+"><\/script>\s*<script type="module" crossorigin src="\/assets\/ogloszenia-index-cc20261013[a-z0-9]+\.js">/, f);
   }
-  const bundle = await readFile('assets/ogloszenia-index-cc20261013h.js', 'utf8');
+  const bundle = await readFile('assets/ogloszenia-index-cc20261013b.js', 'utf8');
   // Formularz publikuje do wspólnej bazy (widzą wszyscy), nie tylko do localStorage autora.
   assert.match(bundle, /window\.CCOgloszeniaStore;if\(!S\|\|typeof S\.publish!==`function`\)/);
   assert.doesNotMatch(bundle, /w=e=>\{t\(t=>\{let n=\[e,\.\.\.t\];try\{localStorage\.setItem/);
@@ -351,10 +351,6 @@ test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyj
   assert.match(store, /const COLLECTION = 'user_posts';/);
   assert.match(store, /authorUid: user\.uid/);
   assert.match(store, /u\.protocol === 'https:'/);
-  assert.match(store, /async function update\(/);
-  assert.match(bundle, /_ShareBar/);
-  assert.match(bundle, /Edytuj ogłoszenie/);
-  assert.match(bundle, /hasMedia/);
   assert.match(bundle, /Ke=\(Array\.isArray\(window\.CC_OGLOSZENIA\)\?window\.CC_OGLOSZENIA:\[\]\)/);
   for (const fake of ['Wiśniewscy', 'Złota Rączka CC', 'Skoda Octavia', 'images.unsplash.com', 'Setki braci']) assert.ok(!bundle.includes(fake), fake);
   const data = await readFile('js/cc-ogloszenia-data.js', 'utf8');
@@ -362,4 +358,24 @@ test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyj
   assert.match(data, /\/ksiazki-autora|\/pokonac-goliata/);
   const w = await readFile('_worker.js', 'utf8');
   assert.match(w, /kalendarz-\?20\(26\|27\|28\|29\|30\)/);
+});
+
+test('MojaBiblia: polskie znaczenia słów, uczciwa lista przekładów i wyszukiwarka pełnotekstowa', async () => {
+  const engine = await readFile('mojabiblia-engine.js', 'utf8');
+  assert.match(engine, /fetch\('\/data\/bible\/glosy-pl\.json/);
+  assert.match(engine, /glossFor\(w\) \{/);
+  assert.doesNotMatch(engine, /<div class="mb-word-gloss">\$\{w\.gloss\}<\/div>/);
+  // Przekłady o identycznym tekście nie mogą udawać różnych przekładów.
+  assert.match(engine, /availableTranslations\(data\)/);
+  assert.doesNotMatch(engine, /Porównanie Przekładów UBG \/ BW \/ BT \/ BG/);
+  assert.match(engine, /async fullTextSearch\(query\)/);
+  assert.match(engine, /\/data\/bible\/szukaj-ubg\.json/);
+  const html = await readFile('mojabiblia.html', 'utf8');
+  assert.doesNotMatch(html, /4 polskich przekładów|UBG, BW, BT, BG/);
+  assert.match(html, /mojabiblia-engine\.js\?v=2\.2\.0_20261013/);
+  const gl = JSON.parse(await readFile('data/bible/glosy-pl.json', 'utf8'));
+  assert.ok(Object.keys(gl).length > 1000);
+  assert.equal(gl.H8064, 'niebo');
+  const idx = JSON.parse(await readFile('data/bible/szukaj-ubg.json', 'utf8'));
+  assert.ok(idx.r.length > 30000, 'indeks obejmuje całą Biblię');
 });

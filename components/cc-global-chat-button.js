@@ -10,13 +10,12 @@
  * - Położenie: prawy dolny róg (right: max(18px, env(safe-area-inset-right)),
  *   bottom: max(18px, env(safe-area-inset-bottom))), dynamicznie współgra
  *   z paskami odtwarzaczy i przyciskiem cc-back-to-top.
- * - Interakcja: delikatna animacja po najechaniu; kliknięcie OD RAZU otwiera
- *   okno czatu (natywny modal na podstronach LUMINA lub zintegrowane okno
- *   rozmowy live z wiadomościami i polem wprowadzania na pozostałych stronach).
+ * - Architektura zintegrowana: Kliknięcie od razu otwiera okno rozmowy live
+ *   ze zintegrowanym wyborem wszystkich kanałów komunikacji (Czat na żywo +
+ *   pełne 4 karty wyboru: Czat LUMINA, Duchowny Mariusz, WhatsApp, Sztab CC).
  * - Integracja: jedno logowanie LUMINA / CC ID.
- * - Funkcjonalność: wiadomości na żywo, kontakt ze społecznością, szybki
- *   kontakt duszpasterski i WhatsApp — wyłącznie zaimplementowane moduły.
- * - Architektura: jeden współdzielony komponent dla całego ekosystemu CC.
+ * - Wymogi: ergonomia dotyku min. 44px, brak zależności od zewnętrznych fontów
+ *   (100% inline SVG), Zero-QA.
  * ══════════════════════════════════════════════════════════════════════════
  */
 
@@ -143,7 +142,7 @@
         transform: translateY(-50%) translateX(0) !important;
       }
 
-      /* ── OKNO CZATU CC GLOBAL (LIVE CONVERSATION WINDOW) ── */
+      /* ── OKNO CZATU CC GLOBAL (ZINTEGROWANE: LIVE + KANAŁY) ── */
       .cc-chat-drawer-overlay {
         position: fixed !important;
         inset: 0 !important;
@@ -170,7 +169,7 @@
         bottom: max(18px, env(safe-area-inset-bottom)) !important;
         width: 410px !important;
         max-width: calc(100vw - 36px) !important;
-        height: 620px !important;
+        height: 630px !important;
         max-height: calc(100vh - 36px) !important;
         background: linear-gradient(165deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 27, 75, 0.98) 55%, rgba(10, 15, 30, 0.99) 100%) !important;
         border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
@@ -198,7 +197,7 @@
         justify-content: space-between !important;
         padding: 12px 16px !important;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.22) !important;
         gap: 8px !important;
       }
 
@@ -298,20 +297,71 @@
         fill: none !important;
       }
 
+      /* ── ZAKŁADKI WYBORU (CZAT NA ŻYWO / KANAŁY KOMUNIKACJI) ── */
+      .cc-chat-tabs-bar {
+        display: flex !important;
+        padding: 6px 12px 6px 12px !important;
+        gap: 6px !important;
+        background: rgba(0, 0, 0, 0.42) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .cc-chat-tab-btn {
+        flex: 1 1 50% !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        padding: 6px 10px !important;
+        border-radius: 12px !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        color: #94A3B8 !important;
+        transition: all 0.2s ease !important;
+        font-family: inherit !important;
+      }
+
+      .cc-chat-tab-btn:hover:not(.is-active) {
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: #F8FAFC !important;
+      }
+
+      .cc-chat-tab-btn.is-active {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(217, 70, 239, 0.22) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.5) !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3) !important;
+      }
+
+      .cc-chat-tab-btn svg {
+        width: 14px !important;
+        height: 14px !important;
+        display: block !important;
+      }
+
+      /* ── WIDOK 1: CZAT NA ŻYWO ── */
+      .cc-chat-view-live {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+      }
+
       /* Pasek szybkich kontaktów (Duszpasterz & WhatsApp) */
       .cc-chat-quick-contacts {
         padding: 6px 14px !important;
-        background: rgba(0, 0, 0, 0.3) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        background: rgba(0, 0, 0, 0.28) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         display: flex !important;
         align-items: center !important;
+        justify-content: space-between !important;
         gap: 8px !important;
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-      }
-
-      .cc-chat-quick-contacts::-webkit-scrollbar {
-        display: none !important;
       }
 
       .cc-chat-quick-pill {
@@ -342,10 +392,30 @@
         fill: currentColor !important;
       }
 
+      .cc-chat-channels-switch-link {
+        font-size: 0.70rem !important;
+        font-weight: 700 !important;
+        color: #C4A35A !important;
+        cursor: pointer !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 4px 6px !important;
+        text-decoration: none !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        transition: color 0.2s ease !important;
+      }
+
+      .cc-chat-channels-switch-link:hover {
+        color: #FDE047 !important;
+        text-decoration: underline !important;
+      }
+
       /* Pasek tożsamości użytkownika LUMINA / CC ID */
       .cc-chat-auth-bar {
         padding: 8px 16px !important;
-        background: rgba(0, 0, 0, 0.45) !important;
+        background: rgba(0, 0, 0, 0.42) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         display: flex !important;
         align-items: center !important;
@@ -397,11 +467,11 @@
         color: #0A0F1E !important;
       }
 
-      /* ── STRUMIEŃ WIADOMOŚCI CZATU ── */
+      /* Strumień wiadomości czatu */
       .cc-chat-feed {
         flex: 1 1 auto !important;
         overflow-y: auto !important;
-        padding: 14px 16px !important;
+        padding: 12px 16px !important;
         display: flex !important;
         flex-direction: column !important;
         gap: 12px !important;
@@ -513,7 +583,7 @@
         border-top-right-radius: 4px !important;
       }
 
-      /* ── DOLNY PASEK WPROWADZANIA WIADOMOŚCI ── */
+      /* Dolny pasek wprowadzania wiadomości */
       .cc-chat-composer {
         padding: 10px 14px !important;
         background: rgba(0, 0, 0, 0.5) !important;
@@ -594,6 +664,124 @@
         color: #94A3B8 !important;
         text-align: center !important;
         letter-spacing: 0.02em !important;
+      }
+
+      /* ── WIDOK 2: KANAŁY KOMUNIKACJI (WCZEŚNIEJSZY UKŁAD 4 KART) ── */
+      .cc-chat-view-channels {
+        display: none !important;
+        flex-direction: column !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        padding: 14px 16px !important;
+        gap: 10px !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(196, 163, 90, 0.3) transparent !important;
+      }
+
+      .cc-chat-view-channels::-webkit-scrollbar {
+        width: 5px !important;
+      }
+      .cc-chat-view-channels::-webkit-scrollbar-thumb {
+        background: rgba(196, 163, 90, 0.35) !important;
+        border-radius: 4px !important;
+      }
+
+      .cc-chat-action-card {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        padding: 12px 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        text-decoration: none !important;
+        color: #F8FAFC !important;
+        min-height: 44px !important;
+      }
+
+      .cc-chat-action-card:hover {
+        background: rgba(168, 85, 247, 0.15) !important;
+        border-color: rgba(212, 175, 55, 0.5) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      .cc-chat-action-card-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+      }
+
+      .cc-chat-action-icon {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .cc-chat-action-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+        display: block !important;
+        fill: currentColor !important;
+      }
+
+      .cc-chat-action-info {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .cc-chat-action-title {
+        font-size: 0.86rem !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+      }
+
+      .cc-chat-action-desc {
+        font-size: 0.72rem !important;
+        color: #94A3B8 !important;
+      }
+
+      .cc-chat-action-arrow {
+        color: #C4A35A !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .cc-chat-action-arrow svg {
+        width: 14px !important;
+        height: 14px !important;
+        display: block !important;
+        stroke: currentColor !important;
+        fill: none !important;
+      }
+
+      /* Stopka w widoku kanałów */
+      .cc-chat-channels-footer {
+        margin-top: auto !important;
+        padding-top: 10px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        font-size: 0.72rem !important;
+        color: #94A3B8 !important;
+      }
+
+      .cc-chat-channels-footer a {
+        color: #C4A35A !important;
+        text-decoration: none !important;
+        font-weight: 700 !important;
+      }
+
+      .cc-chat-channels-footer a:hover {
+        text-decoration: underline !important;
       }
 
       /* ── RESPONSIVE DLA TELEFONÓW (<= 768px) ── */
@@ -725,7 +913,7 @@
     `;
     document.body.appendChild(fabWrap);
 
-    // Okno czatu (Live Conversation Drawer)
+    // Okno czatu (Zintegrowane: Czat na żywo + Wybór kanałów)
     const overlay = document.createElement('div');
     overlay.id = 'ccGlobalChatOverlay';
     overlay.className = 'cc-chat-drawer-overlay';
@@ -744,7 +932,7 @@
               </div>
               <div class="cc-chat-header-sub">
                 <span class="cc-chat-live-dot"></span>
-                <span>Społeczność na żywo</span>
+                <span id="ccChatHeaderSubText">Społeczność na żywo</span>
               </div>
             </div>
           </div>
@@ -758,54 +946,203 @@
           </div>
         </div>
 
-        <!-- Szybkie kontakty pomocnicze -->
-        <div class="cc-chat-quick-contacts">
-          <a href="tel:+48608337477" class="cc-chat-quick-pill" title="Rozmowa duszpasterska: Duchowny Mariusz">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-            <span>Duszpasterz: +48 608 337 477</span>
-          </a>
-          <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-quick-pill" title="Dołącz do Grupy WhatsApp CC">
-            <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.2 1.25-1.74 1.32-.49.07-1.12.1-3.26-.79-2.73-1.14-4.49-3.92-4.63-4.1-.14-.19-1.1-1.46-1.1-2.79 0-1.32.69-1.97.94-2.24.25-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.07.61.57.24.58.82 2 .89 2.15.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.15-.3.31-.13.61.17.3 1.07 1.77 2.3 2.87 1.58 1.41 2.91 1.85 3.32 2.05.41.2.65.17.89-.1.24-.28 1.03-1.2 1.31-1.61.27-.41.55-.35.92-.21.38.14 2.38 1.12 2.79 1.32.41.2.68.31.78.48.1.18.1 1.02-.14 1.7z"/></svg>
-            <span>Grupa WhatsApp</span>
-          </a>
+        <!-- Zakładki wyboru: Czat na żywo vs Kanały komunikacji -->
+        <div class="cc-chat-tabs-bar" role="tablist" aria-label="Wybór widoku">
+          <button type="button" class="cc-chat-tab-btn is-active" id="ccChatTabLiveBtn" role="tab" aria-selected="true" aria-controls="ccChatViewLive">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            <span>Czat na żywo</span>
+          </button>
+          <button type="button" class="cc-chat-tab-btn" id="ccChatTabChannelsBtn" role="tab" aria-selected="false" aria-controls="ccChatViewChannels">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Wybór komunikacji (4)</span>
+          </button>
         </div>
 
-        <!-- Pasek tożsamości -->
-        <div class="cc-chat-auth-bar" id="ccChatAuthBar"></div>
-
-        <!-- Strumień wiadomości na żywo -->
-        <div class="cc-chat-feed" id="ccChatFeed">
-          <div class="cc-chat-system-bubble">
-            ✨ <strong>Pokój Wam!</strong> Witaj na ogólnym czacie społeczności Christian Culture i LUMINA. Rozmawiajmy, wspierajmy się w wierze i budujmy chrześcijańską wspólnotę.
-          </div>
-          <div id="ccChatMessagesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-        </div>
-
-        <!-- Formularz wysyłania wiadomości -->
-        <div class="cc-chat-composer">
-          <form class="cc-chat-form" id="ccChatForm">
-            <input type="text" id="ccChatInput" class="cc-chat-input" placeholder="Napisz wiadomość na czacie..." maxlength="500" autocomplete="off" aria-label="Treść wiadomości">
-            <button type="submit" id="ccChatSendBtn" class="cc-chat-send-btn" title="Wyślij wiadomość" aria-label="Wyślij wiadomość">
-              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        <!-- ════ WIDOK 1: CZAT NA ŻYWO ════ -->
+        <div class="cc-chat-view-live" id="ccChatViewLive" role="tabpanel" aria-labelledby="ccChatTabLiveBtn">
+          <!-- Szybkie kontakty pomocnicze -->
+          <div class="cc-chat-quick-contacts">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <a href="tel:+48608337477" class="cc-chat-quick-pill" title="Rozmowa duszpasterska: Duchowny Mariusz">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <span>Duszpasterz: 608 337 477</span>
+              </a>
+              <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-quick-pill" title="Grupa WhatsApp CC">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.2 1.25-1.74 1.32-.49.07-1.12.1-3.26-.79-2.73-1.14-4.49-3.92-4.63-4.1-.14-.19-1.1-1.46-1.1-2.79 0-1.32.69-1.97.94-2.24.25-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.07.61.57.24.58.82 2 .89 2.15.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.15-.3.31-.13.61.17.3 1.07 1.77 2.3 2.87 1.58 1.41 2.91 1.85 3.32 2.05.41.2.65.17.89-.1.24-.28 1.03-1.2 1.31-1.61.27-.41.55-.35.92-.21.38.14 2.38 1.12 2.79 1.32.41.2.68.31.78.48.1.18.1 1.02-.14 1.7z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+            <button type="button" class="cc-chat-channels-switch-link" id="ccChatQuickSwitchToChannels" title="Przejdź do pełnego wyboru kanałów">
+              <span>Wszystkie kanały →</span>
             </button>
-          </form>
-          <div class="cc-chat-hint">Jedna tożsamość LUMINA • Prawda, miłość i wzajemny szacunek 🕊️</div>
+          </div>
+
+          <!-- Pasek tożsamości -->
+          <div class="cc-chat-auth-bar" id="ccChatAuthBar"></div>
+
+          <!-- Strumień wiadomości na żywo -->
+          <div class="cc-chat-feed" id="ccChatFeed">
+            <div class="cc-chat-system-bubble">
+              ✨ <strong>Pokój Wam!</strong> Witaj na ogólnym czacie społeczności Christian Culture i LUMINA. Rozmawiajmy, wspierajmy się w wierze i budujmy chrześcijańską wspólnotę.
+            </div>
+            <div id="ccChatMessagesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+          </div>
+
+          <!-- Formularz wysyłania wiadomości -->
+          <div class="cc-chat-composer">
+            <form class="cc-chat-form" id="ccChatForm">
+              <input type="text" id="ccChatInput" class="cc-chat-input" placeholder="Napisz wiadomość na czacie..." maxlength="500" autocomplete="off" aria-label="Treść wiadomości">
+              <button type="submit" id="ccChatSendBtn" class="cc-chat-send-btn" title="Wyślij wiadomość" aria-label="Wyślij wiadomość">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </form>
+            <div class="cc-chat-hint">Jedna tożsamość LUMINA • Prawda, miłość i wzajemny szacunek 🕊️</div>
+          </div>
+        </div>
+
+        <!-- ════ WIDOK 2: WYBÓR KANAŁÓW KOMUNIKACJI (4 KARTY) ════ -->
+        <div class="cc-chat-view-channels" id="ccChatViewChannels" role="tabpanel" aria-labelledby="ccChatTabChannelsBtn">
+          <div class="cc-chat-system-bubble">
+            ✨ <strong>Pokój Wam!</strong> Witaj w centralnym węźle komunikacji ekosystemu Christian Culture.
+            Wybierz dogodną formę kontaktu: rozmowę na czacie, wsparcie duszpasterskie, grupę WhatsApp lub kontakt ze sztabem misji.
+          </div>
+
+          <!-- Opcja 1: Czat Społeczności LUMINA -->
+          <div class="cc-chat-action-card" id="ccChatActionLumina" role="button" tabindex="0">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(168, 85, 247, 0.2); color: #C084FC;">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">Czat Społeczności LUMINA</span>
+                <span class="cc-chat-action-desc">Rozmowa na żywo i wiadomości (przełącz tutaj)</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+          </div>
+
+          <!-- Opcja 2: Rozmowa Duszpasterska / Duchowny Mariusz -->
+          <a href="tel:+48608337477" class="cc-chat-action-card">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(234, 179, 8, 0.2); color: #FACC15;">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">Duchowny Mariusz</span>
+                <span class="cc-chat-action-desc">Wsparcie duszpasterskie i modlitwa (+48 608 337 477)</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+          </a>
+
+          <!-- Opcja 3: WhatsApp Społeczności Christian Culture -->
+          <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-action-card">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(34, 197, 94, 0.2); color: #4ADE80;">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.2 1.25-1.74 1.32-.49.07-1.12.1-3.26-.79-2.73-1.14-4.49-3.92-4.63-4.1-.14-.19-1.1-1.46-1.1-2.79 0-1.32.69-1.97.94-2.24.25-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.07.61.57.24.58.82 2 .89 2.15.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.15-.3.31-.13.61.17.3 1.07 1.77 2.3 2.87 1.58 1.41 2.91 1.85 3.32 2.05.41.2.65.17.89-.1.24-.28 1.03-1.2 1.31-1.61.27-.41.55-.35.92-.21.38.14 2.38 1.12 2.79 1.32.41.2.68.31.78.48.1.18.1 1.02-.14 1.7z"/></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">Grupa WhatsApp CC</span>
+                <span class="cc-chat-action-desc">Codzienne rozważania i braterstwo</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>
+          </a>
+
+          <!-- Opcja 4: Skontaktuj się ze Sztabem CC (Email / Infolinia) -->
+          <a href="/o-nas.html" class="cc-chat-action-card">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8;">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">O Inicjatywie i Kontakt</span>
+                <span class="cc-chat-action-desc">Cezary i Wioletta Rogowscy • Redakcja</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+          </a>
+
+          <!-- Stopka w widoku kanałów -->
+          <div class="cc-chat-channels-footer">
+            <span>Jeden czat • Jedna tożsamość LUMINA</span>
+            <a href="/lumina-tablica.html">Tablica 🕊️</a>
+          </div>
         </div>
       </div>
     `;
     document.body.appendChild(overlay);
 
-    // Podpięcie zdarzeń
+    // Podpięcie elementów i zdarzeń
     const btn = document.getElementById('ccChatFabBtn');
     const closeBtn = document.getElementById('ccChatCloseBtn');
     const chatForm = document.getElementById('ccChatForm');
     const chatInput = document.getElementById('ccChatInput');
+    const tabLiveBtn = document.getElementById('ccChatTabLiveBtn');
+    const tabChannelsBtn = document.getElementById('ccChatTabChannelsBtn');
+    const viewLive = document.getElementById('ccChatViewLive');
+    const viewChannels = document.getElementById('ccChatViewChannels');
+    const quickSwitchLink = document.getElementById('ccChatQuickSwitchToChannels');
+    const actionLuminaCard = document.getElementById('ccChatActionLumina');
+    const headerSub = document.getElementById('ccChatHeaderSubText');
 
     function scrollToBottom() {
       const feed = document.getElementById('ccChatFeed');
       if (feed) {
         feed.scrollTop = feed.scrollHeight;
       }
+    }
+
+    function switchTab(target) {
+      if (target === 'channels') {
+        tabLiveBtn.classList.remove('is-active');
+        tabChannelsBtn.classList.add('is-active');
+        tabLiveBtn.setAttribute('aria-selected', 'false');
+        tabChannelsBtn.setAttribute('aria-selected', 'true');
+        viewLive.style.setProperty('display', 'none', 'important');
+        viewChannels.style.setProperty('display', 'flex', 'important');
+        if (headerSub) headerSub.textContent = 'Wybór formy kontaktu';
+      } else {
+        tabChannelsBtn.classList.remove('is-active');
+        tabLiveBtn.classList.add('is-active');
+        tabChannelsBtn.setAttribute('aria-selected', 'false');
+        tabLiveBtn.setAttribute('aria-selected', 'true');
+        viewChannels.style.setProperty('display', 'none', 'important');
+        viewLive.style.setProperty('display', 'flex', 'important');
+        if (headerSub) headerSub.textContent = 'Społeczność na żywo';
+        scrollToBottom();
+        if (chatInput && window.innerWidth > 768) {
+          chatInput.focus();
+        }
+      }
+    }
+
+    tabLiveBtn.addEventListener('click', function () {
+      switchTab('live');
+    });
+
+    tabChannelsBtn.addEventListener('click', function () {
+      switchTab('channels');
+    });
+
+    if (quickSwitchLink) {
+      quickSwitchLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        switchTab('channels');
+      });
+    }
+
+    if (actionLuminaCard) {
+      actionLuminaCard.addEventListener('click', function (e) {
+        e.preventDefault();
+        switchTab('live');
+      });
+      actionLuminaCard.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          switchTab('live');
+        }
+      });
     }
 
     function openChat() {
@@ -832,9 +1169,10 @@
       }
 
       // 2. Na wszystkich pozostałych podstronach ekosystemu CC (oraz dla gości na lumina.html):
-      // natychmiastowe otwarcie zintegrowanego okna rozmowy live
+      // natychmiastowe otwarcie zintegrowanego okna rozmowy live (z zakładką czatu i kanałów)
       renderAuthBar();
       renderChatMessages();
+      switchTab('live');
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1091,9 +1429,13 @@
 
   // Eksport globalnego API
   window.CCGlobalChat = {
-    open: function () {
+    open: function (targetTab) {
       const btn = document.getElementById('ccChatFabBtn');
       if (btn) btn.click();
+      if (targetTab) {
+        const tabBtn = targetTab === 'channels' ? document.getElementById('ccChatTabChannelsBtn') : document.getElementById('ccChatTabLiveBtn');
+        if (tabBtn) tabBtn.click();
+      }
     },
     close: function () {
       const closeBtn = document.getElementById('ccChatCloseBtn');
