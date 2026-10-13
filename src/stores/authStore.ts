@@ -22,6 +22,11 @@ export const useAuthStore = defineStore("auth", () => {
     authRepository.onAuthStateChanged((currentUser) => {
       user.value = currentUser;
       isLoading.value = false;
+      if (currentUser) errorMessage.value = null;
+    }, () => {
+      user.value = null;
+      isLoading.value = false;
+      errorMessage.value = "Nie udało się sprawdzić sesji. Spróbuj zalogować się ponownie.";
     });
   }
 
