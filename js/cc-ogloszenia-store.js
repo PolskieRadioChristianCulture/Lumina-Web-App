@@ -13,7 +13,7 @@
  */
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, collection, query, where, limit, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getFirestore, collection, query, where, limit, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const CONFIG = {
     apiKey: 'AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M',
@@ -27,7 +27,7 @@ const KIND = 'cc_ogloszenie';
 const COLLECTION = 'user_posts';
 const ADMINS = ['nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
     'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com'];
-const TYPES = ['oddam', 'pomoge', 'potrzebuje', 'szukam_fachowca', 'polecam_fachowca', 'sprzedam', 'kupie', 'zamienie'];
+const TYPES = ['oddam', 'pomoge', 'czekolada', 'potrzebuje', 'szukam_fachowca', 'polecam_fachowca', 'sprzedam', 'kupie', 'zamienie'];
 const CATEGORIES = ['fachowcy', 'inne', 'podroze', 'nocleg', 'rodzina_dzieci', 'ubrania', 'nieruchomosci', 'motoryzacja',
     'zywnosc', 'praca', 'opieka', 'uslugi', 'sprzet', 'duchowe'];
 
@@ -79,7 +79,14 @@ function toAd(id, d) {
 }
 
 function withPermissions(list) {
-    return list.map(a => ({ ...a, canDelete: !!(currentUser && (a._authorUid === currentUser.uid || isAdmin(currentUser))) }));
+    return list.map(a => {
+        const canMod = !!(currentUser && (a._authorUid === currentUser.uid || isAdmin(currentUser))) || (typeof a.id === 'string' && a.id.startsWith('ann-user-'));
+        return {
+            ...a,
+            canDelete: canMod,
+            canEdit: canMod
+        };
+    });
 }
 
 function push() {
@@ -157,6 +164,64 @@ async function publish(ad) {
     return withPermissions([ad2])[0];
 }
 
+async function update(id, updatedAd) {
+    if (typeof id === 'string' && id.startsWith('ann-user-')) {
+        try {
+            const stored = JSON.parse(localStorage.getItem('cc_community_announcements') || '[]');
+            const idx = stored.findIndex(a => a.id === id);
+            if (idx !== -1) {
+                stored[idx] = { ...stored[idx], ...updatedAd, id };
+                localStorage.setItem('cc_community_announcements', JSON.stringify(stored));
+            }
+        } catch (e) { console.warn(e); }
+        if (typeof window.__ccOglSetAds === 'function') {
+            window.__ccOglSetAds(prev => prev.map(a => a.id === id ? { ...a, ...updatedAd, id, canDelete: true, canEdit: true } : a));
+        }
+        return { ...updatedAd, id, canDelete: true, canEdit: true };
+    }
+
+    const user = await ensureMember();
+    const existing = remoteAds.find(a => a.id === id);
+    if (!existing) throw new Error('Nie znaleziono ogłoszenia do edycji.');
+    if (!isAdmin(user) && existing._authorUid !== user.uid) {
+        throw new Error('Tylko autor lub administrator może edytować to ogłoszenie.');
+    }
+
+    const data = {
+        title: text(updatedAd && updatedAd.title, 140),
+        type: TYPES.includes(updatedAd && updatedAd.type) ? updatedAd.type : existing.type,
+        category: CATEGORIES.includes(updatedAd && updatedAd.category) ? updatedAd.category : existing.category,
+        priceText: text(updatedAd && updatedAd.priceText, 80),
+        description: text(updatedAd && updatedAd.description, 4000),
+        location: text(updatedAd && updatedAd.location, 120),
+        contactName: text(updatedAd && updatedAd.contactName, 120),
+        contactEmail: text(updatedAd && updatedAd.contactEmail, 160) || null,
+        contactPhone: text(updatedAd && updatedAd.contactPhone, 40) || null,
+        luminaProfileUrl: safeUrl(updatedAd && updatedAd.luminaProfileUrl) || null,
+        imageUrl: safeUrl(updatedAd && updatedAd.imageUrl) || null,
+        mediaUrls: Array.isArray(updatedAd && updatedAd.mediaUrls) ? updatedAd.mediaUrls.map(safeUrl).filter(Boolean).slice(0, 6) : [],
+        youtubeUrl: safeUrl(updatedAd && updatedAd.youtubeUrl) || null,
+        updatedAt: serverTimestamp()
+    };
+
+    if (!data.title || !data.description || !data.contactName) {
+        throw new Error('Wypełnij tytuł, opis oraz imię/dane kontaktowe.');
+    }
+
+    await updateDoc(doc(db, COLLECTION, existing._docId), data);
+
+    const updated = toAd(existing._docId, {
+        ...existing,
+        ...data,
+        _authorUid: existing._authorUid,
+        createdAt: { toMillis: () => existing._ms }
+    });
+
+    remoteAds = remoteAds.map(a => a.id === id ? updated : a);
+    push();
+    return withPermissions([updated])[0];
+}
+
 async function remove(id) {
     const ad = remoteAds.find(a => a.id === id);
     if (!ad) return;
@@ -170,7 +235,7 @@ async function remove(id) {
     }
 }
 
-window.CCOgloszeniaStore = { publish, remove, reload: load };
+window.CCOgloszeniaStore = { publish, update, remove, reload: load };
 window.addEventListener('cc-ogloszenia-ready', push);
 onAuthStateChanged(auth, u => { currentUser = u; push(); });
 load();
