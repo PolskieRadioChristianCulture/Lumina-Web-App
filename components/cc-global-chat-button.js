@@ -1572,10 +1572,91 @@
       });
     }
 
+    // Stan aktywnej subskrypcji Firestore realtime
+    let activeRealtimeUnsubscribe = null;
+    let currentPartnerRealtimeMessages = null;
+
+    function showChatNotice(htmlMessage) {
+      let noticeEl = document.getElementById('ccChatNoticeBox');
+      if (!noticeEl) {
+        noticeEl = document.createElement('div');
+        noticeEl.id = 'ccChatNoticeBox';
+        noticeEl.style.cssText = 'position:absolute;top:56px;left:12px;right:12px;background:rgba(20,24,33,0.96);border:1px solid rgba(196,163,90,0.5);color:#F8FAFC;padding:10px 14px;border-radius:12px;font-size:0.8rem;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,0.6);z-index:99;display:flex;align-items:center;justify-content:space-between;gap:10px;animation:ccFadeIn 0.25s ease;';
+        const bodyEl = document.getElementById('ccChatBody');
+        if (bodyEl) bodyEl.appendChild(noticeEl);
+      }
+      noticeEl.innerHTML = `<span>${htmlMessage}</span><button type="button" style="background:none;border:none;color:#94A3B8;cursor:pointer;font-size:1.1rem;padding:0 4px;" aria-label="Zamknij powiadomienie">✕</button>`;
+      noticeEl.style.display = 'flex';
+      const closeNoticeBtn = noticeEl.querySelector('button');
+      if (closeNoticeBtn) {
+        closeNoticeBtn.onclick = () => { noticeEl.style.display = 'none'; };
+      }
+      setTimeout(() => {
+        if (noticeEl) noticeEl.style.display = 'none';
+      }, 7000);
+    }
+
     // Zmiana aktywnego rozmówcy
     function setChatPartner(partner) {
+      if (typeof activeRealtimeUnsubscribe === 'function') {
+        try { activeRealtimeUnsubscribe(); } catch(e) {}
+        activeRealtimeUnsubscribe = null;
+      }
+      currentPartnerRealtimeMessages = null;
       currentChatPartner = partner || COMMUNITY_MEMBERS[0];
+
       updateActivePartnerUI();
+
+      // Ustawienie kontekstowego placeholdera
+      if (chatInput) {
+        const u = getUserState();
+        if (currentChatPartner.isPublic) {
+          chatInput.placeholder = 'Napisz na czacie ogólnym LUMINA...';
+        } else if (u.isLoggedIn) {
+          chatInput.placeholder = `Napisz prywatną wiadomość do: ${currentChatPartner.name}...`;
+        } else {
+          chatInput.placeholder = `Zaloguj się do LUMINA, aby pisać do: ${currentChatPartner.name}...`;
+        }
+      }
+
+      // Podłączenie subskrypcji w czasie rzeczywistym z Firestore
+      const user = getUserState();
+      if (currentChatPartner.isPublic) {
+        if (window.LuminaDB && typeof window.LuminaDB.subscribeToPublicChat === 'function') {
+          try {
+            activeRealtimeUnsubscribe = window.LuminaDB.subscribeToPublicChat(function (msgs) {
+              if (currentChatPartner.isPublic && Array.isArray(msgs)) {
+                currentPartnerRealtimeMessages = msgs;
+                renderChatMessages();
+                scrollToBottom();
+              }
+            });
+          } catch(err) {
+            console.warn('Lumina Public Chat sync:', err);
+          }
+        }
+      } else {
+        if (user.isLoggedIn && user.uid && window.LuminaDB && typeof window.LuminaDB.subscribeToDirectMessages === 'function') {
+          const partnerId = currentChatPartner.slug || currentChatPartner.id;
+          const myId = user.slug || user.uid;
+          const chatId = (typeof window.LuminaDB.getChatId === 'function')
+            ? window.LuminaDB.getChatId(myId, partnerId)
+            : [myId, partnerId].sort().join('_');
+
+          try {
+            activeRealtimeUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, function (msgs) {
+              if (!currentChatPartner.isPublic && Array.isArray(msgs)) {
+                currentPartnerRealtimeMessages = msgs;
+                renderChatMessages();
+                scrollToBottom();
+              }
+            });
+          } catch(err) {
+            console.warn('Lumina Direct Chat sync:', err);
+          }
+        }
+      }
+
       renderChatMessages();
       switchTab('live');
     }
@@ -1774,7 +1855,7 @@
       }
     });
 
-    // Obsługa wysyłania wiadomości
+    // Obsługa wysyłania wiadomości (Real Firestore Transport • Zero Symulacji)
     chatForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const text = (chatInput.value || '').trim();
@@ -1784,72 +1865,73 @@
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      const newMsg = {
-        id: 'msg_' + Date.now(),
-        senderName: user.name,
-        senderAvatar: user.avatar,
-        senderBadge: user.badge || (user.isLoggedIn ? '🕊️ LUMINA' : 'Gość'),
-        senderId: user.slug || user.uid || 'guest_' + Date.now(),
-        targetPartnerId: currentChatPartner.id,
-        text: text,
-        dateStr: timeStr,
-        timestamp: { seconds: Math.floor(Date.now() / 1000) },
-        isMe: true
-      };
-
-      // Zapis w pamięci wątku dla wybranego rozmówcy
-      const threadStorageKey = currentChatPartner.isPublic ? 'lumina_public_chat_cache' : `lumina_chat_thread_${currentChatPartner.id}`;
-      try {
-        const cached = JSON.parse(localStorage.getItem(threadStorageKey) || '[]');
-        cached.push(newMsg);
-        localStorage.setItem(threadStorageKey, JSON.stringify(cached));
-      } catch (err) {}
-
-      // Jeśli jesteśmy na czacie ogólnym i dostępna jest baza LuminaDB
-      if (currentChatPartner.isPublic && user.isLoggedIn && window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
-        window.LuminaDB.sendPublicChatMessage({
-          text: text,
-          senderName: user.name,
-          senderAvatar: user.avatar,
-          senderBadge: user.badge
-        }).catch(function (err) {
-          console.warn('Błąd wysyłki wiadomości do Firestore:', err);
-        });
+      // WERYFIKACJA LOGOWANIA — brak symulacji dla gości w czacie 1:1
+      if (!currentChatPartner.isPublic && (!user.isLoggedIn || !user.uid)) {
+        showChatNotice(`Wiadomości prywatne do ${escapeHtml(currentChatPartner.name)} wymagają zalogowanego konta w portalu LUMINA. <a href="/lumina.html?action=login" target="_blank" style="color:#C4A35A;font-weight:bold;text-decoration:underline;">Zaloguj się tutaj 🕊️</a>`);
+        return;
       }
 
-      // Wyczyść pole i odśwież widok
-      chatInput.value = '';
-      renderChatMessages();
-      scrollToBottom();
+      // WERYFIKACJA LOGOWANIA DLA CZATU PUBLICZNEGO
+      if (currentChatPartner.isPublic && (!user.isLoggedIn || !user.uid)) {
+        showChatNotice(`Wysyłanie na czacie ogólnym wymaga zalogowanego profilu w portalu LUMINA. <a href="/lumina.html?action=login" target="_blank" style="color:#C4A35A;font-weight:bold;text-decoration:underline;">Zaloguj się tutaj 🕊️</a>`);
+        return;
+      }
 
-      // Jeśli rozmowa jest prywatna 1:1 — sympatyczna odpowiedź zwrotna od rozmówcy w duchu chrześcijańskim
-      if (!currentChatPartner.isPublic) {
-        setTimeout(() => {
-          const partnerReplies = [
-            `Dziękuję za wiadomość! Pamiętamy o Tobie w modlitwie. Niech Pan Ci błogosławi i strzeże! 🕊️✨`,
-            `Pokój Tobie! Otrzymałem Twoją wiadomość. Bądźmy silni w wierze i nadziei! 🌸`,
-            `Dobrego i owocnego dnia w Panu! Jeśli potrzebujesz dodatkowej modlitwy, jesteśmy tu dla Ciebie. 📖`
-          ];
-          const autoReply = {
-            id: 'reply_' + Date.now(),
-            senderName: currentChatPartner.name,
-            senderAvatar: currentChatPartner.avatar,
-            senderBadge: currentChatPartner.badge,
-            senderId: currentChatPartner.id,
-            targetPartnerId: currentChatPartner.id,
-            text: partnerReplies[Math.floor(Math.random() * partnerReplies.length)],
-            dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            timestamp: { seconds: Math.floor(Date.now() / 1000) },
-            isMe: false
-          };
-          try {
-            const threadCached = JSON.parse(localStorage.getItem(threadStorageKey) || '[]');
-            threadCached.push(autoReply);
-            localStorage.setItem(threadStorageKey, JSON.stringify(threadCached));
-          } catch (err) {}
-          renderChatMessages();
-          scrollToBottom();
-        }, 1200);
+      // 1. CZAT OGÓLNY SPOŁECZNOŚCI
+      if (currentChatPartner.isPublic) {
+        if (window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
+          chatInput.value = '';
+          window.LuminaDB.sendPublicChatMessage({
+            text: text,
+            senderName: user.name,
+            senderAvatar: user.avatar,
+            senderBadge: user.badge
+          }).then(function () {
+            if (!activeRealtimeUnsubscribe) {
+              renderChatMessages();
+              scrollToBottom();
+            }
+          }).catch(function (err) {
+            console.warn('Błąd wysyłki wiadomości do Firestore:', err);
+            showChatNotice('Nie udało się wysłać wiadomości na czat ogólny. Sprawdź połączenie.');
+          });
+        }
+        return;
+      }
+
+      // 2. CZAT BEZPOŚREDNI 1:1 (LUMINA DIRECT CLOUD)
+      const partnerId = currentChatPartner.slug || currentChatPartner.id;
+      const myId = user.slug || user.uid;
+      const chatId = (window.LuminaDB && typeof window.LuminaDB.getChatId === 'function')
+        ? window.LuminaDB.getChatId(myId, partnerId)
+        : [myId, partnerId].sort().join('_');
+
+      const messageObj = {
+        text: text,
+        receiverId: partnerId,
+        senderName: user.name,
+        senderAvatar: user.avatar,
+        senderBadge: user.badge,
+        senderAuthUid: user.uid,
+        senderId: myId,
+        dateStr: timeStr,
+        createdAt: Date.now()
+      };
+
+      chatInput.value = '';
+
+      if (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') {
+        window.LuminaDB.sendDirectMessageToCloud(chatId, messageObj).then(function () {
+          if (!activeRealtimeUnsubscribe) {
+            renderChatMessages();
+            scrollToBottom();
+          }
+        }).catch(function (err) {
+          console.warn('Błąd wysyłki wiadomości 1:1:', err);
+          showChatNotice('Nie udało się doręczyć wiadomości prywatnej. Sprawdź połączenie.');
+        });
+      } else {
+        showChatNotice('Baza danych LUMINA jest w tej chwili niedostępna.');
       }
     });
 
@@ -1859,64 +1941,30 @@
 
   // 6. Pobieranie wiadomości dla aktywnego rozmówcy
   function getChatMessagesForPartner(partner) {
-    const threadStorageKey = partner.isPublic ? 'lumina_public_chat_cache' : `lumina_chat_thread_${partner.id}`;
-    let msgs = [];
-    try {
-      const cached = localStorage.getItem(threadStorageKey);
-      if (cached) {
-        msgs = JSON.parse(cached);
-      }
-    } catch (e) {}
-
-    // Domyślne powitanie od rozmówcy, jeśli wątek jest pusty
-    if (!msgs || msgs.length === 0) {
-      if (partner.isPublic) {
-        msgs = [
-          {
-            id: 'init_pub_1',
-            senderName: 'Cezary Rogowski',
-            senderAvatar: '/avatar_cezary_official.jpg',
-            senderBadge: '👑 Założyciel',
-            senderId: 'cezaryrgowski',
-            text: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i portalu LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!',
-            dateStr: '10:00'
-          },
-          {
-            id: 'init_pub_2',
-            senderName: 'Wioletta Rogowska',
-            senderAvatar: '/avatar_wioletta_official.webp',
-            senderBadge: '🌸 Liderka CC',
-            senderId: 'wiolettarogowska',
-            text: 'Błogosławionego dnia dla całej naszej rodziny misyjnej! Modlimy się dziś o pokój, miłość i umocnienie w wierze. ✨',
-            dateStr: '10:15'
-          },
-          {
-            id: 'init_pub_3',
-            senderName: 'Misja & Radio CC',
-            senderAvatar: '/avatar_christian_culture_hq_2026.webp',
-            senderBadge: '🕊️ Redakcja Misji',
-            senderId: 'radiocc',
-            text: 'Audycje radiowe, Biblia audio i muzyka uwielbienia grają bez przerwy na polskieradio.cc 📻 Możesz tutaj pisać w każdej chwili!',
-            dateStr: '10:30'
-          }
-        ];
-      } else {
-        msgs = [
-          {
-            id: 'init_priv_' + partner.id,
-            senderName: partner.name,
-            senderAvatar: partner.avatar,
-            senderBadge: partner.badge,
-            senderId: partner.id,
-            text: partner.initialGreeting || `Niech będzie pochwalony Jezus Chrystus! Błogosławionego dnia. 🕊️`,
-            dateStr: 'Dzisiaj',
-            isMe: false
-          }
-        ];
-      }
+    if (currentPartnerRealtimeMessages && Array.isArray(currentPartnerRealtimeMessages)) {
+      return currentPartnerRealtimeMessages;
     }
 
-    return msgs;
+    const user = getUserState();
+    if (partner.isPublic) {
+      try {
+        const cached = localStorage.getItem('lumina_public_chat_cache');
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+      return [];
+    } else {
+      if (!user.isLoggedIn || !user.uid) return [];
+      try {
+        const partnerId = partner.slug || partner.id;
+        const myId = user.slug || user.uid;
+        const chatId = (window.LuminaDB && typeof window.LuminaDB.getChatId === 'function')
+          ? window.LuminaDB.getChatId(myId, partnerId)
+          : [myId, partnerId].sort().join('_');
+        const cached = localStorage.getItem('lumina_chat_' + chatId);
+        if (cached) return JSON.parse(cached);
+      } catch (e) {}
+      return [];
+    }
   }
 
   function renderChatMessages() {
@@ -1926,19 +1974,71 @@
     const msgs = getChatMessagesForPartner(currentChatPartner);
     const user = getUserState();
 
+    if (!msgs || msgs.length === 0) {
+      if (currentChatPartner.isPublic) {
+        list.innerHTML = `
+          <div class="cc-chat-empty-state" style="text-align:center;padding:36px 16px;color:#94A3B8;">
+            <div style="font-size:2.2rem;margin-bottom:8px;">🕊️</div>
+            <div style="font-weight:700;color:#F8FAFC;font-size:0.95rem;margin-bottom:6px;">Czat Ogólny Społeczności LUMINA</div>
+            <p style="font-size:0.82rem;line-height:1.45;max-width:320px;margin:0 auto;color:#94A3B8;">
+              Wspólnota wiary, modlitwy i dialogu. Podziel się świadectwem, zadaj pytanie lub dołącz do rozmowy!
+            </p>
+            ${!user.isLoggedIn ? `
+              <div style="margin-top:16px;">
+                <a href="/lumina.html?action=login" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 18px;border-radius:999px;background:linear-gradient(135deg,#C4A35A,#9A7B38);color:#0A0E17;font-weight:700;font-size:0.8rem;text-decoration:none;box-shadow:0 4px 12px rgba(196,163,90,0.3);">
+                  Zaloguj się do LUMINA 🕊️
+                </a>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } else {
+        list.innerHTML = `
+          <div class="cc-chat-empty-state" style="text-align:center;padding:32px 16px;color:#94A3B8;">
+            <img src="${escapeHtml(currentChatPartner.avatar || '/images/chat/cc-chat-button-120.webp')}" alt="${escapeHtml(currentChatPartner.name)}" style="width:64px;height:64px;border-radius:50%;margin:0 auto 10px;display:block;border:2px solid rgba(196,163,90,0.5);object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,0.4);" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
+            <div style="font-weight:700;color:#F8FAFC;font-size:0.98rem;margin-bottom:4px;">${escapeHtml(currentChatPartner.name)}</div>
+            <div style="display:inline-block;font-size:0.75rem;color:#C4A35A;background:rgba(196,163,90,0.12);border:1px solid rgba(196,163,90,0.3);padding:2px 10px;border-radius:999px;margin-bottom:10px;">${escapeHtml(currentChatPartner.badge)}</div>
+            <p style="font-size:0.82rem;line-height:1.45;max-width:300px;margin:0 auto;color:#94A3B8;">
+              ${user.isLoggedIn
+                ? 'Rozpocznij bezpośrednią rozmowę. Wiadomości trafiają prosto do skrzynki profilu.'
+                : 'Bezpośrednie wiadomości 1:1 wymagają zalogowanego profilu w portalu LUMINA.'}
+            </p>
+            ${!user.isLoggedIn ? `
+              <div style="margin-top:14px;">
+                <a href="/lumina.html?action=login" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 18px;border-radius:999px;background:linear-gradient(135deg,#C4A35A,#9A7B38);color:#0A0E17;font-weight:700;font-size:0.8rem;text-decoration:none;box-shadow:0 4px 12px rgba(196,163,90,0.3);">
+                  Zaloguj się, aby rozmawiać 🕊️
+                </a>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+      return;
+    }
+
     let html = '';
     msgs.forEach(m => {
       // Rozróżnienie wiadomości własnych od rozmówcy
-      const isMe = m.isMe || (user.uid && m.senderAuthUid === user.uid) || (user.slug && m.senderId === user.slug);
-      const name = escapeHtml(m.senderName || 'Użytkownik LUMINA');
-      const avatar = escapeHtml(m.senderAvatar || '/images/chat/cc-chat-button-120.webp');
-      const badge = escapeHtml(m.senderBadge || '🕊️ CC');
-      const time = escapeHtml(m.dateStr || '');
+      const isMe = m.isMe || (user.uid && (m.senderAuthUid === user.uid || m.senderUid === user.uid)) || (user.slug && m.senderId === user.slug);
+      const name = escapeHtml(m.senderName || (isMe ? user.name : currentChatPartner.name));
+      const avatar = escapeHtml(m.senderAvatar || (isMe ? user.avatar : currentChatPartner.avatar) || '/images/chat/cc-chat-button-120.webp');
+      const badge = escapeHtml(m.senderBadge || (isMe ? user.badge : currentChatPartner.badge) || '🕊️ CC');
+
+      let time = escapeHtml(m.dateStr || '');
+      if (!time && m.timestamp) {
+        const sec = m.timestamp.seconds || (typeof m.timestamp === 'number' ? (m.timestamp > 1e11 ? m.timestamp / 1000 : m.timestamp) : null);
+        if (sec) {
+          time = new Date(sec * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+      } else if (!time && m.createdAt) {
+        time = new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
       const text = escapeHtml(m.text || '');
 
       // Odnalezienie profilu nadawcy
       const partnerObj = COMMUNITY_MEMBERS.find(c => c.id === m.senderId || c.slug === m.senderId);
-      const profileLink = partnerObj ? partnerObj.profileUrl : '/lumina-tablica.html';
+      const profileLink = partnerObj ? partnerObj.profileUrl : (isMe ? '/lumina-tablica.html' : currentChatPartner.profileUrl || '/lumina-tablica.html');
 
       html += `
         <div class="cc-chat-msg-row ${isMe ? 'is-me' : ''}">
