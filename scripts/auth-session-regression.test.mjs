@@ -67,7 +67,7 @@ test('a failed stale write cannot continue into cache or another alias write',as
 test('primary entrypoints request fresh, consistent auth modules',()=>{
  for(const path of ['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html']){
   const html=readFileSync(path,'utf8');
-  assert.ok(html.includes('lumina-db.js?v=20261013_session1'));
+  assert.ok(html.includes('lumina-db.js?v=20261013_notifroute1'));
   assert.ok(!html.includes('lumina-db.js?v=20261011_odznaki1'));
   if(html.includes('cc-global-auth.js?v='))assert.ok(html.includes('cc-global-auth.js?v=20261013_auth_session1'));
  }

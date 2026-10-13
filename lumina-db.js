@@ -4124,7 +4124,39 @@ function playSynthesizerChimeFallback() {
     } catch(e) {}
 }
 
-export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type }) {
+export function openNotificationChat({ type, senderId, senderName, avatar, messageId } = {}) {
+    const isPublic = ['public', 'public_chat', 'chat_public'].includes(type);
+    const targetId = typeof senderId === 'string' ? senderId.trim() : '';
+    if (!isPublic && !targetId) return false;
+    const target = new URL('/lumina', window.location.origin);
+    target.searchParams.set(isPublic ? 'openPublicChat' : 'openChat', isPublic ? '1' : targetId);
+    if (messageId) target.searchParams.set('messageId', String(messageId));
+    try {
+        const guest = document.body?.classList.contains('user-is-guest');
+        const nativeModal = document.getElementById('directMessagesModal');
+        if (isPublic && guest && typeof window.CCGlobalChat?.open === 'function') {
+            window.CCGlobalChat.open('live', 'public');
+            return true;
+        }
+        if (isPublic && !guest && nativeModal && typeof window.openDirectMessagesModal === 'function') {
+            window.CCGlobalChat?.close?.();
+            window.openDirectMessagesModal('public');
+            window.switchMessengerMainTab?.('public');
+            return true;
+        }
+        if (!isPublic && !guest && nativeModal && typeof window.openChatWith === 'function') {
+            window.CCGlobalChat?.close?.();
+            window.openChatWith(senderName || targetId, avatar || '/lumina_icon.jpg', targetId, messageId);
+            return true;
+        }
+    } catch (error) {
+        // Preserve the exact destination when the current page's UI is unavailable.
+    }
+    window.location.assign(target.href);
+    return true;
+}
+
+export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type, messageId }) {
     if (typeof document === 'undefined') return;
     let banner = document.getElementById('lumina-chat-notification-banner');
     if (!banner) {
@@ -4159,7 +4191,7 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
     }
 
     const iconSrc = avatar || 'lumina_icon.jpg';
-    const tagText = type === 'public' ? '🌐 Czat Ogólny' : '🔒 Prywatna 1:1';
+    const tagText = ['public', 'public_chat', 'chat_public'].includes(type) ? '🌐 Czat Ogólny' : '🔒 Prywatna 1:1';
     const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
 
     banner.innerHTML = `
@@ -4184,18 +4216,19 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
         </div>
     `;
 
+    banner.setAttribute('role', 'button');
+    banner.tabIndex = 0;
+    banner.setAttribute('aria-label', tagText + ': otwórz rozmowę');
     banner.onclick = () => {
+        if (!openNotificationChat({ type, senderId, senderName: dispName, avatar, messageId })) return;
+        if (window._luminaBannerTimeout) clearTimeout(window._luminaBannerTimeout);
         banner.style.transform = 'translateY(140%)';
         banner.style.opacity = '0';
-        if (type === 'public') {
-            if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
-            if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
-        } else {
-            if (typeof window.openChatWith === 'function') {
-                window.openChatWith(dispName, avatar, senderId);
-            } else if (typeof window.openDirectMessagesModal === 'function') {
-                window.openDirectMessagesModal();
-            }
+    };
+    banner.onkeydown = (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            banner.click();
         }
     };
 

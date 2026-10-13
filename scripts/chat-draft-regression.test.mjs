@@ -3,6 +3,54 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {Window} from 'happy-dom';
+test('notification bubble routes to the exact conversation, including fallback and keyboard',async()=>{
+ const source=await readFile('lumina-db.js','utf8');
+ const start=source.indexOf('export function openNotificationChat(');
+ const end=source.indexOf('export async function showSystemDrawerNotification(',start);
+ assert.ok(start>0&&end>start);
+ const code=source.slice(start,end).replaceAll('export function ','function ');
+ function fixture({guest=false,native=true,fail=false}={}){
+  const dom=new Window(),calls=[];
+  if(native)dom.document.body.innerHTML='<div id="directMessagesModal"></div>';
+  if(guest)dom.document.body.classList.add('user-is-guest');
+  const win={location:{origin:'https://polskieradio.cc',assign:url=>calls.push(['navigate',url])},
+   CCGlobalChat:{close:()=>calls.push(['close']),open:(...args)=>calls.push(['global',...args])},
+   _luminaBannerTimeout:null};
+  if(native){win.openChatWith=(...args)=>{if(fail)throw Error('UI unavailable');calls.push(['private',...args]);};
+   win.openDirectMessagesModal=(tab)=>{if(fail)throw Error('UI unavailable');calls.push(['public',tab]);};
+   win.switchMessengerMainTab=tab=>calls.push(['tab',tab]);}
+  const ctx=vm.createContext({window:win,document:dom.document,URL,
+   requestAnimationFrame:fn=>fn(),setTimeout:()=>1,clearTimeout:()=>{}});
+  vm.runInContext(code+';window.openNotificationChat=openNotificationChat;window.showInAppChatBanner=showInAppChatBanner;',ctx);
+  return{win,dom,calls,banner:data=>win.showInAppChatBanner(data)};
+ }
+ const f=fixture();
+ f.banner({type:'private',senderId:'MemberUID_A',senderName:'Synthetic member',messageId:'msg-A'});
+ let bubble=f.dom.document.getElementById('lumina-chat-notification-banner');bubble.click();
+ assert.deepEqual(f.calls,[['close'],['private','Synthetic member','/lumina_icon.jpg','MemberUID_A','msg-A']]);
+ // Reused bubble must route to the NEW notification, not the previous recipient.
+ f.banner({type:'private',senderId:'MemberUID_B',senderName:'Second fixture'});bubble.click();
+ assert.equal(f.calls.at(-1)[3],'MemberUID_B');
+ const keyboard=new f.dom.KeyboardEvent('keydown',{key:'Enter',bubbles:true});
+ bubble.dispatchEvent(keyboard);assert.equal(f.calls.at(-1)[3],'MemberUID_B');
+ assert.equal(bubble.getAttribute('role'),'button');assert.equal(bubble.tabIndex,0);
+ for(const type of ['public','public_chat','chat_public']){
+  const p=fixture();p.banner({type,senderId:'do-not-open-private'});p.dom.document.getElementById('lumina-chat-notification-banner').click();
+  assert.deepEqual(p.calls,[['close'],['public','public'],['tab','public']]);
+ }
+ const guest=fixture({guest:true});guest.win.openNotificationChat({type:'public'});
+ assert.deepEqual(guest.calls,[['global','live','public']]);
+ for(const options of [{native:false},{fail:true},{guest:true}]){
+  const p=fixture(options);p.win.openNotificationChat({type:'private',senderId:'MemberUID_A',messageId:'msg-B'});
+  const dest=new URL(p.calls.at(-1)[1]);assert.equal(dest.origin,'https://polskieradio.cc');
+  assert.equal(dest.pathname,'/lumina');assert.equal(dest.searchParams.get('openChat'),'MemberUID_A');
+  assert.equal(dest.searchParams.get('messageId'),'msg-B');
+ }
+ const pub=fixture({native:false});pub.win.openNotificationChat({type:'public'});
+ assert.equal(new URL(pub.calls.at(-1)[1]).searchParams.get('openPublicChat'),'1');
+ const invalid=fixture();assert.equal(invalid.win.openNotificationChat({type:'private'}),false);
+ assert.deepEqual(invalid.calls,[]);
+});
 
 const surfaces=['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html'];
 for (const file of surfaces) {
