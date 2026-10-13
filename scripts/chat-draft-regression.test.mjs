@@ -56,3 +56,39 @@ for (const file of surfaces) {
     assert.equal(f.input.value,'Nowa rozmowa'); assert.equal(f.input.disabled,false);
   });
 }
+
+// Execute the complete shared chat component against an isolated DOM (no network).
+const globalChatSource=await readFile('components/cc-global-chat-button.js','utf8');
+function globalChatFixture(loggedIn=false){
+ const win=new Window({url:'https://example.invalid/lumina',settings:{disableCSSFileLoading:true,disableJavaScriptFileLoading:true}});
+ const errors=[];win.addEventListener('error',e=>{errors.push(e.error);e.preventDefault();});
+ win.LuminaDB={getCurrentUser:()=>loggedIn?{uid:'fixture-user'}:null,getCurrentProfile:()=>({slug:'fixture-user',name:'Fixture'}),
+  getChatId:(a,b)=>[a,b].sort().join('_'),
+  subscribeToDirectMessages:(_id,cb)=>{cb([{text:'Fixture cloud message',senderName:'Fixture peer'}]);return ()=>{};}};
+ const ctx=vm.createContext({window:win,document:win.document,localStorage:win.localStorage,console,setTimeout:()=>0,clearTimeout:()=>{}});
+ vm.runInContext(globalChatSource,ctx);
+ win.document.dispatchEvent(new win.Event('DOMContentLoaded'));
+ return {win,errors};
+}
+test('global chat actually opens and closes for a guest without runtime errors',()=>{
+ const {win,errors}=globalChatFixture();
+ win.document.getElementById('ccChatFabBtn').click();
+ const overlay=win.document.getElementById('ccGlobalChatOverlay');
+ assert.equal(overlay.getAttribute('aria-hidden'),'false');
+ assert.ok(overlay.classList.contains('is-open'));
+ assert.match(win.document.getElementById('ccChatMessagesList').textContent,/Czat Ogólny/);
+ win.document.getElementById('ccChatCloseBtn').click();
+ assert.equal(overlay.getAttribute('aria-hidden'),'true');assert.deepEqual(errors,[]);
+});
+test('global chat can select a private recipient as a guest without fabricated replies',()=>{
+ const {win,errors}=globalChatFixture();win.document.getElementById('ccChatFabBtn').click();
+ win.document.querySelector('[data-partner-id="wiolettarogowska"]').click();
+ assert.match(win.document.getElementById('ccChatMessagesList').textContent,/wymagają zalogowanego/);
+ assert.equal(win.document.querySelectorAll('.cc-chat-msg-row').length,0);assert.deepEqual(errors,[]);
+});
+test('global chat renders a confirmed private snapshot for a synthetic signed-in session',()=>{
+ const {win,errors}=globalChatFixture(true);win.document.getElementById('ccChatFabBtn').click();
+ win.document.querySelector('[data-partner-id="wiolettarogowska"]').click();
+ assert.match(win.document.getElementById('ccChatMessagesList').textContent,/Fixture cloud message/);
+ assert.deepEqual(errors,[]);
+});

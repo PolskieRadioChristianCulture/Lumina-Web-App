@@ -195,6 +195,7 @@
   ];
 
   let currentChatPartner = COMMUNITY_MEMBERS[0]; // Domyślnie Czat Ogólny
+  let currentPartnerRealtimeMessages = null; // Shared by the mounted listener and renderer.
 
   // 3. Wstrzyknięcie uniwersalnych stylów CSS (niezależnych od motywu podstrony)
   function injectStyles() {
@@ -1574,7 +1575,6 @@
 
     // Stan aktywnej subskrypcji Firestore realtime
     let activeRealtimeUnsubscribe = null;
-    let currentPartnerRealtimeMessages = null;
 
     function showChatNotice(htmlMessage) {
       let noticeEl = document.getElementById('ccChatNoticeBox');
