@@ -858,54 +858,89 @@
             }
         }
 
-        /* ── FLOATING CHAT BUBBLE BUTTON (DYMEK CZATU NAD SCROLL-TOP) ── */
+        /* ── FLOATING CHAT BUBBLE BUTTON (NOWY PRZYCISK CZATU W SZKLE W DOKU) ── */
         .lumina-floating-chat-btn {
             position: fixed !important;
             bottom: 148px !important;
             right: 10px !important;
-            width: 50px !important;
-            height: 50px !important;
+            width: 48px !important;
+            height: 48px !important;
+            min-width: 48px !important;
+            min-height: 48px !important;
+            max-width: 48px !important;
+            max-height: 48px !important;
             border-radius: 50% !important;
-            background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-            border: 2px solid #facc15 !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
             color: #ffffff !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 16px rgba(250, 204, 21, 0.4) !important;
             cursor: pointer !important;
             z-index: 99998 !important;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease !important;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease !important;
             -webkit-tap-highlight-color: transparent !important;
             outline: none !important;
             text-decoration: none !important;
+            touch-action: manipulation !important;
+            filter: drop-shadow(0 8px 22px rgba(168, 85, 247, 0.45)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6)) !important;
         }
         .lumina-floating-chat-btn:hover {
-            transform: translateY(-4px) scale(1.08) !important;
-            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.7), 0 0 24px rgba(250, 204, 21, 0.55) !important;
-            background: linear-gradient(135deg, #f43f5e, #a855f7) !important;
+            transform: scale(1.08) translateY(-2px) !important;
+            filter: drop-shadow(0 12px 28px rgba(217, 70, 239, 0.65)) drop-shadow(0 4px 14px rgba(234, 179, 8, 0.5)) !important;
         }
         .lumina-floating-chat-btn:active {
-            transform: translateY(1px) scale(0.95) !important;
+            transform: scale(0.96) translateY(0) !important;
         }
-        .lumina-floating-chat-btn i {
-            font-size: 1.35rem !important;
-            color: #ffffff !important;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) !important;
+        .lumina-floating-chat-btn:focus-visible {
+            outline: 3px solid #EAB308 !important;
+            outline-offset: 3px !important;
         }
+        .lumina-floating-chat-btn img,
+        .lumina-floating-chat-btn picture {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 50% !important;
+            object-fit: contain !important;
+            display: block !important;
+            pointer-events: none !important;
+            user-select: none !important;
+        }
+        /* Pulsująca zielona dioda online w prawym górnym rogu */
+        .lumina-floating-chat-btn .cc-chat-fab-badge {
+            position: absolute !important;
+            top: 1px !important;
+            right: 1px !important;
+            width: 13px !important;
+            height: 13px !important;
+            border-radius: 50% !important;
+            background: #22C55E !important;
+            border: 2px solid #0B0F19 !important;
+            box-shadow: 0 0 10px #22C55E !important;
+            pointer-events: none !important;
+            animation: ccChatPulse 2s infinite ease-in-out !important;
+        }
+        @keyframes ccChatPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.22); opacity: 0.85; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Badge nieprzeczytanych wiadomości (z lewej u góry, by nie zasłaniać zielonej diody) */
         .lumina-floating-chat-badge {
             position: absolute !important;
-            top: -3px !important;
-            right: -3px !important;
+            top: -2px !important;
+            left: -2px !important;
             background: #ef4444 !important;
             color: #ffffff !important;
-            font-size: 0.72rem !important;
+            font-size: 0.70rem !important;
             font-weight: 900 !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            min-width: 20px !important;
-            height: 20px !important;
+            min-width: 18px !important;
+            height: 18px !important;
             padding: 0 4px !important;
-            border-radius: 10px !important;
+            border-radius: 9px !important;
             display: none !important;
             align-items: center !important;
             justify-content: center !important;
@@ -923,13 +958,10 @@
 
         @media (max-width: 768px) {
             .lumina-floating-chat-btn {
-                bottom: calc(202px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above theme switcher */
+                bottom: calc(202px + env(safe-area-inset-bottom, 8px)) !important;
                 right: 10px !important;
                 width: 48px !important;
                 height: 48px !important;
-            }
-            .lumina-floating-chat-btn i {
-                font-size: 1.25rem !important;
             }
         }
 
@@ -1188,14 +1220,18 @@
 
     // 3. Wstrzyknięcie Struktury HTML
     const navHtml = `
-        <!-- ══════════ PŁYWAJĄCY DYMEK CZATU (NAD PRZYCISKIEM SCROLL-TOP) ══════════ -->
+        <!-- ══════════ PŁYWAJĄCY PRZYCISK CZATU W SZKLE (W DOKU BOCZNYM) ══════════ -->
         <button type="button" 
                 id="luminaFloatingChatBtn" 
                 class="lumina-floating-chat-btn" 
-                onclick="window.openLuminaChatModal()" 
-                title="Otwórz Czat & Wiadomości LUMINA" 
-                aria-label="Czat i Wiadomości LUMINA">
-            <i class="fa-solid fa-comment-dots"></i>
+                onclick="window.openLuminaChatModal ? window.openLuminaChatModal() : (window.CCGlobalChat && window.CCGlobalChat.open())" 
+                title="Czat Christian Culture & LUMINA" 
+                aria-label="Czat Christian Culture & LUMINA">
+            <picture>
+                <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
+                <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="48" height="48" loading="lazy" decoding="async">
+            </picture>
+            <span class="cc-chat-fab-badge" aria-hidden="true"></span>
             <span id="floatingChatBadge" class="lumina-floating-chat-badge ${initialUnread > 0 ? 'visible' : ''}" data-visible="${initialUnread > 0 ? 'true' : 'false'}" style="${initialUnread > 0 ? 'display:flex !important;' : 'display:none !important;'}">${initialUnread > 0 ? (initialUnread > 9 ? '9+' : initialUnread) : ''}</span>
         </button>
 
@@ -1947,9 +1983,11 @@
                 window.triggerSecretAdminPrompt();
             });
         });
-    }, 1000);
-
     document.body.insertAdjacentHTML('beforeend', navHtml);
+    try {
+        const dupChat = document.getElementById('ccGlobalChatFab');
+        if (dupChat) dupChat.remove();
+    } catch(e) {}
     setupAccessibleNavigation(document.getElementById('luminaBottomNav'), document.getElementById('luminaBottomMenuPopup'));
 
     // ══════════════════════════════════════════════════════════════════════════

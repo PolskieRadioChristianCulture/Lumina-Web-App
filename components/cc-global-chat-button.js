@@ -1144,26 +1144,48 @@
 
   // 5. Montowanie struktury HTML przycisku i okna czatu
   function mountComponent() {
-    if (document.getElementById('ccGlobalChatFab')) return;
+    if (document.getElementById('ccGlobalChatOverlay')) return;
 
-    // Przycisk FAB (Neonowy w szkle)
-    const fabWrap = document.createElement('div');
-    fabWrap.id = 'ccGlobalChatFab';
-    fabWrap.className = 'cc-chat-fab-wrap';
-    fabWrap.setAttribute('role', 'region');
-    fabWrap.setAttribute('aria-label', 'Czat Christian Culture');
+    // Pilnowanie żelaznej zasady jednego przycisku czatu:
+    // Jeśli na stronie istnieje już dedykowany przycisk czatu #luminaFloatingChatBtn w doku,
+    // NIE WSTRZYKUJEMY drugiego przycisku fabWrap!
+    const hasDockChatBtn = !!document.getElementById('luminaFloatingChatBtn');
+    let fabWrap = document.getElementById('ccGlobalChatFab');
+    if (!hasDockChatBtn && !fabWrap) {
+      fabWrap = document.createElement('div');
+      fabWrap.id = 'ccGlobalChatFab';
+      fabWrap.className = 'cc-chat-fab-wrap';
+      fabWrap.setAttribute('role', 'region');
+      fabWrap.setAttribute('aria-label', 'Czat Christian Culture');
 
-    fabWrap.innerHTML = `
-      <div class="cc-chat-fab-tooltip" id="ccChatFabTooltip">Czat Społeczności LUMINA</div>
-      <button type="button" class="cc-chat-fab-btn" id="ccChatFabBtn" aria-label="Otwórz czat Christian Culture i LUMINA" title="Czat Christian Culture & LUMINA">
-        <picture>
-          <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
-          <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="60" height="60" loading="lazy" decoding="async">
-        </picture>
-        <span class="cc-chat-fab-badge" aria-hidden="true"></span>
-      </button>
-    `;
-    document.body.appendChild(fabWrap);
+      fabWrap.innerHTML = `
+        <div class="cc-chat-fab-tooltip" id="ccChatFabTooltip">Czat Społeczności LUMINA</div>
+        <button type="button" class="cc-chat-fab-btn" id="ccChatFabBtn" aria-label="Otwórz czat Christian Culture i LUMINA" title="Czat Christian Culture & LUMINA">
+          <picture>
+            <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
+            <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="60" height="60" loading="lazy" decoding="async">
+          </picture>
+          <span class="cc-chat-fab-badge" aria-hidden="true"></span>
+        </button>
+      `;
+      document.body.appendChild(fabWrap);
+    } else if (hasDockChatBtn && fabWrap) {
+      fabWrap.remove();
+      fabWrap = null;
+    }
+
+    // Dynamiczny strażnik jednego przycisku:
+    try {
+      const singleButtonObserver = new MutationObserver(function () {
+        if (document.getElementById('luminaFloatingChatBtn')) {
+          const extraFab = document.getElementById('ccGlobalChatFab');
+          if (extraFab) extraFab.remove();
+        }
+      });
+      if (document.body) {
+        singleButtonObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    } catch (e) {}
 
     // Okno czatu (Zintegrowane: Czat + Społeczność + Kanały)
     const overlay = document.createElement('div');
@@ -1561,13 +1583,27 @@
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+    if (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openChat();
+      });
     }
 
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      openChat();
-    });
+    const luminaDockBtn = document.getElementById('luminaFloatingChatBtn');
+    if (luminaDockBtn && !luminaDockBtn._ccGlobalChatBound) {
+      luminaDockBtn._ccGlobalChatBound = true;
+      luminaDockBtn.addEventListener('click', function (e) {
+        const nativeModal = document.getElementById('directMessagesModal');
+        const isGuestBlocked = document.body && document.body.classList.contains('user-is-guest');
+        if (!nativeModal || isGuestBlocked) {
+          e.preventDefault();
+          e.stopPropagation();
+          openChat();
+        }
+      });
+    }
 
     closeBtn.addEventListener('click', function (e) {
       e.preventDefault();
@@ -1822,8 +1858,9 @@
   // Eksport globalnego API
   window.CCGlobalChat = {
     open: function (targetTab, targetPartnerId) {
-      const btn = document.getElementById('ccChatFabBtn');
+      const btn = document.getElementById('ccChatFabBtn') || document.getElementById('luminaFloatingChatBtn');
       if (btn) btn.click();
+      else if (typeof openChat === 'function') openChat();
       if (targetPartnerId) {
         const p = COMMUNITY_MEMBERS.find(x => x.id === targetPartnerId);
         if (p) {
