@@ -538,7 +538,20 @@
     console.warn('CCN Logo click handler warning:', err);
   }
 
-  // 10. Uruchomienie po załadowaniu drzewa DOM
+  // 10. Automatyczne załadowanie uniwersalnego komponentu CCGlobalChatButton (neonowy przycisk w szkle)
+  try {
+    if (!window.CCGlobalChatButton && !document.getElementById('ccGlobalChatScript') && !document.querySelector('script[src*="cc-global-chat-button"]')) {
+      const chatScript = document.createElement('script');
+      chatScript.id = 'ccGlobalChatScript';
+      chatScript.src = '/components/cc-global-chat-button.js?v=20261013_chat_v1';
+      chatScript.defer = true;
+      document.head.appendChild(chatScript);
+    }
+  } catch (chatErr) {
+    console.warn('CCGlobalChatButton load error:', chatErr);
+  }
+
+  // 11. Uruchomienie po załadowaniu drzewa DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', autoMountSupportFooter);
   } else {
