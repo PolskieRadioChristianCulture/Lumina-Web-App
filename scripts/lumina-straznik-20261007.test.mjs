@@ -331,7 +331,7 @@ test('dolny pasek: podpisy pod ikonami i środkowy „+” do napisania posta; d
   for (const l of ['Start', 'Tablica', 'Rolki', 'Menu']) assert.match(nav, new RegExp(`<span class="lumina-nav-label">${l}</span>`));
   for (const f of await htmlFiles()) {
     const t = await readFile(f, 'utf8');
-    if (t.includes('lumina-bottom-nav.js?v=')) assert.match(t, /lumina-bottom-nav\.js\?v=20261013_nav_fix2/, f);
+    if (t.includes('lumina-bottom-nav.js?v=')) assert.match(t, /lumina-bottom-nav\.js\?v=20261013_nav_guest1/, f);
   }
   for (const f of ['lumina-tablica.html', 'lumina-tablica-light.html']) assert.match(await readFile(f, 'utf8'), /id="lumina-compose-param"/, f);
   const top = await readFile('js/cc-back-to-top.js', 'utf8');

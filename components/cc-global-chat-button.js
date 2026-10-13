@@ -227,6 +227,10 @@
         display: none !important;
       }
 
+      /* Guests have no native messaging button: preserve their entry/login invitation. */
+      html body.user-is-guest #ccGlobalChatFab {
+        display: flex !important;
+      }
       .cc-chat-fab-btn {
         width: 50px !important;
         height: 50px !important;

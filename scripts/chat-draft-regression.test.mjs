@@ -92,3 +92,25 @@ test('global chat renders a confirmed private snapshot for a synthetic signed-in
  assert.match(win.document.getElementById('ccChatMessagesList').textContent,/Fixture cloud message/);
  assert.deepEqual(errors,[]);
 });
+
+test('guest chat entry stays visible in both LUMINA themes',()=>{
+ for(const theme of ['dark','light']){
+  const {win}=globalChatFixture();win.document.documentElement.setAttribute('data-lumina-theme',theme);
+  win.document.body.classList.add('user-is-guest');
+  assert.equal(win.getComputedStyle(win.document.getElementById('ccGlobalChatFab')).display,'flex');
+ }
+});
+test('mobile phone moves the same link to the header and restores its desktop position',async()=>{
+ const source=await readFile('js/cc-mobile-helpline.js','utf8');
+ const win=new Window();win.document.body.innerHTML='<header><div id="quickActionsMenu"></div></header><div id="player"><a id="helplineFloat" href="tel:+48730958583">Call</a></div>';
+ let changed;const media={matches:true,addEventListener:(_name,fn)=>{changed=fn;}};win.matchMedia=()=>media;
+ vm.runInNewContext(source,{window:win,document:win.document});
+ const link=win.document.getElementById('helplineFloat');
+ assert.equal(link.parentElement.id,'quickActionsMenu');
+ assert.equal(link.getAttribute('href'),'tel:+48730958583');
+ media.matches=false;changed();assert.equal(link.parentElement.id,'player');
+ media.matches=true;changed();assert.equal(link.parentElement.id,'quickActionsMenu');
+ assert.equal(win.document.querySelectorAll('#helplineFloat').length,1);
+ const index=await readFile('index.html','utf8');assert.match(index,/cc-mobile-helpline\.js\?v=20261013_mobile1/);
+ assert.match(index,/#mainHeader #helplineFloat \{ min-width: 44px; min-height: 44px;/);
+});
