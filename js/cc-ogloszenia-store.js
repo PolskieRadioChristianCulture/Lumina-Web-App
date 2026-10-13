@@ -72,7 +72,10 @@ function toAd(id, d) {
         mediaUrls: media.length ? media : undefined,
         youtubeUrl: safeUrl(d.youtubeUrl) || undefined,
         date: fmtDate(d.createdAt),
-        urgent: false,
+        urgent: !!d.urgent,
+        featured: !!(d.featured || d.isPatron),
+        isPatron: !!(d.isPatron || d.featured),
+        patronBadge: text(d.patronBadge, 80) || ((d.isPatron || d.featured) ? 'Patron & Mecenas CC' : ''),
         isCommunityVerified: false,
         canDelete: false
     };
@@ -95,10 +98,27 @@ function push() {
     const fresh = withPermissions(remoteAds);
     set(prev => {
         const others = (prev || []).filter(a => !(a && typeof a.id === 'string' && a.id.startsWith('fs-')));
-        // Ogłoszenia społeczności przed stałymi ogłoszeniami Christian Culture (pierwsze zostaje list „Szukamy domu”).
-        const pinned = others.filter(a => a && a.urgent);
-        const rest = others.filter(a => !(a && a.urgent));
-        return [...pinned, ...fresh, ...rest];
+        const all = [...fresh, ...others];
+        const seen = new Set();
+        const deduped = [];
+        for (const item of all) {
+            if (!item || !item.id || seen.has(item.id)) continue;
+            seen.add(item.id);
+            deduped.push(item);
+        }
+        return deduped.sort((a, b) => {
+            const isFounderA = a.id === 'cc-szukamy-domu-studio' || a.id === 'szukamy-domu-studio' || (a.title && a.title.includes('Szukamy domu dla rodziny'));
+            const isFounderB = b.id === 'cc-szukamy-domu-studio' || b.id === 'szukamy-domu-studio' || (b.title && b.title.includes('Szukamy domu dla rodziny'));
+            if (isFounderA) return -1;
+            if (isFounderB) return 1;
+            const fa = (a.featured || a.isPatron) ? 1 : 0;
+            const fb = (b.featured || b.isPatron) ? 1 : 0;
+            if (fb !== fa) return fb - fa;
+            const ua = a.urgent ? 1 : 0;
+            const ub = b.urgent ? 1 : 0;
+            if (ub !== ua) return ub - ua;
+            return (b._ms || 0) - (a._ms || 0);
+        });
     });
 }
 
@@ -149,6 +169,9 @@ async function publish(ad) {
         imageUrl: safeUrl(ad && ad.imageUrl),
         mediaUrls: Array.isArray(ad && ad.mediaUrls) ? ad.mediaUrls.map(safeUrl).filter(Boolean).slice(0, 6) : [],
         youtubeUrl: safeUrl(ad && ad.youtubeUrl),
+        featured: !!(ad && (ad.featured || ad.isPatron)),
+        isPatron: !!(ad && (ad.isPatron || ad.featured)),
+        patronBadge: text(ad && ad.patronBadge, 80) || ((ad && (ad.featured || ad.isPatron)) ? 'Patron & Mecenas CC' : ''),
         createdAt: serverTimestamp()
     };
     if (!data.title || !data.description || !data.contactName) throw new Error('Wypełnij tytuł, opis oraz imię/dane kontaktowe.');
@@ -204,6 +227,9 @@ async function update(id, updatedAd) {
         imageUrl: safeUrl(updatedAd && updatedAd.imageUrl) || null,
         mediaUrls: Array.isArray(updatedAd && updatedAd.mediaUrls) ? updatedAd.mediaUrls.map(safeUrl).filter(Boolean).slice(0, 6) : [],
         youtubeUrl: safeUrl(updatedAd && updatedAd.youtubeUrl) || null,
+        featured: !!(updatedAd && (updatedAd.featured || updatedAd.isPatron)),
+        isPatron: !!(updatedAd && (updatedAd.isPatron || updatedAd.featured)),
+        patronBadge: text(updatedAd && updatedAd.patronBadge, 80) || ((updatedAd && (updatedAd.featured || updatedAd.isPatron)) ? 'Patron & Mecenas CC' : ''),
         updatedAt: serverTimestamp()
     };
 
