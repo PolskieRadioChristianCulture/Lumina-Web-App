@@ -2060,13 +2060,28 @@
     list.innerHTML = html;
   }
 
-  // 7. Dynamiczne pozycjonowanie FAB (ochrona przed nakładaniem na pasek audio / dolne menu)
+  // 7. Dynamiczne pozycjonowanie FAB (wyrównanie z przyciskiem play i ochrona przed nakładaniem na paski)
   function setupPositionSync(fabWrap) {
     function adjust() {
       const isMobile = window.innerWidth <= 768;
       let bottomOffset = isMobile ? 14 : 18;
+      let playerCenterFromBottom = null;
+      let detectedBarTopFromBottom = 0;
 
+      // 1. Sprawdzenie przycisku play w dolnym odtwarzaczu (#playBtn lub .play-btn)
+      const playBtn = document.getElementById('playBtn') || document.querySelector('.play-btn');
+      if (playBtn) {
+        const pRect = playBtn.getBoundingClientRect();
+        if (pRect.height > 0 && pRect.top < window.innerHeight && pRect.bottom > window.innerHeight - 200) {
+          const playCenterY = pRect.top + (pRect.height / 2);
+          playerCenterFromBottom = window.innerHeight - playCenterY;
+        }
+      }
+
+      // 2. Wykrywanie dolnych belek (pasek radia, audio bar, dolna nawigacja)
       const candidates = [
+        '#radioPlayerBar',
+        '.radio-player-bar',
         '#globalAudioBar',
         '.radio-bar',
         '.player-bottom-bar',
@@ -2081,22 +2096,43 @@
         if (el) {
           const rect = el.getBoundingClientRect();
           if (rect.height > 0 && rect.top < window.innerHeight && rect.bottom >= window.innerHeight - 10) {
-            bottomOffset = Math.max(bottomOffset, Math.round(window.innerHeight - rect.top + (isMobile ? 10 : 14)));
+            const barHeight = Math.round(window.innerHeight - rect.top);
+            detectedBarTopFromBottom = Math.max(detectedBarTopFromBottom, barHeight);
+            bottomOffset = Math.max(bottomOffset, barHeight + (isMobile ? 10 : 14));
           }
         }
       }
 
-      fabWrap.style.bottom = `${bottomOffset}px`;
+      // 3. Pozycjonowanie ikony czatu:
+      // Jeśli wykryto przycisk play — wyrównaj idealnie oś poziomą (dokładnie ta sama wysokość co playBtn)
+      const fabBtn = fabWrap.querySelector('.cc-chat-fab-btn') || fabWrap;
+      const fabH = fabBtn.offsetHeight || (isMobile ? 50 : 50);
 
+      if (playerCenterFromBottom !== null) {
+        const alignedBottom = Math.round(playerCenterFromBottom - (fabH / 2));
+        fabWrap.style.bottom = `${alignedBottom}px`;
+      } else {
+        fabWrap.style.bottom = `${bottomOffset}px`;
+      }
+
+      // 4. Bezpieczne pozycjonowanie przycisku "do góry" (#backToTopBtn) — ZAWSZE w całości nad dolnym paskiem!
       const btt = document.getElementById('backToTopBtn');
       if (btt) {
-        const bttBottom = bottomOffset + (isMobile ? 64 : 70);
+        let bttBottom = 0;
+        if (detectedBarTopFromBottom > 0) {
+          // Dolny pasek radia/audio jest obecny — umieść przycisk bezpiecznie 16px nad górną krawędzią paska
+          bttBottom = detectedBarTopFromBottom + 16;
+        } else {
+          // Brak paska — umieść przycisk nad ikoną czatu
+          bttBottom = bottomOffset + (isMobile ? 64 : 70);
+        }
         btt.style.setProperty('bottom', `${bttBottom}px`, 'important');
       }
     }
 
     window.addEventListener('resize', adjust, { passive: true });
     window.addEventListener('scroll', adjust, { passive: true });
+    setTimeout(adjust, 100);
     setTimeout(adjust, 300);
     setTimeout(adjust, 1000);
   }
