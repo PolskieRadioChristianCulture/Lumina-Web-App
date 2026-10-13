@@ -1220,20 +1220,7 @@
 
     // 3. Wstrzyknięcie Struktury HTML
     const navHtml = `
-        <!-- ══════════ PŁYWAJĄCY PRZYCISK CZATU W SZKLE (W DOKU BOCZNYM) ══════════ -->
-        <button type="button" 
-                id="luminaFloatingChatBtn" 
-                class="lumina-floating-chat-btn" 
-                onclick="window.openLuminaChatModal ? window.openLuminaChatModal() : (window.CCGlobalChat && window.CCGlobalChat.open())" 
-                title="Czat Christian Culture & LUMINA" 
-                aria-label="Czat Christian Culture & LUMINA">
-            <picture>
-                <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
-                <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="48" height="48" loading="lazy" decoding="async">
-            </picture>
-            <span class="cc-chat-fab-badge" aria-hidden="true"></span>
-            <span id="floatingChatBadge" class="lumina-floating-chat-badge ${initialUnread > 0 ? 'visible' : ''}" data-visible="${initialUnread > 0 ? 'true' : 'false'}" style="${initialUnread > 0 ? 'display:flex !important;' : 'display:none !important;'}">${initialUnread > 0 ? (initialUnread > 9 ? '9+' : initialUnread) : ''}</span>
-        </button>
+
 
 
         <!-- ══════════ POPUP ROZWIJANY Q&A (Pytania i Odpowiedzi LUMINA) ══════════ -->

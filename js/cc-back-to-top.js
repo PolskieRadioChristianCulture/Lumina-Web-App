@@ -88,7 +88,7 @@
     var css = document.createElement('style');
     css.textContent = 'html.cc-fab-dock-on:not(.cc-fab-dock-open) :is(#luminaThemeSwitchBtn,#luminaFloatingChatBtn,#ccGlobalChatFab,#luminaMiniPlayerContainer.minimized){display:none!important}' +
       'html.cc-fab-dock-open #luminaThemeSwitchBtn{bottom:calc(var(--cc-dock-b) + 60px)!important;right:var(--cc-dock-r)!important}' +
-      'html.cc-fab-dock-open :is(#luminaFloatingChatBtn,#ccGlobalChatFab){bottom:calc(var(--cc-dock-b) + 120px)!important;right:var(--cc-dock-r)!important}' +
+      'html.cc-fab-dock-open :is(#luminaFloatingChatBtn,#ccGlobalChatFab){display:flex!important;bottom:calc(var(--cc-dock-b) + 120px)!important;right:var(--cc-dock-r)!important}' +
       'html.cc-fab-dock-open #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-dock-b) + 180px)!important;right:var(--cc-dock-r)!important}' +
       '#ccFabDockToggle{position:fixed;z-index:100006;bottom:var(--cc-dock-b);right:var(--cc-dock-r);width:48px;height:48px;border-radius:50%;border:1px solid #b08a3c;background:#fff;color:#63470e;box-shadow:0 3px 14px #0003;display:none;align-items:center;justify-content:center;cursor:pointer;padding:0;touch-action:manipulation;transition:transform .2s}' +
       'html.cc-fab-dock-on #ccFabDockToggle{display:flex}html.cc-fab-dock-open #ccFabDockToggle{transform:rotate(90deg)}' +

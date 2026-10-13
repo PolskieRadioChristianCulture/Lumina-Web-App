@@ -155,12 +155,12 @@
       }
 
       .cc-chat-fab-btn {
-        width: 60px !important;
-        height: 60px !important;
-        min-width: 60px !important;
-        min-height: 60px !important;
-        max-width: 60px !important;
-        max-height: 60px !important;
+        width: 50px !important;
+        height: 50px !important;
+        min-width: 50px !important;
+        min-height: 50px !important;
+        max-width: 50px !important;
+        max-height: 50px !important;
         border-radius: 50% !important;
         border: none !important;
         padding: 0 !important;
@@ -1146,12 +1146,9 @@
   function mountComponent() {
     if (document.getElementById('ccGlobalChatOverlay')) return;
 
-    // Pilnowanie żelaznej zasady jednego przycisku czatu:
-    // Jeśli na stronie istnieje już dedykowany przycisk czatu #luminaFloatingChatBtn w doku,
-    // NIE WSTRZYKUJEMY drugiego przycisku fabWrap!
-    const hasDockChatBtn = !!document.getElementById('luminaFloatingChatBtn');
+    // Przycisk FAB (Neonowy w szkle z pliku Neonowy przycisk czatu w szkle.png) — uniwersalny w całym ekosystemie
     let fabWrap = document.getElementById('ccGlobalChatFab');
-    if (!hasDockChatBtn && !fabWrap) {
+    if (!fabWrap) {
       fabWrap = document.createElement('div');
       fabWrap.id = 'ccGlobalChatFab';
       fabWrap.className = 'cc-chat-fab-wrap';
@@ -1163,29 +1160,13 @@
         <button type="button" class="cc-chat-fab-btn" id="ccChatFabBtn" aria-label="Otwórz czat Christian Culture i LUMINA" title="Czat Christian Culture & LUMINA">
           <picture>
             <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
-            <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="60" height="60" loading="lazy" decoding="async">
+            <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="50" height="50" loading="eager" decoding="sync">
           </picture>
           <span class="cc-chat-fab-badge" aria-hidden="true"></span>
         </button>
       `;
       document.body.appendChild(fabWrap);
-    } else if (hasDockChatBtn && fabWrap) {
-      fabWrap.remove();
-      fabWrap = null;
     }
-
-    // Dynamiczny strażnik jednego przycisku:
-    try {
-      const singleButtonObserver = new MutationObserver(function () {
-        if (document.getElementById('luminaFloatingChatBtn')) {
-          const extraFab = document.getElementById('ccGlobalChatFab');
-          if (extraFab) extraFab.remove();
-        }
-      });
-      if (document.body) {
-        singleButtonObserver.observe(document.body, { childList: true, subtree: true });
-      }
-    } catch (e) {}
 
     // Okno czatu (Zintegrowane: Czat + Społeczność + Kanały)
     const overlay = document.createElement('div');
@@ -1583,6 +1564,8 @@
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+    }
+
     if (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
