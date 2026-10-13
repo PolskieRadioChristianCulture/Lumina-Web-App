@@ -371,7 +371,29 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-size: 1rem !important;
+      }
+
+      .cc-chat-action-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+        display: block !important;
+        fill: currentColor !important;
+      }
+
+      .cc-chat-close-btn svg {
+        width: 16px !important;
+        height: 16px !important;
+        display: block !important;
+        stroke: currentColor !important;
+        fill: none !important;
+      }
+
+      .cc-chat-action-arrow svg {
+        width: 14px !important;
+        height: 14px !important;
+        display: block !important;
+        stroke: currentColor !important;
+        fill: none !important;
       }
 
       .cc-chat-action-info {
@@ -563,7 +585,7 @@
             </div>
           </div>
           <button type="button" class="cc-chat-close-btn" id="ccChatCloseBtn" aria-label="Zamknij czat">
-            <i class="fa-solid fa-xmark"></i>
+            <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
         </div>
 
@@ -581,56 +603,56 @@
           <a href="/lumina.html#chat" class="cc-chat-action-card" id="ccChatActionLumina">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(168, 85, 247, 0.2); color: #C084FC;">
-                <i class="fa-solid fa-comments"></i>
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
               </div>
               <div class="cc-chat-action-info">
                 <span class="cc-chat-action-title">Czat Społeczności LUMINA</span>
                 <span class="cc-chat-action-desc">Wiadomości prywatne i pokoje rozmów</span>
               </div>
             </div>
-            <i class="fa-solid fa-arrow-right cc-chat-action-arrow"></i>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
           </a>
 
           <!-- Opcja 2: Rozmowa Duszpasterska / Duchowny Mariusz -->
           <a href="tel:+48608337477" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(234, 179, 8, 0.2); color: #FACC15;">
-                <i class="fa-solid fa-hands-praying"></i>
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
               </div>
               <div class="cc-chat-action-info">
                 <span class="cc-chat-action-title">Duchowny Mariusz</span>
                 <span class="cc-chat-action-desc">Wsparcie duszpasterskie i modlitwa (+48 608 337 477)</span>
               </div>
             </div>
-            <i class="fa-solid fa-phone cc-chat-action-arrow"></i>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
           </a>
 
           <!-- Opcja 3: WhatsApp Społeczności Christian Culture -->
           <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(34, 197, 94, 0.2); color: #4ADE80;">
-                <i class="fa-brands fa-whatsapp"></i>
+                <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.2 1.25-1.74 1.32-.49.07-1.12.1-3.26-.79-2.73-1.14-4.49-3.92-4.63-4.1-.14-.19-1.1-1.46-1.1-2.79 0-1.32.69-1.97.94-2.24.25-.26.54-.33.72-.33.18 0 .36 0 .52.01.17.01.4.07.61.57.24.58.82 2 .89 2.15.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.15-.3.31-.13.61.17.3 1.07 1.77 2.3 2.87 1.58 1.41 2.91 1.85 3.32 2.05.41.2.65.17.89-.1.24-.28 1.03-1.2 1.31-1.61.27-.41.55-.35.92-.21.38.14 2.38 1.12 2.79 1.32.41.2.68.31.78.48.1.18.1 1.02-.14 1.7z"/></svg>
               </div>
               <div class="cc-chat-action-info">
                 <span class="cc-chat-action-title">Grupa WhatsApp CC</span>
                 <span class="cc-chat-action-desc">Codzienne rozważania i braterstwo</span>
               </div>
             </div>
-            <i class="fa-solid fa-arrow-up-right-from-square cc-chat-action-arrow"></i>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>
           </a>
 
           <!-- Opcja 4: Skontaktuj się ze Sztabem CC (Email / Infolinia) -->
           <a href="/o-nas.html" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8;">
-                <i class="fa-solid fa-envelope"></i>
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
               </div>
               <div class="cc-chat-action-info">
                 <span class="cc-chat-action-title">O Inicjatywie i Kontakt</span>
                 <span class="cc-chat-action-desc">Cezary i Wioletta Rogowscy • Redakcja</span>
               </div>
             </div>
-            <i class="fa-solid fa-arrow-right cc-chat-action-arrow"></i>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
           </a>
         </div>
 
