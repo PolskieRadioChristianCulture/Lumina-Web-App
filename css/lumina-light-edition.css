@@ -712,7 +712,7 @@ body.theme-lumina-light .mobile-tab-btn.active {
 /* ── 15. PŁYWAJĄCY PRZEŁĄCZNIK TRYBU (IKONA SŁOŃCE / KSIĘŻYC) ── */
 .lumina-theme-switch-pill {
     position: fixed !important;
-    bottom: 86px !important;
+    bottom: 134px !important;
     right: 10px !important;
     z-index: 99998 !important;
     display: inline-flex !important;
@@ -793,7 +793,7 @@ html[data-lumina-theme="dark"] .lumina-theme-switch-pill i {
 /* Ergonomia mobilna: idealne ułożenie w pionie po prawej stronie */
 @media (max-width: 768px) {
     .lumina-theme-switch-pill {
-        bottom: calc(142px + env(safe-area-inset-bottom, 8px)) !important;
+        bottom: calc(134px + env(safe-area-inset-bottom, 8px)) !important;
         right: 10px !important;
         left: auto !important;
         width: 48px !important;

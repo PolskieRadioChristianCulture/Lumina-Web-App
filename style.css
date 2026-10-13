@@ -2341,7 +2341,7 @@ button {
 .back-to-top {
     position: fixed;
     right: 1.5rem;
-    bottom: 116px; /* Bezpiecznie 16px nad paskiem radia (100px) */
+    bottom: 74px; /* Podstawa kolumny FAB: strzałka 74px | motyw 134px | radio 194px */
     width: 38px;
     height: 38px;
     border-radius: 50%;
@@ -2379,7 +2379,7 @@ button {
 @media (max-width: 767px) {
     .back-to-top {
         right: 1.25rem;
-        bottom: 130px; /* mobile player ma 115px wysokości */
+        bottom: 74px; /* Podstawa kolumny FAB na mobile */
         width: 42px;
         height: 42px;
         font-size: 1rem;
