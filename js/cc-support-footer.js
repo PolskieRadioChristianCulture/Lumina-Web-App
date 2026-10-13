@@ -102,6 +102,15 @@
       w Polsce i na świecie.
     </p>
 
+    <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(196, 163, 90, 0.18); font-size: 11px; line-height: 1.5; color: #94a3b8; text-align: center;">
+      <p style="margin: 0 0 6px 0;">
+        <strong style="color: #cbd5e1;">Nota Prawna & Misja:</strong> Christian Culture (polskieradio.cc) to niezależna, prywatna chrześcijańska inicjatywa misyjna i ewangelizacyjna, finansowana z dobrowolnych darowizn i prowadzona w duchu chrześcijańskiego wolontariatu.
+      </p>
+      <p style="margin: 0;">
+        Projekt nie jest powiązany ani stowarzyszony z publicznym nadawcą <em>Polskie Radio S.A.</em> (polskieradio.pl). | <a href="/privacy" style="color: #C4A35A; text-decoration: underline;">Polityka Prywatności</a>
+      </p>
+    </div>
+
   </div>
 </section>
   `.trim();
@@ -509,7 +518,40 @@
     }
   }
 
-  // 9. Uruchomienie po załadowaniu drzewa DOM
+  // 9. Globalny pancerz klikalności logo CCN News (zarówno białe jak i czarne) -> ZAWSZE /news
+  try {
+    document.addEventListener('click', function (e) {
+      const target = e.target && e.target.closest 
+        ? e.target.closest('img[src*="ccn-logo"], img[src*="ccn_news"], .ccn-ticker-brand, [data-ccn-logo]')
+        : null;
+      if (target) {
+        // Kliknięto w logotyp CCN News
+        const a = target.closest('a');
+        if (!a || a.getAttribute('href') !== '/news') {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = '/news';
+        }
+      }
+    }, true); // useCapture = true, przechwytuje zdarzenie przed jakimkolwiek buttonem/stopPropagation
+  } catch (err) {
+    console.warn('CCN Logo click handler warning:', err);
+  }
+
+  // 10. Automatyczne załadowanie uniwersalnego komponentu CCGlobalChatButton (neonowy przycisk w szkle)
+  try {
+    if (!window.CCGlobalChatButton && !document.getElementById('ccGlobalChatScript') && !document.querySelector('script[src*="cc-global-chat-button"]')) {
+      const chatScript = document.createElement('script');
+      chatScript.id = 'ccGlobalChatScript';
+      chatScript.src = '/components/cc-global-chat-button.js?v=20261013_chat_v1';
+      chatScript.defer = true;
+      document.head.appendChild(chatScript);
+    }
+  } catch (chatErr) {
+    console.warn('CCGlobalChatButton load error:', chatErr);
+  }
+
+  // 11. Uruchomienie po załadowaniu drzewa DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', autoMountSupportFooter);
   } else {

@@ -598,8 +598,13 @@ if (auth) {
     } catch(e) {}
 }
 
+let luminaAuthEventGeneration = 0;
+
 if (auth) {
     onAuthStateChanged(auth, async (user) => {
+        const authEventGeneration = ++luminaAuthEventGeneration;
+        const isCurrentAuthEvent = () => authEventGeneration === luminaAuthEventGeneration && auth.currentUser?.uid === user?.uid;
+        if (currentUserState?.uid !== user?.uid) currentProfileState = null;
         currentUserState = user;
         if (user) {
             // Sprawdź czy to nowe/inne konto niż poprzednio — jeśli tak, zresetuj stare powiadomienia i liczniki
@@ -627,7 +632,7 @@ if (auth) {
                     }
                 }
                 localStorage.setItem('lumina_last_authenticated_uid', user.uid);
-            } catch(e) {}
+            } catch(e) { if (!isCurrentAuthEvent()) return; }
 
             // Save basic user session in localStorage immediately
             try {
@@ -641,11 +646,12 @@ if (auth) {
                 localStorage.setItem('lumina_current_user', JSON.stringify(uData));
                 localStorage.setItem('lumina_user_session', 'active');
                 sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
-            } catch(e) {}
+            } catch(e) { if (!isCurrentAuthEvent()) return; }
 
             // Load user profile from Firestore
             try {
                 const userDoc = await getDoc(doc(db, 'lumina_profiles', user.uid));
+                if (!isCurrentAuthEvent()) return;
                 const _luminaOfficialId = detectLuminaOfficialIdentity(user); const isRadioCC = _luminaOfficialId === 'radiocc';
                 
                 if (userDoc.exists()) {
@@ -664,8 +670,10 @@ if (auth) {
                         currentProfileState.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
                         try {
                             await setDoc(doc(db, 'lumina_profiles', user.uid), currentProfileState, { merge: true });
+                            if (!isCurrentAuthEvent()) return;
                             await setDoc(doc(db, 'lumina_profiles', 'radiocc'), currentProfileState, { merge: true });
-                        } catch(e) {}
+                            if (!isCurrentAuthEvent()) return;
+                        } catch(e) { if (!isCurrentAuthEvent()) return; }
                     }
                     
                     // 🛡️ STRAŻNIK: samonaprawa profilu, któremu wcześniej błędnie nadano cudzą tożsamość
@@ -685,7 +693,8 @@ if (auth) {
                             healed.needsProfileCompletion = true;
                         }
                         Object.assign(currentProfileState, healed);
-                        try { await setDoc(doc(db, 'lumina_profiles', user.uid), healed, { merge: true }); } catch(e) {}
+                        try { await setDoc(doc(db, 'lumina_profiles', user.uid), healed, { merge: true }); } catch(e) { if (!isCurrentAuthEvent()) return; }
+                        if (!isCurrentAuthEvent()) return;
                     }
 
                     // Auto-fix / enforce Cezary Rogowski official avatar
@@ -700,8 +709,10 @@ if (auth) {
                             currentProfileState.profileCompleted = true;
                             try {
                                 await setDoc(doc(db, 'lumina_profiles', user.uid), { avatar: 'avatar_cezary_official.jpg', avatarVideo: 'cezary_rgowski_video_avatar.mp4', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                                if (!isCurrentAuthEvent()) return;
                                 await setDoc(doc(db, 'lumina_profiles', 'cezaryrgowski'), { avatar: 'avatar_cezary_official.jpg', avatarVideo: 'cezary_rgowski_video_avatar.mp4', hasRealPhoto: true, profileCompleted: true }, { merge: true });
-                            } catch(e) {}
+                                if (!isCurrentAuthEvent()) return;
+                            } catch(e) { if (!isCurrentAuthEvent()) return; }
                         }
                     }
 
@@ -716,8 +727,10 @@ if (auth) {
                             currentProfileState.profileCompleted = true;
                             try {
                                 await setDoc(doc(db, 'lumina_profiles', user.uid), { avatar: 'avatar_wioletta_official.jpg', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                                if (!isCurrentAuthEvent()) return;
                                 await setDoc(doc(db, 'lumina_profiles', 'wiolettarogowska'), { avatar: 'avatar_wioletta_official.jpg', hasRealPhoto: true, profileCompleted: true }, { merge: true });
-                            } catch(e) {}
+                                if (!isCurrentAuthEvent()) return;
+                            } catch(e) { if (!isCurrentAuthEvent()) return; }
                         }
                     }
 
@@ -736,7 +749,7 @@ if (auth) {
                             localStorage.setItem('lumina_profile_' + currentProfileState.slug, safeJson);
                             sessionStorage.setItem('lumina_auth_owner_' + currentProfileState.slug, 'true');
                         }
-                    } catch(e) {}
+                    } catch(e) { if (!isCurrentAuthEvent()) return; }
                 } else {
                     // Check if Cezary Rogowski / Christian Culture / Wioletta by email/name
                     const isCezary = detectLuminaOfficialIdentity(user) === 'cezary';
@@ -784,11 +797,14 @@ if (auth) {
                     if (db) {
                         try {
                             await setDoc(doc(db, 'lumina_profiles', user.uid), currentProfileState, { merge: true });
+                            if (!isCurrentAuthEvent()) return;
                             if (cleanSlug && cleanSlug !== user.uid && !LUMINA_RESERVED_PROFILE_SLUGS.includes(cleanSlug)) {
                                 await setDoc(doc(db, 'lumina_profiles', cleanSlug), currentProfileState, { merge: true });
+                                if (!isCurrentAuthEvent()) return;
                             }
                             console.log(`Lumina: Automatycznie utworzono nowy profil Firestore dla użytkownika Google [${cleanSlug}] ☁️✨`);
                         } catch(saveErr) {
+                            if (!isCurrentAuthEvent()) return;
                             console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
                         }
                     }
@@ -808,9 +824,10 @@ if (auth) {
                         if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, safeJson);
                         sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
                         if (cleanSlug) sessionStorage.setItem('lumina_auth_owner_' + cleanSlug, 'true');
-                    } catch(e) {}
+                    } catch(e) { if (!isCurrentAuthEvent()) return; }
                 }
             } catch(e) {
+                if (!isCurrentAuthEvent()) return;
                 console.warn('Error loading user profile:', e);
             }
         } else {
@@ -833,9 +850,10 @@ if (auth) {
                     b.setAttribute('data-visible', 'false');
                     b.textContent = '';
                 }
-            } catch(e) {}
+            } catch(e) { if (!isCurrentAuthEvent()) return; }
         }
         
+        if (!isCurrentAuthEvent()) return;
         authSubscribers.forEach(cb => cb(currentUserState, currentProfileState));
         window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user: currentUserState, profile: currentProfileState } }));
     });

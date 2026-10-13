@@ -1970,13 +1970,21 @@
                 window.triggerSecretAdminPrompt();
             });
         });
-    }, 1000);
     document.body.insertAdjacentHTML('beforeend', navHtml);
-    try {
-        const dupChat = document.getElementById('ccGlobalChatFab');
-        if (dupChat) dupChat.remove();
-    } catch(e) {}
     setupAccessibleNavigation(document.getElementById('luminaBottomNav'), document.getElementById('luminaBottomMenuPopup'));
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // GLOBALNY PRZYCISK CZATU CC DLA CAŁEGO EKOSYSTEMU I PORTALU LUMINA
+    // ══════════════════════════════════════════════════════════════════════════
+    try {
+        if (!window.CCGlobalChatButton && !document.getElementById('ccGlobalChatScript') && !document.querySelector('script[src*="cc-global-chat-button"]')) {
+            const chatScript = document.createElement('script');
+            chatScript.id = 'ccGlobalChatScript';
+            chatScript.src = '/components/cc-global-chat-button.js?v=20261013_chat_v3';
+            chatScript.defer = true;
+            document.head.appendChild(chatScript);
+        }
+    } catch(e) {}
 
     // ══════════════════════════════════════════════════════════════════════════
     // Pomocnik natychmiastowego pobierania w tle stron portalu LUMINA (Near-Zero Latency)
