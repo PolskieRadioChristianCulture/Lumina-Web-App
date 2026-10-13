@@ -43,7 +43,7 @@
     let containerEl = null;
     let stationsPopupEl = null;
     let isPlaying = false;
-    let isMinimized = false;
+    let isMinimized = true;
     let currentStationIndex = 0;
     let shouldAutoResume = false;
     let userExplicitlyPaused = false;
@@ -425,11 +425,8 @@
         },
 
         onLeftClick: function (e) {
-            if (isMinimized) {
-                this.expand();
-            } else {
-                this.toggle(e);
-            }
+            if (e && e.stopPropagation) e.stopPropagation();
+            this.toggle(e);
         },
 
         toggleStationsPopup: function (e) {

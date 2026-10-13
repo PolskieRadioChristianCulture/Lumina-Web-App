@@ -2007,13 +2007,13 @@
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
-            lmpCss.href = '/css/lumina-mini-player.css?v=20261003_player_above_chat_v7';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20261013_fab_col_v1';
             document.head.appendChild(lmpCss);
         }
         if (!window.LuminaMiniPlayer && !document.querySelector('script[src*="lumina-mini-player.js"]')) {
             const lmpScript = document.createElement('script');
             lmpScript.id = 'luminaMiniPlayerScript';
-            lmpScript.src = 'js/lumina-mini-player.js?v=20260918_v5';
+            lmpScript.src = '/js/lumina-mini-player.js?v=20261013_fab_col_v1';
             lmpScript.defer = true;
             document.body.appendChild(lmpScript);
         }
