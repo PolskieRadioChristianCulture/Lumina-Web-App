@@ -1,9 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "updatedAt": "2026-10-12T12:20:00Z",
+  "updatedAt": "2026-10-13T13:00:00Z",
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
+    {
+      "topic": "CC UI: Wyrównanie ikony czatu z osią przycisku play oraz naprawa widoczności przycisku powrotu do góry",
+      "date": "2026-10-13",
+      "agent": "A"
+    },
     {
       "topic": "CC CHAT: Prawdziwy transport Firestore 1:1, usunięcie symulacji i integracja realtime LUMINA",
       "date": "2026-10-13",
