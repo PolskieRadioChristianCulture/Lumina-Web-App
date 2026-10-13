@@ -38,11 +38,24 @@
       badge: '🌐 Cała Społeczność',
       desc: 'Otwarty pokój rozmów dla wszystkich członków',
       avatar: '/images/chat/cc-chat-button-120.webp',
+      profileUrl: '/lumina-tablica.html',
       isPublic: true,
       initialGreeting: 'Pokój Wam! 🕊️ Witaj na ogólnym czacie społeczności Christian Culture i LUMINA. Bądźmy dla siebie wsparciem i dzielmy się Słowem Bożym!'
     },
     {
+      id: 'cezaryrgowski',
+      slug: 'cezaryrgowski',
+      profileUrl: '/lumina.cezaryrgowski.html',
+      name: 'Cezary Rogowski',
+      badge: '👑 Założyciel CC',
+      desc: 'Założyciel Misji Christian Culture & LUMINA',
+      avatar: '/avatar_cezary_official.jpg',
+      initialGreeting: 'Pokój Wam! 🕊️ Niech Boży pokój i łaska będą z Wami każdego dnia. W czym mogę pomóc w dziele misji?'
+    },
+    {
       id: 'wiolettarogowska',
+      slug: 'wiolettarogowska',
+      profileUrl: '/lumina.wiolettarogowska.html',
       name: 'Wioletta Rogowska',
       badge: '🌸 Liderka CC',
       desc: 'Liderka Społeczności & Współzałożycielka • Modlitwa',
@@ -51,6 +64,8 @@
     },
     {
       id: 'mariusz',
+      slug: 'mariusz',
+      profileUrl: '/lumina.mariusz.html',
       name: 'Duchowny Mariusz',
       badge: '🛠️ Duszpasterz CC',
       desc: 'Wsparcie duszpasterskie i modlitwa (+48 608 337 477)',
@@ -59,6 +74,8 @@
     },
     {
       id: 'radiocc',
+      slug: 'radiocc',
+      profileUrl: '/lumina.radiocc.html',
       name: 'Misja & Radio CC',
       badge: '🕊️ Redakcja Misji',
       desc: 'Oficjalny Nadawca Radiowy & Sztab Ewangelizacji',
@@ -67,6 +84,8 @@
     },
     {
       id: 'andrzejthiel',
+      slug: 'andrzejthiel',
+      profileUrl: '/lumina.andrzejthiel.html',
       name: 'Andrzej Thiel',
       badge: '📖 Autor CKD',
       desc: 'Autor rozważań Cuda Każdego Dnia • Sieradz',
@@ -75,6 +94,8 @@
     },
     {
       id: 'jolawojcik',
+      slug: 'jolawojcik',
+      profileUrl: '/lumina.jolawojcik.html',
       name: 'Jola Wójcik',
       badge: '🕊️ Pasmo Modlitwy',
       desc: 'Biblijny Czas Modlitwy • Polskie Radio CC',
@@ -83,6 +104,8 @@
     },
     {
       id: 'studiodobregoslowa',
+      slug: 'studiodobregoslowa',
+      profileUrl: '/lumina.studiodobregoslowa.html',
       name: 'Studio Dobrego Słowa',
       badge: '🎙️ Studio CC',
       desc: 'Nagrania Audio & Wideo • Produkcja misyjna',
@@ -90,31 +113,9 @@
       initialGreeting: 'Dobre słowo ma moc przemiany serc! 🎙️ Witamy w Studiu Dobrego Słowa.'
     },
     {
-      id: 'robert',
-      name: 'Robert Łukasz Pio',
-      badge: '✨ Społeczność',
-      desc: 'Członek Społeczności LUMINA • Kraków',
-      avatar: '/avatar_robert.jpg',
-      initialGreeting: 'Cześć bracie/siostro! Pozdrowienia z Krakowa w Panu Jezusie. ✨'
-    },
-    {
-      id: 'zyta',
-      name: 'Zyta Grzesik',
-      badge: '✨ Społeczność',
-      desc: 'Członkini Społeczności LUMINA • Warszawa',
-      avatar: '/avatar_zyta_grzesik.webp',
-      initialGreeting: 'Dzień dobry! Błogosławieństwa Bożego na cały dzisiejszy dzień. 🌸'
-    },
-    {
-      id: 'david',
-      name: 'David Leoniuk',
-      badge: '✨ Społeczność',
-      desc: 'Członek Społeczności LUMINA • New York, USA',
-      avatar: '/avatar_david_leoniuk.jpg',
-      initialGreeting: 'God bless you! Pozdrowienia dla całej polskiej wspólnoty Christian Culture zza oceanu. ✨'
-    },
-    {
       id: 'zbyszek',
+      slug: 'zbyszekgieron',
+      profileUrl: '/lumina.zbyszekgieron.html',
       name: 'Zbyszek Gieroń',
       badge: '🕊️ Misja & Wiara',
       desc: 'Profil Misyjny • Świadectwo & Wiara',
@@ -123,11 +124,73 @@
     },
     {
       id: 'zofia',
+      slug: 'zofiadudek',
+      profileUrl: '/lumina.zofiadudek.html',
       name: 'Zofia Dudek',
       badge: '🌸 Kobiety CC',
       desc: 'Kobiety Christian Culture • Modlitwa',
       avatar: '/avatar_zofia_dudek.png',
       initialGreeting: 'Szczęść Boże! Cieszę się z naszej wspólnoty i wzajemnego umocnienia w modlitwie. 🌸'
+    },
+    {
+      id: 'osobowoscplus',
+      slug: 'osobowoscplus',
+      profileUrl: '/lumina.osobowoscplus.html',
+      name: 'Osobowość PLUS',
+      badge: '💡 Rozwój',
+      desc: 'Kanał i Społeczność Rozwoju Osobistego CC',
+      avatar: '/logo_osobowosc_plus.jpg',
+      initialGreeting: 'Witaj w Osobowość PLUS! Rozwijaj swoje talenty ku chwale Bożej. ✨'
+    },
+    {
+      id: 'pawelmurawski',
+      slug: 'pawelmurawski',
+      profileUrl: '/lumina.pawelmurawski.html',
+      name: 'Paweł Murawski',
+      badge: '📖 Teologia',
+      desc: 'Studia Biblijne i Rozważania Słowa',
+      avatar: '/avatar_pawel_murawski.jpg',
+      initialGreeting: 'Niech Słowo Boże mieszka w Was obficie! 📖 Pokój Chrystusowy.'
+    },
+    {
+      id: 'magdalena',
+      slug: 'magdalena',
+      profileUrl: '/lumina.magdalena.html',
+      name: 'Magdalena',
+      badge: '🌸 Kobiety LUMINA',
+      desc: 'Wspólnota i Świadectwo Kobiet Chrześcijańskich',
+      avatar: '/avatar_magdalena.png',
+      initialGreeting: 'Błogosławionego dnia! Pięknie, że tworzymy razem tę Bożą społeczność. 🌸'
+    },
+    {
+      id: 'robert',
+      slug: 'robert',
+      profileUrl: '/lumina-profile.html?user=robert',
+      name: 'Robert Łukasz Pio',
+      badge: '✨ Społeczność',
+      desc: 'Członek Społeczności LUMINA • Kraków',
+      avatar: '/avatar_robert.jpg',
+      initialGreeting: 'Cześć bracie/siostro! Pozdrowienia z Krakowa w Panu Jezusie. ✨'
+    },
+    {
+      id: 'zyta',
+      slug: 'zyta',
+      profileUrl: '/lumina-profile.html?user=zyta',
+      name: 'Zyta Grzesik',
+      badge: '✨ Społeczność',
+      desc: 'Członkini Społeczności LUMINA • Warszawa',
+      avatar: '/avatar_zyta_grzesik.webp',
+      initialGreeting: 'Dzień dobry! Błogosławieństwa Bożego na cały dzisiejszy dzień. 🌸'
+    },
+    {
+      id: 'david',
+      slug: 'david',
+      profileUrl: '/lumina-profile.html?user=david',
+      name: 'David Leoniuk',
+      badge: '✨ Społeczność',
+      desc: 'Członek Społeczności LUMINA • New York, USA',
+      avatar: '/avatar_david_leoniuk.jpg',
+      initialGreeting: 'God bless you! Pozdrowienia dla całej polskiej wspólnoty Christian Culture zza oceanu. ✨'
     }
   ];
 
@@ -274,9 +337,9 @@
         position: fixed !important;
         right: max(18px, env(safe-area-inset-right)) !important;
         bottom: max(18px, env(safe-area-inset-bottom)) !important;
-        width: 410px !important;
-        max-width: calc(100vw - 36px) !important;
-        height: 640px !important;
+        width: 480px !important;
+        max-width: calc(100vw - 32px) !important;
+        height: 740px !important;
         max-height: calc(100vh - 36px) !important;
         background: linear-gradient(165deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 27, 75, 0.98) 55%, rgba(10, 15, 30, 0.99) 100%) !important;
         border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
@@ -466,33 +529,45 @@
         overflow: hidden !important;
       }
 
-      /* Wstęga awatarów szybkiego wyboru rozmówcy */
+      /* Wstęga awatarów szybkiego wyboru rozmówcy (pełna widoczność bez obcinania) */
       .cc-chat-partners-bar {
-        padding: 8px 12px !important;
-        background: rgba(0, 0, 0, 0.35) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        padding: 10px 14px !important;
+        background: rgba(8, 12, 22, 0.75) !important;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.18) !important;
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 12px !important;
         overflow-x: auto !important;
-        scrollbar-width: none !important;
+        overflow-y: hidden !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(196, 163, 90, 0.3) transparent !important;
+        flex-shrink: 0 !important;
+        min-height: 86px !important;
+        box-sizing: border-box !important;
       }
 
       .cc-chat-partners-bar::-webkit-scrollbar {
-        display: none !important;
+        height: 4px !important;
+      }
+      .cc-chat-partners-bar::-webkit-scrollbar-thumb {
+        background: rgba(196, 163, 90, 0.35) !important;
+        border-radius: 4px !important;
       }
 
       .cc-chat-partner-chip {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        gap: 3px !important;
+        justify-content: center !important;
+        gap: 4px !important;
         background: transparent !important;
         border: none !important;
         cursor: pointer !important;
-        padding: 0 !important;
-        min-width: 52px !important;
+        padding: 2px !important;
+        min-width: 58px !important;
+        flex-shrink: 0 !important;
         transition: transform 0.2s ease !important;
+        touch-action: manipulation !important;
       }
 
       .cc-chat-partner-chip:hover {
@@ -501,17 +576,29 @@
 
       .cc-chat-partner-avatar-wrap {
         position: relative !important;
-        width: 38px !important;
-        height: 38px !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
         border-radius: 50% !important;
         padding: 2px !important;
-        border: 2px solid rgba(255, 255, 255, 0.15) !important;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+        border: 2px solid rgba(255, 255, 255, 0.22) !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45) !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
+
+      .cc-chat-partner-chip:hover .cc-chat-partner-avatar-wrap {
+        border-color: #FACC15 !important;
+        box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
       }
 
       .cc-chat-partner-chip.is-active .cc-chat-partner-avatar-wrap {
         border-color: #C4A35A !important;
-        box-shadow: 0 0 10px rgba(196, 163, 90, 0.6), 0 0 4px #A855F7 !important;
+        box-shadow: 0 0 14px rgba(196, 163, 90, 0.8), 0 0 6px #A855F7 !important;
       }
 
       .cc-chat-partner-chip-img {
@@ -523,29 +610,33 @@
       }
 
       .cc-chat-partner-chip-name {
-        font-size: 0.65rem !important;
+        font-size: 0.70rem !important;
         font-weight: 700 !important;
-        color: #94A3B8 !important;
+        color: #CBD5E1 !important;
         white-space: nowrap !important;
-        max-width: 56px !important;
+        max-width: 62px !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         text-align: center !important;
+        line-height: 1.2 !important;
       }
 
       .cc-chat-partner-chip.is-active .cc-chat-partner-chip-name {
         color: #FACC15 !important;
+        font-weight: 800 !important;
       }
 
       /* Belka tożsamości aktywnej konwersacji */
       .cc-chat-active-info-bar {
-        padding: 6px 14px !important;
-        background: rgba(0, 0, 0, 0.45) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 8px 14px !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.18) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
         gap: 8px !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
       }
 
       .cc-chat-active-info-left {
@@ -553,6 +644,7 @@
         align-items: center !important;
         gap: 8px !important;
         min-width: 0 !important;
+        flex-wrap: wrap !important;
       }
 
       .cc-chat-active-badge {
@@ -566,7 +658,7 @@
       }
 
       .cc-chat-active-name {
-        font-size: 0.76rem !important;
+        font-size: 0.80rem !important;
         font-weight: 700 !important;
         color: #FFFFFF !important;
         white-space: nowrap !important;
@@ -574,13 +666,37 @@
         text-overflow: ellipsis !important;
       }
 
-      .cc-chat-members-switch-btn {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+      .cc-chat-active-profile-btn {
+        background: rgba(250, 204, 21, 0.12) !important;
+        border: 1px solid rgba(212, 175, 55, 0.55) !important;
         color: #FACC15 !important;
         padding: 3px 8px !important;
         border-radius: 10px !important;
         font-size: 0.68rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        transition: all 0.2s ease !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      .cc-chat-active-profile-btn:hover {
+        background: rgba(250, 204, 21, 0.25) !important;
+        border-color: #FACC15 !important;
+        transform: scale(1.03) !important;
+        color: #FFFFFF !important;
+      }
+
+      .cc-chat-members-switch-btn {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        color: #FACC15 !important;
+        padding: 4px 10px !important;
+        border-radius: 10px !important;
+        font-size: 0.70rem !important;
         font-weight: 700 !important;
         cursor: pointer !important;
         white-space: nowrap !important;
@@ -588,6 +704,7 @@
         align-items: center !important;
         gap: 4px !important;
         transition: all 0.2s ease !important;
+        flex-shrink: 0 !important;
       }
 
       .cc-chat-members-switch-btn:hover {
@@ -904,6 +1021,36 @@
         text-overflow: ellipsis !important;
       }
 
+      .cc-chat-member-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+      }
+
+      .cc-chat-member-profile-btn {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        color: #FACC15 !important;
+        padding: 6px 10px !important;
+        border-radius: 12px !important;
+        font-size: 0.70rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        transition: all 0.2s ease !important;
+        white-space: nowrap !important;
+      }
+
+      .cc-chat-member-profile-btn:hover {
+        background: rgba(250, 204, 21, 0.22) !important;
+        border-color: #FACC15 !important;
+        transform: translateY(-1px) !important;
+        color: #FFFFFF !important;
+      }
+
       .cc-chat-member-chat-btn {
         background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(217, 70, 239, 0.2) 100%) !important;
         border: 1px solid #C4A35A !important;
@@ -917,6 +1064,14 @@
         align-items: center !important;
         gap: 4px !important;
         flex-shrink: 0 !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .cc-chat-member-chat-btn:hover {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.5) 0%, rgba(217, 70, 239, 0.4) 100%) !important;
+        border-color: #FACC15 !important;
+        transform: translateY(-1px) !important;
       }
 
       /* ── WIDOK 3: KANAŁY KOMUNIKACJI (4 KARTY) ── */

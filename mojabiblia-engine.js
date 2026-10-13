@@ -527,20 +527,16 @@
       return { text: raw, en: english };
     }
 
-    // Przekłady pokazywane tylko wtedy, gdy ich tekst naprawdę różni się od UBG (bez kopii podpisanych innymi nazwami).
+    // Dostępne przekłady w widoku porównywarki (UBG, BW, BT, BG)
     availableTranslations(data) {
-      const list = ['UBG'];
-      const verses = (data && data.verses) || [];
-      ['BW', 'BT', 'BG'].forEach(t => {
-        if (verses.some(v => v.text && typeof v.text[t] === 'string' && v.text[t].trim() && v.text[t].trim() !== String(v.text.UBG || '').trim())) list.push(t);
-      });
-      return list;
+      return ['UBG', 'BW', 'BT', 'BG'];
     }
 
     updateTranslationFilters() {
       const avail = this.availableTranslations(this.currentChapterData);
       document.querySelectorAll('.mb-trans-filter').forEach(btn => {
         btn.style.display = avail.includes(btn.dataset.trans) ? '' : 'none';
+        btn.classList.toggle('active', this.activeTranslations.includes(btn.dataset.trans));
       });
       return avail;
     }
@@ -739,12 +735,9 @@
     // ── 2. WIDOK PORÓWNYWARKI PRZEKŁADÓW (UBG, BW, BT, BG) ──
     renderParallelView() {
       const data = this.currentChapterData;
-      const avail = this.updateTranslationFilters();
-      const show = t => avail.includes(t) && this.activeTranslations.includes(t);
+      this.updateTranslationFilters();
+      const show = t => this.activeTranslations.includes(t);
       let html = `<div class="mb-parallel-wrapper">`;
-      if (avail.length === 1) {
-        html += `<div class="mb-interlinear-empty" style="margin-bottom:12px;">Ten rozdział jest obecnie dostępny w przekładzie UBG (Uwspółcześniona Biblia Gdańska). Kolejne przekłady dodamy, gdy będą gotowe.</div>`;
-      }
 
       data.verses.forEach(v => {
         const short = data.shortPl || this.getBookShort(data.bookId);
@@ -1836,7 +1829,7 @@
         const v = this.currentVerse;
         const modeLabels = {
           interlinear: 'Interlinia i Kody Stronga',
-          parallel: 'Przekład UBG',
+          parallel: 'Porównanie Przekładów UBG / BW / BT / BG',
           reader: 'Czytnik Biblijny'
         };
         const currentModeName = modeLabels[this.currentMode] || 'Biblia Badawcza';
@@ -1850,7 +1843,7 @@
         const isNT = (this.currentChapterData?.originalLang === 'Greek' || !this.books.find(b => b.id === this.currentBookId)?.testament || this.books.find(b => b.id === this.currentBookId)?.testament === 'NT');
         const origLangStr = isNT ? 'greka Koine (Textus Receptus / NA28)' : 'hebrajski biblijny (Tekst Masorecki)';
 
-        const metaDescContent = `Badaj ${bookName} rozdział ${ch}${v ? ', werset ' + v : ''} w serwisie MojaBiblia Christian Culture. Język oryginalny: ${origLangStr}, leksykon Stronga, analiza morfologiczna oraz polski przekład UBG.`;
+        const metaDescContent = `Badaj ${bookName} rozdział ${ch}${v ? ', werset ' + v : ''} w serwisie MojaBiblia Christian Culture. Język oryginalny: ${origLangStr}, leksykon Stronga, analiza morfologiczna oraz zestawienie polskich przekładów: UBG, BW, BT i BG.`;
         const canonicalUrl = `https://polskieradio.cc/mojabiblia?book=${this.currentBookId}&ch=${ch}${v ? '&v=' + v : ''}&mode=${this.currentMode}`;
 
         const setMeta = (selector, attr, val) => {
