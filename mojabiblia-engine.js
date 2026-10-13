@@ -93,8 +93,19 @@
       this.fontSizeDelta = 0;
       this.bookmarks = [];
       this.notes = {};
+      this.highlights = {}; // { "JHN_1_3": "yellow", ... }
       this.isAudioPlaying = false;
       this.audioElement = null;
+
+      // TTS state
+      this._ttsActive = false;
+      this._ttsPaused = false;
+      this._ttsVerseIdx = 0;
+      this._ttsRate = 1;
+      this._ttsRates = [1, 1.25, 1.5, 0.75];
+      this._ttsRateIdx = 0;
+      this._ttsUtterance = null;
+      this._hlPickerVerseIdx = 0;
 
       this.init();
     }
@@ -121,6 +132,8 @@
         if (savedBookmarks) this.bookmarks = JSON.parse(savedBookmarks);
         const savedNotes = localStorage.getItem('mb_notes');
         if (savedNotes) this.notes = JSON.parse(savedNotes);
+        const savedHL = localStorage.getItem('mb_highlights');
+        if (savedHL) this.highlights = JSON.parse(savedHL);
       } catch (e) {
         console.warn('[MojaBiblia] Błąd odczytu preferencji:', e);
       }
@@ -133,6 +146,7 @@
         localStorage.setItem('mb_active_trans', JSON.stringify(this.activeTranslations));
         localStorage.setItem('mb_bookmarks', JSON.stringify(this.bookmarks));
         localStorage.setItem('mb_notes', JSON.stringify(this.notes));
+        localStorage.setItem('mb_highlights', JSON.stringify(this.highlights));
         if (window.LuminaStorage && typeof window.LuminaStorage.set === 'function') {
           window.LuminaStorage.set('cache', 'mb_bookmarks', this.bookmarks);
           window.LuminaStorage.set('cache', 'mb_notes', this.notes);
@@ -793,17 +807,30 @@
     renderReaderView() {
       const data = this.currentChapterData;
       const isReverse = this.reverseInterlinear;
-      let html = `
-        <div class="mb-reader-wrapper">
-          <div class="mb-reader-article">
-            <h2 class="mb-reader-chapter-heading">${data.bookName}, Rozdział ${data.chapter}</h2>
-            <div class="mb-reader-text-body">
-      `;
+      const short = data.shortPl || data.bookName;
 
-      data.verses.forEach(v => {
-        let verseHtml = '';
+      let html = `<div class="mb-reader-wrapper">
+        <div class="mb-reader-top-bar">
+          <h2 class="mb-reader-chapter-heading">${data.bookName}, Rozdział ${data.chapter}</h2>
+          <div class="mb-reader-ribbon">
+            <button class="mb-reader-ribbon-btn mb-ribbon-tts-btn" onclick="window.mbApp.ttsStart(0)" title="Czytaj rozdział od początku (TTS)">
+              <i class="fa-solid fa-volume-high"></i> Czytaj rozdział
+            </button>
+          </div>
+        </div>
+        <div class="mb-reader-verses-list" id="mbReaderVersesList">`;
+
+      data.verses.forEach((v, idx) => {
+        const key = `${data.bookId}_${data.chapter}_${v.verse}`;
+        const hlColor = this.highlights[key] || null;
+        const hlClass = hlColor ? ` mb-hl-${hlColor}` : '';
+        const refStr = `${short} ${data.chapter}:${v.verse}`;
+        const ubgSafe = this.escapeHtml(v.text.UBG || '');
+        const refSafe = this.escapeHtml(refStr);
+
+        let bodyHtml = '';
         if (isReverse && v.interlinear && v.interlinear.length > 0) {
-          verseHtml = v.interlinear.map(w => {
+          bodyHtml = v.interlinear.map(w => {
             const safeOrig = this.escapeHtml(w.original);
             const safeTranslit = this.escapeHtml(w.translit);
             const safeGloss = this.escapeHtml(this.glossFor(w).text);
@@ -812,23 +839,171 @@
             return `<span class="mb-rev-word" data-strong="${safeStrong}" data-orig="${safeOrig}" data-translit="${safeTranslit}" data-gloss="${safeGloss}" data-morph="${safeMorph}" onclick="window.mbApp.handleWordClick(event, this)">${safeGloss || safeOrig}</span>`;
           }).join(' ');
         } else {
-          verseHtml = v.text.UBG;
+          bodyHtml = ubgSafe;
         }
 
-        html += `
-          <span class="mb-reader-verse" id="verse-${v.verse}">
-            <sup class="mb-reader-num">${v.verse}</sup>
-            ${verseHtml}&nbsp;
-          </span>
-        `;
+        html += `<div class="mb-reader-verse-row${hlClass}" id="verse-${v.verse}" data-verse-idx="${idx}" data-verse-num="${v.verse}">
+          <div class="mb-reader-row-left">
+            <button class="mb-reader-num-btn" onclick="window.mbApp.openHlPicker(${idx},'${refSafe}')" title="Zakreśl / opcje wersetu ${refSafe}">${v.verse}</button>
+          </div>
+          <div class="mb-reader-row-body" onclick="window.mbApp.openHlPicker(${idx},'${refSafe}')">${bodyHtml}</div>
+          <div class="mb-reader-row-actions">
+            <button class="mb-reader-act-btn" onclick="window.mbApp.copyVerse('${refSafe}','${ubgSafe}')" title="Kopiuj ${refSafe}"><i class="fa-regular fa-copy"></i></button>
+            <button class="mb-reader-act-btn mb-act-lumina" onclick="window.mbApp.shareToLumina('${refSafe}','${ubgSafe}')" title="Opublikuj ${refSafe} na LUMINA">L</button>
+            <button class="mb-reader-act-btn" onclick="window.mbApp.openHlPicker(${idx},'${refSafe}')" title="Zakreśl kolorem"><i class="fa-solid fa-highlighter"></i></button>
+            <button class="mb-reader-act-btn" onclick="window.mbApp.ttsStart(${idx})" title="Czytaj od tego wersetu"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+        </div>`;
       });
 
-      html += `
-            </div>
-          </div>
-        </div>
-      `;
+      html += `</div></div>`;
       this.contentContainer.innerHTML = html;
+    }
+
+    // ── HIGHLIGHTER ──────────────────────────────────────────────────────────
+    openHlPicker(verseIdx, refStr) {
+      this._hlPickerVerseIdx = verseIdx;
+      const modal = document.getElementById('mbHlPickerModal');
+      const refEl  = document.getElementById('mbHlPickerRef');
+      if (refEl)  refEl.textContent = refStr;
+      if (modal)  modal.style.display = 'flex';
+    }
+
+    closeHlPicker() {
+      const modal = document.getElementById('mbHlPickerModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    applyHighlight(color) {
+      const data = this.currentChapterData;
+      if (!data) return;
+      const v = data.verses[this._hlPickerVerseIdx];
+      if (!v) return;
+      const key = `${data.bookId}_${data.chapter}_${v.verse}`;
+      if (color) {
+        this.highlights[key] = color;
+      } else {
+        delete this.highlights[key];
+      }
+      this.savePreferences();
+      this.closeHlPicker();
+      const row = document.getElementById(`verse-${v.verse}`);
+      if (row) {
+        row.classList.remove('mb-hl-yellow','mb-hl-green','mb-hl-blue','mb-hl-rose','mb-hl-purple');
+        if (color) row.classList.add(`mb-hl-${color}`);
+      }
+    }
+
+    // ── TTS (Web Speech API) ──────────────────────────────────────────────────
+    ttsStart(verseIdx) {
+      if (!window.speechSynthesis) {
+        this.showToast('Twoja przeglądarka nie obsługuje lektora głosowego.');
+        return;
+      }
+      this._ttsActive = true;
+      this._ttsPaused = false;
+      this._ttsVerseIdx = verseIdx;
+      const bar = document.getElementById('mbTtsBar');
+      if (bar) bar.style.display = 'block';
+      this.ttsReadVerse(verseIdx);
+    }
+
+    ttsStop(force) {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      this._ttsActive = false;
+      this._ttsPaused = false;
+      document.querySelectorAll('.mb-verse-tts-active').forEach(el => el.classList.remove('mb-verse-tts-active'));
+      if (force) {
+        const bar = document.getElementById('mbTtsBar');
+        if (bar) bar.style.display = 'none';
+      }
+      const icon = document.getElementById('mbTtsPlayIcon');
+      if (icon) icon.className = 'fa-solid fa-play';
+    }
+
+    ttsToggle() {
+      if (!this._ttsActive) {
+        this.ttsStart(this._ttsVerseIdx);
+        return;
+      }
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        this._ttsPaused = true;
+        const icon = document.getElementById('mbTtsPlayIcon');
+        if (icon) icon.className = 'fa-solid fa-play';
+      } else {
+        window.speechSynthesis.resume();
+        this._ttsPaused = false;
+        const icon = document.getElementById('mbTtsPlayIcon');
+        if (icon) icon.className = 'fa-solid fa-pause';
+      }
+    }
+
+    ttsPrevVerse() {
+      if (this._ttsVerseIdx > 0) {
+        this.ttsStart(this._ttsVerseIdx - 1);
+      }
+    }
+
+    ttsNextVerse() {
+      const data = this.currentChapterData;
+      if (!data) return;
+      if (this._ttsVerseIdx < data.verses.length - 1) {
+        this.ttsStart(this._ttsVerseIdx + 1);
+      } else {
+        this.ttsStop(true);
+        this.showToast('Koniec rozdziału.');
+      }
+    }
+
+    ttsCycleRate() {
+      this._ttsRateIdx = (this._ttsRateIdx + 1) % this._ttsRates.length;
+      this._ttsRate = this._ttsRates[this._ttsRateIdx];
+      const btn = document.getElementById('mbTtsRateBtn');
+      if (btn) btn.textContent = `${this._ttsRate}×`;
+      if (this._ttsActive) this.ttsStart(this._ttsVerseIdx);
+    }
+
+    ttsStartFromVerse() {
+      this.ttsStart(this._hlPickerVerseIdx);
+    }
+
+    ttsReadVerse(idx) {
+      const data = this.currentChapterData;
+      if (!data || idx >= data.verses.length) {
+        this.ttsStop(true);
+        return;
+      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      const v = data.verses[idx];
+      this._ttsVerseIdx = idx;
+      // Highlight active verse row
+      document.querySelectorAll('.mb-verse-tts-active').forEach(el => el.classList.remove('mb-verse-tts-active'));
+      const activeRow = document.getElementById(`verse-${v.verse}`);
+      if (activeRow) {
+        activeRow.classList.add('mb-verse-tts-active');
+        activeRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // Update bar reference display
+      const short = data.shortPl || data.bookName;
+      const refEl = document.getElementById('mbTtsCurrentRef');
+      if (refEl) refEl.textContent = `${short} ${data.chapter}:${v.verse}`;
+      const icon = document.getElementById('mbTtsPlayIcon');
+      if (icon) icon.className = 'fa-solid fa-pause';
+      // Speak the verse
+      const utt = new SpeechSynthesisUtterance(v.text.UBG || '');
+      utt.lang = 'pl-PL';
+      utt.rate = this._ttsRate;
+      utt.onend = () => {
+        if (!this._ttsActive || this._ttsPaused) return;
+        this.ttsReadVerse(idx + 1);
+      };
+      utt.onerror = (e) => {
+        if (e.error === 'interrupted' || e.error === 'canceled') return;
+        this.ttsStop(true);
+      };
+      this._ttsUtterance = utt;
+      window.speechSynthesis.speak(utt);
     }
 
     handleWordClick(e, el) {

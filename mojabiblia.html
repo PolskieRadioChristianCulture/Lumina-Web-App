@@ -979,8 +979,18 @@
       background: linear-gradient(155deg, rgba(212, 169, 74, 0.08), rgba(212, 169, 74, 0.02) 40%), var(--cc-void-2, #12121A);
       border: 1px solid rgba(212, 169, 74, 0.35);
       border-radius: 22px;
-      padding: 40px 36px;
+      padding: 36px 32px;
       box-shadow: 0 0 0 1px rgba(212, 169, 74, 0.06), 0 24px 60px -20px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .mb-reader-top-bar {
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(212, 169, 74, 0.25);
+      padding-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
     .mb-reader-chapter-heading {
@@ -989,17 +999,175 @@
       font-weight: 600;
       color: var(--cc-gold-soft, #E8C97A);
       text-align: center;
-      margin-bottom: 28px;
-      border-bottom: 1px solid rgba(212, 169, 74, 0.25);
-      padding-bottom: 18px;
+      margin: 0;
     }
 
+    .mb-reader-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mb-reader-ribbon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      min-height: 38px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 169, 74, 0.25);
+      border-radius: 20px;
+      color: var(--cc-parchment, #EDE6D6);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-reader-ribbon-btn:hover {
+      background: rgba(212, 169, 74, 0.15);
+      border-color: var(--gold-bright, #facc15);
+      color: #fff;
+    }
+    .mb-reader-ribbon-btn.active {
+      background: linear-gradient(135deg, rgba(212, 169, 74, 0.3), rgba(212, 169, 74, 0.15));
+      border-color: var(--gold-bright, #facc15);
+      color: var(--gold-bright, #facc15);
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.2);
+    }
+    .mb-ribbon-tts-btn {
+      border-color: rgba(250, 204, 21, 0.5);
+      background: rgba(250, 204, 21, 0.1);
+      color: var(--gold-bright, #facc15);
+    }
+    .mb-ribbon-tts-btn:hover {
+      background: rgba(250, 204, 21, 0.22);
+    }
+
+    /* Układ wersetowy (od nowej linijki) */
+    .mb-reader-verses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mb-reader-verse-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border-left: 3.5px solid transparent;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .mb-reader-verse-row:hover {
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .mb-reader-verse-row:hover .mb-reader-row-actions {
+      opacity: 1;
+    }
+
+    .mb-reader-row-left {
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .mb-reader-num-btn {
+      font-family: var(--cc-font-sans, 'Manrope', sans-serif);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--cc-gold, #D4A94A);
+      background: rgba(212, 169, 74, 0.1);
+      border: 1px solid rgba(212, 169, 74, 0.3);
+      border-radius: 6px;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-reader-num-btn:hover {
+      background: var(--cc-gold, #D4A94A);
+      color: #0d1424;
+      border-color: var(--gold-bright, #facc15);
+      transform: scale(1.08);
+    }
+
+    .mb-reader-row-body {
+      font-family: var(--cc-font-serif, 'Fraunces', serif);
+      font-size: calc(var(--mb-font-scale) * 1.25);
+      line-height: 1.8;
+      color: var(--cc-parchment, #EDE6D6);
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .mb-reader-row-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      opacity: 0.35;
+      transition: opacity 0.2s ease;
+      margin-top: 4px;
+    }
+    @media (max-width: 768px) {
+      .mb-reader-row-actions {
+        opacity: 0.85;
+      }
+    }
+
+    .mb-reader-act-btn {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--cc-parchment, #EDE6D6);
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-reader-act-btn:hover {
+      border-color: var(--gold-bright, #facc15);
+      color: var(--gold-bright, #facc15);
+      background: rgba(250, 204, 21, 0.15);
+      transform: scale(1.08);
+    }
+    .mb-reader-act-btn.mb-act-lumina {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      color: #c084fc;
+    }
+    .mb-reader-act-btn.mb-act-lumina:hover {
+      border-color: #c084fc;
+      background: rgba(192, 132, 252, 0.15);
+    }
+
+    /* Układ ciągły (akapitowy) */
     .mb-reader-text-body {
       font-family: var(--cc-font-serif, 'Fraunces', serif);
       font-size: calc(var(--mb-font-scale) * 1.3);
       line-height: 1.85;
       color: var(--cc-parchment, #EDE6D6);
       text-align: justify;
+    }
+
+    .mb-reader-verse {
+      transition: all 0.2s ease;
+      border-radius: 4px;
+      padding: 1px 3px;
+      cursor: pointer;
     }
 
     .mb-reader-num {
@@ -1009,6 +1177,307 @@
       font-weight: 800;
       margin-right: 5px;
       vertical-align: super;
+      cursor: pointer;
+    }
+    .mb-reader-num:hover {
+      color: var(--gold-bright, #facc15);
+      text-decoration: underline;
+    }
+
+    /* ══════════ ZAZNACZANIE KOLORAMI (HIGHLIGHTER) ══════════ */
+    .mb-hl-yellow {
+      background: rgba(250, 204, 21, 0.13) !important;
+      border-left-color: #facc15 !important;
+    }
+    .mb-hl-green {
+      background: rgba(34, 197, 94, 0.13) !important;
+      border-left-color: #4ade80 !important;
+    }
+    .mb-hl-blue {
+      background: rgba(14, 165, 233, 0.13) !important;
+      border-left-color: #38bdf8 !important;
+    }
+    .mb-hl-rose {
+      background: rgba(244, 63, 94, 0.13) !important;
+      border-left-color: #fb7185 !important;
+    }
+    .mb-hl-purple {
+      background: rgba(168, 85, 247, 0.13) !important;
+      border-left-color: #c084fc !important;
+    }
+    span.mb-reader-verse.mb-hl-yellow {
+      background: rgba(250, 204, 21, 0.2) !important;
+      outline: 1.5px solid rgba(250, 204, 21, 0.4);
+    }
+    span.mb-reader-verse.mb-hl-green {
+      background: rgba(34, 197, 94, 0.2) !important;
+      outline: 1.5px solid rgba(34, 197, 94, 0.4);
+    }
+    span.mb-reader-verse.mb-hl-blue {
+      background: rgba(14, 165, 233, 0.2) !important;
+      outline: 1.5px solid rgba(14, 165, 233, 0.4);
+    }
+    span.mb-reader-verse.mb-hl-rose {
+      background: rgba(244, 63, 94, 0.2) !important;
+      outline: 1.5px solid rgba(244, 63, 94, 0.4);
+    }
+    span.mb-reader-verse.mb-hl-purple {
+      background: rgba(168, 85, 247, 0.2) !important;
+      outline: 1.5px solid rgba(168, 85, 247, 0.4);
+    }
+
+    /* ══════════ AKTYWNY WERSET LEKTORA TTS ══════════ */
+    .mb-verse-tts-active {
+      background: rgba(250, 204, 21, 0.22) !important;
+      border-left-color: var(--gold-bright, #facc15) !important;
+      outline: 2px solid var(--gold-bright, #facc15) !important;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(250, 204, 21, 0.45);
+      animation: mbPulseTtsGlow 2s infinite alternate ease-in-out;
+    }
+    @keyframes mbPulseTtsGlow {
+      from { box-shadow: 0 0 15px rgba(250, 204, 21, 0.25); }
+      to { box-shadow: 0 0 35px rgba(250, 204, 21, 0.65); }
+    }
+
+    /* ══════════ PŁYWAJĄCY PASEK LEKTORA TTS ══════════ */
+    .mb-tts-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 998;
+      width: calc(100% - 32px);
+      max-width: 660px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1.5px solid var(--gold-primary, #D4A94A);
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 28px rgba(212, 169, 74, 0.25);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 10px 18px;
+      color: #fff;
+    }
+    .mb-tts-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .mb-tts-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 140px;
+    }
+    .mb-tts-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--gold-bright, #facc15);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .mb-tts-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    .mb-tts-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mb-tts-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-tts-btn:hover {
+      border-color: var(--gold-bright, #facc15);
+      color: var(--gold-bright, #facc15);
+      background: rgba(250, 204, 21, 0.15);
+      transform: scale(1.08);
+    }
+    .mb-tts-btn.mb-tts-btn-play {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      min-height: 42px;
+      background: var(--gold-primary, #D4A94A);
+      color: #0d1424;
+      font-size: 1rem;
+      border: none;
+      box-shadow: 0 0 16px rgba(212, 169, 74, 0.4);
+    }
+    .mb-tts-btn.mb-tts-btn-play:hover {
+      background: var(--gold-bright, #facc15);
+      transform: scale(1.1);
+    }
+    .mb-tts-rate-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mb-tts-rate-btn {
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--gold-bright, #facc15);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-tts-rate-btn:hover {
+      border-color: var(--gold-bright, #facc15);
+      background: rgba(250, 204, 21, 0.15);
+    }
+    .mb-tts-close-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-tts-close-btn:hover {
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    /* Modal wyboru zakreślacza */
+    .mb-hl-picker-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .mb-hl-picker-card {
+      background: #0f172a;
+      border: 1.5px solid var(--gold-primary, #D4A94A);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--gold-glow);
+      width: 100%;
+      max-width: 420px;
+      padding: 20px 22px;
+      color: #fff;
+    }
+    .mb-hl-picker-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+    }
+    .mb-hl-picker-title {
+      font-size: 0.92rem;
+      color: var(--cc-parchment, #EDE6D6);
+    }
+    .mb-hl-picker-close {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .mb-hl-picker-close:hover {
+      color: #fff;
+    }
+    .mb-hl-picker-colors {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .mb-hl-color-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-hl-color-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+    .mb-hl-color-btn.active {
+      border-color: #000;
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
+    }
+    .mb-hl-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mb-hl-clear-btn {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #e2e8f0 !important;
+      border: 1px dashed rgba(255, 255, 255, 0.3) !important;
+    }
+    .mb-hl-clear-btn:hover {
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #f87171 !important;
+      border-color: #f87171 !important;
+    }
+    .mb-hl-picker-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 12px;
+      display: flex;
+      justify-content: center;
+    }
+    .mb-hl-quick-tts-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      min-height: 42px;
+      border-radius: 20px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid var(--gold-primary, #D4A94A);
+      color: var(--gold-bright, #facc15);
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mb-hl-quick-tts-btn:hover {
+      background: rgba(250, 204, 21, 0.25);
+      transform: scale(1.03);
     }
 
     /* ══════════ MODAL LEKSYKONU STRONGA ══════════ */
@@ -2631,6 +3100,60 @@
   <!-- ══════════ MODAL INSPEKTORA STRONGA ══════════ -->
   <div id="mbStrongModal" style="display:none;"></div>
 
+  <!-- ══════════ PŁYWAJĄCY PASEK LEKTORA TTS ══════════ -->
+  <div class="mb-tts-bar" id="mbTtsBar" style="display:none;" role="region" aria-label="Lektor Pisma Świętego">
+    <div class="mb-tts-bar-inner">
+      <div class="mb-tts-info">
+        <div class="mb-tts-badge"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold-bright);animation:mbPulseTtsGlow 1.5s infinite alternate;"></span> LEKTOR CZYTA</div>
+        <div class="mb-tts-title" id="mbTtsCurrentRef">—</div>
+      </div>
+      <div class="mb-tts-controls">
+        <button class="mb-tts-btn" onclick="window.mbApp.ttsPrevVerse()" title="Poprzedni werset"><i class="fa-solid fa-backward-step"></i></button>
+        <button class="mb-tts-btn mb-tts-btn-play" id="mbTtsPlayBtn" onclick="window.mbApp.ttsToggle()" title="Start / Stop (Spacja)"><i class="fa-solid fa-play" id="mbTtsPlayIcon"></i></button>
+        <button class="mb-tts-btn" onclick="window.mbApp.ttsNextVerse()" title="Następny werset"><i class="fa-solid fa-forward-step"></i></button>
+        <div class="mb-tts-rate-wrap">
+          <button class="mb-tts-rate-btn" id="mbTtsRateBtn" onclick="window.mbApp.ttsCycleRate()" title="Zmień tempo odczytu">1×</button>
+        </div>
+      </div>
+      <button class="mb-tts-close-btn" onclick="window.mbApp.ttsStop(true)" title="Zatrzymaj lektora"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL ZAKREŚLACZA (HIGHLIGHTER) ══════════ -->
+  <div class="mb-hl-picker-modal" id="mbHlPickerModal" style="display:none;" onclick="if(event.target===this)window.mbApp.closeHlPicker()">
+    <div class="mb-hl-picker-card" onclick="event.stopPropagation()">
+      <div class="mb-hl-picker-header">
+        <span class="mb-hl-picker-title"><i class="fa-solid fa-highlighter" style="color:var(--gold-bright);margin-right:6px;"></i> Zakreśl werset <span id="mbHlPickerRef" style="color:var(--gold-bright);"></span></span>
+        <button class="mb-hl-picker-close" onclick="window.mbApp.closeHlPicker()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="mb-hl-picker-colors">
+        <button class="mb-hl-color-btn" style="background:rgba(250,204,21,0.15);color:#fff;" onclick="window.mbApp.applyHighlight('yellow')">
+          <span class="mb-hl-dot" style="background:#facc15;"></span> Złoty
+        </button>
+        <button class="mb-hl-color-btn" style="background:rgba(34,197,94,0.15);color:#fff;" onclick="window.mbApp.applyHighlight('green')">
+          <span class="mb-hl-dot" style="background:#4ade80;"></span> Zielony
+        </button>
+        <button class="mb-hl-color-btn" style="background:rgba(14,165,233,0.15);color:#fff;" onclick="window.mbApp.applyHighlight('blue')">
+          <span class="mb-hl-dot" style="background:#38bdf8;"></span> Niebieski
+        </button>
+        <button class="mb-hl-color-btn" style="background:rgba(244,63,94,0.15);color:#fff;" onclick="window.mbApp.applyHighlight('rose')">
+          <span class="mb-hl-dot" style="background:#fb7185;"></span> Różowy
+        </button>
+        <button class="mb-hl-color-btn" style="background:rgba(168,85,247,0.15);color:#fff;" onclick="window.mbApp.applyHighlight('purple')">
+          <span class="mb-hl-dot" style="background:#c084fc;"></span> Fioletowy
+        </button>
+        <button class="mb-hl-color-btn mb-hl-clear-btn" onclick="window.mbApp.applyHighlight(null)">
+          <i class="fa-solid fa-eraser"></i> Usuń
+        </button>
+      </div>
+      <div class="mb-hl-picker-footer">
+        <button class="mb-hl-quick-tts-btn" onclick="window.mbApp.closeHlPicker();window.mbApp.ttsStartFromVerse()">
+          <i class="fa-solid fa-volume-high"></i> Czytaj od tego wersetu
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ══════════ PŁYWAJĄCY PRZYCISK ZGŁOŚ PROBLEM (FAB) ══════════ -->
   <button class="mb-fab-report" id="mbFabReportBtn" onclick="window.mbApp.openReportProblemModal()" title="Zgłoś problem lub skontaktuj się z zespołem Biblia Audio CC">
     <i class="fa-solid fa-comment-dots"></i>
@@ -2681,6 +3204,6 @@
 
   <!-- Silnik Lumina Share & MojaBiblia -->
   <script defer src="js/lumina-share.js"></script>
-  <script defer src="mojabiblia-engine.js?v=2.2.0_20261013"></script>
+  <script defer src="mojabiblia-engine.js?v=2.3.0_20261013"></script>
 </body>
 </html>

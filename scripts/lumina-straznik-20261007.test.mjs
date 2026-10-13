@@ -372,7 +372,7 @@ test('MojaBiblia: polskie znaczenia słów, uczciwa lista przekładów i wyszuki
   assert.match(engine, /\/data\/bible\/szukaj-ubg\.json/);
   const html = await readFile('mojabiblia.html', 'utf8');
   assert.doesNotMatch(html, /4 polskich przekładów|UBG, BW, BT, BG/);
-  assert.match(html, /mojabiblia-engine\.js\?v=2\.2\.0_20261013/);
+  assert.match(html, /mojabiblia-engine\.js\?v=2\.3\.0_20261013/);
   const gl = JSON.parse(await readFile('data/bible/glosy-pl.json', 'utf8'));
   assert.ok(Object.keys(gl).length > 1000);
   assert.equal(gl.H8064, 'niebo');
