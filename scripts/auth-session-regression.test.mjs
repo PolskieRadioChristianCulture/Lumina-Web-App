@@ -80,7 +80,7 @@ test('session regression is included in mandatory CC release gate',()=>{
 test('navigation entrypoints bypass the broken cached bundle',()=>{
  for(const path of ["lumina.html","lumina-profile.html","lumina-tablica.html","lumina-tablica-light.html","lumina.ccwomen.html","lumina.mariusz.html","lumina.osobowoscplus.html","lumina.pawelmurawski.html","lumina.cezaryrgowski.html","lumina.zofiadudek.html","lumina.zbyszekgieron.html","lumina.wiolettarogowska.html"]){
   const html=readFileSync(path,'utf8');
-  assert.ok(html.includes('/lumina-bottom-nav.js?v=20261013_nav_guest1'),path);
+  assert.ok(html.includes('/lumina-bottom-nav.js?v=20261013_nav_col2'),path);
   assert.ok(!html.includes('lumina-bottom-nav.js?v=20261011_nav_mockup1'),path);
  }
  // Compile without executing DOM code; catches a lost callback closing brace.

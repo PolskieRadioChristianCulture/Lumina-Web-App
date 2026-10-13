@@ -121,3 +121,19 @@ test('mobile home hides its brand and reserves clear space for chat beside audio
  assert.match(html,/#radioPlayerBar \.player-right \{[^}]*padding-right: 88px !important/);
  assert.match(html,/#radioPlayerBar \.volume-slider \{[^}]*min-width: 0;[^}]*width: auto !important;[^}]*flex: 1 1 auto;/);
 });
+test('LUMINA shared chat remains visible for signed-in members in both themes',()=>{
+ for(const theme of ['dark','light']){
+  const {win}=globalChatFixture(true);
+  win.document.documentElement.setAttribute('data-lumina-theme',theme);
+  assert.equal(win.getComputedStyle(win.document.getElementById('ccGlobalChatFab')).display,'flex');
+ }
+});
+test('LUMINA controls use one compact lane with chat immediately above scroll-to-top',async()=>{
+ const source=await readFile('js/cc-back-to-top.js','utf8');
+ assert.match(source,/#backToTopBtn\[data-cc-back-to-top\]\{bottom:var\(--cc-lumina-action-base\)/);
+ assert.match(source,/#ccGlobalChatFab\{display:flex!important;bottom:calc\(var\(--cc-lumina-action-base\) \+ 60px\)/);
+ assert.match(source,/#luminaThemeSwitchBtn\{display:flex!important;bottom:calc\(var\(--cc-lumina-action-base\) \+ 120px\)/);
+ assert.match(source,/#luminaMiniPlayerContainer\.minimized\{display:flex!important;bottom:calc\(var\(--cc-lumina-action-base\) \+ 180px\)/);
+ assert.match(source,/if \(visible && !luminaActions && document\.elementsFromPoint\)/);
+ assert.match(source,/function start\(\) \{ mount\(\); mountLuminaActions\(\);/);
+});

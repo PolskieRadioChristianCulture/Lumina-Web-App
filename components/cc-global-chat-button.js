@@ -218,13 +218,13 @@
         transition: bottom 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
       }
 
-      /* Na stronach LUMINA portal ma dedykowaną kolumnę 3 przycisków (radio, motyw, do góry) i własne moduły wiadomości — ukrywamy nakładający się fab */
+      /* LUMINA keeps the shared chat entry for guests and signed-in members. */
       html[data-lumina-theme] .cc-chat-fab-wrap,
       body.theme-lumina-light .cc-chat-fab-wrap,
       body.lumina-page .cc-chat-fab-wrap,
       body:has(#luminaThemeSwitchBtn) .cc-chat-fab-wrap,
       body:has(#luminaScrollTop) .cc-chat-fab-wrap {
-        display: none !important;
+        display: flex !important;
       }
 
       /* Guests have no native messaging button: preserve their entry/login invitation. */

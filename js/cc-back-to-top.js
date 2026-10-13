@@ -41,7 +41,8 @@
       if (document.fullscreenElement || modalOpen) visible = false;
       // Sample only the right-hand action lane, avoiding expensive whole-DOM scans.
       // Fixed players, navigation and floating controls reserve space above them.
-      if (visible && document.elementsFromPoint) {
+      var luminaActions = document.querySelector && document.querySelector('#luminaThemeSwitchBtn');
+      if (visible && !luminaActions && document.elementsFromPoint) {
         for (var pass = 0; pass < 12; pass++) {
           var previous = bottom;
           [right - 24, right - 2].forEach(function (x) {
@@ -61,7 +62,7 @@
         }
       }
       if (bottom + 48 > height * 0.65) visible = false;
-      button.style.setProperty('bottom', 'max(' + bottom + 'px, env(safe-area-inset-bottom))', 'important');
+      button.style.setProperty('bottom', luminaActions ? 'var(--cc-lumina-action-base)' : 'max(' + bottom + 'px, env(safe-area-inset-bottom))', 'important');
       button.style.setProperty('display', visible ? 'flex' : 'none', 'important');
     }
     function schedule() {
@@ -158,7 +159,24 @@
     script.defer = true;
     document.head.appendChild(script);
   }
-  function start() { mount(); try { loadRadioMilion(); } catch (e) {} }
+  // One stable LUMINA lane, independent of authentication and late module loading.
+  function mountLuminaActions() {
+    var css = document.createElement('style');
+    css.textContent = `
+      body:has(#luminaThemeSwitchBtn){--cc-lumina-action-base:calc(76px + env(safe-area-inset-bottom, 0px));--cc-lumina-action-right:max(16px,env(safe-area-inset-right))}
+      html body:has(#luminaThemeSwitchBtn) #backToTopBtn[data-cc-back-to-top]{bottom:var(--cc-lumina-action-base)!important;z-index:99997!important}
+      html body:has(#luminaThemeSwitchBtn) #ccGlobalChatFab{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 60px)!important;right:var(--cc-lumina-action-right)!important;z-index:99998!important}
+      html body:has(#luminaThemeSwitchBtn) #ccChatFabBtn{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important}
+      html body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 120px)!important;right:var(--cc-lumina-action-right)!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;box-sizing:border-box!important}
+      html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 180px)!important;right:var(--cc-lumina-action-right)!important;left:auto!important;width:48px!important;height:48px!important;box-sizing:border-box!important;transform:none!important}
+      html body:has(#luminaThemeSwitchBtn) #ccFabDockToggle,
+      html body:has(#luminaThemeSwitchBtn):has(#ccGlobalChatFab) #luminaFloatingChatBtn{display:none!important}
+      html body:has(#luminaThemeSwitchBtn):has(#directMessagesModal.open) #luminaMiniPlayerContainer,
+      html body:has(#luminaThemeSwitchBtn):has(#messageModal.open) #luminaMiniPlayerContainer{display:none!important}
+    `;
+    document.head.appendChild(css);
+  }
+  function start() { mount(); mountLuminaActions(); try { loadRadioMilion(); } catch (e) {} }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();
