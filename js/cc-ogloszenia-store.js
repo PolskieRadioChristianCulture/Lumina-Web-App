@@ -152,6 +152,9 @@ async function publish(ad) {
         createdAt: serverTimestamp()
     };
     if (!data.title || !data.description || !data.contactName) throw new Error('Wypełnij tytuł, opis oraz imię/dane kontaktowe.');
+    if (!data.imageUrl && (!data.mediaUrls || data.mediaUrls.length === 0) && !data.youtubeUrl) {
+        throw new Error('Wymagane jest dodanie co najmniej jednego zdjęcia (link WWW / Dysk Google) lub filmu wideo (np. z YouTube).');
+    }
     let ref;
     try {
         ref = await addDoc(collection(db, COLLECTION), data);
@@ -206,6 +209,9 @@ async function update(id, updatedAd) {
 
     if (!data.title || !data.description || !data.contactName) {
         throw new Error('Wypełnij tytuł, opis oraz imię/dane kontaktowe.');
+    }
+    if (!data.imageUrl && (!data.mediaUrls || data.mediaUrls.length === 0) && !data.youtubeUrl) {
+        throw new Error('Wymagane jest dodanie co najmniej jednego zdjęcia (link WWW / Dysk Google) lub filmu wideo (np. z YouTube).');
     }
 
     await updateDoc(doc(db, COLLECTION, existing._docId), data);

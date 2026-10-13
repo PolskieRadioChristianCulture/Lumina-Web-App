@@ -341,9 +341,9 @@ test('dolny pasek: podpisy pod ikonami i środkowy „+” do napisania posta; d
 test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyjnych osób i telefonów', async () => {
   for (const f of ['ogloszenia/index.html', 'ogloszenia.html']) {
     const t = await readFile(f, 'utf8');
-    assert.match(t, /<script src="\/js\/cc-ogloszenia-data\.js\?v=[^"]+"><\/script>\s*<script type="module" src="\/js\/cc-ogloszenia-store\.js\?v=[^"]+"><\/script>\s*<script type="module" crossorigin src="\/assets\/ogloszenia-index-cc20261013[b-f]\.js">/, f);
+    assert.match(t, /<script src="\/js\/cc-ogloszenia-data\.js\?v=[^"]+"><\/script>\s*<script type="module" src="\/js\/cc-ogloszenia-store\.js\?v=[^"]+"><\/script>\s*<script type="module" crossorigin src="\/assets\/ogloszenia-index-cc20261013[b-g]\.js">/, f);
   }
-  const bundle = await readFile('assets/ogloszenia-index-cc20261013f.js', 'utf8');
+  const bundle = await readFile('assets/ogloszenia-index-cc20261013g.js', 'utf8');
   // Formularz publikuje do wspólnej bazy (widzą wszyscy), nie tylko do localStorage autora.
   assert.match(bundle, /window\.CCOgloszeniaStore;if\(!S\|\|typeof S\.publish!==`function`\)/);
   assert.doesNotMatch(bundle, /w=e=>\{t\(t=>\{let n=\[e,\.\.\.t\];try\{localStorage\.setItem/);
@@ -351,6 +351,10 @@ test('CCN Ogłoszenia: tylko prawdziwe ogłoszenia Christian Culture, bez fikcyj
   assert.match(store, /const COLLECTION = 'user_posts';/);
   assert.match(store, /authorUid: user\.uid/);
   assert.match(store, /u\.protocol === 'https:'/);
+  assert.match(store, /async function update\(/);
+  assert.match(bundle, /_ShareBar/);
+  assert.match(bundle, /Edytuj ogłoszenie/);
+  assert.match(bundle, /hasMedia/);
   assert.match(bundle, /Ke=\(Array\.isArray\(window\.CC_OGLOSZENIA\)\?window\.CC_OGLOSZENIA:\[\]\)/);
   for (const fake of ['Wiśniewscy', 'Złota Rączka CC', 'Skoda Octavia', 'images.unsplash.com', 'Setki braci']) assert.ok(!bundle.includes(fake), fake);
   const data = await readFile('js/cc-ogloszenia-data.js', 'utf8');
