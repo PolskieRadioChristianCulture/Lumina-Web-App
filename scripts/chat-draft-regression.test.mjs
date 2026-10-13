@@ -114,3 +114,10 @@ test('mobile phone moves the same link to the header and restores its desktop po
  const index=await readFile('index.html','utf8');assert.match(index,/cc-mobile-helpline\.js\?v=20261013_mobile1/);
  assert.match(index,/#mainHeader #helplineFloat \{ min-width: 44px; min-height: 44px;/);
 });
+
+test('mobile home hides its brand and reserves clear space for chat beside audio controls',async()=>{
+ const html=await readFile('index.html','utf8');
+ assert.match(html,/#mainHeader \.brand-logo \{ display: none !important; \}/);
+ assert.match(html,/#radioPlayerBar \.player-right \{[^}]*padding-right: 88px !important/);
+ assert.match(html,/#radioPlayerBar \.volume-slider \{[^}]*min-width: 0;[^}]*width: auto !important;[^}]*flex: 1 1 auto;/);
+});
