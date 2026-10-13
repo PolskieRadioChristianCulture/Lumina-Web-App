@@ -4,6 +4,9 @@ export function applyPageStandard(file, html) {
   const name = file.replaceAll('\\', '/').toLowerCase();
   if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24)/.test(name)) return html;
   if (!/<body\b/i.test(html) || !/<\/body\s*>/i.test(html)) return html;
-  if (/http-equiv\s*=\s*["']refresh["']/i.test(html) || html.includes('/js/cc-back-to-top.js')) return html;
+  if (/http-equiv\s*=\s*["']refresh["']/i.test(html)) return html;
+  // Refresh the shared chat loader even when back-to-top is already installed.
+  html = html.replace(/(src=["'])(\/(?:components|js)\/cc-support-footer\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261013_chat_v5$3');
+  if (html.includes('/js/cc-back-to-top.js')) return html;
   return html.replace(/<\/body\s*>/i, `<script defer src="${BACK_TO_TOP_SCRIPT}"></script>\n</body>`);
 }
