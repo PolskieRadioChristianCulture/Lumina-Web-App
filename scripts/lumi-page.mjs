@@ -14,8 +14,8 @@ export function renderLumiPage(html) {
     .replace(/<link rel="manifest" href="manifest-lumina.json">/, '<link rel="manifest" href="/manifest-lumi.json">')
     .replace(/<script src="lumina-pwa-installer\.js[^\"]*"><\/script>/, '')
     .replace(/(<meta name="apple-mobile-web-app-title" content=")[^"]*(">)/, '$1LumiMess$2')
-    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_intro">
-<script defer src="/js/lumi-standalone.js?v=20261014_intro"></script>
+    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_layout2">
+<script defer src="/js/lumi-standalone.js?v=20261014_layout2"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
@@ -43,18 +43,29 @@ export function renderLumiPage(html) {
     <img src="/images/chat/cc-chat-button-128.webp" alt="" width="96" height="96">
     <p class="lumi-eyebrow">LumiMess · Christian Culture</p>
     <h1 id="lumiTitle">LUMI Messenger</h1>
-    <p>Rozmowy, które budują wspólnotę.</p>
+    <p class="lumi-tagline">Rozmowy, które budują wspólnotę.</p>
     <p class="lumi-description">Chrześcijański komunikator społeczności LUMINA. Twoje obecne konto, kontakty i rozmowy — w jednym miejscu.</p>
-    <div class="lumi-actions"><button type="button" id="lumiOpen">Otwórz komunikator</button><a id="lumiLogin" href="/lumina-login?next=%2Fmess">Zaloguj się bezpłatnie</a></div>
-    <div class="lumi-secondary-actions">
-      <button type="button" id="lumiReplayIntro" class="lumi-btn-secondary"><span aria-hidden="true">▶</span> Obejrzyj intro</button>
+    <div class="lumi-actions">
+      <button type="button" id="lumiOpen">Otwórz komunikator</button>
+      <a id="lumiLogin" href="/lumina-login?next=%2Fmess">Zaloguj się bezpłatnie</a>
+    </div>
+    <div class="lumi-actions-install">
       <button type="button" id="lumiInstall">Dodaj LUMI do urządzenia</button>
     </div>
-    <p id="lumiInstallStatus" role="status" aria-live="polite"></p>
-    <details id="lumiInstallHelp"><summary>Jak zainstalować?</summary><p>Android: otwórz tę stronę w Chrome i wybierz w menu „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”. iPhone: otwórz w Safari, wybierz Udostępnij → Do ekranu początkowego. Dostępność zależy od przeglądarki.</p></details>
-    <p class="lumi-description">Zaloguj się, by odebrać za darmo więcej korzyści i korzystać z rozmów prywatnych. Społeczność LUMINA jest przeznaczona dla osób pełnoletnich.</p>
-    <footer><a href="/lumina-safety">Zasady społeczności</a><a href="/privacy">Prywatność</a><a href="/lumina">Konto i ustawienia</a></footer>
   </section>
+  <footer id="lumiFooter" class="lumi-page-footer">
+    <div class="lumi-footer-install-info">
+      <p id="lumiInstallStatus" role="status" aria-live="polite"></p>
+      <details id="lumiInstallHelp"><summary>Jak zainstalować aplikację?</summary><p>Android: otwórz tę stronę w Chrome i wybierz w menu „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”. iPhone: otwórz w Safari, wybierz Udostępnij → Do ekranu początkowego. Dostępność zależy od przeglądarki.</p></details>
+    </div>
+    <p class="lumi-footer-description">Zaloguj się, by odebrać za darmo więcej korzyści i korzystać z rozmów prywatnych. Społeczność LUMINA jest przeznaczona dla osób pełnoletnich.</p>
+    <div class="lumi-footer-links">
+      <button type="button" id="lumiReplayIntro" class="lumi-footer-intro-btn"><span aria-hidden="true">▶</span> Obejrzyj intro</button>
+      <a href="/lumina-safety">Zasady społeczności</a>
+      <a href="/privacy">Prywatność</a>
+      <a href="/lumina">Konto i ustawienia</a>
+    </div>
+  </footer>
 </main>`);
   if (!html.includes('id="lumiLanding"')) throw new Error('LUMI: body contract changed');
   return html;

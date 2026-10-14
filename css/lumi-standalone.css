@@ -60,7 +60,8 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
 
 .lumi-welcome {
   max-width: 580px;
-  margin: 36px auto;
+  width: 100%;
+  margin: auto;
   text-align: center;
   background: rgba(10, 15, 26, 0.74);
   backdrop-filter: blur(20px);
@@ -68,7 +69,7 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
   border: 1px solid rgba(212, 175, 55, 0.32);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.14);
   border-radius: 28px;
-  padding: 36px 28px;
+  padding: 36px 28px 30px;
   box-sizing: border-box;
 }
 
@@ -97,10 +98,18 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
   margin-top: 14px;
 }
 
+.lumi-tagline {
+  color: #f5f7ff;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 8px 0 16px;
+  line-height: 1.4;
+}
+
 .lumi-description {
   line-height: 1.7;
   color: #d1d8e6;
-  margin: 20px 0;
+  margin: 16px 0 24px;
 }
 
 .lumi-actions {
@@ -109,7 +118,13 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin: 28px 0 18px;
+  margin: 20px 0 0;
+}
+
+.lumi-actions-install {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
 }
 
 #lumiLanding button {
@@ -161,14 +176,19 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
 
 #lumiLanding #lumiInstall {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  margin-top: 8px;
+  min-height: 48px;
+  padding: 12px 28px;
+  border-radius: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 #lumiLanding #lumiInstall:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.15);
   border-color: rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
 }
 
 #lumiLanding button:focus-visible,
@@ -344,36 +364,110 @@ body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer {
   transition: width 0.1s linear;
 }
 
-.lumi-secondary-actions {
+.lumi-page-footer {
+  width: 100%;
+  max-width: 600px;
+  margin: 16px auto 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.lumi-footer-install-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lumi-page-footer #lumiInstallStatus {
+  min-height: 20px;
+  color: #c5afff;
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.lumi-page-footer #lumiInstallHelp {
+  margin: 4px 0 8px;
+  text-align: left;
+  color: #b8c3d9;
+  line-height: 1.6;
+  max-width: 520px;
+  font-size: 0.88rem;
+}
+
+.lumi-page-footer #lumiInstallHelp summary {
+  cursor: pointer;
+  min-height: 44px;
+  text-align: center;
+  color: #f0e6c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.lumi-footer-description {
+  font-size: 0.82rem;
+  color: rgba(209, 216, 230, 0.7);
+  line-height: 1.6;
+  margin: 4px 0 8px;
+  max-width: 520px;
+}
+
+.lumi-footer-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 16px 22px;
+  margin-top: 4px;
 }
 
-#lumiReplayIntro {
+.lumi-footer-links a {
+  color: #f0e6c8;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.88rem;
+  transition: color 0.2s ease;
+}
+
+.lumi-footer-links a:hover {
+  color: #facc15;
+}
+
+.lumi-footer-intro-btn {
+  appearance: none;
   background: rgba(212, 175, 55, 0.12) !important;
-  border: 1px solid rgba(212, 175, 55, 0.5) !important;
+  border: 1px solid rgba(212, 175, 55, 0.45) !important;
   color: #facc15 !important;
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  min-height: 48px;
-  border-radius: 16px;
-  padding: 12px 20px;
+  padding: 8px 16px;
+  border-radius: 999px !important;
   cursor: pointer;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  gap: 6px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
   transition: all 0.2s ease;
 }
 
-#lumiReplayIntro:hover {
+.lumi-footer-intro-btn:hover {
   background: rgba(212, 175, 55, 0.25) !important;
   border-color: #facc15 !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
 }
 
