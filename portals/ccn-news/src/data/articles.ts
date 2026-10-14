@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  'Z Biblią za Pan Brat: Dzień 15 — Bóg dotrzymuje obietnicy: Narodziny Izaaka i ocalenie na pustyni (Rdz 20:1–21:34)',
   'Z Biblią za Pan Brat: Dzień 14 — Sodoma: Łaska, sąd i ratunek — Gdy Bóg wyprowadza człowieka z miejsca zagłady (Rdz 19:1–38)',
   'ŚWIAT: 544 języki oczekujące na przekład i 4457 aktywnych projektów — raport 2025 Global Scripture Access (Wycliffe Global Alliance)',
   'KRAJ: Jesienna mobilizacja chrześcijańskich organizacji charytatywnych w Polsce — Diakonia, ChSCh i Caritas wspierają seniorów',
@@ -546,6 +547,48 @@ export const INITIAL_ARTICLES: Article[] = [
       'Mechanizm kuszenia nie zmienił się od czasów Edenu ani od kuszenia Jezusa na pustyni. Szatan nie pojawia się z rogami i widłami; przychodzi w garniturze doradcy biznesowego, oferując złudzenie potęgi: „Wszystko to ci dam, jeśli upadniesz i oddasz mi pokłon” (Mt 4:9). W realiach XXI wieku pokłon oddaje się algorytmom, kompromisom etycznym i milczeniu w obliczu zła.',
       'Najtragiczniejszą ceną pogoni za viralowym sukcesem jest utrata autentyczności i sumienia. Człowiek zaczyna żyć pod dyktando cudzych oczekiwań, aż w końcu nie pamięta, kim był, zanim założył konto w sieci. Przyjaźnie stają się rekwizytami do nagrań, a relacje rodzinne znikają pod lawiną powiadomień.',
       'Słowa Jezusa z Ewangelii Mateusza wybrzmiewają dziś z niebywałą mocą: „Cóż pomoże człowiekowi, choćby cały świat pozyskał, a na duszy swej szkodę poniósł?” (Mt 16:26). Możesz mieć dwa miliony obserwujących i zero spokoju w sercu. Prawdziwe przywództwo i godność polegają na umiejętności powiedzenia „NIE” potężnym instytucjom tego świata, gdy żądają one zapłaty w walucie sumienia.',
+    ],
+  },
+  {
+    id: 'art-z-biblia-za-pan-brat-dzien-15',
+    title: 'BÓG DOTRZYMUJE OBIETNIC — WIERNOŚĆ STWÓRCY PONAD LUDZKIMI SŁABOŚCIAMI W KSIĘDZE RODZAJU 20–21',
+    slug: 'bog-dotrzymuje-obietnic-wiernosc-stworcy-ponad-ludzkimi-slabosciami-rdz-20-21',
+    excerpt: 'Dwudziesty i dwudziesty pierwszy rozdział Księgi Rodzaju ukazuje niezwykłą wierność Boga, który chroni swoje przymierze pomimo potknięć Abrahama, wypełnia obietnicę narodzin Izaaka oraz czuwa nad udręczoną Hagar i Ismaelem na pustyni.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · LEKSYKON BIBLIJNY',
+    publishedAt: '2026-10-15',
+    dateFormatted: '15 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_15_isaac_obietnica.jpg',
+    imageCaption: 'Ilustracja AI: Księga Rodzaju 21:1–7 — Abraham i Sara z niewysłowioną wdzięcznością i czystą radością tulą w namiocie narodzonego Izaaka, syna obietnicy przymierza (ilustracja poglądowa wygenerowana z pomocą AI).',
+    readTimeMinutes: 7,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 20', 'Rdz 21', 'Izaak', 'Abraham', 'Sara', 'Wierność Boga', 'Obietnica', 'Przymierze', 'Hagar', 'Ismael', 'Chrystus'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 21:1',
+      text: 'A PAN nawiedził Sarę, jak powiedział, i PAN uczynił Sarze, jak obiecał.',
+      strongCode: 'H6485',
+    },
+    lexiconTerms: [
+      {
+        term: 'Nawiedził / Wypełnił obietnicę (Rdz 21:1)',
+        strongCode: 'H6485',
+        definition: 'Hebr. paqad — osobiście zwrócić uwagę, wejrzeć z troską, podjąć suwerenną interwencję i zrealizować wcześniej złożone słowo przymierza.',
+      },
+      {
+        term: 'Amen / Wierność obietnic (2 Kor 1:20)',
+        strongCode: 'G0281',
+        definition: 'Gr. amen (z hebr. aman) — pewne, stałe, niezawodne; w Jezusie Chrystusie wszystkie obietnice Boże znajdują swoje definitywne i niewzruszone potwierzenie.',
+      },
+    ],
+    content: [
+      'W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, opracowanie leksykonu teologicznego na portalu CCN bada dwudziesty i dwudziesty pierwszy rozdział Księgi Rodzaju. Ta część narracji patriarchalnej odsłania fundamentalną prawdę wiary: Boża wierność nie zależy od ludzkiej doskonałości, lecz opiera się na niezmiennym charakterze Stwórcy, który w wyznaczonym przez Siebie czasie wypełnia każde dane słowo.',
+      '1. Ludzka Chwila Słabości i Boża Ochrona Przymierza: Rdz 20:1–18. Po dramatycznych wydarzeniach w Sodomie Abraham wyrusza na południe i osiada w Gerarze. W obliczu lęku o własne życie patriarcha powtarza swój dawny błąd z Egiptu, zatajając małżeństwo z Sarą (Rdz 20:2; por. Rdz 12:11–13). Zanim jednak doszło do naruszenia czystości linii obietnicy, sam Bóg wkracza w nocy we śnie pogańskiego króla Abimelecha, ostrzegając go i chroniąc Sarę. Choć Abraham okazał słabość, Bóg nie unieważnił Swojego wybrania — co więcej, nazwał Abrahama prorokiem i nakazał królowi prosić go o wstawiennictwo (Rdz 20:7). Historia ta unaocznia, że Boża łaska potrafi osłonić człowieka nawet przed fatalnymi skutkami jego własnych kompromisów.',
+      '2. Cud Narodzin Izaaka i Śmiech Radości: Rdz 21:1–7. Po dwudziestu pięciu latach od pierwszego powołania w Haranie nadszedł upragniony dzień: „A PAN nawiedził Sarę, jak powiedział, i PAN uczynił Sarze, jak obiecał” (Rdz 21:1). Stuletni Abraham i dziewięćdziesięcioletnia Sara trzymają na rękach syna, któremu nadają imię Izaak (hebr. Jicchak — „będzie się śmiał”). Śmiech powątpiewania i bezsilności (Rdz 18:12) został przez Bożą wszechmoc przemieniony w śmiech tryumfującej wdzięczności i uwielbienia (Rdz 21:6). Bóg udowodnił, że nie spóźnia się z realizacją swoich zamierzeń — działa w punkcie kulminacyjnym, gdy wszelkie ludzkie siły wyczerpały się do cna.',
+      '3. Troska o Odrzuconych i Przymierze z Beer-Szeby: Rdz 21:8–34. Rozdział dwudziesty pierwszy nie przemilcza trudnych napięć rodzinnych: po odstawieniu Izaaka od piersi Sara żąda odesłania Hagar i Ismaela. Bóg nakazuje Abrahamowi posłuchać Sary, lecz równocześnie osobiście bierze w opiekę udręczoną niewolnicę na pustyni Beer-Szeby. Gdy kończy się woda w bukłaku, a zrozpaczona matka odkłada dziecko pod krzewem, „Bóg usłyszał głos chłopca” (Rdz 21:17) i otworzył jej oczy na studnię z żywą wodą. Rozdział zamyka uroczyste przymierze Abrahama z Abimelechem przy studni przysięgi w Beer-Szebie, gdzie patriarcha zasadził tamaryszek i wzywał imienia „PANA, Boga Wiecznego” (El-Olam, Rdz 21:33).',
+      '4. Perspektywa Nowotestamentowa: W Chrystusie Wszystkie Obietnice są „Tak”. W Nowym Testamencie apostoł Paweł odczytuje historię narodzin Izaaka jako zapowiedź duchowego odrodzenia każdego chrześcijanina z Ducha Świętego według obietnicy (Ga 4:28). Jak pisał do Koryntian: „Ile bowiem obietnic Bożych jest, w Nim są »tak« i w Nim »Amen«, ku chwale Bożej przez nas” (2 Kor 1:20). Narodziny Izaaka wbrew prawom biologii zapowiadały największy cud historii: poczęcie i zmartwychwstanie Jezusa Chrystusa, w którym każdy wierzący otrzymuje wieczne dziedzictwo łaski.',
     ],
   },
   {
