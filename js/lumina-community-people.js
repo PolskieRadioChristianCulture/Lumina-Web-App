@@ -37,7 +37,10 @@
         var seen = {};
         var list = [];
         community.forEach(function (p) {
-            if (String(p.slug || '').toLowerCase().replace(/^u_/, '') === 'zbyszekgieron') return;
+            if (!p) return;
+            var s = String(p.slug || '').toLowerCase().replace(/^u_/, '');
+            var n = String(p.name || '').toLowerCase();
+            if (s === 'zbyszekgieron' || s === 'zbyszek' || n.includes('zbyszek') || n.includes('gieroń') || n.includes('gieron')) return;
             if (seen[p.slug]) return;
             seen[p.slug] = true;
             list.push({
@@ -49,7 +52,12 @@
             });
         });
         // Osoby oficjalne zawsze obecne (jeśli nie przyszły już z bazy) — na początku listy.
-        var official = OFFICIAL_PEOPLE.filter(function (p) { return !seen[p.slug]; });
+        var official = OFFICIAL_PEOPLE.filter(function (p) {
+            var s = String(p.slug || '').toLowerCase().replace(/^u_/, '');
+            var n = String(p.name || '').toLowerCase();
+            if (s === 'zbyszekgieron' || s === 'zbyszek' || n.includes('zbyszek') || n.includes('gieroń') || n.includes('gieron')) return false;
+            return !seen[p.slug];
+        });
         return official.concat(list);
     };
 

@@ -5530,25 +5530,6 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     </div>
                 </div>
 
-                <!-- 11b-1. Zbyszek Gieroń (Profil Misyjny • Świadectwo & Wiara) -->
-                <div class="profile-card mission-profile-card" id="card_profile_zbyszekgieron" data-profile-slug="zbyszekgieron" onclick="openCommunityProfile('zbyszekgieron')" data-category="misja mezczyzna spolecznosc" style="cursor:pointer;">
-                    <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:1px solid rgba(255,255,255,0.3);">
-                            <i class="fa-solid fa-cross" style="color:#fde047; font-size:0.65rem;"></i> MISJA
-                        </div>
-                        <img src="avatar_zbyszek_gieron.jpg" onerror="this.src='lumina_icon.jpg'" alt="Zbyszek Gieroń" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'zbyszekgieron','Zbyszek Gieroń','avatar_zbyszek_gieron.jpg')"><i class="fa-solid fa-heart"></i></button>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; width:fit-content;">🕊️ PROFIL MISYJNY</div>
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Zbyszek Gieroń <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Zweryfikowany Profil Misyjny"></i>
-                        </div>
-                        <div class="card-city">📍 Polska • <b style="color:#38bdf8;">🕊️ Świadectwo &amp; Wiara</b></div>
-                        <div class="card-desc">"Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa. Dzielę się Słowem Bożym i świadectwem wiary."</div>
-                    </div>
-                </div>
-
                 <!-- 13. MISJA 5: CC MEN (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_ccmen" data-profile-slug="ccmen" onclick="window.location.href='lumina/ccmen'" data-category="misja mezczyzna" style="cursor:pointer;">
                     <div class="card-photo">
@@ -8403,6 +8384,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         }
                     } catch(e) {}
 
+                    if (cleanPKey === 'zbyszekgieron' || cleanPKey === 'zbyszek' || normName.includes('zbyszek') || normName.includes('gieroń') || normName.includes('gieron')) {
+                        return '';
+                    }
+
                     // Filtruj i deduplikuj wszelkie warianty profilu LUMINA / Misji
                     if (pKey.includes('lumina') || normName.includes('lumina') || cleanNameKey.includes('lumina') || (p.job && p.job.includes('Oficjalny profil Misji'))) {
                         return '';
@@ -9251,7 +9236,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             } catch(e) {}
 
             // 3. Aktywni uczestnicy czatu z bazy demo/społeczności
-            const activeChatSlugs = ['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'u_urszula_7685', 'urszula', 'ula', 'noemi', 'dawid', 'zbyszekgieron', 'pawelmurawski', 'mariusz', 'radiocc'];
+            const activeChatSlugs = ['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'u_urszula_7685', 'urszula', 'ula', 'noemi', 'dawid', 'pawelmurawski', 'mariusz', 'radiocc'];
             if (activeChatSlugs.some(s => cleanSlug.includes(s.replace(/^u_/, '')) || normSlug === s.replace(/^u_/, '').replace(/[^a-z0-9]/g, ''))) {
                 return true;
             }
@@ -9522,7 +9507,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (lower.includes('julia')) slug = 'julia';
             else if (lower.includes('hamera')) slug = 'andrzejhamera';
             else if (lower.includes('thiel') || (lower.includes('andrzej') && !lower.includes('hamera'))) slug = 'andrzejthiel';
-            else if (lower.includes('zbyszek') || lower.includes('gieron')) slug = 'zbyszekgieron';
             else if (lower.includes('zofia') || lower.includes('dudek')) slug = 'zofiadudek';
             else if (lower.includes('paweł') || lower.includes('pawel') || lower.includes('murawski')) slug = 'pawelmurawski';
             else if (lower.includes('studio dobrego') || lower.includes('studiodobre') || lower.includes('sds') || lower.includes('studiodes') || (lower.includes('mariusz') && (lower.includes('studio') || lower.includes('sds') || lower.includes('słowa') || lower.includes('slowa')))) slug = 'studiodobregoslowa';
@@ -14373,7 +14357,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script defer src="/js/cc-owner-push-test.js?v=20261008_sender2"></script>
     <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
     <script src="js/lumina-community-people.js?v=20261011_all_members1" defer></script>
-    <script src="/js/lumina-member-home.js?v=20261011_2" defer></script>
+    <script src="/js/lumina-member-home.js?v=20261014_zbyszek_off" defer></script>
 <script src="/js/lumina-support-project.js?v=20260921_support_project_v3" defer></script>
 <script>
 /* Strażnik 2026-10-11: przycisk „Wspieraj” na górnej belce otwiera pełne okno wsparcia (BLIK, Revolut, Patronite, przelew) */

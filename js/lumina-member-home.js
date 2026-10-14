@@ -87,7 +87,13 @@
 
     function peopleHtml() {
         var people = typeof window.getLuminaCarouselPeople === 'function' ? window.getLuminaCarouselPeople() : [];
-        var withPhoto = people.filter(function (p) { return p.avatar && p.avatar.indexOf('lumina-avatar-zastepczy') === -1; });
+        var withPhoto = people.filter(function (p) {
+            if (!p) return false;
+            var slug = String(p.slug || '').toLowerCase().replace(/^u_/, '');
+            var name = String(p.name || '').toLowerCase();
+            if (slug === 'zbyszekgieron' || slug === 'zbyszek' || name.includes('zbyszek') || name.includes('gieroń') || name.includes('gieron')) return false;
+            return p.avatar && p.avatar.indexOf('lumina-avatar-zastepczy') === -1;
+        });
         var list = withPhoto.slice(0, 10);
         if (!list.length) return '';
         return '<section class="lmh-sec" aria-labelledby="lmhPeopleTitle"><div class="lmh-sec-head"><h2 id="lmhPeopleTitle">Polecane</h2>' +
