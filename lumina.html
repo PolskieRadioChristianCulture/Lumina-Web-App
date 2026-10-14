@@ -6185,6 +6185,18 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 
             <!-- Settings Groups -->
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <!-- Radio CC — 6 Stacji w tle podczas czatu -->
+                <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(196,163,90,0.35); border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-weight: 700; font-size: 0.84rem; color: #facc15; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-radio"></i> Radio CC • 6 Stacji w tle</span>
+                        <span style="font-size: 0.70rem; color: #10b981; font-weight: 600;">Na żywo ✨</span>
+                    </div>
+                    <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px;">
+                        Wybierz stację i słuchaj chrześcijańskiej muzyki oraz Słowa Bożego podczas rozmów na czacie:
+                    </div>
+                    <div class="cc-chat-settings-radio-mount"></div>
+                </div>
+
                 <!-- Audio & Notifications -->
                 <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px;">
                     <div style="font-weight: 700; font-size: 0.84rem; color: #facc15; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
@@ -12189,6 +12201,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (soundToggle) {
                 const soundPref = localStorage.getItem('lumina_chat_sound_enabled');
                 soundToggle.checked = soundPref !== 'false';
+            }
+
+            if (window.CCUnifiedChat && typeof window.CCUnifiedChat.mountRadio === 'function') {
+                window.CCUnifiedChat.mountRadio(modal);
             }
 
             modal.style.display = 'flex';

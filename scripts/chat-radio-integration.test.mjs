@@ -76,16 +76,31 @@ test('radio controls mount for both guest and native chat, and changing stations
   assert.equal(win.document.querySelector('.cc-chat-radio button').disabled, false);
 });
 
-test('mini radio player mounts on the upper chat header bar between brand and actions', async () => {
+test('mini radio player mounts inside chat settings modal and keeps header bar uncluttered', async () => {
   const { win, run } = fixture();
-  win.document.body.innerHTML = '<div id="ccGlobalChatOverlay"><div class="cc-chat-drawer"><div class="cc-chat-header"><div class="cc-chat-header-brand">Brand</div><div class="cc-chat-header-actions"><button>Close</button></div></div></div></div>';
+  win.document.body.innerHTML = `
+    <div id="directMessagesModal">
+      <div class="chat-header-bar">
+        <div>
+          <div class="brand">LUMI Messenger</div>
+          <div class="chat-header-actions"><button id="btnChatSettingsModal">Settings</button></div>
+        </div>
+      </div>
+    </div>
+    <div id="chatSettingsModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="cc-chat-settings-radio-mount"></div>
+      </div>
+    </div>
+  `;
   win.fetch = async () => ({ ok: true, json: async () => [{ url: './audio/test.mp3', duration: 240 }] });
   run(files[0]); win.CCRadioMilion = true; run(files[1]); run(files[2]);
   win.document.dispatchEvent(new win.Event('DOMContentLoaded')); await settle();
-  const header = win.document.querySelector('.cc-chat-header');
-  const radio = header.querySelector('.cc-chat-radio');
-  assert.ok(radio, 'Radio must be mounted inside .cc-chat-header');
-  assert.equal(radio.nextElementSibling.className, 'cc-chat-header-actions', 'Radio must sit before header actions');
+  const header = win.document.querySelector('.chat-header-bar');
+  assert.equal(header.querySelectorAll('.cc-chat-radio').length, 0, 'Header must not contain radio player');
+  const settingsModal = win.document.querySelector('#chatSettingsModal');
+  const radio = settingsModal.querySelector('.cc-chat-radio');
+  assert.ok(radio, 'Radio must be mounted inside chatSettingsModal');
   assert.equal(radio.querySelector('select').options.length, 6);
   assert.equal(radio.querySelector('button').textContent, 'Słuchaj');
 });
