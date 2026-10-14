@@ -59,6 +59,107 @@
         updateInstalled();
         updateAccount();
         window.addEventListener('lumina-auth-state', updateAccount);
+        setupIntro();
+    }
+    function setupIntro() {
+        const overlay = document.getElementById('lumiIntroOverlay');
+        const video = document.getElementById('lumiIntroVideo');
+        const skipBtn = document.getElementById('lumiIntroSkip');
+        const soundBtn = document.getElementById('lumiIntroSound');
+        const soundIcon = document.getElementById('lumiIntroSoundIcon');
+        const soundText = document.getElementById('lumiIntroSoundText');
+        const progressBar = document.getElementById('lumiIntroProgressBar');
+        const replayBtn = document.getElementById('lumiReplayIntro');
+        if (!overlay || !video) return;
+
+        let isDismissed = false;
+
+        function updateSoundUI(muted) {
+            if (soundIcon) soundIcon.textContent = muted ? '🔇' : '🔊';
+            if (soundText) soundText.textContent = muted ? 'Włącz dźwięk' : 'Wycisz';
+            if (soundBtn) soundBtn.setAttribute('aria-label', muted ? 'Włącz dźwięk' : 'Wycisz');
+        }
+
+        function dismissIntro() {
+            if (isDismissed) return;
+            isDismissed = true;
+            overlay.classList.add('fade-out');
+            try { video.pause(); } catch (_) {}
+            setTimeout(() => {
+                overlay.hidden = true;
+            }, 750);
+        }
+
+        function playIntro(withAudio) {
+            isDismissed = false;
+            overlay.hidden = false;
+            overlay.classList.remove('fade-out');
+            if (progressBar) progressBar.style.width = '0%';
+            try { video.currentTime = 0; } catch (_) {}
+            video.muted = !withAudio;
+            updateSoundUI(video.muted);
+            const promise = video.play();
+            if (promise && typeof promise.catch === 'function') {
+                promise.catch(() => {
+                    video.muted = true;
+                    updateSoundUI(true);
+                    video.play().catch(() => {});
+                });
+            }
+        }
+
+        if (skipBtn) {
+            skipBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                dismissIntro();
+            });
+        }
+
+        if (soundBtn) {
+            soundBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                video.muted = !video.muted;
+                updateSoundUI(video.muted);
+            });
+        }
+
+        video.addEventListener('timeupdate', () => {
+            if (progressBar && video.duration) {
+                const pct = Math.min(100, (video.currentTime / video.duration) * 100);
+                progressBar.style.width = pct + '%';
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            if (progressBar) progressBar.style.width = '100%';
+            dismissIntro();
+        });
+
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay || e.target.classList.contains('lumi-intro-video-wrap')) {
+                dismissIntro();
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (!overlay.hidden && !isDismissed && (e.key === 'Escape' || e.key === ' ')) {
+                dismissIntro();
+            }
+        });
+
+        if (replayBtn) {
+            replayBtn.addEventListener('click', () => {
+                playIntro(true);
+            });
+        }
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            overlay.hidden = true;
+            overlay.classList.add('fade-out');
+        } else {
+            playIntro(false);
+        }
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
     else setup();

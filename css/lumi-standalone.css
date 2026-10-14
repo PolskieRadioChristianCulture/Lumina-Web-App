@@ -19,7 +19,7 @@ body.lumi-standalone {
   min-height: 100dvh;
 }
 
-body.lumi-standalone > :not(#lumiLanding):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) {
+body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) {
   display: none !important;
 }
 
@@ -239,3 +239,141 @@ body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer {
     flex-direction: column;
   }
 }
+
+/* === LUMI INTRO OVERLAY === */
+#lumiIntroOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 99990;
+  background: #060913;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.75s ease;
+}
+
+#lumiIntroOverlay.fade-out {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.lumi-intro-video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.lumi-intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.lumi-intro-controls {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.lumi-intro-btn {
+  appearance: none;
+  background: rgba(10, 15, 26, 0.76) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.5) !important;
+  color: #f5f7ff !important;
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  min-height: 44px;
+  border-radius: 999px !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+  transition: all 0.2s ease;
+}
+
+.lumi-intro-btn:hover {
+  background: rgba(20, 28, 48, 0.92) !important;
+  border-color: #facc15 !important;
+  color: #facc15 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(212, 175, 55, 0.4);
+}
+
+.lumi-intro-btn:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+}
+
+.lumi-intro-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.18);
+  z-index: 10;
+}
+
+.lumi-intro-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #c4a35a, #facc15);
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+  transition: width 0.1s linear;
+}
+
+.lumi-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+#lumiReplayIntro {
+  background: rgba(212, 175, 55, 0.12) !important;
+  border: 1px solid rgba(212, 175, 55, 0.5) !important;
+  color: #facc15 !important;
+  font-weight: 700;
+  min-height: 48px;
+  border-radius: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+
+#lumiReplayIntro:hover {
+  background: rgba(212, 175, 55, 0.25) !important;
+  border-color: #facc15 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+}
+
