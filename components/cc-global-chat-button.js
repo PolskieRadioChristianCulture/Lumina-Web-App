@@ -2359,9 +2359,8 @@
             <div class="cc-chat-msg-bubble">
               ${renderChatMedia(text, m.id)}
               <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:4px;">
-                <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${name}" data-share-text="${text}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; font-size:0.65rem; font-weight:700; cursor:pointer; padding:2px 7px; border-radius:6px; min-height:44px; display:inline-flex; align-items:center; gap:4px;" title="Udostępnij tę wiadomość">
-                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                  <span>Udostępnij</span>
+                <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${name}" data-share-text="${text}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                 </button>
               </div>
             </div>

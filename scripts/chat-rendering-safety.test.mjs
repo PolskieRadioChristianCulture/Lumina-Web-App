@@ -114,6 +114,8 @@ test('every chat message renderer includes an accessible 44px UDOSTĘPNIJ button
     assert.match(source, /window\.openShareMessageModal\s*=/, `${file} exports window.openShareMessageModal`);
     assert.match(source, /class="cc-chat-share-btn"/, `${file} contains cc-chat-share-btn`);
     assert.match(source, /min-height:\s*44px/, `${file} share button satisfies 44px touch ergonomics`);
+    assert.match(source, /aria-label="Udostępnij wiadomość"/, `${file} share button has accessible aria-label`);
+    assert.doesNotMatch(source, /class="cc-chat-share-btn"[^>]*>[\s\S]*?<span>Udostępnij<\/span>/, `${file} share button is icon-only without redundant text`);
     assert.match(source, /api\.whatsapp\.com\/send\?text=/, `${file} modal supports WhatsApp sharing`);
     assert.match(source, /t\.me\/share\/url\?/, `${file} modal supports Telegram sharing`);
     assert.match(source, /facebook\.com\/sharer\/sharer\.php\?/, `${file} modal supports Facebook sharing`);
