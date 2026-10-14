@@ -1,3 +1,4 @@
+import { renderLumiDashboard } from './lumi-dashboard.mjs';
 // Build a dedicated entry from the canonical renderer; never fork the chat engine.
 export function renderLumiPage(html) {
   if (!html.includes('id="directMessagesModal"') || !html.includes('manifest-lumina.json')) {
@@ -28,7 +29,9 @@ try {
 </script>
 <style>html.cc-mess-embedded #lumiLanding,html.cc-mess-embedded #lumiIntroOverlay{display:none!important}</style>
 <link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_settings_fix">
+<link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261014_mockup1">
 <script defer src="/js/lumi-standalone.js?v=20261014_settings_fix"></script>
+<script defer src="/js/lumi-dashboard.js?v=20261014_mockup1"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
@@ -51,38 +54,7 @@ try {
     </div>
   </div>
 </div>
-<main id="lumiLanding" aria-labelledby="lumiTitle">
-  <nav aria-label="Ekosystem Christian Culture"><a href="/lumina">LUMINA</a><a href="/">Christian Culture</a></nav>
-  <section class="lumi-welcome">
-    <img src="/images/chat/cc-chat-button-128.webp" alt="" width="96" height="96">
-    <p class="lumi-eyebrow">LumiMess · Christian Culture</p>
-    <h1 id="lumiTitle">LUMI Messenger</h1>
-    <p class="lumi-tagline">Rozmowy, które budują wspólnotę.</p>
-    <p class="lumi-description">Chrześcijański komunikator społeczności LUMINA. Twoje obecne konto, kontakty i rozmowy — w jednym miejscu.</p>
-    <div class="lumi-actions">
-      <button type="button" id="lumiOpen">Otwórz komunikator</button>
-      <a id="lumiLogin" href="/lumina-login?next=%2Fmess">Zaloguj się bezpłatnie</a>
-      <button type="button" id="lumiSettings" class="lumi-settings-btn" hidden>Ustawienia i wylogowanie</button>
-    </div>
-    <div class="lumi-actions-install">
-      <button type="button" id="lumiInstall">Dodaj LUMI do urządzenia</button>
-    </div>
-  </section>
-  <footer id="lumiFooter" class="lumi-page-footer">
-    <div class="lumi-footer-install-info">
-      <p id="lumiInstallStatus" role="status" aria-live="polite"></p>
-      <details id="lumiInstallHelp"><summary>Jak zainstalować aplikację?</summary><p>Android: otwórz tę stronę w Chrome i wybierz w menu „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”. iPhone: otwórz w Safari, wybierz Udostępnij → Do ekranu początkowego. Dostępność zależy od przeglądarki.</p></details>
-    </div>
-    <p class="lumi-footer-description">Zaloguj się, by odebrać za darmo więcej korzyści i korzystać z rozmów prywatnych. Społeczność LUMINA jest przeznaczona dla osób pełnoletnich.</p>
-    <div class="lumi-footer-links">
-      <button type="button" id="lumiReplayIntro" class="lumi-footer-intro-btn"><span aria-hidden="true">▶</span> Obejrzyj intro</button>
-      <a href="/lumina-safety">Zasady społeczności</a>
-      <a href="/privacy">Prywatność</a>
-      <button type="button" id="lumiFooterSettings" class="lumi-footer-intro-btn" onclick="if(typeof window.openChatSettingsModal==='function')window.openChatSettingsModal();else if(typeof window.openDirectMessagesModal==='function')window.openDirectMessagesModal('private');">⚙ Ustawienia czatu</button>
-      <a href="/lumina">Konto i profil</a>
-    </div>
-  </footer>
-</main>`);
+${renderLumiDashboard()}`);
   if (!html.includes('id="lumiLanding"')) throw new Error('LUMI: body contract changed');
   return html;
 }

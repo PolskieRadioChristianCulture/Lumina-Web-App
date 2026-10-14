@@ -2,8 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { LUMINA_ROOT, SCRATCH_ROOT, NEWS_SRC, PORTALS } = require('./portals_data.cjs');
+const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 console.log('=== BUILD 5 HUBS DIRECTLY IN NEWS_SRC ===');
+console.log('PROJECT ROOT:', PROJECT_ROOT);
+console.log('LUMINA ROOT:', LUMINA_ROOT);
 
 const VITE_JS = path.join(NEWS_SRC, 'node_modules/vite/bin/vite.js');
 
@@ -337,10 +340,12 @@ export default defineConfig(() => {
     const buildLog = execSync(`npm.cmd run build`, { cwd: NEWS_SRC }).toString();
     console.log(`✓ Built in ${Date.now() - t0}ms`);
 
-    // H. Copy assets to LUMINA/assets
+    // H. Copy assets to LUMINA/assets and PROJECT_ROOT/assets
     const distAssetsDir = path.join(NEWS_SRC, 'dist/assets');
     const luminaAssetsDir = path.join(LUMINA_ROOT, 'assets');
+    const projectAssetsDir = path.join(PROJECT_ROOT, 'assets');
     if (!fs.existsSync(luminaAssetsDir)) fs.mkdirSync(luminaAssetsDir, { recursive: true });
+    if (!fs.existsSync(projectAssetsDir)) fs.mkdirSync(projectAssetsDir, { recursive: true });
 
     let jsAssetUrl = '';
     let cssAssetUrl = '';
@@ -349,10 +354,12 @@ export default defineConfig(() => {
       if (f.startsWith(`${portal.id}-index-`) && f.endsWith('.js')) {
         jsAssetUrl = `/assets/${f}`;
         fs.copyFileSync(path.join(distAssetsDir, f), path.join(luminaAssetsDir, f));
+        fs.copyFileSync(path.join(distAssetsDir, f), path.join(projectAssetsDir, f));
       }
       if (f.startsWith(`${portal.id}-index-`) && f.endsWith('.css')) {
         cssAssetUrl = `/assets/${f}`;
         fs.copyFileSync(path.join(distAssetsDir, f), path.join(luminaAssetsDir, f));
+        fs.copyFileSync(path.join(distAssetsDir, f), path.join(projectAssetsDir, f));
       }
     }
 
@@ -367,16 +374,26 @@ export default defineConfig(() => {
 
     console.log(`Assets: JS=${jsAssetUrl}, CSS=${cssAssetUrl}`);
 
-    // I. Generate HTML files
+    // I. Generate HTML files for both LUMINA_ROOT and PROJECT_ROOT
     const finalHtml = generateProductionHtml(portal, jsAssetUrl, cssAssetUrl);
+    
+    // LUMINA
     const rootHtml = path.join(LUMINA_ROOT, `${portal.id}.html`);
     const subDir = path.join(LUMINA_ROOT, portal.id);
     if (!fs.existsSync(subDir)) fs.mkdirSync(subDir, { recursive: true });
     const subHtml = path.join(subDir, 'index.html');
-
     fs.writeFileSync(rootHtml, finalHtml, 'utf8');
     fs.writeFileSync(subHtml, finalHtml, 'utf8');
-    console.log(`✓ Generated ${rootHtml} & ${subHtml}`);
+
+    // PROJECT_ROOT
+    const projRootHtml = path.join(PROJECT_ROOT, `${portal.id}.html`);
+    const projSubDir = path.join(PROJECT_ROOT, portal.id);
+    if (!fs.existsSync(projSubDir)) fs.mkdirSync(projSubDir, { recursive: true });
+    const projSubHtml = path.join(projSubDir, 'index.html');
+    fs.writeFileSync(projRootHtml, finalHtml, 'utf8');
+    fs.writeFileSync(projSubHtml, finalHtml, 'utf8');
+
+    console.log(`✓ Generated ${rootHtml} & ${projRootHtml}`);
   }
 
   // Restore and rebuild NEWS

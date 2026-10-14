@@ -246,4 +246,5 @@
   });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup, { once: true });
   else setup();
+  window.dispatchEvent(new window.CustomEvent('cc-chat-integration-ready'));
 })();

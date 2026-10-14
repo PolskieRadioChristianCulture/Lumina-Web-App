@@ -160,7 +160,7 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
   margin-top: 14px;
 }
 
-#lumiLanding button {
+#lumiLanding:not(.lumi-dashboard) button {
   min-height: 48px;
   border-radius: 16px;
   padding: 12px 20px;

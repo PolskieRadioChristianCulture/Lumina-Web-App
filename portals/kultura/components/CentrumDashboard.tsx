@@ -1,4 +1,5 @@
 import React from 'react';
+import { KulturaEditorialArticle } from './KulturaEditorialArticle';
 import { UserPersona, JOZUE_AVATAR_URL, MIRIAM_AVATAR_URL, JESZUA_AVATAR_URL, fixOrphans, AppLanguage } from '../types';
 import { Sparkles, Radio, Film, Users, BookOpen, Briefcase, Newspaper, GraduationCap, ArrowRight, CheckCircle2, Heart } from 'lucide-react';
 
@@ -216,6 +217,9 @@ export const CentrumDashboard: React.FC<CentrumDashboardProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Featured Editorial Article on Kultura */}
+      <KulturaEditorialArticle />
 
       {/* Main Content Grid: Cards + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

@@ -28,7 +28,10 @@
             const settings = document.getElementById('lumiSettings');
             if (login) login.hidden = member;
             if (settings) settings.hidden = !member;
-            open.textContent = member ? 'Otwórz moje rozmowy' : 'Otwórz komunikator';
+            if (document.getElementById('lumiLanding')?.classList.contains('lumi-dashboard')) {
+                const label = open.querySelector('span');
+                if (label) label.textContent = 'Czat ogólny';
+            } else open.textContent = member ? 'Otwórz moje rozmowy' : 'Otwórz komunikator';
         }
         function updateInstalled() {
             if (installed()) { install.hidden = true; status.textContent = 'LUMI uruchomione jako aplikacja.'; }
@@ -221,7 +224,7 @@
         const forceIntro = window.location.search.includes('intro=1') || window.location.hash === '#intro';
         const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        if (prefersReducedMotion || (!forceIntro && hasSeenIntroToday())) {
+        if (prefersReducedMotion || (!forceIntro && (hasSeenIntroToday() || document.getElementById('lumiLanding')?.classList.contains('lumi-dashboard')))) {
             overlay.hidden = true;
             overlay.classList.add('fade-out');
         } else {
