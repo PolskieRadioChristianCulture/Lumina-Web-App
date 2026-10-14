@@ -12160,6 +12160,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         // ══════════ PROFESJONALNE USTAWIENIA CZATU I WYLOGOWANIE ══════════
         window.openChatSettingsModal = function() {
+            const drawer = document.getElementById('ccGlobalChatOverlay');
+            if (drawer) {
+                drawer.classList.remove('is-open');
+                drawer.setAttribute('aria-hidden', 'true');
+            }
             const modal = document.getElementById('chatSettingsModal');
             if (!modal) return;
 
@@ -12213,6 +12218,18 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             modal.classList.add('open');
             modal.classList.add('active');
         };
+
+        // Gwarancja przechwycenia kliknięcia w ikonę zębatki ustawień czatu (Capture Phase)
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('#btnChatSettingsModal, .chat-settings-btn');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof window.openChatSettingsModal === 'function') {
+                    window.openChatSettingsModal();
+                }
+            }
+        }, true);
 
         window.closeChatSettingsModal = function() {
             const modal = document.getElementById('chatSettingsModal');
@@ -12718,8 +12735,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }
 
         function openDirectMessagesModal(preferredTab) {
+            const drawer = document.getElementById('ccGlobalChatOverlay');
+            if (drawer) {
+                drawer.classList.remove('is-open');
+                drawer.setAttribute('aria-hidden', 'true');
+            }
             const m = document.getElementById('directMessagesModal');
             if (m) {
+                m.removeAttribute('inert');
+                m.setAttribute('aria-hidden', 'false');
                 m.style.display = 'flex';
                 m.classList.add('open');
                 checkAndShowCommanderTab();
