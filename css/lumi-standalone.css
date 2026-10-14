@@ -1,23 +1,241 @@
-html:has(body.lumi-standalone) { background: #101827; }
-body.lumi-standalone { background: #101827 !important; color: #f5f7ff; margin: 0; }
-body.lumi-standalone > :not(#lumiLanding):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) { display: none !important; }
-#lumiLanding { min-height: 100dvh; box-sizing: border-box; padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)); font-family: Manrope, system-ui, sans-serif; }
-#lumiLanding nav, #lumiLanding footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-#lumiLanding a { color: #d7c7ff; text-decoration: underline; text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
-#lumiLanding [hidden] { display: none !important; }
-.lumi-welcome { max-width: 580px; margin: 48px auto 0; text-align: center; }
-.lumi-welcome > img { border-radius: 50%; object-fit: cover; }
-.lumi-welcome h1 { font-size: clamp(2rem, 7vw, 3.4rem); line-height: 1.12; margin: 12px 0; letter-spacing: -.04em; }
-.lumi-eyebrow { color: #c5afff; font-size: .8rem; letter-spacing: .08em; }
-.lumi-description { line-height: 1.7; color: #b8c3d9; margin: 22px 0; }
-.lumi-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; margin: 28px 0 18px; }
-#lumiLanding button { min-height: 48px; border-radius: 16px; padding: 12px 20px; font: inherit; cursor: pointer; border: 1px solid #6d5b92; background: #222d43; color: #fff; }
-#lumiLanding #lumiOpen { background: #7551d8; border-color: #a787ff; font-weight: 700; }
-#lumiLanding button:focus-visible, #lumiLanding a:focus-visible, #lumiLanding summary:focus-visible { outline: 3px solid #dfcdff; outline-offset: 4px; }
-#lumiInstallHelp { margin: 12px 0; text-align: left; color: #b8c3d9; line-height: 1.6; }
-#lumiInstallHelp summary { cursor: pointer; min-height: 44px; text-align: center; }
-#lumiInstallStatus { min-height: 24px; color: #c5afff; }
-body.lumi-standalone #directMessagesModal.open { position: fixed !important; inset: 0 !important; width: 100vw !important; height: var(--lumi-viewport-height, 100dvh) !important; padding: 0 !important; }
-body.lumi-standalone #directMessagesModal.open > .modal-card { width: 100% !important; max-width: none !important; height: 100% !important; max-height: none !important; margin: 0 !important; border-radius: 0 !important; }
-body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer { position: fixed !important; inset: 0 !important; width: 100vw !important; max-width: none !important; height: var(--lumi-viewport-height, 100dvh) !important; max-height: none !important; border-radius: 0 !important; }
-@media(max-width:480px) { .lumi-welcome { margin-top: 24px; } .lumi-actions { flex-direction: column; } }
+html:has(body.lumi-standalone) {
+  background: #060913;
+}
+
+body.lumi-standalone {
+  background-color: #060913 !important;
+  background-image:
+    radial-gradient(ellipse at center, rgba(6, 9, 19, 0.45) 0%, rgba(6, 9, 19, 0.82) 100%),
+    url('/images/chat/lumi-mess-bg.png') !important;
+  background-image:
+    radial-gradient(ellipse at center, rgba(6, 9, 19, 0.45) 0%, rgba(6, 9, 19, 0.82) 100%),
+    url('/images/chat/lumi-mess-bg.webp') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  color: #f5f7ff;
+  margin: 0;
+  min-height: 100dvh;
+}
+
+body.lumi-standalone > :not(#lumiLanding):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) {
+  display: none !important;
+}
+
+#lumiLanding {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom));
+  font-family: Manrope, system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#lumiLanding nav, #lumiLanding footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+#lumiLanding a {
+  color: #f0e6c8;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  transition: color 0.2s ease;
+}
+
+#lumiLanding a:hover {
+  color: #facc15;
+}
+
+#lumiLanding [hidden] {
+  display: none !important;
+}
+
+.lumi-welcome {
+  max-width: 580px;
+  margin: 36px auto;
+  text-align: center;
+  background: rgba(10, 15, 26, 0.74);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.14);
+  border-radius: 28px;
+  padding: 36px 28px;
+  box-sizing: border-box;
+}
+
+.lumi-welcome > img {
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.5), 0 8px 24px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(250, 204, 21, 0.65);
+}
+
+.lumi-welcome h1 {
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  line-height: 1.12;
+  margin: 12px 0;
+  letter-spacing: -.03em;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+.lumi-eyebrow {
+  color: #facc15;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 14px;
+}
+
+.lumi-description {
+  line-height: 1.7;
+  color: #d1d8e6;
+  margin: 20px 0;
+}
+
+.lumi-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 28px 0 18px;
+}
+
+#lumiLanding button {
+  min-height: 48px;
+  border-radius: 16px;
+  padding: 12px 20px;
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid #6d5b92;
+  background: #222d43;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+#lumiLanding #lumiOpen {
+  background: linear-gradient(135deg, #c4a35a 0%, #e2c974 50%, #b89742 100%);
+  border: 1px solid #facc15;
+  color: #0b0f19;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35);
+}
+
+#lumiLanding #lumiOpen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5);
+}
+
+#lumiLanding #lumiLogin {
+  color: #facc15;
+  font-weight: 700;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  padding: 12px 22px;
+  border-radius: 16px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.06);
+  min-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+#lumiLanding #lumiLogin:hover {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: #facc15;
+  transform: translateY(-2px);
+}
+
+#lumiLanding #lumiInstall {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+#lumiLanding #lumiInstall:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+#lumiLanding button:focus-visible,
+#lumiLanding a:focus-visible,
+#lumiLanding summary:focus-visible {
+  outline: 3px solid #dfcdff;
+  outline-offset: 4px;
+}
+
+#lumiInstallHelp {
+  margin: 12px 0;
+  text-align: left;
+  color: #b8c3d9;
+  line-height: 1.6;
+}
+
+#lumiInstallHelp summary {
+  cursor: pointer;
+  min-height: 44px;
+  text-align: center;
+}
+
+#lumiInstallStatus {
+  min-height: 24px;
+  color: #c5afff;
+}
+
+body.lumi-standalone #directMessagesModal.open {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: var(--lumi-viewport-height, 100dvh) !important;
+  padding: 0 !important;
+}
+
+body.lumi-standalone #directMessagesModal.open > .modal-card {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: var(--lumi-viewport-height, 100dvh) !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 768px) {
+  body.lumi-standalone {
+    background-attachment: scroll !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .lumi-welcome {
+    margin-top: 20px;
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+  .lumi-actions {
+    flex-direction: column;
+  }
+}

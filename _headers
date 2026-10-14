@@ -69,6 +69,12 @@
 /images/academy_hero_main.png
   Cache-Control: public, max-age=0, must-revalidate
 
+/css/lumi-standalone.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/lumi-standalone.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 
 /*.js
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
