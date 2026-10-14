@@ -16,7 +16,9 @@
             const user = window.LuminaDB?.getCurrentUser?.();
             const member = Boolean(user && !user.isAnonymous);
             const login = document.getElementById('lumiLogin');
+            const settings = document.getElementById('lumiSettings');
             if (login) login.hidden = member;
+            if (settings) settings.hidden = !member;
             open.textContent = member ? 'Otwórz moje rozmowy' : 'Otwórz komunikator';
         }
         function updateInstalled() {
@@ -33,6 +35,16 @@
             }
         }
         open.addEventListener('click', openChat);
+        const settings = document.getElementById('lumiSettings');
+        if (settings) {
+            settings.addEventListener('click', () => {
+                if (typeof window.openChatSettingsModal === 'function') {
+                    window.openChatSettingsModal();
+                } else if (typeof window.openDirectMessagesModal === 'function') {
+                    window.openDirectMessagesModal('private');
+                }
+            });
+        }
         install.addEventListener('click', async () => {
             if (!installPrompt) {
                 const help = document.getElementById('lumiInstallHelp');

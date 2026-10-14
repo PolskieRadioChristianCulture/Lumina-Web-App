@@ -5912,6 +5912,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         </div>
                     </div>
                     <div class="chat-header-actions" style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                        <button id="btnChatSettingsModal" type="button" onclick="openChatSettingsModal()" title="Ustawienia czatu i wylogowanie" class="chat-settings-btn" style="align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; max-width:36px; min-height:36px; max-height:36px; border-radius:10px; border:1px solid rgba(250,204,21,0.4); background:rgba(250,204,21,0.12); color:#facc15; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex:0 0 36px; flex-shrink:0; padding:0; margin:0; box-sizing:border-box;"><i class="fa-solid fa-gear"></i></button>
                         <button id="btnChatFullscreen" type="button" onclick="toggleChatFullscreen()" title="Pełny ekran czatu" class="chat-fullscreen-btn" style="align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; max-width:36px; min-height:36px; max-height:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex:0 0 36px; flex-shrink:0; padding:0; margin:0; box-sizing:border-box;"><i class="fa-solid fa-expand" id="iconChatFullscreen"></i></button>
                         <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -5947,8 +5948,29 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 <!-- Wskaźnik "X pisze..." -->
                 <div id="publicChatTypingIndicator" class="lumina-typing-indicator"></div>
 
+                <!-- Quick Emojis Drawer dla Czatu Ogólnego -->
+                <div id="publicChatEmojisBar" class="messenger-quick-emojis-bar">
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('❤️')">❤️</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('🙏')">🙏</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('🕊️')">🕊️</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('✨')">✨</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('👍')">👍</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('😊')">😊</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('☕')">☕</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('📖')">📖</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('✝️')">✝️</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('🛡️')">🛡️</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('🔥')">🔥</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('🌸')">🌸</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('👑')">👑</button>
+                    <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('👏')">👏</button>
+                </div>
+
                 <!-- Public Chat Input Form -->
-                <form id="publicChatForm" class="chat-input-bar" onsubmit="handleSendPublicChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1);">
+                <form id="publicChatForm" class="chat-input-bar" onsubmit="handleSendPublicChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1); align-items: center;">
+                    <button type="button" id="btnPublicChatEmoji" onclick="window.togglePublicChatEmojiDrawer()" aria-controls="publicChatEmojisBar" aria-expanded="false" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; flex-shrink: 0;" title="Wybierz emotikon / odpowiedź emoji">
+                        <i class="fa-regular fa-face-smile"></i>
+                    </button>
                     <input type="text" id="publicChatInput" class="lumina-chat-input-premium" placeholder="Napisz do wszystkich na czacie ogólnym..." style="flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.85rem; transition: border-color 0.2s ease;" required>
                     <button type="submit" class="lumina-send-btn-premium" style="padding: 10px 18px; border-radius: 20px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
                         <span>Wyślij</span> <i class="fa-solid fa-paper-plane"></i>
@@ -6077,6 +6099,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                                <button type="button" onclick="openChatSettingsModal()" title="Ustawienia czatu i wylogowanie" class="chat-settings-btn" style="align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; max-width:36px; min-height:36px; max-height:36px; border-radius:10px; border:1px solid rgba(250,204,21,0.4); background:rgba(250,204,21,0.12); color:#facc15; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex:0 0 36px; flex-shrink:0; padding:0; margin:0; box-sizing:border-box;"><i class="fa-solid fa-gear"></i></button>
                                 <button type="button" class="chat-header-profile-btn" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 12px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; min-height: 36px;" title="Zobacz pełny profil rozmówcy">
                                     <i class="fa-solid fa-user"></i><span class="chat-header-profile-text"> Profil</span>
                                 </button>
@@ -6127,6 +6150,89 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 
         </div>
     </div>
+        </div>
+    </div>
+
+    <!-- ══════════ CHAT SETTINGS & LOGOUT MODAL ══════════ -->
+    <div class="modal-overlay" id="chatSettingsModal" style="display:none; z-index:100000; background:rgba(0,0,0,0.78); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);">
+        <div class="modal-card" style="max-width: 460px; max-height: 90vh; overflow-y: auto; padding: 22px; border-radius: 24px; background: #0f172a; border: 1.5px solid rgba(250,204,21,0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.85); color: #f8fafc; font-family: inherit;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 38px; height: 38px; border-radius: 12px; background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.4); display: flex; align-items: center; justify-content: center; color: #facc15; font-size: 1.1rem;">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: #fff; font-family: 'Outfit', sans-serif;">Ustawienia Czatu</h3>
+                        <div style="font-size: 0.74rem; color: #94a3b8;">LUMI Messenger &bull; Konfiguracja i Konto</div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeChatSettingsModal()" style="position: static; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Profile Summary Card -->
+            <div id="chatSettingsProfileCard" style="display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 14px; margin-bottom: 16px;">
+                <img id="chatSettingsAvatar" src="lumina_icon.jpg" alt="Awatar" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #facc15; flex-shrink: 0;">
+                <div style="flex: 1; min-width: 0;">
+                    <div id="chatSettingsName" style="font-weight: 800; font-size: 0.96rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Użytkownik LUMINA</div>
+                    <div id="chatSettingsRole" style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 5px;">
+                        <i class="fa-solid fa-shield-halved"></i> <span>Konto zweryfikowane</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeChatSettingsModal(); if(window.openMyProfileEditor) window.openMyProfileEditor(); else window.location.href='lumina-profile.html';" style="background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.4); color: #c084fc; border-radius: 10px; padding: 6px 12px; font-size: 0.76rem; font-weight: 700; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;" title="Edytuj dane profilu">
+                    Mój Profil
+                </button>
+            </div>
+
+            <!-- Settings Groups -->
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <!-- Audio & Notifications -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-weight: 700; font-size: 0.84rem; color: #facc15; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-bell"></i> Dźwięki i Powiadomienia
+                    </div>
+                    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 6px 0; font-size: 0.82rem; color: #cbd5e1; min-height: 44px;">
+                        <span>Dźwięk nowej wiadomości</span>
+                        <input type="checkbox" id="chatSettingsSoundToggle" onchange="toggleChatSoundSetting(this.checked)" checked style="width: 18px; height: 18px; accent-color: #facc15; cursor: pointer;">
+                    </label>
+                </div>
+
+                <!-- Intro & Media -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-weight: 700; font-size: 0.84rem; color: #facc15; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-film"></i> Intro i Multimedia
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 0; min-height: 44px;">
+                        <span style="font-size: 0.82rem; color: #cbd5e1;">Kinowe wideo wprowadzające:</span>
+                        <button type="button" onclick="if(typeof window.playLumiIntro==='function'){closeChatSettingsModal(); window.playLumiIntro();}else if(typeof window.replayLumiIntro==='function'){closeChatSettingsModal(); window.replayLumiIntro();}" style="background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.35); color: #fde047; padding: 6px 12px; border-radius: 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-play"></i> Odtwórz Intro
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cache & Memory -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-weight: 700; font-size: 0.84rem; color: #facc15; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-broom"></i> Odświeżenie Czatu
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 0; min-height: 44px;">
+                        <span style="font-size: 0.80rem; color: #94a3b8;">Wyczyść lokalny bufor i pobierz najnowsze wiadomości:</span>
+                        <button type="button" onclick="handleClearChatCache()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #e2e8f0; padding: 6px 12px; border-radius: 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Odśwież
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout Section -->
+            <div style="border-top: 1px solid rgba(239,68,68,0.25); padding-top: 16px;">
+                <button type="button" id="btnChatSettingsLogout" onclick="handleChatSettingsLogout()" style="width: 100%; min-height: 48px; border-radius: 14px; background: linear-gradient(135deg, rgba(239,68,68,0.85), rgba(185,28,28,0.95)); border: 1px solid rgba(248,113,113,0.5); color: #fff; font-weight: 800; font-size: 0.90rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(239,68,68,0.35); transition: all 0.2s ease;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Wyloguj się z profilu i czatu</span>
+                </button>
+                <div style="text-align: center; margin-top: 8px; font-size: 0.72rem; color: #94a3b8;">
+                    Bezpieczne wylogowanie z sesji. Będziesz mógł ponownie zalogować się kontem Google.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -11684,20 +11790,28 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 name: myProfile?.name || myUser?.displayName
             };
 
-            if (type === 'direct') {
-                await window.LuminaDB.toggleDirectMessageReaction(chatId, msgId, emoji, userObj);
-            } else if (type === 'public') {
-                await window.LuminaDB.togglePublicChatMessageReaction(msgId, emoji, userObj);
+            try {
+                if (type === 'direct') {
+                    await window.LuminaDB.toggleDirectMessageReaction(chatId, msgId, emoji, userObj);
+                } else if (type === 'public') {
+                    await window.LuminaDB.togglePublicChatMessageReaction(msgId, emoji, userObj);
+                }
+            } catch (err) {
+                console.warn('Błąd podczas zapisywania reakcji:', err);
             }
         };
 
         window.toggleReactionPicker = function(btnEl, type, chatId, msgId) {
             const existing = document.querySelector('.lumina-reaction-picker');
             if (existing && existing._targetBtn === btnEl) {
-                existing.remove();
+                if (typeof existing._cleanup === 'function') existing._cleanup();
+                else existing.remove();
                 return;
             }
-            document.querySelectorAll('.lumina-reaction-picker').forEach(p => p.remove());
+            document.querySelectorAll('.lumina-reaction-picker').forEach(p => {
+                if (typeof p._cleanup === 'function') p._cleanup();
+                else p.remove();
+            });
             if (!btnEl) return;
 
             const rect = btnEl.getBoundingClientRect();
@@ -11708,6 +11822,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             picker.className = 'lumina-reaction-picker';
             picker._targetBtn = btnEl;
             picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.98); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; padding:6px 8px; display:grid; grid-template-columns:repeat(6, 1fr); gap:3px; align-items:center; justify-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; width:max-content; max-width:260px; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
+
+            let dismissHandler = null;
+            const cleanup = () => {
+                if (dismissHandler) {
+                    document.removeEventListener('pointerdown', dismissHandler);
+                    window.removeEventListener('resize', dismissHandler);
+                }
+                if (picker.parentNode) picker.parentNode.removeChild(picker);
+            };
+            picker._cleanup = cleanup;
 
             const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
             emojis.forEach(em => {
@@ -11725,10 +11849,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 };
                 const selectEmoji = (ev) => {
                     ev.stopPropagation();
+                    cleanup();
                     Promise.resolve(window.handleChatReaction(type, chatId, msgId, em)).catch((error) => {
                         console.warn('Nie udało się zapisać reakcji:', error);
                     });
-                    picker.remove();
                 };
                 sp.onclick = selectEmoji;
                 picker.appendChild(sp);
@@ -11759,17 +11883,146 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 picker.style.opacity = '1';
             });
 
-            const dismissHandler = (ev) => {
+            dismissHandler = (ev) => {
                 if (!picker.contains(ev.target) && ev.target !== btnEl && !btnEl.contains(ev.target)) {
-                    picker.remove();
-                    document.removeEventListener('pointerdown', dismissHandler);
-                    window.removeEventListener('resize', dismissHandler);
+                    cleanup();
                 }
             };
             setTimeout(() => {
                 document.addEventListener('pointerdown', dismissHandler);
                 window.addEventListener('resize', dismissHandler);
             }, 50);
+        };
+
+        // ══════════ EMOJI DRAWER DLA CZATU OGÓLNEGO ══════════
+        window.togglePublicChatEmojiDrawer = function() {
+            const bar = document.getElementById('publicChatEmojisBar');
+            const button = document.getElementById('btnPublicChatEmoji');
+            if (!bar) return;
+            const isOpen = bar.classList.toggle('open');
+            if (button) button.setAttribute('aria-expanded', String(isOpen));
+        };
+
+        window.insertPublicChatEmoji = function(emoji) {
+            const input = document.getElementById('publicChatInput');
+            if (input) {
+                input.value = (input.value ? input.value + ' ' : '') + emoji;
+                input.focus();
+            }
+        };
+
+        // ══════════ PROFESJONALNE USTAWIENIA CZATU I WYLOGOWANIE ══════════
+        window.openChatSettingsModal = function() {
+            const modal = document.getElementById('chatSettingsModal');
+            if (!modal) return;
+
+            const myUser = window.LuminaDB?.getCurrentUser?.();
+            const myProfile = window.LuminaDB?.getCurrentProfile?.();
+            const nameEl = document.getElementById('chatSettingsName');
+            const avatarEl = document.getElementById('chatSettingsAvatar');
+            const roleEl = document.getElementById('chatSettingsRole');
+            const logoutBtn = document.getElementById('btnChatSettingsLogout');
+            const soundToggle = document.getElementById('chatSettingsSoundToggle');
+
+            const isGuest = !myUser || myUser.isAnonymous;
+            const name = myProfile?.name || myUser?.displayName || 'Gość Społeczności';
+            const avatar = myProfile?.avatar || myUser?.photoURL || 'lumina_icon.jpg';
+
+            if (nameEl) nameEl.textContent = name;
+            if (avatarEl) avatarEl.src = avatar;
+            if (roleEl) {
+                if (isGuest) {
+                    roleEl.innerHTML = '<i class="fa-solid fa-user"></i> <span>Tryb gościa (brak zalogowania)</span>';
+                    roleEl.style.color = '#94a3b8';
+                } else {
+                    roleEl.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Konto zalogowane w Chrystusie ✨</span>';
+                    roleEl.style.color = '#10b981';
+                }
+            }
+            if (logoutBtn) {
+                logoutBtn.innerHTML = isGuest
+                    ? '<i class="fa-brands fa-google"></i> <span>Zaloguj się przez Google</span>'
+                    : '<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Wyloguj się z profilu i czatu</span>';
+                if (isGuest) {
+                    logoutBtn.style.background = 'linear-gradient(135deg, #ec4899, #8b5cf6)';
+                    logoutBtn.style.borderColor = 'rgba(236,72,153,0.5)';
+                    logoutBtn.style.boxShadow = '0 4px 16px rgba(236,72,153,0.35)';
+                } else {
+                    logoutBtn.style.background = 'linear-gradient(135deg, rgba(239,68,68,0.85), rgba(185,28,28,0.95))';
+                    logoutBtn.style.borderColor = 'rgba(248,113,113,0.5)';
+                    logoutBtn.style.boxShadow = '0 4px 16px rgba(239,68,68,0.35)';
+                }
+            }
+
+            if (soundToggle) {
+                const soundPref = localStorage.getItem('lumina_chat_sound_enabled');
+                soundToggle.checked = soundPref !== 'false';
+            }
+
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        };
+
+        window.closeChatSettingsModal = function() {
+            const modal = document.getElementById('chatSettingsModal');
+            if (!modal) return;
+            modal.style.display = 'none';
+            modal.classList.remove('active');
+        };
+
+        window.handleChatSettingsLogout = async function() {
+            const myUser = window.LuminaDB?.getCurrentUser?.();
+            const isGuest = !myUser || myUser.isAnonymous;
+            if (isGuest) {
+                window.closeChatSettingsModal();
+                if (typeof window.loginWithGoogle === 'function') {
+                    window.loginWithGoogle();
+                } else if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
+                    window.LuminaDB.loginWithGoogle();
+                }
+                return;
+            }
+            if (confirm('Czy na pewno chcesz się wylogować z profilu LUMINA i czatu?')) {
+                try {
+                    if (window.LuminaDB && typeof window.LuminaDB.logoutUser === 'function') {
+                        await window.LuminaDB.logoutUser();
+                    } else if (typeof window.logoutUser === 'function') {
+                        await window.logoutUser();
+                    }
+                } catch(e) {
+                    console.warn('Logout error:', e);
+                }
+                if (typeof showToast === 'function') {
+                    showToast('Wylogowano pomyślnie. Do zobaczenia! ✨');
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 300);
+            }
+        };
+
+        window.toggleChatSoundSetting = function(enabled) {
+            try {
+                localStorage.setItem('lumina_chat_sound_enabled', enabled ? 'true' : 'false');
+            } catch(e) {}
+            if (typeof showToast === 'function') {
+                showToast(enabled ? 'Dźwięki czatu włączone 🔔' : 'Dźwięki czatu wyciszone 🔕');
+            }
+        };
+
+        window.handleClearChatCache = function() {
+            try {
+                localStorage.removeItem('lumina_public_chat_cache');
+            } catch(e) {}
+            if (typeof showToast === 'function') {
+                showToast('Pamięć podręczna czatu odświeżona! ✨');
+            }
+            window.closeChatSettingsModal();
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToPublicChat === 'function') {
+                window.LuminaDB.subscribeToPublicChat((messages) => {
+                    if (typeof renderPublicChatMessages === 'function') renderPublicChatMessages(messages);
+                });
+            }
         };
 
         function buildMessageReactionsHtml(msg, type, chatId, myId) {

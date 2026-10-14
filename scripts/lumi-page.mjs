@@ -14,8 +14,8 @@ export function renderLumiPage(html) {
     .replace(/<link rel="manifest" href="manifest-lumina.json">/, '<link rel="manifest" href="/manifest-lumi.json">')
     .replace(/<script src="lumina-pwa-installer\.js[^\"]*"><\/script>/, '')
     .replace(/(<meta name="apple-mobile-web-app-title" content=")[^"]*(">)/, '$1LumiMess$2')
-    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_mobile_intro">
-<script defer src="/js/lumi-standalone.js?v=20261014_mobile_intro"></script>
+    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_chat_settings">
+<script defer src="/js/lumi-standalone.js?v=20261014_chat_settings"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
@@ -49,6 +49,7 @@ export function renderLumiPage(html) {
     <div class="lumi-actions">
       <button type="button" id="lumiOpen">Otwórz komunikator</button>
       <a id="lumiLogin" href="/lumina-login?next=%2Fmess">Zaloguj się bezpłatnie</a>
+      <button type="button" id="lumiSettings" class="lumi-settings-btn" hidden>Ustawienia i wylogowanie</button>
     </div>
     <div class="lumi-actions-install">
       <button type="button" id="lumiInstall">Dodaj LUMI do urządzenia</button>
@@ -64,7 +65,8 @@ export function renderLumiPage(html) {
       <button type="button" id="lumiReplayIntro" class="lumi-footer-intro-btn"><span aria-hidden="true">▶</span> Obejrzyj intro</button>
       <a href="/lumina-safety">Zasady społeczności</a>
       <a href="/privacy">Prywatność</a>
-      <a href="/lumina">Konto i ustawienia</a>
+      <button type="button" id="lumiFooterSettings" class="lumi-footer-intro-btn" onclick="if(typeof window.openChatSettingsModal==='function')window.openChatSettingsModal();else if(typeof window.openDirectMessagesModal==='function')window.openDirectMessagesModal('private');">⚙ Ustawienia czatu</button>
+      <a href="/lumina">Konto i profil</a>
     </div>
   </footer>
 </main>`);

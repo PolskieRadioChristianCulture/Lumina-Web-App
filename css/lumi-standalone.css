@@ -174,6 +174,22 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
   transform: translateY(-2px);
 }
 
+#lumiLanding #lumiSettings {
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  color: #fde047;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lumiLanding #lumiSettings:hover {
+  background: rgba(250, 204, 21, 0.22);
+  border-color: #facc15;
+  transform: translateY(-2px);
+}
+
 #lumiLanding #lumiInstall {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);

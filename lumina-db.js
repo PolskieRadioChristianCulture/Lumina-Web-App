@@ -3197,6 +3197,7 @@ export function getChatId(userA, userB) {
 }
 
 const activeDirectChatListeners = new Map();
+const activeDirectChatMessages = new Map();
 
 function getDirectMessageTime(message) {
     return (message.timestamp?.seconds ? message.timestamp.seconds * 1000 : 0) || message.createdAt || 0;
@@ -3273,6 +3274,12 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             uniqueMessages.set(key, existing ? { ...existing, ...message } : message);
         });
         const messages = [...uniqueMessages.values()].sort((a, b) => getDirectMessageTime(a) - getDirectMessageTime(b));
+        if (typeof activeDirectChatMessages !== 'undefined') {
+            activeDirectChatMessages.set(normalizedChatId, messages);
+        } else if (typeof activeDirectChatListeners !== 'undefined' && activeDirectChatListeners) {
+            if (!activeDirectChatListeners._messages) activeDirectChatListeners._messages = new Map();
+            activeDirectChatListeners._messages.set(normalizedChatId, messages);
+        }
         onUpdate(messages);
     };
 
@@ -3788,11 +3795,18 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
 }
 
 // ── Public Community Live Chatroom 🌐🕊️ ──
+let activePublicChatListener = null;
+let activePublicChatMessages = [];
+
 export function subscribeToPublicChat(onUpdate) {
+    activePublicChatListener = onUpdate;
     // 1. Check local cached messages
     try {
         const cached = localStorage.getItem('lumina_public_chat_cache');
-        if (cached) onUpdate(JSON.parse(cached));
+        if (cached) {
+            activePublicChatMessages = JSON.parse(cached);
+            onUpdate(activePublicChatMessages);
+        }
     } catch(e) {}
 
     if (!db) return () => {};
@@ -3809,6 +3823,7 @@ export function subscribeToPublicChat(onUpdate) {
             const msgs = [];
             snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
             msgs.reverse();
+            activePublicChatMessages = msgs;
             try {
                 localStorage.setItem('lumina_public_chat_cache', JSON.stringify(msgs));
             } catch(e) {}
@@ -3900,22 +3915,29 @@ export async function markPublicMessagesSeen(messages, currentUser) {
 // ── Reakcje Emotikonami na Wiadomości Prywatne (1:1) 👍❤️😊🙏🔥🕊️✝️😂😮😢👏🌹 ──
 export async function toggleDirectMessageReaction(chatId, messageId, emoji, currentUser) {
     if (!chatId || !messageId || !emoji) return;
-    const parts = (chatId || '').split('_');
-    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    let normalizedChatId = chatId || '';
+    if (chatId && chatId.includes('_')) {
+        const parts = chatId.split('_');
+        if (parts.length === 2 && !chatId.startsWith('u_')) {
+            normalizedChatId = getChatId(parts[0], parts[1]);
+        }
+    }
     const uid = currentUser?.slug || currentUser?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
     const normId = normalizeChatUserId(uid);
     const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
 
     const localKey = `lumina_chat_${normalizedChatId}`;
 
-    // 1. Natychmiast zaktualizuj lokalny cache
+    // 1. Natychmiast zaktualizuj lokalny stan w pamięci oraz cache
     try {
+        const inMem = activeDirectChatMessages.get(normalizedChatId) || [];
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        const targetMsg = cached.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId)));
+        const targetMsg = inMem.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId))) ||
+                          cached.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId)));
         if (targetMsg) {
             targetMsg.reactions = targetMsg.reactions || {};
             const list = targetMsg.reactions[emoji] || [];
-            const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+            const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
             if (existingIdx >= 0) {
                 list.splice(existingIdx, 1);
             } else {
@@ -3926,9 +3948,9 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
             } else {
                 targetMsg.reactions[emoji] = list;
             }
-            localStorage.setItem(localKey, JSON.stringify(cached));
+            if (cached.length) localStorage.setItem(localKey, JSON.stringify(cached));
             const listener = activeDirectChatListeners.get(normalizedChatId);
-            if (listener) listener(cached);
+            if (listener) listener([...(inMem.length ? inMem : cached)]);
         }
     } catch(e) {}
 
@@ -3947,7 +3969,7 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
                 const currentData = docSnap.data();
                 const reactions = currentData.reactions || {};
                 const list = reactions[emoji] || [];
-                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
                 if (existingIdx >= 0) {
                     list.splice(existingIdx, 1);
                 } else {
@@ -3973,27 +3995,36 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
     const normId = normalizeChatUserId(uid);
     const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
 
-    // 1. Natychmiast zaktualizuj lokalny cache
+    // 1. Natychmiast zaktualizuj pamięć i lokalny cache
+    let targetMsg = activePublicChatMessages.find(m => m.id === messageId);
+    let cached = [];
     try {
-        const cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
-        const targetMsg = cached.find(m => m.id === messageId);
-        if (targetMsg) {
-            targetMsg.reactions = targetMsg.reactions || {};
-            const list = targetMsg.reactions[emoji] || [];
-            const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
-            if (existingIdx >= 0) {
-                list.splice(existingIdx, 1);
-            } else {
-                list.push({ id: normId, name: userName });
-            }
-            if (list.length === 0) {
-                delete targetMsg.reactions[emoji];
-            } else {
-                targetMsg.reactions[emoji] = list;
-            }
-            localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
-        }
+        cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+        if (!targetMsg) targetMsg = cached.find(m => m.id === messageId);
     } catch(e) {}
+
+    if (targetMsg) {
+        targetMsg.reactions = targetMsg.reactions || {};
+        const list = targetMsg.reactions[emoji] || [];
+        const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
+        if (existingIdx >= 0) {
+            list.splice(existingIdx, 1);
+        } else {
+            list.push({ id: normId, name: userName });
+        }
+        if (list.length === 0) {
+            delete targetMsg.reactions[emoji];
+        } else {
+            targetMsg.reactions[emoji] = list;
+        }
+        const updatedList = activePublicChatMessages.length ? activePublicChatMessages : cached;
+        try {
+            localStorage.setItem('lumina_public_chat_cache', JSON.stringify(updatedList));
+        } catch(e) {}
+        if (typeof activePublicChatListener === 'function') {
+            activePublicChatListener([...updatedList]);
+        }
+    }
 
     if (!db) return;
 
@@ -4006,7 +4037,7 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
                 const currentData = docSnap.data();
                 const reactions = currentData.reactions || {};
                 const list = reactions[emoji] || [];
-                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
                 if (existingIdx >= 0) {
                     list.splice(existingIdx, 1);
                 } else {
