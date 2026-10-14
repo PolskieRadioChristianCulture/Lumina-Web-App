@@ -29,7 +29,6 @@ const standardizedProfilePages = [
   'lumina.pawelmurawski.html',
   'lumina.radiocc.html',
   'lumina.studiodobregoslowa.html',
-  'lumina.zbyszekgieron.html',
   'lumina.zofiadudek.html',
 ];
 

@@ -1339,6 +1339,19 @@ async function handleSupportRoute(request, env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // Owner-authorized withdrawal of this public profile (2026-10-14).
+    const removedProfilePaths = new Set(['/lumina.zbyszekgieron', '/lumina.zbyszekgieron.html', '/lumina/zbyszekgieron', '/lumina/zbyszek-gieron', '/lumina/gieron', '/zbyszekgieron', '/zbyszek-gieron', '/gieron']);
+    const profileSlug = (url.searchParams.get('u') || '').toLowerCase().replace(/^u_/, '');
+    let removalPath = url.pathname;
+    try { removalPath = decodeURIComponent(removalPath); } catch { /* Invalid paths use the general deny guard below. */ }
+    if (removedProfilePaths.has(removalPath.toLowerCase().replace(/\/$/, '')) ||
+        (/^\/lumina-profile(?:\.html)?$/.test(removalPath) && ['zbyszekgieron','zbyszek','gieron'].includes(profileSlug)) ||
+        /^\/avatar_zbyszek_gieron\.(?:jpg|jpeg|png|webp)$/i.test(removalPath)) {
+      return new Response('<!doctype html><html lang="pl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Profil niedostępny</title><main><h1>Profil niedostępny</h1><p>Ta strona profilu nie jest już dostępna.</p><a href="/lumina">Wróć do LUMINA</a></main></html>', {
+        status: 410,
+        headers: {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow, noarchive','X-Content-Type-Options':'nosniff'}
+      });
+    }
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {
         status: 404,

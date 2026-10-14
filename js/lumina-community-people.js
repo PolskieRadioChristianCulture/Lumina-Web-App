@@ -15,8 +15,7 @@
     var OFFICIAL_PEOPLE = [
         { name: 'Cezary Rogowski',   slug: 'cezaryrgowski',    tag: 'Założyciel CC',        avatar: 'avatar_cezary_official.jpg',   verified: true },
         { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', tag: 'Ewangelizacja',        avatar: 'avatar_wioletta_official.jpg', verified: true },
-        { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true },
-        { name: 'Zbyszek Gieroń',    slug: 'zbyszekgieron',    tag: 'Świadectwo',           avatar: 'avatar_zbyszek_gieron.jpg',    verified: false }
+        { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true }
     ];
     var FALLBACK_AVATAR = 'images/lumina-avatar-zastepczy.jpg';
     var community = [];
@@ -38,6 +37,7 @@
         var seen = {};
         var list = [];
         community.forEach(function (p) {
+            if (String(p.slug || '').toLowerCase().replace(/^u_/, '') === 'zbyszekgieron') return;
             if (seen[p.slug]) return;
             seen[p.slug] = true;
             list.push({

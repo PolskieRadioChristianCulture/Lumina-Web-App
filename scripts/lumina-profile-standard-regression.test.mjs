@@ -17,7 +17,6 @@ const profileFiles = [
   'lumina.osobowoscplus.html',
   'lumina.pawelmurawski.html',
   'lumina.radiocc.html',
-  'lumina.zbyszekgieron.html',
   'lumina.zofiadudek.html',
 ];
 

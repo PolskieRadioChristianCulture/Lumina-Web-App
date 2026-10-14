@@ -11,8 +11,10 @@ const show = vm.runInNewContext(`${source.slice(start, end).replace('export ', '
 test('cached security importer receives the same release version as the DB module', () => {
     const root = new URL('../', import.meta.url);
     let checked = 0;
+    let withdrawn = 0;
     for (const file of readdirSync(root).filter(file => /^lumina.*\.html$/.test(file) && !file.includes('backup'))) {
         const html = readFileSync(new URL(file, root), 'utf8');
+        if (file === 'lumina.zbyszekgieron.html' && html.includes('data-profile-withdrawn="true"')) { withdrawn++; continue; }
         const security = html.match(/src=["'](?:\.\/)?lumina-security\.js(\?v=[^"']+)["']/);
         if (!security) continue;
         const db = html.match(/src=["'](?:\.\/)?lumina-db\.js(\?v=[^"']+)["']/);
@@ -20,7 +22,7 @@ test('cached security importer receives the same release version as the DB modul
         assert.equal(security[1], db[1], `${file}: old cached security importer can load another DB instance`);
         checked++;
     }
-    assert.ok(checked >= 19, 'Canonical and legacy profile entry points must be covered');
+    assert.ok(checked + withdrawn >= 19, 'Active entries and explicitly withdrawn pages must be covered');
 });
 test('both board entries refresh the cached importer with the DB/core release', () => {
     const root = new URL('../', import.meta.url);

@@ -359,51 +359,9 @@
             "_isNewlyPublished": true
         },
 
-        {
-            "id": "post_yt_zbyszekgieron_yoszIGTJ4DI",
-            "type": "post",
-            "author": "Zbyszek Gieroń",
-            "authorSlug": "zbyszekgieron",
-            "authorAvatar": "avatar_zbyszek_gieron.jpg",
-            "authorRole": "Słowo Boże & Jezus Wraca ✨ • YouTube",
-            "badgeHtml": "<span class=\"badge-type-tag\" style=\"background:linear-gradient(135deg,rgba(239,68,68,0.25),rgba(220,38,38,0.35));border:1px solid #ef4444;color:#fca5a5;font-weight:800;\" title=\"🕊️ ZBYSZEK GIEROŃ • YouTube\"><i class=\"fa-brands fa-youtube\" style=\"color:#ef4444;\"></i> <span class=\"badge-type-tag-text\">🕊️ ZBYSZEK GIEROŃ • YouTube</span></span>",
-            "time": "Świeża Publikacja • 🎥 YouTube",
-            "title": "AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA 👉 Lekcja X 👉 5 września 2026",
-            "text": "AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA 👉 Lekcja X 👉 5 września 2026\n\nZapraszamy do oglądania najnowszego materiału z oficjalnego kanału Zbyszek Gieroń w sieci Christian Culture! Oglądaj bezpośrednio w odtwarzaczu powyżej. 🕊️✨",
-            "desc": "AUTENTYCZNA CHRZEŚCIJAŃSKA SŁUŻBA 👉 Lekcja X 👉 5 września 2026",
-            "image": "https://i.ytimg.com/vi/yoszIGTJ4DI/hqdefault.jpg",
-            "videoUrl": "https://www.youtube-nocookie.com/embed/yoszIGTJ4DI",
-            "youtubeUrl": "https://www.youtube.com/watch?v=yoszIGTJ4DI",
-            "category": "general",
-            "likes": 51,
-            "amen": 40,
-            "createdAtTimestamp": 1789609785087,
-            "_sortTs": 1789609785087,
-            "_isNewlyPublished": true
-        },
 
-        {
-            "id": "post_yt_zbyszekgieron_rFPEIo9bgfQ",
-            "type": "post",
-            "author": "Zbyszek Gieroń",
-            "authorSlug": "zbyszekgieron",
-            "authorAvatar": "avatar_zbyszek_gieron.jpg",
-            "authorRole": "Słowo Boże & Jezus Wraca ✨ • YouTube",
-            "badgeHtml": "<span class=\"badge-type-tag\" style=\"background:linear-gradient(135deg,rgba(239,68,68,0.25),rgba(220,38,38,0.35));border:1px solid #ef4444;color:#fca5a5;font-weight:800;\" title=\"🕊️ ZBYSZEK GIEROŃ • YouTube\"><i class=\"fa-brands fa-youtube\" style=\"color:#ef4444;\"></i> <span class=\"badge-type-tag-text\">🕊️ ZBYSZEK GIEROŃ • YouTube</span></span>",
-            "time": "Świeża Publikacja • 🎥 YouTube",
-            "title": "SŁUŻBA MOTYWOWANA MIŁOŚCIĄ 👉 Lekcja IX 👉 29 sierpnia 2026",
-            "text": "SŁUŻBA MOTYWOWANA MIŁOŚCIĄ 👉 Lekcja IX 👉 29 sierpnia 2026\n\nZapraszamy do oglądania najnowszego materiału z oficjalnego kanału Zbyszek Gieroń w sieci Christian Culture! Oglądaj bezpośrednio w odtwarzaczu powyżej. 🕊️✨",
-            "desc": "SŁUŻBA MOTYWOWANA MIŁOŚCIĄ 👉 Lekcja IX 👉 29 sierpnia 2026",
-            "image": "https://i.ytimg.com/vi/rFPEIo9bgfQ/hqdefault.jpg",
-            "videoUrl": "https://www.youtube-nocookie.com/embed/rFPEIo9bgfQ",
-            "youtubeUrl": "https://www.youtube.com/watch?v=rFPEIo9bgfQ",
-            "category": "general",
-            "likes": 52,
-            "amen": 38,
-            "createdAtTimestamp": 1789607085087,
-            "_sortTs": 1789607085087,
-            "_isNewlyPublished": true
-        },
+
+
 
         {
             "id": "post_yt_osobowoscplus_gtGiaco7rwI",

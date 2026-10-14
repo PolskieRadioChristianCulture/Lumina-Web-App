@@ -8860,81 +8860,15 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 const zCustomPosts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
 
                 const zSeedPosts = [
-                    {
-                        id: 'post_zg_btd',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Dzisiaj • 📖 Biblijny Tekst Dnia',
-                        title: '📖 Biblijny Tekst Dnia • Codzienna analiza wersetów',
-                        text: 'Link jest zawsze aktywny prowadzi do wcześniejszych analiz i aktualnej - zgodnej z kalendarzem.\nZapraszam do codziennego rozważania Słowa Bożego! 🕊️✨',
-                        image: 'tlo-biblia.png',
-                        externalUrl: 'https://claude.ai/share/bdbc52b0-b463-43a2-afd9-a6a7307f00f7',
-                        externalUrlLabel: 'Otwórz Analizę w Claude AI',
-                        likes: 0,
-                        amen: 0,
-                        _sortTs: Date.now()
-                    },
-                    {
-                        id: 'post_zg_1',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Dzisiaj • 🕊️ Misja & Świadectwo',
-                        title: 'Czy znasz brakujące SŁOWO? • Narzędzie HiperBiblia',
-                        text: '<12> ➖ Czy znasz brakujące SŁOWO ? ❓\n\n✝️ Źródło cytatu 👉 HiperBiblia\nWpisz do wyszukiwarki słowo: HiperBiblia 👉 poznaj narzędzie do studiowania Pisma.\n\n💎 Główne funkcje strony HiperBiblia:\n• Porównywarka przekładów\n• Przypisy i komentarze\n• Czytnik\n• Wyszukiwarka\n• Interlinia\n• Leksykony\n• Kody Stronga\n• Zapytaj AI\n• Audio 💎',
-                        image: 'post_zbyszek_hiperbiblia.jpg',
-                        fbUrl: 'https://www.facebook.com/permalink.php?story_fbid=pfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql&id=100018961423282',
-                        likes: 0,
-                        amen: 0,
-                        _sortTs: Date.now() - 2 * 3600 * 1000
-                    },
-                    {
-                        id: 'post_zg_psalm1',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Wczoraj • 📁 Publikacja Google Drive',
-                        title: 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie',
-                        text: '„Błogosławiony człowiek, który nie idzie za radą występnych... Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 📖🌿\n\nMateriał z mojego Dysku Google.',
-                        image: 'post_zbyszek_psalm1.jpg',
-                        gdriveData: {
-                            fileId: '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd',
-                            type: 'file',
-                            typeLabel: 'Dysk Google • Psalm 1',
-                            icon: 'fa-brands fa-google-drive',
-                            previewEmbedUrl: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
-                            directImgUrl: 'post_zbyszek_psalm1.jpg',
-                            mode: 'embed'
-                        },
-                        gdriveEmbed: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
-                        likes: 0,
-                        amen: 0,
-                        _sortTs: Date.now() - 24 * 3600 * 1000
-                    }
+
+
                 ];
 
                 const allZPosts = [...zCustomPosts, ...(zProfile?.posts || []), ...zSeedPosts];
                 allZPosts.forEach(zp => {
                     if (!zp || !zp.id || seenPostIds.has(zp.id)) return;
                     seenPostIds.add(zp.id);
-                    posts.push({
-                        ...zp,
-                        author: zp.author || 'Zbyszek Gieroń',
-                        authorRole: zp.authorRole || 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: zp.authorAvatar || 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: zp.time || (formatPostTimestamp(zp.createdAtTimestamp || extractSortTs(zp), 'Przed chwilą') + ' • 🕊️ Świadectwo'),
-                        likes: zp.likes || 1,
-                        amen: zp.amen || 0,
-                        _sortTs: zp.createdAtTimestamp || extractSortTs(zp) || Date.now()
-                    });
+                    posts.push();
                 });
             } catch(e) {}
 
@@ -10230,7 +10164,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 { name: 'CC Women', slug: 'ccwomen', tag: 'Kobiety wiary', avatar: 'logo_cc_women.jpg', verified: false },
                 { name: 'CC Men', slug: 'ccmen', tag: 'Mężczyźni wiary', avatar: 'logo_cc_men.jpg', verified: false },
                 { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', tag: 'Nauczanie', avatar: 'studiodobregoslowa_avatar.jpg?v=20260918_sds_host', verified: true },
-                { name: 'Zbyszek Gieroń', slug: 'zbyszekgieron', tag: 'Świadectwo', avatar: 'avatar_zbyszek_gieron.jpg', verified: false },
+
                 { name: 'OsobowośćPLUS', slug: 'osobowoscplus', tag: 'Rozwój duchowy', avatar: 'logo_osobowosc_plus.jpg', verified: false },
             ];
 
@@ -13155,7 +13089,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
             { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Udostępnia rozważania Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
-            { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️✨', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Świadectwo', isMission: true },
+
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Członkini Społeczności • Modlitwa & Wiara 🌸🕊️', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Modlitwa & Wiara', isMission: false },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
@@ -16558,8 +16492,7 @@ window.initFeedCarousels = function(container) {
     var PROFILES = [
         { name: 'Cezary Rogowski',   slug: 'cezaryrgowski',    tag: 'Założyciel CC',        avatar: 'avatar_cezary_official.jpg',   verified: true },
         { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', tag: 'Ewangelizacja',        avatar: 'avatar_wioletta_official.jpg', verified: true },
-        { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true },
-        { name: 'Zbyszek Gieroń',    slug: 'zbyszekgieron',    tag: 'Świadectwo',           avatar: 'avatar_zbyszek_gieron.jpg',    verified: false }
+        { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true }
     ];
     function run() {
         var scroll = document.getElementById('staticProfilesCarouselScroll');

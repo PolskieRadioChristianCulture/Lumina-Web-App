@@ -35,17 +35,7 @@
             defaultFriend: false,
             defaultFollowed: false
         },
-        {
-            slug: 'zbyszekgieron',
-            name: 'Zbyszek Gieroń',
-            shortName: 'Zbyszek',
-            avatar: 'avatar_zbyszek_gieron.jpg',
-            role: 'Profil Misyjny 🕊️',
-            url: 'lumina.zbyszekgieron.html',
-            city: 'Polska',
-            defaultFriend: false,
-            defaultFollowed: false
-        },
+
         {
             slug: 'andrzejthiel',
             name: 'Andrzej Thiel',

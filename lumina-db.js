@@ -1623,6 +1623,7 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
 export async function getProfileFromCloud(slugOrUid) {
     if (!slugOrUid) return null;
     const normalized = slugOrUid.trim().toLowerCase();
+    if (normalized.replace(/^u_/, '') === 'zbyszekgieron') return null;
     try {
         if (normalized === 'robertlukaszpio' || normalized === 'robertukaszpio' || normalized === 'u_robertukaszpio_5668' || normalized === 'jidflt3g8ohgpcowmcljaz9i5d42') {
             return ROBERT_LUKASZ_PIO_PROFILE;
@@ -5384,9 +5385,9 @@ export const LUMINA_HANDLES = {
     'radio': { slug: 'radiocc', name: 'Polskie Radio CC', url: 'lumina.radiocc.html', avatar: 'logo_radio_cc.jpg', badge: '📻 Radio Uwielbienia 24/7' },
     'cctv': { slug: 'cctv', name: 'Christian Culture TV', url: 'lumina.cctv.html', avatar: 'logo_cctv.png', badge: '📺 Telewizja CCTV24' },
     'osobowoscplus': { slug: 'osobowoscplus', name: 'OSOBOWOŚĆ + • YouTube', url: 'lumina.osobowoscplus.html', avatar: 'logo_osobowosc_plus.jpg', badge: '🧠 Formacja & Wiara' },
-    'zbyszek': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
-    'zbyszekgieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
-    'gieron': { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', url: 'lumina.zbyszekgieron.html', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Świadectwo' },
+
+
+
     'jola': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Społeczność LUMINA' },
     'jolawojcik': { slug: 'jolawojcik', name: 'Jola Wójcik', url: 'lumina.jolawojcik.html', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Społeczność LUMINA' },
     'zofia': { slug: 'zofiadudek', name: 'Zofia Dudek', url: 'lumina.zofiadudek.html', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Społeczność LUMINA' },
@@ -7794,7 +7795,7 @@ export const LuminaCommentsEngine = {
     _trustedMissionProfiles: [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Cuda Każdego Dnia' },
         { slug: 'jolawojcik', name: 'Jola Wójcik', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Wstawiennik LUMINA' },
-        { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🛡️ Świadectwo Wiary' },
+
         { slug: 'zofiadudek', name: 'Zofia Dudek', avatar: 'avatar_zofia_dudek.jpg', badge: '🌿 Mądrość & Modlitwa' },
         { slug: 'ccmen', name: 'CC MEN', avatar: 'logo_cc_men.jpg', badge: '🛡️ Męska Wspólnota' },
         { slug: 'ccwomen', name: 'CC WOMEN', avatar: 'avatar_ccwomen_official_2026.jpg', badge: '🌸 Kobieca Formacja' },
