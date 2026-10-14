@@ -6,8 +6,8 @@ const { chromium } = require('playwright');
   const page = await browser.newPage();
 
   // 1. KULTURA
-  console.log('1. Checking https://76a73fc2.polskieradio.pages.dev/kultura ...');
-  await page.goto('https://76a73fc2.polskieradio.pages.dev/kultura', { waitUntil: 'domcontentloaded' });
+  console.log('1. Checking https://polskieradio.cc/kultura ...');
+  await page.goto('https://polskieradio.cc/kultura', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(3000);
   const htmlKultura = await page.content();
   console.log('   Has KULTURA ŻYCIA I ŚWIATŁOŚCI:', htmlKultura.includes('KULTURA ŻYCIA I ŚWIATŁOŚCI'));
