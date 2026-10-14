@@ -36,7 +36,7 @@
     integrationReady = new Promise(resolve => {
       const integration = document.createElement('script');
       integration.id = 'ccChatIntegrationScript';
-      integration.src = '/js/cc-chat-integration.js?v=20261014_header_radio4';
+      integration.src = '/js/cc-chat-integration.js?v=20261014_header_radio5';
       integration.onload = resolve;
       integration.onerror = resolve;
       document.head.appendChild(integration);

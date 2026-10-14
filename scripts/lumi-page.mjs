@@ -5,7 +5,7 @@ export function renderLumiPage(html) {
   }
   const title = 'LUMI Messenger — chrześcijański komunikator | Christian Culture';
   const description = 'Rozmawiaj, poznawaj społeczność i dziel się wiarą. LUMI Messenger łączy rozmowy LUMINA i Christian Culture w jednym miejscu.';
-  html = html.replace(/<html(?:\s+[^>]*)?>/i, '<html lang="pl" data-lumina-theme="dark" class="lumi-mess-page">')
+  html = html.replace(/<html(?:\s+[^>]*)?>/i, '<html lang="pl" data-lumina-theme="dark" class="lumi-mess-page" data-no-onboarding="true">')
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`)
     .replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*(">)/g, `$1${description}$2`)
     .replace(/(<meta (?:name|property)="(?:og:title|twitter:title)" content=")[^"]*(">)/g, `$1${title}$2`)
@@ -27,8 +27,8 @@ try {
 } catch(e) {}
 </script>
 <style>html.cc-mess-embedded #lumiLanding,html.cc-mess-embedded #lumiIntroOverlay{display:none!important}</style>
-<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_dark_fix">
-<script defer src="/js/lumi-standalone.js?v=20261014_dark_fix"></script>
+<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_settings_fix">
+<script defer src="/js/lumi-standalone.js?v=20261014_settings_fix"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">

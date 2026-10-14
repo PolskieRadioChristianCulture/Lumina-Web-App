@@ -14,6 +14,8 @@
 (function () {
     'use strict';
     if (window.__luminaOnboarding) return;
+    if (typeof location !== 'undefined' && /[?&]embed=1\b/.test(location.search)) return;
+    if (typeof document !== 'undefined' && (document.documentElement.classList.contains('cc-mess-embedded') || document.documentElement.hasAttribute('data-no-onboarding'))) return;
     window.__luminaOnboarding = true;
 
     var SESSION_KEY = 'lumina_onboarding_later';
