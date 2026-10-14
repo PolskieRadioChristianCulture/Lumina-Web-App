@@ -423,6 +423,41 @@ const PORTALS = [
         ]
       },
       {
+        id: 'art-historia-halloween-od-samhain-do-popkultury',
+        title: 'Od celtyckiego Samhain do amerykańskiego przemysłu strachu: Prawdziwa historia i ewolucja Halloween',
+        slug: 'od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity',
+        excerpt: 'Czy Halloween to starożytny kult celtycki, wigilia chrześcijańska czy współczesny produkt marketingu? Odkrywamy historyczne fakty od brytyjskiego Samhain i All Hallows’ Eve po XX-wieczną transformację w USA w świetle rzetelnych źródeł.',
+        category: 'manuskrypty',
+        categoryLabel: 'CCN HISTORIA · BADANIA I ŹRÓDŁA',
+        publishedAt: '2026-10-14T06:00:00Z',
+        dateFormatted: '14 października 2026',
+        imageUrl: '/images/news/art-historia-halloween-od-samhain-do-popkultury.jpg',
+        imageCaption: 'Ilustracja AI: Gabinet historyka badającego starożytne kroniki i manuskrypty — rzetelne dociekanie prawdy historycznej o dawnych tradycjach.',
+        readTimeMinutes: 8,
+        isHero: true,
+        isPopular: true,
+        popularRank: 1,
+        tags: ['Historia', 'Halloween', 'Samhain', 'Archeologia', 'Fakty i Mity', 'Cezary Rogowski', 'Christian Culture'],
+        author: {
+          id: 'cezary-rogowski',
+          name: 'Cezary Rogowski',
+          role: 'Założyciel Christian Culture',
+          avatarUrl: '/avatar_cezary_official.jpg'
+        },
+        scriptureReference: {
+          verse: '1 List do Tesaloniczan 5:21',
+          text: 'Wszystkiego doświadczajcie, a co dobre, tego się trzymajcie.',
+          strongCode: 'G1381 (dokimazo - badać, weryfikować autentyczność)'
+        },
+        content: [
+          'Wokół Halloween narosło wiele skrajnych teorii: jedni widzą w nim wprost nieprzerwany rytuał satanistyczny odprawiany od tysiącleci, inni twierdzą, że to wyłącznie współczesny, niewinny amerykański karnawał. Aby zająć dojrzałe chrześcijańskie stanowisko, musimy sięgnąć do faktów historycznych i rzetelnych źródeł akademickich (m.in. badań historyków Uniwersytetu Oksfordzkiego i Smithsonian Magazine).',
+          '1. Celtyckie Samhain i rytm agrarny. Korzenie niektórych obrzędów sięgają przedchrześcijańskiego święta Samhain obchodzonego na Wyspach Brytyjskich i w Irlandii na przełomie października i listopada. Wyznaczało ono koniec żniw i wejście w ciemną, zimową połowę roku. W archaicznych wierzeniach pasterskich był to czas liminalny — wierzono, że granica między światem zmysłowym a sferą duchów staje się przepuszczalna, co rodziło zwyczaje rozpalania ognisk mających odstraszać błąkające się istoty.',
+          '2. Próba chrystianizacji: All Hallows’ Eve. W VIII wieku papież Grzegorz III przeniósł obchody Wszystkich Świętych na 1 listopada, a papież Grzegorz IV w 835 roku rozszerzył je na cały Kościół. Wigilia tego dnia w języku staroangielskim została nazwana „All Hallows’ Eve” (z czego wywodzi się skrócona nazwa Halloween). Kościół starał się zastąpić pogański lęk przed zjawami chrześcijańską nadzieją na wstawiennictwo zbawionych i zmartwychwstanie. Jednak w tradycjach ludowych dawne przesądy wciąż tliły się pod powierzchnią religijnych form.',
+          '3. Irlandzka emigracja do Ameryki i narodziny przemysłu grozy. Współczesny kształt święta uformował się w XIX wieku w Stanach Zjednoczonych wraz z masową imigracją Irlandczyków uciekających przed Wielkim Głodem. To w Ameryce tradycyjne irlandzkie rzepy rzeźbione w maski zastąpiono łatwiejszą w obróbce dynią (tzw. Jack-o’-lantern). W latach 30. i 50. XX wieku zwyczaj psot ulicznych („trick or treat”) został przejęty i sformatowany przez producentów słodyczy, kostiumów i hollywoodzkie wytwórnie filmów grozy. W ten sposób z archaicznego obrzędu zrodził się wielomiliardowy, świecki przemysł rozrywki komercyjnej.',
+          '4. Wnioski dla współczesnego chrześcijanina. Rzetelna historia uczy nas unikania mitomanii: dynia sama w sobie nie jest demonem, a dzieci pukające do drzwi nie są kapłanami druidycznymi. Lecz równocześnie historia obnaża fakt, że rdzeń tego zjawiska nigdy nie był skupiony na Chrystusie ani na Ewangelii. Pismo wzywa nas: „Wszystkiego doświadczajcie, a co dobre, tego się trzymajcie” (1 Tes 5:21). Skoro współczesna kultura Halloween promuje lęk, brzydotę i fascynację zaświatami bez Boga, chrześcijanin ma pełne prawo i historyczną mądrość, by powiedzieć: to nie jest nasza droga.'
+        ]
+      },
+      {
         id: 'historia-qumran',
         title: 'Zwoje z Qumran: Jak odkrycie nad Morzem Martwym obaliło wiek sceptycyzmu wobec Biblii',
         slug: 'zwoje-z-qumran-dead-sea-scrolls-rzetelnosc-tekstu',
