@@ -147,17 +147,38 @@
             }
         });
 
+        function hasSeenIntroToday() {
+            try {
+                return /(?:^|;\s*)lumi_intro_seen=1/.test(document.cookie);
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function markIntroSeenToday() {
+            try {
+                const now = new Date();
+                const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+                const maxAge = Math.max(300, Math.floor((midnight.getTime() - now.getTime()) / 1000));
+                document.cookie = `lumi_intro_seen=1; path=/; max-age=${maxAge}; SameSite=Lax`;
+            } catch (_) {}
+        }
+
         if (replayBtn) {
             replayBtn.addEventListener('click', () => {
+                markIntroSeenToday();
                 playIntro(true);
             });
         }
 
+        const forceIntro = window.location.search.includes('intro=1') || window.location.hash === '#intro';
         const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
+
+        if (prefersReducedMotion || (!forceIntro && hasSeenIntroToday())) {
             overlay.hidden = true;
             overlay.classList.add('fade-out');
         } else {
+            markIntroSeenToday();
             playIntro(false);
         }
     }
