@@ -1408,20 +1408,6 @@
           <!-- Wstęga szybkiego wyboru rozmówcy -->
           <div class="cc-chat-partners-bar" id="ccChatPartnersBar"></div>
 
-          <!-- Belka aktywnego rozmówcy -->
-          <div class="cc-chat-active-info-bar">
-            <div class="cc-chat-active-info-left">
-              <span class="cc-chat-active-name" id="ccChatActiveName">Czat Ogólny Społeczności</span>
-              <span class="cc-chat-active-badge" id="ccChatActiveBadge">🌐 Społeczność</span>
-              <a href="/lumina-tablica.html" target="_blank" rel="noopener noreferrer" class="cc-chat-active-profile-btn" id="ccChatActiveProfileBtn" title="Otwórz pełny profil w portalu LUMINA">
-                <span>Tablica</span> 🕊️
-              </a>
-            </div>
-            <button type="button" class="cc-chat-members-switch-btn" id="ccChatOpenMembersBtn" title="Zobacz wszystkich użytkowników społeczności">
-              <span>Wszyscy członkowie →</span>
-            </button>
-          </div>
-
           <!-- Strumień wiadomości na żywo -->
           <div class="cc-chat-feed" id="ccChatFeed">
             <div id="ccChatMessagesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
@@ -1447,28 +1433,56 @@
           <div class="cc-chat-members-list" id="ccChatMembersList"></div>
         </div>
 
-        <!-- ════ WIDOK 3: KANAŁY KOMUNIKACJI (4 KARTY) ════ -->
+        <!-- ════ WIDOK 3: KANAŁY KOMUNIKACJI (KARTY NAWIGACJI) ════ -->
         <div class="cc-chat-view-channels" id="ccChatViewChannels" role="tabpanel" aria-labelledby="ccChatTabChannelsBtn">
           <div class="cc-chat-system-bubble">
             ✨ <strong>Pokój Wam!</strong> Witaj w centralnym węźle komunikacji ekosystemu Christian Culture.
-            Wybierz dogodną formę kontaktu: rozmowę na czacie, wsparcie duszpasterskie, grupę WhatsApp lub kontakt ze sztabem misji.
+            Wybierz dogodną formę kontaktu: rozmowę na czacie, katalog społeczności, tablicę LUMINA, wsparcie duszpasterskie lub grupę WhatsApp.
           </div>
 
-          <!-- Opcja 1: Czat Społeczności LUMINA -->
+          <!-- Karta 1: Czat Ogólny Społeczności LUMINA -->
           <div class="cc-chat-action-card" id="ccChatActionLumina" role="button" tabindex="0">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(168, 85, 247, 0.2); color: #C084FC;">
                 <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
               </div>
               <div class="cc-chat-action-info">
-                <span class="cc-chat-action-title">Czat Społeczności LUMINA</span>
-                <span class="cc-chat-action-desc">Rozmowa na żywo i wiadomości (przełącz tutaj)</span>
+                <span class="cc-chat-action-title">Czat Ogólny Społeczności</span>
+                <span class="cc-chat-action-desc">Strumień wiadomości na żywo całej społeczności</span>
               </div>
             </div>
             <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
           </div>
 
-          <!-- Opcja 2: Rozmowa Duszpasterska / Duchowny Mariusz -->
+          <!-- Karta 2: Wszyscy Członkowie Społeczności -->
+          <div class="cc-chat-action-card" id="ccChatActionMembers" role="button" tabindex="0">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(212, 175, 55, 0.2); color: #FACC15;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">Wszyscy Członkowie Społeczności</span>
+                <span class="cc-chat-action-desc">Przeglądaj profile i rozmawiaj prywatnie</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+          </div>
+
+          <!-- Karta 3: Tablica Społeczności LUMINA -->
+          <a href="/lumina-tablica.html" target="_blank" rel="noopener noreferrer" class="cc-chat-action-card">
+            <div class="cc-chat-action-card-left">
+              <div class="cc-chat-action-icon" style="background: rgba(244, 63, 94, 0.2); color: #FB7185;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"></path><path d="M18 2h4v4"></path><path d="M14 11l7-7"></path></svg>
+              </div>
+              <div class="cc-chat-action-info">
+                <span class="cc-chat-action-title">Tablica Społeczności LUMINA 🕊️</span>
+                <span class="cc-chat-action-desc">Publiczne wpisy, intencje modlitewne i świadectwa</span>
+              </div>
+            </div>
+            <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>
+          </a>
+
+          <!-- Karta 4: Rozmowa Duszpasterska / Duchowny Mariusz -->
           <a href="tel:+48608337477" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(234, 179, 8, 0.2); color: #FACC15;">
@@ -1482,7 +1496,7 @@
             <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
           </a>
 
-          <!-- Opcja 3: WhatsApp Społeczności Christian Culture -->
+          <!-- Karta 5: WhatsApp Społeczności Christian Culture -->
           <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(34, 197, 94, 0.2); color: #4ADE80;">
@@ -1496,7 +1510,7 @@
             <span class="cc-chat-action-arrow"><svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>
           </a>
 
-          <!-- Opcja 4: Skontaktuj się ze Sztabem CC (Email / Infolinia) -->
+          <!-- Karta 6: Skontaktuj się ze Sztabem CC (Email / Infolinia) -->
           <a href="/o-nas.html" class="cc-chat-action-card">
             <div class="cc-chat-action-card-left">
               <div class="cc-chat-action-icon" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8;">
@@ -1533,6 +1547,7 @@
     const viewChannels = document.getElementById('ccChatViewChannels');
     const openMembersBtn = document.getElementById('ccChatOpenMembersBtn');
     const actionLuminaCard = document.getElementById('ccChatActionLumina');
+    const actionMembersCard = document.getElementById('ccChatActionMembers');
     const membersSearchInput = document.getElementById('ccChatMembersSearchInput');
 
     function scrollToBottom() {
@@ -1590,6 +1605,26 @@
         e.preventDefault();
         setChatPartner(COMMUNITY_MEMBERS[0]);
         switchTab('live');
+      });
+      actionLuminaCard.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setChatPartner(COMMUNITY_MEMBERS[0]);
+          switchTab('live');
+        }
+      });
+    }
+
+    if (actionMembersCard) {
+      actionMembersCard.addEventListener('click', function (e) {
+        e.preventDefault();
+        switchTab('members');
+      });
+      actionMembersCard.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          switchTab('members');
+        }
       });
     }
 
