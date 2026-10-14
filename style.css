@@ -4995,5 +4995,12 @@ html {
     }
 }
 
+/* Wyrównanie ikony czatu do ikony telefonu w dolnym pasku odtwarzacza na komputerze */
+@media (min-width: 769px) {
+    #ccGlobalChatFab.cc-chat-fab-wrap {
+        bottom: max(25px, env(safe-area-inset-bottom)) !important;
+    }
+}
+
 
 

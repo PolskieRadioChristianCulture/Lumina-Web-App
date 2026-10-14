@@ -197,7 +197,7 @@
       .cc-chat-fab-wrap {
         position: fixed !important;
         right: max(18px, env(safe-area-inset-right)) !important;
-        bottom: max(18px, env(safe-area-inset-bottom)) !important;
+        bottom: max(25px, env(safe-area-inset-bottom)) !important;
         z-index: 10000 !important;
         display: flex !important;
         align-items: center !important;

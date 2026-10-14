@@ -436,6 +436,12 @@
             transform: scale(1.08);
             background: linear-gradient(135deg, #ffe45e, #f5c518);
         }
+        /* Wyrównanie ikony czatu do ikony telefonu w dolnym pasku odtwarzacza na komputerze */
+        @media (min-width: 769px) {
+            #ccGlobalChatFab.cc-chat-fab-wrap {
+                bottom: max(25px, env(safe-area-inset-bottom)) !important;
+            }
+        }
         @media (max-width: 768px) {
             #mainHeader .brand-logo { display: none !important; }
             #radioPlayerBar .player-right { min-width: 0 !important; width: 100% !important; box-sizing: border-box; padding-right: 88px !important; justify-content: flex-start !important; gap: 8px !important; }
