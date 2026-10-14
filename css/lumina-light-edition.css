@@ -4234,9 +4234,9 @@ body.theme-lumina-light .post-content a:not(.post-action-btn):hover {
 /* Shared light palette. Every surface token must change together: components
    still using the CC tokens must not inherit dark surfaces with light-mode ink.
    Media/photo overlays keep their existing white-on-dark presentation. */
-html[data-lumina-theme="light"],
-html[data-lumina-theme="light"] body,
-body.theme-lumina-light {
+html[data-lumina-theme="light"]:not(:has(body.lumi-standalone)),
+html[data-lumina-theme="light"] body:not(.lumi-standalone),
+body.theme-lumina-light:not(.lumi-standalone) {
     --bg-surface: #F5F2EB !important;
     --cc-bg-surface: #F5F2EB !important;
     --cc-void: #FAF9F6 !important;
