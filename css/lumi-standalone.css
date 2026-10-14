@@ -1,0 +1,23 @@
+html:has(body.lumi-standalone) { background: #101827; }
+body.lumi-standalone { background: #101827 !important; color: #f5f7ff; margin: 0; }
+body.lumi-standalone > :not(#lumiLanding):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) { display: none !important; }
+#lumiLanding { min-height: 100dvh; box-sizing: border-box; padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)); font-family: Manrope, system-ui, sans-serif; }
+#lumiLanding nav, #lumiLanding footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+#lumiLanding a { color: #d7c7ff; text-decoration: underline; text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
+#lumiLanding [hidden] { display: none !important; }
+.lumi-welcome { max-width: 580px; margin: 48px auto 0; text-align: center; }
+.lumi-welcome > img { border-radius: 50%; object-fit: cover; }
+.lumi-welcome h1 { font-size: clamp(2rem, 7vw, 3.4rem); line-height: 1.12; margin: 12px 0; letter-spacing: -.04em; }
+.lumi-eyebrow { color: #c5afff; font-size: .8rem; letter-spacing: .08em; }
+.lumi-description { line-height: 1.7; color: #b8c3d9; margin: 22px 0; }
+.lumi-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; margin: 28px 0 18px; }
+#lumiLanding button { min-height: 48px; border-radius: 16px; padding: 12px 20px; font: inherit; cursor: pointer; border: 1px solid #6d5b92; background: #222d43; color: #fff; }
+#lumiLanding #lumiOpen { background: #7551d8; border-color: #a787ff; font-weight: 700; }
+#lumiLanding button:focus-visible, #lumiLanding a:focus-visible, #lumiLanding summary:focus-visible { outline: 3px solid #dfcdff; outline-offset: 4px; }
+#lumiInstallHelp { margin: 12px 0; text-align: left; color: #b8c3d9; line-height: 1.6; }
+#lumiInstallHelp summary { cursor: pointer; min-height: 44px; text-align: center; }
+#lumiInstallStatus { min-height: 24px; color: #c5afff; }
+body.lumi-standalone #directMessagesModal.open { position: fixed !important; inset: 0 !important; width: 100vw !important; height: var(--lumi-viewport-height, 100dvh) !important; padding: 0 !important; }
+body.lumi-standalone #directMessagesModal.open > .modal-card { width: 100% !important; max-width: none !important; height: 100% !important; max-height: none !important; margin: 0 !important; border-radius: 0 !important; }
+body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer { position: fixed !important; inset: 0 !important; width: 100vw !important; max-width: none !important; height: var(--lumi-viewport-height, 100dvh) !important; max-height: none !important; border-radius: 0 !important; }
+@media(max-width:480px) { .lumi-welcome { margin-top: 24px; } .lumi-actions { flex-direction: column; } }

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { dailyCourseManifest } from './daily-course-manifest.mjs';
 import { applyPageStandard } from './cc-page-standard.mjs';
+import { renderLumiPage } from './lumi-page.mjs';
 
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
@@ -96,6 +97,9 @@ for (const relativePath of tracked) {
   }
   copied++;
 }
+
+// One chat implementation, two entry experiences. Never copy/maintain a fork.
+fs.writeFileSync(path.join(resolvedOutput, 'mess.html'), renderLumiPage(fs.readFileSync(path.join(resolvedOutput, 'lumina.html'), 'utf8')));
 
 for (const required of REQUIRED_FILES) {
   if (!fs.existsSync(path.join(resolvedOutput, required))) {
