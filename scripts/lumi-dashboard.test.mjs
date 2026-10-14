@@ -120,3 +120,12 @@ test('canonical standalone guest chat is visibly open rather than hidden by the 
   assert.equal(win.getComputedStyle(overlay).display, 'flex');
   assert.equal(win.getComputedStyle(overlay).visibility, 'visible');
 });
+
+test('avatar circle geometry and footer line alignment are strictly enforced in CSS', async () => {
+  const css = await readFile('css/lumi-messenger-design.css', 'utf8');
+  assert.match(css, /\.lumi-icon-button\{[^}]*flex-shrink:0[^}]*aspect-ratio:1\/1[^}]*border-radius:50%/);
+  assert.match(css, /\.lumi-account img\{[^}]*aspect-ratio:1\/1[^}]*object-fit:cover[^}]*border-radius:50%/);
+  assert.match(css, /\.lumi-conversation-card>img\{[^}]*flex-shrink:0[^}]*aspect-ratio:1\/1[^}]*border-radius:50%/);
+  assert.match(css, /\.lumi-dashboard-footer a,\.lumi-dashboard-footer button\{[^}]*min-height:44px[^}]*display:inline-flex[^}]*align-items:center/);
+});
+

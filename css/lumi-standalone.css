@@ -103,8 +103,17 @@ body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-over
 }
 
 .lumi-welcome > img {
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  min-height: 96px;
+  max-height: 96px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
+  margin: 0 auto;
   box-shadow: 0 0 24px rgba(250, 204, 21, 0.6), 0 8px 24px rgba(0, 0, 0, 0.7);
   border: 2px solid rgba(250, 204, 21, 0.75);
 }
