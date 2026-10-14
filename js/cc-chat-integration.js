@@ -38,37 +38,38 @@
     #ccUnifiedChatHost{position:fixed;inset:0;z-index:2147483000;background:#090e1a;display:flex;flex-direction:column;color:#f8fafc;font:14px system-ui}
     #ccUnifiedChatHost[hidden]{display:none!important}
     #ccUnifiedChatHost header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 12px;border-bottom:1px solid #334155}
-    #ccUnifiedChatHost button,#ccUnifiedChatHost a{min-height:44px;min-width:44px;color:inherit;background:transparent;border:0;font:inherit;cursor:pointer}
+    #ccUnifiedChatHost button{min-height:44px;min-width:44px;color:inherit;background:transparent;border:0;font:inherit;cursor:pointer}
     #ccUnifiedChatFrame{width:100%;flex:1;min-height:0;border:0;background:#090e1a}
-    .cc-chat-radio{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(15,23,42,0.92);border:1px solid rgba(196,163,90,0.4);border-radius:14px;color:#f8fafc;font:12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08);width:100%;box-sizing:border-box;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s ease}
+    .cc-chat-radio{display:inline-flex;align-items:center;gap:6px;padding:3px 6px 3px 4px;background:rgba(15,23,42,0.85);border:1px solid rgba(196,163,90,0.4);border-radius:20px;color:#f8fafc;font:12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08);flex-shrink:1;max-width:100%;margin:0 6px 0 auto!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s ease}
     .cc-chat-radio.is-playing{border-color:rgba(16,185,129,0.7);box-shadow:0 0 12px rgba(16,185,129,0.3),inset 0 1px 0 rgba(255,255,255,0.12)}
-    .cc-chat-radio button{background:linear-gradient(135deg,#facc15 0%,#eab308 100%);color:#0f172a;border:0;border-radius:10px;min-height:38px;min-width:44px;padding:0 12px;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(250,204,21,0.3);transition:all .2s ease;white-space:nowrap;font-family:inherit;flex-shrink:0}
+    .cc-chat-radio button{background:linear-gradient(135deg,#facc15 0%,#eab308 100%);color:#0f172a;border:0;border-radius:14px;min-height:36px;min-width:44px;padding:0 10px;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(250,204,21,0.3);transition:all .2s ease;white-space:nowrap;font-family:inherit}
     .cc-chat-radio button::before{content:'▶';font-size:9px;line-height:1}
-    .cc-chat-radio.is-playing button{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff;box-shadow:0 0 10px rgba(16,185,129,0.4)}
-    .cc-chat-radio.is-playing button::before{content:'⏸';font-size:10px}
+    .cc-chat-radio.is-playing button{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff;box-shadow:0 2px 6px rgba(16,185,129,0.4)}
+    .cc-chat-radio.is-playing button::before{content:'⏸'}
     .cc-chat-radio button:disabled{opacity:.55;cursor:wait}
-    .cc-chat-radio select{flex:1;background:rgba(10,15,30,0.95);color:#f8fafc;border:1px solid rgba(148,163,184,0.3);border-radius:10px;min-height:38px;padding:0 10px;font-size:12px;font-weight:600;cursor:pointer;outline:none;font-family:inherit;transition:border-color .2s ease}
-    .cc-chat-radio select:focus{border-color:#facc15}
-    .cc-chat-radio select option{background:#0b1120;color:#f8fafc;padding:6px}
-    .cc-chat-radio-bars{display:none;align-items:flex-end;gap:2px;height:16px;padding:0 4px;flex-shrink:0}
-    .cc-chat-radio.is-playing .cc-chat-radio-bars{display:inline-flex}
-    .cc-chat-radio-bars span{width:2.5px;background:#10b981;border-radius:1px;animation:ccRadioBar .8s ease-in-out infinite alternate}
-    .cc-chat-radio-bars span:nth-child(1){height:5px;animation-delay:.1s}
-    .cc-chat-radio-bars span:nth-child(2){height:14px;animation-delay:.35s}
-    .cc-chat-radio-bars span:nth-child(3){height:9px;animation-delay:.2s}
-    @keyframes ccRadioBar{0%{height:3px}100%{height:14px}}
+    .cc-chat-radio select{background:rgba(2,6,23,0.75);color:#f8fafc;border:1px solid rgba(196,163,90,0.35);border-radius:14px;min-height:36px;padding:0 8px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;outline:none;max-width:160px}
+    .cc-chat-radio select:focus{border-color:#facc15;box-shadow:0 0 0 2px rgba(250,204,21,0.25)}
+    .cc-chat-radio select option{background:#0f172a;color:#f8fafc}
+    .cc-chat-radio-bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px;padding:0 4px}
+    .cc-chat-radio-bars span{width:2.5px;background:#94a3b8;border-radius:1px;height:4px;transition:height .2s ease}
+    .cc-chat-radio.is-playing .cc-chat-radio-bars span{background:#10b981;animation:ccRadioBarBounce 1s ease-in-out infinite alternate}
+    .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(1){animation-delay:0s;height:12px}
+    .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(2){animation-delay:.2s;height:14px}
+    .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(3){animation-delay:.4s;height:8px}
+    @keyframes ccRadioBarBounce{0%{height:4px}100%{height:14px}}
     .cc-chat-radio output{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .cc-chat-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
-    .cc-chat-header-brand{flex:1!important;min-width:0!important}
+    .cc-chat-header-brand{flex:0 1 auto!important;min-width:0!important}
+    .cc-chat-header .cc-chat-radio, .chat-header-bar .cc-chat-radio{margin:0 6px 0 auto!important}
     @media (max-width: 480px) {
       .cc-chat-header{gap:4px!important;padding:10px 8px!important}
-      .cc-chat-header-brand{min-width:0!important;flex:1!important}
+      .cc-chat-header-brand{min-width:0!important;flex:0 1 auto!important}
       .cc-chat-header-sub{display:none!important}
       .cc-chat-header-title{font-size:0.82rem!important}
       .cc-chat-header-icon{width:30px!important;height:30px!important;min-width:30px!important}
-      .cc-chat-radio{padding:4px 6px!important}
-      .cc-chat-radio select{font-size:11px!important;padding:0 6px!important}
-      .cc-chat-radio button{padding:0 8px!important;font-size:10px!important}
+      .cc-chat-radio{margin:0 4px 0 auto!important;padding:2px 4px!important}
+      .cc-chat-radio select{max-width:95px!important;font-size:10px!important;padding:0 4px!important}
+      .cc-chat-radio button{padding:0 6px!important;font-size:10px!important;min-width:36px!important}
       .cc-chat-radio-bars{display:none!important}
     }
     body.cc-mess-embedded #lumiLanding,body.cc-mess-embedded #lumiIntroOverlay{display:none!important}
@@ -102,7 +103,7 @@
       host.setAttribute('role', 'dialog');
       host.setAttribute('aria-modal', 'true');
       host.setAttribute('aria-label', 'LUMI Messenger');
-      host.innerHTML = '<header><strong>LUMI Messenger</strong><div><a href="/mess" target="_blank" rel="noopener">Otwórz osobno</a><button type="button" aria-label="Zamknij komunikator">✕</button></div></header>';
+      host.innerHTML = '<header><strong>LUMI Messenger</strong><div><button type="button" aria-label="Zamknij komunikator">✕</button></div></header>';
       frame = document.createElement('iframe');
       frame.id = 'ccUnifiedChatFrame';
       frame.title = 'Rozmowy LUMINA — LUMI Messenger';
@@ -147,19 +148,23 @@
     else if (embedded) { try { window.parent.CCUnifiedChat?.close(); } catch (_) {} }
   });
   function mountRadio(target) {
-    if (!target) return;
-    const mountPoint = target.querySelector?.('.cc-chat-settings-radio-mount')
-      || (target.classList?.contains('cc-chat-settings-radio-mount') ? target : null)
-      || target.querySelector?.('#chatSettingsModal .cc-chat-settings-radio-mount')
-      || target.querySelector?.('.modal-card')
-      || target;
-    if (!mountPoint || mountPoint.querySelector('.cc-chat-radio')) return;
+    if (!target || target.querySelector('.cc-chat-radio')) return;
     const radio = document.createElement('div');
     radio.className = 'cc-chat-radio';
     radio.setAttribute('role', 'region');
-    radio.setAttribute('aria-label', 'Radio CC w ustawieniach czatu');
+    radio.setAttribute('aria-label', 'Mini odtwarzacz Radio CC');
     radio.innerHTML = '<button type="button" disabled aria-label="Włącz lub zatrzymaj radio" title="Włącz lub zatrzymaj radio">Słuchaj</button><select aria-label="Stacja radiowa" title="Wybierz stację radiową"></select><span class="cc-chat-radio-bars" aria-hidden="true"><span></span><span></span><span></span></span><output role="status" aria-live="polite">Ładowanie radia…</output>';
-    mountPoint.appendChild(radio);
+    const headerRow = target.querySelector(':scope > .cc-chat-header, .cc-chat-header, :scope > .chat-header-bar > div, .chat-header-bar > div, :scope > .chat-header-bar, .chat-header-bar, header');
+    if (headerRow) {
+      const actions = headerRow.querySelector('.cc-chat-header-actions, .chat-header-actions');
+      if (actions && actions.parentNode) {
+        actions.parentNode.insertBefore(radio, actions);
+      } else {
+        headerRow.appendChild(radio);
+      }
+    } else {
+      target.insertBefore(radio, target.firstChild);
+    }
     radioReady.then(() => {
       const chatRadio = window.CCChatRadio;
       const select = radio.querySelector('select');
@@ -211,19 +216,9 @@
     });
   }
   function setup() {
-    // Keep chat headers clean and uncluttered as ordered by Dowódca
-    document.querySelectorAll('.cc-chat-header .cc-chat-radio, .chat-header-bar .cc-chat-radio, #ccUnifiedChatHost header .cc-chat-radio').forEach(el => el.remove());
-    const settingsMount = document.querySelector('#chatSettingsModal .cc-chat-settings-radio-mount, #chatSettingsModal');
-    if (settingsMount) {
-      mountRadio(settingsMount);
-    } else {
-      mountRadio(document.querySelector('#ccGlobalChatOverlay .cc-chat-drawer'));
-      mountRadio(document.querySelector('#directMessagesModal .lumina-messenger-modal-card, #directMessagesModal .modal-card'));
-    }
-    if (host && !host.querySelector('.cc-chat-radio')) {
-      const hostSettings = host.querySelector('#chatSettingsModal .cc-chat-settings-radio-mount, #chatSettingsModal');
-      if (hostSettings) mountRadio(hostSettings);
-    }
+    mountRadio(document.querySelector('#ccGlobalChatOverlay .cc-chat-drawer'));
+    mountRadio(document.querySelector('#directMessagesModal .lumina-messenger-modal-card, #directMessagesModal .modal-card, #directMessagesModal'));
+    if (host) mountRadio(host);
     if (embedded) {
       document.body.classList.add('cc-mess-embedded');
       document.getElementById('lumiIntroVideo')?.pause();
@@ -238,7 +233,7 @@
     }
   }
   document.addEventListener('click', event => {
-    if (event.target.closest?.('#ccChatFabBtn, #luminaFloatingChatBtn, [data-start-chat], .cc-chat-member-card, .drawer-nav-item, #btnChatSettingsModal, .chat-settings-btn, [onclick*="openChatSettingsModal"]')) {
+    if (event.target.closest?.('#ccChatFabBtn, #luminaFloatingChatBtn, [data-start-chat], .cc-chat-member-card, .drawer-nav-item, #btnChatSettingsModal, .chat-settings-btn')) {
       setTimeout(setup, 30);
     }
   });

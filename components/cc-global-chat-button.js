@@ -36,7 +36,7 @@
     integrationReady = new Promise(resolve => {
       const integration = document.createElement('script');
       integration.id = 'ccChatIntegrationScript';
-      integration.src = '/js/cc-chat-integration.js?v=20261014_settings_radio3';
+      integration.src = '/js/cc-chat-integration.js?v=20261014_header_radio4';
       integration.onload = resolve;
       integration.onerror = resolve;
       document.head.appendChild(integration);
@@ -1264,7 +1264,8 @@
       .cc-chat-drawer-overlay { z-index:20000000!important; }
       .cc-chat-drawer { background:#101827!important; box-shadow:0 16px 48px #0005!important; }
       .cc-chat-header { background:#101827!important; border-bottom:1px solid #ffffff18!important; gap:8px!important; }
-      .cc-chat-header-brand { flex:1!important; min-width:0!important; }
+      .cc-chat-header-brand { flex:0 1 auto!important; min-width:0!important; }
+      .cc-chat-header .cc-chat-radio, .chat-header-bar .cc-chat-radio { margin:0 6px 0 auto!important; }
       .cc-chat-header-title { font-size:0.9rem!important; white-space:nowrap!important; }
       .cc-chat-header-actions { flex-shrink:0!important; gap:4px!important; }
       .cc-chat-header-icon { filter:none!important; border:0!important; }
