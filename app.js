@@ -5,6 +5,7 @@
  */
 
 import { db } from "./firebase-config.js";
+import './js/cc-radio-catalog.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 // 1. STATIONS DATA CONFIGURATION
@@ -102,6 +103,13 @@ let STATIONS = {
 };
 
 // 2. STATE VARIABLES
+// Keep presentation metadata, but share the station sources with the chat.
+window.CCRadioStations.forEach(station => {
+    if (STATIONS[station.id]) {
+        STATIONS[station.id].streamUrl = station.streamUrl;
+        if (station.playlistUrl) STATIONS[station.id].playlistUrl = station.playlistUrl;
+    }
+});
 let activeStation = STATIONS.poland;
 let isPlaying = false;
 let isMuted = false;
@@ -672,6 +680,21 @@ loadPlaylistsImmediate();
 // DOM Elements
 const audio = new Audio();
 audio.volume = 0.8;
+audio.setAttribute('data-cc-radio', 'true');
+let homeRadioConfirmed = false;
+// Chat frames on the homepage control this same player, never a second stream.
+window.CCHomeRadio = {
+    select: id => { homeRadioConfirmed = false; selectStation(id); },
+    pause: () => pauseRadio(),
+    state: () => ({ stationId: activeStation.id, playing: homeRadioConfirmed, status: homeRadioConfirmed ? 'Odtwarza' : 'Wstrzymano' })
+};
+['playing', 'pause', 'error'].forEach(event => audio.addEventListener(event, () => {
+    homeRadioConfirmed = event === 'playing';
+    window.dispatchEvent(new CustomEvent('cc-home-radio-state', { detail: {
+        stationId: activeStation.id, playing: event === 'playing',
+        status: event === 'playing' ? 'Odtwarza' : event === 'error' ? 'Nie udało się odtworzyć. Spróbuj ponownie.' : 'Wstrzymano'
+    } }));
+}));
 
 // Global Audio Ended Handler: Automatic loop for Worship Music, Biblia Śpiewana and Global Biblia
 audio.addEventListener('ended', () => {

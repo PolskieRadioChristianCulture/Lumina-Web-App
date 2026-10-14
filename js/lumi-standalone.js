@@ -92,6 +92,11 @@
         const progressBar = document.getElementById('lumiIntroProgressBar');
         const replayBtn = document.getElementById('lumiReplayIntro');
         if (!overlay || !video) return;
+        if (new URLSearchParams(window.location.search).get('embed') === '1') {
+            overlay.hidden = true;
+            try { video.pause(); } catch (_) {}
+            return;
+        }
 
         let isDismissed = false;
 

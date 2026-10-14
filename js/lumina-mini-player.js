@@ -7,6 +7,8 @@
 
 (function () {
     'use strict';
+    // Never auto-resume another player inside the canonical chat frame.
+    if (/^\/mess(?:\/|\.html)?$/.test(location.pathname) && new URLSearchParams(location.search).get('embed') === '1') return;
 
     if (window.LuminaMiniPlayer) {
         return; // Już zainicjalizowany

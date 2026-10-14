@@ -250,7 +250,7 @@ for (const file of surfaces) {
 // Execute the complete shared chat component against an isolated DOM (no network).
 const globalChatSource=await readFile('components/cc-global-chat-button.js','utf8');
 function globalChatFixture(loggedIn=false){
- const win=new Window({url:'https://example.invalid/lumina',settings:{disableCSSFileLoading:true,disableJavaScriptFileLoading:true}});
+ const win=new Window({url:'https://example.invalid/mess',settings:{disableCSSFileLoading:true,disableJavaScriptFileLoading:true}});
  const errors=[];win.addEventListener('error',e=>{errors.push(e.error);e.preventDefault();});
  win.LuminaDB={getCurrentUser:()=>loggedIn?{uid:'fixture-user'}:null,getCurrentProfile:()=>({slug:'fixture-user',name:'Fixture'}),
   getChatId:(a,b)=>[a,b].sort().join('_'),

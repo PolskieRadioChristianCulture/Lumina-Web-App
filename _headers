@@ -75,6 +75,21 @@
 /js/lumi-standalone.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/components/cc-global-chat-button.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/cc-chat-integration.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/cc-chat-radio.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/cc-radio-catalog.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/cc-radio-milion.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 
 /*.js
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400

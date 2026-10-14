@@ -7,6 +7,8 @@
  */
 (function() {
     if (window.LuminaRadioEngineInitialized) return;
+    // The embedded canonical chat uses its host's six-station controller.
+    if (/^\/mess(?:\/|\.html)?$/.test(location.pathname) && new URLSearchParams(location.search).get('embed') === '1') return;
     window.LuminaRadioEngineInitialized = true;
 
     const RADIO_STREAMS = [

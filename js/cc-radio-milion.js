@@ -15,7 +15,7 @@
   window.CCRadioMilion = true;
   // Na /milion przycisk „Włącz Radio” sam zgłasza swoje +1.
   var OWN_HOST = /(^|\.)polskieradio\.cc$|\.pages\.dev$/.test(location.hostname || '');
-  if (OWN_HOST && /^\/milion(\/|\.html)?$/.test(location.pathname)) return;
+  var SELF_COUNTING_PAGE = OWN_HOST && /^\/milion(\/|\.html)?$/.test(location.pathname);
   // Na naszej domenie — adres względny; na cudzej stronie lub z pliku — pełny adres licznika.
   var ENDPOINT = OWN_HOST ? '/api/milion/count' : 'https://polskieradio.cc/api/milion/count';
 
@@ -24,6 +24,9 @@
 
   function isRadio(el) {
     if (!el || typeof el.currentSrc !== 'string') return false;
+    // The canonical six-station player also uses local MP3 and ebible playlists.
+    if (el.getAttribute && el.getAttribute('data-cc-radio') === 'true') return true;
+    if (SELF_COUNTING_PAGE) return false;
     var src = el.currentSrc || el.src || '';
     if (STREAM.test(src)) return true;
     var sources = el.querySelectorAll ? el.querySelectorAll('source') : [];
@@ -54,7 +57,7 @@
     HTMLMediaElement.prototype.play = function () {
       var result = originalPlay.apply(this, arguments);
       var el = this;
-      if (isRadio(el) || STREAM.test(el.src || '')) {
+      if (isRadio(el) || (!SELF_COUNTING_PAGE && STREAM.test(el.src || ''))) {
         if (result && typeof result.then === 'function') result.then(report, function () {});
         else report();
       }

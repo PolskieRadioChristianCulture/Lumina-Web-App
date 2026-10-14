@@ -22,9 +22,11 @@ export function renderLumiPage(html) {
 try {
   document.documentElement.setAttribute('data-lumina-theme', 'dark');
   document.documentElement.classList.add('lumi-mess-page');
-  localStorage.setItem('lumina_theme', 'dark');
+  if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('cc-mess-embedded');
+  if (new URLSearchParams(location.search).get('embed') !== '1') localStorage.setItem('lumina_theme', 'dark');
 } catch(e) {}
 </script>
+<style>html.cc-mess-embedded #lumiLanding,html.cc-mess-embedded #lumiIntroOverlay{display:none!important}</style>
 <link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_dark_fix">
 <script defer src="/js/lumi-standalone.js?v=20261014_dark_fix"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
@@ -32,7 +34,7 @@ try {
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
 <div id="lumiIntroOverlay" class="lumi-intro-overlay" role="region" aria-label="Intro LUMI Messenger">
   <div class="lumi-intro-video-wrap">
-    <video id="lumiIntroVideo" class="lumi-intro-video" playsinline muted autoplay preload="auto" poster="/images/chat/lumi-intro-poster.webp">
+    <video id="lumiIntroVideo" class="lumi-intro-video" playsinline muted preload="none" poster="/images/chat/lumi-intro-poster.webp">
       <source id="lumiIntroSourceMobile" media="(orientation: portrait) and (max-width: 900px)" src="/images/chat/lumi-intro-mobile.mp4" type="video/mp4">
       <source id="lumiIntroSourceDesktop" src="/images/chat/lumi-intro.mp4" type="video/mp4">
     </video>

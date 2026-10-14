@@ -29,6 +29,19 @@
   // 1. Zabezpieczenie przed wielokrotną inicjalizacją
   if (window.CCGlobalChatButton) return;
   window.CCGlobalChatButton = true;
+  // A single /mess document supplies the chat on every ecosystem page.
+  const isCanonicalMessenger = /^\/mess(?:\/|\.html)?$/.test(window.location.pathname);
+  let integrationReady = Promise.resolve();
+  if (!window.CCUnifiedChat && !document.getElementById('ccChatIntegrationScript')) {
+    integrationReady = new Promise(resolve => {
+      const integration = document.createElement('script');
+      integration.id = 'ccChatIntegrationScript';
+      integration.src = '/js/cc-chat-integration.js?v=20261014_shared1';
+      integration.onload = resolve;
+      integration.onerror = resolve;
+      document.head.appendChild(integration);
+    });
+  }
 
   // 2. Katalog członków społeczności CC & LUMINA
   const COMMUNITY_MEMBERS = [
@@ -1834,6 +1847,13 @@
     }
 
     function openChat() {
+      if (!isCanonicalMessenger) {
+        integrationReady.then(() => {
+          if (window.CCUnifiedChat) window.CCUnifiedChat.open();
+          else window.location.href = '/mess';
+        });
+        return;
+      }
       // Jeśli jesteśmy na podstronie z natywnym modalem LUMINA i użytkownik nie jest w trybie gościa ukrywającego go:
       const nativeModal = document.getElementById('directMessagesModal');
       const isGuestBlocked = document.body && document.body.classList.contains('user-is-guest');
@@ -2464,15 +2484,21 @@
   // Eksport globalnego API
   window.CCGlobalChat = {
     open: function (targetTab, targetPartnerId) {
+      if (!isCanonicalMessenger) {
+        integrationReady.then(() => {
+          if (window.CCUnifiedChat) window.CCUnifiedChat.open({ tab: targetTab === 'members' ? 'private' : 'public', partner: targetPartnerId });
+          else window.location.href = '/mess';
+        });
+        return;
+      }
       const btn = document.getElementById('ccChatFabBtn') || document.getElementById('luminaFloatingChatBtn');
       if (btn) btn.click();
       else if (typeof openChat === 'function') openChat();
       if (targetPartnerId) {
-        const p = COMMUNITY_MEMBERS.find(x => x.id === targetPartnerId);
+        const p = COMMUNITY_MEMBERS.find(x => x.id === targetPartnerId || x.slug === targetPartnerId);
         if (p) {
-          currentChatPartner = p;
-          const liveBtn = document.getElementById('ccChatTabLiveBtn');
-          if (liveBtn) liveBtn.click();
+          const partnerBtn = document.querySelector(`[data-partner-id="${p.id}"]`);
+          if (partnerBtn) partnerBtn.click();
         }
       } else if (targetTab) {
         const tabMap = {
