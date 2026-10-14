@@ -113,16 +113,6 @@
       initialGreeting: 'Dobre słowo ma moc przemiany serc! 🎙️ Witamy w Studiu Dobrego Słowa.'
     },
     {
-      id: 'zbyszek',
-      slug: 'zbyszekgieron',
-      profileUrl: '/lumina.zbyszekgieron.html',
-      name: 'Zbyszek Gieroń',
-      badge: '🕊️ Misja & Wiara',
-      desc: 'Profil Misyjny • Świadectwo & Wiara',
-      avatar: '/avatar_zbyszek_gieron.png',
-      initialGreeting: 'Chwała Panu! Świadectwo żywej wiary to nasza siła. Miło Cię widzieć na czacie. 🕊️'
-    },
-    {
       id: 'zofia',
       slug: 'zofiadudek',
       profileUrl: '/lumina.zofiadudek.html',
