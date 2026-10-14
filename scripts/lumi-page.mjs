@@ -29,9 +29,9 @@ try {
 </script>
 <style>html.cc-mess-embedded #lumiLanding,html.cc-mess-embedded #lumiIntroOverlay{display:none!important}</style>
 <link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_settings_fix">
-<link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261014_mockup1">
+<link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261014_mockup3">
 <script defer src="/js/lumi-standalone.js?v=20261014_settings_fix"></script>
-<script defer src="/js/lumi-dashboard.js?v=20261014_mockup1"></script>
+<script defer src="/js/lumi-dashboard.js?v=20261014_mockup2"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
