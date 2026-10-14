@@ -76,6 +76,20 @@ test('radio controls mount for both guest and native chat, and changing stations
   assert.equal(win.document.querySelector('.cc-chat-radio button').disabled, false);
 });
 
+test('mini radio player mounts on the upper chat header bar between brand and actions', async () => {
+  const { win, run } = fixture();
+  win.document.body.innerHTML = '<div id="ccGlobalChatOverlay"><div class="cc-chat-drawer"><div class="cc-chat-header"><div class="cc-chat-header-brand">Brand</div><div class="cc-chat-header-actions"><button>Close</button></div></div></div></div>';
+  win.fetch = async () => ({ ok: true, json: async () => [{ url: './audio/test.mp3', duration: 240 }] });
+  run(files[0]); win.CCRadioMilion = true; run(files[1]); run(files[2]);
+  win.document.dispatchEvent(new win.Event('DOMContentLoaded')); await settle();
+  const header = win.document.querySelector('.cc-chat-header');
+  const radio = header.querySelector('.cc-chat-radio');
+  assert.ok(radio, 'Radio must be mounted inside .cc-chat-header');
+  assert.equal(radio.nextElementSibling.className, 'cc-chat-header-actions', 'Radio must sit before header actions');
+  assert.equal(radio.querySelector('select').options.length, 6);
+  assert.equal(radio.querySelector('button').textContent, 'Słuchaj');
+});
+
 test('home radio integration uses the existing audio engine without creating another element', async () => {
   const { win, run } = fixture('/'); const played = [];
   win.CCHomeRadio = { select: id => played.push(id), pause: () => played.push('pause'), state: () => ({ stationId: 'global', playing: true, status: 'Odtwarza' }) };
