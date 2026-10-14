@@ -8985,6 +8985,9 @@ export function isLuminaCommunityReadyProfile(p) {
     if (p.isBlocked || p.isMissionAccount || p.visibility === 'private') return false;
     const slug = String(p.slug || p.uid || '').toLowerCase();
     if (!slug) return false;
+    const cleanSlug = slug.replace(/^u_/, '');
+    const name = String(p.name || '').toLowerCase();
+    if (cleanSlug === 'zbyszekgieron' || cleanSlug === 'zbyszek' || name.includes('zbyszek') || name.includes('gieroń') || name.includes('gieron')) return false;
     return getLuminaProfileCompletion(p).complete;
 }
 
@@ -9001,7 +9004,10 @@ export function isLuminaCarouselMember(p) {
     if (p.isBlocked || p.isMissionAccount || p.visibility === 'private') return false;
     const slug = String(p.slug || p.uid || p.id || '').toLowerCase();
     if (!slug) return false;
+    const cleanSlug = slug.replace(/^u_/, '');
     const name = String(p.name || '').trim();
+    const cleanName = name.toLowerCase();
+    if (cleanSlug === 'zbyszekgieron' || cleanSlug === 'zbyszek' || cleanName.includes('zbyszek') || cleanName.includes('gieroń') || cleanName.includes('gieron')) return false;
     return name.length >= 2 && !LUMINA_PLACEHOLDER_NAMES.includes(name.toLowerCase());
 }
 export function getCommunityCarouselProfiles(max = 60) {
