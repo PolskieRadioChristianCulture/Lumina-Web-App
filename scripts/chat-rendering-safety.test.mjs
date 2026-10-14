@@ -102,3 +102,39 @@ test('renderChatMedia unit tests: url linking, YouTube preview generation, and s
   assert.doesNotMatch(sanitizedMalformed, /cc-chat-yt-card/, 'Invalid/tampered YouTube ID is rejected and not rendered as preview card');
 });
 
+test('every chat message renderer includes an accessible 44px UDOSTĘPNIJ button', async () => {
+  const globalChatSource = await readFile('components/cc-global-chat-button.js', 'utf8');
+  assert.match(globalChatSource, /class="cc-chat-share-btn"/, 'cc-global-chat-button.js renders cc-chat-share-btn');
+  assert.match(globalChatSource, /min-height:\s*44px/, 'cc-global-chat-button.js has min 44px touch target');
+  assert.match(globalChatSource, /window\.shareChatMessage/, 'cc-global-chat-button.js wires window.shareChatMessage');
+
+  for (const [file, source] of sources) {
+    assert.match(source, /function shareChatMessage\(/, `${file} defines shareChatMessage`);
+    assert.match(source, /window\.shareChatMessage\s*=/, `${file} exports window.shareChatMessage`);
+    assert.match(source, /window\.openShareMessageModal\s*=/, `${file} exports window.openShareMessageModal`);
+    assert.match(source, /class="cc-chat-share-btn"/, `${file} contains cc-chat-share-btn`);
+    assert.match(source, /min-height:\s*44px/, `${file} share button satisfies 44px touch ergonomics`);
+    assert.match(source, /api\.whatsapp\.com\/send\?text=/, `${file} modal supports WhatsApp sharing`);
+    assert.match(source, /t\.me\/share\/url\?/, `${file} modal supports Telegram sharing`);
+    assert.match(source, /facebook\.com\/sharer\/sharer\.php\?/, `${file} modal supports Facebook sharing`);
+    assert.match(source, /twitter\.com\/intent\/tweet\?/, `${file} modal supports X (Twitter) sharing`);
+  }
+});
+
+test('public chat is opened first as default tab across ekosystem', async () => {
+  const standaloneSource = await readFile('js/lumi-standalone.js', 'utf8');
+  assert.match(standaloneSource, /window\.openDirectMessagesModal\('public'\)/, 'lumi-standalone.js opens public chat first');
+
+  const globalChatSource = await readFile('components/cc-global-chat-button.js', 'utf8');
+  assert.match(globalChatSource, /setChatPartner\(COMMUNITY_MEMBERS\[0\]\)/, 'cc-global-chat-button.js defaults to community public chat');
+
+  for (const [file, source] of sources) {
+    assert.match(
+      source,
+      /function openDirectMessagesModal\([^)]*\)\s*\{[\s\S]*?(?:preferredTab\s*\|\|\s*['"]public['"]|switchMessengerMainTab\(.*['"]public['"]\))/,
+      `${file} defaults openDirectMessagesModal to public tab`,
+    );
+  }
+});
+
+

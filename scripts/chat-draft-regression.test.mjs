@@ -32,7 +32,7 @@ test('LUMI install fallback, cancellation and existing chat entry execute withou
   win.document.dispatchEvent(new win.Event('DOMContentLoaded'));
   win.document.getElementById('lumiOpen').click(); assert.deepEqual(calls.at(-1),['guest','live']);
   win.LuminaDB.getCurrentUser=()=>({uid:'SyntheticOwner'});
-  win.document.getElementById('lumiOpen').click(); assert.deepEqual(calls.at(-1),['native','private']);
+  win.document.getElementById('lumiOpen').click(); assert.deepEqual(calls.at(-1),['native','public']);
   const install=win.document.getElementById('lumiInstall'); install.click();
   assert.equal(win.document.getElementById('lumiInstallHelp').open,true);
   const prompt=new win.Event('beforeinstallprompt',{cancelable:true});

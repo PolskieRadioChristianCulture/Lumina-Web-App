@@ -1855,7 +1855,10 @@
         return;
       }
 
-      // Otwarcie zintegrowanego okna rozmowy live
+      // Otwarcie zintegrowanego okna rozmowy live (domyślnie czat ogólny)
+      if (typeof COMMUNITY_MEMBERS !== 'undefined' && COMMUNITY_MEMBERS.length > 0 && typeof setChatPartner === 'function') {
+        setChatPartner(COMMUNITY_MEMBERS[0]);
+      }
       updateActivePartnerUI();
       renderChatMessages();
       switchTab('live');
@@ -2114,6 +2117,161 @@
     };
   }
 
+  if (typeof window.shareChatMessage !== 'function') {
+    window.shareChatMessage = function(triggerEl, senderParam, textParam) {
+      let sender = senderParam;
+      let text = textParam;
+      if (triggerEl && typeof triggerEl.getAttribute === 'function') {
+        sender = triggerEl.getAttribute('data-share-sender') || sender || 'Użytkownik';
+        text = triggerEl.getAttribute('data-share-text') || text || '';
+      }
+      sender = String(sender || 'Użytkownik').trim();
+      text = String(text || '').trim();
+      if (!text) {
+        if (typeof showToast === 'function') showToast('Ta wiadomość jest pusta.');
+        return;
+      }
+
+      const shareUrl = 'https://polskieradio.cc/mess';
+      const shareText = `„${text}” — ${sender} • Czat Christian Culture & LUMINA\n${shareUrl}`;
+
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+      if (isMobile && typeof navigator.share === 'function') {
+        navigator.share({
+          title: `Wiadomość od ${sender} • Christian Culture`,
+          text: shareText,
+          url: shareUrl
+        }).catch(err => {
+          if (err && err.name === 'AbortError') return;
+          window.openShareMessageModal(sender, text, shareUrl, shareText);
+        });
+        return;
+      }
+
+      window.openShareMessageModal(sender, text, shareUrl, shareText);
+    };
+  }
+
+  if (typeof window.openShareMessageModal !== 'function') {
+    window.openShareMessageModal = function(sender, text, shareUrl, shareText) {
+      let modal = document.getElementById('ccShareMessageModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'ccShareMessageModal';
+        modal.className = 'lumina-modal cc-share-modal';
+        modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.78); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:9999999; display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity 0.2s ease;';
+        document.body.appendChild(modal);
+      }
+
+      const previewQuote = (text.length > 180 ? text.slice(0, 180) + '…' : text);
+      const encText = encodeURIComponent(shareText);
+      const encUrl = encodeURIComponent(shareUrl);
+      const encQuote = encodeURIComponent(`„${text}” — ${sender}`);
+
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encText}`;
+      const telegramUrl = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent('„' + text + '” — ' + sender)}`;
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}&quote=${encQuote}`;
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent('„' + (text.length > 180 ? text.slice(0, 180) + '…' : text) + '” — ' + sender)}&url=${encUrl}`;
+
+      modal.innerHTML = `
+        <div class="modal-card" style="background:#0F172A; border:1px solid rgba(196,163,90,0.5); border-radius:20px; max-width:440px; width:100%; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); color:#F8FAFC; position:relative; max-height:90vh; overflow-y:auto; font-family:system-ui, -apple-system, sans-serif;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:1.3rem;">🕊️</span>
+              <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#F8FAFC; letter-spacing:0.2px;">Prześlij wiadomość dalej</h3>
+            </div>
+            <button type="button" onclick="window.closeShareMessageModal()" style="background:rgba(255,255,255,0.08); border:none; color:#94A3B8; width:44px; height:44px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;" aria-label="Zamknij okno udostępniania">✕</button>
+          </div>
+          
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px; margin-bottom:16px;">
+            <div style="font-size:0.75rem; font-weight:700; color:#C4A35A; margin-bottom:4px;">${escapeHtml(sender)}:</div>
+            <div style="font-size:0.86rem; line-height:1.45; color:#E2E8F0; word-break:break-word; max-height:120px; overflow-y:auto;">„${escapeHtml(previewQuote)}”</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:9px; margin-bottom:14px;">
+            <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:rgba(37,211,102,0.14); border:1px solid rgba(37,211,102,0.4); color:#4ADE80; font-weight:700; font-size:0.88rem; text-decoration:none; min-height:44px;">
+              <span style="font-size:1.2rem;">🟢</span>
+              <span>Udostępnij na WhatsApp</span>
+              <span style="margin-left:auto; opacity:0.7;">↗</span>
+            </a>
+            <a href="${telegramUrl}" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:rgba(42,171,238,0.14); border:1px solid rgba(42,171,238,0.4); color:#38BDF8; font-weight:700; font-size:0.88rem; text-decoration:none; min-height:44px;">
+              <span style="font-size:1.2rem;">✈️</span>
+              <span>Udostępnij na Telegram</span>
+              <span style="margin-left:auto; opacity:0.7;">↗</span>
+            </a>
+            <a href="${fbUrl}" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:rgba(24,119,242,0.14); border:1px solid rgba(24,119,242,0.4); color:#60A5FA; font-weight:700; font-size:0.88rem; text-decoration:none; min-height:44px;">
+              <span style="font-size:1.2rem;">👥</span>
+              <span>Udostępnij na Facebook</span>
+              <span style="margin-left:auto; opacity:0.7;">↗</span>
+            </a>
+            <a href="${twitterUrl}" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#F8FAFC; font-weight:700; font-size:0.88rem; text-decoration:none; min-height:44px;">
+              <span style="font-size:1.2rem;">𝕏</span>
+              <span>Udostępnij na X (Twitter)</span>
+              <span style="margin-left:auto; opacity:0.7;">↗</span>
+            </a>
+            <button type="button" id="ccGlobalChatCopyBtn" style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:linear-gradient(135deg, rgba(196,163,90,0.18), rgba(212,175,55,0.1)); border:1px solid rgba(196,163,90,0.4); color:#FDE047; font-weight:700; font-size:0.88rem; cursor:pointer; min-height:44px; text-align:left; width:100%;">
+              <span style="font-size:1.2rem;">📋</span>
+              <span id="btnCopyChatMsgText">Kopiuj treść z linkiem</span>
+              <span style="margin-left:auto; font-size:0.75rem; opacity:0.8;">Kliknij</span>
+            </button>
+          </div>
+
+          <button type="button" onclick="window.closeShareMessageModal()" style="width:100%; padding:10px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#94A3B8; font-weight:600; font-size:0.82rem; cursor:pointer; min-height:44px;">
+            Zamknij
+          </button>
+        </div>
+      `;
+
+      const copyBtn = modal.querySelector('#ccGlobalChatCopyBtn');
+      if (copyBtn) {
+        copyBtn.onclick = function() {
+          window.copyChatMessageContent(shareText);
+        };
+      }
+
+      modal.style.opacity = '1';
+      modal.style.pointerEvents = 'auto';
+    };
+  }
+
+  if (typeof window.closeShareMessageModal !== 'function') {
+    window.closeShareMessageModal = function() {
+      const modal = document.getElementById('ccShareMessageModal');
+      if (modal) {
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+      }
+    };
+  }
+
+  if (typeof window.copyChatMessageContent !== 'function') {
+    window.copyChatMessageContent = async function(textToCopy) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(textToCopy);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        const lbl = document.getElementById('btnCopyChatMsgText');
+        if (lbl) lbl.textContent = '✅ Skopiowano do schowka!';
+        if (typeof showToast === 'function') showToast('✨ Treść wiadomości skopiowana do schowka!');
+        setTimeout(() => {
+          if (lbl) lbl.textContent = 'Kopiuj treść z linkiem';
+        }, 2500);
+      } catch (err) {
+        console.warn('Copy error:', err);
+        if (typeof showToast === 'function') showToast('Nie udało się skopiować.');
+      }
+    };
+  }
+
   function renderChatMessages() {
     const list = document.getElementById('ccChatMessagesList');
     if (!list) return;
@@ -2198,7 +2356,15 @@
               <span class="cc-chat-msg-badge">${badge}</span>
               ${time ? `<span style="opacity: 0.7;">${time}</span>` : ''}
             </div>
-            <div class="cc-chat-msg-bubble">${renderChatMedia(text, m.id)}</div>
+            <div class="cc-chat-msg-bubble">
+              ${renderChatMedia(text, m.id)}
+              <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:4px;">
+                <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${name}" data-share-text="${text}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; font-size:0.65rem; font-weight:700; cursor:pointer; padding:2px 7px; border-radius:6px; min-height:44px; display:inline-flex; align-items:center; gap:4px;" title="Udostępnij tę wiadomość">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                  <span>Udostępnij</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       `;

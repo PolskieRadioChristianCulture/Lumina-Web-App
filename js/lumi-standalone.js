@@ -36,7 +36,7 @@
         function openChat() {
             const user = window.LuminaDB?.getCurrentUser?.();
             if (user && !user.isAnonymous && typeof window.openDirectMessagesModal === 'function') {
-                window.openDirectMessagesModal('private');
+                window.openDirectMessagesModal('public');
             } else if (window.CCGlobalChat && document.getElementById('ccChatFabBtn')) {
                 window.CCGlobalChat.open('live');
             } else {
