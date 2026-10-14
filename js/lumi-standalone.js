@@ -1,5 +1,14 @@
 (function () {
     'use strict';
+    // LUMI Messenger is a dedicated cinematic dark shell; enforce dark theme on load
+    try {
+        if (typeof document !== 'undefined') {
+            document.documentElement.setAttribute('data-lumina-theme', 'dark');
+            if (document.body) {
+                document.body.classList.remove('theme-lumina-light');
+            }
+        }
+    } catch (_) {}
     let installPrompt = null;
     window.addEventListener('beforeinstallprompt', event => {
         event.preventDefault(); installPrompt = event;

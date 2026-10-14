@@ -5,7 +5,8 @@ export function renderLumiPage(html) {
   }
   const title = 'LUMI Messenger — chrześcijański komunikator | Christian Culture';
   const description = 'Rozmawiaj, poznawaj społeczność i dziel się wiarą. LUMI Messenger łączy rozmowy LUMINA i Christian Culture w jednym miejscu.';
-  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`)
+  html = html.replace(/<html(?:\s+[^>]*)?>/i, '<html lang="pl" data-lumina-theme="dark" class="lumi-mess-page">')
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`)
     .replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*(">)/g, `$1${description}$2`)
     .replace(/(<meta (?:name|property)="(?:og:title|twitter:title)" content=")[^"]*(">)/g, `$1${title}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(">)/, '$1https://polskieradio.cc/mess$2')
@@ -14,8 +15,8 @@ export function renderLumiPage(html) {
     .replace(/<link rel="manifest" href="manifest-lumina.json">/, '<link rel="manifest" href="/manifest-lumi.json">')
     .replace(/<script src="lumina-pwa-installer\.js[^\"]*"><\/script>/, '')
     .replace(/(<meta name="apple-mobile-web-app-title" content=")[^"]*(">)/, '$1LumiMess$2')
-    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_chat_settings">
-<script defer src="/js/lumi-standalone.js?v=20261014_chat_settings"></script>
+    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_contrast_fix">
+<script defer src="/js/lumi-standalone.js?v=20261014_contrast_fix"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
