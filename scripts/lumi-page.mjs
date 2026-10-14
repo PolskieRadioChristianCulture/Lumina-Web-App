@@ -14,15 +14,16 @@ export function renderLumiPage(html) {
     .replace(/<link rel="manifest" href="manifest-lumina.json">/, '<link rel="manifest" href="/manifest-lumi.json">')
     .replace(/<script src="lumina-pwa-installer\.js[^\"]*"><\/script>/, '')
     .replace(/(<meta name="apple-mobile-web-app-title" content=")[^"]*(">)/, '$1LumiMess$2')
-    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_daily1">
-<script defer src="/js/lumi-standalone.js?v=20261014_daily1"></script>
+    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_mobile_intro">
+<script defer src="/js/lumi-standalone.js?v=20261014_mobile_intro"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
 <div id="lumiIntroOverlay" class="lumi-intro-overlay" role="region" aria-label="Intro LUMI Messenger">
   <div class="lumi-intro-video-wrap">
     <video id="lumiIntroVideo" class="lumi-intro-video" playsinline muted autoplay preload="auto" poster="/images/chat/lumi-intro-poster.webp">
-      <source src="/images/chat/lumi-intro.mp4" type="video/mp4">
+      <source id="lumiIntroSourceMobile" media="(orientation: portrait) and (max-width: 900px)" src="/images/chat/lumi-intro-mobile.mp4" type="video/mp4">
+      <source id="lumiIntroSourceDesktop" src="/images/chat/lumi-intro.mp4" type="video/mp4">
     </video>
     <div class="lumi-intro-controls">
       <button type="button" id="lumiIntroSound" class="lumi-intro-btn lumi-intro-sound" aria-label="Włącz dźwięk">

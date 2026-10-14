@@ -90,11 +90,32 @@
             }, 750);
         }
 
+        function isPortraitMobile() {
+            try {
+                return window.matchMedia && window.matchMedia('(orientation: portrait) and (max-width: 900px)').matches;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function resolveIntroSources() {
+            const isMobile = isPortraitMobile();
+            const targetSrc = isMobile ? '/images/chat/lumi-intro-mobile.mp4' : '/images/chat/lumi-intro.mp4';
+            const targetPoster = isMobile ? '/images/chat/lumi-intro-mobile-poster.webp' : '/images/chat/lumi-intro-poster.webp';
+            if (video.getAttribute('poster') !== targetPoster) video.setAttribute('poster', targetPoster);
+            const current = video.currentSrc || video.src || '';
+            if (!current.includes(targetSrc)) {
+                video.src = targetSrc;
+                try { video.load(); } catch (_) {}
+            }
+        }
+
         function playIntro(withAudio) {
             isDismissed = false;
             overlay.hidden = false;
             overlay.classList.remove('fade-out');
             if (progressBar) progressBar.style.width = '0%';
+            resolveIntroSources();
             try { video.currentTime = 0; } catch (_) {}
             video.muted = !withAudio;
             updateSoundUI(video.muted);
