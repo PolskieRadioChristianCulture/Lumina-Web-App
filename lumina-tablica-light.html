@@ -12374,7 +12374,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                             <div>${escapeHtml(msg.text)}</div>
                             ${reactionsHtml}
                             <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:rgba(255,255,255,0.6); margin-top:4px;">
-                                <span>${time}</span>
+                                <span>${escapeHtml(time)}</span>
                                 ${!isMe ? `
                                     <button type="button" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')" style="background:none; border:none; color:#38bdf8; font-size:0.65rem; cursor:pointer; font-weight:700; padding:0;">Napisz Priv 💬</button>
                                 ` : ''}
@@ -12514,17 +12514,17 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : u.id === myId));
                     const tooltipNames = usersList.map(u => (typeof u === 'string' ? u : u.name || u.id)).join(', ');
                     chipsHtml += `
-                        <button type="button" onclick="window.handleChatReaction('${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}', '${emojiKey}')"
+                        <button type="button" onclick="window.handleChatReaction('${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}', '${escapeForInlineJs(emojiKey)}')"
                               style="display:inline-flex; align-items:center; gap:3px; background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'}; font-size:0.72rem; padding:1px 6px; border-radius:10px; cursor:pointer; font-family:inherit; transition:all 0.15s ease;"
                               title="Reagujący: ${escapeHtml(tooltipNames)}">
-                            <span>${emojiKey}</span> <span style="font-size:0.65rem; font-weight:700; opacity:0.9;">${usersList.length}</span>
+                            <span>${escapeHtml(emojiKey)}</span> <span style="font-size:0.65rem; font-weight:700; opacity:0.9;">${usersList.length}</span>
                         </button>
                     `;
                 }
             });
 
             const addBtn = `
-                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}')"
+                <button type="button" onclick="window.toggleReactionPicker(this, '${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}')"
                         style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;"
                         title="Dodaj emotikon / reakcję">
                     <i class="fa-regular fa-face-smile"></i> +
@@ -12846,7 +12846,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                                 <div style="max-width:82%; padding:10px 14px; border-radius:${radius}; background:${bg}; border:${border}; color:#fff; font-size:0.86rem; line-height:1.45; box-shadow:0 3px 12px rgba(0,0,0,0.4); position:relative;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
                                         <span style="font-weight:800; font-size:0.75rem; color:${isCC ? '#c4b5fd' : '#fde047'};">${escapeHtml(msg.senderName)} <span style="font-size:0.65rem; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px; margin-left:4px;">${escapeHtml(msg.senderBadge)}</span></span>
-                                        <span style="font-size:0.65rem; color:rgba(255,255,255,0.65);">${time}</span>
+                                        <span style="font-size:0.65rem; color:rgba(255,255,255,0.65);">${escapeHtml(time)}</span>
                                     </div>
                                     <div style="word-break:break-word;">${escapeHtml(msg.text)}</div>
                                 </div>
@@ -14096,12 +14096,12 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     const readerName = msg.readByName || partnerName;
                     if (msg.isRead || msg.status === 'read') {
                         const readTime = msg.readAt ? new Date(msg.readAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : time;
-                        checkmarksHtml = `<i class="fa-solid fa-check-double fb-check-read" title="Odczytano przez: ${escapeHtml(readerName)} o ${readTime}"></i>`;
+                        checkmarksHtml = `<i class="fa-solid fa-check-double fb-check-read" title="Odczytano przez: ${escapeHtml(readerName)} o ${escapeHtml(readTime)}"></i>`;
                     } else if (msg.delivered || msg.status === 'delivered') {
                         const delivTime = msg.deliveredAt ? new Date(msg.deliveredAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : time;
-                        checkmarksHtml = `<i class="fa-solid fa-check-double fb-check-delivered" title="Dostarczono o ${delivTime}"></i>`;
+                        checkmarksHtml = `<i class="fa-solid fa-check-double fb-check-delivered" title="Dostarczono o ${escapeHtml(delivTime)}"></i>`;
                     } else {
-                        checkmarksHtml = `<i class="fa-solid fa-check fb-check-single" title="Wysłana o ${time}"></i>`;
+                        checkmarksHtml = `<i class="fa-solid fa-check fb-check-single" title="Wysłana o ${escapeHtml(time)}"></i>`;
                     }
                 }
 
@@ -14114,7 +14114,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                             <div style="font-size:0.86rem; line-height:1.42;">${escapeHtml(msg.text)}</div>
                             ${reactionsHtml}
                             <div class="fb-msg-meta">
-                                <span>${time}</span>
+                                <span>${escapeHtml(time)}</span>
                                 ${checkmarksHtml}
                             </div>
                         </div>
