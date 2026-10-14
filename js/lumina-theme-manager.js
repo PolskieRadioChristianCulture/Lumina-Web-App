@@ -9,6 +9,9 @@
 
     function getPreferredTheme() {
         try {
+            if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string' && window.location.pathname.includes('/mess')) {
+                return 'dark';
+            }
             var urlParam = new URLSearchParams(window.location.search).get('theme');
             if (urlParam === 'light' || urlParam === 'dark') return urlParam;
             var stored = localStorage.getItem('lumina_theme');
@@ -18,6 +21,11 @@
     }
 
     function applyLuminaTheme(theme, savePreference) {
+        if (typeof document !== 'undefined' && document.body && document.body.classList && document.body.classList.contains('lumi-standalone')) {
+            document.documentElement.setAttribute('data-lumina-theme', 'dark');
+            document.body.classList.remove('theme-lumina-light');
+            return;
+        }
         var isLight = theme === 'light';
         if (isLight) {
             document.documentElement.setAttribute('data-lumina-theme', 'light');

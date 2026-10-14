@@ -29,10 +29,10 @@
 }
 
 /* ── Zmienne Globalne w trybie jasnym ── */
-body.theme-lumina-light,
-.theme-lumina-light body,
-html[data-lumina-theme="light"],
-html[data-lumina-theme="light"] body {
+body.theme-lumina-light:not(.lumi-standalone),
+.theme-lumina-light body:not(.lumi-standalone),
+html[data-lumina-theme="light"]:not(:has(body.lumi-standalone)),
+html[data-lumina-theme="light"] body:not(.lumi-standalone) {
     --bg-base: #FAF9F6 !important;
     --bg-card: #FFFFFF !important;
     --bg-card-hover: #F5F2EB !important;

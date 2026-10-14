@@ -12444,6 +12444,91 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             return d.toLocaleDateString('pl-PL', { ...strefa, day: 'numeric', month: 'short', ...(rok(d) === rok(teraz) ? {} : { year: 'numeric' }) }) + ', ' + godz;
         }
 
+        function renderChatMedia(escapedText, msgId) {
+            if (!escapedText) return '';
+            const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+            let firstYtId = null;
+
+            const linkedHtml = escapedText.replace(urlRegex, function(matchedUrl) {
+                let cleanUrl = matchedUrl;
+                let trailingPunct = '';
+                const punctMatch = matchedUrl.match(/[.,!?;:]+$/);
+                if (punctMatch) {
+                    trailingPunct = punctMatch[0];
+                    cleanUrl = matchedUrl.slice(0, -trailingPunct.length);
+                }
+
+                if (!firstYtId) {
+                    const ytMatch = cleanUrl.match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                    if (ytMatch && ytMatch[1]) {
+                        firstYtId = ytMatch[1];
+                    }
+                }
+
+                return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline; word-break:break-all;">${cleanUrl}</a>${trailingPunct}`;
+            });
+
+            if (!firstYtId) {
+                const ytMatch = escapedText.match(/(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                if (ytMatch && ytMatch[1]) {
+                    firstYtId = ytMatch[1];
+                }
+            }
+
+            if (firstYtId && /^[a-zA-Z0-9_-]{11}$/.test(firstYtId)) {
+                const cardId = 'yt_preview_' + (msgId ? String(msgId).replace(/[^a-zA-Z0-9_-]/g, '_') : Math.random().toString(36).slice(2, 9));
+                const ytWatchUrl = 'https://www.youtube.com/watch?v=' + firstYtId;
+                const ytThumb = 'https://i.ytimg.com/vi/' + firstYtId + '/hqdefault.jpg';
+                const previewCard = `
+                    <div class="cc-chat-yt-card" id="${cardId}" style="margin-top:8px; border-radius:12px; overflow:hidden; border:1px solid rgba(212,175,55,0.35); background:#070A10; max-width:100%; box-shadow:0 4px 16px rgba(0,0,0,0.5);">
+                        <div class="cc-chat-yt-thumb-wrap" onclick="window.playChatYoutube('${cardId}', '${firstYtId}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.playChatYoutube('${cardId}', '${firstYtId}');}" role="button" tabindex="0" aria-label="Odtwórz wideo YouTube" style="position:relative; aspect-ratio:16/9; width:100%; min-height:120px; cursor:pointer; background:#000; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                            <img src="${ytThumb}" alt="Miniatura wideo YouTube" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='https://i.ytimg.com/vi/${firstYtId}/mqdefault.jpg';">
+                            <div style="position:absolute; inset:0; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center;">
+                                <div style="width:48px; height:48px; min-width:48px; min-height:48px; border-radius:50%; background:rgba(220,38,38,0.92); border:2px solid #FFFFFF; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,0.7);">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#FFFFFF" style="margin-left:3px;"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                            <span style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.75); color:#F8FAFC; font-size:0.65rem; font-weight:700; padding:2px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.15);">YouTube</span>
+                        </div>
+                        <div style="padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; background:rgba(255,255,255,0.03);">
+                            <div style="display:flex; align-items:center; gap:6px; min-width:0; overflow:hidden;">
+                                <span style="color:#EF4444; font-size:0.75rem; font-weight:700;">▶ Wideo</span>
+                                <span style="color:#94A3B8; font-size:0.72rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij miniaturę, aby odtworzyć</span>
+                            </div>
+                            <a href="${ytWatchUrl}" target="_blank" rel="noopener noreferrer" style="color:#C4A35A; font-size:0.72rem; font-weight:700; text-decoration:none; white-space:nowrap; padding:6px 10px; border-radius:8px; background:rgba(196,163,90,0.12); border:1px solid rgba(196,163,90,0.3); min-height:44px; display:inline-flex; align-items:center;">
+                                YouTube ↗
+                            </a>
+                        </div>
+                    </div>
+                `;
+                return `${linkedHtml}${previewCard}`;
+            }
+
+            return linkedHtml;
+        }
+
+        window.renderChatMedia = renderChatMedia;
+
+        if (typeof window.playChatYoutube !== 'function') {
+            window.playChatYoutube = function(cardId, ytId) {
+                if (!ytId || !/^[a-zA-Z0-9_-]{11}$/.test(ytId)) return;
+                const card = document.getElementById(cardId);
+                if (!card) return;
+                const thumbWrap = card.querySelector('.cc-chat-yt-thumb-wrap');
+                if (!thumbWrap) return;
+                thumbWrap.outerHTML = `
+                    <div style="position:relative; width:100%; aspect-ratio:16/9; background:#000;">
+                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&playsinline=1"
+                            title="YouTube video player"
+                            style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; display:block;"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                `;
+            };
+        }
+
         function renderPublicChatMessages(messages) {
             const box = document.getElementById('publicChatMessagesBox');
             if (!box) return;
@@ -12484,7 +12569,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                                 <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')">${escapeHtml(isMe ? ('Ty' + (msg.senderName ? ' (' + msg.senderName + ')' : '')) : (msg.senderName || 'Użytkownik'))}</span>
                                 ${(msg.senderBadge ? "<span style=\"font-size:0.65rem; background:rgba(0,0,0,0.25); padding:1px 6px; border-radius:8px; color:#fde047;\">" + escapeHtml(msg.senderBadge) + "</span>" : "")}
                             </div>
-                            <div>${escapeHtml(msg.text)}</div>
+                            <div style="word-break:break-word;">${renderChatMedia(escapeHtml(msg.text), msg.id)}</div>
                             ${reactionsHtml}
                             <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:rgba(255,255,255,0.6); margin-top:4px;">
                                 <span>${escapeHtml(time)}</span>
@@ -12961,7 +13046,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                                         <span style="font-weight:800; font-size:0.75rem; color:${isCC ? '#c4b5fd' : '#fde047'};">${escapeHtml(msg.senderName)} <span style="font-size:0.65rem; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px; margin-left:4px;">${escapeHtml(msg.senderBadge)}</span></span>
                                         <span style="font-size:0.65rem; color:rgba(255,255,255,0.65);">${escapeHtml(time)}</span>
                                     </div>
-                                    <div style="word-break:break-word;">${escapeHtml(msg.text)}</div>
+                                    <div style="word-break:break-word;">${renderChatMedia(escapeHtml(msg.text), msg.id)}</div>
                                 </div>
                             </div>
                         `;
@@ -14225,7 +14310,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     <div style="display:flex; justify-content:${align}; margin-bottom:5px;" id="msg_${escapeHtml(msg.id || '')}" data-message-id="${escapeHtml(msg.id || '')}">
                         <div class="${bubbleClass}">
                             ${!isMe ? `<div style="font-weight:700; font-size:0.70rem; color:#93c5fd; margin-bottom:2px;">${escapeHtml(msg.senderName || 'Rozmówca')}</div>` : ''}
-                            <div style="font-size:0.86rem; line-height:1.42;">${escapeHtml(msg.text)}</div>
+                            <div style="font-size:0.86rem; line-height:1.42; word-break:break-word;">${renderChatMedia(escapeHtml(msg.text), msg.id)}</div>
                             ${reactionsHtml}
                             <div class="fb-msg-meta">
                                 <span>${escapeHtml(time)}</span>
