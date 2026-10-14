@@ -94,19 +94,79 @@ test('notification list treats cached and received fields as text and restricts 
 });
 
 const surfaces=['lumina.html','lumina-tablica.html','lumina-tablica-light.html','lumina-profile.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html'];
+const draftsSource = await readFile('js/lumi-chat-drafts.js', 'utf8');
+function draftFixture() {
+  const win = new Window();
+  win.document.body.innerHTML = '<input id="activeChatInput">';
+  let user = {uid: 'SyntheticOwnerA'};
+  win.LuminaDB = {getCurrentUser: () => user};
+  vm.runInContext(draftsSource, vm.createContext({window: win, document: win.document, Event: win.Event}));
+  const input = win.document.querySelector('input');
+  return {win, input, api: win.LumiChatDrafts,
+    type(text) {input.value = text; input.dispatchEvent(new win.Event('input', {bubbles: true}));},
+    auth(next) {user = next; win.dispatchEvent(new win.Event('lumina-auth-state'));}};
+}
+test('room drafts survive navigation, remain isolated, and never enter persistent storage', () => {
+  const f = draftFixture();
+  f.api.open('RoomA'); f.type('Szkic A <img src=x>');
+  f.api.open('RoomB'); assert.equal(f.input.value, ''); f.type('Szkic B');
+  f.api.open('RoomA'); assert.equal(f.input.value, 'Szkic A <img src=x>');
+  f.api.leave(); assert.equal(f.input.value, '');
+  f.api.open('RoomB'); assert.equal(f.input.value, 'Szkic B');
+  assert.equal(f.win.localStorage.length, 0); assert.equal(f.win.sessionStorage.length, 0);
+});
+test('drafts clear on logout/account change, not on same-account profile refresh', () => {
+  const f = draftFixture(); f.api.open('RoomA'); f.type('Only A');
+  f.auth({uid: 'SyntheticOwnerA'}); assert.equal(f.input.value, 'Only A');
+  f.auth(null); assert.equal(f.input.value, '');
+  f.auth({uid: 'SyntheticOwnerB'}); f.api.open('RoomA'); assert.equal(f.input.value, '');
+  f.type('Only B'); f.auth({uid: 'SyntheticOwnerA'}); f.api.open('RoomA'); assert.equal(f.input.value, '');
+});
+test('confirmed send clears only its unchanged draft and cannot clear a later session', () => {
+  const f = draftFixture(); f.api.open('A'); f.type('Sent A');
+  const ticket = f.api.capture('A', f.input.value);
+  f.api.open('B'); f.type('Keep B'); f.api.confirmed(ticket);
+  f.api.open('A'); assert.equal(f.input.value, '');
+  f.type('New A'); f.api.confirmed(ticket); f.api.open('B'); f.api.open('A'); assert.equal(f.input.value, 'New A');
+  const oldTicket = f.api.capture('A', f.input.value);
+  f.auth(null); f.auth({uid: 'SyntheticOwnerA'}); f.api.open('A'); f.type('New A');
+  f.api.confirmed(oldTicket); f.api.open('B'); f.api.open('A'); assert.equal(f.input.value, 'New A');
+});
+test('anonymous visitors cannot retain account drafts', () => {
+  const f = draftFixture(); f.auth({uid: 'Anonymous', isAnonymous: true});
+  f.api.open('A'); f.type('Guest'); f.api.open('B'); f.api.open('A'); assert.equal(f.input.value, '');
+});
+test('explicit logout clears drafts even while the SDK is unavailable', () => {
+  const f = draftFixture(); f.api.open('A'); f.type('Private fixture');
+  f.win.LuminaDB = undefined;
+  f.win.dispatchEvent(new f.win.CustomEvent('lumina-auth-state', {detail: {user: null}}));
+  assert.equal(f.input.value, '');
+  f.auth({uid: 'SyntheticOwnerA'}); f.win.LuminaDB = {getCurrentUser: () => ({uid: 'SyntheticOwnerA'})};
+  f.api.open('A'); assert.equal(f.input.value, '');
+});
 for (const file of surfaces) {
   const source=await readFile(file,'utf8');
   const start=source.indexOf('        async function handleSendActiveChatMessage(e) {');
   const end=source.indexOf('\n        //',start);
   assert.ok(start>=0 && end>start);
   const handler=source.slice(start,end).trim();
+  test(file + ': draft integration loads the shared helper and scopes room switches', () => {
+    assert.match(source, /lumi-chat-drafts\.js\?v=20261014_drafts1/);
+    assert.match(source, /LumiChatDrafts\?\.open\(chatId\)/);
+    assert.match(source, /LumiChatDrafts\?\.leave\(\)/);
+    assert.match(handler, /LumiChatDrafts\?\.capture\(session.chatId, draft\)/);
+    assert.match(handler, /if \(saved\) \{\s*window.LumiChatDrafts\?\.confirmed\(draftTicket\)/);
+  });
   function fixture(send=async()=>null) {
     const win=new Window();
     win.document.body.innerHTML='<input id="activeChatInput"><button id="btnActiveChatSubmit"></button>';
     const input=win.document.querySelector('input'),button=win.document.querySelector('button');
     input.value='  Testowy szkic  ';
     const calls=[],notices=[];
-    win.LuminaDB={sendDirectMessageToCloud:async(...args)=>{calls.push(args);return send(...args);}};
+    win.LuminaDB={getCurrentUser:()=>({uid:'SyntheticOwnerA'}),sendDirectMessageToCloud:async(...args)=>{calls.push(args);return send(...args);}};
+    vm.runInContext(draftsSource,vm.createContext({window:win,document:win.document,Event:win.Event}));
+    win.LumiChatDrafts.open('synthetic-room');
+    input.value='  Testowy szkic  ';
     const context=vm.createContext({window:win,document:win.document,activeChatSession:{chatId:'synthetic-room',targetId:'synthetic-recipient'},showToast:(...args)=>notices.push(args),scrollChatToBottom:()=>{},handleActiveChatInputChange:text=>{button.disabled=!text.trim();}});
     const run=vm.runInContext('('+handler+')',context);
     return {win,input,button,calls,notices,context,run};
@@ -140,6 +200,7 @@ for (const file of surfaces) {
     assert.equal(f.input.value,'  Testowy szkic  '); assert.equal(f.input.disabled,true);
     await f.run(); assert.equal(f.calls.length,1);
     f.context.activeChatSession={chatId:'other-synthetic-room',targetId:'other-recipient'};
+    f.win.LumiChatDrafts.open('other-synthetic-room');
     f.input.value='Nowa rozmowa';
     resolve('synthetic-message-id'); await sending;
     assert.equal(f.input.value,'Nowa rozmowa'); assert.equal(f.input.disabled,false);

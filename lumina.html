@@ -12604,6 +12604,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 activeChatTypingUnsubscribe();
                 activeChatTypingUnsubscribe = null;
             }
+            window.LumiChatDrafts?.leave();
             activeChatSession = null;
             const modal = document.getElementById('directMessagesModal');
             if (modal) modal.classList.remove('is-chat-active');
@@ -12733,6 +12734,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
 
+            window.LumiChatDrafts?.open(chatId);
             activeChatSession = {
                 chatId: chatId,
                 targetId: toId,
@@ -12926,6 +12928,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const text = draft.trim();
             if (!text) { input.focus(); return; }
             const session = activeChatSession;
+            const draftTicket = window.LumiChatDrafts?.capture(session.chatId, draft);
             const submitButton = document.getElementById('btnActiveChatSubmit');
             input.disabled = true;
             input.setAttribute('aria-busy', 'true');
@@ -12943,6 +12946,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 });
                 const saved = (typeof result === 'string' && result.length > 0 && !result.startsWith('local_')) || result?.status === 'request_sent';
                 if (saved) {
+                    window.LumiChatDrafts?.confirmed(draftTicket);
                     if (activeChatSession === session && input.value === draft) input.value = '';
                     if (result?.status === 'request_sent') showToast?.('Wysłano prośbę o rozmowę. Poczekaj na akceptację.');
                     if (activeChatSession === session) scrollChatToBottom('activeChatMessagesBox', true);
@@ -13133,6 +13137,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-story-card-generator.js?v=20260918_v1" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js?v=20260913_fix_v3" defer></script>
+    <script src="/js/lumi-chat-drafts.js?v=20261014_drafts1" defer></script>
     <script src="js/lumina-messenger-composer.js?v=20261007_guardian2" defer></script>
     <script src="js/lumina-message-requests.js?v=20260914_chatfix_v1" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
