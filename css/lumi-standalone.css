@@ -293,14 +293,37 @@ body.lumi-standalone #directMessagesModal.open > .modal-card {
   border-radius: 0 !important;
 }
 
-body.lumi-standalone #ccGlobalChatOverlay .cc-chat-drawer {
+body.lumi-standalone #ccGlobalChatOverlay,
+body:has(#directMessagesModal.open) #ccGlobalChatOverlay,
+body:has(#chatSettingsModal.open) #ccGlobalChatOverlay {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+#chatSettingsModal.open {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
-  max-width: none !important;
-  height: var(--lumi-viewport-height, 100dvh) !important;
-  max-height: none !important;
-  border-radius: 0 !important;
+  height: 100dvh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2147483647 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#chatSettingsModal.open > .modal-card {
+  position: relative !important;
+  z-index: 2147483647 !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  max-width: 460px !important;
+  width: 92% !important;
 }
 
 @media (max-width: 768px) {

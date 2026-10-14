@@ -37,9 +37,7 @@
   style.textContent = `
     #ccUnifiedChatHost{position:fixed;inset:0;z-index:2147483000;background:#090e1a;display:flex;flex-direction:column;color:#f8fafc;font:14px system-ui}
     #ccUnifiedChatHost[hidden]{display:none!important}
-    #ccUnifiedChatHost header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 12px;border-bottom:1px solid #334155}
-    #ccUnifiedChatHost button{min-height:44px;min-width:44px;color:inherit;background:transparent;border:0;font:inherit;cursor:pointer}
-    #ccUnifiedChatFrame{width:100%;flex:1;min-height:0;border:0;background:#090e1a}
+    #ccUnifiedChatFrame{width:100%!important;height:100%!important;flex:1;min-height:0;border:0;background:#090e1a}
     .cc-chat-radio{display:inline-flex;align-items:center;gap:6px;padding:3px 6px 3px 4px;background:rgba(15,23,42,0.85);border:1px solid rgba(196,163,90,0.4);border-radius:20px;color:#f8fafc;font:12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08);flex-shrink:1;max-width:100%;margin:0 6px 0 auto!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s ease}
     .cc-chat-radio.is-playing{border-color:rgba(16,185,129,0.7);box-shadow:0 0 12px rgba(16,185,129,0.3),inset 0 1px 0 rgba(255,255,255,0.12)}
     .cc-chat-radio button{background:linear-gradient(135deg,#facc15 0%,#eab308 100%);color:#0f172a;border:0;border-radius:14px;min-height:36px;min-width:44px;padding:0 10px;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(250,204,21,0.3);transition:all .2s ease;white-space:nowrap;font-family:inherit}
@@ -74,12 +72,23 @@
     }
     body.cc-mess-embedded #lumiLanding,body.cc-mess-embedded #lumiIntroOverlay{display:none!important}
     body.cc-mess-embedded .modal-overlay.open{inset:0!important;height:100dvh!important;max-height:100dvh!important}
+    body.cc-mess-embedded #ccGlobalChatOverlay,
+    body.lumi-standalone #ccGlobalChatOverlay,
+    body:has(#directMessagesModal.open) #ccGlobalChatOverlay,
+    body:has(#chatSettingsModal.open) #ccGlobalChatOverlay{display:none!important;pointer-events:none!important;visibility:hidden!important}
+    #chatSettingsModal.open{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:2147483647!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+    #chatSettingsModal.open>.modal-card{position:relative!important;z-index:2147483647!important;display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;max-width:460px!important;width:92%!important}
   `;
   document.head.appendChild(style);
   let host, frame, previousOverflow, opener, request = { tab: 'public' };
   function openCurrent(next = request) {
     request = next;
     const user = window.LuminaDB?.getCurrentUser?.();
+    const drawer = document.getElementById('ccGlobalChatOverlay');
+    if (drawer) {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
     if (next.partner && user && !user.isAnonymous && typeof window.openChatWith === 'function') {
       window.openChatWith(next.name || next.partner, next.avatar || '/lumina_icon.jpg', next.partner, next.messageId);
     } else if (user && !user.isAnonymous && typeof window.openDirectMessagesModal === 'function') {
@@ -103,14 +112,12 @@
       host.setAttribute('role', 'dialog');
       host.setAttribute('aria-modal', 'true');
       host.setAttribute('aria-label', 'LUMI Messenger');
-      host.innerHTML = '<header><strong>LUMI Messenger</strong><div><button type="button" aria-label="Zamknij komunikator">✕</button></div></header>';
       frame = document.createElement('iframe');
       frame.id = 'ccUnifiedChatFrame';
       frame.title = 'Rozmowy LUMINA — LUMI Messenger';
       frame.src = '/mess?embed=1';
       // Same-origin Firebase session; no mic, camera or other permission grant.
       frame.addEventListener('load', deliver);
-      host.querySelector('button').addEventListener('click', close);
       host.appendChild(frame);
       document.body.appendChild(host);
     }
@@ -120,7 +127,7 @@
     }
     host.hidden = false;
     document.body.style.overflow = 'hidden';
-    host.querySelector('button').focus();
+    frame?.focus?.();
     deliver();
   }
   function close() {
