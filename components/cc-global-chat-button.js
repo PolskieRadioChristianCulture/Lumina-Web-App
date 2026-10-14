@@ -1236,9 +1236,11 @@
           bottom: 0 !important;
           width: 100vw !important;
           max-width: 100vw !important;
-          height: min(600px, 88vh) !important;
-          max-height: 88vh !important;
-          border-radius: 24px 24px 0 0 !important;
+          top: 0 !important;
+          bottom: auto !important;
+          height: var(--lumi-viewport-height, 100dvh) !important;
+          max-height: var(--lumi-viewport-height, 100dvh) !important;
+          border-radius: 0 !important;
           border-left: none !important;
           border-right: none !important;
           border-bottom: none !important;
@@ -1252,9 +1254,31 @@
         .cc-chat-input {
           font-size: 16px !important; /* zapobiega auto-zoomowi na iOS */
         }
+        .cc-chat-header { padding: max(12px, env(safe-area-inset-top)) 12px 12px !important; }
+        .cc-chat-composer { padding-bottom: max(10px, env(safe-area-inset-bottom)) !important; }
+        .cc-chat-icon-btn, .cc-chat-send-btn { min-width:44px!important; min-height:44px!important; }
       }
+      .cc-chat-drawer-overlay { z-index:20000000!important; }
+      .cc-chat-drawer { background:#101827!important; box-shadow:0 16px 48px #0005!important; }
+      .cc-chat-header { background:#101827!important; border-bottom:1px solid #ffffff18!important; }
+      .cc-chat-header-brand { flex:1!important; }
+      .cc-chat-header-title { font-size:0.9rem!important; white-space:nowrap!important; }
+      .cc-chat-header-actions { flex-shrink:0!important; gap:4px!important; }
+      .cc-chat-header-icon { filter:none!important; border:0!important; }
+      .cc-chat-live-dot { display:none!important; }
+      .cc-chat-msg-bubble { box-shadow:none!important; border-radius:18px!important; line-height:1.5!important; }
+      .cc-chat-msg-row.is-me .cc-chat-msg-bubble { background:#7551d8!important; }
+      .cc-chat-msg-row:not(.is-me) .cc-chat-msg-bubble { background:#263244!important; }
+      .cc-chat-composer { background:#101827!important; border-top:1px solid #ffffff18!important; }
     `;
     document.head.appendChild(style);
+    const syncLumiViewport = () => {
+      const height = window.visualViewport?.height || window.innerHeight;
+      if (Number.isFinite(height) && height > 0) document.documentElement.style.setProperty('--lumi-viewport-height', height + 'px');
+    };
+    syncLumiViewport();
+    window.addEventListener('resize', syncLumiViewport, { passive: true });
+    window.visualViewport?.addEventListener('resize', syncLumiViewport, { passive: true });
   }
 
   // 4. Sprawdzenie aktywnej sesji użytkownika LUMINA / CC ID
@@ -1326,14 +1350,14 @@
       fabWrap.id = 'ccGlobalChatFab';
       fabWrap.className = 'cc-chat-fab-wrap';
       fabWrap.setAttribute('role', 'region');
-      fabWrap.setAttribute('aria-label', 'Czat Christian Culture');
+      fabWrap.setAttribute('aria-label', 'LUMI Messenger');
 
       fabWrap.innerHTML = `
-        <div class="cc-chat-fab-tooltip" id="ccChatFabTooltip">Czat Społeczności LUMINA</div>
-        <button type="button" class="cc-chat-fab-btn" id="ccChatFabBtn" aria-label="Otwórz czat Christian Culture i LUMINA" title="Czat Christian Culture & LUMINA">
+        <div class="cc-chat-fab-tooltip" id="ccChatFabTooltip">LUMI Messenger · LumiMess</div>
+        <button type="button" class="cc-chat-fab-btn" id="ccChatFabBtn" aria-label="Otwórz LUMI Messenger" title="LUMI Messenger · LumiMess">
           <picture>
             <source srcset="/images/chat/cc-chat-button.webp" type="image/webp">
-            <img src="/images/chat/cc-chat-button.png" alt="Czat Christian Culture" class="cc-chat-fab-img" width="50" height="50" loading="eager" decoding="sync">
+            <img src="/images/chat/cc-chat-button.png" alt="LUMI Messenger" class="cc-chat-fab-img" width="50" height="50" loading="eager" decoding="sync">
           </picture>
           <span class="cc-chat-fab-badge" aria-hidden="true"></span>
         </button>
@@ -1355,8 +1379,7 @@
             <img src="/images/chat/cc-chat-button-120.webp" id="ccChatHeaderPartnerAvatar" alt="CC Chat" class="cc-chat-header-icon" width="38" height="38" onerror="this.src='/images/chat/cc-chat-button-120.webp'">
             <div class="cc-chat-header-titles">
               <div class="cc-chat-header-title" id="ccChatHeaderTitle">
-                <span>CC CHAT</span>
-                <span style="font-size: 0.68rem; padding: 2px 6px; border-radius: 8px; background: rgba(168, 85, 247, 0.25); color: #D8B4FE; border: 1px solid rgba(168, 85, 247, 0.4);">LUMINA</span>
+                <span>LUMI Messenger</span>
               </div>
               <div class="cc-chat-header-sub">
                 <span class="cc-chat-live-dot"></span>

@@ -226,3 +226,20 @@ test('LUMINA controls use one compact lane with chat immediately above scroll-to
  assert.match(source,/if \(visible && !luminaActions && document\.elementsFromPoint\)/);
  assert.match(source,/function start\(\) \{ mount\(\); mountLuminaActions\(\);/);
 });
+
+test('LUMI Messenger branding and mobile app shell preserve existing chat controls',async()=>{
+ const {win,errors}=globalChatFixture();
+ assert.equal(win.document.getElementById('ccChatFabBtn').getAttribute('aria-label'),'Otwórz LUMI Messenger');
+ assert.match(win.document.getElementById('ccChatHeaderTitle').textContent,/LUMI Messenger/);
+ assert.match(win.document.getElementById('ccChatFabTooltip').textContent,/LumiMess/);
+ win.document.getElementById('ccChatFabBtn').click();
+ for(const id of ['ccChatCloseBtn','ccChatTabLiveBtn','ccChatTabMembersBtn','ccChatTabChannelsBtn','ccChatSendBtn'])assert.ok(win.document.getElementById(id),id);
+ const source=await readFile('components/cc-global-chat-button.js','utf8');
+ assert.doesNotMatch(source,/height: min\(600px, 88vh\)/);
+ assert.match(source,/height: var\(--lumi-viewport-height, 100dvh\)/);
+ const css=await readFile('css/lumina-chat-premium.css','utf8');
+ assert.match(css,/html body #directMessagesModal\.open/);
+ assert.match(css,/height: var\(--lumi-viewport-height, 100dvh\)/);
+ for(const page of surfaces){const html=await readFile(page,'utf8');assert.match(html,/LUMI Messenger<\/h3>/);}
+ assert.deepEqual(errors,[]);
+});

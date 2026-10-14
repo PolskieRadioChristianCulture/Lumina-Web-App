@@ -10,6 +10,35 @@
    już istnieje gdzie indziej).
    ══════════════════════════════════════════════════════════════════════════ */
 
+/* LUMI Messenger / LumiMess: mobile app shell, independent of fullscreen toggle. */
+@media (max-width: 768px) {
+    html body #directMessagesModal.open,
+    html body #publicChatModal.open,
+    html body #directMessagesModal.open .lumina-messenger-modal-card,
+    html body #publicChatModal.open .modal-card {
+        height: var(--lumi-viewport-height, 100dvh) !important;
+        max-height: var(--lumi-viewport-height, 100dvh) !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+    #directMessagesModal .chat-header-bar { box-shadow:none!important; border-bottom:1px solid #ffffff18!important; }
+    #directMessagesModal .fb-msg-bubble-me { background:#7551d8!important; box-shadow:none!important; }
+    #directMessagesModal .fb-msg-bubble-them { background:#263244!important; box-shadow:none!important; }
+    #directMessagesModal #dmConversationsList > div[onclick] {
+        min-height:72px!important; padding:12px!important; gap:14px!important;
+        background:transparent!important; border:0!important; border-radius:12px!important;
+        box-shadow:none!important; animation:none!important;
+    }
+    #directMessagesModal #dmConversationsList > div[onclick] img {
+        width:56px!important; height:56px!important; border:0!important;
+    }
+    #directMessagesModal .dm-avatar-badge { background:#5865f2!important; box-shadow:none!important; animation:none!important; }
+    #directMessagesModal #dmUserSearchInput { min-height:44px!important; font-size:16px!important; border-radius:22px!important; }
+}
+
 /* --- Wejście nowej wiadomości: delikatne pojawienie się, nie "wyskoczenie" --- */
 @keyframes luminaMsgIn {
     from { opacity: 0; transform: translateY(8px) scale(0.98); }
