@@ -488,7 +488,11 @@
         body.embedded-mode .ccn-master-ticker,
         body.no-ticker .ccn-master-ticker,
         html.no-ticker .ccn-master-ticker,
-        html.embedded-mode .ccn-master-ticker {
+        html.embedded-mode .ccn-master-ticker,
+        body.embedded-mode .dekalog-top-ticker,
+        body.no-ticker .dekalog-top-ticker,
+        html.no-ticker .dekalog-top-ticker,
+        html.embedded-mode .dekalog-top-ticker {
             display: none !important;
         }
 
@@ -515,6 +519,157 @@
             position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.3);
             z-index: 10000; font-size: 10px; pointer-events: none; text-transform: uppercase; letter-spacing: 2px;
             display: none;
+        }
+
+        /* ── GÓRNY PASEK EMISYJNY: DEKALOG BIBLIJNY (BJW) ── */
+        :root {
+            --dekalog-height: 48px;
+        }
+
+        .dekalog-top-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--dekalog-height);
+            z-index: 99999;
+            background: #000000;
+            border-bottom: 2px solid var(--gold-primary);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.25);
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        .dekalog-brand-badge {
+            height: 100%;
+            background: linear-gradient(135deg, #181c26 0%, #0d1017 100%);
+            border-right: 2px solid var(--gold-primary);
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            z-index: 10;
+            box-shadow: 4px 0 14px rgba(0, 0, 0, 0.7);
+        }
+
+        .dekalog-brand-badge i {
+            color: var(--gold-primary);
+            font-size: 1.15rem;
+            filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
+        }
+
+        .dekalog-brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.92rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .dekalog-brand-title .gold-accent {
+            color: var(--gold-primary);
+        }
+
+        .dekalog-track-wrap {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #000000;
+            mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
+        }
+
+        .dekalog-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: dekalogScroll 210s linear infinite;
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.22rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+        }
+
+        .dekalog-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes dekalogScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .dekalog-segment {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .dekalog-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 28px;
+        }
+
+        .dekalog-num {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            font-weight: 900;
+            font-size: 1.28rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .dekalog-text {
+            color: #f1f5f9;
+            line-height: 1;
+        }
+
+        .dekalog-separator {
+            color: var(--gold-primary);
+            font-size: 1.15rem;
+            padding: 0 10px;
+            opacity: 0.8;
+        }
+
+        .dekalog-sigla {
+            color: #cbd5e1;
+            font-style: italic;
+            font-size: 1.15rem;
+            padding: 0 28px;
+        }
+
+        .dekalog-sigla strong {
+            color: var(--gold-primary);
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        @media (max-width: 1400px) {
+            :root { --dekalog-height: 44px; }
+            .dekalog-content { font-size: 1.1rem; }
+            .dekalog-num { font-size: 1.15rem; }
+            .dekalog-brand-title { font-size: 0.8rem; letter-spacing: 1.2px; }
+        }
+
+        @media (max-width: 900px) {
+            :root { --dekalog-height: 38px; }
+            .dekalog-content { font-size: 0.95rem; }
+            .dekalog-num { font-size: 1.0rem; }
+            .dekalog-brand-badge { padding: 0 10px; }
+            .dekalog-brand-title { font-size: 0.72rem; }
         }
     </style>
 </head>
@@ -543,8 +698,145 @@
         </div>
     </div>
 
+    <!-- ── GÓRNY PASEK EMISYJNY: DEKALOG BIBLIJNY CO DO SŁOWA (BJW 1962) ── -->
+    <div class="dekalog-top-ticker" aria-label="Dekalog w przekładzie ks. Jakuba Wujka">
+        <div class="dekalog-brand-badge">
+            <i class="fa-solid fa-scroll"></i>
+            <div class="dekalog-brand-title">DEKALOG <span class="gold-accent">BOŻY</span></div>
+        </div>
+        <div class="dekalog-track-wrap">
+            <div class="dekalog-content" id="dekalogContent">
+                <!-- SET 1 -->
+                <div class="dekalog-segment">
+                    <div class="dekalog-item">
+                        <span class="dekalog-num"><i class="fa-solid fa-book-bible"></i></span>
+                        <span class="dekalog-text"><strong>Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)</strong></span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">I.</span>
+                        <span class="dekalog-text">Nie będziesz miał bogów cudzych przede mną.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">II.</span>
+                        <span class="dekalog-text">Nie uczynisz sobie obrazu rytego ani żadnej podobizny tego, co jest na niebie w górze i co na ziemi nisko, ani z tych rzeczy, które są w wodach pod ziemią. Nie będziesz się im kłaniał ani służył. Ja jestem Pan, Bóg twój, mocny, zawistny, karzący nieprawość ojców na synach do trzeciego i czwartego pokolenia tych, którzy mnie nienawidzą; a czyniący miłosierdzie tysiącom tych, którzy mię miłują i strzegą przykazań moich.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">III.</span>
+                        <span class="dekalog-text">Nie będziesz brał imienia Pana, Boga twego, nadaremno; bo nie będzie miał Pan za niewinnego tego, który by wziął imię Pana, Boga swego, nadaremno.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">IV.</span>
+                        <span class="dekalog-text">Pamiętaj, abyś dzień sobotni święcił. Sześć dni robic będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi. Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">V.</span>
+                        <span class="dekalog-text">Czcij ojca twego i matkę twoją, abyś długo żył na ziemi, którą Pan, Bóg twój, da tobie.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VI.</span>
+                        <span class="dekalog-text">Nie będziesz zabijał.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VII.</span>
+                        <span class="dekalog-text">Nie będziesz cudzołożył.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VIII.</span>
+                        <span class="dekalog-text">Nie będziesz kradzieży czynił.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">IX.</span>
+                        <span class="dekalog-text">Nie będziesz mówił fałszywego świadectwa przeciw bliźniemu twemu.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">X.</span>
+                        <span class="dekalog-text">Nie będziesz pożądał domu bliźniego twego, ani będziesz pragnął żony jego, ani sługi, ani służebnicy, ani wołu, ani osła, ani żadnej rzeczy, która jego jest.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-sigla">
+                        <strong>Księga Wyjścia 20,1-17</strong> (Biblia w przekładzie Ks. Jakuba Wujka, wyd.III 1962r.)
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                </div>
+
+                <!-- SET 2 (SEAMLESS CONTINUOUS LOOP DUPLICATION) -->
+                <div class="dekalog-segment">
+                    <div class="dekalog-item">
+                        <span class="dekalog-num"><i class="fa-solid fa-book-bible"></i></span>
+                        <span class="dekalog-text"><strong>Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)</strong></span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">I.</span>
+                        <span class="dekalog-text">Nie będziesz miał bogów cudzych przede mną.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">II.</span>
+                        <span class="dekalog-text">Nie uczynisz sobie obrazu rytego ani żadnej podobizny tego, co jest na niebie w górze i co na ziemi nisko, ani z tych rzeczy, które są w wodach pod ziemią. Nie będziesz się im kłaniał ani służył. Ja jestem Pan, Bóg twój, mocny, zawistny, karzący nieprawość ojców na synach do trzeciego i czwartego pokolenia tych, którzy mnie nienawidzą; a czyniący miłosierdzie tysiącom tych, którzy mię miłują i strzegą przykazań moich.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">III.</span>
+                        <span class="dekalog-text">Nie będziesz brał imienia Pana, Boga twego, nadaremno; bo nie będzie miał Pan za niewinnego tego, który by wziął imię Pana, Boga swego, nadaremno.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">IV.</span>
+                        <span class="dekalog-text">Pamiętaj, abyś dzień sobotni święcił. Sześć dni robic będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi. Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">V.</span>
+                        <span class="dekalog-text">Czcij ojca twego i matkę twoją, abyś długo żył na ziemi, którą Pan, Bóg twój, da tobie.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VI.</span>
+                        <span class="dekalog-text">Nie będziesz zabijał.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VII.</span>
+                        <span class="dekalog-text">Nie będziesz cudzołożył.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">VIII.</span>
+                        <span class="dekalog-text">Nie będziesz kradzieży czynił.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">IX.</span>
+                        <span class="dekalog-text">Nie będziesz mówił fałszywego świadectwa przeciw bliźniemu twemu.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-item">
+                        <span class="dekalog-num">X.</span>
+                        <span class="dekalog-text">Nie będziesz pożądał domu bliźniego twego, ani będziesz pragnął żony jego, ani sługi, ani służebnicy, ani wołu, ani osła, ani żadnej rzeczy, która jego jest.</span>
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                    <div class="dekalog-sigla">
+                        <strong>Księga Wyjścia 20,1-17</strong> (Biblia w przekładzie Ks. Jakuba Wujka, wyd.III 1962r.)
+                        <span class="dekalog-separator">✦</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MASTER UNMUTE BANNER -->
-    <div id="masterUnmuteBanner" onclick="unmuteSubframe();" style="position: fixed; top: 25px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.88); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
+    <div id="masterUnmuteBanner" onclick="unmuteSubframe();" style="position: fixed; top: 65px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.88); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
         <i class="fa-solid fa-volume-high" style="color: var(--gold-primary); font-size: 1.3rem;"></i>
         <span>KLIKNIJ W DOWOLNYM MIEJSCU, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI NA ŻYWO</span>
     </div>
@@ -1084,7 +1376,9 @@
                         style.textContent = `
                             footer, .footer, .footer-ticker, .ticker-popup-tab,
                             .bottom-ticker-bar, .tv24-ticker-system, .worship-live-ticker,
-                            .lumina-master-ticker, .ticker-wrap, .radio-ticker-wrap {
+                            .lumina-master-ticker, .ticker-wrap, .radio-ticker-wrap,
+                            .top-header-bar, .top-header, .header-bar, .channel-header-bar,
+                            .episode-badge-box, #episode-badge-box {
                                 display: none !important;
                                 opacity: 0 !important;
                                 pointer-events: none !important;
@@ -1094,6 +1388,8 @@
                             body, html {
                                 padding-bottom: 0 !important;
                                 margin-bottom: 0 !important;
+                                padding-top: 0 !important;
+                                margin-top: 0 !important;
                             }
                         `;
                         (doc.head || doc.documentElement).appendChild(style);

@@ -181,7 +181,7 @@
     $('lumiNewConversation').addEventListener('click', () => { category = 'all'; filter = 'all'; query = ''; $('lumiDirectorySearch').value = ''; render(); $('lumiDirectorySearch').focus(); $('lumiDirectorySearch').scrollIntoView?.({ block: 'center' }); });
     $('lumiAccountAction').addEventListener('click', () => isMember() ? window.openChatSettingsModal?.() : login());
     window.addEventListener('lumina-auth-state', bindSession);
-    for (const event of ['lumina:carousel-people', 'lumina:notification', 'lumina:profileDeleted']) window.addEventListener(event, render);
+    for (const event of ['lumina:carousel-people', 'lumina:notification', 'lumina:profileDeleted', 'cc-global-chat-ready']) window.addEventListener(event, render);
     window.addEventListener('cc-chat-integration-ready', () => { bindRadio(); bindSession(); });
     window.addEventListener('pagehide', () => { generation++; roomStop?.(); }, { once: true });
     bindRadio(); bindSession(); setTimeout(render, 2000);

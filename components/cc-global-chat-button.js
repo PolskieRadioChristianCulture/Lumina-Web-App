@@ -36,7 +36,7 @@
     integrationReady = new Promise(resolve => {
       const integration = document.createElement('script');
       integration.id = 'ccChatIntegrationScript';
-      integration.src = '/js/cc-chat-integration.js?v=20261014_header_radio5';
+      integration.src = '/js/cc-chat-integration.js?v=20261014_mockup4';
       integration.onload = resolve;
       integration.onerror = resolve;
       document.head.appendChild(integration);
@@ -2477,6 +2477,7 @@
   function init() {
     injectStyles();
     mountComponent();
+    window.dispatchEvent(new window.CustomEvent('cc-global-chat-ready'));
   }
 
   if (document.readyState === 'loading') {

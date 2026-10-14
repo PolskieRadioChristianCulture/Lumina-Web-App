@@ -1074,12 +1074,80 @@ const PORTALS = [
       { id: 'about', label: 'O dziale' }
     ],
     tickerItems: [
+      'DEKALOG BOŻY (BJW): Księga Wyjścia 20:1–17 w przekładzie ks. Jakuba Wujka — autentyczny, pełny tekst Dziesięciu Przykazań na polskieradio.cc/prawo',
       'Konstytucjonalizm: Dekalog i prawo hebrajskie stanowiły historyczną podstawę Magna Charta, Habeas Corpus i wolności zachodnich',
       'Prawa Naturalne: Niezbywalne prawa człowieka wynikają ze stworzenia na Boży obraz (Imago Dei), a nie z dekretu państwa',
       'Sądownictwo: Zasada dwóch świadków (Pwt 19:15) i zakaz stronniczości (Pwt 16:19) dały początek domniemaniu niewinności',
       'Granice Władzy: Rzymian 13 a Dzieje Apostolskie 5:29 – państwo nie ma prawa nakazywać tego, czego zakazuje Bóg'
     ],
     articles: [
+      {
+        "id": "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw",
+        "title": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)",
+        "slug": "dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
+        "excerpt": "Księga Wyjścia 20,1–17 w klasycznym, natchnionym przekładzie ks. Jakuba Wujka (wyd. III 1962 r.). Poznaj autentyczne, nienaruszone brzmienie Dekalogu — z biblijnym zakazem kultu obrazów rytych oraz uświęceniem dnia siódmego (sabatu).",
+        "content": [
+                "„I mówił Bóg wszystkie te słowa, rzekłszy: Jam jest Pan, Bóg twój, który cię wywiódł z ziemi egipskiej, z domu niewoli” (Księga Wyjścia 20,1–2, Biblia w przekładzie Ks. Jakuba Wujka, wyd. III 1962 r.).",
+                "Prezentujemy autentyczny, pełny tekst Dziesięciu Przykazań Bożych dokładnie według natchnionego tekstu Pisma Świętego w historycznym przekładzie ks. Jakuba Wujka (BJW):",
+                "I. Nie będziesz miał bogów cudzych przede mną.",
+                "II. Nie uczynisz sobie obrazu rytego ani żadnej podobizny tego, co jest na niebie w górze i co na ziemi nisko, ani z tych rzeczy, które są w wodach pod ziemią. Nie będziesz się im kłaniał ani służył. Ja jestem Pan, Bóg twój, mocny, zawistny, karzący nieprawość ojców na synach do trzeciego i czwartego pokolenia tych, którzy mnie nienawidzą; a czyniący miłosierdzie tysiącom tych, którzy mię miłują i strzegą przykazań moich.",
+                "III. Nie będziesz brał imienia Pana, Boga twego, nadaremno; bo nie będzie miał Pan za niewinnego tego, który by wziął imię Pana, Boga swego, nadaremno.",
+                "IV. Pamiętaj, abyś dzień sobotni święcił. Sześć dni robic będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi. Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.",
+                "V. Czcij ojca twego i matkę twoją, abyś długo żył na ziemi, którą Pan, Bóg twój, da tobie.",
+                "VI. Nie będziesz zabijał.",
+                "VII. Nie będziesz cudzołożył.",
+                "VIII. Nie będziesz kradzieży czynił.",
+                "IX. Nie będziesz mówił fałszywego świadectwa przeciw bliźniemu twemu.",
+                "X. Nie będziesz pożądał domu bliźniego twego, ani będziesz pragnął żony jego, ani sługi, ani służebnicy, ani wołu, ani osła, ani żadnej rzeczy, która jego jest.",
+                "(Księga Wyjścia 20,1-17, Biblia w przekładzie Ks. Jakuba Wujka, wyd.III 1962r.)",
+                "KOMENTARZ REDAKCYJNY — CEZARY ROGOWSKI:",
+                "Przekład ks. Jakuba Wujka z 1599 roku (oraz zrewidowane wydanie III z 1962 r.) to nie tylko monumentalny zabytek polszczyzny, ale przede wszystkim wierne świadectwo integralności Słowa Bożego. Tekst ten bez żadnych retuszy zachowuje pełne, natchnione brzmienie Dekalogu.",
+                "Współczesna kultura religijna przyzwyczaiła wielu wiernych do skróconych formuł katechizmowych, w których z reguły całkowicie usunięte zostaje drugie przykazanie o zakazie kultu obrazów i posągów, a przykazanie czwarte o sabacie sprowadzone jest do ogólnego nakazu święcenia dni świętych. Aby uzupełnić brakujące przykazanie do liczby dziesięciu, dziesiąte przykazanie o pożądaniu zostało rozdzielone na dwa odrębne punkty.",
+                "Pismo Święte w Księdze Wyjścia 20:1–17 ukazuje jednak Dekalog jako nierozerwalną całość Przymierza. Sam Zbawiciel, Jezus Chrystus, podkreślił w Ewangelii wg św. Mateusza (5:17–19), że ani jedna jota, ani jedna kreska nie przeminie z Zakonu. Apostoł Jakub napisał: „Ktokolwiek bowiem zachowa cały Zakon, a uchybi w jednym, stał się winnym wszystkich” (Jk 2:10).",
+                "Dekalog ogłoszony na Synaju wyznacza wieczne standardy sprawiedliwości i miłości. Pierwsze cztery przykazania regulują naszą relację z Bogiem — Jego wyłączność, zakaz bałwochwalstwa, cześć dla Jego Imienia oraz odpoczynek sabatowy na pamiątkę Stworzenia. Kolejnych sześć przykazań chroni rodzinę, życie, wierność małżeńską, własność, prawdę i czystość ludzkiego serca.",
+                "Jako Christian Culture stajemy na gruncie nieskażonego Słowa Bożego, zachęcając każdego czytelnika do osobistego sięgnięcia po Pismo Święte i weryfikowania każdej nauki w świetle natchnionego tekstu Biblii."
+        ],
+        "scriptureReference": {
+                "verse": "Księga Wyjścia 20:1–17",
+                "text": "I mówił Bóg wszystkie te słowa, rzekłszy: Jam jest Pan, Bóg twój, który cię wywiódł z ziemi egipskiej, z domu niewoli.",
+                "strongCode": "H1697 (Aseret ha-Dvarim — Dziesięć Przykazań) / H8451 (Torah — Prawo Boże)"
+        },
+        "sourceCitation": {
+                "sourceName": "Biblia w przekładzie Ks. Jakuba Wujka, wyd. III 1962r.",
+                "sourceUrl": "https://polskieradio.cc/prawo",
+                "quotationDate": "Wydanie III z 1962 r.",
+                "originalTitle": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (Wj 20,1-17)"
+        },
+        "category": "dekalog",
+        "categoryLabel": "DEKALOG · PISMO ŚWIĘTE (BJW)",
+        "author": {
+                "id": "cezary-rogowski",
+                "name": "Cezary Rogowski",
+                "role": "Założyciel Christian Culture",
+                "status": "Żonaty",
+                "avatarUrl": "/avatar_cezary_official.jpg",
+                "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+        },
+        "publishedAt": "2026-10-14T19:30:00Z",
+        "dateFormatted": "14 października 2026",
+        "imageUrl": "/images/news/art-dekalog-dziesiec-przykazan-wujek.jpg",
+        "imageCaption": "Ilustracja AI: Tablice Przymierza na Górze Synaj w majestatycznym świetle poranka (ilustracja poglądowa wygenerowana z pomocą AI — nie przedstawia opisywanego wydarzenia).",
+        "readTimeMinutes": 6,
+        "isHero": true,
+        "isPopular": true,
+        "popularRank": 1,
+        "tags": [
+                "Dekalog",
+                "Dziesięć Przykazań",
+                "Biblia Jakuba Wujka",
+                "BJW",
+                "Księga Wyjścia 20",
+                "Prawo Boże",
+                "Sabat",
+                "Synaj",
+                "Cezary Rogowski"
+        ]
+},
       {
         id: 'art-pensylwania-grand-jury-prawo-i-moralnosc',
         title: 'Raport z Pensylwanii: Ponad 300 księży i 1000 ofiar. Anatomia systemowego tuszowania w świetle Prawa Bożego i cywilnego',
@@ -1772,6 +1840,7 @@ const PORTALS = [
       { id: 'about', label: 'O Bibliotece' }
     ],
     tickerItems: [
+      'BIBLIA JAKUBA WUJKA (BJW): Kompletny tekst Dekalogu z Księgi Wyjścia 20,1–17 (wyd. III 1962 r.) w zbiorach CCN Biblioteka',
       'NOWOŚĆ 2026: „Pokonać Goliata” Cezarego Rogowskiego — bezpłatny e-book EPUB/PDF + Generator Mocy TTS dostępny teraz na polskieradio.cc/pokonac-goliata',
       'Biblioteka Cyfrowa CC: Ponad 100 bezpłatnych e-booków i komentarzy biblijnych dostępnych do pobrania',
       'Audiobooki & Słuchowiska: Nowe profesjonalne nagrania Pisma Świętego i arcydzieł literatury chrześcijańskiej',
@@ -1779,6 +1848,73 @@ const PORTALS = [
       'Czytelnictwo z Wartościami: Buduj mądrość serca na fundamencie natchnionego Słowa Bożego'
     ],
     articles: [
+      {
+        "id": "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw",
+        "title": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)",
+        "slug": "dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
+        "excerpt": "Księga Wyjścia 20,1–17 w klasycznym, natchnionym przekładzie ks. Jakuba Wujka (wyd. III 1962 r.). Poznaj autentyczne, nienaruszone brzmienie Dekalogu — z biblijnym zakazem kultu obrazów rytych oraz uświęceniem dnia siódmego (sabatu).",
+        "content": [
+                "„I mówił Bóg wszystkie te słowa, rzekłszy: Jam jest Pan, Bóg twój, który cię wywiódł z ziemi egipskiej, z domu niewoli” (Księga Wyjścia 20,1–2, Biblia w przekładzie Ks. Jakuba Wujka, wyd. III 1962 r.).",
+                "Prezentujemy autentyczny, pełny tekst Dziesięciu Przykazań Bożych dokładnie według natchnionego tekstu Pisma Świętego w historycznym przekładzie ks. Jakuba Wujka (BJW):",
+                "I. Nie będziesz miał bogów cudzych przede mną.",
+                "II. Nie uczynisz sobie obrazu rytego ani żadnej podobizny tego, co jest na niebie w górze i co na ziemi nisko, ani z tych rzeczy, które są w wodach pod ziemią. Nie będziesz się im kłaniał ani służył. Ja jestem Pan, Bóg twój, mocny, zawistny, karzący nieprawość ojców na synach do trzeciego i czwartego pokolenia tych, którzy mnie nienawidzą; a czyniący miłosierdzie tysiącom tych, którzy mię miłują i strzegą przykazań moich.",
+                "III. Nie będziesz brał imienia Pana, Boga twego, nadaremno; bo nie będzie miał Pan za niewinnego tego, który by wziął imię Pana, Boga swego, nadaremno.",
+                "IV. Pamiętaj, abyś dzień sobotni święcił. Sześć dni robic będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi. Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.",
+                "V. Czcij ojca twego i matkę twoją, abyś długo żył na ziemi, którą Pan, Bóg twój, da tobie.",
+                "VI. Nie będziesz zabijał.",
+                "VII. Nie będziesz cudzołożył.",
+                "VIII. Nie będziesz kradzieży czynił.",
+                "IX. Nie będziesz mówił fałszywego świadectwa przeciw bliźniemu twemu.",
+                "X. Nie będziesz pożądał domu bliźniego twego, ani będziesz pragnął żony jego, ani sługi, ani służebnicy, ani wołu, ani osła, ani żadnej rzeczy, która jego jest.",
+                "(Księga Wyjścia 20,1-17, Biblia w przekładzie Ks. Jakuba Wujka, wyd.III 1962r.)",
+                "KOMENTARZ REDAKCYJNY — CEZARY ROGOWSKI:",
+                "Przekład ks. Jakuba Wujka z 1599 roku (oraz zrewidowane wydanie III z 1962 r.) to nie tylko monumentalny zabytek polszczyzny, ale przede wszystkim wierne świadectwo integralności Słowa Bożego. Tekst ten bez żadnych retuszy zachowuje pełne, natchnione brzmienie Dekalogu.",
+                "Współczesna kultura religijna przyzwyczaiła wielu wiernych do skróconych formuł katechizmowych, w których z reguły całkowicie usunięte zostaje drugie przykazanie o zakazie kultu obrazów i posągów, a przykazanie czwarte o sabacie sprowadzone jest do ogólnego nakazu święcenia dni świętych. Aby uzupełnić brakujące przykazanie do liczby dziesięciu, dziesiąte przykazanie o pożądaniu zostało rozdzielone na dwa odrębne punkty.",
+                "Pismo Święte w Księdze Wyjścia 20:1–17 ukazuje jednak Dekalog jako nierozerwalną całość Przymierza. Sam Zbawiciel, Jezus Chrystus, podkreślił w Ewangelii wg św. Mateusza (5:17–19), że ani jedna jota, ani jedna kreska nie przeminie z Zakonu. Apostoł Jakub napisał: „Ktokolwiek bowiem zachowa cały Zakon, a uchybi w jednym, stał się winnym wszystkich” (Jk 2:10).",
+                "Dekalog ogłoszony na Synaju wyznacza wieczne standardy sprawiedliwości i miłości. Pierwsze cztery przykazania regulują naszą relację z Bogiem — Jego wyłączność, zakaz bałwochwalstwa, cześć dla Jego Imienia oraz odpoczynek sabatowy na pamiątkę Stworzenia. Kolejnych sześć przykazań chroni rodzinę, życie, wierność małżeńską, własność, prawdę i czystość ludzkiego serca.",
+                "Jako Christian Culture stajemy na gruncie nieskażonego Słowa Bożego, zachęcając każdego czytelnika do osobistego sięgnięcia po Pismo Święte i weryfikowania każdej nauki w świetle natchnionego tekstu Biblii."
+        ],
+        "scriptureReference": {
+                "verse": "Księga Wyjścia 20:1–17",
+                "text": "I mówił Bóg wszystkie te słowa, rzekłszy: Jam jest Pan, Bóg twój, który cię wywiódł z ziemi egipskiej, z domu niewoli.",
+                "strongCode": "H1697 (Aseret ha-Dvarim — Dziesięć Przykazań) / H8451 (Torah — Prawo Boże)"
+        },
+        "sourceCitation": {
+                "sourceName": "Biblia w przekładzie Ks. Jakuba Wujka, wyd. III 1962r.",
+                "sourceUrl": "https://polskieradio.cc/prawo",
+                "quotationDate": "Wydanie III z 1962 r.",
+                "originalTitle": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (Wj 20,1-17)"
+        },
+        "category": "klasyka",
+        "categoryLabel": "PISMO ŚWIĘTE · PRZEKŁAD KS. JAKUBA WUJKA (BJW)",
+        "author": {
+                "id": "cezary-rogowski",
+                "name": "Cezary Rogowski",
+                "role": "Założyciel Christian Culture",
+                "status": "Żonaty",
+                "avatarUrl": "/avatar_cezary_official.jpg",
+                "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+        },
+        "publishedAt": "2026-10-14T19:30:00Z",
+        "dateFormatted": "14 października 2026",
+        "imageUrl": "/images/news/art-dekalog-dziesiec-przykazan-wujek.jpg",
+        "imageCaption": "Ilustracja AI: Tablice Przymierza na Górze Synaj w majestatycznym świetle poranka (ilustracja poglądowa wygenerowana z pomocą AI — nie przedstawia opisywanego wydarzenia).",
+        "readTimeMinutes": 6,
+        "isHero": false,
+        "isPopular": true,
+        "popularRank": 3,
+        "tags": [
+                "Dekalog",
+                "Dziesięć Przykazań",
+                "Biblia Jakuba Wujka",
+                "BJW",
+                "Księga Wyjścia 20",
+                "Prawo Boże",
+                "Sabat",
+                "Synaj",
+                "Cezary Rogowski"
+        ]
+},
       {
         id: 'art-pokonac-goliata-recenzja-2026',
         title: '„Pokonać Goliata — Jak zwyciężać własne słabości” Cezarego Rogowskiego: Recenzja i Platforma Cyfrowa 2026',

@@ -293,7 +293,6 @@ body.lumi-standalone #directMessagesModal.open > .modal-card {
   border-radius: 0 !important;
 }
 
-body.lumi-standalone #ccGlobalChatOverlay,
 body:has(#directMessagesModal.open) #ccGlobalChatOverlay,
 body:has(#chatSettingsModal.open) #ccGlobalChatOverlay {
   display: none !important;

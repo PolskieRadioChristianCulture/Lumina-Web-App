@@ -104,3 +104,19 @@ test('header exposes the six existing stations and controls the same player trut
   f.win.document.getElementById('lumiRadioPlay').click();
   assert.equal(f.win.document.getElementById('lumiRadioPlay').getAttribute('aria-label'), 'Włącz radio');
 });
+
+test('canonical standalone guest chat is visibly open rather than hidden by the page shell', async () => {
+  const win = new Window({ url: 'https://polskieradio.cc/mess', settings: { disableJavaScriptFileLoading: true, disableCSSFileLoading: true, disableIframePageLoading: true } });
+  windows.push(win); win.document.body.className = 'lumi-standalone user-is-guest';
+  win.document.body.innerHTML = '<div id="directMessagesModal"></div><div id="chatSettingsModal"></div>';
+  const style = win.document.createElement('style'); style.textContent = await readFile('css/lumi-standalone.css', 'utf8'); win.document.head.appendChild(style);
+  const context = { window: win, document: win.document, location: win.location, localStorage: win.localStorage, URLSearchParams, console, setTimeout: () => 0, clearTimeout: () => {} };
+  win.CCRadioStations = []; win.CCRadioMilion = true; win.CCChatRadio = { stations: [], prepare: async () => {}, subscribe: () => () => {} };
+  vm.runInNewContext(await readFile('components/cc-global-chat-button.js', 'utf8'), context);
+  win.document.dispatchEvent(new win.Event('DOMContentLoaded'));
+  vm.runInNewContext(await readFile('js/cc-chat-integration.js', 'utf8'), context);
+  win.CCGlobalChat.open('live');
+  const overlay = win.document.getElementById('ccGlobalChatOverlay');
+  assert.equal(win.getComputedStyle(overlay).display, 'flex');
+  assert.equal(win.getComputedStyle(overlay).visibility, 'visible');
+});

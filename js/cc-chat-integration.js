@@ -72,8 +72,6 @@
     }
     body.cc-mess-embedded #lumiLanding,body.cc-mess-embedded #lumiIntroOverlay{display:none!important}
     body.cc-mess-embedded .modal-overlay.open{inset:0!important;height:100dvh!important;max-height:100dvh!important}
-    body.cc-mess-embedded #ccGlobalChatOverlay,
-    body.lumi-standalone #ccGlobalChatOverlay,
     body:has(#directMessagesModal.open) #ccGlobalChatOverlay,
     body:has(#chatSettingsModal.open) #ccGlobalChatOverlay{display:none!important;pointer-events:none!important;visibility:hidden!important}
     #chatSettingsModal.open{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:2147483647!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important}
