@@ -31,8 +31,8 @@
 /* ── Zmienne Globalne w trybie jasnym ── */
 body.theme-lumina-light:not(.lumi-standalone),
 .theme-lumina-light body:not(.lumi-standalone),
-html[data-lumina-theme="light"]:not(:has(body.lumi-standalone)),
-html[data-lumina-theme="light"] body:not(.lumi-standalone) {
+html[data-lumina-theme="light"]:not(.lumi-mess-page):not(:has(body.lumi-standalone)),
+html[data-lumina-theme="light"]:not(.lumi-mess-page) body:not(.lumi-standalone) {
     --bg-base: #FAF9F6 !important;
     --bg-card: #FFFFFF !important;
     --bg-card-hover: #F5F2EB !important;
@@ -4234,7 +4234,7 @@ body.theme-lumina-light .post-content a:not(.post-action-btn):hover {
 /* Shared light palette. Every surface token must change together: components
    still using the CC tokens must not inherit dark surfaces with light-mode ink.
    Media/photo overlays keep their existing white-on-dark presentation. */
-html[data-lumina-theme="light"]:not(:has(body.lumi-standalone)),
+html[data-lumina-theme="light"]:not(.lumi-mess-page):not(:has(body.lumi-standalone)),
 html[data-lumina-theme="light"] body:not(.lumi-standalone),
 body.theme-lumina-light:not(.lumi-standalone) {
     --bg-surface: #F5F2EB !important;

@@ -14,9 +14,19 @@ export function renderLumiPage(html) {
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '')
     .replace(/<link rel="manifest" href="manifest-lumina.json">/, '<link rel="manifest" href="/manifest-lumi.json">')
     .replace(/<script src="lumina-pwa-installer\.js[^\"]*"><\/script>/, '')
+    .replace(/<link rel="stylesheet" href="\/css\/lumina-light-edition\.css[^"]*">/g, '')
+    .replace(/<script src="\/js\/lumina-theme-manager\.js[^"]*"><\/script>/g, '')
+    .replace(/<button [^>]*id="luminaThemeSwitchBtn"[^>]*>[\s\S]*?<\/button>/g, '')
     .replace(/(<meta name="apple-mobile-web-app-title" content=")[^"]*(">)/, '$1LumiMess$2')
-    .replace('</head>', `<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_contrast_fix">
-<script defer src="/js/lumi-standalone.js?v=20261014_contrast_fix"></script>
+    .replace('</head>', `<script>
+try {
+  document.documentElement.setAttribute('data-lumina-theme', 'dark');
+  document.documentElement.classList.add('lumi-mess-page');
+  localStorage.setItem('lumina_theme', 'dark');
+} catch(e) {}
+</script>
+<link rel="stylesheet" href="/css/lumi-standalone.css?v=20261014_dark_fix">
+<script defer src="/js/lumi-standalone.js?v=20261014_dark_fix"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">
