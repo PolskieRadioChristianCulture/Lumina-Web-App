@@ -1930,8 +1930,19 @@ export default {
       url.pathname.startsWith('/indeks/')
     ) {
       const indexReqUrl = new URL(request.url);
-      indexReqUrl.pathname = '/semantic-index.html';
-      return env.ASSETS.fetch(new Request(indexReqUrl, request));
+      indexReqUrl.pathname = '/index/';
+      const dirResp = await env.ASSETS.fetch(new Request(indexReqUrl, request));
+      if (dirResp.status === 200) {
+        return new Response(dirResp.body, {
+          status: 200,
+          headers: {
+            ...Object.fromEntries(dirResp.headers.entries()),
+            'Content-Type': 'text/html; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600, must-revalidate',
+          },
+        });
+      }
+      return dirResp;
     }
 
     const assetResp = await env.ASSETS.fetch(request);

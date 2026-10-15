@@ -1041,9 +1041,14 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
 </html>
 `;
 
-  // Zapisz wygenerowany statyczny HTML
+  // Zapisz wygenerowany statyczny HTML we wszystkich wymaganych lokalizacjach
   fs.writeFileSync(path.join(rootDir, 'semantic-index.html'), htmlContent, 'utf8');
-  console.log(`Wygenerowano semantic-index.html (${htmlContent.length} bajtów, ${items.length} rekordów, 10 kategorii).`);
+  fs.mkdirSync(path.join(rootDir, 'index'), { recursive: true });
+  fs.writeFileSync(path.join(rootDir, 'index/index.html'), htmlContent, 'utf8');
+  fs.mkdirSync(path.join(rootDir, 'indeks'), { recursive: true });
+  fs.writeFileSync(path.join(rootDir, 'indeks/index.html'), htmlContent, 'utf8');
+  fs.writeFileSync(path.join(rootDir, 'indeks.html'), htmlContent, 'utf8');
+  console.log(`Wygenerowano semantic-index.html, index/index.html, indeks/index.html (${htmlContent.length} bajtów, ${items.length} rekordów, 10 kategorii).`);
 
   return {
     totalRecords: items.length,
