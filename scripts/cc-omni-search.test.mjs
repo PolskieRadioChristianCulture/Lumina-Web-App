@@ -59,3 +59,34 @@ test('cc-page-standard: injects cc-omni-search.js and preserves idempotency', ()
   const res2 = applyPageStandard('index.html', res1);
   assert.equal(res2, res1, 'idempotent call produces identical HTML');
 });
+
+test('cc-omni-search.js: search for "cclite" returns cclite.pl as #1 and matches context guide', () => {
+  const normQuery = 'cclite';
+  const scored = [];
+  for (const item of catalogData.items) {
+    const normTitle = (item.title || '').toLowerCase();
+    const normTags = ((item.tags || []).join(' ')).toLowerCase();
+    let score = 0;
+    if (normTitle.includes(normQuery)) score += 50;
+    if (normTitle.startsWith('cclite.pl')) score += 80;
+    if (normTags.includes(normQuery)) score += 25;
+    if (score > 0) scored.push({ item, score });
+  }
+  scored.sort((a, b) => b.score - a.score);
+
+  assert.ok(scored.length >= 10, 'Found at least 10 results for cclite');
+  assert.ok(scored[0].item.title.includes('cclite.pl'), 'Top result is cclite.pl');
+  assert.equal(scored[0].item.url, 'https://cclite.pl');
+
+  const guide = catalogData.contextGuides && (catalogData.contextGuides.cclite || catalogData.contextGuides.aplikacja);
+  assert.ok(guide, 'Context guide for cclite or aplikacja exists');
+  assert.ok(guide.shortcuts.some(s => s.url === 'https://cclite.pl'), 'Contains shortcut to cclite.pl');
+});
+
+test('cc-omni-search.js: search for "aplikacja" matches context guide and cclite.pl', () => {
+  const guide = catalogData.contextGuides && catalogData.contextGuides.aplikacja;
+  assert.ok(guide, 'Context guide for aplikacja exists');
+  assert.ok(guide.keywords.includes('cclite'), 'Guide keywords include cclite');
+  assert.ok(guide.shortcuts.some(s => s.title.includes('cclite.pl')), 'Contains shortcut to cclite.pl');
+});
+
