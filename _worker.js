@@ -1433,8 +1433,38 @@ async function handleBiblijneUwielbienieRoute(request, env) {
   return null;
 }
 
+async function handlePersonalHubRoute(request, env) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/$/, '');
+  const lowerPath = path.toLowerCase();
 
+  if (lowerPath === '/moje-centrum') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/moje-centrum.html';
+    assetUrl.search = '';
+    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), {
+      method: 'GET',
+      headers: { 'Accept': 'text/html' }
+    }));
+    const body = await assetResp.arrayBuffer();
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  }
 
+  if (lowerPath === '/centrum' || lowerPath === '/hub') {
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = '/moje-centrum';
+    return Response.redirect(redirectUrl.toString(), 301);
+  }
+
+  return null;
+}
 
 export default {
   async fetch(request, env, ctx) {
@@ -1478,6 +1508,8 @@ export default {
     if (supportPageRoute) return supportPageRoute;
     const worshipRoute = await handleBiblijneUwielbienieRoute(request, env);
     if (worshipRoute) return worshipRoute;
+    const personalHubRoute = await handlePersonalHubRoute(request, env);
+    if (personalHubRoute) return personalHubRoute;
 
     if (url.pathname.startsWith('/api/tresci-18/')) {
       return handleAdultContent(request, env, url);

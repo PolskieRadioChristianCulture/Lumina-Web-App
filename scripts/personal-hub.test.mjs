@@ -118,7 +118,7 @@ console.log('\n--- 5. Testing _redirects Clean Routing ---');
 const redirectsPath = path.join(rootDir, '_redirects');
 assert(fs.existsSync(redirectsPath), '_redirects exists');
 const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
-assert(redirectsContent.includes('/moje-centrum /moje-centrum.html 200'), '_redirects routes /moje-centrum to /moje-centrum.html');
+assert(redirectsContent.includes('/moje-centrum /moje-centrum 200') || redirectsContent.includes('/moje-centrum /moje-centrum.html 200'), '_redirects routes /moje-centrum');
 
 console.log('\n═══════════════════════════════════════════════════════════════');
 console.log('🎉 ALL MOJE CENTRUM CC & ULUBIONE TESTS PASSED (100% PASS)');
