@@ -120,6 +120,11 @@
 /js/cc-radio-milion.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/assets/bu/*
+  Cache-Control: no-cache, must-revalidate
+
+/data/bu-karaoke/*
+  Cache-Control: no-cache, must-revalidate
 
 /*.js
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400

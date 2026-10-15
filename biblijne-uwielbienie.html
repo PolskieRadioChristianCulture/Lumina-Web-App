@@ -2349,6 +2349,354 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
       }
+    /* ========================================================================
+       HERO KARAOKE & CZYTAJ I ŚPIEWAJ STAGE (Built-in Premium Glassmorphism)
+       ======================================================================== */
+    :root {
+      --bu-font-size: 20px;
+    }
+
+    .hero-karaoke-stage-wrapper {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    .hero-karaoke-stage-wrapper.is-fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      margin: 0;
+      max-width: 100vw;
+      max-height: 100vh;
+      padding: clamp(12px, 3vw, 28px);
+      background: #050811;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-karaoke-inner {
+      background: rgba(11, 18, 34, 0.95);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(226, 204, 154, 0.2);
+      backdrop-filter: blur(16px);
+      padding: clamp(14px, 2.5vw, 24px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-karaoke-stage-wrapper.is-fullscreen .hero-karaoke-inner {
+      height: 100%;
+      border-radius: 16px;
+    }
+    .hero-karaoke-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-karaoke-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-karaoke-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(196, 163, 90, 0.2);
+      color: #e2cc9a;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+    }
+    .hero-karaoke-title {
+      font-size: clamp(18px, 2.4vw, 26px);
+      font-family: 'Cinzel', Georgia, serif;
+      font-weight: 600;
+      color: #f7f4ef;
+      margin: 0;
+    }
+    .hero-karaoke-mode-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(7, 12, 24, 0.8);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(55, 66, 88, 0.6);
+    }
+    .hero-mode-tab {
+      min-height: 44px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: transparent;
+      color: #cdd4e0;
+      border: 0;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .hero-mode-tab:hover:not(:disabled) {
+      color: #ffe2a5;
+    }
+    .hero-mode-tab.is-active {
+      background: #c4a35a;
+      color: #060a12;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .hero-mode-tab:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .hero-karaoke-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-karaoke-ctrl-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 10px;
+      background: #19263b;
+      color: #f7f4ef;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .hero-karaoke-ctrl-btn:hover {
+      background: #233552;
+      border-color: #e2cc9a;
+    }
+    .hero-karaoke-ctrl-btn.close {
+      color: #ff9d9d;
+    }
+    .bu-verse-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(196, 163, 90, 0.22);
+      border: 1px solid rgba(196, 163, 90, 0.45);
+      color: #e2cc9a;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+    .bu-line.is-instrumental {
+      font-style: italic;
+      color: #94a3b8;
+      border-left-color: #64748b;
+      background: rgba(30, 41, 59, 0.35);
+    }
+
+    /* Pasek wyboru księgi i rozdziału */
+    .hero-karaoke-selector-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      background: rgba(7, 12, 24, 0.6);
+      border-radius: 12px;
+      border: 1px solid rgba(55, 66, 88, 0.5);
+    }
+    .hero-select-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-select-label {
+      font-size: 13px;
+      color: #c4a35a;
+      font-weight: 600;
+    }
+    .hero-select {
+      min-height: 44px;
+      background: #101827;
+      color: #f7f4ef;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .hero-select:focus-visible {
+      outline: 2px solid #e2cc9a;
+    }
+    .hero-karaoke-sync-status {
+      font-size: 13px;
+      color: #e2cc9a;
+      margin-left: auto;
+      font-weight: 500;
+    }
+
+    /* Viewport tekstów */
+    .hero-karaoke-viewport {
+      max-height: clamp(340px, 50vh, 640px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      border-radius: 14px;
+      background: rgba(5, 10, 20, 0.7);
+      padding: clamp(14px, 2vw, 24px);
+      border: 1px solid rgba(55, 66, 88, 0.4);
+    }
+    .hero-karaoke-stage-wrapper.is-fullscreen .hero-karaoke-viewport {
+      max-height: none;
+      flex: 1;
+    }
+
+    /* TRYB A: CZYTAJ I ŚPIEWAJ (Tekst Biblii) */
+    .hero-karaoke-lines[data-mode="reading"] {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-karaoke-intro {
+      font-style: italic;
+      color: #e2cc9a;
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      border-left: 3px solid #c4a35a;
+      background: rgba(196, 163, 90, 0.1);
+      border-radius: 0 8px 8px 0;
+      font-size: calc(var(--bu-font-size) * 0.85);
+      line-height: 1.5;
+    }
+    .hero-karaoke-verse {
+      display: flex;
+      gap: 12px;
+      line-height: 1.65;
+      color: #e0e6ed;
+      font-size: var(--bu-font-size);
+      text-align: left;
+    }
+    .hero-karaoke-verse .verse-num {
+      color: #c4a35a;
+      font-weight: 700;
+      min-width: 38px;
+      font-variant-numeric: tabular-nums;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .hero-karaoke-verse .verse-text {
+      flex: 1;
+    }
+
+    /* TRYB B: KARAOKE ZSYNCHRONIZOWANE */
+    .hero-karaoke-lines[data-mode="synchronized"] {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .bu-line {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: #8b99ad;
+      text-align: center;
+      border: 0;
+      border-radius: 12px;
+      font-size: var(--bu-font-size);
+      line-height: 1.55;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+    .bu-line:hover {
+      background: rgba(196, 163, 90, 0.1);
+      color: #f7f4ef;
+    }
+    .bu-line.active {
+      color: #ffe2a5;
+      background: rgba(196, 163, 90, 0.24);
+      font-weight: 700;
+      transform: scale(1.02);
+      text-shadow: 0 0 16px rgba(226, 204, 154, 0.6);
+      box-shadow: inset 0 0 0 1px #c4a35a, 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .bu-line.prev,
+    .bu-line.next {
+      color: #cdd4e0;
+      font-weight: 500;
+    }
+
+    .hero-karaoke-license {
+      font-size: 12px;
+      color: #8c97a8;
+      text-align: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(55, 66, 88, 0.4);
+      line-height: 1.4;
+    }
+
+    .chapter-lyrics-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      min-height: 44px;
+      background: rgba(25, 38, 59, 0.85);
+      color: #e2cc9a;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chapter-lyrics-trigger-btn:hover {
+      background: #233552;
+      border-color: #e2cc9a;
+      color: #fff;
+    }
+
+    @media (max-width: 680px) {
+      .hero-karaoke-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-karaoke-mode-tabs {
+        width: 100%;
+      }
+      .hero-mode-tab {
+        flex: 1;
+        justify-content: center;
+      }
+      .hero-karaoke-controls {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .hero-karaoke-selector-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-select-wrap {
+        width: 100%;
+      }
+      .hero-select {
+        flex: 1;
+      }
+      .hero-karaoke-sync-status {
+        margin-left: 0;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -3451,6 +3799,7 @@
       { code: "JUD", name: "List Judy", testament: "nt", chapters: 1 },
       { code: "REV", name: "Apokalipsa św. Jana", testament: "nt", chapters: 22 }
     ];
+    window.BIBLE_BOOKS = BIBLE_BOOKS;
 
     /* ------------------------------------------------------------------------
        2. REAL PUBLISHED TRACKS: 37 AUTENTYCZNYCH UTWORÓW YOUTUBE (PLGBAOJCGyM6g)
@@ -3458,6 +3807,8 @@
     let PLAYLIST_DATA = [];
     let PUBLISHED_MAP = new Map(); // chapterId -> track
     let CURRENT_TRACK_INDEX = 0;
+    window.PLAYLIST_DATA = PLAYLIST_DATA;
+    window.CURRENT_TRACK_INDEX = CURRENT_TRACK_INDEX;
     let IS_SHUFFLE = false;
     let IS_REPEAT = false;
     let CURRENT_ACTIVE_BOOK_CODE = null;
@@ -3615,6 +3966,7 @@
       if (index < 0) index = PLAYLIST_DATA.length - 1;
       if (index >= PLAYLIST_DATA.length) index = 0;
       CURRENT_TRACK_INDEX = index;
+      window.CURRENT_TRACK_INDEX = index;
       const track = PLAYLIST_DATA[CURRENT_TRACK_INDEX];
       if (!track) return;
 
@@ -3790,11 +4142,24 @@
     function togglePlayerKaraoke() {
       if (window.CC_BU_FEATURES && typeof window.CC_BU_FEATURES.togglePlayerKaraoke === 'function') {
         window.CC_BU_FEATURES.togglePlayerKaraoke();
+      } else if (typeof window.startChapterKaraoke === 'function') {
+        const cur = (PLAYLIST_DATA && PLAYLIST_DATA[CURRENT_TRACK_INDEX]) || null;
+        window.startChapterKaraoke(cur?.chapterId || 'GEN-001');
       } else {
         const stage = document.getElementById('hero-karaoke-stage');
-        if (stage) {
-          stage.style.display = stage.style.display === 'none' ? 'block' : 'none';
-        }
+        const cur = (PLAYLIST_DATA && PLAYLIST_DATA[CURRENT_TRACK_INDEX]) || null;
+        const targetId = cur?.chapterId || 'GEN-001';
+        let tries = 0;
+        const check = setInterval(() => {
+          tries++;
+          if (window.CC_BU_FEATURES && typeof window.CC_BU_FEATURES.togglePlayerKaraoke === 'function') {
+            clearInterval(check);
+            window.CC_BU_FEATURES.togglePlayerKaraoke(targetId);
+          } else if (tries > 25) {
+            clearInterval(check);
+            if (stage) stage.style.display = 'block';
+          }
+        }, 50);
       }
     }
 
@@ -4308,6 +4673,7 @@
         if (resp.ok) {
           const json = await resp.json();
           PLAYLIST_DATA = json.items || [];
+          window.PLAYLIST_DATA = PLAYLIST_DATA;
         }
       } catch (err) {
         console.warn("Could not load playlist json, using fallback:", err);

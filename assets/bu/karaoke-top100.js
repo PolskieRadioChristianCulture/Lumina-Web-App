@@ -484,7 +484,9 @@
       }
     }
   `;
-  document.head.append(style);
+  if (!document.getElementById('bu-karaoke-top100-styles')) {
+    document.head.append(style);
+  }
 
   // 2. MODAL BACKDROP (TOP 100)
   const backdrop = document.createElement('div');
@@ -500,7 +502,9 @@
   `;
 
   function attachDialog() {
-    if (!backdrop.isConnected) document.body.append(backdrop);
+    if (!document.getElementById('bu-dialog-backdrop') && !backdrop.isConnected) {
+      document.body.append(backdrop);
+    }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', attachDialog, { once: true });
@@ -548,6 +552,9 @@
   // 4. PLAYER INTEGRATION
   function getTracks() {
     try {
+      if (typeof window !== 'undefined' && Array.isArray(window.PLAYLIST_DATA) && window.PLAYLIST_DATA.length) {
+        return window.PLAYLIST_DATA;
+      }
       return (typeof PLAYLIST_DATA !== 'undefined' && Array.isArray(PLAYLIST_DATA)) ? PLAYLIST_DATA : [];
     } catch {
       return [];
@@ -556,7 +563,12 @@
   function currentTrack() {
     try {
       const tracks = getTracks();
-      const idx = (typeof CURRENT_TRACK_INDEX === 'number') ? CURRENT_TRACK_INDEX : 0;
+      let idx = 0;
+      if (typeof window !== 'undefined' && typeof window.CURRENT_TRACK_INDEX === 'number') {
+        idx = window.CURRENT_TRACK_INDEX;
+      } else if (typeof CURRENT_TRACK_INDEX === 'number') {
+        idx = CURRENT_TRACK_INDEX;
+      }
       return tracks[idx] || null;
     } catch {
       return null;
@@ -586,7 +598,7 @@
     if (!chapterId) throw new Error('Nie określono identyfikatora rozdziału.');
     if (lyricsCache.has(chapterId)) return lyricsCache.get(chapterId);
 
-    const response = await fetch(`${BIBLE_BASE}/${encodeURIComponent(chapterId)}.json`, { cache: 'default' });
+    const response = await fetch(`${BIBLE_BASE}${encodeURIComponent(chapterId)}.json`, { cache: 'default' });
     if (!response.ok) {
       throw new Error(`Tekst rozdziału ${chapterId} jest niedostępny (${response.status}).`);
     }
@@ -603,7 +615,7 @@
     if (syncCache.has(chapterId)) return syncCache.get(chapterId);
 
     try {
-      const response = await fetch(`${KARAOKE_BASE}/${encodeURIComponent(chapterId)}.json`, { cache: 'no-store' });
+      const response = await fetch(`${KARAOKE_BASE}${encodeURIComponent(chapterId)}.json`, { cache: 'no-store' });
       if (!response.ok) {
         syncCache.set(chapterId, null);
         return null;
@@ -639,11 +651,83 @@
     isFullscreen: false
   };
 
+  const BIBLE_BOOKS_CANON = [
+    { code: "GEN", name: "Księga Rodzaju", chapters: 50 },
+    { code: "EXO", name: "Księga Wyjścia", chapters: 40 },
+    { code: "LEV", name: "Księga Kapłańska", chapters: 27 },
+    { code: "NUM", name: "Księga Liczb", chapters: 36 },
+    { code: "DEU", name: "Księga Powtórzonego Prawa", chapters: 34 },
+    { code: "JOS", name: "Księga Jozuego", chapters: 24 },
+    { code: "JDG", name: "Księga Sędziów", chapters: 21 },
+    { code: "RUT", name: "Księga Rut", chapters: 4 },
+    { code: "1SA", name: "1 Księga Samuela", chapters: 31 },
+    { code: "2SA", name: "2 Księga Samuela", chapters: 24 },
+    { code: "1KI", name: "1 Księga Królewska", chapters: 22 },
+    { code: "2KI", name: "2 Księga Królewska", chapters: 25 },
+    { code: "1CH", name: "1 Księga Kronik", chapters: 29 },
+    { code: "2CH", name: "2 Księga Kronik", chapters: 36 },
+    { code: "EZR", name: "Księga Ezdrasza", chapters: 10 },
+    { code: "NEH", name: "Księga Nehemiasza", chapters: 13 },
+    { code: "EST", name: "Księga Estery", chapters: 10 },
+    { code: "JOB", name: "Księga Hioba", chapters: 42 },
+    { code: "PSA", name: "Księga Psalmów", chapters: 150 },
+    { code: "PRO", name: "Przypowieści Salomona", chapters: 31 },
+    { code: "ECC", name: "Księga Kaznodziei", chapters: 12 },
+    { code: "SNG", name: "Pieśń nad Pieśniami", chapters: 8 },
+    { code: "ISA", name: "Księga Izajasza", chapters: 66 },
+    { code: "JER", name: "Księga Jeremiasza", chapters: 52 },
+    { code: "LAM", name: "Lamentacje Jeremiasza", chapters: 5 },
+    { code: "EZK", name: "Księga Ezechiela", chapters: 48 },
+    { code: "DAN", name: "Księga Daniela", chapters: 12 },
+    { code: "HOS", name: "Księga Ozeasza", chapters: 14 },
+    { code: "JOL", name: "Księga Joela", chapters: 3 },
+    { code: "AMO", name: "Księga Amosa", chapters: 9 },
+    { code: "OBA", name: "Księga Abdiasza", chapters: 1 },
+    { code: "JON", name: "Księga Jonasza", chapters: 4 },
+    { code: "MIC", name: "Księga Micheasza", chapters: 7 },
+    { code: "NAH", name: "Księga Nahuma", chapters: 3 },
+    { code: "HAB", name: "Księga Habakuka", chapters: 3 },
+    { code: "ZEP", name: "Księga Sofoniasza", chapters: 3 },
+    { code: "HAG", name: "Księga Aggeusza", chapters: 2 },
+    { code: "ZEC", name: "Księga Zachariasza", chapters: 14 },
+    { code: "MAL", name: "Księga Malachiasza", chapters: 4 },
+    { code: "MAT", name: "Ewangelia Mateusza", chapters: 28 },
+    { code: "MRK", name: "Ewangelia Marka", chapters: 16 },
+    { code: "LUK", name: "Ewangelia Łukasza", chapters: 24 },
+    { code: "JHN", name: "Ewangelia Jana", chapters: 21 },
+    { code: "ACT", name: "Dzieje Apostolskie", chapters: 28 },
+    { code: "ROM", name: "List do Rzymian", chapters: 16 },
+    { code: "1CO", name: "1 List do Koryntian", chapters: 16 },
+    { code: "2CO", name: "2 List do Koryntian", chapters: 13 },
+    { code: "GAL", name: "List do Galacjan", chapters: 6 },
+    { code: "EPH", name: "List do Efezjan", chapters: 6 },
+    { code: "PHP", name: "List do Filipian", chapters: 4 },
+    { code: "COL", name: "List do Kolosan", chapters: 4 },
+    { code: "1TH", name: "1 List do Tesaloniczan", chapters: 5 },
+    { code: "2TH", name: "2 List do Tesaloniczan", chapters: 3 },
+    { code: "1TI", name: "1 List do Tymoteusza", chapters: 6 },
+    { code: "2TI", name: "2 List do Tymoteusza", chapters: 4 },
+    { code: "TIT", name: "List do Tytusa", chapters: 3 },
+    { code: "PHM", name: "List do Filemona", chapters: 1 },
+    { code: "HEB", name: "List do Hebrajczyków", chapters: 13 },
+    { code: "JAS", name: "List Jakuba", chapters: 5 },
+    { code: "1PE", name: "1 List Piotra", chapters: 5 },
+    { code: "2PE", name: "2 List Piotra", chapters: 3 },
+    { code: "1JN", name: "1 List Jana", chapters: 5 },
+    { code: "2JN", name: "2 List Jana", chapters: 1 },
+    { code: "3JN", name: "3 List Jana", chapters: 1 },
+    { code: "JUD", name: "List Judy", chapters: 1 },
+    { code: "REV", name: "Apokalipsa św. Jana", chapters: 22 }
+  ];
+
   function getBooksList() {
-    if (typeof BIBLE_BOOKS !== 'undefined' && Array.isArray(BIBLE_BOOKS)) {
+    if (typeof window !== 'undefined' && Array.isArray(window.BIBLE_BOOKS) && window.BIBLE_BOOKS.length) {
+      return window.BIBLE_BOOKS;
+    }
+    if (typeof BIBLE_BOOKS !== 'undefined' && Array.isArray(BIBLE_BOOKS) && BIBLE_BOOKS.length) {
       return BIBLE_BOOKS;
     }
-    return [{ code: 'GEN', name: 'Księga Rodzaju', chapters: 50 }];
+    return BIBLE_BOOKS_CANON;
   }
 
   function initChapterSelectors() {
@@ -1271,15 +1355,16 @@
     downloadFormat
   };
 
-  // Inicjalizacja stanu przycisków
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      updateVotingButtonState();
-      syncMyVotes();
-    });
-  } else {
+  // Inicjalizacja stanu selektorów i przycisków
+  function initOnReady() {
+    initChapterSelectors();
     updateVotingButtonState();
     syncMyVotes();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOnReady);
+  } else {
+    initOnReady();
   }
 
 })();

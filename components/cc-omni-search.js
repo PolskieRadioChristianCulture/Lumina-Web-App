@@ -343,6 +343,7 @@
 
     const queryWords = normQuery.split(/\s+/).filter(Boolean);
     const { synonyms, isTodayQuery, todayDayNum } = expandQueryTerms(normQuery, queryWords);
+    const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
 
     // Sprawdzenie przewodnika tematycznego
     let matchedGuide = null;
@@ -415,6 +416,15 @@
         }
       }
 
+      // Jeśli użytkownik podał konkretną liczbę (np. "15"), dopasowanie tej dokładnej liczby w tytule ma priorytet
+      for (const num of numberTokens) {
+        if (normTitle.includes(`lekcja ${num}`) || normTitle.includes(`dzien ${num}`) || normTitle.includes(` ${num}:`) || normTitle.includes(` ${num} `) || normTitle.endsWith(` ${num}`)) {
+          score += 90;
+        } else if (normTitle.includes(num)) {
+          score += 45;
+        }
+      }
+
       if (primaryWordsMatched === queryWords.length && queryWords.length > 1) {
         score += 25;
       }
@@ -425,7 +435,6 @@
     }
 
     // Analiza czy w zapytaniu występuje konkretny numer (np. 15, 99)
-    const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
     const stopWords = new Set(['w', 'z', 'na', 'o', 'do', 'i', 'a', 'oraz', 'czyli', 'dla', 'ze', 'za', 'po', 'od']);
     const significantWords = queryWords.filter(w => !stopWords.has(w));
 
