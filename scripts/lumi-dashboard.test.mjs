@@ -131,14 +131,18 @@ test('avatar circle geometry and footer line alignment are strictly enforced in 
 
 test('new conversation button uses feather quill icon and radio dropdown uses elegant svg chevron', async () => {
   const markup = renderLumiDashboard();
-  // Feather quill pen icon in new conversation button
+  // Feather quill pen icon in new conversation button and separated words
   assert.match(markup, /id="lumiNewConversation"[^>]*aria-label="Nowa rozmowa"/);
   assert.match(markup, /M20\.24 12\.24a6 6 0 0 0-8\.49-8\.49L5 10\.5V19h8\.5z/);
+  assert.match(markup, /<span>Nowa rozmowa<\/span>/);
+  assert.doesNotMatch(markup, /Nowarozmowa|Nowa<br>rozmowa/);
   // Radio dropdown uses SVG chevronDown and never raw unicode caret character
   assert.match(markup, /id="lumiRadioMenu"[^>]*><svg[^>]*><path d="m6 9 6 6 6-6"/);
   assert.doesNotMatch(markup, /id="lumiRadioMenu"[^>]*>⌄/);
 
   const css = await readFile('css/lumi-messenger-design.css', 'utf8');
+  // Desktop button label whitespace
+  assert.match(css, /\.lumi-new-conversation span\{white-space:nowrap\}/);
   // Dropdown rotation and styling
   assert.match(css, /\.lumi-radio-pill button:last-child\[aria-expanded=true\] svg\{transform:rotate\(180deg\)\}/);
   // Mobile clean circular FAB without overflowing text
