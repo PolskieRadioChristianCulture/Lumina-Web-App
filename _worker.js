@@ -1543,15 +1543,15 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    if (decodedP === '/biblijneuwielbienie' || decodedP === '/uwielbienie') {
-      const redirectUrl = new URL(request.url);
-      redirectUrl.pathname = '/BiblijneUwielbienie';
-      return Response.redirect(redirectUrl.toString(), 301);
-    }
-    if (url.pathname === '/BiblijneUwielbienie' || url.pathname === '/BiblijneUwielbienie/' || decodedP === '/biblijne-uwielbienie') {
+    if (decodedP === '/biblijneuwielbienie' || decodedP === '/biblijne-uwielbienie' || url.pathname === '/BiblijneUwielbienie' || url.pathname === '/BiblijneUwielbienie/') {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/biblijne-uwielbienie.html';
       return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+    if (decodedP === '/uwielbienie') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/BiblijneUwielbienie';
+      return Response.redirect(redirectUrl.toString(), 301);
     }
 
     if (decodedP.startsWith('/music/')) {
