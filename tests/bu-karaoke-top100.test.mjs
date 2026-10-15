@@ -132,3 +132,80 @@ test('BU Karaoke & TOP 100: 6. Testy jednostkowe API backendu (bu-voting-worker.
   const res404 = await handleBUApi(req404, mockEnv);
   assert.equal(res404.status, 404);
 });
+
+test('BU Karaoke & TOP 100: 7. Kompletność importu całej Biblii UBG 2025 (66 ksiąg, 1189 rozdziałów)', () => {
+  const bibleDir = path.join(ROOT, 'data', 'bible', 'ubg-2025');
+  assert.ok(fs.existsSync(bibleDir), 'Katalog data/bible/ubg-2025 musi istnieć');
+
+  const files = fs.readdirSync(bibleDir).filter(f => f.endsWith('.json') && f !== 'manifest.json');
+  assert.equal(files.length, 1189, 'Musi być dokładnie 1189 plików rozdziałów w data/bible/ubg-2025/');
+
+  const manifestPath = path.join(bibleDir, 'manifest.json');
+  assert.ok(fs.existsSync(manifestPath), 'manifest.json musi istnieć');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  assert.equal(manifest.totalBooks, 66, 'Musi być dokładnie 66 ksiąg');
+  assert.equal(manifest.totalChapters, 1189, 'Musi być dokładnie 1189 rozdziałów');
+  assert.equal(manifest.totalVerses, 31102, 'Musi być dokładnie 31102 wersety');
+  assert.equal(manifest.chapters.length, 1189, 'Tablica chapters w manifest.json musi mieć 1189 wpisów');
+});
+
+test('BU Karaoke & TOP 100: 8. Integralność wersetów kluczowych rozdziałów (GEN-001, PRO-001, ECC-012, LEV-001, REV-022)', () => {
+  const checkList = [
+    { id: 'GEN-001', book: 'Księga Rodzaju', ch: 1, minVerses: 31, v1Start: 'Na początku Bóg stworzył niebo i ziemię.' },
+    { id: 'PRO-001', book: 'Przypowieści Salomona', ch: 1, minVerses: 33, v1Start: 'Przysłowia Salomona' },
+    { id: 'ECC-012', book: 'Księga Kaznodziei', ch: 12, minVerses: 14, v1Start: 'Pamiętaj więc o swoim Stwórcy' },
+    { id: 'LEV-001', book: 'Księga Kapłańska', ch: 1, minVerses: 17, v1Start: 'I PAN zawołał do Mojżesza' },
+    { id: 'PSA-023', book: 'Księga Psalmów', ch: 23, minVerses: 6, v1Start: 'PAN jest moim pasterzem' },
+    { id: 'REV-022', book: 'Apokalipsa św. Jana', ch: 22, minVerses: 21, v1Start: 'I pokazał mi czystą rzekę' }
+  ];
+
+  for (const c of checkList) {
+    const p = path.join(ROOT, 'data', 'bible', 'ubg-2025', `${c.id}.json`);
+    assert.ok(fs.existsSync(p), `Plik ${c.id}.json musi istnieć`);
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.equal(data.chapterId, c.id);
+    assert.equal(data.book, c.book);
+    assert.equal(data.chapter, c.ch);
+    assert.equal(data.translation, 'UBG-2025');
+    assert.ok(data.copyright.includes('Fundacja Wrota Nadziei'), 'Musi zawierać notę o prawach autorskich');
+    assert.ok(data.copyright.includes('CC BY-ND 4.0'), 'Musi zawierać informację o licencji CC BY-ND 4.0');
+    assert.ok(Array.isArray(data.verses), 'verses musi być tablicą');
+    assert.ok(data.verses.length >= c.minVerses, `Liczba wersetów musi być >= ${c.minVerses}`);
+
+    // Sprawdzenie sekwencji 1..N
+    data.verses.forEach((v, idx) => {
+      assert.equal(v.number, idx + 1, `Werset ${v.number} powinien mieć indeks ${idx + 1}`);
+      assert.ok(typeof v.text === 'string' && v.text.trim().length > 0, `Werset ${v.number} nie może być pusty`);
+    });
+
+    assert.ok(data.verses[0].text.startsWith(c.v1Start), `Werset 1 ${c.id} musi zaczynać się od "${c.v1Start}"`);
+  }
+});
+
+test('BU Karaoke & TOP 100: 9. Obecność kontenerów hero-karaoke-lines i sceny HERO w biblijne-uwielbienie.html', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
+
+  assert.ok(html.includes('id="hero-karaoke-stage"'), 'Musi zawierać kontener hero-karaoke-stage');
+  assert.ok(html.includes('id="hero-karaoke-lines"'), 'Musi zawierać kontener hero-karaoke-lines');
+  assert.ok(html.includes('tab-mode-reading'), 'Musi zawierać przycisk Trybu A (Czytaj i śpiewaj)');
+  assert.ok(html.includes('tab-mode-sync'), 'Musi zawierać przycisk Trybu B (Karaoke zsynchronizowane)');
+  assert.ok(html.includes('hero-book-select'), 'Musi zawierać selektor ksiąg Biblii');
+  assert.ok(html.includes('hero-chapter-select'), 'Musi zawierać selektor rozdziałów Biblii');
+  assert.ok(html.includes('btn-player-karaoke'), 'Master player musi mieć przycisk Tekst Biblii & Karaoke');
+  assert.ok(html.includes('chapter-lyrics-trigger-btn'), 'Karty rozdziałów w bibliotece muszą mieć przycisk Tekst');
+});
+
+test('BU Karaoke & TOP 100: 10. Architektura skryptu assets/bu/karaoke-top100.js (Zero Atrap, Tryb A i B, Brak pustego ekranu)', () => {
+  const js = fs.readFileSync(path.join(ROOT, 'assets', 'bu', 'karaoke-top100.js'), 'utf8');
+
+  assert.ok(js.includes('loadChapterLyrics'), 'Musi implementować funkcję loadChapterLyrics');
+  assert.ok(js.includes('startChapterKaraoke'), 'Musi implementować funkcję startChapterKaraoke');
+  assert.ok(js.includes('/data/bible/ubg-2025/'), 'Musi odpytywać ścieżkę /data/bible/ubg-2025/');
+  assert.ok(js.includes('/data/bu-karaoke/'), 'Musi odpytywać ścieżkę /data/bu-karaoke/');
+  assert.ok(js.includes('data-mode'), 'Musi ustawiać atrybut data-mode na kontenerze');
+  assert.ok(js.includes('reading'), 'Musi obsługiwać tryb reading');
+  assert.ok(js.includes('synchronized'), 'Musi obsługiwać tryb synchronized');
+  assert.ok(js.includes('adjustFontSize'), 'Musi udostępniać regulację wielkości liter');
+  assert.ok(js.includes('toggleFullscreen'), 'Musi udostępniać tryb pełnoekranowy');
+  assert.ok(js.includes('CC BY-ND 4.0'), 'Musi zawierać notę licencyjną CC BY-ND 4.0');
+});

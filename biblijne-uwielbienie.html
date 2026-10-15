@@ -2437,6 +2437,55 @@
           </div>
         </div>
       </div>
+
+      <!-- Dedykowana Scena Karaoke & Tekstu Biblii w HERO (ETAP 4) -->
+      <div class="container hero-karaoke-stage-wrapper" id="hero-karaoke-stage" style="display: none;" aria-label="Tekst Biblii i Karaoke">
+        <div class="hero-karaoke-inner">
+          <div class="hero-karaoke-topbar">
+            <div class="hero-karaoke-heading">
+              <span class="hero-karaoke-badge" id="hero-karaoke-badge">UBG 2025</span>
+              <h2 class="hero-karaoke-title" id="hero-karaoke-title">Księga Rodzaju · Rozdział 1</h2>
+            </div>
+            <div class="hero-karaoke-mode-tabs" role="tablist">
+              <button class="hero-mode-tab is-active" id="tab-mode-reading" type="button" role="tab" aria-selected="true" onclick="window.CC_BU_FEATURES?.setMode('reading')">
+                📖 Czytaj i śpiewaj
+              </button>
+              <button class="hero-mode-tab" id="tab-mode-sync" type="button" role="tab" aria-selected="false" onclick="window.CC_BU_FEATURES?.setMode('sync')">
+                🎤 Karaoke zsynchronizowane
+              </button>
+            </div>
+            <div class="hero-karaoke-controls">
+              <button class="hero-karaoke-ctrl-btn" type="button" id="btn-font-smaller" title="Zmniejsz czcionkę" aria-label="Zmniejsz czcionkę" onclick="window.CC_BU_FEATURES?.adjustFontSize(-1)">A−</button>
+              <button class="hero-karaoke-ctrl-btn" type="button" id="btn-font-larger" title="Powiększ czcionkę" aria-label="Powiększ czcionkę" onclick="window.CC_BU_FEATURES?.adjustFontSize(1)">A+</button>
+              <button class="hero-karaoke-ctrl-btn" type="button" id="btn-hero-fullscreen" title="Pełny ekran" aria-label="Pełny ekran" onclick="window.CC_BU_FEATURES?.toggleFullscreen()">⛶</button>
+              <button class="hero-karaoke-ctrl-btn close" type="button" id="btn-hero-close" title="Zamknij panel tekstu" aria-label="Zamknij panel tekstu" onclick="window.CC_BU_FEATURES?.closeHeroKaraoke()">✕</button>
+            </div>
+          </div>
+
+          <!-- Pasek wyboru rozdziału (Select book & chapter) -->
+          <div class="hero-karaoke-selector-row">
+            <div class="hero-select-wrap">
+              <label for="hero-book-select" class="hero-select-label">Księga:</label>
+              <select class="hero-select" id="hero-book-select" onchange="window.CC_BU_FEATURES?.onBookSelect(this.value)" aria-label="Wybierz księgę"></select>
+            </div>
+            <div class="hero-select-wrap">
+              <label for="hero-chapter-select" class="hero-select-label">Rozdział:</label>
+              <select class="hero-select" id="hero-chapter-select" onchange="window.CC_BU_FEATURES?.onChapterSelect(this.value)" aria-label="Wybierz rozdział"></select>
+            </div>
+            <span class="hero-karaoke-sync-status" id="hero-sync-status-indicator"></span>
+          </div>
+
+          <!-- Główny kontener wersetów / linijek karaoke -->
+          <div class="hero-karaoke-viewport" id="hero-karaoke-viewport">
+            <div id="hero-karaoke-lines" class="hero-karaoke-lines" data-mode="reading"></div>
+          </div>
+
+          <!-- Stopka z notą licencyjną CC BY-ND 4.0 -->
+          <div class="hero-karaoke-license">
+            <span>Uwspółcześniona Biblia Gdańska (UBG) © Fundacja Wrota Nadziei / Logos Media. Wykorzystanie ewangelizacyjne na licencji CC BY-ND 4.0.</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ========================================================================
@@ -2531,6 +2580,16 @@
                 <circle cx="18" cy="19" r="3"></circle>
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </button>
+
+            <!-- Karaoke & Scripture Lyrics Toggle -->
+            <button class="player-action-icon" type="button" onclick="openZeroAtrapModal('karaoke')" id="btn-player-karaoke" title="Tekst Biblii & Karaoke" aria-label="Pokaż tekst Biblii i Karaoke">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <path d="M9 10h6"></path>
+                <path d="M9 14h4"></path>
               </svg>
             </button>
 
@@ -3529,6 +3588,14 @@
       updateFavoritesUI();
       updatePatronModuleUI('player', track.chapterId);
 
+      // Aktualizacja aktywnego tekstu / karaoke jeśli panel w HERO jest otwarty
+      try {
+        const stage = document.getElementById('hero-karaoke-stage');
+        if (stage && stage.style.display !== 'none' && window.CC_BU_FEATURES?.openKaraoke) {
+          window.CC_BU_FEATURES.openKaraoke(track.chapterId);
+        }
+      } catch (e) {}
+
       if (ytPlayer && ytPlayer.loadVideoById) {
         if (autoPlay) {
           ytPlayer.loadVideoById(track.videoId);
@@ -4060,6 +4127,13 @@
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="chapter-lyrics-trigger-btn" type="button" onclick="openChapterLyrics('${chapterId}', event)" title="Czytaj i śpiewaj Rozdział ${c}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>Tekst</span>
+              </button>
               <button class="chapter-patron-trigger-btn" type="button" onclick="selectDrilldownChapterPatron('${chapterId}', event)" title="Zostań patronem Rozdziału ${c}">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
@@ -4082,6 +4156,13 @@
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="chapter-lyrics-trigger-btn" type="button" onclick="openChapterLyrics('${chapterId}', event)" title="Czytaj Rozdział ${c}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>Tekst</span>
+              </button>
               <button class="chapter-patron-trigger-btn" type="button" onclick="selectDrilldownChapterPatron('${chapterId}', event)" title="Zostań patronem Rozdziału ${c}">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>

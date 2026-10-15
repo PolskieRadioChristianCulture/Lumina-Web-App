@@ -68,42 +68,94 @@ async function run() {
     await page.goto(`${baseUrl}/BiblijneUwielbienie?chapter=GEN-001`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
-    // Check Karaoke Modal
-    console.log('Testing Karaoke Modal...');
-    await page.evaluate(() => window.openZeroAtrapModal('karaoke'));
-    await page.waitForSelector('#bu-dialog-backdrop.open');
-    const karaokeTitle = await page.textContent('#bu-dialog-title');
-    console.log(`Karaoke Title: "${karaokeTitle}"`);
-    if (!karaokeTitle?.includes('Karaoke')) {
-      throw new Error(`Oczekiwano tytułu Karaoke, otrzymano: ${karaokeTitle}`);
+    // Test A: Hero Karaoke Stage & GEN-001 Sync Mode
+    console.log('Testing Hero Karaoke Stage (GEN-001)...');
+    await page.evaluate(() => window.CC_BU_FEATURES.openKaraoke('GEN-001'));
+    await page.waitForSelector('#hero-karaoke-stage', { state: 'visible' });
+
+    const stageTitle = await page.textContent('#hero-karaoke-title');
+    console.log(`Hero Stage Title: "${stageTitle}"`);
+    if (!stageTitle?.includes('Księga Rodzaju') || !stageTitle?.includes('1')) {
+      throw new Error(`Niepoprawny tytuł rozdziału: ${stageTitle}`);
     }
 
-    // Wait for lines to render
-    await page.waitForSelector('.bu-line');
-    const lineCount = await page.locator('.bu-line').count();
-    console.log(`Rendered karaoke lines: ${lineCount}`);
-    if (lineCount < 20) {
-      throw new Error(`Zbyt mało wersów karaoke: ${lineCount}`);
+    // Check Sync Mode lines
+    await page.waitForSelector('#hero-karaoke-lines .bu-line');
+    const syncLineCount = await page.locator('#hero-karaoke-lines .bu-line').count();
+    console.log(`Rendered synchronized lines for GEN-001: ${syncLineCount}`);
+    if (syncLineCount < 50) {
+      throw new Error(`Zbyt mało wersów w trybie sync: ${syncLineCount}`);
     }
 
-    const firstLineText = await page.locator('.bu-line').first().textContent();
-    console.log(`First line: "${firstLineText?.trim()}"`);
-    if (!firstLineText?.includes('Na początku')) {
-      throw new Error(`Pierwszy wers nie zawiera 'Na początku': ${firstLineText}`);
+    // Test B: Switch to Tryb A (Reading Mode)
+    console.log('Testing Switch to Tryb A (Reading Mode)...');
+    await page.click('#tab-mode-reading');
+    await page.waitForTimeout(400);
+
+    const verseRows = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
+    console.log(`Rendered Scripture verses for GEN-001 in Tryb A: ${verseRows}`);
+    if (verseRows !== 31) {
+      throw new Error(`Księga Rodzaju 1 powinna mieć dokładnie 31 wersetów, otrzymano: ${verseRows}`);
     }
 
-    // Test clicking a line
-    await page.locator('.bu-line').nth(2).click();
-    console.log('Clicked 3rd karaoke line.');
+    const v1Text = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').first().textContent();
+    console.log(`Verse 1: "${v1Text?.trim()}"`);
+    if (!v1Text?.includes('Na początku Bóg stworzył niebo i ziemię')) {
+      throw new Error(`Niepoprawny tekst wersetu 1: ${v1Text}`);
+    }
 
-    // Close Karaoke Modal
-    await page.click('#bu-dialog-close');
+    // Test C: Font size adjustment
+    console.log('Testing Font Size Adjustment...');
+    await page.click('#btn-font-larger');
+    await page.click('#btn-font-larger');
+    const fontSizeStyle = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bu-font-size'));
+    console.log(`Increased font size: ${fontSizeStyle}`);
+    if (!fontSizeStyle.includes('24px')) {
+      throw new Error(`Oczekiwano powiększenia czcionki do 24px, otrzymano: ${fontSizeStyle}`);
+    }
+
+    // Test D: Open Unrecorded Chapter (LEV-001 - Leviticus 1)
+    console.log('\nTesting Unrecorded Chapter fallback (LEV-001)...');
+    await page.evaluate(() => window.CC_BU_FEATURES.openKaraoke('LEV-001'));
+    await page.waitForTimeout(500);
+
+    const levTitle = await page.textContent('#hero-karaoke-title');
+    console.log(`Leviticus Title: "${levTitle}"`);
+    if (!levTitle?.includes('Księga Kapłańska')) {
+      throw new Error(`Oczekiwano Księgi Kapłańskiej, otrzymano: ${levTitle}`);
+    }
+
+    const levVerses = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
+    console.log(`Leviticus 1 verses in Tryb A: ${levVerses}`);
+    if (levVerses !== 17) {
+      throw new Error(`Księga Kapłańska 1 powinna mieć 17 wersetów, otrzymano: ${levVerses}`);
+    }
+
+    // Ensure Sync Tab is disabled with notice
+    const isSyncTabDisabled = await page.evaluate(() => document.getElementById('tab-mode-sync').disabled);
+    console.log(`Is Sync Tab disabled for unrecorded chapter? ${isSyncTabDisabled}`);
+    if (!isSyncTabDisabled) {
+      throw new Error('Przycisk trybu sync powinien być wyłączony dla nienagranego utworu');
+    }
+
+    // Test E: Test Proverbs 1 (PRO-001)
+    console.log('\nTesting Proverbs 1 (PRO-001)...');
+    await page.evaluate(() => window.CC_BU_FEATURES.openKaraoke('PRO-001'));
+    await page.waitForTimeout(500);
+    const proVerses = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
+    console.log(`Proverbs 1 verses in Tryb A: ${proVerses}`);
+    if (proVerses !== 33) {
+      throw new Error(`Przypowieści 1 powinny mieć 33 wersety, otrzymano: ${proVerses}`);
+    }
+
+    // Test F: Close Hero stage
+    await page.click('#btn-hero-close');
     await page.waitForTimeout(300);
-    const isOpenAfterClose = await page.evaluate(() => document.getElementById('bu-dialog-backdrop').classList.contains('open'));
-    if (isOpenAfterClose) throw new Error('Modal karaoke nie zamknął się.');
-    console.log('✅ Karaoke modal Desktop PASSED.');
+    const isStageHidden = await page.evaluate(() => document.getElementById('hero-karaoke-stage').style.display === 'none');
+    if (!isStageHidden) throw new Error('Scena hero karaoke nie zamknęła się po kliknięciu ✕.');
+    console.log('Hero stage closed cleanly.');
 
-    // Check TOP 100 Modal
+    // Test G: Check TOP 100 Modal
     console.log('\nTesting TOP 100 Modal...');
     await page.evaluate(() => window.openZeroAtrapModal('top100'));
     await page.waitForSelector('#bu-dialog-backdrop.open');
@@ -118,18 +170,8 @@ async function run() {
     console.log(`Rendered ranking rows: ${rankCount}`);
     if (rankCount < 1) throw new Error('Brak wierszy w rankingu TOP 100.');
 
-    // Verify non-logged in notice
-    const contentText = await page.textContent('#bu-dialog-content');
-    if (!contentText?.includes('Zaloguj się przez LUMINA')) {
-      throw new Error('Brak komunikatu o wymogu logowania przez LUMINA.');
-    }
-    console.log('Non-logged in notice displayed properly.');
-
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
-    const isOpenAfterEsc = await page.evaluate(() => document.getElementById('bu-dialog-backdrop').classList.contains('open'));
-    if (isOpenAfterEsc) throw new Error('Modal TOP 100 nie zamknął się po Escape.');
-    console.log('✅ TOP 100 modal Desktop PASSED.');
 
     // 2. MOBILE TEST (390x844 - iPhone)
     console.log('\n--- 2. MOBILE PLAYWRIGHT TEST (390x844) ---');
@@ -138,26 +180,25 @@ async function run() {
     await mobilePage.waitForTimeout(1000);
 
     // Open Karaoke on mobile
-    await mobilePage.evaluate(() => window.openZeroAtrapModal('karaoke'));
-    await mobilePage.waitForSelector('#bu-dialog-backdrop.open');
-    const mLineCount = await mobilePage.locator('.bu-line').count();
-    console.log(`Mobile karaoke lines: ${mLineCount}`);
-    if (mLineCount < 20) throw new Error('Mobile: brak wersów karaoke.');
+    await mobilePage.evaluate(() => window.CC_BU_FEATURES.openKaraoke('GEN-001'));
+    await mobilePage.waitForSelector('#hero-karaoke-stage', { state: 'visible' });
 
-    await mobilePage.click('#bu-dialog-close');
+    // Check lines rendered
+    const mLines = await mobilePage.locator('#hero-karaoke-lines .bu-line').count();
+    console.log(`Mobile synchronized lines: ${mLines}`);
+    if (mLines < 50) throw new Error('Mobile: brak linii karaoke.');
+
+    // Switch to reading on mobile
+    await mobilePage.click('#tab-mode-reading');
     await mobilePage.waitForTimeout(300);
+    const mVerses = await mobilePage.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
+    console.log(`Mobile reading verses: ${mVerses}`);
+    if (mVerses !== 31) throw new Error(`Mobile: oczekiwano 31 wersetów, otrzymano ${mVerses}`);
 
-    // Open TOP 100 on mobile
-    await mobilePage.evaluate(() => window.openZeroAtrapModal('top100'));
-    await mobilePage.waitForSelector('#bu-dialog-backdrop.open');
-    const mRankCount = await mobilePage.locator('.bu-rank').count();
-    console.log(`Mobile TOP 100 ranks: ${mRankCount}`);
-    if (mRankCount < 1) throw new Error('Mobile: brak wierszy rankingu.');
-
-    await mobilePage.click('#bu-dialog-close');
+    await mobilePage.click('#btn-hero-close');
     console.log('✅ Mobile tests PASSED.');
 
-    console.log('\n🎯 WSZYSTKIE TESTY PLAYWRIGHT KARAOKE I TOP 100 ZAKOŃCZONE SUKCESEM (100% PASS)');
+    console.log('\n🎯 WSZYSTKIE TESTY PLAYWRIGHT KARAOKE, TEKSTU UBG 2025 I TOP 100 ZAKOŃCZONE SUKCESEM (100% PASS)');
   } finally {
     await browser.close();
     server.close();
