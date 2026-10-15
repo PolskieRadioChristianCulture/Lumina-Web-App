@@ -43,7 +43,7 @@
         "name": "Biblijne Uwielbienie — Cała Biblia w Muzyce",
         "description": "Projekt muzyczny Christian Culture obejmujący 66 ksiąg i 1189 rozdziałów Pisma Świętego.",
         "url": "https://polskieradio.cc/BiblijneUwielbienie",
-        "numTracks": 37,
+        "numTracks": 38,
         "genre": ["Worship", "Christian", "Biblical Music"],
         "provider": {
           "@type": "Organization",
@@ -2881,9 +2881,9 @@
             <span class="stat-sep" aria-hidden="true">•</span>
             <div class="stat-metric"><strong>1189</strong> Rozdziałów</div>
             <span class="stat-sep" aria-hidden="true">•</span>
-            <div class="stat-metric"><strong id="stat-published-count">37</strong> Dostępnych utworów</div>
+            <div class="stat-metric"><strong id="stat-published-count">38</strong> Dostępnych utworów</div>
             <span class="stat-sep" aria-hidden="true">•</span>
-            <div class="stat-metric"><strong>1 152</strong> w przygotowaniu</div>
+            <div class="stat-metric"><strong>1 151</strong> w przygotowaniu</div>
           </div>
         </div>
 
@@ -2893,7 +2893,7 @@
             <button class="filter-pill active" type="button" role="tab" aria-selected="true" onclick="setTestamentFilter('all', this)">Wszystkie (66)</button>
             <button class="filter-pill" type="button" role="tab" aria-selected="false" onclick="setTestamentFilter('ot', this)">Stary Testament (39)</button>
             <button class="filter-pill" type="button" role="tab" aria-selected="false" onclick="setTestamentFilter('nt', this)">Nowy Testament (27)</button>
-            <button class="filter-pill" type="button" role="tab" aria-selected="false" onclick="setTestamentFilter('published', this)">Tylko Dostępne (37)</button>
+            <button class="filter-pill" type="button" role="tab" aria-selected="false" onclick="setTestamentFilter('published', this)">Tylko Dostępne (<span id="stat-published-pill">38</span>)</button>
             <button class="filter-pill" type="button" role="tab" aria-selected="false" onclick="setTestamentFilter('favorites', this)">★ Moje Ulubione (<span id="fav-count-pill">0</span>)</button>
           </div>
 
@@ -3510,11 +3510,21 @@
 
       // Update UI labels
       document.getElementById('player-track-title').textContent = track.title;
-      document.getElementById('player-track-subtitle').textContent = `${track.bookName} · ${track.chapterId} · ${track.lengthText}`;
+      const subInfo = track.verseRange ? `${track.bookName} · ${track.chapterId} (${track.verseRange}) · ${track.lengthText}` : `${track.bookName} · ${track.chapterId} · ${track.lengthText}`;
+      document.getElementById('player-track-subtitle').textContent = subInfo;
       document.getElementById('mini-track-title').textContent = track.title;
       document.getElementById('mini-track-sub').textContent = `${track.bookName} · ${track.chapterId}`;
       document.getElementById('total-duration-text').textContent = track.lengthText;
-      document.getElementById('link-open-youtube').href = `https://www.youtube.com/watch?v=${track.videoId}&list=PLGBAOJCGyM6g`;
+      document.getElementById('link-open-youtube').href = track.source || `https://www.youtube.com/watch?v=${track.videoId}&list=PLGBAOJCGyM6g`;
+
+      const statusTag = document.getElementById('player-status-tag');
+      if (statusTag) {
+        if (track.completenessStatus === 'Do weryfikacji') {
+          statusTag.textContent = 'PUBLIKACJA POTWIERDZONA · TEKST: DO WERYFIKACJI';
+        } else {
+          statusTag.textContent = 'OFICJALNA PLAYLISTA';
+        }
+      }
 
       updateFavoritesUI();
       updatePatronModuleUI('player', track.chapterId);
@@ -4037,12 +4047,16 @@
             loadTrack(trackIdx, true);
             scrollToPlayer();
           };
+          const statusBadge = (track.completenessStatus === 'Do weryfikacji')
+            ? `<span class="chapter-status-pill published">Dostępny · ${track.lengthText}</span> <span class="chapter-status-pill unverified" style="color: #FFA94D; font-weight: 600;" title="Status kompletności wersetów: Do weryfikacji">· Do weryfikacji</span>`
+            : `<span class="chapter-status-pill published">Dostępny · ${track.lengthText}</span>`;
+
           item.innerHTML = `
             <div class="chapter-item-info">
               <div class="chapter-num-box">${c}</div>
               <div class="chapter-name-col">
                 <span class="chapter-name-title">Rozdział ${c}: ${track.subtitle || 'Utwór'}</span>
-                <span class="chapter-status-pill published">Dostępny · ${track.lengthText}</span>
+                ${statusBadge}
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">

@@ -23,7 +23,7 @@ test('Biblijne Uwielbienie: 2. Metadane SEO, Canonical i Schema.org', () => {
   const content = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
   assert.ok(content.includes('rel="canonical" href="https://polskieradio.cc/BiblijneUwielbienie"'), 'Musi mieć kanoniczny URL');
   assert.ok(content.includes('"@type": "MusicPlaylist"'), 'Musi mieć Schema.org MusicPlaylist');
-  assert.ok(content.includes('"numTracks": 37'), 'Musi deklarować 37 opublikowanych utworów');
+  assert.ok(content.includes('"numTracks": 38'), 'Musi deklarować 38 opublikowanych utworów');
   assert.ok(content.includes('og:title'), 'Musi zawierać OpenGraph title');
   assert.ok(content.includes('twitter:card'), 'Musi zawierać Twitter Card');
 });
@@ -57,9 +57,21 @@ test('Biblijne Uwielbienie: 5. Integralność bazy danych playlisty', () => {
   assert.ok(fs.existsSync(jsonPath), 'data/biblijne-uwielbienie-playlist.json musi istnieć');
   const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   assert.equal(data.playlistId, 'PLGBAOJCGyM6g');
-  assert.equal(data.items.length, 37);
+  assert.equal(data.items.length, 38);
   assert.equal(data.verifiedChaptersCount, 36);
   assert.equal(data.adaptationCount, 1);
+  assert.equal(data.unverifiedChaptersCount, 1);
+
+  // Weryfikacja obecności i metadanych GEN-001
+  const gen001 = data.items.find(it => it.chapterId === 'GEN-001');
+  assert.ok(gen001, 'GEN-001 musi istnieć w playliście');
+  assert.equal(gen001.videoId, 'WN_y21vHW6g');
+  assert.equal(gen001.completenessStatus, 'Do weryfikacji');
+  assert.equal(gen001.bookName, 'Księga Rodzaju');
+  assert.equal(gen001.bookCode, 'GEN');
+  assert.equal(gen001.chapterNumber, 1);
+  assert.equal(gen001.verseRange, 'Rodzaju 1:1–31');
+  assert.equal(gen001.production, 'Christian Culture');
 
   // Weryfikacja formatu videoId (dokładnie 11 znaków)
   for (const item of data.items) {
@@ -78,7 +90,7 @@ test('Biblijne Uwielbienie: 7. Brak fikcyjnych statystyk i obietnic (Zero-QA)', 
   const content = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
   assert.ok(!content.includes('12 548 słuchaczy'), 'ZAKAZ fikcyjnych liczb odtworzeń');
   assert.ok(!content.includes('100% ukończone'), 'ZAKAZ fałszywych deklaracji ukończenia');
-  assert.ok(content.includes('1 152') || content.includes('1152'), 'Musi rzetelnie wskazywać 1152 rozdziały w przygotowaniu');
+  assert.ok(content.includes('1 151') || content.includes('1151'), 'Musi rzetelnie wskazywać 1151 rozdziałów w przygotowaniu');
 });
 
 test('Biblijne Uwielbienie: 8. Moduł Patron Rozdziału (P1) w odtwarzaczu i bibliotece', () => {
