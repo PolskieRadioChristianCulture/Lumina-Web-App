@@ -13,7 +13,18 @@ binding = "mission_control_db"
 database_name = "mission-control-db"
 database_id = "2696531d-d420-4a0c-a882-2ad11b5d9da7"
 
+[[d1_databases]]
+binding = "bu_votes_db"
+database_name = "bu-votes-db"
+database_id = "c31208a3-4580-4a97-a7d2-4782b009b754"
+
+[vars]
+FIREBASE_PROJECT_ID = "lumina-cc"
+
 [env.production]
+[env.production.vars]
+FIREBASE_PROJECT_ID = "lumina-cc"
+
 [[env.production.d1_databases]]
 binding = "milion_db"
 database_name = "milion-db"
@@ -23,4 +34,9 @@ database_id = "331fef6b-116c-4cfd-8dc8-1028a4fb6da4"
 binding = "mission_control_db"
 database_name = "mission-control-db"
 database_id = "2696531d-d420-4a0c-a882-2ad11b5d9da7"
+
+[[env.production.d1_databases]]
+binding = "bu_votes_db"
+database_name = "bu-votes-db"
+database_id = "c31208a3-4580-4a97-a7d2-4782b009b754"
 

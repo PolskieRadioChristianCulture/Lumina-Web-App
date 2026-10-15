@@ -1,3 +1,5 @@
+import { handleBUApi } from './lib/bu-voting-worker.js';
+
 const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
@@ -1449,6 +1451,9 @@ export default {
         status: 410,
         headers: {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow, noarchive','X-Content-Type-Options':'nosniff'}
       });
+    }
+    if (url.pathname.startsWith('/api/bu/v1/')) {
+      return handleBUApi(request, env);
     }
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {

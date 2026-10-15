@@ -4204,5 +4204,28 @@
 
     document.addEventListener('DOMContentLoaded', initApp);
   </script>
+
+  <!-- Prawdziwe Karaoke i Głosowanie TOP 100 D1 (LUMINA Auth) -->
+  <script>
+    window.CC_BU_GET_ID_TOKEN = async () => {
+      try {
+        if (window.LuminaDB && window.LuminaDB.auth && window.LuminaDB.auth.currentUser) {
+          return await window.LuminaDB.auth.currentUser.getIdToken();
+        }
+        const mod = await import('/lumina-db.js?v=cc_auth_v12');
+        const ready = await mod.ensureDbReady?.();
+        const auth = ready?.auth || (await mod.getAuth?.());
+        if (auth && typeof auth.authStateReady === 'function') {
+          try { await auth.authStateReady(); } catch (e) {}
+        }
+        const user = auth && auth.currentUser;
+        return user ? await user.getIdToken() : null;
+      } catch (e) {
+        console.warn('[BU Auth] Token retrieval fallback:', e);
+        return null;
+      }
+    };
+  </script>
+  <script src="/assets/bu/karaoke-top100.js" defer></script>
 </body>
 </html>
