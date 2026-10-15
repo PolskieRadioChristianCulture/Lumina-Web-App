@@ -8,6 +8,12 @@
 /master*
   Cache-Control: no-cache, no-store, must-revalidate
 
+/szukaj*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/szukaj/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /*-live.html
   Cache-Control: no-cache, no-store, must-revalidate
 
