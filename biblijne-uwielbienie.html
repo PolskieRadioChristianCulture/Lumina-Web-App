@@ -560,119 +560,38 @@
       color: var(--text-subtle);
     }
 
-    /* Hero Right Stage: Scena 3 Niezależnych Postaci Alpha */
+    /* Hero Right Stage: Scena Uwielbienia — Podniesione Dłonie w Blasku Krzyża */
     .hero-stage {
       position: relative;
       height: 480px;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
       max-width: 100%;
       overflow: hidden;
     }
 
-    /* Luminous Cross in the background of stage */
-    .stage-background-cross {
-      position: absolute;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 140px;
-      height: 240px;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.92;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .cross-vertical {
-      width: 16px;
-      height: 230px;
-      background: linear-gradient(180deg, #FFFFFF 0%, var(--gold-light) 40%, rgba(196, 163, 90, 0.15) 100%);
-      border-radius: 8px;
-      box-shadow: 0 0 30px var(--gold-glow), 0 0 60px rgba(196, 163, 90, 0.4), 0 0 90px rgba(196, 163, 90, 0.2);
-    }
-
-    .cross-horizontal {
-      position: absolute;
-      top: 50px;
-      width: 110px;
-      height: 16px;
-      background: linear-gradient(90deg, rgba(196, 163, 90, 0.15) 0%, #FFFFFF 40%, var(--gold-light) 60%, rgba(196, 163, 90, 0.15) 100%);
-      border-radius: 8px;
-      box-shadow: 0 0 30px var(--gold-glow), 0 0 60px rgba(196, 163, 90, 0.35);
-    }
-
-    /* Tri-Portrait Composition: Postać centralna na 1. planie, kobiety na 2. planie */
-    .tri-portrait-wrapper {
+    .stage-scene-wrapper {
       position: relative;
       width: 100%;
-      max-width: 760px;
+      max-width: 820px;
       height: 100%;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
-      z-index: 2;
     }
 
-    /* Central Host (Cezary Rogowski, 1. Plan) */
-    .portrait-center {
-      position: relative;
-      z-index: 3;
-      width: 390px;
-      max-width: 58%;
-      margin-bottom: 0;
-      flex-shrink: 0;
-      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
-    }
-
-    .portrait-center img {
+    .stage-scene-img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      max-height: 480px;
+      object-fit: contain;
+      object-position: center bottom;
       display: block;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.7));
     }
 
-    /* Left Artist (Brunette, 2. Plan) */
-    .portrait-left {
-      position: absolute;
-      left: 15px;
-      bottom: 30px;
-      width: 285px;
-      max-width: 44%;
-      z-index: 2;
-      opacity: 0.95;
-      filter: brightness(0.92) contrast(1.04) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
-      transition: var(--transition-standard);
-    }
-
-    .portrait-left img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Right Artist (Blonde, 2. Plan) */
-    .portrait-right {
-      position: absolute;
-      right: 15px;
-      bottom: 30px;
-      width: 285px;
-      max-width: 44%;
-      z-index: 2;
-      opacity: 0.95;
-      filter: brightness(0.94) contrast(1.04) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
-      transition: var(--transition-standard);
-    }
-
-    .portrait-right img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Script Tag: "Uwielbienie zmienia świat" (przeniesiony tak, by nie nakładał się na twarze) */
+    /* Script Tag: "Uwielbienie zmienia świat" */
     .stage-script-tag {
       position: absolute;
       top: 15px;
@@ -680,12 +599,12 @@
       z-index: 4;
       font-family: var(--font-script);
       font-style: italic;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 600;
       line-height: 1.15;
       letter-spacing: 0.5px;
       color: var(--gold-light);
-      text-shadow: 0 4px 18px rgba(196, 163, 90, 0.5), 0 0 35px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 4px 18px rgba(196, 163, 90, 0.6), 0 0 35px rgba(0, 0, 0, 0.9);
       pointer-events: none;
       transform: rotate(-3deg);
       text-align: right;
@@ -694,7 +613,7 @@
     .stage-script-tag::after {
       content: "";
       display: block;
-      width: 130px;
+      width: 120px;
       height: 3px;
       margin-left: auto;
       margin-top: 4px;
@@ -1853,51 +1772,26 @@
         padding-left: 8px;
       }
       .hero-stage {
-        height: 250px;
+        height: 240px;
         margin-top: 10px;
         max-width: 100%;
         overflow: hidden;
       }
-      .portrait-center {
-        width: 190px;
-        max-width: 58%;
+      .stage-scene-wrapper {
+        max-width: 100%;
+        height: 100%;
       }
-      .portrait-left {
-        width: 145px;
-        max-width: 42%;
-        left: 0;
-        bottom: 20px;
-      }
-      .portrait-right {
-        width: 145px;
-        max-width: 42%;
-        right: 0;
-        bottom: 20px;
+      .stage-scene-img {
+        max-height: 240px;
       }
       .stage-script-tag {
-        font-size: 16px;
-        top: 2px;
+        font-size: 15px;
+        top: 4px;
         right: 12px;
       }
       .stage-script-tag::after {
-        width: 80px;
-        height: 2px;
-      }
-      .stage-background-cross {
-        top: 22px;
-        height: 160px;
-      }
-      .cross-vertical {
-        height: 140px;
-        width: 10px;
-      }
-      .cross-horizontal {
-        top: 30px;
         width: 70px;
-        height: 10px;
-      }
-      .stage-quote-badge {
-        display: none;
+        height: 2px;
       }
       .feature-tiles-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2069,33 +1963,11 @@
           </div>
         </div>
 
-        <!-- Hero Right Stage: 3 Niezależne Postacie Alpha & Krzyż -->
-        <div class="hero-stage" aria-label="Scena artystów Biblijnego Uwielbienia">
-          <!-- Background Cross -->
-          <div class="stage-background-cross" aria-hidden="true">
-            <div class="cross-horizontal"></div>
-            <div class="cross-vertical"></div>
-          </div>
-
-          <!-- Script Calligraphy Tag: przeniesiony w bezpieczne miejsce -->
-          <div class="stage-script-tag" aria-hidden="true">Uwielbienie zmienia świat</div>
-
-          <!-- Tri-Portrait Overlap: Postać centralna na 1. planie, kobiety na 2. planie -->
-          <div class="tri-portrait-wrapper">
-            <!-- Left Artist (Brunette, 2. Plan) -->
-            <div class="portrait-left">
-              <img src="/images/biblijne-uwielbienie/artist-one.webp" alt="Wokalistka uwielbienia Christian Culture" width="285" height="315" loading="eager" decoding="async">
-            </div>
-
-            <!-- Center Host (Cezary Rogowski, 1. Plan) -->
-            <div class="portrait-center">
-              <img src="/images/biblijne-uwielbienie/host.webp" alt="Cezary Rogowski — Gospodarz Biblijnego Uwielbienia" width="390" height="360" loading="eager" decoding="async">
-            </div>
-
-            <!-- Right Artist (Blonde, 2. Plan) -->
-            <div class="portrait-right">
-              <img src="/images/biblijne-uwielbienie/artist-two.webp" alt="Wokalistka uwielbienia Christian Culture" width="285" height="325" loading="eager" decoding="async">
-            </div>
+        <!-- Hero Right Stage: Scena Uwielbienia — Podniesione Dłonie w Blasku Krzyża -->
+        <div class="hero-stage" aria-label="Scena uwielbienia — Cezary Rogowski i wokalistki z podniesionymi dłońmi w blasku krzyża">
+          <div class="stage-scene-wrapper">
+            <img class="stage-scene-img" src="/images/biblijne-uwielbienie/podniesione-dlonie-stage.webp" alt="Cezary Rogowski i wokalistki — Podniesione dłonie w blasku krzyża" width="1672" height="941" loading="eager" decoding="async">
+            <div class="stage-script-tag" aria-hidden="true">Uwielbienie zmienia świat</div>
           </div>
         </div>
       </div>
