@@ -148,6 +148,13 @@ test('new conversation button uses feather quill icon and radio dropdown uses el
   // Mobile clean circular FAB without overflowing text
   assert.match(css, /\.lumi-new-conversation\{[^}]*width:58px;height:58px;min-width:58px;min-height:58px;border-radius:50%[^}]*\}/);
   assert.match(css, /\.lumi-new-conversation span\{display:none!important\}/);
+  // Search input has no rectangular outline and delegates focus styling to rounded pill container
+  assert.doesNotMatch(css, /\.lumi-dashboard input:focus-visible/);
+  assert.match(css, /\.lumi-search-field:focus-within\{border-color:#f2a3ff/);
+  assert.match(css, /\.lumi-search-field input:focus,\.lumi-search-field input:focus-visible\{outline:none!important;box-shadow:none!important\}/);
+  // Radio select removes the native right-side arrow completely
+  assert.match(css, /\.lumi-radio-panel select\{appearance:none;-webkit-appearance:none;-moz-appearance:none/);
+  assert.match(css, /\.cc-chat-radio select\{[^}]*appearance:none!important/);
 });
 
 
