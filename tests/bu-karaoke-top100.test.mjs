@@ -55,10 +55,14 @@ test('BU Karaoke & TOP 100: 5. Poprawność pliku synchronizacji GEN-001 (Karaok
   const data = JSON.parse(fs.readFileSync(karaokePath, 'utf8'));
   assert.equal(data.chapterId, 'GEN-001');
   assert.equal(data.videoId, 'WN_y21vHW6g');
-  assert.equal(data.status, 'approved');
-  assert.ok(data.translation.includes('Christian Culture'), 'Musi podawać właściwą autorską adaptację');
+  assert.ok(data.status === 'SYNC_READY' || data.status === 'approved', 'Status musi być SYNC_READY lub approved');
+  assert.ok(data.translation.includes('UBG-2025') || data.translation.includes('Christian Culture'), 'Musi podawać tłumaczenie lub adaptację');
   assert.ok(Array.isArray(data.lines), 'lines musi być tablicą');
   assert.ok(data.lines.length >= 30, 'Musi zawierać przynajmniej 30 zsynchronizowanych wersów');
+
+  // Sprawdzenie istnienia formatów WebVTT i LRC
+  assert.ok(fs.existsSync(path.join(ROOT, 'data', 'bu-karaoke', 'GEN-001.vtt')), 'GEN-001.vtt musi istnieć');
+  assert.ok(fs.existsSync(path.join(ROOT, 'data', 'bu-karaoke', 'GEN-001.lrc')), 'GEN-001.lrc musi istnieć');
 
   // Sprawdzenie kolejności chronologicznej i poprawności znaczników czasu
   let prevTime = 0;
@@ -208,4 +212,33 @@ test('BU Karaoke & TOP 100: 10. Architektura skryptu assets/bu/karaoke-top100.js
   assert.ok(js.includes('adjustFontSize'), 'Musi udostępniać regulację wielkości liter');
   assert.ok(js.includes('toggleFullscreen'), 'Musi udostępniać tryb pełnoekranowy');
   assert.ok(js.includes('CC BY-ND 4.0'), 'Musi zawierać notę licencyjną CC BY-ND 4.0');
+});
+
+test('BU Karaoke & TOP 100: 11. Auto Karaoke Sync Engine, Rejestr i Panel Karaoke Studio', () => {
+  // 1. Skrypt silnika ASR i forced alignment
+  const enginePath = path.join(ROOT, 'scripts', 'bu_auto_karaoke_engine.py');
+  assert.ok(fs.existsSync(enginePath), 'scripts/bu_auto_karaoke_engine.py musi istnieć');
+  const enginePy = fs.readFileSync(enginePath, 'utf8');
+  assert.ok(enginePy.includes('find_best_verse_span'), 'Musi implementować precyzyjne dopasowanie słów wersetu');
+  assert.ok(enginePy.includes('export_webvtt'), 'Musi implementować eksport WebVTT');
+  assert.ok(enginePy.includes('export_lrc'), 'Musi implementować eksport LRC');
+  assert.ok(enginePy.includes('SYNC_READY') && enginePy.includes('SYNC_REVIEW'), 'Musi klasyfikować statusy synchronizacji');
+
+  // 2. Centralny rejestr
+  const registryPath = path.join(ROOT, 'data', 'bu-sync-registry.json');
+  assert.ok(fs.existsSync(registryPath), 'data/bu-sync-registry.json musi istnieć');
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  assert.equal(registry.schemaVersion, 1);
+  assert.equal(registry.totalCatalogSongs, 38);
+  assert.ok(registry.summary.syncReady >= 1, 'Musi mieć przynajmniej 1 utwór SYNC_READY');
+  assert.ok(Array.isArray(registry.items) && registry.items.length === 38);
+
+  // 3. Panel administracyjny Karaoke Sync Studio
+  const studioPath = path.join(ROOT, 'karaoke-studio.html');
+  assert.ok(fs.existsSync(studioPath), 'karaoke-studio.html musi istnieć');
+  const studioHtml = fs.readFileSync(studioPath, 'utf8');
+  assert.ok(studioHtml.includes('Karaoke Sync Studio'), 'Musi zawierać tytuł panelu');
+  assert.ok(studioHtml.includes('kpi-grid'), 'Musi zawierać kafelki KPI');
+  assert.ok(studioHtml.includes('song-table'), 'Musi zawierać tabelę utworów');
+  assert.ok(studioHtml.includes('inspector-panel'), 'Musi zawierać studio inspekcji osi czasu');
 });

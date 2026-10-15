@@ -47,6 +47,11 @@ assert(favScriptContent.includes('cc_user_visit_history'), 'Uses localStorage cc
 assert(favScriptContent.includes('cc_history_settings') || favScriptContent.includes('setHistoryEnabled'), 'Supports user privacy toggle for visit history');
 assert(favScriptContent.includes('favorites') && favScriptContent.includes('users/${uid}/favorites'), 'Synchronizes with Firestore /users/{userId}/favorites');
 assert(favScriptContent.includes('min-height: 44px') || favScriptContent.includes('min-width: 44px') || favScriptContent.includes('44px'), 'Ergonomics: UI button has 44px touch targets');
+assert(favScriptContent.includes('cc-topbar-fav-btn'), 'Defines top-bar star button styles (.cc-topbar-fav-btn)');
+assert(favScriptContent.includes('ccTopBarFavBtn'), 'Defines top-bar star button ID (#ccTopBarFavBtn)');
+assert(favScriptContent.includes('injectTopBarFavoriteButton'), 'Implements top-bar star button injection function');
+assert(favScriptContent.includes('cc-floating-topbar-wrap'), 'Implements top-bar fallback floating wrap for pages without nav');
+assert(favScriptContent.includes('moje-centrum'), 'Toast notification links to Moje Centrum CC');
 
 // 2. Test firestore.rules
 console.log('\n--- 2. Testing firestore.rules Security & Isolation ---');

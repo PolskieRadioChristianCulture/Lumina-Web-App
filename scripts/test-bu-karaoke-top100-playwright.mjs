@@ -198,7 +198,31 @@ async function run() {
     await mobilePage.click('#btn-hero-close');
     console.log('✅ Mobile tests PASSED.');
 
-    console.log('\n🎯 WSZYSTKIE TESTY PLAYWRIGHT KARAOKE, TEKSTU UBG 2025 I TOP 100 ZAKOŃCZONE SUKCESEM (100% PASS)');
+    // 3. KARAOKE SYNC STUDIO TEST
+    console.log('\n--- 3. KARAOKE SYNC STUDIO TEST (karaoke-studio.html) ---');
+    const studioPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await studioPage.goto(`${baseUrl}/karaoke-studio.html`, { waitUntil: 'domcontentloaded' });
+    await studioPage.waitForTimeout(1000);
+
+    const kpiSongs = await studioPage.locator('#kpi-total-songs').textContent();
+    console.log(`Studio KPI songs: ${kpiSongs}`);
+    if (kpiSongs.trim() !== '38') throw new Error(`Oczekiwano 38 utworów, otrzymano ${kpiSongs}`);
+
+    const tableRows = await studioPage.locator('#catalog-tbody tr').count();
+    console.log(`Studio catalog rows: ${tableRows}`);
+    if (tableRows !== 38) throw new Error(`Oczekiwano 38 wierszy tabeli, otrzymano ${tableRows}`);
+
+    const inspectorTitle = await studioPage.locator('#inspector-title').textContent();
+    console.log(`Inspector title: ${inspectorTitle}`);
+    if (!inspectorTitle.includes('GEN-001')) throw new Error('Inspector nie załadował GEN-001 domyślnie');
+
+    const timelineCount = await studioPage.locator('#inspector-view-timeline .timeline-item').count();
+    console.log(`Inspector timeline items: ${timelineCount}`);
+    if (timelineCount < 100) throw new Error(`Oczekiwano przynajmniej 100 linii na osi czasu, otrzymano ${timelineCount}`);
+
+    console.log('✅ Karaoke Sync Studio tests PASSED.');
+
+    console.log('\n🎯 WSZYSTKIE TESTY PLAYWRIGHT KARAOKE, TEKSTU UBG 2025, TOP 100 ORAZ KARAOKE SYNC STUDIO ZAKOŃCZONE SUKCESEM (100% PASS)');
   } finally {
     await browser.close();
     server.close();

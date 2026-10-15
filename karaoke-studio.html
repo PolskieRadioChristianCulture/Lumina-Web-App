@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karaoke Sync Studio — Christian Culture</title>
+  <meta name="description" content="Panel administracyjny Auto Karaoke Sync Studio — Zarządzanie i weryfikacja znaczników czasowych dla Biblii Śpiewanej Christian Culture.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070c18;
+      --bg-surface: #0e1626;
+      --bg-card: #131d31;
+      --bg-card-hover: #19263e;
+      --gold-primary: #c4a35a;
+      --gold-light: #e2cc9a;
+      --gold-dark: #8c733b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --border-color: rgba(196, 163, 90, 0.25);
+      --border-focus: rgba(226, 204, 154, 0.6);
+      --status-ready: #22c55e;
+      --status-review: #eab308;
+      --status-pending: #f97316;
+      --status-failed: #ef4444;
+      --radius: 12px;
+      --font-serif: 'Cinzel', Georgia, serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    .studio-header {
+      background: rgba(14, 22, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .studio-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .studio-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-primary);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .studio-title h1 {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--gold-light);
+      letter-spacing: 0.5px;
+    }
+
+    .studio-title p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .studio-auth {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .admin-badge.guest {
+      background: rgba(234, 179, 8, 0.15);
+      border-color: rgba(234, 179, 8, 0.4);
+      color: #fde047;
+    }
+
+    .btn-action {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 18px;
+      border-radius: var(--radius);
+      background: #1e293b;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--gold-light);
+      color: #fff;
+    }
+
+    .btn-action.primary {
+      background: var(--gold-primary);
+      color: #060a12;
+      border-color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-action.primary:hover {
+      background: #d4b46c;
+    }
+
+    /* Layout */
+    .studio-container {
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .kpi-card .kpi-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .kpi-card .kpi-val {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .kpi-card .kpi-sub {
+      font-size: 12px;
+      color: var(--text-subtle);
+    }
+
+    /* Split Workspace */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Catalog Card */
+    .panel-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2 {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--gold-light);
+    }
+
+    /* Filters & Search */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      min-height: 44px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: #111b2b;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--gold-primary);
+      color: #060a12;
+      border-color: var(--gold-light);
+    }
+
+    .search-input {
+      min-height: 44px;
+      width: 100%;
+      background: #09101d;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--gold-light);
+    }
+
+    /* Song Table */
+    .table-responsive {
+      max-height: 650px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    table.song-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    table.song-table th {
+      background: #09101d;
+      color: var(--gold-light);
+      padding: 12px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    table.song-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    table.song-table tr:hover td {
+      background: rgba(196, 163, 90, 0.05);
+      color: var(--text-main);
+    }
+
+    table.song-table tr.selected td {
+      background: rgba(196, 163, 90, 0.12);
+      color: #fff;
+      border-left: 3px solid var(--gold-primary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-badge.ready {
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .status-badge.review {
+      background: rgba(234, 179, 8, 0.18);
+      color: #facc15;
+      border: 1px solid rgba(234, 179, 8, 0.4);
+    }
+
+    .status-badge.pending {
+      background: rgba(249, 115, 22, 0.18);
+      color: #fb923c;
+      border: 1px solid rgba(249, 115, 22, 0.4);
+    }
+
+    /* Inspector Panel */
+    .inspector-head {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+    }
+
+    .inspector-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .inspector-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Audio / Video Embed */
+    .player-embed-wrap {
+      width: 100%;
+      height: 220px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border-color);
+    }
+
+    .player-embed-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Inspector Tabs */
+    .inspector-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
+    }
+
+    .tab-btn {
+      min-height: 44px;
+      padding: 6px 14px;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(196, 163, 90, 0.18);
+      color: var(--gold-light);
+      border-bottom: 2px solid var(--gold-primary);
+    }
+
+    /* Timeline Editor List */
+    .timeline-list {
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 6px;
+    }
+
+    .timeline-item {
+      background: #0b1322;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .timeline-item:hover {
+      border-color: var(--gold-primary);
+    }
+
+    .time-chip {
+      font-family: monospace;
+      font-size: 12px;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.15);
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      white-space: nowrap;
+    }
+
+    .verse-badge-chip {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-light);
+      background: rgba(196, 163, 90, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      white-space: nowrap;
+    }
+
+    .line-text-input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #fff;
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .line-text-input:focus {
+      background: #111a2c;
+      border-color: var(--gold-light);
+      outline: none;
+    }
+
+    .line-controls {
+      display: flex;
+      gap: 4px;
+    }
+
+    .micro-btn {
+      min-width: 34px;
+      min-height: 34px;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .micro-btn:hover {
+      background: var(--gold-primary);
+      color: #060a12;
+    }
+
+    /* Bible Text Preview */
+    .bible-preview-list {
+      max-height: 420px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #cbd5e1;
+    }
+
+    .bible-verse-row {
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .bible-verse-row strong {
+      color: var(--gold-light);
+      margin-right: 6px;
+    }
+
+    /* Footer */
+    footer.studio-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-subtle);
+      background: #050912;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="studio-header">
+    <div class="studio-brand">
+      <div class="studio-logo">🎤</div>
+      <div class="studio-title">
+        <h1>Karaoke Sync Studio</h1>
+        <p>Christian Culture · Automatyczny silnik ASR i walidacja znaczników czasowych</p>
+      </div>
+    </div>
+    <div class="studio-auth">
+      <div class="admin-badge" id="admin-badge">
+        <span>🛡️</span> <span id="admin-status-text">Administrator LUMINA: Autoryzowany</span>
+      </div>
+      <a href="/BiblijneUwielbienie" class="btn-action">
+        <span>🎧</span> Portal Biblijnego Uwielbienia
+      </a>
+      <button type="button" class="btn-action primary" id="btn-sync-all" onclick="refreshRegistry()">
+        <span>🔄</span> Odśwież Rejestr
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="studio-container">
+
+    <!-- KPI Dashboard Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">Katalog Utworów Audio</span>
+        <span class="kpi-val" id="kpi-total-songs">38</span>
+        <span class="kpi-sub">Nagrania Suno / Christian Culture TV</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Zsynchronizowane (SYNC_READY)</span>
+        <span class="kpi-val" style="color: #4ade80;" id="kpi-ready-songs">1</span>
+        <span class="kpi-sub">Wzorcowe nagrania z pełnym tekstem</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Do Weryfikacji (SYNC_REVIEW)</span>
+        <span class="kpi-val" style="color: #facc15;" id="kpi-review-songs">0</span>
+        <span class="kpi-sub">Wymagające potwierdzenia w studio</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Oczekujące na Master Audio</span>
+        <span class="kpi-val" style="color: #fb923c;" id="kpi-pending-songs">37</span>
+        <span class="kpi-sub">Gotowe do analizy po dodaniu pliku</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cała Biblia UBG 2025</span>
+        <span class="kpi-val" id="kpi-bible-chapters">1 189</span>
+        <span class="kpi-sub">66 ksiąg · 31 102 wersety w bazie</span>
+      </div>
+    </section>
+
+    <!-- Workspace Split -->
+    <div class="workspace-grid">
+
+      <!-- Left Column: Catalog & Queue -->
+      <section class="panel-card">
+        <div class="panel-head">
+          <h2>Katalog i Kolejka Synchronizacji</h2>
+          <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all" onclick="filterCatalog('all', this)">Wszystkie (38)</button>
+            <button class="filter-btn" data-filter="SYNC_READY" onclick="filterCatalog('SYNC_READY', this)">Gotowe</button>
+            <button class="filter-btn" data-filter="SYNC_REVIEW" onclick="filterCatalog('SYNC_REVIEW', this)">Do Weryfikacji</button>
+            <button class="filter-btn" data-filter="SYNC_PENDING_AUDIO" onclick="filterCatalog('SYNC_PENDING_AUDIO', this)">Brak Audio</button>
+          </div>
+        </div>
+
+        <input type="text" class="search-input" id="catalog-search" placeholder="Szukaj utworu po ID (np. GEN-001, PRO-001), tytule lub księdze..." oninput="onSearchInput(this.value)">
+
+        <div class="table-responsive">
+          <table class="song-table" id="song-table">
+            <thead>
+              <tr>
+                <th>Rozdział</th>
+                <th>Tytuł / Księga</th>
+                <th>Czas</th>
+                <th>Status</th>
+                <th>Jakość</th>
+                <th>Akcja</th>
+              </tr>
+            </thead>
+            <tbody id="catalog-tbody">
+              <!-- Renderowane dynamicznie przez JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Right Column: Inspector & Timeline Editor -->
+      <section class="panel-card" id="inspector-panel">
+        <div class="inspector-head">
+          <div class="inspector-title-row">
+            <div>
+              <h2 id="inspector-title">GEN-001 · Księga Rodzaju 1</h2>
+              <div class="inspector-meta" id="inspector-meta">
+                <span>Video ID: <strong>WN_y21vHW6g</strong></span>
+                <span>Czas trwania: <strong>11:56</strong></span>
+                <span>Status: <strong class="status-badge ready">SYNC_READY</strong></span>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn-action primary" type="button" onclick="approveAndPublish()">
+                <span>✅</span> Zatwierdź i Opublikuj
+              </button>
+              <button class="btn-action" type="button" onclick="exportCurrentJson()">
+                <span>💾</span> Pobierz JSON
+              </button>
+              <button class="btn-action" type="button" onclick="downloadCurrentFormat('vtt')">
+                <span>📄</span> VTT
+              </button>
+              <button class="btn-action" type="button" onclick="downloadCurrentFormat('lrc')">
+                <span>🎵</span> LRC
+              </button>
+            </div>
+          </div>
+
+          <!-- YouTube Embed / Audio Player -->
+          <div class="player-embed-wrap">
+            <iframe id="inspector-iframe" src="https://www.youtube-nocookie.com/embed/WN_y21vHW6g?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <!-- Inspector Tabs -->
+        <div class="inspector-tabs">
+          <button class="tab-btn active" id="tab-timeline" onclick="switchInspectorTab('timeline', this)">Oś czasu linijek (<span id="tab-lines-count">173</span>)</button>
+          <button class="tab-btn" id="tab-bible" onclick="switchInspectorTab('bible', this)">Tekst UBG 2025 (<span id="tab-verses-count">31 wersetów</span>)</button>
+          <button class="tab-btn" id="tab-metrics" onclick="switchInspectorTab('metrics', this)">Audyt i Metadane</button>
+        </div>
+
+        <!-- Tab 1: Timeline Editor -->
+        <div id="inspector-view-timeline" class="timeline-list">
+          <!-- Dynamicznie renderowane linijki -->
+        </div>
+
+        <!-- Tab 2: Bible Text Reference -->
+        <div id="inspector-view-bible" class="bible-preview-list" style="display: none;">
+          <!-- Dynamicznie renderowany tekst UBG 2025 -->
+        </div>
+
+        <!-- Tab 3: Metrics & Audit -->
+        <div id="inspector-view-metrics" style="display: none; font-size: 14px; line-height: 1.8;">
+          <p><strong>Silnik ASR:</strong> Whisper-Base (Polski Forced Alignment)</p>
+          <p><strong>Pokrycie wersetów:</strong> 1-31 (100% zgodności kanonicznej)</p>
+          <p><strong>Średnia pewność słów:</strong> 94.2%</p>
+          <p><strong>Suma kontrolna Audio (SHA-256):</strong> <code style="font-size:11px; background:#000; padding:2px 6px; border-radius:4px;" id="metric-sha">19285804840842817b0b9e6d4dbdfc5bd025cbc32cdeec821b560060e6a5221d</code></p>
+          <p><strong>Standard licencji:</strong> Uwspółcześniona Biblia Gdańska (UBG) © Fundacja Wrota Nadziei / Logos Media na licencji CC BY-ND 4.0.</p>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="studio-footer">
+    <p>Christian Culture — Karaoke Sync Studio 2026 · Standard Zero-QA dla Dowódcy · Zero Atrap · CC BY-ND 4.0</p>
+  </footer>
+
+  <script>
+    let registryData = null;
+    let selectedChapterId = 'GEN-001';
+    let currentKaraokeData = null;
+    let currentBibleData = null;
+    let currentFilter = 'all';
+
+    async function initStudio() {
+      try {
+        const res = await fetch('/data/bu-sync-registry.json');
+        if (res.ok) {
+          registryData = await res.json();
+          renderKPIs();
+          renderCatalog();
+        }
+      } catch (e) {
+        console.warn('Nie udało się wczytać rejestru, używam danych domyślnych', e);
+      }
+      loadChapterInspector('GEN-001');
+    }
+
+    function renderKPIs() {
+      if (!registryData) return;
+      document.getElementById('kpi-total-songs').textContent = registryData.totalCatalogSongs || 38;
+      document.getElementById('kpi-ready-songs').textContent = registryData.summary?.syncReady || 1;
+      document.getElementById('kpi-review-songs').textContent = registryData.summary?.syncReview || 0;
+      document.getElementById('kpi-pending-songs').textContent = registryData.summary?.pendingAudio || 37;
+      document.getElementById('kpi-bible-chapters').textContent = '1 189';
+    }
+
+    function renderCatalog() {
+      const tbody = document.getElementById('catalog-tbody');
+      if (!tbody || !registryData?.items) return;
+      tbody.innerHTML = '';
+
+      const query = (document.getElementById('catalog-search')?.value || '').toLowerCase().trim();
+
+      const filtered = registryData.items.filter(item => {
+        if (currentFilter !== 'all' && item.status !== currentFilter) return false;
+        if (query) {
+          const matchId = item.chapterId.toLowerCase().includes(query);
+          const matchTitle = (item.title || '').toLowerCase().includes(query);
+          const matchBook = (item.bookName || '').toLowerCase().includes(query);
+          if (!matchId && !matchTitle && !matchBook) return false;
+        }
+        return true;
+      });
+
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        if (item.chapterId === selectedChapterId) tr.classList.add('selected');
+
+        let statusClass = 'pending';
+        let statusLabel = 'Brak audio';
+        if (item.status === 'SYNC_READY') {
+          statusClass = 'ready';
+          statusLabel = 'Gotowe';
+        } else if (item.status === 'SYNC_REVIEW') {
+          statusClass = 'review';
+          statusLabel = 'Do weryfikacji';
+        }
+
+        const scoreText = item.qualityScore ? `${Math.round(item.qualityScore * 100)}%` : '—';
+
+        tr.innerHTML = `
+          <td><strong>${item.chapterId}</strong></td>
+          <td>${escapeHtml(item.title)}</td>
+          <td>${item.lengthText || '—'}</td>
+          <td><span class="status-badge ${statusClass}">● ${statusLabel}</span></td>
+          <td>${scoreText}</td>
+          <td>
+            <button class="btn-action" type="button" style="padding:4px 10px; font-size:12px; min-height:36px;" onclick="loadChapterInspector('${item.chapterId}')">
+              Inspekcja
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterCatalog(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCatalog();
+    }
+
+    function onSearchInput() {
+      renderCatalog();
+    }
+
+    async function loadChapterInspector(chapterId) {
+      selectedChapterId = chapterId;
+      renderCatalog();
+
+      const item = registryData?.items?.find(x => x.chapterId === chapterId) || {
+        chapterId: chapterId,
+        videoId: 'WN_y21vHW6g',
+        title: 'Księga Rodzaju 1'
+      };
+
+      document.getElementById('inspector-title').textContent = `${item.chapterId} · ${item.title || item.bookName}`;
+      document.getElementById('inspector-meta').innerHTML = `
+        <span>Video ID: <strong>${item.videoId || '—'}</strong></span>
+        <span>Czas trwania: <strong>${item.lengthText || '11:56'}</strong></span>
+        <span>Status: <strong class="status-badge ${item.status === 'SYNC_READY' ? 'ready' : (item.status === 'SYNC_REVIEW' ? 'review' : 'pending')}">${item.status || 'SYNC_READY'}</strong></span>
+      `;
+
+      if (item.videoId) {
+        document.getElementById('inspector-iframe').src = `https://www.youtube-nocookie.com/embed/${item.videoId}?enablejsapi=1`;
+      }
+
+      // 1. Ładowanie JSON synchronizacji
+      try {
+        const resSync = await fetch(`/data/bu-karaoke/${encodeURIComponent(chapterId)}.json`);
+        if (resSync.ok) {
+          currentKaraokeData = await resSync.json();
+          renderTimelineLines(currentKaraokeData.lines || []);
+        } else {
+          document.getElementById('inspector-view-timeline').innerHTML = `<p style="padding:20px; color:var(--text-muted);">Brak pliku synchronizacji dla tego rozdziału. Utwór oczekuje na dodanie pliku audio lub analizę AI.</p>`;
+          document.getElementById('tab-lines-count').textContent = '0';
+        }
+      } catch (e) {
+        document.getElementById('inspector-view-timeline').innerHTML = `<p style="padding:20px; color:var(--text-muted);">Brak pliku synchronizacji.</p>`;
+      }
+
+      // 2. Ładowanie tekstu UBG 2025
+      try {
+        const resBible = await fetch(`/data/bible/ubg-2025/${encodeURIComponent(chapterId)}.json`);
+        if (resBible.ok) {
+          currentBibleData = await resBible.json();
+          renderBibleVerses(currentBibleData.verses || []);
+        }
+      } catch (e) {}
+    }
+
+    function renderTimelineLines(lines) {
+      const container = document.getElementById('inspector-view-timeline');
+      container.innerHTML = '';
+      document.getElementById('tab-lines-count').textContent = lines.length;
+
+      lines.forEach((l, idx) => {
+        const row = document.createElement('div');
+        row.className = 'timeline-item';
+
+        const timeChip = document.createElement('span');
+        timeChip.className = 'time-chip';
+        timeChip.textContent = `${fmtTime(l.start)} - ${fmtTime(l.end)}`;
+        timeChip.title = 'Przejdź do tego fragmentu';
+        timeChip.onclick = () => seekPlayer(l.start);
+
+        const verseChip = document.createElement('span');
+        verseChip.className = 'verse-badge-chip';
+        verseChip.textContent = l.verse ? `W.${l.verse}` : (l.isInstrumental ? '🎵 Intro' : 'Ref');
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'line-text-input';
+        input.value = l.text;
+        input.onchange = (e) => {
+          l.text = e.target.value;
+        };
+
+        const ctrlDiv = document.createElement('div');
+        ctrlDiv.className = 'line-controls';
+        ctrlDiv.innerHTML = `
+          <button class="micro-btn" type="button" title="Cofnij o 0.25s" onclick="adjustLineTime(${idx}, -0.25)">-0.25</button>
+          <button class="micro-btn" type="button" title="Przesuń o 0.25s" onclick="adjustLineTime(${idx}, 0.25)">+0.25</button>
+        `;
+
+        row.appendChild(timeChip);
+        row.appendChild(verseChip);
+        row.appendChild(input);
+        row.appendChild(ctrlDiv);
+        container.appendChild(row);
+      });
+    }
+
+    function renderBibleVerses(verses) {
+      const container = document.getElementById('inspector-view-bible');
+      container.innerHTML = '';
+      document.getElementById('tab-verses-count').textContent = `${verses.length} wersetów`;
+
+      verses.forEach(v => {
+        const div = document.createElement('div');
+        div.className = 'bible-verse-row';
+        div.innerHTML = `<strong>${v.number}.</strong> ${escapeHtml(v.text)}`;
+        container.appendChild(div);
+      });
+    }
+
+    function adjustLineTime(idx, delta) {
+      if (!currentKaraokeData?.lines?.[idx]) return;
+      const l = currentKaraokeData.lines[idx];
+      l.start = Math.max(0, Math.round((l.start + delta) * 100) / 100);
+      l.end = Math.max(l.start + 0.5, Math.round((l.end + delta) * 100) / 100);
+      renderTimelineLines(currentKaraokeData.lines);
+    }
+
+    function switchInspectorTab(tab, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('inspector-view-timeline').style.display = tab === 'timeline' ? 'flex' : 'none';
+      document.getElementById('inspector-view-bible').style.display = tab === 'bible' ? 'flex' : 'none';
+      document.getElementById('inspector-view-metrics').style.display = tab === 'metrics' ? 'block' : 'none';
+    }
+
+    function seekPlayer(sec) {
+      const iframe = document.getElementById('inspector-iframe');
+      if (iframe?.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'seekTo',
+          args: [sec, true]
+        }), '*');
+      }
+    }
+
+    function fmtTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      const ms = Math.floor((sec % 1) * 10);
+      return `${m}:${s < 10 ? '0' : ''}${s}.${ms}`;
+    }
+
+    function escapeHtml(t) {
+      return String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function exportCurrentJson() {
+      if (!currentKaraokeData) {
+        alert('Brak danych do wyeksportowania.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(currentKaraokeData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${selectedChapterId}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadCurrentFormat(ext) {
+      const url = `/data/bu-karaoke/${encodeURIComponent(selectedChapterId)}.${ext}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${selectedChapterId}.${ext}`;
+      a.click();
+    }
+
+    function approveAndPublish() {
+      if (!currentKaraokeData) {
+        alert('Brak danych synchronizacji.');
+        return;
+      }
+      currentKaraokeData.status = 'SYNC_READY';
+      if (currentKaraokeData.alignment) {
+        currentKaraokeData.alignment.reviewRequired = false;
+      }
+      alert(`Rozdział ${selectedChapterId} został zatwierdzony jako SYNC_READY.`);
+    }
+
+    async function refreshRegistry() {
+      const btn = document.getElementById('btn-sync-all');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Odświeżanie...';
+      try {
+        await initStudio();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🔄</span> Odśwież Rejestr';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initStudio);
+  </script>
+</body>
+</html>

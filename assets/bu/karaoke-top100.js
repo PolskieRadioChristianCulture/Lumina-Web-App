@@ -262,6 +262,25 @@
     .hero-karaoke-ctrl-btn.close {
       color: #ff9d9d;
     }
+    .bu-verse-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(196, 163, 90, 0.22);
+      border: 1px solid rgba(196, 163, 90, 0.45);
+      color: #e2cc9a;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+    .bu-line.is-instrumental {
+      font-style: italic;
+      color: #94a3b8;
+      border-left-color: #64748b;
+      background: rgba(30, 41, 59, 0.35);
+    }
 
     /* Pasek wyboru księgi i rozdziału */
     .hero-karaoke-selector-row {
@@ -590,7 +609,8 @@
         return null;
       }
       const data = await response.json();
-      if (data.status === 'approved' && Array.isArray(data.lines) && data.lines.length > 0) {
+      const isValidStatus = data.status === 'SYNC_READY' || data.status === 'approved' || data.status === 'SYNC_REVIEW';
+      if (isValidStatus && Array.isArray(data.lines) && data.lines.length > 0) {
         const sorted = data.lines
           .filter(s => Number.isFinite(s.start) && Number.isFinite(s.end) && s.end >= s.start && s.text?.trim())
           .sort((a, b) => a.start - b.start);
@@ -698,12 +718,22 @@
     for (const [idx, segment] of syncData.lines.entries()) {
       const lineBtn = document.createElement('button');
       lineBtn.type = 'button';
-      lineBtn.className = 'bu-line';
+      lineBtn.className = 'bu-line' + (segment.isInstrumental ? ' is-instrumental' : '');
       lineBtn.dataset.index = idx;
       lineBtn.dataset.start = segment.start;
       lineBtn.dataset.end = segment.end;
-      lineBtn.textContent = segment.text;
       lineBtn.title = `Przejdź do ${fmt(segment.start)}`;
+
+      if (segment.verse) {
+        const pill = document.createElement('span');
+        pill.className = 'bu-verse-pill';
+        pill.textContent = `W.${segment.verse}`;
+        lineBtn.appendChild(pill);
+      }
+      const textSpan = document.createElement('span');
+      textSpan.className = 'bu-line-text';
+      textSpan.textContent = segment.text;
+      lineBtn.appendChild(textSpan);
 
       lineBtn.addEventListener('click', () => {
         player()?.seekTo?.(segment.start, true);
@@ -806,9 +836,15 @@
       }
 
       if (statusEl) {
-        statusEl.textContent = hasSync
-          ? (activeMode === 'sync' ? '● Synchronizacja aktywna' : '○ Dostępna synchronizacja')
-          : '○ Pełny tekst UBG (bez znaczników czasu)';
+        if (hasSync) {
+          const isReview = syncData.status === 'SYNC_REVIEW';
+          const score = syncData.qualityScore ? ` (${Math.round(syncData.qualityScore * 100)}%)` : '';
+          statusEl.textContent = isReview ? `● Do weryfikacji${score}` : `● Zsynchronizowane AI${score}`;
+          statusEl.style.color = isReview ? '#fbbf24' : '#4ade80';
+        } else {
+          statusEl.textContent = '○ Pełny tekst UBG (bez znaczników czasu)';
+          statusEl.style.color = '#e2cc9a';
+        }
       }
 
       if (activeMode === 'sync' && syncData) {
@@ -936,6 +972,17 @@
     startChapterKaraoke(targetId, requestedMode);
   }
 
+  function downloadFormat(ext) {
+    if (!state.chapterId) return;
+    const url = `${KARAOKE_BASE}${encodeURIComponent(state.chapterId)}.${ext}`;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.chapterId}.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   // 7. GŁOSOWANIE TOP 100 & AUTHENTICATION
   async function getToken() {
     if (typeof window.CC_BU_GET_ID_TOKEN === 'function') {
@@ -1057,6 +1104,13 @@
     }
   }
 
+  // Obsługa powrotu na kartę przeglądarki
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && state.mode === 'sync') {
+      tickSync();
+    }
+  });
+
   // 8. GLOBALNE INTERFEJSY I PODPIĘCIE
   const originalZeroAtrap = window.openZeroAtrapModal;
   window.openZeroAtrapModal = function (which) {
@@ -1083,7 +1137,8 @@
     onBookSelect,
     onChapterSelect,
     loadChapterLyrics,
-    startChapterKaraoke
+    startChapterKaraoke,
+    downloadFormat
   };
 
 })();

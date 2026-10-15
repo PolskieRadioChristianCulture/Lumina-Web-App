@@ -289,7 +289,7 @@
     if (user?.uid) {
       await writeFavoriteToFirestore(user.uid, fav);
     }
-    showToast(`⭐ Dodano do Ulubionych: "${fav.title}"`);
+    showToast(`⭐ Dodano do Ulubionych: "${fav.title}"`, true);
     return fav;
   }
 
@@ -304,7 +304,7 @@
       await deleteFavoriteFromFirestore(user.uid, targetId);
     }
     if (removed) {
-      showToast(`Usunięto z Ulubionych: "${removed.title}"`);
+      showToast(`Usunięto z Ulubionych: "${removed.title}"`, false);
     }
     return targetId;
   }
@@ -396,7 +396,7 @@
   }
 
   // 6. Toast & Komunikat UI
-  function showToast(text) {
+  function showToast(text, isAdded) {
     let toast = document.getElementById('ccFavToast');
     if (!toast) {
       toast = document.createElement('div');
@@ -406,36 +406,44 @@
         bottom: 84px;
         left: 50%;
         transform: translateX(-50%) translateY(20px);
-        background: #11141c;
+        background: rgba(15, 20, 30, 0.95);
         color: #f1f5f9;
         border: 1px solid rgba(196, 163, 90, 0.45);
         padding: 10px 18px;
         border-radius: 9999px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(196, 163, 90, 0.2);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(196, 163, 90, 0.25);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 0.88rem;
         font-weight: 600;
         z-index: 9999999;
         opacity: 0;
-        pointer-events: none;
+        pointer-events: auto;
         transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         white-space: nowrap;
       `;
       document.body.appendChild(toast);
     }
-    toast.textContent = text;
+
+    let innerHtml = `<span>${safeEscape(text)}</span>`;
+    if (isAdded) {
+      innerHtml += `<a href="/moje-centrum" style="color:#ffd978; text-decoration:underline; font-weight:700; margin-left:4px; font-size:0.82rem;">Moje Centrum &rarr;</a>`;
+    }
+    toast.innerHTML = innerHtml;
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(-50%) translateY(0)';
-    setTimeout(() => {
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateX(-50%) translateY(20px)';
-    }, 2800);
+    }, 3200);
   }
 
-  // 7. Wstrzykiwanie Przycisków UI
+  // 7. Wstrzykiwanie Przycisków i Stylów UI
   function ensureStyles() {
     if (document.getElementById('cc-fav-styles')) return;
     const style = document.createElement('style');
@@ -485,6 +493,79 @@
         stroke: #c4a35a;
         transform: scale(1.1);
       }
+
+      /* ── Gwiazdka w Górnej Belce (Top Bar Star) ── */
+      .cc-topbar-fav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        border-radius: 12px;
+        border: 1px solid rgba(196, 163, 90, 0.35);
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #cbd5e1;
+        cursor: pointer;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        touch-action: manipulation;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        margin: 0 4px;
+      }
+      .cc-topbar-fav-btn:hover {
+        background: rgba(196, 163, 90, 0.18);
+        border-color: rgba(196, 163, 90, 0.7);
+        color: #ffd978;
+        transform: translateY(-1px);
+      }
+      .cc-topbar-fav-btn.is-active {
+        background: linear-gradient(135deg, rgba(196, 163, 90, 0.28), rgba(217, 119, 6, 0.22));
+        border-color: #c4a35a;
+        color: #ffd978;
+        box-shadow: 0 0 16px rgba(196, 163, 90, 0.38);
+      }
+      .cc-topbar-fav-btn svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), fill 0.2s ease, stroke 0.2s ease;
+      }
+      .cc-topbar-fav-btn:hover svg {
+        stroke: #c4a35a;
+        transform: scale(1.12);
+      }
+      .cc-topbar-fav-btn.is-active svg {
+        fill: #c4a35a;
+        stroke: #c4a35a;
+        transform: scale(1.12);
+        animation: ccStarPulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes ccStarPulse {
+        0% { transform: scale(0.8); }
+        50% { transform: scale(1.35); }
+        100% { transform: scale(1.12); }
+      }
+
+      /* Pływająca belka dla stron bez dedykowanego kontenera nawigacji */
+      .cc-floating-topbar-wrap {
+        position: fixed;
+        top: max(14px, env(safe-area-inset-top));
+        right: max(16px, env(safe-area-inset-right));
+        z-index: 99998;
+        display: flex;
+        align-items: center;
+        pointer-events: auto;
+      }
+
       /* Motyw Jasny */
       [data-theme="light"] .cc-fav-btn,
       [data-lumina-theme="light"] .cc-fav-btn {
@@ -504,6 +585,26 @@
         border-color: #d97706;
         color: #92400e;
       }
+      [data-theme="light"] .cc-topbar-fav-btn,
+      [data-lumina-theme="light"] .cc-topbar-fav-btn {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(196, 163, 90, 0.4);
+        color: #64748b;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      }
+      [data-theme="light"] .cc-topbar-fav-btn:hover,
+      [data-lumina-theme="light"] .cc-topbar-fav-btn:hover {
+        background: #fefce8;
+        border-color: #c4a35a;
+        color: #b45309;
+      }
+      [data-theme="light"] .cc-topbar-fav-btn.is-active,
+      [data-lumina-theme="light"] .cc-topbar-fav-btn.is-active {
+        background: #fef3c7;
+        border-color: #d97706;
+        color: #b45309;
+        box-shadow: 0 0 14px rgba(217, 119, 6, 0.25);
+      }
     `;
     document.head.appendChild(style);
   }
@@ -514,7 +615,7 @@
       if (isFav) {
         btn.classList.add('is-active');
         btn.setAttribute('aria-pressed', 'true');
-        btn.setAttribute('title', 'Usuń tę stronę z Ulubionych');
+        btn.setAttribute('title', 'Strona jest w Twoich Ulubionych (kliknij, aby usunąć)');
         const textSpan = btn.querySelector('.cc-fav-text');
         if (textSpan) textSpan.textContent = 'W Ulubionych';
       } else {
@@ -527,8 +628,86 @@
     });
   }
 
+  // 8. Wstrzykiwanie Gwiazdki w Górnej Belce (Top Bar Integration)
+  function injectTopBarFavoriteButton() {
+    if (document.getElementById('ccTopBarFavBtn')) return;
+    const path = window.location.pathname.toLowerCase();
+    // Bezpieczeństwo kanałów transmisyjnych LIVE i narzędzi operatorskich
+    if (/(?:live|stream|obs|embed|admin|cctv24)/i.test(path)) return;
+
+    const favBtn = document.createElement('button');
+    favBtn.type = 'button';
+    favBtn.id = 'ccTopBarFavBtn';
+    favBtn.className = 'cc-topbar-fav-btn cc-fav-btn';
+    favBtn.setAttribute('data-cc-favorite-toggle', 'true');
+    favBtn.setAttribute('aria-label', 'Dodaj tę stronę do Ulubionych');
+    favBtn.setAttribute('title', 'Dodaj tę stronę do Ulubionych');
+    favBtn.innerHTML = `
+      <svg class="cc-fav-star-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+    `;
+
+    const candidates = [
+      '.hub-nav-actions',                       // Moje Centrum CC (/moje-centrum)
+      '.lumina-nav-actions',                     // Portal LUMINA, Tablica, Profile (/lumina, /tablica, /lumina-profile)
+      '.site-header .nav-right',                 // Biblijne Uwielbienie (/BiblijneUwielbienie)
+      '.nav-right',                              // Ogólne belki nav-right
+      '#quickActionsMenu',                       // Strona Główna Radia CC (index.html)
+      '.header-right',                           // Nagłówek Radia CC
+      '.top-nav .nav-links',                     // Wyszukiwarka /szukaj
+      'header .nav-links',                       // Ogólne nagłówki
+      'header .nav-actions',                     // Ogólne akcje nagłówka
+      'header nav',                              // Ogólna nawigacja w headerze
+      'nav .nav-right',
+      'nav'
+    ];
+
+    let mounted = false;
+    for (const selector of candidates) {
+      const container = document.querySelector(selector);
+      if (container) {
+        if (selector === '.hub-nav-actions') {
+          favBtn.classList.add('hub-btn-icon');
+          container.insertBefore(favBtn, container.firstChild);
+        } else if (selector === '.site-header .nav-right') {
+          favBtn.classList.add('nav-icon-btn');
+          container.insertBefore(favBtn, container.firstChild);
+        } else if (selector === '#quickActionsMenu' || selector === '.header-right') {
+          container.insertBefore(favBtn, container.firstChild);
+        } else if (selector === '.lumina-nav-actions') {
+          container.insertBefore(favBtn, container.firstChild);
+        } else if (selector === '.top-nav .nav-links') {
+          const themeBtn = container.querySelector('#themeToggleBtn') || container.querySelector('.theme-toggle-btn');
+          if (themeBtn) {
+            container.insertBefore(favBtn, themeBtn);
+          } else {
+            container.appendChild(favBtn);
+          }
+        } else {
+          container.appendChild(favBtn);
+        }
+        mounted = true;
+        break;
+      }
+    }
+
+    // Fallback dla stron bez dedykowanego kontenera w górnej belce (np. SPA werset-dnia)
+    if (!mounted && document.body) {
+      let wrap = document.getElementById('ccFloatingTopBarWrap');
+      if (!wrap) {
+        wrap = document.createElement('div');
+        wrap.id = 'ccFloatingTopBarWrap';
+        wrap.className = 'cc-floating-topbar-wrap';
+        document.body.appendChild(wrap);
+      }
+      wrap.appendChild(favBtn);
+    }
+  }
+
   function wirePageElements() {
     ensureStyles();
+    injectTopBarFavoriteButton();
 
     // Rejestracja kliknięć we wszystkie przyciski [data-cc-favorite-toggle]
     document.addEventListener('click', (e) => {
@@ -555,9 +734,15 @@
         resolveFirebase().then(() => syncFromFirestore());
       }, 1000);
     }
+
+    // Druga próba wstrzyknięcia dla stron renderujących nagłówek asynchronicznie (np. SPA)
+    setTimeout(() => {
+      injectTopBarFavoriteButton();
+      updateButtonUI();
+    }, 600);
   }
 
-  // 8. Eksport do przestrzeni globalnej
+  // 9. Eksport do przestrzeni globalnej
   window.CCFavorites = {
     isFavorite,
     addFavorite,
@@ -571,7 +756,8 @@
     isHistoryEnabled,
     recordVisit: recordPageVisit,
     getPageMeta,
-    syncFromFirestore
+    syncFromFirestore,
+    injectTopBarButton: injectTopBarFavoriteButton
   };
 
   if (document.readyState === 'loading') {
@@ -581,3 +767,4 @@
   }
 
 })();
+
