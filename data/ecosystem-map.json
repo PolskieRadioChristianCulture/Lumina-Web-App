@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Moje Centrum CC & Ulubione CC: Wdrożenie uniwersalnej wtyczki ulubionych (/js/cc-favorites.js) z synchronizacją Firestore, prywatnego pulpitu Personal Hub (/moje-centrum) oraz dedykowanej zakładki na profilu LUMINA",
+      "date": "2026-10-15",
+      "agent": "A"
+    },
+    {
       "topic": "Biblijne Uwielbienie: Integracja modułu Karaoke ze 168 zsynchronizowanymi wersami GEN-001 oraz modułu głosowania TOP 100 w oparciu o Cloudflare D1 i LUMINA Auth",
       "date": "2026-10-15",
       "agent": "A"
@@ -2555,6 +2560,39 @@
         "mojabiblia",
         "akademia",
         "dzj"
+      ]
+    },
+    {
+      "id": "moje-centrum-cc",
+      "branchId": "lumina-spolecznosc",
+      "name": "Moje Centrum CC — Personal Hub",
+      "shortDesc": "Prywatny pulpit użytkownika zintegrowany z kontem LUMINA.",
+      "fullDesc": "Scentralizowany, osobisty pulpit zbierający ulubione strony, historię odwiedzin, postępy kursów Akademii, zapisane utwory Biblijnego Uwielbienia, zakładki MojejBiblii oraz skróty społeczności LUMINA.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/moje-centrum",
+      "status": "ready",
+      "lang": "pl",
+      "icon": "👑",
+      "category": "LUMINA & Społeczność",
+      "verifiedDate": "2026-10-15",
+      "keywords": [
+        "moje centrum",
+        "personal hub",
+        "ulubione",
+        "historia",
+        "pulpit",
+        "lumina",
+        "skróty",
+        "akademia",
+        "biblia"
+      ],
+      "connections": [
+        "lumina-portal",
+        "lumina-profile",
+        "lumina-tablica",
+        "akademia-cc",
+        "mojabiblia",
+        "biblijne-uwielbienie"
       ]
     }
   ]

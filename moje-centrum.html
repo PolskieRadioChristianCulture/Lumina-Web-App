@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Moje Centrum CC — Osobisty Pulpit Ekosystemu Christian Culture</title>
+    <meta name="description" content="Prywatny, zintegrowany pulpit użytkownika ekosystemu Christian Culture i LUMINA. Ulubione strony, zapisane utwory, postępy kursów i historia w jednym miejscu.">
+    <link rel="canonical" href="https://polskieradio.cc/moje-centrum">
+
+    <!-- Ikony & Fonty -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Stylistyka Premium Obsidian & Imperial Gold -->
+    <style>
+        :root {
+            --cc-bg: #090c10;
+            --cc-card: #12161f;
+            --cc-card-hover: #171d29;
+            --cc-border: rgba(196, 163, 90, 0.28);
+            --cc-border-subtle: rgba(255, 255, 255, 0.08);
+            --cc-gold: #c4a35a;
+            --cc-gold-hover: #dfc27e;
+            --cc-gold-muted: #8c733b;
+            --cc-gold-glow: rgba(196, 163, 90, 0.2);
+            --cc-text: #f1f5f9;
+            --cc-text-muted: #94a3b8;
+            --cc-text-dim: #64748b;
+            --cc-danger: #ef4444;
+            --cc-success: #10b981;
+            --cc-radius: 18px;
+            --cc-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65);
+        }
+
+        [data-theme="light"] {
+            --cc-bg: #f8fafc;
+            --cc-card: #ffffff;
+            --cc-card-hover: #f1f5f9;
+            --cc-border: rgba(180, 140, 50, 0.35);
+            --cc-border-subtle: rgba(0, 0, 0, 0.08);
+            --cc-gold: #a67c2e;
+            --cc-gold-hover: #8a6218;
+            --cc-gold-muted: #b48530;
+            --cc-gold-glow: rgba(196, 163, 90, 0.15);
+            --cc-text: #0f172a;
+            --cc-text-muted: #475569;
+            --cc-text-dim: #94a3b8;
+            --cc-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--cc-bg);
+            color: var(--cc-text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.5;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* ── Nawigacja Główna ── */
+        .hub-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: rgba(18, 22, 31, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--cc-border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        [data-theme="light"] .hub-navbar {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .hub-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .hub-brand-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--cc-gold);
+            background: #000;
+            object-fit: cover;
+        }
+        .hub-brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--cc-gold);
+            line-height: 1.15;
+        }
+        .hub-brand-sub {
+            font-size: 0.68rem;
+            color: var(--cc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .hub-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hub-btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--cc-border-subtle);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--cc-text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            text-decoration: none;
+            font-size: 1.05rem;
+        }
+        .hub-btn-icon:hover {
+            border-color: var(--cc-gold);
+            background: var(--cc-gold-glow);
+            color: var(--cc-gold);
+            transform: translateY(-1px);
+        }
+
+        /* ── Główny Kontener ── */
+        .hub-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+            flex: 1;
+        }
+
+        /* ── Hero Banner ── */
+        .hub-hero {
+            background: linear-gradient(135deg, rgba(196, 163, 90, 0.16) 0%, rgba(18, 22, 31, 0.85) 100%);
+            border: 1px solid var(--cc-border);
+            border-radius: var(--cc-radius);
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            box-shadow: var(--cc-shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        [data-theme="light"] .hub-hero {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.85) 0%, rgba(255, 255, 255, 0.95) 100%);
+        }
+
+        .hub-hero-info {
+            flex: 1;
+            min-width: 280px;
+        }
+        .hub-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--cc-gold);
+            margin-bottom: 8px;
+        }
+        .hub-hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--cc-text);
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+        .hub-hero-tagline {
+            font-size: 1rem;
+            color: var(--cc-text-muted);
+            font-weight: 400;
+        }
+
+        /* Profil / Tożsamość */
+        .hub-user-badge-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid var(--cc-border);
+        }
+        [data-theme="light"] .hub-user-badge-card {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .hub-avatar-img {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 2px solid var(--cc-gold);
+            object-fit: cover;
+            background: #1e2430;
+        }
+        .hub-user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+        .hub-user-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--cc-text);
+        }
+        .hub-user-role {
+            font-size: 0.78rem;
+            color: var(--cc-gold);
+            font-weight: 600;
+        }
+        .hub-user-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .hub-pill-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--cc-border-subtle);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--cc-text);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .hub-pill-action:hover {
+            border-color: var(--cc-gold);
+            background: var(--cc-gold-glow);
+            color: var(--cc-gold);
+        }
+
+        /* ── Siatka Modułów (6 Filarów) ── */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .hub-card {
+            background: var(--cc-card);
+            border: 1px solid var(--cc-border);
+            border-radius: var(--cc-radius);
+            box-shadow: var(--cc-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+        }
+        .hub-card:hover {
+            border-color: var(--cc-gold);
+            transform: translateY(-2px);
+        }
+
+        .hub-card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--cc-border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .hub-card-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hub-card-icon {
+            font-size: 1.35rem;
+            color: var(--cc-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hub-card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cc-text);
+            line-height: 1.2;
+        }
+        .hub-card-subtitle {
+            font-size: 0.78rem;
+            color: var(--cc-text-muted);
+        }
+        .hub-card-badge {
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            background: var(--cc-gold-glow);
+            border: 1px solid var(--cc-border);
+            color: var(--cc-gold);
+        }
+
+        .hub-card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Pozycje listy w kartach */
+        .hub-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--cc-border-subtle);
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.16s ease;
+            gap: 12px;
+            min-height: 44px;
+        }
+        .hub-item-row:hover {
+            background: var(--cc-gold-glow);
+            border-color: var(--cc-border);
+            transform: translateX(4px);
+        }
+        [data-theme="light"] .hub-item-row {
+            background: #f8fafc;
+        }
+        .hub-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+        .hub-item-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .hub-item-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .hub-item-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--cc-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .hub-item-desc {
+            font-size: 0.76rem;
+            color: var(--cc-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .hub-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .hub-btn-delete {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--cc-text-dim);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            touch-action: manipulation;
+        }
+        .hub-btn-delete:hover {
+            color: var(--cc-danger);
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        /* Pusty stan */
+        .hub-empty-state {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--cc-text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .hub-empty-icon {
+            font-size: 2.2rem;
+            color: var(--cc-gold-muted);
+            margin-bottom: 4px;
+        }
+        .hub-empty-text {
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+        .hub-empty-cta {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            padding: 6px 14px;
+            border-radius: 10px;
+            background: var(--cc-gold-glow);
+            border: 1px solid var(--cc-border);
+            color: var(--cc-gold);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .hub-empty-cta:hover {
+            background: var(--cc-gold);
+            color: #000;
+        }
+
+        /* Pasek dolny karty */
+        .hub-card-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--cc-border-subtle);
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .hub-card-link {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--cc-gold);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            padding: 0 4px;
+            touch-action: manipulation;
+        }
+        .hub-card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Pasek Postępu Akademii */
+        .hub-progress-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin: 6px 0 10px;
+        }
+        [data-theme="light"] .hub-progress-bar-wrap {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        .hub-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c4a35a, #f59e0b);
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 640px) {
+            .hub-container {
+                padding: 16px 12px 60px;
+            }
+            .hub-hero {
+                padding: 20px 16px;
+                gap: 16px;
+            }
+            .hub-hero-title {
+                font-size: 1.6rem;
+            }
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Nawigacja Główna ── -->
+    <header class="hub-navbar">
+        <a href="/" class="hub-nav-brand" title="Powrót do strony głównej PolskieRadio.cc">
+            <img src="/images/logo-192.png" alt="Christian Culture" class="hub-brand-logo" onerror="this.src='/images/logo.png'">
+            <div>
+                <div class="hub-brand-title">Christian Culture</div>
+                <div class="hub-brand-sub">Moje Centrum CC · Personal Hub</div>
+            </div>
+        </a>
+
+        <div class="hub-nav-actions">
+            <button type="button" class="hub-btn-icon" id="themeToggleBtn" aria-label="Przełącz motyw" title="Zmień motyw">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="/szukaj" class="hub-btn-icon" aria-label="Wyszukiwarka @w" title="Wyszukiwarka @w (Ctrl+K)">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+            <a href="/lumina" class="hub-btn-icon" aria-label="Portal LUMINA" title="Portal LUMINA">
+                <i class="fa-solid fa-users"></i>
+            </a>
+            <a href="/player" class="hub-btn-icon" aria-label="Radio CC Player" title="Odtwarzacz Radia CC">
+                <i class="fa-solid fa-radio"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- ── Główna Zawartość ── -->
+    <main class="hub-container">
+
+        <!-- ── Hero Banner ── -->
+        <section class="hub-hero">
+            <div class="hub-hero-info">
+                <div class="hub-hero-badge">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>Ekosystem Christian Culture · LUMINA 2026</span>
+                </div>
+                <h1 class="hub-hero-title">Moje Centrum CC</h1>
+                <p class="hub-hero-tagline">Twoja przestrzeń. Twoja droga. Twoje wartości.</p>
+            </div>
+
+            <div class="hub-user-badge-card" id="hubUserCard">
+                <img src="/avatar_cezary_official.jpg" alt="Awatar profilu" class="hub-avatar-img" id="hubUserAvatar">
+                <div class="hub-user-meta">
+                    <span class="hub-user-name" id="hubUserName">Gość Ekosystemu</span>
+                    <span class="hub-user-role" id="hubUserRole">LUMINA Community ✨</span>
+                    <div class="hub-user-actions">
+                        <a href="/lumina-tablica.html" class="hub-pill-action" id="hubProfileBtn">
+                            <i class="fa-solid fa-user"></i> <span>Mój Profil</span>
+                        </a>
+                        <button type="button" class="hub-pill-action" id="hubAuthBtn">
+                            <i class="fa-solid fa-right-to-bracket"></i> <span>Zaloguj</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Siatka 6 Strategicznych Modułów ── -->
+        <div class="hub-grid" id="hubGrid">
+
+            <!-- 1. Ulubione strony -->
+            <article class="hub-card" id="cardFavorites">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-star"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Ulubione strony</h2>
+                            <p class="hub-card-subtitle">Twoje zapisane miejsca w całym ekosystemie CC</p>
+                        </div>
+                    </div>
+                    <span class="hub-card-badge" id="favCountBadge">0 stron</span>
+                </header>
+                <div class="hub-card-body" id="favoritesListContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <span style="font-size:0.78rem;color:var(--cc-text-muted);">Synchronizacja Firestore</span>
+                    <a href="/szukaj" class="hub-card-link">Odkrywaj nowe strony &rarr;</a>
+                </footer>
+            </article>
+
+            <!-- 2. Ostatnio odwiedzane -->
+            <article class="hub-card" id="cardRecent">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Ostatnio odwiedzane</h2>
+                            <p class="hub-card-subtitle">Szybki powrót do przeglądanych treści</p>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-pill-action" id="clearHistoryBtn" title="Wyczyść historię odwiedzin">
+                        <i class="fa-solid fa-trash-can"></i> <span>Wyczyść</span>
+                    </button>
+                </header>
+                <div class="hub-card-body" id="historyListContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <label style="font-size:0.78rem;color:var(--cc-text-muted);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                        <input type="checkbox" id="historyToggleCheckbox" checked> Historia aktywna
+                    </label>
+                    <span style="font-size:0.75rem;color:var(--cc-text-dim);">Prywatne na urządzeniu</span>
+                </footer>
+            </article>
+
+            <!-- 3. Moja muzyka -->
+            <article class="hub-card" id="cardMusic">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-music"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Moja muzyka</h2>
+                            <p class="hub-card-subtitle">Biblijne Uwielbienie & Stacje Radia CC</p>
+                        </div>
+                    </div>
+                    <span class="hub-card-badge" id="musicBadge">Radio Live</span>
+                </header>
+                <div class="hub-card-body" id="musicContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <a href="/biblijne-uwielbienie" class="hub-card-link">Biblijne Uwielbienie &rarr;</a>
+                    <a href="/player" class="hub-card-link">Odtwarzacz Spotify-Style &rarr;</a>
+                </footer>
+            </article>
+
+            <!-- 4. Moja Akademia -->
+            <article class="hub-card" id="cardAcademy">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Moja Akademia</h2>
+                            <p class="hub-card-subtitle">Kurs Codzienny & Kursy Biblijne</p>
+                        </div>
+                    </div>
+                    <span class="hub-card-badge" id="academyProgressBadge">Dzień 15</span>
+                </header>
+                <div class="hub-card-body" id="academyContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <a href="/kursy/kurscodzienny/dzien-15.html" class="hub-card-link" id="todayLessonLink">Lekcja na dziś &rarr;</a>
+                    <a href="/akademia" class="hub-card-link">Katalog Kursów &rarr;</a>
+                </footer>
+            </article>
+
+            <!-- 5. Moja Biblia -->
+            <article class="hub-card" id="cardBible">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-book-bible"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Moja Biblia</h2>
+                            <p class="hub-card-subtitle">Czytanie, słuchanie i zakładki</p>
+                        </div>
+                    </div>
+                    <span class="hub-card-badge">UBG / Strong</span>
+                </header>
+                <div class="hub-card-body" id="bibleContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <a href="/werset-dnia" class="hub-card-link">Mój Werset Dnia &rarr;</a>
+                    <a href="/mojabiblia" class="hub-card-link">Interlinearna MojaBiblia &rarr;</a>
+                </footer>
+            </article>
+
+            <!-- 6. Moja społeczność -->
+            <article class="hub-card" id="cardCommunity">
+                <header class="hub-card-header">
+                    <div class="hub-card-title-wrap">
+                        <span class="hub-card-icon"><i class="fa-solid fa-comments"></i></span>
+                        <div>
+                            <h2 class="hub-card-title">Moja społeczność</h2>
+                            <p class="hub-card-subtitle">LUMINA, relacje i komunikator LumiMess</p>
+                        </div>
+                    </div>
+                    <span class="hub-card-badge">LUMINA CC</span>
+                </header>
+                <div class="hub-card-body" id="communityContainer">
+                    <!-- Renderowane dynamicznie -->
+                </div>
+                <footer class="hub-card-footer">
+                    <a href="/mess" class="hub-card-link">Czat LumiMess &rarr;</a>
+                    <a href="/lumina-tablica.html" class="hub-card-link">Tablica Społeczności &rarr;</a>
+                </footer>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- ── Skrypty Integracyjne Ekosystemu ── -->
+    <script src="/js/cc-favorites.js" defer></script>
+    <script src="/components/cc-omni-search.js?v=20261015_w" defer></script>
+    <script src="/js/cc-back-to-top.js?v=20261013_col2" defer></script>
+
+    <!-- Kontroler Pulpitu Moje Centrum CC -->
+    <script>
+        (function () {
+            'use strict';
+
+            // 1. Obsługa motywu jasny / ciemny
+            const themeBtn = document.getElementById('themeToggleBtn');
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                document.body.setAttribute('data-theme', theme);
+                if (themeBtn) {
+                    themeBtn.innerHTML = theme === 'light' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+                }
+                try { localStorage.setItem('lumina_theme', theme); } catch (e) {}
+            }
+
+            const savedTheme = localStorage.getItem('lumina_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            applyTheme(savedTheme);
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+                    applyTheme(current === 'dark' ? 'light' : 'dark');
+                });
+            }
+
+            // 2. Integracja profilu użytkownika
+            function initUserProfile() {
+                const nameEl = document.getElementById('hubUserName');
+                const roleEl = document.getElementById('hubUserRole');
+                const avatarEl = document.getElementById('hubUserAvatar');
+                const authBtn = document.getElementById('hubAuthBtn');
+                const profileBtn = document.getElementById('hubProfileBtn');
+
+                let user = null;
+                let profile = null;
+
+                try {
+                    const rawU = localStorage.getItem('lumina_current_user');
+                    const rawP = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile');
+                    if (rawU) user = JSON.parse(rawU);
+                    if (rawP) profile = JSON.parse(rawP);
+                } catch (e) {}
+
+                if (user && profile) {
+                    if (nameEl) nameEl.textContent = profile.name || user.displayName || 'Członek LUMINA';
+                    if (roleEl) roleEl.textContent = profile.church || profile.job || 'Aktywny Członek Społeczności ✨';
+                    if (avatarEl && profile.avatar) avatarEl.src = profile.avatar;
+                    if (authBtn) {
+                        authBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> <span>Wyloguj</span>';
+                        authBtn.onclick = () => {
+                            if (window.LuminaDB?.logoutUser) window.LuminaDB.logoutUser();
+                            localStorage.removeItem('lumina_current_user');
+                            localStorage.removeItem('lumina_current_user_profile');
+                            window.location.reload();
+                        };
+                    }
+                    if (profileBtn) {
+                        const slug = profile.slug || user.uid;
+                        profileBtn.href = `/lumina-profile.html?u=${encodeURIComponent(slug)}`;
+                    }
+                } else {
+                    if (nameEl) nameEl.textContent = 'Witaj w Moim Centrum CC';
+                    if (roleEl) roleEl.textContent = 'Zaloguj się, aby zsynchronizować dane';
+                    if (authBtn) {
+                        authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> <span>Zaloguj</span>';
+                        authBtn.onclick = () => {
+                            if (window.LuminaDB?.loginWithGoogle) {
+                                window.LuminaDB.loginWithGoogle().then(() => window.location.reload());
+                            } else {
+                                window.location.href = '/lumina';
+                            }
+                        };
+                    }
+                }
+            }
+
+            // 3. Renderowanie Ulubionych Stron
+            function renderFavorites() {
+                const container = document.getElementById('favoritesListContainer');
+                const badge = document.getElementById('favCountBadge');
+                if (!container) return;
+
+                const favs = window.CCFavorites ? window.CCFavorites.getFavorites() : [];
+                if (badge) badge.textContent = `${favs.length} ${favs.length === 1 ? 'strona' : (favs.length >= 2 && favs.length <= 4 ? 'strony' : 'stron')}`;
+
+                if (!favs.length) {
+                    container.innerHTML = `
+                        <div class="hub-empty-state">
+                            <span class="hub-empty-icon"><i class="fa-regular fa-star"></i></span>
+                            <div class="hub-empty-text">Nie masz jeszcze ulubionych stron w ekosystemie.<br>Kliknij gwiazdkę na dowolnej podstronie CC, aby ją zapisać.</div>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px;">
+                                <a href="/werset-dnia" class="hub-empty-cta">✨ Werset Dnia</a>
+                                <a href="/mojabiblia" class="hub-empty-cta">📖 MojaBiblia</a>
+                                <a href="/akademia" class="hub-empty-cta">🎓 Akademia</a>
+                                <a href="/vod" class="hub-empty-cta">🎬 Kino VOD</a>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = favs.map(f => `
+                    <div class="hub-item-row">
+                        <a href="${f.url}" class="hub-item-left">
+                            <span class="hub-item-icon">${f.icon || '🌟'}</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">${escapeHtml(f.title)}</span>
+                                <span class="hub-item-desc">${escapeHtml(f.category || 'Podstrona CC')}</span>
+                            </div>
+                        </a>
+                        <div class="hub-item-actions">
+                            <button type="button" class="hub-btn-delete" title="Usuń z ulubionych" onclick="window.removeHubFav('${f.id}')" aria-label="Usuń ${escapeHtml(f.title)} z ulubionych">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            window.removeHubFav = async function(id) {
+                if (window.CCFavorites) {
+                    await window.CCFavorites.removeFavorite(id);
+                    renderFavorites();
+                }
+            };
+
+            // 4. Renderowanie Historii Odwiedzin
+            function renderHistory() {
+                const container = document.getElementById('historyListContainer');
+                const checkbox = document.getElementById('historyToggleCheckbox');
+                if (!container) return;
+
+                const enabled = window.CCFavorites ? window.CCFavorites.isHistoryEnabled() : true;
+                if (checkbox) checkbox.checked = enabled;
+
+                if (!enabled) {
+                    container.innerHTML = `
+                        <div class="hub-empty-state">
+                            <span class="hub-empty-icon"><i class="fa-solid fa-pause"></i></span>
+                            <div class="hub-empty-text">Rejestrowanie historii odwiedzin jest wyłączone.<br>Możesz włączyć je poniżej, jeśli chcesz szybko wracać do czytanych stron.</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const history = window.CCFavorites ? window.CCFavorites.getVisitHistory() : [];
+                if (!history.length) {
+                    container.innerHTML = `
+                        <div class="hub-empty-state">
+                            <span class="hub-empty-icon"><i class="fa-regular fa-clock"></i></span>
+                            <div class="hub-empty-text">Brak zarejestrowanych ostatnich stron.<br>Podczas przeglądania ekosystemu Twoje ostatnie miejsca pojawią się tutaj.</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = history.slice(0, 5).map(h => `
+                    <a href="${h.url}" class="hub-item-row">
+                        <div class="hub-item-left">
+                            <span class="hub-item-icon">${h.icon || '⏱️'}</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">${escapeHtml(h.title)}</span>
+                                <span class="hub-item-desc">${escapeHtml(h.category || 'Odwiedzono')}</span>
+                            </div>
+                        </div>
+                        <span style="font-size:0.75rem;color:var(--cc-text-dim);"><i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                `).join('');
+            }
+
+            // 5. Renderowanie Mojej Muzyki
+            function renderMusic() {
+                const container = document.getElementById('musicContainer');
+                if (!container) return;
+
+                let buFavs = [];
+                try {
+                    const raw = localStorage.getItem('cc_bu_favs');
+                    if (raw) buFavs = JSON.parse(raw);
+                } catch (e) {}
+
+                let html = '';
+
+                // Ostatnia stacja
+                html += `
+                    <div class="hub-item-row" style="border-left: 3px solid var(--cc-gold);">
+                        <a href="/player" class="hub-item-left">
+                            <span class="hub-item-icon">📻</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">Radio Christian Culture</span>
+                                <span class="hub-item-desc">Transmisja 24/7 · Słowo, muzyka i audycje</span>
+                            </div>
+                        </a>
+                        <a href="/player" class="hub-pill-action"><i class="fa-solid fa-play"></i> Słuchaj</a>
+                    </div>
+                `;
+
+                if (buFavs.length > 0) {
+                    html += `<div style="font-size:0.8rem;font-weight:700;color:var(--cc-gold);margin-top:6px;">Ulubione w Biblijnym Uwielbieniu:</div>`;
+                    buFavs.slice(0, 3).forEach(chapId => {
+                        html += `
+                            <a href="/biblijne-uwielbienie?chapter=${encodeURIComponent(chapId)}" class="hub-item-row">
+                                <div class="hub-item-left">
+                                    <span class="hub-item-icon">🎵</span>
+                                    <div class="hub-item-text">
+                                        <span class="hub-item-title">Rozdział ${escapeHtml(chapId)}</span>
+                                        <span class="hub-item-desc">Biblijne Uwielbienie · Pieśń i Słowo</span>
+                                    </div>
+                                </div>
+                                <span style="font-size:0.78rem;color:var(--cc-gold);"><i class="fa-solid fa-play"></i></span>
+                            </a>
+                        `;
+                    });
+                } else {
+                    html += `
+                        <div style="font-size:0.82rem;color:var(--cc-text-muted);padding:8px 0;">
+                            Możesz dodawać utwory do ulubionych w <a href="/biblijne-uwielbienie" style="color:var(--cc-gold);text-decoration:underline;">Biblijnym Uwielbieniu</a> oraz głosować na TOP 100.
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = html;
+            }
+
+            // 6. Renderowanie Mojej Akademii
+            function renderAcademy() {
+                const container = document.getElementById('academyContainer');
+                if (!container) return;
+
+                let completedLessons = 0;
+                try {
+                    const localIds = JSON.parse(localStorage.getItem('lumina_academy_local_completed') || localStorage.getItem('lumina_completed_ids') || '[]');
+                    completedLessons = localIds.length;
+                } catch (e) {}
+
+                const progressPct = Math.min(100, Math.round((completedLessons / 28) * 100));
+
+                container.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+                        <span style="font-weight:600;">Kurs Biblijne Zasady Wiary (28 Lekcji)</span>
+                        <span style="color:var(--cc-gold);font-weight:700;">${completedLessons} / 28 (${progressPct}%)</span>
+                    </div>
+                    <div class="hub-progress-bar-wrap">
+                        <div class="hub-progress-bar-fill" style="width: ${progressPct}%"></div>
+                    </div>
+                    <a href="/kursy/kurscodzienny/dzien-15.html" class="hub-item-row">
+                        <div class="hub-item-left">
+                            <span class="hub-item-icon">📖</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">Kurs Codzienny — Dzień 15</span>
+                                <span class="hub-item-desc">Z Biblią za Pan Brat · Dzisiejsza lekcja</span>
+                            </div>
+                        </div>
+                        <span class="hub-pill-action"><i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                `;
+            }
+
+            // 7. Renderowanie Mojej Biblii
+            function renderBible() {
+                const container = document.getElementById('bibleContainer');
+                if (!container) return;
+
+                let bookmarks = [];
+                try {
+                    const raw = localStorage.getItem('mb_bookmarks');
+                    if (raw) bookmarks = JSON.parse(raw);
+                } catch (e) {}
+
+                let html = `
+                    <a href="/werset-dnia" class="hub-item-row">
+                        <div class="hub-item-left">
+                            <span class="hub-item-icon">✨</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">Mój Werset Dnia</span>
+                                <span class="hub-item-desc">Generator kart ze Słowem Bożym i obietnicami</span>
+                            </div>
+                        </div>
+                        <span style="font-size:0.8rem;color:var(--cc-gold);"><i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                `;
+
+                if (bookmarks.length > 0) {
+                    html += `<div style="font-size:0.8rem;font-weight:700;color:var(--cc-gold);margin-top:6px;">Twoje Zakładki:</div>`;
+                    bookmarks.slice(0, 3).forEach(bm => {
+                        html += `
+                            <a href="/mojabiblia?ref=${encodeURIComponent(bm.ref || bm)}" class="hub-item-row">
+                                <div class="hub-item-left">
+                                    <span class="hub-item-icon">🔖</span>
+                                    <div class="hub-item-text">
+                                        <span class="hub-item-title">${escapeHtml(bm.ref || bm)}</span>
+                                        <span class="hub-item-desc">Przejdź do wersetu w MojejBiblii</span>
+                                    </div>
+                                </div>
+                                <span style="font-size:0.75rem;color:var(--cc-text-dim);"><i class="fa-solid fa-arrow-right"></i></span>
+                            </a>
+                        `;
+                    });
+                }
+
+                container.innerHTML = html;
+            }
+
+            // 8. Renderowanie Społeczności
+            function renderCommunity() {
+                const container = document.getElementById('communityContainer');
+                if (!container) return;
+
+                container.innerHTML = `
+                    <a href="/lumina-tablica.html" class="hub-item-row">
+                        <div class="hub-item-left">
+                            <span class="hub-item-icon">🌐</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">Tablica Społeczności LUMINA</span>
+                                <span class="hub-item-desc">Świadectwa, intencje modlitewne i budowanie wiary</span>
+                            </div>
+                        </div>
+                        <span class="hub-pill-action">Otwórz</span>
+                    </a>
+                    <a href="/mess" class="hub-item-row">
+                        <div class="hub-item-left">
+                            <span class="hub-item-icon">💬</span>
+                            <div class="hub-item-text">
+                                <span class="hub-item-title">LumiMess — Komunikator</span>
+                                <span class="hub-item-desc">Bezpieczne rozmowy prywatne i czat ze Sztabem CC</span>
+                            </div>
+                        </div>
+                        <span class="hub-pill-action">Rozmowy</span>
+                    </a>
+                `;
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+
+            // Inicjalizacja całego pulpitu
+            document.addEventListener('DOMContentLoaded', () => {
+                initUserProfile();
+                renderFavorites();
+                renderHistory();
+                renderMusic();
+                renderAcademy();
+                renderBible();
+                renderCommunity();
+
+                // Reakcja na zmiany w ulubionych
+                if (window.CCFavorites?.onFavoritesChange) {
+                    window.CCFavorites.onFavoritesChange(() => {
+                        renderFavorites();
+                    });
+                }
+
+                // Obsługa przełącznika historii
+                const histCheck = document.getElementById('historyToggleCheckbox');
+                if (histCheck) {
+                    histCheck.addEventListener('change', (e) => {
+                        if (window.CCFavorites) {
+                            window.CCFavorites.setHistoryEnabled(e.target.checked);
+                            renderHistory();
+                        }
+                    });
+                }
+
+                // Obsługa czyszczenia historii
+                const clearHistBtn = document.getElementById('clearHistoryBtn');
+                if (clearHistBtn) {
+                    clearHistBtn.addEventListener('click', () => {
+                        if (window.CCFavorites) {
+                            window.CCFavorites.clearVisitHistory();
+                            renderHistory();
+                        }
+                    });
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

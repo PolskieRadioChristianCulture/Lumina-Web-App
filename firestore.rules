@@ -169,6 +169,21 @@ service cloud.firestore {
       allow read: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
       allow create, update: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
       allow delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+
+      // Ulubione CC — prywatna lista stron użytkownika (synchronizacja między urządzeniami)
+      match /favorites/{favId} {
+        allow read, write, delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+      }
+
+      // Moje Centrum CC — prywatny pulpit, kafelki i konfiguracja Personal Hub
+      match /personal_hub/{docId} {
+        allow read, write, delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+      }
+
+      // Historia odwiedzin — prywatny rejestr za zgodą użytkownika
+      match /history/{histId} {
+        allow read, write, delete: if isMasterAdmin() || (isMember() && request.auth.uid == userId);
+      }
     }
 
     match /user_posts/{postId} {

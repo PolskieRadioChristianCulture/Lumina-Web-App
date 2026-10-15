@@ -3477,6 +3477,7 @@
                 <button class="tab-btn" onclick="switchTab('tab-photos', this)" title="Galeria Zdjęć"><i class="fa-solid fa-images"></i> <span class="tab-text">Galeria Zdjęć</span></button>
                 <button class="tab-btn" onclick="switchTab('tab-faith', this)" title="Wartości & Wiara"><i class="fa-solid fa-book-bible"></i> <span class="tab-text">Wartości & Wiara</span></button>
                 <button class="tab-btn" onclick="switchTab('tab-badges', this)" title="Odznaki"><i class="fa-solid fa-medal" style="color:#f59e0b;"></i> <span class="tab-text">Odznaki</span></button>
+                <button class="tab-btn" id="tabBtnPersonalHub" onclick="switchTab('tab-personal-hub', this)" title="Moje Centrum CC" style="display:none;"><i class="fa-solid fa-crown" style="color:var(--cc-gold, #c4a35a);"></i> <span class="tab-text">Moje Centrum CC</span></button>
             </div>
         </section>
 
@@ -3711,6 +3712,55 @@
                 <!-- Tab: Wyróżnienia & Odznaki 3D -->
                 <div id="tab-badges" class="tab-content-pane" style="display:none;">
                     <div id="tab3DBadgesContainer"></div>
+                </div>
+
+                <!-- Tab: Moje Centrum CC (Prywatny Pulpit Właściciela Konta) -->
+                <div id="tab-personal-hub" class="tab-content-pane" style="display:none;">
+                    <div style="background:linear-gradient(135deg, rgba(196,163,90,0.12), rgba(15,23,42,0.6)); border:1.5px solid rgba(196,163,90,0.35); border-radius:18px; padding:20px; margin-bottom:20px; box-shadow:0 8px 30px rgba(0,0,0,0.35);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+                            <div>
+                                <span style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#c4a35a; font-weight:800; background:rgba(196,163,90,0.16); padding:4px 10px; border-radius:999px;">
+                                    <i class="fa-solid fa-lock"></i> Prywatny Pulpit
+                                </span>
+                                <h3 style="font-family:'Outfit',sans-serif; font-size:1.4rem; color:#fff; margin:6px 0 2px 0;">Moje Centrum CC</h3>
+                                <p style="font-size:0.85rem; color:#94a3b8; margin:0;">Zarządzaj swoimi ulubionymi stronami, historią oraz osobistymi skrótami ekosystemu.</p>
+                            </div>
+                            <a href="/moje-centrum" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg, #c4a35a, #8c7335); color:#0b0d12; font-weight:800; font-size:0.86rem; text-decoration:none; box-shadow:0 4px 14px rgba(196,163,90,0.3); min-height:44px;">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Pełny Pulpit Osobisty
+                            </a>
+                        </div>
+
+                        <!-- Mini Ulubione & Historia Preview -->
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:16px;">
+                            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:16px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                    <h4 style="font-size:0.95rem; color:#f1f5f9; margin:0; display:flex; align-items:center; gap:8px;">
+                                        <i class="fa-solid fa-star" style="color:#eab308;"></i> Ulubione strony (<span id="profileFavCount">0</span>)
+                                    </h4>
+                                    <button type="button" onclick="renderProfilePersonalHubData()" title="Odśwież ulubione" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.85rem; min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;">
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </button>
+                                </div>
+                                <div id="profileFavList" style="display:flex; flex-direction:column; gap:8px;">
+                                    <div style="font-size:0.82rem; color:#64748b; padding:12px; text-align:center;">Ładowanie Twoich ulubionych...</div>
+                                </div>
+                            </div>
+
+                            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:16px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                    <h4 style="font-size:0.95rem; color:#f1f5f9; margin:0; display:flex; align-items:center; gap:8px;">
+                                        <i class="fa-solid fa-clock-rotate-left" style="color:#38bdf8;"></i> Ostatnio odwiedzane
+                                    </h4>
+                                    <button type="button" onclick="if(window.CCFavorites){window.CCFavorites.clearVisitHistory(); renderProfilePersonalHubData();}" title="Wyczyść historię" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.75rem; font-weight:700; min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;">
+                                        Wyczyść
+                                    </button>
+                                </div>
+                                <div id="profileHistoryList" style="display:flex; flex-direction:column; gap:8px;">
+                                    <div style="font-size:0.82rem; color:#64748b; padding:12px; text-align:center;">Ładowanie historii...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </section>
@@ -5999,6 +6049,19 @@
 
             isPersonalOwner = isSelf;
             isOwnerMode = isMaster || isSelf;
+
+            const personalHubBtn = document.getElementById('tabBtnPersonalHub');
+            if (personalHubBtn) {
+                personalHubBtn.style.display = isPersonalOwner ? 'inline-flex' : 'none';
+            }
+            if (!isPersonalOwner) {
+                const curActivePane = document.getElementById('tab-personal-hub');
+                if (curActivePane && curActivePane.style.display !== 'none') {
+                    switchTab('tab-feed', document.querySelector('.tab-btn'));
+                }
+            } else {
+                renderProfilePersonalHubData();
+            }
 
             if (isOwnerMode) {
                 document.body.classList.add('owner-mode-active');
@@ -8489,6 +8552,49 @@
             const target = document.getElementById(tabId);
             if (target) target.style.display = 'block';
             if (btn) btn.classList.add('active');
+            if (tabId === 'tab-personal-hub') {
+                renderProfilePersonalHubData();
+            }
+        }
+
+        function renderProfilePersonalHubData() {
+            if (!window.CCFavorites) return;
+            const favs = window.CCFavorites.getFavorites();
+            const favCountEl = document.getElementById('profileFavCount');
+            const favListEl = document.getElementById('profileFavList');
+            if (favCountEl) favCountEl.textContent = favs.length;
+            if (favListEl) {
+                if (favs.length === 0) {
+                    favListEl.innerHTML = '<div style="font-size:0.82rem; color:#94a3b8; text-align:center; padding:12px;">Nie dodałeś jeszcze żadnej strony do ulubionych. Użyj przycisku gwiazdki na dowolnej podstronie ekosystemu! ⭐</div>';
+                } else {
+                    favListEl.innerHTML = favs.slice(0, 5).map(f => `
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 12px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+                            <a href="${f.url}" style="color:#e2e8f0; font-size:0.85rem; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                <i class="fa-solid fa-star" style="color:#eab308; font-size:0.8rem;"></i>
+                                <span style="overflow:hidden; text-overflow:ellipsis;">${f.title || f.url}</span>
+                            </a>
+                            <button type="button" onclick="window.CCFavorites.removeFavorite('${f.id}').then(()=>renderProfilePersonalHubData());" title="Usuń z ulubionych" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.8rem; padding:4px 8px; min-width:32px; min-height:32px; display:inline-flex; align-items:center; justify-content:center;">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `).join('') + (favs.length > 5 ? `<a href="/moje-centrum" style="font-size:0.78rem; color:#c4a35a; text-align:center; padding:6px; text-decoration:none; font-weight:700;">Zobacz wszystkie (${favs.length}) &rarr;</a>` : '');
+                }
+            }
+
+            const hist = window.CCFavorites.getVisitHistory();
+            const histListEl = document.getElementById('profileHistoryList');
+            if (histListEl) {
+                if (hist.length === 0) {
+                    histListEl.innerHTML = '<div style="font-size:0.82rem; color:#94a3b8; text-align:center; padding:12px;">Brak historii odwiedzin. Historia jest w 100% prywatna i zapisywana lokalnie. ⏱️</div>';
+                } else {
+                    histListEl.innerHTML = hist.slice(0, 5).map(h => `
+                        <a href="${h.url}" style="display:flex; align-items:center; gap:8px; padding:8px 12px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid rgba(255,255,255,0.05); color:#cbd5e1; font-size:0.82rem; text-decoration:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                            <i class="fa-solid fa-clock" style="color:#38bdf8; font-size:0.75rem;"></i>
+                            <span style="overflow:hidden; text-overflow:ellipsis;">${h.title || h.url}</span>
+                        </a>
+                    `).join('') + (hist.length > 5 ? `<a href="/moje-centrum" style="font-size:0.78rem; color:#38bdf8; text-align:center; padding:6px; text-decoration:none; font-weight:700;">Przejdź do pełnej historii &rarr;</a>` : '');
+                }
+            }
         }
 
         let profileChatUnsubscribe = null;
@@ -11382,5 +11488,6 @@
         <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
     <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
+    <script src="/js/cc-favorites.js" defer></script>
 </body>
 </html>
