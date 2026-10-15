@@ -27,7 +27,7 @@ const BLOCKED_EXTENSIONS = new Set([
 const REQUIRED_FILES = [
   '_headers', '_redirects', '_worker.js', 'firebase-messaging-sw.js', 'index.html',
   'lumina.html', 'lumina-tablica.html', 'manifest-lumina.json', 'robots.txt',
-  'js/cc-back-to-top.js',
+  'js/cc-back-to-top.js', 'components/cc-omni-search.js',
 ];
 const SECRET_PATTERNS = [
   /-----BEGIN (?:RSA |EC )?PRIVATE KEY-----/,

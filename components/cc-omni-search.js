@@ -923,6 +923,8 @@
         '.fa-magnifying-glass',
         '.fa-search',
         '.search-icon',
+        '.nav-search-icon',
+        '.mapa-search-icon',
         '.mobile-nav-search-btn',
         '#mobileNavSearchBtn',
         '.btn-omni-action',
@@ -960,7 +962,49 @@
       });
     }
 
-    // D. Wstępne załadowanie katalogu przy bezczynności przeglądarki
+    // D. Podpięcie paska odtwarzacza (player.html)
+    const playerInput = document.getElementById('searchInput');
+    if (playerInput) {
+      playerInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = playerInput.value.trim();
+          if (val) {
+            e.preventDefault();
+            openSearch(val);
+          }
+        }
+      });
+    }
+
+    // E. Podpięcie paska LUMINA (lumina.html)
+    const luminaInput = document.getElementById('omniSearchInput');
+    if (luminaInput) {
+      luminaInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = luminaInput.value.trim();
+          if (val && !val.startsWith('@') && !val.startsWith('#')) {
+            e.preventDefault();
+            openSearch(val);
+          }
+        }
+      });
+    }
+
+    // F. Podpięcie paska VOD (vod.html)
+    const vodInput = document.getElementById('netflixSearchInput');
+    if (vodInput) {
+      vodInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = vodInput.value.trim();
+          if (val) {
+            e.preventDefault();
+            openSearch(val);
+          }
+        }
+      });
+    }
+
+    // G. Wstępne załadowanie katalogu przy bezczynności przeglądarki
     if ('requestIdleCallback' in window) {
       window.requestIdleCallback(() => loadCatalog(), { timeout: 3000 });
     } else {
