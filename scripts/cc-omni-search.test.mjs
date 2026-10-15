@@ -90,3 +90,17 @@ test('cc-omni-search.js: search for "aplikacja" matches context guide and cclite
   assert.ok(guide.shortcuts.some(s => s.title.includes('cclite.pl')), 'Contains shortcut to cclite.pl');
 });
 
+test('cc-omni-search.js: all key MENU CC items are indexed in catalog', () => {
+  const urls = new Set(catalogData.items.map(i => (i.url || '').toLowerCase()));
+  const requiredPaths = ['/skins', '/music', '/holos', '/studio', '/kalendarz', '/ambientsleep', '/tv', '/ziu', '/kuchnia', '/biznes', '/finanse', '/apologetyka', '/misje', '/biblioteka', '/wspolpraca', '/projektant', '/cc-light', '/widget', '/rolki', '/certyfikat'];
+  for (const path of requiredPaths) {
+    const found = Array.from(urls).some(u => u.includes(path));
+    assert.ok(found, `MENU CC item with path ${path} must be indexed`);
+  }
+  assert.ok(catalogData.contextGuides.muzyka, 'Guide muzyka exists');
+  assert.ok(catalogData.contextGuides.zdrowie, 'Guide zdrowie exists');
+  assert.ok(catalogData.contextGuides.biznes, 'Guide biznes exists');
+  assert.ok(catalogData.contextGuides.ksiazki, 'Guide ksiazki exists');
+});
+
+
