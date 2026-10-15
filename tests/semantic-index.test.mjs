@@ -104,3 +104,58 @@ test('CC Semantic Index: 10. sitemap.xml and robots.txt include /index', () => {
   const headers = fs.readFileSync(headersPath, 'utf8');
   assert.ok(headers.includes('/index'), '_headers musi zawierać regułę dla /index');
 });
+
+test('CC Semantic Index 2.0: 11. Zero duplicate reflections by title', () => {
+  const registryPath = path.join(rootDir, 'data/cc-public-index.json');
+  const data = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const titles = data.records.map(r => r.title.trim().toLowerCase());
+  const duplicates = titles.filter((t, i) => titles.indexOf(t) !== i);
+  assert.equal(duplicates.length, 0, `Znaleziono zduplikowane tytuły: ${duplicates.join(', ')}`);
+});
+
+test('CC Semantic Index 2.0: 12. Orthogonal content types present in registry', () => {
+  const registryPath = path.join(rootDir, 'data/cc-public-index.json');
+  const data = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const types = new Set(data.records.map(r => r.type));
+  assert.ok(types.has('devotional'), 'Musi zawierać typ devotional');
+  assert.ok(types.has('article'), 'Musi zawierać typ article');
+  assert.ok(types.has('lesson'), 'Musi zawierać typ lesson');
+  assert.ok(types.has('portal'), 'Musi zawierać typ portal');
+  assert.ok(types.has('book'), 'Musi zawierać typ book');
+  assert.ok(types.has('project'), 'Musi zawierać typ project');
+  assert.ok(types.has('bible-entry'), 'Musi zawierać typ bible-entry');
+});
+
+test('CC Semantic Index 2.0: 13. Zero raw technical badges in visible HTML', () => {
+  const filePath = path.join(rootDir, 'semantic-index.html');
+  const html = fs.readFileSync(filePath, 'utf8');
+  const rawTypes = ['project', 'portal', 'resource', 'course', 'devotional', 'lesson', 'bible-entry', 'book'];
+  const rawCats = ['biblia-wiara', 'radio-transmisje', 'filmy-multimedia', 'edukacja-rozwoj', 'rodzina-relacje', 'spolecznosc-cc', 'zdrowie-styl-zycia', 'nauka-historia-wiedza', 'narzedzia-technologia', 'misja-wsparcie'];
+
+  for (const t of rawTypes) {
+    const matches = html.match(new RegExp('>\\s*' + t + '\\s*<', 'g')) || [];
+    assert.equal(matches.length, 0, `Wykryto surowy badge typu w HTML: >${t}<`);
+  }
+
+  for (const c of rawCats) {
+    const matches = html.match(new RegExp('>\\s*' + c + '\\s*<', 'g')) || [];
+    assert.equal(matches.length, 0, `Wykryto surowy tag kategorii w HTML: >${c}<`);
+  }
+});
+
+test('CC Semantic Index 2.0: 14. Polish grammatical declension (no "1 zasobów")', () => {
+  const filePath = path.join(rootDir, 'semantic-index.html');
+  const html = fs.readFileSync(filePath, 'utf8');
+  const badMatches = html.match(/(^|[^\d])1\s+zasobów/g) || [];
+  assert.equal(badMatches.length, 0, 'Wykryto błędną formę "1 zasobów" w HTML');
+});
+
+test('CC Semantic Index 2.0: 15. Orthogonal type filter bar present in HTML', () => {
+  const filePath = path.join(rootDir, 'semantic-index.html');
+  const html = fs.readFileSync(filePath, 'utf8');
+  assert.ok(html.includes('class="type-filter-bar"'), 'HTML musi zawierać pasek filtrów typów');
+  assert.ok(html.includes('data-type="devotional"'), 'Musi zawierać filtr dla rozważań');
+  assert.ok(html.includes('data-type="article"'), 'Musi zawierać filtr dla artykułów');
+  assert.ok(html.includes('data-type="book"'), 'Musi zawierać filtr dla książek');
+});
+

@@ -23,6 +23,31 @@ const ICONS_SVG = {
   'arrow-up-right': `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>`
 };
 
+const TYPE_NAMES = {
+  'project': 'Projekt',
+  'portal': 'Portal',
+  'article': 'Artykuł',
+  'devotional': 'Rozważanie',
+  'lesson': 'Lekcja',
+  'course': 'Kurs',
+  'bible-entry': 'Hasło biblijne',
+  'book': 'Książka',
+  'audio': 'Audio',
+  'video': 'Wideo',
+  'tool': 'Narzędzie',
+  'community': 'Społeczność',
+  'resource': 'Zasób'
+};
+
+function formatZasobyCount(n) {
+  if (n === 1) return '1 zasób';
+  const lastTwo = n % 100;
+  const last = n % 10;
+  if (lastTwo >= 11 && lastTwo <= 19) return `${n} zasobów`;
+  if (last >= 2 && last <= 4) return `${n} zasoby`;
+  return `${n} zasobów`;
+}
+
 export function buildSemanticIndex() {
   console.log('--- Rozpoczynam budowanie CC Semantic Index 2026 ---');
   const items = normalizeCatalogItems();
@@ -34,6 +59,16 @@ export function buildSemanticIndex() {
 
   const taxonomyPath = path.join(rootDir, 'cc-semantic-index/config/taxonomy.json');
   const taxonomy = JSON.parse(fs.readFileSync(taxonomyPath, 'utf8'));
+
+  const typeCounts = {};
+  for (const it of items) {
+    typeCounts[it.type] = (typeCounts[it.type] || 0) + 1;
+  }
+
+  const categoryNames = {};
+  for (const c of taxonomy.categories) {
+    categoryNames[c.id] = c.name;
+  }
 
   // 1. Zapisz pliki danych
   const registryData = {
@@ -421,6 +456,62 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
       transform: translateY(-50%);
       color: var(--text-muted);
       pointer-events: none;
+    }
+
+    /* Orthogonal Type Filter Bar (CC Index 2.0) */
+    .type-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .type-filter-btn {
+      appearance: none;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+      min-height: 44px;
+      box-sizing: border-box;
+    }
+
+    .type-filter-btn:hover {
+      background: var(--card-surface);
+      color: var(--text-main);
+      border-color: var(--gold-accent);
+    }
+
+    .type-filter-btn.active {
+      background: var(--gold-accent);
+      color: #080D18;
+      border-color: var(--gold-accent);
+      font-weight: 700;
+    }
+
+    .type-filter-btn .pill-count {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.12);
+      font-weight: 700;
+    }
+
+    .type-filter-btn.active .pill-count {
+      background: rgba(0, 0, 0, 0.22);
+      color: #080D18;
     }
 
     /* A-Z Jump Bar */
@@ -862,11 +953,28 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
       <div class="filter-icon">${ICONS_SVG.search}</div>
     </section>
 
+    <!-- Orthogonal Type Filter Bar (CC Index 2.0) -->
+    <nav class="type-filter-bar" aria-label="Filtruj według typu publikacji">
+      <button class="type-filter-btn active" data-type="all">Wszystkie typy <span class="pill-count">${items.length}</span></button>
+      <button class="type-filter-btn" data-type="devotional">Rozważania <span class="pill-count">${typeCounts['devotional'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="article">Artykuły <span class="pill-count">${typeCounts['article'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="lesson">Lekcje <span class="pill-count">${typeCounts['lesson'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="book">Książki <span class="pill-count">${typeCounts['book'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="portal">Portale <span class="pill-count">${typeCounts['portal'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="project">Projekty <span class="pill-count">${typeCounts['project'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="course">Kursy <span class="pill-count">${typeCounts['course'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="bible-entry">Leksykon <span class="pill-count">${typeCounts['bible-entry'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="video">Wideo <span class="pill-count">${typeCounts['video'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="audio">Audio <span class="pill-count">${typeCounts['audio'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="tool">Narzędzia <span class="pill-count">${typeCounts['tool'] || 0}</span></button>
+      <button class="type-filter-btn" data-type="community">Społeczność <span class="pill-count">${typeCounts['community'] || 0}</span></button>
+    </nav>
+
     <!-- A-Z Alphabetical Jump Bar -->
     <nav class="az-bar" aria-label="Indeks alfabetyczny">
       ${letters.map(l => {
         const count = azIndex[l]?.length || 0;
-        return `<a href="#letter-${l}" class="az-link ${count > 0 ? 'has-items' : ''}" title="${count} zasobów na literę ${l}">${l}</a>`;
+        return `<a href="#letter-${l}" class="az-link ${count > 0 ? 'has-items' : ''}" title="${formatZasobyCount(count)} na literę ${l}">${l}</a>`;
       }).join('\n      ')}
     </nav>
 
@@ -881,7 +989,7 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
               ${ICONS_SVG[c.icon] || ICONS_SVG['book-open']}
               <span>${c.name}</span>
             </div>
-            <span class="cat-count">${categoryBuckets[c.id]?.items.length || 0}</span>
+            <span class="cat-count" title="${formatZasobyCount(categoryBuckets[c.id]?.items.length || 0)}">${categoryBuckets[c.id]?.items.length || 0}</span>
           </div>
           <p class="cat-desc">${c.description}</p>
           <a href="#cat-${c.slug}" class="cat-link">
@@ -906,20 +1014,20 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
           </h2>
           <p>${c.description}</p>
         </div>
-        <span class="cat-count">${catItems.length} zasobów</span>
+        <span class="cat-count">${formatZasobyCount(catItems.length)}</span>
       </div>
 
       <div class="resources-grid">
         ${catItems.map(it => `
-        <article class="resource-card" data-title="${it.title.toLowerCase()}" data-desc="${it.description.toLowerCase()}" data-tags="${it.keywords.join(' ').toLowerCase()}">
-          <span class="resource-card-type">${it.type}</span>
+        <article class="resource-card" data-type="${it.type}" data-title="${it.title.toLowerCase()}" data-desc="${it.description.toLowerCase()}" data-tags="${it.keywords.join(' ').toLowerCase()}">
+          <span class="resource-card-type">${TYPE_NAMES[it.type] || 'Zasób'}</span>
           <h3 class="resource-card-title">
             <a href="${it.url}" target="_blank" rel="noopener">${it.title}</a>
           </h3>
           <p class="resource-card-desc">${it.description}</p>
           <div class="resource-card-url">${it.url.replace(/^https?:\/\//, '')}</div>
           <div class="resource-card-footer">
-            <span class="resource-tag">${it.primaryCategory}</span>
+            <span class="resource-tag">${categoryNames[it.primaryCategory] || it.primaryCategory}</span>
             <a href="${it.url}" class="cat-link" target="_blank" rel="noopener">Otwórz ${ICONS_SVG['arrow-up-right']}</a>
           </div>
         </article>`).join('')}
@@ -986,9 +1094,8 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
       var themeToggleBtn = document.getElementById('themeToggleBtn');
       var themeIcon = document.getElementById('themeIcon');
       var savedTheme = localStorage.getItem('cc_theme');
-
       if (!savedTheme) {
-        savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        savedTheme = 'dark';
       }
       applyTheme(savedTheme);
 
@@ -1008,30 +1115,51 @@ ${JSON.stringify(schemaJsonLd, null, 2)}
         }
       }
 
-      // 2. Filtrowanie na żywo
+      // 2. Filtrowanie na żywo (Tekst + Ortogonalny Typ Publikacji)
       var filterInput = document.getElementById('filterInput');
+      var typeButtons = document.querySelectorAll('.type-filter-btn');
+      var activeType = 'all';
+
+      if (typeButtons && typeButtons.length > 0) {
+        typeButtons.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            typeButtons.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            activeType = btn.getAttribute('data-type') || 'all';
+            applyFilter();
+          });
+        });
+      }
+
       if (filterInput) {
-        filterInput.addEventListener('input', function(e) {
-          var query = (e.target.value || '').toLowerCase().trim();
-          var cards = document.querySelectorAll('.resource-card');
-          var sections = document.querySelectorAll('.resource-section');
+        filterInput.addEventListener('input', applyFilter);
+      }
 
-          cards.forEach(function(card) {
-            var title = card.getAttribute('data-title') || '';
-            var desc = card.getAttribute('data-desc') || '';
-            var tags = card.getAttribute('data-tags') || '';
-            if (!query || title.includes(query) || desc.includes(query) || tags.includes(query)) {
-              card.style.display = '';
-            } else {
-              card.style.display = 'none';
-            }
-          });
+      function applyFilter() {
+        var query = (filterInput ? filterInput.value : '').toLowerCase().trim();
+        var cards = document.querySelectorAll('.resource-card');
+        var sections = document.querySelectorAll('.resource-section');
 
-          // Ukryj sekcje bez widocznych kart
-          sections.forEach(function(sec) {
-            var visibleCards = sec.querySelectorAll('.resource-card:not([style*="display: none"])');
-            sec.style.display = (visibleCards.length > 0 || !query) ? '' : 'none';
-          });
+        cards.forEach(function(card) {
+          var title = card.getAttribute('data-title') || '';
+          var desc = card.getAttribute('data-desc') || '';
+          var tags = card.getAttribute('data-tags') || '';
+          var type = card.getAttribute('data-type') || '';
+
+          var matchesQuery = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+          var matchesType = activeType === 'all' || type === activeType;
+
+          if (matchesQuery && matchesType) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Ukryj sekcje bez widocznych kart
+        sections.forEach(function(sec) {
+          var visibleCards = sec.querySelectorAll('.resource-card:not([style*="display: none"])');
+          sec.style.display = visibleCards.length > 0 ? '' : 'none';
         });
       }
     })();

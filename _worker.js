@@ -1920,7 +1920,7 @@ export default {
       return serveLiveNews(ctx);
     }
 
-    // CC Semantic Index — obsługa dedykowanego indeksu wiedzy na /index bez pętli 308
+    // CC Semantic Index — obsługa dedykowanego indeksu wiedzy semantic-index.html na /index bez pętli 308
     if (
       url.pathname === '/index' ||
       url.pathname === '/index/' ||
@@ -1931,7 +1931,11 @@ export default {
     ) {
       const indexReqUrl = new URL(request.url);
       indexReqUrl.pathname = '/index/';
-      const dirResp = await env.ASSETS.fetch(new Request(indexReqUrl, request));
+      let dirResp = await env.ASSETS.fetch(new Request(indexReqUrl, request));
+      if (dirResp.status !== 200) {
+        indexReqUrl.pathname = '/semantic-index.html';
+        dirResp = await env.ASSETS.fetch(new Request(indexReqUrl, request));
+      }
       if (dirResp.status === 200) {
         return new Response(dirResp.body, {
           status: 200,
