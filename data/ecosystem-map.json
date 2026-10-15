@@ -1,9 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "updatedAt": "2026-10-15T05:50:00Z",
+  "updatedAt": "2026-10-15T04:48:58.972Z",
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
+    {
+      "topic": "Wyszukiwarka @w: Pelnotekstowe i kontekstowe przeszukiwanie calego ekosystemu oraz dodanie aplikacji Moj Werset Dnia",
+      "date": "2026-10-15",
+      "agent": "A"
+    },
     {
       "topic": "LUMI Messenger: Pełna naprawa reakcji emotikonami na wiadomościach czatu i widoczności pickera",
       "date": "2026-10-15",
@@ -2454,6 +2459,33 @@
         "radio-main",
         "lumina-main",
         "akademia"
+      ]
+    },
+    {
+      "id": "werset-dnia-app",
+      "branchId": "biblia-edukacja",
+      "name": "Mój Werset Dnia",
+      "shortDesc": "Wyszukiwarka Słowa Bożego i generator pięknych kart z wersetami biblijnymi.",
+      "fullDesc": "Minimalistyczna aplikacja internetowa do wyszukiwania, losowania i generowania estetycznych kart ze Słowem Bożym na dziś.",
+      "type": "app",
+      "url": "https://polskieradio.cc/werset-dnia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "✨",
+      "category": "Biblia & Edukacja",
+      "verifiedDate": "2026-10-15",
+      "keywords": [
+        "werset dnia",
+        "mój werset dnia",
+        "wersety",
+        "cytaty biblijne",
+        "generator kart",
+        "słowo boże"
+      ],
+      "connections": [
+        "mojabiblia",
+        "akademia",
+        "dzj"
       ]
     }
   ]

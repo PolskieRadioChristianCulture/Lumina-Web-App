@@ -399,6 +399,132 @@
     .chip strong { font-size: 14px; font-weight: 700; }
     .chip small { font-size: 11px; color: var(--chip-desc); }
 
+    /* --- CONTEXT GUIDE BANNER --- */
+    .context-guide {
+      margin: 0 0 28px;
+      padding: 24px 28px;
+      border-radius: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--gold-accent);
+      box-shadow: 0 8px 24px var(--gold-shadow);
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+    .context-guide::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--gold-gradient);
+    }
+    .guide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--gold-accent);
+      margin-bottom: 8px;
+    }
+    .context-guide h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-family: Georgia, serif;
+      color: var(--heading-color);
+    }
+    .context-guide p {
+      margin: 0 0 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+    .guide-verses {
+      background: var(--chip-active-bg);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border-left: 3px solid var(--gold-accent);
+    }
+    .guide-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .guide-verses ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .guide-verses li {
+      margin-bottom: 4px;
+    }
+    .guide-verses strong {
+      display: inline;
+      font-weight: 700;
+      color: var(--gold-accent);
+    }
+    .guide-verses a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--gold-accent);
+      text-underline-offset: 3px;
+    }
+    .guide-verses a:hover {
+      color: var(--gold-accent);
+    }
+    .guide-shortcuts {
+      margin-top: 4px;
+    }
+    .guide-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .guide-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--search-input-bg);
+      border: 1px solid var(--chip-active-border);
+      color: var(--chip-text);
+      transition: all 0.2s;
+      min-height: 44px;
+      text-decoration: none !important;
+    }
+    .guide-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px var(--btn-shadow);
+      border-color: var(--gold-accent);
+    }
+    .snippet {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--search-input-bg);
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-secondary);
+      border-left: 2px solid var(--gold-accent);
+    }
+    mark.hl {
+      background: rgba(212, 175, 55, 0.35);
+      color: inherit;
+      padding: 1px 3px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
     .results-head {
       display: flex;
       align-items: center;
@@ -641,6 +767,8 @@
           <small>Działaj. Twórz. Ewangelizuj.</small>
         </button>
       </div>
+      
+      <div id="guide-box" class="hidden"></div>
 
       <h2 id="wyniki" class="results-head" tabindex="-1">Najważniejsze w ekosystemie Christian Culture</h2>
       <p class="count" id="count" role="status" aria-live="polite">Ładowanie katalogu…</p>
@@ -713,12 +841,15 @@
     const CATS = {
       'Radio & Live': '◉',
       'Portale': '👥',
+      'Artykuły & Wiedza CCN': '📰',
       'Biblia i formacja': '📖',
       'Media i treści': '▶',
-      'Narzędzia i misja': '⚙'
+      'Narzędzia i misja': '⚙',
+      'Społeczność & Relacje': '💜'
     };
 
     let data = [];
+    let contextGuides = {};
     let category = '';
     let all = false;
 
@@ -728,8 +859,17 @@
     const count = $('#count');
     const heading = $('#wyniki');
     const empty = $('#empty');
+    const guideBox = $('#guide-box');
 
     $('#year').textContent = new Date().getFullYear();
+
+    const escapeHtml = str => (str || '').replace(/[&<>"']/g, m => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
 
     // Polish diacritics & punctuation normalizer
     const norm = v => (v || '')
@@ -739,6 +879,20 @@
       .replace(/ł/g, 'l')
       .replace(/[^a-z0-9]+/g, ' ')
       .trim();
+
+    function highlight(text, q) {
+      if (!text) return '';
+      const safe = escapeHtml(text);
+      if (!q) return safe;
+      const tokens = norm(q).split(' ').filter(t => t.length >= 2);
+      if (!tokens.length) return safe;
+      try {
+        const pattern = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+        return safe.replace(new RegExp(`(${pattern})`, 'gi'), '<mark class="hl">$1</mark>');
+      } catch (_) {
+        return safe;
+      }
+    }
 
     // Typo distance calculation (Damerau-Levenshtein distance)
     const dist = (a, b) => {
@@ -765,27 +919,102 @@
 
     function score(item, q) {
       if (!q) return item.featured ? 50 : 0;
-      const tokens = norm(q).split(' ').filter(Boolean);
+      const qNorm = norm(q);
+      const tokens = qNorm.split(' ').filter(Boolean);
       const title = norm(item.title);
       const tags = norm((item.tags || []).join(' '));
       const desc = norm(item.description);
+      const content = norm(item.contentSnippet || '');
+      const scripture = norm(item.scripture || '');
+      const author = norm(item.author || '');
       const url = norm(item.url);
       const cat = norm(item.category);
-      const words = (title + ' ' + tags + ' ' + cat).split(' ');
+      const allText = `${title} ${tags} ${desc} ${scripture} ${author} ${cat} ${content}`;
+      const words = allText.split(' ');
       
       let n = 0;
+      // Exact whole query phrase match bonus
+      if (title.includes(qNorm)) n += 120;
+      else if (tags.includes(qNorm)) n += 80;
+      else if (desc.includes(qNorm)) n += 50;
+
       for (const t of tokens) {
-        if (title === t) n += 95;
-        else if (title.startsWith(t)) n += 60;
-        else if (title.includes(t)) n += 40;
-        else if (tags.includes(t)) n += 30;
-        else if (cat.includes(t)) n += 18;
-        else if (url.includes(t)) n += 15;
-        else if (desc.includes(t)) n += 10;
-        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) n += 6;
+        if (title === t) n += 100;
+        else if (title.startsWith(t)) n += 70;
+        else if (title.includes(t)) n += 45;
+        else if (tags.includes(t)) n += 35;
+        else if (desc.includes(t)) n += 25;
+        else if (scripture.includes(t)) n += 22;
+        else if (content.includes(t)) n += 18;
+        else if (cat.includes(t)) n += 15;
+        else if (author.includes(t)) n += 15;
+        else if (url.includes(t)) n += 12;
+        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) n += 8;
         else return -1;
       }
-      return n + (item.featured ? 2 : 0);
+      return n + (item.featured ? 3 : 0);
+    }
+
+    function matchesCategory(itemCat, filterCat) {
+      if (!filterCat) return true;
+      if (itemCat === filterCat) return true;
+      if (filterCat === 'Portale' && (itemCat === 'Portale' || itemCat === 'Artykuły & Wiedza CCN' || itemCat === 'Społeczność & Relacje')) return true;
+      if (filterCat === 'Media i treści' && (itemCat === 'Media i treści' || itemCat === 'Książki')) return true;
+      if (filterCat === 'Biblia i formacja' && (itemCat === 'Biblia i formacja' || itemCat === 'Leksykon')) return true;
+      return false;
+    }
+
+    function findContextGuide(q) {
+      if (!q || !contextGuides) return null;
+      const qNorm = norm(q).trim();
+      if (!qNorm) return null;
+      for (const [key, guide] of Object.entries(contextGuides)) {
+        if (norm(key) === qNorm) return guide;
+        if (guide.keywords && guide.keywords.some(k => {
+          const kNorm = norm(k);
+          return kNorm === qNorm || (qNorm.length >= 4 && kNorm.includes(qNorm)) || (kNorm.length >= 4 && qNorm.includes(kNorm));
+        })) {
+          return guide;
+        }
+      }
+      return null;
+    }
+
+    function renderContextGuide(guide) {
+      if (!guideBox) return;
+      if (!guide) {
+        guideBox.innerHTML = '';
+        guideBox.className = 'hidden';
+        return;
+      }
+      guideBox.className = 'context-guide';
+      guideBox.innerHTML = `
+        <div class="guide-badge">✦ Przewodnik Tematyczny Ekosystemu Christian Culture</div>
+        <h3>${escapeHtml(guide.topic)}</h3>
+        <p>${escapeHtml(guide.summary)}</p>
+        ${guide.keyVerses && guide.keyVerses.length ? `
+          <div class="guide-verses">
+            <div class="guide-label">Słowo Boże & Kluczowe Wersety:</div>
+            <ul>
+              ${guide.keyVerses.map(v => `
+                <li><a href="${escapeHtml(v.url || 'https://polskieradio.cc/mojabiblia')}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(v.ref)}</strong>: „${escapeHtml(v.text)}”</a></li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        ${guide.shortcuts && guide.shortcuts.length ? `
+          <div class="guide-shortcuts">
+            <div class="guide-label">Gdzie znajdziesz w ekosystemie:</div>
+            <div class="guide-pills">
+              ${guide.shortcuts.map(s => `
+                <a href="${escapeHtml(s.url)}" class="guide-pill" ${s.url.startsWith('http') && !s.url.includes('polskieradio.cc') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                  <span>${escapeHtml(s.icon || '✦')}</span> ${escapeHtml(s.title)}
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      `;
     }
 
     function updateUrl() {
@@ -797,14 +1026,17 @@
 
     function render() {
       const q = query.value.trim();
+      const guide = findContextGuide(q);
+      renderContextGuide(guide);
+
       let result = data
         .map(x => ({ x, s: score(x, q) }))
-        .filter(x => x.s >= 0 && (!category || x.x.category === category))
+        .filter(x => x.s >= 0 && matchesCategory(x.x.category, category))
         .sort((a, b) => b.s - a.s || a.x.title.localeCompare(b.x.title, 'pl'));
 
       const total = result.length;
       if (!q && !category && !all) {
-        result = result.filter(z => z.x.featured).slice(0, 8);
+        result = result.filter(z => z.x.featured).slice(0, 12);
       }
 
       heading.textContent = q
@@ -812,12 +1044,12 @@
         : category
           ? category
           : all
-            ? 'Wszystkie projekty Christian Culture'
+            ? 'Wszystkie projekty i treści Christian Culture'
             : 'Najważniejsze w ekosystemie Christian Culture';
 
       count.textContent = total === 0
         ? 'Brak wyników'
-        : `${result.length}${result.length < total ? ' z ' + total : ''} projektów`;
+        : `${result.length}${result.length < total ? ' z ' + total : ''} wyników w ekosystemie`;
 
       grid.replaceChildren();
 
@@ -848,12 +1080,19 @@
         }
 
         const title = document.createElement('strong');
-        title.textContent = x.title;
+        title.innerHTML = highlight(x.title, q);
 
         const desc = document.createElement('p');
-        desc.textContent = x.description;
+        desc.innerHTML = highlight(x.description, q);
 
         info.append(url, title, desc);
+
+        if (x.contentSnippet && q && norm(x.contentSnippet).includes(norm(q))) {
+          const snip = document.createElement('div');
+          snip.className = 'snippet';
+          snip.innerHTML = '…' + highlight(x.contentSnippet, q) + '…';
+          info.append(snip);
+        }
 
         const arrow = document.createElement('span');
         arrow.className = 'arr';
@@ -985,7 +1224,9 @@
           if (!r.ok) throw Error(r.status);
           return r.json();
         })
-        .then(rows => {
+        .then(res => {
+          const rows = Array.isArray(res) ? res : (res.items || []);
+          contextGuides = (res && res.contextGuides) ? res.contextGuides : {};
           data = rows.filter(x => x.title && x.url && x.category && x.description && /^https?:\/\//.test(x.url));
           render();
         })
