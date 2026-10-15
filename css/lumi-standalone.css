@@ -34,8 +34,14 @@ body.lumi-standalone {
   min-height: 100dvh;
 }
 
-body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(script):not(style):not(noscript) {
+body.lumi-standalone > :not(#lumiLanding):not(#lumiIntroOverlay):not(.modal-overlay):not([role="dialog"]):not(#ccGlobalChatOverlay):not(.toast):not(#lumina-cookie-banner):not(#lumina-chat-notification-banner):not(.lumina-reaction-picker):not(script):not(style):not(noscript) {
   display: none !important;
+}
+
+body.lumi-standalone .lumina-reaction-picker,
+.lumina-reaction-picker {
+  display: grid !important;
+  z-index: 2147483647 !important;
 }
 
 #lumiLanding {

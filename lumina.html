@@ -12042,16 +12042,35 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (!window.LuminaDB) return;
             const myUser = window.LuminaDB.getCurrentUser();
             const myProfile = window.LuminaDB.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+            const normFrom = window.LuminaDB.normalizeChatUserId ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+
+            const isGuest = (!myUser && (!myProfile || normFrom === 'guest') && localStorage.getItem('lumina_auth_master_admin') !== 'true');
+            if (isGuest) {
+                if (typeof showToast === 'function') {
+                    showToast('Zaloguj się, aby dodawać reakcje na wiadomości! 🕊️');
+                } else if (typeof window.showToast === 'function') {
+                    window.showToast('Zaloguj się, aby dodawać reakcje na wiadomości! 🕊️');
+                }
+                if (typeof window.openAuthModal === 'function') {
+                    window.openAuthModal();
+                }
+                return;
+            }
+
             const userObj = {
-                slug: myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest',
-                name: myProfile?.name || myUser?.displayName
+                slug: normFrom,
+                name: myProfile?.name || myUser?.displayName || (normFrom === 'cezaryrgowski' ? 'Cezary Rogowski' : (normFrom === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))
             };
+
+            const targetMsgId = msgId || '';
+            const targetChatId = chatId || (type === 'public' ? 'public' : (window.activeChatSession?.chatId || ''));
 
             try {
                 if (type === 'direct') {
-                    await window.LuminaDB.toggleDirectMessageReaction(chatId, msgId, emoji, userObj);
+                    await window.LuminaDB.toggleDirectMessageReaction(targetChatId, targetMsgId, emoji, userObj);
                 } else if (type === 'public') {
-                    await window.LuminaDB.togglePublicChatMessageReaction(msgId, emoji, userObj);
+                    await window.LuminaDB.togglePublicChatMessageReaction(targetMsgId, emoji, userObj);
                 }
             } catch (err) {
                 console.warn('Błąd podczas zapisywania reakcji:', err);
@@ -12071,20 +12090,26 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
             if (!btnEl) return;
 
+            const targetMsgId = msgId || btnEl.closest('[data-message-id]')?.getAttribute('data-message-id') || btnEl.closest('.lumina-msg-row')?.id?.replace(/^msg_/, '') || '';
+            const targetChatId = chatId || (type === 'public' ? 'public' : (window.activeChatSession?.chatId || ''));
+            const targetType = type || (btnEl.closest('#publicChatMessagesBox') ? 'public' : 'direct');
+
             const rect = btnEl.getBoundingClientRect();
             const cardEl = btnEl.closest('.modal-card') || document.querySelector('#directMessagesModal .modal-card') || document.body;
-            const cardRect = cardEl.getBoundingClientRect();
+            const cardRect = cardEl ? cardEl.getBoundingClientRect() : { left: 0, right: window.innerWidth, top: 0, bottom: window.innerHeight };
 
             const picker = document.createElement('div');
             picker.className = 'lumina-reaction-picker';
+            picker.setAttribute('role', 'dialog');
+            picker.setAttribute('aria-label', 'Wybór reakcji emotikonami');
             picker._targetBtn = btnEl;
-            picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.98); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; padding:6px 8px; display:grid; grid-template-columns:repeat(6, 1fr); gap:3px; align-items:center; justify-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; width:max-content; max-width:260px; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
 
             let dismissHandler = null;
             const cleanup = () => {
                 if (dismissHandler) {
-                    document.removeEventListener('pointerdown', dismissHandler);
-                    window.removeEventListener('resize', dismissHandler);
+                    document.removeEventListener('pointerdown', dismissHandler, true);
+                    window.removeEventListener('resize', dismissHandler, true);
+                    window.removeEventListener('scroll', dismissHandler, true);
                 }
                 if (picker.parentNode) picker.parentNode.removeChild(picker);
             };
@@ -12094,20 +12119,19 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             emojis.forEach(em => {
                 const sp = document.createElement('button');
                 sp.type = 'button';
+                sp.className = 'lumina-reaction-btn';
                 sp.textContent = em;
-                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border:0; color:#fff; background:transparent; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center; padding:0; touch-action:manipulation;';
-                sp.onmouseover = () => {
-                    sp.style.transform = 'scale(1.35) translateY(-2px)';
-                    sp.style.background = 'rgba(255,255,255,0.18)';
-                };
-                sp.onmouseout = () => {
-                    sp.style.transform = 'scale(1)';
-                    sp.style.background = 'transparent';
-                };
-                const selectEmoji = (ev) => {
+                sp.setAttribute('aria-label', 'Dodaj reakcję ' + em);
+                sp.addEventListener('pointerdown', (ev) => {
                     ev.stopPropagation();
+                });
+                const selectEmoji = (ev) => {
+                    if (ev) {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                    }
                     cleanup();
-                    Promise.resolve(window.handleChatReaction(type, chatId, msgId, em)).catch((error) => {
+                    Promise.resolve(window.handleChatReaction(targetType, targetChatId, targetMsgId, em)).catch((error) => {
                         console.warn('Nie udało się zapisać reakcji:', error);
                     });
                 };
@@ -12117,7 +12141,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             document.body.appendChild(picker);
 
-            const pickerWidth = picker.offsetWidth || 230;
+            const pickerWidth = picker.offsetWidth || 250;
             const pickerHeight = picker.offsetHeight || 80;
 
             const minLeft = Math.max(cardRect.left + 8, 8);
@@ -12128,16 +12152,18 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (left > maxLeft) left = maxLeft;
 
             let top = rect.top - pickerHeight - 8;
-            if (top < Math.max(cardRect.top + 8, 60)) {
+            if (top < Math.max(cardRect.top + 8, 50)) {
                 top = rect.bottom + 8;
             }
+            if (top + pickerHeight > window.innerHeight - 8) {
+                top = Math.max(8, window.innerHeight - pickerHeight - 8);
+            }
 
-            picker.style.left = left + 'px';
-            picker.style.top = top + 'px';
+            picker.style.left = Math.round(left) + 'px';
+            picker.style.top = Math.round(top) + 'px';
 
             requestAnimationFrame(() => {
-                picker.style.transform = 'scale(1)';
-                picker.style.opacity = '1';
+                picker.classList.add('is-open');
             });
 
             dismissHandler = (ev) => {
@@ -12146,9 +12172,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             };
             setTimeout(() => {
-                document.addEventListener('pointerdown', dismissHandler);
-                window.addEventListener('resize', dismissHandler);
-            }, 50);
+                document.addEventListener('pointerdown', dismissHandler, true);
+                window.addEventListener('resize', dismissHandler, true);
+                window.addEventListener('scroll', dismissHandler, true);
+            }, 60);
         };
 
         // ══════════ EMOJI DRAWER DLA CZATU OGÓLNEGO ══════════
@@ -12312,14 +12339,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const reactionKeys = Object.keys(reactions);
             let chipsHtml = '';
 
+            const safeMsgId = escapeForInlineJs(msg.id || msg.clientMessageId || (msg.timestamp?.seconds ? String(msg.timestamp.seconds) : ''));
+
             reactionKeys.forEach(emojiKey => {
                 const usersList = reactions[emojiKey] || [];
                 if (usersList.length > 0) {
-                    const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : u.id === myId));
+                    const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : (u.id === myId || u.slug === myId)));
                     const tooltipNames = usersList.map(u => (typeof u === 'string' ? u : u.name || u.id)).join(', ');
                     chipsHtml += `
-                        <button type="button" onclick="window.handleChatReaction('${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}', '${escapeForInlineJs(emojiKey)}')" 
-                              style="display:inline-flex; align-items:center; gap:3px; background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'}; font-size:0.72rem; padding:1px 6px; border-radius:10px; cursor:pointer; font-family:inherit; transition:all 0.15s ease;" 
+                        <button type="button" class="lumina-reaction-chip" onclick="window.handleChatReaction('${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${safeMsgId}', '${escapeForInlineJs(emojiKey)}')" 
+                              style="background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'};" 
                               title="Reagujący: ${escapeHtml(tooltipNames)}">
                             <span>${escapeHtml(emojiKey)}</span> <span style="font-size:0.65rem; font-weight:700; opacity:0.9;">${usersList.length}</span>
                         </button>
@@ -12328,9 +12357,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             });
 
             const addBtn = `
-                <button type="button" onclick="window.toggleReactionPicker(this, '${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}')"
-                        style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;" 
-                        title="Dodaj emotikon / reakcję">
+                <button type="button" class="lumina-reaction-add-btn" onclick="window.toggleReactionPicker(this, '${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${safeMsgId}')"
+                        title="Dodaj emotikon / reakcję" aria-label="Dodaj reakcję">
                     <i class="fa-regular fa-face-smile"></i> +
                 </button>
             `;

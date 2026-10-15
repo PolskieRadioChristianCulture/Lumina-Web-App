@@ -10064,93 +10064,296 @@
             if (!window.LuminaDB) return;
             const myUser = window.LuminaDB.getCurrentUser();
             const myProfile = window.LuminaDB.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+            const normFrom = window.LuminaDB.normalizeChatUserId ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+
+            const isGuest = (!myUser && (!myProfile || normFrom === 'guest') && localStorage.getItem('lumina_auth_master_admin') !== 'true');
+            if (isGuest) {
+                if (typeof showToast === 'function') {
+                    showToast('Zaloguj się, aby dodawać reakcje na wiadomości! 🕊️');
+                } else if (typeof window.showToast === 'function') {
+                    window.showToast('Zaloguj się, aby dodawać reakcje na wiadomości! 🕊️');
+                }
+                if (typeof window.openAuthModal === 'function') {
+                    window.openAuthModal();
+                }
+                return;
+            }
+
             const userObj = {
-                slug: myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest',
-                name: myProfile?.name || myUser?.displayName
+                slug: normFrom,
+                name: myProfile?.name || myUser?.displayName || (normFrom === 'cezaryrgowski' ? 'Cezary Rogowski' : (normFrom === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))
             };
 
-            if (type === 'direct') {
-                await window.LuminaDB.toggleDirectMessageReaction(chatId, msgId, emoji, userObj);
-            } else if (type === 'public') {
-                await window.LuminaDB.togglePublicChatMessageReaction(msgId, emoji, userObj);
+            const targetMsgId = msgId || '';
+            const targetChatId = chatId || (type === 'public' ? 'public' : (window.activeChatSession?.chatId || ''));
+
+            try {
+                if (type === 'direct') {
+                    await window.LuminaDB.toggleDirectMessageReaction(targetChatId, targetMsgId, emoji, userObj);
+                } else if (type === 'public') {
+                    await window.LuminaDB.togglePublicChatMessageReaction(targetMsgId, emoji, userObj);
+                }
+            } catch (err) {
+                console.warn('Błąd podczas zapisywania reakcji:', err);
             }
         };
 
         window.toggleReactionPicker = function(btnEl, type, chatId, msgId) {
             const existing = document.querySelector('.lumina-reaction-picker');
             if (existing && existing._targetBtn === btnEl) {
-                existing.remove();
+                if (typeof existing._cleanup === 'function') existing._cleanup();
+                else existing.remove();
                 return;
             }
-            document.querySelectorAll('.lumina-reaction-picker').forEach(p => p.remove());
+            document.querySelectorAll('.lumina-reaction-picker').forEach(p => {
+                if (typeof p._cleanup === 'function') p._cleanup();
+                else p.remove();
+            });
             if (!btnEl) return;
+
+            const targetMsgId = msgId || btnEl.closest('[data-message-id]')?.getAttribute('data-message-id') || btnEl.closest('.lumina-msg-row')?.id?.replace(/^msg_/, '') || '';
+            const targetChatId = chatId || (type === 'public' ? 'public' : (window.activeChatSession?.chatId || ''));
+            const targetType = type || (btnEl.closest('#publicChatMessagesBox') ? 'public' : 'direct');
 
             const rect = btnEl.getBoundingClientRect();
             const cardEl = btnEl.closest('.modal-card') || document.querySelector('#directMessagesModal .modal-card') || document.body;
-            const cardRect = cardEl.getBoundingClientRect();
+            const cardRect = cardEl ? cardEl.getBoundingClientRect() : { left: 0, right: window.innerWidth, top: 0, bottom: window.innerHeight };
 
             const picker = document.createElement('div');
             picker.className = 'lumina-reaction-picker';
+            picker.setAttribute('role', 'dialog');
+            picker.setAttribute('aria-label', 'Wybór reakcji emotikonami');
             picker._targetBtn = btnEl;
-            picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.98); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; padding:6px 8px; display:grid; grid-template-columns:repeat(6, 1fr); gap:3px; align-items:center; justify-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; width:max-content; max-width:260px; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
+
+            let dismissHandler = null;
+            const cleanup = () => {
+                if (dismissHandler) {
+                    document.removeEventListener('pointerdown', dismissHandler, true);
+                    window.removeEventListener('resize', dismissHandler, true);
+                    window.removeEventListener('scroll', dismissHandler, true);
+                }
+                if (picker.parentNode) picker.parentNode.removeChild(picker);
+            };
+            picker._cleanup = cleanup;
 
             const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
             emojis.forEach(em => {
-                const sp = document.createElement('span');
+                const sp = document.createElement('button');
+                sp.type = 'button';
+                sp.className = 'lumina-reaction-btn';
                 sp.textContent = em;
-                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
-                sp.onmouseover = () => {
-                    sp.style.transform = 'scale(1.35) translateY(-2px)';
-                    sp.style.background = 'rgba(255,255,255,0.18)';
-                };
-                sp.onmouseout = () => {
-                    sp.style.transform = 'scale(1)';
-                    sp.style.background = 'transparent';
-                };
-                sp.onclick = (ev) => {
+                sp.setAttribute('aria-label', 'Dodaj reakcję ' + em);
+                sp.addEventListener('pointerdown', (ev) => {
                     ev.stopPropagation();
-                    window.handleChatReaction(type, chatId, msgId, em);
-                    picker.remove();
+                });
+                const selectEmoji = (ev) => {
+                    if (ev) {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                    }
+                    cleanup();
+                    Promise.resolve(window.handleChatReaction(targetType, targetChatId, targetMsgId, em)).catch((error) => {
+                        console.warn('Nie udało się zapisać reakcji:', error);
+                    });
                 };
+                sp.onclick = selectEmoji;
                 picker.appendChild(sp);
             });
 
             document.body.appendChild(picker);
 
-            const pickerWidth = picker.offsetWidth || 230;
+            const pickerWidth = picker.offsetWidth || 250;
             const pickerHeight = picker.offsetHeight || 80;
 
             const minLeft = Math.max(cardRect.left + 8, 8);
-            const maxLeft = Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8);
+            const maxLeft = Math.max(minLeft, Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8));
 
             let left = rect.left + (rect.width / 2) - (pickerWidth / 2);
             if (left < minLeft) left = minLeft;
             if (left > maxLeft) left = maxLeft;
 
             let top = rect.top - pickerHeight - 8;
-            if (top < Math.max(cardRect.top + 8, 60)) {
+            if (top < Math.max(cardRect.top + 8, 50)) {
                 top = rect.bottom + 8;
             }
+            if (top + pickerHeight > window.innerHeight - 8) {
+                top = Math.max(8, window.innerHeight - pickerHeight - 8);
+            }
 
-            picker.style.left = left + 'px';
-            picker.style.top = top + 'px';
+            picker.style.left = Math.round(left) + 'px';
+            picker.style.top = Math.round(top) + 'px';
 
             requestAnimationFrame(() => {
-                picker.style.transform = 'scale(1)';
-                picker.style.opacity = '1';
+                picker.classList.add('is-open');
             });
 
-            const dismissHandler = (ev) => {
+            dismissHandler = (ev) => {
                 if (!picker.contains(ev.target) && ev.target !== btnEl && !btnEl.contains(ev.target)) {
-                    picker.remove();
-                    document.removeEventListener('pointerdown', dismissHandler);
-                    window.removeEventListener('resize', dismissHandler);
+                    cleanup();
                 }
             };
             setTimeout(() => {
-                document.addEventListener('pointerdown', dismissHandler);
-                window.addEventListener('resize', dismissHandler);
-            }, 50);
+                document.addEventListener('pointerdown', dismissHandler, true);
+                window.addEventListener('resize', dismissHandler, true);
+                window.addEventListener('scroll', dismissHandler, true);
+            }, 60);
+        };
+
+        // ══════════ EMOJI DRAWER DLA CZATU OGÓLNEGO ══════════
+        window.togglePublicChatEmojiDrawer = function() {
+            const bar = document.getElementById('publicChatEmojisBar');
+            const button = document.getElementById('btnPublicChatEmoji');
+            if (!bar) return;
+            const isOpen = bar.classList.toggle('open');
+            if (button) button.setAttribute('aria-expanded', String(isOpen));
+        };
+
+        window.insertPublicChatEmoji = function(emoji) {
+            const input = document.getElementById('publicChatInput');
+            if (input) {
+                input.value = (input.value ? input.value + ' ' : '') + emoji;
+                input.focus();
+            }
+        };
+
+        // ══════════ PROFESJONALNE USTAWIENIA CZATU I WYLOGOWANIE ══════════
+        window.openChatSettingsModal = function() {
+            const drawer = document.getElementById('ccGlobalChatOverlay');
+            if (drawer) {
+                drawer.classList.remove('is-open');
+                drawer.setAttribute('aria-hidden', 'true');
+            }
+            const modal = document.getElementById('chatSettingsModal');
+            if (!modal) return;
+
+            const myUser = window.LuminaDB?.getCurrentUser?.();
+            const myProfile = window.LuminaDB?.getCurrentProfile?.();
+            const nameEl = document.getElementById('chatSettingsName');
+            const avatarEl = document.getElementById('chatSettingsAvatar');
+            const roleEl = document.getElementById('chatSettingsRole');
+            const logoutBtn = document.getElementById('btnChatSettingsLogout');
+            const soundToggle = document.getElementById('chatSettingsSoundToggle');
+
+            const isGuest = !myUser || myUser.isAnonymous;
+            const name = myProfile?.name || myUser?.displayName || 'Gość Społeczności';
+            const avatar = myProfile?.avatar || myUser?.photoURL || 'lumina_icon.jpg';
+
+            if (nameEl) nameEl.textContent = name;
+            if (avatarEl) avatarEl.src = avatar;
+            if (roleEl) {
+                if (isGuest) {
+                    roleEl.innerHTML = '<i class="fa-solid fa-user"></i> <span>Tryb gościa (brak zalogowania)</span>';
+                    roleEl.style.color = '#94a3b8';
+                } else {
+                    roleEl.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Konto zalogowane w Chrystusie ✨</span>';
+                    roleEl.style.color = '#10b981';
+                }
+            }
+            if (logoutBtn) {
+                logoutBtn.innerHTML = isGuest
+                    ? '<i class="fa-brands fa-google"></i> <span>Zaloguj się przez Google</span>'
+                    : '<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Wyloguj się z profilu i czatu</span>';
+                if (isGuest) {
+                    logoutBtn.style.background = 'linear-gradient(135deg, #ec4899, #8b5cf6)';
+                    logoutBtn.style.borderColor = 'rgba(236,72,153,0.5)';
+                    logoutBtn.style.boxShadow = '0 4px 16px rgba(236,72,153,0.35)';
+                } else {
+                    logoutBtn.style.background = 'linear-gradient(135deg, rgba(239,68,68,0.85), rgba(185,28,28,0.95))';
+                    logoutBtn.style.borderColor = 'rgba(248,113,113,0.5)';
+                    logoutBtn.style.boxShadow = '0 4px 16px rgba(239,68,68,0.35)';
+                }
+            }
+
+            if (soundToggle) {
+                const soundPref = localStorage.getItem('lumina_chat_sound_enabled');
+                soundToggle.checked = soundPref !== 'false';
+            }
+
+            modal.removeAttribute('inert');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.style.setProperty('z-index', '2147483647', 'important');
+
+            modal.style.display = 'flex';
+            modal.classList.add('open');
+            modal.classList.add('active');
+        };
+
+        // Gwarancja przechwycenia kliknięcia w ikonę zębatki ustawień czatu (Capture Phase)
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('#btnChatSettingsModal, .chat-settings-btn');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof window.openChatSettingsModal === 'function') {
+                    window.openChatSettingsModal();
+                }
+            }
+        }, true);
+
+        window.closeChatSettingsModal = function() {
+            const modal = document.getElementById('chatSettingsModal');
+            if (!modal) return;
+            modal.setAttribute('aria-hidden', 'true');
+            modal.setAttribute('inert', '');
+            modal.classList.remove('open');
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+        };
+
+        window.handleChatSettingsLogout = async function() {
+            const myUser = window.LuminaDB?.getCurrentUser?.();
+            const isGuest = !myUser || myUser.isAnonymous;
+            if (isGuest) {
+                window.closeChatSettingsModal();
+                if (typeof window.loginWithGoogle === 'function') {
+                    window.loginWithGoogle();
+                } else if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
+                    window.LuminaDB.loginWithGoogle();
+                }
+                return;
+            }
+            if (confirm('Czy na pewno chcesz się wylogować z profilu LUMINA i czatu?')) {
+                try {
+                    if (window.LuminaDB && typeof window.LuminaDB.logoutUser === 'function') {
+                        await window.LuminaDB.logoutUser();
+                    } else if (typeof window.logoutUser === 'function') {
+                        await window.logoutUser();
+                    }
+                } catch(e) {
+                    console.warn('Logout error:', e);
+                }
+                if (typeof showToast === 'function') {
+                    showToast('Wylogowano pomyślnie. Do zobaczenia! ✨');
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 300);
+            }
+        };
+
+        window.toggleChatSoundSetting = function(enabled) {
+            try {
+                localStorage.setItem('lumina_chat_sound_enabled', enabled ? 'true' : 'false');
+            } catch(e) {}
+            if (typeof showToast === 'function') {
+                showToast(enabled ? 'Dźwięki czatu włączone 🔔' : 'Dźwięki czatu wyciszone 🔕');
+            }
+        };
+
+        window.handleClearChatCache = function() {
+            try {
+                localStorage.removeItem('lumina_public_chat_cache');
+            } catch(e) {}
+            if (typeof showToast === 'function') {
+                showToast('Pamięć podręczna czatu odświeżona! ✨');
+            }
+            window.closeChatSettingsModal();
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToPublicChat === 'function') {
+                window.LuminaDB.subscribeToPublicChat((messages) => {
+                    if (typeof renderPublicChatMessages === 'function') renderPublicChatMessages(messages);
+                });
+            }
         };
 
         function buildMessageReactionsHtml(msg, type, chatId, myId) {
@@ -10158,14 +10361,16 @@
             const reactionKeys = Object.keys(reactions);
             let chipsHtml = '';
 
+            const safeMsgId = escapeForInlineJs(msg.id || msg.clientMessageId || (msg.timestamp?.seconds ? String(msg.timestamp.seconds) : ''));
+
             reactionKeys.forEach(emojiKey => {
                 const usersList = reactions[emojiKey] || [];
                 if (usersList.length > 0) {
-                    const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : u.id === myId));
+                    const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : (u.id === myId || u.slug === myId)));
                     const tooltipNames = usersList.map(u => (typeof u === 'string' ? u : u.name || u.id)).join(', ');
                     chipsHtml += `
-                        <button type="button" onclick="window.handleChatReaction('${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}', '${escapeForInlineJs(emojiKey)}')"
-                              style="display:inline-flex; align-items:center; gap:3px; background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'}; font-size:0.72rem; padding:1px 6px; border-radius:10px; cursor:pointer; font-family:inherit; transition:all 0.15s ease;"
+                        <button type="button" class="lumina-reaction-chip" onclick="window.handleChatReaction('${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${safeMsgId}', '${escapeForInlineJs(emojiKey)}')" 
+                              style="background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'};" 
                               title="Reagujący: ${escapeHtml(tooltipNames)}">
                             <span>${escapeHtml(emojiKey)}</span> <span style="font-size:0.65rem; font-weight:700; opacity:0.9;">${usersList.length}</span>
                         </button>
@@ -10174,9 +10379,8 @@
             });
 
             const addBtn = `
-                <button type="button" onclick="window.toggleReactionPicker(this, '${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${escapeForInlineJs(msg.id || '')}')"
-                        style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;"
-                        title="Dodaj emotikon / reakcję">
+                <button type="button" class="lumina-reaction-add-btn" onclick="window.toggleReactionPicker(this, '${escapeForInlineJs(type)}', '${escapeForInlineJs(chatId)}', '${safeMsgId}')"
+                        title="Dodaj emotikon / reakcję" aria-label="Dodaj reakcję">
                     <i class="fa-regular fa-face-smile"></i> +
                 </button>
             `;

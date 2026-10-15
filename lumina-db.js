@@ -3821,7 +3821,7 @@ export function subscribeToPublicChat(onUpdate) {
 
         return onSnapshot(publicQuery, (snap) => {
             const msgs = [];
-            snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => msgs.push({ ...d.data(), id: d.id }));
             msgs.reverse();
             activePublicChatMessages = msgs;
             try {
@@ -3931,9 +3931,11 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
     // 1. Natychmiast zaktualizuj lokalny stan w pamięci oraz cache
     try {
         const inMem = activeDirectChatMessages.get(normalizedChatId) || [];
-        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
-        const targetMsg = inMem.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId))) ||
-                          cached.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId)));
+        let cached = [];
+        try { cached = JSON.parse(localStorage.getItem(localKey) || '[]'); } catch(_) {}
+
+        const matchFn = (m) => String(m.id) === String(messageId) || (m.timestamp?.seconds && String(m.timestamp.seconds) === String(messageId));
+        const targetMsg = inMem.find(matchFn) || cached.find(matchFn);
         if (targetMsg) {
             targetMsg.reactions = targetMsg.reactions || {};
             const list = targetMsg.reactions[emoji] || [];
@@ -3948,7 +3950,15 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
             } else {
                 targetMsg.reactions[emoji] = list;
             }
-            if (cached.length) localStorage.setItem(localKey, JSON.stringify(cached));
+
+            // Zsynchronizuj drugą kolekcję (inMem / cached)
+            const otherList = inMem.includes(targetMsg) ? cached : inMem;
+            const otherMsg = otherList.find(matchFn);
+            if (otherMsg) otherMsg.reactions = targetMsg.reactions;
+
+            if (cached.length) {
+                try { localStorage.setItem(localKey, JSON.stringify(cached)); } catch(_) {}
+            }
             const listener = activeDirectChatListeners.get(normalizedChatId);
             if (listener) listener([...(inMem.length ? inMem : cached)]);
         }
@@ -3996,11 +4006,12 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
     const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
 
     // 1. Natychmiast zaktualizuj pamięć i lokalny cache
-    let targetMsg = activePublicChatMessages.find(m => m.id === messageId);
+    const matchFn = (m) => String(m.id) === String(messageId) || (m.timestamp?.seconds && String(m.timestamp.seconds) === String(messageId));
+    let targetMsg = activePublicChatMessages.find(matchFn);
     let cached = [];
     try {
         cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
-        if (!targetMsg) targetMsg = cached.find(m => m.id === messageId);
+        if (!targetMsg) targetMsg = cached.find(matchFn);
     } catch(e) {}
 
     if (targetMsg) {
@@ -4017,10 +4028,24 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
         } else {
             targetMsg.reactions[emoji] = list;
         }
+
+        if (cached && cached.length) {
+            const cMsg = cached.find(matchFn);
+            if (cMsg && cMsg !== targetMsg) {
+                cMsg.reactions = targetMsg.reactions;
+            }
+            try {
+                localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
+            } catch(e) {}
+        }
+        if (activePublicChatMessages && activePublicChatMessages.length) {
+            const mMsg = activePublicChatMessages.find(matchFn);
+            if (mMsg && mMsg !== targetMsg) {
+                mMsg.reactions = targetMsg.reactions;
+            }
+        }
+
         const updatedList = activePublicChatMessages.length ? activePublicChatMessages : cached;
-        try {
-            localStorage.setItem('lumina_public_chat_cache', JSON.stringify(updatedList));
-        } catch(e) {}
         if (typeof activePublicChatListener === 'function') {
             activePublicChatListener([...updatedList]);
         }
