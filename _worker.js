@@ -1702,6 +1702,123 @@ export default {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
     }
 
+    // ──────────────────────────────────────────────────────────────────────────
+    // MISSION CONTROL EDGE API (CLOUDFLARE D1) — ZERO-COST PRIVATE BACKEND
+    // ──────────────────────────────────────────────────────────────────────────
+    if (url.pathname.startsWith('/api/mc/')) {
+      const authHeader = request.headers.get('x-mc-secret') || request.headers.get('authorization') || '';
+      const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+      const EXPECTED_SECRET = env.MC_SECRET || 'cc-mission-control-key-2026';
+
+      if (token !== EXPECTED_SECRET) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      const db = env.mission_control_db;
+      if (!db) {
+        return new Response(JSON.stringify({ error: 'Database binding missing' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      const jsonHeaders = {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate'
+      };
+
+      // 1. GET /api/mc/queue/pending — list pending commands
+      if (url.pathname === '/api/mc/queue/pending' && request.method === 'GET') {
+        const { results } = await db.prepare(
+          "SELECT * FROM command_queue WHERE status = 'pending' ORDER BY priority DESC, created_at ASC LIMIT 50"
+        ).all();
+        return new Response(JSON.stringify({ success: true, count: results.length, queue: results }), {
+          status: 200,
+          headers: jsonHeaders
+        });
+      }
+
+      // 2. POST /api/mc/queue/push — enqueue new command
+      if (url.pathname === '/api/mc/queue/push' && request.method === 'POST') {
+        const body = await request.json().catch(() => ({}));
+        const id = body.id || `cmd_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const command = body.command || '';
+        const targetGroup = body.target_group || body.targetGroup || null;
+        const priority = Number(body.priority || 1);
+        const dayNumber = body.day_number || body.dayNumber || null;
+
+        if (!command) {
+          return new Response(JSON.stringify({ error: 'Command text required' }), { status: 400, headers: jsonHeaders });
+        }
+
+        await db.prepare(
+          "INSERT OR REPLACE INTO command_queue (id, command, target_group, status, priority, day_number) VALUES (?, ?, ?, 'pending', ?, ?)"
+        ).bind(id, command, targetGroup, priority, dayNumber).run();
+
+        return new Response(JSON.stringify({ success: true, id, status: 'pending' }), { status: 200, headers: jsonHeaders });
+      }
+
+      // 3. POST /api/mc/queue/update — update command status (done / processing / failed)
+      if (url.pathname === '/api/mc/queue/update' && request.method === 'POST') {
+        const body = await request.json().catch(() => ({}));
+        const id = body.id;
+        const status = body.status || 'done';
+        const error = body.error || null;
+
+        if (!id) {
+          return new Response(JSON.stringify({ error: 'Command id required' }), { status: 400, headers: jsonHeaders });
+        }
+
+        await db.prepare(
+          "UPDATE command_queue SET status = ?, error = ?, executed_at = datetime('now') WHERE id = ?"
+        ).bind(status, error, id).run();
+
+        return new Response(JSON.stringify({ success: true, id, status }), { status: 200, headers: jsonHeaders });
+      }
+
+      // 4. GET /api/mc/inspirations/today — get daily inspiration
+      if (url.pathname === '/api/mc/inspirations/today' && request.method === 'GET') {
+        const urlParams = new URL(request.url).searchParams;
+        const dayParam = urlParams.get('day');
+
+        let row;
+        if (dayParam) {
+          row = await db.prepare("SELECT * FROM daily_inspirations WHERE day_number = ?").bind(Number(dayParam)).first();
+        } else {
+          const todayIso = new Date().toISOString().slice(0, 10);
+          row = await db.prepare("SELECT * FROM daily_inspirations WHERE date = ?").bind(todayIso).first();
+          if (!row) {
+            row = await db.prepare("SELECT * FROM daily_inspirations ORDER BY day_number DESC LIMIT 1").first();
+          }
+        }
+
+        if (!row) {
+          return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: jsonHeaders });
+        }
+
+        return new Response(JSON.stringify({ success: true, inspiration: row }), { status: 200, headers: jsonHeaders });
+      }
+
+      // 5. POST /api/mc/status — update system status
+      if (url.pathname === '/api/mc/status' && request.method === 'POST') {
+        const body = await request.json().catch(() => ({}));
+        const service = body.service || 'whatsapp_agent';
+        const status = body.status || 'ONLINE';
+        const details = typeof body.details === 'object' ? JSON.stringify(body.details) : (body.details || null);
+
+        await db.prepare(
+          "INSERT OR REPLACE INTO system_status (service, status, last_ping, details) VALUES (?, ?, datetime('now'), ?)"
+        ).bind(service, status, details).run();
+
+        return new Response(JSON.stringify({ success: true, service, status }), { status: 200, headers: jsonHeaders });
+      }
+
+      return new Response(JSON.stringify({ error: 'Unknown MC endpoint' }), { status: 404, headers: jsonHeaders });
+    }
+
     if (url.pathname === '/api/auth/me') {
       return new Response(
         JSON.stringify({ user: null, isAdmin: false, firebaseAdminReady: true }),

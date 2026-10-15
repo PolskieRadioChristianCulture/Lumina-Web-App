@@ -8,9 +8,19 @@ binding = "milion_db"
 database_name = "milion-db"
 database_id = "331fef6b-116c-4cfd-8dc8-1028a4fb6da4"
 
+[[d1_databases]]
+binding = "mission_control_db"
+database_name = "mission-control-db"
+database_id = "2696531d-d420-4a0c-a882-2ad11b5d9da7"
+
 [env.production]
 [[env.production.d1_databases]]
 binding = "milion_db"
 database_name = "milion-db"
 database_id = "331fef6b-116c-4cfd-8dc8-1028a4fb6da4"
+
+[[env.production.d1_databases]]
+binding = "mission_control_db"
+database_name = "mission-control-db"
+database_id = "2696531d-d420-4a0c-a882-2ad11b5d9da7"
 

@@ -1,5 +1,7 @@
 // Public web documents only: never alter broadcast, operational or embed screens.
 export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261013_col2';
+export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261015_w';
+
 export function applyPageStandard(file, html) {
   const name = file.replaceAll('\\', '/').toLowerCase();
   if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24)/.test(name)) return html;
@@ -11,6 +13,18 @@ export function applyPageStandard(file, html) {
   html = html.replace(/(src=["'])(\/?app\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_mockup4$3');
   html = html.replace(/(src=["'])(\/components\/cc-global-chat-button\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_shared4$3');
   html = html.replace(/(src=["'])(\/js\/cc-back-to-top\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261013_col2$3');
-  if (html.includes('/js/cc-back-to-top.js')) return html;
-  return html.replace(/<\/body\s*>/i, `<script defer src="${BACK_TO_TOP_SCRIPT}"></script>\n</body>`);
+  html = html.replace(/(src=["'])(\/components\/cc-omni-search\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261015_w$3');
+
+  let additions = '';
+  if (!html.includes('cc-omni-search.js')) {
+    additions += `<script defer src="${OMNI_SEARCH_SCRIPT}"></script>\n`;
+  }
+  if (!html.includes('/js/cc-back-to-top.js')) {
+    additions += `<script defer src="${BACK_TO_TOP_SCRIPT}"></script>\n`;
+  }
+
+  if (additions) {
+    return html.replace(/<\/body\s*>/i, `${additions}</body>`);
+  }
+  return html;
 }
