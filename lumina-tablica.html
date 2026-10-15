@@ -4818,8 +4818,11 @@
             #tabBtnPrivateChat span:not(.tab-badge):not(.tab-icon-wrap),
             #tabBtnGroupsChat span:not(.tab-badge):not(.tab-icon-wrap),
             .messenger-tab-btn span:not(.tab-badge):not(.tab-icon-wrap) { display: none !important; }
+            #tabBtnCommanderChat:not(.is-commander-authorized),
+            #tabBtnCommanderChat[hidden],
+            #tabBtnCommanderChat.is-commander-hidden { display: none !important; }
             #tabBtnPublicChat,
-            #tabBtnCommanderChat,
+            #tabBtnCommanderChat.is-commander-authorized,
             #tabBtnPrivateChat,
             #tabBtnGroupsChat,
             .messenger-tab-btn {
@@ -6936,7 +6939,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="position:relative; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s; touch-action:manipulation;">
                         <i class="fa-solid fa-earth-europe"></i> <span class="tab-label" style="margin-left:6px;">Czat Ogólny (Publiczny)</span>
                     </button>
-                                        <button type="button" id="tabBtnCommanderChat" onclick="switchMessengerMainTab('commander')" style="position:relative; display:none; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; align-items:center; justify-content:center; gap:0; box-shadow:0 0 12px rgba(245,158,11,0.45); transition:all 0.2s; touch-action:manipulation;">
+                                        <button type="button" id="tabBtnCommanderChat" onclick="switchMessengerMainTab('commander')" style="position:relative; display:none !important; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; align-items:center; justify-content:center; gap:0; box-shadow:0 0 12px rgba(245,158,11,0.45); transition:all 0.2s; touch-action:manipulation;" hidden class="is-commander-hidden">
                         <i class="fa-solid fa-crown"></i> <span class="tab-label" style="margin-left:6px;">Sztab Dowództwa CC</span>
                     </button>
                     <button type="button" id="tabBtnPrivateChat" onclick="switchMessengerMainTab('private')" style="position:relative; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; transition:all 0.2s; touch-action:manipulation;">
@@ -6970,7 +6973,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 
 
             <!-- TAB 3: COMMANDER VIP MISSION CHAT (Exclusive for authorized emails: nazirczarkes@gmail.com, radiochristianculture@gmail.com) -->
-            <div id="messengerCommanderView" hidden inert aria-hidden="true" style="display: none; flex-direction: column; flex: 1; min-height: 0; background:#070d1e;">
+            <div id="messengerCommanderView" hidden inert aria-hidden="true" style="display: none !important; flex-direction: column; flex: 1; min-height: 0; background:#070d1e;" class="is-commander-hidden">
                 <!-- VIP Room Header info -->
                 <div style="padding:8px 14px; background:linear-gradient(135deg, rgba(245,158,11,0.15), rgba(139,92,246,0.15)); border-bottom:1px solid rgba(245,158,11,0.3); display:flex; justify-content:space-between; align-items:center;">
                     <div style="font-size:0.75rem; color:#fde047; font-weight:800; display:flex; align-items:center; gap:6px;">
@@ -12291,6 +12294,9 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 
          function switchMessengerMainTab(tab, preserveActiveChat) {
             checkAndShowCommanderTab();
+            if (tab === 'commander' && !isUserCommanderAuthorized()) {
+                tab = 'public';
+            }
             const btnPublic = document.getElementById('tabBtnPublicChat');
             const btnPrivate = document.getElementById('tabBtnPrivateChat');
             const btnCommander = document.getElementById('tabBtnCommanderChat');
@@ -12326,6 +12332,10 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 initPublicChatListener();
                 scrollChatToBottom('publicChatMessagesBox', false);
             } else if (tab === 'commander') {
+                if (!isUserCommanderAuthorized()) {
+                    switchMessengerMainTab('public');
+                    return;
+                }
                 if (btnPublic) {
                     btnPublic.style.background = 'transparent';
                     btnPublic.style.color = '#94a3b8';
@@ -13084,36 +13094,85 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             } catch(e) {}
         }
 
-
-        // ── VIP SZTAB DOWÓDZTWA CC (nazirczarkes@gmail.com & radiochristianculture@gmail.com) ──
+                // ── VIP SZTAB DOWÓDZTWA CC (WYŁĄCZNIE DLA nazirczarkes@gmail.com) ──
         let commanderChatUnsubscribe = null;
 
         function isUserCommanderAuthorized() {
-            const myUser = window.LuminaDB?.getCurrentUser();
-            const myProfile = window.LuminaDB?.getCurrentProfile();
-            const email = (myUser?.email || myProfile?.email || localStorage.getItem('lumina_current_user_email') || '').toLowerCase().trim();
-            const slug = (myProfile?.slug || myUser?.slug || localStorage.getItem('lumina_current_user_slug') || '').toLowerCase().trim();
-            const isMasterAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            try {
+                let email = '';
+                let isAuthenticated = false;
 
-            const ALLOWED_EMAILS = [
-                'nazirczarkes@gmail.com',
-                'radiochristianculture@gmail.com',
-                'studiodees7@gmail.com'
-            ];
+                // 1. Sprawdź instancję LuminaDB / Firebase
+                const L = window.LuminaDB;
+                if (L && typeof L.getCurrentUser === 'function') {
+                    const fbUser = L.getCurrentUser();
+                    if (fbUser && !fbUser.isAnonymous) {
+                        isAuthenticated = true;
+                        if (fbUser.email) email = fbUser.email;
+                    }
+                }
 
-            if (ALLOWED_EMAILS.includes(email)) return true;
-            if (slug === 'cezaryrgowski' || slug === 'radiocc' || slug.includes('cezary')) return true;
-            if (isMasterAdmin) return true;
-            return false;
+                // 2. Sprawdź profil LuminaDB
+                if (L && typeof L.getCurrentProfile === 'function') {
+                    const prof = L.getCurrentProfile();
+                    if (prof && prof.email && !email) {
+                        email = prof.email;
+                    }
+                }
+
+                // 3. Fallback do aktywnej sesji użytkownika w pamięci
+                if (!isAuthenticated) {
+                    const sessionActive = (localStorage.getItem('lumina_user_session') === 'active');
+                    if (sessionActive) {
+                        const userStr = localStorage.getItem('lumina_current_user');
+                        if (userStr) {
+                            try {
+                                const parsed = JSON.parse(userStr);
+                                if (parsed && (parsed.uid || parsed.email) && !parsed.isAnonymous) {
+                                    isAuthenticated = true;
+                                    if (parsed.email && !email) email = parsed.email;
+                                }
+                            } catch (_) {}
+                        }
+                    }
+                }
+
+                if (!isAuthenticated) return false;
+
+                const normalizedEmail = String(email || '').toLowerCase().trim();
+                return normalizedEmail === 'nazirczarkes@gmail.com';
+            } catch (_) {
+                return false;
+            }
         }
 
         function checkAndShowCommanderTab() {
             const btn = document.getElementById('tabBtnCommanderChat');
+            const view = document.getElementById('messengerCommanderView');
+            const isAuth = isUserCommanderAuthorized();
             if (btn) {
-                if (isUserCommanderAuthorized()) {
-                    btn.style.display = 'flex';
+                if (isAuth) {
+                    btn.classList.add('is-commander-authorized');
+                    btn.classList.remove('is-commander-hidden');
+                    btn.removeAttribute('hidden');
+                    btn.style.setProperty('display', 'inline-flex', 'important');
                 } else {
-                    btn.style.display = 'none';
+                    btn.classList.remove('is-commander-authorized');
+                    btn.classList.add('is-commander-hidden');
+                    btn.setAttribute('hidden', '');
+                    btn.style.setProperty('display', 'none', 'important');
+                }
+            }
+            if (view && !isAuth) {
+                view.classList.remove('is-commander-authorized');
+                view.classList.add('is-commander-hidden');
+                view.style.setProperty('display', 'none', 'important');
+                view.setAttribute('hidden', '');
+                view.setAttribute('inert', '');
+                view.setAttribute('aria-hidden', 'true');
+                if (typeof commanderChatUnsubscribe === 'function') {
+                    commanderChatUnsubscribe();
+                    commanderChatUnsubscribe = null;
                 }
             }
         }
@@ -13127,6 +13186,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
         }
 
         function initCommanderChatListener() {
+            if (!isUserCommanderAuthorized()) return;
             if (commanderChatUnsubscribe) return;
             const box = document.getElementById('commanderChatMessagesBox');
             if (!box) return;
@@ -13223,6 +13283,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 
         async function handleSendCommanderChatMessage(e) {
             if (e) e.preventDefault();
+            if (!isUserCommanderAuthorized()) return;
             const input = document.getElementById('commanderChatInput');
             if (!input) return;
             const text = input.value.trim();
@@ -13284,6 +13345,14 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 console.warn('Błąd wysyłania do sztabu dowództwa:', err);
             }
         }
+
+        window.addEventListener('lumina-auth-state', () => {
+            checkAndShowCommanderTab();
+            const view = document.getElementById('messengerCommanderView');
+            if (view && view.style.display !== 'none' && !isUserCommanderAuthorized()) {
+                switchMessengerMainTab('public');
+            }
+        });
 
         function openDirectMessagesModal(preferredTab) {
             const m = document.getElementById('directMessagesModal');

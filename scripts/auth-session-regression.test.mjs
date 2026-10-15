@@ -86,3 +86,65 @@ test('navigation entrypoints bypass the broken cached bundle',()=>{
  // Compile without executing DOM code; catches a lost callback closing brace.
  assert.doesNotThrow(()=>new vm.Script(readFileSync('lumina-bottom-nav.js','utf8')));
 });
+
+test('commander chat room is strictly exclusive to nazirczarkes@gmail.com and invisible to everyone else',()=>{
+ const pages = ['lumina.html', 'lumina-tablica.html', 'lumina-tablica-light.html', 'lumina-profile.html', 'lumina.cezaryrgowski.html', 'lumina.wiolettarogowska.html'];
+ for (const page of pages) {
+  const html = readFileSync(page, 'utf8');
+
+  // 1. Button and view are hidden by default
+  assert.ok(html.includes('id="tabBtnCommanderChat"'), `${page}: missing tabBtnCommanderChat`);
+  assert.ok(html.includes('id="messengerCommanderView"'), `${page}: missing messengerCommanderView`);
+  assert.ok(/<button[^>]*id=["']tabBtnCommanderChat["'][^>]*hidden/.test(html), `${page}: tabBtnCommanderChat must have hidden attribute`);
+  assert.ok(/<div[^>]*id=["']messengerCommanderView["'][^>]*hidden/.test(html), `${page}: messengerCommanderView must have hidden attribute`);
+  assert.ok(/<button[^>]*id=["']tabBtnCommanderChat["'][^>]*is-commander-hidden/.test(html), `${page}: tabBtnCommanderChat must have is-commander-hidden class`);
+  assert.ok(/<div[^>]*id=["']messengerCommanderView["'][^>]*is-commander-hidden/.test(html), `${page}: messengerCommanderView must have is-commander-hidden class`);
+
+  // 2. Extract isUserCommanderAuthorized function and test in sandbox
+  const match = html.match(/function isUserCommanderAuthorized\(\)\s*\{[\s\S]*?\n        \}/);
+  assert.ok(match, `${page}: isUserCommanderAuthorized function not found`);
+
+  function runAuth(userObj, profileObj, storageMap = new Map()) {
+   const sandbox = {
+    window: {
+     LuminaDB: {
+      getCurrentUser: () => userObj,
+      getCurrentProfile: () => profileObj
+     }
+    },
+    localStorage: {
+     getItem: k => storageMap.get(k) || null,
+     setItem: (k, v) => storageMap.set(k, v)
+    },
+    sessionStorage: {
+     getItem: () => null
+    }
+   };
+   return vm.runInNewContext(`${match[0]}\nisUserCommanderAuthorized();`, sandbox);
+  }
+
+  // Unauthenticated / Guest
+  assert.equal(runAuth(null, null), false, `${page}: guest must be false`);
+
+  // Anonymous user
+  assert.equal(runAuth({ isAnonymous: true, email: 'nazirczarkes@gmail.com' }, null), false, `${page}: anonymous must be false`);
+
+  // Other email addresses
+  assert.equal(runAuth({ isAnonymous: false, email: 'radiochristianculture@gmail.com' }, null), false, `${page}: radiochristianculture must be false`);
+  assert.equal(runAuth({ isAnonymous: false, email: 'studiodees7@gmail.com' }, null), false, `${page}: studiodees7 must be false`);
+  assert.equal(runAuth({ isAnonymous: false, email: 'czarekrogowski3@gmail.com' }, null), false, `${page}: czarekrogowski3 must be false`);
+  assert.equal(runAuth({ isAnonymous: false, email: 'user@example.com' }, null), false, `${page}: generic email must be false`);
+
+  // Spoofed slug without auth
+  const spoofedStorage = new Map([
+   ['lumina_current_user_slug', 'cezaryrgowski'],
+   ['lumina_auth_master_admin', 'true']
+  ]);
+  assert.equal(runAuth(null, null, spoofedStorage), false, `${page}: slug/master admin spoofing must be false`);
+
+  // Strictly nazirczarkes@gmail.com
+  assert.equal(runAuth({ isAnonymous: false, email: 'nazirczarkes@gmail.com' }, null), true, `${page}: nazirczarkes@gmail.com must be true`);
+  assert.equal(runAuth({ isAnonymous: false, email: 'NAZIRCZARKES@GMAIL.COM' }, null), true, `${page}: case insensitivity must be true`);
+  assert.equal(runAuth({ isAnonymous: false, email: ' nazirczarkes@gmail.com ' }, null), true, `${page}: trimmed email must be true`);
+ }
+});

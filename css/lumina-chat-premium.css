@@ -1418,3 +1418,19 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
     justify-content: center !important;
   }
 }
+
+/* 🛡️ STRAŻNIK DOWÓDZTWA: Pokój Dowództwa widoczny WYŁĄCZNIE dla nazirczarkes@gmail.com */
+#tabBtnCommanderChat[hidden],
+#tabBtnCommanderChat.is-commander-hidden,
+#tabBtnCommanderChat:not(.is-commander-authorized),
+#directMessagesModal #tabBtnCommanderChat[style*="display:none"],
+#directMessagesModal #tabBtnCommanderChat[style*="display: none"] {
+  display: none !important;
+}
+#messengerCommanderView[hidden],
+#messengerCommanderView.is-commander-hidden,
+#messengerCommanderView:not(.is-commander-authorized),
+#directMessagesModal #messengerCommanderView[style*="display:none"],
+#directMessagesModal #messengerCommanderView[style*="display: none"] {
+  display: none !important;
+}
