@@ -3,6 +3,8 @@ import { readdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+import { buildCcnStaticPages } from './build-ccn-static-pages.mjs';
+
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'portals/ccn-news');
 const result = spawnSync(process.execPath, [path.join(source, 'node_modules/vite/bin/vite.js'), 'build'], { cwd: source, stdio: 'inherit' });
@@ -15,3 +17,6 @@ await writeFile(path.join(root, 'news.html'), html);
 await writeFile(path.join(root, 'news/index.html'), html);
 await copyFile(path.join(source, 'public/data/ccn-public-feed.json'), path.join(root, 'data/ccn-public-feed.json'));
 console.log('CCN News: canonical source built; both public entrypoints updated.');
+
+await buildCcnStaticPages();
+console.log('CCN News: static article pages (SSG) generated successfully.');
