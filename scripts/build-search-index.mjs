@@ -425,6 +425,14 @@ const CORE_PROJECTS = [
     featured: false
   },
   {
+    title: "Polityka Redakcyjna CCN 1.0 — Christian Culture Network",
+    category: "Wiedza & Standardy",
+    url: "https://polskieradio.cc/polityka-redakcyjna",
+    description: "Oficjalny standard i kodeks dziennikarski 20 portali Christian Culture Network. Model mieszany, zasady weryfikacji źródeł, etyka AI, rzetelność i chrześcijańska odpowiedzialność za słowo.",
+    tags: ["polityka redakcyjna", "ccn", "standard redakcyjny", "etyka dziennikarska", "weryfikacja faktów", "etyka ai", "regulamin ccn", "kodeks", "zasady publikacji", "o ccn"],
+    featured: true
+  },
+  {
     title: "Licznik 1 000 000 Słuchaczy",
     category: "Narzędzia i misja",
     url: "https://polskieradio.cc/milion",
@@ -581,10 +589,15 @@ function loadCcnArticles() {
       const tags = Array.isArray(art.tags) ? art.tags : [];
       const authorName = art.author && art.author.name ? art.author.name : 'Redakcja CCN';
       
+      let artUrl = `https://polskieradio.cc/news?art=${art.slug || art.id}`;
+      if (art.slug === 'czy-ai-zastapi-ludzka-madrosc') {
+        artUrl = 'https://polskieradio.cc/nauka/czy-ai-zastapi-ludzka-madrosc';
+      }
+
       return {
         title: art.title,
         category: "Artykuły & Wiedza CCN",
-        url: `https://polskieradio.cc/news?art=${art.slug || art.id}`,
+        url: artUrl,
         description: art.excerpt || contentText.slice(0, 180) + '…',
         contentSnippet: contentText.slice(0, 350) + '…',
         author: authorName,
