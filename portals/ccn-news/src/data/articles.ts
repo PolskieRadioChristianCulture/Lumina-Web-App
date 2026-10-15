@@ -136,6 +136,75 @@ export const INITIAL_ARTICLES: Article[] = [
     ]
   },
   {
+    "id": "art-dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+    "title": "Dlaczego czuję się samotny, chociaż mam setki znajomych w sieci? Prawdziwa więź w erze cyfrowej izolacji",
+    "slug": "dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+    "excerpt": "Można mieć setki kontaktów na komunikatorach, tysiące obserwujących i nieustanny strumień powiadomień, a mimo to doświadczać dotkliwego poczucia pustki. Dlaczego cyfrowa łączność nie leczy samotności i czym różni się kontakt online od autentycznej obecności drugiego człowieka?",
+    "content": [
+      "Można mieć setki kontaktów na komunikatorach, tysiące obserwujących i nieustanny strumień powiadomień w kieszeni, a mimo to kłaść się spać z dotkliwym poczuciem wewnętrznej pustki. Paradoks współczesnego świata polega na tym, że nigdy w historii ludzkości nie byliśmy tak stale połączeni technologicznie — i jednocześnie tak głęboko wyobcowani w realnym życiu.",
+      "ILUZJA BLISKOŚCI: DLACZEGO CYFROWA ŁĄCZNOŚĆ TO NIE TO SAMO CO RELACJA?",
+      "Gdy otrzymujemy polubienie, komentarz czy krótką wiadomość tekstową, nasz mózg reaguje mikrodawką dopaminy — neuroprzekaźnika odpowiedzialnego za oczekiwanie na nagrodę i chwilowe pobudzenie. Jednak układ nerwowy człowieka został ukształtowany do zupełnie innego rodzaju kontaktu. Potrzebujemy kontaktu wzrokowego, tembru ludzkiego głosu, mikromimiki twarzy i fizycznej obecności, które stymulują wydzielanie oksytocyny — hormonu budującego poczucie bezpieczeństwa, zaufania i emocjonalnego ukojenia.",
+      "Komunikacja przez ekran często staje się relacją asymetryczną i przefiltrowaną. Pokazujemy w sieci starannie wyselekcjonowane fragmenty naszej codzienności — sukcesy, wakacje, estetyczne kadry — ukrywając zmęczenie, bezradność, lęk i łzy. W rezultacie wchodzimy w interakcje nie z prawdziwymi ludźmi, lecz z ich cyfrowymi awatarami, porównując swoje nieidealne wnętrze z wyretuszowaną fasadą innych.",
+      "EPIDEMIA SAMOTNOŚCI W ŚWIETLE WSPÓŁCZESNEJ NAUKI",
+      "Poczucie osamotnienia przestało być wyłącznie indywidualnym problemem emocjonalnym — stało się jednym z najpoważniejszych wyzwań zdrowia publicznego XXI wieku. W oficjalnym raporcie U.S. Surgeon General (Naczelnego Lekarza Stanów Zjednoczonych) z 2023 roku pt. „Our Epidemic of Loneliness and Isolation” wskazano, że chroniczna samotność i brak głębokich więzi społecznych niosą ze sobą ryzyko przedwczesnej śmierci porównywalne z wypalaniem 15 papierosów dziennie.",
+      "Badania epidemiologiczne jednoznacznie wykazują, że przewlekła izolacja społeczna podnosi poziom kortyzolu, nasila stany zapalne w organizmie, zaburza sen, zwiększa ryzyko chorób układu krążenia o 29% oraz ryzyko udaru mózgu o 32%. U dzieci i młodzieży spędzających powyżej kilku godzin dziennie na biernym przeglądaniu mediów społecznościowych odnotowuje się gwałtowny wzrost objawów depresyjnych i stanów lękowych. Wbrew obietnicom cyfrowych gigantów, algorytmy optymalizowane pod kątem przykuwania uwagi nie łączą ludzi — zatrzymują ich w klatce nieustannego przebodźcowania.",
+      "SAMOTNOŚĆ A ODOSOBNIENIE: CZYM RÓŻNI SIĘ PUSTKA OD CISZY?",
+      "Warto dokonać istotnego rozróżnienia: samotność (ang. loneliness) to subiektywne, bolesne doświadczenie braku zrozumienia, więzi i bycia kochanym. Odosobnienie lub cisza (ang. solitude) może być natomiast przestrzenią twórczego odpoczynku, refleksji i głębokiego spotkania z Bogiem. Człowiek może być sam w pokoju i czuć się nasycony pokojem, a może stać pośrodku tętniącego życiem tłumu na rynku metropolii i umierać z poczucia bezradnego osamotnienia.",
+      "Ucieczka przed samotnością w kolejne aplikacje, randki internetowe czy ciągłe scrollowanie rolek jest jak próba ugaszenia pragnienia morską wodą — chwilowo tłumi ciszę, ale na dłuższą metę potęguje wewnętrzne odwodnienie duszy.",
+      "PERSPEKTYWA BIBLIJNA: CZŁOWIEK STWORZONY DO PRZYMIERZA, NIE DO SAMOTNOŚCI",
+      "Pismo Święte od pierwszych rozdziałów Księgi Rodzaju stawia sprawę bezkompromisowo. Zanim na świecie pojawił się grzech, ból i cierpienie, jedyną rzeczą, o której Bóg powiedział w doskonałym ogrodzie Eden, że „nie jest dobra”, była samotność człowieka: „PAN Bóg powiedział też: Niedobrze, by człowiek był sam; uczynię mu odpowiednią dla niego pomoc” (Rdz 2:18, UBG).",
+      "Zostaliśmy stworzeni na obraz i podobieństwo Boga, który Sam w Sobie jest wieczną wspólnotą miłości Ojca, Syna i Ducha Świętego. Dlatego pragnienie bycia znanym, przyjętym i kochanym takim, jakim się jest — bez masek i bez filtrów — nie jest słabością czy defektem charakteru. Jest nienaruszalnym, świętym znakiem naszego pochodzenia.",
+      "W Liście do Galacjan 6:2 apostoł Paweł formułuje fundament chrześcijańskiej wspólnoty: „Jedni drugich brzemiona noście, a tak wypełniajcie zakon Chrystusowy”. W języku greckim Nowego Testamentu słowo „brzemię” (G922: baros) oznacza ciężar zbyt wielki, by pojedynczy wędrowiec mógł go unieść samotnie na stromym szlaku. Cyfrowy emotikon czy kciuk w górę nie weźmie na ramiona twojego lęku o przyszłość, twojej żałoby po stracie bliskiego ani twojej walki z chorobą. Do tego potrzebny jest żywy brat i siostra, którzy potrafią usiąść obok, pomilczeć, wysłuchać i podać rękę.",
+      "JAK WYJŚĆ Z CYFROWEJ IZOLACJI? 5 KROKÓW DO PRAWDZIWEJ WIĘZI:",
+      "1. Odłóż telefon na czas spotkania: Wprowadź żelazną zasadę „ekrany w dół”, gdy rozmawiasz z mężem, żoną, dzieckiem czy przyjacielem. Prawdziwa obecność wymaga niepodzielnej uwagi oczu i uszu.",
+      "2. Zastąp wiadomość tekstową telefonem lub spotkaniem: Zamiast kolejnego zdawkowego „co tam?”, zadzwoń i powiedz: „Pomyślałem o tobie, masz wolne pół godziny na herbatę i spacer?”.",
+      "3. Miej odwagę do bezbronności: Prawdziwa relacja nie rodzi się z imponowania sobie nawzajem, ale z odwagi powiedzenia: „Przechodzę trudniejszy czas, potrzebuję modlitwy i rozmowy”.",
+      "4. Zaangażuj się w realną służbę i wolontariat: Najszybszym lekarstwem na koncentrację na własnej samotności jest wyciągnięcie dłoni do kogoś, kto potrzebuje pomocy — seniora w sąsiedztwie, rodziny w kryzysie czy lokalnej społeczności wierzących.",
+      "5. Odkryj obecność Tego, który nigdy nie opuszcza: Jezus Chrystus przeszedł przez najgłębszą samotność Getsemane i krzyża, gdy opuścili Go wszyscy uczniowie. On wie, jak smakuje odrzucenie. Obietnica Pisma pozostaje niewzruszona: „Nie porzucę cię ani cię nie opuszczę” (Hbr 13:5).",
+      "POCZĄTEK NOWEGO SPOTKANIA",
+      "Nie jesteś skazany na wieczną samotność w szklanym labiryncie powiadomień. Być może dzisiejszy dzień to moment, by wziąć głęboki oddech, wyłączyć ekran, podnieść wzrok i zapukać do drzwi drugiego człowieka. Właśnie tam, w prostej, niedoskonałej, ale prawdziwej rozmowie z drugim człowiekiem i w żywej modlitwie do Boga, zaczyna się powrót do życia, dla którego zostaliśmy powołani."
+    ],
+    "scriptureReference": {
+      "verse": "List do Galacjan 6:2 · Księga Rodzaju 2:18",
+      "text": "Jedni drugich brzemiona noście, a tak wypełniajcie zakon Chrystusowy.",
+      "strongCode": "G922 (Baros — Ciężar, brzemiona) / H5828 (Ezer — Pomoc odpowiadająca)"
+    },
+    "sourceCitation": {
+      "sourceName": "U.S. Surgeon General Advisory on Loneliness & Harvard Study of Adult Development (2023)",
+      "sourceUrl": "https://www.hhs.gov/surgeongeneral/priorities/loneliness-and-isolation/index.html",
+      "quotationDate": "15 października 2026 r.",
+      "originalTitle": "Our Epidemic of Loneliness and Isolation: The U.S. Surgeon General's Advisory on the Healing Effects of Social Connection and Community"
+    },
+    "category": "psychologia",
+    "categoryLabel": "CCN PSYCHOLOGIA & RELACJE",
+    "author": {
+      "id": "wioletta-rogowska",
+      "name": "Wioletta Rogowska",
+      "role": "Współzałożycielka Christian Culture",
+      "status": "Mężatka",
+      "avatarUrl": "/avatar_wioletta_official.jpg",
+      "bio": "Współzałożycielka Christian Culture, koordynatorka inicjatyw charytatywnych i ewangelizacyjnych."
+    },
+    "publishedAt": "2026-10-15T09:30:00Z",
+    "dateFormatted": "15 października 2026",
+    "imageUrl": "/images/news/art-samotnosc-w-sieci-prawdziwe-relacje.jpg",
+    "imageCaption": "Ilustracja AI: Symboliczny kontrast pomiędzy rozświetlonym ekranem smartfona a potrzebą autentycznej obecności człowieka w ciepłej palecie Champagne Gold (ilustracja poglądowa wygenerowana z pomocą AI).",
+    "readTimeMinutes": 5,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Samotność w Sieci",
+      "Psychologia i Wiara",
+      "Relacje",
+      "Surgeon General",
+      "Bliskość i Więź",
+      "Zdrowie Psychiczne",
+      "Galacjan 6:2",
+      "Wioletta Rogowska"
+    ]
+  },
+  {
   "id": "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw",
   "title": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)",
   "slug": "dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",

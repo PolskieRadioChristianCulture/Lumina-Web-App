@@ -557,12 +557,42 @@ const CCN_PORTALS = [
     featured: false
   },
   {
-    title: "CCN Ogłoszenia — Społeczność w Działaniu",
+    title: "CCN ZIU — Portal Zdrowia, Urody & Atlas Ziół („Ciało Świątynią Ducha Świętego”)",
     category: "Portale",
-    url: "https://polskieradio.cc/ogloszenia",
-    description: "Chrześcijańska tablica ogłoszeń: sprzęt studyjny, wolontariat misyjny, wsparcie lokalnych zborów, usługi i pomoc wzajemna braci i sióstr.",
-    tags: ["ccn ogłoszenia", "ogłoszenia chrześcijańskie", "sprzęt studyjny", "wolontariat", "wsparcie braterskie"],
-    featured: false
+    url: "https://polskieradio.cc/ziu",
+    description: "Boża apteka natury: atlas ziół leczniczych, zdrowy styl życia, pielęgnacja ciała jako świątyni Ducha Świętego, profilaktyka i biblijne zasady witalności.",
+    tags: ["ccn ziu", "zdrowie", "atlas ziół", "uroda", "ciało świątynią ducha", "medycyna naturalna", "profilaktyka", "witalność"],
+    featured: true
+  },
+  {
+    title: "Polityka Redakcyjna CCN 1.0 — Christian Culture Network",
+    category: "Wiedza & Standardy",
+    url: "https://polskieradio.cc/polityka-redakcyjna",
+    description: "Oficjalny standard i kodeks dziennikarski 20 portali Christian Culture Network. Model mieszany, zasady weryfikacji źródeł, etyka AI, rzetelność i chrześcijańska odpowiedzialność za słowo.",
+    tags: ["polityka redakcyjna", "ccn", "standard redakcyjny", "etyka dziennikarska", "weryfikacja faktów", "etyka ai", "regulamin ccn", "kodeks", "zasady publikacji", "o ccn"],
+    featured: true
+  },
+  {
+    title: "Czy sztuczna inteligencja może zastąpić ludzką mądrość? Technologia stawia pytanie o przyszłość człowieka",
+    category: "Artykuły & Wiedza CCN",
+    url: "https://polskieradio.cc/nauka/czy-ai-zastapi-ludzka-madrosc",
+    description: "Systemy sztucznej inteligencji potrafią analizować ogromne ilości informacji i tworzyć teksty. Jednak wraz ze wzrostem ich możliwości pojawia się pytanie: czy technologia może również zastąpić ludzką mądrość?",
+    contentSnippet: "Systemy sztucznej inteligencji potrafią analizować ogromne ilości informacji, tworzyć teksty, pomagać w programowaniu i wspierać podejmowanie decyzji. Jednak czy technologia może zastąpić mądrość Bożą?",
+    author: "Cezary Rogowski",
+    date: "15 października 2026",
+    tags: ["sztuczna inteligencja", "etyka ai", "mądrość biblijna", "technologia i wiara", "analiza ccn", "nauka", "cezary rogowski", "artykuł"],
+    featured: true
+  },
+  {
+    title: "Dlaczego czuję się samotny, chociaż mam setki znajomych w sieci? Prawdziwa więź w erze cyfrowej izolacji",
+    category: "Artykuły & Wiedza CCN",
+    url: "https://polskieradio.cc/news?art=dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+    description: "Można mieć setki kontaktów na komunikatorach, tysiące obserwujących, a mimo to doświadczać dotkliwego poczucia pustki. Dlaczego cyfrowa łączność nie leczy samotności i czym różni się od autentycznej obecności?",
+    contentSnippet: "Paradoks współczesnego świata polega na tym, że nigdy w historii ludzkości nie byliśmy tak stale połączeni technologicznie — i jednocześnie tak głęboko wyobcowani w realnym życiu.",
+    author: "Wioletta Rogowska",
+    date: "15 października 2026",
+    tags: ["samotność w sieci", "psychologia i wiara", "relacje", "bliskość i więź", "zdrowie psychiczne", "wioletta rogowska", "psychologia", "artykuł"],
+    featured: true
   }
 ];
 
