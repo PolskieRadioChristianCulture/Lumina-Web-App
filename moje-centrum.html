@@ -100,8 +100,9 @@
             height: 38px;
             border-radius: 10px;
             border: 1px solid var(--cc-gold);
-            background: #000;
-            object-fit: cover;
+            background: rgba(0, 0, 0, 0.4);
+            object-fit: contain;
+            padding: 2px;
         }
         .hub-brand-title {
             font-family: 'Cinzel', serif;
@@ -522,7 +523,7 @@
     <!-- ── Nawigacja Główna ── -->
     <header class="hub-navbar">
         <a href="/" class="hub-nav-brand" title="Powrót do strony głównej PolskieRadio.cc">
-            <img src="/images/logo-192.png" alt="Christian Culture" class="hub-brand-logo" onerror="this.src='/images/logo.png'">
+            <img src="/logo-cc.png" alt="Christian Culture" class="hub-brand-logo" onerror="this.onerror=null; this.src='/lumina-icon-192.png';">
             <div>
                 <div class="hub-brand-title">Christian Culture</div>
                 <div class="hub-brand-sub">Moje Centrum CC · Personal Hub</div>
