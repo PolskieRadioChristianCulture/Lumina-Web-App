@@ -3228,12 +3228,12 @@
   <div class="modal-overlay" id="modal-karaoke" onclick="onOverlayClick(event, 'modal-karaoke')">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="karaoke-title">
       <button class="modal-close-btn" type="button" onclick="closeModal('modal-karaoke')" aria-label="Zamknij">✕</button>
-      <span class="modal-badge">W PRZYGOTOWANIU · HARMONOGRAM 2026</span>
-      <h3 class="modal-heading" id="karaoke-title">Wspólne Śpiewanie & Karaoke</h3>
+      <span class="modal-badge">PISMO ŚWIĘTE · UBG 2025</span>
+      <h3 class="modal-heading" id="karaoke-title">Wspólne Śpiewanie & Tekst Biblii</h3>
       <p class="modal-body-text">
-        Moduł interaktywnego karaoke i synchronizacji tekstu werset po wersecie jest obecnie w fazie implementacji. Trwa proces licencjonowania i dopasowania tekstu Uwspółcześnionej Biblii Gdańskiej (UBG). Funkcja zostanie udostępniona w kolejnej aktualizacji portalu.
+        Wybierz dowolny rozdział z całej Biblii (66 ksiąg, 1189 rozdziałów), aby śpiewać z tekstem w Trybie Czytaj i Śpiewaj lub włączyć automatyczne karaoke zsynchronizowane z oficjalnym odtwarzaczem muzycznym.
       </p>
-      <button class="btn-cta-primary" style="width: 100%;" type="button" onclick="closeModal('modal-karaoke')">Rozumiem, czekam na premierę</button>
+      <button class="btn-cta-primary" style="width: 100%;" type="button" onclick="closeModal('modal-karaoke'); if (window.startChapterKaraoke) window.startChapterKaraoke('GEN-001')">Otwórz tekst i karaoke</button>
     </div>
   </div>
 
@@ -3241,12 +3241,12 @@
   <div class="modal-overlay" id="modal-top100" onclick="onOverlayClick(event, 'modal-top100')">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="top100-title">
       <button class="modal-close-btn" type="button" onclick="closeModal('modal-top100')" aria-label="Zamknij">✕</button>
-      <span class="modal-badge">SPOŁECZNOŚĆ LUMINA · BEZ ATRAP</span>
+      <span class="modal-badge">SPOŁECZNOŚĆ LUMINA · TOP 100</span>
       <h3 class="modal-heading" id="top100-title">Ranking TOP 100 & Głosowanie</h3>
       <p class="modal-body-text">
-        Głosowanie na ulubione utwory Biblijnego Uwielbienia zostanie zintegrowane bezpośrednio z kontami chrześcijańskiego portalu społecznościowego LUMINA. Obowiązuje żelazna zasada <strong>ZERO ATRAP</strong>: nie generujemy fikcyjnych głosów ani sztucznych rankingów. Głosowanie ruszy po wdrożeniu modułu autoryzacji.
+        Oficjalny ranking Biblijnego Uwielbienia połączony z kontami portalu LUMINA. Oddaj głos na swoje ulubione rozdziały Pisma Świętego i twórz razem z nami listę przebojów chrześcijańskiej muzyki biblijnej.
       </p>
-      <button class="btn-cta-primary" style="width: 100%;" type="button" onclick="closeModal('modal-top100')">Przejdź do portalu LUMINA</button>
+      <button class="btn-cta-primary" style="width: 100%;" type="button" onclick="closeModal('modal-top100'); if (window.CC_BU_FEATURES && window.CC_BU_FEATURES.openRanking) window.CC_BU_FEATURES.openRanking()">Otwórz ranking i głosuj</button>
     </div>
   </div>
 

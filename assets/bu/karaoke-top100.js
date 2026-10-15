@@ -1024,7 +1024,7 @@
     const area = content();
     area.replaceChildren();
 
-    const lead = make('p', 'Głosowanie wymaga bezpłatnego konta LUMINA. Każdy członek może oddać jeden głos na wybrany utwór z możliwością jego cofnięcia. Zero fikcyjnych liczb.', 'bu-muted');
+    const lead = make('p', 'Głosowanie wymaga bezpłatnego konta LUMINA. Każdy zalogowany członek może oddać jeden głos na wybrany utwór z możliwością jego cofnięcia lub zmiany.', 'bu-muted');
     area.appendChild(lead);
 
     let data;
