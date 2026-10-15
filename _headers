@@ -8,6 +8,15 @@
 /master*
   Cache-Control: no-cache, no-store, must-revalidate
 
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/llms.txt
+  Cache-Control: public, max-age=0, must-revalidate
+
 /szukaj*
   Cache-Control: no-cache, no-store, must-revalidate
 
