@@ -917,10 +917,49 @@
       return d[la][lb];
     };
 
+    const SYNONYM_MAP = {
+      'lekcja': ['lekcje', 'rozważanie', 'rozwazanie', 'inspiracja', 'słowo na dziś', 'kurs', 'studium', 'dzień', 'dzien'],
+      'lekcje': ['lekcja', 'rozważania', 'kursy', 'studia'],
+      'rozwazanie': ['rozważanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+      'rozważanie': ['rozwazanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+      'rozwzanie': ['rozważanie', 'rozwazanie', 'lekcja', 'inspiracja'],
+      'inspiracja': ['rozważanie', 'lekcja', 'słowo na dziś', 'poranna'],
+      'kurs': ['akademia', 'lekcja', '28 kroków', 'kurs codzienny', 'studium'],
+      'akademia': ['kurs', 'lekcja', 'biblijna', '28 kroków', 'z biblią za pan brat'],
+      'dzien': ['dzień', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
+      'dzień': ['dzien', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
+      'dzis': ['dziś', 'dzisiaj', 'na dziś', 'dzisiejsza'],
+      'dziś': ['dzis', 'dzisiaj', 'na dziś', 'dzisiejsza'],
+      'dzisiaj': ['dziś', 'dzis', 'na dziś', 'dzisiejsza'],
+      'biblia': ['pismo święte', 'słowo boże', 'ewangelia', 'mojabiblia'],
+      'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep'],
+      'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship'],
+      'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka'],
+      'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka'],
+      'radio': ['stacja', 'audycja', 'transmisja', 'live', 'cctv24', 'śniadaniowa'],
+      'film': ['kino', 'vod', 'wideo', 'filmy'],
+      'kino': ['vod', 'film', 'filmy'],
+      'vod': ['kino', 'film', 'filmy', 'wideo'],
+      'apokalipsa': ['objawienie', 'proroctwo', 'palla', 'czasy ostateczne', 'alfred palla'],
+      'spolecznosc': ['społeczność', 'lumina', 'profil', 'tablica'],
+      'społeczność': ['spolecznosc', 'lumina', 'profil', 'tablica'],
+      'lumina': ['społeczność', 'profil', 'tablica', 'portal'],
+      'modlitwa': ['wstawiennictwo', 'za polskę', 'intencje'],
+      'aplikacja': ['cclite', 'cclite.pl', 'apka', 'pwa', 'mobile', 'dobrze że jesteś'],
+      'apka': ['aplikacja', 'cclite', 'cclite.pl', 'mobile'],
+      'sklep': ['koszyk', 'zamówienie', 'współpraca', 'książki'],
+      'ksiazki': ['książki', 'sklep', 'biblioteka'],
+      'książki': ['ksiazki', 'sklep', 'biblioteka']
+    };
+
     function score(item, q) {
       if (!q) return item.featured ? 50 : 0;
       const qNorm = norm(q);
-      const tokens = qNorm.split(' ').filter(Boolean);
+      const rawTokens = qNorm.split(' ').filter(Boolean);
+      const stopWords = new Set(['w', 'z', 'na', 'o', 'do', 'i', 'a', 'oraz', 'czyli', 'dla', 'ze', 'za', 'po', 'od']);
+      const tokens = rawTokens.filter(t => !stopWords.has(t));
+      if (!tokens.length) return item.featured ? 50 : 0;
+
       const title = norm(item.title);
       const tags = norm((item.tags || []).join(' '));
       const desc = norm(item.description);
@@ -931,28 +970,62 @@
       const cat = norm(item.category);
       const allText = `${title} ${tags} ${desc} ${scripture} ${author} ${cat} ${content}`;
       const words = allText.split(' ');
-      
+
+      // Rozpoznanie "na dziś" / "dziś"
+      const isToday = /\b(dzis|dzisiaj|na dzis|dzisiejsz\w*)\b/.test(qNorm);
+      const todayDay = new Date().getDate(); // np. 15
+
+      // Synonimy
+      const synonyms = [];
+      for (const t of tokens) {
+        if (SYNONYM_MAP[t]) {
+          for (const s of SYNONYM_MAP[t]) synonyms.push(norm(s));
+        }
+      }
+
       let n = 0;
       // Exact whole query phrase match bonus
-      if (title.includes(qNorm)) n += 120;
-      else if (tags.includes(qNorm)) n += 80;
+      if (title.includes(qNorm)) n += 140;
+      else if (tags.includes(qNorm)) n += 90;
       else if (desc.includes(qNorm)) n += 50;
 
+      let matchedTokens = 0;
       for (const t of tokens) {
-        if (title === t) n += 100;
-        else if (title.startsWith(t)) n += 70;
-        else if (title.includes(t)) n += 45;
-        else if (tags.includes(t)) n += 35;
-        else if (desc.includes(t)) n += 25;
-        else if (scripture.includes(t)) n += 22;
-        else if (content.includes(t)) n += 18;
-        else if (cat.includes(t)) n += 15;
-        else if (author.includes(t)) n += 15;
-        else if (url.includes(t)) n += 12;
-        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) n += 8;
-        else return -1;
+        if (title === t) { n += 100; matchedTokens++; }
+        else if (title.startsWith(t)) { n += 70; matchedTokens++; }
+        else if (title.includes(t)) { n += 45; matchedTokens++; }
+        else if (tags.includes(t)) { n += 35; matchedTokens++; }
+        else if (desc.includes(t)) { n += 25; matchedTokens++; }
+        else if (scripture.includes(t)) { n += 22; matchedTokens++; }
+        else if (content.includes(t)) { n += 18; matchedTokens++; }
+        else if (cat.includes(t)) { n += 15; matchedTokens++; }
+        else if (author.includes(t)) { n += 15; matchedTokens++; }
+        else if (url.includes(t)) { n += 12; matchedTokens++; }
+        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) {
+          n += 20;
+          matchedTokens++;
+        }
       }
-      return n + (item.featured ? 3 : 0);
+
+      // Bonus za synonimy
+      for (const s of synonyms) {
+        if (title.includes(s)) n += 25;
+        else if (tags.includes(s)) n += 15;
+      }
+
+      // Bonus za dopasowanie dnia bieżącego (np. Dzień 15 / Lekcja 15 na dziś)
+      if (isToday) {
+        const dayStr = String(todayDay);
+        if (title.includes(dayStr) || tags.includes(dayStr) || url.includes(`dzien-${todayDay < 10 ? '0' + todayDay : todayDay}`)) {
+          n += 60;
+        }
+      }
+
+      if (matchedTokens === 0 && synonyms.length === 0 && !title.includes(qNorm)) {
+        return -1;
+      }
+
+      return n + (item.featured ? 5 : 0);
     }
 
     function matchesCategory(itemCat, filterCat) {

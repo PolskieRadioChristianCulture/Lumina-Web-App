@@ -103,4 +103,57 @@ test('cc-omni-search.js: all key MENU CC items are indexed in catalog', () => {
   assert.ok(catalogData.contextGuides.ksiazki, 'Guide ksiazki exists');
 });
 
+test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and suggestions', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: {
+      location: { pathname: '/' },
+      __ccSearchCatalog: catalogData
+    },
+    document: {
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    console: console,
+    setTimeout: setTimeout,
+    clearTimeout: clearTimeout,
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const search = sandbox.window.CCOmniSearch.performSearch;
+  assert.ok(typeof search === 'function', 'performSearch is a function');
+
+  // 1. Lekcja 15 na dziś
+  const r1 = search('Lekcja 15 na dziś');
+  assert.equal(r1.isSuggestion, false, 'isSuggestion must be false for exact match');
+  assert.ok(r1.items.length > 0, 'Must return results');
+  assert.ok(r1.items[0].title.includes('Dzień 15') || r1.items[0].title.includes('Lekcja 15'), 'Top result is Lesson 15');
+
+  // 2. Typo: "rozwżanie na dziś"
+  const r2 = search('rozwżanie na dziś');
+  assert.ok(r2.items.length > 0, 'Typo query finds results');
+  assert.ok(r2.items[0].title.includes('Lekcja 15 na dziś') || r2.items[0].title.includes('Dzień 15'), 'Top result handles typo');
+
+  // 3. Synonim: "worship"
+  const r3 = search('worship');
+  assert.ok(r3.items.some(i => i.title.toLowerCase().includes('worship') || i.title.toLowerCase().includes('muzyka')), 'Synonym finds worship items');
+
+  // 4. Missing item with specific number: "Lekcja 99"
+  const r4 = search('Lekcja 99');
+  assert.equal(r4.isSuggestion, true, 'isSuggestion must be true for missing number');
+  assert.ok(r4.suggestionNote && r4.suggestionNote.includes('99'), 'suggestionNote mentions missing number 99');
+  assert.ok(r4.items.length > 0, 'Provides near-match suggestions');
+  assert.ok(r4.items[0].title.includes('Dzień 15') || r4.items[0].title.includes('Lekcja 15'), 'Proposes today lesson as top suggestion');
+
+  // 5. Completely missing query
+  const r5 = search('nieznanybrakujacyhasloxyz');
+  assert.equal(r5.isSuggestion, true, 'isSuggestion must be true for unknown phrase');
+  assert.ok(r5.items.length > 0, 'Provides fallback proposals');
+});
+
+
 

@@ -138,19 +138,211 @@
     return { group: 'modules', name: 'Moduły & Platformy', icon: '🌐' };
   }
 
-  // 6. Inteligentne wyszukiwanie w pamięci (<2ms)
+  // 6. Słownik synonimów i powiązań semantycznych ekosystemu Christian Culture
+  const SYNONYM_MAP = {
+    // Lekcje, rozważania i studia
+    'lekcja': ['lekcje', 'lekcji', 'rozważanie', 'rozwazanie', 'inspiracja', 'kurs', 'studium', 'dzień', 'dzien', 'nauka'],
+    'lekcje': ['lekcja', 'rozważania', 'kursy', 'studia'],
+    'lekcji': ['lekcja', 'rozważania', 'kursy'],
+    'rozwazanie': ['rozważanie', 'rozwazania', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+    'rozważanie': ['rozwazanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+    'rozwazania': ['rozważania', 'rozważanie', 'lekcje', 'inspiracje'],
+    'rozważania': ['rozwazania', 'rozważanie', 'lekcje', 'inspiracje'],
+    'rozwzanie': ['rozważanie', 'rozwazanie', 'lekcja', 'inspiracja'], // tolerancja częstej literówki
+    'inspiracja': ['rozważanie', 'lekcja', 'słowo na dziś', 'poranna', 'cytat'],
+    'kurs': ['akademia', 'lekcja', '28 kroków', 'kurs codzienny', 'studium', 'formacja'],
+    'kursy': ['akademia', 'lekcje', '28 kroków', 'kurs codzienny'],
+    'akademia': ['kurs', 'lekcja', 'biblijna', '28 kroków', 'z biblią za pan brat', 'studium'],
+    'dzien': ['dzień', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj', 'werset'],
+    'dzień': ['dzien', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj', 'werset'],
+
+    // Dynamiczny kontekst daty i dnia bieżącego
+    'dzis': ['dziś', 'dzisiaj', 'na dziś', 'dzisiejsza', 'aktualna', 'bieżąca'],
+    'dziś': ['dzis', 'dzisiaj', 'na dziś', 'dzisiejsza', 'aktualna', 'bieżąca'],
+    'dzisiaj': ['dziś', 'dzis', 'na dziś', 'dzisiejsza'],
+
+    // Pismo Święte
+    'biblia': ['pismo święte', 'słowo boże', 'ewangelia', 'mojabiblia', 'interlinearna', 'werset'],
+    'pismo': ['biblia', 'słowo boże', 'pismo święte'],
+    'werset': ['słowo', 'cytat', 'mojabiblia', 'werset dnia', 'pismo'],
+
+    // Muzyka, Radio & Transmisje
+    'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep', 'hymny'],
+    'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship', 'live'],
+    'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka', 'pieśni'],
+    'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka', 'pieśni'],
+    'radio': ['stacja', 'audycja', 'transmisja', 'live', 'cctv24', 'śniadaniowa', 'zapolske'],
+    'audycja': ['radio', 'podcast', 'śniadaniowa', 'nagrania'],
+
+    // Filmy i VOD
+    'film': ['kino', 'vod', 'wideo', 'filmy', 'seans'],
+    'kino': ['vod', 'film', 'filmy', 'kino chrześcijańskie'],
+    'vod': ['kino', 'film', 'filmy', 'wideo'],
+    'apokalipsa': ['objawienie', 'proroctwo', 'palla', 'czasy ostateczne', 'alfred palla'],
+
+    // Społeczność LUMINA
+    'spolecznosc': ['społeczność', 'lumina', 'profil', 'tablica', 'czat', 'posty'],
+    'społeczność': ['spolecznosc', 'lumina', 'profil', 'tablica', 'czat', 'posty'],
+    'lumina': ['społeczność', 'profil', 'tablica', 'portal', 'posty', 'czat'],
+
+    // Modlitwa & Wstawiennictwo
+    'modlitwa': ['wstawiennictwo', 'za polskę', 'intencje', 'modlitwy', 'zjednoczeni'],
+    'intencja': ['modlitwa', 'wstawiennictwo'],
+
+    // Aplikacje & Narzędzia
+    'aplikacja': ['cclite', 'cclite.pl', 'apka', 'pwa', 'mobile', 'dobrze że jesteś'],
+    'apka': ['aplikacja', 'cclite', 'cclite.pl', 'mobile'],
+
+    // Sklep & Zasoby
+    'sklep': ['koszyk', 'zamówienie', 'współpraca', 'książki', 'literatura'],
+    'ksiazki': ['książki', 'sklep', 'biblioteka', 'literatura'],
+    'książki': ['ksiazki', 'sklep', 'biblioteka', 'literatura']
+  };
+
+  // Damerau-Levenshtein distance (tolerancja literówek i przestawień liter)
+  function levenshteinDist(a, b) {
+    if (a === b) return 0;
+    const la = a.length;
+    const lb = b.length;
+    if (!la) return lb;
+    if (!lb) return la;
+    if (Math.abs(la - lb) > 2) return 99;
+
+    const d = [];
+    for (let i = 0; i <= la; i++) d[i] = [i];
+    for (let j = 1; j <= lb; j++) d[0][j] = j;
+
+    for (let i = 1; i <= la; i++) {
+      for (let j = 1; j <= lb; j++) {
+        const cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        d[i][j] = Math.min(
+          d[i - 1][j] + 1,       // deletion
+          d[i][j - 1] + 1,       // insertion
+          d[i - 1][j - 1] + cost // substitution
+        );
+        if (i > 1 && j > 1 && a.charAt(i - 1) === b.charAt(j - 2) && a.charAt(i - 2) === b.charAt(j - 1)) {
+          d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1); // transposition (np. bilbia -> biblia)
+        }
+      }
+    }
+    return d[la][lb];
+  }
+
+  function isFuzzyWordMatch(word, targetWord) {
+    if (!word || !targetWord) return false;
+    if (word === targetWord) return true;
+    const maxDist = word.length <= 4 ? 1 : 2;
+    return levenshteinDist(word, targetWord) <= maxDist;
+  }
+
+  // Rozszerzanie zapytania o synonimy i rozpoznawanie zapytań "na dziś"
+  function expandQueryTerms(normQuery, queryWords) {
+    const synonymsList = [];
+    for (const w of queryWords) {
+      if (SYNONYM_MAP[w]) {
+        for (const syn of SYNONYM_MAP[w]) {
+          synonymsList.push(normalizeStr(syn));
+        }
+      }
+    }
+
+    const isTodayQuery = /\b(dzis|dzisiaj|na dzis|dzisiejsz\w*)\b/.test(normQuery);
+    const now = new Date();
+    const todayDayNum = now.getDate(); // np. 15
+
+    return {
+      synonyms: Array.from(new Set(synonymsList)),
+      isTodayQuery,
+      todayDayNum
+    };
+  }
+
+  // Inteligentne propozycje bliskoznaczne gdy brak bezpośredniego wyniku
+  function findNearSuggestions(normQuery, queryWords, filter) {
+    if (!catalogData || !catalogData.items || !catalogData.items.length) return [];
+
+    const isLessonRelated = queryWords.some(w => ['lekcja', 'lekcje', 'lekcji', 'dzien', 'dzień', 'rozwazanie', 'rozważanie', 'kurs', 'studium', 'akademia'].includes(w));
+    const now = new Date();
+    const todayDay = now.getDate(); // np. 15
+    const suggestions = [];
+    const seenUrls = new Set();
+
+    function addSuggestion(item) {
+      if (!item || seenUrls.has(item.url)) return;
+      seenUrls.add(item.url);
+      const meta = categorizeItem(item);
+      if (filter !== 'all' && meta.group !== filter) return;
+      suggestions.push(Object.assign({}, item, { _meta: meta, isNearMatch: true }));
+    }
+
+    // 1. Jeśli zapytanie dotyczyło lekcji/rozważań/kursu — zaproponuj dzisiejszą lekcję (Dzień 15), Kurs 28 Kroków i Werset Dnia
+    if (isLessonRelated) {
+      // Dzień bieżący w kursie codziennym (np. Dzień 15 / Lekcja 15 na dziś)
+      const todayLesson = catalogData.items.find(i => {
+        const t = normalizeStr(i.title);
+        return t.includes(`dzien ${todayDay}`) || t.includes(`lekcja ${todayDay}`);
+      });
+      if (todayLesson) addSuggestion(todayLesson);
+
+      // Lekcja fundamentalna 28 Kroków
+      const fundLesson = catalogData.items.find(i => normalizeStr(i.title).includes(`lekcja ${todayDay}:`)) ||
+                         catalogData.items.find(i => normalizeStr(i.title).includes('lekcja 01:') || normalizeStr(i.title).includes('lekcja 1:'));
+      if (fundLesson) addSuggestion(fundLesson);
+
+      // Mój Werset Dnia
+      const werset = catalogData.items.find(i => normalizeStr(i.title).includes('werset dnia'));
+      if (werset) addSuggestion(werset);
+
+      // Kurs Codzienny / Akademia
+      const akademia = catalogData.items.find(i => (i.url || '').includes('/akademia'));
+      if (akademia) addSuggestion(akademia);
+    }
+
+    // 2. Przeszukanie katalogu pod kątem częściowych słów lub tolerancji literówek
+    for (const item of catalogData.items) {
+      if (suggestions.length >= 6) break;
+      const normTitle = normalizeStr(item.title);
+      const normTags = normalizeStr(Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || ''));
+      const text = `${normTitle} ${normTags}`;
+      const words = text.split(/\s+/);
+
+      const hasPartialOrFuzzy = queryWords.some(qw => {
+        if (qw.length >= 3 && text.includes(qw)) return true;
+        return qw.length >= 4 && words.some(w => isFuzzyWordMatch(qw, w));
+      });
+
+      if (hasPartialOrFuzzy) {
+        addSuggestion(item);
+      }
+    }
+
+    // 3. Fallback do głównych filarów ekosystemu
+    if (suggestions.length < 4) {
+      for (const item of catalogData.items) {
+        if (suggestions.length >= 6) break;
+        if (item.featured) addSuggestion(item);
+      }
+    }
+
+    return suggestions.slice(0, 8);
+  }
+
+  // 7. Inteligentne wyszukiwanie w pamięci (<2ms)
   function performSearch(query, filter = 'all') {
-    if (!catalogData || !catalogData.items) return { items: [], guide: null };
+    if (!catalogData || !catalogData.items) return { items: [], guide: null, isSuggestion: false, suggestionNote: null };
 
     const normQuery = normalizeStr(query);
     if (!normQuery) {
       return {
-        items: catalogData.items.filter(i => i.featured).slice(0, 8),
-        guide: null
+        items: catalogData.items.filter(i => i.featured).slice(0, 8).map(i => Object.assign({}, i, { _meta: categorizeItem(i) })),
+        guide: null,
+        isSuggestion: false,
+        suggestionNote: null
       };
     }
 
     const queryWords = normQuery.split(/\s+/).filter(Boolean);
+    const { synonyms, isTodayQuery, todayDayNum } = expandQueryTerms(normQuery, queryWords);
 
     // Sprawdzenie przewodnika tematycznego
     let matchedGuide = null;
@@ -174,42 +366,147 @@
       const normDesc = normalizeStr(item.description);
       const normTags = normalizeStr(Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || ''));
       const normContent = normalizeStr(item.contentSnippet || item.fullText || '');
+      const itemUrl = normalizeStr(item.url || '');
+      const allItemText = `${normTitle} ${normTags} ${normDesc} ${normContent}`;
+      const itemWords = allItemText.split(/\s+/).filter(Boolean);
 
       let score = 0;
 
-      // Dokładne dopasowanie tytułu
-      if (normTitle === normQuery) score += 120;
-      else if (normTitle.startsWith(normQuery)) score += 80;
-      else if (normTitle.includes(normQuery)) score += 50;
+      // Dokładne dopasowanie frazy w tytule
+      if (normTitle === normQuery) score += 140;
+      else if (normTitle.startsWith(normQuery)) score += 90;
+      else if (normTitle.includes(normQuery)) score += 60;
+      else if (normTags.includes(normQuery)) score += 40;
 
-      // Słowa zapytania
-      let allWordsFound = true;
+      // Słowa zapytania z tolerancją literówek
+      let primaryWordsMatched = 0;
       for (const w of queryWords) {
         if (normTitle.includes(w)) {
           score += 35;
+          primaryWordsMatched++;
         } else if (normTags.includes(w)) {
           score += 25;
+          primaryWordsMatched++;
         } else if (normDesc.includes(w)) {
           score += 15;
+          primaryWordsMatched++;
         } else if (normContent.includes(w)) {
           score += 8;
-        } else {
-          allWordsFound = false;
+          primaryWordsMatched++;
+        } else if (w.length >= 4 && itemWords.some(iw => isFuzzyWordMatch(w, iw))) {
+          // Dopasowanie literówki (np. "rozwżanie" -> "rozważanie")
+          score += 28;
+          primaryWordsMatched++;
         }
       }
 
-      if (allWordsFound) score += 20;
-      if (item.featured) score += 10;
+      // Bonus za synonimy
+      for (const syn of synonyms) {
+        if (normTitle.includes(syn)) score += 20;
+        else if (normTags.includes(syn)) score += 12;
+      }
 
+      // Specjalne dopasowanie dla zapytań o materiał "na dziś" (np. Lekcja 15 na dziś)
+      if (isTodayQuery && todayDayNum) {
+        const dayStr = String(todayDayNum);
+        const dayPadded = todayDayNum < 10 ? '0' + todayDayNum : String(todayDayNum);
+        if (normTitle.includes(dayStr) || normTags.includes(dayStr) || itemUrl.includes(`dzien-${dayPadded}`)) {
+          score += 55;
+        }
+      }
+
+      if (primaryWordsMatched === queryWords.length && queryWords.length > 1) {
+        score += 25;
+      }
       if (score > 0) {
-        scored.push({ item, score, meta });
+        if (item.featured) score += 10;
+        scored.push({ item, score, meta, primaryWordsMatched });
       }
     }
 
-    scored.sort((a, b) => b.score - a.score);
+    // Analiza czy w zapytaniu występuje konkretny numer (np. 15, 99)
+    const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
+    const stopWords = new Set(['w', 'z', 'na', 'o', 'do', 'i', 'a', 'oraz', 'czyli', 'dla', 'ze', 'za', 'po', 'od']);
+    const significantWords = queryWords.filter(w => !stopWords.has(w));
+
+    let missingNumberToken = null;
+
+    if (scored.length > 0) {
+      scored.sort((a, b) => b.score - a.score);
+
+      // Sprawdzenie czy numer z zapytania rzeczywiście istnieje w wynikach
+      if (numberTokens.length > 0) {
+        for (const num of numberTokens) {
+          const numFound = scored.some(s => {
+            const t = normalizeStr(s.item.title);
+            const tags = normalizeStr(Array.isArray(s.item.tags) ? s.item.tags.join(' ') : (s.item.tags || ''));
+            const u = normalizeStr(s.item.url || '');
+            return t.includes(num) || tags.includes(num) || u.includes(num);
+          });
+          if (!numFound) {
+            missingNumberToken = num;
+            break;
+          }
+        }
+      }
+
+      // Jeśli w zapytaniu był konkretny numer (np. Lekcja 99), którego nie ma w ekosystemie:
+      if (missingNumberToken) {
+        const todayDay = new Date().getDate();
+        const todayItem = catalogData.items.find(i => normalizeStr(i.title).includes(`dzien ${todayDay}`) || normalizeStr(i.title).includes(`lekcja ${todayDay}`));
+        const otherScored = scored.filter(s => !todayItem || s.item.url !== todayItem.url).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true }));
+        const suggestionList = todayItem
+          ? [Object.assign({}, todayItem, { _meta: categorizeItem(todayItem), isNearMatch: true }), ...otherScored.slice(0, 15)]
+          : scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true }));
+
+        return {
+          items: suggestionList,
+          guide: matchedGuide,
+          isSuggestion: true,
+          suggestionNote: `Nie znaleziono w ekosystemie materiału z numerem ${missingNumberToken}. Proponujemy aktualną Lekcję ${todayDay} na dziś oraz dostępne lekcje biblijne:`
+        };
+      }
+
+      // Sprawdzenie czy przynajmniej jeden wynik pokrywa wszystkie istotne słowa lub ma wysoki score
+      const hasExactOrAllWordsMatch = scored.some(s => {
+        if (s.score >= 90) return true;
+        if (significantWords.length <= 1) return s.primaryWordsMatched >= 1;
+        return s.primaryWordsMatched >= significantWords.length;
+      });
+
+      // Jeśli zapytanie wielowyrazowe nie znalazło pełnego pokrycia
+      if (!hasExactOrAllWordsMatch && significantWords.length >= 2) {
+        return {
+          items: scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true })),
+          guide: matchedGuide,
+          isSuggestion: true,
+          suggestionNote: `Brak pełnego dopasowania dla wszystkich słów. Proponujemy najbardziej zbliżone materiały z ekosystemu:`
+        };
+      }
+
+      return {
+        items: scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta })),
+        guide: matchedGuide,
+        isSuggestion: false,
+        suggestionNote: null
+      };
+    }
+
+    // Gdy brak bezpośrednich wyników — sugeruj bliskoznaczną propozycję
+    const nearSuggestions = findNearSuggestions(normQuery, queryWords, filter);
+    const isLessonQuery = queryWords.some(w => ['lekcja', 'lekcje', 'lekcji', 'dzien', 'dzień', 'rozwazanie', 'rozważanie', 'kurs'].includes(w));
+    
+    let note = `Nie znaleźliśmy bezpośredniego dopasowania dla «${query}». Proponujemy bliskoznaczne materiały z ekosystemu Christian Culture:`;
+    if (isLessonQuery) {
+      const todayDay = new Date().getDate();
+      note = `Nie znaleziono dokładnie tego numeru lekcji. Proponujemy aktualną Lekcję ${todayDay} na dziś oraz powiązane studia biblijne:`;
+    }
+
     return {
-      items: scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta })),
-      guide: matchedGuide
+      items: nearSuggestions,
+      guide: matchedGuide,
+      isSuggestion: true,
+      suggestionNote: note
     };
   }
 
@@ -558,6 +855,56 @@
         background: rgba(245, 158, 11, 0.3);
         color: #78350f;
       }
+      .cc-omni-item-badge.cc-badge-suggestion {
+        background: rgba(196, 163, 90, 0.3);
+        color: #ffe69c;
+        border: 1px solid rgba(196, 163, 90, 0.5);
+      }
+      [data-theme="light"] .cc-omni-item-badge.cc-badge-suggestion {
+        background: rgba(245, 158, 11, 0.2);
+        color: #92400e;
+        border-color: rgba(217, 119, 6, 0.4);
+      }
+      .cc-omni-suggestion-header {
+        margin: 12px 16px 8px;
+        padding: 12px 14px;
+        background: rgba(196, 163, 90, 0.12);
+        border: 1px solid rgba(196, 163, 90, 0.35);
+        border-radius: 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      [data-theme="light"] .cc-omni-suggestion-header,
+      [data-lumina-theme="light"] .cc-omni-suggestion-header {
+        background: rgba(245, 158, 11, 0.08);
+        border-color: rgba(217, 119, 6, 0.3);
+      }
+      .cc-omni-suggestion-icon {
+        font-size: 1.3rem;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .cc-omni-suggestion-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #f8fafc;
+        margin-bottom: 2px;
+      }
+      [data-theme="light"] .cc-omni-suggestion-title,
+      [data-lumina-theme="light"] .cc-omni-suggestion-title {
+        color: #0f172a;
+      }
+      .cc-omni-suggestion-desc {
+        font-size: 0.82rem;
+        color: #cbd5e1;
+        line-height: 1.35;
+      }
+      [data-theme="light"] .cc-omni-suggestion-desc,
+      [data-lumina-theme="light"] .cc-omni-suggestion-desc {
+        color: #475569;
+      }
       .cc-omni-empty {
         text-align: center;
         padding: 36px 16px;
@@ -773,7 +1120,7 @@
     if (!body) return;
 
     currentQuery = query;
-    const { items, guide } = performSearch(query, filter);
+    const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
     currentResults = items;
     activeIndex = -1;
 
@@ -811,7 +1158,20 @@
       `;
     }
 
-    // 2. Lista wyników
+    // 2. Nagłówek propozycji bliskoznacznych gdy brak bezpośrednich wyników
+    if (isSuggestion && items && items.length) {
+      html += `
+        <div class="cc-omni-suggestion-header">
+          <div class="cc-omni-suggestion-icon">💡</div>
+          <div class="cc-omni-suggestion-text">
+            <div class="cc-omni-suggestion-title">Brak bezpośredniego dopasowania dla „${escapeHtml(query)}”</div>
+            <div class="cc-omni-suggestion-desc">${escapeHtml(suggestionNote || 'Oto bliskoznaczne propozycje i powiązane materiały z ekosystemu Christian Culture:')}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. Lista wyników
     if (!items.length) {
       html += `
         <div class="cc-omni-empty">
@@ -830,6 +1190,7 @@
         const url = escapeHtml(item.url || '#');
         const icon = meta.icon || '✨';
         const groupName = escapeHtml(meta.name || '');
+        const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">💡 Propozycja</span>' : '';
 
         html += `
           <a href="${url}" class="cc-omni-item" data-url="${url}">
@@ -838,6 +1199,7 @@
               <div class="cc-omni-item-title-row">
                 <span class="cc-omni-item-title">${titleHl}</span>
                 <span class="cc-omni-item-badge">${groupName}</span>
+                ${suggestionBadge}
               </div>
               <p class="cc-omni-item-desc">${descHl}</p>
             </div>
