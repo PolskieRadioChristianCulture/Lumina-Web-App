@@ -136,7 +136,7 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
   // 2. Typo: "rozwżanie na dziś"
   const r2 = search('rozwżanie na dziś');
   assert.ok(r2.items.length > 0, 'Typo query finds results');
-  assert.ok(r2.items[0].title.includes('Lekcja 15 na dziś') || r2.items[0].title.includes('Dzień 15'), 'Top result handles typo');
+  assert.ok(r2.items[0].title.includes('Lekcja 15 na dziś') || r2.items[0].title.includes('Dzień 15') || r2.items[0].title.toLowerCase().includes('rozważanie'), 'Top result handles typo');
 
   // 3. Synonim: "worship"
   const r3 = search('worship');

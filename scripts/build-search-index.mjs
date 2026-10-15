@@ -823,13 +823,20 @@ function build() {
   const outPath1 = path.join(ROOT, 'szukaj/catalog.json');
   fs.writeFileSync(outPath1, JSON.stringify(finalCatalog, null, 2), 'utf8');
   console.log(`✨ Zapisano szukaj/catalog.json: ${allItems.length} zindeksowanych pozycji.`);
+
+  const outPath2 = path.join(ROOT, 'data/cc-search-index.json');
+  fs.writeFileSync(outPath2, JSON.stringify(finalCatalog, null, 2), 'utf8');
+  console.log(`✨ Zapisano data/cc-search-index.json: ${allItems.length} zindeksowanych pozycji.`);
   
   // Zapis do lustrzanego katalogu LUMINA
   const mirrorPath = path.join('C:/Users/czark/Desktop/@ICC/LUMINA/szukaj/catalog.json');
+  const mirrorPath2 = path.join('C:/Users/czark/Desktop/@ICC/LUMINA/data/cc-search-index.json');
   try {
     fs.mkdirSync(path.dirname(mirrorPath), { recursive: true });
     fs.writeFileSync(mirrorPath, JSON.stringify(finalCatalog, null, 2), 'utf8');
-    console.log(`✨ Zsynchronizowano do lustra LUMINA.`);
+    fs.mkdirSync(path.dirname(mirrorPath2), { recursive: true });
+    fs.writeFileSync(mirrorPath2, JSON.stringify(finalCatalog, null, 2), 'utf8');
+    console.log(`✨ Zsynchronizowano do lustra LUMINA (szukaj/catalog.json i data/cc-search-index.json).`);
   } catch (e) {
     console.warn('Nie udało się zapisać do lustra:', e.message);
   }
