@@ -887,6 +887,26 @@
       background: rgba(239, 68, 68, 0.1);
     }
 
+    .player-action-icon.is-voted {
+      color: #F59E0B !important;
+      border-color: rgba(245, 158, 11, 0.45) !important;
+      background: rgba(245, 158, 11, 0.15) !important;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+    }
+    .player-action-icon.is-voted svg {
+      fill: #F59E0B;
+    }
+
+    .player-action-icon.is-karaoke-active {
+      color: var(--gold-light) !important;
+      border-color: var(--gold) !important;
+      background: rgba(196, 163, 90, 0.2) !important;
+      box-shadow: 0 0 16px rgba(196, 163, 90, 0.4);
+    }
+    .player-action-icon.is-karaoke-active svg {
+      fill: rgba(196, 163, 90, 0.25);
+    }
+
     .volume-group {
       display: flex;
       align-items: center;
@@ -2599,8 +2619,8 @@
                 </svg>
               </button>
 
-              <!-- Głosowanie TOP 100 (Oficjalny ranking) -->
-              <button class="player-action-icon" type="button" onclick="openZeroAtrapModal('top100')" id="btn-player-top100" title="Głosuj w TOP 100" aria-label="Głosuj na utwór w TOP 100">
+              <!-- Głosowanie TOP 100 (Bezpośredni głos bez okna) -->
+              <button class="player-action-icon" type="button" onclick="voteCurrentTrack()" id="btn-player-top100" title="Oddaj głos w TOP 100" aria-label="Oddaj głos na utwór w TOP 100">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
                   <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
@@ -2610,8 +2630,8 @@
                 </svg>
               </button>
 
-              <!-- Karaoke & Scripture Lyrics Toggle -->
-              <button class="player-action-icon" type="button" onclick="openZeroAtrapModal('karaoke')" id="btn-player-karaoke" title="Tekst Biblii & Karaoke" aria-label="Pokaż tekst Biblii i Karaoke">
+              <!-- Karaoke & Scripture Lyrics (Bezpośrednio na tapecie HERO bez okna) -->
+              <button class="player-action-icon" type="button" onclick="togglePlayerKaraoke()" id="btn-player-karaoke" title="Tekst Biblii & Karaoke na tapecie HERO" aria-label="Pokaż lub ukryj tekst Biblii i Karaoke na tapecie HERO">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
@@ -3618,6 +3638,9 @@
 
       updateFavoritesUI();
       updatePatronModuleUI('player', track.chapterId);
+      if (window.CC_BU_FEATURES && typeof window.CC_BU_FEATURES.updateVotingButtonState === 'function') {
+        window.CC_BU_FEATURES.updateVotingButtonState(track.chapterId);
+      }
 
       // Aktualizacja aktywnego tekstu / karaoke jeśli panel w HERO jest otwarty
       try {
@@ -3753,6 +3776,25 @@
         navigator.clipboard.writeText(shareUrl).then(() => {
           showToast("Link do utworu skopiowany do schowka!");
         });
+      }
+    }
+
+    function voteCurrentTrack() {
+      if (window.CC_BU_FEATURES && typeof window.CC_BU_FEATURES.voteCurrentTrack === 'function') {
+        window.CC_BU_FEATURES.voteCurrentTrack();
+      } else {
+        showToast("Trwa inicjalizacja modułu głosowania...");
+      }
+    }
+
+    function togglePlayerKaraoke() {
+      if (window.CC_BU_FEATURES && typeof window.CC_BU_FEATURES.togglePlayerKaraoke === 'function') {
+        window.CC_BU_FEATURES.togglePlayerKaraoke();
+      } else {
+        const stage = document.getElementById('hero-karaoke-stage');
+        if (stage) {
+          stage.style.display = stage.style.display === 'none' ? 'block' : 'none';
+        }
       }
     }
 

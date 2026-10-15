@@ -148,16 +148,40 @@ async function run() {
       throw new Error(`Przypowieści 1 powinny mieć 33 wersety, otrzymano: ${proVerses}`);
     }
 
-    // Test F: Close Hero stage
+    // Test F: Close Hero stage via close button
     await page.click('#btn-hero-close');
     await page.waitForTimeout(300);
     const isStageHidden = await page.evaluate(() => document.getElementById('hero-karaoke-stage').style.display === 'none');
     if (!isStageHidden) throw new Error('Scena hero karaoke nie zamknęła się po kliknięciu ✕.');
     console.log('Hero stage closed cleanly.');
 
-    // Test G: Check TOP 100 Modal
-    console.log('\nTesting TOP 100 Modal...');
-    await page.evaluate(() => window.openZeroAtrapModal('top100'));
+    // Test G: Player button btn-player-karaoke displays text directly on hero stage without opening modal window
+    console.log('\nTesting btn-player-karaoke toggle (Zero Modal Window)...');
+    await page.click('#btn-player-karaoke');
+    await page.waitForTimeout(400);
+    const isHeroOpenViaBtn = await page.evaluate(() => {
+      const stage = document.getElementById('hero-karaoke-stage');
+      const dialog = document.getElementById('bu-dialog-backdrop');
+      return stage && stage.style.display !== 'none' && (!dialog || !dialog.classList.contains('open'));
+    });
+    if (!isHeroOpenViaBtn) throw new Error('btn-player-karaoke powinien otwierać scenę HERO bezpośrednio nad odtwarzaczem bez otwierania okna dialogowego.');
+    console.log('btn-player-karaoke successfully opened hero stage without opening modal dialog.');
+
+    // Test H: Player button btn-player-top100 triggers direct vote without opening window
+    console.log('\nTesting btn-player-top100 direct vote (Zero Modal Window)...');
+    await page.click('#btn-player-top100');
+    await page.waitForTimeout(300);
+    const isDialogStillClosed = await page.evaluate(() => {
+      const dialog = document.getElementById('bu-dialog-backdrop');
+      const toast = document.getElementById('toast-popup');
+      return (!dialog || !dialog.classList.contains('open')) && toast && toast.classList.contains('is-visible');
+    });
+    if (!isDialogStillClosed) throw new Error('btn-player-top100 powinien oddawać głos / wyświetlać powiadomienie bez otwierania okna dialogowego.');
+    console.log('btn-player-top100 successfully triggered vote action with toast without opening modal dialog.');
+
+    // Test I: Check Full Ranking Dialog via window.CC_BU_FEATURES.openRanking()
+    console.log('\nTesting Full Ranking Dialog via window.CC_BU_FEATURES.openRanking()...');
+    await page.evaluate(() => window.CC_BU_FEATURES.openRanking());
     await page.waitForSelector('#bu-dialog-backdrop.open');
     const top100Title = await page.textContent('#bu-dialog-title');
     console.log(`TOP 100 Title: "${top100Title}"`);

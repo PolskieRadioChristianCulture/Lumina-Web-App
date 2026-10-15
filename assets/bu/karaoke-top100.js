@@ -934,6 +934,8 @@
       stage.classList.remove('is-fullscreen');
       state.isFullscreen = false;
     }
+    const btn = document.getElementById('btn-player-karaoke');
+    if (btn) btn.classList.remove('is-karaoke-active');
     if (state.tickInterval) {
       clearInterval(state.tickInterval);
       state.tickInterval = null;
@@ -969,7 +971,32 @@
       const cur = currentTrack();
       targetId = cur?.chapterId || state.chapterId || 'GEN-001';
     }
+    const btn = document.getElementById('btn-player-karaoke');
+    if (btn) btn.classList.add('is-karaoke-active');
     startChapterKaraoke(targetId, requestedMode);
+  }
+
+  function togglePlayerKaraoke(chapterId = null) {
+    const stage = document.getElementById('hero-karaoke-stage');
+    const playerKaraokeBtn = document.getElementById('btn-player-karaoke');
+    const cur = currentTrack();
+    const targetId = chapterId || cur?.chapterId || state.chapterId || 'GEN-001';
+
+    const isVisible = stage && stage.style.display !== 'none' && stage.offsetParent !== null;
+
+    if (isVisible && state.chapterId === targetId) {
+      closeHeroKaraoke();
+      if (typeof window.showToast === 'function') {
+        window.showToast('Ukryto tekst Pisma Świętego');
+      }
+    } else {
+      if (playerKaraokeBtn) playerKaraokeBtn.classList.add('is-karaoke-active');
+      openKaraoke(targetId);
+      const heroSection = document.getElementById('hero') || stage;
+      if (heroSection) {
+        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }
 
   function downloadFormat(ext) {
@@ -1104,6 +1131,100 @@
     }
   }
 
+  // 7b. ZARZĄDZANIE BEZPOŚREDNIM GŁOSOWANIEM (BEZ OTWIERANIA OKNA)
+  let myVotedChapters = new Set();
+  try {
+    const cached = localStorage.getItem('bu_voted_chapters');
+    if (cached) myVotedChapters = new Set(JSON.parse(cached));
+  } catch {}
+
+  function saveVotedChapters() {
+    try {
+      localStorage.setItem('bu_voted_chapters', JSON.stringify([...myVotedChapters]));
+    } catch {}
+  }
+
+  function updateVotingButtonState(chapterId) {
+    const btn = document.getElementById('btn-player-top100');
+    if (!btn) return;
+    const curId = chapterId || currentTrack()?.chapterId || state.chapterId || 'GEN-001';
+    const isVoted = myVotedChapters.has(curId);
+    if (isVoted) {
+      btn.classList.add('is-voted');
+      btn.title = 'Głos oddany w TOP 100 (kliknij, aby cofnąć)';
+      btn.setAttribute('aria-label', 'Głos oddany w TOP 100 — kliknij, aby cofnąć');
+    } else {
+      btn.classList.remove('is-voted');
+      btn.title = 'Oddaj głos w TOP 100';
+      btn.setAttribute('aria-label', 'Oddaj głos na utwór w TOP 100');
+    }
+  }
+
+  async function syncMyVotes() {
+    const token = await getToken().catch(() => null);
+    if (!token) return;
+    try {
+      const res = await api('/my-votes', { token });
+      if (Array.isArray(res.chapterIds)) {
+        myVotedChapters = new Set(res.chapterIds);
+        saveVotedChapters();
+        updateVotingButtonState();
+      }
+    } catch {}
+  }
+
+  async function voteCurrentTrack() {
+    const btn = document.getElementById('btn-player-top100');
+    const track = currentTrack();
+    const chapterId = track?.chapterId || state.chapterId || 'GEN-001';
+    const title = track?.title || ('Rozdział ' + chapterId);
+
+    const token = await getToken().catch(() => null);
+    if (!token) {
+      if (typeof window.showToast === 'function') {
+        window.showToast('Zaloguj się w portalu LUMINA, aby oddać głos w TOP 100 🏆');
+      } else {
+        alert('Zaloguj się w portalu LUMINA, aby oddać głos w TOP 100 🏆');
+      }
+      return;
+    }
+
+    const isCurrentlyVoted = myVotedChapters.has(chapterId);
+    const method = isCurrentlyVoted ? 'DELETE' : 'PUT';
+
+    if (btn) btn.disabled = true;
+    try {
+      const result = await api('/votes/' + encodeURIComponent(chapterId), {
+        method,
+        token
+      });
+
+      if (result.voted) {
+        myVotedChapters.add(chapterId);
+        saveVotedChapters();
+        updateVotingButtonState(chapterId);
+        if (typeof window.showToast === 'function') {
+          window.showToast(`🏆 Oddano głos na: ${title}! (Razem: ${result.votes})`);
+        }
+      } else {
+        myVotedChapters.delete(chapterId);
+        saveVotedChapters();
+        updateVotingButtonState(chapterId);
+        if (typeof window.showToast === 'function') {
+          window.showToast(`Cofnięto głos na: ${title}.`);
+        }
+      }
+    } catch (e) {
+      if (typeof window.showToast === 'function') {
+        window.showToast(e.message || 'Nie udało się zapisać głosu.');
+      } else {
+        alert(e.message || 'Nie udało się zapisać głosu.');
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
   // Obsługa powrotu na kartę przeglądarki
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && state.mode === 'sync') {
@@ -1114,21 +1235,30 @@
   // 8. GLOBALNE INTERFEJSY I PODPIĘCIE
   const originalZeroAtrap = window.openZeroAtrapModal;
   window.openZeroAtrapModal = function (which) {
-    if (which === 'karaoke') return openKaraoke();
-    if (which === 'top100') return ranking();
+    if (which === 'karaoke') return togglePlayerKaraoke();
+    if (which === 'top100') return voteCurrentTrack();
     if (typeof originalZeroAtrap === 'function') return originalZeroAtrap(which);
   };
 
   window.openChapterLyrics = function (chapterId, evt) {
     if (evt && typeof evt.stopPropagation === 'function') evt.stopPropagation();
     openKaraoke(chapterId, 'reading');
+    const heroSection = document.getElementById('hero') || document.getElementById('hero-karaoke-stage');
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   window.loadChapterLyrics = loadChapterLyrics;
   window.startChapterKaraoke = startChapterKaraoke;
+  window.voteCurrentTrack = voteCurrentTrack;
+  window.togglePlayerKaraoke = togglePlayerKaraoke;
 
   window.CC_BU_FEATURES = {
     openKaraoke,
+    togglePlayerKaraoke,
+    voteCurrentTrack,
+    updateVotingButtonState,
     openRanking: ranking,
     setMode,
     adjustFontSize,
@@ -1140,5 +1270,16 @@
     startChapterKaraoke,
     downloadFormat
   };
+
+  // Inicjalizacja stanu przycisków
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      updateVotingButtonState();
+      syncMyVotes();
+    });
+  } else {
+    updateVotingButtonState();
+    syncMyVotes();
+  }
 
 })();

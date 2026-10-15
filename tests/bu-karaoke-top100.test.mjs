@@ -204,6 +204,8 @@ test('BU Karaoke & TOP 100: 10. Architektura skryptu assets/bu/karaoke-top100.js
 
   assert.ok(js.includes('loadChapterLyrics'), 'Musi implementować funkcję loadChapterLyrics');
   assert.ok(js.includes('startChapterKaraoke'), 'Musi implementować funkcję startChapterKaraoke');
+  assert.ok(js.includes('voteCurrentTrack'), 'Musi implementować bezpośrednie oddawanie głosu voteCurrentTrack bez okna');
+  assert.ok(js.includes('togglePlayerKaraoke'), 'Musi implementować przełączanie karaoke na tapecie HERO togglePlayerKaraoke bez okna');
   assert.ok(js.includes('/data/bible/ubg-2025/'), 'Musi odpytywać ścieżkę /data/bible/ubg-2025/');
   assert.ok(js.includes('/data/bu-karaoke/'), 'Musi odpytywać ścieżkę /data/bu-karaoke/');
   assert.ok(js.includes('data-mode'), 'Musi ustawiać atrybut data-mode na kontenerze');
