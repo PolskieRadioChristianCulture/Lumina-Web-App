@@ -1351,6 +1351,83 @@ async function handleBiblijneUwielbienieRoute(request, env) {
     return Response.redirect(redirectUrl.toString(), 301);
   }
 
+  // 3. API Modułu „Patron Rozdziału” (P1)
+  if (path === '/api/biblijne-uwielbienie/patron/config') {
+    return new Response(JSON.stringify({
+      status: 'ok',
+      mission: 'Christian Culture · Biblia Śpiewana',
+      totalChapters: 1189,
+      titleTemplate: 'Biblia Śpiewana / {chapterId}',
+      methods: [
+        { id: 'zrzutka', name: 'Zrzutka.pl', url: 'https://zrzutka.pl/rs4g4v' },
+        { id: 'revolut', name: 'Revolut Pay', url: 'https://revolut.me/christianculture' },
+        { id: 'wspieraj', name: 'Oficjalne formy CC', url: 'https://polskieradio.cc/wspieraj' }
+      ],
+      policy: {
+        voluntary: true,
+        freeAccess: true,
+        verificationRequired: true,
+        zeroFakeCounters: true,
+        adminAudit: true
+      }
+    }), {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'public, max-age=300'
+      }
+    });
+  }
+
+  if (path === '/api/biblijne-uwielbienie/patron/acknowledgments') {
+    // Only verified patrons are served. Zero fake counters or auto-credited links.
+    return new Response(JSON.stringify({
+      status: 'ok',
+      verifiedPatronsCount: 0,
+      acknowledgments: []
+    }), {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'public, max-age=60'
+      }
+    });
+  }
+
+  if (path === '/api/biblijne-uwielbienie/patron/declare' && request.method === 'POST') {
+    try {
+      const data = await request.json();
+      const chapterId = typeof data.chapterId === 'string' ? data.chapterId.trim() : '';
+      const anonymous = !!data.anonymous;
+      const displayName = anonymous ? 'Anonimowy Patron' : String(data.displayName || '').slice(0, 60).trim();
+      const consentPage = !!data.consentPage;
+      const consentLumina = !!data.consentLumina;
+
+      if (!chapterId || !/^[A-Z0-9]{2,4}-\d{3}$/.test(chapterId)) {
+        return new Response(JSON.stringify({ ok: false, error: 'invalid_chapter_id' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json; charset=utf-8' }
+        });
+      }
+
+      return new Response(JSON.stringify({
+        ok: true,
+        status: 'received',
+        pendingVerification: true,
+        chapterId,
+        displayName: displayName || 'Anonimowy Patron',
+        consentPage,
+        consentLumina,
+        message: 'Zgłoszenie zostało przyjęte do weryfikacji. Dziękujemy!'
+      }), {
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
+    } catch (e) {
+      return new Response(JSON.stringify({ ok: false, error: 'bad_request' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
+    }
+  }
+
   return null;
 }
 

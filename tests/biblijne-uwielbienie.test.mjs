@@ -80,3 +80,48 @@ test('Biblijne Uwielbienie: 7. Brak fikcyjnych statystyk i obietnic (Zero-QA)', 
   assert.ok(!content.includes('100% ukończone'), 'ZAKAZ fałszywych deklaracji ukończenia');
   assert.ok(content.includes('1 152') || content.includes('1152'), 'Musi rzetelnie wskazywać 1152 rozdziały w przygotowaniu');
 });
+
+test('Biblijne Uwielbienie: 8. Moduł Patron Rozdziału (P1) w odtwarzaczu i bibliotece', () => {
+  const content = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
+
+  // Obecność modułu w obu kluczowych miejscach
+  assert.ok(content.includes('id="player-patron-module"'), 'Musi zawierać moduł Patrona w odtwarzaczu');
+  assert.ok(content.includes('id="drilldown-patron-module"'), 'Musi zawierać moduł Patrona w panelu rozdziałów biblioteki');
+
+  // Obowiązkowe komunikaty
+  assert.ok(content.includes('Zostań patronem tego rozdziału'), 'Musi zawierać nagłówek Patrona');
+  assert.ok(content.includes('Udostępnij i wspieraj produkcję kolejnych rozdziałów Biblii Śpiewanej.'), 'Musi zawierać podtytuł Patrona');
+  assert.ok(content.includes('Pomóż nam przemienić wszystkie 1189 rozdziałów Biblii w muzyczne świadectwo wiary'), 'Musi zawierać treść wstępu');
+
+  // 5 kanałów udostępniania
+  assert.ok(content.includes('shareChapterNativeCurrent'), 'Musi obsługiwać Web Share API');
+  assert.ok(content.includes('shareChapterWhatsAppCurrent'), 'Musi obsługiwać WhatsApp');
+  assert.ok(content.includes('shareChapterFacebookCurrent'), 'Musi obsługiwać Facebook');
+  assert.ok(content.includes('copyChapterLinkCurrent'), 'Musi obsługiwać kopiowanie linku');
+  assert.ok(content.includes('openQrModalCurrent'), 'Musi obsługiwać lokalny kod QR');
+
+  // Metody wsparcia finansowego
+  assert.ok(content.includes('https://zrzutka.pl/rs4g4v'), 'Musi zawierać zweryfikowany link Zrzutka.pl');
+  assert.ok(content.includes('https://revolut.me/christianculture'), 'Musi zawierać zweryfikowany link Revolut.me');
+  assert.ok(content.includes('https://polskieradio.cc/wspieraj'), 'Musi zawierać link do rejestru wszystkich metod CC');
+
+  // Identyfikator tytułu wpłaty
+  assert.ok(content.includes('Biblia Śpiewana / '), 'Musi formatować tytuł przelewu jako Biblia Śpiewana / [ID]');
+
+  // Inwariant bezpieczeństwa i etyki: brak fałszywych deklaracji i weryfikacja
+  assert.ok(content.includes('przyznawany jest wyłącznie po rzeczywistym zaksięgowaniu wpłaty i weryfikacji przez administratora'), 'Musi informować o weryfikacji');
+  assert.ok(content.includes('całkowicie darmowy dla każdego człowieka') || content.includes('100% bezpłatny'), 'Musi gwarantować darmowy dostęp do Słowa Bożego');
+
+  // Lokalny generator QR bez zewnętrznych płatnych usług
+  assert.ok(content.includes('/js/vendor-qrcode.min.js'), 'Musi ładować lokalną bibliotekę QRCode.js');
+  assert.ok(content.includes('id="qr-modal-overlay"'), 'Musi posiadać modal kodu QR');
+});
+
+test('Biblijne Uwielbienie: 9. API Patrona Rozdziału w _worker.js', () => {
+  const workerContent = fs.readFileSync(path.join(ROOT, '_worker.js'), 'utf8');
+
+  assert.ok(workerContent.includes('/api/biblijne-uwielbienie/patron/config'), 'Musi obsługiwać endpoint config');
+  assert.ok(workerContent.includes('/api/biblijne-uwielbienie/patron/acknowledgments'), 'Musi obsługiwać endpoint acknowledgments');
+  assert.ok(workerContent.includes('/api/biblijne-uwielbienie/patron/declare'), 'Musi obsługiwać endpoint declare (POST)');
+});
+

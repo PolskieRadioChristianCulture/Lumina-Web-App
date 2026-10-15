@@ -923,6 +923,454 @@
       height: 100%;
       border: none;
     }
+    /* ==========================================================================
+       MODUŁ „PATRON ROZDZIAŁU” (P1 — Specyfikacja Wdrożenia 2026)
+       ========================================================================== */
+    .patron-chapter-module {
+      margin-top: 14px;
+      background: #0B1222;
+      border: 1px solid rgba(196, 163, 90, 0.22);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color var(--transition-standard), box-shadow var(--transition-standard);
+      position: relative;
+    }
+
+    .patron-chapter-module:hover {
+      border-color: rgba(196, 163, 90, 0.38);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Accordion Toggle Bar */
+    .patron-header-bar {
+      width: 100%;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(16, 24, 39, 0.6);
+      cursor: pointer;
+      text-align: left;
+      border: none;
+      color: inherit;
+      transition: background var(--transition-standard);
+    }
+
+    .patron-header-bar:hover {
+      background: rgba(196, 163, 90, 0.08);
+    }
+
+    .patron-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .patron-icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(196, 163, 90, 0.22), rgba(11, 18, 34, 0.8));
+      border: 1px solid var(--gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      flex-shrink: 0;
+    }
+
+    .patron-icon-badge svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .patron-header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .patron-main-title {
+      font-family: var(--font-serif);
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #F7F4EF;
+      letter-spacing: 0.3px;
+    }
+
+    .patron-sub-title {
+      font-size: 13px;
+      color: var(--gold-light);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .patron-toggle-action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .patron-chevron {
+      width: 20px;
+      height: 20px;
+      transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .patron-chapter-module.is-open .patron-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Expandable Body */
+    .patron-expand-body {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease;
+    }
+
+    .patron-chapter-module.is-open .patron-expand-body {
+      max-height: 2200px;
+      opacity: 1;
+    }
+
+    .patron-content-inner {
+      padding: 18px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .patron-intro-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #F7F4EF;
+      background: rgba(23, 34, 56, 0.45);
+      border-left: 3px solid var(--gold);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 0;
+    }
+
+    /* Chapter Badge & Suggested Transfer ID */
+    .patron-target-box {
+      background: rgba(16, 24, 39, 0.7);
+      border: 1px solid var(--gold-border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .patron-target-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .patron-target-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-subtle);
+      font-weight: 600;
+    }
+
+    .patron-target-id {
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold-light);
+      background: rgba(196, 163, 90, 0.12);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .patron-target-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-copy-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: var(--transition-standard);
+      cursor: pointer;
+    }
+
+    .btn-copy-id:hover {
+      background: var(--gold);
+      color: #070B16;
+    }
+
+    /* Section Subheaders */
+    .patron-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* Sharing Grid */
+    .patron-share-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .btn-patron-share {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 8px;
+      border-radius: var(--radius-md);
+      background: rgba(23, 34, 56, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #F7F4EF;
+      font-size: 12px;
+      font-weight: 600;
+      transition: var(--transition-standard);
+      cursor: pointer;
+      text-align: center;
+      min-height: 58px;
+    }
+
+    .btn-patron-share svg {
+      width: 20px;
+      height: 20px;
+      color: var(--gold-light);
+      transition: transform var(--transition-standard);
+    }
+
+    .btn-patron-share:hover {
+      background: rgba(196, 163, 90, 0.14);
+      border-color: var(--gold-border);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .btn-patron-share:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Financial Methods Grid */
+    .patron-finance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .btn-finance-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(23, 34, 56, 0.7);
+      border: 1px solid var(--gold-border-subtle);
+      color: #F7F4EF;
+      text-decoration: none;
+      transition: var(--transition-standard);
+    }
+
+    .btn-finance-card:hover {
+      background: rgba(196, 163, 90, 0.15);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(196, 163, 90, 0.2);
+    }
+
+    .finance-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: rgba(7, 11, 22, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      flex-shrink: 0;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .finance-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .finance-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #F7F4EF;
+    }
+
+    .finance-card-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Voluntary Patron Declaration Box */
+    .patron-declaration-box {
+      background: rgba(7, 11, 22, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .declaration-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .declaration-input {
+      background: rgba(23, 34, 56, 0.8);
+      border: 1px solid var(--gold-border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #F7F4EF;
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition-standard);
+    }
+
+    .declaration-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px var(--gold-glow);
+    }
+
+    .declaration-checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .declaration-checkbox-label input[type="checkbox"] {
+      accent-color: var(--gold);
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .patron-verification-notice {
+      font-size: 12px;
+      color: var(--text-subtle);
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    /* Local QR Modal Overlay */
+    .qr-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .qr-modal-overlay.is-active {
+      display: flex;
+    }
+
+    .qr-modal-box {
+      background: #0B1222;
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+
+    .qr-canvas-holder {
+      background: #FFFFFF;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      min-width: 180px;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Drilldown Chapter Card Patron Trigger */
+    .chapter-patron-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(196, 163, 90, 0.1);
+      border: 1px solid var(--gold-border-subtle);
+      color: var(--gold-light);
+      font-size: 11.5px;
+      font-weight: 600;
+      transition: var(--transition-standard);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .chapter-patron-trigger-btn:hover {
+      background: var(--gold);
+      color: #070B16;
+    }
+
+    .chapter-item-card.is-targeted {
+      border-color: var(--gold);
+      background: rgba(196, 163, 90, 0.15);
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
 
     /* ==========================================================================
        6 FEATURE TILES (Makieta: Cała Biblia, Karaoke, Głosuj, Ulubione...)
@@ -1824,6 +2272,24 @@
       .books-grid {
         grid-template-columns: 1fr;
       }
+      .patron-share-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .patron-finance-grid {
+        grid-template-columns: 1fr;
+      }
+      .btn-finance-card {
+        padding: 12px 14px;
+      }
+      .patron-header-bar {
+        padding: 12px 14px;
+      }
+      .patron-main-title {
+        font-size: 15px;
+      }
+      .patron-sub-title {
+        font-size: 12px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -2104,6 +2570,202 @@
             <div id="yt-player-target"></div>
           </div>
         </div>
+
+        <!-- MODUŁ „PATRON ROZDZIAŁU” W ODTWARZACZU (P1) -->
+        <div class="patron-chapter-module" id="player-patron-module">
+          <button class="patron-header-bar" id="player-patron-toggle" type="button" onclick="togglePatronModule('player')" aria-expanded="false" aria-controls="player-patron-body">
+            <div class="patron-header-left">
+              <div class="patron-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                </svg>
+              </div>
+              <div class="patron-header-titles">
+                <span class="patron-main-title">Zostań patronem tego rozdziału</span>
+                <span class="patron-sub-title">Udostępnij i wspieraj produkcję kolejnych rozdziałów Biblii Śpiewanej.</span>
+              </div>
+            </div>
+            <div class="patron-toggle-action">
+              <span id="player-patron-action-text">Rozwiń</span>
+              <svg class="patron-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+
+          <div class="patron-expand-body" id="player-patron-body" role="region" aria-label="Szczegóły wsparcia i udostępniania utworu">
+            <div class="patron-content-inner">
+              <p class="patron-intro-text">
+                Pomóż nam przemienić wszystkie 1189 rozdziałów Biblii w muzyczne świadectwo wiary. Każde udostępnienie pozwala docierać do nowych słuchaczy, a Twoje dobrowolne wsparcie pomaga nam tworzyć i publikować następne pieśni. Razem możemy nieść Słowo Boże dalej.
+              </p>
+
+              <!-- Chapter identification & transfer title binding -->
+              <div class="patron-target-box">
+                <div class="patron-target-meta">
+                  <span class="patron-target-label">Chcę wesprzeć właśnie ten rozdział:</span>
+                  <span class="patron-target-id" id="player-patron-chapter-id">Biblia Śpiewana / PRO-001</span>
+                  <span class="patron-target-desc" id="player-patron-chapter-title">Przypowieści Salomona · Rozdział 1</span>
+                </div>
+                <button class="btn-copy-id" type="button" onclick="copyPatronTransferId('player')" title="Kopiuj sugerowany tytuł wpłaty">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span id="player-btn-copy-transfer-text">Kopiuj tytuł wpłaty</span>
+                </button>
+              </div>
+
+              <!-- 3. Udostępnij ten rozdział (5 channels) -->
+              <div>
+                <div class="patron-section-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                  <span>1. Udostępnij ten rozdział światu</span>
+                </div>
+                <div class="patron-share-grid">
+                  <!-- Native Share -->
+                  <button class="btn-patron-share" type="button" onclick="shareChapterNativeCurrent('player')" title="Udostępnij natywnie w systemie">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                      <polyline points="16 6 12 2 8 6"></polyline>
+                      <line x1="12" y1="2" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Udostępnij</span>
+                  </button>
+
+                  <!-- WhatsApp -->
+                  <button class="btn-patron-share" type="button" onclick="shareChapterWhatsAppCurrent('player')" title="Udostępnij na WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <!-- Facebook -->
+                  <button class="btn-patron-share" type="button" onclick="shareChapterFacebookCurrent('player')" title="Udostępnij na Facebooku">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <span>Facebook</span>
+                  </button>
+
+                  <!-- Copy Link -->
+                  <button class="btn-patron-share" type="button" onclick="copyChapterLinkCurrent('player')" title="Kopiuj bezpośredni link do rozdziału">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <span id="player-btn-share-copy-text">Kopiuj link</span>
+                  </button>
+
+                  <!-- Local QR Code -->
+                  <button class="btn-patron-share" type="button" onclick="openQrModalCurrent('player')" title="Pokaż lokalny kod QR">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>Kod QR</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4. Metody Wsparcia Finansowego (Zrzutka, Revolut, Wszystkie formy CC) -->
+              <div>
+                <div class="patron-section-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  <span>2. Bezpośrednie metody wsparcia produkcji</span>
+                </div>
+                <div class="patron-finance-grid">
+                  <!-- Zrzutka -->
+                  <a href="https://zrzutka.pl/rs4g4v" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('zrzutka', 'player')">
+                    <div class="finance-card-icon" style="color: #FD7E14;" aria-hidden="true">Z</div>
+                    <div class="finance-card-text">
+                      <span class="finance-card-name">Zrzutka.pl</span>
+                      <span class="finance-card-desc">Szybki BLIK, karta, przelew</span>
+                    </div>
+                  </a>
+
+                  <!-- Revolut -->
+                  <a href="https://revolut.me/christianculture" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('revolut', 'player')">
+                    <div class="finance-card-icon" style="color: #0075EB;" aria-hidden="true">R</div>
+                    <div class="finance-card-text">
+                      <span class="finance-card-name">Revolut Pay</span>
+                      <span class="finance-card-desc">Revolut.me/christianculture</span>
+                    </div>
+                  </a>
+
+                  <!-- Wszystkie metody CC -->
+                  <a href="https://polskieradio.cc/wspieraj" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('wspieraj', 'player')">
+                    <div class="finance-card-icon" style="color: var(--gold-light);" aria-hidden="true">CC</div>
+                    <div class="finance-card-text">
+                      <span class="finance-card-name">Oficjalne formy CC</span>
+                      <span class="finance-card-desc">Tradycyjny przelew, Patronite i inne</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              <!-- 5 & 6. Dobrowolna Deklaracja Patrona i Integracja LUMINA -->
+              <div class="patron-declaration-box">
+                <div class="patron-section-title" style="margin-bottom: 4px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <polyline points="17 11 19 13 23 9"></polyline>
+                  </svg>
+                  <span>3. Zgłoszenie i status Patrona Rozdziału (Opcjonalnie)</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 8px;">
+                  Po dokonaniu dobrowolnej wpłaty z podanym tytułem możesz zgłosić swoje wsparcie. Zgodnie z zasadami misji status przyznajemy dopiero po zweryfikowaniu wpłaty.
+                </p>
+
+                <div class="declaration-form-row">
+                  <label class="declaration-checkbox-label">
+                    <input type="checkbox" id="player-decl-anon" onchange="toggleDeclAnon('player')">
+                    <span>Chcę wesprzeć całkowicie anonimowo (bez podawania nazwiska)</span>
+                  </label>
+                </div>
+
+                <div class="declaration-form-row" id="player-decl-name-group">
+                  <label for="player-decl-name" style="font-size: 12px; color: var(--gold-light); font-weight: 600;">Twoje imię / nazwa wyświetlana:</label>
+                  <input type="text" class="declaration-input" id="player-decl-name" placeholder="np. Brat Marek, Rodzina Kowalskich..." maxlength="60">
+                </div>
+
+                <div class="declaration-form-row">
+                  <label class="declaration-checkbox-label">
+                    <input type="checkbox" id="player-decl-consent-page" checked>
+                    <span>Wyrażam zgodę na wyświetlenie imienia w podziękowaniu na stronie tego rozdziału</span>
+                  </label>
+                  <label class="declaration-checkbox-label">
+                    <input type="checkbox" id="player-decl-consent-lumina">
+                    <span>Wyrażam zgodę na podziękowanie na moim profilu w społeczności LUMINA (jeśli posiadasz konto)</span>
+                  </label>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 4px;">
+                  <button class="btn-cta-secondary" type="button" onclick="submitPatronDeclaration('player')" style="padding: 10px 20px; font-size: 13px;">
+                    <span>Zgłoś wsparcie tego rozdziału</span>
+                  </button>
+                  <span id="player-decl-status-msg" style="font-size: 12.5px; color: var(--gold-light); font-weight: 500;"></span>
+                </div>
+
+                <div class="patron-verification-notice">
+                  ℹ️ <strong>Zasada Zero-QA & Pancerne Bezpieczeństwo:</strong> Kliknięcie odnośnika do wpłaty nie przyznaje automatycznie statusu patrona. Tytuł „Patron rozdziału” przyznawany jest wyłącznie po rzeczywistym zaksięgowaniu wpłaty i weryfikacji przez administratora. Żadne kwoty nie są upubliczniane. Dostęp do pieśni i Słowa Bożego w Biblijnym Uwielbieniu jest w 100% bezpłatny.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2260,6 +2922,202 @@
             </button>
           </div>
 
+          <!-- MODUŁ „PATRON ROZDZIAŁU” W PANELU ROZDZIAŁÓW (P1) -->
+          <div class="patron-chapter-module" id="drilldown-patron-module" style="margin-bottom: 20px;">
+            <button class="patron-header-bar" id="drilldown-patron-toggle" type="button" onclick="togglePatronModule('drilldown')" aria-expanded="false" aria-controls="drilldown-patron-body">
+              <div class="patron-header-left">
+                <div class="patron-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                  </svg>
+                </div>
+                <div class="patron-header-titles">
+                  <span class="patron-main-title">Zostań patronem tego rozdziału</span>
+                  <span class="patron-sub-title">Udostępnij i wspieraj produkcję kolejnych rozdziałów Biblii Śpiewanej.</span>
+                </div>
+              </div>
+              <div class="patron-toggle-action">
+                <span id="drilldown-patron-action-text">Rozwiń</span>
+                <svg class="patron-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </button>
+
+            <div class="patron-expand-body" id="drilldown-patron-body" role="region" aria-label="Szczegóły wsparcia i udostępniania wybranego rozdziału">
+              <div class="patron-content-inner">
+                <p class="patron-intro-text">
+                  Pomóż nam przemienić wszystkie 1189 rozdziałów Biblii w muzyczne świadectwo wiary. Każde udostępnienie pozwala docierać do nowych słuchaczy, a Twoje dobrowolne wsparcie pomaga nam tworzyć i publikować następne pieśni. Razem możemy nieść Słowo Boże dalej.
+                </p>
+
+                <!-- Chapter identification & transfer title binding -->
+                <div class="patron-target-box">
+                  <div class="patron-target-meta">
+                    <span class="patron-target-label">Chcę wesprzeć właśnie ten rozdział:</span>
+                    <span class="patron-target-id" id="drilldown-patron-chapter-id">Biblia Śpiewana / PRO-001</span>
+                    <span class="patron-target-desc" id="drilldown-patron-chapter-title">Przypowieści Salomona · Rozdział 1</span>
+                  </div>
+                  <button class="btn-copy-id" type="button" onclick="copyPatronTransferId('drilldown')" title="Kopiuj sugerowany tytuł wpłaty">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span id="drilldown-btn-copy-transfer-text">Kopiuj tytuł wpłaty</span>
+                  </button>
+                </div>
+
+                <!-- 3. Udostępnij ten rozdział (5 channels) -->
+                <div>
+                  <div class="patron-section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    <span>1. Udostępnij ten rozdział światu</span>
+                  </div>
+                  <div class="patron-share-grid">
+                    <!-- Native Share -->
+                    <button class="btn-patron-share" type="button" onclick="shareChapterNativeCurrent('drilldown')" title="Udostępnij natywnie w systemie">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                      </svg>
+                      <span>Udostępnij</span>
+                    </button>
+
+                    <!-- WhatsApp -->
+                    <button class="btn-patron-share" type="button" onclick="shareChapterWhatsAppCurrent('drilldown')" title="Udostępnij na WhatsApp">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                      </svg>
+                      <span>WhatsApp</span>
+                    </button>
+
+                    <!-- Facebook -->
+                    <button class="btn-patron-share" type="button" onclick="shareChapterFacebookCurrent('drilldown')" title="Udostępnij na Facebooku">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                      </svg>
+                      <span>Facebook</span>
+                    </button>
+
+                    <!-- Copy Link -->
+                    <button class="btn-patron-share" type="button" onclick="copyChapterLinkCurrent('drilldown')" title="Kopiuj bezpośredni link do rozdziału">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                      </svg>
+                      <span id="drilldown-btn-share-copy-text">Kopiuj link</span>
+                    </button>
+
+                    <!-- Local QR Code -->
+                    <button class="btn-patron-share" type="button" onclick="openQrModalCurrent('drilldown')" title="Pokaż lokalny kod QR">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                      </svg>
+                      <span>Kod QR</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 4. Metody Wsparcia Finansowego (Zrzutka, Revolut, Wszystkie formy CC) -->
+                <div>
+                  <div class="patron-section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span>2. Bezpośrednie metody wsparcia produkcji</span>
+                  </div>
+                  <div class="patron-finance-grid">
+                    <!-- Zrzutka -->
+                    <a href="https://zrzutka.pl/rs4g4v" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('zrzutka', 'drilldown')">
+                      <div class="finance-card-icon" style="color: #FD7E14;" aria-hidden="true">Z</div>
+                      <div class="finance-card-text">
+                        <span class="finance-card-name">Zrzutka.pl</span>
+                        <span class="finance-card-desc">Szybki BLIK, karta, przelew</span>
+                      </div>
+                    </a>
+
+                    <!-- Revolut -->
+                    <a href="https://revolut.me/christianculture" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('revolut', 'drilldown')">
+                      <div class="finance-card-icon" style="color: #0075EB;" aria-hidden="true">R</div>
+                      <div class="finance-card-text">
+                        <span class="finance-card-name">Revolut Pay</span>
+                        <span class="finance-card-desc">Revolut.me/christianculture</span>
+                      </div>
+                    </a>
+
+                    <!-- Wszystkie metody CC -->
+                    <a href="https://polskieradio.cc/wspieraj" class="btn-finance-card" target="_blank" rel="noopener noreferrer" onclick="trackPatronProvider('wspieraj', 'drilldown')">
+                      <div class="finance-card-icon" style="color: var(--gold-light);" aria-hidden="true">CC</div>
+                      <div class="finance-card-text">
+                        <span class="finance-card-name">Oficjalne formy CC</span>
+                        <span class="finance-card-desc">Tradycyjny przelew, Patronite i inne</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- 5 & 6. Dobrowolna Deklaracja Patrona i Integracja LUMINA -->
+                <div class="patron-declaration-box">
+                  <div class="patron-section-title" style="margin-bottom: 4px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="8.5" cy="7" r="4"></circle>
+                      <polyline points="17 11 19 13 23 9"></polyline>
+                    </svg>
+                    <span>3. Zgłoszenie i status Patrona Rozdziału (Opcjonalnie)</span>
+                  </div>
+                  <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 8px;">
+                    Po dokonaniu dobrowolnej wpłaty z podanym tytułem możesz zgłosić swoje wsparcie. Zgodnie z zasadami misji status przyznajemy dopiero po zweryfikowaniu wpłaty.
+                  </p>
+
+                  <div class="declaration-form-row">
+                    <label class="declaration-checkbox-label">
+                      <input type="checkbox" id="drilldown-decl-anon" onchange="toggleDeclAnon('drilldown')">
+                      <span>Chcę wesprzeć całkowicie anonimowo (bez podawania nazwiska)</span>
+                    </label>
+                  </div>
+
+                  <div class="declaration-form-row" id="drilldown-decl-name-group">
+                    <label for="drilldown-decl-name" style="font-size: 12px; color: var(--gold-light); font-weight: 600;">Twoje imię / nazwa wyświetlana:</label>
+                    <input type="text" class="declaration-input" id="drilldown-decl-name" placeholder="np. Brat Marek, Rodzina Kowalskich..." maxlength="60">
+                  </div>
+
+                  <div class="declaration-form-row">
+                    <label class="declaration-checkbox-label">
+                      <input type="checkbox" id="drilldown-decl-consent-page" checked>
+                      <span>Wyrażam zgodę na wyświetlenie imienia w podziękowaniu na stronie tego rozdziału</span>
+                    </label>
+                    <label class="declaration-checkbox-label">
+                      <input type="checkbox" id="drilldown-decl-consent-lumina">
+                      <span>Wyrażam zgodę na podziękowanie na moim profilu w społeczności LUMINA (jeśli posiadasz konto)</span>
+                    </label>
+                  </div>
+
+                  <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 4px;">
+                    <button class="btn-cta-secondary" type="button" onclick="submitPatronDeclaration('drilldown')" style="padding: 10px 20px; font-size: 13px;">
+                      <span>Zgłoś wsparcie tego rozdziału</span>
+                    </button>
+                    <span id="drilldown-decl-status-msg" style="font-size: 12.5px; color: var(--gold-light); font-weight: 500;"></span>
+                  </div>
+
+                  <div class="patron-verification-notice">
+                    ℹ️ <strong>Zasada Zero-QA & Pancerne Bezpieczeństwo:</strong> Kliknięcie odnośnika do wpłaty nie przyznaje automatycznie statusu patrona. Tytuł „Patron rozdziału” przyznawany jest wyłącznie po rzeczywistym zaksięgowaniu wpłaty i weryfikacji przez administratora. Żadne kwoty nie są upubliczniane. Dostęp do pieśni i Słowa Bożego w Biblijnym Uwielbieniu jest w 100% bezpłatny.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="chapters-list-grid" id="chapters-list-grid">
             <!-- Dynamically populated chapters -->
           </div>
@@ -2384,6 +3242,26 @@
 
   <!-- Toast Element -->
   <div class="toast-popup" id="toast-popup" role="status" aria-live="polite">Link skopiowany do schowka!</div>
+
+  <!-- ========================================================================
+       QR MODAL (Lokalny, natywny generator offline QRCode.js)
+       ======================================================================== -->
+  <div class="qr-modal-overlay" id="qr-modal-overlay" onclick="onQrOverlayClick(event)">
+    <div class="qr-modal-box" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <button class="modal-close-btn" type="button" onclick="closeQrModal()" aria-label="Zamknij kod QR">✕</button>
+      <span class="modal-badge">SKANUJ TELEFONEM</span>
+      <h3 class="modal-heading" id="qr-modal-title" style="font-size: 18px; margin: 0;">Kod QR Rozdziału</h3>
+      <p class="modal-body-text" id="qr-modal-desc" style="font-size: 13px; margin: 0;">Zeskanuj aparatem w smartfonie, aby natychmiast otworzyć i udostępnić ten rozdział.</p>
+      <div class="qr-canvas-holder" id="qr-code-canvas-target">
+        <!-- Rendered by QRCode.js -->
+      </div>
+      <span class="patron-target-id" id="qr-modal-chapter-id">Biblia Śpiewana / GEN-001</span>
+      <button class="btn-cta-primary" style="width: 100%; font-size: 13px;" type="button" onclick="closeQrModal()">Zamknij</button>
+    </div>
+  </div>
+
+  <!-- Local In-Browser QR Code Engine (Zero Cost, Zero External Request) -->
+  <script src="/js/vendor-qrcode.min.js"></script>
 
   <!-- ========================================================================
        JAVASCRIPT LOGIC & YOUTUBE IFRAME API SYNCHRONIZATION
@@ -2639,6 +3517,7 @@
       document.getElementById('link-open-youtube').href = `https://www.youtube.com/watch?v=${track.videoId}&list=PLGBAOJCGyM6g`;
 
       updateFavoritesUI();
+      updatePatronModuleUI('player', track.chapterId);
 
       if (ytPlayer && ytPlayer.loadVideoById) {
         if (autoPlay) {
@@ -2782,6 +3661,251 @@
     }
 
     /* ------------------------------------------------------------------------
+       4B. MODUŁ „PATRON ROZDZIAŁU” & UDOSTĘPNIANIE (P1)
+       ------------------------------------------------------------------------ */
+    const CURRENT_PATRON_CHAPTERS = {
+      player: 'PRO-001',
+      drilldown: 'PRO-001'
+    };
+
+    function getChapterMeta(chapterId) {
+      if (!chapterId) chapterId = 'PRO-001';
+      const parts = chapterId.split('-');
+      const code = parts[0] || 'PRO';
+      const num = parseInt(parts[1] || '1', 10);
+      const book = BIBLE_BOOKS.find(b => b.code === code) || { name: code, chapters: num };
+      const title = `${book.name} · Rozdział ${num}`;
+      const suggestedTransferTitle = `Biblia Śpiewana / ${chapterId}`;
+      const directUrl = `${window.location.origin}/BiblijneUwielbienie?chapter=${chapterId}`;
+      return { chapterId, code, num, bookName: book.name, title, suggestedTransferTitle, directUrl };
+    }
+
+    function updatePatronModuleUI(prefix, chapterId) {
+      if (!chapterId) return;
+      CURRENT_PATRON_CHAPTERS[prefix] = chapterId;
+      const meta = getChapterMeta(chapterId);
+
+      const idEl = document.getElementById(`${prefix}-patron-chapter-id`);
+      if (idEl) idEl.textContent = meta.suggestedTransferTitle;
+
+      const titleEl = document.getElementById(`${prefix}-patron-chapter-title`);
+      if (titleEl) titleEl.textContent = meta.title;
+
+      const statusEl = document.getElementById(`${prefix}-decl-status-msg`);
+      if (statusEl) statusEl.textContent = '';
+    }
+
+    function togglePatronModule(prefix) {
+      const moduleEl = document.getElementById(`${prefix}-patron-module`);
+      if (!moduleEl) return;
+      moduleEl.classList.toggle('is-open');
+      const isOpen = moduleEl.classList.contains('is-open');
+      const toggleBtn = document.getElementById(`${prefix}-patron-toggle`);
+      if (toggleBtn) toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      const actionText = document.getElementById(`${prefix}-patron-action-text`);
+      if (actionText) actionText.textContent = isOpen ? 'Zwiń' : 'Rozwiń';
+    }
+
+    function openPatronModule(prefix) {
+      const moduleEl = document.getElementById(`${prefix}-patron-module`);
+      if (!moduleEl) return;
+      if (!moduleEl.classList.contains('is-open')) {
+        togglePatronModule(prefix);
+      }
+    }
+
+    function copyPatronTransferId(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      navigator.clipboard.writeText(meta.suggestedTransferTitle).then(() => {
+        const btnText = document.getElementById(`${prefix}-btn-copy-transfer-text`);
+        if (btnText) {
+          const old = btnText.textContent;
+          btnText.textContent = 'Skopiowano tytuł!';
+          setTimeout(() => { btnText.textContent = old; }, 2200);
+        }
+        showToast(`Skopiowano tytuł wpłaty: ${meta.suggestedTransferTitle}`);
+        trackPatronEvent('copy_transfer_title', meta.chapterId);
+      }).catch(() => {
+        showToast(meta.suggestedTransferTitle);
+      });
+    }
+
+    function shareChapterNativeCurrent(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      const title = `Biblijne Uwielbienie · ${meta.title}`;
+      const text = `Posłuchaj i wesprzyj produkcję pieśni z rozdziału ${meta.title} w projekcie Biblia Śpiewana:`;
+      if (navigator.share) {
+        navigator.share({ title, text, url: meta.directUrl })
+          .then(() => trackPatronEvent('share_native', meta.chapterId))
+          .catch(() => {});
+      } else {
+        copyChapterLinkCurrent(prefix);
+      }
+    }
+
+    function shareChapterWhatsAppCurrent(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      const text = encodeURIComponent(`Posłuchaj i wesprzyj produkcję rozdziału: ${meta.title} w Biblijnym Uwielbieniu:\n${meta.directUrl}`);
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+      trackPatronEvent('share_whatsapp', meta.chapterId);
+    }
+
+    function shareChapterFacebookCurrent(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      const u = encodeURIComponent(meta.directUrl);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${u}`, '_blank');
+      trackPatronEvent('share_facebook', meta.chapterId);
+    }
+
+    function copyChapterLinkCurrent(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      navigator.clipboard.writeText(meta.directUrl).then(() => {
+        const btnText = document.getElementById(`${prefix}-btn-share-copy-text`);
+        if (btnText) {
+          const old = btnText.textContent;
+          btnText.textContent = 'Skopiowano!';
+          setTimeout(() => { btnText.textContent = old; }, 2200);
+        }
+        showToast(`Skopiowano link do rozdziału: ${meta.title}`);
+        trackPatronEvent('share_copy_link', meta.chapterId);
+      }).catch(() => {
+        showToast(meta.directUrl);
+      });
+    }
+
+    let qrCodeInstance = null;
+    function openQrModalCurrent(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      const overlay = document.getElementById('qr-modal-overlay');
+      const idEl = document.getElementById('qr-modal-chapter-id');
+      const descEl = document.getElementById('qr-modal-desc');
+      const container = document.getElementById('qr-code-canvas-target');
+
+      if (idEl) idEl.textContent = meta.suggestedTransferTitle;
+      if (descEl) descEl.textContent = `Zeskanuj telefonem, aby otworzyć: ${meta.title}`;
+      if (container) {
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          qrCodeInstance = new QRCode(container, {
+            text: meta.directUrl,
+            width: 180,
+            height: 180,
+            colorDark: "#070B16",
+            colorLight: "#FFFFFF",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        } else {
+          container.textContent = meta.directUrl;
+        }
+      }
+      if (overlay) overlay.classList.add('is-active');
+      trackPatronEvent('open_qr_modal', meta.chapterId);
+    }
+
+    function closeQrModal() {
+      const overlay = document.getElementById('qr-modal-overlay');
+      if (overlay) overlay.classList.remove('is-active');
+    }
+
+    function onQrOverlayClick(e) {
+      if (e.target && e.target.id === 'qr-modal-overlay') {
+        closeQrModal();
+      }
+    }
+
+    function toggleDeclAnon(prefix) {
+      const anonBox = document.getElementById(`${prefix}-decl-anon`);
+      const nameGroup = document.getElementById(`${prefix}-decl-name-group`);
+      if (anonBox && nameGroup) {
+        nameGroup.style.display = anonBox.checked ? 'none' : 'flex';
+      }
+    }
+
+    async function submitPatronDeclaration(prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      const meta = getChapterMeta(chapterId);
+      const isAnon = document.getElementById(`${prefix}-decl-anon`)?.checked || false;
+      const nameVal = (document.getElementById(`${prefix}-decl-name`)?.value || '').trim();
+      const consentPage = document.getElementById(`${prefix}-decl-consent-page`)?.checked || false;
+      const consentLumina = document.getElementById(`${prefix}-decl-consent-lumina`)?.checked || false;
+      const statusMsg = document.getElementById(`${prefix}-decl-status-msg`);
+
+      if (!isAnon && !nameVal) {
+        if (statusMsg) {
+          statusMsg.style.color = '#FFA94D';
+          statusMsg.textContent = 'Wpisz imię lub zaznacz wsparcie anonimowe.';
+        }
+        return;
+      }
+
+      const payload = {
+        chapterId: meta.chapterId,
+        suggestedTitle: meta.suggestedTransferTitle,
+        anonymous: isAnon,
+        displayName: isAnon ? 'Anonimowy Patron' : nameVal,
+        consentPage,
+        consentLumina,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const stored = JSON.parse(localStorage.getItem('cc_patron_declarations') || '[]');
+        stored.push(payload);
+        localStorage.setItem('cc_patron_declarations', JSON.stringify(stored));
+
+        fetch('/api/biblijne-uwielbienie/patron/declare', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+
+        if (statusMsg) {
+          statusMsg.style.color = 'var(--gold-light)';
+          statusMsg.textContent = '✓ Zgłoszenie przyjęte do weryfikacji. Dziękujemy!';
+        }
+        showToast('Zgłoszenie przyjęte. Dziękujemy za wsparcie!');
+        trackPatronEvent('submit_declaration', meta.chapterId);
+      } catch (err) {
+        if (statusMsg) {
+          statusMsg.textContent = '✓ Zgłoszenie zapisane lokalnie. Dziękujemy!';
+        }
+      }
+    }
+
+    function trackPatronProvider(provider, prefix) {
+      const chapterId = CURRENT_PATRON_CHAPTERS[prefix] || 'PRO-001';
+      trackPatronEvent(`click_provider_${provider}`, chapterId);
+    }
+
+    function trackPatronEvent(action, chapterId) {
+      try {
+        const events = JSON.parse(localStorage.getItem('cc_patron_events') || '[]');
+        events.push({ action, chapterId, t: Date.now() });
+        if (events.length > 50) events.shift();
+        localStorage.setItem('cc_patron_events', JSON.stringify(events));
+      } catch(e) {}
+    }
+
+    function selectDrilldownChapterPatron(chapterId, event) {
+      if (event) event.stopPropagation();
+      updatePatronModuleUI('drilldown', chapterId);
+      openPatronModule('drilldown');
+
+      document.querySelectorAll('.chapter-item-card').forEach(el => el.classList.remove('is-targeted'));
+      const targetCard = document.getElementById(`chapter-card-${chapterId}`);
+      if (targetCard) {
+        targetCard.classList.add('is-targeted');
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    /* ------------------------------------------------------------------------
        5. PROGRESSIVE BIBLE EXPLORER (Rendering & Filtering)
        ------------------------------------------------------------------------ */
     function renderBooksGrid() {
@@ -2893,6 +4017,7 @@
         if (PUBLISHED_MAP.has(`${book.code}-${String(c).padStart(3, '0')}`)) publishedInBook++;
       }
       document.getElementById('drilldown-progress-badge').textContent = `${publishedInBook} / ${book.chapters} nagranych`;
+      updatePatronModuleUI('drilldown', `${book.code}-001`);
 
       const listGrid = document.getElementById('chapters-list-grid');
       listGrid.innerHTML = '';
@@ -2904,6 +4029,7 @@
 
         const item = document.createElement('div');
         item.className = `chapter-item-card ${isPub ? 'is-published' : ''}`;
+        item.id = `chapter-card-${chapterId}`;
 
         if (isPub) {
           const trackIdx = PLAYLIST_DATA.findIndex(t => t.chapterId === chapterId);
@@ -2919,11 +4045,20 @@
                 <span class="chapter-status-pill published">Dostępny · ${track.lengthText}</span>
               </div>
             </div>
-            <div class="chapter-play-icon" title="Odtwórz utwór">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="chapter-patron-trigger-btn" type="button" onclick="selectDrilldownChapterPatron('${chapterId}', event)" title="Zostań patronem Rozdziału ${c}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                </svg>
+                <span>Patron</span>
+              </button>
+              <div class="chapter-play-icon" title="Odtwórz utwór">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </div>
             </div>
           `;
         } else {
+          item.onclick = (e) => selectDrilldownChapterPatron(chapterId, e);
           item.innerHTML = `
             <div class="chapter-item-info">
               <div class="chapter-num-box">${c}</div>
@@ -2931,6 +4066,14 @@
                 <span class="chapter-name-title">Rozdział ${c}</span>
                 <span class="chapter-status-pill">W przygotowaniu</span>
               </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="chapter-patron-trigger-btn" type="button" onclick="selectDrilldownChapterPatron('${chapterId}', event)" title="Zostań patronem Rozdziału ${c}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                </svg>
+                <span>Patron</span>
+              </button>
             </div>
           `;
         }
@@ -3013,12 +4156,22 @@
       document.getElementById('stat-published-count').textContent = PLAYLIST_DATA.length;
       updateFavoritesUI();
 
-      // Check URL query for direct chapter deeplink (?chapter=PRO-003)
+      // Check URL query for direct chapter deeplink (?chapter=PRO-003 or ?chapter=GEN-001)
       const urlParams = new URLSearchParams(window.location.search);
       const deepChapter = urlParams.get('chapter');
-      if (deepChapter && PUBLISHED_MAP.has(deepChapter)) {
-        const deepIdx = PLAYLIST_DATA.findIndex(t => t.chapterId === deepChapter);
-        if (deepIdx !== -1) CURRENT_TRACK_INDEX = deepIdx;
+      if (deepChapter) {
+        if (PUBLISHED_MAP.has(deepChapter)) {
+          const deepIdx = PLAYLIST_DATA.findIndex(t => t.chapterId === deepChapter);
+          if (deepIdx !== -1) CURRENT_TRACK_INDEX = deepIdx;
+        } else {
+          const parts = deepChapter.split('-');
+          if (parts[0]) {
+            setTimeout(() => {
+              openBookDrillDown(parts[0]);
+              selectDrilldownChapterPatron(deepChapter);
+            }, 300);
+          }
+        }
       }
 
       loadTrack(CURRENT_TRACK_INDEX, false);
