@@ -23,6 +23,15 @@
 /szukaj/*
   Cache-Control: no-cache, no-store, must-revalidate
 
+/index
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/index/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/semantic-index.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
 /*-live.html
   Cache-Control: no-cache, no-store, must-revalidate
 

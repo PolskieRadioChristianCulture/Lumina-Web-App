@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "updatedAt": "2026-10-15",
+  "sources": [
+    {
+      "id": "cc-approved-registry",
+      "name": "CC Approved Search Catalog",
+      "path": "szukaj/catalog.json",
+      "type": "json",
+      "trusted": true,
+      "priority": 1
+    },
+    {
+      "id": "cc-ecosystem-map",
+      "name": "Mapa Ekosystemu Christian Culture",
+      "path": "data/ecosystem-map.json",
+      "type": "json",
+      "trusted": true,
+      "priority": 2
+    },
+    {
+      "id": "cc-public-pages",
+      "name": "Oficjalne podstrony HTML polskieradio.cc",
+      "type": "static-html",
+      "trusted": true,
+      "priority": 3
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "updatedAt": "2026-10-15",
+  "categories": [
+    {
+      "id": "biblia-wiara",
+      "slug": "biblia",
+      "name": "Biblia i wiara",
+      "icon": "book-open",
+      "description": "Pismo Święte online, Biblia Audio, studium interlinearne, modlitwa, proroctwa i fundamenty zbawienia.",
+      "topics": [
+        "biblia-online", "biblia-audio", "studium-biblijne", "jezus-chrystus",
+        "ewangelia", "zbawienie", "modlitwa", "szabat", "proroctwa",
+        "apokalipsa", "ksiega-daniela", "zmartwychwstanie", "slowo-boze"
+      ]
+    },
+    {
+      "id": "radio-transmisje",
+      "slug": "radio",
+      "name": "Radio i transmisje",
+      "icon": "radio-tower",
+      "description": "Całodobowe Polskie Radio Christian Culture, kanały muzyczne, audycje na żywo i podcasty.",
+      "topics": [
+        "radio-chrzescijanskie", "radio-na-zywo", "audycje", "transmisje",
+        "muzyka-chrzescijanska", "podcasty", "modlitwa-na-zywo", "ambient-sleep",
+        "worship-live", "sniadaniowa"
+      ]
+    },
+    {
+      "id": "filmy-multimedia",
+      "slug": "media",
+      "name": "Filmy i multimedia",
+      "icon": "play-circle",
+      "description": "Kino Chrześcijańskie VOD, poruszające świadectwa, produkcja studyjna CC Studio DAW i Biblia Śpiewana.",
+      "topics": [
+        "filmy-chrzescijanskie", "kino-vod", "swiadectwa", "dokumenty",
+        "nauczanie-biblijne", "produkcja-filmowa", "kanaly-youtube",
+        "cc-studio-daw", "biblia-spiewana"
+      ]
+    },
+    {
+      "id": "edukacja-rozwoj",
+      "slug": "edukacja",
+      "name": "Edukacja i rozwój",
+      "icon": "graduation-cap",
+      "description": "Akademia Biblijna, bezpłatne kursy Pisma Świętego, codzienne lekcje formacyjne i rozwój duchowy.",
+      "topics": [
+        "kursy-biblijne", "akademia-biblijna", "kurs-codzienny", "rozwoj-osobisty",
+        "zycie-duchowe", "edukacja-i-wiedza", "apokalipsa-kurs", "z-biblia-za-pan-brat"
+      ]
+    },
+    {
+      "id": "rodzina-relacje",
+      "slug": "relacje",
+      "name": "Rodzina i relacje",
+      "icon": "heart-handshake",
+      "description": "Wartościowe relacje, Boży zamysł małżeństwa, rodzicielstwo, przyjaźń i zdrowa komunikacja.",
+      "topics": [
+        "malzenstwo", "rodzina", "rodzicielstwo", "przyjazn",
+        "relacje-chrzescijanskie", "spolecznosc", "komunikacja", "czystosc"
+      ]
+    },
+    {
+      "id": "spolecznosc-cc",
+      "slug": "spolecznosc",
+      "name": "Społeczność Christian Culture",
+      "icon": "users-round",
+      "description": "Portal społecznościowy LUMINA, profile autorów, bezpieczne dyskusje i wspólnota chrześcijańska.",
+      "topics": [
+        "lumina", "profile", "wspolnota", "dyskusje", "inicjatywy",
+        "wspolpraca", "ogloszenia", "lumi-messenger"
+      ]
+    },
+    {
+      "id": "zdrowie-styl-zycia",
+      "slug": "zdrowie",
+      "name": "Zdrowie i styl życia",
+      "icon": "activity",
+      "description": "Zdrowie fizyczne, psychiczne i duchowe w świetle Bożych praw, odpoczynek i zrównoważone życie.",
+      "topics": [
+        "zdrowie", "profilaktyka", "aktywnosc-fizyczna", "odpoczynek",
+        "zycie-w-rownowadze", "zdrowa-dieta", "regeneracja"
+      ]
+    },
+    {
+      "id": "nauka-historia-wiedza",
+      "slug": "wiedza",
+      "name": "Nauka, historia i wiedza",
+      "icon": "book-marked",
+      "description": "Portale CCN News, historia chrześcijaństwa, biologia, kreacjonizm, prawo i rzetelna publicystyka.",
+      "topics": [
+        "ccn-news", "historia", "nauka", "biologia", "prawo", "kultura",
+        "edukacja-ogolna", "kreacjonizm", "archeologia-biblijna"
+      ]
+    },
+    {
+      "id": "narzedzia-technologia",
+      "slug": "narzedzia",
+      "name": "Narzędzia i technologia",
+      "icon": "settings-2",
+      "description": "Inteligentna wyszukiwarka CC Search, uniwersalna aplikacja cclite.pl PWA, HOLOS i Mapa Ekosystemu.",
+      "topics": [
+        "cc-search", "cclite-pwa", "holos", "narzedzia-dla-tworcow",
+        "automatyzacja", "multimedia", "aplikacje", "mapa-ekosystemu"
+      ]
+    },
+    {
+      "id": "misja-wsparcie",
+      "slug": "misja",
+      "name": "Misja i wsparcie",
+      "icon": "globe",
+      "description": "Globalna ewangelizacja, akcja Zjednoczeni za Polskę, wolontariat i bezinteresowne wsparcie misji.",
+      "topics": [
+        "ewangelizacja", "misja", "wolontariat", "wspolpraca",
+        "wspieranie-dzialalnosci", "dzialalnosc-spoleczna", "zjednoczeni-za-polske",
+        "pomoc-duchowa"
+      ]
+    }
+  ]
+}

@@ -1920,6 +1920,20 @@ export default {
       return serveLiveNews(ctx);
     }
 
+    // CC Semantic Index — obsługa dedykowanego indeksu wiedzy na /index bez pętli 308
+    if (
+      url.pathname === '/index' ||
+      url.pathname === '/index/' ||
+      url.pathname === '/indeks' ||
+      url.pathname === '/indeks/' ||
+      url.pathname.startsWith('/index/') ||
+      url.pathname.startsWith('/indeks/')
+    ) {
+      const indexReqUrl = new URL(request.url);
+      indexReqUrl.pathname = '/semantic-index.html';
+      return env.ASSETS.fetch(new Request(indexReqUrl, request));
+    }
+
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
       const dirUrl = new URL(request.url);

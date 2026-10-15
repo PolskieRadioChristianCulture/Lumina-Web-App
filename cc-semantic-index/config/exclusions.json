@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "updatedAt": "2026-10-15",
+  "rules": {
+    "blockPrivateChats": true,
+    "blockAdminEndpoints": true,
+    "blockAdultRestricted": true,
+    "blockTokensAndCredentials": true
+  },
+  "blockedPrefixes": [
+    "/admin/",
+    "/config/",
+    "/scripts/",
+    "/windows_tools/",
+    "/tresci-18plus/",
+    "/api/admin/",
+    "/.agents/",
+    "/.github/",
+    "/.firebase/",
+    "/.gemini/",
+    "/.vscode/",
+    "/.wrangler/"
+  ],
+  "blockedUrls": [
+    "https://polskieradio.cc/admin",
+    "https://polskieradio.cc/config",
+    "https://polskieradio.cc/tresci-18plus"
+  ],
+  "blockedParameters": [
+    "?q=",
+    "?k=",
+    "?sort=",
+    "?page="
+  ]
+}

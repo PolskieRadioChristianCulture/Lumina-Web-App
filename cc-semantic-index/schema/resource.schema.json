@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://polskieradio.cc/schemas/semantic-resource.json",
+  "title": "CC Semantic Index Resource",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "url",
+    "description",
+    "language",
+    "primaryCategory",
+    "topics",
+    "keywords",
+    "visibility",
+    "status",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Trwały unikalny identyfikator zasobu (kebab-case)"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "project",
+        "portal",
+        "course",
+        "article",
+        "audio",
+        "video",
+        "tool",
+        "community",
+        "resource"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 300
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 1000
+    },
+    "language": {
+      "type": "string",
+      "enum": ["pl", "en"]
+    },
+    "primaryCategory": {
+      "type": "string",
+      "enum": [
+        "biblia-wiara",
+        "radio-transmisje",
+        "filmy-multimedia",
+        "edukacja-rozwoj",
+        "rodzina-relacje",
+        "spolecznosc-cc",
+        "zdrowie-styl-zycia",
+        "nauka-historia-wiedza",
+        "narzedzia-technologia",
+        "misja-wsparcie"
+      ]
+    },
+    "topics": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "relatedIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "private", "unlisted"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "archived", "removed"]
+    },
+    "source": {
+      "type": "string"
+    },
+    "verifiedAt": {
+      "type": ["string", "null"]
+    },
+    "publishedAt": {
+      "type": ["string", "null"]
+    },
+    "updatedAt": {
+      "type": ["string", "null"]
+    },
+    "author": {
+      "type": ["string", "null"]
+    },
+    "publisher": {
+      "type": ["string", "null"]
+    },
+    "thumbnail": {
+      "type": ["string", "null"]
+    },
+    "schemaType": {
+      "type": ["string", "null"]
+    }
+  },
+  "additionalProperties": true
+}
