@@ -5,17 +5,18 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 
-test('Biblijne Uwielbienie: 1. Główne pliki HTML i katalogi istnieją', () => {
+test('Biblijne Uwielbienie: 1. Główny plik HTML i routing w _worker.js', () => {
   const mainFile = path.join(ROOT, 'biblijne-uwielbienie.html');
-  const upperFile = path.join(ROOT, 'BiblijneUwielbienie.html');
-  const dirIndex = path.join(ROOT, 'BiblijneUwielbienie', 'index.html');
+  const workerFile = path.join(ROOT, '_worker.js');
 
   assert.ok(fs.existsSync(mainFile), 'biblijne-uwielbienie.html musi istnieć');
-  assert.ok(fs.existsSync(upperFile), 'BiblijneUwielbienie.html musi istnieć');
-  assert.ok(fs.existsSync(dirIndex), 'BiblijneUwielbienie/index.html musi istnieć');
+  assert.ok(fs.existsSync(workerFile), '_worker.js musi istnieć');
 
   const content = fs.readFileSync(mainFile, 'utf8');
   assert.ok(content.length > 5000, 'biblijne-uwielbienie.html musi zawierać pełną treść portalu');
+
+  const workerContent = fs.readFileSync(workerFile, 'utf8');
+  assert.ok(workerContent.includes('handleBiblijneUwielbienieRoute'), '_worker.js musi obsługiwać routing handleBiblijneUwielbienieRoute');
 });
 
 test('Biblijne Uwielbienie: 2. Metadane SEO, Canonical i Schema.org', () => {
