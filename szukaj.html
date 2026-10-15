@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fdfefe">
+  <meta name="description" content="Christian Culture Search — szukaj projektów, audycji, Biblii, mediów i narzędzi w ekosystemie polskieradio.cc.">
+  <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
+  <link rel="canonical" href="https://polskieradio.cc/szukaj">
+  <title>Christian Culture Search — polskieradio.cc/szukaj</title>
+
+  <style>
+    :root {
+      --font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --bg-page: #fdfefe;
+      --bg-body-radial1: #f5f9ff;
+      --bg-body-radial2: #f6f0e5;
+      --text-main: #18335f;
+      --text-secondary: #60728f;
+      --text-muted: #8a9bb4;
+      --heading-color: #094489;
+      --gold-accent: #c49947;
+      --gold-star: #c9a04d;
+      --gold-gradient: linear-gradient(110deg, #e8c16d, #b88730);
+      --gold-btn-gradient: linear-gradient(100deg, #e8bc65, #c39239);
+      --gold-shadow: rgba(189, 148, 68, 0.28);
+      
+      --search-bg: #ffffff;
+      --search-border: #e3eaf6;
+      --search-shadow: rgba(18, 62, 118, 0.12);
+      --search-focus-border: #92b9e8;
+      --search-focus-shadow: rgba(14, 82, 145, 0.16);
+      --search-text: #163766;
+      
+      --btn-bg: #ffffff;
+      --btn-border: #e5e9f1;
+      --btn-text: #28446c;
+      --btn-shadow: rgba(44, 71, 112, 0.08);
+      
+      --chip-hover-bg: #f2f6fc;
+      --chip-active-bg: #eff5ff;
+      --chip-active-border: #d5e4fc;
+      --chip-text: #163766;
+      --chip-desc: #7485a0;
+      
+      --card-bg: #ffffff;
+      --card-border: #e9edf4;
+      --card-shadow: rgba(32, 58, 87, 0.06);
+      --card-hover-border: #a8c4ed;
+      --card-hover-shadow: rgba(35, 75, 117, 0.13);
+      --card-title: #1757ba;
+      --card-url: #7f8da5;
+      --card-desc: #6e7d95;
+      
+      --line-color: #e0e6f0;
+      --empty-bg: #ffffff;
+      --empty-border: #cad8e9;
+      --footer-border: #e6edf5;
+      --footer-text: #78869d;
+      --footer-heading: #164584;
+
+      --theme-toggle-bg: rgba(235, 242, 255, 0.7);
+      --theme-toggle-border: #dbe5f5;
+      --theme-toggle-text: #28446c;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #060913;
+      --bg-body-radial1: rgba(15, 23, 42, 0.85);
+      --bg-body-radial2: rgba(30, 27, 20, 0.45);
+      --text-main: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --heading-color: #ffffff;
+      --gold-accent: #facc15;
+      --gold-star: #facc15;
+      --gold-gradient: linear-gradient(110deg, #d4af37, #a88220);
+      --gold-btn-gradient: linear-gradient(100deg, #e8bc65, #b88628);
+      --gold-shadow: rgba(212, 175, 55, 0.35);
+      
+      --search-bg: rgba(15, 23, 42, 0.85);
+      --search-border: rgba(212, 175, 55, 0.35);
+      --search-shadow: rgba(0, 0, 0, 0.5);
+      --search-focus-border: #facc15;
+      --search-focus-shadow: rgba(250, 204, 21, 0.25);
+      --search-text: #ffffff;
+      
+      --btn-bg: rgba(20, 28, 48, 0.85);
+      --btn-border: rgba(212, 175, 55, 0.3);
+      --btn-text: #f1f5f9;
+      --btn-shadow: rgba(0, 0, 0, 0.4);
+      
+      --chip-hover-bg: rgba(30, 41, 59, 0.75);
+      --chip-active-bg: rgba(30, 41, 59, 0.95);
+      --chip-active-border: rgba(212, 175, 55, 0.6);
+      --chip-text: #f1f5f9;
+      --chip-desc: #94a3b8;
+      
+      --card-bg: rgba(15, 23, 42, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-shadow: rgba(0, 0, 0, 0.35);
+      --card-hover-border: rgba(212, 175, 55, 0.5);
+      --card-hover-shadow: rgba(0, 0, 0, 0.6);
+      --card-title: #facc15;
+      --card-url: #94a3b8;
+      --card-desc: #cbd5e1;
+      
+      --line-color: rgba(255, 255, 255, 0.12);
+      --empty-bg: rgba(15, 23, 42, 0.7);
+      --empty-border: rgba(212, 175, 55, 0.3);
+      --footer-border: rgba(255, 255, 255, 0.12);
+      --footer-text: #94a3b8;
+      --footer-heading: #facc15;
+
+      --theme-toggle-bg: rgba(30, 41, 59, 0.85);
+      --theme-toggle-border: rgba(212, 175, 55, 0.4);
+      --theme-toggle-text: #facc15;
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-family);
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      background-image: 
+        radial-gradient(ellipse 56% 30% at 50% 23%, var(--bg-body-radial1) 0%, transparent 85%),
+        radial-gradient(ellipse 35% 32% at 100% 45%, var(--bg-body-radial2) 0%, transparent 75%);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .skip {
+      position: absolute;
+      top: -100px;
+      left: 20px;
+      padding: 12px;
+      background: var(--search-bg);
+      color: var(--text-main);
+      z-index: 30;
+      border-radius: 8px;
+    }
+    .skip:focus { top: 10px; }
+
+    /* --- TOP NAVBAR --- */
+    .top {
+      max-width: 1480px;
+      margin: auto;
+      padding: 20px 34px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .mini {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--heading-color);
+      font-size: 25px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mini span, .hero h1 span {
+      color: var(--gold-accent);
+    }
+    .nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .nav a:not(.support):hover,
+    .nav a:not(.support):focus-visible {
+      color: var(--gold-accent);
+    }
+    .support {
+      background: var(--gold-gradient);
+      color: #ffffff !important;
+      border-radius: 35px;
+      padding: 11px 20px;
+      box-shadow: 0 6px 17px var(--gold-shadow);
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .support:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 9px 22px var(--gold-shadow);
+    }
+
+    .theme-toggle-btn {
+      appearance: none;
+      background: var(--theme-toggle-bg);
+      border: 1px solid var(--theme-toggle-border);
+      color: var(--theme-toggle-text);
+      border-radius: 30px;
+      padding: 8px 14px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 700;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    /* --- HERO & SEARCH --- */
+    .hero {
+      max-width: 1100px;
+      text-align: center;
+      margin: 50px auto 25px;
+      padding: 0 20px;
+    }
+    .mark {
+      color: var(--gold-star);
+      font-size: 40px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero h1 {
+      font: normal clamp(44px, 6.5vw, 92px)/1.15 Georgia, "Times New Roman", serif;
+      letter-spacing: -0.055em;
+      margin: 4px 0;
+      color: var(--heading-color);
+    }
+    .hero p {
+      margin: 0 0 26px;
+      letter-spacing: 0.16em;
+      color: var(--text-secondary);
+      font-size: clamp(12px, 1.2vw, 16px);
+      text-transform: uppercase;
+    }
+
+    .search-wrap {
+      max-width: 820px;
+      margin: auto;
+      position: relative;
+    }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 65px;
+      border: 1px solid var(--search-border);
+      border-radius: 50px;
+      box-shadow: 0 10px 32px var(--search-shadow);
+      background: var(--search-bg);
+      padding: 7px 16px 7px 24px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .search:focus-within {
+      box-shadow: 0 12px 38px var(--search-focus-shadow);
+      border-color: var(--search-focus-border);
+    }
+    .search svg { flex: none; stroke: var(--text-secondary); }
+    .search input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: none;
+      color: var(--search-text);
+      background: transparent;
+      font-size: 17px;
+    }
+    .search input::placeholder {
+      color: var(--text-muted);
+    }
+    .kbd-badge {
+      display: inline-block;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid var(--search-border);
+      border-radius: 6px;
+      background: var(--btn-bg);
+      letter-spacing: 0.05em;
+    }
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      transition: background 0.15s;
+    }
+    .icon-btn:hover, .icon-btn:focus-visible {
+      background: var(--chip-hover-bg);
+    }
+    .voice-note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 8px 0;
+      min-height: 18px;
+    }
+
+    .actions {
+      margin: 18px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border-radius: 40px;
+      padding: 13px 26px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      box-shadow: 0 5px 16px var(--btn-shadow);
+      font-weight: 650;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn.primary {
+      background: var(--gold-btn-gradient);
+      color: #ffffff;
+      border: 0;
+      box-shadow: 0 6px 18px var(--gold-shadow);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 9px 20px var(--btn-shadow);
+    }
+    .btn.primary:hover {
+      box-shadow: 0 10px 24px var(--gold-shadow);
+    }
+
+    /* --- LAYOUT & FILTERS --- */
+    .layout {
+      max-width: 1480px;
+      margin: 40px auto;
+      padding: 0 34px;
+    }
+    .filters {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .chip {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 12px 14px;
+      min-width: 160px;
+      border-radius: 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--chip-text);
+      transition: transform 0.15s, background 0.15s, border-color 0.15s;
+      min-height: 44px;
+    }
+    .chip:hover, .chip:focus-visible {
+      background: var(--chip-hover-bg);
+      transform: translateY(-2px);
+    }
+    .chip[aria-pressed="true"] {
+      background: var(--chip-active-bg);
+      border-color: var(--chip-active-border);
+      box-shadow: 0 4px 12px var(--btn-shadow);
+    }
+    .bubble {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: #f9e9bf;
+      color: #b78225;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .chip:nth-child(2) .bubble { background: #e0ecff; color: #2368c2; }
+    .chip:nth-child(3) .bubble { background: #e6f0ff; color: #1556a6; }
+    .chip:nth-child(4) .bubble { background: #f0e8ff; color: #6945b3; }
+    .chip:nth-child(5) .bubble { background: #dcf8e9; color: #147650; }
+
+    .chip strong { font-size: 14px; font-weight: 700; }
+    .chip small { font-size: 11px; color: var(--chip-desc); }
+
+    .results-head {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 32px 0 16px;
+      color: var(--text-secondary);
+      letter-spacing: 0.08em;
+      font-size: 13px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .results-head::before, .results-head::after {
+      content: "";
+      height: 1px;
+      background: var(--line-color);
+      flex: 1;
+    }
+    .count {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: -6px 0 20px;
+    }
+
+    /* --- RESULTS GRID --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .result {
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      min-height: 124px;
+      background: var(--card-bg);
+      box-shadow: 0 6px 18px var(--card-shadow);
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .result:hover, .result:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px var(--card-hover-shadow);
+      border-color: var(--card-hover-border);
+    }
+    .result .emoji {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--chip-hover-bg);
+      display: grid;
+      place-items: center;
+      flex: none;
+      font-size: 22px;
+    }
+    .result .info { min-width: 0; flex: 1; }
+    .url {
+      color: var(--card-url);
+      font-size: 11px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .result strong {
+      display: block;
+      font-size: 15px;
+      color: var(--card-title);
+      margin: 2px 0 4px;
+      font-weight: 700;
+    }
+    .result p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--card-desc);
+      margin: 0;
+    }
+    .arr {
+      align-self: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      transition: transform 0.15s, color 0.15s;
+    }
+    .result:hover .arr {
+      transform: translateX(3px);
+      color: var(--gold-accent);
+    }
+
+    .empty {
+      background: var(--empty-bg);
+      padding: 40px 20px;
+      text-align: center;
+      border-radius: 18px;
+      border: 1px dashed var(--empty-border);
+      color: var(--text-main);
+    }
+    .empty strong { display: block; font-size: 17px; margin-bottom: 6px; }
+    .empty p { color: var(--text-secondary); margin: 0 0 18px; font-size: 14px; }
+
+    /* --- FOOTER --- */
+    .footer {
+      border-top: 1px solid var(--footer-border);
+      max-width: 1480px;
+      margin: 60px auto 0;
+      padding: 24px 34px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--footer-text);
+      font-size: 13px;
+    }
+    .footer b {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--footer-heading);
+      font-size: 19px;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .footer a:hover { color: var(--gold-accent); }
+
+    .hidden { display: none !important; }
+
+    /* --- RESPONSIVE MEDIA QUERIES --- */
+    @media (max-width: 1150px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav { gap: 12px; }
+      .top { padding: 16px 20px; }
+    }
+    @media (max-width: 820px) {
+      .nav a:not(.support) { display: none; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout { padding: 0 20px; }
+      .filters { justify-content: center; gap: 8px; }
+      .chip { min-width: 120px; }
+      .kbd-badge { display: none; }
+    }
+    @media (max-width: 530px) {
+      .mini { font-size: 19px; }
+      .top { padding: 12px 14px; gap: 8px; }
+      .nav { gap: 8px; }
+      .support { padding: 8px 12px; font-size: 11px; white-space: nowrap; }
+      .theme-toggle-btn { padding: 6px 10px; font-size: 11px; min-height: 38px; white-space: nowrap; }
+      .hero { margin: 32px auto 18px; padding: 0 12px; }
+      .hero h1 { font-size: clamp(34px, 8.5vw, 48px); }
+      .hero p { font-size: 11px; letter-spacing: 0.08em; }
+      .search { padding: 5px 10px 5px 14px; min-height: 54px; gap: 6px; }
+      .search input { font-size: 15px; }
+      .filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .chip { min-width: 0; padding: 8px 4px; }
+      .chip small { display: none; }
+      .chip strong { font-size: 11px; }
+      .bubble { width: 44px; height: 44px; font-size: 20px; }
+      .grid { grid-template-columns: 1fr; }
+      .footer { padding: 24px 16px; flex-direction: column; text-align: center; }
+      .result { min-height: 100px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+    :focus-visible { outline: 3px solid #7aa7ee; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#wyniki">Przejdź do wyników</a>
+  
+  <header class="top">
+    <a class="mini" href="https://polskieradio.cc/" aria-label="Christian Culture — strona główna">
+      Christian <span>Culture</span>
+    </a>
+    <nav class="nav" aria-label="Menu nawigacyjne">
+      <a href="#kategorie" data-filter-link="Radio & Live">Radio & Live</a>
+      <a href="#kategorie" data-filter-link="Portale">Portale</a>
+      <a href="#kategorie" data-filter-link="Biblia i formacja">Biblia i formacja</a>
+      <a href="#kategorie" data-filter-link="Media i treści">Media i treści</a>
+      <a href="#kategorie" data-filter-link="Narzędzia i misja">Narzędzia i misja</a>
+      <a class="support" href="https://polskieradio.cc/wspieraj">♥ Wesprzyj misję</a>
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Przełącz motyw (Jasny / Ciemny)" title="Przełącz motyw">
+        <span id="themeToggleIcon" aria-hidden="true">☀️</span> <span id="themeToggleText">Jasny</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Christian Culture Search">
+      <div class="mark" aria-hidden="true">✦</div>
+      <h1>Christian <span>Culture</span></h1>
+      <p>Brama do ekosystemu | polskieradio.cc</p>
+      
+      <form id="form" class="search-wrap" role="search">
+        <div class="search">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <circle cx="10.5" cy="10.5" r="7"/>
+            <path d="m16 16 5 5"/>
+          </svg>
+          <input id="q" type="search" placeholder="Szukaj w ekosystemie Christian Culture…" autocomplete="off" enterkeyhint="search" aria-label="Wyszukaj projekt Christian Culture">
+          <kbd class="kbd-badge" aria-hidden="true">Ctrl K</kbd>
+          <button type="button" class="icon-btn" id="mic" aria-label="Wyszukiwanie głosowe" title="Wyszukiwanie głosowe">🎙️</button>
+          <button type="button" class="icon-btn" id="clear" aria-label="Wyczyść wyszukiwanie" title="Wyczyść">✕</button>
+        </div>
+        <div id="voice-note" class="voice-note" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="actions">
+        <a class="btn primary" href="https://polskieradio.cc/live">▶ &nbsp; START LIVE</a>
+        <button type="button" class="btn" id="show-all">Przejdź do ekosystemu →</button>
+      </div>
+    </section>
+
+    <section class="layout" id="kategorie" aria-label="Kategorie projektów">
+      <div class="filters" id="filters">
+        <button class="chip" data-category="Radio & Live" aria-pressed="false">
+          <span class="bubble" aria-hidden="true">◉</span>
+          <strong>Radio & Live</strong>
+          <small>Słuchaj. Oglądaj. Bądź z nami.</small>
+        </button>
+        <button class="chip" data-category="Portale" aria-pressed="false">
+          <span class="bubble" aria-hidden="true">👥</span>
+          <strong>Portale i społeczność</strong>
+          <small>Ludzie. Rozmowy. Wspólnota.</small>
+        </button>
+        <button class="chip" data-category="Biblia i formacja" aria-pressed="false">
+          <span class="bubble" aria-hidden="true">📖</span>
+          <strong>Biblia i formacja</strong>
+          <small>Poznawaj. Doświadczaj. Wzrastaj.</small>
+        </button>
+        <button class="chip" data-category="Media i treści" aria-pressed="false">
+          <span class="bubble" aria-hidden="true">▶</span>
+          <strong>Media i treści</strong>
+          <small>Filmy. Podcasty. Artykuły.</small>
+        </button>
+        <button class="chip" data-category="Narzędzia i misja" aria-pressed="false">
+          <span class="bubble" aria-hidden="true">⚙</span>
+          <strong>Narzędzia i misja</strong>
+          <small>Działaj. Twórz. Ewangelizuj.</small>
+        </button>
+      </div>
+
+      <h2 id="wyniki" class="results-head" tabindex="-1">Najważniejsze w ekosystemie Christian Culture</h2>
+      <p class="count" id="count" role="status" aria-live="polite">Ładowanie katalogu…</p>
+      
+      <div class="grid" id="grid"></div>
+      
+      <div class="empty hidden" id="empty">
+        <strong>Nie znaleziono pasujących projektów.</strong>
+        <p>Spróbuj innej frazy, np. „biblia audio”, „radio”, „studium” albo „kurs”.</p>
+        <button class="btn" id="reset">Pokaż wszystkie projekty</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <b>Christian Culture</b>
+      <div>polskieradio.cc</div>
+    </div>
+    <div>Wiara. Media. Ludzie. Dla Polski. Dla Świata.</div>
+    <div>© <span id="year"></span> Christian Culture · <a href="https://polskieradio.cc/">Strona główna</a></div>
+  </footer>
+
+  <script>
+  (() => {
+    'use strict';
+
+    // ── THEME CONTROLLER (DUAL THEME: LIGHT & DARK) ──
+    function initTheme() {
+      let saved = null;
+      try {
+        const urlParam = new URLSearchParams(window.location.search).get('theme');
+        if (urlParam === 'light' || urlParam === 'dark') saved = urlParam;
+        if (!saved) saved = localStorage.getItem('cc_theme') || localStorage.getItem('lumina_theme');
+        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          saved = 'dark';
+        }
+      } catch (_) {}
+      
+      const theme = (saved === 'dark') ? 'dark' : 'light';
+      applyTheme(theme, false);
+    }
+
+    function applyTheme(theme, save) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const icon = document.getElementById('themeToggleIcon');
+      const text = document.getElementById('themeToggleText');
+      if (icon) icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      if (text) text.textContent = theme === 'dark' ? 'Ciemny' : 'Jasny';
+      
+      if (save) {
+        try {
+          localStorage.setItem('cc_theme', theme);
+          localStorage.setItem('lumina_theme', theme);
+        } catch (_) {}
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next, true);
+    }
+
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+    initTheme();
+
+    // ── ICONS & STATE ──
+    const CATS = {
+      'Radio & Live': '◉',
+      'Portale': '👥',
+      'Biblia i formacja': '📖',
+      'Media i treści': '▶',
+      'Narzędzia i misja': '⚙'
+    };
+
+    let data = [];
+    let category = '';
+    let all = false;
+
+    const $ = s => document.querySelector(s);
+    const query = $('#q');
+    const grid = $('#grid');
+    const count = $('#count');
+    const heading = $('#wyniki');
+    const empty = $('#empty');
+
+    $('#year').textContent = new Date().getFullYear();
+
+    // Polish diacritics & punctuation normalizer
+    const norm = v => (v || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/ł/g, 'l')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
+    // Typo distance calculation (Damerau-Levenshtein distance)
+    const dist = (a, b) => {
+      const la = a.length, lb = b.length;
+      if (Math.abs(la - lb) > 2) return 3;
+      const d = [];
+      for (let i = 0; i <= la; i++) d[i] = [i];
+      for (let j = 1; j <= lb; j++) d[0][j] = j;
+      for (let i = 1; i <= la; i++) {
+        for (let j = 1; j <= lb; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          d[i][j] = Math.min(
+            d[i - 1][j] + 1,        // deletion
+            d[i][j - 1] + 1,        // insertion
+            d[i - 1][j - 1] + cost  // substitution
+          );
+          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1); // transposition (e.g. bilbia -> biblia)
+          }
+        }
+      }
+      return d[la][lb];
+    };
+
+    function score(item, q) {
+      if (!q) return item.featured ? 50 : 0;
+      const tokens = norm(q).split(' ').filter(Boolean);
+      const title = norm(item.title);
+      const tags = norm((item.tags || []).join(' '));
+      const desc = norm(item.description);
+      const url = norm(item.url);
+      const cat = norm(item.category);
+      const words = (title + ' ' + tags + ' ' + cat).split(' ');
+      
+      let n = 0;
+      for (const t of tokens) {
+        if (title === t) n += 95;
+        else if (title.startsWith(t)) n += 60;
+        else if (title.includes(t)) n += 40;
+        else if (tags.includes(t)) n += 30;
+        else if (cat.includes(t)) n += 18;
+        else if (url.includes(t)) n += 15;
+        else if (desc.includes(t)) n += 10;
+        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) n += 6;
+        else return -1;
+      }
+      return n + (item.featured ? 2 : 0);
+    }
+
+    function updateUrl() {
+      const u = new URL(location.href);
+      query.value.trim() ? u.searchParams.set('q', query.value.trim()) : u.searchParams.delete('q');
+      category ? u.searchParams.set('k', category) : u.searchParams.delete('k');
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    }
+
+    function render() {
+      const q = query.value.trim();
+      let result = data
+        .map(x => ({ x, s: score(x, q) }))
+        .filter(x => x.s >= 0 && (!category || x.x.category === category))
+        .sort((a, b) => b.s - a.s || a.x.title.localeCompare(b.x.title, 'pl'));
+
+      const total = result.length;
+      if (!q && !category && !all) {
+        result = result.filter(z => z.x.featured).slice(0, 8);
+      }
+
+      heading.textContent = q
+        ? `Wyniki wyszukiwania: ${q}`
+        : category
+          ? category
+          : all
+            ? 'Wszystkie projekty Christian Culture'
+            : 'Najważniejsze w ekosystemie Christian Culture';
+
+      count.textContent = total === 0
+        ? 'Brak wyników'
+        : `${result.length}${result.length < total ? ' z ' + total : ''} projektów`;
+
+      grid.replaceChildren();
+
+      for (const { x } of result) {
+        const a = document.createElement('a');
+        a.className = 'result';
+        a.href = x.url;
+        a.rel = 'noopener noreferrer';
+        if (new URL(x.url).origin !== location.origin) {
+          a.target = '_blank';
+        }
+
+        const icon = document.createElement('span');
+        icon.className = 'emoji';
+        icon.textContent = CATS[x.category] || '◎';
+        icon.setAttribute('aria-hidden', 'true');
+
+        const info = document.createElement('span');
+        info.className = 'info';
+
+        const url = document.createElement('span');
+        url.className = 'url';
+        try {
+          const parsed = new URL(x.url);
+          url.textContent = parsed.host + (parsed.pathname === '/' ? '' : parsed.pathname);
+        } catch (_) {
+          url.textContent = x.url;
+        }
+
+        const title = document.createElement('strong');
+        title.textContent = x.title;
+
+        const desc = document.createElement('p');
+        desc.textContent = x.description;
+
+        info.append(url, title, desc);
+
+        const arrow = document.createElement('span');
+        arrow.className = 'arr';
+        arrow.textContent = '❯';
+        arrow.setAttribute('aria-hidden', 'true');
+
+        a.append(icon, info, arrow);
+        grid.append(a);
+      }
+
+      empty.classList.toggle('hidden', total !== 0);
+      document.querySelectorAll('[data-category]').forEach(b => {
+        b.setAttribute('aria-pressed', String(b.dataset.category === category));
+      });
+      updateUrl();
+    }
+
+    function reset() {
+      query.value = '';
+      category = '';
+      all = true;
+      render();
+      query.focus();
+    }
+
+    document.querySelectorAll('[data-category]').forEach(b => {
+      b.addEventListener('click', () => {
+        category = category === b.dataset.category ? '' : b.dataset.category;
+        all = true;
+        render();
+        heading.scrollIntoView({
+          behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+          block: 'start'
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-filter-link]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        category = a.dataset.filterLink;
+        all = true;
+        render();
+        heading.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    query.addEventListener('input', () => {
+      all = !!query.value.trim();
+      render();
+    });
+
+    $('#form').addEventListener('submit', e => {
+      e.preventDefault();
+      all = true;
+      render();
+      heading.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    $('#clear').addEventListener('click', reset);
+    $('#reset').addEventListener('click', reset);
+    $('#show-all').addEventListener('click', () => {
+      category = '';
+      all = true;
+      render();
+      heading.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Shortcuts
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        query.focus();
+        query.select();
+      }
+      if (e.key === 'Escape' && document.activeElement === query) {
+        query.blur();
+      }
+    });
+
+    // Voice Search
+    const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const mic = $('#mic');
+    if (!Speech) {
+      mic.hidden = true;
+      $('#voice-note').textContent = '';
+    } else {
+      mic.addEventListener('click', () => {
+        const recognizer = new Speech();
+        recognizer.lang = 'pl-PL';
+        recognizer.interimResults = false;
+        recognizer.maxAlternatives = 1;
+        $('#voice-note').textContent = 'Słucham…';
+        
+        recognizer.onresult = e => {
+          query.value = e.results[0][0].transcript;
+          all = true;
+          render();
+          $('#voice-note').textContent = 'Wyszukiwanie głosowe zakończone';
+        };
+        recognizer.onerror = () => {
+          $('#voice-note').textContent = 'Nie udało się rozpoznać mowy.';
+        };
+        recognizer.onend = () => {
+          setTimeout(() => { $('#voice-note').textContent = ''; }, 2500);
+        };
+        recognizer.start();
+      });
+    }
+
+    // URL Parameters initialization
+    const args = new URLSearchParams(location.search);
+    query.value = args.get('q') || '';
+    category = Object.keys(CATS).includes(args.get('k')) ? args.get('k') : '';
+    all = !!(query.value || category);
+
+    // Fetch catalog with multiple path fallbacks
+    const catalogPaths = ['/szukaj/catalog.json', './szukaj/catalog.json', './catalog.json'];
+    function tryFetchCatalog(index) {
+      if (index >= catalogPaths.length) {
+        count.textContent = 'Katalog chwilowo niedostępny';
+        empty.classList.remove('hidden');
+        empty.querySelector('strong').textContent = 'Nie można pobrać katalogu. Odśwież stronę lub spróbuj później.';
+        $('#reset').hidden = true;
+        return;
+      }
+      fetch(catalogPaths[index], { cache: 'no-store' })
+        .then(r => {
+          if (!r.ok) throw Error(r.status);
+          return r.json();
+        })
+        .then(rows => {
+          data = rows.filter(x => x.title && x.url && x.category && x.description && /^https?:\/\//.test(x.url));
+          render();
+        })
+        .catch(() => tryFetchCatalog(index + 1));
+    }
+
+    tryFetchCatalog(0);
+  })();
+  </script>
+</body>
+</html>
