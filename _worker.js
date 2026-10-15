@@ -1336,37 +1336,16 @@ async function handleSupportRoute(request, env) {
 async function handleBiblijneUwielbienieRoute(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
-  const lowerPath = path.toLowerCase();
 
-  // Nie przechwytuj bezpośredniego pliku .html — pozwala to env.ASSETS.fetch pobrać plik bez pętli
-  if (url.pathname === '/biblijne-uwielbienie.html') {
-    return null;
-  }
-
-  if (
-    path === '/BiblijneUwielbienie' ||
-    lowerPath === '/biblijneuwielbienie' ||
-    lowerPath === '/biblijne-uwielbienie'
-  ) {
+  // 1. Kanoniczny adres /BiblijneUwielbienie (z wielkimi literami): pobierz natywny asset /biblijne-uwielbienie
+  if (path === '/BiblijneUwielbienie') {
     const assetUrl = new URL(request.url);
-    assetUrl.pathname = '/biblijne-uwielbienie.html';
-    assetUrl.search = '';
-    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), {
-      method: 'GET',
-      headers: { 'Accept': 'text/html' }
-    }));
-    const body = await assetResp.arrayBuffer();
-    return new Response(body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-        'X-Content-Type-Options': 'nosniff',
-      },
-    });
+    assetUrl.pathname = '/biblijne-uwielbienie';
+    return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
   }
 
-  if (lowerPath === '/uwielbienie') {
+  // 2. Skrót /uwielbienie przekieruj 301 na kanoniczny /BiblijneUwielbienie
+  if (path.toLowerCase() === '/uwielbienie') {
     const redirectUrl = new URL(request.url);
     redirectUrl.pathname = '/BiblijneUwielbienie';
     return Response.redirect(redirectUrl.toString(), 301);
