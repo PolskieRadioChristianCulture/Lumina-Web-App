@@ -4,10 +4,49 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080D18">
-  <meta name="description" content="Christian Culture Search — profesjonalna wyszukiwarka projektów, audycji, Pisma Świętego, mediów i narzędzi w ekosystemie polskieradio.cc.">
-  <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
+  <title>Christian Culture Search — Znajdź radio, Biblię, filmy i więcej</title>
+  <meta name="description" content="Szukasz radia chrześcijańskiego, Biblii, kursów lub wartościowych filmów? Christian Culture Search pomaga odkrywać projekty i treści ekosystemu polskieradio.cc.">
   <link rel="canonical" href="https://polskieradio.cc/szukaj">
-  <title>Christian Culture Search — polskieradio.cc/szukaj</title>
+  <meta name="robots" id="metaRobots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Christian Culture">
+  <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Christian Culture">
+  <meta property="og:title" content="Christian Culture Search — Wszystko w jednym miejscu">
+  <meta property="og:description" content="Odkryj radio, Biblię, filmy, kursy, społeczność i projekty Christian Culture.">
+  <meta property="og:url" content="https://polskieradio.cc/szukaj">
+  <meta property="og:image" content="https://polskieradio.cc/images/milion-og.jpg">
+  <meta property="og:image:alt" content="Christian Culture Search — Wszystko w jednym miejscu">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="pl_PL">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Christian Culture Search — Wszystko w jednym miejscu">
+  <meta name="twitter:description" content="Odkryj radio, Biblię, filmy, kursy, społeczność i projekty Christian Culture.">
+  <meta name="twitter:image" content="https://polskieradio.cc/images/milion-og.jpg">
+
+  <!-- Schema.org — wyszukiwarka -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://polskieradio.cc/szukaj#webpage",
+    "url": "https://polskieradio.cc/szukaj",
+    "name": "Christian Culture Search",
+    "description": "Wyszukiwarka projektów, mediów i treści ekosystemu Christian Culture.",
+    "inLanguage": "pl-PL",
+    "isPartOf": {
+      "@id": "https://polskieradio.cc/#website"
+    },
+    "about": {
+      "@id": "https://polskieradio.cc/#organization"
+    }
+  }
+  </script>
 
   <!-- Typography: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1678,6 +1717,16 @@
     function render() {
       const q = query.value.trim();
       const isSearchActive = !!(q || category || all);
+
+      // SEO / GEO / AEO: Dynamiczne noindex, follow dla zapytań wyszukiwania (ochrona indeksu Google przed duplikatami parametrów)
+      const robotsEl = document.getElementById('metaRobots');
+      if (robotsEl) {
+        if (q || category) {
+          robotsEl.setAttribute('content', 'noindex, follow');
+        } else {
+          robotsEl.setAttribute('content', 'index, follow, max-image-preview:large');
+        }
+      }
 
       // Przełączenie trybu Hero (Home vs Compact Results Mode)
       if (heroSection) {
