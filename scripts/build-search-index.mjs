@@ -751,8 +751,13 @@ function loadDailyReflections() {
     const items = [];
     const history = raw.history || [];
     
-    // Bierzemy wszystkie dostępne rozważania z bazy
+    // Bierzemy wszystkie unikalne rozważania z bazy (anty-duplikat)
+    const seenReflections = new Set();
     for (const ref of history) {
+      const dedupKey = `${(ref.title || '').trim().toLowerCase()}|${(ref.dateText || '').trim().toLowerCase()}`;
+      if (seenReflections.has(dedupKey)) continue;
+      seenReflections.add(dedupKey);
+
       const pText = Array.isArray(ref.paragraphs) ? ref.paragraphs.slice(0, 3).join(' ') : '';
       const prayer = ref.prayer || '';
       items.push({
