@@ -1,486 +1,556 @@
 <!doctype html>
-<html lang="pl" data-theme="light">
+<html lang="pl" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fdfefe">
-  <meta name="description" content="Christian Culture Search — szukaj projektów, audycji, Biblii, mediów i narzędzi w ekosystemie polskieradio.cc.">
+  <meta name="theme-color" content="#080D18">
+  <meta name="description" content="Christian Culture Search — profesjonalna wyszukiwarka projektów, audycji, Pisma Świętego, mediów i narzędzi w ekosystemie polskieradio.cc.">
   <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
   <link rel="canonical" href="https://polskieradio.cc/szukaj">
   <title>Christian Culture Search — polskieradio.cc/szukaj</title>
 
-  <style>
-    :root {
-      --font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-      --bg-page: #fdfefe;
-      --bg-body-radial1: #f5f9ff;
-      --bg-body-radial2: #f6f0e5;
-      --text-main: #18335f;
-      --text-secondary: #60728f;
-      --text-muted: #8a9bb4;
-      --heading-color: #094489;
-      --gold-accent: #c49947;
-      --gold-star: #c9a04d;
-      --gold-gradient: linear-gradient(110deg, #e8c16d, #b88730);
-      --gold-btn-gradient: linear-gradient(100deg, #e8bc65, #c39239);
-      --gold-shadow: rgba(189, 148, 68, 0.28);
-      
-      --search-bg: #ffffff;
-      --search-border: #e3eaf6;
-      --search-shadow: rgba(18, 62, 118, 0.12);
-      --search-focus-border: #92b9e8;
-      --search-focus-shadow: rgba(14, 82, 145, 0.16);
-      --search-text: #163766;
-      
-      --btn-bg: #ffffff;
-      --btn-border: #e5e9f1;
-      --btn-text: #28446c;
-      --btn-shadow: rgba(44, 71, 112, 0.08);
-      
-      --chip-hover-bg: #f2f6fc;
-      --chip-active-bg: #eff5ff;
-      --chip-active-border: #d5e4fc;
-      --chip-text: #163766;
-      --chip-desc: #7485a0;
-      
-      --card-bg: #ffffff;
-      --card-border: #e9edf4;
-      --card-shadow: rgba(32, 58, 87, 0.06);
-      --card-hover-border: #a8c4ed;
-      --card-hover-shadow: rgba(35, 75, 117, 0.13);
-      --card-title: #1757ba;
-      --card-url: #7f8da5;
-      --card-desc: #6e7d95;
-      
-      --line-color: #e0e6f0;
-      --empty-bg: #ffffff;
-      --empty-border: #cad8e9;
-      --footer-border: #e6edf5;
-      --footer-text: #78869d;
-      --footer-heading: #164584;
+  <!-- Typography: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
-      --theme-toggle-bg: rgba(235, 242, 255, 0.7);
-      --theme-toggle-border: #dbe5f5;
-      --theme-toggle-text: #28446c;
+  <style>
+    /* ==========================================================================
+       1. SYSTEM KOLORÓW I ZMIENNYCH CSS (DARK & LIGHT PREMIUM 2026)
+       ========================================================================== */
+    :root {
+      --font-family: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-brand: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+
+      /* Light Premium — tryb jasny */
+      --bg-page: #F9FAFC;
+      --bg-body-radial1: rgba(220, 230, 245, 0.45);
+      --bg-body-radial2: rgba(240, 235, 220, 0.35);
+      --card-bg: #FFFFFF;
+      --card-surface-elevated: #F1F4F9;
+      --text-main: #172238;
+      --text-secondary: #637188;
+      --text-muted: #8E9BAE;
+      --card-border: #E5EAF1;
+      --card-hover-border: #C4A35A;
+      --result-link: #21549A;
+      --gold-accent: #A08040;
+      --gold-hover: #B8944F;
+      --gold-soft: #E2CC9A;
+      --focus-ring: #1757BA;
+
+      --search-bg: #FFFFFF;
+      --search-border: #E2E8F0;
+      --search-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+      --search-text: #172238;
+
+      --chip-bg: #FFFFFF;
+      --chip-border: #E5EAF1;
+      --chip-hover-bg: #F8FAFC;
+      --chip-active-bg: #F1F5F9;
+      --chip-active-border: #A08040;
+      --chip-active-shadow: 0 0 0 2px rgba(160, 128, 64, 0.2);
+
+      --card-shadow: 0 3px 12px -2px rgba(23, 34, 56, 0.06);
+      --card-hover-shadow: 0 10px 24px -4px rgba(23, 34, 56, 0.1);
+
+      --footer-border: #E5EAF1;
+      --footer-text: #637188;
+      --theme-toggle-bg: #F1F4F9;
+      --theme-toggle-border: #E2E8F0;
+      --theme-toggle-text: #172238;
+      --tag-bg: #F1F4F9;
+      --tag-text: #475569;
     }
 
     [data-theme="dark"] {
-      --bg-page: #060913;
-      --bg-body-radial1: rgba(15, 23, 42, 0.85);
-      --bg-body-radial2: rgba(30, 27, 20, 0.45);
-      --text-main: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --heading-color: #ffffff;
-      --gold-accent: #facc15;
-      --gold-star: #facc15;
-      --gold-gradient: linear-gradient(110deg, #d4af37, #a88220);
-      --gold-btn-gradient: linear-gradient(100deg, #e8bc65, #b88628);
-      --gold-shadow: rgba(212, 175, 55, 0.35);
-      
-      --search-bg: rgba(15, 23, 42, 0.85);
-      --search-border: rgba(212, 175, 55, 0.35);
-      --search-shadow: rgba(0, 0, 0, 0.5);
-      --search-focus-border: #facc15;
-      --search-focus-shadow: rgba(250, 204, 21, 0.25);
-      --search-text: #ffffff;
-      
-      --btn-bg: rgba(20, 28, 48, 0.85);
-      --btn-border: rgba(212, 175, 55, 0.3);
-      --btn-text: #f1f5f9;
-      --btn-shadow: rgba(0, 0, 0, 0.4);
-      
-      --chip-hover-bg: rgba(30, 41, 59, 0.75);
-      --chip-active-bg: rgba(30, 41, 59, 0.95);
-      --chip-active-border: rgba(212, 175, 55, 0.6);
-      --chip-text: #f1f5f9;
-      --chip-desc: #94a3b8;
-      
-      --card-bg: rgba(15, 23, 42, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-shadow: rgba(0, 0, 0, 0.35);
-      --card-hover-border: rgba(212, 175, 55, 0.5);
-      --card-hover-shadow: rgba(0, 0, 0, 0.6);
-      --card-title: #facc15;
-      --card-url: #94a3b8;
-      --card-desc: #cbd5e1;
-      
-      --line-color: rgba(255, 255, 255, 0.12);
-      --empty-bg: rgba(15, 23, 42, 0.7);
-      --empty-border: rgba(212, 175, 55, 0.3);
-      --footer-border: rgba(255, 255, 255, 0.12);
-      --footer-text: #94a3b8;
-      --footer-heading: #facc15;
+      /* Dark Premium — tryb ciemny */
+      --bg-page: #080D18;
+      --bg-body-radial1: rgba(24, 34, 52, 0.65);
+      --bg-body-radial2: rgba(30, 25, 18, 0.35);
+      --card-bg: #111827;
+      --card-surface-elevated: #182234;
+      --text-main: #F5F7FB;
+      --text-secondary: #A6B2C5;
+      --text-muted: #7F8CA3;
+      --card-border: #263247;
+      --card-hover-border: #C4A35A;
+      --result-link: #DDE8FA;
+      --gold-accent: #C4A35A;
+      --gold-hover: #D4B578;
+      --gold-soft: #E2CC9A;
+      --focus-ring: #89B4FF;
 
-      --theme-toggle-bg: rgba(30, 41, 59, 0.85);
-      --theme-toggle-border: rgba(212, 175, 55, 0.4);
-      --theme-toggle-text: #facc15;
+      --search-bg: #111827;
+      --search-border: #263247;
+      --search-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.5);
+      --search-text: #F5F7FB;
+
+      --chip-bg: #111827;
+      --chip-border: #263247;
+      --chip-hover-bg: #182234;
+      --chip-active-bg: #182234;
+      --chip-active-border: #C4A35A;
+      --chip-active-shadow: 0 0 0 2px rgba(196, 163, 90, 0.25);
+
+      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+      --card-hover-shadow: 0 14px 32px -4px rgba(0, 0, 0, 0.7);
+
+      --footer-border: #263247;
+      --footer-text: #7F8CA3;
+      --theme-toggle-bg: #182234;
+      --theme-toggle-border: #263247;
+      --theme-toggle-text: #F5F7FB;
+      --tag-bg: #182234;
+      --tag-text: #A6B2C5;
     }
 
     * { box-sizing: border-box; }
-    
+
     body {
       margin: 0;
       min-height: 100vh;
       font-family: var(--font-family);
       color: var(--text-main);
       background-color: var(--bg-page);
-      background-image: 
-        radial-gradient(ellipse 56% 30% at 50% 23%, var(--bg-body-radial1) 0%, transparent 85%),
-        radial-gradient(ellipse 35% 32% at 100% 45%, var(--bg-body-radial2) 0%, transparent 75%);
+      background-image:
+        radial-gradient(ellipse 60% 35% at 50% 18%, var(--bg-body-radial1) 0%, transparent 85%),
+        radial-gradient(ellipse 40% 30% at 100% 40%, var(--bg-body-radial2) 0%, transparent 80%);
       transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
+    button, input, select { font: inherit; }
     button { cursor: pointer; }
 
     .skip {
       position: absolute;
       top: -100px;
       left: 20px;
-      padding: 12px;
+      padding: 12px 18px;
       background: var(--search-bg);
       color: var(--text-main);
-      z-index: 30;
+      z-index: 9999;
       border-radius: 8px;
+      border: 1px solid var(--gold-accent);
+      font-weight: 600;
     }
-    .skip:focus { top: 10px; }
+    .skip:focus { top: 16px; }
 
-    /* --- TOP NAVBAR --- */
-    .top {
-      max-width: 1480px;
-      margin: auto;
-      padding: 20px 34px;
+    /* ==========================================================================
+       2. TOP NAVBAR
+       ========================================================================== */
+    .top-nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
     }
-    .mini {
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--heading-color);
-      font-size: 25px;
+    .top-brand {
+      font-family: var(--font-brand);
+      color: var(--text-main);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      touch-action: manipulation;
     }
-    .mini span, .hero h1 span {
+    .top-brand span {
       color: var(--gold-accent);
     }
-    .nav {
+    .nav-links {
       display: flex;
-      gap: 22px;
+      gap: 18px;
       align-items: center;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--text-secondary);
     }
-    .nav a:not(.support):hover,
-    .nav a:not(.support):focus-visible {
+    .nav-links a:not(.btn-support):hover,
+    .nav-links a:not(.btn-support):focus-visible {
       color: var(--gold-accent);
     }
-    .support {
-      background: var(--gold-gradient);
-      color: #ffffff !important;
-      border-radius: 35px;
-      padding: 11px 20px;
-      box-shadow: 0 6px 17px var(--gold-shadow);
-      font-weight: 700;
+    .btn-support {
+      background: linear-gradient(135deg, var(--gold-accent), var(--gold-hover));
+      color: #FFFFFF !important;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(196, 163, 90, 0.25);
       transition: transform 0.2s, box-shadow 0.2s;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .support:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 9px 22px var(--gold-shadow);
+    .btn-support:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(196, 163, 90, 0.35);
     }
-
     .theme-toggle-btn {
       appearance: none;
       background: var(--theme-toggle-bg);
       border: 1px solid var(--theme-toggle-border);
-      color: var(--theme-toggle-text);
-      border-radius: 30px;
+      border-radius: 999px;
       padding: 8px 14px;
-      min-height: 44px;
+      color: var(--theme-toggle-text);
+      font-size: 12px;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      font-weight: 700;
-      font-size: 12px;
-      transition: all 0.2s ease;
+      gap: 6px;
+      min-height: 44px;
+      transition: background-color 0.2s, border-color 0.2s;
     }
     .theme-toggle-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.08);
+      border-color: var(--gold-accent);
     }
-
-    /* --- HERO & SEARCH --- */
-    .hero {
-      max-width: 1100px;
-      text-align: center;
-      margin: 50px auto 25px;
-      padding: 0 20px;
-    }
-    .mark {
-      color: var(--gold-star);
-      font-size: 40px;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .hero h1 {
-      font: normal clamp(44px, 6.5vw, 92px)/1.15 Georgia, "Times New Roman", serif;
-      letter-spacing: -0.055em;
-      margin: 4px 0;
-      color: var(--heading-color);
-    }
-    .hero p {
-      margin: 0 0 26px;
-      letter-spacing: 0.16em;
-      color: var(--text-secondary);
-      font-size: clamp(12px, 1.2vw, 16px);
-      text-transform: uppercase;
-    }
-
-    .search-wrap {
-      max-width: 820px;
-      margin: auto;
-      position: relative;
-    }
-    .search {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-height: 65px;
-      border: 1px solid var(--search-border);
-      border-radius: 50px;
-      box-shadow: 0 10px 32px var(--search-shadow);
-      background: var(--search-bg);
-      padding: 7px 16px 7px 24px;
-      transition: box-shadow 0.2s, border-color 0.2s;
-    }
-    .search:focus-within {
-      box-shadow: 0 12px 38px var(--search-focus-shadow);
-      border-color: var(--search-focus-border);
-    }
-    .search svg { flex: none; stroke: var(--text-secondary); }
-    .search input {
-      min-width: 0;
-      flex: 1;
-      border: 0;
-      outline: none;
-      color: var(--search-text);
-      background: transparent;
-      font-size: 17px;
-    }
-    .search input::placeholder {
-      color: var(--text-muted);
-    }
-    .kbd-badge {
-      display: inline-block;
-      padding: 3px 7px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border: 1px solid var(--search-border);
-      border-radius: 6px;
-      background: var(--btn-bg);
-      letter-spacing: 0.05em;
-    }
-    .icon-btn {
-      border: 0;
-      background: transparent;
-      color: var(--text-secondary);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      font-size: 17px;
-      transition: background 0.15s;
-    }
-    .icon-btn:hover, .icon-btn:focus-visible {
-      background: var(--chip-hover-bg);
-    }
-    .voice-note {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin: 8px 0;
-      min-height: 18px;
-    }
-
-    .actions {
-      margin: 18px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      border-radius: 40px;
-      padding: 13px 26px;
-      background: var(--btn-bg);
-      border: 1px solid var(--btn-border);
-      color: var(--btn-text);
-      box-shadow: 0 5px 16px var(--btn-shadow);
-      font-weight: 650;
-      min-height: 44px;
+    .theme-toggle-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn.primary {
-      background: var(--gold-btn-gradient);
-      color: #ffffff;
-      border: 0;
-      box-shadow: 0 6px 18px var(--gold-shadow);
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 9px 20px var(--btn-shadow);
-    }
-    .btn.primary:hover {
-      box-shadow: 0 10px 24px var(--gold-shadow);
     }
 
-    /* --- LAYOUT & FILTERS --- */
-    .layout {
-      max-width: 1480px;
-      margin: 40px auto;
-      padding: 0 34px;
-    }
-    .filters {
-      display: flex;
-      gap: 15px;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .chip {
-      border: 1px solid transparent;
-      background: transparent;
-      padding: 12px 14px;
-      min-width: 160px;
-      border-radius: 20px;
+    /* ==========================================================================
+       3. HERO SECTION (HOME & COMPACT RESULTS MODE)
+       ========================================================================== */
+    .hero {
+      max-width: 920px;
+      margin: 48px auto 28px;
+      padding: 0 20px;
       text-align: center;
+      transition: margin 0.25s ease, padding 0.25s ease;
+    }
+    .hero.is-results {
+      margin: 16px auto 20px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--card-surface-elevated);
+      border: 1px solid var(--card-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold-accent);
+      margin-bottom: 14px;
+      transition: opacity 0.2s;
+    }
+    .hero.is-results .hero-badge {
+      display: none;
+    }
+
+    .hero-title {
+      font-family: var(--font-brand);
+      font-size: 68px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin: 0 0 10px;
+      color: var(--text-main);
+      transition: font-size 0.25s ease, margin 0.25s ease;
+    }
+    .hero-title span {
+      color: var(--gold-accent);
+    }
+    .hero.is-results .hero-title {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin: 0 0 28px;
+      letter-spacing: 0.01em;
+      transition: opacity 0.2s, margin 0.2s;
+    }
+    .hero.is-results .hero-subtitle {
+      display: none;
+    }
+
+    /* --- SEARCH BAR (PILL 62PX) --- */
+    .search-container {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .search-bar {
+      position: relative;
       display: flex;
       align-items: center;
+      background: var(--search-bg);
+      border: 1px solid var(--search-border);
+      border-radius: 999px;
+      box-shadow: var(--search-shadow);
+      padding: 0 16px 0 22px;
+      height: 62px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .search-bar:focus-within {
+      border-color: var(--gold-accent);
+      box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.2), var(--search-shadow);
+    }
+    .search-icon-left {
+      color: var(--gold-accent);
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      flex-direction: column;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+    .search-input {
+      flex: 1;
+      height: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--search-text);
+      padding: 0;
+      min-width: 0;
+    }
+    .search-input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .search-actions {
+      display: flex;
+      align-items: center;
       gap: 6px;
-      color: var(--chip-text);
-      transition: transform 0.15s, background 0.15s, border-color 0.15s;
-      min-height: 44px;
+      flex-shrink: 0;
     }
-    .chip:hover, .chip:focus-visible {
-      background: var(--chip-hover-bg);
-      transform: translateY(-2px);
+    .kbd-shortcut {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-surface-elevated);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      user-select: none;
+      letter-spacing: 0.04em;
     }
-    .chip[aria-pressed="true"] {
-      background: var(--chip-active-bg);
-      border-color: var(--chip-active-border);
-      box-shadow: 0 4px 12px var(--btn-shadow);
-    }
-    .bubble {
-      width: 52px;
-      height: 52px;
+    .btn-search-icon {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      background: #f9e9bf;
-      color: #b78225;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s, background-color 0.15s;
+      padding: 0;
     }
-    .chip:nth-child(2) .bubble { background: #e0ecff; color: #2368c2; }
-    .chip:nth-child(3) .bubble { background: #e6f0ff; color: #1556a6; }
-    .chip:nth-child(4) .bubble { background: #f0e8ff; color: #6945b3; }
-    .chip:nth-child(5) .bubble { background: #dcf8e9; color: #147650; }
+    .btn-search-icon:hover {
+      color: var(--gold-accent);
+      background-color: var(--card-surface-elevated);
+    }
+    .voice-feedback {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold-accent);
+      text-align: center;
+      min-height: 16px;
+    }
 
-    .chip strong { font-size: 14px; font-weight: 700; }
-    .chip small { font-size: 11px; color: var(--chip-desc); }
+    /* Actions under search bar (Home mode only) */
+    .hero-quick-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .hero.is-results .hero-quick-actions {
+      display: none;
+    }
+    .btn-quick {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 44px;
+      transition: transform 0.15s, background-color 0.2s, border-color 0.2s;
+    }
+    .btn-quick.live {
+      background: var(--card-surface-elevated);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+    .btn-quick.live:hover {
+      border-color: var(--gold-accent);
+      transform: translateY(-1px);
+    }
+    .btn-quick.explore {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--gold-accent);
+    }
+    .btn-quick.explore:hover {
+      background: var(--card-surface-elevated);
+    }
 
-    /* --- CONTEXT GUIDE BANNER --- */
+    /* ==========================================================================
+       4. KATEGORIE (5 POZIOMYCH KART NA DESKTOP / H-SCROLL NA MOBILE)
+       ========================================================================== */
+    .categories-wrap {
+      max-width: 1240px;
+      margin: 32px auto 28px;
+      padding: 0 20px;
+      transition: margin 0.25s ease;
+    }
+    .hero.is-results + .categories-wrap {
+      margin: 14px auto 20px;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .category-card {
+      appearance: none;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      border-radius: 16px;
+      padding: 16px 14px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      min-height: 88px;
+      color: inherit;
+      transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      touch-action: manipulation;
+    }
+    .category-card:hover {
+      border-color: var(--gold-accent);
+      transform: translateY(-1px);
+    }
+    .category-card[aria-pressed="true"] {
+      background: var(--chip-active-bg);
+      border-color: var(--gold-accent);
+      box-shadow: var(--chip-active-shadow);
+    }
+    .category-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .category-card-icon {
+      color: var(--gold-accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .category-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .category-card-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+      margin: 2px 0 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       5. PRZEWODNIKI TEMATYCZNE (CONTEXT GUIDES)
+       ========================================================================== */
+    .context-guide-wrap {
+      max-width: 1240px;
+      margin: 0 auto 24px;
+      padding: 0 20px;
+    }
     .context-guide {
-      margin: 0 0 28px;
-      padding: 24px 28px;
-      border-radius: 20px;
       background: var(--card-bg);
       border: 1px solid var(--gold-accent);
-      box-shadow: 0 8px 24px var(--gold-shadow);
-      position: relative;
-      overflow: hidden;
-      text-align: left;
-    }
-    .context-guide::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: var(--gold-gradient);
+      border-radius: 18px;
+      padding: 22px 24px;
+      box-shadow: 0 8px 24px -4px rgba(196, 163, 90, 0.15);
+      animation: fadeIn 0.25s ease-out;
     }
     .guide-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       color: var(--gold-accent);
       margin-bottom: 8px;
     }
     .context-guide h3 {
-      margin: 0 0 10px;
-      font-size: 22px;
-      font-family: Georgia, serif;
-      color: var(--heading-color);
+      font-family: var(--font-brand);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 8px;
     }
     .context-guide p {
-      margin: 0 0 16px;
       font-size: 14px;
-      line-height: 1.6;
-      color: var(--text-main);
-    }
-    .guide-verses {
-      background: var(--chip-active-bg);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      border-left: 3px solid var(--gold-accent);
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin: 0 0 16px;
     }
     .guide-label {
-      display: block;
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      color: var(--gold-accent);
       margin-bottom: 8px;
     }
     .guide-verses ul {
-      margin: 0;
-      padding-left: 18px;
+      margin: 0 0 16px;
+      padding-left: 20px;
+      color: var(--text-secondary);
       font-size: 13px;
-      line-height: 1.6;
-    }
-    .guide-verses li {
-      margin-bottom: 4px;
-    }
-    .guide-verses strong {
-      display: inline;
-      font-weight: 700;
-      color: var(--gold-accent);
+      line-height: 1.5;
     }
     .guide-verses a {
-      color: inherit;
+      color: var(--text-main);
       text-decoration: underline;
-      text-decoration-color: var(--gold-accent);
-      text-underline-offset: 3px;
-    }
-    .guide-verses a:hover {
-      color: var(--gold-accent);
-    }
-    .guide-shortcuts {
-      margin-top: 4px;
+      text-decoration-color: var(--gold-soft);
     }
     .guide-pills {
       display: flex;
@@ -490,325 +560,699 @@
     .guide-pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 8px 14px;
-      border-radius: 24px;
+      gap: 6px;
+      background: var(--card-surface-elevated);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 6px 14px;
       font-size: 12px;
-      font-weight: 700;
-      background: var(--search-input-bg);
-      border: 1px solid var(--chip-active-border);
-      color: var(--chip-text);
-      transition: all 0.2s;
-      min-height: 44px;
-      text-decoration: none !important;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: border-color 0.15s, transform 0.15s;
     }
     .guide-pill:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px var(--btn-shadow);
+      border-color: var(--gold-accent);
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       6. WYNIKI: TOOLBAR, LICZNIK I SORTOWANIE
+       ========================================================================== */
+    .results-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+    .results-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .results-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .results-head {
+      font-family: var(--font-brand);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      letter-spacing: -0.015em;
+    }
+    .results-count {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0;
+      font-weight: 400;
+    }
+    .results-sort-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sort-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sort-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      min-height: 40px;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .sort-select:focus {
       border-color: var(--gold-accent);
     }
-    .snippet {
-      margin-top: 8px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      background: var(--search-input-bg);
-      font-size: 11px;
-      line-height: 1.45;
-      color: var(--text-secondary);
-      border-left: 2px solid var(--gold-accent);
-    }
-    mark.hl {
-      background: rgba(212, 175, 55, 0.35);
-      color: inherit;
-      padding: 1px 3px;
-      border-radius: 3px;
-      font-weight: 700;
-    }
 
-    .results-head {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin: 32px 0 16px;
-      color: var(--text-secondary);
-      letter-spacing: 0.08em;
-      font-size: 13px;
-      text-align: center;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-    .results-head::before, .results-head::after {
-      content: "";
-      height: 1px;
-      background: var(--line-color);
-      flex: 1;
-    }
-    .count {
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin: -6px 0 20px;
-    }
-
-    /* --- RESULTS GRID --- */
-    .grid {
+    /* ==========================================================================
+       7. KARTY WYNIKÓW (GRID PREMUM 2026)
+       ========================================================================== */
+    .results-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
     }
-    .result {
+    .result-card {
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
-      min-height: 124px;
-      background: var(--card-bg);
-      box-shadow: 0 6px 18px var(--card-shadow);
-      padding: 18px;
+      padding: 22px;
       display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+      min-height: 160px;
+      touch-action: manipulation;
     }
-    .result:hover, .result:focus-visible {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px var(--card-hover-shadow);
+    .result-card:hover {
+      transform: translateY(-2px);
       border-color: var(--card-hover-border);
+      box-shadow: var(--card-hover-shadow);
     }
-    .result .emoji {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--chip-hover-bg);
-      display: grid;
-      place-items: center;
-      flex: none;
-      font-size: 22px;
+    .result-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
-    .result .info { min-width: 0; flex: 1; }
-    .url {
-      color: var(--card-url);
-      font-size: 11px;
-      font-weight: 600;
-      overflow-wrap: anywhere;
-      display: block;
-      margin-bottom: 2px;
+    .result-card-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
-    .result strong {
-      display: block;
-      font-size: 15px;
-      color: var(--card-title);
-      margin: 2px 0 4px;
-      font-weight: 700;
+    .result-card-icon {
+      color: var(--gold-accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .result p {
+    .result-card-domain {
       font-size: 12px;
-      line-height: 1.5;
-      color: var(--card-desc);
-      margin: 0;
-    }
-    .arr {
-      align-self: center;
+      font-weight: 500;
       color: var(--text-muted);
-      font-size: 14px;
-      transition: transform 0.15s, color 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .result:hover .arr {
+    .result-card-arrow {
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .result-card:hover .result-card-arrow {
       transform: translateX(3px);
       color: var(--gold-accent);
     }
-
-    .empty {
-      background: var(--empty-bg);
-      padding: 40px 20px;
-      text-align: center;
-      border-radius: 18px;
-      border: 1px dashed var(--empty-border);
+    .result-card-title {
+      font-size: 17px;
+      font-weight: 600;
       color: var(--text-main);
+      margin: 0;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.15s;
     }
-    .empty strong { display: block; font-size: 17px; margin-bottom: 6px; }
-    .empty p { color: var(--text-secondary); margin: 0 0 18px; font-size: 14px; }
+    .result-card:hover .result-card-title {
+      color: var(--result-link);
+    }
+    [data-theme="dark"] .result-card:hover .result-card-title {
+      color: var(--gold-soft);
+    }
+    .result-card-desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+    .result-card-snippet {
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: var(--card-surface-elevated);
+      border-radius: 8px;
+      padding: 6px 10px;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+    .result-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
+    }
+    .result-card-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tag-text);
+      background: var(--tag-bg);
+      border-radius: 6px;
+      padding: 3px 8px;
+    }
+    .result-card-badge-feat {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-accent);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 999px;
+      padding: 2px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .result-card-badge-feat::before {
+      content: '✦';
+      font-size: 9px;
+    }
 
-    /* --- FOOTER --- */
-    .footer {
+    /* Highlight matching terms */
+    mark.hl {
+      background: rgba(196, 163, 90, 0.25);
+      color: inherit;
+      border-radius: 3px;
+      padding: 0 2px;
+      font-weight: 600;
+    }
+    [data-theme="light"] mark.hl {
+      background: rgba(160, 128, 64, 0.18);
+    }
+
+    /* ==========================================================================
+       8. STANY PUSTE I PROPOZYCJE BLISKOZNACZNE
+       ========================================================================== */
+    .empty-state {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 48px 24px;
+      text-align: center;
+      max-width: 680px;
+      margin: 20px auto;
+    }
+    .empty-state-icon {
+      color: var(--gold-accent);
+      margin-bottom: 12px;
+      display: inline-flex;
+    }
+    .empty-state h3 {
+      font-family: var(--font-brand);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 8px;
+    }
+    .empty-state p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0 0 20px;
+    }
+    .btn-reset {
+      background: var(--card-surface-elevated);
+      border: 1px solid var(--gold-accent);
+      color: var(--text-main);
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 44px;
+      transition: background-color 0.2s;
+    }
+    .btn-reset:hover {
+      background: var(--card-bg);
+    }
+
+    .suggestion-banner {
+      background: rgba(196, 163, 90, 0.1);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    [data-theme="light"] .suggestion-banner {
+      background: rgba(160, 128, 64, 0.08);
+      border-color: rgba(160, 128, 64, 0.3);
+    }
+    .suggestion-banner-icon {
+      color: var(--gold-accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .suggestion-banner-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .suggestion-banner-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       9. FOOTER
+       ========================================================================== */
+    .site-footer {
+      max-width: 1240px;
+      margin: 40px auto 0;
+      padding: 24px 20px 32px;
       border-top: 1px solid var(--footer-border);
-      max-width: 1480px;
-      margin: 60px auto 0;
-      padding: 24px 34px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 13px;
+      color: var(--footer-text);
       gap: 16px;
       flex-wrap: wrap;
-      color: var(--footer-text);
-      font-size: 13px;
     }
-    .footer b {
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--footer-heading);
-      font-size: 19px;
-      display: block;
-      margin-bottom: 2px;
+    .site-footer b {
+      color: var(--text-main);
     }
-    .footer a:hover { color: var(--gold-accent); }
+    .site-footer a:hover {
+      color: var(--gold-accent);
+    }
 
     .hidden { display: none !important; }
 
-    /* --- RESPONSIVE MEDIA QUERIES --- */
-    @media (max-width: 1150px) {
-      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .nav { gap: 12px; }
-      .top { padding: 16px 20px; }
+    /* ==========================================================================
+       10. RESPONSIVE BREAKPOINTS (DESKTOP, TABLET, MOBILE)
+       ========================================================================== */
+    @media (max-width: 1100px) {
+      .results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
-    @media (max-width: 820px) {
-      .nav a:not(.support) { display: none; }
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .layout { padding: 0 20px; }
-      .filters { justify-content: center; gap: 8px; }
-      .chip { min-width: 120px; }
-      .kbd-badge { display: none; }
+    @media (max-width: 860px) {
+      .nav-links a:not(.btn-support) { display: none; }
+      .categories-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
-    @media (max-width: 530px) {
-      .mini { font-size: 19px; }
-      .top { padding: 12px 14px; gap: 8px; }
-      .nav { gap: 8px; }
-      .support { padding: 8px 12px; font-size: 11px; white-space: nowrap; }
-      .theme-toggle-btn { padding: 6px 10px; font-size: 11px; min-height: 38px; white-space: nowrap; }
-      .hero { margin: 32px auto 18px; padding: 0 12px; }
-      .hero h1 { font-size: clamp(34px, 8.5vw, 48px); }
-      .hero p { font-size: 11px; letter-spacing: 0.08em; }
-      .search { padding: 5px 10px 5px 14px; min-height: 54px; gap: 6px; }
-      .search input { font-size: 15px; }
-      .filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-      .chip { min-width: 0; padding: 8px 4px; }
-      .chip small { display: none; }
-      .chip strong { font-size: 11px; }
-      .bubble { width: 44px; height: 44px; font-size: 20px; }
-      .grid { grid-template-columns: 1fr; }
-      .footer { padding: 24px 16px; flex-direction: column; text-align: center; }
-      .result { min-height: 100px; }
+    @media (max-width: 768px) {
+      html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      .top-nav {
+        padding: 12px 16px;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .top-brand {
+        font-size: 18px;
+      }
+      .nav-links {
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .btn-support {
+        padding: 6px 12px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+      .theme-toggle-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+        min-height: 40px;
+      }
+      #themeToggleText {
+        display: none;
+      }
+      .hero {
+        margin: 24px auto 14px;
+        padding: 0 16px;
+      }
+      .hero-title {
+        font-size: 38px;
+      }
+      .hero.is-results .hero-title {
+        font-size: 24px;
+      }
+      .search-bar {
+        height: 54px;
+        padding: 0 10px 0 14px;
+      }
+      .search-input {
+        font-size: 15px;
+      }
+      .kbd-shortcut {
+        display: none;
+      }
+
+      /* Horizontal scrollable categories on mobile */
+      .categories-wrap {
+        padding: 0 16px;
+        margin: 18px auto 14px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .categories-wrap::-webkit-scrollbar {
+        display: none;
+      }
+      .categories-grid {
+        display: flex;
+        gap: 8px;
+        width: max-content;
+        padding-bottom: 4px;
+      }
+      .category-card {
+        flex: 0 0 auto;
+        min-height: 44px;
+        padding: 8px 14px;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 999px;
+      }
+      .category-card-desc {
+        display: none;
+      }
+
+      .results-container {
+        padding: 0 16px 48px;
+      }
+      .results-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .results-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .site-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .top-nav {
+        padding: 10px 10px;
+        gap: 6px;
+      }
+      .top-brand {
+        font-size: 15px;
+      }
+      .btn-support {
+        padding: 6px 8px;
+        font-size: 11px;
+      }
+      .theme-toggle-btn {
+        padding: 6px 8px;
+      }
+      .hero-title {
+        font-size: 32px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
     }
-    :focus-visible { outline: 3px solid #7aa7ee; outline-offset: 3px; }
+    :focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <a class="skip" href="#wyniki">Przejdź do wyników</a>
-  
-  <header class="top">
-    <a class="mini" href="https://polskieradio.cc/" aria-label="Christian Culture — strona główna">
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <a class="top-brand" href="https://polskieradio.cc/" aria-label="Christian Culture — strona główna">
       Christian <span>Culture</span>
     </a>
-    <nav class="nav" aria-label="Menu nawigacyjne">
+    <nav class="nav-links" aria-label="Nawigacja ekosystemu">
       <a href="#kategorie" data-filter-link="Radio & Live">Radio & Live</a>
       <a href="#kategorie" data-filter-link="Portale">Portale</a>
       <a href="#kategorie" data-filter-link="Biblia i formacja">Biblia i formacja</a>
       <a href="#kategorie" data-filter-link="Media i treści">Media i treści</a>
       <a href="#kategorie" data-filter-link="Narzędzia i misja">Narzędzia i misja</a>
-      <a class="support" href="https://polskieradio.cc/wspieraj">♥ Wesprzyj misję</a>
-      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Przełącz motyw (Jasny / Ciemny)" title="Przełącz motyw">
-        <span id="themeToggleIcon" aria-hidden="true">☀️</span> <span id="themeToggleText">Jasny</span>
+      <a class="btn-support" href="https://polskieradio.cc/wspieraj">♥ Wesprzyj</a>
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Przełącz motyw" title="Przełącz motyw jasny/ciemny">
+        <span class="theme-toggle-icon" id="themeToggleIcon" aria-hidden="true"></span>
+        <span id="themeToggleText">Jasny</span>
       </button>
     </nav>
   </header>
 
   <main>
-    <section class="hero" aria-label="Christian Culture Search">
-      <div class="mark" aria-hidden="true">✦</div>
-      <h1>Christian <span>Culture</span></h1>
-      <p>Brama do ekosystemu | polskieradio.cc</p>
-      
-      <form id="form" class="search-wrap" role="search">
-        <div class="search">
-          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2">
-            <circle cx="10.5" cy="10.5" r="7"/>
-            <path d="m16 16 5 5"/>
-          </svg>
-          <input id="q" type="search" placeholder="Szukaj w ekosystemie Christian Culture…" autocomplete="off" enterkeyhint="search" aria-label="Wyszukaj projekt Christian Culture">
-          <kbd class="kbd-badge" aria-hidden="true">Ctrl K</kbd>
-          <button type="button" class="icon-btn" id="mic" aria-label="Wyszukiwanie głosowe" title="Wyszukiwanie głosowe">🎙️</button>
-          <button type="button" class="icon-btn" id="clear" aria-label="Wyczyść wyszukiwanie" title="Wyczyść">✕</button>
+    <!-- Hero / Search Section -->
+    <section class="hero is-home" id="heroSection" aria-label="Wyszukiwarka Christian Culture">
+      <div class="hero-badge">✦ Profesjonalna Wyszukiwarka Ekosystemu</div>
+      <h1 class="hero-title">Christian <span>Culture</span></h1>
+      <p class="hero-subtitle">Inteligentny dostęp do 286+ projektów, audycji, Pisma Świętego i wiedzy</p>
+
+      <form id="searchForm" class="search-container" role="search">
+        <div class="search-bar">
+          <span class="search-icon-left" aria-hidden="true" id="searchIconHolder"></span>
+          <input
+            id="q"
+            type="search"
+            class="search-input"
+            placeholder="Szukaj: werset dnia, nadzieja, radio, kursy, muzyka…"
+            autocomplete="off"
+            spellcheck="false"
+            enterkeyhint="search"
+            aria-label="Wpisz szukaną frazę w ekosystemie Christian Culture">
+          <div class="search-actions">
+            <kbd class="kbd-shortcut" aria-hidden="true">Ctrl K</kbd>
+            <button type="button" class="btn-search-icon" id="micBtn" aria-label="Wyszukiwanie głosowe" title="Wyszukiwanie głosowe"></button>
+            <button type="button" class="btn-search-icon" id="clearBtn" aria-label="Wyczyść zapytanie" title="Wyczyść zapytanie" style="display:none;"></button>
+          </div>
         </div>
-        <div id="voice-note" class="voice-note" role="status" aria-live="polite"></div>
+        <div id="voiceNote" class="voice-feedback" role="status" aria-live="polite"></div>
       </form>
 
-      <div class="actions">
-        <a class="btn primary" href="https://polskieradio.cc/live">▶ &nbsp; START LIVE</a>
-        <button type="button" class="btn" id="show-all">Przejdź do ekosystemu →</button>
+      <div class="hero-quick-actions">
+        <a class="btn-quick live" href="https://polskieradio.cc/live">
+          <span>▶</span>
+          <span>Start Live</span>
+        </a>
+        <button type="button" class="btn-quick explore" id="exploreAllBtn">
+          <span>Przejdź do ekosystemu</span>
+          <span>&rarr;</span>
+        </button>
       </div>
     </section>
 
-    <section class="layout" id="kategorie" aria-label="Kategorie projektów">
-      <div class="filters" id="filters">
-        <button class="chip" data-category="Radio & Live" aria-pressed="false">
-          <span class="bubble" aria-hidden="true">◉</span>
-          <strong>Radio & Live</strong>
-          <small>Słuchaj. Oglądaj. Bądź z nami.</small>
+    <!-- Categories Navigation (5 filarów) -->
+    <section class="categories-wrap" id="kategorie" aria-label="Kategorie zasobów">
+      <div class="categories-grid" id="categoriesGrid">
+        <button type="button" class="category-card" data-category="Radio & Live" aria-pressed="false">
+          <div class="category-card-header">
+            <span class="category-card-icon" data-icon="radio"></span>
+            <span class="category-card-name">Radio & Live</span>
+          </div>
+          <p class="category-card-desc">Stacje na żywo, audycje i muzyka</p>
         </button>
-        <button class="chip" data-category="Portale" aria-pressed="false">
-          <span class="bubble" aria-hidden="true">👥</span>
-          <strong>Portale i społeczność</strong>
-          <small>Ludzie. Rozmowy. Wspólnota.</small>
+
+        <button type="button" class="category-card" data-category="Portale" aria-pressed="false">
+          <div class="category-card-header">
+            <span class="category-card-icon" data-icon="community"></span>
+            <span class="category-card-name">Portale i społeczność</span>
+          </div>
+          <p class="category-card-desc">LUMINA, ludzie, profile i dyskusje</p>
         </button>
-        <button class="chip" data-category="Biblia i formacja" aria-pressed="false">
-          <span class="bubble" aria-hidden="true">📖</span>
-          <strong>Biblia i formacja</strong>
-          <small>Poznawaj. Doświadczaj. Wzrastaj.</small>
+
+        <button type="button" class="category-card" data-category="Biblia i formacja" aria-pressed="false">
+          <div class="category-card-header">
+            <span class="category-card-icon" data-icon="bible"></span>
+            <span class="category-card-name">Biblia i formacja</span>
+          </div>
+          <p class="category-card-desc">Pismo Święte, kursy i lekcje dzienne</p>
         </button>
-        <button class="chip" data-category="Media i treści" aria-pressed="false">
-          <span class="bubble" aria-hidden="true">▶</span>
-          <strong>Media i treści</strong>
-          <small>Filmy. Podcasty. Artykuły.</small>
+
+        <button type="button" class="category-card" data-category="Media i treści" aria-pressed="false">
+          <div class="category-card-header">
+            <span class="category-card-icon" data-icon="media"></span>
+            <span class="category-card-name">Media i treści</span>
+          </div>
+          <p class="category-card-desc">Kino VOD, wideo, podcasty i artykuły</p>
         </button>
-        <button class="chip" data-category="Narzędzia i misja" aria-pressed="false">
-          <span class="bubble" aria-hidden="true">⚙</span>
-          <strong>Narzędzia i misja</strong>
-          <small>Działaj. Twórz. Ewangelizuj.</small>
+
+        <button type="button" class="category-card" data-category="Narzędzia i misja" aria-pressed="false">
+          <div class="category-card-header">
+            <span class="category-card-icon" data-icon="tools"></span>
+            <span class="category-card-name">Narzędzia i misja</span>
+          </div>
+          <p class="category-card-desc">Aplikacje, studio, sklep i projekty</p>
         </button>
       </div>
-      
-      <div id="guide-box" class="hidden"></div>
+    </section>
 
-      <h2 id="wyniki" class="results-head" tabindex="-1">Najważniejsze w ekosystemie Christian Culture</h2>
-      <p class="count" id="count" role="status" aria-live="polite">Ładowanie katalogu…</p>
-      
-      <div class="grid" id="grid"></div>
-      
-      <div class="empty hidden" id="empty">
-        <strong>Nie znaleziono pasujących projektów.</strong>
-        <p>Spróbuj innej frazy, np. „biblia audio”, „radio”, „studium” albo „kurs”.</p>
-        <button class="btn" id="reset">Pokaż wszystkie projekty</button>
+    <!-- Przewodnik tematyczny (Context Guide) -->
+    <div class="context-guide-wrap">
+      <div id="guideBox" class="hidden"></div>
+    </div>
+
+    <!-- Results Section -->
+    <section class="results-container" aria-label="Wyniki wyszukiwania">
+      <div class="results-toolbar">
+        <div class="results-title-group">
+          <h2 id="wyniki" class="results-head" tabindex="-1">Najważniejsze w ekosystemie Christian Culture</h2>
+          <p class="results-count" id="count" role="status" aria-live="polite">Ładowanie katalogu…</p>
+        </div>
+        <div class="results-sort-group">
+          <label for="sortBy" class="sort-label">
+            <span id="sortIconHolder" aria-hidden="true"></span>
+            <span>Sortuj:</span>
+          </label>
+          <select id="sortBy" class="sort-select" aria-label="Sortuj wyniki wyszukiwania">
+            <option value="relevance">Trafność</option>
+            <option value="date">Najnowsze</option>
+            <option value="alpha">Alfabetycznie (A–Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Baner sugestii bliskoznacznych gdy brak bezpośrednich wyników -->
+      <div id="suggestionBanner" class="hidden"></div>
+
+      <!-- Grid wyników -->
+      <div class="results-grid" id="grid"></div>
+
+      <!-- Stan pusty (gdy brak jakichkolwiek wyników) -->
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-state-icon" id="emptyIconHolder"></div>
+        <h3 id="emptyTitle">Nie znaleziono pasujących materiałów</h3>
+        <p id="emptyDesc">Spróbuj wpisać inną frazę, np. „werset dnia”, „nadzieja”, „apokalipsa” albo wybierz jedną z kategorii.</p>
+        <button type="button" class="btn-reset" id="resetBtn">Pokaż wszystkie projekty</button>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <div>
-      <b>Christian Culture</b>
-      <div>polskieradio.cc</div>
+      <b>Christian Culture</b> &middot; polskieradio.cc
     </div>
     <div>Wiara. Media. Ludzie. Dla Polski. Dla Świata.</div>
-    <div>© <span id="year"></span> Christian Culture · <a href="https://polskieradio.cc/">Strona główna</a></div>
+    <div>&copy; <span id="year"></span> Christian Culture &middot; <a href="https://polskieradio.cc/">Strona główna</a></div>
   </footer>
 
   <script>
   (() => {
     'use strict';
 
-    // ── THEME CONTROLLER (DUAL THEME: LIGHT & DARK) ──
+    // ==========================================================================
+    // 1. ZESTAW PROFESJONALNYCH IKON SVG (LUCIDE STYLE)
+    // ==========================================================================
+    const SVG = {
+      search: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+      mic: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>',
+      clear: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+      arrow: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+      sliders: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>',
+      sun: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
+      moon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>',
+      radio: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>',
+      community: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-5-8a5 5 0 0 0-.45-8.3"/></svg>',
+      bible: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>',
+      media: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+      tools: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
+      article: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>',
+      bulb: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
+      compass: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'
+    };
+
+    function getCategoryIcon(cat) {
+      if (!cat) return SVG.tools;
+      if (cat.includes('Radio')) return SVG.radio;
+      if (cat.includes('Portal') || cat.includes('Społeczność')) return SVG.community;
+      if (cat.includes('Biblia') || cat.includes('Leksykon')) return SVG.bible;
+      if (cat.includes('Media') || cat.includes('Treści')) return SVG.media;
+      if (cat.includes('Artykuły') || cat.includes('Wiedza')) return SVG.article;
+      return SVG.tools;
+    }
+
+    // ==========================================================================
+    // 2. KONTROLER MOTYWU (DARK / LIGHT PREMIUM)
+    // ==========================================================================
     function initTheme() {
       let saved = null;
       try {
         const urlParam = new URLSearchParams(window.location.search).get('theme');
         if (urlParam === 'light' || urlParam === 'dark') saved = urlParam;
         if (!saved) saved = localStorage.getItem('cc_theme') || localStorage.getItem('lumina_theme');
-        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          saved = 'dark';
+        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          saved = 'light';
         }
       } catch (_) {}
-      
-      const theme = (saved === 'dark') ? 'dark' : 'light';
+
+      const theme = (saved === 'light') ? 'light' : 'dark';
       applyTheme(theme, false);
     }
 
@@ -816,9 +1260,9 @@
       document.documentElement.setAttribute('data-theme', theme);
       const icon = document.getElementById('themeToggleIcon');
       const text = document.getElementById('themeToggleText');
-      if (icon) icon.textContent = theme === 'dark' ? '🌙' : '☀️';
-      if (text) text.textContent = theme === 'dark' ? 'Ciemny' : 'Jasny';
-      
+      if (icon) icon.innerHTML = theme === 'dark' ? SVG.sun : SVG.moon;
+      if (text) text.textContent = theme === 'dark' ? 'Jasny' : 'Ciemny';
+
       if (save) {
         try {
           localStorage.setItem('cc_theme', theme);
@@ -828,40 +1272,57 @@
     }
 
     function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next, true);
     }
 
-    const themeBtn = document.getElementById('themeToggleBtn');
-    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-    initTheme();
-
-    // ── ICONS & STATE ──
-    const CATS = {
-      'Radio & Live': '◉',
-      'Portale': '👥',
-      'Artykuły & Wiedza CCN': '📰',
-      'Biblia i formacja': '📖',
-      'Media i treści': '▶',
-      'Narzędzia i misja': '⚙',
-      'Społeczność & Relacje': '💜'
+    // ==========================================================================
+    // 3. SŁOWNIK SYNONIMÓW, TOLERANCJA LITERÓWEK I KONTEKST DATY
+    // ==========================================================================
+    const SYNONYM_MAP = {
+      'lekcja': ['lekcje', 'rozważanie', 'rozwazanie', 'inspiracja', 'słowo na dziś', 'kurs', 'studium', 'dzień', 'dzien', 'nauka'],
+      'lekcje': ['lekcja', 'rozważania', 'kursy', 'studia'],
+      'rozwazanie': ['rozważanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+      'rozważanie': ['rozwazanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
+      'rozwzanie': ['rozważanie', 'rozwazanie', 'lekcja', 'inspiracja'],
+      'inspiracja': ['rozważanie', 'lekcja', 'słowo na dziś', 'poranna'],
+      'kurs': ['akademia', 'lekcja', '28 kroków', 'kurs codzienny', 'studium'],
+      'akademia': ['kurs', 'lekcja', 'biblijna', '28 kroków', 'z biblią za pan brat'],
+      'dzien': ['dzień', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
+      'dzień': ['dzien', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
+      'dzis': ['dziś', 'dzisiaj', 'na dziś', 'dzisiejsza'],
+      'dziś': ['dzis', 'dzisiaj', 'na dziś', 'dzisiejsza'],
+      'dzisiaj': ['dziś', 'dzis', 'na dziś', 'dzisiejsza'],
+      'biblia': ['pismo święte', 'słowo boże', 'ewangelia', 'mojabiblia'],
+      'pismo': ['biblia', 'słowo boże', 'pismo święte'],
+      'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep'],
+      'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship'],
+      'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka'],
+      'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka'],
+      'radio': ['stacja', 'audycja', 'transmisja', 'live', 'cctv24', 'śniadaniowa'],
+      'film': ['kino', 'vod', 'wideo', 'filmy'],
+      'kino': ['vod', 'film', 'filmy'],
+      'vod': ['kino', 'film', 'filmy', 'wideo'],
+      'apokalipsa': ['objawienie', 'proroctwo', 'palla', 'czasy ostateczne', 'alfred palla'],
+      'spolecznosc': ['społeczność', 'lumina', 'profil', 'tablica'],
+      'społeczność': ['spolecznosc', 'lumina', 'profil', 'tablica'],
+      'lumina': ['społeczność', 'profil', 'tablica', 'portal'],
+      'modlitwa': ['wstawiennictwo', 'za polskę', 'intencje'],
+      'aplikacja': ['cclite', 'cclite.pl', 'apka', 'pwa', 'mobile', 'dobrze że jesteś'],
+      'apka': ['aplikacja', 'cclite', 'cclite.pl', 'mobile'],
+      'sklep': ['koszyk', 'zamówienie', 'współpraca', 'książki'],
+      'ksiazki': ['książki', 'sklep', 'biblioteka'],
+      'książki': ['ksiazki', 'sklep', 'biblioteka']
     };
 
-    let data = [];
-    let contextGuides = {};
-    let category = '';
-    let all = false;
-
-    const $ = s => document.querySelector(s);
-    const query = $('#q');
-    const grid = $('#grid');
-    const count = $('#count');
-    const heading = $('#wyniki');
-    const empty = $('#empty');
-    const guideBox = $('#guide-box');
-
-    $('#year').textContent = new Date().getFullYear();
+    const norm = v => (v || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/ł/g, 'l')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
 
     const escapeHtml = str => (str || '').replace(/[&<>"']/g, m => ({
       '&': '&amp;',
@@ -870,15 +1331,6 @@
       '"': '&quot;',
       "'": '&#39;'
     }[m]));
-
-    // Polish diacritics & punctuation normalizer
-    const norm = v => (v || '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/ł/g, 'l')
-      .replace(/[^a-z0-9]+/g, ' ')
-      .trim();
 
     function highlight(text, q) {
       if (!text) return '';
@@ -894,7 +1346,6 @@
       }
     }
 
-    // Typo distance calculation (Damerau-Levenshtein distance)
     const dist = (a, b) => {
       const la = a.length, lb = b.length;
       if (Math.abs(la - lb) > 2) return 3;
@@ -905,12 +1356,12 @@
         for (let j = 1; j <= lb; j++) {
           const cost = a[i - 1] === b[j - 1] ? 0 : 1;
           d[i][j] = Math.min(
-            d[i - 1][j] + 1,        // deletion
-            d[i][j - 1] + 1,        // insertion
-            d[i - 1][j - 1] + cost  // substitution
+            d[i - 1][j] + 1,
+            d[i][j - 1] + 1,
+            d[i - 1][j - 1] + cost
           );
           if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
-            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1); // transposition (e.g. bilbia -> biblia)
+            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
           }
         }
       }
@@ -920,7 +1371,11 @@
     function score(item, q) {
       if (!q) return item.featured ? 50 : 0;
       const qNorm = norm(q);
-      const tokens = qNorm.split(' ').filter(Boolean);
+      const rawTokens = qNorm.split(' ').filter(Boolean);
+      const stopWords = new Set(['w', 'z', 'na', 'o', 'do', 'i', 'a', 'oraz', 'czyli', 'dla', 'ze', 'za', 'po', 'od']);
+      const tokens = rawTokens.filter(t => !stopWords.has(t));
+      if (!tokens.length) return item.featured ? 50 : 0;
+
       const title = norm(item.title);
       const tags = norm((item.tags || []).join(' '));
       const desc = norm(item.description);
@@ -931,28 +1386,57 @@
       const cat = norm(item.category);
       const allText = `${title} ${tags} ${desc} ${scripture} ${author} ${cat} ${content}`;
       const words = allText.split(' ');
-      
+
+      const isToday = /\b(dzis|dzisiaj|na dzis|dzisiejsz\w*)\b/.test(qNorm);
+      const todayDay = new Date().getDate(); // np. 15
+
+      const synonyms = [];
+      for (const t of tokens) {
+        if (SYNONYM_MAP[t]) {
+          for (const s of SYNONYM_MAP[t]) synonyms.push(norm(s));
+        }
+      }
+
       let n = 0;
-      // Exact whole query phrase match bonus
-      if (title.includes(qNorm)) n += 120;
-      else if (tags.includes(qNorm)) n += 80;
+      if (title.includes(qNorm)) n += 140;
+      else if (tags.includes(qNorm)) n += 90;
       else if (desc.includes(qNorm)) n += 50;
 
+      let matchedTokens = 0;
       for (const t of tokens) {
-        if (title === t) n += 100;
-        else if (title.startsWith(t)) n += 70;
-        else if (title.includes(t)) n += 45;
-        else if (tags.includes(t)) n += 35;
-        else if (desc.includes(t)) n += 25;
-        else if (scripture.includes(t)) n += 22;
-        else if (content.includes(t)) n += 18;
-        else if (cat.includes(t)) n += 15;
-        else if (author.includes(t)) n += 15;
-        else if (url.includes(t)) n += 12;
-        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) n += 8;
-        else return -1;
+        if (title === t) { n += 100; matchedTokens++; }
+        else if (title.startsWith(t)) { n += 70; matchedTokens++; }
+        else if (title.includes(t)) { n += 45; matchedTokens++; }
+        else if (tags.includes(t)) { n += 35; matchedTokens++; }
+        else if (desc.includes(t)) { n += 25; matchedTokens++; }
+        else if (scripture.includes(t)) { n += 22; matchedTokens++; }
+        else if (content.includes(t)) { n += 18; matchedTokens++; }
+        else if (cat.includes(t)) { n += 15; matchedTokens++; }
+        else if (author.includes(t)) { n += 15; matchedTokens++; }
+        else if (url.includes(t)) { n += 12; matchedTokens++; }
+        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) {
+          n += 20;
+          matchedTokens++;
+        }
       }
-      return n + (item.featured ? 3 : 0);
+
+      for (const s of synonyms) {
+        if (title.includes(s)) n += 25;
+        else if (tags.includes(s)) n += 15;
+      }
+
+      if (isToday) {
+        const dayStr = String(todayDay);
+        if (title.includes(dayStr) || tags.includes(dayStr) || url.includes(`dzien-${todayDay < 10 ? '0' + todayDay : todayDay}`)) {
+          n += 60;
+        }
+      }
+
+      if (matchedTokens === 0 && synonyms.length === 0 && !title.includes(qNorm)) {
+        return -1;
+      }
+
+      return n + (item.featured ? 5 : 0);
     }
 
     function matchesCategory(itemCat, filterCat) {
@@ -964,6 +1448,48 @@
       return false;
     }
 
+    // ==========================================================================
+    // 4. STAN APLIKACJI I ELEMENTY DOM
+    // ==========================================================================
+    let data = [];
+    let contextGuides = {};
+    let category = '';
+    let currentSort = 'relevance';
+    let all = false;
+
+    const $ = s => document.querySelector(s);
+    const query = $('#q');
+    const heroSection = $('#heroSection');
+    const grid = $('#grid');
+    const count = $('#count');
+    const heading = $('#wyniki');
+    const emptyState = $('#emptyState');
+    const guideBox = $('#guideBox');
+    const suggestionBanner = $('#suggestionBanner');
+    const clearBtn = $('#clearBtn');
+    const sortBySelect = $('#sortBy');
+
+    $('#year').textContent = new Date().getFullYear();
+
+    // Wstrzyknięcie ikon SVG do elementów statycznych
+    $('#searchIconHolder').innerHTML = SVG.search;
+    $('#micBtn').innerHTML = SVG.mic;
+    $('#clearBtn').innerHTML = SVG.clear;
+    $('#sortIconHolder').innerHTML = SVG.sliders;
+    $('#emptyIconHolder').innerHTML = SVG.search;
+
+    document.querySelectorAll('.category-card-icon').forEach(el => {
+      const iconKey = el.dataset.icon;
+      if (SVG[iconKey]) el.innerHTML = SVG[iconKey];
+    });
+
+    initTheme();
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+    // ==========================================================================
+    // 5. PRZEWODNIKI TEMATYCZNE
+    // ==========================================================================
     function findContextGuide(q) {
       if (!q || !contextGuides) return null;
       const qNorm = norm(q).trim();
@@ -989,7 +1515,7 @@
       }
       guideBox.className = 'context-guide';
       guideBox.innerHTML = `
-        <div class="guide-badge">✦ Przewodnik Tematyczny Ekosystemu Christian Culture</div>
+        <div class="guide-badge">${SVG.compass} &nbsp; Przewodnik Tematyczny Ekosystemu</div>
         <h3>${escapeHtml(guide.topic)}</h3>
         <p>${escapeHtml(guide.summary)}</p>
         ${guide.keyVerses && guide.keyVerses.length ? `
@@ -1008,13 +1534,138 @@
             <div class="guide-pills">
               ${guide.shortcuts.map(s => `
                 <a href="${escapeHtml(s.url)}" class="guide-pill" ${s.url.startsWith('http') && !s.url.includes('polskieradio.cc') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                  <span>${escapeHtml(s.icon || '✦')}</span> ${escapeHtml(s.title)}
+                  <span>✦</span> ${escapeHtml(s.title)}
                 </a>
               `).join('')}
             </div>
           </div>
         ` : ''}
       `;
+    }
+
+    // ==========================================================================
+    // 6. PROPOZYCJE BLISKOZNACZNE PRZY BRAKACH
+    // ==========================================================================
+    function findNearSuggestions(q) {
+      const qNorm = norm(q);
+      const queryWords = qNorm.split(' ').filter(Boolean);
+      const todayDay = new Date().getDate();
+
+      const isLessonRelated = queryWords.some(w => ['lekcja', 'lekcje', 'lekcji', 'dzien', 'dzień', 'rozwazanie', 'rozważanie', 'kurs', 'studium'].includes(w));
+      const suggestions = [];
+      const seenUrls = new Set();
+
+      function add(item) {
+        if (!item || seenUrls.has(item.url)) return;
+        seenUrls.add(item.url);
+        suggestions.push(item);
+      }
+
+      if (isLessonRelated) {
+        const todayItem = data.find(i => norm(i.title).includes(`dzien ${todayDay}`) || norm(i.title).includes(`lekcja ${todayDay}`));
+        if (todayItem) add(todayItem);
+
+        const fundLesson = data.find(i => norm(i.title).includes(`lekcja ${todayDay}:`)) ||
+                           data.find(i => norm(i.title).includes('lekcja 01:') || norm(i.title).includes('lekcja 1:'));
+        if (fundLesson) add(fundLesson);
+
+        const werset = data.find(i => norm(i.title).includes('werset dnia'));
+        if (werset) add(werset);
+
+        const akademia = data.find(i => (i.url || '').includes('/akademia'));
+        if (akademia) add(akademia);
+      }
+
+      // Częściowe dopasowania lub literówki
+      for (const item of data) {
+        if (suggestions.length >= 6) break;
+        const text = `${norm(item.title)} ${norm((item.tags || []).join(' '))}`;
+        const words = text.split(' ');
+        const match = queryWords.some(qw => (qw.length >= 3 && text.includes(qw)) || (qw.length >= 4 && words.some(w => dist(qw, w) <= 2)));
+        if (match) add(item);
+      }
+
+      // Dopełnienie pozycjami wyróżnionymi
+      if (suggestions.length < 3) {
+        for (const item of data) {
+          if (suggestions.length >= 6) break;
+          if (item.featured) add(item);
+        }
+      }
+
+      return suggestions.slice(0, 6);
+    }
+
+    // ==========================================================================
+    // 7. GŁÓWNA PROCEDURA RENDEROWANIA
+    // ==========================================================================
+    function sortItems(list, mode) {
+      if (mode === 'alpha') {
+        return list.slice().sort((a, b) => a.x.title.localeCompare(b.x.title, 'pl'));
+      }
+      if (mode === 'date') {
+        return list.slice().sort((a, b) => {
+          const da = a.x.date || a.x.publishedAt || '';
+          const db = b.x.date || b.x.publishedAt || '';
+          return db.localeCompare(da) || b.s - a.s;
+        });
+      }
+      // Domyślnie: relevance (trafność)
+      return list.slice().sort((a, b) => b.s - a.s || a.x.title.localeCompare(b.x.title, 'pl'));
+    }
+
+    function renderCard(item, q, isSuggestion) {
+      const a = document.createElement('a');
+      a.className = 'result-card';
+      a.href = item.url;
+      a.rel = 'noopener noreferrer';
+      try {
+        if (new URL(item.url).origin !== location.origin) {
+          a.target = '_blank';
+        }
+      } catch (_) {}
+
+      let domain = '';
+      try {
+        const u = new URL(item.url);
+        domain = u.host + (u.pathname === '/' ? '' : u.pathname);
+      } catch (_) {
+        domain = item.url;
+      }
+
+      const iconSvg = getCategoryIcon(item.category);
+
+      a.innerHTML = `
+        <div class="result-card-header">
+          <div class="result-card-meta">
+            <span class="result-card-icon" aria-hidden="true">${iconSvg}</span>
+            <span class="result-card-domain">${escapeHtml(domain)}</span>
+          </div>
+          <span class="result-card-arrow" aria-hidden="true">${SVG.arrow}</span>
+        </div>
+        <h3 class="result-card-title">${highlight(item.title, q)}</h3>
+        <p class="result-card-desc">${highlight(item.description, q)}</p>
+        ${item.contentSnippet && q && norm(item.contentSnippet).includes(norm(q))
+          ? `<div class="result-card-snippet">…${highlight(item.contentSnippet, q)}…</div>`
+          : ''}
+        <div class="result-card-footer">
+          <span class="result-card-tag">${escapeHtml(item.category)}</span>
+          ${isSuggestion
+            ? `<span class="result-card-badge-feat" style="color:var(--gold-accent)">Propozycja</span>`
+            : item.featured
+              ? `<span class="result-card-badge-feat">Polecane</span>`
+              : ''}
+        </div>
+      `;
+      return a;
+    }
+
+    function pluralizeWyniki(n) {
+      if (n === 1) return 'wynik';
+      const m10 = n % 10;
+      const m100 = n % 100;
+      if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return 'wyniki';
+      return 'wyników';
     }
 
     function updateUrl() {
@@ -1026,98 +1677,109 @@
 
     function render() {
       const q = query.value.trim();
+      const isSearchActive = !!(q || category || all);
+
+      // Przełączenie trybu Hero (Home vs Compact Results Mode)
+      if (heroSection) {
+        if (isSearchActive) {
+          heroSection.classList.remove('is-home');
+          heroSection.classList.add('is-results');
+        } else {
+          heroSection.classList.remove('is-results');
+          heroSection.classList.add('is-home');
+        }
+      }
+
+      // Przycisk czyszczenia w search-barze
+      clearBtn.style.display = q ? 'inline-flex' : 'none';
+
+      // Przewodnik kontekstowy
       const guide = findContextGuide(q);
       renderContextGuide(guide);
 
+      // Obliczenie trafności
       let result = data
         .map(x => ({ x, s: score(x, q) }))
-        .filter(x => x.s >= 0 && matchesCategory(x.x.category, category))
-        .sort((a, b) => b.s - a.s || a.x.title.localeCompare(b.x.title, 'pl'));
+        .filter(x => x.s >= 0 && matchesCategory(x.x.category, category));
+
+      result = sortItems(result, currentSort);
 
       const total = result.length;
+
+      // Jeśli jesteśmy na stronie startowej bez zapytania, pokazujemy 12 najważniejszych
+      let displayList = result;
       if (!q && !category && !all) {
-        result = result.filter(z => z.x.featured).slice(0, 12);
+        displayList = result.filter(z => z.x.featured).slice(0, 12);
       }
 
-      heading.textContent = q
-        ? `Wyniki wyszukiwania: ${q}`
-        : category
-          ? category
-          : all
-            ? 'Wszystkie projekty i treści Christian Culture'
-            : 'Najważniejsze w ekosystemie Christian Culture';
-
-      count.textContent = total === 0
-        ? 'Brak wyników'
-        : `${result.length}${result.length < total ? ' z ' + total : ''} wyników w ekosystemie`;
+      // Nagłówek i licznik wyników
+      if (q) {
+        heading.textContent = `Znaleziono ${total} ${pluralizeWyniki(total)}`;
+        count.textContent = `Wyświetlono ${displayList.length} z ${total}`;
+      } else if (category) {
+        heading.textContent = `Kategoria: ${category}`;
+        count.textContent = `Znaleziono ${total} ${pluralizeWyniki(total)}`;
+      } else if (all) {
+        heading.textContent = 'Wszystkie materiały i projekty Christian Culture';
+        count.textContent = `Wyświetlono ${displayList.length} z ${total}`;
+      } else {
+        heading.textContent = 'Najważniejsze w ekosystemie Christian Culture';
+        count.textContent = `Wyświetlono ${displayList.length} z ${data.length}`;
+      }
 
       grid.replaceChildren();
 
-      for (const { x } of result) {
-        const a = document.createElement('a');
-        a.className = 'result';
-        a.href = x.url;
-        a.rel = 'noopener noreferrer';
-        if (new URL(x.url).origin !== location.origin) {
-          a.target = '_blank';
+      // Obsługa braku bezpośrednich wyników (propozycje bliskoznaczne)
+      if (total === 0 && q) {
+        const suggestions = findNearSuggestions(q);
+        if (suggestions.length > 0) {
+          suggestionBanner.className = 'suggestion-banner';
+          suggestionBanner.innerHTML = `
+            <div class="suggestion-banner-icon">${SVG.bulb}</div>
+            <div>
+              <div class="suggestion-banner-title">Brak bezpośredniego wyniku dla „${escapeHtml(q)}”</div>
+              <div class="suggestion-banner-desc">Nie znaleźliśmy dokładnie takiego materiału. Przygotowaliśmy propozycje bliskoznaczne i powiązane studia biblijne:</div>
+            </div>
+          `;
+
+          for (const item of suggestions) {
+            grid.append(renderCard(item, q, true));
+          }
+          emptyState.classList.add('hidden');
+        } else {
+          suggestionBanner.className = 'hidden';
+          suggestionBanner.innerHTML = '';
+          emptyState.classList.remove('hidden');
         }
+      } else {
+        suggestionBanner.className = 'hidden';
+        suggestionBanner.innerHTML = '';
+        emptyState.classList.toggle('hidden', total !== 0);
 
-        const icon = document.createElement('span');
-        icon.className = 'emoji';
-        icon.textContent = CATS[x.category] || '◎';
-        icon.setAttribute('aria-hidden', 'true');
-
-        const info = document.createElement('span');
-        info.className = 'info';
-
-        const url = document.createElement('span');
-        url.className = 'url';
-        try {
-          const parsed = new URL(x.url);
-          url.textContent = parsed.host + (parsed.pathname === '/' ? '' : parsed.pathname);
-        } catch (_) {
-          url.textContent = x.url;
+        for (const { x } of displayList) {
+          grid.append(renderCard(x, q, false));
         }
-
-        const title = document.createElement('strong');
-        title.innerHTML = highlight(x.title, q);
-
-        const desc = document.createElement('p');
-        desc.innerHTML = highlight(x.description, q);
-
-        info.append(url, title, desc);
-
-        if (x.contentSnippet && q && norm(x.contentSnippet).includes(norm(q))) {
-          const snip = document.createElement('div');
-          snip.className = 'snippet';
-          snip.innerHTML = '…' + highlight(x.contentSnippet, q) + '…';
-          info.append(snip);
-        }
-
-        const arrow = document.createElement('span');
-        arrow.className = 'arr';
-        arrow.textContent = '❯';
-        arrow.setAttribute('aria-hidden', 'true');
-
-        a.append(icon, info, arrow);
-        grid.append(a);
       }
 
-      empty.classList.toggle('hidden', total !== 0);
+      // Aktualizacja stanu przycisków kategorii
       document.querySelectorAll('[data-category]').forEach(b => {
         b.setAttribute('aria-pressed', String(b.dataset.category === category));
       });
+
       updateUrl();
     }
 
     function reset() {
       query.value = '';
       category = '';
-      all = true;
+      all = false;
       render();
       query.focus();
     }
 
+    // ==========================================================================
+    // 8. OBSŁUGA ZDARZEŃ I WYSZUKIWANIA
+    // ==========================================================================
     document.querySelectorAll('[data-category]').forEach(b => {
       b.addEventListener('click', () => {
         category = category === b.dataset.category ? '' : b.dataset.category;
@@ -1145,23 +1807,28 @@
       render();
     });
 
-    $('#form').addEventListener('submit', e => {
+    $('#searchForm').addEventListener('submit', e => {
       e.preventDefault();
       all = true;
       render();
       heading.scrollIntoView({ behavior: 'smooth' });
     });
 
-    $('#clear').addEventListener('click', reset);
-    $('#reset').addEventListener('click', reset);
-    $('#show-all').addEventListener('click', () => {
+    clearBtn.addEventListener('click', reset);
+    $('#resetBtn').addEventListener('click', reset);
+    $('#exploreAllBtn').addEventListener('click', () => {
       category = '';
       all = true;
       render();
       heading.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Shortcuts
+    sortBySelect.addEventListener('change', () => {
+      currentSort = sortBySelect.value;
+      render();
+    });
+
+    // Skróty klawiatury
     document.addEventListener('keydown', e => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -1173,50 +1840,59 @@
       }
     });
 
-    // Voice Search
+    // Rozpoznawanie mowy (SpeechRecognition)
     const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const mic = $('#mic');
+    const micBtn = $('#micBtn');
+    const voiceNote = $('#voiceNote');
     if (!Speech) {
-      mic.hidden = true;
-      $('#voice-note').textContent = '';
+      micBtn.style.display = 'none';
+      voiceNote.textContent = '';
     } else {
-      mic.addEventListener('click', () => {
+      micBtn.addEventListener('click', () => {
         const recognizer = new Speech();
         recognizer.lang = 'pl-PL';
         recognizer.interimResults = false;
         recognizer.maxAlternatives = 1;
-        $('#voice-note').textContent = 'Słucham…';
-        
+        voiceNote.textContent = 'Słucham… Wypowiedz szukaną frazę';
+
         recognizer.onresult = e => {
           query.value = e.results[0][0].transcript;
           all = true;
           render();
-          $('#voice-note').textContent = 'Wyszukiwanie głosowe zakończone';
+          voiceNote.textContent = 'Rozpoznano: „' + query.value + '”';
+          setTimeout(() => { voiceNote.textContent = ''; }, 3000);
         };
         recognizer.onerror = () => {
-          $('#voice-note').textContent = 'Nie udało się rozpoznać mowy.';
+          voiceNote.textContent = 'Nie udało się rozpoznać mowy.';
+          setTimeout(() => { voiceNote.textContent = ''; }, 3000);
         };
         recognizer.onend = () => {
-          setTimeout(() => { $('#voice-note').textContent = ''; }, 2500);
+          if (voiceNote.textContent === 'Słucham… Wypowiedz szukaną frazę') {
+            voiceNote.textContent = '';
+          }
         };
         recognizer.start();
       });
     }
 
-    // URL Parameters initialization
+    // Inicjalizacja parametrów z adresu URL
     const args = new URLSearchParams(location.search);
     query.value = args.get('q') || '';
-    category = Object.keys(CATS).includes(args.get('k')) ? args.get('k') : '';
+    const catArg = args.get('k') || '';
+    if (['Radio & Live', 'Portale', 'Biblia i formacja', 'Media i treści', 'Narzędzia i misja'].includes(catArg)) {
+      category = catArg;
+    }
     all = !!(query.value || category);
 
-    // Fetch catalog with multiple path fallbacks
+    // Pobranie katalogu
     const catalogPaths = ['/szukaj/catalog.json', './szukaj/catalog.json', './catalog.json'];
     function tryFetchCatalog(index) {
       if (index >= catalogPaths.length) {
         count.textContent = 'Katalog chwilowo niedostępny';
-        empty.classList.remove('hidden');
-        empty.querySelector('strong').textContent = 'Nie można pobrać katalogu. Odśwież stronę lub spróbuj później.';
-        $('#reset').hidden = true;
+        emptyState.classList.remove('hidden');
+        $('#emptyTitle').textContent = 'Nie można pobrać katalogu ekosystemu';
+        $('#emptyDesc').textContent = 'Sprawdź połączenie z internetem i odśwież stronę.';
+        $('#resetBtn').style.display = 'none';
         return;
       }
       fetch(catalogPaths[index], { cache: 'no-store' })
@@ -1236,5 +1912,7 @@
     tryFetchCatalog(0);
   })();
   </script>
+<script defer src="/components/cc-omni-search.js?v=20261015_w"></script>
+<script defer src="/js/cc-back-to-top.js?v=20261013_col2"></script>
 </body>
 </html>
