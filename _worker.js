@@ -1334,41 +1334,48 @@ async function handleSupportRoute(request, env) {
 }
 
 async function handleBiblijneUwielbienieRoute(request, env) {
-  const url = new URL(request.url);
-  const path = url.pathname.replace(/\/$/, '');
-  const lowerPath = path.toLowerCase();
+  try {
+    const url = new URL(request.url);
+    const path = url.pathname.replace(/\/$/, '');
+    const lowerPath = path.toLowerCase();
 
-  if (
-    lowerPath === '/biblijneuwielbienie' ||
-    lowerPath === '/biblijne-uwielbienie' ||
-    path === '/BiblijneUwielbienie' ||
-    url.pathname === '/BiblijneUwielbienie' ||
-    url.pathname === '/BiblijneUwielbienie/' ||
-    url.pathname === '/biblijne-uwielbienie.html' ||
-    url.pathname === '/BiblijneUwielbienie.html'
-  ) {
-    const assetUrl = new URL(request.url);
-    assetUrl.pathname = '/biblijne-uwielbienie.html';
-    assetUrl.search = '';
-    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
-    const body = await assetResp.arrayBuffer();
-    return new Response(body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-        'X-Content-Type-Options': 'nosniff',
-      },
+    if (
+      lowerPath === '/biblijneuwielbienie' ||
+      lowerPath === '/biblijne-uwielbienie' ||
+      path === '/BiblijneUwielbienie' ||
+      url.pathname === '/BiblijneUwielbienie' ||
+      url.pathname === '/BiblijneUwielbienie/' ||
+      url.pathname === '/biblijne-uwielbienie.html' ||
+      url.pathname === '/BiblijneUwielbienie.html'
+    ) {
+      const assetUrl = new URL(request.url);
+      assetUrl.pathname = '/biblijne-uwielbienie.html';
+      assetUrl.search = '';
+      const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+      const body = await assetResp.arrayBuffer();
+      return new Response(body, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=3600',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      });
+    }
+
+    if (lowerPath === '/uwielbienie') {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/BiblijneUwielbienie';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    return null;
+  } catch (err) {
+    return new Response('BiblijneUwielbienie route error: ' + (err.stack || err.message), {
+      status: 500,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
     });
   }
-
-  if (lowerPath === '/uwielbienie') {
-    const redirectUrl = new URL(request.url);
-    redirectUrl.pathname = '/BiblijneUwielbienie';
-    return Response.redirect(redirectUrl.toString(), 301);
-  }
-
-  return null;
 }
 
 
