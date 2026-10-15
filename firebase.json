@@ -67,6 +67,30 @@
       ],
       "rewrites": [
         {
+          "source": "/szukaj/**",
+          "destination": "/szukaj.html"
+        },
+        {
+          "source": "/szukaj",
+          "destination": "/szukaj.html"
+        },
+        {
+          "source": "/hub",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/centrum",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/moje-centrum/**",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/moje-centrum",
+          "destination": "/moje-centrum.html"
+        },
+        {
           "source": "/news",
           "destination": "/news.html"
         },
@@ -712,6 +736,30 @@
         }
       ],
       "rewrites": [
+        {
+          "source": "/szukaj/**",
+          "destination": "/szukaj.html"
+        },
+        {
+          "source": "/szukaj",
+          "destination": "/szukaj.html"
+        },
+        {
+          "source": "/hub",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/centrum",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/moje-centrum/**",
+          "destination": "/moje-centrum.html"
+        },
+        {
+          "source": "/moje-centrum",
+          "destination": "/moje-centrum.html"
+        },
         {
           "source": "/news",
           "destination": "/news.html"
