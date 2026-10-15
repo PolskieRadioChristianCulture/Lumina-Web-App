@@ -25,7 +25,7 @@ const BLOCKED_EXTENSIONS = new Set([
   '.xlsx', '.yaml', '.yml',
 ]);
 const REQUIRED_FILES = [
-  '_headers', '_redirects', '_worker.js', 'firebase-messaging-sw.js', 'index.html',
+  '_headers', '_redirects', '_worker.js', 'lib/bu-voting-worker.js', 'firebase-messaging-sw.js', 'index.html',
   'semantic-index.html', 'lumina.html', 'lumina-tablica.html', 'manifest-lumina.json', 'robots.txt',
   'js/cc-back-to-top.js', 'components/cc-omni-search.js',
 ];
@@ -42,6 +42,7 @@ function normalized(relativePath) {
 
 function isPublicFile(relativePath) {
   const file = normalized(relativePath);
+  if (file === 'lib/bu-voting-worker.js') return true;
   const lower = file.toLowerCase();
   const segments = lower.split('/');
   if (segments.some((segment) => BLOCKED_DIRECTORIES.has(segment))) return false;
