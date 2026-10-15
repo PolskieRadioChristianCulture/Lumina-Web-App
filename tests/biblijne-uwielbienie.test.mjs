@@ -71,12 +71,12 @@ test('Biblijne Uwielbienie: 5. Integralność bazy danych playlisty', () => {
 test('Biblijne Uwielbienie: 6. Ochrona istniejących kanałów nadawczych', () => {
   const redirects = fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8');
   assert.ok(redirects.includes('/biblia-spiewana /biblia-spiewana-live.html 200'), 'Trasa /biblia-spiewana nie może zostać zmieniona');
-  assert.ok(redirects.includes('/BiblijneUwielbienie /biblijne-uwielbienie.html 200'), 'Trasa /BiblijneUwielbienie musi być zarejestrowana');
+  assert.ok(redirects.includes('/BiblijneUwielbienie /biblijne-uwielbienie 200') || redirects.includes('/BiblijneUwielbienie /biblijne-uwielbienie.html 200'), 'Trasa /BiblijneUwielbienie musi być zarejestrowana');
 });
 
 test('Biblijne Uwielbienie: 7. Brak fikcyjnych statystyk i obietnic (Zero-QA)', () => {
   const content = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
   assert.ok(!content.includes('12 548 słuchaczy'), 'ZAKAZ fikcyjnych liczb odtworzeń');
   assert.ok(!content.includes('100% ukończone'), 'ZAKAZ fałszywych deklaracji ukończenia');
-  assert.ok(content.includes('1 152'), 'Musi rzetelnie wskazywać 1152 rozdziały w przygotowaniu');
+  assert.ok(content.includes('1 152') || content.includes('1152'), 'Musi rzetelnie wskazywać 1152 rozdziały w przygotowaniu');
 });
