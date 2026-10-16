@@ -2773,6 +2773,46 @@
       transform: scale(1.02) !important;
       text-shadow: 0 2px 18px rgba(0, 0, 0, 0.98), 0 0 26px rgba(226, 204, 154, 0.65) !important;
     }
+    .bu-line-text {
+      display: inline;
+    }
+    .bu-word {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 1px;
+      border-radius: 9999px;
+      transition: background-color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+      vertical-align: baseline;
+    }
+    /* Słowo aktualnie śpiewane – precyzyjna fioletowa pigułka #5e17eb wg wzorca */
+    .bu-line.active .bu-word.is-singing {
+      background-color: #5e17eb !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      padding: 3px 14px !important;
+      margin: 0 4px !important;
+      border-radius: 9999px !important;
+      transform: scale(1.12) !important;
+      box-shadow: 0 4px 20px rgba(94, 23, 235, 0.75), 0 0 28px rgba(94, 23, 235, 0.5) !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+      letter-spacing: 0.01em !important;
+      z-index: 2;
+      position: relative;
+    }
+    /* Słowa już zaśpiewane w bieżącym wersie */
+    .bu-line.active .bu-word.is-sung {
+      color: #ffe2a5 !important;
+      font-weight: 700 !important;
+      opacity: 0.95 !important;
+    }
+    /* Słowa oczekujące w bieżącym wersie */
+    .bu-line.active .bu-word:not(.is-singing):not(.is-sung) {
+      color: rgba(247, 244, 239, 0.65) !important;
+      opacity: 0.75 !important;
+    }
     .bu-line.prev,
     .bu-line.next {
       color: rgba(247, 244, 239, 0.8) !important;
@@ -3959,7 +3999,7 @@
     };
 
     function initYouTubePlayer(initialVideoId) {
-      ytPlayer = new YT.Player('yt-player-target', {
+      window.ytPlayer = ytPlayer = new YT.Player('yt-player-target', {
         host: 'https://www.youtube-nocookie.com',
         height: '100%',
         width: '100%',
@@ -5399,6 +5439,46 @@
       transform: scale(1.02) !important;
       text-shadow: 0 2px 18px rgba(0, 0, 0, 0.98), 0 0 26px rgba(226, 204, 154, 0.65) !important;
     }
+    .bu-line-text {
+      display: inline;
+    }
+    .bu-word {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 1px;
+      border-radius: 9999px;
+      transition: background-color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+      vertical-align: baseline;
+    }
+    /* Słowo aktualnie śpiewane – precyzyjna fioletowa pigułka #5e17eb wg wzorca */
+    .bu-line.active .bu-word.is-singing {
+      background-color: #5e17eb !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      padding: 3px 14px !important;
+      margin: 0 4px !important;
+      border-radius: 9999px !important;
+      transform: scale(1.12) !important;
+      box-shadow: 0 4px 20px rgba(94, 23, 235, 0.75), 0 0 28px rgba(94, 23, 235, 0.5) !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+      letter-spacing: 0.01em !important;
+      z-index: 2;
+      position: relative;
+    }
+    /* Słowa już zaśpiewane w bieżącym wersie */
+    .bu-line.active .bu-word.is-sung {
+      color: #ffe2a5 !important;
+      font-weight: 700 !important;
+      opacity: 0.95 !important;
+    }
+    /* Słowa oczekujące w bieżącym wersie */
+    .bu-line.active .bu-word:not(.is-singing):not(.is-sung) {
+      color: rgba(247, 244, 239, 0.65) !important;
+      opacity: 0.75 !important;
+    }
     .bu-line.prev,
     .bu-line.next {
       color: rgba(247, 244, 239, 0.8) !important;
@@ -5513,6 +5593,7 @@
   }
   function player() {
     try {
+      if (typeof window !== 'undefined' && window.ytPlayer) return window.ytPlayer;
       return (typeof ytPlayer !== 'undefined') ? ytPlayer : null;
     } catch {
       return null;
@@ -5730,6 +5811,93 @@
     }
   }
 
+  function prepareLineWords(segment) {
+    const text = (segment.text || '').trim();
+    if (!text) return [];
+
+    if (Array.isArray(segment.words) && segment.words.length > 0) {
+      return segment.words.map(w => ({
+        text: w.text || w.word || '',
+        start: Number(w.start),
+        end: Number(w.end)
+      }));
+    }
+
+    const rawWords = text.split(/\s+/).filter(Boolean);
+    if (!rawWords.length) return [];
+
+    const start = Number(segment.start);
+    const end = Number(segment.end);
+    const duration = Math.max(0.4, end - start);
+
+    const weights = rawWords.map(w => {
+      const clean = w.replace(/[.,;:!?„"»«—–\-\(\)]/g, '');
+      return Math.max(2, clean.length);
+    });
+    const totalWeight = weights.reduce((acc, v) => acc + v, 0);
+
+    let currentStart = start;
+    const result = [];
+    for (let i = 0; i < rawWords.length; i++) {
+      const frac = weights[i] / totalWeight;
+      const wordDur = duration * frac;
+      const wordEnd = (i === rawWords.length - 1) ? end : Math.round((currentStart + wordDur) * 100) / 100;
+      result.push({
+        text: rawWords[i],
+        start: Math.round(currentStart * 100) / 100,
+        end: wordEnd
+      });
+      currentStart = wordEnd;
+    }
+    return result;
+  }
+
+  function updateActiveLineWords(lineBtn, segment, now) {
+    if (!lineBtn || !segment) return;
+    const wordNodes = lineBtn._wordNodes;
+    const wordsTiming = lineBtn._wordsTiming;
+    if (!wordNodes || !wordsTiming || !wordNodes.length) return;
+
+    let activeWordIdx = -1;
+    for (let i = 0; i < wordsTiming.length; i++) {
+      const w = wordsTiming[i];
+      if (now >= w.start && now < w.end) {
+        activeWordIdx = i;
+        break;
+      }
+    }
+
+    if (activeWordIdx === -1 && now >= segment.start) {
+      if (now >= segment.end) {
+        activeWordIdx = wordsTiming.length - 1;
+      } else {
+        for (let i = wordsTiming.length - 1; i >= 0; i--) {
+          if (now >= wordsTiming[i].start) {
+            activeWordIdx = i;
+            break;
+          }
+        }
+      }
+    }
+
+    for (let i = 0; i < wordNodes.length; i++) {
+      const wNode = wordNodes[i];
+      if (i === activeWordIdx) {
+        if (!wNode.classList.contains('is-singing')) {
+          wNode.classList.add('is-singing');
+        }
+        wNode.classList.remove('is-sung');
+      } else if (activeWordIdx >= 0 && i < activeWordIdx) {
+        if (!wNode.classList.contains('is-sung')) {
+          wNode.classList.add('is-sung');
+        }
+        wNode.classList.remove('is-singing');
+      } else {
+        wNode.classList.remove('is-singing', 'is-sung');
+      }
+    }
+  }
+
   function renderSyncMode(container, syncData) {
     container.dataset.mode = 'synchronized';
     container.replaceChildren();
@@ -5751,9 +5919,26 @@
         pill.textContent = `W.${segment.verse}`;
         lineBtn.appendChild(pill);
       }
+
       const textSpan = document.createElement('span');
       textSpan.className = 'bu-line-text';
-      textSpan.textContent = segment.text;
+
+      const wordsTiming = prepareLineWords(segment);
+      lineBtn._wordsTiming = wordsTiming;
+      lineBtn._wordNodes = [];
+
+      wordsTiming.forEach((w, wIdx) => {
+        const wSpan = document.createElement('span');
+        wSpan.className = 'bu-word';
+        wSpan.dataset.wordIdx = wIdx;
+        wSpan.textContent = w.text;
+        textSpan.appendChild(wSpan);
+        lineBtn._wordNodes.push(wSpan);
+        if (wIdx < wordsTiming.length - 1) {
+          textSpan.appendChild(document.createTextNode(' '));
+        }
+      });
+
       lineBtn.appendChild(textSpan);
 
       lineBtn.addEventListener('click', () => {
@@ -5795,7 +5980,14 @@
     if (active !== state.lastActiveIdx) {
       // Usuń poprzednie klasy
       if (state.lastActiveIdx >= 0) {
-        state.syncNodes[state.lastActiveIdx]?.classList.remove('active', 'prev', 'next');
+        const prevEl = state.syncNodes[state.lastActiveIdx];
+        prevEl?.classList.remove('active', 'prev', 'next');
+        if (prevEl?._wordNodes) {
+          prevEl._wordNodes.forEach(wNode => {
+            wNode.classList.remove('is-singing');
+            wNode.classList.add('is-sung');
+          });
+        }
         state.syncNodes[state.lastActiveIdx - 1]?.classList.remove('prev');
         state.syncNodes[state.lastActiveIdx + 1]?.classList.remove('next');
       }
@@ -5813,6 +6005,11 @@
         }
       }
       state.lastActiveIdx = active;
+    }
+
+    // Odświeżaj podświetlenie słowa w czasie rzeczywistym w aktywnej linijce
+    if (active >= 0 && state.syncNodes[active]) {
+      updateActiveLineWords(state.syncNodes[active], segments[active], now);
     }
   }
 
@@ -5836,7 +6033,7 @@
 
     if (alreadyRendered) {
       if (state.mode === 'sync' && state.sync && !state.tickInterval) {
-        state.tickInterval = setInterval(tickSync, 200);
+        state.tickInterval = setInterval(tickSync, 40);
       }
       if (showStage) {
         
@@ -5914,7 +6111,7 @@
       if (activeMode === 'sync' && syncData) {
         renderSyncMode(container, syncData);
         if (showStage && !state.tickInterval) {
-          state.tickInterval = setInterval(tickSync, 200);
+          state.tickInterval = setInterval(tickSync, 40);
         }
       } else {
         renderReadingMode(container, lyrics);
@@ -5960,7 +6157,7 @@
     if (mode === 'sync' && state.sync) {
       renderSyncMode(container, state.sync);
       if (statusEl) statusEl.textContent = '● Synchronizacja aktywna';
-      if (!state.tickInterval) state.tickInterval = setInterval(tickSync, 200);
+      if (!state.tickInterval) state.tickInterval = setInterval(tickSync, 40);
     } else {
       renderReadingMode(container, state.lyrics);
       if (statusEl) statusEl.textContent = state.sync ? '○ Pełny tekst UBG' : '○ Pełny tekst UBG (bez znaczników czasu)';
