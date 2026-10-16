@@ -5440,53 +5440,134 @@
       display: none !important;
     }
     .hero-karaoke-viewport {
-      max-height: 156px !important;
+      position: relative !important;
+      max-height: clamp(210px, 28vh, 280px) !important;
       overflow-y: auto;
       overflow-x: hidden;
-      scroll-behavior: smooth;
-      border-radius: 0 !important;
-      background: transparent !important;
+      scroll-behavior: auto !important;
+      border-radius: 14px !important;
+      background: rgba(5, 10, 20, 0.45) !important;
+      backdrop-filter: blur(8px) !important;
       padding: 4px 12px !important;
-      border: 0 !important;
-      box-shadow: none !important;
+      border: 1px solid rgba(196, 163, 90, 0.22) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
     }
     .hero-karaoke-viewport::-webkit-scrollbar {
       display: none;
     }
+    .hero-karaoke-viewport::before {
+      content: '';
+      position: sticky;
+      top: 40%;
+      display: block;
+      height: 52px;
+      margin-top: -26px;
+      margin-bottom: -26px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, transparent 0%, rgba(196, 163, 90, 0.04) 15%, rgba(196, 163, 90, 0.08) 50%, rgba(196, 163, 90, 0.04) 85%, transparent 100%);
+      border-top: 1px dashed rgba(196, 163, 90, 0.22);
+      border-bottom: 1px dashed rgba(196, 163, 90, 0.22);
+      pointer-events: none;
+      z-index: 0;
+    }
     .hero-karaoke-lines[data-mode="synchronized"] {
-      gap: 2px !important;
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+      padding: clamp(80px, 11vh, 120px) 14px !important;
+      z-index: 1;
     }
     .bu-line {
+      display: block;
+      width: 100%;
       background: transparent !important;
-      border: 0 !important;
+      border: 1px solid transparent !important;
       box-shadow: none !important;
-      color: rgba(247, 244, 239, 0.56) !important;
-      font-size: clamp(15px, 1.45vw, 18.5px) !important;
-      line-height: 1.42 !important;
-      padding: 5px 12px !important;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95) !important;
+      color: rgba(226, 232, 240, 0.45) !important;
+      font-size: var(--bu-font-size, clamp(17px, 1.85vw, 22px)) !important;
+      line-height: 1.5 !important;
+      padding: 8px 16px !important;
+      border-radius: 12px !important;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.22s ease, background-color 0.22s ease, border-color 0.22s ease !important;
+      transform-origin: center center;
+      opacity: 0.24;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95) !important;
     }
     .bu-line:hover {
-      background: transparent !important;
+      opacity: 0.85;
       color: #f7f4ef !important;
+      background: rgba(196, 163, 90, 0.06) !important;
+    }
+    .bu-line.prev {
+      opacity: 0.44;
+      color: rgba(226, 232, 240, 0.68) !important;
+      transform: scale(0.97);
+    }
+    .bu-line.next {
+      opacity: 0.72;
+      color: rgba(247, 244, 239, 0.88) !important;
+      transform: scale(0.99);
     }
     .bu-line.active {
+      opacity: 1 !important;
       color: #ffe2a5 !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      font-weight: 700 !important;
-      font-size: clamp(19px, 2.1vw, 26px) !important;
-      transform: scale(1.02) !important;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.98), 0 0 26px rgba(226, 204, 154, 0.65) !important;
+      background: rgba(196, 163, 90, 0.12) !important;
+      border-color: rgba(196, 163, 90, 0.38) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(196, 163, 90, 0.08) !important;
+      font-weight: 600 !important;
+      transform: scale(1.04) !important;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 24px rgba(226, 204, 154, 0.7) !important;
+      z-index: 2;
     }
-    .bu-line.prev,
-    .bu-line.next {
-      color: rgba(247, 244, 239, 0.8) !important;
-      font-weight: 500 !important;
+    .bu-line.active.is-holding {
+      opacity: 0.92 !important;
+      border-color: rgba(196, 163, 90, 0.25) !important;
+    }
+    .bu-line.active.is-primed {
+      opacity: 0.95 !important;
+      color: #f7f4ef !important;
+      border-color: rgba(168, 85, 247, 0.4) !important;
+      background: rgba(124, 58, 237, 0.08) !important;
+    }
+    .bu-floating-follow-btn {
+      position: absolute;
+      bottom: 14px;
+      right: 18px;
+      z-index: 10;
+      min-height: 44px;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      background: rgba(10, 18, 32, 0.92);
+      color: #ffe2a5;
+      border: 1px solid rgba(196, 163, 90, 0.5);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      font: 600 13px/1.4 Inter, system-ui, sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+    }
+    .bu-floating-follow-btn.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .bu-floating-follow-btn:hover {
+      background: #c4a35a;
+      color: #060a12;
+      border-color: #ffe2a5;
     }
     .hero-karaoke-lines[data-mode="reading"] {
       gap: 8px !important;
@@ -5569,6 +5650,27 @@
     @media (max-width: 1050px) {
       .hero-karaoke-sync-toolbar { grid-template-columns: 1fr 1fr; }
       .bu-offset-group { grid-column: 1 / -1; }
+    }
+    @media (max-width: 640px) {
+      .hero-karaoke-viewport {
+        max-height: clamp(190px, 32vh, 240px) !important;
+        padding: 4px 6px !important;
+      }
+      .hero-karaoke-lines[data-mode="synchronized"] {
+        padding: clamp(65px, 10vh, 95px) 6px !important;
+        gap: 4px !important;
+      }
+      .bu-line {
+        font-size: clamp(15px, 4.2vw, 17.5px) !important;
+        padding: 6px 8px !important;
+        line-height: 1.42 !important;
+      }
+      .hero-karaoke-viewport::before {
+        height: 44px;
+        margin-top: -22px;
+        margin-bottom: -22px;
+        top: 38%;
+      }
     }
     @media (max-width: 580px) {
       .hero-karaoke-sync-toolbar { grid-template-columns: 1fr; gap: 10px; }
@@ -5752,6 +5854,7 @@
     offsetMs: 0,
     fontSize: 20,
     autoScroll: true,
+    userScrollTimeout: null,
     lyrics: null,
     sync: null,
     syncNodes: [],
@@ -5844,14 +5947,64 @@
     return !loadedId || !track.videoId || loadedId === track.videoId;
   }
 
-  function centerActiveLine() {
-    const vp = document.getElementById('hero-karaoke-viewport');
-    const line = state.syncNodes[state.lastActiveIdx];
-    if (!vp || !line || !state.autoScroll) return;
-    const top = vp.scrollTop + line.getBoundingClientRect().top - vp.getBoundingClientRect().top
-      - (vp.clientHeight - line.clientHeight) / 2;
+  function getLineScrollTop(line, vp) {
+    let top = 0;
+    let curr = line;
+    while (curr && curr !== vp) {
+      top += curr.offsetTop;
+      curr = curr.offsetParent;
+    }
+    return top;
+  }
+
+  let activeScrollAnimation = null;
+
+  function scrollToSmoothly(vp, targetY, instant = false) {
+    if (!vp) return;
+    if (activeScrollAnimation) {
+      cancelAnimationFrame(activeScrollAnimation);
+      activeScrollAnimation = null;
+    }
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    vp.scrollTo({ top: Math.max(0, top), behavior: reducedMotion ? 'instant' : 'smooth' });
+    if (instant || reducedMotion) {
+      vp.scrollTop = targetY;
+      return;
+    }
+
+    const startY = vp.scrollTop;
+    const diff = targetY - startY;
+    if (Math.abs(diff) < 2) return;
+
+    const duration = Math.min(260, Math.max(120, Math.abs(diff) * 0.9));
+    const startTime = performance.now();
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // easeOutCubic curve
+      const ease = 1 - Math.pow(1 - progress, 3);
+      vp.scrollTop = Math.round(startY + diff * ease);
+      if (progress < 1) {
+        activeScrollAnimation = requestAnimationFrame(step);
+      } else {
+        activeScrollAnimation = null;
+      }
+    }
+    activeScrollAnimation = requestAnimationFrame(step);
+  }
+
+  function centerActiveLine(instant = false) {
+    const vp = document.getElementById('hero-karaoke-viewport');
+    if (!vp || state.lastActiveIdx < 0 || !state.autoScroll) return;
+    const line = state.syncNodes[state.lastActiveIdx];
+    if (!line) return;
+
+    // Fixed Vocal Horizon: exactly 40% from top of viewport
+    const lineTop = getLineScrollTop(line, vp);
+    const focalAnchor = Math.round(vp.clientHeight * 0.40);
+    const targetScroll = Math.max(0, Math.round(lineTop - focalAnchor));
+
+    scrollToSmoothly(vp, targetScroll, instant);
   }
 
   function setAutoScroll(enabled) {
@@ -5861,7 +6014,19 @@
       button.textContent = enabled ? 'Śledzenie tekstu: włączone' : 'Wróć do śpiewanego tekstu';
       button.setAttribute('aria-pressed', String(state.autoScroll));
     }
+    const floatingBtn = document.getElementById('bu-floating-follow-btn');
+    if (floatingBtn) {
+      floatingBtn.classList.toggle('is-visible', !enabled);
+    }
     if (enabled) centerActiveLine();
+  }
+
+  function resumeAutoScroll() {
+    if (state.userScrollTimeout) {
+      clearTimeout(state.userScrollTimeout);
+      state.userScrollTimeout = null;
+    }
+    setAutoScroll(true);
   }
 
   function setSettingsAvailable(available) {
@@ -5923,14 +6088,37 @@
           summary.focus();
         }
       });
-      const pauseFollowing = () => setAutoScroll(false);
+      if (!document.getElementById('bu-floating-follow-btn')) {
+        const floatBtn = document.createElement('button');
+        floatBtn.type = 'button';
+        floatBtn.id = 'bu-floating-follow-btn';
+        floatBtn.className = 'bu-floating-follow-btn';
+        floatBtn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span>Wróć do tekstu</span>
+        `;
+        floatBtn.setAttribute('aria-label', 'Wróć do śpiewanego tekstu');
+        floatBtn.onclick = () => resumeAutoScroll();
+        vp.appendChild(floatBtn);
+      }
+
+      const pauseFollowing = () => {
+        if (!state.autoScroll) return;
+        setAutoScroll(false);
+        if (state.userScrollTimeout) clearTimeout(state.userScrollTimeout);
+        state.userScrollTimeout = setTimeout(() => {
+          resumeAutoScroll();
+        }, 4500);
+      };
       vp.addEventListener('wheel', pauseFollowing, { passive: true });
       vp.addEventListener('touchmove', pauseFollowing, { passive: true });
       vp.addEventListener('keydown', (event) => {
         if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) pauseFollowing();
       });
       vp.tabIndex = 0;
-      vp.setAttribute('aria-label', 'Tekst karaoke. Przewijanie zatrzymuje śledzenie tekstu.');
+      vp.setAttribute('aria-label', 'Tekst karaoke. Przewijanie zatrzymuje śledzenie tekstu na kilka sekund.');
     }
 
     try {
@@ -6139,13 +6327,28 @@
     return result;
   }
 
-  function updateActiveLineWords(lineBtn, segment, now) {
+  function updateActiveLineWords(lineBtn, segment, now, isHolding = false, isPrimed = false) {
     if (!lineBtn || !segment) return;
     const wordNodes = lineBtn._wordNodes;
     const wordsTiming = lineBtn._wordsTiming;
     if (!wordNodes || !wordsTiming || !wordNodes.length) return;
 
     if (state.displayMode === 'lines') {
+      for (let i = 0; i < wordNodes.length; i++) {
+        wordNodes[i].classList.remove('is-singing', 'is-sung');
+      }
+      return;
+    }
+
+    if (isHolding) {
+      for (let i = 0; i < wordNodes.length; i++) {
+        wordNodes[i].classList.add('is-sung');
+        wordNodes[i].classList.remove('is-singing');
+      }
+      return;
+    }
+
+    if (isPrimed) {
       for (let i = 0; i < wordNodes.length; i++) {
         wordNodes[i].classList.remove('is-singing', 'is-sung');
       }
@@ -6261,23 +6464,92 @@
     const matching = isMatchingTrack();
     const now = (currentTime() + state.offsetMs / 1000) * syncTimeScale();
     const segments = state.sync.lines;
-    const active = matching ? segments.findIndex(x => now >= x.start && now < x.end) : -1;
+    if (!matching || !segments.length) return;
+
+    let active = -1;
+    let isPrimed = false;
+    let isHolding = false;
+
+    // 1. Direct segment hit
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      if (now >= seg.start && now < seg.end) {
+        active = i;
+        break;
+      }
+    }
+
+    // 2. Inter-segment continuity & lookahead priming
+    if (active === -1) {
+      if (now < segments[0].start) {
+        // Pre-track intro: prime the first verse on the focal horizon!
+        active = 0;
+        isPrimed = true;
+      } else {
+        let prevIdx = -1;
+        for (let i = segments.length - 1; i >= 0; i--) {
+          if (now >= segments[i].end) {
+            prevIdx = i;
+            break;
+          }
+        }
+        if (prevIdx >= 0) {
+          const nextIdx = prevIdx + 1;
+          if (nextIdx < segments.length) {
+            const nextStart = segments[nextIdx].start;
+            const gap = nextStart - segments[prevIdx].end;
+            // 550ms lookahead pre-scroll: glide to next line before singing begins
+            if (now >= nextStart - 0.55) {
+              active = nextIdx;
+              isPrimed = true;
+            } else if (gap < 3.2 || now < segments[prevIdx].end + 1.8) {
+              // Continuity: hold previous line in sung state
+              active = prevIdx;
+              isHolding = true;
+            } else {
+              // Musical interlude
+              active = -1;
+            }
+          } else {
+            // End of track: hold final line
+            active = prevIdx;
+            isHolding = true;
+          }
+        }
+      }
+    }
+
+    const statusEl = document.getElementById('hero-sync-status-indicator');
+    if (statusEl) {
+      if (active === -1) {
+        statusEl.textContent = '♫ Przerwa muzyczna ···';
+        statusEl.style.color = '#ffe2a5';
+      } else {
+        statusEl.textContent = '● Synchronizacja aktywna';
+        statusEl.style.color = '#4ade80';
+      }
+    }
 
     if (active !== state.lastActiveIdx) {
       // Rebuild neighboring states after any jump, including backwards and into a pause.
       state.syncNodes.forEach((node, index) => {
-        node.classList.toggle('active', index === active);
+        const isActive = (index === active);
+        node.classList.toggle('active', isActive);
+        node.classList.toggle('is-holding', isActive && isHolding);
+        node.classList.toggle('is-primed', isActive && isPrimed);
         node.classList.toggle('prev', active >= 0 && index === active - 1);
         node.classList.toggle('next', active >= 0 && index === active + 1);
-        if (index === active) node.setAttribute('aria-current', 'true');
+        if (isActive) node.setAttribute('aria-current', 'true');
         else node.removeAttribute('aria-current');
-        if (index !== active) node._wordNodes?.forEach(word => word.classList.remove('is-singing', 'is-sung'));
+        if (!isActive) node._wordNodes?.forEach(word => word.classList.remove('is-singing', 'is-sung'));
       });
       state.lastActiveIdx = active;
       centerActiveLine();
     }
 
-    if (active >= 0) updateActiveLineWords(state.syncNodes[active], segments[active], now);
+    if (active >= 0) {
+      updateActiveLineWords(state.syncNodes[active], segments[active], now, isHolding, isPrimed);
+    }
   }
 
   async function startChapterKaraoke(chapterId, requestedMode = null, showStage = true) {
@@ -6460,6 +6732,7 @@
   function adjustFontSize(delta) {
     state.fontSize = Math.min(36, Math.max(15, state.fontSize + delta * 2));
     document.documentElement.style.setProperty('--bu-font-size', `${state.fontSize}px`);
+    setTimeout(() => centerActiveLine(true), 40);
   }
 
   function toggleFullscreen() {
@@ -6476,6 +6749,7 @@
     } else if (!state.isFullscreen && document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
+    setTimeout(() => centerActiveLine(true), 60);
   }
 
   function closeHeroKaraoke() {
@@ -6831,6 +7105,8 @@
     onChapterSelect,
     setDisplayMode,
     setAutoScroll,
+    resumeAutoScroll,
+    centerActiveLine,
     adjustOffset,
     resetOffset,
     getSavedOffset,
