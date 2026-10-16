@@ -69,7 +69,7 @@ function shell(content) {
     <header class="site-header">
       <div class="wrap nav">
         <a class="brand" href="/Global/">
-          <img class="logo" src="${asset('favicon.svg')}" alt="Christian Culture Global Logo" width="40" height="40"/>
+          <img class="logo" src="${asset('logo-global.webp')}" alt="Radio CG Christian Culture Global Logo" width="42" height="42"/>
           <span class="brand-text">
             <span class="brand-title">CHRISTIAN CULTURE <span class="brand-gold">GLOBAL</span></span>
             <small class="brand-sub">INTERNATIONAL CHRISTIAN MEDIA NETWORK</small>
@@ -90,7 +90,7 @@ function shell(content) {
       <div class="wrap footer-content">
         <div class="footer-brand">
           <div class="footer-logo-row">
-            <img class="logo" src="${asset('favicon.svg')}" alt="" width="32" height="32"/>
+            <img class="logo" src="${asset('logo-global.webp')}" alt="Radio CG Christian Culture Global Logo" width="38" height="38"/>
             <strong>CHRISTIAN CULTURE GLOBAL</strong>
           </div>
           <p class="muted">Free international Christian media network sharing the Gospel, Bible and worship worldwide.</p>
@@ -258,7 +258,7 @@ function home() {
             <!-- FEATURED LEAD ARTICLE -->
             <article class="featured-lead-article">
               <div class="lead-thumb-wrap">
-                <img src="${asset(featuredArticle.image || 'article-biblical-worship.webp')}" alt="" loading="lazy" width="360" height="200"/>
+                <img src="${asset(featuredArticle.image || 'article-biblical-worship-v2.webp')}" alt="" loading="lazy" width="360" height="200"/>
               </div>
               <div class="lead-body">
                 <span class="pill-category">${e(featuredArticle.category)}</span>
@@ -488,6 +488,7 @@ function playStation(station) {
       drawVisualizers();
       renderPlayer();
     }).catch(err => {
+      if (err.name === 'AbortError' || err.message?.includes('interrupted')) return;
       playError = `Playback unavailable: ${err.message}`;
       drawVisualizers();
       renderPlayer();

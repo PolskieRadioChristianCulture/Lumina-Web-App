@@ -3,7 +3,7 @@ export const ARTICLES = [
     slug: 'biblical-worship-sing-the-word-of-god',
     title: 'Biblical Worship — Sing the Entire Word of God!',
     category: 'Bible in Music',
-    image: 'article-biblical-worship.webp',
+    image: 'article-biblical-worship-v2.webp',
     excerpt: 'A journey through the 66 books and 1,189 chapters of Scripture — a vision for music, learning and worship.',
     body: [
       'Music has long been a way to remember, celebrate and reflect on Scripture. The Psalms show how song can carry prayer, praise and lament across generations.',

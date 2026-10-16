@@ -175,6 +175,9 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  X-Frame-Options: SAMEORIGIN
-  Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.youtube-nocookie.com https://www.gstatic.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://stream.zeno.fm https://*.zeno.fm; media-src 'self' https://*.zeno.fm https://stream.zeno.fm; font-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://accounts.google.com
+  Content-Security-Policy: default-src 'self' https: data: blob:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube-nocookie.com https://www.gstatic.com https://apis.google.com https://*.firebaseapp.com https://accounts.google.com https:; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://accounts.google.com https://*.firebaseapp.com; connect-src 'self' https: wss:; media-src 'self' blob: data: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; form-action 'self' https:
+  Cache-Control: public, max-age=0, must-revalidate
+
+/Global/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
 

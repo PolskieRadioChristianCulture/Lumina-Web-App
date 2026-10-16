@@ -1,7 +1,6 @@
 /**
  * auth.js – LUMINA Canonical Auth for CC Global
- * Reads existing session from lumina-db.js (window.LuminaDB / window.getCurrentUser)
- * Falls back to direct Firebase signInWithPopup → signInWithRedirect
+ * Seamlessly integrates with the ecosystem's shared LUMINA session and lumina-db.js
  */
 import { CONFIG } from './config.js';
 
@@ -11,127 +10,165 @@ let auth, provider, authModule, _onChange;
  * Tries to read an already-signed-in LUMINA user from the shared session
  * (set by lumina-db.js via localStorage or window.LuminaDB.getCurrentUser).
  */
-function readLuminaSession() {
+export function readLuminaSession() {
   try {
-    // 1. Check via canonical LuminaDB API (injected by lumina-db.js if present)
+    // 1. Check via canonical LuminaDB API
     if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
       const u = window.LuminaDB.getCurrentUser();
-      if (u) return u;
+      if (u) return formatUser(u);
     }
-    // 2. Fallback: read raw localStorage key set by lumina-db.js
-    const raw = localStorage.getItem('lumina_current_user');
+
+    // 2. Fallback: read raw localStorage keys set by lumina-db.js & lumina-login.html
+    const raw = localStorage.getItem('lumina_current_user') || localStorage.getItem('lumina_current_user_profile');
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (parsed && parsed.uid) return parsed;
+      if (parsed && (parsed.uid || parsed.email || parsed.displayName || parsed.name || parsed.imie)) {
+        return formatUser(parsed);
+      }
+    }
+
+    const email = localStorage.getItem('lumina_user_email');
+    const slug = localStorage.getItem('lumina_current_user_slug');
+    if (email && email.includes('@')) {
+      return {
+        uid: slug || email,
+        displayName: slug || email.split('@')[0],
+        email: email,
+        photoURL: ''
+      };
     }
   } catch (_) {}
   return null;
 }
 
+function formatUser(u) {
+  return {
+    uid: u.uid || u.id || 'lumina_user',
+    displayName: u.displayName || u.name || u.imie || (u.email ? u.email.split('@')[0] : 'LUMINA Member'),
+    email: u.email || '',
+    photoURL: u.photoURL || u.avatar || u.avatarUrl || ''
+  };
+}
+
 export async function setupAuth(onChange) {
   _onChange = onChange;
 
-  // --- 1. Check shared LUMINA session first (no Firebase round-trip needed) ---
+  // 1. Immediately notify caller of existing LUMINA session
   const existingUser = readLuminaSession();
   if (existingUser) {
     onChange(existingUser, null);
-    // Still initialise Firebase so sign-out works cleanly
   }
 
-  // --- 2. Firebase initialisation ---
+  // Listen to cross-tab storage changes (e.g. user logged in on another tab)
+  window.addEventListener('storage', (ev) => {
+    if (ev.key === 'lumina_current_user' || ev.key === 'lumina_user_session' || ev.key === 'lumina_user_email') {
+      const u = readLuminaSession();
+      onChange(u, null);
+    }
+  });
+
+  // 2. Initialize Firebase Auth
   if (!CONFIG.firebase.apiKey || !CONFIG.firebase.projectId) {
-    if (!existingUser) onChange(null, 'LUMINA authentication requires Firebase configuration.');
     return false;
   }
 
   try {
     const [{ initializeApp }, authPkg] = await Promise.all([
       import('firebase/app'),
-      import('firebase/auth'),
+      import('firebase/auth')
     ]);
-    const { getAuth, GoogleAuthProvider, onAuthStateChanged } = authPkg;
+    const { getAuth, GoogleAuthProvider, onAuthStateChanged, getRedirectResult } = authPkg;
 
     const app = initializeApp(CONFIG.firebase, 'cc-global');
     auth = getAuth(app);
     provider = new GoogleAuthProvider();
-    // Request profile + email scopes for LUMINA
     provider.addScope('profile');
     provider.addScope('email');
     authModule = authPkg;
 
-    // Handle redirect result first (in case we were redirected back after signInWithRedirect)
+    // Check redirect result (if returning from signInWithRedirect)
     try {
-      const { getRedirectResult } = authPkg;
       const redirectResult = await getRedirectResult(auth);
       if (redirectResult?.user) {
-        onChange(redirectResult.user, null);
-        // Restore original destination after redirect
-        const target = sessionStorage.getItem('cc_auth_redirect_target');
-        if (target) {
-          sessionStorage.removeItem('cc_auth_redirect_target');
-          if (target !== window.location.href) window.location.href = target;
-        }
+        onChange(formatUser(redirectResult.user), null);
       }
     } catch (_) {}
 
     onAuthStateChanged(auth, (u) => {
-      onChange(u, null);
+      if (u) {
+        onChange(formatUser(u), null);
+      } else {
+        // Fall back to localStorage session if Firebase local state is idle
+        const local = readLuminaSession();
+        onChange(local, null);
+      }
     });
 
     return true;
   } catch (err) {
-    console.error('[CC Global] Auth init error:', err);
-    onChange(existingUser || null, null);
+    console.warn('[CC Global] Firebase auth setup warning:', err.message);
+    const local = readLuminaSession();
+    onChange(local, null);
     return false;
   }
 }
 
 export async function signIn() {
-  // 1. Try canonical LuminaDB loginWithGoogle (handles popup+redirect internally)
+  // 1. Try canonical LuminaDB loginWithGoogle if available
   if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
-    const result = await window.LuminaDB.loginWithGoogle();
-    if (result) return result;
-  }
-  if (window.loginWithGoogle) {
-    const result = await window.loginWithGoogle();
-    if (result) return result;
-  }
-
-  // 2. Direct Firebase fallback
-  if (!auth) {
-    // Auth not yet initialised — redirect to canonical LUMINA login page
-    sessionStorage.setItem('cc_auth_redirect_target', window.location.href);
-    window.location.href = '/lumina-login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
-    return null;
-  }
-
-  try {
-    return await authModule.signInWithPopup(auth, provider);
-  } catch (popupErr) {
-    if (popupErr.code === 'auth/popup-closed-by-user') return null;
-    if (
-      popupErr.code === 'auth/popup-blocked' ||
-      popupErr.code === 'auth/cancelled-popup-request' ||
-      popupErr.code === 'auth/internal-error'
-    ) {
-      sessionStorage.setItem('cc_auth_redirect_target', window.location.href);
-      await authModule.signInWithRedirect(auth, provider);
-      return null;
+    try {
+      const res = await window.LuminaDB.loginWithGoogle();
+      if (res) return res;
+    } catch (e) {
+      console.warn('LuminaDB.loginWithGoogle failed:', e);
     }
-    throw popupErr;
   }
+
+  // 2. Direct Firebase popup login
+  if (auth && authModule) {
+    try {
+      const res = await authModule.signInWithPopup(auth, provider);
+      if (res?.user) {
+        // Save to LUMINA shared session
+        try {
+          localStorage.setItem('lumina_current_user', JSON.stringify({
+            uid: res.user.uid,
+            displayName: res.user.displayName,
+            email: res.user.email,
+            photoURL: res.user.photoURL
+          }));
+          localStorage.setItem('lumina_user_session', 'active');
+        } catch (_) {}
+        return res;
+      }
+    } catch (popupErr) {
+      if (popupErr.code === 'auth/popup-closed-by-user') return null;
+      console.warn('[CC Global] Popup sign-in error, redirecting to LUMINA login:', popupErr.message);
+    }
+  }
+
+  // 3. Foolproof fallback: redirect to canonical LUMINA login portal
+  sessionStorage.setItem('cc_auth_redirect_target', window.location.href);
+  window.location.href = '/lumina-login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+  return null;
 }
 
 export async function signOut() {
   // Clear shared LUMINA session
   try {
-    ['lumina_current_user', 'lumina_current_user_profile', 'lumina_my_profile',
-     'lumina_user_session', 'lumina_user_email', 'lumina_current_user_slug',
-     'lumina_admin', 'lumina_auth_master_admin', 'lumina_auth_owner_cezaryrgowski'
+    [
+      'lumina_current_user', 'lumina_current_user_profile', 'lumina_my_profile',
+      'lumina_user_session', 'lumina_user_email', 'lumina_current_user_slug',
+      'lumina_admin', 'lumina_auth_master_admin', 'lumina_auth_owner_cezaryrgowski',
+      'lumina_user_uid'
     ].forEach(k => localStorage.removeItem(k));
     if (window.LuminaDB?.signOut) await window.LuminaDB.signOut();
   } catch (_) {}
-  if (auth) return authModule.signOut(auth);
+  if (auth && authModule) {
+    try {
+      await authModule.signOut(auth);
+    } catch (_) {}
+  }
 }
 
 export async function idToken() {
