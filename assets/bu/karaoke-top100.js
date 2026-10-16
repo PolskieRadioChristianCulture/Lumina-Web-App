@@ -918,15 +918,30 @@
       state.syncNodes[0]?.classList.add('active');
       state.syncNodes[1]?.classList.add('next');
       state.lastActiveIdx = 0;
+      if (currentTime() > 0.5) {
+        state.lastActiveIdx = -1;
+        tickSync();
+      }
     }
   }
 
   function tickSync() {
     if (state.mode !== 'sync' || !state.sync || !state.syncNodes.length) return;
-    const now = currentTime();
+    let now = currentTime();
+    try {
+      const p = player();
+      const ytDur = Number(p?.getDuration?.() || 0);
+      const syncDur = Number(state.sync.duration || 0);
+      if (ytDur > 15 && syncDur > 15 && Math.abs(ytDur - syncDur) > 1.5) {
+        now = now * (syncDur / ytDur);
+      }
+    } catch {}
     const segments = state.sync.lines;
     let active = segments.findIndex(x => now >= x.start && now < x.end);
     if (active === -1 && now <= (segments[0]?.start || 2)) active = 0;
+    if (active === -1 && segments.length > 0 && now >= segments[segments.length - 1].end) {
+      active = segments.length - 1;
+    }
 
     if (active !== state.lastActiveIdx) {
       // Usuń poprzednie klasy
@@ -1451,7 +1466,7 @@
 
   window.openChapterLyrics = function (chapterId, evt) {
     if (evt && typeof evt.stopPropagation === 'function') evt.stopPropagation();
-    openKaraoke(chapterId, 'reading');
+    openKaraoke(chapterId, null);
     const heroSection = document.getElementById('hero') || document.getElementById('hero-karaoke-stage');
     if (heroSection) {
       heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });

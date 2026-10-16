@@ -244,3 +244,41 @@ test('BU Karaoke & TOP 100: 11. Auto Karaoke Sync Engine, Rejestr i Panel Karaok
   assert.ok(studioHtml.includes('song-table'), 'Musi zawierać tabelę utworów');
   assert.ok(studioHtml.includes('inspector-panel'), 'Musi zawierać studio inspekcji osi czasu');
 });
+
+test('BU Karaoke & TOP 100: 12. Czystość kanoniczna UBG 2025 (0 słów spoza Biblii) i synchronizacja wszystkich 38 opublikowanych utworów', () => {
+  const playlist = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'biblijne-uwielbienie-playlist.json'), 'utf8'));
+  assert.equal(playlist.items.length, 38, 'Playlista musi zawierać 38 opublikowanych utworów');
+
+  for (const item of playlist.items) {
+    const chId = item.chapterId;
+    const syncPath = path.join(ROOT, 'data', 'bu-karaoke', `${chId}.json`);
+    const vttPath = path.join(ROOT, 'data', 'bu-karaoke', `${chId}.vtt`);
+    const lrcPath = path.join(ROOT, 'data', 'bu-karaoke', `${chId}.lrc`);
+    const biblePath = path.join(ROOT, 'data', 'bible', 'ubg-2025', `${chId}.json`);
+
+    assert.ok(fs.existsSync(syncPath), `Brak pliku karaoke JSON dla ${chId}`);
+    assert.ok(fs.existsSync(vttPath), `Brak pliku karaoke VTT dla ${chId}`);
+    assert.ok(fs.existsSync(lrcPath), `Brak pliku karaoke LRC dla ${chId}`);
+
+    const syncData = JSON.parse(fs.readFileSync(syncPath, 'utf8'));
+    const bibleData = JSON.parse(fs.readFileSync(biblePath, 'utf8'));
+
+    assert.equal(syncData.status, 'SYNC_READY', `${chId} musi mieć status SYNC_READY`);
+    assert.ok(Array.isArray(syncData.lines) && syncData.lines.length >= 30, `${chId} musi mieć linie karaoke`);
+
+    const byVerse = new Map();
+    for (const line of syncData.lines) {
+      assert.ok(Number.isInteger(line.verse) && line.verse >= 1, `Każda linia w ${chId} musi należeć do wersetu biblijnego`);
+      assert.ok(!line.text.includes('Wstawka muzyczna'), `${chId} nie może zawierać pozabiblijnych wstawek`);
+      if (!byVerse.has(line.verse)) byVerse.set(line.verse, []);
+      byVerse.get(line.verse).push(line.text);
+    }
+
+    for (const v of bibleData.verses) {
+      const reconstructed = (byVerse.get(v.number) || []).join(' ');
+      const canonical = v.text.trim().replace(/\s+/g, ' ');
+      assert.equal(reconstructed, canonical, `Niezgodność ze Słowem Bożym UBG 2025 w ${chId} w.${v.number}`);
+    }
+  }
+});
+

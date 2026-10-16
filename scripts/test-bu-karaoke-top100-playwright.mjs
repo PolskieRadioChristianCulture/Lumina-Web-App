@@ -137,10 +137,17 @@ async function run() {
       throw new Error('Przycisk trybu sync powinien być wyłączony dla nienagranego utworu');
     }
 
-    // Test E: Test Proverbs 1 (PRO-001)
+    // Test E: Test Proverbs 1 (PRO-001) — Synchronized Karaoke & Reading Mode
     console.log('\nTesting Proverbs 1 (PRO-001)...');
     await page.evaluate(() => window.CC_BU_FEATURES.openKaraoke('PRO-001'));
     await page.waitForTimeout(500);
+    const proSyncLines = await page.locator('#hero-karaoke-lines .bu-line').count();
+    console.log(`Proverbs 1 synchronized karaoke lines in Tryb B: ${proSyncLines}`);
+    if (proSyncLines < 60) {
+      throw new Error(`Przypowieści 1 w trybie karaoke powinny mieć >= 60 linii, otrzymano: ${proSyncLines}`);
+    }
+    await page.evaluate(() => window.CC_BU_FEATURES.setMode('reading'));
+    await page.waitForTimeout(300);
     const proVerses = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
     console.log(`Proverbs 1 verses in Tryb A: ${proVerses}`);
     if (proVerses !== 33) {
