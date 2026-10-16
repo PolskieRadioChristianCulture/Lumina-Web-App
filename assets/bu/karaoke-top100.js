@@ -601,10 +601,158 @@
       gap: 8px !important;
       text-align: center;
     }
-    .hero-karaoke-verse {
-      justify-content: center !important;
-      text-align: center !important;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95) !important;
+    /* CC KARAOKE SYNC 2.0 — TOOLBAR & DISPLAY MODES */
+    .hero-karaoke-sync-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 8px 14px;
+      margin: 0 auto 10px auto;
+      max-width: 860px;
+      width: 100%;
+      background: rgba(11, 18, 34, 0.88);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(226, 204, 154, 0.15);
+      transition: all 0.25s ease;
+      z-index: 10;
+    }
+    .bu-toolbar-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .bu-mode-toggle-group {
+      background: rgba(5, 8, 16, 0.7);
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 66, 88, 0.6);
+    }
+    .bu-tool-tab {
+      min-height: 44px;
+      min-width: 74px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: transparent;
+      color: #cdd4e0;
+      border: 0;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .bu-tool-tab:hover {
+      color: #ffe2a5;
+    }
+    .bu-tool-tab.is-active {
+      background: #c4a35a;
+      color: #060a12;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .bu-toolbar-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #c4a35a;
+      margin-right: 4px;
+      user-select: none;
+    }
+    .bu-tool-btn {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(25, 38, 59, 0.9);
+      color: #f7f4ef;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .bu-tool-btn:hover {
+      background: #233552;
+      border-color: #e2cc9a;
+      color: #ffe2a5;
+    }
+    .bu-tool-btn.reset {
+      color: #94a3b8;
+    }
+    .bu-tool-btn.reset:hover {
+      color: #ff9d9d;
+      border-color: rgba(255, 157, 157, 0.45);
+    }
+    .bu-offset-val {
+      min-width: 62px;
+      padding: 4px 8px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffe2a5;
+      background: rgba(196, 163, 90, 0.18);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 6px;
+      user-select: none;
+    }
+    .hero-karaoke-viewport[data-display-mode="lines"] .bu-line.active {
+      background: rgba(196, 163, 90, 0.22) !important;
+      color: #ffe2a5 !important;
+      border-radius: 12px !important;
+      padding: 8px 16px !important;
+      text-shadow: 0 0 16px rgba(226, 204, 154, 0.7) !important;
+    }
+    .hero-karaoke-viewport[data-display-mode="lines"] .bu-line.active .bu-word {
+      background-color: transparent !important;
+      color: inherit !important;
+      transform: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      padding: 0 1px !important;
+      margin: 0 !important;
+    }
+    .bu-word.is-uncertain {
+      border-bottom: 1.5px dotted rgba(251, 191, 36, 0.6) !important;
+    }
+    @media (max-width: 680px) {
+      .hero-karaoke-sync-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px;
+      }
+      .bu-mode-toggle-group {
+        width: 100%;
+        display: flex;
+      }
+      .bu-tool-tab {
+        flex: 1;
+      }
+      .bu-offset-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .bu-toolbar-label {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+      .bu-tool-btn {
+        flex: 1;
+        padding: 6px 8px;
+        font-size: 11.5px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -768,10 +916,12 @@
     return null;
   }
 
-  // 6. STAN HERO KARAOKE
+  // 6. STAN HERO KARAOKE (CC KARAOKE SYNC 2.0)
   let state = {
     chapterId: 'GEN-001',
     mode: 'reading', // 'reading' (Tryb A) lub 'sync' (Tryb B)
+    displayMode: 'words', // 'lines' lub 'words'
+    offsetMs: 0,
     fontSize: 20,
     autoScroll: true,
     lyrics: null,
@@ -781,6 +931,128 @@
     tickInterval: null,
     isFullscreen: false
   };
+
+  function getSavedOffset(chapterId) {
+    if (!chapterId) return 0;
+    try {
+      const val = localStorage.getItem(`cc_karaoke_offset_${chapterId}`);
+      if (val !== null) return parseInt(val, 10) || 0;
+    } catch {}
+    return 0;
+  }
+
+  function saveOffset(chapterId, offsetMs) {
+    if (!chapterId) return;
+    try {
+      if (offsetMs === 0) {
+        localStorage.removeItem(`cc_karaoke_offset_${chapterId}`);
+      } else {
+        localStorage.setItem(`cc_karaoke_offset_${chapterId}`, String(offsetMs));
+      }
+    } catch {}
+  }
+
+  function updateOffsetDisplay() {
+    const badge = document.getElementById('bu-offset-val-badge');
+    if (!badge) return;
+    const ms = state.offsetMs || 0;
+    if (ms > 0) {
+      badge.textContent = `+${ms} ms`;
+      badge.style.color = '#4ade80';
+    } else if (ms < 0) {
+      badge.textContent = `${ms} ms`;
+      badge.style.color = '#fbbf24';
+    } else {
+      badge.textContent = '0 ms';
+      badge.style.color = '#ffe2a5';
+    }
+  }
+
+  function adjustOffset(deltaMs) {
+    state.offsetMs = Math.max(-2000, Math.min(2000, (state.offsetMs || 0) + deltaMs));
+    saveOffset(state.chapterId, state.offsetMs);
+    updateOffsetDisplay();
+    tickSync();
+  }
+
+  function resetOffset() {
+    state.offsetMs = 0;
+    saveOffset(state.chapterId, 0);
+    updateOffsetDisplay();
+    tickSync();
+  }
+
+  function setDisplayMode(mode) {
+    if (mode !== 'lines' && mode !== 'words') return;
+    state.displayMode = mode;
+    try {
+      localStorage.setItem('cc_bu_display_mode', mode);
+    } catch {}
+    const vp = document.getElementById('hero-karaoke-viewport');
+    if (vp) vp.dataset.displayMode = mode;
+
+    const btnLines = document.getElementById('bu-display-lines-btn');
+    const btnWords = document.getElementById('bu-display-words-btn');
+    if (btnLines) btnLines.classList.toggle('is-active', mode === 'lines');
+    if (btnWords) btnWords.classList.toggle('is-active', mode === 'words');
+    tickSync();
+  }
+
+  function ensureSyncToolbar() {
+    let toolbar = document.getElementById('hero-karaoke-sync-toolbar');
+    const stage = document.getElementById('hero-karaoke-stage');
+    const vp = document.getElementById('hero-karaoke-viewport');
+    if (!stage || !vp) return;
+
+    if (!toolbar) {
+      toolbar = document.createElement('div');
+      toolbar.id = 'hero-karaoke-sync-toolbar';
+      toolbar.className = 'hero-karaoke-sync-toolbar';
+      toolbar.setAttribute('role', 'toolbar');
+      toolbar.setAttribute('aria-label', 'Narzędzia synchronizacji karaoke');
+      toolbar.innerHTML = `
+        <div class="bu-toolbar-group bu-mode-toggle-group" role="group" aria-label="Wybór prezentacji">
+          <button type="button" class="bu-tool-tab" id="bu-display-lines-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('lines')" aria-label="Prezentacja: Linijki">
+            Linijki
+          </button>
+          <button type="button" class="bu-tool-tab is-active" id="bu-display-words-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('words')" aria-label="Prezentacja: Słowa">
+            Słowa
+          </button>
+        </div>
+        <div class="bu-toolbar-group bu-offset-group" role="group" aria-label="Korekta synchronizacji">
+          <span class="bu-toolbar-label">Korekta synchronizacji:</span>
+          <button type="button" class="bu-tool-btn" id="bu-offset-minus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(100)" title="Tekst wcześniej o 100 ms" aria-label="Tekst wcześniej o 100 ms">
+            Tekst wcześniej
+          </button>
+          <span class="bu-offset-val" id="bu-offset-val-badge" title="Przesunięcie czasu">0 ms</span>
+          <button type="button" class="bu-tool-btn" id="bu-offset-plus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(-100)" title="Tekst później o 100 ms" aria-label="Tekst później o 100 ms">
+            Tekst później
+          </button>
+          <button type="button" class="bu-tool-btn reset" id="bu-offset-reset-btn" onclick="window.CC_BU_FEATURES?.resetOffset()" title="Wyzeruj korektę do 0 ms" aria-label="Wyzeruj przesunięcie">
+            Wyzeruj
+          </button>
+        </div>
+      `;
+      vp.parentNode.insertBefore(toolbar, vp);
+    }
+
+    try {
+      const savedMode = localStorage.getItem('cc_bu_display_mode');
+      if (savedMode === 'lines' || savedMode === 'words') {
+        state.displayMode = savedMode;
+      }
+    } catch {}
+
+    vp.dataset.displayMode = state.displayMode;
+    const btnLines = document.getElementById('bu-display-lines-btn');
+    const btnWords = document.getElementById('bu-display-words-btn');
+    if (btnLines) btnLines.classList.toggle('is-active', state.displayMode === 'lines');
+    if (btnWords) btnWords.classList.toggle('is-active', state.displayMode === 'words');
+
+    state.offsetMs = getSavedOffset(state.chapterId);
+    updateOffsetDisplay();
+    toolbar.style.display = (state.mode === 'sync') ? 'flex' : 'none';
+  }
 
   const BIBLE_BOOKS_CANON = [
     { code: "GEN", name: "Księga Rodzaju", chapters: 50 },
@@ -932,7 +1204,8 @@
       return segment.words.map(w => ({
         text: w.text || w.word || '',
         start: Number(w.start),
-        end: Number(w.end)
+        end: Number(w.end),
+        confidence: w.confidence !== undefined ? Number(w.confidence) : (segment.confidence || 0.95)
       }));
     }
 
@@ -958,7 +1231,8 @@
       result.push({
         text: rawWords[i],
         start: Math.round(currentStart * 100) / 100,
-        end: wordEnd
+        end: wordEnd,
+        confidence: segment.confidence || 0.95
       });
       currentStart = wordEnd;
     }
@@ -970,6 +1244,13 @@
     const wordNodes = lineBtn._wordNodes;
     const wordsTiming = lineBtn._wordsTiming;
     if (!wordNodes || !wordsTiming || !wordNodes.length) return;
+
+    if (state.displayMode === 'lines') {
+      for (let i = 0; i < wordNodes.length; i++) {
+        wordNodes[i].classList.remove('is-singing', 'is-sung');
+      }
+      return;
+    }
 
     let activeWordIdx = -1;
     for (let i = 0; i < wordsTiming.length; i++) {
@@ -1016,6 +1297,7 @@
     container.replaceChildren();
     state.syncNodes = [];
     state.lastActiveIdx = -1;
+    ensureSyncToolbar();
 
     for (const [idx, segment] of syncData.lines.entries()) {
       const lineBtn = document.createElement('button');
@@ -1043,6 +1325,10 @@
       wordsTiming.forEach((w, wIdx) => {
         const wSpan = document.createElement('span');
         wSpan.className = 'bu-word';
+        if (w.confidence !== undefined && w.confidence < 0.70) {
+          wSpan.classList.add('is-uncertain');
+          wSpan.title = 'Wskaźnik pewności AI < 70%';
+        }
         wSpan.dataset.wordIdx = wIdx;
         wSpan.textContent = w.text;
         textSpan.appendChild(wSpan);
@@ -1075,6 +1361,12 @@
   function tickSync() {
     if (state.mode !== 'sync' || !state.sync || !state.syncNodes.length) return;
     let now = currentTime();
+
+    // Korekta przesunięcia (Sync Offset)
+    if (state.offsetMs) {
+      now = now + (state.offsetMs / 1000.0);
+    }
+
     try {
       const p = player();
       const ytDur = Number(p?.getDuration?.() || 0);
@@ -1271,6 +1563,9 @@
       renderSyncMode(container, state.sync);
       if (statusEl) statusEl.textContent = '● Synchronizacja aktywna';
       if (!state.tickInterval) state.tickInterval = setInterval(tickSync, 40);
+      ensureSyncToolbar();
+      const tb = document.getElementById('hero-karaoke-sync-toolbar');
+      if (tb) tb.style.display = 'flex';
     } else {
       renderReadingMode(container, state.lyrics);
       if (statusEl) statusEl.textContent = state.sync ? '○ Pełny tekst UBG' : '○ Pełny tekst UBG (bez znaczników czasu)';
@@ -1278,6 +1573,8 @@
         clearInterval(state.tickInterval);
         state.tickInterval = null;
       }
+      const tb = document.getElementById('hero-karaoke-sync-toolbar');
+      if (tb) tb.style.display = 'none';
     }
   }
 
@@ -1309,6 +1606,8 @@
       stage.classList.remove('is-fullscreen');
       state.isFullscreen = false;
     }
+    const tb = document.getElementById('hero-karaoke-sync-toolbar');
+    if (tb) tb.style.display = 'none';
     const btn = document.getElementById('btn-player-karaoke');
     if (btn) btn.classList.remove('is-karaoke-active');
     if (state.tickInterval) {
@@ -1649,6 +1948,11 @@
     closeHeroKaraoke,
     onBookSelect,
     onChapterSelect,
+    setDisplayMode,
+    adjustOffset,
+    resetOffset,
+    getSavedOffset,
+    updateOffsetDisplay,
     loadChapterLyrics,
     startChapterKaraoke,
     downloadFormat

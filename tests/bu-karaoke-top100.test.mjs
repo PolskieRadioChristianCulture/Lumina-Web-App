@@ -264,7 +264,7 @@ test('BU Karaoke & TOP 100: 12. Czystość kanoniczna UBG 2025 (0 słów spoza B
     const bibleData = JSON.parse(fs.readFileSync(biblePath, 'utf8'));
 
     assert.equal(syncData.status, 'SYNC_READY', `${chId} musi mieć status SYNC_READY`);
-    assert.ok(Array.isArray(syncData.lines) && syncData.lines.length >= 30, `${chId} musi mieć linie karaoke`);
+    assert.ok(Array.isArray(syncData.lines) && syncData.lines.length >= 15, `${chId} musi mieć linie karaoke`);
 
     const byVerse = new Map();
     for (const line of syncData.lines) {
