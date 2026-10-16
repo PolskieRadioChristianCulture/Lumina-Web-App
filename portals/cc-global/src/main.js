@@ -211,7 +211,7 @@ function home() {
                 'GLOBAL BIBLE RADIO',
                 tr(27),
                 'bible',
-                'radio-bible.webp',
+                'radio-bible-v2.webp',
                 tr(29)
               )}
             </div>
