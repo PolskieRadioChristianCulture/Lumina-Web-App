@@ -204,7 +204,7 @@ function home() {
                 'GLOBAL RADIO',
                 tr(26),
                 'global',
-                'radio-global.webp',
+                'radio-global-v2.webp',
                 tr(28)
               )}
               ${stationCard(

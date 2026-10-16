@@ -120,7 +120,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["static/index.esm-DkOZO
           <!-- 2 LIVE RADIO STATIONS -->
           <section class="radio-stations-section" id="radio" aria-label="Radio Stations">
             <div class="radio-cards-grid">
-              ${P(`GLOBAL RADIO`,O(26),`global`,`radio-global.webp`,O(28))}
+              ${P(`GLOBAL RADIO`,O(26),`global`,`radio-global-v2.webp`,O(28))}
               ${P(`GLOBAL BIBLE RADIO`,O(27),`bible`,`radio-bible-v2.webp`,O(29))}
             </div>
           </section>
