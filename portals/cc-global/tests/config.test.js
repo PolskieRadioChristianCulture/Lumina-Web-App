@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {I18N} from '../src/i18n.js';
+test('all 10 languages have same translation keys',()=>{assert.equal(Object.keys(I18N).length,10);const count=I18N.en.length;for(const [code,strings] of Object.entries(I18N)){assert.equal(strings.length,count,code);assert.ok(strings.every(Boolean),code);}});
+test('YouTube playlist ids are unique',()=>{const ids=['PL5VKLFQU7nyCuh4U3mIQLwxqcxjilGq1m','PL5VKLFQU7nyA-q5ESfQpjxsAtJszeWePA','PL5VKLFQU7nyDotu7lsI_C0EjbE6KCdopf','PL5VKLFQU7nyAJO8cEjGPbD2m7aCjkwMKM','PL5VKLFQU7nyCpcbDA-soPovlK3STsZh4g'];assert.equal(new Set(ids).size,5);});

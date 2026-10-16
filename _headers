@@ -170,3 +170,11 @@
 
 /components/*
   Cache-Control: no-cache, no-store, must-revalidate
+
+/Global/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.youtube-nocookie.com https://www.gstatic.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://stream.zeno.fm https://*.zeno.fm; media-src 'self' https://*.zeno.fm https://stream.zeno.fm; font-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://accounts.google.com
+

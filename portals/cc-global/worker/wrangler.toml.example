@@ -1,0 +1,11 @@
+name = "christian-culture-global-api"
+main = "index.js"
+compatibility_date = "2026-10-01"
+# Deploy behind /Global/api/* using your existing Cloudflare zone route.
+# Configure secret/binding FIREBASE_PROJECT_ID, ALLOWED_ORIGIN and CONTENT_KV.
+# [[kv_namespaces]]
+# binding = "CONTENT_KV"
+# id = "YOUR_EXISTING_KV_NAMESPACE_ID"
+# [[routes]]
+# pattern = "polskieradio.cc/Global/api/*"
+# zone_name = "polskieradio.cc"
