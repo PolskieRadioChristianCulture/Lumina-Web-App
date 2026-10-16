@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "Z Biblią za Pan Brat: Dzień 17 — Wiara patrząca w przyszłość: Grota Machpela i spotkanie przy studni (Rdz 23–24)",
   "CCN SPOŁECZEŃSTWO: Czy świat potrzebuje nowego przebudzenia duchowego? Chrześcijaństwo wobec globalnych przemian — analiza Cezarego Rogowskiego",
   "CCN HISTORIA & BIBLIA: Czy Jezus naprawdę istniał? Co mówią źródła historyczne poza Biblią? Analiza źródeł starożytnych",
   "CCN AI & TECH: Czy sztuczna inteligencja może zastąpić ludzką mądrość? Analiza technologiczna i etyczna Cezarego Rogowskiego",
@@ -1201,6 +1202,48 @@ export const INITIAL_ARTICLES: Article[] = [
     ],
   },
     {
+    id: 'art-z-biblia-za-pan-brat-dzien-17',
+    title: 'WIARA PATRZĄCA W PRZYSZŁOŚĆ — GROTA MACHPELA, DECYZJA REBEKI I BOŻA OPATRZNOŚĆ W CODZIENNOŚCI',
+    slug: 'wiara-patrzaca-w-przyszlosc-grota-machpela-decyzja-rebeki-i-boza-opatrznosc-w-codziennosci-rdz-23-24',
+    excerpt: 'Rozdziały dwudziesty trzeci i dwudziesty czwarty Księgi Rodzaju ukazują przejście historii przymierza w nowe pokolenie, łącząc realistyczny opis żałoby po śmierci Sary z teologią Bożej opatrzności działającej poprzez ludzką roztropność, modlitwę i wolny wybór.',
+    category: 'wiara',
+    categoryLabel: 'Z BIBLIĄ ZA PAN BRAT · LEKSYKON BIBLIJNY',
+    publishedAt: '2026-10-17',
+    dateFormatted: '17 października 2026',
+    imageUrl: 'https://polskieradio.cc/images/academy/daily/kc_day_17_machpela_rebeka.jpg',
+    imageCaption: 'Ilustracja AI: Księga Rodzaju 24:1–67 — Spotkanie przy studni: Rebeka i sługa Abrahama na tle karawany wielbłądów o zmierzchu (ilustracja poglądowa wygenerowana z pomocą AI).',
+    readTimeMinutes: 7,
+    isHero: false,
+    isPopular: true,
+    popularRank: 2,
+    tags: ['Z Biblią za Pan Brat', 'Księga Rodzaju', 'Rdz 23', 'Rdz 24', 'Abraham', 'Sara', 'Machpela', 'Rebeka', 'Izaak', 'Opatrzność', 'Wiara', 'Modlitwa', 'Jezus Chrystus'],
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Rodzaju 24:7',
+      text: 'PAN, Bóg niebios (...) On pośle swego anioła przed tobą i weźmiesz stamtąd żonę dla mego syna.',
+      strongCode: 'H4375',
+    },
+    lexiconTerms: [
+      {
+        term: 'Machpela / Podwójna (Rdz 23:9)',
+        strongCode: 'H4375',
+        definition: 'Hebr. Makpelah — „podwójna / fałda”; grota kupiona przez Abrahama od Efrona Chetyty w Hebronie, miejsce pochówku patriarchów i prawne świadectwo wiary w obietnicę Ziemi.',
+      },
+      {
+        term: 'Anastasis / Zmartwychwstanie (J 11:25)',
+        strongCode: 'G0386',
+        definition: 'Gr. anastasis — powstanie ze śmierci do życia; chrystologiczne wypełnienie nadziei wiary Abrahama, który kupił grób spoglądając ku wiecznemu miastu Bożemu.',
+      },
+    ],
+    content: [
+      'W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały dwudziesty trzeci i dwudziesty czwarty Księgi Rodzaju. Tekst ten ukazuje przejście historii przymierza w nowe pokolenie, łącząc realistyczny opis żałoby po śmierci Sary z teologią Bożej opatrzności działającej poprzez ludzką roztropność, modlitwę i wolny wybór.',
+      '1. Teologia Żałoby i Uczciwości: Zakup Groty Machpela (Rdz 23). Śmierć Sary w wieku 127 lat otwiera nowy etap w życiu Abrahama. Biblijna narracja bez wahania ukazuje płacz patriarchy (Rdz 23:2), obalając mit, jakoby dojrzała wiara wykluczała głęboki smutek po stracie bliskiej osoby (por. płacz Jezusa przy grobie Łazarza w J 11:35). Szczególną uwagę egzegetów zwraca publiczna transakcja zakupu pola i groty Machpela w pobliżu Mamre (Hebronu) od Chetyty Efrona za 400 syklów srebra (Rdz 23:15–20). Choć Abraham otrzymał od Boga obietnicę odziedziczenia całego Kanaanu, określa siebie jako „przybysza i osiedleńca” (Rdz 23:4) i nie wykorzystuje Bożego powołania do roszczeniowego przejęcia cudzej własności. Pierwszą prawnie nabytą posiadłością w Ziemi Obiecanej staje się grobowiec — znak wiary, która patrzy poza granicę śmierci ku przyszłemu Bożemu miastu (Hbr 11:10, 13).',
+      '2. Opatrzność i Roztropność: Misja Sługi Abrahama (Rdz 24:1–27). Druga część analizowanego tekstu (Rdz 24) to najdłuższe pojedyncze opowiadanie w Księdze Rodzaju. Posunięty w latach Abraham powierza swojemu najstarszemu słudze zadanie znalezienia żony dla Izaaka spośród krewnych w Mezopotamii, wykluczając zarazem powrót syna do dawnej ojczyzny (Rdz 24:6–8). Postawa sługi przy studni stanowi klasyczny model współdziałania wiary i rozumu: planowanie i działanie, modlitwa i wdzięczność (Rdz 24:12, 26) oraz weryfikacja charakteru Rebeki poprzez sprawdzian gościnności i pracowitości (Rdz 24:17–21).',
+      '3. Wolna Wola i Szacunek dla Godności: „Pójdę” (Rdz 24:50–67). Tekst biblijny wyraźnie chroni podmiotowość kobiety w procesie zawierania małżeństwa. Już Abraham zastrzegł, że w razie odmowy kobiety sługa będzie zwolniony z przysięgi (Rdz 24:8). W domu Betuela i Labana ostateczne słowo należy do samej Rebeki: „Zawołajmy dziewczynę i zapytajmy ją (…) Czy pójdziesz z tym człowiekiem? A ona odpowiedziała: Pójdę” (Rdz 24:57–58). Opowieść zamyka się spotkaniem na polu oraz wprowadzeniem Rebeki do namiotu Sary, gdzie Izaak obdarza żonę miłością i znajduje pocieszenie po stracie matki (Rdz 24:67).',
+      '4. Perspektywa Chrystocentryczna i Podsumowanie CCN. W ujęciu kanonicznym kontynuacja linii przymierza przez Izaaka i Rebekę prowadzi bezpośrednio do narodzin Mesjasza — Jezusa Chrystusa (Mt 1:1; Ga 3:16, 29). Chrystus nie tylko przynosi ostateczne pocieszenie w obliczu śmierci, zapewniając zmartwychwstanie (1 Tes 4:14–17), ale w Nowym Testamencie zostaje również ukazany jako wierny Oblubieniec, który miłuje swój Kościół i przygotowuje mu wieczne mieszkanie w domu Ojca (J 14:2–3; Ef 5:25; Ap 21:4). Autentyczna wiara nie ucieka od realizmu cierpienia ani od uczciwości w codziennych relacjach — z nadzieją patrzy w przyszłość zakorzenioną w Chrystusie.',
+    ],
+  },
+  {
     id: 'art-z-biblia-za-pan-brat-dzien-16',
     title: 'BÓG SAM ZAPEWNI BARANKA — ABRAHAM NA GÓRZE MORIA I TYPOLOGIA OFIARY CHRYSTUSA',
     slug: 'bog-sam-zapewni-baranka-abraham-na-gorze-moria-typologia-ofiary-chrystusa-rdz-22',
