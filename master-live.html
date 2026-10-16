@@ -523,7 +523,7 @@
 
         /* ── GÓRNY PASEK EMISYJNY: DEKALOG BIBLIJNY (BJW) ── */
         :root {
-            --dekalog-height: 48px;
+            --dekalog-height: 89px;
         }
 
         .dekalog-top-ticker {
@@ -534,8 +534,7 @@
             height: var(--dekalog-height);
             z-index: 99999;
             background: #000000;
-            border-bottom: 2px solid var(--gold-primary);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
             display: flex;
             align-items: stretch;
             overflow: hidden;
@@ -546,7 +545,7 @@
         .dekalog-brand-badge {
             height: 100%;
             background: linear-gradient(135deg, #181c26 0%, #0d1017 100%);
-            border-right: 2px solid var(--gold-primary);
+            border-right: 2px solid var(--ccn-red);
             padding: 0 18px;
             display: flex;
             align-items: center;
@@ -554,12 +553,6 @@
             flex-shrink: 0;
             z-index: 10;
             box-shadow: 4px 0 14px rgba(0, 0, 0, 0.7);
-        }
-
-        .dekalog-brand-badge i {
-            color: var(--gold-primary);
-            font-size: 1.15rem;
-            filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
         }
 
         .dekalog-brand-title {
@@ -594,8 +587,8 @@
             white-space: nowrap;
             animation: dekalogScroll 210s linear infinite;
             font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.22rem;
-            font-weight: 600;
+            font-size: 2.0rem;
+            font-weight: 700;
             letter-spacing: 0.4px;
             color: #ffffff;
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
@@ -658,14 +651,14 @@
         }
 
         @media (max-width: 1400px) {
-            :root { --dekalog-height: 44px; }
-            .dekalog-content { font-size: 1.1rem; }
+            :root { --dekalog-height: 80px; }
+            .dekalog-content { font-size: 1.5rem; }
             .dekalog-num { font-size: 1.15rem; }
             .dekalog-brand-title { font-size: 0.8rem; letter-spacing: 1.2px; }
         }
 
         @media (max-width: 900px) {
-            :root { --dekalog-height: 38px; }
+            :root { --dekalog-height: 68px; }
             .dekalog-content { font-size: 0.95rem; }
             .dekalog-num { font-size: 1.0rem; }
             .dekalog-brand-badge { padding: 0 10px; }
@@ -701,8 +694,7 @@
     <!-- ── GÓRNY PASEK EMISYJNY: DEKALOG BIBLIJNY CO DO SŁOWA (BJW 1962) ── -->
     <div class="dekalog-top-ticker" aria-label="Dekalog w przekładzie ks. Jakuba Wujka">
         <div class="dekalog-brand-badge">
-            <i class="fa-solid fa-scroll"></i>
-            <div class="dekalog-brand-title">DEKALOG <span class="gold-accent">BOŻY</span></div>
+            <div class="dekalog-brand-title">Boży Dekalog</div>
         </div>
         <div class="dekalog-track-wrap">
             <div class="dekalog-content" id="dekalogContent">
@@ -836,7 +828,7 @@
     </div>
 
     <!-- MASTER UNMUTE BANNER -->
-    <div id="masterUnmuteBanner" onclick="unmuteSubframe();" style="position: fixed; top: 65px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.88); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
+    <div id="masterUnmuteBanner" onclick="unmuteSubframe();" style="position: fixed; top: 110px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.88); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
         <i class="fa-solid fa-volume-high" style="color: var(--gold-primary); font-size: 1.3rem;"></i>
         <span>KLIKNIJ W DOWOLNYM MIEJSCU, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI NA ŻYWO</span>
     </div>
