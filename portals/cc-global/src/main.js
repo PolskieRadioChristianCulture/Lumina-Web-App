@@ -100,7 +100,9 @@ function shell(content) {
             <div class="footer-heading">Network</div>
             <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer">PolskieRadio.cc ↗</a>
             <a href="https://polskieradio.cc/BiblijneUwielbienie" target="_blank" rel="noopener noreferrer">Biblijne Uwielbienie ↗</a>
-            <a href="https://biblia.cclite.pl" target="_blank" rel="noopener noreferrer">Biblia CCLite ↗</a>
+            <a href="https://polskieradio.cc/mojabiblia" target="_blank" rel="noopener noreferrer">MojaBiblia ↗</a>
+            <a href="https://polskieradio.cc/akademia" target="_blank" rel="noopener noreferrer">Akademia Biblijna ↗</a>
+            <a href="https://cclite.pl" target="_blank" rel="noopener noreferrer">CC Lite PWA ↗</a>
           </div>
           <div class="footer-col">
             <div class="footer-heading">Media</div>
@@ -306,18 +308,21 @@ function home() {
           </a>
         </div>
         <div class="personality-grid">
-          ${PLAYLISTS.map((pl, i) => `
-            <div class="playlist-card" data-playlist="${e(pl.id)}" role="button" tabindex="0" aria-label="${e(pl.title)}">
+          ${PLAYLISTS.map((pl, i) => {
+            const plTitle = (pl.titles && pl.titles[lang]) || pl.title;
+            return `
+            <div class="playlist-card" data-playlist="${e(pl.id)}" role="button" tabindex="0" aria-label="${e(plTitle)}">
               <img class="playlist-bg" src="${asset(pl.image)}" alt="" loading="lazy" width="280" height="180"/>
               <div class="playlist-overlay">
                 <div class="playlist-play-icon" aria-hidden="true">▶</div>
                 <div class="playlist-info">
                   <span class="playlist-tag">Personality Plus · ${i + 1}</span>
-                  <h4 class="playlist-name">${e(pl.title)}</h4>
+                  <h4 class="playlist-name">${e(plTitle)}</h4>
                 </div>
               </div>
             </div>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
       </section>
 
@@ -589,12 +594,13 @@ function renderModal() {
     return;
   }
   const plObj = PLAYLISTS.find(p => p.id === modalId) || { title: 'Personality Plus' };
+  const modalTitle = (plObj.titles && plObj.titles[lang]) || plObj.title;
 
   root.innerHTML = `
     <div class="iframe-overlay" role="dialog" aria-modal="true" aria-label="Personality Plus playlist">
       <div class="modal">
         <div class="modal-head">
-          <strong class="modal-title">Personality Plus · ${e(plObj.title)}</strong>
+          <strong class="modal-title">Personality Plus · ${e(modalTitle)}</strong>
           <button class="modal-close" id="close-modal" aria-label="Close">× ${tr(19)}</button>
         </div>
         <div class="modal-iframe-wrap">

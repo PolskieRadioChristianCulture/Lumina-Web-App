@@ -41,30 +41,90 @@ export const PLAYLISTS = [
   {
     id: 'PL5VKLFQU7nyCuh4U3mIQLwxqcxjilGq1m',
     title: 'Christian Worship & Praise',
+    titles: {
+      en: 'Christian Worship & Praise',
+      pl: 'Uwielbienie i Chwała',
+      es: 'Alabanza y Adoración',
+      pt: 'Louvor e Adoração',
+      fr: 'Louange et Adoration',
+      de: 'Anbetung & Lobpreis',
+      hi: 'प्रशंसा और आराधना',
+      id: 'Pujian & Penyembahan',
+      sw: 'Sifa na Ibada',
+      zh: '敬拜与赞美'
+    },
     image: 'playlist-worship.webp',
     desc: 'Deep atmosphere of praise, heartfelt devotion and adoration.'
   },
   {
     id: 'PL5VKLFQU7nyA-q5ESfQpjxsAtJszeWePA',
     title: 'Faith and Inspiration',
+    titles: {
+      en: 'Faith and Inspiration',
+      pl: 'Wiara i Inspiracja',
+      es: 'Fe e Inspiración',
+      pt: 'Fé e Inspiração',
+      fr: 'Foi et Inspiration',
+      de: 'Glaube und Inspiration',
+      hi: 'विश्वास और प्रेरणा',
+      id: 'Iman dan Inspirasi',
+      sw: 'Imani na Maongozi',
+      zh: '信心与启迪'
+    },
     image: 'playlist-faith.webp',
     desc: 'Inspiring messages and music lifting spirits in everyday trials.'
   },
   {
     id: 'PL5VKLFQU7nyDotu7lsI_C0EjbE6KCdopf',
     title: 'Christian Living & Personal Growth',
+    titles: {
+      en: 'Christian Living & Personal Growth',
+      pl: 'Życie chrześcijańskie i rozwój',
+      es: 'Vida cristiana y crecimiento',
+      pt: 'Vida cristã e crescimento',
+      fr: 'Vie chrétienne et croissance',
+      de: 'Christliches Leben & Reife',
+      hi: 'मसीही जीवन और आत्मिक विकास',
+      id: 'Kehidupan Kristen & Pertumbuhan',
+      sw: 'Maisha ya Kikristo na Ukuaji',
+      zh: '基督徒生活与成长'
+    },
     image: 'playlist-growth.webp',
     desc: 'Biblical wisdom for family, character, work and relationships.'
   },
   {
     id: 'PL5VKLFQU7nyAJO8cEjGPbD2m7aCjkwMKM',
-    title: 'Bible Teaching and Devotionals',
-    image: 'playlist-devotionals.webp',
-    desc: 'Sound biblical teaching, verse reflection and theological depth.'
+    title: 'Epic Instrumental Sounds',
+    titles: {
+      en: 'Epic Instrumental Sounds',
+      pl: 'Muzyka instrumentalna',
+      es: 'Música instrumental',
+      pt: 'Música instrumental',
+      fr: 'Musique instrumentale',
+      de: 'Instrumentalmusik',
+      hi: 'वाद्य संगीत',
+      id: 'Musik Instrumental',
+      sw: 'Muziki wa Ala',
+      zh: '器乐音乐'
+    },
+    image: 'playlist-instrumental.webp',
+    desc: 'Peaceful acoustic and orchestral melodies for prayer, focus and reflection.'
   },
   {
     id: 'PL5VKLFQU7nyCpcbDA-soPovlK3STsZh4g',
     title: 'Music for Every Season',
+    titles: {
+      en: 'Music for Every Season',
+      pl: 'Muzyka na każdą porę',
+      es: 'Música para cada tiempo',
+      pt: 'Música para toda estação',
+      fr: 'Musique pour chaque saison',
+      de: 'Musik für jede Zeit',
+      hi: 'हर मौसम का संगीत',
+      id: 'Musik untuk Setiap Musim',
+      sw: 'Muziki kwa Kila Majira',
+      zh: '四季之音'
+    },
     image: 'playlist-season.webp',
     desc: 'Acoustic harmonies, meditative peace and quiet moments with God.'
   }
