@@ -137,6 +137,7 @@
     /* ========================================================================
        HERO KARAOKE & CZYTAJ I ŚPIEWAJ STAGE
        ======================================================================== */
+    .hero-section { flex-direction: column; }
     .hero-karaoke-stage-wrapper {
       margin-top: 24px;
       margin-bottom: 24px;
@@ -1100,7 +1101,7 @@
     } else {
       if (playerKaraokeBtn) playerKaraokeBtn.classList.add('is-karaoke-active');
       openKaraoke(targetId);
-      const heroSection = document.getElementById('hero') || stage;
+      const heroSection = stage || document.getElementById('hero');
       if (heroSection) {
         heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
