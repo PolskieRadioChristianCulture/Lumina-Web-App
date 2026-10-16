@@ -331,11 +331,17 @@ function home() {
           </div>
           <div class="support-actions">
             <a class="btn-gold" href="${e(CONFIG.support)}" target="_blank" rel="noopener noreferrer">
-              ♡ Support Christian Culture
+              ♡ Support via Zrzutka
             </a>
             <a class="btn-outline" href="${e(CONFIG.revolut)}" target="_blank" rel="noopener noreferrer">
               Revolut ↗
             </a>
+            <a class="btn-stripe" href="${e(CONFIG.stripe)}" target="_blank" rel="noopener noreferrer">
+              💳 Stripe ↗
+            </a>
+            <button class="btn-paypal" id="paypal-btn" aria-label="Donate via PayPal — view QR code">
+              🅿 PayPal
+            </button>
           </div>
         </div>
       </section>
@@ -425,6 +431,37 @@ function draw() {
 
   renderPlayer();
   renderModal();
+
+  // PayPal QR modal
+  const paypalBtn = document.getElementById('paypal-btn');
+  if (paypalBtn) {
+    paypalBtn.addEventListener('click', () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'paypal-modal-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-label', 'PayPal donation QR code');
+      overlay.innerHTML = `
+        <div class="paypal-modal">
+          <button class="paypal-modal-close" aria-label="Close PayPal modal">×</button>
+          <h3 class="paypal-modal-title">Support via PayPal</h3>
+          <p class="paypal-modal-sub">Scan the QR code with your camera or PayPal app<br>to support Christian Culture Global.</p>
+          <img class="paypal-qr-img" src="${asset('paypal-qr.webp')}" alt="PayPal QR code for Christian Culture donation" width="200" height="200" loading="eager"/>
+          <a class="paypal-modal-link" href="${e(CONFIG.paypal)}" target="_blank" rel="noopener noreferrer">
+            Or open PayPal directly ↗
+          </a>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.querySelector('.paypal-modal-close').focus();
+
+      const close = () => overlay.remove();
+      overlay.querySelector('.paypal-modal-close').addEventListener('click', close);
+      overlay.addEventListener('click', ev => { if (ev.target === overlay) close(); });
+      const escHandler = ev => { if (ev.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); } };
+      document.addEventListener('keydown', escHandler);
+    });
+  }
 }
 
 function playStation(station) {

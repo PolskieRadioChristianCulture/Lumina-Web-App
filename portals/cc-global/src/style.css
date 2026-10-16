@@ -299,15 +299,22 @@ img {
 }
 
 /* ==========================================================================
-   HERO CARD
+   HERO CARD — hero-flipped.webp: presenters on LEFT, dark text area on RIGHT
    ========================================================================== */
 .hero-card {
   position: relative;
   min-height: 480px;
-  background: linear-gradient(90deg, #061225 0%, rgba(6, 18, 37, 0.94) 44%, rgba(6, 18, 37, 0.38) 72%, rgba(6, 18, 37, 0.15) 100%),
-              url('/Global/assets/hero.webp') right 28% center / cover no-repeat;
+  /* Presenters visible on left; text over the dark right side — NO face overlap */
+  background: linear-gradient(to left,
+                #061225 0%,
+                rgba(6, 18, 37, 0.97) 30%,
+                rgba(6, 18, 37, 0.72) 52%,
+                rgba(6, 18, 37, 0.18) 72%,
+                rgba(6, 18, 37, 0.04) 100%),
+              url('/Global/assets/hero-flipped.webp') left center / cover no-repeat;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   padding: 44px 44px;
 }
 
@@ -319,10 +326,12 @@ img {
   pointer-events: none;
 }
 
+/* Text anchored to the RIGHT — over dark gradient, NEVER over presenters' faces */
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 530px;
+  max-width: 520px;
+  width: 100%;
 }
 
 .hero-tag {
@@ -1019,7 +1028,122 @@ img {
   gap: 12px;
   flex-shrink: 0;
   flex-wrap: wrap;
+  align-items: center;
 }
+
+/* Stripe CTA button */
+.btn-stripe {
+  background: linear-gradient(120deg, #7e5ff2 0%, #5433ff 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 11px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  box-shadow: 0 4px 16px rgba(100, 80, 240, 0.38);
+  transition: all 0.2s ease;
+}
+.btn-stripe:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+/* PayPal button */
+.btn-paypal {
+  background: linear-gradient(120deg, #ffc439 0%, #ffb902 100%);
+  color: #003087;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 11px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  box-shadow: 0 4px 16px rgba(255, 196, 57, 0.38);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+.btn-paypal:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+/* PayPal QR code modal overlay */
+.paypal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(4, 13, 26, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.paypal-modal {
+  background: linear-gradient(145deg, #0d2645 0%, #08182f 100%);
+  border: 1px solid var(--border-gold-strong);
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+.paypal-modal-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.paypal-modal-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.paypal-qr-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  border: 3px solid var(--gold-primary);
+  object-fit: contain;
+  background: #fff;
+  padding: 8px;
+  margin: 0 auto 16px;
+  display: block;
+}
+.paypal-modal-link {
+  display: inline-block;
+  color: var(--gold-light);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+.paypal-modal-link:hover { color: var(--gold-glow); text-decoration: underline; }
+.paypal-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.paypal-modal-close:hover { color: #fff; }
 
 /* ==========================================================================
    FOOTER
@@ -1337,9 +1461,14 @@ img {
     padding: 32px 20px 24px;
     background-position: center top;
     background-size: cover;
-    background-image: linear-gradient(180deg, rgba(6, 18, 37, 0.15) 0%, rgba(6, 18, 37, 0.55) 42%, rgba(6, 18, 37, 0.96) 72%),
-                     url('/Global/assets/hero.webp');
+    /* On mobile: gradient dark at bottom so text is readable; flipped image fills frame */
+    background-image: linear-gradient(180deg,
+                       rgba(6, 18, 37, 0.12) 0%,
+                       rgba(6, 18, 37, 0.55) 42%,
+                       rgba(6, 18, 37, 0.97) 72%),
+                     url('/Global/assets/hero-flipped.webp');
     align-items: flex-end;
+    justify-content: flex-start;
   }
   .hero-content {
     max-width: 100%;

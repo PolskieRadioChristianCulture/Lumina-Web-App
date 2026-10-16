@@ -1,9 +1,13 @@
 export const CONFIG = {
-  globalRadio: import.meta.env.VITE_GLOBAL_RADIO_URL || 'https://stream.zeno.fm/vz96pvl3pnktv',
-  globalBible: import.meta.env.VITE_GLOBAL_BIBLE_URL || 'https://stream.zeno.fm/imo45hqnshyuv',
+  // ✅ Verified 2026-10-16: HTTP 200, audio/mpeg, icy-name: Christiian Culture Global
+  globalRadio: import.meta.env.VITE_GLOBAL_RADIO_URL || 'https://stream.zeno.fm/umej2cuqncluv',
+  // ✅ Verified 2026-10-16: HTTP 200, audio/mpeg — World English Bible (eBible.org)
+  globalBible: import.meta.env.VITE_GLOBAL_BIBLE_URL || 'https://ebible.org/eng-web/mp3/01_01_Matthew.mp3',
   api: import.meta.env.VITE_CONTENT_API || '/Global/api',
   support: import.meta.env.VITE_SUPPORT_URL || 'https://zrzutka.pl/rs4g4v',
   revolut: import.meta.env.VITE_SUPPORT_REVOLUT_URL || 'https://revolut.me/christianculture',
+  stripe: import.meta.env.VITE_SUPPORT_STRIPE_URL || 'https://buy.stripe.com/cNicMZ8xeeIJfJ9bXYbsc00?locale=en',
+  paypal: import.meta.env.VITE_SUPPORT_PAYPAL_URL || 'https://paypal.me/christianculture',
   firebase: {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M',
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'lumina-cc.firebaseapp.com',
