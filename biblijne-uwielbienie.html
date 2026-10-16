@@ -5492,111 +5492,61 @@
       gap: 8px !important;
       text-align: center;
     }
-    /* CC KARAOKE SYNC 2.0 — TOOLBAR & DISPLAY MODES */
+    /* Settings stay in the player flow; the disclosure sits on the right. */
+    .bu-karaoke-settings { position: static; width: 100%; }
+    .bu-karaoke-settings[hidden] { display: none !important; }
+    .bu-karaoke-settings > summary {
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      width: fit-content; min-height: 44px; margin-left: auto; padding: 10px 14px;
+      box-sizing: border-box; list-style: none;
+      border: 1px solid rgba(196, 163, 90, 0.3); border-radius: 10px;
+      background: rgba(10, 17, 30, 0.45); color: #e2cc9a; cursor: pointer;
+      font: 600 13px/1.6 Inter, system-ui, sans-serif;
+    }
+    .bu-karaoke-settings > summary::-webkit-details-marker { display: none; }
+    .bu-karaoke-settings > summary::after {
+      content: ''; width: 6px; height: 6px; margin-left: 5px;
+      border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg); transition: transform 0.18s ease;
+    }
+    .bu-karaoke-settings[open] > summary::after { transform: rotate(225deg); }
+    .bu-karaoke-settings > summary:hover { background: rgba(196, 163, 90, 0.1); border-color: #c4a35a; }
+    .bu-karaoke-settings > summary:focus-visible { outline: 3px solid #ffe2a5; outline-offset: 3px; }
     .hero-karaoke-sync-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 8px 14px;
-      margin: 0 auto 10px auto;
-      max-width: 860px;
-      width: 100%;
-      background: rgba(11, 18, 34, 0.88);
-      border: 1px solid rgba(196, 163, 90, 0.35);
-      border-radius: 14px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(226, 204, 154, 0.15);
-      transition: all 0.25s ease;
-      z-index: 10;
+      display: grid; grid-template-columns: minmax(170px, 0.85fr) minmax(220px, 1.1fr) minmax(370px, 1.8fr);
+      align-items: stretch; gap: 12px; width: 100%; margin-top: 14px;
+      box-sizing: border-box; font-family: Inter, system-ui, sans-serif;
     }
-    .bu-toolbar-group {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+    .bu-setting-group {
+      display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+      min-width: 0; padding: 16px; border-radius: 12px;
+      border: 1px solid rgba(196, 163, 90, 0.18); background: rgba(7, 13, 24, 0.46);
     }
+    .bu-setting-label { color: #d7c493; font-size: 11px; line-height: 1.4; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .bu-mode-toggle-group {
-      background: rgba(5, 8, 16, 0.7);
-      padding: 3px;
-      border-radius: 10px;
-      border: 1px solid rgba(55, 66, 88, 0.6);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px;
+      background: rgba(4, 8, 16, 0.7); border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 10px;
     }
-    .bu-tool-tab {
-      min-height: 44px;
-      min-width: 74px;
-      padding: 6px 14px;
-      border-radius: 8px;
-      background: transparent;
-      color: #cdd4e0;
-      border: 0;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      font-family: inherit;
+    .bu-tool-tab, .bu-tool-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; min-width: 44px; padding: 8px 10px; box-sizing: border-box;
+      border-radius: 8px; font: 600 12px/1.35 Inter, system-ui, sans-serif;
+      cursor: pointer; transition: background 0.18s ease, border-color 0.18s ease;
     }
-    .bu-tool-tab:hover {
-      color: #ffe2a5;
-    }
-    .bu-tool-tab.is-active {
-      background: #c4a35a;
-      color: #060a12;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-    .bu-toolbar-label {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #c4a35a;
-      margin-right: 4px;
-      user-select: none;
-    }
-    .bu-tool-btn {
-      min-height: 44px;
-      min-width: 44px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: rgba(25, 38, 59, 0.9);
-      color: #f7f4ef;
-      border: 1px solid rgba(196, 163, 90, 0.35);
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-    .bu-tool-btn:hover {
-      background: #233552;
-      border-color: #e2cc9a;
-      color: #ffe2a5;
-    }
-    .bu-tool-btn.reset {
-      color: #94a3b8;
-    }
-    .bu-tool-btn.reset:hover {
-      color: #ff9d9d;
-      border-color: rgba(255, 157, 157, 0.45);
-    }
+    .bu-tool-tab { border: 0; background: transparent; color: #cdd4e0; }
+    .bu-tool-tab:hover { color: #ffe2a5; background: rgba(196, 163, 90, 0.08); }
+    .bu-tool-tab.is-active { background: #c4a35a; color: #060a12; }
+    .bu-tool-btn { border: 1px solid rgba(148, 163, 184, 0.24); background: #19263b; color: #f7f4ef; }
+    .bu-tool-btn:hover { background: #233552; border-color: #c4a35a; }
+    #bu-follow-btn { width: 100%; min-height: 52px; }
+    .bu-offset-controls { display: grid; grid-template-columns: 1fr 68px 1fr auto; gap: 6px; align-items: stretch; min-height: 52px; }
     .bu-offset-val {
-      min-width: 62px;
-      padding: 4px 8px;
-      text-align: center;
-      font-variant-numeric: tabular-nums;
-      font-size: 13px;
-      font-weight: 800;
-      color: #ffe2a5;
-      background: rgba(196, 163, 90, 0.18);
-      border: 1px solid rgba(196, 163, 90, 0.35);
-      border-radius: 6px;
-      user-select: none;
+      display: flex; align-items: center; justify-content: center; min-width: 0;
+      border: 1px solid rgba(196, 163, 90, 0.3); border-radius: 8px;
+      color: #ffe2a5; background: rgba(196, 163, 90, 0.1);
+      font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
     }
+    .bu-tool-btn.reset { background: transparent; color: #c5cedd; }
     .hero-karaoke-viewport[data-display-mode="lines"] .bu-line.active {
       background: rgba(196, 163, 90, 0.22) !important;
       color: #ffe2a5 !important;
@@ -5616,35 +5566,22 @@
     .bu-word.is-uncertain {
       border-bottom: 1.5px dotted rgba(251, 191, 36, 0.6) !important;
     }
-    @media (max-width: 680px) {
-      .hero-karaoke-sync-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        padding: 8px;
-      }
-      .bu-mode-toggle-group {
-        width: 100%;
-        display: flex;
-      }
-      .bu-tool-tab {
-        flex: 1;
-      }
-      .bu-offset-group {
-        width: 100%;
-        justify-content: space-between;
-      }
-      .bu-toolbar-label {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 2px;
-      }
-      .bu-tool-btn {
-        flex: 1;
-        padding: 6px 8px;
-        font-size: 11.5px;
-      }
+    @media (max-width: 1050px) {
+      .hero-karaoke-sync-toolbar { grid-template-columns: 1fr 1fr; }
+      .bu-offset-group { grid-column: 1 / -1; }
     }
+    @media (max-width: 580px) {
+      .hero-karaoke-sync-toolbar { grid-template-columns: 1fr; gap: 10px; }
+      .bu-setting-group { padding: 12px; gap: 10px; }
+      .bu-offset-controls { grid-template-columns: 1fr 62px 1fr; }
+      .bu-offset-controls .reset { grid-column: 1 / -1; }
+    }
+
+    .bu-tool-btn:focus-visible, .bu-tool-tab:focus-visible, .bu-line:focus-visible {
+      outline: 3px solid #ffe2a5 !important;
+      outline-offset: 3px;
+    }
+    .hero-karaoke-viewport { overscroll-behavior-y: contain; }
 
     @media (prefers-reduced-motion: reduce) {
       .hero-karaoke-viewport,
@@ -5820,6 +5757,7 @@
     syncNodes: [],
     lastActiveIdx: -1,
     tickInterval: null,
+    loadVersion: 0,
     isFullscreen: false
   };
 
@@ -5884,16 +5822,63 @@
 
     const btnLines = document.getElementById('bu-display-lines-btn');
     const btnWords = document.getElementById('bu-display-words-btn');
-    if (btnLines) btnLines.classList.toggle('is-active', mode === 'lines');
-    if (btnWords) btnWords.classList.toggle('is-active', mode === 'words');
+    for (const [button, selected] of [[btnLines, mode === 'lines'], [btnWords, mode === 'words']]) {
+      button?.classList.toggle('is-active', selected);
+      button?.setAttribute('aria-pressed', String(selected));
+    }
     tickSync();
+  }
+
+  function syncTimeScale() {
+    const duration = Number(player()?.getDuration?.() || 0);
+    const syncDuration = Number(state.sync?.duration || 0);
+    return duration > 15 && syncDuration > 15 && Math.abs(duration - syncDuration) > 1.5
+      ? syncDuration / duration : 1;
+  }
+
+  function isMatchingTrack() {
+    const track = currentTrack();
+    if (!track || track.chapterId !== state.chapterId) return false;
+    if (state.sync?.videoId && track.videoId !== state.sync.videoId) return false;
+    const loadedId = player()?.getVideoData?.()?.video_id;
+    return !loadedId || !track.videoId || loadedId === track.videoId;
+  }
+
+  function centerActiveLine() {
+    const vp = document.getElementById('hero-karaoke-viewport');
+    const line = state.syncNodes[state.lastActiveIdx];
+    if (!vp || !line || !state.autoScroll) return;
+    const top = vp.scrollTop + line.getBoundingClientRect().top - vp.getBoundingClientRect().top
+      - (vp.clientHeight - line.clientHeight) / 2;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    vp.scrollTo({ top: Math.max(0, top), behavior: reducedMotion ? 'instant' : 'smooth' });
+  }
+
+  function setAutoScroll(enabled) {
+    state.autoScroll = Boolean(enabled);
+    const button = document.getElementById('bu-follow-btn');
+    if (button) {
+      button.textContent = enabled ? 'Śledzenie tekstu: włączone' : 'Wróć do śpiewanego tekstu';
+      button.setAttribute('aria-pressed', String(state.autoScroll));
+    }
+    if (enabled) centerActiveLine();
+  }
+
+  function setSettingsAvailable(available) {
+    const settings = document.getElementById('bu-karaoke-settings');
+    if (!settings) return;
+    settings.hidden = !available;
+    const toolbar = document.getElementById('hero-karaoke-sync-toolbar');
+    if (toolbar) toolbar.style.display = available ? 'grid' : 'none';
+    if (!available) settings.open = false;
   }
 
   function ensureSyncToolbar() {
     let toolbar = document.getElementById('hero-karaoke-sync-toolbar');
     const stage = document.getElementById('hero-karaoke-stage');
     const vp = document.getElementById('hero-karaoke-viewport');
-    if (!stage || !vp) return;
+    const deck = document.querySelector('#player-section .player-deck');
+    if (!stage || !vp || !deck) return;
 
     if (!toolbar) {
       toolbar = document.createElement('div');
@@ -5902,29 +5887,50 @@
       toolbar.setAttribute('role', 'toolbar');
       toolbar.setAttribute('aria-label', 'Narzędzia synchronizacji karaoke');
       toolbar.innerHTML = `
-        <div class="bu-toolbar-group bu-mode-toggle-group" role="group" aria-label="Wybór prezentacji">
-          <button type="button" class="bu-tool-tab" id="bu-display-lines-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('lines')" aria-label="Prezentacja: Linijki">
-            Linijki
-          </button>
-          <button type="button" class="bu-tool-tab is-active" id="bu-display-words-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('words')" aria-label="Prezentacja: Słowa">
-            Słowa
-          </button>
+        <div class="bu-setting-group" role="group" aria-labelledby="bu-display-label">
+          <span class="bu-setting-label" id="bu-display-label">Wyświetlanie</span>
+          <div class="bu-mode-toggle-group">
+            <button type="button" class="bu-tool-tab" id="bu-display-lines-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('lines')" aria-label="Prezentacja: Linijki">Linijki</button>
+            <button type="button" class="bu-tool-tab is-active" id="bu-display-words-btn" onclick="window.CC_BU_FEATURES?.setDisplayMode('words')" aria-label="Prezentacja: Słowa">Słowa</button>
+          </div>
         </div>
-        <div class="bu-toolbar-group bu-offset-group" role="group" aria-label="Korekta synchronizacji">
-          <span class="bu-toolbar-label">Korekta synchronizacji:</span>
-          <button type="button" class="bu-tool-btn" id="bu-offset-minus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(100)" title="Tekst wcześniej o 100 ms" aria-label="Tekst wcześniej o 100 ms">
-            Tekst wcześniej
-          </button>
-          <span class="bu-offset-val" id="bu-offset-val-badge" title="Przesunięcie czasu">0 ms</span>
-          <button type="button" class="bu-tool-btn" id="bu-offset-plus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(-100)" title="Tekst później o 100 ms" aria-label="Tekst później o 100 ms">
-            Tekst później
-          </button>
-          <button type="button" class="bu-tool-btn reset" id="bu-offset-reset-btn" onclick="window.CC_BU_FEATURES?.resetOffset()" title="Wyzeruj korektę do 0 ms" aria-label="Wyzeruj przesunięcie">
-            Wyzeruj
-          </button>
+        <div class="bu-setting-group" role="group" aria-labelledby="bu-follow-label">
+          <span class="bu-setting-label" id="bu-follow-label">Przewijanie</span>
+          <button type="button" class="bu-tool-btn" id="bu-follow-btn" aria-pressed="true" onclick="window.CC_BU_FEATURES?.setAutoScroll(this.getAttribute('aria-pressed') !== 'true')">Śledzenie tekstu: włączone</button>
+        </div>
+        <div class="bu-setting-group bu-offset-group" role="group" aria-labelledby="bu-offset-label">
+          <span class="bu-setting-label" id="bu-offset-label">Synchronizacja · krok 100 ms</span>
+          <div class="bu-offset-controls">
+            <button type="button" class="bu-tool-btn" id="bu-offset-minus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(100)" title="Tekst wcześniej o 100 ms" aria-label="Tekst wcześniej o 100 ms">Wcześniej</button>
+            <span class="bu-offset-val" id="bu-offset-val-badge" title="Przesunięcie czasu" role="status">0 ms</span>
+            <button type="button" class="bu-tool-btn" id="bu-offset-plus-btn" onclick="window.CC_BU_FEATURES?.adjustOffset(-100)" title="Tekst później o 100 ms" aria-label="Tekst później o 100 ms">Później</button>
+            <button type="button" class="bu-tool-btn reset" id="bu-offset-reset-btn" onclick="window.CC_BU_FEATURES?.resetOffset()" title="Wyzeruj korektę do 0 ms" aria-label="Wyzeruj przesunięcie">Wyzeruj</button>
+          </div>
         </div>
       `;
-      vp.parentNode.insertBefore(toolbar, vp);
+      const settings = document.createElement('details');
+      settings.id = 'bu-karaoke-settings';
+      settings.className = 'bu-karaoke-settings';
+      const summary = document.createElement('summary');
+      summary.textContent = 'Ustawienia karaoke';
+      summary.setAttribute('aria-controls', toolbar.id);
+      settings.append(summary, toolbar);
+      deck.after(settings);
+      settings.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && settings.open) {
+          event.preventDefault();
+          settings.open = false;
+          summary.focus();
+        }
+      });
+      const pauseFollowing = () => setAutoScroll(false);
+      vp.addEventListener('wheel', pauseFollowing, { passive: true });
+      vp.addEventListener('touchmove', pauseFollowing, { passive: true });
+      vp.addEventListener('keydown', (event) => {
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) pauseFollowing();
+      });
+      vp.tabIndex = 0;
+      vp.setAttribute('aria-label', 'Tekst karaoke. Przewijanie zatrzymuje śledzenie tekstu.');
     }
 
     try {
@@ -5940,9 +5946,12 @@
     if (btnLines) btnLines.classList.toggle('is-active', state.displayMode === 'lines');
     if (btnWords) btnWords.classList.toggle('is-active', state.displayMode === 'words');
 
+    setDisplayMode(state.displayMode);
+    setAutoScroll(state.autoScroll);
     state.offsetMs = getSavedOffset(state.chapterId);
     updateOffsetDisplay();
-    toolbar.style.display = (state.mode === 'sync') ? 'flex' : 'none';
+    toolbar.style.display = 'grid';
+    setSettingsAvailable(state.mode === 'sync' && stage.style.display !== 'none');
   }
 
   const BIBLE_BOOKS_CANON = [
@@ -6232,81 +6241,43 @@
       lineBtn.appendChild(textSpan);
 
       lineBtn.addEventListener('click', () => {
-        player()?.seekTo?.(segment.start, true);
+        if (!isMatchingTrack()) {
+          window.showToast?.('Włącz ten sam rozdział w odtwarzaczu, aby przewinąć nagranie.');
+          return;
+        }
+        const seekTime = segment.start / syncTimeScale() - state.offsetMs / 1000;
+        player()?.seekTo?.(Math.max(0, seekTime), true);
+        tickSync();
       });
 
       container.appendChild(lineBtn);
       state.syncNodes.push(lineBtn);
     }
-    if (state.syncNodes.length > 0) {
-      state.syncNodes[0]?.classList.add('active');
-      state.syncNodes[1]?.classList.add('next');
-      state.lastActiveIdx = 0;
-      if (currentTime() > 0.5) {
-        state.lastActiveIdx = -1;
-        tickSync();
-      }
-    }
+    tickSync();
   }
 
   function tickSync() {
     if (state.mode !== 'sync' || !state.sync || !state.syncNodes.length) return;
-    let now = currentTime();
-
-    // Korekta przesunięcia (Sync Offset)
-    if (state.offsetMs) {
-      now = now + (state.offsetMs / 1000.0);
-    }
-
-    try {
-      const p = player();
-      const ytDur = Number(p?.getDuration?.() || 0);
-      const syncDur = Number(state.sync.duration || 0);
-      if (ytDur > 15 && syncDur > 15 && Math.abs(ytDur - syncDur) > 1.5) {
-        now = now * (syncDur / ytDur);
-      }
-    } catch {}
+    const matching = isMatchingTrack();
+    const now = (currentTime() + state.offsetMs / 1000) * syncTimeScale();
     const segments = state.sync.lines;
-    let active = segments.findIndex(x => now >= x.start && now < x.end);
-    if (active === -1 && now <= (segments[0]?.start || 2)) active = 0;
-    if (active === -1 && segments.length > 0 && now >= segments[segments.length - 1].end) {
-      active = segments.length - 1;
-    }
+    const active = matching ? segments.findIndex(x => now >= x.start && now < x.end) : -1;
 
     if (active !== state.lastActiveIdx) {
-      // Usuń poprzednie klasy
-      if (state.lastActiveIdx >= 0) {
-        const prevEl = state.syncNodes[state.lastActiveIdx];
-        prevEl?.classList.remove('active', 'prev', 'next');
-        if (prevEl?._wordNodes) {
-          prevEl._wordNodes.forEach(wNode => {
-            wNode.classList.remove('is-singing');
-            wNode.classList.add('is-sung');
-          });
-        }
-        state.syncNodes[state.lastActiveIdx - 1]?.classList.remove('prev');
-        state.syncNodes[state.lastActiveIdx + 1]?.classList.remove('next');
-      }
-
-      if (active >= 0) {
-        const curEl = state.syncNodes[active];
-        curEl?.classList.add('active');
-        state.syncNodes[active - 1]?.classList.add('prev');
-        state.syncNodes[active + 1]?.classList.add('next');
-
-        const vp = document.getElementById('hero-karaoke-viewport');
-        if (state.autoScroll && curEl && vp) {
-          const topPos = curEl.offsetTop - (vp.clientHeight / 2) + (curEl.clientHeight / 2);
-          vp.scrollTo({ top: Math.max(0, topPos), behavior: 'smooth' });
-        }
-      }
+      // Rebuild neighboring states after any jump, including backwards and into a pause.
+      state.syncNodes.forEach((node, index) => {
+        node.classList.toggle('active', index === active);
+        node.classList.toggle('prev', active >= 0 && index === active - 1);
+        node.classList.toggle('next', active >= 0 && index === active + 1);
+        if (index === active) node.setAttribute('aria-current', 'true');
+        else node.removeAttribute('aria-current');
+        if (index !== active) node._wordNodes?.forEach(word => word.classList.remove('is-singing', 'is-sung'));
+      });
       state.lastActiveIdx = active;
+      centerActiveLine();
     }
 
-    // Odświeżaj podświetlenie słowa w czasie rzeczywistym w aktywnej linijce
-    if (active >= 0 && state.syncNodes[active]) {
-      updateActiveLineWords(state.syncNodes[active], segments[active], now);
-    }
+    if (active >= 0) updateActiveLineWords(state.syncNodes[active], segments[active], now);
   }
 
   async function startChapterKaraoke(chapterId, requestedMode = null, showStage = true) {
@@ -6322,12 +6293,14 @@
       (!requestedMode || requestedMode === state.mode)
     );
 
+    const loadVersion = ++state.loadVersion;
     state.chapterId = targetId;
     if (showStage) {
       stage.style.display = 'block';
     }
 
     if (alreadyRendered) {
+      setSettingsAvailable(state.mode === 'sync');
       if (state.mode === 'sync' && state.sync && !state.tickInterval) {
         state.tickInterval = setInterval(tickSync, 40);
       }
@@ -6337,6 +6310,15 @@
       return;
     }
 
+    if (state.tickInterval) clearInterval(state.tickInterval);
+    state.tickInterval = null;
+    state.lyrics = null;
+    state.sync = null;
+    state.syncNodes = [];
+    state.lastActiveIdx = -1;
+    const oldToolbar = document.getElementById('hero-karaoke-sync-toolbar');
+    if (oldToolbar) oldToolbar.style.display = 'none';
+    setSettingsAvailable(false);
     const titleEl = document.getElementById('hero-karaoke-title');
     const badgeEl = document.getElementById('hero-karaoke-badge');
     const statusEl = document.getElementById('hero-sync-status-indicator');
@@ -6351,14 +6333,16 @@
 
     try {
       // 1. Zawsze ładujemy pełny tekst biblijny UBG 2025
-      const lyrics = await loadChapterLyrics(state.chapterId);
+      const [lyrics, syncData] = await Promise.all([
+        loadChapterLyrics(targetId), loadChapterSync(targetId)
+      ]);
+      if (loadVersion !== state.loadVersion) return;
       state.lyrics = lyrics;
 
       if (titleEl) titleEl.textContent = `${lyrics.book} · Rozdział ${lyrics.chapter}`;
       if (badgeEl) badgeEl.textContent = lyrics.translation || 'UBG 2025';
 
       // 2. Sprawdzamy dostępność synchronizacji karaoke
-      const syncData = await loadChapterSync(state.chapterId);
       state.sync = syncData;
 
       initChapterSelectors();
@@ -6422,6 +6406,7 @@
       }
 
     } catch (err) {
+      if (loadVersion !== state.loadVersion) return;
       container.textContent = err.message || 'Nie udało się wczytać tekstu rozdziału.';
       container.dataset.mode = 'unavailable';
       if (statusEl) statusEl.textContent = 'Błąd wczytywania tekstu';
@@ -6429,6 +6414,7 @@
   }
 
   function setMode(mode) {
+    if (mode !== 'sync' && mode !== 'reading') return;
     if (mode === 'sync' && !state.sync) {
       alert('Dla tego rozdziału nie ma jeszcze przygotowanej synchronizacji czasowej. Dostępny jest pełny tekst w trybie „Czytaj i śpiewaj”.');
       return;
@@ -6456,7 +6442,8 @@
       if (!state.tickInterval) state.tickInterval = setInterval(tickSync, 40);
       ensureSyncToolbar();
       const tb = document.getElementById('hero-karaoke-sync-toolbar');
-      if (tb) tb.style.display = 'flex';
+      if (tb) tb.style.display = 'grid';
+      setSettingsAvailable(true);
     } else {
       renderReadingMode(container, state.lyrics);
       if (statusEl) statusEl.textContent = state.sync ? '○ Pełny tekst UBG' : '○ Pełny tekst UBG (bez znaczników czasu)';
@@ -6466,6 +6453,7 @@
       }
       const tb = document.getElementById('hero-karaoke-sync-toolbar');
       if (tb) tb.style.display = 'none';
+      setSettingsAvailable(false);
     }
   }
 
@@ -6491,6 +6479,7 @@
   }
 
   function closeHeroKaraoke() {
+    ++state.loadVersion;
     const stage = document.getElementById('hero-karaoke-stage');
     if (stage) {
       stage.style.display = 'none';
@@ -6499,6 +6488,7 @@
     }
     const tb = document.getElementById('hero-karaoke-sync-toolbar');
     if (tb) tb.style.display = 'none';
+    setSettingsAvailable(false);
     const btn = document.getElementById('btn-player-karaoke');
     if (btn) btn.classList.remove('is-karaoke-active');
     if (state.tickInterval) {
@@ -6840,6 +6830,7 @@
     onBookSelect,
     onChapterSelect,
     setDisplayMode,
+    setAutoScroll,
     adjustOffset,
     resetOffset,
     getSavedOffset,
