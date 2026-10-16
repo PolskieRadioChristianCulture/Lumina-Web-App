@@ -4,6 +4,8 @@
 */
 (() => {
   'use strict';
+  if (typeof window !== 'undefined' && window.__CC_BU_KARAOKE_V4_READY__) return;
+  if (typeof window !== 'undefined') window.__CC_BU_KARAOKE_V4_READY__ = true;
 
   const API = '/api/bu/v1';
   const BIBLE_BASE = '/data/bible/ubg-2025/';
@@ -11,7 +13,8 @@
   const UBG_LICENSE = 'Uwspółcześniona Biblia Gdańska (UBG) © Fundacja Wrota Nadziei / Logos Media. Wykorzystanie ewangelizacyjne na licencji CC BY-ND 4.0.';
 
   // 1. STYLE CSS
-  const style = document.createElement('style');
+  const existingStyle = document.getElementById('bu-karaoke-top100-styles');
+  const style = existingStyle || document.createElement('style');
   style.id = 'bu-karaoke-top100-styles';
   style.textContent = `
     :root {
@@ -856,13 +859,33 @@
     }
   }
 
-  async function startChapterKaraoke(chapterId, requestedMode = null) {
+  async function startChapterKaraoke(chapterId, requestedMode = null, showStage = true) {
     const stage = document.getElementById('hero-karaoke-stage');
     const container = document.getElementById('hero-karaoke-lines');
     if (!stage || !container) return;
 
-    state.chapterId = chapterId || state.chapterId || 'GEN-001';
-    stage.style.display = 'block';
+    const targetId = chapterId || state.chapterId || 'GEN-001';
+    const alreadyRendered = (
+      state.chapterId === targetId &&
+      state.lyrics &&
+      container.children.length > 5 &&
+      (!requestedMode || requestedMode === state.mode)
+    );
+
+    state.chapterId = targetId;
+    if (showStage) {
+      stage.style.display = 'block';
+    }
+
+    if (alreadyRendered) {
+      if (state.mode === 'sync' && state.sync && !state.tickInterval) {
+        state.tickInterval = setInterval(tickSync, 200);
+      }
+      if (showStage) {
+        stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      return;
+    }
 
     const titleEl = document.getElementById('hero-karaoke-title');
     const badgeEl = document.getElementById('hero-karaoke-badge');
@@ -933,7 +956,7 @@
 
       if (activeMode === 'sync' && syncData) {
         renderSyncMode(container, syncData);
-        if (!state.tickInterval) {
+        if (showStage && !state.tickInterval) {
           state.tickInterval = setInterval(tickSync, 200);
         }
       } else {
@@ -944,8 +967,9 @@
         }
       }
 
-      // Przewiń płynnie do panelu HERO
-      stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (showStage) {
+        stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
 
     } catch (err) {
       container.textContent = err.message || 'Nie udało się wczytać tekstu rozdziału.';
@@ -1338,7 +1362,7 @@
   window.voteCurrentTrack = voteCurrentTrack;
   window.togglePlayerKaraoke = togglePlayerKaraoke;
 
-  window.CC_BU_FEATURES = {
+  let _ccBuFeatures = {
     openKaraoke,
     togglePlayerKaraoke,
     voteCurrentTrack,
@@ -1355,11 +1379,29 @@
     downloadFormat
   };
 
-  // Inicjalizacja stanu selektorów i przycisków
+  try {
+    Object.defineProperty(window, 'CC_BU_FEATURES', {
+      configurable: true,
+      enumerable: true,
+      get() { return _ccBuFeatures; },
+      set(val) {
+        if (val && typeof val.togglePlayerKaraoke === 'function' && typeof val.onBookSelect === 'function') {
+          _ccBuFeatures = val;
+        }
+      }
+    });
+  } catch {
+    window.CC_BU_FEATURES = _ccBuFeatures;
+  }
+
+  // Inicjalizacja stanu selektorów, przycisków i preloadu GEN-001
   function initOnReady() {
     initChapterSelectors();
     updateVotingButtonState();
     syncMyVotes();
+    const cur = currentTrack();
+    const initialId = cur?.chapterId || 'GEN-001';
+    startChapterKaraoke(initialId, null, false).catch(() => {});
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initOnReady);

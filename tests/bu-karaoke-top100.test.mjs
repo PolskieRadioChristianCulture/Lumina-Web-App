@@ -43,7 +43,7 @@ test('BU Karaoke & TOP 100: 3. Bezpieczna integracja w _worker.js (bez nadpisywa
 test('BU Karaoke & TOP 100: 4. Podpięcie skryptu i tokena LUMINA w biblijne-uwielbienie.html', () => {
   const content = fs.readFileSync(path.join(ROOT, 'biblijne-uwielbienie.html'), 'utf8');
 
-  assert.ok(content.includes('<script src="/assets/bu/karaoke-top100.js" defer></script>'), 'Musi dołączać skrypt karaoke-top100.js z defer');
+  assert.ok(/<script\s+src="\/assets\/bu\/karaoke-top100\.js(\?[^"]*)?"\s+defer><\/script>/.test(content), 'Musi dołączać skrypt karaoke-top100.js z defer');
   assert.ok(content.includes('window.CC_BU_GET_ID_TOKEN'), 'Musi definiować funkcję pobierania tokena CC_BU_GET_ID_TOKEN');
   assert.ok(content.includes('/lumina-db.js'), 'Musi wspierać pobieranie tożsamości z lumina-db.js');
 });
