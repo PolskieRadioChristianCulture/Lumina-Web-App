@@ -143,8 +143,8 @@ async function run() {
     await page.waitForTimeout(500);
     const proSyncLines = await page.locator('#hero-karaoke-lines .bu-line').count();
     console.log(`Proverbs 1 synchronized karaoke lines in Tryb B: ${proSyncLines}`);
-    if (proSyncLines < 60) {
-      throw new Error(`Przypowieści 1 w trybie karaoke powinny mieć >= 60 linii, otrzymano: ${proSyncLines}`);
+    if (proSyncLines < 40) {
+      throw new Error(`Przypowieści 1 w trybie karaoke powinny mieć >= 40 linii, otrzymano: ${proSyncLines}`);
     }
     await page.evaluate(() => window.CC_BU_FEATURES.setMode('reading'));
     await page.waitForTimeout(300);

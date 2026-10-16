@@ -1,1014 +1,3441 @@
 {
   "chapterId": "ECC-002",
-  "book": "Księga Kaznodziei",
-  "chapter": 2,
   "videoId": "WZY5GrH922o",
-  "title": "Kaznodzieja 2: Gonitwa za wiatrem | Biblia Śpiewana",
-  "translation": "UBG-2025 (Tekst kanoniczny 100%)",
-  "copyright": "Uwspółcześniona Biblia Gdańska (UBG) © Fundacja Wrota Nadziei / Logos Media. Wykorzystanie ewangelizacyjne na licencji CC BY-ND 4.0.",
-  "status": "SYNC_READY",
-  "qualityScore": 0.96,
-  "audioVersion": "yt-WZY5GrH922o",
-  "duration": 234,
-  "lastAnalyzedAt": "2026-10-16T06:41:26.120Z",
+  "status": "SYNC_REVIEW",
+  "syncMethod": "yt-timedtext-precision",
+  "coverage": 31,
+  "totalLines": 54,
+  "duration": 233,
+  "generatedAt": "2026-10-16T08:38:07.687Z",
   "lines": [
     {
       "id": "ECC-002-L001",
       "verse": 1,
       "start": 0,
-      "end": 7.3,
+      "end": 1.09,
       "text": "Powiedziałem w sercu:",
-      "confidence": 0.96,
+      "words": [
+        {
+          "text": "Powiedziałem",
+          "start": 0,
+          "end": 0.73
+        },
+        {
+          "text": "w",
+          "start": 0.73,
+          "end": 0.88
+        },
+        {
+          "text": "sercu:",
+          "start": 0.88,
+          "end": 1.09
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L002",
       "verse": 1,
-      "start": 7.3,
-      "end": 9.51,
-      "text": "Niech teraz doświadczę cię w radości,",
-      "confidence": 0.96,
+      "start": 1.09,
+      "end": 5.95,
+      "text": "Niech teraz doświadczę cię w radości, zażywaj więc przyjemności. Lecz to także jest marnością.",
+      "words": [
+        {
+          "text": "Niech",
+          "start": 1.09,
+          "end": 1.4
+        },
+        {
+          "text": "teraz",
+          "start": 1.4,
+          "end": 1.71
+        },
+        {
+          "text": "doświadczę",
+          "start": 1.71,
+          "end": 2.33
+        },
+        {
+          "text": "cię",
+          "start": 2.33,
+          "end": 2.52
+        },
+        {
+          "text": "w",
+          "start": 2.52,
+          "end": 2.67
+        },
+        {
+          "text": "radości,",
+          "start": 2.67,
+          "end": 3.11
+        },
+        {
+          "text": "zażywaj",
+          "start": 3.11,
+          "end": 3.55
+        },
+        {
+          "text": "więc",
+          "start": 3.55,
+          "end": 3.8
+        },
+        {
+          "text": "przyjemności.",
+          "start": 3.8,
+          "end": 4.55
+        },
+        {
+          "text": "Lecz",
+          "start": 4.55,
+          "end": 4.8
+        },
+        {
+          "text": "to",
+          "start": 4.8,
+          "end": 4.95
+        },
+        {
+          "text": "także",
+          "start": 4.95,
+          "end": 5.26
+        },
+        {
+          "text": "jest",
+          "start": 5.26,
+          "end": 5.51
+        },
+        {
+          "text": "marnością.",
+          "start": 5.51,
+          "end": 5.95
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L003",
-      "verse": 1,
-      "start": 9.51,
-      "end": 11.09,
-      "text": "zażywaj więc przyjemności.",
-      "confidence": 0.96,
+      "verse": 2,
+      "start": 7.96,
+      "end": 14.02,
+      "text": "O śmiechu powiedziałem:",
+      "words": [
+        {
+          "text": "O",
+          "start": 7.96,
+          "end": 8.26
+        },
+        {
+          "text": "śmiechu",
+          "start": 8.26,
+          "end": 10.38
+        },
+        {
+          "text": "powiedziałem:",
+          "start": 10.38,
+          "end": 14.02
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L004",
-      "verse": 1,
-      "start": 11.09,
-      "end": 13.29,
-      "text": "Lecz to także jest marnością.",
-      "confidence": 0.96,
+      "verse": 2,
+      "start": 14.02,
+      "end": 21.13,
+      "text": "To szaleństwo, a o radości:",
+      "words": [
+        {
+          "text": "To",
+          "start": 14.32,
+          "end": 17.64
+        },
+        {
+          "text": "szaleństwo,",
+          "start": 17.64,
+          "end": 20.92
+        },
+        {
+          "text": "a",
+          "start": 20.92,
+          "end": 21.12
+        },
+        {
+          "text": "o",
+          "start": 21.12,
+          "end": 21.27
+        },
+        {
+          "text": "radości:",
+          "start": 21.24,
+          "end": 21.49
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L005",
       "verse": 2,
-      "start": 13.29,
-      "end": 14.71,
-      "text": "O śmiechu powiedziałem:",
-      "confidence": 0.96,
+      "start": 21.13,
+      "end": 24.02,
+      "text": "Co to daje?",
+      "words": [
+        {
+          "text": "Co",
+          "start": 21.43,
+          "end": 22.58
+        },
+        {
+          "text": "to",
+          "start": 22.58,
+          "end": 23.72
+        },
+        {
+          "text": "daje?",
+          "start": 23.72,
+          "end": 24.02
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L006",
-      "verse": 2,
-      "start": 14.71,
-      "end": 16.35,
-      "text": "To szaleństwo, a o radości:",
-      "confidence": 0.96,
+      "verse": 3,
+      "start": 24.02,
+      "end": 27.05,
+      "text": "Postanowiłem w sercu, że poddam swoje ciało winu –",
+      "words": [
+        {
+          "text": "Postanowiłem",
+          "start": 24.02,
+          "end": 24.91
+        },
+        {
+          "text": "w",
+          "start": 24.91,
+          "end": 25.06
+        },
+        {
+          "text": "sercu,",
+          "start": 25.06,
+          "end": 25.43
+        },
+        {
+          "text": "że",
+          "start": 25.43,
+          "end": 25.58
+        },
+        {
+          "text": "poddam",
+          "start": 25.58,
+          "end": 26.02
+        },
+        {
+          "text": "swoje",
+          "start": 26.02,
+          "end": 26.39
+        },
+        {
+          "text": "ciało",
+          "start": 26.39,
+          "end": 26.76
+        },
+        {
+          "text": "winu",
+          "start": 26.76,
+          "end": 27.05
+        },
+        {
+          "text": "–",
+          "start": 27.05,
+          "end": 27.05
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L007",
-      "verse": 2,
-      "start": 16.35,
-      "end": 17.53,
-      "text": "Co to daje?",
-      "confidence": 0.96,
+      "verse": 3,
+      "start": 27.05,
+      "end": 29.17,
+      "text": "serce jednak kierowałem mądrością –",
+      "words": [
+        {
+          "text": "serce",
+          "start": 27.05,
+          "end": 27.39
+        },
+        {
+          "text": "jednak",
+          "start": 27.39,
+          "end": 27.8
+        },
+        {
+          "text": "kierowałem",
+          "start": 27.8,
+          "end": 28.48
+        },
+        {
+          "text": "mądrością",
+          "start": 28.48,
+          "end": 29.1
+        },
+        {
+          "text": "–",
+          "start": 29.1,
+          "end": 29.17
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L008",
       "verse": 3,
-      "start": 17.53,
-      "end": 18.83,
-      "text": "Postanowiłem w sercu,",
-      "confidence": 0.96,
+      "start": 29.17,
+      "end": 31.72,
+      "text": "i że będę się trzymać głupoty, aż zobaczę,",
+      "words": [
+        {
+          "text": "i",
+          "start": 29.47,
+          "end": 31.6
+        },
+        {
+          "text": "że",
+          "start": 31.6,
+          "end": 31.75
+        },
+        {
+          "text": "będę",
+          "start": 30.97,
+          "end": 31.12
+        },
+        {
+          "text": "się",
+          "start": 31.12,
+          "end": 31.27
+        },
+        {
+          "text": "trzymać",
+          "start": 31.27,
+          "end": 31.42
+        },
+        {
+          "text": "głupoty,",
+          "start": 31.42,
+          "end": 31.57
+        },
+        {
+          "text": "aż",
+          "start": 31.57,
+          "end": 31.72
+        },
+        {
+          "text": "zobaczę,",
+          "start": 31.72,
+          "end": 31.97
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L009",
       "verse": 3,
-      "start": 18.83,
-      "end": 20.53,
-      "text": "że poddam swoje ciało winu –",
-      "confidence": 0.96,
+      "start": 31.72,
+      "end": 34.57,
+      "text": "co dla synów ludzkich jest dobrem spośród tego,",
+      "words": [
+        {
+          "text": "co",
+          "start": 31.72,
+          "end": 31.87
+        },
+        {
+          "text": "dla",
+          "start": 31.87,
+          "end": 32.09
+        },
+        {
+          "text": "synów",
+          "start": 32.09,
+          "end": 32.46
+        },
+        {
+          "text": "ludzkich",
+          "start": 32.46,
+          "end": 33.04
+        },
+        {
+          "text": "jest",
+          "start": 33.04,
+          "end": 33.33
+        },
+        {
+          "text": "dobrem",
+          "start": 33.33,
+          "end": 33.77
+        },
+        {
+          "text": "spośród",
+          "start": 33.77,
+          "end": 34.28
+        },
+        {
+          "text": "tego,",
+          "start": 34.28,
+          "end": 34.57
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L010",
       "verse": 3,
-      "start": 20.53,
-      "end": 22.62,
-      "text": "serce jednak kierowałem mądrością –",
-      "confidence": 0.96,
+      "start": 34.57,
+      "end": 38.02,
+      "text": "co mają czynić pod niebem, przez wszystkie dni ich życia.",
+      "words": [
+        {
+          "text": "co",
+          "start": 34.57,
+          "end": 34.72
+        },
+        {
+          "text": "mają",
+          "start": 34.72,
+          "end": 35.02
+        },
+        {
+          "text": "czynić",
+          "start": 35.02,
+          "end": 35.47
+        },
+        {
+          "text": "pod",
+          "start": 35.47,
+          "end": 35.7
+        },
+        {
+          "text": "niebem,",
+          "start": 35.7,
+          "end": 36.15
+        },
+        {
+          "text": "przez",
+          "start": 36.15,
+          "end": 36.53
+        },
+        {
+          "text": "wszystkie",
+          "start": 36.53,
+          "end": 37.21
+        },
+        {
+          "text": "dni",
+          "start": 37.21,
+          "end": 37.44
+        },
+        {
+          "text": "ich",
+          "start": 37.44,
+          "end": 37.67
+        },
+        {
+          "text": "życia.",
+          "start": 37.67,
+          "end": 38.02
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L011",
-      "verse": 3,
-      "start": 22.62,
-      "end": 25.11,
-      "text": "i że będę się trzymać głupoty, aż zobaczę,",
-      "confidence": 0.96,
+      "verse": 4,
+      "start": 38.02,
+      "end": 42.74,
+      "text": "Dokonałem wielkich dzieł, zbudowałem sobie domy, zasadziłem sobie winnice.",
+      "words": [
+        {
+          "text": "Dokonałem",
+          "start": 38.32,
+          "end": 38.61
+        },
+        {
+          "text": "wielkich",
+          "start": 38.61,
+          "end": 38.91
+        },
+        {
+          "text": "dzieł,",
+          "start": 38.91,
+          "end": 39.2
+        },
+        {
+          "text": "zbudowałem",
+          "start": 39.2,
+          "end": 39.68
+        },
+        {
+          "text": "sobie",
+          "start": 39.68,
+          "end": 40.16
+        },
+        {
+          "text": "domy,",
+          "start": 40.16,
+          "end": 41.16
+        },
+        {
+          "text": "zasadziłem",
+          "start": 41.16,
+          "end": 41.8
+        },
+        {
+          "text": "sobie",
+          "start": 41.8,
+          "end": 42.44
+        },
+        {
+          "text": "winnice.",
+          "start": 42.44,
+          "end": 42.74
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L012",
-      "verse": 3,
-      "start": 25.11,
-      "end": 27.88,
-      "text": "co dla synów ludzkich jest dobrem spośród tego,",
-      "confidence": 0.96,
+      "verse": 5,
+      "start": 42.74,
+      "end": 61.06,
+      "text": "Założyłem sobie ogrody i sady i posadziłem w nich wszelkiego rodzaju drzewa owocowe.",
+      "words": [
+        {
+          "text": "Założyłem",
+          "start": 46.16,
+          "end": 46.56
+        },
+        {
+          "text": "sobie",
+          "start": 46.56,
+          "end": 46.96
+        },
+        {
+          "text": "ogrody",
+          "start": 46.96,
+          "end": 58.16
+        },
+        {
+          "text": "i",
+          "start": 58.16,
+          "end": 59.46
+        },
+        {
+          "text": "sady",
+          "start": 59.46,
+          "end": 60.76
+        },
+        {
+          "text": "i",
+          "start": 60.76,
+          "end": 60.91
+        },
+        {
+          "text": "posadziłem",
+          "start": 60.16,
+          "end": 60.31
+        },
+        {
+          "text": "w",
+          "start": 60.31,
+          "end": 60.46
+        },
+        {
+          "text": "nich",
+          "start": 60.46,
+          "end": 60.61
+        },
+        {
+          "text": "wszelkiego",
+          "start": 60.61,
+          "end": 60.76
+        },
+        {
+          "text": "rodzaju",
+          "start": 60.76,
+          "end": 60.91
+        },
+        {
+          "text": "drzewa",
+          "start": 60.91,
+          "end": 61.06
+        },
+        {
+          "text": "owocowe.",
+          "start": 61.06,
+          "end": 61.31
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L013",
-      "verse": 3,
-      "start": 27.88,
-      "end": 29.46,
-      "text": "co mają czynić pod niebem,",
-      "confidence": 0.96,
+      "verse": 6,
+      "start": 61.06,
+      "end": 65.26,
+      "text": "Zbudowałem też sobie stawy na wodę, by nawadniać nią las rosnących drzew.",
+      "words": [
+        {
+          "text": "Zbudowałem",
+          "start": 61.06,
+          "end": 61.76
+        },
+        {
+          "text": "też",
+          "start": 61.76,
+          "end": 61.97
+        },
+        {
+          "text": "sobie",
+          "start": 61.97,
+          "end": 62.32
+        },
+        {
+          "text": "stawy",
+          "start": 62.32,
+          "end": 62.67
+        },
+        {
+          "text": "na",
+          "start": 62.67,
+          "end": 62.82
+        },
+        {
+          "text": "wodę,",
+          "start": 62.82,
+          "end": 63.1
+        },
+        {
+          "text": "by",
+          "start": 63.1,
+          "end": 63.25
+        },
+        {
+          "text": "nawadniać",
+          "start": 63.25,
+          "end": 63.88
+        },
+        {
+          "text": "nią",
+          "start": 63.88,
+          "end": 64.09
+        },
+        {
+          "text": "las",
+          "start": 64.09,
+          "end": 64.3
+        },
+        {
+          "text": "rosnących",
+          "start": 64.3,
+          "end": 64.93
+        },
+        {
+          "text": "drzew.",
+          "start": 64.93,
+          "end": 65.26
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L014",
-      "verse": 3,
-      "start": 29.46,
-      "end": 31.73,
-      "text": "przez wszystkie dni ich życia.",
-      "confidence": 0.96,
+      "verse": 7,
+      "start": 65.26,
+      "end": 72.63,
+      "text": "Nabyłem sługi i służące, miałem też sługi urodzone w swoim domu. Posiadałem również stada wołów i trzody owiec większe niż wszyscy,",
+      "words": [
+        {
+          "text": "Nabyłem",
+          "start": 65.56,
+          "end": 68.4
+        },
+        {
+          "text": "sługi",
+          "start": 68.4,
+          "end": 71.24
+        },
+        {
+          "text": "i",
+          "start": 71.24,
+          "end": 71.39
+        },
+        {
+          "text": "służące,",
+          "start": 70.08,
+          "end": 70.23
+        },
+        {
+          "text": "miałem",
+          "start": 70.23,
+          "end": 70.38
+        },
+        {
+          "text": "też",
+          "start": 70.38,
+          "end": 70.53
+        },
+        {
+          "text": "sługi",
+          "start": 70.53,
+          "end": 70.68
+        },
+        {
+          "text": "urodzone",
+          "start": 70.68,
+          "end": 70.83
+        },
+        {
+          "text": "w",
+          "start": 70.83,
+          "end": 70.98
+        },
+        {
+          "text": "swoim",
+          "start": 70.98,
+          "end": 71.13
+        },
+        {
+          "text": "domu.",
+          "start": 71.13,
+          "end": 71.28
+        },
+        {
+          "text": "Posiadałem",
+          "start": 71.28,
+          "end": 71.43
+        },
+        {
+          "text": "również",
+          "start": 71.43,
+          "end": 71.58
+        },
+        {
+          "text": "stada",
+          "start": 71.58,
+          "end": 71.73
+        },
+        {
+          "text": "wołów",
+          "start": 71.73,
+          "end": 71.88
+        },
+        {
+          "text": "i",
+          "start": 71.88,
+          "end": 72.03
+        },
+        {
+          "text": "trzody",
+          "start": 72.03,
+          "end": 72.18
+        },
+        {
+          "text": "owiec",
+          "start": 72.18,
+          "end": 72.33
+        },
+        {
+          "text": "większe",
+          "start": 72.33,
+          "end": 72.48
+        },
+        {
+          "text": "niż",
+          "start": 72.48,
+          "end": 72.63
+        },
+        {
+          "text": "wszyscy,",
+          "start": 72.63,
+          "end": 72.88
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L015",
-      "verse": 4,
-      "start": 31.73,
-      "end": 33.25,
-      "text": "Dokonałem wielkich dzieł,",
-      "confidence": 0.96,
+      "verse": 7,
+      "start": 72.63,
+      "end": 74.71,
+      "text": "którzy byli przede mną w Jerozolimie.",
+      "words": [
+        {
+          "text": "którzy",
+          "start": 72.63,
+          "end": 73.03
+        },
+        {
+          "text": "byli",
+          "start": 73.03,
+          "end": 73.3
+        },
+        {
+          "text": "przede",
+          "start": 73.3,
+          "end": 73.7
+        },
+        {
+          "text": "mną",
+          "start": 73.7,
+          "end": 73.9
+        },
+        {
+          "text": "w",
+          "start": 73.9,
+          "end": 74.05
+        },
+        {
+          "text": "Jerozolimie.",
+          "start": 74.05,
+          "end": 74.71
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L016",
-      "verse": 4,
-      "start": 33.25,
-      "end": 34.61,
-      "text": "zbudowałem sobie domy,",
-      "confidence": 0.96,
+      "verse": 8,
+      "start": 74.71,
+      "end": 80,
+      "text": "Zgromadziłem sobie srebro i złoto, i klejnoty królów i prowincji. Przygotowałem sobie śpiewaków i śpiewaczki,",
+      "words": [
+        {
+          "text": "Zgromadziłem",
+          "start": 74.71,
+          "end": 75.4
+        },
+        {
+          "text": "sobie",
+          "start": 75.4,
+          "end": 75.69
+        },
+        {
+          "text": "srebro",
+          "start": 75.69,
+          "end": 76.04
+        },
+        {
+          "text": "i",
+          "start": 76.04,
+          "end": 76.19
+        },
+        {
+          "text": "złoto,",
+          "start": 76.19,
+          "end": 76.48
+        },
+        {
+          "text": "i",
+          "start": 76.48,
+          "end": 76.63
+        },
+        {
+          "text": "klejnoty",
+          "start": 76.63,
+          "end": 77.09
+        },
+        {
+          "text": "królów",
+          "start": 77.09,
+          "end": 77.44
+        },
+        {
+          "text": "i",
+          "start": 77.44,
+          "end": 77.59
+        },
+        {
+          "text": "prowincji.",
+          "start": 77.59,
+          "end": 78.11
+        },
+        {
+          "text": "Przygotowałem",
+          "start": 78.11,
+          "end": 78.86
+        },
+        {
+          "text": "sobie",
+          "start": 78.86,
+          "end": 79.15
+        },
+        {
+          "text": "śpiewaków",
+          "start": 79.15,
+          "end": 79.67
+        },
+        {
+          "text": "i",
+          "start": 79.67,
+          "end": 79.82
+        },
+        {
+          "text": "śpiewaczki,",
+          "start": 79.82,
+          "end": 80
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L017",
-      "verse": 4,
-      "start": 34.61,
-      "end": 36.59,
-      "text": "zasadziłem sobie winnice.",
-      "confidence": 0.96,
+      "verse": 8,
+      "start": 80,
+      "end": 83.11,
+      "text": "i inne rozkosze synów ludzkich oraz liczne instrumenty muzyczne.",
+      "words": [
+        {
+          "text": "i",
+          "start": 80,
+          "end": 80.15
+        },
+        {
+          "text": "inne",
+          "start": 80.15,
+          "end": 80.38
+        },
+        {
+          "text": "rozkosze",
+          "start": 80.38,
+          "end": 80.83
+        },
+        {
+          "text": "synów",
+          "start": 80.83,
+          "end": 81.11
+        },
+        {
+          "text": "ludzkich",
+          "start": 81.11,
+          "end": 81.56
+        },
+        {
+          "text": "oraz",
+          "start": 81.56,
+          "end": 81.79
+        },
+        {
+          "text": "liczne",
+          "start": 81.79,
+          "end": 82.13
+        },
+        {
+          "text": "instrumenty",
+          "start": 82.13,
+          "end": 82.75
+        },
+        {
+          "text": "muzyczne.",
+          "start": 82.75,
+          "end": 83.11
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L018",
-      "verse": 5,
-      "start": 36.59,
-      "end": 39.08,
-      "text": "Założyłem sobie ogrody i sady i posadziłem",
-      "confidence": 0.96,
+      "verse": 9,
+      "start": 83.11,
+      "end": 83.78,
+      "text": "I tak stałem się większy i możniejszy niż wszyscy,",
+      "words": [
+        {
+          "text": "I",
+          "start": 83.76,
+          "end": 83.91
+        },
+        {
+          "text": "tak",
+          "start": 82.73,
+          "end": 82.88
+        },
+        {
+          "text": "stałem",
+          "start": 82.88,
+          "end": 83.03
+        },
+        {
+          "text": "się",
+          "start": 83.03,
+          "end": 83.18
+        },
+        {
+          "text": "większy",
+          "start": 83.18,
+          "end": 83.33
+        },
+        {
+          "text": "i",
+          "start": 83.33,
+          "end": 83.48
+        },
+        {
+          "text": "możniejszy",
+          "start": 83.48,
+          "end": 83.63
+        },
+        {
+          "text": "niż",
+          "start": 83.63,
+          "end": 83.78
+        },
+        {
+          "text": "wszyscy,",
+          "start": 83.78,
+          "end": 84.03
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L019",
-      "verse": 5,
-      "start": 39.08,
-      "end": 41.96,
-      "text": "w nich wszelkiego rodzaju drzewa owocowe.",
-      "confidence": 0.96,
+      "verse": 9,
+      "start": 83.78,
+      "end": 84.86,
+      "text": "którzy byli przede mną w Jerozolimie. W dodatku moja mądrość pozostała przy mnie.",
+      "words": [
+        {
+          "text": "którzy",
+          "start": 84.08,
+          "end": 84.23
+        },
+        {
+          "text": "byli",
+          "start": 84.14,
+          "end": 84.29
+        },
+        {
+          "text": "przede",
+          "start": 84.2,
+          "end": 84.35
+        },
+        {
+          "text": "mną",
+          "start": 84.26,
+          "end": 84.41
+        },
+        {
+          "text": "w",
+          "start": 84.32,
+          "end": 84.47
+        },
+        {
+          "text": "Jerozolimie.",
+          "start": 84.38,
+          "end": 84.53
+        },
+        {
+          "text": "W",
+          "start": 84.44,
+          "end": 84.59
+        },
+        {
+          "text": "dodatku",
+          "start": 84.5,
+          "end": 84.65
+        },
+        {
+          "text": "moja",
+          "start": 84.56,
+          "end": 84.71
+        },
+        {
+          "text": "mądrość",
+          "start": 84.41,
+          "end": 84.56
+        },
+        {
+          "text": "pozostała",
+          "start": 84.56,
+          "end": 84.71
+        },
+        {
+          "text": "przy",
+          "start": 84.71,
+          "end": 84.86
+        },
+        {
+          "text": "mnie.",
+          "start": 84.86,
+          "end": 85.11
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L020",
-      "verse": 6,
-      "start": 41.96,
-      "end": 44.05,
-      "text": "Zbudowałem też sobie stawy na wodę,",
-      "confidence": 0.96,
+      "verse": 10,
+      "start": 84.86,
+      "end": 90.43,
+      "text": "Nie wzbraniałem swoim oczom niczego, czego pragnęły, nie odmawiałem swemu sercu żadnej uciechy;",
+      "words": [
+        {
+          "text": "Nie",
+          "start": 84.86,
+          "end": 85.07
+        },
+        {
+          "text": "wzbraniałem",
+          "start": 85.07,
+          "end": 85.84
+        },
+        {
+          "text": "swoim",
+          "start": 85.84,
+          "end": 86.19
+        },
+        {
+          "text": "oczom",
+          "start": 86.19,
+          "end": 86.54
+        },
+        {
+          "text": "niczego,",
+          "start": 86.54,
+          "end": 87.03
+        },
+        {
+          "text": "czego",
+          "start": 87.03,
+          "end": 87.38
+        },
+        {
+          "text": "pragnęły,",
+          "start": 87.38,
+          "end": 87.94
+        },
+        {
+          "text": "nie",
+          "start": 87.94,
+          "end": 88.15
+        },
+        {
+          "text": "odmawiałem",
+          "start": 88.15,
+          "end": 88.85
+        },
+        {
+          "text": "swemu",
+          "start": 88.85,
+          "end": 89.2
+        },
+        {
+          "text": "sercu",
+          "start": 89.2,
+          "end": 89.55
+        },
+        {
+          "text": "żadnej",
+          "start": 89.55,
+          "end": 89.97
+        },
+        {
+          "text": "uciechy;",
+          "start": 89.97,
+          "end": 90.43
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L021",
-      "verse": 6,
-      "start": 44.05,
-      "end": 46.71,
-      "text": "by nawadniać nią las rosnących drzew.",
-      "confidence": 0.96,
+      "verse": 10,
+      "start": 90.43,
+      "end": 95.71,
+      "text": "moje serce bowiem radowało się z całego mojego trudu. A to był mój dział za cały mój trud.",
+      "words": [
+        {
+          "text": "moje",
+          "start": 92.44,
+          "end": 92.74
+        },
+        {
+          "text": "serce",
+          "start": 92.74,
+          "end": 93.04
+        },
+        {
+          "text": "bowiem",
+          "start": 93.04,
+          "end": 93.34
+        },
+        {
+          "text": "radowało",
+          "start": 93.34,
+          "end": 93.64
+        },
+        {
+          "text": "się",
+          "start": 93.64,
+          "end": 93.94
+        },
+        {
+          "text": "z",
+          "start": 93.94,
+          "end": 94.24
+        },
+        {
+          "text": "całego",
+          "start": 94.24,
+          "end": 94.54
+        },
+        {
+          "text": "mojego",
+          "start": 94.54,
+          "end": 94.84
+        },
+        {
+          "text": "trudu.",
+          "start": 94.84,
+          "end": 95.14
+        },
+        {
+          "text": "A",
+          "start": 95.14,
+          "end": 95.44
+        },
+        {
+          "text": "to",
+          "start": 95.44,
+          "end": 95.59
+        },
+        {
+          "text": "był",
+          "start": 94.81,
+          "end": 94.96
+        },
+        {
+          "text": "mój",
+          "start": 94.96,
+          "end": 95.11
+        },
+        {
+          "text": "dział",
+          "start": 95.11,
+          "end": 95.26
+        },
+        {
+          "text": "za",
+          "start": 95.26,
+          "end": 95.41
+        },
+        {
+          "text": "cały",
+          "start": 95.41,
+          "end": 95.56
+        },
+        {
+          "text": "mój",
+          "start": 95.56,
+          "end": 95.71
+        },
+        {
+          "text": "trud.",
+          "start": 95.71,
+          "end": 95.96
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L022",
-      "verse": 7,
-      "start": 46.71,
-      "end": 48.18,
-      "text": "Nabyłem sługi i służące,",
-      "confidence": 0.96,
+      "verse": 11,
+      "start": 95.71,
+      "end": 108.57,
+      "text": "Następnie przyjrzałem się wszystkim dziełom, jakich dokonały moje ręce,",
+      "words": [
+        {
+          "text": "Następnie",
+          "start": 95.71,
+          "end": 97.61
+        },
+        {
+          "text": "przyjrzałem",
+          "start": 97.61,
+          "end": 99.93
+        },
+        {
+          "text": "się",
+          "start": 99.93,
+          "end": 100.56
+        },
+        {
+          "text": "wszystkim",
+          "start": 100.56,
+          "end": 102.46
+        },
+        {
+          "text": "dziełom,",
+          "start": 102.46,
+          "end": 103.94
+        },
+        {
+          "text": "jakich",
+          "start": 103.94,
+          "end": 105.2
+        },
+        {
+          "text": "dokonały",
+          "start": 105.2,
+          "end": 106.89
+        },
+        {
+          "text": "moje",
+          "start": 106.89,
+          "end": 107.73
+        },
+        {
+          "text": "ręce,",
+          "start": 107.73,
+          "end": 108.57
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L023",
-      "verse": 7,
-      "start": 48.18,
-      "end": 50.5,
-      "text": "miałem też sługi urodzone w swoim domu.",
-      "confidence": 0.96,
+      "verse": 11,
+      "start": 108.57,
+      "end": 131.38,
+      "text": "i trudowi, jaki podjąłem dla ich wykonania, a oto wszystko to marność i utrapienie ducha i nie ma żadnego pożytku pod słońcem.",
+      "words": [
+        {
+          "text": "i",
+          "start": 131.08,
+          "end": 131.23
+        },
+        {
+          "text": "trudowi,",
+          "start": 128.38,
+          "end": 128.53
+        },
+        {
+          "text": "jaki",
+          "start": 128.53,
+          "end": 128.68
+        },
+        {
+          "text": "podjąłem",
+          "start": 128.68,
+          "end": 128.83
+        },
+        {
+          "text": "dla",
+          "start": 128.83,
+          "end": 128.98
+        },
+        {
+          "text": "ich",
+          "start": 128.98,
+          "end": 129.13
+        },
+        {
+          "text": "wykonania,",
+          "start": 129.13,
+          "end": 129.28
+        },
+        {
+          "text": "a",
+          "start": 129.28,
+          "end": 129.43
+        },
+        {
+          "text": "oto",
+          "start": 129.43,
+          "end": 129.58
+        },
+        {
+          "text": "wszystko",
+          "start": 129.58,
+          "end": 129.73
+        },
+        {
+          "text": "to",
+          "start": 129.73,
+          "end": 129.88
+        },
+        {
+          "text": "marność",
+          "start": 129.88,
+          "end": 130.03
+        },
+        {
+          "text": "i",
+          "start": 130.03,
+          "end": 130.18
+        },
+        {
+          "text": "utrapienie",
+          "start": 130.18,
+          "end": 130.33
+        },
+        {
+          "text": "ducha",
+          "start": 130.33,
+          "end": 130.48
+        },
+        {
+          "text": "i",
+          "start": 130.48,
+          "end": 130.63
+        },
+        {
+          "text": "nie",
+          "start": 130.63,
+          "end": 130.78
+        },
+        {
+          "text": "ma",
+          "start": 130.78,
+          "end": 130.93
+        },
+        {
+          "text": "żadnego",
+          "start": 130.93,
+          "end": 131.08
+        },
+        {
+          "text": "pożytku",
+          "start": 131.08,
+          "end": 131.23
+        },
+        {
+          "text": "pod",
+          "start": 131.23,
+          "end": 131.38
+        },
+        {
+          "text": "słońcem.",
+          "start": 131.38,
+          "end": 131.63
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L024",
-      "verse": 7,
-      "start": 50.5,
-      "end": 52.31,
-      "text": "Posiadałem również stada wołów",
-      "confidence": 0.96,
+      "verse": 12,
+      "start": 131.38,
+      "end": 137.13,
+      "text": "Odwróciłem się więc, aby przyjrzeć się mądrości, szaleństwu i głupocie. Co bowiem może uczynić człowiek,",
+      "words": [
+        {
+          "text": "Odwróciłem",
+          "start": 131.38,
+          "end": 131.53
+        },
+        {
+          "text": "się",
+          "start": 131.34,
+          "end": 131.49
+        },
+        {
+          "text": "więc,",
+          "start": 131.31,
+          "end": 131.46
+        },
+        {
+          "text": "aby",
+          "start": 131.27,
+          "end": 131.42
+        },
+        {
+          "text": "przyjrzeć",
+          "start": 131.23,
+          "end": 131.38
+        },
+        {
+          "text": "się",
+          "start": 131.19,
+          "end": 131.34
+        },
+        {
+          "text": "mądrości,",
+          "start": 131.16,
+          "end": 131.31
+        },
+        {
+          "text": "szaleństwu",
+          "start": 131.12,
+          "end": 131.27
+        },
+        {
+          "text": "i",
+          "start": 131.08,
+          "end": 131.94
+        },
+        {
+          "text": "głupocie.",
+          "start": 131.94,
+          "end": 132.81
+        },
+        {
+          "text": "Co",
+          "start": 132.81,
+          "end": 133.67
+        },
+        {
+          "text": "bowiem",
+          "start": 133.67,
+          "end": 134.54
+        },
+        {
+          "text": "może",
+          "start": 134.54,
+          "end": 135.4
+        },
+        {
+          "text": "uczynić",
+          "start": 135.4,
+          "end": 136.27
+        },
+        {
+          "text": "człowiek,",
+          "start": 136.27,
+          "end": 137.13
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L025",
-      "verse": 7,
-      "start": 52.31,
-      "end": 54.4,
-      "text": "i trzody owiec większe niż wszyscy,",
-      "confidence": 0.96,
+      "verse": 12,
+      "start": 137.13,
+      "end": 139.78,
+      "text": "który nastąpi po królu? To, co czynili już inni.",
+      "words": [
+        {
+          "text": "który",
+          "start": 137.13,
+          "end": 137.49
+        },
+        {
+          "text": "nastąpi",
+          "start": 137.49,
+          "end": 137.99
+        },
+        {
+          "text": "po",
+          "start": 137.99,
+          "end": 138.14
+        },
+        {
+          "text": "królu?",
+          "start": 138.14,
+          "end": 138.5
+        },
+        {
+          "text": "To,",
+          "start": 138.5,
+          "end": 138.65
+        },
+        {
+          "text": "co",
+          "start": 138.65,
+          "end": 138.8
+        },
+        {
+          "text": "czynili",
+          "start": 138.8,
+          "end": 139.3
+        },
+        {
+          "text": "już",
+          "start": 139.3,
+          "end": 139.51
+        },
+        {
+          "text": "inni.",
+          "start": 139.51,
+          "end": 139.78
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L026",
-      "verse": 7,
-      "start": 54.4,
-      "end": 57.06,
-      "text": "którzy byli przede mną w Jerozolimie.",
-      "confidence": 0.96,
+      "verse": 13,
+      "start": 139.78,
+      "end": 142.58,
+      "text": "I zobaczyłem, że mądrość jest pożyteczniejsza od głupoty,",
+      "words": [
+        {
+          "text": "I",
+          "start": 139.78,
+          "end": 139.93
+        },
+        {
+          "text": "zobaczyłem,",
+          "start": 139.93,
+          "end": 140.51
+        },
+        {
+          "text": "że",
+          "start": 140.51,
+          "end": 140.66
+        },
+        {
+          "text": "mądrość",
+          "start": 140.66,
+          "end": 141.07
+        },
+        {
+          "text": "jest",
+          "start": 141.07,
+          "end": 141.3
+        },
+        {
+          "text": "pożyteczniejsza",
+          "start": 141.3,
+          "end": 142.18
+        },
+        {
+          "text": "od",
+          "start": 142.18,
+          "end": 142.33
+        },
+        {
+          "text": "głupoty,",
+          "start": 142.33,
+          "end": 142.58
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L027",
-      "verse": 8,
-      "start": 57.06,
-      "end": 59.09,
-      "text": "Zgromadziłem sobie srebro i złoto,",
-      "confidence": 0.96,
+      "verse": 13,
+      "start": 142.58,
+      "end": 145.03,
+      "text": "tak jak światło jest pożyteczniejsze od ciemności.",
+      "words": [
+        {
+          "text": "tak",
+          "start": 143.72,
+          "end": 143.92
+        },
+        {
+          "text": "jak",
+          "start": 143.92,
+          "end": 144.12
+        },
+        {
+          "text": "światło",
+          "start": 144.12,
+          "end": 144.32
+        },
+        {
+          "text": "jest",
+          "start": 144.32,
+          "end": 144.52
+        },
+        {
+          "text": "pożyteczniejsze",
+          "start": 144.52,
+          "end": 144.72
+        },
+        {
+          "text": "od",
+          "start": 144.72,
+          "end": 144.92
+        },
+        {
+          "text": "ciemności.",
+          "start": 144.92,
+          "end": 145.17
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L028",
-      "verse": 8,
-      "start": 59.09,
-      "end": 60.9,
-      "text": "i klejnoty królów i prowincji.",
-      "confidence": 0.96,
+      "verse": 14,
+      "start": 145.03,
+      "end": 149.55,
+      "text": "Mądry ma oczy w swojej głowie, głupi zaś chodzi w ciemności. A poznałem,",
+      "words": [
+        {
+          "text": "Mądry",
+          "start": 145.03,
+          "end": 145.43
+        },
+        {
+          "text": "ma",
+          "start": 145.43,
+          "end": 145.59
+        },
+        {
+          "text": "oczy",
+          "start": 145.59,
+          "end": 145.91
+        },
+        {
+          "text": "w",
+          "start": 145.91,
+          "end": 146.06
+        },
+        {
+          "text": "swojej",
+          "start": 146.06,
+          "end": 146.54
+        },
+        {
+          "text": "głowie,",
+          "start": 146.54,
+          "end": 147.02
+        },
+        {
+          "text": "głupi",
+          "start": 147.02,
+          "end": 147.42
+        },
+        {
+          "text": "zaś",
+          "start": 147.42,
+          "end": 147.66
+        },
+        {
+          "text": "chodzi",
+          "start": 147.66,
+          "end": 148.14
+        },
+        {
+          "text": "w",
+          "start": 148.14,
+          "end": 148.29
+        },
+        {
+          "text": "ciemności.",
+          "start": 148.29,
+          "end": 149
+        },
+        {
+          "text": "A",
+          "start": 149,
+          "end": 149.15
+        },
+        {
+          "text": "poznałem,",
+          "start": 149.15,
+          "end": 149.55
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L029",
-      "verse": 8,
-      "start": 60.9,
-      "end": 63.45,
-      "text": "Przygotowałem sobie śpiewaków i śpiewaczki,",
-      "confidence": 0.96,
+      "verse": 14,
+      "start": 149.55,
+      "end": 151.68,
+      "text": "że ten sam los spotyka wszystkich.",
+      "words": [
+        {
+          "text": "że",
+          "start": 149.55,
+          "end": 149.7
+        },
+        {
+          "text": "ten",
+          "start": 149.7,
+          "end": 149.93
+        },
+        {
+          "text": "sam",
+          "start": 149.93,
+          "end": 150.16
+        },
+        {
+          "text": "los",
+          "start": 150.16,
+          "end": 150.39
+        },
+        {
+          "text": "spotyka",
+          "start": 150.39,
+          "end": 150.92
+        },
+        {
+          "text": "wszystkich.",
+          "start": 150.92,
+          "end": 151.68
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L030",
-      "verse": 8,
-      "start": 63.45,
-      "end": 65.25,
-      "text": "i inne rozkosze synów ludzkich",
-      "confidence": 0.96,
+      "verse": 15,
+      "start": 151.68,
+      "end": 153.21,
+      "text": "Dlatego powiedziałem w sercu:",
+      "words": [
+        {
+          "text": "Dlatego",
+          "start": 151.68,
+          "end": 152.11
+        },
+        {
+          "text": "powiedziałem",
+          "start": 152.11,
+          "end": 152.84
+        },
+        {
+          "text": "w",
+          "start": 152.84,
+          "end": 152.99
+        },
+        {
+          "text": "sercu:",
+          "start": 152.99,
+          "end": 153.21
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L031",
-      "verse": 8,
-      "start": 65.25,
-      "end": 67.69,
-      "text": "oraz liczne instrumenty muzyczne.",
-      "confidence": 0.96,
+      "verse": 15,
+      "start": 153.21,
+      "end": 159.35,
+      "text": "Los, który spotyka głupiego, spotka również mnie. Po co więc przewyższyłem go mądrością? Wtedy powiedziałem w sercu,",
+      "words": [
+        {
+          "text": "Los,",
+          "start": 153.21,
+          "end": 153.4
+        },
+        {
+          "text": "który",
+          "start": 153.4,
+          "end": 153.72
+        },
+        {
+          "text": "spotyka",
+          "start": 153.72,
+          "end": 154.17
+        },
+        {
+          "text": "głupiego,",
+          "start": 154.17,
+          "end": 154.69
+        },
+        {
+          "text": "spotka",
+          "start": 154.69,
+          "end": 155.08
+        },
+        {
+          "text": "również",
+          "start": 155.08,
+          "end": 155.53
+        },
+        {
+          "text": "mnie.",
+          "start": 155.53,
+          "end": 155.79
+        },
+        {
+          "text": "Po",
+          "start": 155.79,
+          "end": 155.94
+        },
+        {
+          "text": "co",
+          "start": 155.94,
+          "end": 156.09
+        },
+        {
+          "text": "więc",
+          "start": 156.09,
+          "end": 156.35
+        },
+        {
+          "text": "przewyższyłem",
+          "start": 156.35,
+          "end": 157.19
+        },
+        {
+          "text": "go",
+          "start": 157.19,
+          "end": 157.34
+        },
+        {
+          "text": "mądrością?",
+          "start": 157.34,
+          "end": 157.92
+        },
+        {
+          "text": "Wtedy",
+          "start": 157.92,
+          "end": 158.24
+        },
+        {
+          "text": "powiedziałem",
+          "start": 158.24,
+          "end": 159.02
+        },
+        {
+          "text": "w",
+          "start": 159.02,
+          "end": 159.17
+        },
+        {
+          "text": "sercu,",
+          "start": 159.17,
+          "end": 159.35
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L032",
-      "verse": 9,
-      "start": 67.69,
-      "end": 69.16,
-      "text": "I tak stałem się większy",
-      "confidence": 0.96,
+      "verse": 15,
+      "start": 159.35,
+      "end": 160.78,
+      "text": "że to także jest marnością.",
+      "words": [
+        {
+          "text": "że",
+          "start": 159.35,
+          "end": 159.5
+        },
+        {
+          "text": "to",
+          "start": 159.5,
+          "end": 159.65
+        },
+        {
+          "text": "także",
+          "start": 159.65,
+          "end": 159.98
+        },
+        {
+          "text": "jest",
+          "start": 159.98,
+          "end": 160.24
+        },
+        {
+          "text": "marnością.",
+          "start": 160.24,
+          "end": 160.78
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L033",
-      "verse": 9,
-      "start": 69.16,
-      "end": 70.68,
-      "text": "i możniejszy niż wszyscy,",
-      "confidence": 0.96,
+      "verse": 16,
+      "start": 160.78,
+      "end": 161.36,
+      "text": "Nie ma bowiem pamięci zarówno o mądrym, jak i o głupcu na wieki,",
+      "words": [
+        {
+          "text": "Nie",
+          "start": 160.78,
+          "end": 160.93
+        },
+        {
+          "text": "ma",
+          "start": 160.93,
+          "end": 161.08
+        },
+        {
+          "text": "bowiem",
+          "start": 161.08,
+          "end": 161.23
+        },
+        {
+          "text": "pamięci",
+          "start": 161.23,
+          "end": 161.36
+        },
+        {
+          "text": "zarówno",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "o",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "mądrym,",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "jak",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "i",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "o",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "głupcu",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "na",
+          "start": 161.36,
+          "end": 161.36
+        },
+        {
+          "text": "wieki,",
+          "start": 161.36,
+          "end": 161.36
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L034",
-      "verse": 9,
-      "start": 70.68,
-      "end": 72.89,
-      "text": "którzy byli przede mną w Jerozolimie.",
-      "confidence": 0.96,
+      "verse": 16,
+      "start": 161.36,
+      "end": 162.28,
+      "text": "gdyż to, co jest teraz, w najbliższych dniach pójdzie w niepamięć. A jak umiera mądry? Tak jak głupi.",
+      "words": [
+        {
+          "text": "gdyż",
+          "start": 161.36,
+          "end": 161.51
+        },
+        {
+          "text": "to,",
+          "start": 161.26,
+          "end": 161.41
+        },
+        {
+          "text": "co",
+          "start": 161.16,
+          "end": 161.31
+        },
+        {
+          "text": "jest",
+          "start": 160.18,
+          "end": 160.33
+        },
+        {
+          "text": "teraz,",
+          "start": 160.33,
+          "end": 160.48
+        },
+        {
+          "text": "w",
+          "start": 160.48,
+          "end": 160.63
+        },
+        {
+          "text": "najbliższych",
+          "start": 160.63,
+          "end": 160.78
+        },
+        {
+          "text": "dniach",
+          "start": 160.78,
+          "end": 160.93
+        },
+        {
+          "text": "pójdzie",
+          "start": 160.93,
+          "end": 161.08
+        },
+        {
+          "text": "w",
+          "start": 161.08,
+          "end": 161.23
+        },
+        {
+          "text": "niepamięć.",
+          "start": 161.23,
+          "end": 161.38
+        },
+        {
+          "text": "A",
+          "start": 161.38,
+          "end": 161.53
+        },
+        {
+          "text": "jak",
+          "start": 161.53,
+          "end": 161.68
+        },
+        {
+          "text": "umiera",
+          "start": 161.68,
+          "end": 161.83
+        },
+        {
+          "text": "mądry?",
+          "start": 161.83,
+          "end": 161.98
+        },
+        {
+          "text": "Tak",
+          "start": 161.98,
+          "end": 162.13
+        },
+        {
+          "text": "jak",
+          "start": 162.13,
+          "end": 162.28
+        },
+        {
+          "text": "głupi.",
+          "start": 162.28,
+          "end": 162.53
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L035",
-      "verse": 9,
-      "start": 72.89,
-      "end": 75.88,
-      "text": "W dodatku moja mądrość pozostała przy mnie.",
-      "confidence": 0.96,
+      "verse": 17,
+      "start": 162.28,
+      "end": 169.28,
+      "text": "Dlatego obrzydło mi życie, gdyż przykre mi są wszystkie sprawy dokonane pod słońcem. Wszystko bowiem jest marnością i utrapieniem ducha.",
+      "words": [
+        {
+          "text": "Dlatego",
+          "start": 162.58,
+          "end": 162.73
+        },
+        {
+          "text": "obrzydło",
+          "start": 162.67,
+          "end": 162.82
+        },
+        {
+          "text": "mi",
+          "start": 162.77,
+          "end": 162.92
+        },
+        {
+          "text": "życie,",
+          "start": 162.86,
+          "end": 163.01
+        },
+        {
+          "text": "gdyż",
+          "start": 162.96,
+          "end": 163.11
+        },
+        {
+          "text": "przykre",
+          "start": 163.05,
+          "end": 163.2
+        },
+        {
+          "text": "mi",
+          "start": 163.15,
+          "end": 163.3
+        },
+        {
+          "text": "są",
+          "start": 163.24,
+          "end": 163.39
+        },
+        {
+          "text": "wszystkie",
+          "start": 163.34,
+          "end": 163.49
+        },
+        {
+          "text": "sprawy",
+          "start": 163.43,
+          "end": 163.58
+        },
+        {
+          "text": "dokonane",
+          "start": 163.53,
+          "end": 163.68
+        },
+        {
+          "text": "pod",
+          "start": 163.62,
+          "end": 163.77
+        },
+        {
+          "text": "słońcem.",
+          "start": 163.72,
+          "end": 163.87
+        },
+        {
+          "text": "Wszystko",
+          "start": 163.81,
+          "end": 163.96
+        },
+        {
+          "text": "bowiem",
+          "start": 163.91,
+          "end": 164.06
+        },
+        {
+          "text": "jest",
+          "start": 164,
+          "end": 164.32
+        },
+        {
+          "text": "marnością",
+          "start": 164.32,
+          "end": 165.56
+        },
+        {
+          "text": "i",
+          "start": 165.56,
+          "end": 166.8
+        },
+        {
+          "text": "utrapieniem",
+          "start": 166.8,
+          "end": 168.04
+        },
+        {
+          "text": "ducha.",
+          "start": 168.04,
+          "end": 169.28
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L036",
-      "verse": 10,
-      "start": 75.88,
-      "end": 78.03,
-      "text": "Nie wzbraniałem swoim oczom niczego,",
-      "confidence": 0.96,
+      "verse": 18,
+      "start": 169.28,
+      "end": 172.69,
+      "text": "Zbrzydł mi nawet cały mój trud, który podejmowałem pod słońcem,",
+      "words": [
+        {
+          "text": "Zbrzydł",
+          "start": 169.28,
+          "end": 169.74
+        },
+        {
+          "text": "mi",
+          "start": 169.74,
+          "end": 169.89
+        },
+        {
+          "text": "nawet",
+          "start": 169.89,
+          "end": 170.22
+        },
+        {
+          "text": "cały",
+          "start": 170.22,
+          "end": 170.48
+        },
+        {
+          "text": "mój",
+          "start": 170.48,
+          "end": 170.68
+        },
+        {
+          "text": "trud,",
+          "start": 170.68,
+          "end": 170.94
+        },
+        {
+          "text": "który",
+          "start": 170.94,
+          "end": 171.27
+        },
+        {
+          "text": "podejmowałem",
+          "start": 171.27,
+          "end": 172.06
+        },
+        {
+          "text": "pod",
+          "start": 172.06,
+          "end": 172.26
+        },
+        {
+          "text": "słońcem,",
+          "start": 172.26,
+          "end": 172.69
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L037",
-      "verse": 10,
-      "start": 78.03,
-      "end": 81.43,
-      "text": "czego pragnęły, nie odmawiałem swemu sercu żadnej uciechy;",
-      "confidence": 0.96,
+      "verse": 18,
+      "start": 172.69,
+      "end": 175.93,
+      "text": "gdyż muszę go zostawić człowiekowi, który przyjdzie po mnie.",
+      "words": [
+        {
+          "text": "gdyż",
+          "start": 172.69,
+          "end": 172.95
+        },
+        {
+          "text": "muszę",
+          "start": 172.95,
+          "end": 173.27
+        },
+        {
+          "text": "go",
+          "start": 173.27,
+          "end": 173.42
+        },
+        {
+          "text": "zostawić",
+          "start": 173.42,
+          "end": 173.94
+        },
+        {
+          "text": "człowiekowi,",
+          "start": 173.94,
+          "end": 174.65
+        },
+        {
+          "text": "który",
+          "start": 174.65,
+          "end": 174.97
+        },
+        {
+          "text": "przyjdzie",
+          "start": 174.97,
+          "end": 175.55
+        },
+        {
+          "text": "po",
+          "start": 175.55,
+          "end": 175.7
+        },
+        {
+          "text": "mnie.",
+          "start": 175.7,
+          "end": 175.93
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L038",
-      "verse": 10,
-      "start": 81.43,
-      "end": 83.01,
-      "text": "moje serce bowiem radowało",
-      "confidence": 0.96,
+      "verse": 19,
+      "start": 175.93,
+      "end": 179.05,
+      "text": "A kto wie, czy będzie mądry, czy głupi? A jednak będzie władać całą moją pracą,",
+      "words": [
+        {
+          "text": "A",
+          "start": 175.93,
+          "end": 176.08
+        },
+        {
+          "text": "kto",
+          "start": 176.08,
+          "end": 176.23
+        },
+        {
+          "text": "wie,",
+          "start": 176.23,
+          "end": 176.38
+        },
+        {
+          "text": "czy",
+          "start": 176.38,
+          "end": 176.53
+        },
+        {
+          "text": "będzie",
+          "start": 176.53,
+          "end": 176.84
+        },
+        {
+          "text": "mądry,",
+          "start": 176.84,
+          "end": 177.1
+        },
+        {
+          "text": "czy",
+          "start": 177.1,
+          "end": 177.25
+        },
+        {
+          "text": "głupi?",
+          "start": 177.25,
+          "end": 177.51
+        },
+        {
+          "text": "A",
+          "start": 177.51,
+          "end": 177.66
+        },
+        {
+          "text": "jednak",
+          "start": 177.66,
+          "end": 177.97
+        },
+        {
+          "text": "będzie",
+          "start": 177.97,
+          "end": 178.28
+        },
+        {
+          "text": "władać",
+          "start": 178.28,
+          "end": 178.59
+        },
+        {
+          "text": "całą",
+          "start": 178.59,
+          "end": 178.79
+        },
+        {
+          "text": "moją",
+          "start": 178.79,
+          "end": 178.99
+        },
+        {
+          "text": "pracą,",
+          "start": 178.99,
+          "end": 179.05
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L039",
-      "verse": 10,
-      "start": 83.01,
-      "end": 84.59,
-      "text": "się z całego mojego trudu.",
-      "confidence": 0.96,
+      "verse": 19,
+      "start": 179.05,
+      "end": 182.06,
+      "text": "w którą włożyłem swój trud i mądrość pod słońcem. Także i to jest marnością.",
+      "words": [
+        {
+          "text": "w",
+          "start": 179.05,
+          "end": 179.2
+        },
+        {
+          "text": "którą",
+          "start": 179.01,
+          "end": 179.16
+        },
+        {
+          "text": "włożyłem",
+          "start": 178.98,
+          "end": 179.13
+        },
+        {
+          "text": "swój",
+          "start": 178.94,
+          "end": 179.09
+        },
+        {
+          "text": "trud",
+          "start": 178.9,
+          "end": 179.05
+        },
+        {
+          "text": "i",
+          "start": 178.86,
+          "end": 179.01
+        },
+        {
+          "text": "mądrość",
+          "start": 178.83,
+          "end": 178.98
+        },
+        {
+          "text": "pod",
+          "start": 178.79,
+          "end": 178.94
+        },
+        {
+          "text": "słońcem.",
+          "start": 178.75,
+          "end": 178.9
+        },
+        {
+          "text": "Także",
+          "start": 178.71,
+          "end": 178.86
+        },
+        {
+          "text": "i",
+          "start": 178.68,
+          "end": 178.83
+        },
+        {
+          "text": "to",
+          "start": 178.64,
+          "end": 179.78
+        },
+        {
+          "text": "jest",
+          "start": 179.78,
+          "end": 180.92
+        },
+        {
+          "text": "marnością.",
+          "start": 180.92,
+          "end": 182.06
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L040",
-      "verse": 10,
-      "start": 84.59,
-      "end": 85.72,
-      "text": "A to był mój dział",
-      "confidence": 0.96,
+      "verse": 20,
+      "start": 182.06,
+      "end": 186.01,
+      "text": "Doszedłem więc do tego, że zwątpiłem w sercu w cały swój trud,",
+      "words": [
+        {
+          "text": "Doszedłem",
+          "start": 182.06,
+          "end": 182.79
+        },
+        {
+          "text": "więc",
+          "start": 182.79,
+          "end": 183.11
+        },
+        {
+          "text": "do",
+          "start": 183.11,
+          "end": 183.27
+        },
+        {
+          "text": "tego,",
+          "start": 183.27,
+          "end": 183.59
+        },
+        {
+          "text": "że",
+          "start": 183.59,
+          "end": 183.75
+        },
+        {
+          "text": "zwątpiłem",
+          "start": 183.75,
+          "end": 184.48
+        },
+        {
+          "text": "w",
+          "start": 184.48,
+          "end": 184.63
+        },
+        {
+          "text": "sercu",
+          "start": 184.63,
+          "end": 185.03
+        },
+        {
+          "text": "w",
+          "start": 185.03,
+          "end": 185.18
+        },
+        {
+          "text": "cały",
+          "start": 185.18,
+          "end": 185.5
+        },
+        {
+          "text": "swój",
+          "start": 185.5,
+          "end": 185.82
+        },
+        {
+          "text": "trud,",
+          "start": 185.82,
+          "end": 186.01
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L041",
-      "verse": 10,
-      "start": 85.72,
-      "end": 87.25,
-      "text": "za cały mój trud.",
-      "confidence": 0.96,
+      "verse": 20,
+      "start": 186.01,
+      "end": 187.66,
+      "text": "jaki podjąłem pod słońcem.",
+      "words": [
+        {
+          "text": "jaki",
+          "start": 186.01,
+          "end": 186.31
+        },
+        {
+          "text": "podjąłem",
+          "start": 186.31,
+          "end": 186.91
+        },
+        {
+          "text": "pod",
+          "start": 186.91,
+          "end": 187.14
+        },
+        {
+          "text": "słońcem.",
+          "start": 187.14,
+          "end": 187.66
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L042",
-      "verse": 11,
-      "start": 87.25,
-      "end": 89.85,
-      "text": "Następnie przyjrzałem się wszystkim dziełom,",
-      "confidence": 0.96,
+      "verse": 21,
+      "start": 187.66,
+      "end": 191.28,
+      "text": "Gdyż niejeden człowiek pracuje mądrze, umiejętnie i sprawiedliwie,",
+      "words": [
+        {
+          "text": "Gdyż",
+          "start": 187.66,
+          "end": 187.81
+        },
+        {
+          "text": "niejeden",
+          "start": 187.81,
+          "end": 187.96
+        },
+        {
+          "text": "człowiek",
+          "start": 187.96,
+          "end": 188.51
+        },
+        {
+          "text": "pracuje",
+          "start": 188.51,
+          "end": 189.07
+        },
+        {
+          "text": "mądrze,",
+          "start": 189.07,
+          "end": 189.62
+        },
+        {
+          "text": "umiejętnie",
+          "start": 189.62,
+          "end": 190.17
+        },
+        {
+          "text": "i",
+          "start": 190.17,
+          "end": 190.73
+        },
+        {
+          "text": "sprawiedliwie,",
+          "start": 190.73,
+          "end": 191.28
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L043",
-      "verse": 11,
-      "start": 89.85,
-      "end": 91.43,
-      "text": "jakich dokonały moje ręce,",
-      "confidence": 0.96,
+      "verse": 21,
+      "start": 191.28,
+      "end": 196.76,
+      "text": "a swój dział pozostawia innemu, który się nim nie trudził. Także i to jest marnością i wielkim złem.",
+      "words": [
+        {
+          "text": "a",
+          "start": 191.58,
+          "end": 191.84
+        },
+        {
+          "text": "swój",
+          "start": 191.84,
+          "end": 192.09
+        },
+        {
+          "text": "dział",
+          "start": 192.09,
+          "end": 192.35
+        },
+        {
+          "text": "pozostawia",
+          "start": 192.35,
+          "end": 192.61
+        },
+        {
+          "text": "innemu,",
+          "start": 192.61,
+          "end": 192.86
+        },
+        {
+          "text": "który",
+          "start": 192.86,
+          "end": 193.12
+        },
+        {
+          "text": "się",
+          "start": 193.12,
+          "end": 193.37
+        },
+        {
+          "text": "nim",
+          "start": 193.37,
+          "end": 193.63
+        },
+        {
+          "text": "nie",
+          "start": 193.63,
+          "end": 193.89
+        },
+        {
+          "text": "trudził.",
+          "start": 193.89,
+          "end": 194.14
+        },
+        {
+          "text": "Także",
+          "start": 194.14,
+          "end": 194.4
+        },
+        {
+          "text": "i",
+          "start": 194.4,
+          "end": 194.74
+        },
+        {
+          "text": "to",
+          "start": 194.74,
+          "end": 195.07
+        },
+        {
+          "text": "jest",
+          "start": 195.07,
+          "end": 195.41
+        },
+        {
+          "text": "marnością",
+          "start": 195.41,
+          "end": 195.75
+        },
+        {
+          "text": "i",
+          "start": 195.75,
+          "end": 196.09
+        },
+        {
+          "text": "wielkim",
+          "start": 196.09,
+          "end": 196.42
+        },
+        {
+          "text": "złem.",
+          "start": 196.42,
+          "end": 196.76
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L044",
-      "verse": 11,
-      "start": 91.43,
-      "end": 93.98,
-      "text": "i trudowi, jaki podjąłem dla ich wykonania,",
-      "confidence": 0.96,
+      "verse": 22,
+      "start": 196.76,
+      "end": 201.15,
+      "text": "Cóż bowiem ma człowiek z całej swojej pracy i z utrapienia swego serca,",
+      "words": [
+        {
+          "text": "Cóż",
+          "start": 196.76,
+          "end": 196.99
+        },
+        {
+          "text": "bowiem",
+          "start": 196.99,
+          "end": 197.44
+        },
+        {
+          "text": "ma",
+          "start": 197.44,
+          "end": 197.59
+        },
+        {
+          "text": "człowiek",
+          "start": 197.59,
+          "end": 198.2
+        },
+        {
+          "text": "z",
+          "start": 198.2,
+          "end": 198.35
+        },
+        {
+          "text": "całej",
+          "start": 198.35,
+          "end": 198.73
+        },
+        {
+          "text": "swojej",
+          "start": 198.73,
+          "end": 199.18
+        },
+        {
+          "text": "pracy",
+          "start": 199.18,
+          "end": 199.56
+        },
+        {
+          "text": "i",
+          "start": 199.56,
+          "end": 199.71
+        },
+        {
+          "text": "z",
+          "start": 199.71,
+          "end": 199.86
+        },
+        {
+          "text": "utrapienia",
+          "start": 199.86,
+          "end": 200.62
+        },
+        {
+          "text": "swego",
+          "start": 200.62,
+          "end": 201
+        },
+        {
+          "text": "serca,",
+          "start": 201,
+          "end": 201.15
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L045",
-      "verse": 11,
-      "start": 93.98,
-      "end": 95.5,
-      "text": "a oto wszystko to marność",
-      "confidence": 0.96,
+      "verse": 22,
+      "start": 201.15,
+      "end": 203.06,
+      "text": "którymi się trudzi pod słońcem?",
+      "words": [
+        {
+          "text": "którymi",
+          "start": 201.15,
+          "end": 201.66
+        },
+        {
+          "text": "się",
+          "start": 201.66,
+          "end": 201.88
+        },
+        {
+          "text": "trudzi",
+          "start": 201.88,
+          "end": 202.32
+        },
+        {
+          "text": "pod",
+          "start": 202.32,
+          "end": 202.54
+        },
+        {
+          "text": "słońcem?",
+          "start": 202.54,
+          "end": 203.05
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L046",
-      "verse": 11,
-      "start": 95.5,
-      "end": 96.63,
-      "text": "i utrapienie ducha",
-      "confidence": 0.96,
+      "verse": 23,
+      "start": 203.06,
+      "end": 207.04,
+      "text": "Bo wszystkie jego dni są cierpieniem, a jego zajęcie – smutkiem;",
+      "words": [
+        {
+          "text": "Bo",
+          "start": 203.06,
+          "end": 203.21
+        },
+        {
+          "text": "wszystkie",
+          "start": 203.21,
+          "end": 203.9
+        },
+        {
+          "text": "jego",
+          "start": 203.9,
+          "end": 204.21
+        },
+        {
+          "text": "dni",
+          "start": 204.21,
+          "end": 204.44
+        },
+        {
+          "text": "są",
+          "start": 204.44,
+          "end": 204.59
+        },
+        {
+          "text": "cierpieniem,",
+          "start": 204.59,
+          "end": 205.43
+        },
+        {
+          "text": "a",
+          "start": 205.43,
+          "end": 205.58
+        },
+        {
+          "text": "jego",
+          "start": 205.58,
+          "end": 205.89
+        },
+        {
+          "text": "zajęcie",
+          "start": 205.89,
+          "end": 206.43
+        },
+        {
+          "text": "–",
+          "start": 206.43,
+          "end": 206.58
+        },
+        {
+          "text": "smutkiem;",
+          "start": 206.58,
+          "end": 207.04
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L047",
-      "verse": 11,
-      "start": 96.63,
-      "end": 99.29,
-      "text": "i nie ma żadnego pożytku pod słońcem.",
-      "confidence": 0.96,
+      "verse": 23,
+      "start": 207.04,
+      "end": 211.46,
+      "text": "nawet w nocy jego serce nie zaznaje spokoju. Także i to jest marnością.",
+      "words": [
+        {
+          "text": "nawet",
+          "start": 207.34,
+          "end": 207.49
+        },
+        {
+          "text": "w",
+          "start": 207.49,
+          "end": 207.65
+        },
+        {
+          "text": "nocy",
+          "start": 207.65,
+          "end": 207.8
+        },
+        {
+          "text": "jego",
+          "start": 207.8,
+          "end": 207.96
+        },
+        {
+          "text": "serce",
+          "start": 207.96,
+          "end": 208.11
+        },
+        {
+          "text": "nie",
+          "start": 208.11,
+          "end": 208.26
+        },
+        {
+          "text": "zaznaje",
+          "start": 208.26,
+          "end": 208.42
+        },
+        {
+          "text": "spokoju.",
+          "start": 208.42,
+          "end": 208.57
+        },
+        {
+          "text": "Także",
+          "start": 208.57,
+          "end": 208.73
+        },
+        {
+          "text": "i",
+          "start": 208.73,
+          "end": 208.88
+        },
+        {
+          "text": "to",
+          "start": 208.88,
+          "end": 209.48
+        },
+        {
+          "text": "jest",
+          "start": 209.48,
+          "end": 209.84
+        },
+        {
+          "text": "marnością.",
+          "start": 209.84,
+          "end": 211.46
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L048",
-      "verse": 12,
-      "start": 99.29,
-      "end": 100.54,
-      "text": "Odwróciłem się więc,",
-      "confidence": 0.96,
+      "verse": 24,
+      "start": 211.46,
+      "end": 215,
+      "text": "Nie ma nic lepszego dla człowieka, niż aby jadł i pił,",
+      "words": [
+        {
+          "text": "Nie",
+          "start": 211.76,
+          "end": 212
+        },
+        {
+          "text": "ma",
+          "start": 212,
+          "end": 212.24
+        },
+        {
+          "text": "nic",
+          "start": 212.24,
+          "end": 212.48
+        },
+        {
+          "text": "lepszego",
+          "start": 212.48,
+          "end": 212.72
+        },
+        {
+          "text": "dla",
+          "start": 212.72,
+          "end": 212.96
+        },
+        {
+          "text": "człowieka,",
+          "start": 212.96,
+          "end": 213.2
+        },
+        {
+          "text": "niż",
+          "start": 213.2,
+          "end": 213.44
+        },
+        {
+          "text": "aby",
+          "start": 213.44,
+          "end": 213.68
+        },
+        {
+          "text": "jadł",
+          "start": 213.68,
+          "end": 213.92
+        },
+        {
+          "text": "i",
+          "start": 213.92,
+          "end": 214.46
+        },
+        {
+          "text": "pił,",
+          "start": 214.46,
+          "end": 215
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L049",
-      "verse": 12,
-      "start": 100.54,
-      "end": 102.18,
-      "text": "aby przyjrzeć się mądrości,",
-      "confidence": 0.96,
+      "verse": 24,
+      "start": 215,
+      "end": 219.13,
+      "text": "i czynił dobrze swojej duszy przy swojej pracy. Zobaczyłem też,",
+      "words": [
+        {
+          "text": "i",
+          "start": 215,
+          "end": 215.15
+        },
+        {
+          "text": "czynił",
+          "start": 215.15,
+          "end": 215.63
+        },
+        {
+          "text": "dobrze",
+          "start": 215.63,
+          "end": 216.11
+        },
+        {
+          "text": "swojej",
+          "start": 216.11,
+          "end": 216.59
+        },
+        {
+          "text": "duszy",
+          "start": 216.59,
+          "end": 216.99
+        },
+        {
+          "text": "przy",
+          "start": 216.99,
+          "end": 217.31
+        },
+        {
+          "text": "swojej",
+          "start": 217.31,
+          "end": 217.79
+        },
+        {
+          "text": "pracy.",
+          "start": 217.79,
+          "end": 218.19
+        },
+        {
+          "text": "Zobaczyłem",
+          "start": 218.19,
+          "end": 218.98
+        },
+        {
+          "text": "też,",
+          "start": 218.98,
+          "end": 219.13
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L050",
-      "verse": 12,
-      "start": 102.18,
-      "end": 103.53,
-      "text": "szaleństwu i głupocie.",
-      "confidence": 0.96,
+      "verse": 24,
+      "start": 219.13,
+      "end": 220.9,
+      "text": "że pochodzi to z ręki Boga.",
+      "words": [
+        {
+          "text": "że",
+          "start": 219.13,
+          "end": 219.3
+        },
+        {
+          "text": "pochodzi",
+          "start": 219.3,
+          "end": 219.97
+        },
+        {
+          "text": "to",
+          "start": 219.97,
+          "end": 220.14
+        },
+        {
+          "text": "z",
+          "start": 220.14,
+          "end": 220.29
+        },
+        {
+          "text": "ręki",
+          "start": 220.29,
+          "end": 220.63
+        },
+        {
+          "text": "Boga.",
+          "start": 220.63,
+          "end": 220.9
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L051",
-      "verse": 12,
-      "start": 103.53,
-      "end": 105.46,
-      "text": "Co bowiem może uczynić człowiek,",
-      "confidence": 0.96,
+      "verse": 25,
+      "start": 220.91,
+      "end": 224.76,
+      "text": "Kto bowiem potrafi jeść i cieszyć się tym słuszniej niż ja?",
+      "words": [
+        {
+          "text": "Kto",
+          "start": 220.91,
+          "end": 221.15
+        },
+        {
+          "text": "bowiem",
+          "start": 221.15,
+          "end": 221.63
+        },
+        {
+          "text": "potrafi",
+          "start": 221.63,
+          "end": 222.19
+        },
+        {
+          "text": "jeść",
+          "start": 222.19,
+          "end": 222.51
+        },
+        {
+          "text": "i",
+          "start": 222.51,
+          "end": 222.66
+        },
+        {
+          "text": "cieszyć",
+          "start": 222.66,
+          "end": 223.22
+        },
+        {
+          "text": "się",
+          "start": 223.22,
+          "end": 223.46
+        },
+        {
+          "text": "tym",
+          "start": 223.46,
+          "end": 223.7
+        },
+        {
+          "text": "słuszniej",
+          "start": 223.7,
+          "end": 224.42
+        },
+        {
+          "text": "niż",
+          "start": 224.42,
+          "end": 224.66
+        },
+        {
+          "text": "ja?",
+          "start": 224.66,
+          "end": 224.76
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L052",
-      "verse": 12,
-      "start": 105.46,
-      "end": 107.09,
-      "text": "który nastąpi po królu? To,",
-      "confidence": 0.96,
+      "verse": 26,
+      "start": 224.76,
+      "end": 225.16,
+      "text": "Bo człowiekowi, który mu się podoba, daje mądrość,",
+      "words": [
+        {
+          "text": "Bo",
+          "start": 224.76,
+          "end": 224.91
+        },
+        {
+          "text": "człowiekowi,",
+          "start": 224.91,
+          "end": 225.06
+        },
+        {
+          "text": "który",
+          "start": 225.06,
+          "end": 225.16
+        },
+        {
+          "text": "mu",
+          "start": 225.16,
+          "end": 225.16
+        },
+        {
+          "text": "się",
+          "start": 225.16,
+          "end": 225.16
+        },
+        {
+          "text": "podoba,",
+          "start": 225.16,
+          "end": 225.16
+        },
+        {
+          "text": "daje",
+          "start": 225.16,
+          "end": 225.16
+        },
+        {
+          "text": "mądrość,",
+          "start": 225.16,
+          "end": 225.16
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L053",
-      "verse": 12,
-      "start": 107.09,
-      "end": 108.79,
-      "text": "co czynili już inni.",
-      "confidence": 0.96,
+      "verse": 26,
+      "start": 225.16,
+      "end": 225.65,
+      "text": "wiedzę i radość. Ale grzesznikowi zadaje trud, aby zbierał i gromadził,",
+      "words": [
+        {
+          "text": "wiedzę",
+          "start": 225.16,
+          "end": 225.31
+        },
+        {
+          "text": "i",
+          "start": 225.31,
+          "end": 225.46
+        },
+        {
+          "text": "radość.",
+          "start": 225.46,
+          "end": 225.61
+        },
+        {
+          "text": "Ale",
+          "start": 225.61,
+          "end": 225.65
+        },
+        {
+          "text": "grzesznikowi",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "zadaje",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "trud,",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "aby",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "zbierał",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "i",
+          "start": 225.65,
+          "end": 225.65
+        },
+        {
+          "text": "gromadził,",
+          "start": 225.65,
+          "end": 225.65
+        }
+      ],
       "isInstrumental": false
     },
     {
       "id": "ECC-002-L054",
-      "verse": 13,
-      "start": 108.79,
-      "end": 112.13,
-      "text": "I zobaczyłem, że mądrość jest pożyteczniejsza od głupoty,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L055",
-      "verse": 13,
-      "start": 112.13,
-      "end": 115.52,
-      "text": "tak jak światło jest pożyteczniejsze od ciemności.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L056",
-      "verse": 14,
-      "start": 115.52,
-      "end": 117.33,
-      "text": "Mądry ma oczy w swojej głowie,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L057",
-      "verse": 14,
-      "start": 117.33,
-      "end": 119.08,
-      "text": "głupi zaś chodzi w ciemności.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L058",
-      "verse": 14,
-      "start": 119.08,
-      "end": 122.25,
-      "text": "A poznałem, że ten sam los spotyka wszystkich.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L059",
-      "verse": 15,
-      "start": 122.25,
-      "end": 124.28,
-      "text": "Dlatego powiedziałem w sercu: Los,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L060",
-      "verse": 15,
-      "start": 124.28,
-      "end": 125.7,
-      "text": "który spotyka głupiego,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L061",
-      "verse": 15,
-      "start": 125.7,
-      "end": 126.94,
-      "text": "spotka również mnie.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L062",
-      "verse": 15,
-      "start": 126.94,
-      "end": 129.2,
-      "text": "Po co więc przewyższyłem go mądrością?",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L063",
-      "verse": 15,
-      "start": 129.2,
-      "end": 130.84,
-      "text": "Wtedy powiedziałem w sercu,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L064",
-      "verse": 15,
-      "start": 130.84,
-      "end": 132.93,
-      "text": "że to także jest marnością.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L065",
-      "verse": 16,
-      "start": 132.93,
-      "end": 135.25,
-      "text": "Nie ma bowiem pamięci zarówno o mądrym,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L066",
-      "verse": 16,
-      "start": 135.25,
-      "end": 136.72,
-      "text": "jak i o głupcu na wieki,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L067",
-      "verse": 16,
-      "start": 136.72,
-      "end": 138.14,
-      "text": "gdyż to, co jest teraz,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L068",
-      "verse": 16,
-      "start": 138.14,
-      "end": 140.62,
-      "text": "w najbliższych dniach pójdzie w niepamięć.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L069",
-      "verse": 16,
-      "start": 140.62,
-      "end": 141.81,
-      "text": "A jak umiera mądry?",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L070",
-      "verse": 16,
-      "start": 141.81,
-      "end": 143.17,
-      "text": "Tak jak głupi.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L071",
-      "verse": 17,
-      "start": 143.17,
-      "end": 144.75,
-      "text": "Dlatego obrzydło mi życie,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L072",
-      "verse": 17,
-      "start": 144.75,
-      "end": 148.09,
-      "text": "gdyż przykre mi są wszystkie sprawy dokonane pod słońcem.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L073",
-      "verse": 17,
-      "start": 148.09,
-      "end": 151.54,
-      "text": "Wszystko bowiem jest marnością i utrapieniem ducha.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L074",
-      "verse": 18,
-      "start": 151.54,
-      "end": 153.4,
-      "text": "Zbrzydł mi nawet cały mój trud,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L075",
-      "verse": 18,
-      "start": 153.4,
-      "end": 155.27,
-      "text": "który podejmowałem pod słońcem,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L076",
-      "verse": 18,
-      "start": 155.27,
-      "end": 157.36,
-      "text": "gdyż muszę go zostawić człowiekowi,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L077",
-      "verse": 18,
-      "start": 157.36,
-      "end": 159.28,
-      "text": "który przyjdzie po mnie.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L078",
-      "verse": 19,
-      "start": 159.28,
-      "end": 159.96,
-      "text": "A kto wie,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L079",
-      "verse": 19,
-      "start": 159.96,
-      "end": 161.66,
-      "text": "czy będzie mądry, czy głupi?",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L080",
-      "verse": 19,
-      "start": 161.66,
-      "end": 163.97,
-      "text": "A jednak będzie władać całą moją pracą,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L081",
-      "verse": 19,
-      "start": 163.97,
-      "end": 165.56,
-      "text": "w którą włożyłem swój trud",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L082",
-      "verse": 19,
-      "start": 165.56,
-      "end": 166.91,
-      "text": "i mądrość pod słońcem.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L083",
-      "verse": 19,
-      "start": 166.91,
-      "end": 168.95,
-      "text": "Także i to jest marnością.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L084",
-      "verse": 20,
-      "start": 168.95,
-      "end": 170.36,
-      "text": "Doszedłem więc do tego,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L085",
-      "verse": 20,
-      "start": 170.36,
-      "end": 172.63,
-      "text": "że zwątpiłem w sercu w cały swój trud,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L086",
-      "verse": 20,
-      "start": 172.63,
-      "end": 174.66,
-      "text": "jaki podjąłem pod słońcem.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L087",
-      "verse": 21,
-      "start": 174.66,
-      "end": 176.92,
-      "text": "Gdyż niejeden człowiek pracuje mądrze,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L088",
-      "verse": 21,
-      "start": 176.92,
-      "end": 178.56,
-      "text": "umiejętnie i sprawiedliwie,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L089",
-      "verse": 21,
-      "start": 178.56,
-      "end": 180.43,
-      "text": "a swój dział pozostawia innemu,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L090",
-      "verse": 21,
-      "start": 180.43,
-      "end": 182.01,
-      "text": "który się nim nie trudził.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L091",
-      "verse": 21,
-      "start": 182.01,
-      "end": 184.89,
-      "text": "Także i to jest marnością i wielkim złem.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L092",
-      "verse": 22,
-      "start": 184.89,
-      "end": 187.44,
-      "text": "Cóż bowiem ma człowiek z całej swojej pracy",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L093",
-      "verse": 22,
-      "start": 187.44,
-      "end": 189.08,
-      "text": "i z utrapienia swego serca,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L094",
-      "verse": 22,
-      "start": 189.08,
-      "end": 191.4,
-      "text": "którymi się trudzi pod słońcem?",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L095",
-      "verse": 23,
-      "start": 191.4,
-      "end": 193.6,
-      "text": "Bo wszystkie jego dni są cierpieniem,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L096",
-      "verse": 23,
-      "start": 193.6,
-      "end": 195.19,
-      "text": "a jego zajęcie – smutkiem;",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L097",
-      "verse": 23,
-      "start": 195.19,
-      "end": 197.79,
-      "text": "nawet w nocy jego serce nie zaznaje spokoju.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L098",
-      "verse": 23,
-      "start": 197.79,
-      "end": 199.82,
-      "text": "Także i to jest marnością.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L099",
-      "verse": 24,
-      "start": 199.82,
-      "end": 201.86,
-      "text": "Nie ma nic lepszego dla człowieka,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L100",
-      "verse": 24,
-      "start": 201.86,
-      "end": 203.04,
-      "text": "niż aby jadł i pił,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L101",
-      "verse": 24,
-      "start": 203.04,
-      "end": 205.81,
-      "text": "i czynił dobrze swojej duszy przy swojej pracy.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L102",
-      "verse": 24,
-      "start": 205.81,
-      "end": 208.81,
-      "text": "Zobaczyłem też, że pochodzi to z ręki Boga.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L103",
-      "verse": 25,
-      "start": 208.81,
-      "end": 210.23,
-      "text": "Kto bowiem potrafi jeść",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L104",
-      "verse": 25,
-      "start": 210.23,
-      "end": 212.77,
-      "text": "i cieszyć się tym słuszniej niż ja?",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L105",
       "verse": 26,
-      "start": 212.77,
-      "end": 214.92,
-      "text": "Bo człowiekowi, który mu się podoba,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L106",
-      "verse": 26,
-      "start": 214.92,
-      "end": 216.73,
-      "text": "daje mądrość, wiedzę i radość.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L107",
-      "verse": 26,
-      "start": 216.73,
-      "end": 218.48,
-      "text": "Ale grzesznikowi zadaje trud,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L108",
-      "verse": 26,
-      "start": 218.48,
-      "end": 219.95,
-      "text": "aby zbierał i gromadził,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L109",
-      "verse": 26,
-      "start": 219.95,
-      "end": 221.48,
-      "text": "i potem zostawił to temu,",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L110",
-      "verse": 26,
-      "start": 221.48,
-      "end": 222.83,
-      "text": "który się Bogu podoba.",
-      "confidence": 0.96,
-      "isInstrumental": false
-    },
-    {
-      "id": "ECC-002-L111",
-      "verse": 26,
-      "start": 222.83,
-      "end": 234,
-      "text": "Także i to jest marnością i utrapieniem ducha.",
-      "confidence": 0.96,
+      "start": 225.65,
+      "end": 226.26,
+      "text": "i potem zostawił to temu, który się Bogu podoba. Także i to jest marnością i utrapieniem ducha.",
+      "words": [
+        {
+          "text": "i",
+          "start": 225.65,
+          "end": 225.8
+        },
+        {
+          "text": "potem",
+          "start": 225.8,
+          "end": 225.95
+        },
+        {
+          "text": "zostawił",
+          "start": 225.95,
+          "end": 226.1
+        },
+        {
+          "text": "to",
+          "start": 226.1,
+          "end": 226.25
+        },
+        {
+          "text": "temu,",
+          "start": 226.25,
+          "end": 226.26
+        },
+        {
+          "text": "który",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "się",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "Bogu",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "podoba.",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "Także",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "i",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "to",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "jest",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "marnością",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "i",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "utrapieniem",
+          "start": 226.26,
+          "end": 226.26
+        },
+        {
+          "text": "ducha.",
+          "start": 226.26,
+          "end": 226.26
+        }
+      ],
       "isInstrumental": false
     }
   ]
