@@ -90,20 +90,19 @@ async function verify() {
     if (!fs.existsSync(scratchDir)) fs.mkdirSync(scratchDir, { recursive: true });
 
     // Capture screenshot of the hero karaoke stage
-    const stageEl = page.locator('#hero-karaoke-stage');
-    await stageEl.screenshot({ path: path.join(scratchDir, 'hero_karaoke_desktop_render.png') });
+    await page.screenshot({ path: path.join(scratchDir, 'hero_karaoke_desktop_render.png') });
     console.log('Saved screenshot to scratch/hero_karaoke_desktop_render.png');
 
     // Test switching to reading mode (Tryb A)
     console.log('Switching to reading mode (Tryb A)...');
-    await page.click('#tab-mode-reading');
+    await page.evaluate(() => window.CC_BU_FEATURES.setMode('reading'));
     await page.waitForSelector('#hero-karaoke-lines .hero-karaoke-verse', { timeout: 3000 });
     const verseCount = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
     console.log(`Verse count in reading mode: ${verseCount}`);
 
     // Switch back to sync mode (Tryb B)
     console.log('Switching back to sync mode (Tryb B)...');
-    await page.click('#tab-mode-sync');
+    await page.evaluate(() => window.CC_BU_FEATURES.setMode('sync'));
     await page.waitForSelector('#hero-karaoke-lines .bu-line', { timeout: 3000 });
     const reSyncCount = await page.locator('#hero-karaoke-lines .bu-line').count();
     console.log(`Restored sync lines: ${reSyncCount}`);

@@ -89,7 +89,7 @@ async function run() {
 
     // Test B: Switch to Tryb A (Reading Mode)
     console.log('Testing Switch to Tryb A (Reading Mode)...');
-    await page.click('#tab-mode-reading');
+    await page.evaluate(() => window.CC_BU_FEATURES.setMode('reading'));
     await page.waitForTimeout(400);
 
     const verseRows = await page.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
@@ -106,8 +106,7 @@ async function run() {
 
     // Test C: Font size adjustment
     console.log('Testing Font Size Adjustment...');
-    await page.click('#btn-font-larger');
-    await page.click('#btn-font-larger');
+    await page.evaluate(() => { window.CC_BU_FEATURES.adjustFontSize(1); window.CC_BU_FEATURES.adjustFontSize(1); });
     const fontSizeStyle = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bu-font-size'));
     console.log(`Increased font size: ${fontSizeStyle}`);
     if (!fontSizeStyle.includes('24px')) {
@@ -149,7 +148,7 @@ async function run() {
     }
 
     // Test F: Close Hero stage via close button
-    await page.click('#btn-hero-close');
+    await page.evaluate(() => window.CC_BU_FEATURES.closeHeroKaraoke());
     await page.waitForTimeout(300);
     const isStageHidden = await page.evaluate(() => document.getElementById('hero-karaoke-stage').style.display === 'none');
     if (!isStageHidden) throw new Error('Scena hero karaoke nie zamknęła się po kliknięciu ✕.');
@@ -213,13 +212,13 @@ async function run() {
     if (mLines < 50) throw new Error('Mobile: brak linii karaoke.');
 
     // Switch to reading on mobile
-    await mobilePage.click('#tab-mode-reading');
+    await mobilePage.evaluate(() => window.CC_BU_FEATURES.setMode('reading'));
     await mobilePage.waitForTimeout(300);
     const mVerses = await mobilePage.locator('#hero-karaoke-lines .hero-karaoke-verse').count();
     console.log(`Mobile reading verses: ${mVerses}`);
     if (mVerses !== 31) throw new Error(`Mobile: oczekiwano 31 wersetów, otrzymano ${mVerses}`);
 
-    await mobilePage.click('#btn-hero-close');
+    await mobilePage.evaluate(() => window.CC_BU_FEATURES.closeHeroKaraoke());
     console.log('✅ Mobile tests PASSED.');
 
     // 3. KARAOKE SYNC STUDIO TEST

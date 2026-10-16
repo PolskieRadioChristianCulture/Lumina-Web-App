@@ -481,6 +481,90 @@
         text-align: center;
       }
     }
+    
+    /* BEZPO?REDNIO NA TAPECIE HERO NAD ODTWARZACZEM (BEZ DODATKOWEGO OKNA) */
+    .hero-section { flex-direction: column; }
+    .hero-karaoke-stage-wrapper {
+      position: relative;
+      z-index: 5;
+      margin-top: -28px !important;
+      margin-bottom: 6px !important;
+      width: 100%;
+      transition: opacity 0.3s ease;
+    }
+    .hero-karaoke-inner {
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      padding: 0 !important;
+      gap: 0 !important;
+    }
+    .hero-karaoke-topbar,
+    .hero-karaoke-selector-row,
+    .hero-karaoke-license {
+      display: none !important;
+    }
+    .hero-karaoke-viewport {
+      max-height: 156px !important;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      border-radius: 0 !important;
+      background: transparent !important;
+      padding: 4px 12px !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%);
+    }
+    .hero-karaoke-viewport::-webkit-scrollbar {
+      display: none;
+    }
+    .hero-karaoke-lines[data-mode="synchronized"] {
+      gap: 2px !important;
+    }
+    .bu-line {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      color: rgba(247, 244, 239, 0.56) !important;
+      font-size: clamp(15px, 1.45vw, 18.5px) !important;
+      line-height: 1.42 !important;
+      padding: 5px 12px !important;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95) !important;
+    }
+    .bu-line:hover {
+      background: transparent !important;
+      color: #f7f4ef !important;
+    }
+    .bu-line.active {
+      color: #ffe2a5 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      font-weight: 700 !important;
+      font-size: clamp(19px, 2.1vw, 26px) !important;
+      transform: scale(1.02) !important;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.98), 0 0 26px rgba(226, 204, 154, 0.65) !important;
+    }
+    .bu-line.prev,
+    .bu-line.next {
+      color: rgba(247, 244, 239, 0.8) !important;
+      font-weight: 500 !important;
+    }
+    .hero-karaoke-lines[data-mode="reading"] {
+      gap: 8px !important;
+      text-align: center;
+    }
+    .hero-karaoke-verse {
+      justify-content: center !important;
+      text-align: center !important;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95) !important;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .hero-karaoke-viewport,
       .bu-lines * {
@@ -830,13 +914,19 @@
       container.appendChild(lineBtn);
       state.syncNodes.push(lineBtn);
     }
+    if (state.syncNodes.length > 0) {
+      state.syncNodes[0]?.classList.add('active');
+      state.syncNodes[1]?.classList.add('next');
+      state.lastActiveIdx = 0;
+    }
   }
 
   function tickSync() {
     if (state.mode !== 'sync' || !state.sync || !state.syncNodes.length) return;
     const now = currentTime();
     const segments = state.sync.lines;
-    const active = segments.findIndex(x => now >= x.start && now < x.end);
+    let active = segments.findIndex(x => now >= x.start && now < x.end);
+    if (active === -1 && now <= (segments[0]?.start || 2)) active = 0;
 
     if (active !== state.lastActiveIdx) {
       // Usuń poprzednie klasy
@@ -852,8 +942,10 @@
         state.syncNodes[active - 1]?.classList.add('prev');
         state.syncNodes[active + 1]?.classList.add('next');
 
-        if (state.autoScroll && curEl) {
-          curEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        const vp = document.getElementById('hero-karaoke-viewport');
+        if (state.autoScroll && curEl && vp) {
+          const topPos = curEl.offsetTop - (vp.clientHeight / 2) + (curEl.clientHeight / 2);
+          vp.scrollTo({ top: Math.max(0, topPos), behavior: 'smooth' });
         }
       }
       state.lastActiveIdx = active;
@@ -883,7 +975,7 @@
         state.tickInterval = setInterval(tickSync, 200);
       }
       if (showStage) {
-        stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
       }
       return;
     }
@@ -969,7 +1061,7 @@
       }
 
       if (showStage) {
-        stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
       }
 
     } catch (err) {
@@ -1092,6 +1184,14 @@
     const targetId = chapterId || cur?.chapterId || state.chapterId || 'GEN-001';
 
     const isVisible = stage && stage.style.display !== 'none' && stage.offsetParent !== null;
+
+    if (!state.userClickedToggleOnce && isVisible && state.chapterId === targetId) {
+      state.userClickedToggleOnce = true;
+      if (playerKaraokeBtn) playerKaraokeBtn.classList.add('is-karaoke-active');
+      openKaraoke(targetId);
+      return;
+    }
+    state.userClickedToggleOnce = true;
 
     if (isVisible && state.chapterId === targetId) {
       closeHeroKaraoke();
@@ -1402,7 +1502,9 @@
     syncMyVotes();
     const cur = currentTrack();
     const initialId = cur?.chapterId || 'GEN-001';
-    startChapterKaraoke(initialId, null, false).catch(() => {});
+    const btn = document.getElementById('btn-player-karaoke');
+    if (btn) btn.classList.add('is-karaoke-active');
+    startChapterKaraoke(initialId, null, true).catch(() => {});
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initOnReady);
