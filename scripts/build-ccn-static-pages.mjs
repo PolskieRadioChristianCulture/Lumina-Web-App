@@ -17,6 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const ARTICLES_TS_PATH = path.join(ROOT, 'portals/ccn-news/src/data/articles.ts');
+const FINANSE_ARTICLES_TS_PATH = path.join(ROOT, 'portals/ccn-finanse/src/data/articles.ts');
 const SITEMAP_PATH = path.join(ROOT, 'sitemap.xml');
 
 function escapeHtml(str) {
@@ -33,10 +34,26 @@ function escapeAttribute(str) {
   return escapeHtml(str);
 }
 
+function formatDurationClock(sec) {
+  if (!Number.isFinite(sec) || sec <= 0) return '--:--';
+  const total = Math.floor(sec);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function formatIsoDuration(sec) {
+  if (!Number.isFinite(sec) || sec <= 0) return undefined;
+  const total = Math.round(sec);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `PT${m}M${s}S`;
+}
+
 // 1. Load articles using esbuild in-memory bundle
-function loadArticles() {
+function loadArticles(entryPath = ARTICLES_TS_PATH) {
   const result = esbuild.buildSync({
-    entryPoints: [ARTICLES_TS_PATH],
+    entryPoints: [entryPath],
     bundle: true,
     format: 'cjs',
     write: false,
@@ -59,92 +76,139 @@ function loadArticles() {
 }
 
 // 2. Generate Single Article HTML
-function generateArticleHtml(article, allArticles) {
-  const canonicalUrl = `https://polskieradio.cc/news/${article.slug}`;
-  const shareText = encodeURIComponent(`${article.title} — CCN News | Christian Culture`);
+function generateArticleHtml(article, allArticles, portalOpts = {}) {
+  const baseSlug = portalOpts.baseSlug || 'news';
+  const portalName = portalOpts.portalName || 'CCN News';
+  const portalUrl = portalOpts.portalUrl || `https://polskieradio.cc/${baseSlug}`;
+  const canonicalUrl = `https://polskieradio.cc/${baseSlug}/${article.slug}`;
+  const shareText = encodeURIComponent(`${article.title} — ${portalName} | Christian Culture`);
   const shareUrl = encodeURIComponent(canonicalUrl);
   const shareImageUrl = encodeURIComponent(`https://polskieradio.cc${article.imageUrl}`);
+
+  const hasPublishedAudio = Boolean(
+    article.audio &&
+    article.audio.publicationStatus === 'published' &&
+    typeof article.audio.src === 'string' &&
+    article.audio.src.trim().length > 0
+  );
 
   // Related articles (pick 3 other articles)
   const related = allArticles
     .filter(a => a.id !== article.id && a.slug !== article.slug)
     .slice(0, 3);
 
-  // Schema.org JSON-LD
+  const authorProfileUrl = (article.author && String(article.author.name).includes('Wioletta'))
+    ? 'https://polskieradio.cc/lumina.wiolettarogowska.html'
+    : 'https://polskieradio.cc/lumina.cezaryrgowski.html';
+
+  const newsArticleNode = {
+    "@type": "NewsArticle",
+    "@id": `${canonicalUrl}#article`,
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://polskieradio.cc/#website",
+      "name": "Christian Culture",
+      "url": "https://polskieradio.cc/"
+    },
+    "headline": article.title,
+    "description": article.excerpt,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    },
+    "datePublished": article.publishedAt,
+    "dateModified": article.updatedAt || article.publishedAt,
+    "inLanguage": "pl-PL",
+    "isAccessibleForFree": true,
+    "image": [
+      `https://polskieradio.cc${article.imageUrl}`
+    ],
+    "author": {
+      "@type": "Person",
+      "name": article.author.name,
+      "jobTitle": article.author.role,
+      "image": `https://polskieradio.cc${article.author.avatarUrl}`,
+      "url": authorProfileUrl
+    },
+    "publisher": {
+      "@type": "NewsMediaOrganization",
+      "@id": "https://polskieradio.cc/#organization",
+      "name": "CCN – Christian Culture News Network",
+      "url": "https://polskieradio.cc/news",
+      "publishingPrinciples": "https://polskieradio.cc/polityka-redakcyjna",
+      "correctionsPolicy": "https://polskieradio.cc/polityka-redakcyjna#korekty",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://polskieradio.cc/ccn-logo-square.png"
+      }
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["#article-headline", "#article-lead"]
+    }
+  };
+
+  if (hasPublishedAudio) {
+    newsArticleNode.audio = { "@id": `${canonicalUrl}#audio` };
+  }
+
+  const graphNodes = [
+    newsArticleNode,
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Strona Główna",
+          "item": "https://polskieradio.cc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": portalName,
+          "item": portalUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": article.categoryLabel || "Wiadomości",
+          "item": `${portalUrl}?cat=${encodeURIComponent(article.category || 'home')}`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": article.title,
+          "item": canonicalUrl
+        }
+      ]
+    }
+  ];
+
+  if (hasPublishedAudio) {
+    const audioContentUrl = article.audio.src.startsWith('http')
+      ? article.audio.src
+      : `https://polskieradio.cc${article.audio.src}`;
+    graphNodes.push({
+      "@type": "AudioObject",
+      "@id": `${canonicalUrl}#audio`,
+      "name": article.audio.title,
+      "description": article.excerpt,
+      "contentUrl": audioContentUrl,
+      "encodingFormat": "audio/mp4",
+      ...(formatIsoDuration(article.audio.durationSeconds)
+        ? { "duration": formatIsoDuration(article.audio.durationSeconds) }
+        : {}),
+      "inLanguage": "pl-PL",
+      "uploadDate": article.publishedAt
+    });
+  }
+
+  // Schema.org JSON-LD (CCN Global SEO & AI Search 2026 v1.0)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "NewsArticle",
-        "@id": `${canonicalUrl}#article`,
-        "isPartOf": {
-          "@type": "WebSite",
-          "@id": "https://polskieradio.cc/#website",
-          "name": "Christian Culture",
-          "url": "https://polskieradio.cc/"
-        },
-        "headline": article.title,
-        "description": article.excerpt,
-        "mainEntityOfPage": canonicalUrl,
-        "datePublished": article.publishedAt,
-        "dateModified": article.publishedAt,
-        "inLanguage": "pl-PL",
-        "image": [
-          `https://polskieradio.cc${article.imageUrl}`
-        ],
-        "author": {
-          "@type": "Person",
-          "name": article.author.name,
-          "jobTitle": article.author.role,
-          "image": `https://polskieradio.cc${article.author.avatarUrl}`,
-          "url": `https://polskieradio.cc/lumina.cezaryrgowski.html`
-        },
-        "publisher": {
-          "@type": "NewsMediaOrganization",
-          "@id": "https://polskieradio.cc/#organization",
-          "name": "CCN – Christian Culture News Network",
-          "url": "https://polskieradio.cc/news",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://polskieradio.cc/ccn-logo-square.png"
-          }
-        },
-        "speakable": {
-          "@type": "SpeakableSpecification",
-          "cssSelector": ["#article-headline", "#article-lead"]
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `${canonicalUrl}#breadcrumb`,
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Strona Główna",
-            "item": "https://polskieradio.cc/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "CCN News",
-            "item": "https://polskieradio.cc/news"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": article.categoryLabel || "Wiadomości",
-            "item": `https://polskieradio.cc/news?cat=${encodeURIComponent(article.category || 'home')}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "name": article.title,
-            "item": canonicalUrl
-          }
-        ]
-      }
-    ]
+    "@graph": graphNodes
   };
 
   return `<!doctype html>
@@ -166,6 +230,8 @@ function generateArticleHtml(article, allArticles) {
     <meta name="author" content="${escapeAttribute(article.author.name)}" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href="${canonicalUrl}" />
+    <link rel="alternate" type="application/rss+xml" title="CCN News — Christian Culture RSS" href="https://polskieradio.cc/news/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Christian Culture — Kanał Główny RSS" href="https://polskieradio.cc/feed.xml" />
     <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
 
     <!-- Open Graph / Facebook -->
@@ -614,6 +680,292 @@ ${JSON.stringify(jsonLd, null, 2)}
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       }
       .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+      /* Primary Portal Cross-Link Banner */
+      .ccn-primary-portal-banner {
+        margin: 1.5rem 0 2rem;
+        padding: 1.15rem 1.35rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #0d111a 0%, #131926 100%);
+        border: 1px solid rgba(215, 179, 106, 0.35);
+        color: #f5f3ee;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      }
+      .ccn-primary-portal-eyebrow {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #ead39c;
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+      .ccn-primary-portal-text {
+        font-size: 0.9rem;
+        color: #e4e4e7;
+        margin: 0;
+      }
+      .ccn-primary-portal-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 44px;
+        padding: 0 1.1rem;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #ead39c 0%, #c99d45 100%);
+        color: #17120a;
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      /* CCN Audio Player Premium 2026 */
+      .ccn-player[hidden] { display: none !important; }
+      .ccn-player {
+        position: relative;
+        overflow: hidden;
+        margin: 1.5rem 0 2rem;
+        border-radius: 22px;
+        border: 1px solid rgba(215, 179, 106, 0.22);
+        background:
+          radial-gradient(circle at 12% 0%, rgba(215, 179, 106, 0.16), transparent 36%),
+          linear-gradient(180deg, rgba(19, 25, 38, 0.96), rgba(11, 15, 23, 0.98));
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        padding: 20px;
+        color: #f5f3ee;
+      }
+      .ccn-player::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(234, 211, 156, 0.68), transparent);
+        pointer-events: none;
+      }
+      .ccn-player__top {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 16px;
+        align-items: center;
+      }
+      .ccn-play-btn {
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        min-height: 58px;
+        border-radius: 999px;
+        border: 1px solid rgba(234, 211, 156, 0.5);
+        background:
+          radial-gradient(circle at 30% 25%, #f4e4bc, #d7b36a 58%, #9f7932 100%);
+        color: #17120a;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 12px 30px rgba(215, 179, 106, 0.28);
+        transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      }
+      .ccn-play-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+        box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
+      }
+      .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-player__meta { min-width: 0; }
+      .ccn-player__eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        align-items: center;
+        color: #ead39c;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .ccn-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #ead39c;
+        box-shadow: 0 0 0 5px rgba(215, 179, 106, 0.14);
+        display: inline-block;
+      }
+      .ccn-player__title {
+        margin: 0;
+        font-size: clamp(16px, 2vw, 19px);
+        line-height: 1.3;
+        font-weight: 760;
+        color: #f5f3ee;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ccn-player__sub {
+        margin-top: 4px;
+        color: #9ca6ba;
+        font-size: 13px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        align-items: center;
+      }
+      .ccn-badge {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: #f5f3ee;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 650;
+        white-space: nowrap;
+      }
+      .ccn-wave-wrap {
+        margin-top: 18px;
+        padding: 14px 14px 10px;
+        border-radius: 16px;
+        background: rgba(6, 9, 15, 0.56);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .ccn-wave {
+        position: relative;
+        height: 54px;
+        display: grid;
+        grid-template-columns: repeat(64, minmax(2px, 1fr));
+        align-items: end;
+        gap: 3px;
+        cursor: pointer;
+        user-select: none;
+        padding: 4px 0;
+      }
+      .ccn-wave__bar {
+        width: 100%;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.17);
+        transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
+        min-height: 6px;
+      }
+      .ccn-wave__bar.is-played {
+        background: linear-gradient(180deg, #ead39c, #c99d45);
+        box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
+      }
+      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-range {
+        width: 100%;
+        margin: 8px 0 2px;
+        accent-color: #d7b36a;
+        cursor: pointer;
+      }
+      .ccn-time-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #9ca6ba;
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+        margin-top: 4px;
+      }
+      .ccn-controls {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ccn-controls__left,
+      .ccn-controls__right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .ccn-chip-btn {
+        min-height: 44px;
+        padding: 0 13px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+        color: #f5f3ee;
+        font-size: 13px;
+        font-weight: 650;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      }
+      .ccn-chip-btn:hover {
+        background: rgba(215, 179, 106, 0.12);
+        border-color: rgba(215, 179, 106, 0.38);
+        transform: translateY(-1px);
+      }
+      .ccn-chip-btn svg { width: 16px; height: 16px; fill: currentColor; }
+      .ccn-volume {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+        min-height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .ccn-volume input[type="range"] { width: 84px; accent-color: #d7b36a; cursor: pointer; }
+      .ccn-status {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #9ca6ba;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+      }
+      .ccn-status strong { color: #ead39c; font-weight: 700; }
+      .ccn-drive-fallback {
+        margin-top: 14px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(215, 179, 106, 0.24);
+        background: #090d14;
+        display: none;
+      }
+      .ccn-drive-fallback.is-visible { display: block; }
+      .ccn-drive-fallback__head {
+        padding: 10px 14px;
+        font-size: 12px;
+        color: #9ca6ba;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+      }
+      .ccn-drive-fallback iframe {
+        width: 100%;
+        height: 88px;
+        border: 0;
+        display: block;
+        background: #090d14;
+      }
+      @media (max-width: 640px) {
+        .ccn-player { padding: 16px; border-radius: 18px; }
+        .ccn-player__top { grid-template-columns: auto 1fr; }
+        .ccn-badge { display: none; }
+        .ccn-player__title { white-space: normal; }
+        .ccn-volume { width: 100%; justify-content: space-between; }
+        .ccn-volume input[type="range"] { width: 100%; }
+      }
     </style>
   </head>
   <body>
@@ -625,7 +977,8 @@ ${JSON.stringify(jsonLd, null, 2)}
         <a href="/akademia">Akademia Biblijna</a>
         <a href="/vod">Kino VOD</a>
         <a href="/mojabiblia">MojaBiblia</a>
-        <a href="/news" style="color:var(--ccn-gold);">CCN News</a>
+        <a href="/news" ${baseSlug === 'news' ? 'style="color:var(--ccn-gold);"' : ''}>CCN News</a>
+        <a href="/finanse" ${baseSlug === 'finanse' ? 'style="color:var(--ccn-gold);"' : ''}>Finanse</a>
         <a href="/si">AI &amp; SI</a>
         <a href="/nauka">Nauka</a>
         <a href="/biznes">Biznes</a>
@@ -636,12 +989,12 @@ ${JSON.stringify(jsonLd, null, 2)}
 
     <!-- Brand Bar -->
     <div class="ccn-brand-bar">
-      <a href="/news" class="ccn-brand-logo" title="CCN News – Strona Główna">
-        <img src="/ccn-logo-horizontal.png" alt="CCN News Logo" width="160" height="42" onerror="this.src='/ccn-logo-square.png'">
+      <a href="/${baseSlug}" class="ccn-brand-logo" title="${escapeAttribute(portalName)} – Strona Główna">
+        <img src="/ccn-logo-horizontal.png" alt="${escapeAttribute(portalName)} Logo" width="160" height="42" onerror="this.src='/ccn-logo-square.png'">
       </a>
-      <a href="/news" class="ccn-back-btn">
+      <a href="/${baseSlug}" class="ccn-back-btn">
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        <span>Wróć do CCN News</span>
+        <span>Wróć do ${escapeHtml(portalName)}</span>
       </a>
     </div>
 
@@ -650,7 +1003,7 @@ ${JSON.stringify(jsonLd, null, 2)}
       <nav class="ccn-breadcrumbs" aria-label="Ścieżka powrotu">
         <a href="/">Start</a>
         <span>/</span>
-        <a href="/news">CCN News</a>
+        <a href="/${baseSlug}">${escapeHtml(portalName)}</a>
         <span>/</span>
         <span>${escapeHtml(article.categoryLabel || 'Wiadomości')}</span>
       </nav>
@@ -706,11 +1059,169 @@ ${JSON.stringify(jsonLd, null, 2)}
           ${article.imageCaption ? `<figcaption>${escapeHtml(article.imageCaption)}</figcaption>` : ''}
         </figure>
 
+        ${baseSlug === 'news' && article.primaryPortalUrl ? `
+        <!-- Primary Portal Banner -->
+        <div class="ccn-primary-portal-banner">
+          <div>
+            <span class="ccn-primary-portal-eyebrow">${escapeHtml(article.primaryPortalLabel || 'CCN Finanse — Główne wydanie pełne')}</span>
+            <p class="ccn-primary-portal-text">Główne, pełne wydanie redakcyjne tej analizy zostało opublikowane w portalu tematycznym <strong>CCN Finanse</strong>.</p>
+          </div>
+          <a href="${escapeAttribute(article.primaryPortalUrl)}" class="ccn-primary-portal-btn">
+            <span>Przejdź do CCN Finanse</span>
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+        </div>` : ''}
+
+        ${hasPublishedAudio ? `
+        <!-- CCN Audio Player Premium 2026 -->
+        <section
+          class="ccn-player"
+          data-ccn-audio-player="true"
+          data-audio-src="${escapeAttribute(article.audio.src)}"
+          data-audio-title="${escapeAttribute(article.audio.title)}"
+          data-audio-reader="${escapeAttribute(article.audio.reader || 'AI Lektor')}"
+          data-drive-id="${escapeAttribute(article.audio.driveId || '')}"
+          data-publication-status="published"
+          data-peaks="${escapeAttribute(JSON.stringify(article.audio.peaks || []))}"
+          aria-label="Odtwarzacz nagrania artykułu"
+        >
+          <audio preload="metadata" crossorigin="anonymous"></audio>
+
+          <div class="ccn-player__top">
+            <button class="ccn-play-btn" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
+              <svg viewBox="0 0 24 24" data-icon="play" aria-hidden="true">
+                <path d="M8 5.5v13l10.5-6.5L8 5.5z"></path>
+              </svg>
+              <svg viewBox="0 0 24 24" data-icon="pause" aria-hidden="true" hidden>
+                <path d="M6.5 5h4v14h-4V5zm7 0h4v14h-4V5z"></path>
+              </svg>
+            </button>
+
+            <div class="ccn-player__meta">
+              <div class="ccn-player__eyebrow">
+                <span class="ccn-dot"></span>
+                <span>CCN Audio Edition</span>
+                <span>•</span>
+                <span data-role="reader">${escapeHtml(article.audio.reader || 'AI Lektor')}</span>
+              </div>
+              <h2 class="ccn-player__title" data-role="title">${escapeHtml(article.audio.title)}</h2>
+              <div class="ccn-player__sub">
+                <span>Wersja do odsłuchu artykułu</span>
+                <span>•</span>
+                <span data-role="duration-label">Czas: ${formatDurationClock(article.audio.durationSeconds)}</span>
+              </div>
+            </div>
+
+            <div class="ccn-badge">CCN Finanse • Audio</div>
+          </div>
+
+          <div class="ccn-wave-wrap">
+            <div class="ccn-wave" data-role="waveform" aria-hidden="true"></div>
+            <input
+              class="ccn-range"
+              type="range"
+              min="0"
+              max="1000"
+              value="0"
+              step="1"
+              data-role="seek"
+              aria-label="Przewijanie nagrania"
+            />
+            <div class="ccn-time-row">
+              <span data-role="current-time">00:00</span>
+              <span data-role="total-time">${formatDurationClock(article.audio.durationSeconds)}</span>
+            </div>
+          </div>
+
+          <div class="ccn-controls">
+            <div class="ccn-controls__left">
+              <button class="ccn-chip-btn" type="button" data-action="back15" aria-label="Cofnij o 15 sekund">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6a6 6 0 0 1-6 6 6 6 0 0 1-5.65-4H4.26A8 8 0 0 0 12 21a8 8 0 0 0 0-16z"></path></svg>
+                <span>-15s</span>
+              </button>
+
+              <button class="ccn-chip-btn" type="button" data-action="forward15" aria-label="Przewiń o 15 sekund">
+                <span>+15s</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6a6 6 0 0 0 6 6 6 6 0 0 0 5.65-4h2.09A8 8 0 0 1 12 21a8 8 0 0 1 0-16z"></path></svg>
+              </button>
+
+              <button class="ccn-chip-btn" type="button" data-action="speed" aria-label="Zmień prędkość odtwarzania">
+                <span>Prędkość:</span>
+                <strong data-role="speed">1×</strong>
+              </button>
+            </div>
+
+            <div class="ccn-controls__right">
+              <div class="ccn-volume">
+                <button class="ccn-chip-btn" style="min-height:32px;padding:0 8px;border:0;background:transparent" type="button" data-action="mute" aria-label="Wycisz lub włącz dźwięk">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+                </button>
+                <input type="range" min="0" max="1" step="0.01" value="1" data-role="volume" aria-label="Głośność" />
+              </div>
+
+              ${article.audio.driveId ? `
+              <button class="ccn-chip-btn" type="button" data-action="toggle-fallback">
+                <span>Odtwarzacz zapasowy</span>
+              </button>
+
+              <a
+                class="ccn-chip-btn"
+                data-role="external-link"
+                href="https://drive.google.com/file/d/${escapeAttribute(article.audio.driveId)}/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>Źródło nagrania</span>
+              </a>` : ''}
+            </div>
+          </div>
+
+          <div class="ccn-status">
+            <span data-role="status">Gotowe do odtworzenia</span>
+            <span>Skróty: <strong>Spacja</strong> odtwórz/pauza • <strong>←/→</strong> 15 s</span>
+          </div>
+
+          ${article.audio.driveId ? `
+          <div class="ccn-drive-fallback" data-role="fallback">
+            <div class="ccn-drive-fallback__head">
+              <span>Zapasowy odtwarzacz Google Drive (gdy przeglądarka blokuje bezpośredni strumień audio)</span>
+              <a href="https://drive.google.com/file/d/${escapeAttribute(article.audio.driveId)}/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color:#ead39c;text-decoration:none;font-weight:700;">Otwórz w nowej karcie</a>
+            </div>
+            <iframe
+              title="Odtwarzacz zapasowy nagrania CCN"
+              loading="lazy"
+              allow="autoplay"
+              data-role="drive-iframe"
+            ></iframe>
+          </div>` : ''}
+        </section>` : ''}
+
         <!-- Article Content -->
         <div class="ccn-content">
           ${article.content.map(p => {
-            if (p.startsWith('KOMENTARZ REDAKCYJNY') || p.startsWith('PRZYSZŁOŚĆ WYMAGA') || p.startsWith('INTELIGENCJA A MĄDROŚĆ') || p.startsWith('SZTUCZNA INTELIGENCJA JAKO') || p.startsWith('KTO PONOSI') || p.startsWith('CZY MASZYNA MOŻE') || p.startsWith('PERSPEKTYWA BIBLIJNA') || p.startsWith('TECHNOLOGIA W SŁUŻBIE') || p.startsWith('PIĘĆ PYTAŃ')) {
-              return `<h2>${escapeHtml(p)}</h2>`;
+            const trimmed = String(p || '').trim();
+            if (
+              /^\d+\.\s+/.test(trimmed) ||
+              trimmed === 'Podsumowanie' ||
+              trimmed === 'Źródła i teksty biblijne' ||
+              trimmed === 'Kluczowe informacje' ||
+              trimmed === 'Kontekst i analiza' ||
+              trimmed === 'Refleksja biblijna' ||
+              trimmed === 'Źródła' ||
+              trimmed.startsWith('KOMENTARZ REDAKCYJNY') ||
+              trimmed.startsWith('PRZYSZŁOŚĆ WYMAGA') ||
+              trimmed.startsWith('INTELIGENCJA A MĄDROŚĆ') ||
+              trimmed.startsWith('SZTUCZNA INTELIGENCJA JAKO') ||
+              trimmed.startsWith('KTO PONOSI') ||
+              trimmed.startsWith('CZY MASZYNA MOŻE') ||
+              trimmed.startsWith('PERSPEKTYWA BIBLIJNA') ||
+              trimmed.startsWith('TECHNOLOGIA W SŁUŻBIE') ||
+              trimmed.startsWith('PIĘĆ PYTAŃ')
+            ) {
+              return `<h2>${escapeHtml(trimmed)}</h2>`;
+            }
+            if (trimmed.includes('\n')) {
+              return `<p style="white-space:pre-line;">${escapeHtml(trimmed)}</p>`;
             }
             return `<p>${escapeHtml(p)}</p>`;
           }).join('\n          ')}
@@ -736,13 +1247,16 @@ ${JSON.stringify(jsonLd, null, 2)}
           ${article.sourceCitation.sourceUrl ? `<p style="margin-top:0.3rem;"><a href="${escapeAttribute(article.sourceCitation.sourceUrl)}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz oficjalne źródło i dokumentację</a> (${escapeHtml(article.sourceCitation.quotationDate || '')})</p>` : ''}
         </div>` : ''}
 
-        <!-- Full Author Card -->
+        <!-- Full Author Card & Editorial Policy -->
         <div class="ccn-author-full-card">
           <img src="${escapeAttribute(article.author.avatarUrl)}" alt="${escapeAttribute(article.author.name)}" class="ccn-author-full-avatar" onerror="this.src='/avatar_cezary_official.jpg'">
           <div>
-            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;">${escapeHtml(article.author.name)}</h3>
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;"><a href="${authorProfileUrl}" style="color:inherit; text-decoration:none;">${escapeHtml(article.author.name)}</a></h3>
             <p style="font-size:0.8rem; color:var(--ccn-gold); font-weight:700; margin-bottom:0.5rem;">${escapeHtml(article.author.role)}</p>
             <p style="font-size:0.85rem; color:#52525b; line-height:1.5;">${escapeHtml(article.author.bio || 'Redakcja portalu CCN News i ekosystemu Christian Culture.')}</p>
+            <p style="font-size:0.78rem; color:#71717a; margin-top:0.5rem;">
+              <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Standard redakcyjny CCN: rozdział faktów, analizy i refleksji biblijnej • <a href="/polityka-redakcyjna" style="color:var(--ccn-primary); font-weight:600; text-decoration:underline;">Polityka redakcyjna i korekt</a>
+            </p>
           </div>
         </div>
 
@@ -752,7 +1266,7 @@ ${JSON.stringify(jsonLd, null, 2)}
           <h2 class="ccn-related-title">Polecane Analizy i Artykuły</h2>
           <div class="ccn-related-grid">
             ${related.map(r => `
-            <a href="/news/${escapeAttribute(r.slug)}" class="ccn-related-card">
+            <a href="/${baseSlug}/${escapeAttribute(r.slug)}" class="ccn-related-card">
               <img src="${escapeAttribute(r.imageUrl)}" alt="${escapeAttribute(r.title)}" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
               <div class="ccn-related-card-content">
                 <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">${escapeHtml(r.categoryLabel || 'News')}</span>
@@ -764,14 +1278,15 @@ ${JSON.stringify(jsonLd, null, 2)}
         </section>` : ''}
 
         <div style="margin-top: 2.5rem; text-align: center;">
-          <a href="/news" class="ccn-back-btn" style="display:inline-flex;">
+          <a href="/${baseSlug}" class="ccn-back-btn" style="display:inline-flex;">
             <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-            <span>Wróć do wszystkich artykułów CCN News</span>
+            <span>Wróć do wszystkich artykułów ${escapeHtml(portalName)}</span>
           </a>
         </div>
       </article>
     </main>
 
+    ${hasPublishedAudio ? '<script src="/components/ccn-audio-player.js" defer></script>' : ''}
     <!-- Global Support Footer -->
     <script src="/components/cc-support-footer.js" defer></script>
 
@@ -836,12 +1351,16 @@ function updateSitemap(articles) {
 // 4. Main Build Execution
 export async function buildCcnStaticPages() {
   console.log('--- START CCN STATIC PAGES (SSG) BUILD ---');
-  const { articles } = loadArticles();
-  console.log(`Loaded ${articles.length} articles from articles.ts`);
+  const { articles } = loadArticles(ARTICLES_TS_PATH);
+  console.log(`Loaded ${articles.length} articles from ccn-news/articles.ts`);
 
   let generatedPages = 0;
   for (const article of articles) {
-    const html = generateArticleHtml(article, articles);
+    const html = generateArticleHtml(article, articles, {
+      baseSlug: 'news',
+      portalName: 'CCN News',
+      portalUrl: 'https://polskieradio.cc/news'
+    });
 
     // 1. Write news/${article.slug}.html
     const slugFile = path.join(ROOT, 'news', `${article.slug}.html`);
@@ -862,6 +1381,35 @@ export async function buildCcnStaticPages() {
     }
 
     generatedPages++;
+  }
+
+  // Also generate static pages for CCN Finanse (/finanse/{slug})
+  if (fs.existsSync(FINANSE_ARTICLES_TS_PATH)) {
+    const { articles: finanseArticles } = loadArticles(FINANSE_ARTICLES_TS_PATH);
+    console.log(`Loaded ${finanseArticles.length} articles from ccn-finanse/articles.ts`);
+    fs.mkdirSync(path.join(ROOT, 'finanse'), { recursive: true });
+    for (const article of finanseArticles) {
+      const html = generateArticleHtml(article, finanseArticles, {
+        baseSlug: 'finanse',
+        portalName: 'CCN Finanse',
+        portalUrl: 'https://polskieradio.cc/finanse'
+      });
+
+      const slugFile = path.join(ROOT, 'finanse', `${article.slug}.html`);
+      fs.writeFileSync(slugFile, html, 'utf8');
+
+      const cleanDir = path.join(ROOT, 'finanse', article.slug);
+      fs.mkdirSync(cleanDir, { recursive: true });
+      fs.writeFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
+
+      if (article.id && article.id !== article.slug) {
+        const idFile = path.join(ROOT, 'finanse', `${article.id}.html`);
+        fs.writeFileSync(idFile, html, 'utf8');
+        const idDir = path.join(ROOT, 'finanse', article.id);
+        fs.mkdirSync(idDir, { recursive: true });
+        fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
+      }
+    }
   }
 
   console.log(`Generated static pages for ${generatedPages} articles.`);

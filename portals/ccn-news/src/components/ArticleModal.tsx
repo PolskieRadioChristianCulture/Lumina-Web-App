@@ -1,4 +1,5 @@
 import { PortalPatron } from './PortalPatron';
+import { CcnAudioPlayer } from './CcnAudioPlayer';
 import React, { useState, useEffect } from 'react';
 import { Article } from '../types';
 import { 
@@ -363,6 +364,30 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </figure>
           )}
 
+          {/* Primary Portal Cross-Link Banner (when article is syndicated from a thematic portal) */}
+          {article.primaryPortalUrl && (
+            <div className="bg-gradient-to-r from-[#0d111a] via-[#131926] to-[#0d111a] text-[#f5f3ee] rounded-xl p-4 sm:p-5 border border-[#c4a35a]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#e5cb87] block mb-1">
+                  {article.primaryPortalLabel || 'Główne Wydanie Tematyczne CCN'}
+                </span>
+                <p className="text-xs sm:text-sm text-zinc-200 leading-relaxed">
+                  Główne, pełne wydanie redakcyjne tej analizy zostało opublikowane w portalu tematycznym <strong>CCN Finanse</strong>.
+                </p>
+              </div>
+              <a
+                href={article.primaryPortalUrl}
+                className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#e5cb87] to-[#c4a35a] text-[#17120a] font-bold text-xs hover:brightness-105 transition min-h-[44px]"
+              >
+                <span>Przejdź do CCN Finanse</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          )}
+
+          {/* CCN Audio Player Premium 2026 */}
+          <CcnAudioPlayer audio={article.audio} />
+
           {/* Source Citation Box (Christian Wikipedia standard: legal press quotes) */}
           {article.sourceCitation && (
             <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 text-xs text-amber-950 my-4">
@@ -413,7 +438,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           {/* Article Full Content */}
           <div className={`prose max-w-none text-gray-800 space-y-4 font-normal ${getFontSizeClass()}`}>
             {article.content.map((paragraph, index) => {
-              if (/^(\d\. |PODSUMOWANIE REDAKCYJNE)/.test(paragraph)) {
+              if (/^(\d+\. |PODSUMOWANIE REDAKCYJNE|Podsumowanie$|Źródła i teksty biblijne$|Kluczowe informacje$|Kontekst i analiza$|Refleksja biblijna$|Źródła$)/.test(paragraph)) {
                 return <h2 key={index} className="font-serif font-bold text-xl pt-4">{paragraph}</h2>;
               }
               const isInterviewSpeaker = article.isInterview === true && paragraph.startsWith('CCN News:');

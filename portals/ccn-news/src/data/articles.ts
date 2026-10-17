@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "CCN FINANSE + AUDIO (17:51): Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13 — analiza Cezarego Rogowskiego o CBDC i wolności sumienia (Ap 13:16–17; Wj 20:8–11)",
   "CCN ŚWIAT: Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju? Analiza Cezarego Rogowskiego (Mt 24:4–14; Mt 5:9)",
   "CCN EDUKACJA & RODZINA: Gdy szkoła przestaje być bezpieczna. Po śmierci pracownicy szkoły pod Wyszkowem — analiza Wioletty Rogowskiej (Jk 1:19–20, 27)",
   "Z Biblią za Pan Brat: Dzień 17 — Wiara patrząca w przyszłość: Grota Machpela i spotkanie przy studni (Rdz 23–24)",
@@ -66,6 +67,108 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+      "id": "art-cbdc-prawo-niedzielne-apokalipsa-13",
+      "title": "Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13. Czy technologia może stać się narzędziem przymusu religijnego?",
+      "slug": "cbdc-prawo-niedzielne-apokalipsa-13",
+      "excerpt": "Dyskusja o cyfrowych walutach banków centralnych (CBDC) coraz częściej wykracza poza ekonomię. Chrześcijanie pytają, czy programowalny pieniądz i całkowita kontrola transakcji mogą w przyszłości posłużyć do wywierania presji na sumienie — zwłaszcza w sporze o dzień święty i wolność religijną.",
+      "primaryPortalUrl": "https://polskieradio.cc/finanse/cbdc-prawo-niedzielne-apokalipsa-13",
+      "primaryPortalLabel": "CCN Finanse — Główne wydanie pełne",
+      "audio": {
+          "src": "/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a",
+          "title": "Programowalny pieniądz: CBDC a proroctwo Apokalipsy",
+          "reader": "AI Lektor",
+          "durationSeconds": 1071.368,
+          "driveId": "1armTC6OXOU5XI6hZ9BkBR2amYrLeXCdr",
+          "publicationStatus": "published",
+          "peaks": [54,38,39,45,65,25,38,41,53,54,56,38,56,62,59,60,63,44,47,49,64,60,59,67,49,65,56,80,71,56,53,53,49,49,56,64,52,51,72,73,84,51,66,66,68,56,51,60,64,61,67,44,45,48,51,48,45,44,39,57,45,38,40,48]
+      },
+      "content": [
+          "Dyskusja o cyfrowych walutach banków centralnych (CBDC) coraz częściej wykracza poza ekonomię. Chrześcijanie pytają, czy programowalny pieniądz i całkowita kontrola transakcji mogą w przyszłości posłużyć do wywierania presji na sumienie — zwłaszcza w sporze o dzień święty i wolność religijną.",
+          "1. Cyfrowa rewolucja pieniądza",
+          "Na całym świecie banki centralne prowadzą badania, testy lub wdrożenia cyfrowych walut banków centralnych, określanych skrótem CBDC (Central Bank Digital Currency). Europejski Bank Centralny rozwija projekt cyfrowego euro, Bank Rozrachunków Międzynarodowych analizuje modele rozliczeń transgranicznych, a wiele państw testuje własne systemy płatności cyfrowych.",
+          "Zwolennicy CBDC wskazują na wygodę, szybkość rozliczeń, bezpieczeństwo systemowe oraz walkę z przestępczością finansową. Krytycy zwracają jednak uwagę na drugą stronę tego procesu: postępujące ograniczanie roli gotówki oraz rosnącą możliwość technicznego nadzoru nad każdą transakcją obywatela.",
+          "Gotówka ma jedną cechę, której nie posiada żaden system cyfrowy: pozwala na zawarcie legalnej transakcji bez udziału pośrednika technicznego i bez budowania pełnego profilu zachowań konsumenta.",
+          "2. Programowalny pieniądz i granice wolności",
+          "W debacie o CBDC pojawia się pojęcie pieniądza programowalnego. W sensie technicznym oznacza ono możliwość przypisania środkom określonych reguł użycia: czasu ważności, kategorii zakupów, limitów geograficznych, limitów kwotowych lub warunków aktywacji.",
+          "Należy uczciwie podkreślić: banki centralne w Europie i USA deklarują dziś, że ich celem nie jest całkowite zastąpienie gotówki ani polityczna kontrola obywateli. Jednocześnie historia uczy, że gdy powstaje potężna infrastruktura techniczna, kolejne rządy w sytuacjach kryzysowych mogą sięgać po nią szerzej, niż zakładali jej pierwotni twórcy.",
+          "To właśnie w tym miejscu pytanie technologiczne staje się pytaniem etycznym i duchowym: co się stanie, jeśli dostęp do kupowania i sprzedawania zostanie całkowicie uzależniony od centralnego systemu cyfrowego?",
+          "3. Apokalipsa 13 i ekonomiczny wymiar przymusu",
+          "Dla czytelników Pisma Świętego pytanie to brzmi znajomo. W 13. rozdziale Księgi Apokalipsy czytamy o systemie przymusu, który łączy autorytet religijny, polityczny i ekonomiczny:",
+          "„I sprawia, że wszyscy: mali i wielcy, bogaci i biedni, wolni i niewolnicy otrzymują znamię na prawą rękę lub na czoło, i że nikt nie może kupić ni sprzedać, kto nie ma znamienia...” (Ap 13,16–17).",
+          "Tekst biblijny nie opisuje samego pieniądza cyfrowego jako „znamienia bestii”. Samo używanie karty płatniczej, przelewu bankowego czy aplikacji finansowej nie jest grzechem ani odstępstwem od Boga. Istotą proroctwa Apokalipsy 13 i 14 nie jest sam środek płatniczy, lecz wymuszona lojalność religijno-moralna, w której człowiek staje przed wyborem między posłuszeństwem Bogu a podporządkowaniem się ludzkiemu nakazowi sprzecznemu z Bożym prawem.",
+          "Technologia finansowa nie jest więc proroctwem sama w sobie, ale może stworzyć infrastrukturę, dzięki której opisany w Apokalipsie mechanizm wykluczenia ekonomicznego („nikt nie może kupić ani sprzedać”) staje się technicznie łatwy do wyobrażenia w skali globalnej.",
+          "4. Prawo niedzielne a historia i współczesność",
+          "W chrześcijańskiej refleksji eschatologicznej — szczególnie w tradycji protestanckiej i adwentystycznej — od dawna zwraca się uwagę na znaczenie czwartego przykazania Dekalogu oraz sporu o dzień święty.",
+          "W historii chrześcijaństwa prawa niedzielne nie są fikcją. Już w 321 roku cesarz Konstantyn wydał edykt nakazujący odpoczynek w „czcigodnym dniu słońca”. W kolejnych stuleciach w różnych krajach Europy i Ameryki pojawiały się tzw. blue laws — przepisy regulujące handel, pracę i życie publiczne w niedzielę.",
+          "Współcześnie temat powraca w nowych formach: jako postulaty ograniczenia handlu w niedzielę, ochrony „wspólnego dnia odpoczynku”, troski o rodzinę, dobrostan pracowników lub redukcję konsumpcji i emisji ze względów klimatycznych.",
+          "Warto zachować rozróżnienie: troska o odpoczynek pracowników jest zrozumiałym tematem społecznym, natomiast problem zaczyna się wtedy, gdy państwo zaczyna sankcjonować określony dzień o charakterze religijnym jako normę przymusową, naruszającą wolność sumienia mniejszości religijnych.",
+          "5. Sabat i niedziela — spór o autorytet",
+          "W perspektywie biblijnej czwarty przepis Dekalogu wskazuje na siódmy dzień tygodnia — Sabat — jako pamiątkę stworzenia:",
+          "„Pamiętaj o dniu sabatu, aby go święcić... gdyż w sześciu dniach uczynił Pan niebo i ziemię, morze oraz wszystko, co w nich jest, a odpoczął dnia siódmego” (Wj 20,8–11).",
+          "Dlatego w Księdze Apokalipsy końcowe wezwanie Ewangelii brzmi: „Oddajcie pokłon Temu, który stworzył niebo i ziemię, i morze, i źródła wód” (Ap 14,7), a lud Boży zostaje opisany jako ci, „którzy strzegą przykazań Bożych i wiary Jezusa” (Ap 14,12).",
+          "W tym ujęciu przyszły konflikt wokół prawa niedzielnego nie dotyczy wyłącznie kalendarza, lecz pytania o najwyższy autorytet: czy ostateczną miarą posłuszeństwa człowieka jest Słowo Boże, czy ludzka tradycja poparta przymusem prawa i ekonomii?",
+          "6. Co jest faktem, a co interpretacją?",
+          "Rzetelne dziennikarstwo chrześcijańskie wymaga jasnego oddzielenia faktów od prognoz:",
+          "• Faktem jest rozwój projektów CBDC i postępująca cyfryzacja płatności na świecie.\n• Faktem jest techniczna możliwość tworzenia programowalnych reguł dla cyfrowych pieniędzy.\n• Faktem są historyczne i współczesne regulacje dotyczące niedzieli jako dnia wolnego od handlu i pracy.\n• Nie jest natomiast faktem, że istnieje dziś jedno jawne prawo światowe łączące CBDC z przymusem religijnym.\n• Kwestia przyszłego połączenia nadzoru finansowego z presją na sumienie należy do obszaru teologicznej interpretacji proroctw oraz analizy ryzyk dla wolności obywatelskich.",
+          "Takie rozróżnienie chroni wierzących zarówno przed naiwnością, jak i przed budowaniem sensacji czy wyznaczaniem dat.",
+          "7. Chrześcijańska odpowiedź: czujność zamiast paniki",
+          "Jezus nie wzywał swoich uczniów do paniki, lecz do duchowej trzeźwości: „Patrzcie, aby was kto nie zwiódł” (Mt 24,4). Chrześcijanin nie powinien żyć w lęku przed każdym nowym rozwiązaniem technicznym, ale też nie powinien rezygnować z roztropności.",
+          "Praktyczna postawa obejmuje trzy wymiary:",
+          "1. Obrona wolności sumienia i gotówki jako przestrzeni zwykłej prywatności obywatelskiej.\n2. Rozsądek finansowy — życie bez nadmiernego zadłużenia, uczciwość, prostota i gotowość do wzajemnej pomocy we wspólnocie.\n3. Duchowa wierność Bogu już dziś — bo człowiek, który nie potrafi być wierny w małych wyborach dnia codziennego, nie stanie się nagle wierny w godzinie wielkiej próby (Łk 16,10; Dz 5,29).",
+          "Podsumowanie",
+          "Cyfrowy pieniądz sam w sobie nie jest spełnieniem Apokalipsy 13. Pokazuje jednak, że współczesny świat buduje narzędzia techniczne, które w rękach nietolerancyjnej władzy mogłyby posłużyć do wywierania bezprecedensowej presji ekonomicznej. Dlatego biblijne przesłanie na dziś nie brzmi: „bój się technologii”, lecz: „poznaj prawdę, chroń wolność sumienia i pozostań wierny Bogu ponad wszystko”.",
+          "Źródła i teksty biblijne",
+          "• Biblia: Wj 20,8–11; Łk 16,10; Dz 5,29; Mt 24,4; Ap 13,11–18; Ap 14,6–12.\n• Europejski Bank Centralny — dokumenty informacyjne dotyczące projektu cyfrowego euro.\n• Bank Rozrachunków Międzynarodowych (BIS) — raporty o architekturze CBDC i płatnościach cyfrowych.\n• Rezerwa Federalna USA (Fed) — materiały analityczne dotyczące pieniądza cyfrowego banku centralnego."
+      ],
+      "resourceLinks": [
+          {
+              "label": "Czytaj pełne wydanie tematyczne w portalu CCN Finanse (/finanse)",
+              "url": "https://polskieradio.cc/finanse/cbdc-prawo-niedzielne-apokalipsa-13"
+          }
+      ],
+      "scriptureReference": {
+          "verse": "Objawienie Jana (Apokalipsa) 13:16–17 · Księga Wyjścia 20:8–11 · Objawienie Jana 14:12 · Dzieje Apostolskie 5:29",
+          "text": "I sprawia, aby wszyscy, mali i wielcy, bogaci i ubodzy, wolni i niewolnicy, przyjęli znamię na prawą rękę swoją albo na czoło swoje, i aby nikt nie mógł kupić ani sprzedać, tylko ten, kto ma znamię, imię bestii lub liczbę jej imienia.",
+          "strongCode": "G5480 (Charagma — Znamię) / G4453 (Poleo — Sprzedawać)"
+      },
+      "sourceCitation": {
+          "sourceName": "Europejski Bank Centralny (projekt cyfrowego euro), Bank Rozrachunków Międzynarodowych (BIS), Rezerwa Federalna USA (Fed) & Biblia",
+          "sourceUrl": "https://www.ecb.europa.eu/euro/digital_euro/html/index.en.html",
+          "quotationDate": "15 października 2026 r.",
+          "originalTitle": "Dokumenty informacyjne EBC dot. cyfrowego euro · Raporty BIS o CBDC · Biblia: Wj 20:8–11; Dz 5:29; Ap 13:11–18; Ap 14:6–12"
+      },
+      "category": "swiat",
+      "categoryLabel": "CCN FINANSE · TECHNOLOGIA, WOLNOŚĆ RELIGIJNA I PROROCTWA",
+      "author": {
+          "id": "cezary-rogowski",
+          "name": "Cezary Rogowski",
+          "role": "Założyciel Christian Culture & Redaktor Naczelny CCN",
+          "status": "Żonaty",
+          "avatarUrl": "/avatar_cezary_official.jpg",
+          "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+      },
+      "publishedAt": "2026-10-15T10:00:00Z",
+      "updatedAt": "2026-10-17T11:00:00Z",
+      "dateFormatted": "15 października 2026",
+      "imageUrl": "/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg",
+      "imageCaption": "Ilustracja redakcyjna: Otwarta Biblia obok tradycyjnego pieniądza i cyfrowego systemu transakcyjnego — pytanie o granice kontroli finansowej i wolność sumienia (ilustracja poglądowa wygenerowana z pomocą AI).",
+      "readTimeMinutes": 9,
+      "isHero": true,
+      "isPopular": true,
+      "popularRank": 1,
+      "tags": [
+          "CBDC",
+          "Cyfrowy Pieniądz",
+          "Apokalipsa 13",
+          "Prawo Niedzielne",
+          "Wolność Religijna",
+          "Sabat",
+          "Dekalog",
+          "Finanse",
+          "Cezary Rogowski"
+      ]
+  },
   {
       "id": "art-wojna-ukraina-jezus-pokoj-znaki-czasow",
       "title": "Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju?",
@@ -112,9 +215,9 @@ export const INITIAL_ARTICLES: Article[] = [
       "imageUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg",
       "imageCaption": "Ilustracja AI: Światło świecy, otwarta Biblia i pomoc humanitarna przy oknie w zaciemnionym mieszkaniu o zmierzchu (ilustracja poglądowa wygenerowana z pomocą AI — nie przedstawia opisywanego wydarzenia).",
       "readTimeMinutes": 5,
-      "isHero": true,
+      "isHero": false,
       "isPopular": true,
-      "popularRank": 1,
+      "popularRank": 2,
       "tags": [
           "Ukraina",
           "Pokój",

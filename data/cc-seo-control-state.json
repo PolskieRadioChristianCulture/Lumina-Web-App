@@ -1,0 +1,602 @@
+{
+  "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
+  "generatedAt": "2026-10-17T09:21:27.127Z",
+  "zeroFakeDataPolicy": true,
+  "counts": {
+    "totalValidatedUrls": 56,
+    "validUrls": 56,
+    "invalidUrls": 0,
+    "newsArticlesCount": 50,
+    "googleNews48hCount": 4,
+    "akademiaUrlsCount": 45,
+    "bibliaUrlsCount": 4,
+    "muzykaUrlsCount": 9,
+    "videoUrlsCount": 2,
+    "pagesUrlsCount": 33,
+    "enUrlsCount": 1
+  },
+  "discoveryFiles": [
+    {
+      "path": "/robots.txt",
+      "exists": true,
+      "sizeBytes": 2584,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemap.xml",
+      "exists": true,
+      "sizeBytes": 45757,
+      "status": "OK"
+    },
+    {
+      "path": "/feed.xml",
+      "exists": true,
+      "sizeBytes": 23085,
+      "status": "OK"
+    },
+    {
+      "path": "/news/feed.xml",
+      "exists": true,
+      "sizeBytes": 31480,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/news.xml",
+      "exists": true,
+      "sizeBytes": 24773,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/news-google.xml",
+      "exists": true,
+      "sizeBytes": 3344,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/akademia.xml",
+      "exists": true,
+      "sizeBytes": 8280,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/biblia.xml",
+      "exists": true,
+      "sizeBytes": 784,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/muzyka.xml",
+      "exists": true,
+      "sizeBytes": 1623,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/video.xml",
+      "exists": true,
+      "sizeBytes": 1620,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/pages.xml",
+      "exists": true,
+      "sizeBytes": 5557,
+      "status": "OK"
+    },
+    {
+      "path": "/sitemaps/en.xml",
+      "exists": true,
+      "sizeBytes": 582,
+      "status": "OK"
+    }
+  ],
+  "indexNow": {
+    "keyConfigured": false,
+    "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
+    "totalQueued": 18,
+    "pendingCount": 18,
+    "submittedCount": 0,
+    "failedCount": 0,
+    "recentItems": [
+      {
+        "url": "https://polskieradio.cc/news/wojna-ukraina-jezus-pokoj-znaki-czasow",
+        "section": "news",
+        "publishedAt": "2026-10-17T08:00:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/tragedia-szkola-wyszkow-przemoc-biblia",
+        "section": "news",
+        "publishedAt": "2026-10-17T08:15:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/czy-swiat-potrzebuje-przebudzenia-duchowego",
+        "section": "news",
+        "publishedAt": "2026-10-15T09:00:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/czy-jezus-istnial-dowody-historyczne",
+        "section": "news",
+        "publishedAt": "2026-10-15T09:15:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/czy-ai-zastapi-ludzka-madrosc",
+        "section": "news",
+        "publishedAt": "2026-10-15T09:30:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+        "section": "news",
+        "publishedAt": "2026-10-15T09:30:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
+        "section": "news",
+        "publishedAt": "2026-10-14T19:30:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
+        "section": "news",
+        "publishedAt": "2026-10-14",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska",
+        "section": "news",
+        "publishedAt": "2026-10-14",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/news/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity",
+        "section": "news",
+        "publishedAt": "2026-10-14",
+        "queuedAt": "2026-10-17T08:51:09.461Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
+        "section": "edukacja",
+        "publishedAt": "2026-10-17T08:15:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
+        "section": "rodzina",
+        "publishedAt": "2026-10-17T08:15:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
+        "section": "misje",
+        "publishedAt": "2026-10-17T08:00:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
+        "section": "spoleczenstwo",
+        "publishedAt": "2026-10-17T08:00:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      },
+      {
+        "url": "https://polskieradio.cc/akademia/dzien-17",
+        "section": "akademia",
+        "publishedAt": "2026-10-17T04:00:00Z",
+        "queuedAt": "2026-10-17T09:21:27.122Z",
+        "attempts": 0,
+        "maxRetries": 3,
+        "lastAttemptAt": null,
+        "lastHttpStatus": null,
+        "lastError": null,
+        "lifecycle": {
+          "published": true,
+          "queuedIndexNow": true,
+          "submittedIndexNow": false,
+          "discoveredByBot": null,
+          "indexedInSearch": null
+        },
+        "status": "PENDING"
+      }
+    ]
+  },
+  "externalWebmasterTools": {
+    "googleSearchConsole": {
+      "connected": false,
+      "status": "AWAITING_OWNER_API_CREDENTIALS",
+      "note": "Brak podpiętego klucza Search Console API — zgodnie z Sekcją 9 brak danych nie jest zastępowany fikcyjnymi licznikami."
+    },
+    "bingWebmasterTools": {
+      "connected": false,
+      "status": "AWAITING_OWNER_API_CREDENTIALS",
+      "note": "Brak podpiętego klucza Bing Webmaster API — kolejka IndexNow gotowa do wysyłki po ustawieniu INDEXNOW_KEY."
+    }
+  },
+  "alerts": [],
+  "sampleValidatedPages": [
+    {
+      "file": "news/cbdc-prawo-niedzielne-apokalipsa-13.html",
+      "canonicalUrl": "https://polskieradio.cc/news/cbdc-prawo-niedzielne-apokalipsa-13",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/wojna-ukraina-jezus-pokoj-znaki-czasow.html",
+      "canonicalUrl": "https://polskieradio.cc/news/wojna-ukraina-jezus-pokoj-znaki-czasow",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/tragedia-szkola-wyszkow-przemoc-biblia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/tragedia-szkola-wyszkow-przemoc-biblia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/czy-swiat-potrzebuje-przebudzenia-duchowego.html",
+      "canonicalUrl": "https://polskieradio.cc/news/czy-swiat-potrzebuje-przebudzenia-duchowego",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/czy-jezus-istnial-dowody-historyczne.html",
+      "canonicalUrl": "https://polskieradio.cc/news/czy-jezus-istnial-dowody-historyczne",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/czy-ai-zastapi-ludzka-madrosc.html",
+      "canonicalUrl": "https://polskieradio.cc/news/czy-ai-zastapi-ludzka-madrosc",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych.html",
+      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog.html",
+      "canonicalUrl": "https://polskieradio.cc/news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna.html",
+      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity.html",
+      "canonicalUrl": "https://polskieradio.cc/news/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/psychologia-strachu-i-oswajanie-z-makabra-uklad-nerwowy-emocje-biblia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/psychologia-strachu-i-oswajanie-z-makabra-uklad-nerwowy-emocje-biblia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/jak-rozmawiac-z-dziecmi-o-halloween-bez-straszenia-i-odrzucenia-poradnik-mamy.html",
+      "canonicalUrl": "https://polskieradio.cc/news/jak-rozmawiac-z-dziecmi-o-halloween-bez-straszenia-i-odrzucenia-poradnik-mamy",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/chrzescijanski-dom-jako-twierdza-pokoju-budowanie-tradycji-zycia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/chrzescijanski-dom-jako-twierdza-pokoju-budowanie-tradycji-zycia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/wychowanie-w-erze-popkulturowej-presji-ksztaltowanie-sumienia-u-nastolatkow.html",
+      "canonicalUrl": "https://polskieradio.cc/news/wychowanie-w-erze-popkulturowej-presji-ksztaltowanie-sumienia-u-nastolatkow",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/swiat-544-jezyki-oczekujace-na-przeklad-i-4457-aktywnych-projektow-raport-2025-wycliffe.html",
+      "canonicalUrl": "https://polskieradio.cc/news/swiat-544-jezyki-oczekujace-na-przeklad-i-4457-aktywnych-projektow-raport-2025-wycliffe",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kraj-jesienna-mobilizacja-chrzescijanskich-organizacji-charytatywnych-w-polsce-wsparcie-dla-seniorow.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kraj-jesienna-mobilizacja-chrzescijanskich-organizacji-charytatywnych-w-polsce-wsparcie-dla-seniorow",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/swiat-monumentalna-fosa-obronna-i-pieczec-z-okresu-pierwszej-swiatyni-w-jerozolimie-odkrycia-iaa.html",
+      "canonicalUrl": "https://polskieradio.cc/news/swiat-monumentalna-fosa-obronna-i-pieczec-z-okresu-pierwszej-swiatyni-w-jerozolimie-odkrycia-iaa",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kraj-renesans-czytelnictwa-pisma-swietego-w-polsce-towarzystwo-biblijne-i-cyfrowe-studium.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kraj-renesans-czytelnictwa-pisma-swietego-w-polsce-towarzystwo-biblijne-i-cyfrowe-studium",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc.html",
+      "canonicalUrl": "https://polskieradio.cc/news/swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kod-zrodlowy-duszy-jak-zresetowac-wewnetrzny-system-i-odrzucic-falszywy-blysk-sukcesu.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kod-zrodlowy-duszy-jak-zresetowac-wewnetrzny-system-i-odrzucic-falszywy-blysk-sukcesu",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/prawda-bez-filtra-dlaczego-kobiety-uciekaja-w-iluzje-relacji-i-jak-odzyskac-godnosc.html",
+      "canonicalUrl": "https://polskieradio.cc/news/prawda-bez-filtra-dlaczego-kobiety-uciekaja-w-iluzje-relacji-i-jak-odzyskac-godnosc",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/pokonac-goliata-8-krokow-zwyciezcy-z-doliny-leku-do-pelnej-wolnosci.html",
+      "canonicalUrl": "https://polskieradio.cc/news/pokonac-goliata-8-krokow-zwyciezcy-z-doliny-leku-do-pelnej-wolnosci",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca.html",
+      "canonicalUrl": "https://polskieradio.cc/news/czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

@@ -81,6 +81,21 @@ export interface RelatedMusic {
   badge?: string;
 }
 
+export interface ArticleAudio {
+  articleId: string;
+  title: string;
+  reader?: string;
+  audioUrl: string;
+  driveId?: string;
+  mimeType: string;
+  durationSeconds: number;
+  peaks?: number[];
+  transcriptUrl?: string;
+  chapters?: { title: string; startSeconds: number }[];
+  publicationStatus: 'published' | 'draft';
+  downloadAllowed?: boolean;
+}
+
 export interface Article {
   id: string;
   title: string;
@@ -120,4 +135,7 @@ export interface Article {
     title: string;
     avatarUrl?: string;
   };
+  audio?: ArticleAudio;
+  primaryPortalUrl?: string;
+  primaryPortalLabel?: string;
 }

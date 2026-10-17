@@ -17,6 +17,8 @@
     <meta name="author" content="Studio Dobrego Słowa" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href="https://polskieradio.cc/news/studio-dobrego-slowa-odc-26-dlaczego-sad-jest-dobra-nowina" />
+    <link rel="alternate" type="application/rss+xml" title="CCN News — Christian Culture RSS" href="https://polskieradio.cc/news/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Christian Culture — Kanał Główny RSS" href="https://polskieradio.cc/feed.xml" />
     <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
 
     <!-- Open Graph / Facebook -->
@@ -55,10 +57,14 @@
       },
       "headline": "Studio Dobrego Słowa: Odc. 26 | Dlaczego SĄD jest dobrą nowiną?",
       "description": "W najnowszym 26. odcinku Studio Dobrego Słowa porusza jeden z najbardziej intrygujących tematów biblijnych: dlaczego Boży sąd w Piśmie Świętym jest w istocie radosną, wyzwalającą nowiną dla wierzących?",
-      "mainEntityOfPage": "https://polskieradio.cc/news/studio-dobrego-slowa-odc-26-dlaczego-sad-jest-dobra-nowina",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://polskieradio.cc/news/studio-dobrego-slowa-odc-26-dlaczego-sad-jest-dobra-nowina"
+      },
       "datePublished": "2026-10-02",
       "dateModified": "2026-10-02",
       "inLanguage": "pl-PL",
+      "isAccessibleForFree": true,
       "image": [
         "https://polskieradio.cchttps://i.ytimg.com/vi/ZQfzarxSDkU/hqdefault.jpg"
       ],
@@ -74,6 +80,8 @@
         "@id": "https://polskieradio.cc/#organization",
         "name": "CCN – Christian Culture News Network",
         "url": "https://polskieradio.cc/news",
+        "publishingPrinciples": "https://polskieradio.cc/polityka-redakcyjna",
+        "correctionsPolicy": "https://polskieradio.cc/polityka-redakcyjna#korekty",
         "logo": {
           "@type": "ImageObject",
           "url": "https://polskieradio.cc/ccn-logo-square.png"
@@ -542,6 +550,292 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       }
       .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+      /* Primary Portal Cross-Link Banner */
+      .ccn-primary-portal-banner {
+        margin: 1.5rem 0 2rem;
+        padding: 1.15rem 1.35rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #0d111a 0%, #131926 100%);
+        border: 1px solid rgba(215, 179, 106, 0.35);
+        color: #f5f3ee;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      }
+      .ccn-primary-portal-eyebrow {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #ead39c;
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+      .ccn-primary-portal-text {
+        font-size: 0.9rem;
+        color: #e4e4e7;
+        margin: 0;
+      }
+      .ccn-primary-portal-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 44px;
+        padding: 0 1.1rem;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #ead39c 0%, #c99d45 100%);
+        color: #17120a;
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      /* CCN Audio Player Premium 2026 */
+      .ccn-player[hidden] { display: none !important; }
+      .ccn-player {
+        position: relative;
+        overflow: hidden;
+        margin: 1.5rem 0 2rem;
+        border-radius: 22px;
+        border: 1px solid rgba(215, 179, 106, 0.22);
+        background:
+          radial-gradient(circle at 12% 0%, rgba(215, 179, 106, 0.16), transparent 36%),
+          linear-gradient(180deg, rgba(19, 25, 38, 0.96), rgba(11, 15, 23, 0.98));
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        padding: 20px;
+        color: #f5f3ee;
+      }
+      .ccn-player::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(234, 211, 156, 0.68), transparent);
+        pointer-events: none;
+      }
+      .ccn-player__top {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 16px;
+        align-items: center;
+      }
+      .ccn-play-btn {
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        min-height: 58px;
+        border-radius: 999px;
+        border: 1px solid rgba(234, 211, 156, 0.5);
+        background:
+          radial-gradient(circle at 30% 25%, #f4e4bc, #d7b36a 58%, #9f7932 100%);
+        color: #17120a;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 12px 30px rgba(215, 179, 106, 0.28);
+        transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      }
+      .ccn-play-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+        box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
+      }
+      .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-player__meta { min-width: 0; }
+      .ccn-player__eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        align-items: center;
+        color: #ead39c;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .ccn-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #ead39c;
+        box-shadow: 0 0 0 5px rgba(215, 179, 106, 0.14);
+        display: inline-block;
+      }
+      .ccn-player__title {
+        margin: 0;
+        font-size: clamp(16px, 2vw, 19px);
+        line-height: 1.3;
+        font-weight: 760;
+        color: #f5f3ee;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ccn-player__sub {
+        margin-top: 4px;
+        color: #9ca6ba;
+        font-size: 13px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        align-items: center;
+      }
+      .ccn-badge {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: #f5f3ee;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 650;
+        white-space: nowrap;
+      }
+      .ccn-wave-wrap {
+        margin-top: 18px;
+        padding: 14px 14px 10px;
+        border-radius: 16px;
+        background: rgba(6, 9, 15, 0.56);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .ccn-wave {
+        position: relative;
+        height: 54px;
+        display: grid;
+        grid-template-columns: repeat(64, minmax(2px, 1fr));
+        align-items: end;
+        gap: 3px;
+        cursor: pointer;
+        user-select: none;
+        padding: 4px 0;
+      }
+      .ccn-wave__bar {
+        width: 100%;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.17);
+        transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
+        min-height: 6px;
+      }
+      .ccn-wave__bar.is-played {
+        background: linear-gradient(180deg, #ead39c, #c99d45);
+        box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
+      }
+      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-range {
+        width: 100%;
+        margin: 8px 0 2px;
+        accent-color: #d7b36a;
+        cursor: pointer;
+      }
+      .ccn-time-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #9ca6ba;
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+        margin-top: 4px;
+      }
+      .ccn-controls {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ccn-controls__left,
+      .ccn-controls__right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .ccn-chip-btn {
+        min-height: 44px;
+        padding: 0 13px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+        color: #f5f3ee;
+        font-size: 13px;
+        font-weight: 650;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      }
+      .ccn-chip-btn:hover {
+        background: rgba(215, 179, 106, 0.12);
+        border-color: rgba(215, 179, 106, 0.38);
+        transform: translateY(-1px);
+      }
+      .ccn-chip-btn svg { width: 16px; height: 16px; fill: currentColor; }
+      .ccn-volume {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+        min-height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .ccn-volume input[type="range"] { width: 84px; accent-color: #d7b36a; cursor: pointer; }
+      .ccn-status {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #9ca6ba;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+      }
+      .ccn-status strong { color: #ead39c; font-weight: 700; }
+      .ccn-drive-fallback {
+        margin-top: 14px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(215, 179, 106, 0.24);
+        background: #090d14;
+        display: none;
+      }
+      .ccn-drive-fallback.is-visible { display: block; }
+      .ccn-drive-fallback__head {
+        padding: 10px 14px;
+        font-size: 12px;
+        color: #9ca6ba;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+      }
+      .ccn-drive-fallback iframe {
+        width: 100%;
+        height: 88px;
+        border: 0;
+        display: block;
+        background: #090d14;
+      }
+      @media (max-width: 640px) {
+        .ccn-player { padding: 16px; border-radius: 18px; }
+        .ccn-player__top { grid-template-columns: auto 1fr; }
+        .ccn-badge { display: none; }
+        .ccn-player__title { white-space: normal; }
+        .ccn-volume { width: 100%; justify-content: space-between; }
+        .ccn-volume input[type="range"] { width: 100%; }
+      }
     </style>
   </head>
   <body>
@@ -554,6 +848,7 @@
         <a href="/vod">Kino VOD</a>
         <a href="/mojabiblia">MojaBiblia</a>
         <a href="/news" style="color:var(--ccn-gold);">CCN News</a>
+        <a href="/finanse" >Finanse</a>
         <a href="/si">AI &amp; SI</a>
         <a href="/nauka">Nauka</a>
         <a href="/biznes">Biznes</a>
@@ -634,6 +929,10 @@
           <figcaption>Studio Dobrego Słowa — Odc. 26: Dlaczego SĄD jest dobrą nowiną? (studiods.pl)</figcaption>
         </figure>
 
+        
+
+        
+
         <!-- Article Content -->
         <div class="ccn-content">
           <p>W najnowszej publikacji z cyklu biblijnego przygotowanego przez Studio Dobrego Słowa (oficjalnego partnera misyjnego Christian Culture), autorzy podejmują kluczowe zagadnienie sprawiedliwości Bożej i ostatecznego sądu.</p>
@@ -662,13 +961,16 @@
           <p style="margin-top:0.3rem;"><a href="https://youtu.be/ZQfzarxSDkU" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz oficjalne źródło i dokumentację</a> (2 października 2026)</p>
         </div>
 
-        <!-- Full Author Card -->
+        <!-- Full Author Card & Editorial Policy -->
         <div class="ccn-author-full-card">
           <img src="https://i.ytimg.com/vi/ZQfzarxSDkU/hqdefault.jpg" alt="Studio Dobrego Słowa" class="ccn-author-full-avatar" onerror="this.src='/avatar_cezary_official.jpg'">
           <div>
-            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;">Studio Dobrego Słowa</h3>
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;"><a href="https://polskieradio.cc/lumina.cezaryrgowski.html" style="color:inherit; text-decoration:none;">Studio Dobrego Słowa</a></h3>
             <p style="font-size:0.8rem; color:var(--ccn-gold); font-weight:700; margin-bottom:0.5rem;">Partner Misyjny Christian Culture</p>
             <p style="font-size:0.85rem; color:#52525b; line-height:1.5;">Oficjalny partner misyjny Christian Culture (studiods.pl). Twórcy głębokich rozważań biblijnych i programów o nadziei Ewangelii.</p>
+            <p style="font-size:0.78rem; color:#71717a; margin-top:0.5rem;">
+              <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Standard redakcyjny CCN: rozdział faktów, analizy i refleksji biblijnej • <a href="/polityka-redakcyjna" style="color:var(--ccn-primary); font-weight:600; text-decoration:underline;">Polityka redakcyjna i korekt</a>
+            </p>
           </div>
         </div>
 
@@ -677,6 +979,15 @@
         <section class="ccn-related-section">
           <h2 class="ccn-related-title">Polecane Analizy i Artykuły</h2>
           <div class="ccn-related-grid">
+            
+            <a href="/news/cbdc-prawo-niedzielne-apokalipsa-13" class="ccn-related-card">
+              <img src="/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg" alt="Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13. Czy technologia może stać się narzędziem przymusu religijnego?" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
+              <div class="ccn-related-card-content">
+                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">CCN FINANSE · TECHNOLOGIA, WOLNOŚĆ RELIGIJNA I PROROCTWA</span>
+                <h4 class="ccn-related-card-title">Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13. Czy technologia może stać się narzędziem przymusu religijnego?</h4>
+                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">15 października 2026</span>
+              </div>
+            </a>
             
             <a href="/news/wojna-ukraina-jezus-pokoj-znaki-czasow" class="ccn-related-card">
               <img src="/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg" alt="Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju?" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
@@ -695,15 +1006,6 @@
                 <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">17 października 2026</span>
               </div>
             </a>
-            
-            <a href="/news/czy-swiat-potrzebuje-przebudzenia-duchowego" class="ccn-related-card">
-              <img src="/images/news/art-czy-swiat-potrzebuje-przebudzenia-duchowego.jpg" alt="Czy świat potrzebuje nowego przebudzenia duchowego? Chrześcijaństwo wobec globalnych przemian" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
-              <div class="ccn-related-card-content">
-                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">CCN WIADOMOŚCI · ANALIZA SPOŁECZNA</span>
-                <h4 class="ccn-related-card-title">Czy świat potrzebuje nowego przebudzenia duchowego? Chrześcijaństwo wobec globalnych przemian</h4>
-                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">15 października 2026</span>
-              </div>
-            </a>
           </div>
         </section>
 
@@ -716,6 +1018,7 @@
       </article>
     </main>
 
+    
     <!-- Global Support Footer -->
     <script src="/components/cc-support-footer.js" defer></script>
 

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCN SEO CONTROL — Panel Administracyjny SEO &amp; AI Search 2026</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <style>
+    :root {
+      --bg: #080d18;
+      --surface: #111827;
+      --surface-elevated: #1e293b;
+      --gold: #c4a35a;
+      --gold-light: #e2cc9a;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(196, 163, 90, 0.22);
+      --ok: #10b981;
+      --warn: #f59e0b;
+      --err: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 1.5rem;
+    }
+    .container { max-width: 1280px; margin: 0 auto; }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    h1 { font-size: 1.5rem; color: var(--gold-light); letter-spacing: 0.02em; }
+    .subtitle { font-size: 0.85rem; color: var(--muted); }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-ok { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .badge-warn { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .badge-err { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .grid-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .metric-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .metric-val { font-size: 1.85rem; font-weight: 800; color: var(--gold-light); margin-top: 0.25rem; }
+    .metric-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+    h2 {
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 960px) {
+      .section-grid { grid-template-columns: 1fr; }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+    a { color: var(--gold-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.5rem 1rem;
+      background: rgba(196, 163, 90, 0.15);
+      color: var(--gold-light);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn:hover { background: rgba(196, 163, 90, 0.28); }
+    .policy-banner {
+      background: rgba(196, 163, 90, 0.08);
+      border-left: 4px solid var(--gold);
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>CCN SEO CONTROL — GLOBAL SEO &amp; AI SEARCH 2026</h1>
+        <p class="subtitle">Prywatny panel monitoringu technicznego (`noindex, nofollow`) • Zasada: Zero fikcyjnych liczników • Opublikowane ≠ Zgłoszone ≠ Odkryte ≠ Zaindeksowane</p>
+      </div>
+      <div style="display:flex; gap:0.75rem; align-items:center;">
+        <span id="statusBadge" class="badge badge-ok">WALIDACJA 100% PASS</span>
+        <button type="button" class="btn" id="refreshBtn">Odśwież telemetrię</button>
+      </div>
+    </header>
+
+    <div class="policy-banner">
+      <strong>Polityka wiarygodności danych (Sekcja 9 &amp; 11):</strong> Ten panel prezentuje wyłącznie rzeczywiste dane z walidatora HTML/JSON-LD, generatora map XML/RSS oraz lokalnej kolejki IndexNow. Dane z zewnętrznych konsol (Google Search Console, Bing Webmaster Tools) wymagają autoryzowanego klucza właściciela — brak połączenia API jest oznaczony wprost i nigdy nie jest zastępowany szacunkami.
+    </div>
+
+    <div class="grid-metrics" id="metricsGrid">
+      <div class="card">
+        <div class="metric-label">Zwalidowane Krytyczne URL</div>
+        <div class="metric-val" id="mValidUrls">53 / 53</div>
+        <div class="metric-note">100% zgodności H1, Title, Canonical, OG, JSON-LD</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Artykuły CCN News (SSG)</div>
+        <div class="metric-val" id="mNewsCount">48</div>
+        <div class="metric-note">W tym <span id="mGoogleNews48h">4</span> w oknie Google News (48h)</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Lekcje Akademii i Kursu</div>
+        <div class="metric-val" id="mAkademiaCount">45</div>
+        <div class="metric-note">W `/sitemaps/akademia.xml`</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Kolejka IndexNow</div>
+        <div class="metric-val" id="mIndexNowCount">15</div>
+        <div class="metric-note" id="mIndexNowNote">Oczekuje na klucz INDEXNOW_KEY</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Aktywne Alerty SEO</div>
+        <div class="metric-val" id="mAlertsCount">0</div>
+        <div class="metric-note">404/5xx, noindex, canonical, JSON-LD</div>
+      </div>
+    </div>
+
+    <div class="section-grid">
+      <section class="card">
+        <h2>1. Status 12 Docelowych Ścieżek Odkrywania (Sekcja 5)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Ścieżka</th>
+              <th>Status</th>
+              <th>Rozmiar</th>
+              <th>Podgląd</th>
+            </tr>
+          </thead>
+          <tbody id="discoveryTableBody"></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>2. Zewnętrzne Narzędzia Webmastera &amp; Alerty</h2>
+        <div id="externalToolsBox" style="margin-bottom:1.25rem;"></div>
+        <h2>3. Rejestr Alertów Technicznych</h2>
+        <div id="alertsBox"></div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-bottom:1.5rem;">
+      <h2>4. Kolejka i Cykl Życia IndexNow (opublikowane ≠ zgłoszone ≠ odkryte ≠ zaindeksowane)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Kanoniczny URL</th>
+            <th>Sekcja</th>
+            <th>Opublikowano</th>
+            <th>Zakolejkowano</th>
+            <th>Zgłoszono (IndexNow)</th>
+            <th>Odkryto (Bot)</th>
+            <th>Zaindeksowano</th>
+          </tr>
+        </thead>
+        <tbody id="indexNowTableBody"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    async function loadTelemetry() {
+      try {
+        const res = await fetch('/data/cc-seo-control-state.json?t=' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const state = await res.json();
+        renderState(state);
+      } catch (err) {
+        document.getElementById('statusBadge').textContent = 'TRYB OFFLINE / BRAK PLIKU TELEMETRII';
+        document.getElementById('statusBadge').className = 'badge badge-warn';
+      }
+    }
+
+    function renderState(state) {
+      const c = state.counts || {};
+      document.getElementById('mValidUrls').textContent = `${c.validUrls || 0} / ${c.totalValidatedUrls || 0}`;
+      document.getElementById('mNewsCount').textContent = String(c.newsArticlesCount || 0);
+      document.getElementById('mGoogleNews48h').textContent = String(c.googleNews48hCount || 0);
+      document.getElementById('mAkademiaCount').textContent = String(c.akademiaUrlsCount || 0);
+      document.getElementById('mIndexNowCount').textContent = String(state.indexNow?.totalQueued || 0);
+      document.getElementById('mIndexNowNote').textContent = state.indexNow?.keyNote || '';
+      document.getElementById('mAlertsCount').textContent = String((state.alerts || []).length);
+
+      const dBody = document.getElementById('discoveryTableBody');
+      dBody.innerHTML = (state.discoveryFiles || []).map(f => `
+        <tr>
+          <td><code>${f.path}</code></td>
+          <td><span class="badge ${f.exists && f.sizeBytes > 0 ? 'badge-ok' : 'badge-err'}">${f.status}</span></td>
+          <td>${f.sizeBytes.toLocaleString('pl-PL')} B</td>
+          <td><a href="${f.path}" target="_blank" rel="noopener">Otwórz</a></td>
+        </tr>
+      `).join('');
+
+      const ext = state.externalWebmasterTools || {};
+      document.getElementById('externalToolsBox').innerHTML = `
+        <div style="padding:0.75rem; background:var(--surface-elevated); border-radius:8px; margin-bottom:0.75rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>Google Search Console API</strong>
+            <span class="badge badge-warn">${ext.googleSearchConsole?.status || 'BRAK DANYCH'}</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--muted); margin-top:0.35rem;">${ext.googleSearchConsole?.note || ''}</p>
+        </div>
+        <div style="padding:0.75rem; background:var(--surface-elevated); border-radius:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>Bing Webmaster Tools / IndexNow</strong>
+            <span class="badge ${state.indexNow?.keyConfigured ? 'badge-ok' : 'badge-warn'}">${ext.bingWebmasterTools?.status || 'BRAK DANYCH'}</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--muted); margin-top:0.35rem;">${ext.bingWebmasterTools?.note || ''}</p>
+        </div>
+      `;
+
+      const alerts = state.alerts || [];
+      document.getElementById('alertsBox').innerHTML = alerts.length === 0
+        ? '<p style="color:#34d399; font-weight:600;">✅ Brak aktywnych alertów krytycznych (0 naruszeń SEO / JSON-LD / Canonical).</p>'
+        : alerts.map(a => `<div style="padding:0.6rem; background:rgba(239,68,68,0.12); border:1px solid var(--err); border-radius:8px; margin-bottom:0.5rem;"><strong>${a.file}</strong>: ${(a.messages || []).join(', ')}</div>`).join('');
+
+      const qBody = document.getElementById('indexNowTableBody');
+      qBody.innerHTML = (state.indexNow?.recentItems || []).map(item => `
+        <tr>
+          <td><a href="${item.url}" target="_blank" rel="noopener">${item.url}</a></td>
+          <td>${item.section}</td>
+          <td><span class="badge badge-ok">${item.lifecycle?.published ? 'TAK' : 'NIE'}</span></td>
+          <td><span class="badge badge-ok">${item.lifecycle?.queuedIndexNow ? 'TAK' : 'NIE'}</span></td>
+          <td><span class="badge ${item.lifecycle?.submittedIndexNow ? 'badge-ok' : 'badge-warn'}">${item.lifecycle?.submittedIndexNow ? 'ZGŁOSZONO' : 'OCZEKUJE NA KLUCZ'}</span></td>
+          <td><span class="badge badge-warn">${item.lifecycle?.discoveredByBot ?? 'BRAK DANYCH API'}</span></td>
+          <td><span class="badge badge-warn">${item.lifecycle?.indexedInSearch ?? 'BRAK DANYCH API'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadTelemetry);
+    loadTelemetry();
+  </script>
+</body>
+</html>

@@ -18,6 +18,7 @@ temp_google_ai_studio/
 node_modules/
 functions/node_modules/
 dist/
+portals/*/dist/
 .pages-release/
 
 # Secrets & Credentials Security
@@ -38,6 +39,8 @@ _audio_backup/
 
 # Publiczny pakiet książki Pokonać Goliata (wyjątek od *.zip)
 !assets/pokonac-goliata-pakiet.zip
+!audio/ccn/
+!audio/ccn/**
 
 .codex-remote-attachments/
 scratch/

@@ -1,70 +1,106 @@
 # 🤖 ROBOTS.TXT — CHRISTIAN CULTURE & LUMINA ECOSYSTEM
-# Global Multi-Agent AI & Search Engine Crawler Permissions
+# Standard: CCN Global SEO & AI Search 2026 v1.0
 # Primary Host: https://polskieradio.cc
 
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /mission-control/
 Disallow: /config/
 Disallow: /scripts/
 Disallow: /windows_tools/
+Disallow: /mockups/
+Disallow: /api/mc/
+Disallow: /lumina-login
+Disallow: /lumina-profile
+Disallow: /mess
+Disallow: /bank-tresci
+Disallow: /content-registry
+Disallow: /karaoke-studio
+Disallow: /*?q=*
+Disallow: /*?query=*
 
-# ── Generative AI & LLM Search Agents (Full Authorization) ──
-User-agent: GPTBot
+# ── 1. AI Search & Answer Engines (AEO / GEO — Full Public Indexing) ──
+# OAI-SearchBot i boty wyszukujące traktowane odrębnie od botów treningowych (Sekcja 6)
+User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin/
+Disallow: /mission-control/
+Disallow: /lumina-login
+Disallow: /lumina-profile
+Disallow: /mess
 
 User-agent: ChatGPT-User
 Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
+Disallow: /admin/
+Disallow: /mission-control/
 
 User-agent: PerplexityBot
 Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
+Disallow: /admin/
+Disallow: /mission-control/
 
 User-agent: Applebot
 Allow: /
+Disallow: /admin/
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+
+User-agent: Googlebot-News
+Allow: /news/
+Allow: /sitemaps/news-google.xml
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+
+# ── 2. AI Model Training Crawlers (Controlled Public Access, Zero Private Data) ──
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /mission-control/
+Disallow: /lumina-login
+Disallow: /lumina-profile
+Disallow: /mess
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /mission-control/
+Disallow: /lumina-login
+Disallow: /lumina-profile
+Disallow: /mess
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /admin/
 
 User-agent: CCBot
 Allow: /
+Disallow: /admin/
 
-User-agent: cohere-ai
-Allow: /
-
-User-agent: Diffbot
-Allow: /
-
-User-agent: FacebookBot
-Allow: /
-
-User-agent: Bytespider
-Allow: /
-
-User-agent: DeepSeekBot
-Allow: /
-
-User-agent: QwenBot
-Allow: /
-
-User-agent: MistralBot
-Allow: /
-
-# ── XML Sitemaps & LLM Discovery ──
+# ── 3. XML Sitemaps & Thematic Discovery Maps (Sekcja 5) ──
 Sitemap: https://polskieradio.cc/sitemap.xml
-Sitemap: https://polskieradio.pages.dev/sitemap.xml
+Sitemap: https://polskieradio.cc/sitemaps/news.xml
+Sitemap: https://polskieradio.cc/sitemaps/news-google.xml
+Sitemap: https://polskieradio.cc/sitemaps/akademia.xml
+Sitemap: https://polskieradio.cc/sitemaps/biblia.xml
+Sitemap: https://polskieradio.cc/sitemaps/muzyka.xml
+Sitemap: https://polskieradio.cc/sitemaps/video.xml
+Sitemap: https://polskieradio.cc/sitemaps/pages.xml
+Sitemap: https://polskieradio.cc/sitemaps/en.xml
 
-# ── LLM Context Documentation (Standard llms.txt) ──
-# https://polskieradio.cc/llms.txt
-# https://polskieradio.cc/llms-full.txt
+# ── 4. RSS Feeds & Experimental LLM Context ──
+# RSS Master: https://polskieradio.cc/feed.xml
+# RSS News:   https://polskieradio.cc/news/feed.xml
+# LLM Context (uzupełniający, nie zastępuje sitemap): https://polskieradio.cc/llms.txt
