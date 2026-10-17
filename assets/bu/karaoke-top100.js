@@ -695,6 +695,10 @@
     }
 
     /* Optimal Responsive Typography in Fullscreen Worship Mode */
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-viewport::before {
+      content: none !important;
+      display: none !important;
+    }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.is-edge-clipped {
       visibility: hidden !important;
       transition: none !important;
@@ -1958,7 +1962,7 @@
           (rect.top < bounds.top - 0.01 || rect.bottom > bounds.bottom + 0.01);
         entry.target.classList.toggle('is-edge-clipped', Boolean(clipped));
       }
-    }, { root: viewport, threshold: [0, 1] });
+    }, { root: viewport, rootMargin: '-12px 0px', threshold: [0, 1] });
     container.querySelectorAll('.bu-line').forEach(line => lineEdgeObserver.observe(line));
   }
 
@@ -2483,6 +2487,10 @@
       }
     }
     document.body.classList.toggle('has-karaoke-fullscreen', state.isFullscreen);
+    // Re-evaluate every row after the hidden panel changes size. Otherwise a
+    // previously offscreen row can retain visible text-shadow at the top edge.
+    const lines = document.getElementById('hero-karaoke-lines');
+    if (lines) observeCompleteLines(lines);
 
     const buttons = [
       document.getElementById('btn-hero-fullscreen'),

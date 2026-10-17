@@ -77,6 +77,11 @@ test('fullscreen hides incomplete edge lines without changing their layout or th
   assert.match(source, /\.bu-line\.is-edge-clipped\s*\{\s*visibility: hidden/);
 });
 
+test('fullscreen removes the sticky focal marker instead of leaving a collapsed hairline', () => {
+  assert.match(source, /#hero-karaoke-stage\.is-fullscreen \.hero-karaoke-viewport::before\s*\{\s*content: none !important;\s*display: none !important;/);
+  assert.match(source, /rootMargin: '-12px 0px'/);
+});
+
 test('fullscreen preserves the iframe, player, playhead, cue and single sync timer', async () => {
   const f = fixture();
   await f.load('GEN-001');
