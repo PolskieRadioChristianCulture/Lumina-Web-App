@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "title": "Centralny Rejestr Synchronizacji Biblijnego Uwielbienia",
-  "lastUpdated": "2026-10-16T06:41:26.120Z",
+  "lastUpdated": "2026-10-17T04:42:39.390Z",
   "totalCatalogSongs": 38,
   "totalBibleChapters": 1189,
   "summary": {
-    "syncReady": 38,
-    "syncReview": 0,
+    "syncReady": 37,
+    "syncReview": 1,
     "pendingAudio": 0,
     "failed": 0
   },
@@ -871,10 +871,10 @@
       "title": "Na początku Bóg stworzył niebo i ziemię",
       "lengthText": "11:56",
       "audioAvailable": true,
-      "audioSource": "Księga Rodzaju 1 — Biblia Śpiewana (Cały Rozdział 1).mp3",
-      "audioSha256": "c7bd0e8f5939445f",
-      "status": "SYNC_READY",
-      "qualityScore": 0.99,
+      "audioSource": "youtube:WN_y21vHW6g",
+      "audioSha256": "460736d91d05042c2491db206625c04f167ec098e388cb7152d91df27010f752",
+      "status": "SYNC_REVIEW",
+      "qualityScore": null,
       "lineCount": 134,
       "hasVtt": true,
       "hasLrc": true,
@@ -882,8 +882,9 @@
       "vttFile": "/data/bu-karaoke/GEN-001.vtt",
       "lrcFile": "/data/bu-karaoke/GEN-001.lrc",
       "licenseStatus": "UBG-2025 CC BY-ND 4.0",
-      "notes": "Synchronizacja kanoniczna UBG 2025 (100% słów z Biblii) opublikowana i zweryfikowana.",
-      "lastAnalyzedAt": "2026-10-16T06:41:26.120Z"
+      "notes": "Dopasowanie całego nagrania do wyodrębnionego wokalu. Granice niejednoznaczne oznaczone do odsłuchu; bez deklaracji ręcznej weryfikacji. Tekst śpiewany oznaczony jako adaptacja; pełny UBG dostępny w trybie czytania.",
+      "lastAnalyzedAt": "2026-10-16T15:33:39Z",
+      "reviewRequired": true
     }
   ],
   "ECC-003": {

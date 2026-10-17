@@ -10,7 +10,7 @@ const require = createRequire(path.join(process.env.KARAOKE_DEPS || root, 'packa
 const { Window } = require('happy-dom');
 const source = fs.readFileSync(path.join(root, 'assets/bu/karaoke-top100.js'), 'utf8');
 
-function fixture() {
+function fixture(options = {}) {
   const window = new Window({ url: 'http://localhost/' });
   const document = window.document;
   document.body.innerHTML = `<div id="hero-karaoke-stage"><div>
@@ -33,8 +33,8 @@ function fixture() {
   };
   const sync = (id) => ({ chapterId: id, videoId: 'video-A', status: 'SYNC_READY', duration: 100,
     lines: Array.from({ length: 8 }, (_, i) => ({ start: i * 10, end: i * 10 + 8,
-      text: `Linia ${i}`, words: [{ text: 'Linia', start: i * 10, end: i * 10 + 4 },
-        { text: String(i), start: i * 10 + 4, end: i * 10 + 8 }] })) });
+      text: `Linia ${i}`, words: options.noWordBoundaries ? undefined : [{ text: 'Linia', start: i * 10, end: i * 10 + 2 },
+        { text: String(i), start: i * 10 + 5, end: i * 10 + 8 }] })) });
   const lyrics = id => ({ book: id, chapter: 1, verses: [{ verse: 1, text: 'Tekst' }] });
   const fetch = async (url) => {
     const id = /\/([^/]+)\.json/.exec(url)?.[1];
@@ -69,13 +69,13 @@ test('karaoke follows only the selected chapter and loaded video', async () => {
   assert.equal(f.seeks.length, 0);
 });
 
-test('line seeking inverts both duration scaling and the saved offset', async () => {
+test('video duration differences never stretch cues; line seeking respects saved offset', async () => {
   const f = fixture();
   await f.load('GEN-001');
   f.setDuration(200);
   f.api.adjustOffset(500);
   f.document.querySelectorAll('.bu-line')[2].click();
-  assert.equal(f.seeks.at(-1), 39.5);
+  assert.equal(f.seeks.at(-1), 19.5);
   f.setTime(f.seeks.at(-1));
   assert.equal(f.active(), '2');
 });
@@ -87,10 +87,33 @@ test('seeking backwards and instrumental gaps remove stale word highlighting', a
   const future = f.document.querySelectorAll('.bu-line')[1];
   assert.equal(future.querySelectorAll('.is-singing, .is-sung').length, 0);
   f.setTime(9);
-  assert.equal(f.active(), undefined);
   assert.equal(f.document.querySelectorAll('.is-singing').length, 0);
+  assert.equal(f.document.querySelector('.bu-line.active').classList.contains('is-holding'), true);
   f.setTime(100);
-  assert.equal(f.active(), undefined);
+  assert.equal(f.document.querySelectorAll('.is-singing').length, 0);
+});
+
+test('a pause between words is never painted as a sung word', async () => {
+  const f = fixture();
+  await f.load('GEN-001');
+  f.setTime(1);
+  assert.equal(f.document.querySelectorAll('.is-singing').length, 1);
+  f.setTime(3);
+  assert.equal(f.document.querySelectorAll('.is-singing').length, 0);
+  assert.equal(f.document.querySelectorAll('.is-sung').length, 1);
+  f.setTime(6);
+  assert.equal(f.document.querySelectorAll('.is-singing').length, 1);
+  f.setTime(9);
+  assert.equal(f.document.querySelector('.bu-line.active').classList.contains('is-holding'), true);
+});
+
+test('a line timestamp cannot fabricate word timestamps', async () => {
+  const f = fixture({ noWordBoundaries: true });
+  await f.load('GEN-001');
+  f.setTime(1);
+  assert.equal(f.active(), '0');
+  assert.equal(f.document.querySelectorAll('.is-singing').length, 0);
+  assert.match(f.document.querySelector('.bu-line').textContent, /Linia/);
 });
 
 test('manual scrolling suspends following and the button restores it', async () => {

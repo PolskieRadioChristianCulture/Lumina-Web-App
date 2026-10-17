@@ -417,44 +417,21 @@
       display: inline;
     }
     .bu-word {
-      display: inline-block;
-      padding: 2px 6px;
-      margin: 0 1px;
-      border-radius: 9999px;
-      transition: background-color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  box-shadow 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
-      vertical-align: baseline;
+      display: inline-block; padding: 0.08em 0.22em; margin: 0 0.02em;
+      border-radius: 7px; vertical-align: baseline; font-weight: 600;
+      letter-spacing: inherit !important;
+      transition: color 0.12s ease, box-shadow 0.12s ease;
     }
-    /* Słowo aktualnie śpiewane – precyzyjna fioletowa pigułka #5e17eb wg wzorca */
     .bu-line.active .bu-word.is-singing {
-      background-color: #5e17eb !important;
-      color: #ffffff !important;
-      font-weight: 800 !important;
-      padding: 3px 14px !important;
-      margin: 0 4px !important;
-      border-radius: 9999px !important;
-      transform: scale(1.14) !important;
-      outline: 1.5px solid rgba(255, 255, 255, 0.45) !important;
-      outline-offset: -1px !important;
-      box-shadow: 0 4px 22px rgba(94, 23, 235, 0.85), 0 0 32px rgba(168, 85, 247, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
-      letter-spacing: 0.015em !important;
-      z-index: 2;
-      position: relative;
+      background: linear-gradient(90deg, rgba(124,58,237,0.85) var(--bu-word-progress,0%), rgba(124,58,237,0.2) var(--bu-word-progress,0%)) !important;
+      color: #fff !important; font-weight: 600 !important; letter-spacing: inherit !important;
+      padding: 0.08em 0.22em !important; margin: 0 0.02em !important;
+      border-radius: 7px !important; transform: none !important; outline: none !important;
+      box-shadow: 0 0 0 1px rgba(196,181,253,0.5), 0 2px 12px rgba(76,29,149,0.18) !important;
+      text-shadow: none !important;
     }
-    /* Słowa już zaśpiewane w bieżącym wersie */
-    .bu-line.active .bu-word.is-sung {
-      color: #ffe2a5 !important;
-      font-weight: 700 !important;
-      opacity: 0.95 !important;
-    }
-    /* Słowa oczekujące w bieżącym wersie */
-    .bu-line.active .bu-word:not(.is-singing):not(.is-sung) {
-      color: rgba(247, 244, 239, 0.55) !important;
-      opacity: 0.65 !important;
-    }
+    .bu-line.active .bu-word.is-sung { color: #e2cc9a !important; font-weight: 600 !important; opacity: 1 !important; }
+    .bu-line.active .bu-word:not(.is-singing):not(.is-sung) { color: #e5e7eb !important; opacity: 1 !important; }
     .bu-line.prev,
     .bu-line.next {
       color: #cdd4e0;
@@ -702,6 +679,14 @@
     .bu-karaoke-settings[open] > summary::after { transform: rotate(225deg); }
     .bu-karaoke-settings > summary:hover { background: rgba(196, 163, 90, 0.1); border-color: #c4a35a; }
     .bu-karaoke-settings > summary:focus-visible { outline: 3px solid #ffe2a5; outline-offset: 3px; }
+    .bu-text-mode-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 18px; max-width:1080px; margin:0 auto; width:100%; box-sizing:border-box; font-family:Segoe UI,system-ui,sans-serif; }
+    .bu-text-mode-caption { color:#b4b0c0; font-size:12px; line-height:1.5; }
+    .bu-text-mode-bar > div { display:flex; flex-shrink:0; gap:4px; padding:3px; border:1px solid #ffffff16; border-radius:12px; background:#151321; }
+    .bu-text-mode-bar button { min-height:44px; padding:6px 12px; border:0; border-radius:8px; background:transparent; color:#c7c3d3; font:500 12px Segoe UI,system-ui,sans-serif; cursor:pointer; }
+    .bu-text-mode-bar button[aria-pressed="true"] { background:#3b3054; color:#fff4db; }
+    .bu-text-mode-bar button:focus-visible { outline:2px solid #d9bd77; outline-offset:2px; }
+    .bu-text-mode-bar button:disabled { opacity:.4; cursor:default; }
+    @media(max-width:600px) { .bu-text-mode-bar { padding:8px 10px; gap:8px; } .bu-text-mode-caption { max-width:135px; font-size:11px; } .bu-text-mode-bar button { padding:6px 9px; } }
     .hero-karaoke-sync-toolbar {
       display: grid; grid-template-columns: minmax(170px, 0.85fr) minmax(220px, 1.1fr) minmax(370px, 1.8fr);
       align-items: stretch; gap: 12px; width: 100%; margin-top: 14px;
@@ -788,6 +773,15 @@
       .bu-offset-controls .reset { grid-column: 1 / -1; }
     }
 
+    /* Keep text metrics identical before, during and after each word. */
+    #hero-karaoke-lines .bu-line { font: 600 var(--bu-font-size, 22px)/1.6 'Segoe UI', Inter, system-ui, sans-serif !important; letter-spacing: 0.005em; }
+    #hero-karaoke-viewport::before { border-color: transparent; background: none; }
+    #hero-karaoke-lines .bu-line.active { background: linear-gradient(90deg, transparent, rgba(196,163,90,0.1), transparent) !important; border-color: transparent !important; box-shadow: none !important; text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important; }
+    #hero-karaoke-viewport { max-width: 1080px; margin-inline: auto; }
+    #hero-karaoke-lines .bu-verse-pill { font-size: 10px; letter-spacing: 0.04em; opacity: 0.75; }
+    @media (max-width: 580px) {
+      #hero-karaoke-lines .bu-line { padding-inline: 8px !important; font-size: 18px !important; line-height: 1.65 !important; }
+    }
     .bu-tool-btn:focus-visible, .bu-tool-tab:focus-visible, .bu-line:focus-visible {
       outline: 3px solid #ffe2a5 !important;
       outline-offset: 3px;
@@ -1042,10 +1036,8 @@
   }
 
   function syncTimeScale() {
-    const duration = Number(player()?.getDuration?.() || 0);
-    const syncDuration = Number(state.sync?.duration || 0);
-    return duration > 15 && syncDuration > 15 && Math.abs(duration - syncDuration) > 1.5
-      ? syncDuration / duration : 1;
+    // Cue times belong to the video timeline. Extra intros/outros are not speed changes.
+    return 1;
   }
 
   function isMatchingTrack() {
@@ -1363,7 +1355,37 @@
     }
   }
 
+  function renderTextModeBar(container, mode) {
+    let bar = document.getElementById('bu-text-mode-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'bu-text-mode-bar';
+      bar.className = 'bu-text-mode-bar';
+      container.parentElement.before(bar);
+    }
+    bar.replaceChildren();
+    const caption = document.createElement('span');
+    caption.className = 'bu-text-mode-caption';
+    caption.textContent = mode === 'reading' ? 'Pełny tekst · UBG 2025' :
+      (state.sync?.lyricsKind === 'performed-adaptation' ? 'Tekst śpiewany · adaptacja biblijna' : 'Tekst śpiewany');
+    bar.appendChild(caption);
+    const controls = document.createElement('div');
+    controls.setAttribute('role', 'group');
+    controls.setAttribute('aria-label', 'Sposób wyświetlania tekstu');
+    for (const [value, label] of [['sync', 'Śpiewaj'], ['reading', 'Czytaj Biblię']]) {
+      const button = document.createElement('button');
+      button.type = 'button'; button.textContent = label;
+      button.dataset.textMode = value;
+      button.setAttribute('aria-pressed', String(mode === value));
+      button.disabled = value === 'sync' && !state.sync;
+      button.addEventListener('click', () => setMode(value));
+      controls.appendChild(button);
+    }
+    bar.appendChild(controls);
+  }
+
   function renderReadingMode(container, lyrics) {
+    renderTextModeBar(container, 'reading');
     container.dataset.mode = 'reading';
     container.replaceChildren();
 
@@ -1400,40 +1422,15 @@
     if (Array.isArray(segment.words) && segment.words.length > 0) {
       return segment.words.map(w => ({
         text: w.text || w.word || '',
-        start: Number(w.start),
-        end: Number(w.end),
-        confidence: w.confidence !== undefined ? Number(w.confidence) : (segment.confidence || 0.95)
+        start: typeof w.start === 'number' && Number.isFinite(w.start) ? w.start : NaN,
+        end: typeof w.end === 'number' && Number.isFinite(w.end) ? w.end : NaN,
+        confidence: typeof w.confidence === 'number' ? w.confidence : undefined,
+        reviewRequired: w.reviewRequired === true
       }));
     }
 
-    const rawWords = text.split(/\s+/).filter(Boolean);
-    if (!rawWords.length) return [];
-
-    const start = Number(segment.start);
-    const end = Number(segment.end);
-    const duration = Math.max(0.4, end - start);
-
-    const weights = rawWords.map(w => {
-      const clean = w.replace(/[.,;:!?„"»«—–\-\(\)]/g, '');
-      return Math.max(2, clean.length);
-    });
-    const totalWeight = weights.reduce((acc, v) => acc + v, 0);
-
-    let currentStart = start;
-    const result = [];
-    for (let i = 0; i < rawWords.length; i++) {
-      const frac = weights[i] / totalWeight;
-      const wordDur = duration * frac;
-      const wordEnd = (i === rawWords.length - 1) ? end : Math.round((currentStart + wordDur) * 100) / 100;
-      result.push({
-        text: rawWords[i],
-        start: Math.round(currentStart * 100) / 100,
-        end: wordEnd,
-        confidence: segment.confidence || 0.95
-      });
-      currentStart = wordEnd;
-    }
-    return result;
+    // A line cue cannot provide word boundaries. Keep its text without simulated word timing.
+    return text.split(/\s+/).filter(Boolean).map(word => ({ text: word, start: NaN, end: NaN, reviewRequired: true }));
   }
 
   function updateActiveLineWords(lineBtn, segment, now, isHolding = false, isPrimed = false) {
@@ -1473,19 +1470,6 @@
       }
     }
 
-    if (activeWordIdx === -1 && now >= segment.start) {
-      if (now >= segment.end) {
-        activeWordIdx = wordsTiming.length - 1;
-      } else {
-        for (let i = wordsTiming.length - 1; i >= 0; i--) {
-          if (now >= wordsTiming[i].start) {
-            activeWordIdx = i;
-            break;
-          }
-        }
-      }
-    }
-
     for (let i = 0; i < wordNodes.length; i++) {
       const wNode = wordNodes[i];
       if (i === activeWordIdx) {
@@ -1493,7 +1477,10 @@
           wNode.classList.add('is-singing');
         }
         wNode.classList.remove('is-sung');
-      } else if (activeWordIdx >= 0 && i < activeWordIdx) {
+        const word = wordsTiming[i];
+        const progress = Math.min(1, Math.max(0, (now - word.start) / Math.max(0.001, word.end - word.start)));
+        wNode.style.setProperty('--bu-word-progress', (progress * 100).toFixed(1) + '%');
+      } else if (now >= wordsTiming[i].end) {
         if (!wNode.classList.contains('is-sung')) {
           wNode.classList.add('is-sung');
         }
@@ -1505,6 +1492,7 @@
   }
 
   function renderSyncMode(container, syncData) {
+    renderTextModeBar(container, 'sync');
     container.dataset.mode = 'synchronized';
     container.replaceChildren();
     state.syncNodes = [];
@@ -1537,9 +1525,9 @@
       wordsTiming.forEach((w, wIdx) => {
         const wSpan = document.createElement('span');
         wSpan.className = 'bu-word';
-        if (w.confidence !== undefined && w.confidence < 0.70) {
+        if (w.reviewRequired || (Number.isFinite(w.confidence) && w.confidence < 0.70)) {
           wSpan.classList.add('is-uncertain');
-          wSpan.title = 'Wskaźnik pewności AI < 70%';
+          wSpan.title = 'Granica słowa wymaga sprawdzenia z wokalem';
         }
         wSpan.dataset.wordIdx = wIdx;
         wSpan.textContent = w.text;
@@ -1573,7 +1561,15 @@
     const matching = isMatchingTrack();
     const now = (currentTime() + state.offsetMs / 1000) * syncTimeScale();
     const segments = state.sync.lines;
-    if (!matching || !segments.length) return;
+    if (!matching || !segments.length) {
+      state.syncNodes.forEach(node => {
+        node.classList.remove('active', 'prev', 'next', 'is-primed', 'is-holding');
+        node.removeAttribute('aria-current');
+        node._wordNodes?.forEach(word => word.classList.remove('is-singing', 'is-sung'));
+      });
+      state.lastActiveIdx = -1;
+      return;
+    }
 
     let active = -1;
     let isPrimed = false;
@@ -1634,7 +1630,7 @@
         statusEl.textContent = '♫ Przerwa muzyczna ···';
         statusEl.style.color = '#ffe2a5';
       } else {
-        statusEl.textContent = '● Synchronizacja aktywna';
+        statusEl.textContent = isPrimed ? 'Za chwilę' : isHolding ? 'Pauza' : 'Śpiewaj z tekstem';
         statusEl.style.color = '#4ade80';
       }
     }
@@ -1657,6 +1653,8 @@
     }
 
     if (active >= 0) {
+      state.syncNodes[active].classList.toggle('is-holding', isHolding);
+      state.syncNodes[active].classList.toggle('is-primed', isPrimed);
       updateActiveLineWords(state.syncNodes[active], segments[active], now, isHolding, isPrimed);
     }
   }
@@ -1760,8 +1758,8 @@
       if (statusEl) {
         if (hasSync) {
           const isReview = syncData.status === 'SYNC_REVIEW';
-          const score = syncData.qualityScore ? ` (${Math.round(syncData.qualityScore * 100)}%)` : '';
-          statusEl.textContent = isReview ? `● Do weryfikacji${score}` : `● Zsynchronizowane AI${score}`;
+          const vocalTiming = syncData.alignment?.timingSource === 'vocal-forced-alignment';
+          statusEl.textContent = vocalTiming ? (isReview ? 'Dopasowanie do wokalu · do odsłuchu' : 'Dopasowanie do wokalu') : 'Synchronizacja orientacyjna';
           statusEl.style.color = isReview ? '#fbbf24' : '#4ade80';
         } else {
           statusEl.textContent = '○ Pełny tekst UBG (bez znaczników czasu)';

@@ -281,7 +281,7 @@ function buildGen001Lines(bibleData) {
         start,
         end: Math.max(start + 0.5, end),
         text: clauses[i],
-        confidence: 0.99,
+        confidence: null,
         isInstrumental: false
       });
     }
@@ -329,7 +329,7 @@ function buildProportionalLines(chapterId, bibleData, totalDurationSec) {
       start,
       end: Math.max(start + 0.4, end),
       text: item.text,
-      confidence: 0.96,
+      confidence: null,
       isInstrumental: false
     });
   }
@@ -360,6 +360,14 @@ function verifyStrictBiblicalPurity(chapterId, bibleData, lines) {
 function main() {
   const playlist = JSON.parse(fs.readFileSync(PLAYLIST_PATH, 'utf8'));
   const items = playlist.items || [];
+  // Proportional text estimates must never replace measured vocal boundaries.
+  const measured = items.filter(item => {
+    const file = path.join(KARAOKE_DIR, `${item.chapterId}.json`);
+    return fs.existsSync(file) && JSON.parse(fs.readFileSync(file, 'utf8')).alignment?.timingSource === 'vocal-forced-alignment';
+  });
+  if (measured.length) {
+    throw new Error(`Refusing to overwrite vocal alignment: ${measured.map(item => item.chapterId).join(', ')}. Use the vocal alignment workflow.`);
+  }
   const nowIso = new Date().toISOString();
 
   let generatedCount = 0;
@@ -381,7 +389,7 @@ function main() {
 
     verifyStrictBiblicalPurity(chapterId, bibleData, lines);
 
-    const qualityScore = chapterId === 'GEN-001' ? 0.99 : 0.96;
+    const qualityScore = null;
     const audioVersion = chapterId === 'GEN-001' ? 'c7bd0e8f5939445f' : `yt-${item.videoId}`;
 
     const payload = {
@@ -392,7 +400,8 @@ function main() {
       title: item.title,
       translation: 'UBG-2025 (Tekst kanoniczny 100%)',
       copyright: bibleData.copyright,
-      status: 'SYNC_READY',
+      status: 'SYNC_REVIEW',
+      alignment: { timingSource: 'text-length-estimate', reviewRequired: true, humanReviewed: false },
       qualityScore,
       audioVersion,
       duration: durationSec,
@@ -419,7 +428,7 @@ function main() {
       audioAvailable: true,
       audioSource: chapterId === 'GEN-001' ? 'Księga Rodzaju 1 — Biblia Śpiewana (Cały Rozdział 1).mp3' : `youtube:${item.videoId}`,
       audioSha256: audioVersion,
-      status: 'SYNC_READY',
+      status: 'SYNC_REVIEW',
       qualityScore,
       lineCount: lines.length,
       hasVtt: true,
@@ -428,7 +437,7 @@ function main() {
       vttFile: `/data/bu-karaoke/${chapterId}.vtt`,
       lrcFile: `/data/bu-karaoke/${chapterId}.lrc`,
       licenseStatus: 'UBG-2025 CC BY-ND 4.0',
-      notes: 'Synchronizacja kanoniczna UBG 2025 (100% słów z Biblii) opublikowana i zweryfikowana.',
+      notes: 'Znaczniki orientacyjne z proporcji tekstu. Wymagają dopasowania do wokalu i odsłuchu.',
       lastAnalyzedAt: nowIso
     });
 
@@ -443,8 +452,8 @@ function main() {
     totalCatalogSongs: registryItems.length,
     totalBibleChapters: 1189,
     summary: {
-      syncReady: registryItems.length,
-      syncReview: 0,
+      syncReady: 0,
+      syncReview: registryItems.length,
       pendingAudio: 0,
       failed: 0
     },
@@ -452,7 +461,7 @@ function main() {
   };
 
   fs.writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2), 'utf8');
-  console.log(`\nWygenerowano i zweryfikowano ${generatedCount} kompletów karaoke oraz zaktualizowano data/bu-sync-registry.json.`);
+  console.log(`\nWygenerowano ${generatedCount} orientacyjnych kompletów do weryfikacji oraz zaktualizowano data/bu-sync-registry.json.`);
 }
 
 main();
