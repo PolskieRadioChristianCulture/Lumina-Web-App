@@ -2473,8 +2473,9 @@
     }
     /* Słowa oczekujące w bieżącym wersie */
     .bu-line.active .bu-word:not(.is-singing):not(.is-sung) {
-      color: rgba(247, 244, 239, 0.55) !important;
-      opacity: 0.65 !important;
+      color: #ffffff !important;
+      opacity: 0.90 !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
     }
     .bu-line.prev,
     .bu-line.next {
@@ -5282,20 +5283,29 @@
       position: absolute;
       inset: 0;
       background-image: url('/images/biblijne-uwielbienie/worship-cross-fullscreen.webp');
-      background-size: cover;
-      background-position: center 30%;
-      background-repeat: no-repeat;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
       filter: none !important;
       -webkit-filter: none !important;
+      opacity: 1 !important;
       transform: none !important;
     }
     .hero-karaoke-backdrop-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(5, 8, 17, var(--bu-worship-dim, 0.75));
-      transition: background-color 0.25s ease;
+      background: linear-gradient(
+        to bottom,
+        transparent 10%,
+        rgba(5, 7, 18, calc(var(--bu-worship-dim, 0.75) * 0.28)) 28%,
+        rgba(5, 7, 18, calc(var(--bu-worship-dim, 0.75) * 0.44)) 50%,
+        rgba(5, 7, 18, calc(var(--bu-worship-dim, 0.75) * 0.28)) 72%,
+        transparent 92%
+      ) !important;
+      pointer-events: none;
+      transition: background 0.25s ease;
     }
-        /* Fullscreen layout with Docked Master Player */
+    /* Fullscreen layout with Docked Master Player */
     #hero-karaoke-stage.is-fullscreen,
     #hero-karaoke-stage:fullscreen,
     #hero-karaoke-stage:-webkit-full-screen {
@@ -5328,7 +5338,7 @@
       width: 100% !important;
       margin: 0 auto !important;
       border: 0 !important;
-      border-radius: 18px !important;
+      border-radius: 0 !important;
       background: transparent !important;
       box-shadow: none !important;
       backdrop-filter: none !important;
@@ -5337,7 +5347,7 @@
       flex-direction: column !important;
       justify-content: space-between !important;
       padding: 0 !important;
-      gap: 10px !important;
+      gap: 8px !important;
       overflow: hidden !important;
       box-sizing: border-box !important;
     }
@@ -5349,9 +5359,9 @@
       justify-content: space-between !important;
       gap: 12px !important;
       width: 100% !important;
-      padding: 8px 12px !important;
+      padding: 8px 14px !important;
       border-bottom: 1px solid rgba(196, 163, 90, 0.15) !important;
-      background: rgba(8, 14, 26, 0.45) !important;
+      background: rgba(8, 14, 26, 0.55) !important;
       backdrop-filter: blur(12px) !important;
       -webkit-backdrop-filter: blur(12px) !important;
       border-radius: 14px !important;
@@ -5364,22 +5374,24 @@
     #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-viewport {
       max-height: none !important;
       flex: 1 !important;
+      width: min(88vw, 1400px) !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: center !important;
       align-items: center !important;
-      background: radial-gradient(ellipse 90% 85% at center, rgba(6, 10, 20, 0.72) 0%, rgba(6, 10, 20, 0.55) 60%, rgba(6, 10, 20, 0.0) 100%) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
       border: 0 !important;
-      border-radius: 28px !important;
+      border-radius: 0 !important;
       box-shadow: none !important;
       mask-image: none !important;
       -webkit-mask-image: none !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: clamp(10px, 2vh, 24px) clamp(16px, 4vw, 56px) !important;
-      margin: 12px clamp(16px, 4vw, 64px) !important;
+      padding: clamp(10px, 2vh, 24px) 16px !important;
       z-index: 10 !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
@@ -5390,44 +5402,84 @@
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: clamp(10px, 1.8vh, 22px) !important;
-      padding: clamp(30px, 6vh, 80px) 0 !important;
+      gap: clamp(12px, 2.2vh, 26px) !important;
+      padding: clamp(20px, 5vh, 60px) 0 !important;
+      background: transparent !important;
     }
 
     /* Optimal Responsive Typography in Fullscreen Worship Mode */
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line {
       width: 100% !important;
       text-align: center !important;
-      font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
-      font-size: clamp(22px, 3.2vw, 42px) !important;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+      font-size: clamp(18px, calc(var(--bu-font-size, 20px) * 1.25), 36px) !important;
+      font-weight: 600 !important;
       line-height: 1.55 !important;
-      color: rgba(247, 244, 239, 0.45) !important;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9) !important;
+      letter-spacing: 0.01em !important;
+      color: #ffffff !important;
+      opacity: 0.88 !important;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 4px 18px rgba(0, 0, 0, 0.85), 0 0 2px #000000 !important;
       background: transparent !important;
       border: 0 !important;
-      padding: clamp(6px, 1.2vh, 16px) clamp(12px, 2vw, 28px) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: clamp(6px, 1.2vh, 14px) clamp(12px, 2vw, 24px) !important;
       transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active {
-      font-size: clamp(28px, 4.4vw, 56px) !important;
+      font-size: clamp(24px, calc(var(--bu-font-size, 20px) * 1.55), 50px) !important;
       font-weight: 700 !important;
       color: #ffe2a5 !important;
-      text-shadow: 0 0 35px rgba(226, 204, 154, 0.75), 0 4px 20px rgba(0, 0, 0, 0.95) !important;
-      transform: scale(1.05) !important;
+      text-shadow: 0 0 26px rgba(226, 204, 154, 0.75), 0 2px 6px rgba(0, 0, 0, 0.95), 0 4px 20px rgba(0, 0, 0, 0.9) !important;
+      transform: scale(1.04) !important;
       opacity: 1 !important;
-      background: rgba(10, 16, 30, 0.50) !important;
-      backdrop-filter: blur(8px) !important;
-      -webkit-backdrop-filter: blur(8px) !important;
-      border-radius: 18px !important;
-      padding: clamp(8px, 1.4vh, 18px) clamp(16px, 2.5vw, 36px) !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      padding: clamp(8px, 1.4vh, 18px) clamp(16px, 2.5vw, 32px) !important;
     }
-    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-singing {
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word {
+      transition: color 0.15s ease, text-shadow 0.15s ease !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active .bu-word:not(.is-singing):not(.is-sung) {
       color: #ffffff !important;
-      text-shadow: 0 0 30px rgba(255, 226, 165, 1), 0 0 12px rgba(196, 163, 90, 0.9) !important;
+      opacity: 0.92 !important;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 4px 16px rgba(0, 0, 0, 0.8) !important;
     }
-    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-sung {
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active .bu-word.is-singing {
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      background-color: transparent !important;
+      text-shadow: 0 0 32px rgba(255, 226, 165, 1), 0 0 14px rgba(196, 163, 90, 0.95), 0 2px 6px rgba(0, 0, 0, 0.95) !important;
+      transform: scale(1.08) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active .bu-word.is-sung {
+      color: #ffe2a5 !important;
+      font-weight: 700 !important;
+      text-shadow: 0 0 18px rgba(226, 204, 154, 0.6), 0 2px 6px rgba(0, 0, 0, 0.95) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-verse-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-family: Inter, system-ui, sans-serif !important;
+      font-size: clamp(10px, 1.1vw, 13px) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.05em !important;
       color: #e2cc9a !important;
-      text-shadow: 0 0 15px rgba(226, 204, 154, 0.5) !important;
+      background: rgba(10, 16, 30, 0.55) !important;
+      border: 1px solid rgba(196, 163, 90, 0.35) !important;
+      border-radius: 6px !important;
+      padding: 2px 7px !important;
+      margin-right: 10px !important;
+      vertical-align: middle !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+      box-shadow: none !important;
     }
 
     #hero-karaoke-stage.is-fullscreen .patron-chapter-module, #hero-karaoke-stage.is-fullscreen .youtube-stage-drawer,
@@ -5479,6 +5531,55 @@
     #hero-karaoke-stage.is-fullscreen.bu-idle-hidden #hero-karaoke-sync-toolbar {
       opacity: 0 !important;
       pointer-events: none !important;
+    }
+
+    @media (max-width: 768px) {
+      #hero-karaoke-stage.is-fullscreen {
+        padding: 8px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen .hero-karaoke-viewport {
+        width: 100% !important;
+        padding: 8px 6px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
+        gap: 12px !important;
+        padding: 16px 0 !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line {
+        font-size: clamp(16px, 4.5vw, 22px) !important;
+        padding: 6px 8px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active {
+        font-size: clamp(20px, 5.5vw, 28px) !important;
+        padding: 8px 12px !important;
+      }
+    }
+    @media (max-height: 500px) and (orientation: landscape) {
+      #hero-karaoke-stage.is-fullscreen {
+        padding: 4px 12px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen .hero-karaoke-topbar {
+        padding: 4px 10px !important;
+        margin-bottom: 2px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen .hero-karaoke-topbar .hero-karaoke-subtitle {
+        display: none !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #player-section .master-player-card {
+        padding: 4px 12px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
+        gap: 6px !important;
+        padding: 6px 0 !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line {
+        font-size: 16px !important;
+        padding: 3px 6px !important;
+      }
+      #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active {
+        font-size: 20px !important;
+        padding: 4px 8px !important;
+      }
     }
 
     .bu-text-mode-actions {

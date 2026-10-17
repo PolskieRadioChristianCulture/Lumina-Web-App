@@ -3493,16 +3493,18 @@ function getWeatherPreset(city) {
             }
             setTimeout(hideUnmuteBanner, 4000);
 
-            function notifyTrackActive(track, targetIndex) {
+            function notifyTrackActive(track, targetIndex, offsetSec) {
                 window.currentWorshipTrack = track;
                 window.currentWorshipTrackIndex = targetIndex;
+                window.currentWorshipTrackOffset = Number.isFinite(offsetSec) ? offsetSec : 0;
+                window.currentWorshipTrackSyncedAtMs = Date.now();
                 var rdsTrackEl = document.querySelector('#rdsMarqueeText .rds-track');
                 if (rdsTrackEl && track && track.title) {
                     rdsTrackEl.textContent = track.title + ' (24/7)';
                 }
                 try {
                     window.dispatchEvent(new CustomEvent('worshipTrackChanged', {
-                        detail: { track: track, index: targetIndex }
+                        detail: { track: track, index: targetIndex, offsetSec: window.currentWorshipTrackOffset }
                     }));
                 } catch (e) {}
             }
@@ -3557,7 +3559,7 @@ function getWeatherPreset(city) {
                         audio.src = newUrl;
                         applySeekOffset(remaining);
                     }
-                    notifyTrackActive(currentTrack, targetIndex);
+                    notifyTrackActive(currentTrack, targetIndex, remaining);
                     var p = audio.play();
                     if (p !== undefined) {
                         p.then(function() {
@@ -3582,7 +3584,7 @@ function getWeatherPreset(city) {
                     if (nextTrack && nextTrack.url) {
                         audio.src = nextTrack.url;
                         audio.currentTime = 0;
-                        notifyTrackActive(nextTrack, nextIdx);
+                        notifyTrackActive(nextTrack, nextIdx, 0);
                         audio.play().catch(function(e) { console.warn("Play error on ended:", e); });
                         updateMediaSession(nextTrack);
                     }
@@ -3602,7 +3604,7 @@ function getWeatherPreset(city) {
                     if (next && next.url) {
                         audio.src = next.url;
                         audio.currentTime = 0;
-                        notifyTrackActive(next, nextIdx);
+                        notifyTrackActive(next, nextIdx, 0);
                         audio.play().catch(function(){});
                         updateMediaSession(next);
                     }
@@ -3665,7 +3667,7 @@ function getWeatherPreset(city) {
         })();
     </script>
     <script src="live-window-manager.js" defer></script>
-    <script src="assets/bu/biblia-spiewana-live-karaoke.js" defer></script>
+    <script src="assets/bu/biblia-spiewana-live-karaoke.js?v=20261017_obs2" defer></script>
 
     <!-- RDS Scroller — uruchamiany po załadowaniu DOM -->
     <script>

@@ -146,9 +146,26 @@ test('Biblia Śpiewana LIVE 24/7 — Karaoke TV integration (Desktop, Mobile, Fu
     await page.click('#bs-admin-close-btn');
     await page.waitForTimeout(150);
 
-    // Check 5: Track WITHOUT sync data (PRO-018) -> must automatically hide karaoke without interrupting broadcast
+    // Check 5: Verify PRO-018 and PRO-026..031 now have full SYNC_READY karaoke
+    for (const ch of ['PRO-018', 'PRO-026', 'PRO-029', 'PRO-031']) {
+      await page.evaluate(async (id) => {
+        await window.CC_BS_LIVE_KARAOKE.loadChapterForBroadcast(id, `Śpiewane Przypowieści Salomona - ${id}`, true);
+        window.CC_BS_LIVE_KARAOKE.tickSync();
+      }, ch);
+      await page.waitForTimeout(120);
+      const chState = await page.evaluate(() => ({
+        visible: document.getElementById('bs-karaoke-stage').classList.contains('is-visible'),
+        syncStatus: window.CC_BS_LIVE_KARAOKE.getState().syncStatus,
+        activeIdx: window.CC_BS_LIVE_KARAOKE.getState().activeLineIndex
+      }));
+      assert.equal(chState.syncStatus, 'SYNC_READY', `${ch} must report SYNC_READY`);
+      assert.equal(chState.visible, true, `Karaoke stage must be visible for ${ch}`);
+      assert.ok(chState.activeIdx >= 0, `Karaoke stage must have an active verse highlighted for ${ch}`);
+    }
+
+    // Check 5b: Track WITHOUT sync data (PSA-150) -> must automatically hide karaoke without interrupting broadcast
     await page.evaluate(async () => {
-      await window.CC_BS_LIVE_KARAOKE.loadChapterForBroadcast('PRO-018', 'Śpiewane Przypowieści Salomona - Rozdział 18', true);
+      await window.CC_BS_LIVE_KARAOKE.loadChapterForBroadcast('PSA-150', 'Psalm 150', true);
     });
     await page.waitForTimeout(200);
     const noSyncState = await page.evaluate(() => ({
@@ -156,24 +173,34 @@ test('Biblia Śpiewana LIVE 24/7 — Karaoke TV integration (Desktop, Mobile, Fu
       syncStatus: window.CC_BS_LIVE_KARAOKE.getState().syncStatus,
       singingClass: document.body.classList.contains('karaoke-singing-active')
     }));
-    assert.equal(noSyncState.syncStatus, 'NO_SYNC', 'PRO-018 should report NO_SYNC');
+    assert.equal(noSyncState.syncStatus, 'NO_SYNC', 'PSA-150 should report NO_SYNC');
     assert.equal(noSyncState.visible, false, 'Karaoke stage must automatically hide when track has no sync data');
     assert.equal(noSyncState.singingClass, false, 'Normal TV broadcast UI must be restored when track has no sync data');
 
-    // Switch back to PRO-001 and test Fullscreen Karaoke mode
+    // Switch back to PRO-001 and test Fullscreen Karaoke mode + auto-hiding top-right buttons for OBS LIVE
     await page.evaluate(async () => {
       await window.CC_BS_LIVE_KARAOKE.loadChapterForBroadcast('PRO-001', 'Śpiewane Przypowieści Salomona - Rozdział 1', true);
       window.CC_BS_LIVE_KARAOKE.tickSync();
     });
     await page.waitForTimeout(200);
     await page.click('#bs-btn-fullscreen-karaoke');
-    await page.waitForTimeout(200);
-    const fsActive = await page.evaluate(() => document.body.classList.contains('bs-karaoke-fullscreen'));
-    assert.equal(fsActive, true, 'Fullscreen karaoke mode should activate');
+    await page.mouse.move(600, 600); // Move cursor away from top-right corner
+    await page.waitForTimeout(450);
+    const fsInfo = await page.evaluate(() => {
+      const dock = document.getElementById('bs-karaoke-floating-dock');
+      return {
+        fsActive: document.body.classList.contains('bs-karaoke-fullscreen'),
+        dockHiddenClass: dock.classList.contains('is-obs-hidden'),
+        dockOpacity: window.getComputedStyle(dock).opacity
+      };
+    });
+    assert.equal(fsInfo.fsActive, true, 'Fullscreen karaoke mode should activate');
+    assert.equal(fsInfo.dockHiddenClass, true, 'Top-right buttons dock must have is-obs-hidden class during fullscreen / OBS LIVE');
+    assert.equal(fsInfo.dockOpacity, '0', 'Top-right buttons must have opacity 0 during OBS LIVE fullscreen broadcast');
     if (fs.existsSync(ARTIFACT_DIR)) {
       await page.screenshot({ path: path.join(ARTIFACT_DIR, 'biblia_spiewana_live_fullscreen_1920x1080.png') });
     }
-    await page.click('#bs-btn-fullscreen-karaoke');
+    await page.evaluate(() => window.CC_BS_LIVE_KARAOKE.toggleFullscreenKaraoke(false));
 
     // 2. DESKTOP 1440x900
     await page.setViewportSize({ width: 1440, height: 900 });

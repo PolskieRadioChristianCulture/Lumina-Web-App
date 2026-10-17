@@ -184,7 +184,29 @@
       }
     }
 
-    return { track: null, chapterId: null, title: '' };
+    if (playlist.length > 0) {
+      const totalDur = playlist.reduce((acc, t) => acc + (t.duration || 240), 0) || 9294;
+      let rem = Math.floor(Date.now() / 1000) % totalDur;
+      let chosen = playlist[0];
+      for (const item of playlist) {
+        const d = item.duration || 240;
+        if (rem < d) {
+          chosen = item;
+          break;
+        }
+        rem -= d;
+      }
+      if (chosen) {
+        const chId = resolveChapterFromTrack(chosen, '');
+        return {
+          track: chosen,
+          chapterId: chId,
+          title: chosen.title || (chId ? formatChapterTitle(chId) : 'Biblia Śpiewana')
+        };
+      }
+    }
+
+    return { track: null, chapterId: 'PRO-001', title: formatChapterTitle('PRO-001') };
   }
 
   function formatChapterTitle(chapterId) {
@@ -801,6 +823,23 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+
+      /* Automatyczne ukrywanie dwóch przycisków w prawym górnym rogu podczas nadawania OBS LIVE / pełnego ekranu / bezczynności */
+      #bs-karaoke-floating-dock.is-obs-hidden,
+      body.bs-karaoke-fullscreen #bs-karaoke-floating-dock:not(.is-wake-hover):not(.is-admin-open) {
+        opacity: 0 !important;
+        transform: translateY(-10px);
+      }
+
+      #bs-karaoke-floating-dock:hover,
+      #bs-karaoke-floating-dock:focus-within,
+      #bs-karaoke-floating-dock.is-admin-open {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
       }
 
       .bs-dock-btn {
@@ -1307,14 +1346,79 @@
         else if (state.isFullscreen) toggleFullscreenKaraoke(false);
       }
     });
+
+    // Automatyczne ukrywanie dwóch przycisków w prawym górnym rogu podczas nadawania OBS LIVE / pełnego ekranu / bezczynności
+    const dock = document.getElementById('bs-karaoke-floating-dock');
+    if (dock && !dock._autoHideBound) {
+      dock._autoHideBound = true;
+      let dockHideTimer = null;
+
+      const hideDockNow = () => {
+        if (state.adminOpen) return;
+        dock.classList.add('is-obs-hidden');
+        dock.classList.remove('is-wake-hover');
+      };
+
+      const scheduleDockHide = (delayMs = 1800) => {
+        if (dockHideTimer) clearTimeout(dockHideTimer);
+        dockHideTimer = setTimeout(hideDockNow, delayMs);
+      };
+
+      const wakeDock = () => {
+        dock.classList.remove('is-obs-hidden');
+        dock.classList.add('is-wake-hover');
+        scheduleDockHide(1800);
+      };
+
+      // W OBS Browser Source lub z parametrami emisji ukryj natychmiast, w przeglądarce po 1.6s
+      const isObsEnv = Boolean(
+        window.obsstudio ||
+        window.location.search.includes('obs=1') ||
+        window.location.search.includes('clean=1') ||
+        window.location.search.includes('broadcast=1')
+      );
+      if (isObsEnv) {
+        hideDockNow();
+      } else {
+        scheduleDockHide(1600);
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        if (state.isFullscreen) {
+          // W trybie pełnoekranowym / OBS pokaż przyciski tylko po najechaniu kursorem w okolice prawego górnego rogu
+          if (e.clientY <= 120 && e.clientX >= window.innerWidth - 420) {
+            wakeDock();
+          } else if (!state.adminOpen) {
+            hideDockNow();
+          }
+        } else {
+          wakeDock();
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchstart', () => {
+        wakeDock();
+      }, { passive: true });
+
+      document.addEventListener('mouseleave', () => {
+        hideDockNow();
+      });
+    }
   }
 
   function toggleAdminPanel(force) {
     const panel = document.getElementById('bs-karaoke-admin-panel');
     const btn = document.getElementById('bs-btn-admin-toggle');
+    const dock = document.getElementById('bs-karaoke-floating-dock');
     if (!panel) return;
     state.adminOpen = typeof force === 'boolean' ? force : !state.adminOpen;
     panel.classList.toggle('is-open', state.adminOpen);
+    if (dock) {
+      dock.classList.toggle('is-admin-open', state.adminOpen);
+      if (state.adminOpen) {
+        dock.classList.remove('is-obs-hidden');
+      }
+    }
     if (btn) {
       btn.setAttribute('aria-expanded', String(state.adminOpen));
       btn.classList.toggle('is-active', state.adminOpen);
@@ -1378,6 +1482,16 @@
       fsBtn.innerHTML = state.isFullscreen
         ? '<i class="fa-solid fa-compress" aria-hidden="true"></i><span class="bs-dock-text">Zwiń ekran</span>'
         : '<i class="fa-solid fa-expand" aria-hidden="true"></i><span class="bs-dock-text">Pełny ekran</span>';
+    }
+
+    // Po włączeniu pełnego ekranu (np. do emisji OBS LIVE) natychmiast ukryj oba przyciski w prawym górnym rogu
+    const dock = document.getElementById('bs-karaoke-floating-dock');
+    if (dock && state.isFullscreen && !state.adminOpen) {
+      dock.classList.add('is-obs-hidden');
+      dock.classList.remove('is-wake-hover');
+      if (document.activeElement && dock.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
     }
 
     if (state.isFullscreen && !document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -1549,7 +1663,19 @@
     }
 
     const audio = getStreamAudio();
-    const rawTime = audio ? Number(audio.currentTime || 0) : 0;
+    let rawTime = audio ? Number(audio.currentTime || 0) : 0;
+    // Jeżeli odtwarzacz oczekuje jeszcze na gest użytkownika lub ładowanie metadanych,
+    // synchronizuj bezpośrednio z 24/7 zegarem emisji kanału LIVE
+    if (rawTime < 0.2 && (!audio || audio.paused) && !state.manualChapterOverride) {
+      if (Number.isFinite(window.currentWorshipTrackOffset)) {
+        const elapsedSinceSync = window.currentWorshipTrackSyncedAtMs
+          ? Math.max(0, (Date.now() - window.currentWorshipTrackSyncedAtMs) / 1000)
+          : 0;
+        const trackDur = window.currentWorshipTrack?.duration || 300;
+        rawTime = Math.min(trackDur - 0.5, window.currentWorshipTrackOffset + elapsedSinceSync);
+      }
+    }
+
     const now = rawTime + (state.offsetMs || 0) / 1000;
     const segments = state.sync.lines;
 
@@ -1566,7 +1692,7 @@
       }
     }
 
-    // 2. Ciągłość między segmentami oraz 550ms lookahead priming (identycznie jak w karaoke-top100.js)
+    // 2. Ciągłość między segmentami oraz lookahead priming — zawsze utrzymuj podświetlony werset na ekranie TV
     if (active === -1) {
       if (now < segments[0].start) {
         active = 0;
@@ -1587,11 +1713,12 @@
             if (now >= nextStart - 0.55) {
               active = nextIdx;
               isPrimed = true;
-            } else if (gap < 3.2 || now < segments[prevIdx].end + 1.8) {
+            } else if (gap < 3.2 || now < segments[prevIdx].end + 2.0) {
               active = prevIdx;
               isHolding = true;
             } else {
-              active = -1;
+              active = nextIdx;
+              isPrimed = true;
             }
           } else {
             active = prevIdx;
