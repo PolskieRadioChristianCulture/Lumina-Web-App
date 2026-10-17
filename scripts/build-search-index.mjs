@@ -197,6 +197,22 @@ const CONTEXT_GUIDES = {
       { title: "Radio CC — Kanał Uwielbienie", url: "https://polskieradio.cc/player", icon: "📻" },
       { title: "Śpiewajmy Panu TV", url: "https://polskieradio.cc/spiewajmy-panu", icon: "🎶" }
     ]
+  },
+  "wsparcie": {
+    keywords: ["wsparcie", "wspieraj", "patron", "patroni", "patronat", "mecenas", "mecenasi", "mecenat", "darowizna", "darowizny", "wesprzyj", "ofiara", "ofiary", "dziesiecina", "dziesięcina", "blik", "patronite", "revolut"],
+    topic: "Wsparcie Misji Christian Culture — Zostań Patronem lub Mecenasem",
+    summary: "Razem niesiemy nadzieję dalej. Dołącz do grona Mecenasów i Patronów misji Christian Culture. Możesz wesprzeć misję przez modlitwę, wolontariat, BLIK, przelew bankowy, Patronite lub Revolut.",
+    keyVerses: [
+      { ref: "Mt 10:8", text: "Darmo wzięliście, darmo dawajcie.", url: "https://polskieradio.cc/mojabiblia" },
+      { ref: "2 Kor 9:7", text: "Każdy niech daje, jak postanowił w sercu, nie z żalem ani z przymusu; radosnego bowiem dawcę miłuje Bóg.", url: "https://polskieradio.cc/mojabiblia" },
+      { ref: "Mk 16:15", text: "Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu.", url: "https://polskieradio.cc/mojabiblia" }
+    ],
+    shortcuts: [
+      { title: "Centrum Wsparcia Misji (polskieradio.cc/wspieraj)", url: "https://polskieradio.cc/wspieraj", icon: "❤️" },
+      { title: "Zostań Patronem (polskieradio.cc/patron)", url: "https://polskieradio.cc/patron", icon: "🤝" },
+      { title: "Klub Mecenasów Misji (polskieradio.cc/mecenas)", url: "https://polskieradio.cc/mecenas", icon: "🏛️" },
+      { title: "Profil Patronite Osobowość Plus", url: "https://patronite.pl/osobowoscplus", icon: "✨" }
+    ]
   }
 };
 
@@ -509,11 +525,11 @@ const CORE_PROJECTS = [
     featured: true
   },
   {
-    title: "Wsparcie Misji Christian Culture",
+    title: "Wsparcie Misji Christian Culture — Zostań Patronem lub Mecenasem",
     category: "Narzędzia i misja",
     url: "https://polskieradio.cc/wspieraj",
-    description: "Dołącz do grona Mecenasów i Patronów misji Christian Culture. Twoje wsparcie finansowe umożliwia docieranie z Ewangelią do milionów Polaków.",
-    tags: ["wsparcie misji", "wspieraj", "patronat", "darowizna", "mecenat", "dziesięcina", "rozwój ewangelizacji"],
+    description: "Dołącz do grona Mecenasów i Patronów misji Christian Culture. Wesprzyj ewangelizację Polski (/wspieraj, /patron, /mecenas, /darowizna, /wesprzyj). Twoje wsparcie umożliwia docieranie z Ewangelią do milionów Polaków.",
+    tags: ["wsparcie misji", "wspieraj", "patron", "mecenas", "patronat", "mecenat", "darowizna", "darowizny", "wesprzyj", "ofiara", "dziesięcina", "dziesiecina", "donate", "support", "zrzutka", "rozwój ewangelizacji"],
     featured: true
   },
   {

@@ -1,0 +1,54 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const aliases = [
+  { slug: 'patron', title: 'Zostań Patronem Misji Christian Culture' },
+  { slug: 'mecenas', title: 'Klub Mecenasów Misji Christian Culture' },
+  { slug: 'patronat', title: 'Patronat Misyjny Christian Culture' },
+  { slug: 'mecenat', title: 'Mecenat Misyjny Christian Culture' },
+  { slug: 'wesprzyj', title: 'Wesprzyj Misję Christian Culture' },
+  { slug: 'darowizna', title: 'Darowizna na Misję Christian Culture' }
+];
+
+function createRedirectHtml(item) {
+  return `<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${item.title} | polskieradio.cc/${item.slug}</title>
+<meta name="description" content="${item.title}. Razem niesiemy nadzieję dalej. Wybierz swoją formę wsparcia.">
+<meta http-equiv="refresh" content="0; url=/wspieraj">
+<link rel="canonical" href="https://polskieradio.cc/wspieraj">
+<meta name="robots" content="noindex, follow">
+<script>window.location.replace('/wspieraj' + window.location.search + window.location.hash);</script>
+<style>
+body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #040d15; color: #f5f7fb; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; text-align: center; }
+.card { background: #0c1824; border: 1px solid #c4a35a; border-radius: 16px; padding: 36px 28px; max-width: 500px; width: 100%; box-shadow: 0 16px 45px rgba(0,0,0,0.6); }
+.badge { display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #c4a35a; background: rgba(196,163,90,0.12); border: 1px solid rgba(196,163,90,0.3); padding: 4px 12px; border-radius: 999px; margin-bottom: 16px; }
+h1 { font-size: 1.35rem; color: #f5f7fb; margin: 0 0 12px; font-weight: 700; line-height: 1.35; }
+p { font-size: 0.95rem; color: #94a3b8; line-height: 1.55; margin: 0 0 24px; }
+a.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 28px; background: linear-gradient(135deg, #c4a35a, #e6c875); color: #040d15; font-weight: 800; font-size: 0.95rem; text-decoration: none; border-radius: 999px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(196,163,90,0.25); }
+a.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(196,163,90,0.4); }
+</style>
+</head>
+<body>
+<div class="card">
+<span class="badge">Christian Culture</span>
+<h1>${item.title}</h1>
+<p>Przekierowywanie do oficjalnego Centrum Wsparcia Misji…</p>
+<a class="btn" href="/wspieraj">Przejdź do strony wsparcia &rarr;</a>
+</div>
+</body>
+</html>
+`;
+}
+
+for (const item of aliases) {
+  const html = createRedirectHtml(item);
+  fs.writeFileSync(path.join(process.cwd(), `${item.slug}.html`), html, 'utf8');
+  const dir = path.join(process.cwd(), item.slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), html, 'utf8');
+  console.log(`Generated alias: /${item.slug} (${item.slug}.html & ${item.slug}/index.html)`);
+}
