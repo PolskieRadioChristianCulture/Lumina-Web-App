@@ -41,6 +41,8 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "CCN ŚWIAT: Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju? Analiza Cezarego Rogowskiego (Mt 24:4–14; Mt 5:9)",
+  "CCN EDUKACJA & RODZINA: Gdy szkoła przestaje być bezpieczna. Po śmierci pracownicy szkoły pod Wyszkowem — analiza Wioletty Rogowskiej (Jk 1:19–20, 27)",
   "Z Biblią za Pan Brat: Dzień 17 — Wiara patrząca w przyszłość: Grota Machpela i spotkanie przy studni (Rdz 23–24)",
   "CCN SPOŁECZEŃSTWO: Czy świat potrzebuje nowego przebudzenia duchowego? Chrześcijaństwo wobec globalnych przemian — analiza Cezarego Rogowskiego",
   "CCN HISTORIA & BIBLIA: Czy Jezus naprawdę istniał? Co mówią źródła historyczne poza Biblią? Analiza źródeł starożytnych",
@@ -64,6 +66,126 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+      "id": "art-wojna-ukraina-jezus-pokoj-znaki-czasow",
+      "title": "Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju?",
+      "slug": "wojna-ukraina-jezus-pokoj-znaki-czasow",
+      "excerpt": "Październikowe ataki na ukraińską infrastrukturę energetyczną i rozmowy europejskich przywódców przypominają, że w centrum politycznych sporów są ludzie. Jak chrześcijanin powinien czytać „wieści wojenne” i odpowiadać na cierpienie?",
+      "content": [
+          "Październikowe ataki na ukraińską infrastrukturę energetyczną i rozmowy europejskich przywódców przypominają, że w centrum politycznych sporów są ludzie. Jak chrześcijanin powinien czytać „wieści wojenne” i odpowiadać na cierpienie?",
+          "ZIMA STAJE SIĘ KOLEJNYM WYZWANIEM",
+          "W połowie października 2026 roku doniesienia z Ukrainy ponownie koncentrowały się na atakach na infrastrukturę energetyczną. Associated Press informowała 16 października o uderzeniach w dziewięciu regionach oraz przerwach w dostawach prądu dotykających setek tysięcy ludzi. Informacje dotyczące skali szkód i liczby poszkodowanych mogą się zmieniać, dlatego wymagają aktualizacji w dniu publikacji. Gdy przestają działać dostawy energii, konsekwencje nie kończą się na braku światła: zagrożone są ogrzewanie, dostęp do wody, szkoły i opieka medyczna.",
+          "DYPLOMACJA NIE UNIEWAŻNIA LUDZKIEGO CIERPIENIA",
+          "Na szczycie Unii Europejskiej 15–16 października wojna i bezpieczeństwo energetyczne były istotnymi tematami rozmów. Reuters relacjonował 16 października wypowiedzi prezydenta Wołodymyra Zełenskiego dotyczące działań wojennych i sporu o propozycje dotyczące ataków na infrastrukturę. W debacie publicznej ścierają się poglądy na sposób osiągnięcia pokoju, zakres wsparcia i środki nacisku. Chrześcijańska troska o ofiary nie wymaga bezkrytycznego przyjęcia stanowiska któregokolwiek polityka. Wymaga natomiast dostrzeżenia godności każdej osoby dotkniętej wojną.",
+          "CZY WOJNY SĄ ZNAKIEM KOŃCA?",
+          "Jezus powiedział, że Jego uczniowie usłyszą o wojnach i wieściach wojennych (Mt 24,6–8). Ten sam fragment zawiera jednak wyraźne ostrzeżenie, aby nie popadać w trwogę i nie utożsamiać takich wydarzeń z natychmiastowym końcem. Fragment należy czytać w szerszym kontekście mowy Jezusa o zwiedzeniu, prześladowaniach, wytrwałości i głoszeniu Ewangelii (Mt 24,4–14). Dlatego nie jest uprawnione wyznaczanie dat ani przedstawianie każdej wiadomości wojennej jako osobnego, rozstrzygającego spełnienia proroctwa.",
+          "BŁOGOSŁAWIENI, KTÓRZY CZYNIĄ POKÓJ",
+          "W Kazaniu na Górze Jezus nazywa błogosławionymi tych, którzy czynią pokój (Mt 5,9). Chodzi o postawę aktywną: poszukiwanie pojednania, ochronę słabszych i odrzucenie nienawiści. Nie oznacza to obojętności wobec agresji czy zniesienia odpowiedzialności za przemoc. Apostoł Paweł dodaje: „Jeśli można, o ile to od was zależy, ze wszystkimi ludźmi pokój miejcie” (Rz 12,18 — sens wersetu). Sformułowanie „o ile to od was zależy” uczciwie uznaje granice naszych możliwości.",
+          "WIARA, KTÓRA PRZYBIERA POSTAĆ POMOCY",
+          "Jakub 2,15–17 pokazuje, że słowa współczucia nie wystarczają, gdy ktoś nie ma podstawowych środków do życia. W praktyce odpowiedzią chrześcijańskich wspólnot może być wsparcie rzetelnych organizacji humanitarnych, zbiórki ciepłej odzieży, pomoc rodzinom uchodźczym czy wsparcie lokalnych działań integracyjnych. Przy każdej zbiórce należy sprawdzić organizatora i sposób rozliczenia darowizn. Każda taka decyzja jest bardziej konkretna niż kolejny emocjonalny komentarz w sieci.",
+          "NADZIEJA SILNIEJSZA NIŻ STRACH",
+          "Jezus obiecuje pokój inny niż ten, który daje świat (J 14,27), ale nie obiecuje, że Jego uczniowie nie doświadczą cierpienia. Ostateczną perspektywę chrześcijańskiej nadziei przedstawia Ap 21,4: świat, w którym Bóg położy kres śmierci i płaczowi. Dopóki ten dzień nie nadszedł, wierzący są wezwani nie do lęku przed nagłówkami, lecz do modlitwy, odpowiedzialnego osądu i realnej pomocy ludziom."
+      ],
+      "scriptureReference": {
+          "verse": "Ewangelia Mateusza 5:9 · Ewangelia Mateusza 24:4–14 · List do Rzymian 12:18 · List Jakuba 2:15–17 · Ewangelia Jana 14:27 · Apokalipsa 21:4",
+          "text": "Błogosławieni pokój czyniący, albowiem oni synami Bożymi nazwani będą.",
+          "strongCode": "G1518 (Eirenopoios — Czyniący pokój) / G1515 (Eirene — Pokój Chrystusowy)"
+      },
+      "sourceCitation": {
+          "sourceName": "Associated Press (16.10.2026), Reuters (16.10.2026) & Biblia",
+          "sourceUrl": "https://apnews.com/article/025bdb5cebc0be727a6197ce37f2c365",
+          "quotationDate": "17 października 2026 r.",
+          "originalTitle": "Associated Press: „Russia strikes 9 Ukrainian regions…” (16.10.2026) · Reuters: „Zelenskiy blasts Trump’s diesel deal…” (16.10.2026)"
+      },
+      "category": "swiat",
+      "categoryLabel": "CCN NEWS — ŚWIAT / POKÓJ I POMOC HUMANITARNA",
+      "author": {
+          "id": "cezary-rogowski",
+          "name": "Cezary Rogowski",
+          "role": "Założyciel Christian Culture & Redaktor Naczelny CCN",
+          "status": "Żonaty",
+          "avatarUrl": "/avatar_cezary_official.jpg",
+          "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+      },
+      "publishedAt": "2026-10-17T08:00:00Z",
+      "dateFormatted": "17 października 2026",
+      "imageUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg",
+      "imageCaption": "Ilustracja AI: Światło świecy, otwarta Biblia i pomoc humanitarna przy oknie w zaciemnionym mieszkaniu o zmierzchu (ilustracja poglądowa wygenerowana z pomocą AI — nie przedstawia opisywanego wydarzenia).",
+      "readTimeMinutes": 5,
+      "isHero": true,
+      "isPopular": true,
+      "popularRank": 1,
+      "tags": [
+          "Ukraina",
+          "Pokój",
+          "Pomoc Humanitarna",
+          "Znaki Czasów",
+          "Mateusza 5:9",
+          "Mateusza 24:4-14",
+          "Świat",
+          "Cezary Rogowski"
+      ]
+  },
+  {
+      "id": "art-tragedia-szkola-wyszkow-przemoc-biblia",
+      "title": "Gdy szkoła przestaje być bezpieczna. Po śmierci pracownicy szkoły pod Wyszkowem",
+      "slug": "tragedia-szkola-wyszkow-przemoc-biblia",
+      "excerpt": "Śmierć 37-letniej woźnej po ataku w Leszczydole-Nowinach poruszyła Polskę. Obok pytań o bezpieczeństwo i odpowiedzialność warto postawić biblijne pytanie: jak chronić życie, uczyć panowania nad gniewem i nie pozostawiać rodzin samych?",
+      "content": [
+          "Śmierć 37-letniej woźnej po ataku w Leszczydole-Nowinach poruszyła Polskę. Obok pytań o bezpieczeństwo i odpowiedzialność warto postawić biblijne pytanie: jak chronić życie, uczyć panowania nad gniewem i nie pozostawiać rodzin samych?",
+          "TRAGEDIA, ZA KTÓRĄ STOJĄ KONKRETNI LUDZIE",
+          "8 października 2026 roku w szkole podstawowej w Leszczydole-Nowinach w powiecie wyszkowskim doszło do ataku z użyciem noża. Według relacji Polskiego Radia 24 i TVP Info podejrzany to 15-letni były uczeń placówki. W wyniku ataku zmarła 37-letnia pracownica szkoły, a dwie kolejne osoby zostały ranne. 9 października sąd zdecydował o umieszczeniu nastolatka w schronisku dla nieletnich na trzy miesiące. Postępowanie i opinie biegłych miały ustalić dalszy tryb sprawy. Szacunek dla ofiary i osób bliskich wymaga unikania drastycznych szczegółów i niepotwierdzonych opowieści o motywie.",
+          "NIE WYCIĄGAĆ Z JEDNEJ TRAGEDII ŁATWYCH WNIOSKÓW",
+          "W tych samych dniach media informowały o innych incydentach przemocy w placówkach edukacyjnych. To uzasadnia pytania o reakcję instytucji, bezpieczeństwo i dostępność wsparcia. Nie wystarcza jednak, aby bez odrębnych danych dowodzić, że „całe pokolenie staje się bardziej agresywne” albo że sprawy były ze sobą skoordynowane. Nie wolno też diagnozować nieletniego na podstawie plotek czy materiałów z sieci. Odpowiedzialna redakcja oddziela fakt, hipotezę i komentarz.",
+          "CO BIBLIA MÓWI O LUDZKIEJ AGRESJI?",
+          "Jakub 1,19–20 wzywa do gotowości słuchania, powściągliwości w słowach i opanowania gniewu. To nie jest techniczny poradnik zapobiegania przemocy, ale jasna zasada wychowania moralnego. Prz 4,23 zwraca uwagę na znaczenie wewnętrznego życia człowieka. Ef 4,29–32 ukazuje odpowiedzialność za słowo, rezygnację z wrogości i pielęgnowanie życzliwości. Zastosowanie tych tekstów nie polega na obwinianiu ofiar ani na przekonaniu, że sama religijna deklaracja zastąpi profesjonalną pomoc.",
+          "CZY TO ZNAK CZASÓW KOŃCA?",
+          "Jezus w Mt 24,12 mówi o narastaniu bezprawia i oziębnięciu miłości wielu. Można w tym świetle zapytać, jak współczesne społeczeństwo odpowiada na brutalność i zobojętnienie. Nie można jednak uczciwie ogłosić, że konkretna śmierć pracownicy szkoły jest jednoznacznym wypełnieniem tego proroctwa. Wypowiedź Jezusa obejmuje szerszy kontekst ucisku, zwiedzenia i wytrwałości (Mt 24,9–14). Najważniejszym sprawdzianem naszego odczytania tekstu pozostaje to, czy prowadzi do miłości i odpowiedzialności, a nie do sensacji.",
+          "OCHRONA DZIECKA I PRACOWNIKA SZKOŁY JEST OBOWIĄZKIEM",
+          "Biblia przyznaje wielką wartość osobom słabszym i zależnym; Jezus poważnie mówi o krzywdzeniu „małych” (Mt 18,6). W praktyce szkoły i samorządy powinny mieć przejrzyste procedury reagowania na groźby, zasady zgłaszania przemocy i dostęp do specjalistów. Rodzice potrzebują rozmowy z dziećmi, uważności na sygnały zagrożenia i gotowości do szukania pomocy. W sytuacji bezpośredniego niebezpieczeństwa należy powiadomić służby pod numerem 112. Wsparcie duchowe może towarzyszyć działaniom specjalistycznym, ale nie może ich zastępować.",
+          "NIE TYLKO SŁOWA, LECZ OBECNOŚĆ",
+          "Jk 1,27 przypomina o trosce wobec osób osieroconych i dotkniętych cierpieniem. Dla chrześcijańskiej wspólnoty oznacza to poszanowanie prywatności rodziny ofiary, pomoc praktyczną i odmowę podsycania niezweryfikowanych oskarżeń. W trudnej sytuacji można ofiarować obecność, pomoc w codziennych obowiązkach, wsparcie finansowe przez wiarygodne kanały i modlitwę zgodną z życzeniem bliskich. Wierność Ewangelii mierzy się również tym, jak traktujemy cierpiących, kiedy przestają być tematem wiadomości."
+      ],
+      "scriptureReference": {
+          "verse": "List Jakuba 1:19–20 · Księga Przysłów 4:23 · List do Efezjan 4:29–32 · Ewangelia Mateusza 18:6 · List Jakuba 1:27",
+          "text": "Niech każdy człowiek będzie skory do słuchania, nieskory do mówienia, nieskory do gniewu. Gniew bowiem męża nie wykonuje sprawiedliwości Bożej.",
+          "strongCode": "G3709 (Orge — Gniew) / G2356 (Threskeia — Czysta pobożność i troska o cierpiących)"
+      },
+      "sourceCitation": {
+          "sourceName": "Polskie Radio 24 (09.10.2026), TVP Info (09.10.2026), Onet (08.10.2026) & Biblia",
+          "sourceUrl": "https://polskieradio24.pl/polska/zaatakowal-w-szkole-nie-zyje-wozna-sad-zdecydowal-ws-15-latka",
+          "quotationDate": "17 października 2026 r.",
+          "originalTitle": "Polskie Radio 24: „Zaatakował w szkole, nie żyje woźna…” (09.10.2026) · TVP Info: decyzja sądu ws. 15-latka (09.10.2026)"
+      },
+      "category": "kraj",
+      "categoryLabel": "CCN EDUKACJA / RODZINA — BEZPIECZEŃSTWO DZIECI",
+      "author": {
+          "id": "wioletta-rogowska",
+          "name": "Wioletta Rogowska",
+          "role": "Współzałożycielka Christian Culture",
+          "status": "Mężatka",
+          "avatarUrl": "/avatar_wioletta_official.jpg",
+          "bio": "Współzałożycielka Christian Culture, koordynatorka inicjatyw charytatywnych i ewangelizacyjnych."
+      },
+      "publishedAt": "2026-10-17T08:15:00Z",
+      "dateFormatted": "17 października 2026",
+      "imageUrl": "/images/news/art-tragedia-szkola-wyszkow-przemoc-biblia.jpg",
+      "imageCaption": "Ilustracja AI: Cichy korytarz szkolny o poranku z białą różą i zniczem pamięci na stoliku (ilustracja poglądowa wygenerowana z pomocą AI — nie przedstawia opisywanego wydarzenia).",
+      "readTimeMinutes": 6,
+      "isHero": false,
+      "isPopular": true,
+      "popularRank": 2,
+      "tags": [
+          "Bezpieczeństwo Szkoły",
+          "Wychowanie",
+          "Ochrona Życia",
+          "Leszczydół-Nowiny",
+          "Jakuba 1:19-20",
+          "Jakuba 1:27",
+          "Edukacja i Rodzina",
+          "Wioletta Rogowska"
+      ]
+  },
   
   {
     "id": "art-czy-swiat-potrzebuje-przebudzenia-duchowego",
@@ -130,9 +252,9 @@ export const INITIAL_ARTICLES: Article[] = [
     "imageUrl": "/images/news/art-czy-swiat-potrzebuje-przebudzenia-duchowego.jpg",
     "imageCaption": "Ilustracja AI: Otwarta Biblia na tle ludzi różnych kultur oraz współczesnego miasta o wschodzie słońca (Ilustracja koncepcyjna 16:9).",
     "readTimeMinutes": 5,
-    "isHero": true,
+    "isHero": false,
     "isPopular": true,
-    "popularRank": 1,
+    "popularRank": 3,
     "tags": [
         "Przebudzenie Duchowe",
         "Demografia Religijna",
