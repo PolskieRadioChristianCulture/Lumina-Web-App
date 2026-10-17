@@ -49,6 +49,10 @@
       .trim();
   }
 
+  function containsTerm(text, term) {
+    return term.length <= 3 ? text.split(/[^a-z0-9]+/).includes(term) : text.includes(term);
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -302,28 +306,28 @@
     // 1. Jeśli zapytanie dotyczyło lekcji/rozważań/kursu — zaproponuj dzisiejszą lekcję (Dzień 15), Kurs 28 Kroków i Werset Dnia
     if (isLessonRelated) {
       // Dzień bieżący w kursie codziennym (np. Dzień 15 / Lekcja 15 na dziś)
-      const todayLesson = catalogData.items.find(i => {
+      const todayLesson = publicSearchItems().find(i => {
         const t = normalizeStr(i.title);
         return t.includes(`dzien ${todayDay}`) || t.includes(`lekcja ${todayDay}`);
       });
       if (todayLesson) addSuggestion(todayLesson);
 
       // Lekcja fundamentalna 28 Kroków
-      const fundLesson = catalogData.items.find(i => normalizeStr(i.title).includes(`lekcja ${todayDay}:`)) ||
-                         catalogData.items.find(i => normalizeStr(i.title).includes('lekcja 01:') || normalizeStr(i.title).includes('lekcja 1:'));
+      const fundLesson = publicSearchItems().find(i => normalizeStr(i.title).includes(`lekcja ${todayDay}:`)) ||
+                         publicSearchItems().find(i => normalizeStr(i.title).includes('lekcja 01:') || normalizeStr(i.title).includes('lekcja 1:'));
       if (fundLesson) addSuggestion(fundLesson);
 
       // Mój Werset Dnia
-      const werset = catalogData.items.find(i => normalizeStr(i.title).includes('werset dnia'));
+      const werset = publicSearchItems().find(i => normalizeStr(i.title).includes('werset dnia'));
       if (werset) addSuggestion(werset);
 
       // Kurs Codzienny / Akademia
-      const akademia = catalogData.items.find(i => (i.url || '').includes('/akademia'));
+      const akademia = publicSearchItems().find(i => (i.url || '').includes('/akademia'));
       if (akademia) addSuggestion(akademia);
     }
 
     // 2. Przeszukanie katalogu pod kątem częściowych słów lub tolerancji literówek
-    for (const item of catalogData.items) {
+    for (const item of publicSearchItems()) {
       if (suggestions.length >= 6) break;
       const normTitle = normalizeStr(item.title);
       const normTags = normalizeStr(Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || ''));
@@ -342,7 +346,7 @@
 
     // 3. Fallback do głównych filarów ekosystemu
     if (suggestions.length < 4) {
-      for (const item of catalogData.items) {
+      for (const item of publicSearchItems()) {
         if (suggestions.length >= 6) break;
         if (item.featured) addSuggestion(item);
       }
@@ -351,21 +355,50 @@
     return suggestions.slice(0, 8);
   }
 
+  function publicSearchItems() {
+    return (catalogData?.items || []).filter(item =>
+      (!item.access || item.access === 'public') &&
+      (!item.visibility || item.visibility === 'public') &&
+      !['draft', 'unpublished', 'private', 'removed'].includes(item.status));
+  }
+
   // 7. Inteligentne wyszukiwanie w pamięci (<2ms)
-  function performSearch(query, filter = 'all') {
+  function publicationTime(item) {
+    const iso = item.publishedAt || item.updatedAt;
+    if (iso && Number.isFinite(Date.parse(iso))) return Date.parse(iso);
+    const months = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','wrzesnia','pazdziernika','listopada','grudnia'];
+    const match = normalizeStr(item.date || '').match(/^(\d{1,2}) (\S+) (\d{4})$/);
+    if (match && months.includes(match[2])) return Date.UTC(+match[3], months.indexOf(match[2]), +match[1]);
+    return 0;
+  }
+
+  function performSearch(query, filter = 'all', limit = 16) {
     if (!catalogData || !catalogData.items) return { items: [], guide: null, isSuggestion: false, suggestionNote: null };
 
-    const normQuery = normalizeStr(query);
+    let normQuery = normalizeStr(query).replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const cbdcAliases = ['cyfrowy pieniadz', 'waluta banku centralnego', 'central bank digital currency'];
+    if (cbdcAliases.includes(normQuery)) normQuery = 'cbdc';
     if (!normQuery) {
       return {
-        items: catalogData.items.filter(i => i.featured).slice(0, 8).map(i => Object.assign({}, i, { _meta: categorizeItem(i) })),
+        items: publicSearchItems().filter(i => i.featured).slice(0, 8).map(i => Object.assign({}, i, { _meta: categorizeItem(i) })),
         guide: null,
         isSuggestion: false,
         suggestionNote: null
       };
     }
 
-    const queryWords = normQuery.split(/\s+/).filter(Boolean);
+    if (/^(najnowsze (artykuly|publikacje)( cc)?|latest (articles|publications)( cc)?)$/.test(normQuery)) {
+      const seen = new Set();
+      const items = publicSearchItems().filter(i => i.type === 'article' && publicationTime(i) > 0)
+        .filter(i => filter === 'all' || categorizeItem(i).group === filter)
+        .sort((a, b) => publicationTime(b) - publicationTime(a))
+        .filter(i => { const key = new URL(i.url, 'https://polskieradio.cc').href; if (seen.has(key)) return false; seen.add(key); return true; })
+        .slice(0, limit).map(i => Object.assign({}, i, { _meta: categorizeItem(i) }));
+      return { items, guide: null, isSuggestion: false, suggestionNote: null };
+    }
+    const ignoredWords = new Set(['w','z','na','o','do','i','a','oraz','czyli','dla','ze','za','po','od','czy','the','and','of','is']);
+    const queryWords = normQuery.split(/\s+/).filter(w => w && !ignoredWords.has(w));
+    if (!queryWords.length) return { items: [], guide: null, isSuggestion: false, suggestionNote: null };
     const { synonyms, isTodayQuery, todayDayNum } = expandQueryTerms(normQuery, queryWords);
     const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
 
@@ -383,7 +416,7 @@
     }
 
     const scored = [];
-    for (const item of catalogData.items) {
+    for (const item of publicSearchItems()) {
       const meta = categorizeItem(item);
       if (filter !== 'all' && meta.group !== filter) continue;
 
@@ -400,22 +433,22 @@
       // Dokładne dopasowanie frazy w tytule
       if (normTitle === normQuery) score += 140;
       else if (normTitle.startsWith(normQuery)) score += 90;
-      else if (normTitle.includes(normQuery)) score += 60;
-      else if (normTags.includes(normQuery)) score += 40;
+      else if (containsTerm(normTitle, normQuery)) score += 60;
+      else if (containsTerm(normTags, normQuery)) score += 40;
 
       // Słowa zapytania z tolerancją literówek
       let primaryWordsMatched = 0;
       for (const w of queryWords) {
-        if (normTitle.includes(w)) {
+        if (containsTerm(normTitle, w)) {
           score += 35;
           primaryWordsMatched++;
-        } else if (normTags.includes(w)) {
+        } else if (containsTerm(normTags, w)) {
           score += 25;
           primaryWordsMatched++;
-        } else if (normDesc.includes(w)) {
+        } else if (containsTerm(normDesc, w)) {
           score += 15;
           primaryWordsMatched++;
-        } else if (normContent.includes(w)) {
+        } else if (containsTerm(normContent, w)) {
           score += 8;
           primaryWordsMatched++;
         } else if (w.length >= 4 && itemWords.some(iw => isFuzzyWordMatch(w, iw))) {
@@ -427,8 +460,8 @@
 
       // Bonus za synonimy
       for (const syn of synonyms) {
-        if (normTitle.includes(syn)) score += 20;
-        else if (normTags.includes(syn)) score += 12;
+        if (containsTerm(normTitle, syn)) score += 20;
+        else if (containsTerm(normTags, syn)) score += 12;
       }
 
       // Specjalne dopasowanie dla zapytań o materiał "na dziś" (np. Lekcja 15 na dziś)
@@ -466,6 +499,12 @@
 
     if (scored.length > 0) {
       scored.sort((a, b) => b.score - a.score);
+      const seen = new Set();
+      for (let i = 0; i < scored.length;) {
+        const key = new URL(scored[i].item.url, 'https://polskieradio.cc').href;
+        if (seen.has(key)) scored.splice(i, 1);
+        else { seen.add(key); i++; }
+      }
 
       // Sprawdzenie czy numer z zapytania rzeczywiście istnieje w wynikach
       if (numberTokens.length > 0) {
@@ -486,7 +525,7 @@
       // Jeśli w zapytaniu był konkretny numer (np. Lekcja 99), którego nie ma w ekosystemie:
       if (missingNumberToken) {
         const todayDay = new Date().getDate();
-        const todayItem = catalogData.items.find(i => normalizeStr(i.title).includes(`dzien ${todayDay}`) || normalizeStr(i.title).includes(`lekcja ${todayDay}`));
+        const todayItem = publicSearchItems().find(i => normalizeStr(i.title).includes(`dzien ${todayDay}`) || normalizeStr(i.title).includes(`lekcja ${todayDay}`));
         const otherScored = scored.filter(s => !todayItem || s.item.url !== todayItem.url).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true }));
         const suggestionList = todayItem
           ? [Object.assign({}, todayItem, { _meta: categorizeItem(todayItem), isNearMatch: true }), ...otherScored.slice(0, 15)]
@@ -510,7 +549,7 @@
       // Jeśli zapytanie wielowyrazowe nie znalazło pełnego pokrycia
       if (!hasExactOrAllWordsMatch && significantWords.length >= 2) {
         return {
-          items: scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true })),
+          items: scored.slice(0, limit).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: true })),
           guide: matchedGuide,
           isSuggestion: true,
           suggestionNote: `Brak pełnego dopasowania dla wszystkich słów. Proponujemy najbardziej zbliżone materiały z ekosystemu:`
@@ -518,7 +557,7 @@
       }
 
       return {
-        items: scored.slice(0, 16).map(s => Object.assign({}, s.item, { _meta: s.meta })),
+        items: scored.slice(0, limit).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: s.primaryWordsMatched < queryWords.length })),
         guide: matchedGuide,
         isSuggestion: false,
         suggestionNote: null
@@ -1223,7 +1262,7 @@
         const url = escapeHtml(item.url || '#');
         const icon = meta.icon || '✨';
         const groupName = escapeHtml(meta.name || '');
-        const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">💡 Propozycja</span>' : '';
+        const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">💡 Temat pokrewny</span>' : '';
 
         html += `
           <a href="${url}" class="cc-omni-item" data-url="${url}">
@@ -1413,6 +1452,7 @@
     close: closeSearch,
     toggle: toggleSearch,
     loadCatalog: loadCatalog,
+    publicationTime: publicationTime,
     performSearch: performSearch
   };
 

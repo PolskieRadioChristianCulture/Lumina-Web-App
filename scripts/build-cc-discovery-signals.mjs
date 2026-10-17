@@ -57,7 +57,8 @@ function buildStandardUrlsetXml(entries, includeImages = false, includeHreflang 
     includeHreflang ? 'xmlns:xhtml="http://www.w3.org/1999/xhtml"' : '',
   ].filter(Boolean).join('\n        ');
 
-  const body = entries.map(e => {
+  const canonicalEntries = [...new Map(entries.map(e => [e.loc, e])).values()];
+  const body = canonicalEntries.map(e => {
     const lines = [
       '  <url>',
       `    <loc>${xmlEscape(e.loc)}</loc>`,
@@ -96,7 +97,7 @@ function buildGoogleNewsSitemapXml(articles, referenceNow = new Date()) {
   });
 
   const body = recent.map(a => {
-    const loc = `${PRIMARY_ORIGIN}/news/${a.slug}`;
+    const loc = (a.primaryPortalUrl || `${PRIMARY_ORIGIN}/news/${a.slug}`);
     const pubDateIso = new Date(a.publishedAt).toISOString();
     const imgLoc = a.imageUrl.startsWith('http') ? a.imageUrl : `${PRIMARY_ORIGIN}${a.imageUrl}`;
     return [
@@ -329,7 +330,7 @@ export function buildAllDiscoverySignals() {
       imageTitle: 'Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13. Czy technologia może stać się narzędziem przymusu religijnego?',
     },
     ...articles.map(a => ({
-      loc: `${PRIMARY_ORIGIN}/news/${a.slug}`,
+      loc: (a.primaryPortalUrl || `${PRIMARY_ORIGIN}/news/${a.slug}`),
       lastmod: (a.updatedAt || a.publishedAt || '2026-10-17').slice(0, 10),
       changefreq: 'weekly',
       priority: '0.85',
@@ -462,7 +463,7 @@ export function buildAllDiscoverySignals() {
   const sortedArticles = [...articles].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
   const newsRssItems = sortedArticles.slice(0, 30).map(a => ({
     title: a.title,
-    link: `${PRIMARY_ORIGIN}/news/${a.slug}`,
+    link: (a.primaryPortalUrl || `${PRIMARY_ORIGIN}/news/${a.slug}`),
     pubDate: a.publishedAt,
     author: a.author?.name || 'Redakcja Christian Culture',
     category: a.categoryLabel || 'Wiadomości',
@@ -529,7 +530,7 @@ export function buildAllDiscoverySignals() {
     const full = path.join(ROOT, fileRel);
     if (fs.existsSync(full)) {
       const html = fs.readFileSync(full, 'utf8');
-      const expectedCanon = `${PRIMARY_ORIGIN}/news/${a.slug}`;
+      const expectedCanon = (a.primaryPortalUrl || `${PRIMARY_ORIGIN}/news/${a.slug}`);
       const check = validateRenderedHtmlSeo(html, expectedCanon);
       validationResults.push({
         file: fileRel,
@@ -577,7 +578,7 @@ export function buildAllDiscoverySignals() {
     { url: `${PRIMARY_ORIGIN}/finanse/cbdc-prawo-niedzielne-apokalipsa-13`, section: 'finanse', publishedAt: '2026-10-17T11:00:00Z' },
     { url: `${PRIMARY_ORIGIN}/finanse`, section: 'finanse', publishedAt: '2026-10-17T11:00:00Z' },
     ...articles.slice(0, 10).map(a => ({
-      url: `${PRIMARY_ORIGIN}/news/${a.slug}`,
+      url: (a.primaryPortalUrl || `${PRIMARY_ORIGIN}/news/${a.slug}`),
       section: 'news',
       publishedAt: a.publishedAt,
     })),

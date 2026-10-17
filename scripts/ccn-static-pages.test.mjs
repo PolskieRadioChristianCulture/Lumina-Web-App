@@ -64,7 +64,7 @@ test('CCN SSG: every article has generated static HTML and clean URL index.html'
     assert.equal(newsArticle.headline, article.title);
 
     // Canonical link check
-    assert.ok(html.includes(`<link rel="canonical" href="https://polskieradio.cc/news/${article.slug}" />`), `Missing canonical in ${article.slug}`);
+    assert.ok(html.includes(`<link rel="canonical" href="${article.primaryPortalUrl || `https://polskieradio.cc/news/${article.slug}`}" />`), `Missing canonical in ${article.slug}`);
   }
 });
 
@@ -73,7 +73,7 @@ test('CCN SSG: sitemap.xml contains entries for all article slugs', () => {
   const sitemap = fs.readFileSync(SITEMAP_PATH, 'utf8');
 
   for (const article of articles) {
-    const loc = `https://polskieradio.cc/news/${article.slug}`;
+    const loc = article.primaryPortalUrl || `https://polskieradio.cc/news/${article.slug}`;
     assert.ok(sitemap.includes(`<loc>${loc}</loc>`), `Sitemap missing article: ${loc}`);
   }
 });

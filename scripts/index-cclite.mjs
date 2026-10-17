@@ -317,7 +317,7 @@ console.log(`Updated ${indexPath} (totalItems: ${data.totalItems})`);
 fs.writeFileSync(catalogPath, formattedJson, 'utf8');
 console.log(`Updated ${catalogPath}`);
 
-if (fs.existsSync(path.dirname(luminaMirrorPath))) {
+if (!process.argv.includes('--no-mirror') && fs.existsSync(path.dirname(luminaMirrorPath))) {
   fs.writeFileSync(luminaMirrorPath, formattedJson, 'utf8');
   console.log(`Updated mirror ${luminaMirrorPath}`);
 }

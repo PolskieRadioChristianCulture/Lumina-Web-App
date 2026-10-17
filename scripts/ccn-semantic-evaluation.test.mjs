@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const ROOT = process.cwd();
 const catalogData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cc-search-index.json'), 'utf8'));
@@ -57,50 +58,18 @@ function normalize(s) {
     .replace(/ł/g, 'l').trim();
 }
 
-test('CCN Evaluation Baseline: 30 zapytań kontrolnych ze specyfikacji v1.0', () => {
-  let passedQueries = 0;
-  const metrics = [];
-
-  for (const { q, expectedMatches, minTop5Relevance } of EVALUATION_QUERIES) {
-    const nq = normalize(q);
-    const words = nq.split(/\s+/).filter(Boolean);
-
-    // Scoring items from catalogData
-    const scored = [];
-    for (const item of catalogData.items) {
-      const title = normalize(item.title);
-      const desc = normalize(item.description);
-      const tags = normalize(Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || ''));
-      const text = `${title} ${desc} ${tags}`;
-      
-      let score = 0;
-      if (text.includes(nq)) score += 50;
-      for (const w of words) {
-        if (title.includes(w)) score += 30;
-        else if (tags.includes(w)) score += 20;
-        else if (desc.includes(w)) score += 10;
-      }
-      if (score > 0) scored.push({ item, score });
-    }
-
-    scored.sort((a, b) => b.score - a.score);
-    const top5 = scored.slice(0, 5);
-
-    // Calculate precision@5: count how many in top 5 match expectedMatches
-    let relevantCount = 0;
-    for (const r of top5) {
-      const rText = `${normalize(r.item.title)} ${normalize(r.item.url)} ${normalize(r.item.description)}`;
-      const matchesAny = expectedMatches.some(m => rText.includes(normalize(m)));
-      if (matchesAny) relevantCount++;
-    }
-
-    const precisionAt5 = top5.length ? (relevantCount / top5.length) : 0;
-    metrics.push({ q, top5Count: top5.length, relevantCount, precisionAt5 });
-
-    assert.ok(relevantCount >= minTop5Relevance, `Query "${q}" should return at least ${minTop5Relevance} relevant item in top 5 (got ${relevantCount})`);
-    passedQueries++;
+test('CCN search: actual shared engine returns a relevant result for the 30 legacy queries', () => {
+  const context = { window: { __ccSearchCatalog: catalogData, location: { pathname: '/szukaj' } },
+    document: { readyState: 'loading', addEventListener() {} }, URL };
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'components/cc-omni-search.js'), 'utf8'), context);
+  const search = context.window.CCOmniSearch.performSearch;
+  const failures = [];
+  for (const { q, expectedMatches } of EVALUATION_QUERIES) {
+    const top5 = search(q).items.slice(0, 5);
+    const relevant = top5.some(item => expectedMatches.some(term =>
+      normalize(item.title + ' ' + item.url + ' ' + item.description).includes(normalize(term))));
+    if (!relevant) failures.push(q + ': ' + top5.map(i => i.title).join(' | '));
   }
-
-  assert.equal(passedQueries, 30, 'All 30 queries must pass precision benchmark');
-  console.log(`Evaluated ${passedQueries}/30 queries. Average Precision@5: ${(metrics.reduce((acc, m) => acc + m.precisionAt5, 0) / 30).toFixed(2)}`);
+  assert.deepEqual(failures, []);
+  // These keyword checks are smoke tests; they do not measure judged Precision@5 or nDCG.
 });

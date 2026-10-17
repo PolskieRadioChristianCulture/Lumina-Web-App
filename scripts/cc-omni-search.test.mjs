@@ -125,6 +125,7 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
     console: console,
     setTimeout: setTimeout,
     clearTimeout: clearTimeout,
+    URL,
     Date: FixtureDate
   };
   vm.createContext(sandbox);

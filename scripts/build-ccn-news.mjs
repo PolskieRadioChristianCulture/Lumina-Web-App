@@ -156,5 +156,7 @@ for (const portal of thematicPortals) {
 }
 
 await buildCcnStaticPages();
+const searchBuild = spawnSync(process.execPath, [path.join(root, 'scripts/build-search-index.mjs'), '--no-mirror'], { cwd: root, stdio: 'inherit' });
+if (searchBuild.status !== 0) process.exit(searchBuild.status || 1);
 console.log('CCN News & Thematic Portals: static article pages (SSG) generated successfully.');
 

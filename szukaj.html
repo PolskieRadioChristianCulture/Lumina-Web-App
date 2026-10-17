@@ -1269,6 +1269,7 @@
     <div>&copy; <span id="year"></span> Christian Culture &middot; <a href="https://polskieradio.cc/">Strona główna</a></div>
   </footer>
 
+  <script src="/components/cc-omni-search.js?v=20261017_discovery"></script>
   <script>
   (() => {
     'use strict';
@@ -1346,42 +1347,6 @@
     // ==========================================================================
     // 3. SŁOWNIK SYNONIMÓW, TOLERANCJA LITERÓWEK I KONTEKST DATY
     // ==========================================================================
-    const SYNONYM_MAP = {
-      'lekcja': ['lekcje', 'rozważanie', 'rozwazanie', 'inspiracja', 'słowo na dziś', 'kurs', 'studium', 'dzień', 'dzien', 'nauka'],
-      'lekcje': ['lekcja', 'rozważania', 'kursy', 'studia'],
-      'rozwazanie': ['rozważanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
-      'rozważanie': ['rozwazanie', 'lekcja', 'inspiracja', 'słowo na dziś', 'werset dnia', 'dobrze że jesteś', 'dzień', 'dzien'],
-      'rozwzanie': ['rozważanie', 'rozwazanie', 'lekcja', 'inspiracja'],
-      'inspiracja': ['rozważanie', 'lekcja', 'słowo na dziś', 'poranna'],
-      'kurs': ['akademia', 'lekcja', '28 kroków', 'kurs codzienny', 'studium'],
-      'akademia': ['kurs', 'lekcja', 'biblijna', '28 kroków', 'z biblią za pan brat'],
-      'dzien': ['dzień', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
-      'dzień': ['dzien', 'lekcja', 'rozważanie', 'dziś', 'dzisiaj'],
-      'dzis': ['dziś', 'dzisiaj', 'na dziś', 'dzisiejsza'],
-      'dziś': ['dzis', 'dzisiaj', 'na dziś', 'dzisiejsza'],
-      'dzisiaj': ['dziś', 'dzis', 'na dziś', 'dzisiejsza'],
-      'biblia': ['pismo święte', 'słowo boże', 'ewangelia', 'mojabiblia'],
-      'pismo': ['biblia', 'słowo boże', 'pismo święte'],
-      'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep'],
-      'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship'],
-      'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka'],
-      'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka'],
-      'radio': ['stacja', 'audycja', 'transmisja', 'live', 'cctv24', 'śniadaniowa'],
-      'film': ['kino', 'vod', 'wideo', 'filmy'],
-      'kino': ['vod', 'film', 'filmy'],
-      'vod': ['kino', 'film', 'filmy', 'wideo'],
-      'apokalipsa': ['objawienie', 'proroctwo', 'palla', 'czasy ostateczne', 'alfred palla'],
-      'spolecznosc': ['społeczność', 'lumina', 'profil', 'tablica'],
-      'społeczność': ['spolecznosc', 'lumina', 'profil', 'tablica'],
-      'lumina': ['społeczność', 'profil', 'tablica', 'portal'],
-      'modlitwa': ['wstawiennictwo', 'za polskę', 'intencje'],
-      'aplikacja': ['cclite', 'cclite.pl', 'apka', 'pwa', 'mobile', 'dobrze że jesteś'],
-      'apka': ['aplikacja', 'cclite', 'cclite.pl', 'mobile'],
-      'sklep': ['koszyk', 'zamówienie', 'współpraca', 'książki'],
-      'ksiazki': ['książki', 'sklep', 'biblioteka'],
-      'książki': ['ksiazki', 'sklep', 'biblioteka']
-    };
-
     const norm = v => (v || '')
       .toLowerCase()
       .normalize('NFD')
@@ -1410,99 +1375,6 @@
       } catch (_) {
         return safe;
       }
-    }
-
-    const dist = (a, b) => {
-      const la = a.length, lb = b.length;
-      if (Math.abs(la - lb) > 2) return 3;
-      const d = [];
-      for (let i = 0; i <= la; i++) d[i] = [i];
-      for (let j = 1; j <= lb; j++) d[0][j] = j;
-      for (let i = 1; i <= la; i++) {
-        for (let j = 1; j <= lb; j++) {
-          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-          d[i][j] = Math.min(
-            d[i - 1][j] + 1,
-            d[i][j - 1] + 1,
-            d[i - 1][j - 1] + cost
-          );
-          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
-            d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
-          }
-        }
-      }
-      return d[la][lb];
-    };
-
-    function score(item, q) {
-      if (!q) return item.featured ? 50 : 0;
-      const qNorm = norm(q);
-      const rawTokens = qNorm.split(' ').filter(Boolean);
-      const stopWords = new Set(['w', 'z', 'na', 'o', 'do', 'i', 'a', 'oraz', 'czyli', 'dla', 'ze', 'za', 'po', 'od']);
-      const tokens = rawTokens.filter(t => !stopWords.has(t));
-      if (!tokens.length) return item.featured ? 50 : 0;
-
-      const title = norm(item.title);
-      const tags = norm((item.tags || []).join(' '));
-      const desc = norm(item.description);
-      const content = norm(item.contentSnippet || '');
-      const scripture = norm(item.scripture || '');
-      const author = norm(item.author || '');
-      const url = norm(item.url);
-      const cat = norm(item.category);
-      const allText = `${title} ${tags} ${desc} ${scripture} ${author} ${cat} ${content}`;
-      const words = allText.split(' ');
-
-      const isToday = /\b(dzis|dzisiaj|na dzis|dzisiejsz\w*)\b/.test(qNorm);
-      const todayDay = new Date().getDate(); // np. 15
-
-      const synonyms = [];
-      for (const t of tokens) {
-        if (SYNONYM_MAP[t]) {
-          for (const s of SYNONYM_MAP[t]) synonyms.push(norm(s));
-        }
-      }
-
-      let n = 0;
-      if (title.includes(qNorm)) n += 140;
-      else if (tags.includes(qNorm)) n += 90;
-      else if (desc.includes(qNorm)) n += 50;
-
-      let matchedTokens = 0;
-      for (const t of tokens) {
-        if (title === t) { n += 100; matchedTokens++; }
-        else if (title.startsWith(t)) { n += 70; matchedTokens++; }
-        else if (title.includes(t)) { n += 45; matchedTokens++; }
-        else if (tags.includes(t)) { n += 35; matchedTokens++; }
-        else if (desc.includes(t)) { n += 25; matchedTokens++; }
-        else if (scripture.includes(t)) { n += 22; matchedTokens++; }
-        else if (content.includes(t)) { n += 18; matchedTokens++; }
-        else if (cat.includes(t)) { n += 15; matchedTokens++; }
-        else if (author.includes(t)) { n += 15; matchedTokens++; }
-        else if (url.includes(t)) { n += 12; matchedTokens++; }
-        else if (t.length >= 4 && words.some(w => Math.abs(w.length - t.length) <= 1 && dist(w, t) <= (t.length >= 6 ? 2 : 1))) {
-          n += 20;
-          matchedTokens++;
-        }
-      }
-
-      for (const s of synonyms) {
-        if (title.includes(s)) n += 25;
-        else if (tags.includes(s)) n += 15;
-      }
-
-      if (isToday) {
-        const dayStr = String(todayDay);
-        if (title.includes(dayStr) || tags.includes(dayStr) || url.includes(`dzien-${todayDay < 10 ? '0' + todayDay : todayDay}`)) {
-          n += 60;
-        }
-      }
-
-      if (matchedTokens === 0 && synonyms.length === 0 && !title.includes(qNorm)) {
-        return -1;
-      }
-
-      return n + (item.featured ? 5 : 0);
     }
 
     function matchesCategory(itemCat, filterCat) {
@@ -1612,56 +1484,6 @@
     // ==========================================================================
     // 6. PROPOZYCJE BLISKOZNACZNE PRZY BRAKACH
     // ==========================================================================
-    function findNearSuggestions(q) {
-      const qNorm = norm(q);
-      const queryWords = qNorm.split(' ').filter(Boolean);
-      const todayDay = new Date().getDate();
-
-      const isLessonRelated = queryWords.some(w => ['lekcja', 'lekcje', 'lekcji', 'dzien', 'dzień', 'rozwazanie', 'rozważanie', 'kurs', 'studium'].includes(w));
-      const suggestions = [];
-      const seenUrls = new Set();
-
-      function add(item) {
-        if (!item || seenUrls.has(item.url)) return;
-        seenUrls.add(item.url);
-        suggestions.push(item);
-      }
-
-      if (isLessonRelated) {
-        const todayItem = data.find(i => norm(i.title).includes(`dzien ${todayDay}`) || norm(i.title).includes(`lekcja ${todayDay}`));
-        if (todayItem) add(todayItem);
-
-        const fundLesson = data.find(i => norm(i.title).includes(`lekcja ${todayDay}:`)) ||
-                           data.find(i => norm(i.title).includes('lekcja 01:') || norm(i.title).includes('lekcja 1:'));
-        if (fundLesson) add(fundLesson);
-
-        const werset = data.find(i => norm(i.title).includes('werset dnia'));
-        if (werset) add(werset);
-
-        const akademia = data.find(i => (i.url || '').includes('/akademia'));
-        if (akademia) add(akademia);
-      }
-
-      // Częściowe dopasowania lub literówki
-      for (const item of data) {
-        if (suggestions.length >= 6) break;
-        const text = `${norm(item.title)} ${norm((item.tags || []).join(' '))}`;
-        const words = text.split(' ');
-        const match = queryWords.some(qw => (qw.length >= 3 && text.includes(qw)) || (qw.length >= 4 && words.some(w => dist(qw, w) <= 2)));
-        if (match) add(item);
-      }
-
-      // Dopełnienie pozycjami wyróżnionymi
-      if (suggestions.length < 3) {
-        for (const item of data) {
-          if (suggestions.length >= 6) break;
-          if (item.featured) add(item);
-        }
-      }
-
-      return suggestions.slice(0, 6);
-    }
-
     // ==========================================================================
     // 7. GŁÓWNA PROCEDURA RENDEROWANIA
     // ==========================================================================
@@ -1671,9 +1493,7 @@
       }
       if (mode === 'date') {
         return list.slice().sort((a, b) => {
-          const da = a.x.date || a.x.publishedAt || '';
-          const db = b.x.date || b.x.publishedAt || '';
-          return db.localeCompare(da) || b.s - a.s;
+          return window.CCOmniSearch.publicationTime(b.x) - window.CCOmniSearch.publicationTime(a.x) || b.s - a.s;
         });
       }
       // Domyślnie: relevance (trafność)
@@ -1717,7 +1537,7 @@
         <div class="result-card-footer">
           <span class="result-card-tag">${escapeHtml(item.category)}</span>
           ${isSuggestion
-            ? `<span class="result-card-badge-feat" style="color:var(--gold-accent)">Propozycja</span>`
+            ? `<span class="result-card-badge-feat" style="color:var(--gold-accent)">Temat pokrewny</span>`
             : item.featured
               ? `<span class="result-card-badge-feat">Polecane</span>`
               : ''}
@@ -1774,8 +1594,10 @@
       renderContextGuide(guide);
 
       // Obliczenie trafności
-      let result = data
-        .map(x => ({ x, s: score(x, q) }))
+      const searchResult = q ? window.CCOmniSearch.performSearch(q, 'all', data.length) : null;
+      let result = (searchResult
+        ? searchResult.items.map((x, index) => ({ x, s: data.length - index }))
+        : data.map(x => ({ x, s: x.featured ? 50 : 0 })))
         .filter(x => x.s >= 0 && matchesCategory(x.x.category, category));
 
       result = sortItems(result, currentSort);
@@ -1807,7 +1629,7 @@
 
       // Obsługa braku bezpośrednich wyników (propozycje bliskoznaczne)
       if (total === 0 && q) {
-        const suggestions = findNearSuggestions(q);
+        const suggestions = window.CCOmniSearch.performSearch(q, 'all', 6).items;
         if (suggestions.length > 0) {
           suggestionBanner.className = 'suggestion-banner';
           suggestionBanner.innerHTML = `
@@ -1832,8 +1654,17 @@
         suggestionBanner.innerHTML = '';
         emptyState.classList.toggle('hidden', total !== 0);
 
-        for (const { x } of displayList) {
-          grid.append(renderCard(x, q, false));
+        const groups = q && currentSort === 'relevance'
+          ? [['Dokładne wyniki', displayList.filter(r => !r.x.isNearMatch)], ['Tematy pokrewne', displayList.filter(r => r.x.isNearMatch)]]
+          : [[null, displayList]];
+        for (const [label, rows] of groups) {
+          if (label && rows.length) {
+            const title = document.createElement('h2');
+            title.textContent = label;
+            title.style.gridColumn = '1 / -1';
+            grid.append(title);
+          }
+          for (const { x } of rows) grid.append(renderCard(x, q, !!x.isNearMatch));
         }
       }
 
@@ -1980,7 +1811,8 @@
           const rows = Array.isArray(res) ? res : (res.items || []);
           contextGuides = (res && res.contextGuides) ? res.contextGuides : {};
           data = rows.filter(x => x.title && x.url && x.category && x.description && /^https?:\/\//.test(x.url));
-          render();
+          window.__ccSearchCatalog = { items: data, contextGuides };
+          window.CCOmniSearch.loadCatalog().then(() => render());
         })
         .catch(() => tryFetchCatalog(index + 1));
     }
@@ -1988,7 +1820,7 @@
     tryFetchCatalog(0);
   })();
   </script>
-<script defer src="/components/cc-omni-search.js?v=20261015_w"></script>
+
 <script defer src="/js/cc-back-to-top.js?v=20261013_col2"></script>
 <script defer src="/js/cc-favorites.js"></script>
 </body>

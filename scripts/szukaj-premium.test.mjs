@@ -76,7 +76,7 @@ test('szukaj.html: supports two presentation modes (is-home and is-results)', ()
 });
 
 test('szukaj.html: preserves synonym search, typo tolerance, and suggestions', () => {
-  assert.ok(html.includes('SYNONYM_MAP'), 'Contains SYNONYM_MAP');
-  assert.ok(html.includes('findNearSuggestions'), 'Contains near suggestions fallback');
+  assert.ok(html.includes('CCOmniSearch.performSearch'), 'Uses shared synonym and typo engine');
+  assert.ok(html.includes('Tematy pokrewne'), 'Separates related topics');
   assert.ok(html.includes('id="suggestionBanner"'), 'Suggestion banner element exists');
 });

@@ -1,6 +1,6 @@
 // Public web documents only: never alter broadcast, operational or embed screens.
 export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261013_col2';
-export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261015_w';
+export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261017_discovery';
 export const FAVORITES_SCRIPT = '/js/cc-favorites.js?v=20261015_topbar1';
 
 export function applyPageStandard(file, html) {
@@ -14,7 +14,7 @@ export function applyPageStandard(file, html) {
   html = html.replace(/(src=["'])(\/?app\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_mockup4$3');
   html = html.replace(/(src=["'])(\/components\/cc-global-chat-button\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_shared4$3');
   html = html.replace(/(src=["'])(\/js\/cc-back-to-top\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261013_col2$3');
-  html = html.replace(/(src=["'])(\/components\/cc-omni-search\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261015_w$3');
+  html = html.replace(/(src=["'])(\/components\/cc-omni-search\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261017_discovery$3');
   html = html.replace(/(src=["'])(\/js\/cc-favorites\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261015_topbar1$3');
 
   let additions = '';

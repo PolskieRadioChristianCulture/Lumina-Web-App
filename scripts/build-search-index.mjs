@@ -2,6 +2,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import esbuild from 'esbuild';
+import ccnArticleRoutes from '../data/ccn-article-routes.js';
+import portalsData from './portals_data.cjs';
 
 const ROOT = process.cwd();
 
@@ -200,6 +202,72 @@ const CONTEXT_GUIDES = {
 
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
+{
+  "title": "Christian Culture Global (Międzynarodowa Platforma Chrześcijańska)",
+  "category": "Radio i audio",
+  "url": "https://polskieradio.cc/Global/",
+  "description": "Międzynarodowa platforma Christian Culture w 10 językach. Global Radio 24/7, Global Bible, premiery muzyczne JJ Beauvais, playlisty Personality Plus oraz artykuły biblijne i historie wiary.",
+  "tags": [
+    "global",
+    "christian culture global",
+    "radio global",
+    "global radio",
+    "global bible",
+    "international",
+    "english",
+    "jj beauvais",
+    "personality plus",
+    "worship",
+    "world",
+    "multilingual"
+  ],
+  "featured": true
+},
+{
+  "title": "Moje Centrum CC — Twój Osobisty Pulpit (Personal Hub)",
+  "category": "LUMINA i społeczność",
+  "url": "https://polskieradio.cc/moje-centrum",
+  "description": "Prywatny pulpit użytkownika Christian Culture. Zarządzaj swoimi ulubionymi stronami, historią odwiedzin, postępami w Akademii, zapisanymi utworami Biblijnego Uwielbienia, zakładkami MojejBiblii i skrótami LUMINA w jednym miejscu.",
+  "tags": [
+    "moje centrum",
+    "moje centrum cc",
+    "personal hub",
+    "ulubione",
+    "ulubione strony",
+    "historia",
+    "pulpit",
+    "profil",
+    "lumina",
+    "moje konto",
+    "zapisane",
+    "zakladki",
+    "zakładki",
+    "postepy",
+    "postępy"
+  ],
+  "featured": true
+},
+{
+  "title": "Na początku Bóg stworzył niebo i ziemię — Księga Rodzaju 1 (Biblia Śpiewana)",
+  "category": "Muzyka i radio",
+  "url": "https://polskieradio.cc/BiblijneUwielbienie?chapter=GEN-001",
+  "description": "Oficjalny utwór Biblii Śpiewanej: Księga Rodzaju rozdział 1 (Rodzaju 1:1–31). Produkcja Christian Culture, czas trwania: 11:56. Możliwość odsłuchania, udostępnienia i objęcia patronatem.",
+  "contentSnippet": "Na początku Bóg stworzył niebo i ziemię. A ziemia była bezkształtna i pusta, i ciemność była nad otchłanią, a Duch Boży unosił się nad wodami. I rzekł Bóg: Niech stanie się światłość! I stała się światłość.",
+  "tags": [
+    "biblijne uwielbienie",
+    "biblia spiewana",
+    "biblia śpiewana",
+    "ksiega rodzaju",
+    "księga rodzaju",
+    "rodzaju 1",
+    "gen-001",
+    "na poczatku bog stworzyl niebo i ziemie",
+    "stworzenie swiata",
+    "patron rozdzialu",
+    "muzyka chrzescijanska"
+  ],
+  "featured": true
+},
   {
     title: "Mój Werset Dnia",
     category: "Biblia i formacja",
@@ -628,11 +696,143 @@ const CCN_PORTALS = [
   }
 ];
 
+Object.assign(CONTEXT_GUIDES, {
+  "global": {
+    "keywords": [
+      "global",
+      "globalne",
+      "international",
+      "english",
+      "world",
+      "global radio",
+      "swiat",
+      "świat"
+    ],
+    "topic": "Christian Culture Global — Międzynarodowa Misja i Muzyka",
+    "summary": "Odkryj międzynarodowy portal Christian Culture Global dostępny w 10 językach świata. Słuchaj Global Radio 24/7 i Global Bible, oglądaj premiery worship JJ Beauvais oraz playlisty Personality Plus.",
+    "keyVerses": [
+      {
+        "ref": "Mk 16:15",
+        "text": "Idźcie na cały świat i głoście ewangelię wszelkiemu stworzeniu.",
+        "url": "https://polskieradio.cc/Global/"
+      }
+    ],
+    "shortcuts": [
+      {
+        "title": "Christian Culture Global",
+        "url": "https://polskieradio.cc/Global/",
+        "icon": "🌍"
+      },
+      {
+        "title": "JJ Beauvais — Now Is The Time",
+        "url": "https://polskieradio.cc/Global/#music",
+        "icon": "🎵"
+      },
+      {
+        "title": "Global Bible Radio 24/7",
+        "url": "https://polskieradio.cc/Global/#radio",
+        "icon": "📖"
+      }
+    ]
+  },
+  "cbdc": {
+    "keywords": [
+      "cbdc",
+      "cyfrowy pieniadz",
+      "cyfrowy pieniądz",
+      "waluta banku centralnego",
+      "pieniadz cyfrowy",
+      "pieniądz programowalny",
+      "gotowka",
+      "gotówka",
+      "nadzor finansowy",
+      "nadzór finansowy",
+      "prawo niedzielne",
+      "apokalipsa 13",
+      "wolnosc religijna",
+      "wolność religijna"
+    ],
+    "topic": "CBDC, Cyfrowy Pieniądz, Wolność Sumienia & Apokalipsa 13",
+    "summary": "Badania nad cyfrowymi walutami banków centralnych (CBDC) i programowalnym pieniądzem w świetle biblijnych proroctw Apokalipsy 13. Rzetelne rozróżnienie faktów ekonomicznych od teologicznej analizy wolności sumienia i prawa niedzielnego.",
+    "keyVerses": [
+      {
+        "ref": "Ap 13:16-17",
+        "text": "I sprawia, że wszyscy, mali i wielcy, bogaci i ubodzy, wolni i niewolnicy, otrzymują znamię na prawą rękę lub na czoło, i że nikt nie może kupić ani sprzedać, oprócz tego, kto ma znamię...",
+        "url": "https://polskieradio.cc/mojabiblia"
+      },
+      {
+        "ref": "Dz 5:29",
+        "text": "Trzeba bardziej słuchać Boga niż ludzi.",
+        "url": "https://polskieradio.cc/mojabiblia"
+      }
+    ],
+    "shortcuts": [
+      {
+        "title": "Artykuł: Programowalny Pieniądz i Apokalipsa 13 (CCN Finanse)",
+        "url": "https://polskieradio.cc/finanse/cbdc-prawo-niedzielne-apokalipsa-13",
+        "icon": "💳"
+      },
+      {
+        "title": "Artykuł: Wydanie w portalu CCN News",
+        "url": "https://polskieradio.cc/news/cbdc-prawo-niedzielne-apokalipsa-13",
+        "icon": "📰"
+      },
+      {
+        "title": "Portal CCN Finanse & Gospodarność",
+        "url": "https://polskieradio.cc/finanse",
+        "icon": "📊"
+      },
+      {
+        "title": "Kurs Apokalipsy — Wykłady Wideo",
+        "url": "https://polskieradio.cc/kursy/apokalipsa/",
+        "icon": "📖"
+      }
+    ]
+  }
+});
+
 // --- 4. WCZYTANIE ARTYKUŁÓW CCN ---
-function loadCcnArticles() {
+function toSearchArticle(art, section) {
+  const contentText = Array.isArray(art.content) ? art.content.join(' ') : (art.content || '');
+  const scripture = art.scriptureReference ? `${art.scriptureReference.verse || ''} ${art.scriptureReference.text || ''}` : '';
+  const tags = Array.isArray(art.tags) ? art.tags : [];
+  const authorName = art.author && art.author.name ? art.author.name : 'Redakcja CCN';
+
+  const route = ccnArticleRoutes[section]?.[art.id] || ccnArticleRoutes[section]?.[art.slug];
+  if (!route) throw new Error('Article missing from generated public route registry');
+  const primary = art.primaryPortalUrl && new URL(art.primaryPortalUrl, 'https://polskieradio.cc');
+  const artUrl = primary?.origin === 'https://polskieradio.cc' && fs.existsSync(path.join(ROOT, decodeURI(primary.pathname), 'index.html'))
+    ? primary.href : new URL(route, 'https://polskieradio.cc').href;
+
+  return {
+    type: 'article',
+    access: 'public',
+    publishedAt: art.publishedAt,
+    title: art.title,
+    category: "Artykuły & Wiedza CCN",
+    url: artUrl,
+    description: art.excerpt || contentText.slice(0, 180) + '…',
+    contentSnippet: contentText.slice(0, 350) + '…',
+    author: authorName,
+    date: art.dateFormatted || art.publishedAt,
+    tags: [
+      ...tags,
+      art.category,
+      art.categoryLabel,
+      authorName,
+      "artykuł",
+      "wiedza",
+      "ccn"
+    ].filter(Boolean),
+    scripture: scripture,
+    featured: Boolean(art.isHero || art.isPopular)
+  };
+}
+
+function loadCcnArticles(section = 'news') {
   try {
-    const articlesPath = path.join(ROOT, 'portals/ccn-news/src/data/articles.ts');
-    if (!fs.existsSync(articlesPath)) return [];
+    const articlesPath = path.join(ROOT, `portals/ccn-${section}/src/data/articles.ts`);
+    if (!fs.existsSync(articlesPath)) throw new Error('Missing public article source: ' + section);
     const code = fs.readFileSync(articlesPath, 'utf8');
     const res = esbuild.transformSync(code, {
       loader: 'ts',
@@ -644,42 +844,10 @@ function loadCcnArticles() {
     const mod = { exports: {} };
     fn(mod, mod.exports, () => ({}));
     const raw = mod.exports.INITIAL_ARTICLES || [];
-    
-    return raw.map(art => {
-      const contentText = Array.isArray(art.content) ? art.content.join(' ') : (art.content || '');
-      const scripture = art.scriptureReference ? `${art.scriptureReference.verse || ''} ${art.scriptureReference.text || ''}` : '';
-      const tags = Array.isArray(art.tags) ? art.tags : [];
-      const authorName = art.author && art.author.name ? art.author.name : 'Redakcja CCN';
-      
-      let artUrl = `https://polskieradio.cc/news?art=${art.slug || art.id}`;
-      if (art.slug === 'czy-ai-zastapi-ludzka-madrosc') {
-        artUrl = 'https://polskieradio.cc/nauka/czy-ai-zastapi-ludzka-madrosc';
-      }
 
-      return {
-        title: art.title,
-        category: "Artykuły & Wiedza CCN",
-        url: artUrl,
-        description: art.excerpt || contentText.slice(0, 180) + '…',
-        contentSnippet: contentText.slice(0, 350) + '…',
-        author: authorName,
-        date: art.dateFormatted || art.publishedAt,
-        tags: [
-          ...tags,
-          art.category,
-          art.categoryLabel,
-          authorName,
-          "artykuł",
-          "wiedza",
-          "ccn"
-        ].filter(Boolean),
-        scripture: scripture,
-        featured: Boolean(art.isHero || art.isPopular)
-      };
-    });
+    return raw.map(art => toSearchArticle(art, section));
   } catch (err) {
-    console.warn('Nie udało się wczytać articles.ts:', err.message);
-    return [];
+    throw new Error('Nie udało się wczytać publicznych artykułów: ' + section, { cause: err });
   }
 }
 
@@ -690,13 +858,13 @@ function loadApokalipsaLessons() {
     if (!fs.existsSync(filePath)) return [];
     const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const lessons = [];
-    
+
     for (const [key, lesson] of Object.entries(raw)) {
       const num = lesson.numerLekcji || lesson.id || key;
       const title = lesson.tytul || lesson.title || `Lekcja ${num}: Kurs Apokalipsa`;
       const desc = lesson.opis || lesson.streszczenie || lesson.summary || 'Szczegółowe studium proroctwa Księgi Objawienia z dr. Alfredem Pallą.';
       const verses = lesson.wersetyKluczowe || lesson.scripture || '';
-      
+
       lessons.push({
         title: `Kurs Apokalipsa — Lekcja ${num}: ${title}`,
         category: "Biblia i formacja",
@@ -732,7 +900,7 @@ function loadDailyCourseLessons() {
     if (!fs.existsSync(filePath)) return [];
     const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const lessons = [];
-    
+
     for (const l of (raw.lessons || [])) {
       const num = l.lessonGlobalNumber || l.lessonMonthNumber;
       const memVerse = l.memoryVerse ? `${l.memoryVerse.reference}: „${l.memoryVerse.text}”` : '';
@@ -812,7 +980,7 @@ function loadDailyReflections() {
     const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const items = [];
     const history = raw.history || [];
-    
+
     // Bierzemy wszystkie unikalne rozważania z bazy (anty-duplikat)
     const seenReflections = new Set();
     for (const ref of history) {
@@ -851,25 +1019,27 @@ function loadDailyReflections() {
 }
 
 // --- 9. BUDOWANIE PEŁNEGO INDEKSU ---
-function build() {
+async function build() {
   console.log('🔄 Rozpoczynam indeksowanie ekosystemu Christian Culture...');
-  
-  const ccnArticles = loadCcnArticles();
+
+  const ccnArticles = [...loadCcnArticles(), ...loadCcnArticles('finanse'),
+    ...portalsData.PORTALS.filter(p => ['nauka','historia','prawo'].includes(p.id))
+      .flatMap(p => p.articles.map(a => toSearchArticle(a, p.id)))];
   console.log(`✅ Zindeksowano artykuły CCN: ${ccnArticles.length}`);
-  
+
   const apokalipsa = loadApokalipsaLessons();
   console.log(`✅ Zindeksowano lekcje Kursu Apokalipsa: ${apokalipsa.length}`);
-  
+
   const dailyCourse = loadDailyCourseLessons();
   console.log(`✅ Zindeksowano lekcje Kursu Codziennego: ${dailyCourse.length}`);
-  
+
   const lexicon = loadLexiconEntries();
   console.log(`✅ Zindeksowano hasła leksykonu biblijnego: ${lexicon.length}`);
 
   const reflections = loadDailyReflections();
   console.log(`✅ Zindeksowano rozważania dzienne: ${reflections.length}`);
-  
-  const allItems = [
+
+  const rawItems = [
     ...CORE_PROJECTS,
     ...CCN_PORTALS,
     ...ccnArticles,
@@ -878,7 +1048,19 @@ function build() {
     ...lexicon,
     ...reflections
   ];
-  
+
+  // Resolve aliases and relative URLs before deduplication. Prefer current source records.
+  const uniqueItems = new Map();
+  for (const item of rawItems) {
+    const url = new URL(item.url, 'https://polskieradio.cc');
+    const section = url.pathname.slice(1);
+    const route = ccnArticleRoutes[section]?.[url.searchParams.get('art')];
+    if (route) { url.pathname = route; url.searchParams.delete('art'); }
+    const key = item.type === 'article' ? url.href : url.href + '|' + item.title;
+    uniqueItems.set(key, { ...uniqueItems.get(key), ...item, url: url.href });
+  }
+  const allItems = [...uniqueItems.values()];
+
   const finalCatalog = {
     version: "2.0.0",
     updatedAt: new Date().toISOString(),
@@ -886,7 +1068,7 @@ function build() {
     contextGuides: CONTEXT_GUIDES,
     items: allItems
   };
-  
+
   const outPath1 = path.join(ROOT, 'szukaj/catalog.json');
   fs.writeFileSync(outPath1, JSON.stringify(finalCatalog, null, 2), 'utf8');
   console.log(`✨ Zapisano szukaj/catalog.json: ${allItems.length} zindeksowanych pozycji.`);
@@ -894,19 +1076,29 @@ function build() {
   const outPath2 = path.join(ROOT, 'data/cc-search-index.json');
   fs.writeFileSync(outPath2, JSON.stringify(finalCatalog, null, 2), 'utf8');
   console.log(`✨ Zapisano data/cc-search-index.json: ${allItems.length} zindeksowanych pozycji.`);
-  
+
+  const originalArgs = process.argv;
+  process.argv = [...originalArgs, '--no-mirror'];
+  try {
+    for (const script of ['index-cclite.mjs', 'index-lessons.mjs', 'index-menu-items.mjs']) {
+      await import(new URL(script, import.meta.url));
+    }
+  } finally { process.argv = originalArgs; }
+  const completeCatalog = fs.readFileSync(outPath2, 'utf8');
+  if (process.argv.includes('--no-mirror')) return;
+
   // Zapis do lustrzanego katalogu LUMINA
   const mirrorPath = path.join('C:/Users/czark/Desktop/@ICC/LUMINA/szukaj/catalog.json');
   const mirrorPath2 = path.join('C:/Users/czark/Desktop/@ICC/LUMINA/data/cc-search-index.json');
   try {
     fs.mkdirSync(path.dirname(mirrorPath), { recursive: true });
-    fs.writeFileSync(mirrorPath, JSON.stringify(finalCatalog, null, 2), 'utf8');
+    fs.writeFileSync(mirrorPath, completeCatalog, 'utf8');
     fs.mkdirSync(path.dirname(mirrorPath2), { recursive: true });
-    fs.writeFileSync(mirrorPath2, JSON.stringify(finalCatalog, null, 2), 'utf8');
+    fs.writeFileSync(mirrorPath2, completeCatalog, 'utf8');
     console.log(`✨ Zsynchronizowano do lustra LUMINA (szukaj/catalog.json i data/cc-search-index.json).`);
   } catch (e) {
     console.warn('Nie udało się zapisać do lustra:', e.message);
   }
 }
 
-build();
+await build();
