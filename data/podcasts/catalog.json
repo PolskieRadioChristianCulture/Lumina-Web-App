@@ -1,159 +1,19 @@
 {
-  "version": "1.0",
-  "updatedAt": "2026-10-17T23:20:00Z",
+  "version": "2.0",
+  "updatedAt": "2026-10-18T00:00:00Z",
+  "description": "Oficjalny rejestr podcastów, albumów muzycznych i audycji Christian Culture Network. 100% rzeczywiste materiały Spotify i Dysk Google.",
   "featured": {
-    "id": "cc-feat-apokalipsa-01",
-    "title": "Apokalipsa – Księga Nadziei",
-    "subtitle": "O ostatniej księdze Biblii bez lęku, za to z nową perspektywą.",
-    "tag": "WYRÓŻNIONY ODCINEK",
-    "series": "Apokalipsa – Księga Nadziei",
-    "duration": "42 min",
-    "durationSec": 2520,
-    "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2001.mp3",
-    "coverUrl": "/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg",
+    "id": "spotify-show-4iMs8lyni0poJEiZNCfRsW",
+    "title": "Osobowość Plus — Zostań najlepszą wersją siebie",
+    "subtitle": "Oficjalny podcast serii Osobowość Plus w serwisie Spotify.",
+    "tag": "PODCAST SPOTIFY",
+    "series": "Osobowość Plus",
+    "coverUrl": "https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1fe2e99ccefc04913b280d3905",
     "category": "podcast",
-    "author": "Cezary Rogowski"
+    "author": "Osobowość Plus / Christian Culture",
+    "embedUrl": "https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW",
+    "externalUrl": "https://open.spotify.com/show/4iMs8lyni0poJEiZNCfRsW"
   },
-  "recommendedSeries": [
-    {
-      "id": "series-dzj",
-      "title": "Dobrze, że jesteś",
-      "subtitle": "ROZMOWY O WIERZE, ŻYCIU I CODZIENNOŚCI",
-      "category": "reflections",
-      "coverUrl": "/images/academy/hero_couple_cross.jpg",
-      "episodesCount": 365,
-      "badge": "Codzienne Słowo",
-      "author": "Wioletta i Cezary Rogowscy"
-    },
-    {
-      "id": "series-biblia-audio",
-      "title": "Biblia Audio",
-      "subtitle": "PISMO ŚWIĘTE W NOWOCZESNEJ ODSŁONIE",
-      "category": "bible",
-      "coverUrl": "/images/ogloszenia-biblia-gdanska.jpg",
-      "episodesCount": 1189,
-      "badge": "UBG 2025",
-      "author": "Christian Culture"
-    },
-    {
-      "id": "series-apokalipsa",
-      "title": "Apokalipsa – Księga Nadziei",
-      "subtitle": "TRUDNE PYTANIA. PRAWDZIWE ODPOWIEDZI.",
-      "category": "podcast",
-      "coverUrl": "/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg",
-      "episodesCount": 24,
-      "badge": "Seria Wykładów",
-      "author": "Cezary Rogowski"
-    },
-    {
-      "id": "series-herbatka",
-      "title": "Herbatka między słowami",
-      "subtitle": "KAMERALNE ROZMOWY O TYM, CO NAJWAŻNIEJSZE",
-      "category": "podcast",
-      "coverUrl": "/images/ogloszenia-herbatka.webp",
-      "episodesCount": 18,
-      "badge": "Społeczność LUMINA",
-      "author": "Wioletta Rogowska"
-    }
-  ],
-  "episodes": [
-    {
-      "id": "ep-apokalipsa-01",
-      "title": "Nadzieja w niepewnych czasach",
-      "series": "Apokalipsa – Księga Nadziei",
-      "duration": "42 min",
-      "durationSec": 2520,
-      "category": "podcast",
-      "coverUrl": "/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2001.mp3",
-      "publishedAt": "2026-10-15",
-      "description": "Dlaczego ostatnia księga Nowego Testamentu jest księgą pocieszenia i zwycięstwa Baranka, a nie kroniką grozy?"
-    },
-    {
-      "id": "ep-dzj-cisza",
-      "title": "Cisza, która mówi",
-      "series": "Dobrze, że jesteś",
-      "duration": "28 min",
-      "durationSec": 1680,
-      "category": "reflections",
-      "coverUrl": "/images/academy/hero_couple_cross.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2002.mp3",
-      "publishedAt": "2026-10-14",
-      "description": "Jak odnaleźć wewnętrzny pokój i Bożą obecność pośród hałasu współczesnego świata i codziennych obowiązków."
-    },
-    {
-      "id": "ep-biblia-slowo",
-      "title": "Słowo, które daje życie",
-      "series": "Biblia Audio",
-      "duration": "36 min",
-      "durationSec": 2160,
-      "category": "bible",
-      "coverUrl": "/images/ogloszenia-biblia-gdanska.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2003.mp3",
-      "publishedAt": "2026-10-12",
-      "description": "Natchniony tekst Pisma Świętego (UBG 2025) wzbogacony o szlachetną narrację i radiowy mastering studyjny."
-    },
-    {
-      "id": "ep-rodzina-kroki",
-      "title": "Wiara w rodzinie – małe kroki, wielkie owoce",
-      "series": "Rodzina",
-      "duration": "31 min",
-      "durationSec": 1860,
-      "category": "family",
-      "coverUrl": "/images/news/art-rodzina-chrzescijanski-dom-twierdza-pokoju.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2004.mp3",
-      "publishedAt": "2026-10-10",
-      "description": "Praktyczne biblijne zasady budowania relacji małżeńskich i wychowywania dzieci w atmosferze miłości i zaufania."
-    },
-    {
-      "id": "ep-pokoj-burza",
-      "title": "Pokój w sercu pomimo burzy",
-      "series": "Rozważania",
-      "duration": "42 min",
-      "durationSec": 2520,
-      "category": "reflections",
-      "coverUrl": "/images/biblijne-uwielbienie/player-thumb-cross.webp",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2005.mp3",
-      "publishedAt": "2026-10-08",
-      "description": "Jezus ucisza burzę na jeziorze i ucisza lęki w Twoim sercu. O zaufaniu Bogu w chwilach próby."
-    },
-    {
-      "id": "ep-ewangelia-dzis",
-      "title": "Ewangelia na co dzień",
-      "series": "Biblia",
-      "duration": "28 min",
-      "durationSec": 1680,
-      "category": "bible",
-      "coverUrl": "/images/ogloszenia-akademia.webp",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2006.mp3",
-      "publishedAt": "2026-10-06",
-      "description": "Głębokie studium fragmentów Ewangelii w odniesieniu do wyzwań XXI wieku."
-    },
-    {
-      "id": "ep-kim-jest-jezus",
-      "title": "Kim jest Jezus?",
-      "series": "Wiara i duchowość",
-      "duration": "34 min",
-      "durationSec": 2040,
-      "category": "podcast",
-      "coverUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2007.mp3",
-      "publishedAt": "2026-10-04",
-      "description": "Historyczne i biblijne dowody tożsamości Jezusa Chrystusa jako Zbawiciela i Pana wszechświata."
-    },
-    {
-      "id": "ep-sila-przebaczenia",
-      "title": "Siła przebaczenia",
-      "series": "Relacje i rodzina",
-      "duration": "28 min",
-      "durationSec": 1680,
-      "category": "family",
-      "coverUrl": "/images/news/art-tragedia-szkola-wyszkow-przemoc-biblia.jpg",
-      "audioUrl": "https://polskieradio.cc/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2008.mp3",
-      "publishedAt": "2026-10-01",
-      "description": "Uzdrowienie zranień, pojednanie w rodzinie i wolność, jaką daje Boże przebaczenie."
-    }
-  ],
   "googleDriveAudio": [
     {
       "id": "gdrive-14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0",
@@ -165,12 +25,13 @@
       "fileSize": "28.1 MB",
       "mimeType": "audio/x-m4a",
       "summary": "Oficjalne nagranie audio prezentujące architekturę, misję i zintegrowany cyfrowy ekosystem Christian Culture Network.",
-      "category": "podcast",
+      "category": "gdrive",
       "coverUrl": "/assets/podcasts/hero-podcasts.jpg",
       "embedUrl": "https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/preview",
       "directUrl": "https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/view",
       "author": "Christian Culture Network",
-      "duration": "ok. 30 min"
+      "duration": "14:32",
+      "durationSec": 872
     }
   ],
   "spotifyShow": [
@@ -406,8 +267,6 @@
     { "id": "topic-bible", "title": "Biblia", "icon": "📖", "coverUrl": "/images/ogloszenia-biblia-gdanska.jpg" },
     { "id": "topic-meaning", "title": "Sens życia", "icon": "🕊️", "coverUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg" },
     { "id": "topic-family", "title": "Relacje i rodzina", "icon": "👨‍👩‍👧‍👦", "coverUrl": "/images/news/art-rodzina-chrzescijanski-dom-twierdza-pokoju.jpg" },
-    { "id": "topic-history", "title": "Historia Kościoła", "icon": "⛪", "coverUrl": "/images/ogloszenia-akademia.webp" },
-    { "id": "topic-science", "title": "Nauka i wiara", "icon": "⚛️", "coverUrl": "/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg" },
     { "id": "topic-growth", "title": "Rozwój osobisty", "icon": "🌱", "coverUrl": "/images/ogloszenia-herbatka.webp" }
   ]
 }

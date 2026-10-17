@@ -5,78 +5,92 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 
-test('Catalog data integrity (data/podcasts/catalog.json)', () => {
+test('Catalog data integrity (data/podcasts/catalog.json) - 100% Real Materials', () => {
   const catalogPath = path.join(ROOT, 'data/podcasts/catalog.json');
   assert.ok(fs.existsSync(catalogPath), 'catalog.json must exist');
 
   const content = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
   
-  // Featured episode
-  assert.ok(content.featured, 'Featured episode must exist');
-  assert.equal(content.featured.id, 'cc-feat-apokalipsa-01');
-  assert.ok(content.featured.title.includes('Apokalipsa'));
-  assert.ok(content.featured.audioUrl.startsWith('https://'));
+  // Featured item
+  assert.ok(content.featured, 'Featured item must exist');
+  assert.ok(content.featured.id.includes('spotify') || content.featured.id.includes('gdrive'));
 
-  // Recommended series
-  assert.ok(Array.isArray(content.recommendedSeries), 'recommendedSeries must be array');
-  assert.equal(content.recommendedSeries.length, 4, '4 recommended series');
-
-  // Episodes
-  assert.ok(Array.isArray(content.episodes), 'episodes must be array');
-  assert.ok(content.episodes.length >= 6, 'at least 6 native episodes');
-
-  // Google Drive Audio
+  // Google Drive Audio (1 verified item)
   assert.ok(Array.isArray(content.googleDriveAudio), 'googleDriveAudio must be array');
   assert.equal(content.googleDriveAudio.length, 1);
   assert.equal(content.googleDriveAudio[0].sourceId, '14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0');
   assert.ok(content.googleDriveAudio[0].embedUrl.includes('/preview'));
 
-  // Spotify Show
+  // Spotify Show (1 verified item)
   assert.ok(Array.isArray(content.spotifyShow), 'spotifyShow must be array');
   assert.equal(content.spotifyShow.length, 1);
   assert.equal(content.spotifyShow[0].sourceId, '4iMs8lyni0poJEiZNCfRsW');
+  assert.ok(content.spotifyShow[0].embedUrl.includes('open.spotify.com/embed/show/'));
 
-  // Spotify Artist
+  // Spotify Artist (1 verified item)
   assert.ok(Array.isArray(content.spotifyArtist), 'spotifyArtist must be array');
   assert.equal(content.spotifyArtist.length, 1);
   assert.equal(content.spotifyArtist[0].sourceId, '3ZgXCNnAllDbNDtzk4jkg6');
+  assert.ok(content.spotifyArtist[0].embedUrl.includes('open.spotify.com/embed/artist/'));
 
   // Spotify Albums (15 verified albums)
   assert.ok(Array.isArray(content.spotifyAlbums), 'spotifyAlbums must be array');
-  assert.equal(content.spotifyAlbums.length, 15, '15 Spotify albums');
+  assert.equal(content.spotifyAlbums.length, 15, 'Exact 15 Spotify albums');
 
-  // Total external items = 1 + 1 + 1 + 15 = 18
-  const totalExternal = content.googleDriveAudio.length + content.spotifyShow.length + content.spotifyArtist.length + content.spotifyAlbums.length;
-  assert.equal(totalExternal, 18, 'Total 18 verified external registry items');
+  // Total items = 1 + 1 + 1 + 15 = 18 real items
+  const totalItems = content.googleDriveAudio.length + content.spotifyShow.length + content.spotifyArtist.length + content.spotifyAlbums.length;
+  assert.equal(totalItems, 18, 'Total 18 verified external registry items');
 
-  // None of the albums should have generic placeholder titles
+  // Verify none of the albums have placeholder titles or missing covers
   content.spotifyAlbums.forEach(album => {
     assert.ok(!album.title.startsWith('Album Spotify'), `Album ${album.sourceId} has real title: ${album.title}`);
     assert.ok(album.coverUrl.startsWith('https://'), `Album ${album.sourceId} has real cover CDN URL`);
+    assert.ok(album.embedUrl.includes('open.spotify.com/embed/album/'), `Album ${album.sourceId} has valid embedUrl`);
   });
 });
 
-test('HTML structure and accessibility (podcasty.html)', () => {
+test('HTML structure and real live players (podcasty.html)', () => {
   const htmlPath = path.join(ROOT, 'podcasty.html');
-
   assert.ok(fs.existsSync(htmlPath), 'podcasty.html must exist');
 
   const html = fs.readFileSync(htmlPath, 'utf8');
 
-  // Semantic & Meta
+  // Canonical and SEO
   assert.ok(html.includes('canonical" href="https://polskieradio.cc/podcasty"'));
+
+  // Real Live Stage Players (Spotify Show, Google Drive M4A, Music Deck)
+  assert.ok(html.includes('id="live-spotify-show-frame"'), 'Live Spotify show frame exists');
+  assert.ok(html.includes('src="https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW"'), 'Correct Spotify show src');
+  assert.ok(html.includes('id="live-gdrive-m4a-frame"'), 'Live Google Drive frame exists');
+  assert.ok(html.includes('src="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/preview"'), 'Correct Google Drive preview src');
+  assert.ok(html.includes('id="live-music-deck-frame"'), 'Live Music deck frame exists');
+
+  // Core containers
   assert.ok(html.includes('id="podcast-search-input"'));
   assert.ok(html.includes('id="category-filter-bar"'));
-  assert.ok(html.includes('id="series-grid"'));
-  assert.ok(html.includes('id="episodes-list"'));
   assert.ok(html.includes('id="spotify-grid"'));
   assert.ok(html.includes('id="master-player-bar"'));
-  assert.ok(html.includes('id="player-waveform-bar"'));
   assert.ok(html.includes('id="embed-modal"'));
 
-  // Asset links
+  // Assets
   assert.ok(html.includes('/assets/podcasts/podcasts.css'));
   assert.ok(html.includes('/assets/podcasts/podcasts.js'));
+});
+
+test('Security Headers & CSP frame-src allow Spotify and Google Drive', () => {
+  // Check _headers
+  const headersPath = path.join(ROOT, '_headers');
+  assert.ok(fs.existsSync(headersPath), '_headers must exist');
+  const headers = fs.readFileSync(headersPath, 'utf8');
+  assert.ok(headers.includes('https://open.spotify.com'), '_headers allows open.spotify.com');
+  assert.ok(headers.includes('https://drive.google.com'), '_headers allows drive.google.com');
+
+  // Check _worker.js
+  const workerPath = path.join(ROOT, '_worker.js');
+  assert.ok(fs.existsSync(workerPath), '_worker.js must exist');
+  const worker = fs.readFileSync(workerPath, 'utf8');
+  assert.ok(worker.includes('https://open.spotify.com'), '_worker.js allows open.spotify.com');
+  assert.ok(worker.includes('https://drive.google.com'), '_worker.js allows drive.google.com');
 });
 
 test('Stylesheets and JS Controller (assets/podcasts)', () => {
@@ -93,6 +107,7 @@ test('Stylesheets and JS Controller (assets/podcasts)', () => {
 
   const js = fs.readFileSync(jsPath, 'utf8');
   assert.ok(js.includes('CCPodcastsApp'), 'Namespace CCPodcastsApp exists');
+  assert.ok(js.includes('mountDeckItem'), 'mountDeckItem function exists');
   assert.ok(js.includes('openEmbedModal'), 'Modal loader exists');
   assert.ok(js.includes('closeEmbedModal'), 'Modal close exists');
 });

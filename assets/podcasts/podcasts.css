@@ -1570,3 +1570,205 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ==========================================================================
+   DIRECT LIVE STAGE PLAYERS (P0 Audio Execution 2026)
+   ========================================================================== */
+.cc-direct-stage-section {
+  margin-bottom: 32px;
+}
+
+.cc-direct-player-card {
+  background: var(--cc-card);
+  border: 1px solid var(--cc-border);
+  border-radius: var(--cc-radius-lg);
+  padding: clamp(16px, 2.5vw, 24px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s ease;
+}
+
+.cc-direct-player-card:hover {
+  border-color: var(--cc-border-strong);
+}
+
+.cc-direct-player-header {
+  margin-bottom: 16px;
+}
+
+.cc-direct-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cc-gold);
+  margin-bottom: 6px;
+}
+
+.cc-direct-title {
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.cc-direct-desc {
+  font-size: 14px;
+  color: var(--cc-text-secondary);
+  line-height: 1.5;
+}
+
+.cc-iframe-responsive-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #050d18;
+  margin: 14px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+}
+
+.cc-iframe-responsive-wrap iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  pointer-events: auto;
+}
+
+.cc-direct-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.cc-btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cc-gold);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: rgba(196, 163, 90, 0.1);
+  border: 1px solid rgba(196, 163, 90, 0.25);
+  transition: all 0.2s ease;
+}
+
+.cc-btn-link:hover {
+  background: rgba(196, 163, 90, 0.2);
+  color: var(--cc-gold-light);
+  border-color: var(--cc-gold);
+}
+
+.cc-catalog-card.is-deck-active {
+  border-color: var(--cc-gold);
+  background: rgba(196, 163, 90, 0.12);
+  box-shadow: 0 0 20px rgba(196, 163, 90, 0.25);
+}
+
+.cc-card-btn-play {
+  flex: 1;
+  min-height: 44px;
+  padding: 6px 12px;
+  background: var(--cc-gold);
+  color: #071321;
+  font-size: 12px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.cc-card-btn-play:hover {
+  background: var(--cc-gold-hover);
+  transform: translateY(-1px);
+}
+
+.cc-card-btn-modal {
+  min-height: 44px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--cc-border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.cc-card-btn-modal:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--cc-gold);
+}
+
+/* Docked Master Status Bar */
+.cc-docked-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+
+.cc-dock-status-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cc-dock-status-text {
+  font-size: 13px;
+  color: var(--cc-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-dock-status-text strong {
+  color: #ffffff;
+}
+
+.cc-dock-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cc-btn-dock-jump {
+  min-height: 44px;
+  padding: 6px 16px;
+  background: var(--cc-gold);
+  color: #071321;
+  font-size: 13px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.cc-btn-dock-jump:hover {
+  background: var(--cc-gold-hover);
+}

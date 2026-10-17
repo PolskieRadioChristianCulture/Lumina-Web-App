@@ -1331,8 +1331,9 @@ async function handleSupportRoute(request, env) {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
         'X-Content-Type-Options': 'nosniff',
+        'Content-Security-Policy': "default-src 'self' https: data: blob:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube-nocookie.com https://www.gstatic.com https://apis.google.com https://*.firebaseapp.com https://accounts.google.com https:; frame-src 'self' https://open.spotify.com https://drive.google.com https://www.youtube-nocookie.com https://www.youtube.com https://accounts.google.com https://*.firebaseapp.com; connect-src 'self' https: wss:; media-src 'self' blob: data: https:; font-src 'self' data: https:;",
       },
     });
   }

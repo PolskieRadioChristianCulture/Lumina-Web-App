@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Odtwarzaczy Spotify i Dysk Google</title>
+  <style>
+    body {
+      background: #071321;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 { color: #c4a35a; font-size: 24px; }
+    h2 { color: #8da2b5; font-size: 18px; margin-top: 30px; }
+    .player-box {
+      margin-top: 15px;
+      background: #0d2031;
+      border: 1px solid rgba(196, 163, 90, 0.2);
+      border-radius: 14px;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Weryfikacyjny Odtwarzaczy P0</h1>
+
+  <h2>1. Podcast Spotify — Osobowość Plus (Show)</h2>
+  <div class="player-box">
+    <iframe id="test-spotify-show"
+      title="Christian Culture — Podcast Spotify"
+      src="https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW"
+      width="100%"
+      height="352"
+      style="border:0;border-radius:12px"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <h2>2. Dysk Google — Cyfrowy Ekosystem M4A</h2>
+  <div class="player-box">
+    <iframe id="test-gdrive-m4a"
+      title="Cyfrowy ekosystem Christian Culture Network"
+      src="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/preview"
+      width="100%"
+      height="240"
+      style="border:0;border-radius:12px"
+      allow="autoplay"
+      loading="lazy">
+    </iframe>
+  </div>
+</body>
+</html>

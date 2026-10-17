@@ -13,7 +13,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Podcasty Christian Culture • Słuchaj audycji, rozważań i muzyki online</title>
-  <meta name="description" content="Oficjalna platforma podcastowa Christian Culture Network (polskieradio.cc/podcasty). Apokalipsa – Księga Nadziei, Dobrze, że jesteś, Biblia Audio UBG 2025, integracja Spotify i Dysk Google.">
+  <meta name="description" content="Oficjalna platforma podcastowa Christian Culture Network (polskieradio.cc/podcasty). Osobowość Plus, Cyfrowy ekosystem Christian Culture, 15 albumów muzycznych i profil artysty w oficjalnych odtwarzaczach Spotify i Dysk Google.">
   <meta name="theme-color" content="#071321">
   <link rel="icon" type="image/png" href="/icon.png">
   <link rel="canonical" href="https://polskieradio.cc/podcasty">
@@ -65,7 +65,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="search" id="podcast-search-input" class="cc-search-input" placeholder="Szukaj audycji, autorów, tematów... (Ctrl+K)" aria-label="Wyszukaj w podcastach" />
+      <input type="search" id="podcast-search-input" class="cc-search-input" placeholder="Szukaj albumów, audycji, tematów... (Ctrl+K)" aria-label="Wyszukaj w podcastach" />
       <button id="podcast-search-clear" class="cc-search-filter-btn" style="display:none;" aria-label="Wyczyść wyszukiwanie">✕</button>
     </div>
 
@@ -93,17 +93,21 @@
           <svg class="cc-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
           <span>Odkrywaj</span>
         </a>
-        <a href="#series-section" class="cc-nav-link">
+        <a href="#podcast-spotify-section" class="cc-nav-link">
+          <svg class="cc-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12s2-2 4-2 4 2 4 2"></path></svg>
+          <span>Podcast Spotify</span>
+        </a>
+        <a href="#gdrive-audio-section" class="cc-nav-link">
           <svg class="cc-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          <span>Serie audycji</span>
+          <span>Dysk Google (M4A)</span>
         </a>
-        <a href="#episodes-section" class="cc-nav-link">
+        <a href="#active-music-deck" class="cc-nav-link">
           <svg class="cc-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          <span>Najnowsze odcinki</span>
+          <span>Odtwarzacz Muzyczny</span>
         </a>
-        <a href="#spotify-section" class="cc-nav-link">
+        <a href="#music-catalog-section" class="cc-nav-link">
           <svg class="cc-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12s2-2 4-2 4 2 4 2"></path><path d="M7 9s3-3 5-3 5 3 5 3"></path><path d="M9 15s1.5-1 3-1 3 1 3 1"></path></svg>
-          <span>Spotify & Dysk Google</span>
+          <span>15 Albumów Spotify</span>
         </a>
       </div>
 
@@ -132,93 +136,170 @@
 
     <!-- ŚRODKOWY STRUMIEŃ GŁÓWNY -->
     <main class="cc-main-content" id="podcast-main">
-      <!-- HERO BANNER CAROUSEL -->
+      <!-- HERO BANNER -->
       <section class="cc-hero-banner" id="odkrywaj">
         <div class="cc-hero-bg"></div>
         <div class="cc-hero-overlay"></div>
         <div class="cc-hero-text-wrap">
           <span class="cc-hero-badge">Christian Culture Network</span>
           <h1 class="cc-hero-title">Głos, który buduje serce i wiarę</h1>
-          <p class="cc-hero-subtitle">Słuchaj inspirujących rozmów, codziennych rozważań i natchnionego Słowa Bożego w najwyższej jakości radiowej i studyjnej.</p>
+          <p class="cc-hero-subtitle">Słuchaj autorskich podcastów, rozważań i 15 oficjalnych albumów muzycznych bezpośrednio w zintegrowanych odtwarzaczach Spotify i Dysk Google.</p>
           <div class="cc-hero-actions">
-            <button class="cc-btn-primary" onclick="window.CCPodcastsApp?.playTrack(window.CCPodcastsApp?.state?.catalog?.featured)">
+            <a href="#podcast-spotify-section" class="cc-btn-primary">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Zacznij słuchać</span>
-            </button>
-            <a href="#spotify-section" class="cc-btn-secondary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M8 12s2-2 4-2 4 2 4 2"></path></svg>
-              <span>Spotify & Dysk Google</span>
+              <span>Podcast Spotify</span>
             </a>
-          </div>
-          <div class="cc-hero-dots">
-            <span class="cc-hero-dot is-active"></span>
-            <span class="cc-hero-dot"></span>
-            <span class="cc-hero-dot"></span>
+            <a href="#gdrive-audio-section" class="cc-btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              <span>Dysk Google M4A</span>
+            </a>
+            <a href="#music-catalog-section" class="cc-btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M8 12s2-2 4-2 4 2 4 2"></path></svg>
+              <span>15 Albumów Spotify</span>
+            </a>
           </div>
         </div>
 
-        <!-- Wyróżniony odcinek wewnątrz hero -->
+        <!-- Wyróżniony materiał hero -->
         <div class="cc-hero-featured-card" id="hero-featured-card">
           <div class="cc-featured-thumb-wrap">
-            <img src="/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg" alt="Apokalipsa – Księga Nadziei" class="cc-featured-thumb" id="hero-featured-bg" />
-            <span class="cc-featured-tag" id="hero-featured-tag">WYRÓŻNIONY ODCINEK</span>
+            <img src="https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1fe2e99ccefc04913b280d3905" alt="Osobowość Plus" class="cc-featured-thumb" id="hero-featured-bg" />
+            <span class="cc-featured-tag" id="hero-featured-tag">PODCAST SPOTIFY</span>
           </div>
-          <h3 class="cc-featured-title" id="hero-featured-title">Apokalipsa – Księga Nadziei</h3>
-          <p class="cc-featured-desc" id="hero-featured-desc">O ostatniej księdze Biblii bez lęku, za to z nową perspektywą.</p>
+          <h3 class="cc-featured-title" id="hero-featured-title">Zostań najlepszą wersją siebie</h3>
+          <p class="cc-featured-desc" id="hero-featured-desc">Oficjalna seria Osobowość Plus w serwisie Spotify.</p>
           <div class="cc-featured-footer">
-            <span style="font-size: 11px; color: #8da2b5;" id="hero-featured-time">42 min • Cezary Rogowski</span>
-            <button class="cc-featured-play-pill" id="hero-featured-play">
+            <span style="font-size: 11px; color: #8da2b5;" id="hero-featured-time">Osobowość Plus / CC</span>
+            <a href="#podcast-spotify-section" class="cc-featured-play-pill" id="hero-featured-play">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Odtwórz teraz</span>
-            </button>
+              <span>Przejdź do odtwarzacza</span>
+            </a>
           </div>
         </div>
       </section>
 
       <!-- FILTRY KATEGORII (CHIPS) -->
       <nav class="cc-filter-bar" id="category-filter-bar" aria-label="Kategorie podcastów">
-        <button class="cc-filter-chip is-active" data-category="all">Wszystkie</button>
-        <button class="cc-filter-chip" data-category="podcast">Podcasty</button>
-        <button class="cc-filter-chip" data-category="bible">Biblia Audio</button>
-        <button class="cc-filter-chip" data-category="reflections">Rozważania</button>
-        <button class="cc-filter-chip" data-category="spotify">Muzyka Spotify</button>
-        <button class="cc-filter-chip" data-category="gdrive">Dysk Google</button>
+        <button class="cc-filter-chip is-active" data-category="all">Wszystkie (18 pozycji)</button>
+        <button class="cc-filter-chip" data-category="podcast">Podcast Spotify</button>
+        <button class="cc-filter-chip" data-category="gdrive">Dysk Google M4A</button>
+        <button class="cc-filter-chip" data-category="music">Albumy Muzyczne (15)</button>
+        <button class="cc-filter-chip" data-category="artist">Profil Artysty</button>
         <button class="cc-filter-chip" data-category="favorites">Ulubione</button>
       </nav>
 
-      <!-- SEKCJA 1: POLECANE DLA CIEBIE (SERIE) -->
-      <section id="series-section">
+      <!-- SEKCJA 1: OFICJALNY PODCAST SPOTIFY -->
+      <section id="podcast-spotify-section" class="cc-direct-stage-section">
         <div class="cc-section-header">
           <h2 class="cc-section-title">
-            <span>Polecane dla Ciebie</span>
+            <span>Podcast Spotify — Osobowość Plus</span>
           </h2>
-          <span class="cc-section-link">Oficjalne serie CC</span>
+          <span class="cc-section-link">Oficjalny Odtwarzacz Serii i Odcinków</span>
         </div>
-        <div class="cc-recommended-grid" id="series-grid">
-          <!-- Wstrzykiwane dynamicznie z catalog.json -->
+        <div class="cc-direct-player-card">
+          <div class="cc-direct-player-header">
+            <span class="cc-direct-tag">SPOTIFY SHOW • LIVE PLAYER</span>
+            <h3 class="cc-direct-title">Zostań najlepszą wersją siebie | Subskrybuj Osobowość Plus</h3>
+            <p class="cc-direct-desc">Wybieraj odcinki bezpośrednio na playliście odtwarzacza Spotify i słuchaj bez opuszczania strony.</p>
+          </div>
+          <div class="cc-iframe-responsive-wrap">
+            <iframe id="live-spotify-show-frame"
+              title="Christian Culture — Podcast Spotify"
+              src="https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW"
+              width="100%"
+              height="352"
+              style="border:0;border-radius:12px;"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="cc-direct-actions">
+            <a href="https://open.spotify.com/show/4iMs8lyni0poJEiZNCfRsW" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
+              <span>Otwórz w aplikacji Spotify</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2v6H5V5z"/></svg>
+            </a>
+          </div>
         </div>
       </section>
 
-      <!-- SEKCJA 2: NAJNOWSZE ODCINKI (LISTA TRACKÓW) -->
-      <section id="episodes-section">
+      <!-- SEKCJA 2: OFICJALNE NAGRANIE DYSK GOOGLE -->
+      <section id="gdrive-audio-section" class="cc-direct-stage-section">
         <div class="cc-section-header">
           <h2 class="cc-section-title">
-            <span>Najnowsze odcinki</span>
+            <span>Nagranie z Dysku Google (M4A)</span>
           </h2>
-          <span class="cc-section-link">Baza nagrań studyjnych</span>
+          <span class="cc-section-link">Oficjalny Odtwarzacz Podglądu Drive</span>
         </div>
-        <div class="cc-episodes-list" id="episodes-list">
-          <!-- Wstrzykiwane dynamicznie z catalog.json -->
+        <div class="cc-direct-player-card">
+          <div class="cc-direct-player-header">
+            <span class="cc-direct-tag">DYSK GOOGLE • OFICJALNE NAGRANIE MASTER M4A</span>
+            <h3 class="cc-direct-title">Cyfrowy ekosystem Christian Culture Network</h3>
+            <p class="cc-direct-desc">Autorskie nagranie audio prezentujące misję i zintegrowaną architekturę Christian Culture Network (M4A • 28.1 MB). Działa bezpośrednio dla każdego użytkownika bez konieczności logowania.</p>
+          </div>
+          <div class="cc-iframe-responsive-wrap cc-gdrive-wrap">
+            <iframe id="live-gdrive-m4a-frame"
+              title="Cyfrowy ekosystem Christian Culture Network"
+              src="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/preview"
+              width="100%"
+              height="240"
+              style="border:0;border-radius:12px;"
+              allow="autoplay"
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="cc-direct-actions">
+            <a href="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/view" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
+              <span>Otwórz nagranie na Dysku Google w nowej karcie</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2v6H5V5z"/></svg>
+            </a>
+          </div>
         </div>
       </section>
 
-      <!-- SEKCJA 3: DYSK GOOGLE & SPOTIFY CONTENT REGISTRY -->
-      <section id="spotify-section">
+      <!-- SEKCJA 3: AKTYWNY ODTWARZACZ ALBUMÓW SPOTIFY & PROFIL ARTYSTY -->
+      <section id="active-music-deck" class="cc-direct-stage-section">
         <div class="cc-section-header">
           <h2 class="cc-section-title">
-            <span>Dysk Google & Platforma Spotify</span>
+            <span id="active-deck-heading">Aktywny Odtwarzacz Płyty</span>
           </h2>
-          <span class="cc-section-link">18 oficjalnych pozycji</span>
+          <span class="cc-section-link" id="active-deck-subtitle">Załaduj dowolny z 15 albumów lub profil artysty</span>
+        </div>
+        <div class="cc-direct-player-card">
+          <div class="cc-direct-player-header">
+            <span class="cc-direct-tag" id="active-deck-tag">ALBUM SPOTIFY • ODTWARZACZ PŁYTY</span>
+            <h3 class="cc-direct-title" id="active-deck-title">ALPHA • Christian Culture</h3>
+            <p class="cc-direct-desc" id="active-deck-desc">Kliknij dowolną płytę w katalogu poniżej, aby natychmiast załadować ją do tego odtwarzacza.</p>
+          </div>
+          <div class="cc-iframe-responsive-wrap">
+            <iframe id="live-music-deck-frame"
+              title="Odtwarzacz Muzyczny Spotify"
+              src="https://open.spotify.com/embed/album/5cfX59E2Y0xjT7nfj9m8fX"
+              width="100%"
+              height="352"
+              style="border:0;border-radius:12px;"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="cc-direct-actions">
+            <button class="cc-btn-link" id="active-deck-modal-btn" style="cursor: pointer; border: 1px solid var(--cc-border);">
+              <span>⛶ Powiększ odtwarzacz</span>
+            </button>
+            <a id="active-deck-link" href="https://open.spotify.com/album/5cfX59E2Y0xjT7nfj9m8fX" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
+              <span>Otwórz w aplikacji Spotify</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2v6H5V5z"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEKCJA 4: KATALOG 15 ALBUMÓW SPOTIFY + PROFIL ARTYSTY -->
+      <section id="music-catalog-section">
+        <div class="cc-section-header">
+          <h2 class="cc-section-title">
+            <span>Dyskografia & Katalog Muzyczny Spotify</span>
+          </h2>
+          <span class="cc-section-link">15 albumów studyjnych + Profil artysty</span>
         </div>
         <div class="cc-spotify-grid" id="spotify-grid">
           <!-- Wstrzykiwane dynamicznie z catalog.json -->
@@ -232,7 +313,7 @@
         <div class="cc-aside-header">
           <h3 class="cc-aside-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span>Kontynuuj słuchanie</span>
+            <span>Wybór redakcji</span>
           </h3>
         </div>
         <div class="cc-continue-list" id="continue-list">
@@ -254,52 +335,38 @@
     </aside>
   </div>
 
-  <!-- MASTER AUDIO PLAYER BAR (DÓŁ EKRANU) -->
-  <footer class="cc-player-bar" id="master-player-bar" aria-label="Główny odtwarzacz podcastów">
-    <div class="cc-player-track">
-      <img src="/images/news/art-cbdc-prawo-niedzielne-apokalipsa-13.jpg" alt="Okładka" class="cc-player-thumb" id="player-thumb" />
-      <div class="cc-player-info">
-        <h4 class="cc-player-title" id="player-title">Apokalipsa – Księga Nadziei</h4>
-        <span class="cc-player-series" id="player-series">Cezary Rogowski</span>
-      </div>
-      <button class="cc-player-fav-btn" id="player-fav-btn" aria-label="Dodaj do ulubionych" aria-pressed="false">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
-      </button>
-    </div>
-
-    <div class="cc-player-controls-wrap">
-      <div class="cc-player-buttons">
-        <button class="cc-player-btn" id="player-btn-prev" aria-label="Poprzedni odcinek">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"></line></svg>
-        </button>
-        <button class="cc-player-play-btn" id="player-btn-play" aria-label="Odtwórz">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        </button>
-        <button class="cc-player-btn" id="player-btn-next" aria-label="Następny odcinek">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line></svg>
-        </button>
-      </div>
-      <div class="cc-player-progress-wrap">
-        <span class="cc-time-label" id="player-time-cur">0:00</span>
-        <div class="cc-waveform-bar" id="player-waveform-bar" role="slider" aria-label="Pasek postępu">
-          <!-- Waveform slices generowane dynamicznie -->
+  <!-- MASTER AUDIO STATUS BAR (DÓŁ EKRANU — RZECZYWISTY STATUS AUDIO DOCK) -->
+  <footer class="cc-player-bar" id="master-player-bar" aria-label="Status aktywnego odtwarzacza">
+    <div class="cc-docked-bar">
+      <div class="cc-dock-status-info">
+        <img src="https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0283bdfa08c293e823fa0512c8" alt="Okładka" class="cc-player-thumb" id="player-thumb" />
+        <div class="cc-player-info">
+          <h4 class="cc-player-title" id="player-title">ALPHA • Christian Culture</h4>
+          <span class="cc-player-series" id="player-series">Oficjalny Odtwarzacz Spotify</span>
         </div>
-        <span class="cc-time-label" id="player-time-dur">42:00</span>
-      </div>
-    </div>
-
-    <div class="cc-player-tools">
-      <button class="cc-speed-pill" id="player-btn-speed" aria-label="Zmień prędkość odtwarzania">1.0x</button>
-      <div class="cc-volume-wrap">
-        <button class="cc-player-btn" id="player-btn-vol" aria-label="Wycisz dźwięk">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <button class="cc-player-fav-btn" id="player-fav-btn" aria-label="Dodaj do ulubionych" aria-pressed="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
         </button>
-        <input type="range" min="0" max="1" step="0.01" value="1" class="cc-volume-slider" id="player-vol-slider" aria-label="Głośność" />
+      </div>
+
+      <div class="cc-dock-status-text" style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+        <span>Odtwarzanie audio bezpośrednio w odtwarzaczu powyżej</span>
+      </div>
+
+      <div class="cc-dock-actions">
+        <button class="cc-btn-dock-jump" id="player-btn-jump" aria-label="Przewiń do odtwarzacza">
+          <span>Przejdź do odtwarzacza</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 5 5 12 19 12 12 5"></polygon></svg>
+        </button>
+        <a id="player-dock-ext-link" href="https://open.spotify.com/album/5cfX59E2Y0xjT7nfj9m8fX" target="_blank" rel="noopener noreferrer" class="cc-btn-link" style="min-height: 40px; padding: 4px 12px; font-size: 12px;">
+          <span>Otwórz w aplikacji ↗</span>
+        </a>
       </div>
     </div>
   </footer>
 
-  <!-- MODAL / DRAWER SPOTIFY & GOOGLE DRIVE EMBED -->
+  <!-- MODAL / DRAWER SPOTIFY & GOOGLE DRIVE EMBED (POWIĘKSZENIE NA ŻYCZENIE) -->
   <div class="cc-embed-modal" id="embed-modal" role="dialog" aria-modal="true" aria-labelledby="embed-modal-title">
     <div class="cc-embed-container">
       <div class="cc-embed-topbar">
@@ -311,7 +378,7 @@
       </div>
       <div class="cc-embed-body" id="embed-modal-body"></div>
       <div class="cc-embed-footer">
-        <span>Bezpieczny odtwarzacz piaskownicy Christian Culture</span>
+        <span>Oficjalny odtwarzacz bezpiecznej piaskownicy Christian Culture</span>
         <a href="#" target="_blank" rel="noopener noreferrer" class="cc-embed-external-link" id="embed-modal-ext-link">Otwórz bezpośrednio ↗</a>
       </div>
     </div>
