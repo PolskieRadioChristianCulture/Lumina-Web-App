@@ -730,6 +730,141 @@
       display: none !important;
     }
 
+    
+    /* Accordion Toggle Bar (Domyślnie zamknięty panel) */
+    .hero-karaoke-accordion-wrap {
+      margin-top: 18px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .hero-karaoke-accordion-btn {
+      width: 100%;
+      min-height: 52px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      background: linear-gradient(135deg, rgba(16, 24, 39, 0.88) 0%, rgba(10, 16, 28, 0.94) 100%);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      color: #f7f4ef;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hero-karaoke-accordion-btn:hover {
+      border-color: rgba(196, 163, 90, 0.7);
+      background: linear-gradient(135deg, rgba(23, 34, 56, 0.92) 0%, rgba(13, 22, 38, 0.98) 100%);
+      box-shadow: 0 8px 26px rgba(196, 163, 90, 0.2);
+    }
+    .hero-karaoke-accordion-btn .accordion-btn-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-karaoke-accordion-btn .accordion-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(196, 163, 90, 0.18);
+      border: 1px solid rgba(196, 163, 90, 0.45);
+      color: #ffe2a5;
+    }
+    .hero-karaoke-accordion-btn .accordion-icon-book {
+      color: #e2cc9a;
+      display: flex;
+      align-items: center;
+    }
+    .hero-karaoke-accordion-btn .accordion-title {
+      font-size: 15px;
+      color: #e2e8f0;
+    }
+    .hero-karaoke-accordion-btn .accordion-title strong {
+      color: #ffe2a5;
+    }
+    .hero-karaoke-accordion-btn .accordion-btn-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .hero-karaoke-accordion-btn .accordion-status-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2cc9a;
+    }
+    .hero-karaoke-accordion-btn .accordion-chevron {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffe2a5;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+    }
+    .hero-karaoke-accordion-btn:hover .accordion-chevron {
+      background: rgba(196, 163, 90, 0.25);
+    }
+    .hero-karaoke-accordion-btn.is-open .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-accordion-wrap {
+      display: none !important;
+    }
+    .hero-karaoke-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-karaoke-collapse-btn {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      background: rgba(16, 24, 39, 0.85);
+      color: #e2cc9a;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .hero-karaoke-collapse-btn:hover {
+      background: rgba(23, 34, 56, 0.95);
+      color: #ffe2a5;
+      border-color: rgba(196, 163, 90, 0.7);
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-collapse-btn {
+      display: none !important;
+    }
+
+    /* Pancerne Przełączanie Ikony Play / Pause bez polegania wyłącznie na innerHTML */
+    .control-btn-play .icon-shape-pause,
+    .mini-play-btn .icon-shape-pause {
+      display: none !important;
+    }
+    .control-btn-play .icon-shape-play,
+    .mini-play-btn .icon-shape-play {
+      display: block !important;
+    }
+    .control-btn-play.is-playing .icon-shape-pause,
+    .mini-play-btn.is-playing .icon-shape-pause {
+      display: block !important;
+    }
+    .control-btn-play.is-playing .icon-shape-play,
+    .mini-play-btn.is-playing .icon-shape-play {
+      display: none !important;
+    }
+
     /* FULLSCREEN WORSHIP MODE (Christian Culture — Biblijne Uwielbienie) */
     .hero-karaoke-backdrop {
       display: none;
@@ -747,13 +882,14 @@
     }
     .hero-karaoke-backdrop-img {
       position: absolute;
-      inset: -16px;
+      inset: 0;
       background-image: url('/images/biblijne-uwielbienie/worship-cross-fullscreen.webp');
       background-size: cover;
       background-position: center 30%;
       background-repeat: no-repeat;
-      filter: blur(3px);
-      transform: scale(1.04);
+      filter: none !important;
+      -webkit-filter: none !important;
+      transform: none !important;
     }
     .hero-karaoke-backdrop-overlay {
       position: absolute;
@@ -834,14 +970,18 @@
       flex-direction: column !important;
       justify-content: center !important;
       align-items: center !important;
-      background: transparent !important;
+      background: radial-gradient(ellipse 90% 85% at center, rgba(6, 10, 20, 0.72) 0%, rgba(6, 10, 20, 0.55) 60%, rgba(6, 10, 20, 0.0) 100%) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       border: 0 !important;
+      border-radius: 28px !important;
       box-shadow: none !important;
       mask-image: none !important;
       -webkit-mask-image: none !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: clamp(10px, 2vh, 24px) clamp(12px, 3vw, 48px) !important;
+      padding: clamp(10px, 2vh, 24px) clamp(16px, 4vw, 56px) !important;
+      margin: 12px clamp(16px, 4vw, 64px) !important;
       z-index: 10 !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
@@ -877,6 +1017,11 @@
       text-shadow: 0 0 35px rgba(226, 204, 154, 0.75), 0 4px 20px rgba(0, 0, 0, 0.95) !important;
       transform: scale(1.05) !important;
       opacity: 1 !important;
+      background: rgba(10, 16, 30, 0.50) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border-radius: 18px !important;
+      padding: clamp(8px, 1.4vh, 18px) clamp(16px, 2.5vw, 36px) !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-singing {
       color: #ffffff !important;
@@ -1403,7 +1548,16 @@
   }
   function currentTime() {
     try {
-      return Number(player()?.getCurrentTime?.() || 0);
+      if (typeof window !== 'undefined' && typeof window.getCurrentTime === 'function') {
+        const t = window.getCurrentTime();
+        if (typeof t === 'number' && !isNaN(t) && t > 0) return t;
+      }
+      const p = player();
+      if (p && typeof p.getCurrentTime === 'function') {
+        const t = Number(p.getCurrentTime());
+        if (typeof t === 'number' && !isNaN(t)) return t;
+      }
+      return 0;
     } catch {
       return 0;
     }
@@ -1551,10 +1705,11 @@
 
   function isMatchingTrack() {
     const track = currentTrack();
-    if (!track || track.chapterId !== state.chapterId) return false;
-    if (state.sync?.videoId && track.videoId !== state.sync.videoId) return false;
-    const loadedId = player()?.getVideoData?.()?.video_id;
-    return !loadedId || !track.videoId || loadedId === track.videoId;
+    if (!track) return true;
+    if (track.chapterId && state.chapterId && track.chapterId !== state.chapterId) {
+      return false;
+    }
+    return true;
   }
 
   function getLineScrollTop(line, vp) {
@@ -2215,6 +2370,8 @@
 
       if (titleEl) titleEl.textContent = `${lyrics.book} · Rozdział ${lyrics.chapter}`;
       if (badgeEl) badgeEl.textContent = lyrics.translation || 'UBG 2025';
+      const accLabel = document.getElementById('accordion-chapter-label');
+      if (accLabel) accLabel.textContent = `${lyrics.book} · Rozdział ${lyrics.chapter}`;
 
       // 2. Sprawdzamy dostępność synchronizacji karaoke
       state.sync = syncData;
@@ -2339,6 +2496,39 @@
 
   const SVG_MAXIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
   const SVG_MINIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+
+  
+  function toggleHeroKaraokeAccordion(forceState) {
+    const stage = document.getElementById('hero-karaoke-stage');
+    const btn = document.getElementById('btn-hero-accordion-toggle');
+    const statusText = document.getElementById('accordion-status-text');
+    const chevron = document.getElementById('accordion-chevron-icon');
+    if (!stage) return;
+
+    const isCurrentlyOpen = stage.style.display !== 'none' && !stage.classList.contains('is-collapsed');
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+
+    if (shouldOpen) {
+      stage.style.display = 'block';
+      stage.classList.remove('is-collapsed');
+      if (btn) {
+        btn.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      if (statusText) statusText.textContent = 'Zwiń tekst';
+      if (chevron) chevron.classList.add('is-open');
+      startChapterKaraoke(state.chapterId || 'GEN-001', state.mode || 'sync', true);
+    } else {
+      stage.style.display = 'none';
+      stage.classList.add('is-collapsed');
+      if (btn) {
+        btn.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      if (statusText) statusText.textContent = 'Rozwiń tekst';
+      if (chevron) chevron.classList.remove('is-open');
+    }
+  }
 
   function toggleControlsPanel(forceState) {
     const panel = document.getElementById('hero-karaoke-panel-dropdown');
@@ -2592,18 +2782,25 @@
 
   function closeHeroKaraoke() {
     ++state.loadVersion;
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
-      try {
-        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen().catch(() => {});
-      } catch {}
+    if (state.isFullscreen) {
+      toggleFullscreen();
     }
     setFullscreenState(false);
     const stage = document.getElementById('hero-karaoke-stage');
     if (stage) {
       stage.style.display = 'none';
+      stage.classList.add('is-collapsed');
       stage.classList.remove('is-fullscreen');
     }
+    const btnAccordion = document.getElementById('btn-hero-accordion-toggle');
+    if (btnAccordion) {
+      btnAccordion.classList.remove('is-open');
+      btnAccordion.setAttribute('aria-expanded', 'false');
+    }
+    const statusText = document.getElementById('accordion-status-text');
+    if (statusText) statusText.textContent = 'Rozwiń tekst';
+    const chevron = document.getElementById('accordion-chevron-icon');
+    if (chevron) chevron.classList.remove('is-open');
     const tb = document.getElementById('hero-karaoke-sync-toolbar');
     if (tb) tb.style.display = 'none';
     setSettingsAvailable(false);
@@ -2930,6 +3127,7 @@
     setMode,
     setDimmer,
     toggleControlsPanel,
+    toggleHeroKaraokeAccordion,
     onPlaybackStateChange,
     resetIdleTimer,
     dockPlayerForFullscreen,
@@ -2974,8 +3172,7 @@
     const cur = currentTrack();
     const initialId = cur?.chapterId || 'GEN-001';
     const btn = document.getElementById('btn-player-karaoke');
-    if (btn) btn.classList.add('is-karaoke-active');
-    startChapterKaraoke(initialId, null, true).catch(() => {});
+    startChapterKaraoke(initialId, null, false).catch(() => {});
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initOnReady);

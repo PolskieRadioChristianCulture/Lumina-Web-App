@@ -55,7 +55,79 @@ test('BU Fullscreen Worship Mode: 2. Playwright Live Interaction & Zero Regressi
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
-    // 1. Sprawdzenie stanu standardowego i przycisku w prawym górnym rogu
+    // 1. Sprawdzenie domyślnie zamkniętego panelu i przycisku ptaszek (Accordion)
+    const initialAccordionState = await page.evaluate(() => {
+      const stage = document.getElementById('hero-karaoke-stage');
+      const accordionBtn = document.getElementById('btn-hero-accordion-toggle');
+      const stageDisplay = stage ? window.getComputedStyle(stage).display : null;
+      const isExpanded = accordionBtn?.getAttribute('aria-expanded') === 'true';
+      const chevron = document.getElementById('accordion-chevron-icon');
+      return {
+        hasAccordionBtn: Boolean(accordionBtn),
+        stageDisplay,
+        isExpanded,
+        hasChevron: Boolean(chevron)
+      };
+    });
+
+    assert.equal(initialAccordionState.hasAccordionBtn, true, 'Przycisk rozsuwający (ptaszek) btn-hero-accordion-toggle istnieje');
+    assert.equal(initialAccordionState.stageDisplay, 'none', 'Domyślnie schowany panel tekstu i karaoke (display: none)');
+    assert.equal(initialAccordionState.isExpanded, false, 'Domyślnie aria-expanded jest false');
+
+    // Test rozsuwania i zamykania panelu ptaszkiem
+    await page.click('#btn-hero-accordion-toggle');
+    await page.waitForTimeout(300);
+
+    const expandedState = await page.evaluate(() => {
+      const stage = document.getElementById('hero-karaoke-stage');
+      const accordionBtn = document.getElementById('btn-hero-accordion-toggle');
+      return {
+        stageDisplay: stage ? window.getComputedStyle(stage).display : null,
+        isExpanded: accordionBtn?.getAttribute('aria-expanded') === 'true'
+      };
+    });
+    assert.equal(expandedState.stageDisplay, 'block', 'Kliknięcie ptaszka rozsuwa panel (display: block)');
+    assert.equal(expandedState.isExpanded, true, 'aria-expanded staje się true');
+
+    // Test zwijania przyciskiem w topbarze
+    await page.click('#btn-hero-topbar-collapse');
+    await page.waitForTimeout(300);
+
+    const collapsedState = await page.evaluate(() => {
+      const stage = document.getElementById('hero-karaoke-stage');
+      return stage ? window.getComputedStyle(stage).display : null;
+    });
+    assert.equal(collapsedState, 'none', 'Kliknięcie ptaszka w topbarze zamyka panel (display: none)');
+
+    // 1b. Test natychmiastowej zmiany stanu przycisku Play / Stop
+    const playBtnStateBefore = await page.evaluate(() => {
+      const btn = document.getElementById('master-play-btn');
+      return btn?.classList.contains('is-playing');
+    });
+    assert.equal(playBtnStateBefore, false, 'Początkowo przycisk play nie ma klasy is-playing');
+
+    await page.click('#master-play-btn');
+    await page.waitForTimeout(100);
+
+    const playBtnStateAfter = await page.evaluate(() => {
+      const btn = document.getElementById('master-play-btn');
+      return btn?.classList.contains('is-playing');
+    });
+    assert.equal(playBtnStateAfter, true, 'Wciśnięcie Play natychmiast zmienia przycisk na is-playing (Pauza/Stop)');
+
+    await page.click('#master-play-btn');
+    await page.waitForTimeout(100);
+
+    const playBtnStatePaused = await page.evaluate(() => {
+      const btn = document.getElementById('master-play-btn');
+      return btn?.classList.contains('is-playing');
+    });
+    assert.equal(playBtnStatePaused, false, 'Ponowne wciśnięcie przywraca ikonę Odtwórz');
+
+    // 1c. Sprawdzenie stanu standardowego i przycisku w prawym górnym rogu (po rozwinięciu panelu)
+    await page.click('#btn-hero-accordion-toggle');
+    await page.waitForTimeout(200);
+
     const standardState = await page.evaluate(() => {
       const stage = document.getElementById('hero-karaoke-stage');
       const backdrop = document.getElementById('hero-karaoke-backdrop');
@@ -112,6 +184,12 @@ test('BU Fullscreen Worship Mode: 2. Playwright Live Interaction & Zero Regressi
 
     assert.equal(directFsState.isFs, true, 'Przycisk karaoke w odtwarzaczu bezpośrednio włącza is-fullscreen');
     assert.equal(directFsState.bdDisplay, 'block', 'Tło jest widoczne w trybie pełnoekranowym');
+    const bdSharpness = await page.evaluate(() => {
+      const img = document.querySelector('.hero-karaoke-backdrop-img');
+      const filter = img ? window.getComputedStyle(img).filter : '';
+      return filter;
+    });
+    assert.ok(!bdSharpness || bdSharpness === 'none', 'Tło jest w 100% ostre (brak filter: blur na całym obrazie)');
     assert.equal(directFsState.isPlayerDocked, true, 'Cały odtwarzacz player-section jest dostępny w fullscreen wewnątrz stage');
 
     // 3. Sprawdzenie skalowania czcionki w trybie pełnoekranowym

@@ -3336,8 +3336,32 @@
         </div>
       </div>
 
+            <!-- Przycisk rozsuwający / zamykający panel tekstu i karaoke (domyślnie zamknięty) -->
+      <div class="container hero-karaoke-accordion-wrap">
+        <button type="button" class="hero-karaoke-accordion-btn" id="btn-hero-accordion-toggle" onclick="window.CC_BU_FEATURES?.toggleHeroKaraokeAccordion()" aria-expanded="false" aria-controls="hero-karaoke-stage" title="Rozwiń / zwiń tekst Biblii i karaoke">
+          <div class="accordion-btn-left">
+            <span class="accordion-badge" id="accordion-badge-label">UBG 2025</span>
+            <span class="accordion-icon-book" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </span>
+            <span class="accordion-title" id="accordion-title-label">Tekst Biblii i Karaoke: <strong id="accordion-chapter-label">Księga Rodzaju · Rozdział 1</strong></span>
+          </div>
+          <div class="accordion-btn-right">
+            <span class="accordion-status-text" id="accordion-status-text">Rozwiń tekst</span>
+            <span class="accordion-chevron" id="accordion-chevron-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </div>
+        </button>
+      </div>
+
       <!-- Dedykowana Scena Karaoke & Tekstu Biblii w HERO (ETAP 4) -->
-      <div class="container hero-karaoke-stage-wrapper" id="hero-karaoke-stage" style="display: block;" aria-label="Tekst Biblii i Karaoke">
+      <div class="container hero-karaoke-stage-wrapper is-collapsed" id="hero-karaoke-stage" style="display: none;" aria-label="Tekst Biblii i Karaoke">
         <!-- Tło Fullscreen Worship Mode (Uwielbienie w blasku krzyża) -->
         <div class="hero-karaoke-backdrop" id="hero-karaoke-backdrop" aria-hidden="true">
           <div class="hero-karaoke-backdrop-img"></div>
@@ -3353,6 +3377,11 @@
 
             <!-- Single top-right action area with icon button & popover panel -->
             <div class="hero-karaoke-top-actions">
+              <button class="hero-karaoke-collapse-btn" type="button" id="btn-hero-topbar-collapse" title="Zwiń ten panel" aria-label="Zwiń panel tekstu i karaoke" onclick="window.CC_BU_FEATURES?.toggleHeroKaraokeAccordion(false)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              </button>
               <button class="hero-karaoke-panel-toggle-btn" type="button" id="btn-hero-panel-toggle" title="Opcje i ustawienia uwielbienia" aria-label="Opcje i ustawienia uwielbienia" aria-expanded="false" aria-controls="hero-karaoke-panel-dropdown" onclick="window.CC_BU_FEATURES?.toggleControlsPanel()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="4" y1="21" x2="4" y2="14"></line>
@@ -3501,8 +3530,12 @@
               </button>
 
               <button class="control-btn-play" type="button" onclick="togglePlayPause()" id="master-play-btn" title="Odtwórz / Wstrzymaj" aria-label="Odtwórz utwór">
-                <svg id="play-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                <svg id="play-icon-svg" class="play-state-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon class="icon-shape-play" points="5 3 19 12 5 21 5 3"></polygon>
+                  <g class="icon-shape-pause">
+                    <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                    <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                  </g>
                 </svg>
               </button>
 
@@ -4235,9 +4268,13 @@
       </div>
     </div>
     <div class="mini-controls">
-      <button class="mini-play-btn" type="button" onclick="event.stopPropagation(); togglePlayPause()" aria-label="Odtwórz / Wstrzymaj">
-        <svg id="mini-play-svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      <button class="mini-play-btn" type="button" onclick="event.stopPropagation(); togglePlayPause()" id="mini-play-btn" aria-label="Odtwórz / Wstrzymaj">
+        <svg id="mini-play-svg" class="play-state-svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <polygon class="icon-shape-play" points="5 3 19 12 5 21 5 3"></polygon>
+          <g class="icon-shape-pause">
+            <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+            <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+          </g>
         </svg>
       </button>
     </div>
@@ -4480,27 +4517,101 @@
     }
 
     function onPlayerReady(event) {
-      setPlayerVolume(document.getElementById('volume-slider').value);
+      window.ytPlayer = ytPlayer = event.target;
+      window.isYtReady = true;
+      const vol = document.getElementById('volume-slider')?.value;
+      if (vol) setPlayerVolume(vol);
     }
 
-    function onPlayerStateChange(event) {
-      const playBtn = document.getElementById('master-play-btn');
-      const miniSvg = document.getElementById('mini-play-svg');
-      const playSvg = document.getElementById('play-icon-svg');
+    function onPlayerError(event) {
+      console.warn('YouTube Player error:', event?.data);
+      updatePlayPauseButtonUI(false);
+      window.CC_BU_FEATURES?.onPlaybackStateChange?.(false);
+    }
 
+    function updatePlayPauseButtonUI(isPlaying) {
+      const playBtn = document.getElementById('master-play-btn');
+      const miniPlayBtn = document.getElementById('mini-play-btn');
+      const playSvg = document.getElementById('play-icon-svg');
+      const miniSvg = document.getElementById('mini-play-svg');
+      if (playBtn) {
+        playBtn.classList.toggle('is-playing', isPlaying);
+        playBtn.setAttribute('title', isPlaying ? 'Wstrzymaj (Spacja)' : 'Odtwórz (Spacja)');
+        playBtn.setAttribute('aria-label', isPlaying ? 'Wstrzymaj utwór' : 'Odtwórz utwór');
+      }
+      if (miniPlayBtn) {
+        miniPlayBtn.classList.toggle('is-playing', isPlaying);
+      }
+      if (playSvg) {
+        playSvg.innerHTML = isPlaying
+          ? '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>'
+          : '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      }
+      if (miniSvg) {
+        miniSvg.innerHTML = isPlaying
+          ? '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>'
+          : '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      }
+    }
+
+    window.getCurrentTime = function() {
+      try {
+        return Number(ytPlayer?.getCurrentTime?.() || 0);
+      } catch {
+        return 0;
+      }
+    };
+
+    function formatTime(sec) {
+      if (!sec || isNaN(sec)) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updateProgressBar() {
+      if (!ytPlayer || isUserSeeking) return;
+      try {
+        const cur = Number(ytPlayer.getCurrentTime?.() || 0);
+        const dur = Number(ytPlayer.getDuration?.() || 0);
+        const curEl = document.getElementById('current-time-text');
+        if (curEl) curEl.textContent = formatTime(cur);
+        if (dur > 0) {
+          const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
+          const pb = document.getElementById('timeline-progress-bar');
+          if (pb) pb.style.width = pct + '%';
+          const miniPb = document.getElementById('mini-progress-line');
+          if (miniPb) miniPb.style.width = pct + '%';
+        }
+      } catch (e) {}
+    }
+
+    function startProgressTracking() {
+      stopProgressTracking();
+      updateProgressBar();
+      progressTimer = setInterval(updateProgressBar, 250);
+    }
+
+    function stopProgressTracking() {
+      if (progressTimer) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+    }
+
+    window.startProgressTracking = startProgressTracking;
+    window.stopProgressTracking = stopProgressTracking;
+
+    function onPlayerStateChange(event) {
       // 1 = PLAYING
       if (event.data === YT.PlayerState.PLAYING) {
         window.CC_BU_FEATURES?.onPlaybackStateChange?.(true);
-        playBtn.classList.add('is-playing');
-        playSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-        if (miniSvg) miniSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        updatePlayPauseButtonUI(true);
         startProgressTracking();
       } 
-      // 2 = PAUSED, 0 = ENDED, -1 = UNSTARTED
-      else {
-        playBtn.classList.remove('is-playing');
-        playSvg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        if (miniSvg) miniSvg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      // 2 = PAUSED, 0 = ENDED
+      else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+        updatePlayPauseButtonUI(false);
         stopProgressTracking();
         window.CC_BU_FEATURES?.onPlaybackStateChange?.(false);
 
@@ -4515,44 +4626,6 @@
       }
     }
 
-    function onPlayerError(err) {
-      console.warn("YouTube player warning/error, attempting next track:", err);
-    }
-
-    function startProgressTracking() {
-      stopProgressTracking();
-      progressTimer = setInterval(() => {
-        if (!ytPlayer || !ytPlayer.getCurrentTime || isUserSeeking) return;
-        const cur = ytPlayer.getCurrentTime() || 0;
-        const dur = ytPlayer.getDuration() || 1;
-        const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
-
-        document.getElementById('current-time-text').textContent = formatSeconds(cur);
-        document.getElementById('total-duration-text').textContent = formatSeconds(dur);
-        document.getElementById('timeline-progress-bar').style.width = pct + '%';
-        const miniProgress = document.getElementById('mini-progress-line');
-        if (miniProgress) miniProgress.style.width = pct + '%';
-        document.getElementById('timeline-scrubber').value = pct;
-      }, 500);
-    }
-
-    function stopProgressTracking() {
-      if (progressTimer) {
-        clearInterval(progressTimer);
-        progressTimer = null;
-      }
-    }
-
-    function formatSeconds(sec) {
-      const s = Math.floor(sec || 0);
-      const m = Math.floor(s / 60);
-      const rem = s % 60;
-      return m + ':' + (rem < 10 ? '0' : '') + rem;
-    }
-
-    /* ------------------------------------------------------------------------
-       4. PLAYBACK ACTIONS & TRACK SWITCHING
-       ------------------------------------------------------------------------ */
     function loadTrack(index, autoPlay = true) {
       if (index < 0) index = PLAYLIST_DATA.length - 1;
       if (index >= PLAYLIST_DATA.length) index = 0;
@@ -4611,16 +4684,28 @@
       }
     }
 
-    function togglePlayPause() {
-      if (!ytPlayer || !ytPlayer.getPlayerState) {
-        loadTrack(CURRENT_TRACK_INDEX, true);
-        return;
-      }
-      const state = ytPlayer.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        ytPlayer.pauseVideo();
+        function togglePlayPause() {
+      const isCurrentlyPlaying = Boolean(document.getElementById('master-play-btn')?.classList.contains('is-playing'));
+      
+      if (isCurrentlyPlaying) {
+        if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+          try { ytPlayer.pauseVideo(); } catch {}
+        }
+        updatePlayPauseButtonUI(false);
+        stopProgressTracking();
+        window.CC_BU_FEATURES?.onPlaybackStateChange?.(false);
       } else {
-        ytPlayer.playVideo();
+        if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
+          if (!ytPlayer && (isYtReady || window.YT?.Player)) {
+            initYouTubePlayer(PLAYLIST_DATA[CURRENT_TRACK_INDEX]?.videoId || 'WN_y21vHW6g');
+          }
+          loadTrack(CURRENT_TRACK_INDEX, true);
+        } else if (typeof ytPlayer.playVideo === 'function') {
+          try { ytPlayer.playVideo(); } catch {}
+        }
+        updatePlayPauseButtonUI(true);
+        startProgressTracking();
+        window.CC_BU_FEATURES?.onPlaybackStateChange?.(true);
       }
     }
 
@@ -5309,6 +5394,10 @@
         }
       }
 
+            // Race condition guard: initialize YouTube Player if API was ready before playlist fetch
+      if (isYtReady && !ytPlayer && PLAYLIST_DATA.length > 0) {
+        initYouTubePlayer(PLAYLIST_DATA[CURRENT_TRACK_INDEX]?.videoId || 'WN_y21vHW6g');
+      }
       loadTrack(CURRENT_TRACK_INDEX, false);
       renderBooksGrid();
 
@@ -6080,6 +6169,141 @@
       display: none !important;
     }
 
+    
+    /* Accordion Toggle Bar (Domyślnie zamknięty panel) */
+    .hero-karaoke-accordion-wrap {
+      margin-top: 18px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .hero-karaoke-accordion-btn {
+      width: 100%;
+      min-height: 52px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      background: linear-gradient(135deg, rgba(16, 24, 39, 0.88) 0%, rgba(10, 16, 28, 0.94) 100%);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      color: #f7f4ef;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hero-karaoke-accordion-btn:hover {
+      border-color: rgba(196, 163, 90, 0.7);
+      background: linear-gradient(135deg, rgba(23, 34, 56, 0.92) 0%, rgba(13, 22, 38, 0.98) 100%);
+      box-shadow: 0 8px 26px rgba(196, 163, 90, 0.2);
+    }
+    .hero-karaoke-accordion-btn .accordion-btn-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-karaoke-accordion-btn .accordion-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(196, 163, 90, 0.18);
+      border: 1px solid rgba(196, 163, 90, 0.45);
+      color: #ffe2a5;
+    }
+    .hero-karaoke-accordion-btn .accordion-icon-book {
+      color: #e2cc9a;
+      display: flex;
+      align-items: center;
+    }
+    .hero-karaoke-accordion-btn .accordion-title {
+      font-size: 15px;
+      color: #e2e8f0;
+    }
+    .hero-karaoke-accordion-btn .accordion-title strong {
+      color: #ffe2a5;
+    }
+    .hero-karaoke-accordion-btn .accordion-btn-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .hero-karaoke-accordion-btn .accordion-status-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2cc9a;
+    }
+    .hero-karaoke-accordion-btn .accordion-chevron {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffe2a5;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+    }
+    .hero-karaoke-accordion-btn:hover .accordion-chevron {
+      background: rgba(196, 163, 90, 0.25);
+    }
+    .hero-karaoke-accordion-btn.is-open .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-accordion-wrap {
+      display: none !important;
+    }
+    .hero-karaoke-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-karaoke-collapse-btn {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      background: rgba(16, 24, 39, 0.85);
+      color: #e2cc9a;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .hero-karaoke-collapse-btn:hover {
+      background: rgba(23, 34, 56, 0.95);
+      color: #ffe2a5;
+      border-color: rgba(196, 163, 90, 0.7);
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-collapse-btn {
+      display: none !important;
+    }
+
+    /* Pancerne Przełączanie Ikony Play / Pause bez polegania wyłącznie na innerHTML */
+    .control-btn-play .icon-shape-pause,
+    .mini-play-btn .icon-shape-pause {
+      display: none !important;
+    }
+    .control-btn-play .icon-shape-play,
+    .mini-play-btn .icon-shape-play {
+      display: block !important;
+    }
+    .control-btn-play.is-playing .icon-shape-pause,
+    .mini-play-btn.is-playing .icon-shape-pause {
+      display: block !important;
+    }
+    .control-btn-play.is-playing .icon-shape-play,
+    .mini-play-btn.is-playing .icon-shape-play {
+      display: none !important;
+    }
+
     /* FULLSCREEN WORSHIP MODE (Christian Culture — Biblijne Uwielbienie) */
     .hero-karaoke-backdrop {
       display: none;
@@ -6097,13 +6321,14 @@
     }
     .hero-karaoke-backdrop-img {
       position: absolute;
-      inset: -16px;
+      inset: 0;
       background-image: url('/images/biblijne-uwielbienie/worship-cross-fullscreen.webp');
       background-size: cover;
       background-position: center 30%;
       background-repeat: no-repeat;
-      filter: blur(3px);
-      transform: scale(1.04);
+      filter: none !important;
+      -webkit-filter: none !important;
+      transform: none !important;
     }
     .hero-karaoke-backdrop-overlay {
       position: absolute;
@@ -6184,14 +6409,18 @@
       flex-direction: column !important;
       justify-content: center !important;
       align-items: center !important;
-      background: transparent !important;
+      background: radial-gradient(ellipse 90% 85% at center, rgba(6, 10, 20, 0.72) 0%, rgba(6, 10, 20, 0.55) 60%, rgba(6, 10, 20, 0.0) 100%) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       border: 0 !important;
+      border-radius: 28px !important;
       box-shadow: none !important;
       mask-image: none !important;
       -webkit-mask-image: none !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: clamp(10px, 2vh, 24px) clamp(12px, 3vw, 48px) !important;
+      padding: clamp(10px, 2vh, 24px) clamp(16px, 4vw, 56px) !important;
+      margin: 12px clamp(16px, 4vw, 64px) !important;
       z-index: 10 !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
@@ -6227,6 +6456,11 @@
       text-shadow: 0 0 35px rgba(226, 204, 154, 0.75), 0 4px 20px rgba(0, 0, 0, 0.95) !important;
       transform: scale(1.05) !important;
       opacity: 1 !important;
+      background: rgba(10, 16, 30, 0.50) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border-radius: 18px !important;
+      padding: clamp(8px, 1.4vh, 18px) clamp(16px, 2.5vw, 36px) !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-singing {
       color: #ffffff !important;
@@ -6753,7 +6987,16 @@
   }
   function currentTime() {
     try {
-      return Number(player()?.getCurrentTime?.() || 0);
+      if (typeof window !== 'undefined' && typeof window.getCurrentTime === 'function') {
+        const t = window.getCurrentTime();
+        if (typeof t === 'number' && !isNaN(t) && t > 0) return t;
+      }
+      const p = player();
+      if (p && typeof p.getCurrentTime === 'function') {
+        const t = Number(p.getCurrentTime());
+        if (typeof t === 'number' && !isNaN(t)) return t;
+      }
+      return 0;
     } catch {
       return 0;
     }
@@ -6901,10 +7144,11 @@
 
   function isMatchingTrack() {
     const track = currentTrack();
-    if (!track || track.chapterId !== state.chapterId) return false;
-    if (state.sync?.videoId && track.videoId !== state.sync.videoId) return false;
-    const loadedId = player()?.getVideoData?.()?.video_id;
-    return !loadedId || !track.videoId || loadedId === track.videoId;
+    if (!track) return true;
+    if (track.chapterId && state.chapterId && track.chapterId !== state.chapterId) {
+      return false;
+    }
+    return true;
   }
 
   function getLineScrollTop(line, vp) {
@@ -7565,6 +7809,8 @@
 
       if (titleEl) titleEl.textContent = `${lyrics.book} · Rozdział ${lyrics.chapter}`;
       if (badgeEl) badgeEl.textContent = lyrics.translation || 'UBG 2025';
+      const accLabel = document.getElementById('accordion-chapter-label');
+      if (accLabel) accLabel.textContent = `${lyrics.book} · Rozdział ${lyrics.chapter}`;
 
       // 2. Sprawdzamy dostępność synchronizacji karaoke
       state.sync = syncData;
@@ -7689,6 +7935,39 @@
 
   const SVG_MAXIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
   const SVG_MINIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+
+  
+  function toggleHeroKaraokeAccordion(forceState) {
+    const stage = document.getElementById('hero-karaoke-stage');
+    const btn = document.getElementById('btn-hero-accordion-toggle');
+    const statusText = document.getElementById('accordion-status-text');
+    const chevron = document.getElementById('accordion-chevron-icon');
+    if (!stage) return;
+
+    const isCurrentlyOpen = stage.style.display !== 'none' && !stage.classList.contains('is-collapsed');
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+
+    if (shouldOpen) {
+      stage.style.display = 'block';
+      stage.classList.remove('is-collapsed');
+      if (btn) {
+        btn.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      if (statusText) statusText.textContent = 'Zwiń tekst';
+      if (chevron) chevron.classList.add('is-open');
+      startChapterKaraoke(state.chapterId || 'GEN-001', state.mode || 'sync', true);
+    } else {
+      stage.style.display = 'none';
+      stage.classList.add('is-collapsed');
+      if (btn) {
+        btn.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      if (statusText) statusText.textContent = 'Rozwiń tekst';
+      if (chevron) chevron.classList.remove('is-open');
+    }
+  }
 
   function toggleControlsPanel(forceState) {
     const panel = document.getElementById('hero-karaoke-panel-dropdown');
@@ -7942,18 +8221,25 @@
 
   function closeHeroKaraoke() {
     ++state.loadVersion;
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
-      try {
-        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen().catch(() => {});
-      } catch {}
+    if (state.isFullscreen) {
+      toggleFullscreen();
     }
     setFullscreenState(false);
     const stage = document.getElementById('hero-karaoke-stage');
     if (stage) {
       stage.style.display = 'none';
+      stage.classList.add('is-collapsed');
       stage.classList.remove('is-fullscreen');
     }
+    const btnAccordion = document.getElementById('btn-hero-accordion-toggle');
+    if (btnAccordion) {
+      btnAccordion.classList.remove('is-open');
+      btnAccordion.setAttribute('aria-expanded', 'false');
+    }
+    const statusText = document.getElementById('accordion-status-text');
+    if (statusText) statusText.textContent = 'Rozwiń tekst';
+    const chevron = document.getElementById('accordion-chevron-icon');
+    if (chevron) chevron.classList.remove('is-open');
     const tb = document.getElementById('hero-karaoke-sync-toolbar');
     if (tb) tb.style.display = 'none';
     setSettingsAvailable(false);
@@ -8280,6 +8566,7 @@
     setMode,
     setDimmer,
     toggleControlsPanel,
+    toggleHeroKaraokeAccordion,
     onPlaybackStateChange,
     resetIdleTimer,
     dockPlayerForFullscreen,
@@ -8324,8 +8611,7 @@
     const cur = currentTrack();
     const initialId = cur?.chapterId || 'GEN-001';
     const btn = document.getElementById('btn-player-karaoke');
-    if (btn) btn.classList.add('is-karaoke-active');
-    startChapterKaraoke(initialId, null, true).catch(() => {});
+    startChapterKaraoke(initialId, null, false).catch(() => {});
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initOnReady);
