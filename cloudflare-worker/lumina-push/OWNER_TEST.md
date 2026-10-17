@@ -1,5 +1,24 @@
 # Owner-only Android push test
 
+## Audit status 2026-10-17
+
+The isolation release `0fc481f` is already in production. Its delivery cron and
+legacy-import cron are separate. The setup instructions below describe the
+original pre-enrollment pilot, not the current production enablement policy.
+Do not remove existing subscriptions, disable production delivery, reset tokens
+or enable a test merely to reproduce that historical setup.
+
+The new P0 patch is local and awaits owner approval. It keeps historical replay
+off by default (`COURSE_HISTORICAL_PUSH_ENABLED=false`); importing existing
+consent is independent of permission to send old lessons. An operator may enable
+historical replay only after separate owner approval.
+
+Automatic test results and FCM acceptance are not Android delivery evidence.
+The existing owner-test endpoint targets all registered devices on the pilot
+account (up to 10), not exclusively the phone. Before approval, disclose that
+scope and agree on the receiving device and its state. Do not open a test window
+or retry an ambiguous consumed run without fresh approval.
+
 Local preparation only until owner approves the scoped release. No course enrollment, cron, IAM writes, private-message access or paid-plan activation is part of this test.
 
 Endpoint: POST /v1/course/owner-test, allowed production Origin, Firebase ID token from a registered account, empty body. The verified UID must match the configured pilot. Token values never appear in output or logs. All enabled private device tokens belonging to that UID are targeted once (max 10), so the same test may also appear on the owner's desktop. No legacy public profile token fallback.

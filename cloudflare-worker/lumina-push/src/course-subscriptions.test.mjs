@@ -196,10 +196,27 @@ test('FCM exceptions are reported as attempted failures and retain pending lesso
 });
 test('backlog resumes oldest pending lesson and advances only after acceptance',async()=>{
   const f=fixture({lastLessonNumber:6});
+  f.deps.allowHistorical=true;
   f.deps.lessons=async()=>[{...lesson,number:7,url:lesson.url.replace('08','07')},lesson];
   const numbers=[];f.deps.send=async(token,l)=>{numbers.push(l.number);return true;};
   await dispatchCourseLesson(f.deps);await dispatchCourseLesson(f.deps);
   assert.deepEqual(numbers,[7,8]);
+});
+
+test('without separate historical approval only newest published lesson is sent',async()=>{
+  const f=fixture({lastLessonNumber:6});
+  f.deps.lessons=async()=>[{...lesson,number:7},lesson];
+  const sent=[];f.deps.send=async(token,l)=>{sent.push(l.number);return true;};
+  await dispatchCourseLesson(f.deps);await dispatchCourseLesson(f.deps);
+  assert.deepEqual(sent,[8]);
+});
+
+test('failed completion checkpoint cannot report subscription completion',async()=>{
+  const f=fixture({lastLessonNumber:7});const save=f.deps.store.save;
+  f.deps.store.save=async(uid,data,rev)=>data.lastLessonNumber ? false : save(uid,data,rev);
+  const report=await dispatchCourseLesson(f.deps);
+  assert.equal(report.attempted,1);assert.equal(report.accepted,0);assert.equal(report.failed,1);
+  assert.equal(f.record.data.lastLessonNumber,7);
 });
 test('newest eligible manifest lesson only; rejects external links and future dates',async()=>{
   const manifest={version:1,lessons:[lesson,{...lesson,number:9,availableAt:'2099-01-01',url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-09'},{...lesson,number:10,url:'https://evil.example/'}]};

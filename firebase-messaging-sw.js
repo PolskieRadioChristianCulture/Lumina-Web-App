@@ -3,10 +3,11 @@
 // ══════════════════════════════════════════════════════════════════════════
 // Register before Firebase so our deep links also handle SDK-displayed notifications.
 self.addEventListener('notificationclick', handleLuminaNotificationClick);
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
+let fcmBackgroundReady = false;
 
 try {
+    importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+    importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
     firebase.initializeApp({
         apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
         authDomain: "lumina-cc.firebaseapp.com",
@@ -20,6 +21,9 @@ try {
 
     const fcmMessaging = firebase.messaging();
     fcmMessaging.onBackgroundMessage((payload) => {
+        // SDK 10.12.2 already awaited display for notification payloads.
+        // Only data-only messages need our custom display callback.
+        if (payload.notification) return;
         const data = payload.data || {};
         const notification = payload.notification || {};
         const type = data.type || 'general';
@@ -107,8 +111,9 @@ try {
 
         return self.registration.showNotification(title, notificationOptions);
     });
+    fcmBackgroundReady = true;
 } catch(err) {
-    console.warn('[SW] Firebase FCM init in SW error:', err);
+    console.warn('[SW] Firebase unavailable; native push fallback active.');
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -245,7 +250,7 @@ self.addEventListener('push', (event) => {
     const data = payload.data || {};
     const notification = payload.notification || {};
     // FCM's own push listener owns these messages (foreground and background).
-    if (payload.from) return;
+    if (payload.from && fcmBackgroundReady) return;
     const type = data.type || 'general';
 
     const origin = (self.location && self.location.origin) ? self.location.origin : 'https://polskieradio.cc';

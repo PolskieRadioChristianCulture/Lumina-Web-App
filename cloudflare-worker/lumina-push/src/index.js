@@ -284,6 +284,7 @@ function courseDeps(env, accessToken, currentHour = null) {
 
   return {
     currentHour,
+    allowHistorical: env.COURSE_HISTORICAL_PUSH_ENABLED==='true',
     store,
     latest: () => latestCourseLesson(),
     lessons: () => publishedCourseLessons(),

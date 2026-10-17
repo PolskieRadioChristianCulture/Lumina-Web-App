@@ -3,6 +3,20 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
+test('Pages messaging worker replaces overlapping asset cache headers for GET and HEAD',async()=>{
+  const {default:worker}=await import('../_worker.js');
+  for(const method of ['GET','HEAD']) {
+    const request=new Request('https://polskieradio.cc/firebase-messaging-sw.js?v=existing',{method});
+    const response=await worker.fetch(request,{ASSETS:{fetch:async received=>{
+      assert.equal(received.url,request.url);assert.equal(received.method,method);
+      return new Response(method==='HEAD'?null:'/* synthetic service worker */',{headers:{'Cache-Control':'no-store, public, max-age=604800','Content-Type':'application/javascript'}});
+    }}},{});
+    assert.equal(response.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
+    assert.equal(response.headers.get('Content-Type'),'application/javascript');
+    assert.equal(response.status,200);
+  }
+});
+
 // Execute the real worker with inert SDK/network mocks: no registration, push or user data.
 async function fixture() {
   const handlers = new Map();

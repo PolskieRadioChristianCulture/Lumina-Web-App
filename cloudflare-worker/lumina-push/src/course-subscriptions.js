@@ -238,8 +238,11 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       continue;
     }
     if (!record.data.enabled || record.data.uid!==record.uid || record.data.leaseUntil>now) continue;
-    // Resume oldest pending lesson; an outage must not silently skip lessons.
-    const lesson = lessons.find(l=>l.number>record.data.lastLessonNumber);
+    // Historical replay requires a separate owner-approved switch. Normally
+    // resume only the newest published lesson after the preferred hour.
+    const lesson = deps.allowHistorical===true
+      ? lessons.find(l=>l.number>record.data.lastLessonNumber)
+      : (newest.number>record.data.lastLessonNumber ? newest : null);
     if (!lesson) continue;
     const attempts = record.data.attemptLessonNumber===lesson.number ? record.data.attempts||0 : 0;
     const leaseId=crypto.randomUUID();
@@ -279,10 +282,10 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6)),acceptedLessonNumber:lesson.number,acceptedTokens:[...acceptedTokens]};
       if (expiredTokens.size) update.tokens=tokens.filter(token=>!expiredTokens.has(token));
       if (success) update.lastLessonNumber=lesson.number;
-      if (success) accepted++;
       // Never recreate a subscription deleted while delivery was in flight.
-      await deps.store.save(record.uid,update,current.revision);
-      if (!success) failed++;
+      const saved=await deps.store.save(record.uid,update,current.revision);
+      if (success && saved) accepted++;
+      else failed++;
     } catch (_) {
       // Never mark failure as delivery. Cursor rotation lets other students pass.
       await deps.store.save(record.uid,{leaseUntil:now+Math.min(3600000,60000*2**Math.min(attempts,6))},current.revision);

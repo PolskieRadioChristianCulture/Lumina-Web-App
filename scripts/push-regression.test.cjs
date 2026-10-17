@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 
-function worker() {
+function worker({ sdkUnavailable = false } = {}) {
     const listeners = {}, shown = [], opened = [], logs = [];
     let background;
     const self = {
@@ -15,12 +15,32 @@ function worker() {
     };
     vm.runInNewContext(fs.readFileSync(path.join(root, 'firebase-messaging-sw.js'), 'utf8'), {
         self, URL, console: { log: (...args) => logs.push(args), warn: (...args) => logs.push(args) },
-        importScripts: () => assert.equal(typeof listeners.notificationclick, 'function'),
+        importScripts: () => {
+            assert.equal(typeof listeners.notificationclick, 'function');
+            if (sdkUnavailable) throw Error('Synthetic CDN unavailable');
+        },
         firebase: { initializeApp() {}, messaging: () => ({ onBackgroundMessage: fn => { background = fn; } }) },
         clients: { matchAll: async () => [], openWindow: async url => opened.push(url) },
     });
     return { listeners, shown, opened, background, logs, registration: self.registration };
 }
+
+test('FCM notification messages display once including SDK automatic display', async () => {
+    for (const type of ['daily_course_lesson','owner_push_test','direct_message','new_profile','tv_schedule']) {
+        const w=worker();
+        await receiveViaSdk(w,{from:'synthetic',notification:{title:'Synthetic',tag:'one'},data:{type}});
+        assert.equal(w.shown.length,1,`${type}: SDK display must not be repeated by callback`);
+    }
+});
+
+test('cold start without Firebase CDN still handles push in waitUntil', async () => {
+    const w=worker({sdkUnavailable:true});
+    let pending;
+    w.listeners.push({data:{json:()=>({from:'synthetic',notification:{title:'Offline SDK'},data:{type:'daily_course_lesson',url:'/akademia/kurscodzienny/dzien-08'}})},waitUntil:p=>{pending=p;}});
+    assert.ok(pending instanceof Promise || typeof pending?.then==='function');
+    await pending;
+    assert.equal(w.shown.length,1);
+});
 
 // Model the routing/display contract in Firebase SDK 10.12.2 sw-listeners.ts.
 // The ordinary callback mock alone does NOT include SDK automatic display.
@@ -39,14 +59,15 @@ async function receiveViaSdk(w, payload, windowClients = []) {
 }
 
 for (const type of ['owner_push_test', 'daily_course_lesson']) {
-    test(`${type}: background messages display with appropriate action and URL`, async () => {
+    test(`${type}: SDK display preserves server actions and click payload`, async () => {
         const w = worker();
         const payload = { from: 'test-sender', notification: {
-            title: 'Test', body: 'Synthetic', tag: 'synthetic-test'
+            title: 'Test', body: 'Synthetic', tag: 'synthetic-test',
+            actions: [{action:'open',title:type === 'owner_push_test' ? 'Otwórz lekcję testową' : 'Czytaj lekcję'}]
         }, data: { type, tag: 'synthetic-test', url: '/akademia/kurscodzienny/dzien-08' } };
-        await w.background(payload);
+        await receiveViaSdk(w,payload);
         assert.equal(w.shown.length, 1);
-        assert.equal(w.shown[0][1].data.url, payload.data.url);
+        assert.equal(w.shown[0][1].data.FCM_MSG.data.url, payload.data.url);
         assert.equal(w.shown[0][1].actions[0].title, type === 'owner_push_test' ? 'Otwórz lekcję testową' : 'Czytaj lekcję');
     });
 
@@ -77,13 +98,13 @@ test('SDK routes to windows when another page of the same origin is visible', as
 
 test('all hidden clients keep the course notification on the background path', async () => {
     const w = worker();
-    await w.background({ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'daily_course_lesson', url: '/akademia/kurscodzienny/dzien-08' } });
+    await receiveViaSdk(w,{ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'daily_course_lesson', url: '/akademia/kurscodzienny/dzien-08' } },[{url:'https://polskieradio.cc/lumina',visibilityState:'hidden'}]);
     assert.equal(w.shown.length, 1);
 });
 
 test('extension visibility alone does not select foreground delivery', async () => {
     const w = worker();
-    await w.background({ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test', url: '/akademia/kurscodzienny/dzien-08' } });
+    await receiveViaSdk(w,{ from: 'synthetic', notification: { title: 'Test' }, data: { type: 'owner_push_test', url: '/akademia/kurscodzienny/dzien-08' } },[{url:'chrome-extension://synthetic',visibilityState:'visible'}]);
     assert.equal(w.shown.length, 1);
 });
 
@@ -103,11 +124,11 @@ test('public worker response has explicit no-store cache policy', () => {
     assert.match(headers, /\/firebase-messaging-sw\.js\r?\n\s+Cache-Control: no-cache, no-store, must-revalidate/);
 });
 
-test('legacy notification callback preserves full title and body (SDK display not included)', async () => {
+test('legacy FCM notification preserves title and body without a second display', async () => {
     const w = worker();
     const payload = { from: '413985877183', notification: { title: 'Test', body: 'Tresc' }, data: {} };
     w.listeners.push({ data: { json: () => payload }, waitUntil: p => p });
-    await w.background(payload);
+    await receiveViaSdk(w,payload);
     assert.equal(w.shown.length, 1);
     assert.equal(w.shown[0][0], 'Test');
     assert.equal(w.shown[0][1].body, 'Tresc');

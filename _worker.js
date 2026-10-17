@@ -1497,6 +1497,15 @@ export default {
       });
     }
 
+    // Pages combines matching _headers rules, including the generic JS cache.
+    // Set one authoritative policy after ASSETS for the root messaging worker.
+    if (url.pathname === '/firebase-messaging-sw.js' && ['GET','HEAD'].includes(request.method)) {
+      const asset = await env.ASSETS.fetch(request);
+      const response = new Response(asset.body, asset);
+      response.headers.set('Cache-Control','no-cache, no-store, must-revalidate');
+      return response;
+    }
+
     if (url.pathname === '/api/admin/agents-map') {
       return serveAgentsMap(request);
     }
