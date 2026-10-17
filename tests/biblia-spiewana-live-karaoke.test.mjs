@@ -28,6 +28,11 @@ function startStaticServer() {
       try {
         const u = new URL(req.url, 'http://127.0.0.1');
         let pathname = decodeURIComponent(u.pathname);
+        if (pathname === '/api/milion/count') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, count: 113, source: 'test-d1' }));
+          return;
+        }
         if (pathname === '/' || pathname === '/biblia-spiewana' || pathname === '/biblia-spiewana-live') {
           pathname = '/biblia-spiewana-live.html';
         }
@@ -113,6 +118,41 @@ test('Biblia Śpiewana LIVE 24/7 — Karaoke TV integration (Desktop, Mobile, Fu
     assert.ok(stageState.activeLineText.includes('Do poznania mądrości'), `Expected verse 2 active at 22.6s, got: ${stageState.activeLineText}`);
     assert.ok(stageState.activeWordsCount > 0, 'Expected word-level gold highlighting at 22.6s');
     assert.equal(stageState.singingBodyClass, true, 'Body should have karaoke-singing-active class to auto-minimize conflicting UI');
+
+    // Check 3b: Real-time Milion Live Counter in header right zone under "BIBLIA ŚPIEWANA • CC NA ŻYWO"
+    const milionState = await page.evaluate(async () => {
+      const badge = document.getElementById('milionLiveHeaderBadge');
+      const rightZone = document.querySelector('.header-right-zone');
+      const liveTag = document.querySelector('.live-tag-container');
+      const digits = ['m_d6', 'm_d5', 'm_d4', 'm_d3', 'm_d2', 'm_d1', 'm_d0'].map(id => {
+        const el = document.getElementById(id);
+        return el ? el.textContent : '';
+      }).join('');
+
+      // Test real-time live value update
+      if (window.CCMilionLive && typeof window.CCMilionLive.setCount === 'function') {
+        window.CCMilionLive.setCount(114);
+      }
+      await new Promise(r => setTimeout(r, 220));
+      const digitsAfterUpdate = ['m_d6', 'm_d5', 'm_d4', 'm_d3', 'm_d2', 'm_d1', 'm_d0'].map(id => {
+        const el = document.getElementById(id);
+        return el ? el.textContent : '';
+      }).join('');
+
+      return {
+        badgeExists: !!badge,
+        inRightZone: rightZone && rightZone.contains(badge) && rightZone.contains(liveTag),
+        badgeHref: badge ? badge.getAttribute('href') : '',
+        digitsInitial: digits,
+        digitsAfterUpdate: digitsAfterUpdate
+      };
+    });
+
+    assert.equal(milionState.badgeExists, true, 'Milion live header badge should exist');
+    assert.equal(milionState.inRightZone, true, 'Badge must be placed in .header-right-zone alongside .live-tag-container');
+    assert.equal(milionState.badgeHref, '/milion', 'Badge must link to /milion');
+    assert.equal(milionState.digitsInitial, '0000113', 'Digits must reflect fetched live value 113');
+    assert.equal(milionState.digitsAfterUpdate, '0000114', 'Real-time live update must update digits to 114');
 
     // Save 1920x1080 desktop screenshot
     if (fs.existsSync(ARTIFACT_DIR)) {

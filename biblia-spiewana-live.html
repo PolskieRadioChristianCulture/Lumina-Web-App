@@ -222,6 +222,135 @@
             font-size: 0.7rem; /* Increased size */
         }
 
+        /* --- HEADER RIGHT ZONE: LIVE BADGE + MILION COUNTER --- */
+        .header-right-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 6px;
+            z-index: 25;
+        }
+
+        .milion-live-header-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            background: rgba(12, 14, 19, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(197, 160, 89, 0.45);
+            border-top: 1.5px solid rgba(243, 217, 147, 0.65);
+            border-radius: 8px;
+            padding: 4px 10px 5px 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 12px rgba(197, 160, 89, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .milion-live-header-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.8), 0 0 20px rgba(197, 160, 89, 0.4);
+            border-color: rgba(243, 217, 147, 0.85);
+        }
+
+        .milion-badge-topline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+        }
+
+        .milion-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c5a059;
+            box-shadow: 0 0 8px #f3d993;
+            animation: pulse-milion-dot 1.8s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes pulse-milion-dot {
+            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 6px #c5a059; }
+            50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 12px #f3d993; }
+        }
+
+        .milion-badge-title {
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #f3d993;
+            text-transform: uppercase;
+        }
+
+        .milion-badge-target {
+            font-size: 0.60rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: rgba(255, 255, 255, 0.65);
+            padding-left: 6px;
+            border-left: 1px solid rgba(197, 160, 89, 0.35);
+        }
+
+        .milion-badge-counter-frame {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .milion-digit-patch {
+            position: relative;
+            width: 20px;
+            height: 28px;
+            background: linear-gradient(180deg, #272727 0%, #151515 49.5%, #0a0a0a 50%, #222222 51%, #1b1b1b 100%);
+            border-radius: 4px;
+            box-shadow: inset 0 1px 2px #393939, inset 0 -1px 3px #000, 0 2px 4px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            perspective: 400px;
+        }
+
+        .milion-digit-patch::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #080808;
+            box-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .milion-digit-patch span {
+            font-family: Impact, 'Arial Narrow', Arial, sans-serif;
+            font-weight: 900;
+            font-stretch: condensed;
+            font-size: 19px;
+            line-height: 1;
+            color: #ececec;
+            letter-spacing: -0.05em;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4), 0 2px 4px #000;
+            user-select: none;
+            display: inline-block;
+            transform-origin: center;
+            transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s ease;
+        }
+
+        .milion-digit-patch span.flipping {
+            transform: scaleY(0.08) rotateX(-50deg);
+            opacity: 0.3;
+            filter: blur(0.5px);
+        }
+
         /* --- MAIN VIEWPORT --- */
         .main-viewport {
             display: grid;
@@ -1990,19 +2119,38 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     </div>
                     BIBLIA ŚPIEWANA CC
                 </div>
-                <div class="live-tag-container">
-                    <!-- Helpline Widget -->
-                    <div class="helpline-header-widget">
-                        <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
-                        <div class="helpline-header-content">
-                            <div class="helpline-header-title">Infolinia "Nadzieja Christian Culture"</div>
-                            <div class="helpline-header-number">+48 730 958 583</div>
+                <div class="header-right-zone">
+                    <div class="live-tag-container">
+                        <!-- Helpline Widget -->
+                        <div class="helpline-header-widget">
+                            <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
+                            <div class="helpline-header-content">
+                                <div class="helpline-header-title">Infolinia "Nadzieja Christian Culture"</div>
+                                <div class="helpline-header-number">+48 730 958 583</div>
+                            </div>
+                        </div>
+                        <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
+                        <div class="live-badge">
+                            <i class="fa-solid fa-circle"></i> NA ŻYWO
                         </div>
                     </div>
-                    <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
-                    <div class="live-badge">
-                        <i class="fa-solid fa-circle"></i> NA ŻYWO
-                    </div>
+                    <!-- Real-time Milion Live Counter (polskieradio.cc/milion) -->
+                    <a href="/milion" target="_blank" rel="noopener noreferrer" class="milion-live-header-badge" id="milionLiveHeaderBadge" title="Celujemy w Pierwszy Milion – Christian Culture (kliknij, aby otworzyć)">
+                        <div class="milion-badge-topline">
+                            <span class="milion-badge-dot"></span>
+                            <span class="milion-badge-title">CELUJEMY W PIERWSZY MILION</span>
+                            <span class="milion-badge-target">CEL: 1 000 000</span>
+                        </div>
+                        <div class="milion-badge-counter-frame">
+                            <div class="milion-digit-patch" data-index="0"><span id="m_d6">0</span></div>
+                            <div class="milion-digit-patch" data-index="1"><span id="m_d5">0</span></div>
+                            <div class="milion-digit-patch" data-index="2"><span id="m_d4">0</span></div>
+                            <div class="milion-digit-patch" data-index="3"><span id="m_d3">0</span></div>
+                            <div class="milion-digit-patch" data-index="4"><span id="m_d2">0</span></div>
+                            <div class="milion-digit-patch" data-index="5"><span id="m_d1">0</span></div>
+                            <div class="milion-digit-patch" data-index="6"><span id="m_d0">0</span></div>
+                        </div>
+                    </a>
                 </div>
             </header>
 
@@ -3876,6 +4024,111 @@ function getWeatherPreset(city) {
                 window.open(currentTargetCastUrl, '_blank');
             }
         }
+
+        /* --- REAL-TIME MILION LIVE COUNTER SYNC (polskieradio.cc/milion) --- */
+        (function initMilionHeaderCounter() {
+            let currentCount = 0;
+            let isFetching = false;
+            let pollTimer = null;
+            const POLL_INTERVAL_MS = 3500;
+            const digitSpans = [
+                document.getElementById('m_d6'),
+                document.getElementById('m_d5'),
+                document.getElementById('m_d4'),
+                document.getElementById('m_d3'),
+                document.getElementById('m_d2'),
+                document.getElementById('m_d1'),
+                document.getElementById('m_d0')
+            ];
+
+            function setMilionCount(value) {
+                if (!Number.isSafeInteger(value) || value < 0) return;
+                const clamped = Math.min(value, 9999999);
+                const str = String(clamped).padStart(7, '0');
+                currentCount = clamped;
+
+                for (let i = 0; i < 7; i++) {
+                    const span = digitSpans[i];
+                    if (!span) continue;
+                    const char = str[i];
+                    if (span.textContent !== char) {
+                        span.classList.add('flipping');
+                        setTimeout(() => {
+                            span.textContent = char;
+                            span.classList.remove('flipping');
+                        }, 180);
+                    } else {
+                        span.textContent = char;
+                    }
+                }
+            }
+
+            async function fetchMilionCount() {
+                if (isFetching) return;
+                isFetching = true;
+                try {
+                    const res = await fetch('/api/milion/count?t=' + Date.now(), { cache: 'no-store' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (typeof data.count === 'number' && data.count >= 0) {
+                            setMilionCount(data.count);
+                        }
+                    }
+                } catch (err) {
+                    console.warn('[Milion Counter] Błąd pobierania licznika:', err);
+                } finally {
+                    isFetching = false;
+                }
+            }
+
+            function startPolling() {
+                if (pollTimer) clearInterval(pollTimer);
+                pollTimer = setInterval(() => {
+                    if (!document.hidden) {
+                        fetchMilionCount();
+                    }
+                }, POLL_INTERVAL_MS);
+            }
+
+            function stopPolling() {
+                if (pollTimer) {
+                    clearInterval(pollTimer);
+                    pollTimer = null;
+                }
+            }
+
+            // Public API for inspections / manual sync
+            window.CCMilionLive = Object.freeze({
+                getCount: () => currentCount,
+                setCount: setMilionCount,
+                refresh: fetchMilionCount
+            });
+
+            // Page visibility (ZERO COST & eco battery)
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    fetchMilionCount();
+                    startPolling();
+                } else {
+                    stopPolling();
+                }
+            });
+
+            window.addEventListener('focus', () => {
+                fetchMilionCount();
+            });
+
+            // Initial fetch
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    fetchMilionCount();
+                    startPolling();
+                });
+            } else {
+                fetchMilionCount();
+                startPolling();
+            }
+        })();
     </script>
 
 </body>
