@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Podcasty Christian Culture: Uruchomienie nowej platformy /podcasty (dashboard Spotify-style z 3 kolumnami, ciemny granat i złoto champagne), integracja 18 oficjalnych pozycji Spotify i Dysku Google, interaktywny odtwarzacz master z waveformem i zapamiętywaniem odsłuchu",
+      "date": "2026-10-17",
+      "agent": "A"
+    },
+    {
       "topic": "Wiadomości CCN na Żywo: Wdrożenie bloku informacyjnego WIADOMOŚCI CCN na paskach dolnych wszystkich kanałów TV (Biblia Śpiewana, CCTV24 Worship, CCTV24 PL, CCTV24 Global, Za Polskę, DZJ Pionowy) z dynamiczną synchronizacją data/ccn-news-ticker.json i codzienną rutyną publikacji",
       "date": "2026-10-17",
       "agent": "A"
@@ -562,6 +567,37 @@
       "connections": [
         "radio-main",
         "radio-skins",
+        "cclite",
+        "podcasty-platform"
+      ]
+    },
+    {
+      "id": "podcasty-platform",
+      "branchId": "radio-tv",
+      "name": "Platforma Podcastów Christian Culture",
+      "shortDesc": "Nowoczesny dashboard podcastowy Spotify-style z 3 kolumnami, odtwarzaczem audio i integracją Spotify/Dysk Google.",
+      "fullDesc": "Oficjalna platforma podcastów Christian Culture Network (polskieradio.cc/podcasty). Słuchaj audycji Apokalipsa – Księga Nadziei, Dobrze, że jesteś, Biblia Audio, oficjalnego podcastu Osobowość Plus na Spotify oraz zasobów audio na Dysku Google w estetyce dark navy i champagne gold.",
+      "type": "app",
+      "url": "https://polskieradio.cc/podcasty",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🎙️",
+      "category": "Radio & TV",
+      "verifiedDate": "2026-10-17",
+      "keywords": [
+        "podcasty",
+        "podcast",
+        "podcasts",
+        "audycje",
+        "apokalipsa",
+        "spotify",
+        "dysk google",
+        "muzyka",
+        "biblia audio"
+      ],
+      "connections": [
+        "player-spotify",
+        "radio-main",
         "cclite"
       ]
     },

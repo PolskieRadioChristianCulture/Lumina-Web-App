@@ -104,7 +104,33 @@ data.contextGuides.ksiazki = {
   ]
 };
 
+data.contextGuides.podcasty = {
+  keywords: ["podcast", "podcasty", "audycja", "audycje", "sluchowisko", "spotify", "apokalipsa", "osobowosc plus", "podcasts"],
+  topic: "Podcasty Christian Culture & Oficjalne Nagrania Studyjne",
+  summary: "Wkrocz w świat podcastów Christian Culture: słuchaj serii Apokalipsa – Księga Nadziei, Dobrze, że jesteś, Biblia Audio, oficjalnych podcastów Osobowość Plus na Spotify oraz zasobów audio na Dysku Google.",
+  keyVerses: [
+    {
+      ref: "Rz 10:17",
+      text: "Wiara tedy ze słuchania, a słuchanie przez słowo Boże.",
+      url: "https://polskieradio.cc/podcasty"
+    }
+  ],
+  shortcuts: [
+    { title: "Podcasty CC — Główna Platforma", url: "https://polskieradio.cc/podcasty", icon: "🎙️" },
+    { title: "Apokalipsa — Księga Nadziei", url: "https://polskieradio.cc/kursy/apokalipsa/", icon: "📖" },
+    { title: "Radio LIVE CC", url: "https://polskieradio.cc/player", icon: "📻" }
+  ]
+};
+
 const menuItems = [
+  {
+    title: "Podcasty Christian Culture • Głos, który buduje serce i wiarę (/podcasty)",
+    category: "Radio & Live",
+    url: "https://polskieradio.cc/podcasty",
+    description: "Oficjalna platforma podcastowa Christian Culture Network (polskieradio.cc/podcasty). Słuchaj audycji Apokalipsa – Księga Nadziei, Dobrze, że jesteś, Biblia Audio UBG 2025, oficjalnego podcastu Osobowość Plus na platformie Spotify oraz nagrań z Dysku Google.",
+    tags: ["podcast", "podcasty", "podcasts", "audycje", "apokalipsa", "apokalipsa księga nadziei", "dobrze że jesteś", "biblia audio", "osobowość plus", "spotify", "dysk google", "google drive", "muzyka chrześcijańska", "rozważania", "audio"],
+    featured: true
+  },
   {
     title: "Radio SKINS 2.0 — Interaktywny Odtwarzacz & 5 Skórek Wizualnych",
     category: "Radio & Live",
