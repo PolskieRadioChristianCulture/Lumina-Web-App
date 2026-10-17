@@ -26,6 +26,12 @@ function fixture(options = {}) {
   let intervals = 0;
   const seeks = [];
   const pending = new Map();
+  let edgeCallback;
+  class IntersectionObserver {
+    constructor(callback) { edgeCallback = callback; }
+    observe() {}
+    disconnect() {}
+  }
   window.PLAYLIST_DATA = [{ chapterId: 'GEN-001', videoId: 'video-A' }];
   window.CURRENT_TRACK_INDEX = 0;
   window.ytPlayer = {
@@ -43,15 +49,33 @@ function fixture(options = {}) {
     return { ok: true, json: async () => url.includes('/bible/') ? lyrics(id) : url.includes('/bu-karaoke/') ? sync(id) : { items: [] } };
   };
   const context = vm.createContext({ window, document, localStorage: window.localStorage,
-    fetch, console, URL, setInterval: callback => { intervals++; tick = callback; return 1; }, clearInterval: () => { tick = null; },
+    fetch, console, URL, IntersectionObserver, setInterval: callback => { intervals++; tick = callback; return 1; }, clearInterval: () => { tick = null; },
     alert: () => {}, setTimeout, clearTimeout });
   vm.runInContext(source, context);
   return { window, document, seeks, pending, api: window.CC_BU_FEATURES,
     setTime: value => { seconds = value; tick?.(); }, setDuration: value => { duration = value; },
     setVideo: value => { videoId = value; }, tick: () => tick?.(), sync, intervals: () => intervals,
     active: () => document.querySelector('.bu-line.active')?.dataset.index,
-    load: id => window.startChapterKaraoke(id, 'sync') };
+    load: id => window.startChapterKaraoke(id, 'sync'), intersect: entry => edgeCallback([entry]) };
 }
+
+test('fullscreen hides incomplete edge lines without changing their layout or the audio clock', async () => {
+  const f = fixture();
+  await f.load('GEN-001');
+  f.setTime(32);
+  const line = f.document.querySelector('.bu-line');
+  const rootBounds = { top: 100, bottom: 400, height: 300 };
+  f.intersect({ target: line, rootBounds, boundingClientRect: { top: 90, bottom: 130, height: 40 } });
+  assert.equal(line.classList.contains('is-edge-clipped'), true);
+  assert.equal(f.window.ytPlayer.getCurrentTime(), 32);
+  assert.equal(f.active(), '3');
+  f.intersect({ target: line, rootBounds, boundingClientRect: { top: 110, bottom: 150, height: 40 } });
+  assert.equal(line.classList.contains('is-edge-clipped'), false);
+  f.intersect({ target: line, rootBounds, boundingClientRect: { top: 380, bottom: 420, height: 40 } });
+  assert.equal(line.classList.contains('is-edge-clipped'), true);
+  assert.equal(line.parentNode.id, 'hero-karaoke-lines');
+  assert.match(source, /\.bu-line\.is-edge-clipped\s*\{\s*visibility: hidden/);
+});
 
 test('fullscreen preserves the iframe, player, playhead, cue and single sync timer', async () => {
   const f = fixture();

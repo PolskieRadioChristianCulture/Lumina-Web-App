@@ -695,6 +695,10 @@
     }
 
     /* Optimal Responsive Typography in Fullscreen Worship Mode */
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.is-edge-clipped {
+      visibility: hidden !important;
+      transition: none !important;
+    }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line {
       width: 100% !important;
       text-align: center !important;
@@ -1937,6 +1941,27 @@
     }
   }
 
+  let lineEdgeObserver = null;
+
+  function observeCompleteLines(container) {
+    lineEdgeObserver?.disconnect();
+    if (typeof IntersectionObserver === 'undefined') return;
+    const viewport = document.getElementById('hero-karaoke-viewport');
+    if (!viewport) return;
+    lineEdgeObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const bounds = entry.rootBounds;
+        const rect = entry.boundingClientRect;
+        // Preserve layout and playhead; only complete verses are displayed
+        // at the edges of the fullscreen reading window.
+        const clipped = bounds && rect.height < bounds.height &&
+          (rect.top < bounds.top - 0.01 || rect.bottom > bounds.bottom + 0.01);
+        entry.target.classList.toggle('is-edge-clipped', Boolean(clipped));
+      }
+    }, { root: viewport, threshold: [0, 1] });
+    container.querySelectorAll('.bu-line').forEach(line => lineEdgeObserver.observe(line));
+  }
+
   function renderSyncMode(container, syncData) {
     renderTextModeBar(container, 'sync');
     container.dataset.mode = 'synchronized';
@@ -1999,6 +2024,7 @@
       container.appendChild(lineBtn);
       state.syncNodes.push(lineBtn);
     }
+    observeCompleteLines(container);
     tickSync();
   }
 
