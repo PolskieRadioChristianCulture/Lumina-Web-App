@@ -258,11 +258,12 @@ export const CcnAudioPlayer: React.FC<{ audio?: ArticleAudio }> = ({ audio }) =>
               style={{
                 height: '60px',
                 display: 'flex',
-                gap: '2px',
+                gap: 'clamp(1px, 0.4vw, 2.5px)',
                 alignItems: 'center',
                 position: 'relative',
                 cursor: hasDirectStream ? 'pointer' : 'default',
                 touchAction: 'pan-y',
+                overflow: 'hidden',
               }}
             >
               <div
@@ -285,7 +286,7 @@ export const CcnAudioPlayer: React.FC<{ audio?: ArticleAudio }> = ({ audio }) =>
                     aria-hidden="true"
                     style={{
                       flex: 1,
-                      minWidth: '2px',
+                      minWidth: 0,
                       maxWidth: '6px',
                       height: `${Math.max(12, Math.min(92, h))}%`,
                       borderRadius: '3px',
